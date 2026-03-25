@@ -1,0 +1,12 @@
+﻿#pragma once
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Chat/Friendly_Behaviour_Action_Chat.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/GiveQuest/Friendly_Behaviour_Action_Quest.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/GiveQuest/SwordMan/Friendly_Behaviour_Action_SwordManQuest.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/IsChat/Friendly_Behaviour_Action_IsChat.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/MoveForRoute/Friendly_Behaviour_Action_MoveForRoute.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/PlayAnimation/Friendly_Behaviour_Action_PlayAnimation.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/PurposeCamera/Friendly_Behaviour_Action_PurposeCamera.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/ReadBlackBoard/Friendly_Behaviour_Action_ReadBlackBoard.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Sample/Friendly_Behaviour_Action_SampleFirstEventDragonChat.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/SetRotation/Friendly_Behaviour_Action_SetRotation.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/WriteBlackBoard/Friendly_Behaviour_Action_WriteBlackBoard.h"

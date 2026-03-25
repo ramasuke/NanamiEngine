@@ -1,0 +1,109 @@
+{
+    "entryNode_": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "6908B678-2D3F-4196-8B15-814C67C6212D"
+                    },
+                    "position_": {
+                        "value0": 249.0,
+                        "value1": 51.0
+                    }
+                },
+                "nextNode_": {
+                    "polymorphic_id": 2147483649,
+                    "polymorphic_name": "Editor::Npc::Behaviour::SelectorNode",
+                    "ptr_wrapper": {
+                        "id": 2147483650,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "value0": {},
+                                "guid_": {
+                                    "value_": "D99C150C-2435-42E3-AB00-6D0E547DBEEC"
+                                },
+                                "position_": {
+                                    "value0": 253.0,
+                                    "value1": 145.0
+                                }
+                            },
+                            "children_": [
+                                {
+                                    "polymorphic_id": 2147483650,
+                                    "polymorphic_name": "Editor::Npc::Friendly::Behaviour::ActionNode",
+                                    "ptr_wrapper": {
+                                        "id": 2147483651,
+                                        "data": {
+                                            "cereal_class_version": 1,
+                                            "value0": {
+                                                "value0": {},
+                                                "guid_": {
+                                                    "value_": "45B22D3A-E56A-4FF7-9324-D10B6891ACB7"
+                                                },
+                                                "position_": {
+                                                    "value0": 107.0,
+                                                    "value1": 248.0
+                                                }
+                                            },
+                                            "name_": "SampleAppearDragon",
+                                            "action_": {
+                                                "polymorphic_id": 2147483651,
+                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::SampleFirstEventDragonChat",
+                                                "ptr_wrapper": {
+                                                    "valid": 1,
+                                                    "data": {
+                                                        "cereal_class_version": 0,
+                                                        "value0": {
+                                                            "cereal_class_version": 0
+                                                        },
+                                                        "firstEventDragonPrefab_": {
+                                                            "cereal_class_version": 0,
+                                                            "value0": {
+                                                                "polymorphic_id": 1073741824,
+                                                                "ptr_wrapper": {
+                                                                    "id": 2147483652,
+                                                                    "data": {
+                                                                        "cereal_class_version": 0,
+                                                                        "value0": {
+                                                                            "value_": "2D1C4E01-7FA2-4C80-B959-CC80F0F82950"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "appearFirstEventDragonPosition_": {
+                                                            "value0": -412.95098876953127,
+                                                            "value1": 283.67498779296877,
+                                                            "value2": 616.6799926757813
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "parameters_": {
+        "ptr_wrapper": {
+            "valid": 1,
+            "data": {
+                "value0": 0
+            }
+        }
+    }
+}

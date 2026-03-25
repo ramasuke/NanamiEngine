@@ -1,0 +1,49 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::NpcChat",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\NpcChatText/ActionInstructChat.npcChat",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "FF821F71-B180-4A0B-8625-689C9A28F97E"
+                    }
+                },
+                "count": 1,
+                "item_0": {
+                    "cereal_class_version": 0,
+                    "font_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "text_": "左クリックで攻撃！\nCTRLで回避！",
+                    "textColor_": {
+                        "cereal_class_version": 0,
+                        "r_": 255,
+                        "g_": 255,
+                        "b_": 255
+                    }
+                }
+            }
+        }
+    }
+}

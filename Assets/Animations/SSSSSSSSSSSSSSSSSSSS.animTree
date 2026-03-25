@@ -1,0 +1,119 @@
+{
+    "additionParameters_": {
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "value0": 0
+            }
+        }
+    },
+    "entryNode": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483650,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0
+                },
+                "position_": {
+                    "value0": 98.0,
+                    "value1": 338.0
+                },
+                "guid_": {
+                    "cereal_class_version": 0,
+                    "value_": "C289C273-8DC9-4C01-9E55-BDA74BB88FDF"
+                },
+                "speed_": 1.0
+            }
+        }
+    },
+    "visualAnyStateNode": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483651,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {},
+                "position_": {
+                    "value0": 117.0,
+                    "value1": 213.0
+                },
+                "guid_": {
+                    "value_": "4F884C9E-16A9-443F-837D-CBAD82FEA3D5"
+                }
+            }
+        }
+    },
+    "nodesCount": 1,
+    "nodes_0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::AnimationTree::AnimationClipNode",
+        "ptr_wrapper": {
+            "id": 2147483652,
+            "data": {
+                "cereal_class_version": 2,
+                "value0": {},
+                "animationFile_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483653,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "ABFFDB0F-1F3E-4723-BE3B-7F7B30E050D4"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "ClipNode",
+                "position_": {
+                    "value0": 461.0,
+                    "value1": 306.0
+                },
+                "guid_": {
+                    "value_": "4BA131E5-4E16-41C3-8CD6-F69E0485DC87"
+                },
+                "speed_": 100.0,
+                "blendAnimationOffset_secs_": 0.0,
+                "modelAnimationIndex_": 0
+            }
+        }
+    },
+    "fromNodeNodePathCount": 1,
+    "fromNodeNodePath_0": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483654,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0
+                },
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": 0
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.0,
+                "fromNodeGuid_": {
+                    "value_": "C289C273-8DC9-4C01-9E55-BDA74BB88FDF"
+                },
+                "nextNodeGuid_": {
+                    "value_": "4BA131E5-4E16-41C3-8CD6-F69E0485DC87"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "C289C273-8DC9-4C01-9E55-BDA74BB88FDF"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePathCount": 0
+}

@@ -1,0 +1,156 @@
+{
+    "entryNode_": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "41E5149B-D111-4795-9BDF-E6B6B01EAD4E"
+                    },
+                    "position_": {
+                        "value0": 275.0,
+                        "value1": 90.0
+                    }
+                },
+                "nextNode_": {
+                    "polymorphic_id": 2147483649,
+                    "polymorphic_name": "Editor::Npc::Behaviour::SelectorNode",
+                    "ptr_wrapper": {
+                        "id": 2147483650,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "value0": {},
+                                "guid_": {
+                                    "value_": "1115196A-338F-4607-AAC4-971605D5470D"
+                                },
+                                "position_": {
+                                    "value0": 276.0,
+                                    "value1": 174.0
+                                }
+                            },
+                            "children_": [
+                                {
+                                    "polymorphic_id": 2147483650,
+                                    "polymorphic_name": "Editor::Npc::Enemy::Behaviour::ActionNode",
+                                    "ptr_wrapper": {
+                                        "id": 2147483651,
+                                        "data": {
+                                            "cereal_class_version": 1,
+                                            "value0": {
+                                                "value0": {},
+                                                "guid_": {
+                                                    "value_": "2C342B13-F8E1-43B0-9824-EB70D1524E11"
+                                                },
+                                                "position_": {
+                                                    "value0": 184.0,
+                                                    "value1": 274.0
+                                                }
+                                            },
+                                            "name_": "",
+                                            "action_": {
+                                                "polymorphic_id": 2147483651,
+                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::OnDamage",
+                                                "ptr_wrapper": {
+                                                    "valid": 1,
+                                                    "data": {
+                                                        "cereal_class_version": 1,
+                                                        "value0": {
+                                                            "cereal_class_version": 0
+                                                        },
+                                                        "value1": {
+                                                            "cereal_class_version": 0,
+                                                            "value0": {
+                                                                "polymorphic_id": 1073741824,
+                                                                "ptr_wrapper": {
+                                                                    "id": 2147483652,
+                                                                    "data": {
+                                                                        "cereal_class_version": 0,
+                                                                        "value0": {
+                                                                            "value_": "04102435-9B1A-4530-B257-A77B23D804F4"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "value2": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "value3": 1
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "polymorphic_id": 2,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "value0": {
+                                                "value0": {},
+                                                "guid_": {
+                                                    "value_": "B0789AD4-6723-400E-B525-261090EE4FCB"
+                                                },
+                                                "position_": {
+                                                    "value0": 383.0,
+                                                    "value1": 269.0
+                                                }
+                                            },
+                                            "name_": "",
+                                            "action_": {
+                                                "polymorphic_id": 2147483652,
+                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::PlayAnimation",
+                                                "ptr_wrapper": {
+                                                    "valid": 1,
+                                                    "data": {
+                                                        "cereal_class_version": 1,
+                                                        "value0": {},
+                                                        "animatorSetParamNumber_": 0,
+                                                        "animationSound_": {
+                                                            "cereal_class_version": 0,
+                                                            "value0": {
+                                                                "polymorphic_id": 1073741824,
+                                                                "ptr_wrapper": {
+                                                                    "id": 2147483654,
+                                                                    "data": {
+                                                                        "cereal_class_version": 0,
+                                                                        "value0": {
+                                                                            "value_": "43ADCC10-3896-4528-B1E5-B72AAE090D80"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "parameters_": {
+        "ptr_wrapper": {
+            "valid": 1,
+            "data": {
+                "value0": 0
+            }
+        }
+    }
+}

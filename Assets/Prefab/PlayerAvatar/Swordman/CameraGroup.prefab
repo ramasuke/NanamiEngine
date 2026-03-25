@@ -1,0 +1,359 @@
+{
+    "isActive_": false,
+    "name_": "SwordmanCameraGroup",
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 1,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0,
+                            "guid_": {
+                                "cereal_class_version": 0,
+                                "value_": "1BA41EA3-7B5B-47AF-B178-BECFF9860C4A"
+                            },
+                            "isEnable_": true
+                        },
+                        "followFromBehindCamera_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483650,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "D53C7F62-9F36-4413-800F-924CA43DBB0D"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 0.0
+        },
+        "localScale_": {
+            "value0": 1.0,
+            "value1": 1.0,
+            "value2": 1.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 1.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 1.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 1.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 1,
+        "child": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483651,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": false,
+                    "name_": "FollowFromBehind",
+                    "guid_": {
+                        "value_": "EFD4883C-49D2-4C50-A0ED-62A1EF9BC6BF"
+                    },
+                    "components_": {
+                        "componentCount": 4,
+                        "component_0": {
+                            "polymorphic_id": 2147483651,
+                            "polymorphic_name": "NanamiEngine::CineMachine::CineMachineVirtualCamera",
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "D53C7F62-9F36-4413-800F-924CA43DBB0D"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "priority_": {
+                                        "value": 0
+                                    }
+                                }
+                            }
+                        },
+                        "component_1": {
+                            "polymorphic_id": 2147483652,
+                            "polymorphic_name": "NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour",
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "cereal_class_version": 2,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "E5AA55ED-4D90-4A94-BBB0-5C9E2C3E27D7"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value2": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value3": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "followTarget_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483654,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "525EC8A2-EE62-4AFE-9182-A148F313B519"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "followOffset_": {
+                                        "value0": -8.0,
+                                        "value1": 10.0,
+                                        "value2": -1.0
+                                    }
+                                }
+                            }
+                        },
+                        "component_2": {
+                            "polymorphic_id": 2147483653,
+                            "polymorphic_name": "NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour",
+                            "ptr_wrapper": {
+                                "id": 2147483655,
+                                "data": {
+                                    "cereal_class_version": 1,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "4CDB4569-573D-47A3-99F9-F47F284E0372"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value2": {},
+                                    "value3": {},
+                                    "value4": {},
+                                    "target_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483656,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "9BC8E1AB-23C9-4A18-A9DA-7065FB6009EE"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "lookAtTargetOffset_": {
+                                        "value0": 7.0,
+                                        "value1": 6.0,
+                                        "value2": 0.0
+                                    }
+                                }
+                            }
+                        },
+                        "component_3": {
+                            "polymorphic_id": 2147483654,
+                            "polymorphic_name": "CineMachine::Behaviour::ThirdPersonCameraBehaviour",
+                            "ptr_wrapper": {
+                                "id": 2147483657,
+                                "data": {
+                                    "cereal_class_version": 3,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "D547A90B-F987-4D0E-A9E5-CDEA8F446461"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "value3": {},
+                                    "minPitch_": -0.30000001192092898,
+                                    "maxPitch_": 0.20000000298023225,
+                                    "mouseSensitivity_": 0.004999999888241291,
+                                    "distance_": 11.0,
+                                    "target_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483658,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "EA5AE61B-F14C-457C-A448-803AF81E38D6"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "follow_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483659,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "3F575B77-F133-48A1-BE51-2B53730A1E5E"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "lookAt_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483660,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "EE9CA579-7776-4E3B-83AB-67DAF5C9095D"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "followOffsetPos_": {
+                                        "value0": -0.15000000596046449,
+                                        "value1": 15.0,
+                                        "value2": 0.0
+                                    },
+                                    "lookAtOffsetPos_": {
+                                        "value0": -0.15000000596046449,
+                                        "value1": 15.0,
+                                        "value2": 0.0
+                                    },
+                                    "cameraBrain_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483661,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "45506FC6-9E4A-47CF-84C4-F04523403B89"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    }
+                }
+            }
+        }
+    },
+    "value0": 2,
+    "value1": {
+        "value_": "29E9C902-8075-4072-BB00-829B8FADCBCA"
+    },
+    "value2": {
+        "value_": "16AF5758-3AAE-4E67-854F-F69CFC92F11E"
+    }
+}

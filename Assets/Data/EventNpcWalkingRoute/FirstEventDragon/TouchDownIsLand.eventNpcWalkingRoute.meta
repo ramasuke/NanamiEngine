@@ -1,0 +1,57 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::EventNpcWalkingRoute",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\EventNpcWalkingRoute\\FirstEventDragon/TouchDownIsLand.eventNpcWalkingRoute",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "D56267A0-5134-462D-A359-72AD80093315"
+                    }
+                },
+                "count": 4,
+                "route_0": {
+                    "cereal_class_version": 0,
+                    "position_": {
+                        "value0": -10.36607837677002,
+                        "value1": -29.575674057006837,
+                        "value2": -83.93424987792969
+                    },
+                    "duration_secs_": 2.0
+                },
+                "route_1": {
+                    "position_": {
+                        "value0": -10.366000175476075,
+                        "value1": 81.0770034790039,
+                        "value2": -83.93399810791016
+                    },
+                    "duration_secs_": 2.0
+                },
+                "route_2": {
+                    "position_": {
+                        "value0": -10.366000175476075,
+                        "value1": 81.1520004272461,
+                        "value2": 30.0
+                    },
+                    "duration_secs_": 3.0
+                },
+                "route_3": {
+                    "position_": {
+                        "value0": -10.366000175476075,
+                        "value1": 60.0,
+                        "value2": 30.0
+                    },
+                    "duration_secs_": 1.0
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,515 @@
+{
+    "name": "TitleScene",
+    "gameObjectCount": 1,
+    "gameObject_0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    }
+                },
+                "isActive_": false,
+                "name_": "Canvas",
+                "guid_": {
+                    "cereal_class_version": 0,
+                    "value_": "B92D7611-4596-4213-B168-583736FA31E3"
+                },
+                "components_": {
+                    "cereal_class_version": 0,
+                    "componentCount": 4,
+                    "component_0": {
+                        "polymorphic_id": 2147483650,
+                        "polymorphic_name": "GamePlay::Ui::SampleTitleScene",
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "guid_": {
+                                        "value_": "71896422-1272-4579-868E-4DE4036ABF62"
+                                    },
+                                    "isEnable_": true
+                                },
+                                "gameStartButton_": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483651,
+                                            "data": {
+                                                "cereal_class_version": 0,
+                                                "value0": {
+                                                    "value_": "2CE9F545-B60B-41DF-B3CE-91BD68B99608"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "gameExitButton_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483652,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "B1D6BFEE-6673-405E-A8DE-A18BB1457A69"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "component_1": {
+                        "polymorphic_id": 2147483651,
+                        "polymorphic_name": "NanamiEngine::Module::Component::AudioSource",
+                        "ptr_wrapper": {
+                            "id": 2147483653,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "guid_": {
+                                        "value_": "487F5080-EFCD-4253-B24B-B5A3F8C4C008"
+                                    },
+                                    "isEnable_": true
+                                },
+                                "listenableRadius_": 256.0,
+                                "isLoop_": true,
+                                "volume_": 255
+                            }
+                        }
+                    },
+                    "component_2": {
+                        "polymorphic_id": 2147483652,
+                        "polymorphic_name": "GamePlay::Sound::BgmPlayObject",
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "guid_": {
+                                        "value_": "AA873DEB-EDA9-48E2-BF71-A08F6339E4BC"
+                                    },
+                                    "isEnable_": true
+                                },
+                                "bgm_": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483655,
+                                            "data": {
+                                                "cereal_class_version": 0,
+                                                "value0": {
+                                                    "value_": "66BB82C5-E6FB-41F7-BEE5-E8060AF34CCB"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "component_3": {
+                        "polymorphic_id": 2147483653,
+                        "polymorphic_name": "GamePlay::Sound::SoundPlayer",
+                        "ptr_wrapper": {
+                            "id": 2147483656,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "guid_": {
+                                        "value_": "151E3C06-CB52-4304-9C43-3AF5431B021F"
+                                    },
+                                    "isEnable_": true
+                                }
+                            }
+                        }
+                    }
+                },
+                "transform_": {
+                    "cereal_class_version": 0,
+                    "localPos_": {
+                        "value0": 5.0,
+                        "value1": 140.0,
+                        "value2": 0.0
+                    },
+                    "localRot_": {
+                        "value0": 0.0,
+                        "value1": 0.0,
+                        "value2": 0.0,
+                        "value3": 0.0
+                    },
+                    "localScale_": {
+                        "value0": 1.4500000476837159,
+                        "value1": 1.0,
+                        "value2": 1.0
+                    },
+                    "worldMatrix_": {
+                        "value0": {
+                            "value0": 1.4500000476837159,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "value1": {
+                            "value0": 0.0,
+                            "value1": 1.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "value2": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 1.0,
+                            "value3": 0.0
+                        },
+                        "value3": {
+                            "value0": 5.0,
+                            "value1": 140.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        }
+                    },
+                    "childCount": 3,
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147483657,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": false,
+                                "name_": "BackGround",
+                                "guid_": {
+                                    "value_": "9A28612F-5FF6-4F3E-9C2A-7A7A3ECE6793"
+                                },
+                                "components_": {
+                                    "componentCount": 1,
+                                    "component_0": {
+                                        "polymorphic_id": 2147483654,
+                                        "polymorphic_name": "NanamiEngine::Module::Component::ImageRenderer",
+                                        "ptr_wrapper": {
+                                            "id": 2147483658,
+                                            "data": {
+                                                "cereal_class_version": 2,
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "9FA6F118-E0A7-4840-8895-50F97390EF30"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {
+                                                    "cereal_class_version": 0
+                                                },
+                                                "value2": {
+                                                    "cereal_class_version": 0
+                                                },
+                                                "spriteFile_": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147483659,
+                                                            "data": {
+                                                                "cereal_class_version": 0,
+                                                                "value0": {
+                                                                    "value_": "A59C33AA-BEB0-42EB-BFF4-22A0C0BB6AE1"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "renderPriority_": 0
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 673.9600219726563,
+                                        "value1": 281.2799987792969,
+                                        "value2": 0.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.0,
+                                        "value1": 0.0,
+                                        "value2": 0.0,
+                                        "value3": 1.0
+                                    },
+                                    "localScale_": {
+                                        "value0": 0.3700000047683716,
+                                        "value1": 0.3700000047683716,
+                                        "value2": 0.3700000047683716
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": 0.5365000367164612,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": 0.0,
+                                            "value1": 0.3700000047683716,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.3700000047683716,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 982.2420654296875,
+                                            "value1": 421.2799987792969,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                }
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147483660,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": false,
+                                "name_": "GameStartButton",
+                                "guid_": {
+                                    "value_": "D6EF8627-7DB5-44BB-B859-00A02D31DFBE"
+                                },
+                                "components_": {
+                                    "componentCount": 2,
+                                    "component_0": {
+                                        "polymorphic_id": 6,
+                                        "ptr_wrapper": {
+                                            "id": 2147483661,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "700D504E-B18A-4085-B36E-48DE70F43EFC"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "value2": {},
+                                                "spriteFile_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147483662,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "73AB83BE-94C6-439A-9369-8AAED6AA8F88"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "renderPriority_": 1
+                                            }
+                                        }
+                                    },
+                                    "component_1": {
+                                        "polymorphic_id": 2147483655,
+                                        "polymorphic_name": "NanamiUi::Button",
+                                        "ptr_wrapper": {
+                                            "id": 2147483663,
+                                            "data": {
+                                                "cereal_class_version": 0,
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "2CE9F545-B60B-41DF-B3CE-91BD68B99608"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "eventAreaSize_": {
+                                                    "value0": 120.0,
+                                                    "value1": 80.0
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 350.0,
+                                        "value1": 700.0,
+                                        "value2": 0.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.0,
+                                        "value1": 0.0,
+                                        "value2": 0.0,
+                                        "value3": 1.0
+                                    },
+                                    "localScale_": {
+                                        "value0": 0.23999999463558198,
+                                        "value1": 0.2800000011920929,
+                                        "value2": 0.2800000011920929
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": 0.3479999899864197,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": 0.0,
+                                            "value1": 0.2800000011920929,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.2800000011920929,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 512.5,
+                                            "value1": 840.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                }
+                            }
+                        }
+                    },
+                    "child": {
+                        "polymorphic_id": 1,
+                        "ptr_wrapper": {
+                            "id": 2147483664,
+                            "data": {
+                                "value0": {
+                                    "value0": {}
+                                },
+                                "isActive_": false,
+                                "name_": "GameExitButton",
+                                "guid_": {
+                                    "value_": "3F5B7BF4-E914-4B95-BF05-9E303EBA216D"
+                                },
+                                "components_": {
+                                    "componentCount": 2,
+                                    "component_0": {
+                                        "polymorphic_id": 7,
+                                        "ptr_wrapper": {
+                                            "id": 2147483665,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "B1D6BFEE-6673-405E-A8DE-A18BB1457A69"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "eventAreaSize_": {
+                                                    "value0": 120.0,
+                                                    "value1": 80.0
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "component_1": {
+                                        "polymorphic_id": 6,
+                                        "ptr_wrapper": {
+                                            "id": 2147483666,
+                                            "data": {
+                                                "value0": {
+                                                    "guid_": {
+                                                        "value_": "E778C641-662F-4A75-8D16-E1C0FEB28809"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {},
+                                                "value2": {},
+                                                "spriteFile_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147483667,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "29DAFEF8-AE3A-4B67-8471-B4149285E961"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "renderPriority_": 1
+                                            }
+                                        }
+                                    }
+                                },
+                                "transform_": {
+                                    "localPos_": {
+                                        "value0": 920.0,
+                                        "value1": 700.0,
+                                        "value2": 0.0
+                                    },
+                                    "localRot_": {
+                                        "value0": 0.0,
+                                        "value1": 0.0,
+                                        "value2": 0.0,
+                                        "value3": 1.0
+                                    },
+                                    "localScale_": {
+                                        "value0": 0.23999999463558198,
+                                        "value1": 0.2800000011920929,
+                                        "value2": 0.2800000011920929
+                                    },
+                                    "worldMatrix_": {
+                                        "value0": {
+                                            "value0": 0.3479999899864197,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value1": {
+                                            "value0": 0.0,
+                                            "value1": 0.2800000011920929,
+                                            "value2": 0.0,
+                                            "value3": 0.0
+                                        },
+                                        "value2": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.2800000011920929,
+                                            "value3": 0.0
+                                        },
+                                        "value3": {
+                                            "value0": 1339.0,
+                                            "value1": 840.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        }
+                                    },
+                                    "childCount": 0
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
