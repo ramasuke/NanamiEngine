@@ -95,9 +95,26 @@ void GameObject::AddComponent::OnDrawGameCoreGui(std::shared_ptr<Component::Comp
 {
     if (ImGui::TreeNode("GameCore"))
     {
+        
         OnDrawTryAddComponentGui<GameCore::Game>(addComponent);
-        OnDrawTryAddComponentGui<GameCore::Scene::TitleSceneContext>(addComponent);
-        OnDrawTryAddComponentGui<GameCore::Scene::FirstTouchDownMainIsLandSceneContext>(addComponent);
+        if (ImGui::TreeNode("Scene"))
+        {
+            if (ImGui::TreeNode("Main"))
+            {
+                OnDrawTryAddComponentGui<GameCore::Scene::TitleSceneContext>(addComponent);
+                OnDrawTryAddComponentGui<GameCore::Scene::FirstTouchDownMainIsLandSceneContext>(addComponent);
+                ImGui::TreePop();
+                ImGui::Spacing();
+            }
+            if (ImGui::TreeNode("Sub"))
+            {
+                OnDrawTryAddComponentGui<GameCore::Scene::Sub::ChattingUISceneContext>(addComponent);
+                ImGui::TreePop();
+                ImGui::Spacing();
+            }
+            ImGui::TreePop();
+            ImGui::Spacing();
+        }
         ImGui::TreePop();
         ImGui::Spacing();
     }

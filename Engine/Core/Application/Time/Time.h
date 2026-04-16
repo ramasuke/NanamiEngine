@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-class Time {
+class Time
+{
 public:
     static void Update();
     static float DeltaTime();

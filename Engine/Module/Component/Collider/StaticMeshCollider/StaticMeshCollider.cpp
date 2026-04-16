@@ -135,6 +135,7 @@ namespace NanamiEngine::Module::Component
             JPH::Vec3(world.x, world.y, world.z),
             JPH::Quat(normalizedRot.x, normalizedRot.y, normalizedRot.z, normalizedRot.w),
             JPH::EMotionType::Static,
+            0,
             false,
             IsGravity(),
             &Components());

@@ -25,7 +25,6 @@ namespace GameCore::Npc::Friendly
 
         void Tick(const std::string& npcName,
                   const std::weak_ptr<GameObject::IGameObject>& ownGameObject,
-                  const std::weak_ptr<GamePlay::Ui::NpcChatting>& npcChattingUi,
                   bool& isChatting) const;
         void OnSave();
         void OnDrawGraphEditorGui();

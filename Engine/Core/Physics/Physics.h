@@ -1,5 +1,4 @@
 ﻿#pragma once
-
 #include <memory>
 #include "../JoltPhysics/Jolt/Jolt.h"
 #include <../JoltPhysics/Jolt/Physics/PhysicsSystem.h>
@@ -15,6 +14,7 @@ namespace NanamiEngine::Module::GameObject
 namespace NanamiEngine::Core
 {
     constexpr auto GRAVITY_SCALE = -90.8f;
+    constexpr auto IN_COLLISION_STEPS = 1;
     
     class Physics final
     {
@@ -25,8 +25,7 @@ namespace NanamiEngine::Core
         [[nodiscard]] JPH::PhysicsSystem& GetPhysicsSystem() { return physicsSystem_; }
         void Initialize();
         void Update(float deltaTime);
-        void UpdateContactedEvent() const;
-        void Shutdown();
+        void Kill();
         void UnSubscribeEngineCollider(const JPH::BodyID& colliderId) const;
         
         [[nodiscard]] JPH::BodyID CreateCollider(
@@ -34,6 +33,7 @@ namespace NanamiEngine::Core
             const JPH::Vec3& position,
             const JPH::Quat& rotation,
             JPH::EMotionType motionType,
+            float mass,
             bool isSensor,
             bool isGravity,
             Module::GameObject::ComponentGroup* components);

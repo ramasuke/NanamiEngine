@@ -2,6 +2,7 @@
 #include "../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../../Data/FriendlyNpcBehviour/Data_FriendNpcBehaviourFile.h"
+#include "../../../../Data/FriendlyNpcStatus/Base/Data_FriendlyNpcBaseStatus.h"
 #include "../../../Core/Game/Npc/Friendly/IFriendlyNpc.h"
 #include "../../../Core/Game/PlayerAvatar/Chattable/IPlayerChattable.h"
 #include "../../Ui/NpcChatting/NpcChatting.h"
@@ -26,7 +27,7 @@ namespace GamePlay::Npc::Friendly
 
         [[serialize(0)]] std::string name_;
         [[serialize(0)]] FIELD(Asset::FriendNpcBehaviourFile) friendlyNpcBehaviourFile_;
-        [[serialize(1)]] FIELD(Ui::NpcChatting) chattingUi_;
+        [[serialize(2)]] FIELD(Asset::FriendlyNpcBaseResources) baseStatus_;
         std::unique_ptr<GameCore::Npc::Friendly::BehaviourTree> behaviour_;
         bool isChatting_ = false;
 
@@ -40,7 +41,7 @@ namespace GamePlay::Npc::Friendly
             archive(cereal::base_class<ComponentBase>(this));
             archive(CEREAL_NVP(name_));
             archive(CEREAL_NVP(friendlyNpcBehaviourFile_));
-            archive(CEREAL_NVP(chattingUi_));
+            archive(CEREAL_NVP(baseStatus_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
@@ -48,12 +49,12 @@ namespace GamePlay::Npc::Friendly
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 0) archive(CEREAL_NVP(name_));
             if (version >= 0) archive(CEREAL_NVP(friendlyNpcBehaviourFile_));
-            if (version >= 1) archive(CEREAL_NVP(chattingUi_));
+            if (version >= 2) archive(CEREAL_NVP(baseStatus_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Npc::Friendly::FriendlyNpc, 1)                                      
+CEREAL_CLASS_VERSION(GamePlay::Npc::Friendly::FriendlyNpc, 2)                                      
 CEREAL_REGISTER_TYPE(GamePlay::Npc::Friendly::FriendlyNpc) 
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GamePlay::Npc::Friendly::FriendlyNpc)

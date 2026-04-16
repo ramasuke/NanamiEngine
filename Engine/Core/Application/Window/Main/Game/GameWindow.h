@@ -11,8 +11,8 @@ namespace NanamiEngine::Core::MainWindow
     {
     public:
         void AddContent(const std::shared_ptr<Scene::Scene>& content) override;
-        [[nodiscard]] Scene::Scene& MainScene() const { return *mainScene_.lock(); }
         void ChangeMainScene(const std::shared_ptr<Scene::Scene>& scene);
+        [[nodiscard]] Scene::Scene& MainScene() const { return *mainScene_.lock(); }
         [[nodiscard]] std::shared_ptr<Scene::Scene> CatchScene(const Guid& guid) const;
         [[nodiscard]] VECTOR    GetCameraDxPosition      () const { return {editorCamera_.GetPosition().x, editorCamera_.GetPosition().y, editorCamera_.GetPosition().z}; }
         [[nodiscard]] glm::vec3 GetCameraPosition        () const { return editorCamera_.GetPosition(); }
@@ -22,16 +22,15 @@ namespace NanamiEngine::Core::MainWindow
 
         [[nodiscard]] bool IsPlayMode() const { return isPlayMode_; }
         [[nodiscard]] bool IsPlaying () const { return isPlaying_; }
+        [[nodiscard]] bool TryReplaceGameObject(const Guid& replaceGameObjectGuid, const std::shared_ptr<GameObject::IGameObject>& newGameObject) const;
         void RemoveGameObject(const std::weak_ptr<GameObject::IGameObject>& removeGameObject) const;
-        bool TryReplaceGameObject(const Guid& replaceGameObjectGuid, const std::shared_ptr<GameObject::IGameObject>& newGameObject) const;
 
     private:
         [[nodiscard]] std::vector<std::shared_ptr<Scene::Scene>> Scenes() const;
-        void OnUpdate()     override;
+        void OnUpdate() override;
+        void OnSave  () override;
         void OnDrawGui(MainWindowDrawGuiContext context) override;
-        void OnSave()       override;
 
-    private:
         Component::Editor3DCamera editorCamera_;
         std::weak_ptr<Scene::Scene> mainScene_;
         bool isPlayMode_ = false;

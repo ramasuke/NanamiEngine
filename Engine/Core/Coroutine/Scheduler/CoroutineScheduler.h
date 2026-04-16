@@ -26,7 +26,7 @@ namespace Coroutine
     class CoroutineScheduler
     {
     public:
-        void Update();
+        void Invoke();
         void AllClear();
         
         void RegisterWaitForSeconds     (WaitForSeconds* waitForSeconds          ) { pendingWaitForSecondses_   .push_back(waitForSeconds     ); }

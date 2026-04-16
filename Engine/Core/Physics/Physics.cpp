@@ -19,7 +19,7 @@ namespace NanamiEngine::Core
 
     Physics::~Physics()
     {
-        Shutdown();
+        Kill();
 
         delete JPH::Factory::sInstance;
         JPH::Factory::sInstance = nullptr;
@@ -52,17 +52,13 @@ namespace NanamiEngine::Core
 
     void Physics::Update(const float deltaTime)
     {
-        physicsSystem_.Update(deltaTime, 1, tempAllocator_.get(), jobSystem_.get());
-    }
-
-    void Physics::UpdateContactedEvent() const
-    {
+        physicsSystem_.Update(deltaTime, IN_COLLISION_STEPS, tempAllocator_.get(), jobSystem_.get());
         contactListener_->OnUpdate();
     }
 
-    void Physics::Shutdown()
+    void Physics::Kill()
     {
-        jobSystem_.reset();
+        jobSystem_    .reset();
         tempAllocator_.reset();
         JPH::UnregisterTypes();
     }
@@ -73,13 +69,14 @@ namespace NanamiEngine::Core
     }
 
     JPH::BodyID Physics::CreateCollider(
-    const JPH::RefConst<JPH::Shape>& shape,
-    const JPH::Vec3& position,
-    const JPH::Quat& rotation,
-    const JPH::EMotionType motionType,
-    const bool isSensor,
-    const bool isGravity,
-    Module::GameObject::ComponentGroup* components)
+        const JPH::RefConst<JPH::Shape>& shape,
+        const JPH::Vec3& position,
+        const JPH::Quat& rotation,
+        const JPH::EMotionType motionType,
+        const float mass,
+        const bool isSensor,
+        const bool isGravity,
+        Module::GameObject::ComponentGroup* components)
     {
         JPH::BodyCreationSettings settings(
             shape,
@@ -89,6 +86,11 @@ namespace NanamiEngine::Core
             0
         );
         
+        JPH::MassProperties mp;
+        mp.ScaleToMass(mass);
+        settings.mMassPropertiesOverride = mp;
+        settings.mOverrideMassProperties = JPH::EOverrideMassProperties::CalculateInertia;
+
         settings.mIsSensor = isSensor;
         settings.mUserData = reinterpret_cast<JPH::uint64>(components);
         if (!isGravity)

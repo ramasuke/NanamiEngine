@@ -7,7 +7,8 @@
 
 namespace NanamiEngine::Core::MainWindow
 {
-    template <typename ContentT> requires std::derived_from<ContentT, Module::Object::IObject>
+    template <typename ContentT>
+    requires std::derived_from<ContentT, Module::Object::IObject>
     class MainWindowBase : public IMainWindow
     {
     public:

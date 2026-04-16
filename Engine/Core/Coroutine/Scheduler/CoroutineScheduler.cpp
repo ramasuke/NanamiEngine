@@ -16,7 +16,7 @@ namespace Coroutine
         awaited.resume();
     }
     
-    void CoroutineScheduler::Update()
+    void CoroutineScheduler::Invoke()
     {
         for (auto it = waitForSecondses_.begin(); it != waitForSecondses_.end();)
         {

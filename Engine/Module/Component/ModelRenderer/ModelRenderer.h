@@ -18,9 +18,9 @@ namespace NanamiEngine::Module::Component
         int modelDxLibHandle_ = -1;
         
     private:
-        void InitRenderer()   override;
+        void InitRenderer  () override;
         void OnShadowRender() override;
-        void OnRender()       override;
+        void OnRender      () override;
         void OnDestroy() override;
         
         FIELD(Asset::Mv1File) mv1File_;

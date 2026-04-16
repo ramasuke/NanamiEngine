@@ -22,8 +22,9 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
     {
         const auto questUi = Scene::GameObject::Instantiate(questUiPrefab_.get(), glm::vec3{0.0f, 0.0f, 0.0f});
         const auto actionInstructTutorialUi = questUi.lock()->Components().Catch<GamePlay::Ui::SwordManActionInstructTutorial>();
-        
-        presenter_ = std::make_unique<ActionInstructTutorialPresenter>(std::make_unique<ActionInstructTutorialModel>(event), actionInstructTutorialUi);
+
+        auto actionInstructTutorialModel = std::make_unique<ActionInstructTutorialModel>(event);
+        presenter_ = std::make_unique<ActionInstructTutorialPresenter>(std::move(actionInstructTutorialModel), actionInstructTutorialUi);
         
         Coroutine::StartCoroutine(StartQuestAsync(completedQuestGroup));
     }

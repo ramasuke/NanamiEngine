@@ -57,7 +57,7 @@ namespace NanamiEngine::Module::GameObject
 
         [[nodiscard]] std::vector<std::shared_ptr<IGameObject>> GetAllChildren() const;
         [[nodiscard]] std::vector<std::shared_ptr<IGameObject>> GetChildren() const;
-        [[nodiscard]] std::shared_ptr<IGameObject>                CatchChild(const std::string& childName) const;
+        [[nodiscard]] std::shared_ptr<IGameObject>              CatchChild(const std::string& childName) const;
         void AddChild   (const std::shared_ptr<IGameObject>& child);
         void RemoveChild(const std::shared_ptr<IGameObject>& child);
 

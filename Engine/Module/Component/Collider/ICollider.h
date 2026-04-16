@@ -20,6 +20,6 @@ namespace NanamiEngine::Module::Physics
     public:
         virtual ~ICollider() = default;
         [[nodiscard]] virtual const JPH::BodyID& BodyId() const = 0;
-        virtual void ChangeEmotionType(const JPH::EMotionType& type) = 0;
+        virtual void SetMotionType(const JPH::EMotionType& type) = 0;
     };
 }

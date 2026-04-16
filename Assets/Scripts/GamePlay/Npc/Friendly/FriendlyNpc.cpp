@@ -16,7 +16,6 @@ namespace GamePlay::Npc::Friendly
     {
         behaviour_->Tick(name_,
                          Entity(),
-                        chattingUi_.get(),
                         isChatting_);
     }
 
@@ -34,6 +33,5 @@ namespace GamePlay::Npc::Friendly
     {
         ImGuiHelper::OnDrawInputField("name_"                    , name_);
         ImGuiHelper::OnDrawInputField("friendlyNpcBehaviourFile_", friendlyNpcBehaviourFile_);
-        ImGuiHelper::OnDrawInputField("chattingUi_"              , chattingUi_);
     }
 }

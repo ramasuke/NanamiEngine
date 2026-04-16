@@ -44,9 +44,6 @@ namespace NanamiEngine::Module::Component
             if (version >= 3) archive(CEREAL_NVP(constraints_));
             if (version >= 4) archive(CEREAL_NVP(isSensor_   ));
         }
-
-
-    public:
 #pragma endregion
     };
 }

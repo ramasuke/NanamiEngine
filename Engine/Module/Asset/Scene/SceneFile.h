@@ -12,7 +12,7 @@ namespace NanamiEngine::Module::Asset
     public:
         explicit SceneFile(std::string contentPath = "");
         [[nodiscard]] const Guid& GetGuid() const override  { return guid_; }
-        std::shared_ptr<Scene::Scene> LoadScene();
+        std::shared_ptr<Scene::Scene> LoadScene() const;
         [[nodiscard]] std::string GetContentPath() const override;
         
     private:

@@ -1,8 +1,8 @@
 ﻿#include "SampleTitleSceneUI.h"
 
 #include "../../../Core/Game/Game.h"
-#include "../../../Core/Game/Scene/Content/FirstTouchDownMainIsLand/FirstTouchDownMainIsLandScene.h"
-#include "../../../Core/Game/Scene/Group/Main/GameMainSceneGroup.h"
+#include "../../../Core/Game/Scene/Main/Content/FirstTouchDownMainIsLand/FirstTouchDownMainIsLandScene.h"
+#include "../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
 
 namespace GamePlay::Ui
 {
@@ -10,7 +10,7 @@ namespace GamePlay::Ui
     {
         gameStartButton_->OnClick().subscribe([this](NanamiUi::MouseState)
         {
-            GameCore::Game::Instance().MainScene().RequestChangeScene<GameCore::Scene::FirstTouchDownMainIsLandScene>();
+            GameCore::Game::Instance().Scenes().RequestChangeScene<GameCore::Scene::Main::FirstTouchDownMainIsLandScene>();
         });
         gameExitButton_ ->OnClick().subscribe([this](NanamiUi::MouseState)
         {

@@ -8,7 +8,7 @@ Asset::SceneFile::SceneFile(std::string contentPath) : contentPath_(std::move(co
 {
 }
 
-std::shared_ptr<Scene::Scene> Asset::SceneFile::LoadScene()
+std::shared_ptr<Scene::Scene> Asset::SceneFile::LoadScene() const
 {
     return std::make_shared<Scene::Scene>(contentPath_);
 }

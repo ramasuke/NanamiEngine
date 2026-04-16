@@ -327,15 +327,16 @@ namespace NanamiEngine::Module::GameObject
 
     std::shared_ptr<IGameObject> Transform::CatchChild(const std::string& childName) const
     {
-        for (const auto& child : Transform().GetAllChildren())
+        for (const auto& child : GetAllChildren())
         {
             if (child->Name() != childName)
                 continue;
 
             return child;
         }
+        return nullptr;
     }
-    
+
     void Transform::AddChild(const std::shared_ptr<IGameObject>& child)
     {
         if (!child)

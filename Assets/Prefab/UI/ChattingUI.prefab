@@ -3,7 +3,44 @@
     "name_": "ChattingUI",
     "components_": {
         "cereal_class_version": 0,
-        "componentCount": 0
+        "componentCount": 1,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "GamePlay::Ui::SwordManActionInstructTutorial",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 2,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "cereal_class_version": 0,
+                            "value_": "D1ECDFAB-D439-47A5-BECB-3739E0050305"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "5D832E02-4665-46DF-85AE-87FEDE25E5AA"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "value2": "",
+                    "value3": "Aボタンを押して攻撃!",
+                    "value4": "Xボタンでダッシュ!",
+                    "value5": "Xボタンを押しながら、Aでダッシュ攻撃！"
+                }
+            }
+        }
     },
     "transform_": {
         "cereal_class_version": 0,
@@ -51,10 +88,10 @@
         },
         "childCount": 2,
         "child": {
-            "polymorphic_id": 2147483649,
+            "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483649,
+                "id": 2147483651,
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -66,20 +103,18 @@
                     "isActive_": false,
                     "name_": "BackGround",
                     "guid_": {
-                        "cereal_class_version": 0,
                         "value_": "2485DBA2-1FC1-4C2D-8B89-66CC886A9EBE"
                     },
                     "components_": {
                         "componentCount": 1,
                         "component_0": {
-                            "polymorphic_id": 2147483650,
+                            "polymorphic_id": 2147483651,
                             "polymorphic_name": "NanamiEngine::Module::Component::ImageRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483650,
+                                "id": 2147483652,
                                 "data": {
                                     "cereal_class_version": 2,
                                     "value0": {
-                                        "cereal_class_version": 0,
                                         "guid_": {
                                             "value_": "42009504-7D2E-4F73-A76B-E42D5A9B340B"
                                         },
@@ -96,7 +131,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483651,
+                                                "id": 2147483653,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -160,25 +195,25 @@
             }
         },
         "child": {
-            "polymorphic_id": 1,
+            "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483652,
+                "id": 2147483654,
                 "data": {
                     "value0": {
                         "value0": {}
                     },
                     "isActive_": false,
-                    "name_": "Text",
+                    "name_": "TextBox",
                     "guid_": {
                         "value_": "A0F40095-2596-4FD3-9B87-A0DEACE6E695"
                     },
                     "components_": {
                         "componentCount": 1,
                         "component_0": {
-                            "polymorphic_id": 2147483651,
+                            "polymorphic_id": 2147483652,
                             "polymorphic_name": "NanamiEngine::Module::NanamiUi::TextRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483653,
+                                "id": 2147483655,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -193,7 +228,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483654,
+                                                "id": 2147483656,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {

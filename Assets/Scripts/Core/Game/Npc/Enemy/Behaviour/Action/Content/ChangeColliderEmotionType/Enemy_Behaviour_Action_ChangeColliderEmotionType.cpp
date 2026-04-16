@@ -6,7 +6,7 @@ namespace GameCore::Npc::Enemy::Behaviour
     {
         for (const auto& collider : colliders_)
         {
-            collider->ChangeEmotionType(emotionType_);
+            collider->SetMotionType(emotionType_);
         }
         
         return TickStatus::Success;

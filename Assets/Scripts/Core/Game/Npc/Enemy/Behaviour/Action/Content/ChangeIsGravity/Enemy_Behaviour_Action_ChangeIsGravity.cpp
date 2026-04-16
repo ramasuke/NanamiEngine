@@ -4,7 +4,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::ChangeIsGravity::DoTick(const TickContext& context)
     {
-        context.EnemyCollider().ChangeIsGravity(isGravity_);
+        context.EnemyCollider().SetGravity(isGravity_);
         return TickStatus::Success;
     }
 

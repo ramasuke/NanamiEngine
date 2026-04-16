@@ -5,22 +5,23 @@
 
 namespace GamePlay::Ui
 {
-    constexpr auto ATTACK_BUTTON_TUTORIAL_TEXT      = "Aボタンを押して攻撃!"              ;
-    constexpr auto RUN_BUTTON_TUTORIAL_TEXT         = "Xボタンでダッシュ!"                ;
-    constexpr auto DASH_ATTACK_BUTTON_TUTORIAL_TEXT = "Xボタンを押しながら、Aでダッシュ攻撃！";
-    
     class SwordManActionInstructTutorial final : public Component::ComponentBase
     {
     public:
-        void OnDisplayAttackText    () const { OnDisplayText(ATTACK_BUTTON_TUTORIAL_TEXT     ); }
-        void OnDisplayRunText       () const { OnDisplayText(RUN_BUTTON_TUTORIAL_TEXT        ); }
-        void OnDisplayDashAttackText() const { OnDisplayText(DASH_ATTACK_BUTTON_TUTORIAL_TEXT); }
+        void OnDisplayAttackText    () { OnDisplayText(attackButtonTutorialText_    ); }
+        void OnDisplayRunText       () { OnDisplayText(runButtonTutorialText_       ); }
+        void OnDisplayDashAttackText() { OnDisplayText(dashAttackButtonTutorialText_); }
         void Hide();
 
     private:
-        void OnDisplayText      (const std::string& text) const;
+        void OnDisplayText(const std::string& text);
         
-        FIELD(NanamiUi::TextRenderer) textBox_;
+        [[serialize(0)]] FIELD(NanamiUi::TextRenderer) textBox_;
+        [[serialize(1)]] std::string textBoxName_;
+        [[serialize(2)]] std::string attackButtonTutorialText_     = "Aボタンを押して攻撃!"               ;
+        [[serialize(2)]] std::string runButtonTutorialText_        = "Xボタンでダッシュ!"                 ;
+        [[serialize(2)]] std::string dashAttackButtonTutorialText_ = "Xボタンを押しながら、Aでダッシュ攻撃！";
+        
         
 #pragma region Serialization Function
     public:
@@ -30,19 +31,27 @@ namespace GamePlay::Ui
         void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<ComponentBase>(this));
             archive(textBox_);
+            archive(textBoxName_);
+            archive(attackButtonTutorialText_);
+            archive(runButtonTutorialText_);
+            archive(dashAttackButtonTutorialText_);
         }
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 0) archive(textBox_);
+            if (version >= 1) archive(textBoxName_);
+            if (version >= 2) archive(attackButtonTutorialText_);
+            if (version >= 2) archive(runButtonTutorialText_);
+            if (version >= 2) archive(dashAttackButtonTutorialText_);
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Ui::SwordManActionInstructTutorial, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::SwordManActionInstructTutorial, 2);
 CEREAL_REGISTER_TYPE(GamePlay::Ui::SwordManActionInstructTutorial);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GamePlay::Ui::SwordManActionInstructTutorial);
 #pragma endregion

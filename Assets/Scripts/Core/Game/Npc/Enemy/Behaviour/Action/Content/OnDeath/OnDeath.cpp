@@ -2,8 +2,8 @@
 
 #include "../../../../../../Game.h"
 #include "../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../Scene/Group/Main/GameMainSceneGroup.h"
-#include "../../../../../../Scene/Title/TitleScene.h"
+#include "../../../../../../Scene/Main/Group/Main_GameSceneGroup.h"
+#include "../../../../../../Scene/Main/Content/Title/TitleScene.h"
 #include "../../../../Status/EnemyStatus.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
@@ -14,7 +14,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             return TickStatus::Failure;
         
         context.EnemyGameObject().OnDestroy();
-        Game::Instance().MainScene().RequestChangeScene<Scene::TitleScene>();
+        Game::Instance().Scenes().RequestChangeScene<Scene::Main::TitleScene>();
         return TickStatus::Success;
     }
 
