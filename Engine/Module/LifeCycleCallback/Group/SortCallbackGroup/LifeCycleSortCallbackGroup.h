@@ -3,83 +3,100 @@
 #include <functional>
 #include <memory>
 #include <queue>
-#include <unordered_set>
-
-#include "../SharedHash/SharedHash.h"
+#include <unordered_map>
+#include <vector>
+#include "../LifeCycle_CallbackableType.h"
 
 namespace NanamiEngine::Core::Application
 {
-    template <typename T>
+    template <LifeCycleCallbackType T>
     class LifeCycleSortCallbackGroup final 
     {
     public:
-        explicit LifeCycleSortCallbackGroup(std::function<bool(const std::weak_ptr<T>&,
-                                            const std::weak_ptr<T>&)> onSortFunction);
-        void Add   (std::weak_ptr<T> add);
+        explicit LifeCycleSortCallbackGroup(
+            std::function<bool(const std::shared_ptr<T>&,
+                               const std::shared_ptr<T>&)> onSortFunction);
+
+        void Add(std::weak_ptr<T> add);
         void Invoke(const std::function<void(T&)>& func);
         void OnUpdatePushedContents();
 
     private:
-        std::queue<std::weak_ptr<T>> addContentQueue_   ;
-        std::queue<std::weak_ptr<T>> removeContentQueue_;
-        std::unordered_set<std::weak_ptr<T>, SharedPtrHash<T>, SharedPtrEqual<T>> contents_;
-        const std::function<bool(const std::weak_ptr<T>&, const std::weak_ptr<T>&)> onSortFunction_;
+        std::queue<std::weak_ptr<T>> addContentQueue_;
+        std::queue<Guid> removeContentQueue_;
+        std::unordered_map<Guid, std::weak_ptr<T>, GuidHash> contents_;
+
+        const std::function<bool(const std::shared_ptr<T>&,
+                                 const std::shared_ptr<T>&)> onSortFunction_;
     };
 
 
-    template <typename T>
+    template <LifeCycleCallbackType T>
     LifeCycleSortCallbackGroup<T>::LifeCycleSortCallbackGroup(
-    std::function<bool(const std::weak_ptr<T>&,
-                       const std::weak_ptr<T>&)> onSortFunction)
-    : onSortFunction_(onSortFunction)
+        std::function<bool(const std::shared_ptr<T>&,
+                           const std::shared_ptr<T>&)> onSortFunction)
+        : onSortFunction_(onSortFunction)
     {
     }
 
-
-    template <typename T>
+    template <LifeCycleCallbackType T>
     void LifeCycleSortCallbackGroup<T>::Add(std::weak_ptr<T> add)
     {
         addContentQueue_.push(add);
     }
 
-    template <typename T>
+
+    template <LifeCycleCallbackType T>
     void LifeCycleSortCallbackGroup<T>::OnUpdatePushedContents()
     {
+        // 追加
         while (!addContentQueue_.empty())
         {
             auto& wp = addContentQueue_.front();
-            contents_.insert(wp);
+
+            if (auto sp = wp.lock())
+            {
+                contents_[sp->GetGuid()] = wp;
+            }
+
             addContentQueue_.pop();
         }
 
+        // 削除
         while (!removeContentQueue_.empty())
         {
-            auto& wp = removeContentQueue_.front();
-            contents_.erase(wp);
+            contents_.erase(removeContentQueue_.front());
             removeContentQueue_.pop();
         }
     }
 
-    template <typename T>
+
+    template <LifeCycleCallbackType T>
     void LifeCycleSortCallbackGroup<T>::Invoke(const std::function<void(T&)>& func)
     {
-        std::vector<std::weak_ptr<T>> contents(contents_.begin(), contents_.end());
-        std::sort(contents.begin(), contents.end(),
-                  [this](const std::weak_ptr<T>& a, const std::weak_ptr<T>& b)
-        {
-            return onSortFunction_(a, b);
-        });
+        std::vector<std::shared_ptr<T>> sorted;
+        sorted.reserve(contents_.size());
 
-        for (const auto& content : contents)
+        // lockして有効なものだけ収集
+        for (auto& [guid, wp] : contents_)
         {
-            if (auto sp = content.lock())
+            if (auto sp = wp.lock())
             {
-                func(*sp);
+                sorted.push_back(sp);
             }
             else
             {
-                removeContentQueue_.push(content);
+                removeContentQueue_.push(guid);
             }
+        }
+
+        // ソート
+        std::sort(sorted.begin(), sorted.end(), onSortFunction_);
+
+        // 実行
+        for (auto& sharedPtr : sorted)
+        {
+            func(*sharedPtr);
         }
     }
 }

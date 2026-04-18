@@ -6,6 +6,7 @@ namespace GamePlay::Npc::Enemy
 {
     void FirstEventDragon::DoAwake()
     {
+        healthBar_->Entity().lock()->SetEnable(true);
         Status().Health().Subscribe(rxcpp::composite_subscription(), [&](const GameCore::StatusParameter::Health health)
         {
             healthBar_->SetValue(health / Status().MaxHealth());
@@ -18,6 +19,7 @@ namespace GamePlay::Npc::Enemy
         {
             Transform().SetLocalPos(glm::vec3{0.0f, 100.0f, 0.0f});
         }
+        
     }
 
     void FirstEventDragon::OnDrawGui()

@@ -69,7 +69,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[nodiscard]] GameObject::Transform  & EnemyTransform () const;
         [[nodiscard]] Component::Animator    & EnemyAnimator  () const { return *enemyAnimator_  .lock(); }
         [[nodiscard]] Component::ColliderBase& EnemyCollider  () const { return *enemyCollider_  .lock(); }
-        [[nodiscard]] const std::unique_ptr<EnemyStatus>& EnemyStatus() const { return enemyStatus_; }
+        [[nodiscard]] EnemyStatus& EnemyStatus() const { return *enemyStatus_; }
         [[nodiscard]] const std::unique_ptr<BlackBoard::ParameterGroup>& Parameter() const { return parameters_; }
         [[nodiscard]] const std::shared_ptr<std::queue<std::unique_ptr<IDamageContext>>>& OnDamaged() const { return onDamagedStack_; } 
         [[nodiscard]] bool IsOnDamage() const { return !onDamagedStack_->empty(); }

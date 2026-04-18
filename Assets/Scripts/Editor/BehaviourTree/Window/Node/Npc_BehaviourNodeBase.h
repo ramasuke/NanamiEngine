@@ -24,7 +24,7 @@ namespace Editor::Npc::Behaviour
 {
     extern const ImVec2 NODE_SIZE;
     
-    class NodeBase : public Object::IObject
+    class NodeBase : public virtual Object::IObject
     {
     public:
         virtual ~NodeBase() override = default;

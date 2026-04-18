@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include <cstdint>
+#include "../../../Core/Object/IObject.h"
 
 namespace NanamiEngine::Module::LifeCycleCallback
 {
-    class IRenderable
+    class IRenderable : public virtual Object::IObject
     {
     public:
         virtual ~IRenderable() = default;

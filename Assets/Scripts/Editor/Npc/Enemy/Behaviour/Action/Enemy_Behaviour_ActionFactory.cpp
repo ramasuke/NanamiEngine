@@ -19,4 +19,9 @@ namespace Editor::Npc::Enemy::Behaviour
 
         return it->second();
     }
+
+    const std::unordered_map<std::string, ActionFactory::CreateFunc>& ActionFactory::CreatableActions() const
+    {
+        return creatableActionFactories_;
+    }
 }

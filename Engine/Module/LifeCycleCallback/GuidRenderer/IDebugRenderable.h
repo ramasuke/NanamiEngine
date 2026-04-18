@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include <cstdint>
+#include "../../../Core/Object/IObject.h"
 
 namespace NanamiEngine::Module::LifeCycleCallback
 {
-    class IDebugRenderable
+    class IDebugRenderable : public virtual Object::IObject
     {
     public:
         virtual ~IDebugRenderable() = default;

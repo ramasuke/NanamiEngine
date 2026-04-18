@@ -27,6 +27,7 @@ namespace GameCore::Npc
 
     void EnemyBase::OnUpdate()
     {
+        status_->ManualUpdate();
         if (behaviour_)
         {
             behaviour_->Tick(Entity(), status_, onDamagedStack_);

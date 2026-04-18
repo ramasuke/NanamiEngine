@@ -26,7 +26,6 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
 
     Coroutine::Task<void> AboardAirShipMovie::Invoke()
     {
-        co_await Coroutine::WaitForSeconds(5.0f);
         Coroutine::StartCoroutine(AirShipMovieStagingAsync());
         co_await AboardAirShipMovieMoveAirShipAsync();
     }
@@ -56,7 +55,8 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         
         playerAvatar_.lock()->Transform().SetParent(std::weak_ptr<GameObject::IGameObject>(), true);
         context_.lock()->BoundryAirShipCollider().OnDestroy();
-        // NanamiEngine::Scene::GameObject::Instantiate(Context()->FirstEventDragonPrefab().lock()->Content(), Context()->FirstEventDragonSpawnPos());
+        
+        NanamiEngine::Scene::GameObject::Instantiate(Context()->FirstEventDragonPrefab().lock()->Content(), Context()->FirstEventDragonSpawnPos());
     }
     
     Coroutine::Task<void> AboardAirShipMovie::AirShipMovieStagingAsync()

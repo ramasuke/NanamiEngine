@@ -11,11 +11,11 @@ namespace NanamiEngine::Module::AnimationTree
     class AnimationClipNode final : public IAnimationNode
     {
     public:
-        explicit       AnimationClipNode   (glm::vec2 position = glm::vec2(0, 0));
-        void           InitForGamePlay     (int   modelHandle) override;
-        void           OnUpdateAnimation   (int   modelHandle) override;
-        void           OnExitNode          (int   modelHandle) override;
-        void           OnUpdateBlendRate   (float blendRate  ) override;
+        explicit AnimationClipNode(glm::vec2 position = glm::vec2(0, 0));
+        void InitForGamePlay  (int   modelHandle) override;
+        void OnUpdateAnimation(int   modelHandle) override;
+        void OnExitNode       (int   modelHandle) override;
+        void OnUpdateBlendRate(float blendRate  ) override;
 
         Gui::Graph::NodeDrawResult OnDrawGraphEditorGui(const ImVec2& offset,
                                                         ImDrawList* drawList,

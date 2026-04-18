@@ -43,7 +43,6 @@ namespace NanamiEngine::Module::AnimationTree
         
         bool  isFirstBlendingAnimation_ = true;
         bool  isBlending_               = false;
-        bool  isEndedBlend              = false;
         float transitionDuring_secs_    = 0;
         rxcpp::composite_subscription fromNodeSubscription_;
         rxcpp::subjects::subject<IAnimationNode::UpdateCallbackContext> onUpdated_ = rxcpp::subjects::subject<IAnimationNode::UpdateCallbackContext>();
@@ -55,7 +54,8 @@ namespace NanamiEngine::Module::AnimationTree
         [[serialize(1)]] Guid  visualFromNodeGuid_;
 #pragma region Serialization Function
 public:
-void OnDrawGui() {
+void OnDrawGui() override
+{
     LibCore::ImGuiHelper::OnDrawInputField("additionConditionGroup_", additionConditionGroup_);
     LibCore::ImGuiHelper::OnDrawInputField("transitionDuration_secs_", transitionDuration_secs_);
     LibCore::ImGuiHelper::OnDrawInputField("fromNodeGuid_", fromNodeGuid_);

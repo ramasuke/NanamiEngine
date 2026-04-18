@@ -2,13 +2,13 @@
 #include <functional>
 #include <memory>
 #include <queue>
-#include <unordered_set>
 
 #include "SharedHash/SharedHash.h"
-
+#include "LifeCycle_CallbackableType.h"
+        
 namespace NanamiEngine::Core::Application
 {
-    template <typename T>
+    template <LifeCycleCallbackType T>
     class LifeCycleCallbackGroup final
     {
     public:
@@ -22,43 +22,43 @@ namespace NanamiEngine::Core::Application
         std::unordered_set<std::weak_ptr<T>, SharedPtrHash<T>, SharedPtrEqual<T>> contents_;
     };
 
-    template <typename T>
+    template <LifeCycleCallbackType T>
     void LifeCycleCallbackGroup<T>::Add(std::weak_ptr<T> add)
     {
         addContentQueue_.push(add);
     }
 
-    template <typename T>
+    template <LifeCycleCallbackType T>
+    void LifeCycleCallbackGroup<T>::Invoke(const std::function<void(T&)>& func)
+    {
+        for (const auto& weakPtr : contents_)
+        {
+            if (auto sharedPtr = weakPtr.lock())
+            {
+                func(*sharedPtr);
+            }
+            else
+            {
+                removeContentQueue_.push(weakPtr);
+            }
+        }
+    }
+
+    template <LifeCycleCallbackType T>
     void LifeCycleCallbackGroup<T>::OnUpdatePushedContents()
     {
         while (!addContentQueue_.empty())
         {
-            auto& wp = addContentQueue_.front();
-            contents_.insert(wp);
+            auto& weakPtr = addContentQueue_.front();
+            contents_.insert(weakPtr);
             addContentQueue_.pop();
         }
 
         while (!removeContentQueue_.empty())
         {
-            auto& wp = removeContentQueue_.front();
-            contents_.erase(wp);
+            auto& weakPtr = removeContentQueue_.front();
+            contents_.erase(weakPtr);
             removeContentQueue_.pop();
-        }
-    }
-
-    template <typename T>
-    void LifeCycleCallbackGroup<T>::Invoke(const std::function<void(T&)>& func)
-    {
-        for (const auto& wp : contents_)
-        {
-            if (auto sp = wp.lock())
-            {
-                func(*sp);
-            }
-            else
-            {
-                removeContentQueue_.push(wp);
-            }
         }
     }
 }

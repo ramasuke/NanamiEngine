@@ -21,7 +21,7 @@ namespace NanamiEngine::Module::GameObject
 
 namespace NanamiEngine::Module::Component
 {
-    class ComponentBase : public Object::IObject
+    class ComponentBase : public virtual Object::IObject
     {
     public:
         ComponentBase();

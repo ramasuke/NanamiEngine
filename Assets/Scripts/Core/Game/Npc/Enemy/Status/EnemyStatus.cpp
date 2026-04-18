@@ -1,5 +1,6 @@
 ﻿#include "EnemyStatus.h"
 
+#include "../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 
 namespace GameCore::Npc::Enemy
@@ -7,6 +8,11 @@ namespace GameCore::Npc::Enemy
     EnemyStatus::EnemyStatus(const int healthValue)
         : health_(StatusParameter::Health(healthValue))
     {
+    }
+
+    void EnemyStatus::ManualUpdate()
+    {
+        arriveDuration_secs_ += Time::DeltaTime();
     }
 
     void EnemyStatus::OnDamage(const int damageValue)

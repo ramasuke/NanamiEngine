@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include <cstdint>
+#include "../../../Core/Object/IObject.h"
 
 namespace NanamiEngine::Module::LifeCycleCallback
 {
-    class IShadowRenderable
+    class IShadowRenderable : public virtual Object::IObject
     {
     public:
         template <class Archive>

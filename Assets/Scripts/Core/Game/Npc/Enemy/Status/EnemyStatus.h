@@ -9,15 +9,17 @@ namespace GameCore::Npc::Enemy
     {
     public:
         explicit EnemyStatus(int healthValue = 0);
+        void ManualUpdate();
         void OnDamage(int damageValue);
 
         [[nodiscard]] const StatusParameter::Health& MaxHealth() const { return maxHealth_; }
         [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Health> Health() const { return health_.AsReadOnly(); }
-        
+        [[nodiscard]] float ArriveDuration_secs() const { return arriveDuration_secs_; }
 
     private:
         StatusParameter::Health maxHealth_;
         LibCore::Rx::SerializableSubject<StatusParameter::Health> health_;
+        float arriveDuration_secs_ = 0.0f;
         
 #pragma region Serialization Function
     public:

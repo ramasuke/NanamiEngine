@@ -10,14 +10,14 @@ void AnimationTree::AnimationNodePath::InitNodePath(
     const std::function<void(AnimationNodePath*)>& onAddNextCurrentNodePath)
 {
     additionParams_ = additionParams;
-    fromNode_       = findNode(fromNodeGuid_      );
-    nextNode_       = findNode(nextNodeGuid_      );
+    fromNode_       = findNode(fromNodeGuid_);
+    nextNode_       = findNode(nextNodeGuid_);
     visualFromNode_ = findNode(visualFromNodeGuid_);
-    
-    onAddCurrentNode_         = onAddCurrentNode        ;
-    onRemoveCurrentNode_      = onRemoveCurrentNode     ;
+
+    onAddCurrentNode_         = onAddCurrentNode;
+    onRemoveCurrentNode_      = onRemoveCurrentNode;
     onAddNextCurrentNodePath_ = onAddNextCurrentNodePath;
-    
+
     SubscribeUpdateNodeAnimationCallback();
 }
 
@@ -108,7 +108,10 @@ const Guid& AnimationTree::AnimationNodePath::GetGuid() const
 
 void AnimationTree::AnimationNodePath::SubscribeUpdateNodeAnimationCallback()
 {
-    fromNodeSubscription_.unsubscribe();
+    if (fromNodeSubscription_.is_subscribed())
+    {
+        fromNodeSubscription_.unsubscribe();
+    }
     
     fromNodeSubscription_ = rxcpp::composite_subscription();
     fromNode_.lock()->OnUpdated().subscribe(
