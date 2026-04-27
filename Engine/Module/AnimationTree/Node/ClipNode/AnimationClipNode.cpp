@@ -13,7 +13,7 @@ AnimationTree::AnimationClipNode::AnimationClipNode(const glm::vec2 position)
 
 void AnimationTree::AnimationClipNode::InitForGamePlay(const int modelHandle)
 {
-    animationFile_.InitForPrompty();
+    animationFile_.Init();
     if (animationFile_)
     {
         dxlibAnimationIndex_ = animationFile_->DxLibHandle();

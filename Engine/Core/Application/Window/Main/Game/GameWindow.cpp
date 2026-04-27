@@ -4,6 +4,7 @@
 #include <ranges>
 
 #include "ImGuiHelper.h"
+#include "../../../../../Module/Asset/Asset.h"
 #include "../../../../../Module/GameObject/Transform/Transform.h"
 #include "../../../../Coroutine/Scheduler/CoroutineScheduler.h"
 #include "../../../Time/Time.h"
@@ -96,6 +97,7 @@ namespace NanamiEngine::Core::MainWindow
         ImGui::Begin("GameWindow");
         if (!isPlayMode_)
         {
+            ImGui::Text(("LoadingResource Count: " + std::to_string(Asset::Asset::GetLoadingResourceCount())).c_str());
             ImGui::Text(("currentMainScene: " + mainScene_.lock()->Name()).c_str());
             if (ImGui::Button("Play"))
             {

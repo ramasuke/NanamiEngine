@@ -13,7 +13,7 @@
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoEnter()
 {
-    
+    StatusEvent().InvokeOnRun();   
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoUpdate()
@@ -32,7 +32,7 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoUpdate()
     if (Input().Jump().IsPressed())
         OnChangeState<SwordManAvatarJumpState>();
     if (Input().AvoidRolling().IsPressed())
-        OnChangeState<AvoidRolling>();
+        OnChangeState<AvoidRollingState>();
     if (Input().DashAttack().IsPressed())
         OnChangeState<SwordManAvatarDashAttackState>();
     if (Status().CanReinforce() && Input().OnReinforce().IsPressed())

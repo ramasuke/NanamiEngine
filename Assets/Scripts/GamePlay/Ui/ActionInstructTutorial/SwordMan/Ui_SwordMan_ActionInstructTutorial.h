@@ -8,9 +8,10 @@ namespace GamePlay::Ui
     class SwordManActionInstructTutorial final : public Component::ComponentBase
     {
     public:
-        void OnDisplayAttackText    () { OnDisplayText(attackButtonTutorialText_    ); }
-        void OnDisplayRunText       () { OnDisplayText(runButtonTutorialText_       ); }
-        void OnDisplayDashAttackText() { OnDisplayText(dashAttackButtonTutorialText_); }
+        void OnDisplayAttackText      () { OnDisplayText(attackButtonTutorialText_    ); }
+        void OnDisplayRunText         () { OnDisplayText(runButtonTutorialText_       ); }
+        void OnDisplayDashAttackText  () { OnDisplayText(dashAttackButtonTutorialText_); }
+        void OnDisplayAvoidRollingText() { OnDisplayText(avoidButtonTutorialText_); }
         void Hide();
 
     private:
@@ -21,6 +22,7 @@ namespace GamePlay::Ui
         [[serialize(2)]] std::string attackButtonTutorialText_     = "Aボタンを押して攻撃!"               ;
         [[serialize(2)]] std::string runButtonTutorialText_        = "Xボタンでダッシュ!"                 ;
         [[serialize(2)]] std::string dashAttackButtonTutorialText_ = "Xボタンを押しながら、Aでダッシュ攻撃！";
+        [[serialize(3)]] std::string avoidButtonTutorialText_      = "Yボタンで回避";
         
         
 #pragma region Serialization Function
@@ -35,6 +37,7 @@ namespace GamePlay::Ui
             archive(attackButtonTutorialText_);
             archive(runButtonTutorialText_);
             archive(dashAttackButtonTutorialText_);
+            archive(avoidButtonTutorialText_);
         }
 
         template<class Archive>
@@ -45,13 +48,14 @@ namespace GamePlay::Ui
             if (version >= 2) archive(attackButtonTutorialText_);
             if (version >= 2) archive(runButtonTutorialText_);
             if (version >= 2) archive(dashAttackButtonTutorialText_);
+            if (version >= 3) archive(avoidButtonTutorialText_);
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Ui::SwordManActionInstructTutorial, 2);
+CEREAL_CLASS_VERSION(GamePlay::Ui::SwordManActionInstructTutorial, 3);
 CEREAL_REGISTER_TYPE(GamePlay::Ui::SwordManActionInstructTutorial);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GamePlay::Ui::SwordManActionInstructTutorial);
 #pragma endregion

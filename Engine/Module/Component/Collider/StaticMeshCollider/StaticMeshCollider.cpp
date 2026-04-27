@@ -12,6 +12,26 @@
 
 #include "../../../GameObject/Transform/Transform.h"
 
+static glm::quat GetFinalRotation(
+    const GameObject::Transform& transform,
+    const glm::vec3& rotationOffset)
+{
+    const glm::quat baseRot   = glm::normalize(transform.GetWorldRot());
+    const glm::quat offsetRot = glm::quat(glm::radians(rotationOffset));
+
+    return baseRot * offsetRot;
+}
+
+static glm::vec3 GetFinalPosition(
+    const GameObject::Transform& transform,
+    const glm::vec3& offset,
+    const glm::quat&)
+{
+    const glm::quat baseRot = glm::normalize(transform.GetWorldRot());
+
+    return transform.GetWorldPos() + (baseRot * offset);
+}
+
 static bool ExtractMeshFromDxModel(
     const int modelHandle,
     JPH::VertexList& outVerts,
@@ -104,19 +124,13 @@ namespace NanamiEngine::Module::Component
             printf("StaticMeshCollider failed : no mesh\n");
             return;
         }
-        
+
         const glm::vec3 scale = Transform().GetWorldScale() * scale_;
         for (auto& v : verts)
         {
-            v = JPH::Float3(
-                v.x * scale.x,
-                v.y * scale.y,
-                v.z * scale.z
-            );
+            v = JPH::Float3(v.x * scale.x, v.y * scale.y, v.z * scale.z);
         }
 
-
-        // MeshShapeを生成
         const JPH::MeshShapeSettings settings(verts, tris);
         const auto result = settings.Create();
 
@@ -126,14 +140,13 @@ namespace NanamiEngine::Module::Component
             return;
         }
 
-        // Collider 生成
-        const glm::vec3 world   = Transform().GetWorldPos() + offset_;
-        const glm::quat rawRot  = Transform().GetWorldRot();
-        const glm::quat normalizedRot = glm::normalize(rawRot);
+        const glm::quat finalRot = GetFinalRotation(Transform(), rotation_);
+        const glm::vec3 worldPos = GetFinalPosition(Transform(), offset_, finalRot);
+
         bodyId_ = Core::Application::ApplicationBase::Physics().CreateCollider(
             result.Get(),
-            JPH::Vec3(world.x, world.y, world.z),
-            JPH::Quat(normalizedRot.x, normalizedRot.y, normalizedRot.z, normalizedRot.w),
+            JPH::Vec3(worldPos.x, worldPos.y, worldPos.z),
+            JPH::Quat(finalRot.x, finalRot.y, finalRot.z, finalRot.w),
             JPH::EMotionType::Static,
             0,
             false,
@@ -155,29 +168,20 @@ namespace NanamiEngine::Module::Component
         JPH::IndexedTriangleList tris;
 
         if (!ExtractMeshFromDxModel(model, verts, tris))
-        {
-            printf("StaticMeshCollider failed : no mesh\n");
             return;
-        }
 
         const glm::vec3 scale = Transform().GetWorldScale() * scale_;
         for (auto& v : verts)
         {
-            v = JPH::Float3(
-                v.x * scale.x,
-                v.y * scale.y,
-                v.z * scale.z
-            );
+            v = JPH::Float3(v.x * scale.x, v.y * scale.y, v.z * scale.z);
         }
 
         if (verts.empty() || tris.empty())
             return;
 
-        const glm::vec3 worldPos = Transform().GetWorldPos() + offset_;
-        const auto rawRot = Transform().GetWorldRot();
-        const glm::quat q        = glm::normalize(rawRot);
+        const glm::quat q        = GetFinalRotation(Transform(), rotation_);
+        const glm::vec3 worldPos = GetFinalPosition(Transform(), offset_, q);
 
-        // Transform matrix
         glm::mat4 m = glm::mat4_cast(q);
         m[3][0] = worldPos.x;
         m[3][1] = worldPos.y;
@@ -188,31 +192,12 @@ namespace NanamiEngine::Module::Component
             p = m * p;
             return VGet(p.x, p.y, p.z);
         };
-        
-        // draw mesh
+
         for (const auto& tri : tris)
         {
-            const JPH::Vec3 v0(
-                verts[tri.mIdx[0]].x,
-                verts[tri.mIdx[0]].y,
-                verts[tri.mIdx[0]].z
-            );
-
-            const JPH::Vec3 v1(
-                verts[tri.mIdx[1]].x,
-                verts[tri.mIdx[1]].y,
-                verts[tri.mIdx[1]].z
-            );
-
-            const JPH::Vec3 v2(
-                verts[tri.mIdx[2]].x,
-                verts[tri.mIdx[2]].y,
-                verts[tri.mIdx[2]].z
-            );
-
-            const VECTOR p0 = xf(v0);
-            const VECTOR p1 = xf(v1);
-            const VECTOR p2 = xf(v2);
+            const VECTOR p0 = xf({verts[tri.mIdx[0]].x, verts[tri.mIdx[0]].y, verts[tri.mIdx[0]].z});
+            const VECTOR p1 = xf({verts[tri.mIdx[1]].x, verts[tri.mIdx[1]].y, verts[tri.mIdx[1]].z});
+            const VECTOR p2 = xf({verts[tri.mIdx[2]].x, verts[tri.mIdx[2]].y, verts[tri.mIdx[2]].z});
 
             DrawLine3D(p0, p1, GetColor(0,255,0));
             DrawLine3D(p1, p2, GetColor(0,255,0));
@@ -229,36 +214,28 @@ namespace NanamiEngine::Module::Component
         const int modelHandle = modelRenderer->modelDxLibHandle_;
         if (modelHandle < 0)
             throw std::exception("error");
-        
+
         JPH::VertexList verts;
         JPH::IndexedTriangleList tris;
 
         if (!ExtractMeshFromDxModel(modelHandle, verts, tris))
-        {
-            printf("StaticMeshCollider failed : no mesh\n");
             throw std::exception("error");
-        }
-        
+
         const glm::vec3 scale = Transform().GetWorldScale() * scale_;
+        const glm::quat rot   = glm::quat(glm::radians(rotation_));
+
         for (auto& v : verts)
         {
-            v = JPH::Float3(
-                v.x * scale.x,
-                v.y * scale.y,
-                v.z * scale.z
-            );
+            glm::vec3 p(v.x, v.y, v.z);
+
+            p = rot * p;
+            p *= scale;
+
+            v = JPH::Float3(p.x, p.y, p.z);
         }
 
-
-        // MeshShapeを生成
         const JPH::MeshShapeSettings settings(verts, tris);
-        const auto result = settings.Create();
-
-        // Collider 生成
-        const glm::vec3 world   = Transform().GetWorldPos() + offset_;
-        const glm::quat rawRot  = Transform().GetWorldRot();
-        const glm::quat normalizedRot = glm::normalize(rawRot);
-        return result.Get();
+        return settings.Create().Get();
     }
 
     void StaticMeshCollider::OnDrawGui()

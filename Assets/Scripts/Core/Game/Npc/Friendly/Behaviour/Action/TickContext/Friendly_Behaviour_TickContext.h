@@ -3,6 +3,16 @@
 #include <string>
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 
+namespace GameCore
+{
+    class IPlayerAvatar;
+}
+
+namespace GameCore::PlayerAvatar
+{
+    class IQuestGroup;
+}
+
 namespace NanamiEngine::Module::GameObject
 {
     class Transform;
@@ -52,6 +62,8 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         [[nodiscard]] const std::string              & NpcName      () const { return npcName_;             }
         [[nodiscard]] const GamePlay::Ui::NpcChatting& ChattingUi   () const;
         [[nodiscard]] const std::unique_ptr<BlackBoard::ParameterGroup>& Parameter() const { return parameters_; }
+        [[nodiscard]] IPlayerAvatar& Player() const;
+        [[nodiscard]] const PlayerAvatar::IQuestGroup& PlayerQuest() const;
         
     private:
         const std::string npcName_;

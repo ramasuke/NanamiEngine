@@ -32,7 +32,7 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarWalkState::DoUpdate(
     if (Input().Jump().IsPressed())
         OnChangeState<SwordManAvatarJumpState>();
     if (Input().AvoidRolling().IsPressed())
-        OnChangeState<AvoidRolling>();
+        OnChangeState<AvoidRollingState>();
     if (Status().CanReinforce() && Input().OnReinforce().IsPressed())
         OnChangeState<OnEnableReinforceState>();
     if (Input().NormalAttack().IsPressed())

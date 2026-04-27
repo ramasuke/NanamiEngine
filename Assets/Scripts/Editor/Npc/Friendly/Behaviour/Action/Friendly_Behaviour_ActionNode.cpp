@@ -7,6 +7,7 @@
 #include "../../../../BehaviourTree/Window/Node/Npc_Behaviour_NodeHeaders.h"
 #include "../cereal/include/cereal/archives/json.hpp"
 #include "Friendly_Behaviour_ActionHeaders.h"
+#include "../../../../../../../Engine/Module/Gui/StaticReflection/Engine_Module_StaticReflection.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Friendly_Behaviour_ActionBase.h"
 #include "cereal/archives/portable_binary.hpp"
 
@@ -45,23 +46,19 @@ namespace Editor::Npc::Friendly::Behaviour
         {
             ImGui::OpenPopup(("ActionContextMenu##" + GetGuid().Value()).c_str());
         }
-        
-        // --- ポップアップ ---
+
         if (ImGui::BeginPopup(("ActionContextMenu##" + GetGuid().Value()).c_str()))
         {
             ImGui::TextUnformatted("Action");
             ImGui::Separator();
 
-            // Factory から全ノードを列挙
-            const auto& creatableActions = ActionFactory::Instance().CreatableActions();
-            for (const auto& [typeName, createFunc] : creatableActions)
-            {
-                if (ImGui::Button(typeName.c_str()))
-                {
-                     action_ = std::move(createFunc());
-                }
-            }
+            const auto& actions = ActionFactory::Instance().CreatableActions();
 
+            // ツリー構築
+            auto tree = StaticReflection::BuildTree<GameCore::Npc::Friendly::Behaviour::ActionBase>(actions);
+
+            // 描画
+            DrawTreeGui(tree, action_);
             ImGui::EndPopup();
         }
     }

@@ -4,7 +4,7 @@ namespace GameCore::Scene::Sub
 {
     void ChattingUISceneContext::DoInitialize()
     {
-        npcChatting_.InitForPrompty();
+        npcChatting_.Init();
     }
 
     void ChattingUISceneContext::OnDrawGui()

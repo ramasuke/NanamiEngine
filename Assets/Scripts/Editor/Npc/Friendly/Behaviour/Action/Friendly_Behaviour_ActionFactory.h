@@ -18,11 +18,11 @@ namespace Editor::Npc::Friendly::Behaviour
     public:
         using CreateFunc = std::function<std::unique_ptr<GameCore::Npc::Friendly::Behaviour::ActionBase>()>;
 
-        /// アクション型登録
-        void Register(const std::string& typeName, CreateFunc func);
-        /// アクション生成
+        /** アクション型登録 */
+        void Register(const std::string& typeName, CreateFunc function);
+        /** アクション生成 */
         [[nodiscard]] std::unique_ptr<GameCore::Npc::Friendly::Behaviour::ActionBase> Create(const std::string& typeName) const;
-        /// 登録済み型一覧（エディタ用）
+        /** 登録済み型一覧 */
         [[nodiscard]]
         const std::unordered_map<std::string, CreateFunc>& CreatableActions() const { return creatableActionFactories_; }
 
@@ -31,22 +31,27 @@ namespace Editor::Npc::Friendly::Behaviour
     };
 }
 
-#define REGISTER_FRIENDLY_ACTION(TYPE) \
-namespace {                                                     \
-struct TYPE##ActionAutoRegister                                 \
-{                                                               \
-TYPE##ActionAutoRegister()                                  \
-{                                                           \
-auto& factory =                                         \
-Editor::Npc::Friendly::Behaviour::ActionFactory::Instance(); \
-factory.Register(                                       \
-#TYPE,                                              \
-[]() -> std::unique_ptr<                             \
-GameCore::Npc::Friendly::Behaviour::ActionBase>      \
-{                                                   \
-return std::make_unique<TYPE>();                \
-});                                                 \
-}                                                           \
-};                                                              \
-static TYPE##ActionAutoRegister global_##TYPE##ActionAutoRegister; \
+#define REGISTER_FRIENDLY_ACTION_WITH_NAME(TYPE, NAME)                   \
+namespace                                                                \
+{                                                                        \
+    struct TYPE##ActionAutoRegister                                      \
+    {                                                                    \
+        TYPE##ActionAutoRegister()                                       \
+        {                                                                \
+            auto& factory =                                              \
+            Editor::Npc::Friendly::Behaviour::ActionFactory::Instance(); \
+            factory.Register(                                            \
+                NAME,                                                    \
+                []() -> std::unique_ptr<                                 \
+                GameCore::Npc::Friendly::Behaviour::ActionBase>          \
+                {                                                        \
+                    return std::make_unique<TYPE>();                     \
+                });                                                      \
+        }                                                                \
+    };                                                                   \
+    [[maybe_unused]] static TYPE##ActionAutoRegister                     \
+    global_##TYPE##ActionAutoRegister;                                   \
 }
+
+#define REGISTER_FRIENDLY_ACTION(TYPE) \
+REGISTER_FRIENDLY_ACTION_WITH_NAME(TYPE, #TYPE)

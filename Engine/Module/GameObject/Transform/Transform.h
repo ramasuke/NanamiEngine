@@ -70,6 +70,7 @@ namespace NanamiEngine::Module::GameObject
         void OnDrawGui();
 
     private:
+        void OnDrawGuizmoGui();
         void UpdateMatrix();
 
         glm::vec3 guiLocalEuler_;

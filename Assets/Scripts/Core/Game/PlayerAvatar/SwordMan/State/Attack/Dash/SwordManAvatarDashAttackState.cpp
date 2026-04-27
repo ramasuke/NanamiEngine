@@ -10,6 +10,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 {
     void SwordManAvatarDashAttackState::DoEnter()
     {
+        StatusEvent().InvokeDashAttack();
         isAttacked_ = false;
 
         Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));

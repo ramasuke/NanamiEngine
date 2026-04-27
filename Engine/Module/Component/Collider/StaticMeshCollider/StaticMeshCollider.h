@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "../ColliderBase.h"
 #include "../../ComponentBase.h"
-#include "../../../Physics/Layer/PhysicsLayer.h"
 #include "../JoltPhysics/Jolt/Jolt.h"
 #include "../JoltPhysics/Jolt/Physics/Body/BodyID.h"
 

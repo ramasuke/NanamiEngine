@@ -4,6 +4,7 @@
 #include "IWaitForObservable.h"
 #include "../../../Application/ApplicationBase.h"
 #include "../../../Application/Window/Main/Game/GameWindow.h"
+#include "../../Scheduler/CoroutineScheduler.h"
 #include "../rxcpp/rx.hpp"
 
 namespace Coroutine
@@ -16,13 +17,17 @@ namespace Coroutine
             : observable_(observable)
             , isOnNexted_(false     )
         {
-            observable.subscribe(
+             compositeSubscription_ = observable.subscribe(
                 rxcpp::composite_subscription(),
-               [this](const ArgT& arg)
-               {
-                   isOnNexted_ = true;
-                   parentHandle_.resume();
-               });
+                [this](const ArgT& arg)
+                {
+                    isOnNexted_ = true;
+                    parentHandle_.resume();
+                });
+        }
+        ~WaitForObservable() override
+        {
+            compositeSubscription_.unsubscribe();
         }
 
         [[nodiscard]] bool await_ready() const noexcept override
@@ -37,6 +42,7 @@ namespace Coroutine
         void await_resume() const noexcept { }
 
     private:
+        rxcpp::composite_subscription compositeSubscription_;
         std::coroutine_handle<> parentHandle_;
         rxcpp::observable<ArgT> observable_;
         bool isOnNexted_; 

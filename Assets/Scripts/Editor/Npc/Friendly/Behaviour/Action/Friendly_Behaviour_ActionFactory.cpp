@@ -4,9 +4,9 @@
 
 namespace Editor::Npc::Friendly::Behaviour
 {
-    void ActionFactory::Register(const std::string& typeName, CreateFunc func)
+    void ActionFactory::Register(const std::string& typeName, CreateFunc function)
     {
-        creatableActionFactories_[typeName] = std::move(func);
+        creatableActionFactories_[typeName] = std::move(function);
     }
 
     std::unique_ptr<GameCore::Npc::Friendly::Behaviour::ActionBase> ActionFactory::Create(const std::string& typeName) const

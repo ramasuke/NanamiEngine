@@ -20,7 +20,6 @@ namespace NanamiEngine::Module::Asset
 
         std::string contentPath_;
         Guid guid_;
-        int dxLibHandle_ = -1;
 
 #pragma region Serialization Function
     public:
@@ -28,7 +27,6 @@ namespace NanamiEngine::Module::Asset
         {
             LibCore::ImGuiHelper::OnDrawInputField("contentPath_", contentPath_);
             LibCore::ImGuiHelper::OnDrawInputField("guid_", guid_);
-            LibCore::ImGuiHelper::OnDrawInputField("dxLibHandle_", dxLibHandle_);
         }
 
         template<class Archive>
@@ -38,7 +36,6 @@ namespace NanamiEngine::Module::Asset
             archive(cereal::base_class<LifeCycleCallback::IEnablableAsset>(this));
             archive(CEREAL_NVP(contentPath_));
             archive(CEREAL_NVP(guid_));
-            archive(CEREAL_NVP(dxLibHandle_));
         }
 
         template<class Archive>
@@ -48,14 +45,15 @@ namespace NanamiEngine::Module::Asset
             archive(cereal::base_class<LifeCycleCallback::IEnablableAsset>(this));
             if (version >= 0) archive(CEREAL_NVP(contentPath_));
             if (version >= 0) archive(CEREAL_NVP(guid_));
-            if (version >= 0) archive(CEREAL_NVP(dxLibHandle_));
+            int dxLibHandle_ = -1;
+            if (version < 1) archive(CEREAL_NVP(dxLibHandle_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::ParticleFile, 0);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::ParticleFile, 1);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::ParticleFile);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::ParticleFile);
 #pragma endregion

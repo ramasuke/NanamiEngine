@@ -2,14 +2,15 @@
 
 namespace NanamiEngine::Module::Asset
 {
-    FriendlyNpcBaseResources::FriendlyNpcBaseResources(const std::string& contentPath)
+    FriendlyNpcResources::FriendlyNpcResources(const std::string& contentPath)
         : ScriptableObject(contentPath)
     {
         
     }
     
-    void FriendlyNpcBaseResources::OnDrawGui()
+    void FriendlyNpcResources::OnDrawGui()
     {
-        ScriptableObject::OnDrawGui();
+        ImGuiHelper::OnDrawInputField("chattingIconPrefab_" , chattingIconPrefab_ );
+        ImGuiHelper::OnDrawInputField("chattableIconPrefab_", chattableIconPrefab_);
     }
 }

@@ -39,6 +39,8 @@ namespace NanamiEngine::Module::GameObject
         virtual void SetEnable(bool enable) = 0;
         virtual void OnDrawTreeGui() = 0;
         virtual void OnDestroy() const {}
+        
+        ///WARNING: EngineApiなのでEngine内部コードでしか使用しないで下さい。
         virtual void ImplementDestroy() {}
     };
 }

@@ -7,6 +7,8 @@ namespace GameCore::PlayerAvatar
     enum class QuestType : int
     {
         SwordManActionInstructTutorial = 0,
+        
+        
         Kill10Slimes,
         FindLostRing,
     };

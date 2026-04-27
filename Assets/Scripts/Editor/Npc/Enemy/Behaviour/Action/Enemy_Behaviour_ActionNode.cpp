@@ -54,7 +54,7 @@ namespace Editor::Npc::Enemy::Behaviour
 
             const auto& actions = ActionFactory::Instance().CreatableActions();
 
-            // ツリー構築（毎回でOK）
+            // ツリー構築
             auto tree = StaticReflection::BuildTree<GameCore::Npc::Enemy::Behaviour::ActionBase>(actions);
 
             // 描画

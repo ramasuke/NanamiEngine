@@ -6,7 +6,7 @@
 
 namespace NanamiEngine::Module::ClientSaver
 {
-    constexpr auto CLIENT_SAVER_DATA_FILE_PATH            = "ClientSaverData";
+    constexpr auto CLIENT_SAVER_DATA_FOLDER_PATH          = "ClientSaverData/";
     constexpr auto CLIENT_SAVER_DATA_FILE_EXTENSION_LABEL = ".json";
 
     namespace NanamiEngine::Module::ClientSaver
@@ -23,7 +23,7 @@ namespace NanamiEngine::Module::ClientSaver
                           const T& value)
         {
             std::ofstream os(
-                std::string(CLIENT_SAVER_DATA_FILE_PATH) +
+                std::string(CLIENT_SAVER_DATA_FOLDER_PATH) +
                 addFilePath +
                 key +
                 CLIENT_SAVER_DATA_FILE_EXTENSION_LABEL
@@ -49,7 +49,7 @@ namespace NanamiEngine::Module::ClientSaver
                        const std::string& key)
         {
             std::ifstream is(
-                std::string(CLIENT_SAVER_DATA_FILE_PATH) +
+                std::string(CLIENT_SAVER_DATA_FOLDER_PATH) +
                 addFilePath +
                 key +
                 CLIENT_SAVER_DATA_FILE_EXTENSION_LABEL
@@ -77,13 +77,13 @@ namespace NanamiEngine::Module::ClientSaver
     template<typename T>
     void Save(const std::string& key, const T& value)
     {
-        std::ofstream os(CLIENT_SAVER_DATA_FILE_PATH + key + CLIENT_SAVER_DATA_FILE_EXTENSION_LABEL);
-        if (!os)
+        std::ofstream ofStream(CLIENT_SAVER_DATA_FOLDER_PATH + key + CLIENT_SAVER_DATA_FILE_EXTENSION_LABEL);
+        if (!ofStream)
         {
             throw std::runtime_error("Failed to open file for saving: " + key + ".json");
         }
 
-        cereal::JSONOutputArchive archive(os);
+        cereal::JSONOutputArchive archive(ofStream);
         archive(value);
     }
 
@@ -96,13 +96,13 @@ namespace NanamiEngine::Module::ClientSaver
     template<typename T>
     T Load(const std::string& key)
     {
-        std::ifstream is(CLIENT_SAVER_DATA_FILE_PATH + key + CLIENT_SAVER_DATA_FILE_EXTENSION_LABEL);
-        if (!is)
+        std::ifstream ifStream(CLIENT_SAVER_DATA_FOLDER_PATH + key + CLIENT_SAVER_DATA_FILE_EXTENSION_LABEL);
+        if (!ifStream)
         {
             throw std::runtime_error("Failed to open file for loading: " + key + ".json");
         }
 
-        cereal::JSONInputArchive archive(is);
+        cereal::JSONInputArchive archive(ifStream);
         T value;
         archive(value);
         return value;

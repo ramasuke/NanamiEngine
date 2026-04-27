@@ -25,5 +25,6 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("attackButtonTutorialText_", attackButtonTutorialText_);
         ImGuiHelper::OnDrawInputField("runButtonTutorialText_", runButtonTutorialText_);
         ImGuiHelper::OnDrawInputField("dashAttackButtonTutorialText_", dashAttackButtonTutorialText_);
+        ImGuiHelper::OnDrawInputField("avoidButtonTutorialText_", avoidButtonTutorialText_);
     }
 }

@@ -9,6 +9,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     QuestGroup::QuestGroup(
         const std::vector<std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>>& quests)
         : quests_(quests   )
+        , completedQuests_(std::make_unique<Quest::CompletedQuestGroup>())
     {
     }
 

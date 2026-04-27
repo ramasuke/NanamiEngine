@@ -386,7 +386,7 @@ namespace NanamiEngine::Module::GameObject
     {
         if (ImGui::CollapsingHeader("Transform"))
         {
-            // ===== GUI スライダー =====
+            // GUI スライダー
             glm::vec3 pos = localPos_;
             if (ImGui::DragFloat3("Position", &pos.x, 0.01f))
             {
@@ -408,30 +408,52 @@ namespace NanamiEngine::Module::GameObject
                 SetLocalScale(scale);
                 UpdateMatrix();
             }
+            
+            if (ImGui::TreeNode("Option"))
+            {
+                if (ImGui::Button("Set camera position"))
+                {
+                    SetWorldPos(Core::Application::ApplicationBase::GameWindow()->GetCameraPosition());
+                }
+                if (ImGui::Button("Set camera rotation"))
+                {
+                    SetWorldRot(Core::Application::ApplicationBase::GameWindow()->GetCameraRotation());
+                }
+                ImGui::Spacing();
+                ImGui::TreePop();
+            }
         }
-    
-        // ===== ImGuizmo 操作 =====
+        
+        if (Core::Application::ApplicationBase::GameWindow()->IsPlayMode())
+        {
+            OnDrawGuizmoGui();
+        }
+    }
+
+    void Transform::OnDrawGuizmoGui()
+    {
+        // ImGuizmo 操作
         ImGuizmo::BeginFrame();
         ImGuizmo::SetOrthographic(false);
         ImGuizmo::SetDrawlist();
-    
-        ImGuiIO& io = ImGui::GetIO();
+
+        const ImGuiIO& io = ImGui::GetIO();
         ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-    
-        // カメラのビュー・射影行列
+            
+        // カメラのビュー
         glm::mat4 view = Core::Application::ApplicationBase::GameWindow()->GetCameraViewMatrix();
         glm::mat4 proj = Core::Application::ApplicationBase::GameWindow()->GetCameraProjectionMatrix();
-    
+            
         // ワールド行列を取得して Manipulate に渡す
         glm::mat4 worldMatrix = GetWorldMatrix();
-    
+            
         static ImGuizmo::OPERATION operation = ImGuizmo::TRANSLATE;
         static ImGuizmo::MODE mode = ImGuizmo::LOCAL;
-    
+            
         if (ImGui::IsKeyPressed(ImGuiKey_T)) operation = ImGuizmo::TRANSLATE;
         if (ImGui::IsKeyPressed(ImGuiKey_R)) operation = ImGuizmo::ROTATE;
         if (ImGui::IsKeyPressed(ImGuiKey_S)) operation = ImGuizmo::SCALE;
-    
+            
         ImGuizmo::Manipulate(
             glm::value_ptr(view),
             glm::value_ptr(proj),
@@ -439,19 +461,19 @@ namespace NanamiEngine::Module::GameObject
             mode,
             glm::value_ptr(worldMatrix)
         );
-    
+            
         // Manipulate で操作されている場合
         if (ImGuizmo::IsUsing())
         {
             glm::vec3 translation, rotation, scale;
             ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(worldMatrix), &translation.x, &rotation.x, &scale.x);
-    
-            if (auto parentObj = parent_.lock())
+            
+            if (const auto parentObj = parent_.lock())
             {
                 // 親がいる場合はワールド行列からローカル行列に変換
                 glm::mat4 parentWorld = parentObj->TransformRef().GetWorldMatrix();
                 glm::mat4 localMatrix = glm::inverse(parentWorld) * worldMatrix;
-    
+            
                 SetLocalPos(glm::vec3(localMatrix[3]));
                 SetLocalRot(glm::quat_cast(localMatrix));
                 SetLocalScale({
@@ -466,12 +488,12 @@ namespace NanamiEngine::Module::GameObject
                 SetLocalRot(glm::quat(glm::radians(rotation)));
                 SetLocalScale(scale);
             }
-    
+            
             guiLocalEuler_ = rotation;
             UpdateMatrix();
         }
     }
-    
+
     void Transform::UpdateMatrix()
     {
         const glm::mat4 localMatrix = glm::translate(glm::mat4(1.0f), localPos_)

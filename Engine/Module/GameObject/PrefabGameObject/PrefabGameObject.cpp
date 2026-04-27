@@ -54,7 +54,7 @@ void GameObject::PrefabGameObject::InitPrefab(const std::string& filePath)
 
 void GameObject::PrefabGameObject::ImplementDestroy()
 {
-    
+    ownPtr_ = nullptr;   
 }
 
 void GameObject::PrefabGameObject::OnDrawGui()

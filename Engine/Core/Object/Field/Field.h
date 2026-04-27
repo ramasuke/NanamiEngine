@@ -32,12 +32,12 @@ namespace NanamiEngine::Core::Object
 
         explicit operator bool() const { return static_cast<bool>(*context_); }
 
-        void InitForPrompty()
+        void Init()
         {
-            if (context_)
-            {
-                context_->Init();
-            }
+            if (!context_)
+                return;
+
+            context_->Init();
         }
 
         virtual void OnDrawGui()
@@ -48,12 +48,14 @@ namespace NanamiEngine::Core::Object
         template <class Archive>
         void save(Archive& archive, const std::uint32_t version) const
         {
+            assert(context_.use_count() == 1); // ←ここ
             archive(context_);
         }
 
         template <class Archive>
         void load(Archive& archive, const std::uint32_t version)
         {
+            assert(context_.use_count() == 1); // ←ここ
             archive(context_);
             Application::ApplicationBase::ApplicationLifeCycle().AddCallback(std::weak_ptr(context_));
         }

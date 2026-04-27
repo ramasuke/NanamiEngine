@@ -20,7 +20,6 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
     }
     ActionInstructTutorialPresenter::~ActionInstructTutorialPresenter() = default;
 
-
     Coroutine::Task<void> ActionInstructTutorialPresenter::SubscribeModelEventToViewAsync()
     {
         view_.lock()->OnDisplayAttackText();
@@ -31,6 +30,9 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
 
         view_.lock()->OnDisplayDashAttackText();
         co_await Coroutine::WaitForObservable(model_->StatusEvent().OnDashAttack());
+
+        view_.lock()->OnDisplayAvoidRollingText();
+        co_await Coroutine::WaitForObservable(model_->StatusEvent().OnAvoidRolling());
         
         view_.lock()->Hide();
     }

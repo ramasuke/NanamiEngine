@@ -5,21 +5,21 @@ namespace GameCore::Scene
     void FirstTouchDownMainIsLandSceneContext::Init()
     {
         SceneContextBase::Init();
-        airShip_                       .InitForPrompty();
-        airShipFirstMoveFromTargetPos_ .InitForPrompty();
-        airShipSecondMoveFromTargetPos_.InitForPrompty();
-        firstVirtualCamera_            .InitForPrompty();
-        virtualCameraFirstMoveTarget_  .InitForPrompty();
-        secondVirtualCamera_           .InitForPrompty();
-        cameraBrain_                   .InitForPrompty();
-        playerFirstMoveTargetPos_      .InitForPrompty();
-        cameraGroup_                   .InitForPrompty();
-        titleLogo_                     .InitForPrompty();
-        actionControlWayUi_            .InitForPrompty();
-        playerStatusUi_                .InitForPrompty();
-        boundryAirshipCollider_        .InitForPrompty();
-        firstEventDragonPrefab_        .InitForPrompty();
-        firstEventDragonSpawnPos_      .InitForPrompty();
+        airShip_                       .Init();
+        airShipFirstMoveFromTargetPos_ .Init();
+        airShipSecondMoveFromTargetPos_.Init();
+        firstVirtualCamera_            .Init();
+        virtualCameraFirstMoveTarget_  .Init();
+        secondVirtualCamera_           .Init();
+        cameraBrain_                   .Init();
+        playerFirstMoveTargetPos_      .Init();
+        cameraGroup_                   .Init();
+        titleLogo_                     .Init();
+        actionControlWayUi_            .Init();
+        playerStatusUi_                .Init();
+        boundryAirshipCollider_        .Init();
+        firstEventDragonPrefab_        .Init();
+        firstEventDragonSpawnPos_      .Init();
     }
     
     void FirstTouchDownMainIsLandSceneContext::OnDrawGui()

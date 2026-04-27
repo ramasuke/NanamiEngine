@@ -40,7 +40,7 @@ namespace NanamiEngine::Core::Application
         const auto initScene = std::make_shared<Scene::Scene>("Assets/Scene/GameManage.scene");
         MainWindows().Catch<MainWindow::GameWindow>()->AddContent     (initScene);
         MainWindows().Catch<MainWindow::GameWindow>()->ChangeMainScene(initScene);
-        
+
         Physics().Initialize();
 
         /** Effekseerの初期化 */

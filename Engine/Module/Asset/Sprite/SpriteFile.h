@@ -34,7 +34,7 @@ template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<AssetBase>(this));
     archive(cereal::base_class<LifeCycleCallback::IEnablableAsset>(this));
-    archive(CEREAL_NVP(contentPath_));
+    archive(CEREAL_NVP(contentPath_));  
     archive(CEREAL_NVP(guid_));
 }
 

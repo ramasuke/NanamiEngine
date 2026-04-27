@@ -9,63 +9,66 @@
 #include "../../Application/Window/Popup/Inspector/InspectorWindow.h"
 #include "cereal/archives/json.hpp"
 
-NanamiEngine::Core::FileSystem::File NanamiEngine::Core::FileSystem::File::OnLoadForMeta(
-    const std::string& filePath, std::string fileName)
+namespace NanamiEngine::Core::FileSystem
 {
-    File file;
-    file.filePath_ = filePath;
-    file.fileName_ = std::move(fileName);
-    file.content_  = Module::Asset::AssetFactory::Instance().Load(filePath);
-    return std::move(file);
-}
-
-NanamiEngine::Core::FileSystem::File NanamiEngine::Core::FileSystem::File::CreateOrLoad(
-    std::string filePath,
-    std::string fileName)
-{
-    if (std::shared_ptr<Module::Asset::AssetBase> asset; Module::Asset::AssetFactory::Instance().TryCreate(filePath, asset))
+    File File::OnLoadForMeta(
+        const std::string& filePath, std::string fileName)
     {
-        if (!std::filesystem::exists(filePath + ".meta"))
+        File file;
+        file.filePath_ = filePath;
+        file.fileName_ = std::move(fileName);
+        file.content_  = Module::Asset::AssetFactory::Instance().Load(filePath);
+        return std::move(file);
+    }
+    
+    File File::CreateOrLoad(
+        std::string filePath,
+        std::string fileName)
+    {
+        if (std::shared_ptr<Module::Asset::AssetBase> asset; Module::Asset::AssetFactory::Instance().TryCreate(filePath, asset))
         {
-            File file;
-            file.filePath_ = std::move(filePath);
-            file.fileName_ = std::move(fileName);
-            file.content_ = asset;
-            return std::move(file);
+            if (!std::filesystem::exists(filePath + ".meta"))
+            {
+                File file;
+                file.filePath_ = std::move(filePath);
+                file.fileName_ = std::move(fileName);
+                file.content_ = asset;
+                return std::move(file);
+            }
+            return std::move(OnLoadForMeta(filePath, fileName));
         }
-        return std::move(OnLoadForMeta(filePath, fileName));
+    
+        File file;
+        file.filePath_ = std::move(filePath);
+        file.fileName_ = std::move(fileName);
+        return file;
     }
-
-    File file;
-    file.filePath_ = std::move(filePath);
-    file.fileName_ = std::move(fileName);
-    return file;
-}
-
-void NanamiEngine::Core::FileSystem::File::OnSave() const
-{
-    if (!content_)
-        return;
-
-    std::ofstream ofStream(filePath_ + ".meta");
-    if (!ofStream.is_open())
-        return;
-
-    cereal::JSONOutputArchive archive(ofStream);
-    archive(content_);
-
-    content_->OnSaveCallback();
-}
-
-void NanamiEngine::Core::FileSystem::File::OnClick() const
-{
-    for (auto* inspector : Application::ApplicationBase::PopupWindows().Catch<PopupWindow::InspectorWindow>())
+    
+    void File::OnSave() const
     {
-        inspector->TryAddDisplayObject(content_);
+        if (!content_)
+            return;
+    
+        std::ofstream ofStream(filePath_ + ".meta");
+        if (!ofStream.is_open())
+            return;
+    
+        cereal::JSONOutputArchive archive(ofStream);
+        archive(content_);
+    
+        content_->OnSaveCallback();
     }
-}
-
-void NanamiEngine::Core::FileSystem::File::OnDoubleClick() const
-{
-    content_->OnDoubleClick();
+    
+    void File::OnClick() const
+    {
+        for (auto* inspector : Application::ApplicationBase::PopupWindows().Catch<PopupWindow::InspectorWindow>())
+        {
+            inspector->TryAddDisplayObject(content_);
+        }
+    }
+    
+    void File::OnDoubleClick() const
+    {
+        content_->OnDoubleClick();
+    }
 }

@@ -1,6 +1,7 @@
 ﻿#include "Main_GameSceneGroup.h"
 
 #include "../Content/FirstTouchDownMainIsLand/FirstTouchDownMainIsLandScene.h"
+#include "../Content/MainIslandScene/MainIsLandScene.h"
 #include "../Content/Title/TitleScene.h"
 
 namespace GameCore::Scene::Main
@@ -18,9 +19,13 @@ namespace GameCore::Scene::Main
         AddScene(std::make_shared<FirstTouchDownMainIsLandScene>(
             CatchContext<FirstTouchDownMainIsLandSceneContext>(),
             GameSceneBaseContext(mainScenarioProgression, subSceneStack)));
+        
+        AddScene(std::make_shared<MainIslandScene>(
+            CatchContext<MainIslandSceneContext>(),
+            GameSceneBaseContext(mainScenarioProgression, subSceneStack)));
     }
 
-    void GameSceneGroup::OnUpdate()
+    void GameSceneGroup::Update()
     {
         ProcessRequests();
     }
@@ -39,7 +44,7 @@ namespace GameCore::Scene::Main
         {
             if (const auto current = currentScene_.lock())
             {
-                current->OnExit();
+                current->OnExit ();
                 current->Dispose();
             }
 

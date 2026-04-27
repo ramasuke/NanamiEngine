@@ -16,14 +16,15 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnComboAttack         () const override { return onComboAttack_         .get_observable(); }
         [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnDashAttack          () const override { return onDashAttack_          .get_observable(); }
         [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnRun                 () const override { return onRun_                 .get_observable(); }
+        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnAvoidRolling        () const override { return onAvoidRolling_        .get_observable(); }
         
         void InvokeOnDamage   (const StatusParameter::Health& currentHealth) const override;
         void InvokeOnAddEnhancePowerStack(const EnhancePower& currentEnhancePowerStack) const override;
-        void InvokeOnDeath    () const override;
-        void InvokeComboAttack() const override;
-        void InvokeOnRun      () const override;
-        void InvokeDashAttack () const override;
-        
+        void InvokeOnDeath       () const override;
+        void InvokeComboAttack   () const override;
+        void InvokeOnRun         () const override;
+        void InvokeDashAttack    () const override;
+        void InvokeOnAvoidRolling() const override;
 
     private:
         rxcpp::subjects::subject<StatusParameter::Health> onDamage_;
@@ -32,5 +33,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         rxcpp::subjects::subject<LibCore::Rx::unit>       onComboAttack_;
         rxcpp::subjects::subject<LibCore::Rx::unit>       onRun_;
         rxcpp::subjects::subject<LibCore::Rx::unit>       onDashAttack_;
+        rxcpp::subjects::subject<LibCore::Rx::unit>       onAvoidRolling_;
     };
 }

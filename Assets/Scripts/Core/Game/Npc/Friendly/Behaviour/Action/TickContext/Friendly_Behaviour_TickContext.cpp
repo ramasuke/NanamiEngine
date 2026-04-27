@@ -39,4 +39,15 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         const auto& chattingUIScene = subScenes.Catch<Scene::Sub::ChattingUIScene>(Scene::Sub::SceneType::ChattingUI);
         return chattingUIScene->Context().Npc();
     }
+
+    IPlayerAvatar& TickContext::Player() const
+    {
+        //TODO: Network上の自身が操作しているPlayerを取得するように変更必須
+        return *IPlayerAvatar::PlayerAvatars().at(0).lock();
+    }
+
+    const PlayerAvatar::IQuestGroup& TickContext::PlayerQuest() const
+    {
+        return Player().PlayerStatus().Quest();
+    }
 }

@@ -27,5 +27,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit      > OnComboAttack         () const = 0;
         [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit      > OnRun                 () const = 0;
         [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit      > OnDashAttack          () const = 0;
+        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit      > OnAvoidRolling        () const = 0;
     };
 }

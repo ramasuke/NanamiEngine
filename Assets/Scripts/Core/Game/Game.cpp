@@ -35,7 +35,8 @@ namespace GameCore
     
     void Game::OnUpdate()
     {
-        sceneGroup_->OnUpdate();
+        sceneGroup_   ->Update();
+        subSceneGroup_->Update();
     }
     
     void Game::OnDrawGui()

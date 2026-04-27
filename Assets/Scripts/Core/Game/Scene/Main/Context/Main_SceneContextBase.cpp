@@ -6,7 +6,7 @@ namespace GameCore::Scene
 {
     void SceneContextBase::Init()
     {
-        playerSpawnPoint_.InitForPrompty();
+        playerSpawnPoint_.Init();
     }
 
     glm::vec3 SceneContextBase::PlayerSpawnPoint() const

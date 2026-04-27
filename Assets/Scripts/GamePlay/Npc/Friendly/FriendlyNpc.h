@@ -27,7 +27,10 @@ namespace GamePlay::Npc::Friendly
 
         [[serialize(0)]] std::string name_;
         [[serialize(0)]] FIELD(Asset::FriendNpcBehaviourFile) friendlyNpcBehaviourFile_;
-        [[serialize(2)]] FIELD(Asset::FriendlyNpcBaseResources) baseStatus_;
+        [[serialize(2)]] FIELD(Asset::FriendlyNpcResources) baseStatus_;
+        [[serialize(3)]] FIELD(GameObject::IGameObject)     chattableIconTransform_;
+        [[serialize(4)]] FIELD(GameObject::IGameObject)     chattingIconTransform_;
+        
         std::unique_ptr<GameCore::Npc::Friendly::BehaviourTree> behaviour_;
         bool isChatting_ = false;
 
@@ -42,6 +45,8 @@ namespace GamePlay::Npc::Friendly
             archive(CEREAL_NVP(name_));
             archive(CEREAL_NVP(friendlyNpcBehaviourFile_));
             archive(CEREAL_NVP(baseStatus_));
+            archive(CEREAL_NVP(chattableIconTransform_));
+            archive(CEREAL_NVP(chattingIconTransform_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
@@ -50,11 +55,13 @@ namespace GamePlay::Npc::Friendly
             if (version >= 0) archive(CEREAL_NVP(name_));
             if (version >= 0) archive(CEREAL_NVP(friendlyNpcBehaviourFile_));
             if (version >= 2) archive(CEREAL_NVP(baseStatus_));
+            if (version >= 3) archive(CEREAL_NVP(chattableIconTransform_));
+            if (version >= 4) archive(CEREAL_NVP(chattingIconTransform_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Npc::Friendly::FriendlyNpc, 2)                                      
+CEREAL_CLASS_VERSION(GamePlay::Npc::Friendly::FriendlyNpc, 4)
 CEREAL_REGISTER_TYPE(GamePlay::Npc::Friendly::FriendlyNpc) 
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GamePlay::Npc::Friendly::FriendlyNpc)

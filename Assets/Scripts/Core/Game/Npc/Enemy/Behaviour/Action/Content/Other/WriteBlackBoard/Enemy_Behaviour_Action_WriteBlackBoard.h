@@ -30,7 +30,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 #pragma endregion
     };
     
-    REGISTER_ENEMY_ACTION_WITH_NAME(WriteBlackBoard, "Other::BlackBoard")
+    REGISTER_ENEMY_ACTION_WITH_NAME(WriteBlackBoard, "Other::WriteBlackBoard")
 }
 CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoard, 0)
 CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoard)

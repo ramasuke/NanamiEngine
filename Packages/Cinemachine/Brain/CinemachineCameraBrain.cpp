@@ -91,10 +91,10 @@ void CineMachine::CinemachineCameraBrain::OnDebugCameraFovRender() const
 
     const int color = GetColor(255, 255, 0);
 
-    //DrawTriangle3D({eye.x, eye.y, eye.z}, {p1.x, p1.y, p1.z}, {p2.x, p2.y, p2.z}, color, false);
-    //DrawTriangle3D({eye.x, eye.y, eye.z}, {p2.x, p2.y, p2.z}, {p3.x, p3.y, p3.z}, color, false);
-    //DrawTriangle3D({eye.x, eye.y, eye.z}, {p3.x, p3.y, p3.z}, {p4.x, p4.y, p4.z}, color, false);
-    //DrawTriangle3D({eye.x, eye.y, eye.z}, {p4.x, p4.y, p4.z}, {p1.x, p1.y, p1.z}, color, false);
+    DrawTriangle3D({eye.x, eye.y, eye.z}, {p1.x, p1.y, p1.z}, {p2.x, p2.y, p2.z}, color, false);
+    DrawTriangle3D({eye.x, eye.y, eye.z}, {p2.x, p2.y, p2.z}, {p3.x, p3.y, p3.z}, color, false);
+    DrawTriangle3D({eye.x, eye.y, eye.z}, {p3.x, p3.y, p3.z}, {p4.x, p4.y, p4.z}, color, false);
+    DrawTriangle3D({eye.x, eye.y, eye.z}, {p4.x, p4.y, p4.z}, {p1.x, p1.y, p1.z}, color, false);
 }
 
 void CineMachine::CinemachineCameraBrain::OnDrawGui()

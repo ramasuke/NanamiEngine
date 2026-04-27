@@ -14,12 +14,12 @@ namespace GameCore::Npc::Enemy
 
         [[nodiscard]] const StatusParameter::Health& MaxHealth() const { return maxHealth_; }
         [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Health> Health() const { return health_.AsReadOnly(); }
-        [[nodiscard]] float ArriveDuration_secs() const { return arriveDuration_secs_; }
+        [[nodiscard]] float ArriveDuration_secs() const { return arriveDuring_secs_; }
 
     private:
-        StatusParameter::Health maxHealth_;
-        LibCore::Rx::SerializableSubject<StatusParameter::Health> health_;
-        float arriveDuration_secs_ = 0.0f;
+        [[serialize(0)]] StatusParameter::Health maxHealth_;
+        [[serialize(0)]] LibCore::Rx::SerializableSubject<StatusParameter::Health> health_;
+        float arriveDuring_secs_ = 0.0f;
         
 #pragma region Serialization Function
     public:

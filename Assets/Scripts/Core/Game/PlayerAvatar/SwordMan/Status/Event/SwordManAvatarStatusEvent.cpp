@@ -31,4 +31,9 @@ namespace GameCore::PlayerAvatar::SwordMan
     {
         onDashAttack_.get_subscriber().on_next(LibCore::Rx::unit{});
     }
+
+    void StatusEvent::InvokeOnAvoidRolling() const
+    {
+        onAvoidRolling_.get_subscriber().on_next(LibCore::Rx::unit{});
+    }
 }

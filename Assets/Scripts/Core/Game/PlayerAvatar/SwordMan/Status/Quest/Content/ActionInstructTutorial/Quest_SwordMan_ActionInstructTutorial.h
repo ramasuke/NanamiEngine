@@ -7,11 +7,6 @@
 #include "../../../../../Quest/PlayerAvatar_QuestType.h"
 #include "cereal/types/polymorphic.hpp"
 
-namespace GameCore::Npc::Friendly::Behaviour::Action
-{
-    class WriteBlackBoard;
-}
-
 namespace GameCore::PlayerAvatar::SwordMan::Quest
 {
     class ActionInstructTutorialPresenter;

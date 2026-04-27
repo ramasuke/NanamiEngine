@@ -3,10 +3,10 @@
 
 namespace GameCore::PlayerAvatar::SwordMan::State
 {
-    class AvoidRolling final : public SwordManAvatarStateBase
+    class AvoidRollingState final : public SwordManAvatarStateBase
     {
     public:
-        DEFINE_STATE_CONSTRUCTOR(AvoidRolling)
+        DEFINE_STATE_CONSTRUCTOR(AvoidRollingState)
 
     private:
         void DoEnter () override;

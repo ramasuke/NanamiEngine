@@ -37,7 +37,7 @@ namespace GameCore::PlayerAvatar::SwordMan
                                                                 , State::OnEnableReinforceState
                                                                 , State::OnDisableReinforceState
                                                                 , State::HurtState
-                                                                , State::AvoidRolling
+                                                                , State::AvoidRollingState
                                                                 , State::DeathState>;
 
     std::unique_ptr<SwordManAvatarStateMachine> CreateStateMachine(

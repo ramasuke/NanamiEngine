@@ -19,9 +19,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         
         virtual void InvokeOnDamage   (const StatusParameter::Health& currentHealth) const = 0;
         virtual void InvokeOnAddEnhancePowerStack(const EnhancePower& currentEnhancePowerStack) const = 0;
-        virtual void InvokeOnDeath    () const = 0;
-        virtual void InvokeComboAttack() const = 0;
-        virtual void InvokeDashAttack () const = 0;
-        virtual void InvokeOnRun      () const = 0;
+        virtual void InvokeOnDeath       () const = 0;
+        virtual void InvokeComboAttack   () const = 0;
+        virtual void InvokeDashAttack    () const = 0;
+        virtual void InvokeOnRun         () const = 0;
+        virtual void InvokeOnAvoidRolling() const = 0;
     };
 }

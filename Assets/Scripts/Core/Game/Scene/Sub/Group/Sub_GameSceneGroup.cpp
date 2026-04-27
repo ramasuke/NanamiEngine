@@ -10,6 +10,7 @@ namespace GameCore::Scene::Sub
     GameSceneGroup::GameSceneGroup(std::vector<std::weak_ptr<SceneContextBase>> contexts)
         : factory_(std::make_unique<SceneFactory>(contexts))
     {
+        
     }
 
     GameSceneGroup::~GameSceneGroup() = default;

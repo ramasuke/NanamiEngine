@@ -78,39 +78,6 @@
                             "data": {
                                 "cereal_class_version": 0,
                                 "value0": {
-                                    "value_": "54903530-2536-40FD-AFAE-ADD9FA83EC13"
-                                }
-                            }
-                        }
-                    }
-                },
-                "name_": "Idle",
-                "position_": {
-                    "value0": 291.0,
-                    "value1": 555.0
-                },
-                "guid_": {
-                    "value_": "793A372C-AEE0-4EFD-A48C-BC9B7E74EAAD"
-                },
-                "speed_": 50.0,
-                "blendAnimationOffset_secs_": 340.0,
-                "modelAnimationIndex_": 0
-            }
-        }
-    },
-    "nodes_1": {
-        "polymorphic_id": 2,
-        "ptr_wrapper": {
-            "id": 2147483655,
-            "data": {
-                "value0": {},
-                "animationFile_": {
-                    "value0": {
-                        "polymorphic_id": 1073741824,
-                        "ptr_wrapper": {
-                            "id": 2147483656,
-                            "data": {
-                                "value0": {
                                     "value_": "AA634F3B-C41E-47A3-8C65-5D6E21AA14C8"
                                 }
                             }
@@ -131,6 +98,39 @@
             }
         }
     },
+    "nodes_1": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483655,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483656,
+                            "data": {
+                                "value0": {
+                                    "value_": "54903530-2536-40FD-AFAE-ADD9FA83EC13"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Idle",
+                "position_": {
+                    "value0": 291.0,
+                    "value1": 555.0
+                },
+                "guid_": {
+                    "value_": "793A372C-AEE0-4EFD-A48C-BC9B7E74EAAD"
+                },
+                "speed_": 50.0,
+                "blendAnimationOffset_secs_": 340.0,
+                "modelAnimationIndex_": 0
+            }
+        }
+    },
     "nodes_2": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
@@ -144,22 +144,22 @@
                             "id": 2147483658,
                             "data": {
                                 "value0": {
-                                    "value_": "F3938945-BB80-48F7-9714-850573F51AB7"
+                                    "value_": "70CCDEF6-F5B7-4179-974E-ABDF6104D754"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "ComboAttack1",
+                "name_": "Hurt",
                 "position_": {
-                    "value0": 285.0,
-                    "value1": 204.0
+                    "value0": 284.0,
+                    "value1": -8.0
                 },
                 "guid_": {
-                    "value_": "D77E7B2E-EA2D-4068-A5FE-40CE14AFA277"
+                    "value_": "9B44AEC1-A12D-465B-9258-177BC4336E8B"
                 },
-                "speed_": 34.5,
-                "blendAnimationOffset_secs_": 111111112360531590000.0,
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 20.0,
                 "modelAnimationIndex_": 0
             }
         }
@@ -210,22 +210,22 @@
                             "id": 2147483662,
                             "data": {
                                 "value0": {
-                                    "value_": "70CCDEF6-F5B7-4179-974E-ABDF6104D754"
+                                    "value_": "F3938945-BB80-48F7-9714-850573F51AB7"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "Hurt",
+                "name_": "ComboAttack1",
                 "position_": {
-                    "value0": 284.0,
-                    "value1": -8.0
+                    "value0": 285.0,
+                    "value1": 204.0
                 },
                 "guid_": {
-                    "value_": "9B44AEC1-A12D-465B-9258-177BC4336E8B"
+                    "value_": "D77E7B2E-EA2D-4068-A5FE-40CE14AFA277"
                 },
-                "speed_": 30.0,
-                "blendAnimationOffset_secs_": 20.0,
+                "speed_": 34.5,
+                "blendAnimationOffset_secs_": 111111112360531590000.0,
                 "modelAnimationIndex_": 0
             }
         }

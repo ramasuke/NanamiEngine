@@ -23,4 +23,6 @@
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/RigidBody/ShootDownAirShip/Enemy_Behaviour_Action_ShootDownAirShip.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Wait/Seconds/Enemy_Behaviour_Action_WaitSeconds.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/WriteBlackBoard/Enemy_Behaviour_Action_WriteBlackBoard.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Particle/GenerateParticle.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Scene/ChangeToMainIslandScene/ChangeToMainIslandScene.h"
 #include "../../../../../Core/Game/Npc/Enemy/Content/FirstEventDragon/Behaviour/AppearToTouchDownIsLand/FirstEventDragon_Behaviour_AppearToTouchDownIsLand.h"

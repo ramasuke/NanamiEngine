@@ -25,7 +25,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         
     private:
         [[serialize(0)]] std::vector<std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>> quests_;
-        std::unique_ptr<Quest::CompletedQuestGroup> completedQuests_;
+        const std::unique_ptr<Quest::CompletedQuestGroup> completedQuests_;
         std::shared_ptr<IObservableStatusEvent> event_;
         
 #pragma region Serialization Function

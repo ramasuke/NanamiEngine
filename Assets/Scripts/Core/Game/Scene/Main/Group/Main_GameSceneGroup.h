@@ -20,7 +20,7 @@ namespace GameCore::Scene::Main
             const std::shared_ptr<MainScenarioProgression>& mainScenarioProgression,
             const std::shared_ptr<Sub::IGameSceneStack>& subSceneStack);
 
-        void OnUpdate();
+        void Update();
         void OnDrawGui();
 
         template <typename T>
