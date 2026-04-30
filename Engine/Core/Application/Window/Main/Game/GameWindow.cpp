@@ -99,6 +99,10 @@ namespace NanamiEngine::Core::MainWindow
         {
             ImGui::Text(("LoadingResource Count: " + std::to_string(Asset::Asset::GetLoadingResourceCount())).c_str());
             ImGui::Text(("currentMainScene: " + mainScene_.lock()->Name()).c_str());
+            if (ImGui::Button("Reset EditorCamera"))
+            {
+                editorCamera_ = Component::Editor3DCamera(); 
+            }
             if (ImGui::Button("Play"))
             {
                 isPlayMode_ = true;

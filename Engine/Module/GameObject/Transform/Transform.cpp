@@ -371,6 +371,19 @@ namespace NanamiEngine::Module::GameObject
         return localMatrix;
     }
 
+    void Transform::InitForCopied() const
+    {
+        for (const auto& child : GetAllChildren())
+        {
+            child->InitForCopied(
+                child,
+                child->IsEnable(),
+                child->Name(),
+                child->Components(),
+                child->TransformRef());
+        }
+    }
+
     void Transform::OnEnable(const bool enable) const
     {
         for (const auto& child : children_)

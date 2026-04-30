@@ -13,12 +13,12 @@ namespace NanamiEngine::Module::Asset
     public:
         explicit SpriteFile(std::string contentPath = "");
         void OnEnableAsset() override;
-        [[nodiscard]] const Guid& GetGuid       () const override { return guid_;     }
-        [[nodiscard]] int         GetDxLibHandle() const          { return dxLibId_;  }
-        [[nodiscard]] std::string GetContentPath() const override;
+        [[nodiscard]] const Guid& GetGuid        () const override { return guid_;     }
+        [[nodiscard]] int         GetDxLibHandle () const          { return dxLibId_;  }
+        [[nodiscard]] int         LoadGraph() const;
+        [[nodiscard]] std::string GetContentPath () const override;
 
     private:
-        
         std::string contentPath_;
         Guid guid_;
         int dxLibId_ = -1;

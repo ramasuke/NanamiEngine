@@ -12,7 +12,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         auto& transform = context.EnemyTransform();
         
         // Player への方向
-        glm::vec3 targetDir = context.Player().PlayerTransform().GetWorldPos() - transform.GetWorldPos();
+        glm::vec3 targetDir = context.Player()->PlayerTransform().GetWorldPos() - transform.GetWorldPos();
         targetDir.y = 0.0f;
         if (glm::length2(targetDir) < 0.0001f)
             return TickStatus::Failure;

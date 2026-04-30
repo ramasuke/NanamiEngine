@@ -12,7 +12,7 @@ namespace GameCore::Npc::Enemy
 
     void EnemyStatus::ManualUpdate()
     {
-        arriveDuring_secs_ += Time::DeltaTime();
+        arriveDuring_secs_ += NanamiEngine::Time::DeltaTime();
     }
 
     void EnemyStatus::OnDamage(const int damageValue)

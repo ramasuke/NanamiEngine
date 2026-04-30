@@ -1,15 +1,20 @@
 ﻿#pragma once
 
-class Time
+namespace NanamiEngine
 {
-public:
-    static void Update();
-    static float DeltaTime();
-    static void SetTimeScale(float scale);
-    static float GetTimeScale();
+    class Time final
+    {
+    public:
+        static void Update();
+        static float DeltaTime();
+        static float CurrentTime();
+        static void SetTimeScale(float scale);
+        static float GetTimeScale();
 
-private:
-    static int   lastTime_;
-    static float deltaTime_;
-    static float timeScale_;
-};
+    private:
+        static int lastTime_;
+        static float deltaTime_;
+        static float timeScale_;
+        static float currentTime_;
+    };
+}

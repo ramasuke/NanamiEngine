@@ -10,7 +10,7 @@ namespace GameCore::Npc::Enemy::Behaviour
     TickStatus Action::MoveToPlayerPos::DoTick(const TickContext& context)
     {
         const glm::vec3 selfPos   = context.EnemyTransform().GetWorldPos();
-        const glm::vec3 playerPos = context.Player().PlayerTransform().GetWorldPos();
+        const glm::vec3 playerPos = context.Player()->PlayerTransform().GetWorldPos();
 
         glm::vec3 moveDirection = playerPos - selfPos;
         moveDirection.y = 0.0f;

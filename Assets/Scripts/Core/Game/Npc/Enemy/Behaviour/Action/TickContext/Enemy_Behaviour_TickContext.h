@@ -73,7 +73,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[nodiscard]] const std::unique_ptr<BlackBoard::ParameterGroup>& Parameter() const { return parameters_; }
         [[nodiscard]] const std::shared_ptr<std::queue<std::unique_ptr<IDamageContext>>>& OnDamaged() const { return onDamagedStack_; } 
         [[nodiscard]] bool IsOnDamage() const { return !onDamagedStack_->empty(); }
-        [[nodiscard]] IPlayerAvatar& Player() const;
+        [[nodiscard]] std::shared_ptr<IPlayerAvatar> Player() const;
         [[nodiscard]] const PlayerAvatar::IQuestGroup& PlayerQuest() const;
 
         

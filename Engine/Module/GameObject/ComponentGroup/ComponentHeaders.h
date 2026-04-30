@@ -14,6 +14,7 @@
 #include "../../../../Assets/Scripts/GamePlay/Sound/SoundPlayer.h"
 #include "../../../../Assets/Scripts/GamePlay/Sound/Sample/BgmPlayer.h"
 #include "../../../../Assets/Scripts/GamePlay/Ui/ActionInstructTutorial/SwordMan/Ui_SwordMan_ActionInstructTutorial.h"
+#include "../../../../Assets/Scripts/GamePlay/Ui/BillBoardNpcChatIcon/BillBoardNpcChatIcon.h"
 #include "../../../../Assets/Scripts/GamePlay/Ui/NpcChatting/NpcChatting.h" 
 #include "../../../../Assets/Scripts/GamePlay/Ui/Sample/SampleTitleLogo.h"
 #include "../../../../Assets/Scripts/GamePlay/Ui/SampleTitleSceneUI/SampleTitleSceneUI.h"

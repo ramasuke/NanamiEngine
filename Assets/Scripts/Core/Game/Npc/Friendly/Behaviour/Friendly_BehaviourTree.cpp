@@ -28,10 +28,12 @@ namespace GameCore::Npc::Friendly
     void BehaviourTree::Tick(
         const std::string& npcName,
         const std::weak_ptr<GameObject::IGameObject>& ownGameObject,
+        const std::weak_ptr<GamePlay::Ui::BillBoardNpcChatIcon>& ownChatIcon,
         bool& isChatting) const
     {
         entryNode_->Tick(Behaviour::Action::TickContext(npcName,
                                                         ownGameObject,
+                                                        ownChatIcon,
                                                         isChatting,
                                                         parameters_));
     }

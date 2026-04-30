@@ -15,6 +15,7 @@ namespace NanamiEngine::Scene
         [[nodiscard]] const std::string& Name() const override { return name_; }
         Module::GameObject::ComponentGroup& Components() override { return components_; }
         [[nodiscard]] Module::GameObject::Transform& TransformRef() override { return transform_; }
+        bool IsEnable() override { return isActive_; }
         void SetEnable(bool enable) override;
 
         std::shared_ptr<IGameObject> CopyForInstantiate() override;

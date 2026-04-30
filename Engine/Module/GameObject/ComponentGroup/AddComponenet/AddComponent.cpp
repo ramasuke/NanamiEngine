@@ -126,7 +126,8 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
     {
         if (ImGui::TreeNode("UI"))
         {
-            OnDrawTryAddComponentGui<GamePlay::Ui::NpcChatting     >(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::NpcChatting         >(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::BillBoardNpcChatIcon>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::SampleTitleLogo >(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::PlayerStatus    >(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::SampleTitleScene>(addComponent);

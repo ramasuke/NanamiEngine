@@ -1,4 +1,4 @@
-﻿#include "Friendly_Behaviour_Action_Chat.h"
+﻿#include "Friendly_Behaviour_Action_SetEnableShowChatIcon.h"
 
 #include "../../../../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../../../../../../../GamePlay/Ui/NpcChatting/NpcChatting.h"
@@ -36,7 +36,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 
     Coroutine::Task<void> Chat::ChatAsync(const TickContext context)
     {
-        co_await context.ChattingUi().OnDisplayChatAsync(context.NpcName(), *chatData_.get());
+        co_await context.ChatUi().OnDisplayChatAsync(context.NpcName(), *chatData_.get());
         isFinishedChat_ = true;
     }
 

@@ -2457,6 +2457,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\GameObject\Instantiate\Friendly_Behaviour_Action_GameObjectInstantaite.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\GameObject\SetEnable\Friendly_Behaviour_Action_GameObjectSetEnable.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Animation\PlayAnimation\Friendly_Behaviour_Action_PlayAnimation.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -2535,6 +2536,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\ChatIcon\Friendly_Behaviour_Action_SetEnableChatIcon.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\IsChatting\Friendly_Behaviour_Action_IsChat.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -2613,7 +2615,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\StartChat\Friendly_Behaviour_Action_Chat.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\StartChat\Friendly_Behaviour_Action_SetEnableShowChatIcon.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -6045,6 +6047,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\NpcChatting\NpcChatting.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\SampleTitleSceneUI.cpp" />
@@ -8874,6 +8877,7 @@
     <ClCompile Include="Engine\Module\LifeCycleCallback\UpdatedPhysics\IEndPhysics.cpp" />
     <ClCompile Include="Engine\Module\LifeCycleCallback\Update\IUpdatable.cpp" />
     <ClCompile Include="Engine\Module\LifeCycleCallback\UserInterfaceRenderable\IUserInterfaceRenderable.cpp" />
+    <ClCompile Include="Engine\Module\Log\NanamiEngine_Module_Log.cpp" />
     <ClCompile Include="Engine\Module\Namespace\EngineNamespace.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\BlendAnimationRenderer\BlendAnmiationRenderer.cpp" />
@@ -10037,9 +10041,11 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\AnimationType\FriendlyNpcAnimationType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Camera\EnablePurposeCamera\Friendly_Behaviour_Action_PurposeCamera.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\GameObject\Instantiate\Friendly_Behaviour_Action_GameObjectInstantaite.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\GameObject\SetEnable\Friendly_Behaviour_Action_GameObjectSetEnable.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Animation\PlayAnimation\Friendly_Behaviour_Action_PlayAnimation.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\ChatIcon\Friendly_Behaviour_Action_SetEnableChatIcon.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\IsChatting\Friendly_Behaviour_Action_IsChat.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\StartChat\Friendly_Behaviour_Action_Chat.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\StartChat\Friendly_Behaviour_Action_SetEnableShowChatIcon.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\RigidBody\MoveForRoute\Friendly_Behaviour_Action_MoveForRoute.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\RigidBody\SetLinearVelocity\Friendly_Behaviour_Action_SetLinearVelocity.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Transform\SetRotation\Friendly_Behaviour_Action_SetRotation.h" />
@@ -10180,6 +10186,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\NpcChatting\NpcChatting.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\SampleTitleSceneUI.h" />
@@ -10303,6 +10310,7 @@
     <ClInclude Include="Engine\Module\LifeCycleCallback\UpdatedPhysics\IEndPhysics.h" />
     <ClInclude Include="Engine\Module\LifeCycleCallback\Update\IUpdatable.h" />
     <ClInclude Include="Engine\Module\LifeCycleCallback\UserInterfaceRenderable\IUserInterfaceRenderable.h" />
+    <ClInclude Include="Engine\Module\Log\NanamiEngine_Module_Log.h" />
     <ClInclude Include="Engine\Module\Namespace\EngineNamespace.h" />
     <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.h" />
     <ClInclude Include="Engine\Module\NanamiUI\BlendAnimationRenderer\BlendAnmiationRenderer.h" />

@@ -30,7 +30,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 #pragma endregion
     };
     
-    REGISTER_FRIENDLY_ACTION(ReadBlackBoard)
+    REGISTER_FRIENDLY_ACTION_WITH_NAME(ReadBlackBoard, "Other::ReadBlackBoard")
 }
 CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::ReadBlackBoard, 0)
 CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::ReadBlackBoard)

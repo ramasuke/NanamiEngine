@@ -18,8 +18,10 @@ namespace NanamiEngine::Module::NanamiUi
         [[nodiscard]] int GetRenderOrder() const override { return renderOrder_; }
         
 
+        int handle_ = -1;
         [[serialize(0)]] int renderOrder_ = 0;
         [[serialize(1)]] FIELD(Asset::SpriteFile) spriteFile_;
+        [[serialize(2)]] float angle_ = 0.0f;
 
 #pragma region Serialization Function
     public:
@@ -30,6 +32,7 @@ namespace NanamiEngine::Module::NanamiUi
             archive(cereal::base_class<ComponentBase>(this));
             archive(CEREAL_NVP(renderOrder_));
             archive(CEREAL_NVP(spriteFile_));
+            archive(CEREAL_NVP(angle_));
         }
 
         template<class Archive>
@@ -37,13 +40,14 @@ namespace NanamiEngine::Module::NanamiUi
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 0) archive(CEREAL_NVP(renderOrder_));
             if (version >= 1) archive(CEREAL_NVP(spriteFile_));
+            if (version >= 2) archive(CEREAL_NVP(angle_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiUi::Billboard3D, 1);
+CEREAL_CLASS_VERSION(NanamiUi::Billboard3D, 2);
 CEREAL_REGISTER_TYPE(NanamiUi::Billboard3D);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, NanamiUi::Billboard3D);
 #pragma endregion

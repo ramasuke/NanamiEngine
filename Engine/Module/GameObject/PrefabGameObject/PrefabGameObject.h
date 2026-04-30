@@ -29,7 +29,7 @@ namespace NanamiEngine::Module::GameObject
         void OnSave();
         void OnReplaceCopiedObjects();
         
-        ///=== PrefabCopyに使用している関数群 ===
+        ///PrefabCopyに使用している関数群
         template <class Archive>
         void save(Archive& archive, const std::uint32_t version) const;
         template <class Archive>
@@ -37,6 +37,7 @@ namespace NanamiEngine::Module::GameObject
         std::shared_ptr<IGameObject> CopyForEditor();
         [[nodiscard]] std::shared_ptr<IGameObject> CopyForInstantiate() override;
         [[nodiscard]] const std::string& Name() const override { return name_; }
+        bool IsEnable() override { return isActive_; }
         void SetEnable(bool enable) override;
 
     private:

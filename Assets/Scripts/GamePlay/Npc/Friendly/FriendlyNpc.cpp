@@ -11,18 +11,24 @@ namespace GamePlay::Npc::Friendly
     void FriendlyNpc::OnAwake()
     {
         behaviour_ = friendlyNpcBehaviourFile_->OnLoadCopyContent();
-        
-        Scene::GameObject::Instantiate(baseStatus_->GetChattingIconPrefab(), chattableIconTransform_->TransformRef().GetWorldPos())
-            .lock()->TransformRef().SetParent(Entity());
-        Scene::GameObject::Instantiate(baseStatus_->GetChattableIconPrefab(), chattingIconTransform_ ->TransformRef().GetWorldPos())
-            .lock()->TransformRef().SetParent(Entity());
     }
 
     void FriendlyNpc::OnUpdate()
     {
         behaviour_->Tick(name_,
                          Entity(),
+                         billboardNpcChatIcon_.get(),
                         isChatting_);
+    }
+
+    void FriendlyNpc::OnChattable()
+    {
+        billboardNpcChatIcon_->OnChattable();
+    }
+
+    void FriendlyNpc::OnExitChattable()
+    {
+        billboardNpcChatIcon_->OnExitChattable();
     }
 
     void FriendlyNpc::OnChat()
@@ -40,6 +46,6 @@ namespace GamePlay::Npc::Friendly
         ImGuiHelper::OnDrawInputField("name_"                    , name_                    );
         ImGuiHelper::OnDrawInputField("friendlyNpcBehaviourFile_", friendlyNpcBehaviourFile_);
         ImGuiHelper::OnDrawInputField("baseStatus_"              , baseStatus_              );
-        ImGuiHelper::OnDrawInputField("chattableIconTransform_"  , chattableIconTransform_  );
+        ImGuiHelper::OnDrawInputField("billboardNpcChatIcon_"    , billboardNpcChatIcon_    );
     }
 }

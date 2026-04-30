@@ -36,6 +36,7 @@ namespace NanamiEngine::Module::GameObject
         [[nodiscard]] virtual Transform&         TransformRef() = 0;
         [[nodiscard]] virtual ComponentGroup&    Components  () = 0;
         /** @brief GameObjectの全ての機能の有効無効を切り替える */
+        virtual bool IsEnable() = 0;
         virtual void SetEnable(bool enable) = 0;
         virtual void OnDrawTreeGui() = 0;
         virtual void OnDestroy() const {}

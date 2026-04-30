@@ -21,7 +21,7 @@ namespace Coroutine
         for (auto it = waitForSecondses_.begin(); it != waitForSecondses_.end();)
         {
             WaitForSeconds* waitable = *it;
-            waitable->Tick(Time::DeltaTime());
+            waitable->Tick(NanamiEngine::Time::DeltaTime());
             if (waitable->await_ready())
             {
                 waitable->CoroutineHandle().resume();
@@ -36,7 +36,7 @@ namespace Coroutine
         for (auto it = waitForTweens_.begin(); it != waitForTweens_.end();)
         {
             IWaitForTween* waitableTween = *it;
-            waitableTween->Tick(Time::DeltaTime() * 1000.0f);
+            waitableTween->Tick(NanamiEngine::Time::DeltaTime() * 1000.0f);
             if (waitableTween->await_ready())
             {
                 it = waitForTweens_.erase(it);

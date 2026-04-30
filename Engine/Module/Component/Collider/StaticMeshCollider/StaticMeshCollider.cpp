@@ -11,6 +11,7 @@
 #include <DxLib.h>
 
 #include "../../../GameObject/Transform/Transform.h"
+#include "../../../Log/NanamiEngine_Module_Log.h"
 
 static glm::quat GetFinalRotation(
     const GameObject::Transform& transform,
@@ -209,17 +210,17 @@ namespace NanamiEngine::Module::Component
     {
         const auto modelRenderer = Components().Catch<ModelRenderer>().lock();
         if (!modelRenderer)
-            throw std::exception("error");
+            LogError("Create staticMeshCollider error");
 
         const int modelHandle = modelRenderer->modelDxLibHandle_;
         if (modelHandle < 0)
-            throw std::exception("error");
+            LogError("Create staticMeshCollider error");
 
         JPH::VertexList verts;
         JPH::IndexedTriangleList tris;
 
         if (!ExtractMeshFromDxModel(modelHandle, verts, tris))
-            throw std::exception("error");
+            LogError("Create staticMeshCollider error");
 
         const glm::vec3 scale = Transform().GetWorldScale() * scale_;
         const glm::quat rot   = glm::quat(glm::radians(rotation_));

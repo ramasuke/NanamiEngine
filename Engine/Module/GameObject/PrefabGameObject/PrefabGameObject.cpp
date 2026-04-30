@@ -44,7 +44,9 @@ void GameObject::PrefabGameObject::InitForCopied(const std::shared_ptr<IGameObje
     name_       = std::move(name);
     components_ = std::move(components);
     components_ .ResetGuid();
-    transform_  = std::move(transform);    
+    transform_  = std::move(transform);
+    transform_  .InitForCopied();
+    guid_       = Guid();
 }
 
 void GameObject::PrefabGameObject::InitPrefab(const std::string& filePath)

@@ -48,14 +48,14 @@ namespace NanamiEngine::Core::Object
         template <class Archive>
         void save(Archive& archive, const std::uint32_t version) const
         {
-            assert(context_.use_count() == 1); // ←ここ
+            assert(context_.use_count() == 1);
             archive(context_);
         }
 
         template <class Archive>
         void load(Archive& archive, const std::uint32_t version)
         {
-            assert(context_.use_count() == 1); // ←ここ
+            assert(context_.use_count() == 1);
             archive(context_);
             Application::ApplicationBase::ApplicationLifeCycle().AddCallback(std::weak_ptr(context_));
         }

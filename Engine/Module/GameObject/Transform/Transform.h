@@ -66,6 +66,7 @@ namespace NanamiEngine::Module::GameObject
         [[nodiscard]] const glm::vec3& GetLocalScale() const { return localScale_; }
         [[nodiscard]] glm::mat4 GetLocalMatrix() const;
 
+        void InitForCopied() const;
         void OnEnable(bool enable) const;
         void OnDrawGui();
 

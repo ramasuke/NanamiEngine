@@ -26,6 +26,8 @@ void Scene::CopiedPrefabGameObject::InitForCopied(const std::shared_ptr<IGameObj
     components_ = std::move(components);
     components_ .ResetGuid();
     transform_  = std::move(transform);
+    transform_  .InitForCopied();
+    guid_       = Guid();
 }
 
 void Scene::CopiedPrefabGameObject::SetEnable(const bool enable)
@@ -140,6 +142,17 @@ void Scene::CopiedPrefabGameObject::OnDrawTreeGui()
         }
     }
 
+    // 右クリックされた時のポップアップ
+    if (ImGui::BeginPopupContextItem(("Popup_" + name_).c_str()))
+    {
+        if (ImGui::MenuItem("ResetGuid"))
+        {
+            guid_ = Guid();
+        }
+
+        ImGui::EndPopup();
+    }
+    
     const bool hovered = ImGui::IsItemHovered();
     // ホバー中にドラッグ開始できるようにする
     if (hovered && ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))

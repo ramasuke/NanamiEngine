@@ -13,6 +13,8 @@ namespace GameCore::PlayerAvatar
     {
     public:
         virtual ~IPlayerChattable() = default;
+        virtual void OnChattable() = 0;
+        virtual void OnExitChattable() = 0;
         virtual void OnChat() = 0;
         [[nodiscard]] virtual const NanamiEngine::Module::GameObject::Transform& ChattableTransform() const = 0;
     };

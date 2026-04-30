@@ -3,6 +3,11 @@
 #include <string>
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 
+namespace GamePlay::Ui
+{
+    class BillBoardNpcChatIcon;
+}
+
 namespace GameCore
 {
     class IPlayerAvatar;
@@ -50,24 +55,27 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         explicit TickContext(
             std::string npcName,
             const std::weak_ptr<GameObject::IGameObject>& ownGameObject,
+            const std::weak_ptr<GamePlay::Ui::BillBoardNpcChatIcon>& ownChatIcon,
             bool& isChatting,
             const std::unique_ptr<BlackBoard::ParameterGroup>& parameters);
         ~TickContext();
 
-        [[nodiscard]] bool&                                  IsChatting   () const { return isChatting_;    }
-        [[nodiscard]] std::weak_ptr<GameObject::IGameObject> NpcGameObject() const { return ownGameObject_; }
+        [[nodiscard]] bool&                                  IsChatting   () const { return isChatting_;      }
+        [[nodiscard]] GamePlay::Ui::BillBoardNpcChatIcon&    OwnChatIcon  () const { return *ownChatIcon_  .lock(); }
+        [[nodiscard]] GameObject::IGameObject&         NpcGameObject() const { return *ownGameObject_.lock(); }
         [[nodiscard]] GameObject::Transform&           NpcTransform () const;
         [[nodiscard]] Component::Animator&             NpcAnimator  () const { return *npcAnimator_.lock(); }
         [[nodiscard]] Physics::ICollider &             NpcCollider  () const { return *npcCollider_.lock(); }
         [[nodiscard]] const std::string              & NpcName      () const { return npcName_;             }
-        [[nodiscard]] const GamePlay::Ui::NpcChatting& ChattingUi   () const;
+        [[nodiscard]] const GamePlay::Ui::NpcChatting& ChatUi   () const;
         [[nodiscard]] const std::unique_ptr<BlackBoard::ParameterGroup>& Parameter() const { return parameters_; }
-        [[nodiscard]] IPlayerAvatar& Player() const;
+        [[nodiscard]] std::shared_ptr<IPlayerAvatar> Player() const;
         [[nodiscard]] const PlayerAvatar::IQuestGroup& PlayerQuest() const;
         
     private:
         const std::string npcName_;
         const std::weak_ptr<GameObject::IGameObject> ownGameObject_;
+        const std::weak_ptr<GamePlay::Ui::BillBoardNpcChatIcon> ownChatIcon_;
         const std::weak_ptr<Component::Animator> npcAnimator_;
         const std::weak_ptr<Physics::ICollider > npcCollider_;
         bool& isChatting_;

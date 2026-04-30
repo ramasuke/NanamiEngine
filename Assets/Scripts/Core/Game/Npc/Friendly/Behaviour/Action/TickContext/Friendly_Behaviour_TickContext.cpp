@@ -4,6 +4,7 @@
 #include "../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../../../Engine/Module/Component/Collider/ICollider.h"
 #include "../../../../../../../GamePlay/Ui/NpcChatting/NpcChatting.h"
+#include "../../../../../PlayerAvatar/PlayerAvatar.h"
 #include "../../../../../Scene/Main/Group/Main_GameSceneGroup.h"
 #include "../../../../../Scene/Sub/Content/ChattingUI/ChattingUIScene.h"
 #include "../../../../../Scene/Sub/Group/Sub_GameSceneGroup.h"
@@ -14,10 +15,12 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
     TickContext::TickContext(
         std::string npcName,
         const std::weak_ptr<GameObject::IGameObject>& ownGameObject,
+        const std::weak_ptr<GamePlay::Ui::BillBoardNpcChatIcon>& ownChatIcon,
         bool& isChatting,
         const std::unique_ptr<BlackBoard::ParameterGroup>& parameters)
         : npcName_      (std::move(npcName))
         , ownGameObject_(ownGameObject   )
+        , ownChatIcon_  (ownChatIcon)
         , npcAnimator_  (ownGameObject.lock()->Components().Catch<Component::Animator>())
         , npcCollider_  (ownGameObject.lock()->Components().Catch<Physics::ICollider >())
         , isChatting_   (isChatting        )
@@ -33,21 +36,20 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         return ownGameObject_.lock()->TransformRef();
     }
 
-    const GamePlay::Ui::NpcChatting& TickContext::ChattingUi() const
+    const GamePlay::Ui::NpcChatting& TickContext::ChatUi() const
     {
         const auto& subScenes = Game::Instance().SubScenes();
         const auto& chattingUIScene = subScenes.Catch<Scene::Sub::ChattingUIScene>(Scene::Sub::SceneType::ChattingUI);
         return chattingUIScene->Context().Npc();
     }
 
-    IPlayerAvatar& TickContext::Player() const
+    std::shared_ptr<IPlayerAvatar> TickContext::Player() const
     {
-        //TODO: Network上の自身が操作しているPlayerを取得するように変更必須
-        return *IPlayerAvatar::PlayerAvatars().at(0).lock();
+        return PlayerAvatar::Owner();
     }
 
     const PlayerAvatar::IQuestGroup& TickContext::PlayerQuest() const
     {
-        return Player().PlayerStatus().Quest();
+        return Player()->PlayerStatus().Quest();
     }
 }

@@ -27,6 +27,7 @@ void Scene::SceneGameObject::InitForCopied(const std::shared_ptr<IGameObject>& o
     components_ = std::move(components);
     components_ .ResetGuid();
     transform_  = std::move(transform);
+    transform_  .InitForCopied();
     guid_       = Guid();
 }
 
@@ -151,12 +152,16 @@ void Scene::SceneGameObject::OnDrawTreeGui()
         }
     }
 
-    // 右クリックされた時のポップアップ（Selectable の後に書く）
+    // 右クリックされた時のポップアップ
     if (ImGui::BeginPopupContextItem(("Popup_" + name_).c_str()))
     {
         if (ImGui::MenuItem("Copy"))
         {
             GameObject::Instantiate(*ownPtr_, transform_.GetParent());
+        }
+        if (ImGui::MenuItem("ResetGuid"))
+        {
+            guid_ = Guid();
         }
 
         ImGui::EndPopup();

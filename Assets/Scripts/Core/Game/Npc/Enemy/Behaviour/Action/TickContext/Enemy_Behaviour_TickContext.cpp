@@ -4,6 +4,7 @@
 #include "../../../../../../../../../Engine/Module/Component/Collider/ColliderBase.h"
 #include "../../../../../DamageContext/IDamageContext.h"
 #include "../../../../../PlayerAvatar/IPlayerAvatar.h"
+#include "../../../../../PlayerAvatar/PlayerAvatar.h"
 #include "../../../../../PlayerAvatar/Quest/PlayerAvatar_IQuestGroup.h"
 #include "../../../../../PlayerAvatar/Status/IPlayerAvatarStatus.h"
 #include "../../../Status/EnemyStatus.h"
@@ -32,14 +33,13 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         return enemyGameObject_ .lock()->TransformRef();
     }
 
-    IPlayerAvatar& TickContext::Player() const
+    std::shared_ptr<IPlayerAvatar> TickContext::Player() const
     {
-        //TODO: Network上の自身が操作しているPlayerを取得するように変更必須
-        return *IPlayerAvatar::PlayerAvatars().at(0).lock();
+        return PlayerAvatar::Owner();
     }
 
     const PlayerAvatar::IQuestGroup& TickContext::PlayerQuest() const
     {
-        return Player().PlayerStatus().Quest();
+        return Player()->PlayerStatus().Quest();
     }
 }

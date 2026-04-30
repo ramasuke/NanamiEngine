@@ -1,17 +1,25 @@
 ﻿#include "SpriteFile.h"
 #include "DxLib.h"
 
-NanamiEngine::Module::Asset::SpriteFile::SpriteFile(std::string contentPath)
-    : contentPath_(std::move(contentPath))
+namespace NanamiEngine::Module::Asset
 {
-}
+    SpriteFile::SpriteFile(std::string contentPath)
+        : contentPath_(std::move(contentPath))
+    {
+    }
 
-void NanamiEngine::Module::Asset::SpriteFile::OnEnableAsset()
-{
-    dxLibId_ = LoadGraph(contentPath_.c_str());
-}
+    void SpriteFile::OnEnableAsset()
+    {
+        dxLibId_ = LoadGraph();
+    }
 
-std::string NanamiEngine::Module::Asset::SpriteFile::GetContentPath() const
-{
-    return contentPath_;
+    int SpriteFile::LoadGraph() const
+    {
+        return DxLib::LoadGraph(contentPath_.c_str());
+    }
+
+    std::string SpriteFile::GetContentPath() const
+    {
+        return contentPath_;
+    }
 }

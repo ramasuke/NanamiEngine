@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/Chat/StartChat/Friendly_Behaviour_Action_Chat.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/Chat/StartChat/Friendly_Behaviour_Action_SetEnableShowChatIcon.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/PlayerStatus/Quest/GiveQuest/Friendly_Behaviour_Action_Quest.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/PlayerStatus/Quest/GiveQuest/SwordMan/Friendly_Behaviour_Action_SwordManQuest.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/Chat/IsChatting/Friendly_Behaviour_Action_IsChat.h"
@@ -7,6 +7,8 @@
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/Animation/PlayAnimation/Friendly_Behaviour_Action_PlayAnimation.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Camera/EnablePurposeCamera/Friendly_Behaviour_Action_PurposeCamera.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/GameObject/Instantiate/Friendly_Behaviour_Action_GameObjectInstantaite.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/GameObject/SetEnable/Friendly_Behaviour_Action_GameObjectSetEnable.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/ChatIcon/Friendly_Behaviour_Action_SetEnableChatIcon.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/RigidBody/SetLinearVelocity/Friendly_Behaviour_Action_SetLinearVelocity.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Other/ReadBlackBoard/Friendly_Behaviour_Action_ReadBlackBoard.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Other/Sample/Friendly_Behaviour_Action_SampleFirstEventDragonChat.h"

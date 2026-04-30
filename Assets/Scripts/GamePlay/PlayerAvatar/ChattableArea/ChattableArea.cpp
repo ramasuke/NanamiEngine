@@ -40,8 +40,9 @@ namespace GamePlay::PlayerAvatar
         const auto playerChattable = gameObject->Components().Catch<IPlayerChattable>();
         if (playerChattable.expired())
             return;
-        
+
         playerChattableTargets_.push_back(playerChattable);
+        playerChattable.lock()->OnChattable();
     }
     
     void ChattableArea::OnTriggerExit(const std::shared_ptr<GameObject::IGameObject>& gameObject)
@@ -57,6 +58,7 @@ namespace GamePlay::PlayerAvatar
         std::erase_if(playerChattableTargets_, [&](const std::weak_ptr<IPlayerChattable>& w){
             return w.lock() == leaving;
         });
+        leaving->OnExitChattable();
     }
     
     

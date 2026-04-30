@@ -5,6 +5,7 @@
 #include "../../../../Data/FriendlyNpcStatus/Base/Data_FriendlyNpcBaseStatus.h"
 #include "../../../Core/Game/Npc/Friendly/IFriendlyNpc.h"
 #include "../../../Core/Game/PlayerAvatar/Chattable/IPlayerChattable.h"
+#include "../../Ui/BillBoardNpcChatIcon/BillBoardNpcChatIcon.h"
 #include "../../Ui/NpcChatting/NpcChatting.h"
 
 namespace GamePlay::Npc::Friendly
@@ -20,19 +21,20 @@ namespace GamePlay::Npc::Friendly
         ~FriendlyNpc() override;
         
     private:
-        void OnAwake () override;
-        void OnUpdate() override;
-        void OnChat  () override;
+        void OnAwake        () override;
+        void OnUpdate       () override;
+        void OnChattable    () override;
+        void OnExitChattable() override;
+        void OnChat         () override;
         [[nodiscard]] const GameObject::Transform& ChattableTransform() const override;
 
         [[serialize(0)]] std::string name_;
         [[serialize(0)]] FIELD(Asset::FriendNpcBehaviourFile) friendlyNpcBehaviourFile_;
         [[serialize(2)]] FIELD(Asset::FriendlyNpcResources) baseStatus_;
-        [[serialize(3)]] FIELD(GameObject::IGameObject)     chattableIconTransform_;
-        [[serialize(4)]] FIELD(GameObject::IGameObject)     chattingIconTransform_;
+        [[serialize(6)]] FIELD(Ui::BillBoardNpcChatIcon) billboardNpcChatIcon_;
         
         std::unique_ptr<GameCore::Npc::Friendly::BehaviourTree> behaviour_;
-        bool isChatting_ = false;
+        bool isChatting_  = false;
 
 #pragma region Serialization Function
     public:
@@ -45,8 +47,7 @@ namespace GamePlay::Npc::Friendly
             archive(CEREAL_NVP(name_));
             archive(CEREAL_NVP(friendlyNpcBehaviourFile_));
             archive(CEREAL_NVP(baseStatus_));
-            archive(CEREAL_NVP(chattableIconTransform_));
-            archive(CEREAL_NVP(chattingIconTransform_));
+            archive(CEREAL_NVP(billboardNpcChatIcon_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
@@ -55,13 +56,12 @@ namespace GamePlay::Npc::Friendly
             if (version >= 0) archive(CEREAL_NVP(name_));
             if (version >= 0) archive(CEREAL_NVP(friendlyNpcBehaviourFile_));
             if (version >= 2) archive(CEREAL_NVP(baseStatus_));
-            if (version >= 3) archive(CEREAL_NVP(chattableIconTransform_));
-            if (version >= 4) archive(CEREAL_NVP(chattingIconTransform_));
+            if (version >= 6) archive(CEREAL_NVP(billboardNpcChatIcon_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Npc::Friendly::FriendlyNpc, 4)
+CEREAL_CLASS_VERSION(GamePlay::Npc::Friendly::FriendlyNpc, 6)
 CEREAL_REGISTER_TYPE(GamePlay::Npc::Friendly::FriendlyNpc) 
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GamePlay::Npc::Friendly::FriendlyNpc)

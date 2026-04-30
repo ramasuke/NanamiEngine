@@ -33,7 +33,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 #pragma endregion
     };
 
-    REGISTER_FRIENDLY_ACTION(WriteBlackBoard)
+    REGISTER_FRIENDLY_ACTION_WITH_NAME(WriteBlackBoard, "Other::WriteBlackBoard")
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::WriteBlackBoard, 0)
