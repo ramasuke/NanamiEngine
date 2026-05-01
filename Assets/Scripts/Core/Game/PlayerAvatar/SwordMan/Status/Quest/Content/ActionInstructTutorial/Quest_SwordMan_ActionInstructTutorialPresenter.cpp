@@ -2,7 +2,7 @@
 
 #include "Quest_SwordMan_ActionInstructTutorialModel.h"
 #include "../../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
-#include "../../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForObservable/WaitForObservable.h"
+#include "../../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForObservable/Coroutine_WaitForObservable.h"
 #include "../../../../../../../../../../Engine/Core/Coroutine/Task/Task.h"
 #include "../../../../../../../../GamePlay/Ui/ActionInstructTutorial/SwordMan/Ui_SwordMan_ActionInstructTutorial.h"
 #include "../../../Event/IObservableStatusEvent.h"

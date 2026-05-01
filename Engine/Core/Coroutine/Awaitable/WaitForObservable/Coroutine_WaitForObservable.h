@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <coroutine>
 
-#include "IWaitForObservable.h"
+#include "Coroutine_IWaitForObservable.h"
 #include "../../../Application/ApplicationBase.h"
 #include "../../../Application/Window/Main/Game/GameWindow.h"
 #include "../../Scheduler/CoroutineScheduler.h"
@@ -15,16 +15,15 @@ namespace Coroutine
     public:
         explicit WaitForObservable(rxcpp::observable<ArgT> observable)
             : observable_(observable)
-            , isOnNexted_(false     )
         {
-             compositeSubscription_ = observable.subscribe(
+            compositeSubscription_ = observable_.subscribe(
                 rxcpp::composite_subscription(),
-                [this](const ArgT& arg)
+                [this](const ArgT&)
                 {
-                    isOnNexted_ = true;
-                    parentHandle_.resume();
+                    isReady_ = true;
                 });
         }
+
         ~WaitForObservable() override
         {
             compositeSubscription_.unsubscribe();
@@ -32,19 +31,29 @@ namespace Coroutine
 
         [[nodiscard]] bool await_ready() const noexcept override
         {
-            return isOnNexted_;  
+            return isReady_;
         }
-        void await_suspend(const std::coroutine_handle<> parentHandle)
+
+        void await_suspend(std::coroutine_handle<> parentHandle)
         {
             parentHandle_ = parentHandle;
-            Core::Application::ApplicationBase::GameWindow()->LifeCycle().Coroutine()->RegisterWaitForObservable(this);
+
+            Core::Application::ApplicationBase::GameWindow()
+                ->LifeCycle().Coroutine()
+                ->RegisterEvent(this);
         }
-        void await_resume() const noexcept { }
+
+        void await_resume() const noexcept {}
+
+        std::coroutine_handle<> CoroutineHandle() const override
+        {
+            return parentHandle_;
+        }
 
     private:
         rxcpp::composite_subscription compositeSubscription_;
         std::coroutine_handle<> parentHandle_;
         rxcpp::observable<ArgT> observable_;
-        bool isOnNexted_; 
+        bool isReady_ = false;
     };
 }

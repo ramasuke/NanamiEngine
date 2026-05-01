@@ -1,0 +1,314 @@
+{
+    "isActive_": false,
+    "name_": "BillBoardNpcChatIcon",
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 1,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "GamePlay::Ui::BillBoardNpcChatIcon",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "cereal_class_version": 0,
+                            "value_": "52CC1F89-729C-4D10-B0C9-9F7F819BAC23"
+                        },
+                        "isEnable_": true
+                    },
+                    "chattableIcon_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "C912DF4E-5650-4FF8-B212-1A877C51FD98"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "chattingIcon_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483651,
+                                "data": {
+                                    "value0": {
+                                        "value_": "4C5AC96F-0209-447C-B7C7-0972EF560766"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 0.0
+        },
+        "localScale_": {
+            "value0": 3.0,
+            "value1": 3.0,
+            "value2": 3.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 3.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 3.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 3.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 2,
+        "child": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483652,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": false,
+                    "name_": "ChattableIcon",
+                    "guid_": {
+                        "value_": "C912DF4E-5650-4FF8-B212-1A877C51FD98"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 2147483651,
+                            "polymorphic_name": "NanamiUi::Billboard3D",
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "cereal_class_version": 2,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "174DE266-E2D9-48B6-A1C2-64C50DB4EADC"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "renderOrder_": 0,
+                                    "spriteFile_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483654,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "CE29FAE5-4FD2-4D5D-97EE-C4D09660E4C8"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "angle_": 3.1500000953674318
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.008723237551748753,
+                            "value1": 0.027484426274895669,
+                            "value2": -0.00023985293228179216,
+                            "value3": 0.9995841383934021
+                        },
+                        "localScale_": {
+                            "value0": 1.2999999523162842,
+                            "value1": 1.2999999523162842,
+                            "value2": 1.2999999523162842
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 3.8941073417663576,
+                                "value1": -1.135049346179251e-10,
+                                "value2": -0.21430568397045136,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0037401497829705478,
+                                "value1": 3.8994059562683107,
+                                "value2": 0.06796153634786606,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.21427305042743684,
+                                "value1": -0.0680643767118454,
+                                "value2": 3.8935141563415529,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    }
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483655,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "ChattingIcon",
+                    "guid_": {
+                        "value_": "4C5AC96F-0209-447C-B7C7-0972EF560766"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 3,
+                            "ptr_wrapper": {
+                                "id": 2147483656,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "6D60DA27-3016-493B-9AF9-E52D8749B3D4"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "renderOrder_": 0,
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483657,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "E8AFD553-63EB-4881-ABAF-BC4A179DF2C3"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "angle_": 0.0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": -0.6662071347236633,
+                            "value2": 0.0,
+                            "value3": 0.7457667589187622
+                        },
+                        "localScale_": {
+                            "value0": 2.0,
+                            "value1": 2.0,
+                            "value2": 2.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.6740165948867798,
+                                "value1": 0.0,
+                                "value2": 5.962021827697754,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 6.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": -5.962021827697754,
+                                "value1": 0.0,
+                                "value2": 0.6740165948867798,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    }
+                }
+            }
+        }
+    },
+    "value0": 6,
+    "value1": {
+        "value_": "D6D9BE9D-1C48-474A-B7DB-4D94DBB3F36D"
+    },
+    "value2": {
+        "value_": "A586D20D-207A-47BB-8B3F-1B20A5C2DACB"
+    },
+    "value3": {
+        "value_": "A395E52C-D22F-4622-AA2C-BDA3986D33F6"
+    },
+    "value4": {
+        "value_": "3F30BA82-086C-4FA6-8EAE-7F67622F3E6C"
+    },
+    "value5": {
+        "value_": "0A29D043-891B-4C1E-AC35-FA0D50925680"
+    },
+    "value6": {
+        "value_": "953C7A96-A5BA-45E5-8EDA-D1E3747BB4F7"
+    }
+}

@@ -7203,8 +7203,10 @@
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForObservable\WaitForObservable.cpp" />
-    <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForSeconds\WaitForSeconds.cpp">
+    <ClCompile Include="Engine\Core\Coroutine\Awaitable\Engine_Coroutine_IEventWaitable.cpp" />
+    <ClCompile Include="Engine\Core\Coroutine\Awaitable\Engine_Coroutine_ITickableWaitable.cpp" />
+    <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForObservable\Coroutine_WaitForObservable.cpp" />
+    <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForSeconds\Coroutine_WaitForSeconds.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -7280,12 +7282,12 @@
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForSubscription\WaitForSubscription.cpp" />
-    <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForTweenV\WaitForTweenV.cpp" />
-    <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForTween\IWaitForTween.cpp" />
-    <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForTween\WaitForTween.cpp" />
+    <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForSubscription\Coroutine_WaitForSubscription.cpp" />
+    <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForTweenV\Coroutine_WaitForTweenV.cpp" />
+    <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForTween\Coroutine_WaitForTween.cpp" />
+    <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitUntil\Coroutine_WaitUntil.cpp" />
     <ClCompile Include="Engine\Core\Coroutine\Coroutine.cpp" />
-    <ClCompile Include="Engine\Core\Coroutine\FutureTask\FutureTask.cpp" />
+    <ClCompile Include="Engine\Core\Coroutine\FutureTask\Coroutine_FutureTask.cpp" />
     <ClCompile Include="Engine\Core\Coroutine\Scheduler\CoroutineScheduler.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -10216,15 +10218,17 @@
     <ClInclude Include="Engine\Core\Application\Window\Popup\Project\ProjectWindow.h" />
     <ClInclude Include="Engine\Core\Application\Window\Popup\Factory\PopupWindowFactory.h" />
     <ClInclude Include="Engine\Core\Application\Window\Toolbar\EditorToolbarWindow.h" />
-    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForObservable\IWaitForObservable.h" />
-    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForObservable\WaitForObservable.h" />
-    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForSeconds\WaitForSeconds.h" />
-    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForSubscription\WaitForSubscription.h" />
-    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForTweenV\WaitForTweenV.h" />
-    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForTween\IWaitForTween.h" />
-    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForTween\WaitForTween.h" />
+    <ClInclude Include="Engine\Core\Coroutine\Awaitable\Engine_Coroutine_IEventWaitable.h" />
+    <ClInclude Include="Engine\Core\Coroutine\Awaitable\Engine_Coroutine_ITickableWaitable.h" />
+    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForObservable\Coroutine_IWaitForObservable.h" />
+    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForObservable\Coroutine_WaitForObservable.h" />
+    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForSeconds\Coroutine_WaitForSeconds.h" />
+    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForSubscription\Coroutine_WaitForSubscription.h" />
+    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForTweenV\Coroutine_WaitForTweenV.h" />
+    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForTween\Coroutine_WaitForTween.h" />
+    <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitUntil\Coroutine_WaitUntil.h" />
     <ClInclude Include="Engine\Core\Coroutine\Coroutine.h" />
-    <ClInclude Include="Engine\Core\Coroutine\FutureTask\FutureTask.h" />
+    <ClInclude Include="Engine\Core\Coroutine\FutureTask\Coroutine_FutureTask.h" />
     <ClInclude Include="Engine\Core\Coroutine\Scheduler\CoroutineScheduler.h" />
     <ClInclude Include="Engine\Core\Coroutine\Task\Task.h" />
     <ClInclude Include="Engine\Core\FileSystem\Directory\Directory.h" />

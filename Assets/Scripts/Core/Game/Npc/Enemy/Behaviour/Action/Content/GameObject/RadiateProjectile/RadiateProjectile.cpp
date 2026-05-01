@@ -1,7 +1,7 @@
 ﻿#include "RadiateProjectile.h"
 
 #include "../../../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
-#include "../../../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForSeconds/WaitForSeconds.h"
+#include "../../../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
 #include "../../../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 
 namespace GameCore::Npc::Enemy::Behaviour

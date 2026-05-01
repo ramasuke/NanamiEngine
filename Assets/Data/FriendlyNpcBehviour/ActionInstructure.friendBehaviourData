@@ -50,7 +50,7 @@
                                                     "value_": "84B8257F-C20B-4F46-A707-8F74277C2575"
                                                 },
                                                 "position_": {
-                                                    "value0": 51.0,
+                                                    "value0": 52.0,
                                                     "value1": 218.0
                                                 }
                                             },
@@ -99,6 +99,37 @@
                                                             "value0": {
                                                                 "value0": {},
                                                                 "guid_": {
+                                                                    "value_": "7F89BDD9-50CF-4139-A397-3E7E6A091905"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 52.0,
+                                                                    "value1": 425.0
+                                                                }
+                                                            },
+                                                            "name_": "Disable Chat Icon",
+                                                            "action_": {
+                                                                "polymorphic_id": 2147483653,
+                                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::SetEnableShowChatIcon",
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "cereal_class_version": 0,
+                                                                        "value0": {},
+                                                                        "value1": false
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483654,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
                                                                     "value_": "4AC4E389-4FCD-4AFA-B03C-181AA98265A0"
                                                                 },
                                                                 "position_": {
@@ -108,7 +139,7 @@
                                                             },
                                                             "name_": "Enable SurpriseIcon",
                                                             "action_": {
-                                                                "polymorphic_id": 2147483653,
+                                                                "polymorphic_id": 2147483654,
                                                                 "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::GameObjectSetEnable",
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
@@ -120,7 +151,7 @@
                                                                             "value0": {
                                                                                 "polymorphic_id": 1073741824,
                                                                                 "ptr_wrapper": {
-                                                                                    "id": 2147483654,
+                                                                                    "id": 2147483655,
                                                                                     "data": {
                                                                                         "cereal_class_version": 0,
                                                                                         "value0": {
@@ -140,7 +171,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483655,
+                                                        "id": 2147483656,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -148,50 +179,19 @@
                                                                     "value_": "F5E46D66-BCEF-4032-84E1-DDE50AD79610"
                                                                 },
                                                                 "position_": {
-                                                                    "value0": 53.0,
-                                                                    "value1": 426.0
+                                                                    "value0": 51.0,
+                                                                    "value1": 494.0
                                                                 }
                                                             },
                                                             "name_": "IsChat",
                                                             "action_": {
-                                                                "polymorphic_id": 2147483654,
+                                                                "polymorphic_id": 2147483655,
                                                                 "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::IsChat",
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {
                                                                         "cereal_class_version": 0,
                                                                         "value0": {}
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                {
-                                                    "polymorphic_id": 3,
-                                                    "ptr_wrapper": {
-                                                        "id": 2147483656,
-                                                        "data": {
-                                                            "value0": {
-                                                                "value0": {},
-                                                                "guid_": {
-                                                                    "value_": "7F89BDD9-50CF-4139-A397-3E7E6A091905"
-                                                                },
-                                                                "position_": {
-                                                                    "value0": 52.0,
-                                                                    "value1": 564.0
-                                                                }
-                                                            },
-                                                            "name_": "Disable Chat Icon",
-                                                            "action_": {
-                                                                "polymorphic_id": 2147483655,
-                                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::SetEnableShowChatIcon",
-                                                                "ptr_wrapper": {
-                                                                    "valid": 1,
-                                                                    "data": {
-                                                                        "cereal_class_version": 0,
-                                                                        "value0": {},
-                                                                        "value1": false
                                                                     }
                                                                 }
                                                             }
@@ -209,8 +209,8 @@
                                                                     "value_": "500E6F4D-99CE-45E8-8BCC-C101AFB7BD83"
                                                                 },
                                                                 "position_": {
-                                                                    "value0": 53.0,
-                                                                    "value1": 493.0
+                                                                    "value0": 51.0,
+                                                                    "value1": 563.0
                                                                 }
                                                             },
                                                             "name_": "Chat Animation",
@@ -379,7 +379,7 @@
                                                             },
                                                             "name_": "Disable SurpriseIcon",
                                                             "action_": {
-                                                                "polymorphic_id": 5,
+                                                                "polymorphic_id": 6,
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {
@@ -696,7 +696,7 @@
                                                             },
                                                             "name_": "Enable Chat Icon",
                                                             "action_": {
-                                                                "polymorphic_id": 7,
+                                                                "polymorphic_id": 5,
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {

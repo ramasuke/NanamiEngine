@@ -1,45 +1,40 @@
 ﻿#include "CoroutineScheduler.h"
 
 #include <unordered_set>
-
 #include "../../Application/Time/Time.h"
-#include "../Awaitable/WaitForObservable/IWaitForObservable.h"
-#include "../Awaitable/WaitForSeconds/WaitForSeconds.h"
-#include "../Awaitable/WaitForSubscription/WaitForSubscription.h"
-#include "../Awaitable/WaitForTween/IWaitForTween.h"
+#include "../Awaitable/Engine_Coroutine_ITickableWaitable.h"
+#include "../Awaitable/Engine_Coroutine_IEventWaitable.h"
 
 namespace Coroutine
 {
-    void CoroutineScheduler::RegisterTask(std::coroutine_handle<> awaited, std::coroutine_handle<> awaiting)
+    void CoroutineScheduler::RegisterTask(
+        std::coroutine_handle<> awaited,
+        std::coroutine_handle<> awaiting)
     {
         pendingCoroutines_.emplace_back(awaited, awaiting);
         awaited.resume();
     }
-    
+
+    void CoroutineScheduler::RegisterFuture(
+        const std::coroutine_handle<> awaiting)
+    {
+        pendingResume_.push_back(awaiting);
+    }
+
     void CoroutineScheduler::Invoke()
     {
-        for (auto it = waitForSecondses_.begin(); it != waitForSecondses_.end();)
+        const float deltaTime = NanamiEngine::Time::DeltaTime();
+
+        // Tickable
+        for (auto it = tickables_.begin(); it != tickables_.end();)
         {
-            WaitForSeconds* waitable = *it;
-            waitable->Tick(NanamiEngine::Time::DeltaTime());
+            auto* waitable = *it;
+            waitable->Tick(deltaTime);
+
             if (waitable->await_ready())
             {
                 waitable->CoroutineHandle().resume();
-                it = waitForSecondses_.erase(it);
-            }
-            else
-            {
-                ++it;
-            }
-        }
-    
-        for (auto it = waitForTweens_.begin(); it != waitForTweens_.end();)
-        {
-            IWaitForTween* waitableTween = *it;
-            waitableTween->Tick(NanamiEngine::Time::DeltaTime() * 1000.0f);
-            if (waitableTween->await_ready())
-            {
-                it = waitForTweens_.erase(it);
+                it = tickables_.erase(it);
             }
             else
             {
@@ -47,12 +42,13 @@ namespace Coroutine
             }
         }
 
-        for (auto it = waitForSubscriptions_.begin(); it != waitForSubscriptions_.end();)
+        // Event
+        for (auto it = events_.begin(); it != events_.end();)
         {
-            WaitForSubscription* waitForSubscription = *it;
-            if (waitForSubscription->await_ready())
+            if (const auto* waitable = *it; waitable->await_ready())
             {
-                it = waitForSubscriptions_.erase(it);
+                waitable->CoroutineHandle().resume();
+                it = events_.erase(it);
             }
             else
             {
@@ -60,73 +56,56 @@ namespace Coroutine
             }
         }
 
-        for (auto it = waitForObservables_.begin(); it != waitForObservables_.end();)
+        // Coroutine chain
+        for (auto it = coroutines_.begin(); it != coroutines_.end();)
         {
-            if (const IWaitForObservable* waitForObservable = *it; waitForObservable->await_ready())
+            if (auto& [awaited, awaiting] = *it; awaited.done())
             {
-                it = waitForObservables_.erase(it);
-            }
-            else
-            {
-                ++it;
-            }
-        }
-    
-        // --- コルーチンの進行 ---
-        for (auto it = coroutines_.begin(); it != coroutines_.end();) {
-            if (auto& [awaited, awaiting] = *it; awaited.done()) {
                 auto awaitingHandle = awaiting;
                 it = coroutines_.erase(it);
                 awaitingHandle.resume();
-            } else {
+            }
+            else
+            {
                 ++it;
             }
         }
-    
-        if (!pendingWaitForSecondses_.empty())
+
+        // pending反映
+        if (!pendingTickables_.empty())
         {
-            waitForSecondses_.insert(waitForSecondses_.end(),
-                                     pendingWaitForSecondses_.begin(),
-                                     pendingWaitForSecondses_.end());
-            pendingWaitForSecondses_.clear();
+            tickables_.insert(tickables_.end(),
+                pendingTickables_.begin(),
+                pendingTickables_.end());
+            pendingTickables_.clear();
         }
-    
-        if (!pendingWaitForTweens_.empty())
+
+        if (!pendingEvents_.empty())
         {
-            waitForTweens_.insert(waitForTweens_.end(),
-                                  pendingWaitForTweens_.begin(),
-                                  pendingWaitForTweens_.end());
-            pendingWaitForTweens_.clear();
+            events_.insert(events_.end(),
+                pendingEvents_.begin(),
+                pendingEvents_.end());
+            pendingEvents_.clear();
         }
-    
+
         if (!pendingCoroutines_.empty())
         {
             coroutines_.insert(coroutines_.end(),
-                               pendingCoroutines_.begin(),
-                               pendingCoroutines_.end());
+                pendingCoroutines_.begin(),
+                pendingCoroutines_.end());
             pendingCoroutines_.clear();
         }
 
-        if (!pendingWaitForSubscription_.empty())
+        // Future resume
+        for (auto coroutineHandle : pendingResume_)
         {
-            waitForSubscriptions_.insert(waitForSubscriptions_.end(),
-                               pendingWaitForSubscription_.begin(),
-                               pendingWaitForSubscription_.end());
-            pendingWaitForSubscription_.clear();
+            coroutineHandle.resume();
         }
-        
-        if (!pendingWaitForObservables_.empty())
-        {
-            waitForObservables_.insert(waitForObservables_.end(),
-                               pendingWaitForObservables_.begin(),
-                               pendingWaitForObservables_.end());
-            pendingWaitForObservables_.clear();
-        }
+        pendingResume_.clear();
     }
-    
+
     void CoroutineScheduler::AllClear()
     {
-        // すでに destroy したコルーチンフレームを記録
         std::unordered_set<void*> destroyed;
 
         auto destroyIfNeeded = [&](std::coroutine_handle<> h)
@@ -134,7 +113,7 @@ namespace Coroutine
             if (!h) return;
 
             void* addr = h.address();
-            if (destroyed.contains(addr)) return; // 二重破棄防止
+            if (destroyed.contains(addr)) return;
 
             if (!h.done())
                 h.destroy();
@@ -142,44 +121,36 @@ namespace Coroutine
             destroyed.insert(addr);
         };
 
-        for (const WaitForSeconds* waitForSeconds : waitForSecondses_)
-        {
-            destroyIfNeeded(waitForSeconds->CoroutineHandle());
-        }
-        for (const WaitForSeconds* waitForSeconds : pendingWaitForSecondses_)
-        {
-            destroyIfNeeded(waitForSeconds->CoroutineHandle());
-        }
+        // Tickable
+        for (const auto* waitable : tickables_)
+            destroyIfNeeded(waitable->CoroutineHandle());
+        for (const auto* waitable : pendingTickables_)
+            destroyIfNeeded(waitable->CoroutineHandle());
 
-        for (const IWaitForTween* tween : waitForTweens_)
-        {
-            destroyIfNeeded(tween->CoroutineHandle());
-        }
-        for (const IWaitForTween* tween : pendingWaitForTweens_)
-        {
-            destroyIfNeeded(tween->CoroutineHandle());
-        }
+        // Event
+        for (const auto* waitable : events_)
+            destroyIfNeeded(waitable->CoroutineHandle());
+        for (const auto* waitable : pendingEvents_)
+            destroyIfNeeded(waitable->CoroutineHandle());
 
-        // ---- destroy pending coroutines ----
+        // Coroutine
+        for (auto& [awaited, awaiting] : coroutines_)
+        {
+            destroyIfNeeded(awaited);
+            destroyIfNeeded(awaiting);
+        }
         for (auto& [awaited, awaiting] : pendingCoroutines_)
         {
             destroyIfNeeded(awaited);
             destroyIfNeeded(awaiting);
         }
 
-        // ---- destroy active coroutines ----
-        for (auto& [awaited, awaiting] : coroutines_)
-        {
-            destroyIfNeeded(awaited);
-            destroyIfNeeded(awaiting);
-        }
-
-        // ---- コンテナを完全クリア ----
-        waitForSecondses_       .clear();
-        pendingWaitForSecondses_.clear();
-        waitForTweens_          .clear();
-        pendingWaitForTweens_   .clear();
-        coroutines_             .clear();
-        pendingCoroutines_      .clear();
+        tickables_        .clear();
+        pendingTickables_ .clear();
+        events_           .clear();
+        pendingEvents_    .clear();
+        coroutines_       .clear();
+        pendingCoroutines_.clear();
+        pendingResume_    .clear();
     }
 }

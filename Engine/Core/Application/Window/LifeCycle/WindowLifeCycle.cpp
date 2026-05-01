@@ -19,7 +19,7 @@ namespace NanamiEngine::Core::Application
                 const auto b = weakB.lock();
                 if (!a || !b)
                     return false;
-        
+                
                 return a->GetRenderOrder() < b->GetRenderOrder();
             }
         }

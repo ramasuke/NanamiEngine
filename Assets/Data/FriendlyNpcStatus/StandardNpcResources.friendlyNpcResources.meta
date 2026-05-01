@@ -1,0 +1,51 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::FriendlyNpcResources",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\FriendlyNpcStatus/StandardNpcResources.friendlyNpcResources",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "63F2DD6B-7858-46CB-985D-49C8B8CA9478"
+                    }
+                },
+                "chattingIconPrefab_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "C9968C86-1F5E-48E4-B803-591D8EC26DC6"
+                                }
+                            }
+                        }
+                    }
+                },
+                "chattableIconPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "value0": {
+                                    "value_": "3C38F3C0-D335-4450-B875-C5290A8702E5"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

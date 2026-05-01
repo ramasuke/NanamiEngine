@@ -20,9 +20,11 @@ namespace GamePlay::Ui
 
 
         bool isShow_ = true;
-        glm::vec3 basePos_ = {};
+        glm::vec3 basePosChattable_ = {};
+        glm::vec3 basePosSurprise_  = {};
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattableIcon_; 
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattingIcon_;
+        [[serialize(0)]] FIELD(GameObject::IGameObject) surpriseIcon_;
         
 #pragma region Serialization Function
     public:
@@ -33,6 +35,7 @@ namespace GamePlay::Ui
             archive(cereal::base_class<ComponentBase>(this));
             archive(CEREAL_NVP(chattableIcon_));
             archive(CEREAL_NVP(chattingIcon_));
+            archive(CEREAL_NVP(surpriseIcon_));
         }
 
         template<class Archive>
@@ -40,13 +43,14 @@ namespace GamePlay::Ui
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 0) archive(CEREAL_NVP(chattableIcon_));
             if (version >= 0) archive(CEREAL_NVP(chattingIcon_));
+            if (version >= 1) archive(CEREAL_NVP(surpriseIcon_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Ui::BillBoardNpcChatIcon, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::BillBoardNpcChatIcon, 1);
 CEREAL_REGISTER_TYPE(GamePlay::Ui::BillBoardNpcChatIcon);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, GamePlay::Ui::BillBoardNpcChatIcon);
 #pragma endregion

@@ -1,4 +1,4 @@
-﻿#include "WaitForSubscription.h"
+﻿#include "Coroutine_WaitForSubscription.h"
 
 #include "../../../Application/ApplicationBase.h"
 #include "../../../Application/Window/Main/Game/GameWindow.h"
@@ -12,7 +12,6 @@ namespace Coroutine
         subscription_.add([this]
         {
             isReady_ = true;
-            parentHandle_.resume();
         });
     }
 
@@ -24,6 +23,9 @@ namespace Coroutine
     void WaitForSubscription::await_suspend(const std::coroutine_handle<> parentHandle)
     {
         parentHandle_ = parentHandle;
-        Core::Application::ApplicationBase::GameWindow()->LifeCycle().Coroutine()->RegisterWaitForSubscription(this);
+        
+        Core::Application::ApplicationBase::GameWindow()
+            ->LifeCycle().Coroutine()
+            ->RegisterEvent(this);
     }
 }

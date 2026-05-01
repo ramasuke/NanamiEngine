@@ -8,49 +8,67 @@
 
 namespace GamePlay::Ui
 {
+    namespace
+    {
+        void ApplyFloating(const std::shared_ptr<GameObject::IGameObject>& object, const glm::vec3& basePos, const float offset)
+        {
+            if (!object)
+                return;
+
+            auto pos = basePos;
+            pos.y += offset;
+            object->TransformRef().SetLocalPos(pos);
+        }
+    }
+
     void BillBoardNpcChatIcon::Show()
     {
         isShow_ = true;
-        
-        chattableIcon_->SetEnable(true);
-        chattingIcon_ ->SetEnable(true);   
+
+        if (chattableIcon_) chattableIcon_->SetEnable(true);
+        if (chattingIcon_)  chattingIcon_ ->SetEnable(true);
+        if (surpriseIcon_)  surpriseIcon_ ->SetEnable(true);
     }
 
     void BillBoardNpcChatIcon::Hide()
     {
         isShow_ = false;
-        
-        chattableIcon_->SetEnable(false);
-        chattingIcon_ ->SetEnable(false);
+
+        if (chattableIcon_) chattableIcon_->SetEnable(false);
+        if (chattingIcon_)  chattingIcon_ ->SetEnable(false);
+        if (surpriseIcon_)  surpriseIcon_ ->SetEnable(false);
     }
 
     void BillBoardNpcChatIcon::OnChattable()
     {
         if (!isShow_)
             return;
-        
-        chattableIcon_->SetEnable(false);
-        chattingIcon_ ->SetEnable(true);
+
+        if (chattableIcon_) chattableIcon_->SetEnable(false);
+        if (chattingIcon_)  chattingIcon_ ->SetEnable(true);
     }
 
-    
     void BillBoardNpcChatIcon::OnExitChattable()
     {
         if (!isShow_)
             return;
-        
-        chattableIcon_->SetEnable(true);
-        chattingIcon_ ->SetEnable(false);
+
+        if (chattableIcon_) chattableIcon_->SetEnable(true);
+        if (chattingIcon_)  chattingIcon_ ->SetEnable(false);
     }
 
     void BillBoardNpcChatIcon::OnAwake()
     {
-        basePos_ = chattableIcon_->TransformRef().GetLocalPos();
+        if (chattableIcon_)
+            basePosChattable_ = chattableIcon_->TransformRef().GetLocalPos();
+
+        if (surpriseIcon_)
+            basePosSurprise_ = surpriseIcon_->TransformRef().GetLocalPos();
     }
 
     void BillBoardNpcChatIcon::OnUpdate()
     {
-        if (!chattableIcon_)
+        if (!isShow_)
             return;
 
         const float time = Time::CurrentTime();
@@ -58,15 +76,16 @@ namespace GamePlay::Ui
         constexpr float amplitude = 0.2f;
         constexpr float speed     = 2.0f;
 
-        auto position = basePos_;
-        position.y += std::sin(time * speed) * amplitude;
+        const float offset = std::sin(time * speed) * amplitude;
 
-        chattableIcon_->TransformRef().SetLocalPos(position);
+        ApplyFloating(chattableIcon_.get(), basePosChattable_, offset);
+        ApplyFloating(surpriseIcon_ .get(),  basePosSurprise_,  offset);
     }
 
     void BillBoardNpcChatIcon::OnDrawGui()
     {
         ImGuiHelper::OnDrawInputField("chattableIcon_", chattableIcon_);
         ImGuiHelper::OnDrawInputField("chattingIcon_", chattingIcon_);
+        ImGuiHelper::OnDrawInputField("surpriseIcon_", surpriseIcon_);
     }
 }

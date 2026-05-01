@@ -21,6 +21,7 @@ namespace NanamiEngine::Module::Physics
         void UnSubscribeEngineCollider(const JPH::BodyID& colliderId);
 
     private:
+        //TODO: pendingする必要がないため削除必須
         std::vector<PendingEnter> pendingEnter_;
         std::vector<ContactKey  > pendingExit_;
 
