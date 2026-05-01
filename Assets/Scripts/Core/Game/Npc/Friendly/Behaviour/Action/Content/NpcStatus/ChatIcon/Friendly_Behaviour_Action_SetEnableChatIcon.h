@@ -28,7 +28,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 #pragma endregion
     };
 
-    REGISTER_FRIENDLY_ACTION_WITH_NAME(SetEnableShowChatIcon, "EnemyStatus::ChatIcon::SetEnableShowChatIcon")
+    REGISTER_FRIENDLY_ACTION_WITH_NAME(SetEnableShowChatIcon, "NpcStatus::ChatIcon::SetEnableShowChatIcon")
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::SetEnableShowChatIcon, 0)

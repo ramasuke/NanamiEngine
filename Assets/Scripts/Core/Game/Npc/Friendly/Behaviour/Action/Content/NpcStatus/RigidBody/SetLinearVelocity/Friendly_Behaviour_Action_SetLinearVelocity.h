@@ -31,7 +31,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 #pragma endregion
     };
 
-    REGISTER_FRIENDLY_ACTION_WITH_NAME(SetLinearVelocity, "EnemyStatus::RigidBody::SetLinearVelocity")
+    REGISTER_FRIENDLY_ACTION_WITH_NAME(SetLinearVelocity, "NpcStatus::RigidBody::SetLinearVelocity")
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::SetLinearVelocity, 1)

@@ -26,7 +26,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 #pragma endregion
     };
 
-    REGISTER_FRIENDLY_ACTION_WITH_NAME(IsChat, "EnemyStatus::Chat::IsChatting")
+    REGISTER_FRIENDLY_ACTION_WITH_NAME(IsChat, "NpcStatus::Chat::IsChatting")
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::IsChat, 0)

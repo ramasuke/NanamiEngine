@@ -28,7 +28,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 #pragma endregion
     };
     
-    REGISTER_FRIENDLY_ACTION_WITH_NAME(SetRotation, "EnemyStatus::Transform::SetRotation")
+    REGISTER_FRIENDLY_ACTION_WITH_NAME(SetRotation, "NpcStatus::Transform::SetRotation")
 }
 CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::SetRotation, 0)
 CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::SetRotation)

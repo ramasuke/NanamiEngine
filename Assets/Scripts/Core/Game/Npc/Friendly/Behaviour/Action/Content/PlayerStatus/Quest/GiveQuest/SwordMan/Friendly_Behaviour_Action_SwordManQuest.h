@@ -24,7 +24,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 #pragma endregion
     };
 
-    REGISTER_FRIENDLY_ACTION(TrySwordManQuest)
+    REGISTER_FRIENDLY_ACTION_WITH_NAME(TrySwordManQuest, "PlayerStatus::Quest::TrySwordManQuest")
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::TrySwordManQuest, 0)

@@ -32,6 +32,8 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
     
     Coroutine::Task<void> AboardAirShipMovie::AboardAirShipMovieMoveAirShipAsync()
     {
+        
+        
         // 1度目の飛行機の移動
         const auto firstMoveTween = tweeny::from(Context()->AirShip()->TransformRef().GetWorldPos())
                                     .to(Context()->AirShipFirstMoveFromTarget().GetWorldPos())

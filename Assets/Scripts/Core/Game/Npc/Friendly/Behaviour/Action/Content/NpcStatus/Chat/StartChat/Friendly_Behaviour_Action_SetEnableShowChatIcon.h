@@ -33,7 +33,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 #pragma endregion
     };
 
-    REGISTER_FRIENDLY_ACTION_WITH_NAME(Chat, "EnemyStatus::Chat::StartChat")
+    REGISTER_FRIENDLY_ACTION_WITH_NAME(Chat, "NpcStatus::Chat::StartChat")
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::Chat, 0)

@@ -41,7 +41,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 #pragma endregion
     };
 
-    REGISTER_FRIENDLY_ACTION_WITH_NAME(MoveForRoute, "EnemyStatus::RigidBody::MoveForRoute")
+    REGISTER_FRIENDLY_ACTION_WITH_NAME(MoveForRoute, "NpcStatus::RigidBody::MoveForRoute")
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::MoveForRoute, 0)

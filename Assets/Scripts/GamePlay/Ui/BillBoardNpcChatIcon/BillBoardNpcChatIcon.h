@@ -9,8 +9,8 @@ namespace GamePlay::Ui
                                        public LifeCycleCallback::IUpdatable
     {
     public:
-        void Show() const;
-        void Hide() const;
+        void Show();
+        void Hide();
         void OnChattable();
         void OnExitChattable();
         
@@ -19,6 +19,7 @@ namespace GamePlay::Ui
         void OnUpdate() override;
 
 
+        bool isShow_ = true;
         glm::vec3 basePos_ = {};
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattableIcon_; 
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattingIcon_;

@@ -57,19 +57,19 @@ namespace NanamiEngine::Core::Application
         std::unique_ptr<Coroutine::CoroutineScheduler>& Coroutine() { return coroutineScheduler_; } 
 
     private:
-        LifeCycleOnceCallbackGroup<Module::LifeCycleCallback::IInitRenderable> initRenderableCallbacks_;
-        LifeCycleOnceCallbackGroup<Module::LifeCycleCallback::IAwakable>       awakableCallbacks_;
-        LifeCycleOnceCallbackGroup<Module::LifeCycleCallback::IStartable>      startableCallbacks_;
+        LifeCycleOnceCallbackGroup<LifeCycleCallback::IInitRenderable> initRenderableCallbacks_;
+        LifeCycleOnceCallbackGroup<LifeCycleCallback::IAwakable>       awakableCallbacks_;
+        LifeCycleOnceCallbackGroup<LifeCycleCallback::IStartable>      startableCallbacks_;
 
         std::unique_ptr<Coroutine::CoroutineScheduler>                                  coroutineScheduler_;
-        LifeCycleCallbackGroup<Module::LifeCycleCallback::IUpdatable>                   updatableCallbacks_;
-        LifeCycleCallbackGroup<Module::LifeCycleCallback::ILateUpdatable>               lateUpdatableCallbacks_;
-        LifeCycleCallbackGroup<Module::LifeCycleCallback::IBeginPhysics>                beginPhysicsCallbacks_;
-        LifeCycleCallbackGroup<Module::LifeCycleCallback::IEndPhysics>                  endPhysicsCallbacks_;
-        LifeCycleCallbackGroup<Module::LifeCycleCallback::IRenderable>                  renderableCallbacks_;
-        LifeCycleSortCallbackGroup<Module::LifeCycleCallback::IUserInterfaceRenderable> uiRenderableCallbacks_;
-        LifeCycleCallbackGroup<Module::LifeCycleCallback::IShadowRenderable>            shadowRenderableCallbacks_;
-        LifeCycleCallbackGroup<Module::LifeCycleCallback::IDebugRenderable>             guiRenderableCallbacks_;
+        LifeCycleCallbackGroup<LifeCycleCallback::IUpdatable>                   updatableCallbacks_;
+        LifeCycleCallbackGroup<LifeCycleCallback::ILateUpdatable>               lateUpdatableCallbacks_;
+        LifeCycleCallbackGroup<LifeCycleCallback::IBeginPhysics>                beginPhysicsCallbacks_;
+        LifeCycleCallbackGroup<LifeCycleCallback::IEndPhysics>                  endPhysicsCallbacks_;
+        LifeCycleCallbackGroup<LifeCycleCallback::IRenderable>                  renderableCallbacks_;
+        LifeCycleSortCallbackGroup<LifeCycleCallback::IUserInterfaceRenderable> uiRenderableCallbacks_;
+        LifeCycleCallbackGroup<LifeCycleCallback::IShadowRenderable>            shadowRenderableCallbacks_;
+        LifeCycleCallbackGroup<LifeCycleCallback::IDebugRenderable>             guiRenderableCallbacks_;
         
         int shadowMapDxLibHandle_ = -1;
     };
@@ -78,27 +78,27 @@ namespace NanamiEngine::Core::Application
     void WindowLifeCycle::StaticAddCallback(std::weak_ptr<T> add)
     {
         using CallbackType = T;
-        if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::IInitRenderable>)
+        if constexpr (std::derived_from<CallbackType, LifeCycleCallback::IInitRenderable>)
             initRenderableCallbacks_.Add(add);
-        if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::IAwakable>)
+        if constexpr (std::derived_from<CallbackType, LifeCycleCallback::IAwakable>)
             awakableCallbacks_.Add(add);
-        if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::IStartable>)
+        if constexpr (std::derived_from<CallbackType, LifeCycleCallback::IStartable>)
             startableCallbacks_.Add(add);
-        if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::IUpdatable>)
+        if constexpr (std::derived_from<CallbackType, LifeCycleCallback::IUpdatable>)
             updatableCallbacks_.Add(add);
-        if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::ILateUpdatable>)
+        if constexpr (std::derived_from<CallbackType, LifeCycleCallback::ILateUpdatable>)
             lateUpdatableCallbacks_.Add(add);
-        if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::IBeginPhysics>)
+        if constexpr (std::derived_from<CallbackType, LifeCycleCallback::IBeginPhysics>)
             beginPhysicsCallbacks_.Add(add);
-        if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::IEndPhysics>)
+        if constexpr (std::derived_from<CallbackType, LifeCycleCallback::IEndPhysics>)
             endPhysicsCallbacks_.Add(add);
-        if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::IShadowRenderable>)
+        if constexpr (std::derived_from<CallbackType, LifeCycleCallback::IShadowRenderable>)
             shadowRenderableCallbacks_.Add(add);
-        if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::IRenderable>)
+        if constexpr (std::derived_from<CallbackType, LifeCycleCallback::IRenderable>)
             renderableCallbacks_.Add(add);
-        if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::IUserInterfaceRenderable>)
+        if constexpr (std::derived_from<CallbackType, LifeCycleCallback::IUserInterfaceRenderable>)
             uiRenderableCallbacks_.Add(add);
-        if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::IDebugRenderable>)
+        if constexpr (std::derived_from<CallbackType, LifeCycleCallback::IDebugRenderable>)
             guiRenderableCallbacks_.Add(add);
     }
 
@@ -107,27 +107,27 @@ namespace NanamiEngine::Core::Application
     {
         if (auto shared = add.lock())
         {
-            if (auto initRenderable = std::dynamic_pointer_cast<Module::LifeCycleCallback::IInitRenderable>(shared))
+            if (auto initRenderable = std::dynamic_pointer_cast<LifeCycleCallback::IInitRenderable>(shared))
                 initRenderableCallbacks_.Add(initRenderable);
-            if (auto awakable = std::dynamic_pointer_cast<Module::LifeCycleCallback::IAwakable>(shared))
+            if (auto awakable = std::dynamic_pointer_cast<LifeCycleCallback::IAwakable>(shared))
                 awakableCallbacks_.Add(awakable);
-            if (auto startable = std::dynamic_pointer_cast<Module::LifeCycleCallback::IStartable>(shared))
+            if (auto startable = std::dynamic_pointer_cast<LifeCycleCallback::IStartable>(shared))
                 startableCallbacks_.Add(startable);
-            if (auto updatable = std::dynamic_pointer_cast<Module::LifeCycleCallback::IUpdatable>(shared))
+            if (auto updatable = std::dynamic_pointer_cast<LifeCycleCallback::IUpdatable>(shared))
                 updatableCallbacks_.Add(updatable);
-            if (auto lateUpdatable = std::dynamic_pointer_cast<Module::LifeCycleCallback::ILateUpdatable>(shared))
+            if (auto lateUpdatable = std::dynamic_pointer_cast<LifeCycleCallback::ILateUpdatable>(shared))
                 lateUpdatableCallbacks_.Add(lateUpdatable);
-            if (auto beginPhysics = std::dynamic_pointer_cast<Module::LifeCycleCallback::IBeginPhysics>(shared))
+            if (auto beginPhysics = std::dynamic_pointer_cast<LifeCycleCallback::IBeginPhysics>(shared))
                 beginPhysicsCallbacks_.Add(beginPhysics);
-            if (auto endPhysics = std::dynamic_pointer_cast<Module::LifeCycleCallback::IEndPhysics>(shared))
+            if (auto endPhysics = std::dynamic_pointer_cast<LifeCycleCallback::IEndPhysics>(shared))
                 endPhysicsCallbacks_.Add(endPhysics);
-            if (auto shadowRenderable = std::dynamic_pointer_cast<Module::LifeCycleCallback::IShadowRenderable>(shared))
+            if (auto shadowRenderable = std::dynamic_pointer_cast<LifeCycleCallback::IShadowRenderable>(shared))
                 shadowRenderableCallbacks_.Add(shadowRenderable);
-            if (auto renderable = std::dynamic_pointer_cast<Module::LifeCycleCallback::IRenderable>(shared))
+            if (auto renderable = std::dynamic_pointer_cast<LifeCycleCallback::IRenderable>(shared))
                 renderableCallbacks_.Add(renderable);
-            if (auto renderable = std::dynamic_pointer_cast<Module::LifeCycleCallback::IUserInterfaceRenderable>(shared))
+            if (auto renderable = std::dynamic_pointer_cast<LifeCycleCallback::IUserInterfaceRenderable>(shared))
                 uiRenderableCallbacks_.Add(renderable);
-            if (auto guiRenderable = std::dynamic_pointer_cast<Module::LifeCycleCallback::IDebugRenderable>(shared))
+            if (auto guiRenderable = std::dynamic_pointer_cast<LifeCycleCallback::IDebugRenderable>(shared))
                 guiRenderableCallbacks_.Add(guiRenderable);
         }
     }

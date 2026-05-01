@@ -8,20 +8,27 @@
 
 namespace GamePlay::Ui
 {
-    void BillBoardNpcChatIcon::Show() const
+    void BillBoardNpcChatIcon::Show()
     {
+        isShow_ = true;
+        
         chattableIcon_->SetEnable(true);
         chattingIcon_ ->SetEnable(true);   
     }
 
-    void BillBoardNpcChatIcon::Hide() const
+    void BillBoardNpcChatIcon::Hide()
     {
+        isShow_ = false;
+        
         chattableIcon_->SetEnable(false);
         chattingIcon_ ->SetEnable(false);
     }
 
     void BillBoardNpcChatIcon::OnChattable()
     {
+        if (!isShow_)
+            return;
+        
         chattableIcon_->SetEnable(false);
         chattingIcon_ ->SetEnable(true);
     }
@@ -29,6 +36,9 @@ namespace GamePlay::Ui
     
     void BillBoardNpcChatIcon::OnExitChattable()
     {
+        if (!isShow_)
+            return;
+        
         chattableIcon_->SetEnable(true);
         chattingIcon_ ->SetEnable(false);
     }

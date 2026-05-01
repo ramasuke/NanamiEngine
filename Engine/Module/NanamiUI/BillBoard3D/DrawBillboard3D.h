@@ -18,7 +18,6 @@ namespace NanamiEngine::Module::NanamiUi
         [[nodiscard]] int GetRenderOrder() const override { return renderOrder_; }
         
 
-        int handle_ = -1;
         [[serialize(0)]] int renderOrder_ = 0;
         [[serialize(1)]] FIELD(Asset::SpriteFile) spriteFile_;
         [[serialize(2)]] float angle_ = 0.0f;

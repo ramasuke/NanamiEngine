@@ -15,10 +15,11 @@ namespace NanamiEngine::Module::Asset
         void OnEnableAsset() override;
         [[nodiscard]] const Guid& GetGuid        () const override { return guid_;     }
         [[nodiscard]] int         GetDxLibHandle () const          { return dxLibId_;  }
-        [[nodiscard]] int         LoadGraph() const;
         [[nodiscard]] std::string GetContentPath () const override;
 
     private:
+        [[nodiscard]] int         LoadGraph() const;
+        
         std::string contentPath_;
         Guid guid_;
         int dxLibId_ = -1;

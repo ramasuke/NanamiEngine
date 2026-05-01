@@ -29,7 +29,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 #pragma endregion
     };
     
-    REGISTER_FRIENDLY_ACTION(TryQuest)
+    REGISTER_FRIENDLY_ACTION_WITH_NAME(TryQuest, "PlayerStatus::Quest::TryGiveQuest")
 }
 
 CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::TryQuest)
