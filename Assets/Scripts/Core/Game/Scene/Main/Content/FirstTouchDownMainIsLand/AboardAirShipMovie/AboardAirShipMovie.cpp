@@ -2,6 +2,7 @@
 
 #include "../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForTween/Coroutine_WaitForTween.h"
+#include "../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
 #include "../../../../../../../../../Engine/Module/NanamiUI/BlendAnimationRenderer/BlendAnmiationRenderer.h"
 #include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../../../Libs/LibCore/Tween/Ease/Ease.h"
@@ -16,7 +17,7 @@
 namespace GameCore::Scene::FirstTouchDownMainIsLand
 {
     AboardAirShipMovie::AboardAirShipMovie(
-          std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& playerAvatar
+          const std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& playerAvatar
         , const std::shared_ptr<FirstTouchDownMainIsLandSceneContext>& context)
         : playerAvatar_(playerAvatar)
         , context_     (context     )
@@ -32,20 +33,22 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
     
     Coroutine::Task<void> AboardAirShipMovie::AboardAirShipMovieMoveAirShipAsync()
     {
-        
+        co_await Coroutine::WaitUntil([this] { return playerAvatar_.lock()->Transform().GetWorldPos().y < -30.0f; });
+        co_await Coroutine::WaitForSeconds(3.0f);
+        Context()->AirShip()->UnLockMove();
         
         // 1度目の飛行機の移動
-        const auto firstMoveTween = tweeny::from(Context()->AirShip()->TransformRef().GetWorldPos())
+        const auto firstMoveTween = tweeny::from(Context()->AirShip()->Transform().GetWorldPos())
                                     .to(Context()->AirShipFirstMoveFromTarget().GetWorldPos())
                                     .during(Context()->AirShipFirstMoveDuring_msecs())
                                     .via(Tween::Ease(EaseType::Linear));
         
-        co_await Coroutine::WaitForTween(Context()->AirShip()->TransformRef(), firstMoveTween);
+        co_await Coroutine::WaitForTween(Context()->AirShip()->Transform(), firstMoveTween);
     
         // 2度目の飛行機の移動と回転
         const auto secondMoveTween = tweeny::from(
-                Context()->AirShip()->TransformRef().GetWorldPos(),
-                Context()->AirShip()->TransformRef().GetWorldRot())
+                Context()->AirShip()->Transform().GetWorldPos(),
+                Context()->AirShip()->Transform().GetWorldRot())
              .to(
                  Context()->AirShipSecondMoveFromTarget().GetWorldPos(),
                  Context()->AirShipSecondMoveFromTarget().GetWorldRot()
@@ -53,7 +56,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
              .during(Context()->AirShipSecondMoveDuring_msecs())
              .via(Tween::Ease(EaseType::OutQuad), Tween::Ease(EaseType::OutQuad));
         
-        co_await Coroutine::WaitForTween(Context()->AirShip()->TransformRef(), secondMoveTween);
+        co_await Coroutine::WaitForTween(Context()->AirShip()->Transform(), secondMoveTween);
         
         playerAvatar_.lock()->Transform().SetParent(std::weak_ptr<GameObject::IGameObject>(), true);
         context_.lock()->BoundryAirShipCollider().OnDestroy();
@@ -89,7 +92,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
     Coroutine::Task<void> AboardAirShipMovie::AirShipMovieFirstCameraMoveAsync()
     {
         const auto firstVirtualCameraFollowBehaviour = Context()->FirstVirtualCamera()->Components().Catch<CineMachine::Behaviour::VirtualCameraFollowBehaviour>();
-        const auto targetDirection = Context()->VirtualCameraFirstMoveTarget()->TransformRef().GetWorldPos() - Context()->FirstVirtualCamera()->Transform().GetWorldPos() + firstVirtualCameraFollowBehaviour.lock()->followOffset_;
+        const auto targetDirection = Context()->VirtualCameraFirstMoveTarget()->Transform().GetWorldPos() - Context()->FirstVirtualCamera()->Transform().GetWorldPos() + firstVirtualCameraFollowBehaviour.lock()->followOffset_;
         const auto firstMoveTween = tweeny::from(firstVirtualCameraFollowBehaviour.lock()->followOffset_)
                                     .to(targetDirection)
                                     .during(Context()->VirtualCameraFirstMoveTargetDuring_msecs())
@@ -120,11 +123,11 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         Context()->SecondVirtualCamera()->OnDisable();
     }
 
-    void AboardAirShipMovie::StartFadeInUi()
+    void AboardAirShipMovie::StartFadeInUi() const
     {
         context_.lock()->ActionControlWayUI().lock()->SetEnable(true);
         
-        const auto titleLogoBlendRenderer_ = context_.lock()->TitleLogo().lock()->Components().Catch<NanamiUi::BlendAnimationRenderer>();
-        titleLogoBlendRenderer_.lock()->SetAddBlendRate_secs(-titleLogoBlendRenderer_.lock()->GetAddBlendRate_secs());
+        const auto titleLogoBlendRenderer = context_.lock()->TitleLogo().lock()->Components().Catch<NanamiUi::BlendAnimationRenderer>();
+        titleLogoBlendRenderer.lock()->SetAddBlendRate_secs(-titleLogoBlendRenderer.lock()->GetAddBlendRate_secs());
     }
 }

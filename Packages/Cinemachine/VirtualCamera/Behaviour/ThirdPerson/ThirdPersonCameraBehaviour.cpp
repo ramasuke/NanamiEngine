@@ -89,7 +89,7 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     void ThirdPersonCameraBehaviour::UpdateFollowTargetBehaviour() const
     {
-        const glm::vec3 targetPos = target_->TransformRef().GetWorldPos();
+        const glm::vec3 targetPos = target_->Transform().GetWorldPos();
         const glm::vec3 lookAtPos = targetPos + lookAtOffsetPos_;
 
         const glm::mat4 rotY = glm::rotate(glm::mat4(1.0f), yaw_,   glm::vec3(0,1,0));

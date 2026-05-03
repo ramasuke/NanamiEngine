@@ -1,5 +1,6 @@
 ﻿#include "Friendly_Behaviour_ActionBase.h"
 
+#include "../../../../../../GamePlay/Ui/NpcChatting/NpcChatting.h"
 #include "../../../../PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../PlayerAvatar/PlayerAvatar.h"
 

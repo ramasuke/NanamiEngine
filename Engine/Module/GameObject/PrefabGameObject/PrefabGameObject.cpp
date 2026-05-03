@@ -37,7 +37,7 @@ void GameObject::PrefabGameObject::InitGameObject(const std::weak_ptr<IGameObjec
 }
 
 void GameObject::PrefabGameObject::InitForCopied(const std::shared_ptr<IGameObject>& ownPtr, bool isActive,
-    std::string name, ComponentGroup components, Transform transform)
+    std::string name, ComponentGroup components, GameObject::Transform transform)
 {
     ownPtr_     = ownPtr;
     isActive_   = isActive;
@@ -252,7 +252,7 @@ CopyForInstantiate()
         copiedPrefab->isActive_,
         copiedPrefab->name_,
         copiedPrefab->Components(),
-        copiedPrefab->TransformRef()
+        copiedPrefab->Transform()
     );
     copied->InitGameObject(std::weak_ptr<IGameObject>(), copied);
 
@@ -261,7 +261,7 @@ CopyForInstantiate()
 
 void GameObject::PrefabGameObject::SetEnable(const bool enable)
 {
-    TransformRef().OnEnable(enable);
+    Transform().OnEnable(enable);
     Components().SetEnable(enable);
 }
 

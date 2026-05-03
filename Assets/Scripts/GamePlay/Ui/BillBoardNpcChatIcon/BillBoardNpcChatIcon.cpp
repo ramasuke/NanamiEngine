@@ -15,9 +15,9 @@ namespace GamePlay::Ui
             if (!object)
                 return;
 
-            auto pos = basePos;
-            pos.y += offset;
-            object->TransformRef().SetLocalPos(pos);
+            auto position = basePos;
+            position.y += offset;
+            object->Transform().SetLocalPos(position);
         }
     }
 
@@ -60,10 +60,10 @@ namespace GamePlay::Ui
     void BillBoardNpcChatIcon::OnAwake()
     {
         if (chattableIcon_)
-            basePosChattable_ = chattableIcon_->TransformRef().GetLocalPos();
+            basePosChattable_ = chattableIcon_->Transform().GetLocalPos();
 
         if (surpriseIcon_)
-            basePosSurprise_ = surpriseIcon_->TransformRef().GetLocalPos();
+            basePosSurprise_ = surpriseIcon_->Transform().GetLocalPos();
     }
 
     void BillBoardNpcChatIcon::OnUpdate()

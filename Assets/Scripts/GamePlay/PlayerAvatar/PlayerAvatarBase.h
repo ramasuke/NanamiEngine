@@ -84,6 +84,7 @@ namespace GamePlay::PlayerAvatar
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 1) archive(CEREAL_NVP(chattingUi_));
         }
+        
 #pragma endregion
     };
     
@@ -140,9 +141,9 @@ namespace GamePlay::PlayerAvatar
             auto& playerAvatars = PlayerAvatars_();
             playerAvatars.erase(
                 std::remove_if(playerAvatars.begin(), playerAvatars.end(),
-                    [&](const std::weak_ptr<IPlayerAvatar>& w)
+                    [&](const std::weak_ptr<IPlayerAvatar>& weak)
                     {
-                        return !w.expired() && w.lock() == ownPtr;
+                        return !weak.expired() && weak.lock() == ownPtr;
                     }),
                 playerAvatars.end()
             );
@@ -189,7 +190,7 @@ namespace GamePlay::PlayerAvatar
         for (const auto& child : Transform().GetChildren())
         {
             if (child->Name() == "FeatStep")
-                return child->TransformRef().GetWorldPos(); 
+                return child->Transform().GetWorldPos(); 
         }
         throw std::exception("not found featStepPosition");
     }
@@ -197,7 +198,7 @@ namespace GamePlay::PlayerAvatar
     template <RequireType::Traits TraitsT>
     std::shared_ptr<Physics::ICollider> PlayerAvatarBase<TraitsT>::CatchAttackArea(const std::string& childName) const
     {
-        for (const auto& child : Transform().GetParent()->TransformRef().GetAllChildren())
+        for (const auto& child : Transform().GetParent()->Transform().GetAllChildren())
         {
             if (child->Name() == childName)
             {
@@ -208,7 +209,7 @@ namespace GamePlay::PlayerAvatar
         return nullptr;
     }
 
-// PlayerAvatarBase<Traits>をcerealに登録するマクロ
+    // PlayerAvatarBase<Traits>をcerealに登録するマクロ
 #define REGISTER_PLAYER_AVATAR_BASE(TraitsType)                                  \
 CEREAL_CLASS_VERSION(                                                            \
 GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>, 1) \

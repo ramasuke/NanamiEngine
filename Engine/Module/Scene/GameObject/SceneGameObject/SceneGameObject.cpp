@@ -33,7 +33,7 @@ void Scene::SceneGameObject::InitForCopied(const std::shared_ptr<IGameObject>& o
 
 void Scene::SceneGameObject::SetEnable(const bool enable)
 {
-    TransformRef().OnEnable(enable);
+    Transform().OnEnable(enable);
     Components().SetEnable(enable);
 }
 
@@ -58,7 +58,7 @@ std::shared_ptr<GameObject::IGameObject> Scene::SceneGameObject::CopyForInstanti
         copiedGameObject->isActive_,
         copiedGameObject->name_,
         copiedGameObject->Components(),
-        copiedGameObject->TransformRef()
+        copiedGameObject->Transform()
     );
     copied->InitGameObject(std::weak_ptr<IGameObject>(), copied);
 
@@ -75,11 +75,11 @@ void Scene::SceneGameObject::OnDestroy() const
 void Scene::SceneGameObject::ImplementDestroy()
 {
     Components().OnDestroy();
-    for (const auto& child : TransformRef().GetChildren())
+    for (const auto& child : Transform().GetChildren())
     {
         child->ImplementDestroy();
     }
-    TransformRef().SetParent(std::weak_ptr<IGameObject>{});
+    Transform().SetParent(std::weak_ptr<IGameObject>{});
     ownPtr_.reset();
 }
 
@@ -186,7 +186,7 @@ void Scene::SceneGameObject::OnDrawTreeGui()
             {
                 if (const auto draggingGameObject = Core::Application::ApplicationBase::ObjectRegistry().Catch<IGameObject>(draggingObjectGuid.value()).lock())
                 {
-                    draggingGameObject->TransformRef().SetParent(ownPtr_, false);
+                    draggingGameObject->Transform().SetParent(ownPtr_, false);
                 }
             }
         }    

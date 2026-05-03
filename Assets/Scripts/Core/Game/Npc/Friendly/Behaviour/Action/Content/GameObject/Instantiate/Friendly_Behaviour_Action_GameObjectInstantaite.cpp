@@ -27,7 +27,7 @@ namespace GameCore::Npc::Friendly::Behaviour
         {
             if (inheritRotation_)
             {
-                instance->TransformRef().SetWorldRot(npcRot);
+                instance->Transform().SetWorldRot(npcRot);
             }
         }
 

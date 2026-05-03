@@ -33,7 +33,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 
     GameObject::Transform& TickContext::NpcTransform() const
     {
-        return ownGameObject_.lock()->TransformRef();
+        return ownGameObject_.lock()->Transform();
     }
 
     const GamePlay::Ui::NpcChatting& TickContext::ChatUi() const

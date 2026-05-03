@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <cstdint>
 
+#include "../../../../../../../../Engine/Core/Coroutine/Task/Task.h"
 #include "../TickStatus/Friendly_Behaviour_TickStatus.h"
 #include "../cereal/include/cereal/cereal.hpp"
 #include "../cereal/include/cereal/types/polymorphic.hpp"

@@ -11,7 +11,7 @@ namespace GameCore::Scene
 
     glm::vec3 SceneContextBase::PlayerSpawnPoint() const
     {
-        return playerSpawnPoint_->TransformRef().GetWorldPos();
+        return playerSpawnPoint_->Transform().GetWorldPos();
     }
 
     void SceneContextBase::BasedOnDrawgui()

@@ -30,7 +30,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 
     GameObject::Transform& TickContext::EnemyTransform() const
     {
-        return enemyGameObject_ .lock()->TransformRef();
+        return enemyGameObject_ .lock()->Transform();
     }
 
     std::shared_ptr<IPlayerAvatar> TickContext::Player() const

@@ -54,7 +54,7 @@ void Core::MainWindow::PrefabViewWindow::OnDrawAddChildGameObjectButton() const
         
         const auto it = contents_.begin();
         const auto firstContent = it->second;
-        firstContent->TransformRef().AddChild(childGameObject);
+        firstContent->Transform().AddChild(childGameObject);
     }
 }
 

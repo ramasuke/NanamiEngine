@@ -19,7 +19,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(Asset::Pre
 {
     auto copiedPrefab = prefab.Content()->CopyForInstantiate();
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
-    copiedPrefab->TransformRef().SetParent(parent);
+    copiedPrefab->Transform().SetParent(parent);
     return copiedPrefab;       
 }
 
@@ -27,7 +27,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(Asset::Pre
     const glm::vec3 position)
 {
     auto copiedPrefab = prefab.Content()->CopyForInstantiate();
-    copiedPrefab->TransformRef().SetWorldPos(position);
+    copiedPrefab->Transform().SetWorldPos(position);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
     return copiedPrefab;
 }
@@ -35,7 +35,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(Asset::Pre
 std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(std::shared_ptr<Asset::PrefabGameObjectFile> prefab, const glm::vec3 position)
 {
     auto copiedPrefab = prefab->Content()->CopyForInstantiate();
-    copiedPrefab->TransformRef().SetWorldPos(position);
+    copiedPrefab->Transform().SetWorldPos(position);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
     return copiedPrefab;
 }
@@ -45,7 +45,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
 {
     auto copiedPrefab = gameObject->CopyForInstantiate();
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
-    copiedPrefab->TransformRef().SetWorldPos(position);
+    copiedPrefab->Transform().SetWorldPos(position);
     return copiedPrefab;
 }
 
@@ -54,7 +54,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
 {
     auto copiedPrefab = gameObject.CopyForInstantiate();
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
-    copiedPrefab->TransformRef().SetParent(parent);
+    copiedPrefab->Transform().SetParent(parent);
     return copiedPrefab;
 }
 
@@ -62,7 +62,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     Module::GameObject::IGameObject& gameObject, const glm::vec3 position)
 {
     auto copiedPrefab = gameObject.CopyForInstantiate();
-    copiedPrefab->TransformRef().SetWorldPos(position);
+    copiedPrefab->Transform().SetWorldPos(position);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
     return copiedPrefab;
 }

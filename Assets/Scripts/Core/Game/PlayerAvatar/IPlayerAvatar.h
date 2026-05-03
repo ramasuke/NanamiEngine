@@ -8,6 +8,11 @@
 
 namespace GameCore::PlayerAvatar
 {
+    class IPlayerChattable;
+}
+
+namespace GameCore::PlayerAvatar
+{
     class IPlayerAvatarStatus;
 }
 
@@ -48,7 +53,7 @@ namespace GameCore
         [[nodiscard]] virtual GamePlay::Ui::NpcChatting               &          NpcChattingUi   () const = 0;
         [[nodiscard]] virtual const glm::vec3&                                   FeatStepPosition() const = 0;
         [[nodiscard]] virtual const NanamiEngine::Module::GameObject::Transform& PlayerTransform () const = 0;
-        [[nodiscard]] virtual PlayerAvatar::IPlayerAvatarStatus                & PlayerStatus    () const = 0; 
+        [[nodiscard]] virtual PlayerAvatar::IPlayerAvatarStatus                & PlayerStatus    () const = 0;
         static const std::vector<std::weak_ptr<IPlayerAvatar>>& PlayerAvatars();
         
     protected:

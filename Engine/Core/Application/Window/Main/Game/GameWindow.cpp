@@ -57,8 +57,8 @@ namespace NanamiEngine::Core::MainWindow
             if (!replaceGameObject)
                 continue;
             
-            newGameObject->TransformRef().SetParent(replaceGameObject->TransformRef().GetParent());
-            newGameObject->TransformRef().SetWorldMatrix(replaceGameObject->TransformRef().GetWorldMatrix());
+            newGameObject->Transform().SetParent(replaceGameObject->Transform().GetParent());
+            newGameObject->Transform().SetWorldMatrix(replaceGameObject->Transform().GetWorldMatrix());
             scene->AddGameObject   (newGameObject    );
             scene->RemoveGameObject(replaceGameObject);
             return true;

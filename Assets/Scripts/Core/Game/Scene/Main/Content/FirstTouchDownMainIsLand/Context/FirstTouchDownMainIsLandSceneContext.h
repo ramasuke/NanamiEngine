@@ -6,6 +6,7 @@
 #include "../../../../../../../../../Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
 #include "../../../../../../../../Data/PlayerAvatarInitStatus/SwordMan/Data_SwordManInitStatus.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
+#include "../../../../../../../GamePlay/Prop/AirShip/Prop_AirShip.h"
 #include "../../../../../../../GamePlay/Ui/PlayerStatus/Ui_PlayerStatus.h"
 #include "../../../../../../../GamePlay/Ui/Sample/SampleTitleLogo.h"
 #include "../../../Context/Main_SceneContextBase.h"
@@ -20,9 +21,9 @@ namespace GameCore::Scene
 
     public:
         void Init() override;
-        std::shared_ptr<GameObject::IGameObject>                             AirShip()                                           { return airShip_.get();                        }
-        [[nodiscard]] GameObject::Transform&                                 AirShipFirstMoveFromTarget()                const   { return airShipFirstMoveFromTargetPos_->TransformRef(); }
-        [[nodiscard]] GameObject::Transform&                                 AirShipSecondMoveFromTarget()               const   { return airShipSecondMoveFromTargetPos_->TransformRef(); }
+        std::shared_ptr<GamePlay::Prop::AirShip>                             AirShip()                                           { return airShip_.get(); }
+        [[nodiscard]] GameObject::Transform&                                 AirShipFirstMoveFromTarget()                const   { return airShipFirstMoveFromTargetPos_->Transform(); }
+        [[nodiscard]] GameObject::Transform&                                 AirShipSecondMoveFromTarget()               const   { return airShipSecondMoveFromTargetPos_->Transform(); }
         [[nodiscard]] int                                                    AirShipFirstMoveDuring_msecs ()             const   { return airShipFirstMoveDuring_msecs_;  }
         [[nodiscard]] int                                                    AirShipSecondMoveDuring_msecs()             const   { return airShipSecondMoveDuring_msecs_; }
         [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile>           SummonPlayerAvatarPrefab()                          { return summonPlayerAvatarPrefab_.get(); }
@@ -31,7 +32,7 @@ namespace GameCore::Scene
         [[nodiscard]] int                                                    VirtualCameraFirstMoveTargetDuring_msecs()  const   { return virtualCameraFirstMoveTargetDuring_msecs_; }
         [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> SecondVirtualCamera()                               { return secondVirtualCamera_.get(); }
         [[nodiscard]] std::shared_ptr<CineMachine::CinemachineCameraBrain>   CameraBrain()                                       { return cameraBrain_.get(); }
-        [[nodiscard]] GameObject::Transform&                                 PlayerFirstMoveTarget()                     const   { return playerFirstMoveTargetPos_->TransformRef(); }
+        [[nodiscard]] GameObject::Transform&                                 PlayerFirstMoveTarget()                     const   { return playerFirstMoveTargetPos_->Transform(); }
         [[nodiscard]] int                                                    PlayerFirstMoveDuring_msecs()               const   { return playerFirstMoveDuring_msecs_; }
         [[nodiscard]] int                                                    PlayerArmStretchDuring_msecs()              const   { return playerArmStretchDuring_msecs_; }
         [[nodiscard]] std::weak_ptr<PlayerAvatar::SwordMan::SwordManAvatarCameraGroup> CameraGroup()                     const   { return cameraGroup_.get(); }
@@ -41,11 +42,11 @@ namespace GameCore::Scene
         [[nodiscard]] const std::weak_ptr<Asset::SoundFile>&                           BGM() const { return bgm_.get(); }
         [[nodiscard]] const GameObject::IGameObject&                                   BoundryAirShipCollider() const { return *boundryAirshipCollider_.get(); }
         [[nodiscard]] const std::weak_ptr<Asset::PrefabGameObjectFile>&                FirstEventDragonPrefab() const { return firstEventDragonPrefab_.get(); }
-        [[nodiscard]] const glm::vec3&                                                 FirstEventDragonSpawnPos() const { return firstEventDragonSpawnPos_->TransformRef().GetWorldPos(); }
+        [[nodiscard]] const glm::vec3&                                                 FirstEventDragonSpawnPos() const { return firstEventDragonSpawnPos_->Transform().GetWorldPos(); }
         [[nodiscard]] const Asset::SwordManInitStatus&                                 PlayerAvatarInitStatus  () const { return *playerAvatarInitStatus_.get(); }
         
     private:
-        [[serialize(0)]] FIELD(GameObject::IGameObject)               airShip_;
+        [[serialize(0)]] FIELD(GamePlay::Prop::AirShip)               airShip_;
         [[serialize(1)]] FIELD(GameObject::IGameObject)               airShipFirstMoveFromTargetPos_;
         [[serialize(1)]] int                                          airShipFirstMoveDuring_msecs_  = 0.0f;
         [[serialize(2)]] FIELD(GameObject::IGameObject)               airShipSecondMoveFromTargetPos_;

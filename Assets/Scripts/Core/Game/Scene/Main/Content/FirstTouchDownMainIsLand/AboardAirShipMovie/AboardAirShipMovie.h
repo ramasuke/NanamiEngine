@@ -18,7 +18,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
     {
     public:
         explicit AboardAirShipMovie(
-              std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& playerAvatar
+              const std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& playerAvatar
             , const std::shared_ptr<FirstTouchDownMainIsLandSceneContext>& context);
 
         Coroutine::Task<void> ToTask() { co_await Invoke(); }
@@ -31,9 +31,9 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         Coroutine::Task<void> AirShipMovieFirstCameraMoveAsync  ();
         Coroutine::Task<void> AirShipMovieWalkPlayerAsync       ();
         Coroutine::Task<void> AirShipMovieArmStretchPlayerAsync ();
-        void StartFadeInUi();
+        void StartFadeInUi() const;
         
-        std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& playerAvatar_;
+        std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar> playerAvatar_;
         std::weak_ptr<FirstTouchDownMainIsLandSceneContext> context_;
     };
 }

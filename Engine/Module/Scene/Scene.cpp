@@ -139,7 +139,7 @@ void Scene::Scene::OnDrawGui(const std::function<void(Scene*)>& onRemoveScene, C
     {
         if (const std::shared_ptr<Module::GameObject::IGameObject> gameObject = weakGameObject.lock())
         {
-            if (gameObject->TransformRef().GetParent() != nullptr)
+            if (gameObject->Transform().GetParent() != nullptr)
                 continue;
 
             gameObject->OnDrawTreeGui();
@@ -161,7 +161,7 @@ void Scene::Scene::OnDrawFileDropGui(Core::FileSystem::EditorDraggingHand& fileD
             if (const auto sceneGameObject = Core::Application::ApplicationBase::ObjectRegistry().Catch<Module::GameObject::IGameObject>(draggingGuid.value()); !sceneGameObject.expired())
             {
                 AddGameObject(sceneGameObject);
-                sceneGameObject.lock()->TransformRef().SetParent(std::weak_ptr<Module::GameObject::IGameObject>());
+                sceneGameObject.lock()->Transform().SetParent(std::weak_ptr<Module::GameObject::IGameObject>());
             }
         }
         ImGui::EndDragDropTarget();
@@ -182,7 +182,7 @@ void Scene::Scene::OnSave()
     {
         if (auto gameObject = weakGameObject.lock())
         {
-            if (!gameObject->TransformRef().GetParent())
+            if (!gameObject->Transform().GetParent())
             {
                 rootObjects.push_back(gameObject);
             }

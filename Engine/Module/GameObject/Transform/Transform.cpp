@@ -35,7 +35,7 @@ namespace NanamiEngine::Module::GameObject
     {
         if (const auto parentObj = parent_.lock())
         {
-            const glm::mat4 parentWorldMatrix = parentObj->TransformRef().GetWorldMatrix();
+            const glm::mat4 parentWorldMatrix = parentObj->Transform().GetWorldMatrix();
             const glm::mat4 localMatrix = glm::inverse(parentWorldMatrix) * worldMatrix;
             SetLocalMatrix(localMatrix);
         }
@@ -49,7 +49,7 @@ namespace NanamiEngine::Module::GameObject
     {
         if (const auto parentObj = parent_.lock())
         {
-            const glm::mat4 parentWorldMatrix = parentObj->TransformRef().GetWorldMatrix();
+            const glm::mat4 parentWorldMatrix = parentObj->Transform().GetWorldMatrix();
             const glm::mat4 inverseParentMatrix = glm::inverse(parentWorldMatrix);
             const glm::vec4 localPos4 = inverseParentMatrix * glm::vec4(worldPos, 1.0f);
             localPos_ = glm::vec3(localPos4);
@@ -66,7 +66,7 @@ namespace NanamiEngine::Module::GameObject
     {
         if (const auto parentObj = parent_.lock())
         {
-            const glm::quat parentWorldRot = parentObj->TransformRef().GetWorldRot();
+            const glm::quat parentWorldRot = parentObj->Transform().GetWorldRot();
             localRot_ = glm::normalize(glm::inverse(parentWorldRot) * worldRot);
         }
         else
@@ -82,7 +82,7 @@ namespace NanamiEngine::Module::GameObject
     {
         if (const auto parentObj = parent_.lock())
         {
-            const glm::vec3 parentWorldScale = parentObj->TransformRef().GetWorldScale();
+            const glm::vec3 parentWorldScale = parentObj->Transform().GetWorldScale();
 
             // ゼロ割防止
             localScale_ = {
@@ -113,7 +113,7 @@ namespace NanamiEngine::Module::GameObject
 
         if (const auto parentObj = parent_.lock())
         {
-            worldMatrix_ = parentObj->TransformRef().GetWorldMatrix() * localMatrix;
+            worldMatrix_ = parentObj->Transform().GetWorldMatrix() * localMatrix;
         }
         else
         {
@@ -123,7 +123,7 @@ namespace NanamiEngine::Module::GameObject
         for (const auto& child : children_)
         {
             if (child)
-                child->TransformRef().UpdateMatrix();
+                child->Transform().UpdateMatrix();
         }
     }
 
@@ -272,12 +272,12 @@ namespace NanamiEngine::Module::GameObject
             return;
 
         if (const auto oldParent = parent_.lock())
-            oldParent->TransformRef().RemoveChild(ownerGameObject_.lock());
+            oldParent->Transform().RemoveChild(ownerGameObject_.lock());
 
         parent_ = parent;
 
         if (const auto newParent = parent_.lock())
-            newParent->TransformRef().AddChild(ownerGameObject_.lock());
+            newParent->Transform().AddChild(ownerGameObject_.lock());
 
         SetWorldPos(oldWorldPos);
         SetWorldRot(oldWorldRot);
@@ -307,7 +307,7 @@ namespace NanamiEngine::Module::GameObject
             result.emplace_back(child);
 
             // child の Transform からさらに取得
-            const auto& childTransform = child->TransformRef();
+            const auto& childTransform = child->Transform();
             auto subChildren = childTransform.GetAllChildren();
 
             result.insert(
@@ -342,7 +342,7 @@ namespace NanamiEngine::Module::GameObject
         if (!child)
             return;
     
-        auto& childTransform = child->TransformRef();
+        auto& childTransform = child->Transform();
     
         const bool alreadyExists = std::ranges::any_of(children_, [&](const std::shared_ptr<IGameObject>& c)
         {
@@ -380,7 +380,7 @@ namespace NanamiEngine::Module::GameObject
                 child->IsEnable(),
                 child->Name(),
                 child->Components(),
-                child->TransformRef());
+                child->Transform());
         }
     }
 
@@ -484,7 +484,7 @@ namespace NanamiEngine::Module::GameObject
             if (const auto parentObj = parent_.lock())
             {
                 // 親がいる場合はワールド行列からローカル行列に変換
-                glm::mat4 parentWorld = parentObj->TransformRef().GetWorldMatrix();
+                glm::mat4 parentWorld = parentObj->Transform().GetWorldMatrix();
                 glm::mat4 localMatrix = glm::inverse(parentWorld) * worldMatrix;
             
                 SetLocalPos(glm::vec3(localMatrix[3]));
@@ -515,7 +515,7 @@ namespace NanamiEngine::Module::GameObject
     
         if (const auto parentObj = parent_.lock())
         {
-            worldMatrix_ = parentObj->TransformRef().GetWorldMatrix() * localMatrix;
+            worldMatrix_ = parentObj->Transform().GetWorldMatrix() * localMatrix;
         }
         else
         {
@@ -525,7 +525,7 @@ namespace NanamiEngine::Module::GameObject
         for (const auto& child : children_)
         {
             if (child)
-                child->TransformRef().UpdateMatrix();
+                child->Transform().UpdateMatrix();
         }
     }
     

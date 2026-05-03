@@ -17,11 +17,11 @@ namespace NanamiEngine::Module::GameObject
         
         void InitGameObject(const std::weak_ptr<IGameObject>& parent, const std::shared_ptr<IGameObject>& ownPtr) override;
         void InitForCopied(const std::shared_ptr<IGameObject>& ownPtr, bool isActive, std::string name,
-            ComponentGroup components, Transform transform) override;
+            ComponentGroup components, GameObject::Transform transform) override;
         void InitPrefab(const std::string& filePath);
         [[nodiscard]] const Guid& GetGuid() const   override { return guid_;         }
         ComponentGroup& Components()                override { return components_;   }
-        [[nodiscard]] Transform& TransformRef()     override { return transform_;    }
+        [[nodiscard]] GameObject::Transform& Transform() override { return transform_;    }
 
         void ImplementDestroy() override;
         void OnDrawGui()        override;
@@ -46,7 +46,7 @@ namespace NanamiEngine::Module::GameObject
         std::string name_ = "Empty";
         Guid guid_;
         ComponentGroup components_;
-        Transform transform_;
+        GameObject::Transform transform_;
         std::shared_ptr<IGameObject> ownPtr_;
         std::vector<Guid> copiedObjectGuidList_;
     };

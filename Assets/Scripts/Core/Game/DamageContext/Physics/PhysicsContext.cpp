@@ -6,7 +6,7 @@
 namespace GameCore
 {
     Damage::PhysicsContext::PhysicsContext(GameObject::IGameObject& from, GameObject::IGameObject& to, const PhysicsPower damageValue)
-        : damageDirection_(from.TransformRef().GetWorldPos() - to.TransformRef().GetWorldPos())
+        : damageDirection_(from.Transform().GetWorldPos() - to.Transform().GetWorldPos())
         , damageValue_(damageValue)
     {
         

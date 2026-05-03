@@ -14,7 +14,7 @@ namespace GameCore::PlayerAvatar
         const auto playerAvatarObject = Scene::GameObject::Instantiate(*playerAvatarPrefab, summonPosition).lock();
         auto playerAvatar= playerAvatarObject->Components().Catch<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>().lock();
         
-        playerAvatarObject->TransformRef().SetParent(parent);
+        playerAvatarObject->Transform().SetParent(parent);
         return playerAvatar;
     }
 }

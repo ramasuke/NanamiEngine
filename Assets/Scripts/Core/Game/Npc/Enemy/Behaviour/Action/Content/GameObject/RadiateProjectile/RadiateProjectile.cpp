@@ -47,7 +47,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         if (!projectile)
             co_return;
     
-        auto& transform = projectile->TransformRef();
+        auto& transform = projectile->Transform();
     
         const glm::vec3 startPos = transform.GetWorldPos();
     

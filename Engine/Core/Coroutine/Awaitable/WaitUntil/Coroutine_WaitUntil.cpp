@@ -6,7 +6,8 @@
 
 namespace Coroutine
 {
-    WaitUntil::WaitUntil(std::function<bool()> condition): condition_(std::move(condition))
+    WaitUntil::WaitUntil(std::function<bool()> condition)
+        : condition_(std::move(condition))
     {
     }
 
@@ -15,7 +16,7 @@ namespace Coroutine
         return condition_();
     }
 
-    void WaitUntil::await_suspend(std::coroutine_handle<> parentHandle)
+    void WaitUntil::await_suspend(const std::coroutine_handle<> parentHandle)
     {
         parentHandle_ = parentHandle;
 

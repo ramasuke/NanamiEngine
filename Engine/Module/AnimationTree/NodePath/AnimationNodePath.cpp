@@ -112,14 +112,17 @@ void AnimationTree::AnimationNodePath::SubscribeUpdateNodeAnimationCallback()
     {
         fromNodeSubscription_.unsubscribe();
     }
+
+    const auto newSub = rxcpp::composite_subscription();
     
-    fromNodeSubscription_ = rxcpp::composite_subscription();
     fromNode_.lock()->OnUpdated().subscribe(
-        fromNodeSubscription_, 
+        newSub, 
         [this](const IAnimationNode::UpdateCallbackContext context)
         {
             TryAddNextCurrentNodePath(context);
         },
         [](const std::exception_ptr&) { },
         [] { });
+    
+    fromNodeSubscription_ = newSub;
 }

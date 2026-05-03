@@ -38,7 +38,7 @@ void CineMachine::Behaviour::VirtualCameraLookAtBehaviour::LookAtTarget() const
         return;
         
     const glm::vec3 cameraPos = Transform().GetWorldPos();
-    const glm::vec3 targetPos = target_->TransformRef().GetWorldPos() + lookAtTargetOffset_;
+    const glm::vec3 targetPos = target_->Transform().GetWorldPos() + lookAtTargetOffset_;
 
     constexpr auto up      = glm::vec3(0, 1, 0);
     const glm::vec3 forward = glm::normalize(targetPos - cameraPos);

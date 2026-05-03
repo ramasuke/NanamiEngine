@@ -42,7 +42,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] SwordManAvatarCameraGroup& Camera () const { return *cameraGroup_.lock(); }
 
         [[nodiscard]] std::shared_ptr<GameObject::IGameObject> PlayerAvatarObject     () const override { return playerAvatarObject_.lock();                     }
-        [[nodiscard]] GameObject::Transform                &   PlayerAvatarTransform  () const override { return playerAvatarObject_.lock()->TransformRef();     }
+        [[nodiscard]] GameObject::Transform                &   PlayerAvatarTransform  () const override { return playerAvatarObject_.lock()->Transform();     }
         [[nodiscard]] PlayerAvatarCameraGroupBase          &   CameraGroup            () const override { return *cameraGroup_      .lock();                     }
         [[nodiscard]] GamePlay::Ui::NpcChatting            &   NpcChattingUi          () const override { return playerAvatar_      .lock()->NpcChattingUi();    }
         [[nodiscard]] Physics::ICollider                   &   PlayerAvatarCollider   () const override { return playerAvatar_      .lock()->Collider();         }

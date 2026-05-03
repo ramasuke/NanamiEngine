@@ -2537,6 +2537,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\ChatIcon\Friendly_Behaviour_Action_SetEnableChatIcon.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\Chat\Friendly_Behaviour_Action_ImplementChat.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\IsChatting\Friendly_Behaviour_Action_IsChat.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -2615,7 +2616,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\StartChat\Friendly_Behaviour_Action_SetEnableShowChatIcon.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\Chattable\Friendly_Behaviour_Action_Chat.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -7443,86 +7444,8 @@
     <ClCompile Include="Engine\Core\FileSystem\Directory\Directory.cpp" />
     <ClCompile Include="Engine\Core\FileSystem\DraggingHand\EditorDraggingHand.cpp" />
     <ClCompile Include="Engine\Core\FileSystem\File\File.cpp" />
-    <ClCompile Include="Engine\Core\Object\Field\Context\FieldContext.cpp">
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <Optimization>Disabled</Optimization>
-      <SupportJustMyCode>true</SupportJustMyCode>
-      <AssemblerOutput>NoListing</AssemblerOutput>
-      <AssemblerListingLocation>NanamiEngine\x64\Debug\</AssemblerListingLocation>
-      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
-      <BrowseInformation>false</BrowseInformation>
-      <BrowseInformationFile>NanamiEngine\x64\Debug\</BrowseInformationFile>
-      <CompileAs>Default</CompileAs>
-      <ConformanceMode>true</ConformanceMode>
-      <DiagnosticsFormat>Column</DiagnosticsFormat>
-      <DisableLanguageExtensions>false</DisableLanguageExtensions>
-      <ErrorReporting>Prompt</ErrorReporting>
-      <ExpandAttributedSource>false</ExpandAttributedSource>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <EnableASAN>false</EnableASAN>
-      <EnableFuzzer>false</EnableFuzzer>
-      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
-      <EnableVectorLength>NotSet</EnableVectorLength>
-      <FloatingPointModel>Precise</FloatingPointModel>
-      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
-      <GenerateModuleDependencies>false</GenerateModuleDependencies>
-      <GenerateSourceDependencies>false</GenerateSourceDependencies>
-      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <IntrinsicFunctions>false</IntrinsicFunctions>
-      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <LanguageStandard_C>Default</LanguageStandard_C>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ModuleDependenciesFile>NanamiEngine\x64\Debug\</ModuleDependenciesFile>
-      <ModuleOutputFile>NanamiEngine\x64\Debug\</ModuleOutputFile>
-      <OmitDefaultLibName>false</OmitDefaultLibName>
-      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
-      <ObjectFileName>NanamiEngine\x64\Debug\</ObjectFileName>
-      <CallingConvention>Cdecl</CallingConvention>
-      <ProgramDataBaseFileName>NanamiEngine\x64\Debug\vc143.pdb</ProgramDataBaseFileName>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>NanamiEngine\x64\Debug\NanamiEngine.pch</PrecompiledHeaderOutputFile>
-      <PreprocessToFile>false</PreprocessToFile>
-      <PreprocessKeepComments>false</PreprocessKeepComments>
-      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
-      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
-      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
-      <ShowIncludes>false</ShowIncludes>
-      <SourceDependenciesFile>NanamiEngine\x64\Debug\</SourceDependenciesFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
-      <SmallerTypeCheck>false</SmallerTypeCheck>
-      <SpectreMitigation>false</SpectreMitigation>
-      <StructMemberAlignment>Default</StructMemberAlignment>
-      <TrackerLogDirectory>NanamiEngine\x64\Debug\NanamiEngine.tlog\</TrackerLogDirectory>
-      <TranslateIncludes>false</TranslateIncludes>
-      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
-      <TreatWarningAsError>false</TreatWarningAsError>
-      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <UseFullPaths>true</UseFullPaths>
-      <WarningLevel>Level3</WarningLevel>
-      <XMLDocumentationFileName>NanamiEngine\x64\Debug\</XMLDocumentationFileName>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <IntelJCCErratum>false</IntelJCCErratum>
-      <BuildStlModules>false</BuildStlModules>
-      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
-      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
-      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
-      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;</AdditionalIncludeDirectories>
-      <LinkCompiled>true</LinkCompiled>
-    </ClCompile>
-    <ClCompile Include="Engine\Core\Object\Field\Field.cpp" />
     <ClCompile Include="Engine\Core\Object\Field\IInitializablePrefabField.cpp" />
     <ClCompile Include="Engine\Core\Object\Field\Interface\IFieldContext.cpp" />
-    <ClCompile Include="Engine\Core\Object\Field\PrefabField.cpp" />
     <ClCompile Include="Engine\Core\Object\IObject.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -10046,8 +9969,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\GameObject\SetEnable\Friendly_Behaviour_Action_GameObjectSetEnable.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Animation\PlayAnimation\Friendly_Behaviour_Action_PlayAnimation.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\ChatIcon\Friendly_Behaviour_Action_SetEnableChatIcon.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\Chat\Friendly_Behaviour_Action_ImplementChat.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\IsChatting\Friendly_Behaviour_Action_IsChat.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\StartChat\Friendly_Behaviour_Action_SetEnableShowChatIcon.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\Chattable\Friendly_Behaviour_Action_Chat.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\RigidBody\MoveForRoute\Friendly_Behaviour_Action_MoveForRoute.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\RigidBody\SetLinearVelocity\Friendly_Behaviour_Action_SetLinearVelocity.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Transform\SetRotation\Friendly_Behaviour_Action_SetRotation.h" />

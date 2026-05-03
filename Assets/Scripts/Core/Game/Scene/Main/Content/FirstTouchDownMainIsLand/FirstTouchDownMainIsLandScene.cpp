@@ -34,7 +34,7 @@ namespace GameCore::Scene::Main
         playerAvatar_ = PlayerAvatar::Factory::SummonSwordManAvatar(
               Context()->SummonPlayerAvatarPrefab()
             , Context()->PlayerSpawnPoint()
-            , Context()->AirShip());
+            , Context()->AirShip()->Entity().lock());
     }
     
     void FirstTouchDownMainIsLandScene::OnEnter()

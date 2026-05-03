@@ -1,14 +1,14 @@
 ﻿#include "Prop_AirShip.h"
 
-#include "../../../../../Engine/Module/Component/Collider/ICollider.h"
-#include "Jolt/Jolt.h"
+#include "../../../../../Engine/Module/Component/Collider/ColliderBase.h"
+#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "Jolt/Physics/Body/MotionType.h"
 
 namespace GamePlay::Prop
 {
     void AirShip::OnShootDown()
     {
-        for (const auto& collider : Components().Catches<Physics::ICollider>())
+        for (const auto& collider : Components().Catches<Component::ColliderBase>())
         {
             collider.lock()->SetMotionType(JPH::EMotionType::Dynamic);
         }
@@ -16,8 +16,27 @@ namespace GamePlay::Prop
         shootDownParticle_->SetEnable(true);
     }
 
+    void AirShip::UnLockMove()
+    {
+        isMoveLocked_ = false;
+    }
+
+    void AirShip::OnAwake()
+    {
+        originPos_ = Transform().GetWorldPos();
+    }
+
+    void AirShip::OnUpdate()
+    {
+        if (isMoveLocked_)
+        {
+            Transform().SetWorldPos(originPos_);
+        }
+    }
+
     void AirShip::OnDrawGui()
     {
+        ImGuiHelper::OnDrawInputField("originPos_", originPos_);
         ImGuiHelper::OnDrawInputField("shootDownParticle_", shootDownParticle_);
     }
 }

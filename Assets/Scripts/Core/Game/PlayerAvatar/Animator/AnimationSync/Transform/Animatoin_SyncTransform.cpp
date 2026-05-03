@@ -11,7 +11,7 @@ namespace NanamiEngine::Module::AnimationTree
             return;
         
         const auto boneMatrix = MV1GetFrameLocalWorldMatrix(animationModelHandle, BoneIndex());
-        syncChildTransform_->TransformRef().SetWorldMatrix(Glm::FromDxLibMatrix(boneMatrix));
+        syncChildTransform_->Transform().SetWorldMatrix(Glm::FromDxLibMatrix(boneMatrix));
     }
 
     void TransformSync::DoDrawGui()

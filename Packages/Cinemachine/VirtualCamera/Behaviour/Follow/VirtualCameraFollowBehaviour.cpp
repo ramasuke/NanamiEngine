@@ -11,7 +11,7 @@ void CineMachine::Behaviour::VirtualCameraFollowBehaviour::SetTarget(
 
 glm::vec3 CineMachine::Behaviour::VirtualCameraFollowBehaviour::MoveTargetPosition() const noexcept
 {
-    return followTarget_->TransformRef().GetWorldPos() + followOffset_;
+    return followTarget_->Transform().GetWorldPos() + followOffset_;
 }
 
 void CineMachine::Behaviour::VirtualCameraFollowBehaviour::OnUpdate()

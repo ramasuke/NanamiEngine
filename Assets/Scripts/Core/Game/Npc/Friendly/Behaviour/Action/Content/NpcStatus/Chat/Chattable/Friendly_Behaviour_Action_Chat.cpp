@@ -1,4 +1,4 @@
-﻿#include "Friendly_Behaviour_Action_SetEnableShowChatIcon.h"
+﻿#include "Friendly_Behaviour_Action_Chat.h"
 
 #include "../../../../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../../../../../../../GamePlay/Ui/NpcChatting/NpcChatting.h"
@@ -9,13 +9,13 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
     {
         const bool isChatting = context.IsChatting();
 
-        // 会話開始トリガー
+        // 会話開始
         if (isChatting && !isPreviewTickChatting_)
         {
             Coroutine::StartCoroutine(ChatAsync(context));
         }
 
-        // 会話が「終わった瞬間」
+        // 会話が終了
         if (isFinishedChat_)
         {
             isPreviewTickChatting_ = false;
