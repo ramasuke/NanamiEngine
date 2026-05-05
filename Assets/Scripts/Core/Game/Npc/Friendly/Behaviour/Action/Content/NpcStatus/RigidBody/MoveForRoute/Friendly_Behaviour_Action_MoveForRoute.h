@@ -3,6 +3,7 @@
 #include "../../../../../../../../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../../../../../../../Data/FriendlyNpcWalkingRoute/Data_NpcWalkingRoute.h"
 #include "../../../../../../../../../../Editor/Npc/Friendly/Behaviour/Action/Friendly_Behaviour_ActionFactory.h"
+#include "../../../Other/WriteBlackBoard/Friendly_Behaviour_Action_WriteBlackBoard.h"
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {
@@ -13,7 +14,6 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         FIELD(Asset::NpcWalkingRoute) moveRoute_;
         float moveSpeed_                = 0.0f;
         float turnRotateSpeed_          = 0.0f;
-        int   moveAnimationParamNumber_ = 0;
         int   currentRouteIndex_        = 0;
 
         static constexpr float ARRIVE_THRESHOLD = 10.0f;
@@ -27,7 +27,6 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
             archive(CEREAL_NVP(moveRoute_));
             archive(CEREAL_NVP(moveSpeed_));
             archive(CEREAL_NVP(turnRotateSpeed_));
-            archive(CEREAL_NVP(moveAnimationParamNumber_));
         }
 
         template<class Archive>
@@ -36,7 +35,6 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
             if (version >= 0) archive(CEREAL_NVP(moveRoute_));
             if (version >= 0) archive(CEREAL_NVP(moveSpeed_));
             if (version >= 0) archive(CEREAL_NVP(turnRotateSpeed_));
-            if (version >= 0) archive(CEREAL_NVP(moveAnimationParamNumber_));
         }
 #pragma endregion
     };

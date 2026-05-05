@@ -33,7 +33,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         }
 #pragma endregion
     };
-    REGISTER_FRIENDLY_ACTION_WITH_NAME(SampleFirstEventDragonChat, "Other::SampleFirstEventDragonChat")
+    REGISTER_FRIENDLY_ACTION_WITH_NAME(SampleFirstEventDragonChat, "Other::SummonFirstEventDragon")
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::SampleFirstEventDragonChat, 0)

@@ -86,16 +86,22 @@ namespace NanamiEngine::Core
             0
         );
         
-        JPH::MassProperties mp;
-        mp.ScaleToMass(mass);
-        settings.mMassPropertiesOverride = mp;
+        JPH::MassProperties massProperty;
+        massProperty.ScaleToMass(mass);
+        settings.mMassPropertiesOverride = massProperty;
         settings.mOverrideMassProperties = JPH::EOverrideMassProperties::CalculateInertia;
 
         settings.mIsSensor = isSensor;
         settings.mUserData = reinterpret_cast<JPH::uint64>(components);
         if (!isGravity)
+        {
             settings.mGravityFactor = 0.0f;
+        }
 
+        if (motionType != JPH::EMotionType::Static)
+        {
+            return physicsSystem_.GetBodyInterface().CreateAndAddBody(settings, JPH::EActivation::DontActivate);
+        }
         return physicsSystem_.GetBodyInterface().CreateAndAddBody(settings, JPH::EActivation::Activate);
     }
 }

@@ -2,7 +2,6 @@
 #include "../ColliderBase.h"
 #include "../Constraints.h"
 #include "../../ComponentBase.h"
-#include "../JoltPhysics/Jolt/Jolt.h"
 
 namespace NanamiEngine::Module::Component
 {

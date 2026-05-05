@@ -108,21 +108,21 @@ const Guid& AnimationTree::AnimationNodePath::GetGuid() const
 
 void AnimationTree::AnimationNodePath::SubscribeUpdateNodeAnimationCallback()
 {
-    if (fromNodeSubscription_.is_subscribed())
-    {
-        fromNodeSubscription_.unsubscribe();
-    }
+    const auto node = fromNode_.lock();
+    if (!node)
+        return;
 
-    const auto newSub = rxcpp::composite_subscription();
-    
-    fromNode_.lock()->OnUpdated().subscribe(
-        newSub, 
+    const auto old = std::move(fromNodeSubscription_);
+
+    fromNodeSubscription_ = rxcpp::composite_subscription();
+
+    node->OnUpdated().subscribe(
+        fromNodeSubscription_,
         [this](const IAnimationNode::UpdateCallbackContext context)
         {
             TryAddNextCurrentNodePath(context);
-        },
-        [](const std::exception_ptr&) { },
-        [] { });
-    
-    fromNodeSubscription_ = newSub;
+        });
+
+    // ★安全なタイミングで解除（※ここはまだ危険な場合あり）
+    old.unsubscribe();
 }

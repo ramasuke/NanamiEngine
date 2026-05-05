@@ -3,13 +3,16 @@
 
 namespace NanamiEngine
 {
-    int   Time::lastTime_    = 0;
-    float Time::deltaTime_   = 0.0f;
-    float Time::timeScale_   = 1.0f;
-    float Time::currentTime_ = 0.0f;
+    int   Time::lastTime_        = 0;
+    float Time::deltaTime_       = 0.0f;
+    float Time::timeScale_       = 1.0f;
+    float Time::currentTime_     = 0.0f;
+    int   Time::isSkipNextFrame_ = 0;
 
     void Time::Update()
     {
+        isSkipNextFrame_--;
+        
         const int now = GetNowCount();
 
         if (lastTime_ == 0)
@@ -29,6 +32,11 @@ namespace NanamiEngine
 
     float Time::DeltaTime()
     {
+        if (isSkipNextFrame_ > 0)
+        {
+            return 0.0f;
+        }
+        
         return deltaTime_;
     }
 
@@ -40,6 +48,11 @@ namespace NanamiEngine
     void Time::SetTimeScale(const float scale)
     {
         timeScale_ = scale;
+    }
+
+    void Time::SkipNextFrame()
+    {
+        isSkipNextFrame_++;
     }
 
     float Time::GetTimeScale()

@@ -21,7 +21,7 @@ namespace NanamiEngine::Module::Component
         void InitRenderer  () override;
         void OnShadowRender() override;
         void OnRender      () override;
-        void OnDestroy() override;
+        void OnDestroy     () override;
         
         FIELD(Asset::Mv1File) mv1File_;
 #pragma region Serialization Function

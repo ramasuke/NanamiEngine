@@ -5,6 +5,9 @@
 
 void Component::ParticleSystem::Play()
 {
+    if (!IsEnable())
+        return;
+    
     playingEffectHandle_ = PlayEffekseer3DEffect(resourceEffectHandle_);
 }
 
@@ -18,7 +21,7 @@ void Component::ParticleSystem::OnUpdate()
 
 void Component::ParticleSystem::InitRenderer()
 {
-    if (!particleFile_)
+    if (!particleFile_ || !IsEnable())
         return;
 
     resourceEffectHandle_ = particleFile_->LoadDxLibHandle();

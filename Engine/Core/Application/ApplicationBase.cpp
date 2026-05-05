@@ -18,7 +18,7 @@ namespace NanamiEngine::Core::Application
     ApplicationBase::ApplicationBase()
     {
         /** ApplicationConfiguの初期化 */
-        ChangeWindowMode     (false          );
+        ChangeWindowMode     (true          );
         SetGraphMode         (Configuration::WINDOW_WIDTH_SIZE, Configuration::WINDOW_HEIGHT_SIZE, Configuration::WINDOW_COLOR_SCALE);
         SetUseDirect3DVersion(DX_DIRECT3D_11);
         SetUseZBuffer3D      (TRUE          );
@@ -48,7 +48,8 @@ namespace NanamiEngine::Core::Application
         SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
         Effekseer_SetGraphicsDeviceLostCallbackFunctions();
     }
-    
+
+    ///TODO: 呼び出し字の処理ではない実装がされているため実装を変えて、別で関数を作ったほうが良い。
     void ApplicationBase::Run()
     {
         Time::Update();

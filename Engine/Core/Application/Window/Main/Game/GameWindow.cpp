@@ -27,6 +27,12 @@ namespace NanamiEngine::Core::MainWindow
     void GameWindow::ChangeMainScene(const std::shared_ptr<Scene::Scene>& scene)
     {
         mainScene_ = scene;
+
+        //NOTE: 
+        for (int totalSkipFrame = 0; totalSkipFrame < 60; totalSkipFrame++)
+        {
+            Time::SkipNextFrame();
+        }
     }
     
     std::shared_ptr<Scene::Scene> GameWindow::CatchScene(
@@ -110,7 +116,7 @@ namespace NanamiEngine::Core::MainWindow
             }
             float timeScale = Time::GetTimeScale();
     
-            if (ImGui::SliderFloat("Time Scale", &timeScale, 0.0f, 10.0f, "%.2f"))
+            if (ImGui::SliderFloat("Time Scale", &timeScale, 0.0f, 20.0f, "%.2f"))
             {
                 Time::SetTimeScale(timeScale);
             }

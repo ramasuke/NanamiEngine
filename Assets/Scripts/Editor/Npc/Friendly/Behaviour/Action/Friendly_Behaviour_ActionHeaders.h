@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/WriteBlackBoard/Enemy_Behaviour_Action_WriteBlackBoardBool.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/Chat/Chattable/Friendly_Behaviour_Action_Chat.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/PlayerStatus/Quest/GiveQuest/Friendly_Behaviour_Action_Quest.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/PlayerStatus/Quest/GiveQuest/SwordMan/Friendly_Behaviour_Action_SwordManQuest.h"

@@ -9,6 +9,7 @@ namespace NanamiEngine
         static float DeltaTime();
         static float CurrentTime();
         static void SetTimeScale(float scale);
+        static void SkipNextFrame();
         static float GetTimeScale();
 
     private:
@@ -16,5 +17,6 @@ namespace NanamiEngine
         static float deltaTime_;
         static float timeScale_;
         static float currentTime_;
+        static int  isSkipNextFrame_;
     };
 }

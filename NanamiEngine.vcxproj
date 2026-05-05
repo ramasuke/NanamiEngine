@@ -811,7 +811,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\RadiateProjectile\RadiateProjectile.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\RadiateProjectile\Enemy_Behaviour_Action_RadiateProjectile.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -967,7 +967,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\ReadBlackBoard\Enemy_Behaviour_Action_ReadBlackBoard.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\ReadBlackBoard\Enemy_Behaviour_Action_ReadBlackBoardInt.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -1045,6 +1045,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\ReadBlackBoard\Enemy_Behaviour_Action_ReadBlackBoardBool.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\Sample\MoveFront\Enemy_Behaviour_Action_SampleMoveFront.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -1123,7 +1124,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\WriteBlackBoard\Enemy_Behaviour_Action_WriteBlackBoard.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\WriteBlackBoard\Enemy_Behaviour_Action_WriteBlackBoardBool.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\WriteBlackBoard\Enemy_Behaviour_Action_WriteBlackBoardInt.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -2216,6 +2218,7 @@
       <AdditionalOptions>/bigobj </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Position\Enemy_Behaviour_Action_Position.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\TickContext\Enemy_Behaviour_TickContext.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Enemy_BehaviourTree.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\TickStatus\TickStatus.cpp">
@@ -7287,6 +7290,7 @@
     <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForTweenV\Coroutine_WaitForTweenV.cpp" />
     <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForTween\Coroutine_WaitForTween.cpp" />
     <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitUntil\Coroutine_WaitUntil.cpp" />
+    <ClCompile Include="Engine\Core\Coroutine\Awaitable\Yield\Coroutine_WaitYield.cpp" />
     <ClCompile Include="Engine\Core\Coroutine\Coroutine.cpp" />
     <ClCompile Include="Engine\Core\Coroutine\FutureTask\Coroutine_FutureTask.cpp" />
     <ClCompile Include="Engine\Core\Coroutine\Scheduler\CoroutineScheduler.cpp">
@@ -9934,11 +9938,13 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\OnDamage\Enemy_Behaviour_Action_OnDamage.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\OnDeath\OnDeath.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\PlayAnimation\Enemy_Behaviour_Action_PlayAnimation.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\RadiateProjectile\RadiateProjectile.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\RadiateProjectile\Enemy_Behaviour_Action_RadiateProjectile.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\Random\Enemy_Behaviour_Action_Random.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\ReadBlackBoard\Enemy_Behaviour_Action_ReadBlackBoard.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\ReadBlackBoard\Enemy_Behaviour_Action_ReadBlackBoardInt.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\ReadBlackBoard\Enemy_Behaviour_Action_ReadBlackBoardBool.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\Sample\MoveFront\Enemy_Behaviour_Action_SampleMoveFront.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\WriteBlackBoard\Enemy_Behaviour_Action_WriteBlackBoard.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\WriteBlackBoard\Enemy_Behaviour_Action_WriteBlackBoardBool.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\WriteBlackBoard\Enemy_Behaviour_Action_WriteBlackBoardInt.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Particle\GenerateParticle.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\PlayerStatus\CheckCompleteQuest\Enemy_Behaviour_Action_CheckCompleteQuest.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\RigidBody\ChangeColliderEmotionType\Enemy_Behaviour_Action_ChangeColliderEmotionType.h" />
@@ -9954,6 +9960,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Transform\Rotation\OnPlayer\Enemy_Behaviour_Action_RotateOnPlayer.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Wait\Seconds\Enemy_Behaviour_Action_WaitSeconds.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Position\Enemy_Behaviour_Action_Position.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\TickContext\Enemy_Behaviour_TickContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Enemy_BehaviourTree.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\TickStatus\TickStatus.h" />
@@ -10151,6 +10158,7 @@
     <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForTweenV\Coroutine_WaitForTweenV.h" />
     <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForTween\Coroutine_WaitForTween.h" />
     <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitUntil\Coroutine_WaitUntil.h" />
+    <ClInclude Include="Engine\Core\Coroutine\Awaitable\Yield\Coroutine_WaitYield.h" />
     <ClInclude Include="Engine\Core\Coroutine\Coroutine.h" />
     <ClInclude Include="Engine\Core\Coroutine\FutureTask\Coroutine_FutureTask.h" />
     <ClInclude Include="Engine\Core\Coroutine\Scheduler\CoroutineScheduler.h" />
@@ -11261,7 +11269,6 @@
     <Folder Include="Assets\Art\Textures\" />
     <Folder Include="Assets\Audio\" />
     <Folder Include="Assets\Prefab\Npc\Friendly\" />
-    <Folder Include="Assets\Scripts\Core\Game\Npc\Behaviour\WriteBlackBoard\" />
     <Folder Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Content\" />
     <Folder Include="Assets\Tests\" />
     <Folder Include="Engine\Render\" />

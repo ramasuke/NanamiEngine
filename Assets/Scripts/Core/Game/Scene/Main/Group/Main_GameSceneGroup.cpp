@@ -19,7 +19,7 @@ namespace GameCore::Scene::Main
         AddScene(std::make_shared<FirstTouchDownMainIsLandScene>(
             CatchContext<FirstTouchDownMainIsLandSceneContext>(),
             GameSceneBaseContext(mainScenarioProgression, subSceneStack)));
-        
+
         AddScene(std::make_shared<MainIslandScene>(
             CatchContext<MainIslandSceneContext>(),
             GameSceneBaseContext(mainScenarioProgression, subSceneStack)));

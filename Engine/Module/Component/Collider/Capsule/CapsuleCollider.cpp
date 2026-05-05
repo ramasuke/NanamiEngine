@@ -9,6 +9,33 @@
 
 namespace NanamiEngine::Module::Component
 {
+    void CapsuleCollider::OnDebugDraw() const
+    {
+        const auto drawPosition = CalcColliderWorldPos();
+        const auto drawRotation = Transform().GetWorldRot();
+    
+        Render3D::Shapes::DrawCapsule3D(
+            drawPosition,
+            radius_ * Transform().GetWorldScale().z,
+            height_ * Transform().GetWorldScale().y,
+            drawRotation,
+            GetColor(200, 200, 0)
+        );
+    }
+
+    const glm::vec3& CapsuleCollider::CalcColliderWorldPos() const
+    {
+        return Transform().GetWorldPos() + Transform().GetWorldRot() * (offset_ * Transform().GetWorldScale());
+    }
+
+    JPH::RefConst<JPH::Shape> CapsuleCollider::CreateColliderShape() const
+    {
+        const float halfHeight = height_ * 0.5f * Transform().GetWorldScale().y;
+        const float radius     = radius_        * Transform().GetWorldScale().z;
+
+        return Physics::CreateCapsuleShape(halfHeight, radius);
+    }
+
     void CapsuleCollider::OnDrawGui()
     {
         ImGui::Checkbox("isTrigger_", &isSensor_);
@@ -43,33 +70,5 @@ namespace NanamiEngine::Module::Component
         }
 
         OnDebugDraw();
-    }
-    
-    void CapsuleCollider::OnDebugDraw() const
-    {
-        const auto drawPosition = CalcColliderWorldPos();
-        const auto drawRotation = Transform().GetWorldRot();
-    
-        Render3D::Shapes::DrawCapsule3D(
-            drawPosition,
-            radius_ * Transform().GetWorldScale().z,
-            height_ * Transform().GetWorldScale().y,
-            drawRotation,
-            GetColor(200, 200, 0)
-        );
-    }
-
-    const glm::vec3& CapsuleCollider::CalcColliderWorldPos() const
-    {
-        return Transform().GetWorldPos() + Transform().GetWorldRot() * (offset_ * Transform().GetWorldScale());
-    }
-
-    JPH::RefConst<JPH::Shape> CapsuleCollider::CreateColliderShape() const
-    {
-        const glm::vec3 worldPos = CalcColliderWorldPos();
-        const float halfHeight = height_ * 0.5f * Transform().GetWorldScale().y;
-        const float radius     = radius_ * Transform().GetWorldScale().z;
-
-        return Physics::CreateCapsuleShape(halfHeight, radius);
     }
 }

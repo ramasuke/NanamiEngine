@@ -35,8 +35,13 @@ void Physics::EngineContactListener::OnContactAdded(
 
     const ContactKey key{
         .a_ = sensor.GetID(),
-        .b_ = other.GetID()
+        .b_ = other .GetID()
     };
+
+    assert(key.a_ != key.b_);
+    printf("Enter: %u %u\n",
+        key.a_.GetIndexAndSequenceNumber(),
+        key.b_.GetIndexAndSequenceNumber());
 
     activeSensorContacts_[key] = {
         reinterpret_cast<void*>(sensor.GetUserData()),
@@ -65,7 +70,7 @@ void Physics::EngineContactListener::OnContactRemoved(
 
 void Physics::EngineContactListener::UnSubscribeEngineCollider(const JPH::BodyID& colliderId)
 {
-    // ---- pendingEnter_ ----
+    // pendingEnter_
     pendingEnter_.erase(
         std::ranges::remove_if(pendingEnter_
                                ,
@@ -76,7 +81,7 @@ void Physics::EngineContactListener::UnSubscribeEngineCollider(const JPH::BodyID
         pendingEnter_.end()
     );
 
-    // ---- pendingExit_ ----
+    // pendingExit_
     pendingExit_.erase(
         std::ranges::remove_if(pendingExit_
                                ,
@@ -87,7 +92,7 @@ void Physics::EngineContactListener::UnSubscribeEngineCollider(const JPH::BodyID
         pendingExit_.end()
     );
 
-    // ---- activeSensorContacts_ ----
+    // activeSensorContacts_
     for (auto it = activeSensorContacts_.begin(); it != activeSensorContacts_.end(); )
     {
         if (it->first.a_ == colliderId || it->first.b_ == colliderId)

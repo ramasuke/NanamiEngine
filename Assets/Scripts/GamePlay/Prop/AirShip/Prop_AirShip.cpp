@@ -16,11 +16,6 @@ namespace GamePlay::Prop
         shootDownParticle_->SetEnable(true);
     }
 
-    void AirShip::UnLockMove()
-    {
-        isMoveLocked_ = false;
-    }
-
     void AirShip::OnAwake()
     {
         originPos_ = Transform().GetWorldPos();
@@ -28,10 +23,7 @@ namespace GamePlay::Prop
 
     void AirShip::OnUpdate()
     {
-        if (isMoveLocked_)
-        {
-            Transform().SetWorldPos(originPos_);
-        }
+        
     }
 
     void AirShip::OnDrawGui()

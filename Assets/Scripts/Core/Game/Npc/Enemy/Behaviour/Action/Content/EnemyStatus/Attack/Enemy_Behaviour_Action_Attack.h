@@ -4,7 +4,7 @@
 #include "../../../../../../../../../../../Engine/Module/Asset/Sound/SoundFile.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
 #include "../../../../../../../DamageContext/Physics/PhysicsPower.h"
-#include "../../Other/WriteBlackBoard/Enemy_Behaviour_Action_WriteBlackBoard.h"
+#include "../../Other/WriteBlackBoard/Enemy_Behaviour_Action_WriteBlackBoardInt.h"
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {

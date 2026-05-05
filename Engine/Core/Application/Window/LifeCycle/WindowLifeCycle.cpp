@@ -40,6 +40,7 @@ namespace NanamiEngine::Core::Application
     {
         if (Module::Asset::Asset::IsLoadingResource())
             return;
+
         
         initRenderableCallbacks_  .Invoke([](auto& obj) { obj.InitRenderer();     });
         awakableCallbacks_        .Invoke([](auto& obj) { obj.OnAwake();          });
@@ -48,7 +49,7 @@ namespace NanamiEngine::Core::Application
         beginPhysicsCallbacks_    .Invoke([](auto& obj) { obj.OnBeginPhysics();   });
         ApplicationBase::Physics().Update(Time::DeltaTime());
         endPhysicsCallbacks_      .Invoke([](auto& obj) { obj.OnUpdatedPhysics(); });
-    
+
         updatableCallbacks_       .Invoke([](auto& obj) { obj.OnUpdate();         });
         lateUpdatableCallbacks_   .Invoke([](auto& obj) { obj.OnLateUpdate();     });
         coroutineScheduler_      ->Invoke();

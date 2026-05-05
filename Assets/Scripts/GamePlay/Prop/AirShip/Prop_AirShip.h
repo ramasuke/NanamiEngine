@@ -11,13 +11,11 @@ namespace GamePlay::Prop
     {
     public:
         void OnShootDown();
-        void UnLockMove();
         
     private:
         void OnAwake () override;
         void OnUpdate() override;
         
-        bool isMoveLocked_ = true;
         glm::vec3 originPos_{};
         [[serialize(1)]] FIELD(Component::ParticleSystem) shootDownParticle_;
         

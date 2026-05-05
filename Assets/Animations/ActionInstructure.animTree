@@ -51,7 +51,7 @@
                 "cereal_class_version": 0,
                 "value0": {},
                 "position_": {
-                    "value0": 49.0,
+                    "value0": 56.0,
                     "value1": 292.0
                 },
                 "guid_": {
@@ -78,7 +78,7 @@
                             "data": {
                                 "cereal_class_version": 0,
                                 "value0": {
-                                    "value_": "28E8301C-FD97-4760-B432-90D7DF322068"
+                                    "value_": "7A131572-F6B4-4989-95CA-8AAA42C6D741"
                                 }
                             }
                         }
@@ -86,14 +86,14 @@
                 },
                 "name_": "Idle",
                 "position_": {
-                    "value0": 270.0,
+                    "value0": 276.0,
                     "value1": 380.0
                 },
                 "guid_": {
                     "value_": "DF323527-09FF-430F-9A1D-C2BAC20FA507"
                 },
-                "speed_": 1.0,
-                "blendAnimationOffset_secs_": 0.0,
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000000376832.0,
                 "modelAnimationIndex_": 0
             }
         }
@@ -111,22 +111,22 @@
                             "id": 2147483656,
                             "data": {
                                 "value0": {
-                                    "value_": "48D564ED-68A5-4877-9F71-03BD29F9BEF5"
+                                    "value_": "B7212D97-33D5-4547-ACDD-348F11A1EE88"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "ClipNode",
+                "name_": "Walk",
                 "position_": {
-                    "value0": 269.0,
-                    "value1": 299.0
+                    "value0": 275.0,
+                    "value1": 293.0
                 },
                 "guid_": {
                     "value_": "05802991-1083-4F2D-BCA3-1DCD18271C2D"
                 },
-                "speed_": 1.0,
-                "blendAnimationOffset_secs_": 0.0,
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000000376832.0,
                 "modelAnimationIndex_": 0
             }
         }
@@ -174,7 +174,22 @@
                     "ptr_wrapper": {
                         "valid": 1,
                         "data": {
-                            "value0": 0
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 2147483651,
+                                "polymorphic_name": "NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<int>",
+                                "ptr_wrapper": {
+                                    "id": 2147483659,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "cereal_class_version": 0
+                                        },
+                                        "name_": "State",
+                                        "equalValue_": 0
+                                    }
+                                }
+                            }
                         }
                     }
                 },
@@ -194,14 +209,25 @@
     "fromAnyStateNodeNodePath_1": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483659,
+            "id": 2147483660,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
                     "ptr_wrapper": {
                         "valid": 1,
                         "data": {
-                            "value0": 0
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483661,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 1
+                                    }
+                                }
+                            }
                         }
                     }
                 },

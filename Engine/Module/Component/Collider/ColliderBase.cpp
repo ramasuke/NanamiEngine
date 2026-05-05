@@ -33,7 +33,7 @@ namespace NanamiEngine::Module::Component
         switch (emotionType_)
         {
         case JPH::EMotionType::Dynamic:
-            bodyInterface.SetPositionAndRotation(
+            bodyInterface.SetPositionAndRotationWhenChanged(
                 bodyId_, pos, rot, JPH::EActivation::Activate);
             break;
     
@@ -41,11 +41,9 @@ namespace NanamiEngine::Module::Component
             bodyInterface.MoveKinematic(
                 bodyId_, pos, rot, Time::DeltaTime());
             break;
+        case JPH::EMotionType::Static:
+            break;
         default: ;
-            // case JPH::EMotionType::Static:
-        //     bodyInterface.SetPositionAndRotation(
-        //         bodyId_, pos, rot, JPH::EActivation::DontActivate);
-        //     break;
         }
     }
     
@@ -105,13 +103,6 @@ namespace NanamiEngine::Module::Component
             isGravity_,
             &Components()
         );
-        switch (emotionType_)
-        {
-            case JPH::EMotionType::Static:
-            bodyInterface.SetPositionAndRotation(bodyId_, position, rotation, JPH::EActivation::DontActivate);
-            break;
-        default: ;
-        }
     }
     
     void ColliderBase::OnBeginPhysics()
@@ -190,7 +181,7 @@ namespace NanamiEngine::Module::Component
         RecreateBody();
     }
     
-    void ColliderBase::SetGravity(bool isGravity)
+    void ColliderBase::SetGravity(const bool isGravity)
     {
         if (isGravity_ == isGravity)
             return;

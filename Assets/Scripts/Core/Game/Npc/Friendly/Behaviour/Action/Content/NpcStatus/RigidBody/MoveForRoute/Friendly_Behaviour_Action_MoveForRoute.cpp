@@ -77,7 +77,6 @@ namespace GameCore::Npc::Friendly::Behaviour
         toTarget.y = 0.0f;
 
         const float distance = glm::length(toTarget);
-
         // 到達判定
         if (distance <= ARRIVE_THRESHOLD)
         {
@@ -117,6 +116,5 @@ namespace GameCore::Npc::Friendly::Behaviour
         ImGuiHelper::OnDrawInputField("moveRoute_", moveRoute_);
         ImGuiHelper::OnDrawInputField("moveSpeed_", moveSpeed_);
         ImGuiHelper::OnDrawInputField("turnRotateSpeed_", turnRotateSpeed_);
-        ImGuiHelper::OnDrawInputField("moveAnimationParamNumber_", moveAnimationParamNumber_);
     }
 }

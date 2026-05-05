@@ -6,20 +6,13 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 {
     TickStatus SampleFirstEventDragonChat::DoTick(const TickContext& context)
     {
-        if (context.IsChatting())
-        {
-            context.IsChatting() = false;
-            AppearFirstEventDragon(context);
-            return TickStatus::Success; 
-        }
-        return TickStatus::Failure;
+        AppearFirstEventDragon(context);
+        return TickStatus::Success; 
     }
 
     void SampleFirstEventDragonChat::AppearFirstEventDragon(const TickContext& context)
     {
-        const auto dragon = Scene::GameObject::Instantiate(firstEventDragonPrefab_.get(), appearFirstEventDragonPosition_);
-        //dragon.lock()->TransformRef().SetParent(context.NpcGameObject(), true);
-        //dragon.lock()->TransformRef().SetParent(std::weak_ptr<GameObject::IGameObject>(), true);
+        Scene::GameObject::Instantiate(firstEventDragonPrefab_.get(), appearFirstEventDragonPosition_);
     }
 
     void SampleFirstEventDragonChat::DoDrawGui()

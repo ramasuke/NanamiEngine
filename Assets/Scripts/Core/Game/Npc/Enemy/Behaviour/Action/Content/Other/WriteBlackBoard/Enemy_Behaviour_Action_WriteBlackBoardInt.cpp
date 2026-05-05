@@ -1,4 +1,4 @@
-﻿#include "Enemy_Behaviour_Action_WriteBlackBoard.h"
+﻿#include "Enemy_Behaviour_Action_WriteBlackBoardInt.h"
 
 #include "../../../../../../../../../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 

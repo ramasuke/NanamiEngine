@@ -1,6 +1,7 @@
 ﻿#include "TitleScene.h"
 
 #include "../../../../../../../../Engine/Core/Application/ApplicationBase.h"
+#include "../../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
 
