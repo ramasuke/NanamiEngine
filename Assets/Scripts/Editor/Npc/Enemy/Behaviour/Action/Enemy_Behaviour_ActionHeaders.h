@@ -14,6 +14,7 @@
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Sound/PlayBGM/Enemy_Behaviour_Action_PlayBGM.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Sound/PlaySE/Enemy_Behaviour_Action_PlaySE.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Camera/PurposeCamera/Enemy_Behaviour_Action_PurposeCamera.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Camera/ScenePurposeCamera/Enemy_Behaviour_Action_ScenePurposeCamera.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/GameObject/RadiateProjectile/Enemy_Behaviour_Action_RadiateProjectile.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/Random/Enemy_Behaviour_Action_Random.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/ReadBlackBoard/Enemy_Behaviour_Action_ReadBlackBoardBool.h"

@@ -10,6 +10,7 @@ namespace NanamiEngine
 namespace NanamiEngine::Core::Object
 {
     template <typename T>
+    requires std::is_base_of_v<Module::Object::IObject, T>
     class Field
     {
     public:

@@ -1,54 +1,56 @@
 ﻿#include "Directory.h"
 
-#include "../../../Module/Asset/Sprite/SpriteFile.h"
 #include "../../../Module/Asset/Factory/AssetFactory.h"
 
-NanamiEngine::Core::FileSystem::Directory::Directory(const std::string& ownPath)
+namespace NanamiEngine::Core::FileSystem
 {
-    if (!std::filesystem::exists(ownPath) || !std::filesystem::is_directory(ownPath))
-        return;
-
-    ownPath_ = ownPath;
-    name_ = std::filesystem::path(ownPath).filename().string();
-
-    for (const auto& entry : std::filesystem::directory_iterator(ownPath))
+    Directory::Directory(const std::string& ownPath)
     {
-        const std::string fileName = entry.path().filename().string();
-        const std::string filePath = entry.path().string();
-
-        if (entry.is_directory())
+        if (!std::filesystem::exists(ownPath) || !std::filesystem::is_directory(ownPath))
+            return;
+    
+        ownPath_ = ownPath;
+        name_ = std::filesystem::path(ownPath).filename().string();
+    
+        for (const auto& entry : std::filesystem::directory_iterator(ownPath))
         {
-            directories_.emplace_back(filePath);
+            const std::string fileName = entry.path().filename().string();
+            const std::string filePath = entry.path().string();
+    
+            if (entry.is_directory())
+            {
+                directories_.emplace_back(filePath);
+            }
+            else if (entry.is_regular_file())
+            {
+                if (LibCore::FilePath::IsExtension(filePath, ".meta"))
+                    continue;
+                
+                files_.push_back(File::CreateOrLoad(filePath, fileName));
+            }
         }
-        else if (entry.is_regular_file())
+    }
+    
+    void Directory::OnSave()
+    {
+        for (auto& dir : directories_)
         {
-            if (LibCore::FilePath::IsExtension(filePath, ".meta"))
-                continue;
-            
-            files_.push_back(File::CreateOrLoad(filePath, fileName));
+            dir.OnSave();
+        }
+        for (const auto& file : files_)
+        {
+            file.OnSave();
         }
     }
-}
-
-void NanamiEngine::Core::FileSystem::Directory::OnSave()
-{
-    for (auto& dir : directories_)
+    
+    void Directory::AddFile(const File& file)
     {
-        dir.OnSave();
+        files_.push_back(file);
     }
-    for (const auto& file : files_)
+    
+    Directory& Directory::AddDirectory()
     {
-        file.OnSave();
+        directories_.emplace_back("");
+        return directories_.back();
     }
-}
-
-void NanamiEngine::Core::FileSystem::Directory::AddFile(const File& file)
-{
-    files_.push_back(file);
-}
-
-NanamiEngine::Core::FileSystem::Directory& NanamiEngine::Core::FileSystem::Directory::AddDirectory()
-{
-    directories_.emplace_back("");
-    return directories_.back();
 }

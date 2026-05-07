@@ -265,6 +265,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\ScenePurposeCamera\Enemy_Behaviour_Action_ScenePurposeCamera.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Attack\Enemy_Behaviour_Action_Attack.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -2218,6 +2219,7 @@
       <AdditionalOptions>/bigobj </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\FieldGameObject\Enemy_Behaviour_Action_FieldGameObject.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Position\Enemy_Behaviour_Action_Position.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\TickContext\Enemy_Behaviour_TickContext.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Enemy_BehaviourTree.cpp" />
@@ -9931,6 +9933,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\MainProgression\MainProgression.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\AttackArea\Enemy_AttackArea.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\PurposeCamera\Enemy_Behaviour_Action_PurposeCamera.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\ScenePurposeCamera\Enemy_Behaviour_Action_ScenePurposeCamera.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Attack\Enemy_Behaviour_Action_Attack.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Condition\Condition_ArriveDuration\Enemy_Behaviour_Action_ConditionArriveDuration.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Condition\IsCurrentHealthRate\Enemy_Behaviour_Action_IsCurrentHealthRate.h" />
@@ -9960,6 +9963,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Transform\Rotation\OnPlayer\Enemy_Behaviour_Action_RotateOnPlayer.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Wait\Seconds\Enemy_Behaviour_Action_WaitSeconds.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\FieldGameObject\Enemy_Behaviour_Action_FieldGameObject.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Position\Enemy_Behaviour_Action_Position.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\TickContext\Enemy_Behaviour_TickContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Enemy_BehaviourTree.h" />

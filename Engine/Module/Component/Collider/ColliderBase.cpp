@@ -4,6 +4,7 @@
 #include "../../../Core/Application/Time/Time.h"
 #include "../../../Core/Physics/Physics.h"
 #include "../../GameObject/Transform/Transform.h"
+#include "../../Physics/Physics_.h"
 #include "detail/type_quat.hpp"
 #include "ext/quaternion_geometric.hpp"
 
@@ -43,7 +44,8 @@ namespace NanamiEngine::Module::Component
             break;
         case JPH::EMotionType::Static:
             break;
-        default: ;
+        default:
+            break;
         }
     }
     
@@ -89,7 +91,6 @@ namespace NanamiEngine::Module::Component
     void ColliderBase::OnAwake()
     {
         auto& physics = Core::Application::ApplicationBase::Physics();
-        auto& bodyInterface = physics.GetPhysicsSystem().GetBodyInterface();
     
         auto [position, rotation] = CalcWorldTransformInternal();
         
@@ -137,18 +138,17 @@ namespace NanamiEngine::Module::Component
             glm::vec3 newPos(pos.GetX(), pos.GetY(), pos.GetZ());
             glm::quat newRot(rotation.GetW(), rotation.GetX(), rotation.GetY(), rotation.GetZ());
     
-            // --- Freeze Position ---
-            glm::vec3 curPos = Transform().GetWorldPos();
+            const glm::vec3 curPos = Transform().GetWorldPos();
     
             if (HasConstraint(constraints_, Physics::Constraints::FreezePosX)) newPos.x = curPos.x;
             if (HasConstraint(constraints_, Physics::Constraints::FreezePosY)) newPos.y = curPos.y;
             if (HasConstraint(constraints_, Physics::Constraints::FreezePosZ)) newPos.z = curPos.z;
     
-            // --- Freeze Rotation ---
-            glm::quat curRot = Transform().GetWorldRot();
+            // Freeze Rotation
+            const glm::quat curRot = Transform().GetWorldRot();
     
             glm::vec3 newEuler = glm::eulerAngles(newRot);
-            glm::vec3 curEuler = glm::eulerAngles(curRot);
+            const glm::vec3 curEuler = glm::eulerAngles(curRot);
     
             if (HasConstraint(constraints_, Physics::Constraints::FreezeRotX)) newEuler.x = curEuler.x;
             if (HasConstraint(constraints_, Physics::Constraints::FreezeRotY)) newEuler.y = curEuler.y;

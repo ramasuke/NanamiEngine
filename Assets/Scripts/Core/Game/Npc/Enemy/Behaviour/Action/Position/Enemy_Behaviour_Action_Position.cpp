@@ -36,6 +36,9 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         }
 
         ImGuiHelper::OnDrawInputField("offset_", offset_);
-        ImGuiHelper::OnDrawInputField("targetObject_", targetObject_);
+        if (mode_ == Mode::TargetObject)
+        {
+            ImGuiHelper::OnDrawInputField("targetObject_", targetObject_);
+        }
     }
 }

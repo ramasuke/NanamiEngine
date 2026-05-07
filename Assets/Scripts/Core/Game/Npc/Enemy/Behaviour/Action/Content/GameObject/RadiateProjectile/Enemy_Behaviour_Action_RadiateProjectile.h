@@ -19,10 +19,10 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             const std::weak_ptr<GameObject::IGameObject>& projectileObject);
 
     private:
-        [[serialize(0)]] float moveSpeed_ = 5.0f;
-        [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) projectilePrefab_;
         [[serialize(3)]] Position spawnPosition_;
         [[serialize(3)]] Position targetPosition_;
+        [[serialize(3)]] float moveSpeed_ = 5.0f;
+        [[serialize(3)]] FIELD(Asset::PrefabGameObjectFile) projectilePrefab_;
         
 
 #pragma region Serialization
@@ -32,33 +32,16 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(cereal::base_class<ActionBase>(this));
             archive(CEREAL_NVP(spawnPosition_));
             archive(CEREAL_NVP(targetPosition_));
+            archive(CEREAL_NVP(moveSpeed_));
+            archive(CEREAL_NVP(projectilePrefab_));
         }
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
-            //TODO: 後で消す
             if (version >= 3) archive(CEREAL_NVP(spawnPosition_));
             if (version >= 3) archive(CEREAL_NVP(targetPosition_)); 
-
-            if (version >= 3)
-                return;
-            [[serialize(0)]] glm::vec3 instantiateOffsetPos_ = {};
-            [[serialize(0)]] bool useAbsoluteSpawnPosition_ = false;
-            [[serialize(0)]] float moveSpeed_ = 5.0f;
-            [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) projectilePrefab_;
-            [[serialize(1)]] glm::vec3 targetOffsetPos_ = {};
-            [[serialize(2)]] Position::Mode targetMode_ = Position::Mode::EnemyOffset;
-            [[serialize(2)]] FIELD(GameObject::IGameObject) targetObject_;
-            archive(cereal::base_class<ActionBase>(this));
-            archive(CEREAL_NVP(instantiateOffsetPos_));
-            archive(CEREAL_NVP(useAbsoluteSpawnPosition_));
-            bool useAbsoluteTargetPosition_;
-            if (version <= 1) archive(CEREAL_NVP(useAbsoluteTargetPosition_));
-            archive(CEREAL_NVP(moveSpeed_));
-            archive(CEREAL_NVP(projectilePrefab_));
-            archive(CEREAL_NVP(targetOffsetPos_));
-            if (version >= 2) archive(CEREAL_NVP(targetMode_));
-            if (version >= 2) archive(CEREAL_NVP(targetObject_));
+            if (version >= 3) archive(CEREAL_NVP(moveSpeed_)); 
+            if (version >= 3) archive(CEREAL_NVP(projectilePrefab_)); 
         }
 #pragma endregion
     };

@@ -1,7 +1,9 @@
 ﻿#pragma once
+#include "fwd.hpp"
 #include "../ComponentBase.h"
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/Particle/ParticleFile.h"
+#include "detail/type_quat.hpp"
 
 namespace NanamiEngine::Module::Component
 {
@@ -17,9 +19,10 @@ namespace NanamiEngine::Module::Component
         void OnUpdate           () override;
         void InitRenderer       () override;
         void OnRender           () override;
-        void OnUpdateRenderPos  () const;
-        void OnUpdateRenderRot  () const;
-        void OnUpdateRenderScale() const;
+        void TryUpdateRenderPos  ();
+        void TryUpdateRenderRot  ();
+        void TryUpdateRenderScale();
+        void OnDestroy          () override;
 
         FIELD(Asset::ParticleFile) particleFile_;
         int   resourceEffectHandle_ = -1;
@@ -27,6 +30,11 @@ namespace NanamiEngine::Module::Component
         float playingDuration_secs_ = 0.0f;
         float playingDuring_secs_   = 0.0f;
         bool  isRoop_ = true;
+        
+        glm::vec3 prevPos_{};
+        glm::quat prevRot_{};
+        glm::vec3 prevScale_{};
+        bool firstUpdate_ = true;
         
 #pragma region Serialization Function
     public:

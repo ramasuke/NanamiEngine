@@ -11,7 +11,10 @@ namespace NanamiEngine
 
     void Time::Update()
     {
-        isSkipNextFrame_--;
+        if (isSkipNextFrame_ > 0)
+        {
+            isSkipNextFrame_--;
+        }
         
         const int now = GetNowCount();
 

@@ -38,11 +38,6 @@ void Physics::EngineContactListener::OnContactAdded(
         .b_ = other .GetID()
     };
 
-    assert(key.a_ != key.b_);
-    printf("Enter: %u %u\n",
-        key.a_.GetIndexAndSequenceNumber(),
-        key.b_.GetIndexAndSequenceNumber());
-
     activeSensorContacts_[key] = {
         reinterpret_cast<void*>(sensor.GetUserData()),
         reinterpret_cast<void*>(other.GetUserData())

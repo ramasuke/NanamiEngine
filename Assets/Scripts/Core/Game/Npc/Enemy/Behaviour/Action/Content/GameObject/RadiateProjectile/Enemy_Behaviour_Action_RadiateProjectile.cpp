@@ -1,9 +1,9 @@
 ﻿#include "Enemy_Behaviour_Action_RadiateProjectile.h"
 
-#include "../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
-#include "../../../../../../../../../../../Engine/Core/Coroutine/Awaitable/Yield/Coroutine_WaitYield.h"
+#include "../../../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForTween/Coroutine_WaitForTween.h"
 #include "../../../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "../../../../../../../../../../../Libs/LibCore/Tween/Ease/Ease.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -26,41 +26,31 @@ namespace GameCore::Npc::Enemy::Behaviour
 
     void Action::RadiateProjectile::DoDrawGui()
     {
+        
         ImGuiHelper::OnDrawInputField("spawnPosition_" , spawnPosition_);
         ImGuiHelper::OnDrawInputField("targetPosition_", targetPosition_);
+        ImGuiHelper::OnDrawInputField("moveSpeed_", moveSpeed_);
+        ImGuiHelper::OnDrawInputField("projectilePrefab_", projectilePrefab_);
     }
 
     Coroutine::Task<void> Action::RadiateProjectile::MoveProjectileAsync(
         const TickContext context,
         const std::weak_ptr<GameObject::IGameObject>& projectileObject)
     {
-        float t = 0.0f;
+        auto& transform = projectileObject.lock()->Transform();
 
-        auto projectile = projectileObject.lock();
-        if (!projectile)
-            co_return;
+        const glm::vec3 startPos  = transform.GetWorldPos();
+        const glm::vec3 targetPos = targetPosition_.get(context);
 
-        const glm::vec3 startPos = projectile->Transform().GetWorldPos();
+        const float distance = glm::distance(startPos, targetPos);
+        const float durationSec = distance / moveSpeed_;
 
-        while (t < 1.0f)
-        {
-            projectile = projectileObject.lock();
-            if (!projectile)
-                co_return;
+        const auto tween = tweeny::from(startPos)
+            .to(targetPos)
+            .during(static_cast<int>(durationSec * 1000.0f))
+            .via(Tween::Ease(EaseType::Linear));
 
-            auto& transform = projectile->Transform();
-
-            const glm::vec3 targetPos = targetPosition_.get(context);
-
-            t += Time::DeltaTime() * moveSpeed_;
-            transform.SetWorldPos(glm::mix(startPos, targetPos, t));
-
-            co_await Coroutine::WaitYield();
-        }
-
-        if (const auto projectile = projectileObject.lock())
-        {
-            projectile->Transform().SetWorldPos(targetPosition_.get(context));
-        }
+        co_await Coroutine::WaitForTween(transform, tween);
+        projectileObject.lock()->OnDestroy();
     }
 }

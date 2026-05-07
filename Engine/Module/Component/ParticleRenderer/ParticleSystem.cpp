@@ -7,8 +7,12 @@ void Component::ParticleSystem::Play()
 {
     if (!IsEnable())
         return;
-    
+
+    firstUpdate_ = true;
     playingEffectHandle_ = PlayEffekseer3DEffect(resourceEffectHandle_);
+    TryUpdateRenderPos();
+    TryUpdateRenderRot();
+    TryUpdateRenderScale();
 }
 
 void Component::ParticleSystem::OnUpdate()
@@ -32,35 +36,58 @@ void Component::ParticleSystem::OnRender()
 {
     if (!IsEnable())
         return;
-        
+
     if (isRoop_ && playingDuring_secs_ >= playingDuration_secs_)
     {
+        firstUpdate_ = true;
         playingEffectHandle_ = PlayEffekseer3DEffect(resourceEffectHandle_);
         playingDuring_secs_  = 0;
     }
     
-    OnUpdateRenderPos  ();
-    OnUpdateRenderRot  ();
-    OnUpdateRenderScale();
+    TryUpdateRenderPos();
+    TryUpdateRenderRot();
+    TryUpdateRenderScale();
+
+    firstUpdate_ = false;
 }
 
-void Component::ParticleSystem::OnUpdateRenderPos() const
+void Component::ParticleSystem::TryUpdateRenderPos()
 {
-    const auto position = Transform().GetWorldPos();
-    SetPosPlayingEffekseer3DEffect(playingEffectHandle_, position.x, position.y, position.z);
+    const auto pos = Transform().GetWorldPos();
+
+    if (firstUpdate_ || pos != prevPos_)
+    {
+        SetPosPlayingEffekseer3DEffect(playingEffectHandle_, pos.x, pos.y, pos.z);
+        prevPos_ = pos;
+    }
 }
 
-void Component::ParticleSystem::OnUpdateRenderRot() const
+void Component::ParticleSystem::TryUpdateRenderRot()
 {
-    const auto quatRotation = Transform().GetWorldRot();
-    const auto eulerRotation = glm::eulerAngles(quatRotation);
-    SetRotationPlayingEffekseer3DEffect(playingEffectHandle_, eulerRotation.x, eulerRotation.y, eulerRotation.z);
+    const auto rot = Transform().GetWorldRot();
+
+    if (firstUpdate_ || rot != prevRot_)
+    {
+        const auto eulerAngle = glm::eulerAngles(rot);
+        SetRotationPlayingEffekseer3DEffect(playingEffectHandle_, eulerAngle.x, eulerAngle.y, eulerAngle.z);
+        prevRot_ = rot;
+    }
 }
 
-void Component::ParticleSystem::OnUpdateRenderScale() const
+void Component::ParticleSystem::TryUpdateRenderScale()
 {
     const auto scale = Transform().GetWorldScale();
-    SetScalePlayingEffekseer3DEffect(playingEffectHandle_, scale.x, scale.y, scale.z);
+
+    if (firstUpdate_ || scale != prevScale_)
+    {
+        SetScalePlayingEffekseer3DEffect(playingEffectHandle_, scale.x, scale.y, scale.z);
+        prevScale_ = scale;
+    }
+}
+
+void Component::ParticleSystem::OnDestroy()
+{
+    
 }
 
 void Component::ParticleSystem::OnDrawGui()
@@ -84,8 +111,6 @@ void Component::ParticleSystem::OnDrawGui()
     if (ImGui::Button("Play Effect"))
     {
         playingEffectHandle_ = PlayEffekseer3DEffect(resourceEffectHandle_);
-        OnUpdateRenderPos  ();
-        OnUpdateRenderRot  ();
-        OnUpdateRenderScale();
+        firstUpdate_ = true;
     }
 }

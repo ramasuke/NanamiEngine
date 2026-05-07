@@ -1,5 +1,6 @@
 ﻿#include "Main_GameSceneGroup.h"
 
+#include "../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../Content/FirstTouchDownMainIsLand/FirstTouchDownMainIsLandScene.h"
 #include "../Content/MainIslandScene/MainIsLandScene.h"
 #include "../Content/Title/TitleScene.h"
@@ -42,6 +43,9 @@ namespace GameCore::Scene::Main
     {
         for (const auto& changeRequest : changeRequests_)
         {
+            Time::SkipNextFrame();
+            Time::SkipNextFrame();
+            
             if (const auto current = currentScene_.lock())
             {
                 current->OnExit ();

@@ -11,11 +11,6 @@ namespace GamePlay::Ui
     {
         gameStartButton_->OnClick().subscribe([this](NanamiUi::MouseState)
         {
-            //WARNING: 何の処理を待ってから実行するのが適切か分からないので適当に遅延してます。
-            for (int totalSkipFrame = 0; totalSkipFrame < 500; totalSkipFrame++)
-            {
-                Time::SkipNextFrame();
-            }
             GameCore::Game::Instance().Scenes().RequestChangeScene<GameCore::Scene::Main::FirstTouchDownMainIsLandScene>();
         });
         gameExitButton_ ->OnClick().subscribe([this](NanamiUi::MouseState)

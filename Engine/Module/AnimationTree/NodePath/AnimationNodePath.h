@@ -49,9 +49,9 @@ namespace NanamiEngine::Module::AnimationTree
 
         [[serialize(0)]] std::unique_ptr<AnimationNodePathAdditionConditionGroup> additionConditionGroup_ = std::make_unique<AnimationNodePathAdditionConditionGroup>();
         [[serialize(0)]] float transitionDuration_secs_ = 0;
-        [[serialize(0)]] Guid  fromNodeGuid_;
-        [[serialize(0)]] Guid  nextNodeGuid_;
-        [[serialize(1)]] Guid  visualFromNodeGuid_;
+        [[serialize(0)]] Guid fromNodeGuid_;
+        [[serialize(0)]] Guid nextNodeGuid_;
+        [[serialize(1)]] Guid visualFromNodeGuid_;
 #pragma region Serialization Function
 public:
 void OnDrawGui() override
