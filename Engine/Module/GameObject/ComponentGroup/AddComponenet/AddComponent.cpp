@@ -169,6 +169,7 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             if (ImGui::TreeNode("Prop"))
             {
                 OnDrawTryAddComponentGui<GamePlay::Prop::AirShip>(addComponent);
+                OnDrawTryAddComponentGui<GamePlay::Prop::Canon  >(addComponent);
                 ImGui::TreePop();
                 ImGui::Spacing();
             }

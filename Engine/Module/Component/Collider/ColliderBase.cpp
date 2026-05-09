@@ -62,7 +62,8 @@ namespace NanamiEngine::Module::Component
         }
     
         auto [pos, rot] = CalcWorldTransformInternal();
-    
+
+        userData_ = Physics::UserData(Entity());
         bodyId_ = physics.CreateCollider(
             CreateColliderShape(),
             pos,
@@ -71,29 +72,20 @@ namespace NanamiEngine::Module::Component
             mass_,
             isSensor_,
             isGravity_,
-            &Components()
+            &userData_
         );
     }
     
     ColliderBase::~ColliderBase()
     {
-        auto& physics = Core::Application::ApplicationBase::Physics();
-        auto& bodyInterface = physics.GetPhysicsSystem().GetBodyInterface();
-    
-        if (!bodyId_.IsInvalid())
-        {
-            bodyInterface.RemoveBody(bodyId_);
-            bodyInterface.DestroyBody(bodyId_);
-            bodyId_ = JPH::BodyID();
-        }
     }
     
     void ColliderBase::OnAwake()
     {
         auto& physics = Core::Application::ApplicationBase::Physics();
-    
         auto [position, rotation] = CalcWorldTransformInternal();
-        
+
+        userData_ = Physics::UserData(Entity());
         bodyId_ = physics.CreateCollider(
             CreateColliderShape(),
             position,
@@ -102,7 +94,7 @@ namespace NanamiEngine::Module::Component
             mass_,
             isSensor_,
             isGravity_,
-            &Components()
+            &userData_
         );
     }
     
@@ -164,8 +156,17 @@ namespace NanamiEngine::Module::Component
     
     void ColliderBase::OnDestroy()
     {
-        Core::Application::ApplicationBase::Physics()
-            .UnSubscribeEngineCollider(bodyId_);
+        auto& physics = Core::Application::ApplicationBase::Physics();
+        auto& bodyInterface = physics.GetPhysicsSystem().GetBodyInterface();
+
+        if (!bodyId_.IsInvalid())
+        {
+            physics.UnSubscribeEngineCollider(bodyId_);
+
+            bodyInterface.RemoveBody(bodyId_);
+            bodyInterface.DestroyBody(bodyId_);
+            bodyId_ = JPH::BodyID();
+        }
     }
     
     void ColliderBase::SetMotionType(const JPH::EMotionType& type)

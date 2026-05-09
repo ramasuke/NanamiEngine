@@ -31,11 +31,12 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("targetPosition_", targetPosition_);
         ImGuiHelper::OnDrawInputField("moveSpeed_", moveSpeed_);
         ImGuiHelper::OnDrawInputField("projectilePrefab_", projectilePrefab_);
+        ImGuiHelper::OnDrawInputField("moveFinishedProjectileDestroy_", isFinishedProjectileDestroy_);
     }
 
     Coroutine::Task<void> Action::RadiateProjectile::MoveProjectileAsync(
         const TickContext context,
-        const std::weak_ptr<GameObject::IGameObject>& projectileObject)
+        const std::weak_ptr<GameObject::IGameObject> projectileObject)
     {
         auto& transform = projectileObject.lock()->Transform();
 
@@ -51,6 +52,9 @@ namespace GameCore::Npc::Enemy::Behaviour
             .via(Tween::Ease(EaseType::Linear));
 
         co_await Coroutine::WaitForTween(transform, tween);
-        projectileObject.lock()->OnDestroy();
+        if (!projectileObject.expired() && isFinishedProjectileDestroy_)
+        {
+            projectileObject.lock()->OnDestroy();
+        }
     }
 }

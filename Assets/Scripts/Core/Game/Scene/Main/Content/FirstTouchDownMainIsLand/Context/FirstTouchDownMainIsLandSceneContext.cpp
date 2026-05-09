@@ -47,5 +47,6 @@ namespace GameCore::Scene
         LibCore::ImGuiHelper::OnDrawInputField("firstEventDragonPrefab_", firstEventDragonPrefab_);
         LibCore::ImGuiHelper::OnDrawInputField("firstEventDragonSpawnPos_", firstEventDragonSpawnPos_);
         LibCore::ImGuiHelper::OnDrawInputField("playerAvatarInitStatus_", playerAvatarInitStatus_);
+        LibCore::ImGuiHelper::OnDrawInputField("playerControllabeCanon_", playerControllabeCanon_);
     }
 }

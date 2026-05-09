@@ -6,8 +6,8 @@
 
 namespace NanamiEngine::R4
 {
-    class SensorStayable final : public Component::ComponentBase,
-                                 public Physics::Callback::ISensorStayable
+    class SensorStayableAsObservable final : public Component::ComponentBase,
+                                             public Physics::Callback::ISensorStayable
     {
     public:
         [[nodiscard]] rxcpp::observable<std::pair<JPH::ContactManifold, std::shared_ptr<GameObject::IGameObject>>> OnAction() const;
@@ -20,26 +20,23 @@ namespace NanamiEngine::R4
 
 #pragma region Serialization Function
     public:
-        void OnDrawGui() {
-        }
+        void OnDrawGui() override;
 
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<ComponentBase>(this));
-            archive(cereal::base_class<Physics::Callback::ISensorStayable>(this));
         }
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
-            archive(cereal::base_class<Physics::Callback::ISensorStayable>(this));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::R4::SensorStayable, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::R4::SensorStayable);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, NanamiEngine::R4::SensorStayable);
+CEREAL_CLASS_VERSION(NanamiEngine::R4::SensorStayableAsObservable, 0);
+CEREAL_REGISTER_TYPE(NanamiEngine::R4::SensorStayableAsObservable);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, NanamiEngine::R4::SensorStayableAsObservable);
 #pragma endregion

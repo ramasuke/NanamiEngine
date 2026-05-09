@@ -198,7 +198,7 @@
                                         "ptr_wrapper": {
                                             "id": 2147483658,
                                             "data": {
-                                                "cereal_class_version": 15,
+                                                "cereal_class_version": 16,
                                                 "value0": {
                                                     "value0": {
                                                         "guid_": {
@@ -489,6 +489,21 @@
                                                             }
                                                         }
                                                     }
+                                                },
+                                                "playerControllabeCanon_": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147483679,
+                                                            "data": {
+                                                                "cereal_class_version": 0,
+                                                                "value0": {
+                                                                    "value_": "7FC6EC27-004E-46C7-B119-EBAA48CD61B6"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -545,7 +560,7 @@
                     "child": {
                         "polymorphic_id": 1,
                         "ptr_wrapper": {
-                            "id": 2147483679,
+                            "id": 2147483680,
                             "data": {
                                 "value0": {
                                     "value0": {}
@@ -561,7 +576,7 @@
                                         "polymorphic_id": 2147483653,
                                         "polymorphic_name": "GameCore::Scene::Sub::ChattingUISceneContext",
                                         "ptr_wrapper": {
-                                            "id": 2147483680,
+                                            "id": 2147483681,
                                             "data": {
                                                 "cereal_class_version": 1,
                                                 "value0": {
@@ -576,7 +591,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483681,
+                                                                "id": 2147483682,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "896A4B04-93BC-4BF6-8C54-517174FA9BAD"
@@ -591,7 +606,7 @@
                                                     "value0": {
                                                         "polymorphic_id": 1073741824,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483682,
+                                                            "id": 2147483683,
                                                             "data": {
                                                                 "cereal_class_version": 0,
                                                                 "value0": {

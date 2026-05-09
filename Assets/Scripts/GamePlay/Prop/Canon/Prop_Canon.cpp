@@ -1,0 +1,38 @@
+﻿#include "Prop_Canon.h"
+
+#include "../../../../../Engine/Module/Component/Collider/ColliderBase.h"
+#include "../../../../../Engine/Module/Physics/Physics_.h"
+#include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "../../Sound/SoundPlayer.h"
+
+namespace GamePlay::Prop
+{
+    void Canon::Shoot()
+    {
+        const glm::vec3 canonForward = Transform().GetWorldRot() * glm::vec3(0.0f, 0.0f, 1.0f);
+        
+        const auto bullet = Scene::GameObject::Instantiate(bulletPrefab_.get(), Transform().GetWorldPos());
+        const auto bulletCollider = bullet.lock()->Components().Catch<Component::ColliderBase>().lock();
+        Physics::AddForce(bulletCollider->BodyId(), canonForward);
+        Sound::SoundPlayer::PlaySe(*shootSound_.get(), Transform().GetWorldPos());
+    }
+    
+    void Canon::RightRotate()
+    {
+        const auto collider = Components().Catch<Component::ColliderBase>();
+        Physics::AddTorque(collider.lock()->BodyId(), glm::vec3(0.0f, addRotateTorque_, 0.0f));
+    }
+
+    void Canon::LeftRotate()
+    {
+        const auto collider = Components().Catch<Component::ColliderBase>();
+        Physics::AddTorque(collider.lock()->BodyId(), glm::vec3(0.0f, -addRotateTorque_, 0.0f));
+    }
+
+    void Canon::OnDrawGui()
+    {
+        ImGuiHelper::OnDrawInputField("bulletPrefab_", bulletPrefab_);
+        ImGuiHelper::OnDrawInputField("bulletForceSpeed_", bulletForceSpeed_);
+        ImGuiHelper::OnDrawInputField("shootSound_", shootSound_);
+    }
+}

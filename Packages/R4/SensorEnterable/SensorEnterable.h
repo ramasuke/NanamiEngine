@@ -6,7 +6,7 @@
 
 namespace NanamiEngine::R4
 {
-    class SensorEnterable final : public Component::ComponentBase,
+    class SensorEnterableAsObservable final : public Component::ComponentBase,
                                   public Physics::Callback::ISensorEnterable
     {
     public:
@@ -39,9 +39,9 @@ namespace NanamiEngine::R4
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::R4::SensorEnterable, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::R4::SensorEnterable);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, NanamiEngine::R4::SensorEnterable);
+CEREAL_CLASS_VERSION(NanamiEngine::R4::SensorEnterableAsObservable, 0);
+CEREAL_REGISTER_TYPE(NanamiEngine::R4::SensorEnterableAsObservable);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, NanamiEngine::R4::SensorEnterableAsObservable);
 #pragma endregion
 
 

@@ -14,6 +14,7 @@
 #include "OnDisableReinforce/OnDisableReinforceState.h"
 #include "OnEnableReinforce/OnEnableReinforceState.h"
 #include "Run/SwordManAvatarRunState.h"
+#include "UseCanon/SwordManAvatarUseCanonState.h"
 #include "Walk/SwordManAvatarWalkState.h"
 
 namespace GamePlay::PlayerAvatar::SwordMan
@@ -38,7 +39,8 @@ namespace GameCore::PlayerAvatar::SwordMan
                                                                 , State::OnDisableReinforceState
                                                                 , State::HurtState
                                                                 , State::AvoidRollingState
-                                                                , State::DeathState>;
+                                                                , State::DeathState
+                                                                , State::SwordManAvatarUseCannonState>;
 
     std::unique_ptr<SwordManAvatarStateMachine> CreateStateMachine(
           const std::shared_ptr<SwordManAvatarStatus     >& status

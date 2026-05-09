@@ -6,8 +6,8 @@
 
 namespace NanamiEngine::R4
 {
-    class SensorExitable final : public Component::ComponentBase,
-                                 public Physics::Callback::ISensorExitable
+    class SensorExitableAsObservable final : public Component::ComponentBase,
+                                             public Physics::Callback::ISensorExitable
     {
     public:
         [[nodiscard]] rxcpp::observable<std::shared_ptr<GameObject::IGameObject>> OnAction() const;
@@ -38,7 +38,7 @@ namespace NanamiEngine::R4
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::R4::SensorExitable, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::R4::SensorExitable);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, NanamiEngine::R4::SensorExitable);
+CEREAL_CLASS_VERSION(NanamiEngine::R4::SensorExitableAsObservable, 0);
+CEREAL_REGISTER_TYPE(NanamiEngine::R4::SensorExitableAsObservable);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, NanamiEngine::R4::SensorExitableAsObservable);
 #pragma endregion

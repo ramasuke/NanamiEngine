@@ -15,6 +15,7 @@ namespace NanamiEngine::Module::Component
         glm::vec3 scale_    = {1.0f, 1.0f, 1.0f};
         
     private:
+        void OnAwake() override;
         void OnStart         () override;
         void OnDebugDraw     () const override;
         [[nodiscard]] const JPH::BodyID& BodyId() const override { return bodyId_; }

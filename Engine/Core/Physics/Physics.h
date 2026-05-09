@@ -6,6 +6,11 @@
 
 #include "../../Module/Physics/ContactListener/EngineContactListener.h"
 
+namespace NanamiEngine::Module::Physics
+{
+    struct UserData;
+}
+
 namespace NanamiEngine::Module::GameObject
 {
     class ComponentGroup;
@@ -13,8 +18,8 @@ namespace NanamiEngine::Module::GameObject
 
 namespace NanamiEngine::Core
 {
-    constexpr auto GRAVITY_SCALE = -90.8f;
-    constexpr auto IN_COLLISION_STEPS = 2;
+    constexpr auto GRAVITY_SCALE = -180.8f;
+    constexpr auto IN_COLLISION_STEPS = 4;
     
     class Physics final
     {
@@ -36,7 +41,7 @@ namespace NanamiEngine::Core
             float mass,
             bool isSensor,
             bool isGravity,
-            Module::GameObject::ComponentGroup* components);
+            Module::Physics::UserData* userData);
 
     private:
         std::unique_ptr<JPH::TempAllocatorImpl> tempAllocator_;

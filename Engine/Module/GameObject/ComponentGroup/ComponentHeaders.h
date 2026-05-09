@@ -11,6 +11,7 @@
 #include "../../../../Assets/Scripts/GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
 #include "../../../../Assets/Scripts/GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../Assets/Scripts/GamePlay/Prop/AirShip/Prop_AirShip.h"
+#include "../../../../Assets/Scripts/GamePlay/Prop/Canon/Prop_Canon.h"
 #include "../../../../Assets/Scripts/GamePlay/Sound/SoundPlayer.h"
 #include "../../../../Assets/Scripts/GamePlay/Sound/Sample/BgmPlayer.h"
 #include "../../../../Assets/Scripts/GamePlay/Ui/ActionInstructTutorial/SwordMan/Ui_SwordMan_ActionInstructTutorial.h"

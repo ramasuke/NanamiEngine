@@ -4,6 +4,7 @@
 
 #include "../../Module/GameObject/ComponentGroup/ComponentGroup.h"
 #include "../../Module/Physics/ContactListener/EngineContactListener.h"
+#include "../../Module/Physics/UserData/Physics_UserData.h"
 #include "Jolt/Physics/Body/BodyCreationSettings.h"
 #include "Sample/SimpleBroadPhaseLayerInterface.h"
 #include "Jolt/Core/Factory.h"
@@ -46,7 +47,7 @@ namespace NanamiEngine::Core
             OBJECT_LAYER_PAIR_FILTER
         );
         physicsSystem_.SetGravity(JPH::Vec3(0, GRAVITY_SCALE, 0));
-        contactListener_ = std::make_unique<Module::Physics::EngineContactListener>();
+        contactListener_ = std::make_unique<Module::Physics::EngineContactListener>(physicsSystem_);
         physicsSystem_.SetContactListener(contactListener_.get());
     }
 
@@ -76,7 +77,7 @@ namespace NanamiEngine::Core
         const float mass,
         const bool isSensor,
         const bool isGravity,
-        Module::GameObject::ComponentGroup* components)
+        Module::Physics::UserData* userData)
     {
         JPH::BodyCreationSettings settings(
             shape,
@@ -92,13 +93,14 @@ namespace NanamiEngine::Core
         settings.mOverrideMassProperties = JPH::EOverrideMassProperties::CalculateInertia;
 
         settings.mIsSensor = isSensor;
-        settings.mUserData = reinterpret_cast<JPH::uint64>(components);
+        assert(userData);
+        settings.mUserData = reinterpret_cast<JPH::uint64>(userData);
         if (!isGravity)
         {
             settings.mGravityFactor = 0.0f;
         }
 
-        if (motionType != JPH::EMotionType::Static)
+        if (motionType == JPH::EMotionType::Static)
         {
             return physicsSystem_.GetBodyInterface().CreateAndAddBody(settings, JPH::EActivation::DontActivate);
         }

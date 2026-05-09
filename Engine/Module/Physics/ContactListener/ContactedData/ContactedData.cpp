@@ -2,8 +2,7 @@
 
 bool NanamiEngine::Module::Physics::ContactKey::operator==(const ContactKey& rhs) const
 {
-    return (a_ == rhs.a_ && b_ == rhs.b_) ||
-        (a_ == rhs.b_ && b_ == rhs.a_);
+    return (a_ == rhs.a_ && b_ == rhs.b_) || (a_ == rhs.b_ && b_ == rhs.a_);
 }
 
 size_t NanamiEngine::Module::Physics::ContactKeyHash::operator()(const ContactKey& k) const

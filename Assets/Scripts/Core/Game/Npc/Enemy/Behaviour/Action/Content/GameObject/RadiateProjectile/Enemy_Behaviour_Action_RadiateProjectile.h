@@ -16,14 +16,14 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 
         Coroutine::Task<void> MoveProjectileAsync(
             TickContext context,
-            const std::weak_ptr<GameObject::IGameObject>& projectileObject);
+            std::weak_ptr<GameObject::IGameObject> projectileObject);
 
     private:
         [[serialize(3)]] Position spawnPosition_;
         [[serialize(3)]] Position targetPosition_;
         [[serialize(3)]] float moveSpeed_ = 5.0f;
         [[serialize(3)]] FIELD(Asset::PrefabGameObjectFile) projectilePrefab_;
-        
+        [[serialize(4)]] bool isFinishedProjectileDestroy_ = false;
 
 #pragma region Serialization
     public:
@@ -34,6 +34,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(CEREAL_NVP(targetPosition_));
             archive(CEREAL_NVP(moveSpeed_));
             archive(CEREAL_NVP(projectilePrefab_));
+            archive(CEREAL_NVP(isFinishedProjectileDestroy_));
         }
 
         template<class Archive>
@@ -42,6 +43,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             if (version >= 3) archive(CEREAL_NVP(targetPosition_)); 
             if (version >= 3) archive(CEREAL_NVP(moveSpeed_)); 
             if (version >= 3) archive(CEREAL_NVP(projectilePrefab_)); 
+            if (version >= 4) archive(CEREAL_NVP(isFinishedProjectileDestroy_)); 
         }
 #pragma endregion
     };
@@ -49,7 +51,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     REGISTER_ENEMY_ACTION_WITH_NAME(RadiateProjectile, "GameObject::RadiateProjectile")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::RadiateProjectile, 3)
+CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::RadiateProjectile, 4)
 CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::RadiateProjectile)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(
     GameCore::Npc::Enemy::Behaviour::ActionBase,

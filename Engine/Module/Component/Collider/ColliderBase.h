@@ -8,6 +8,7 @@
 #include "Constraints.h"
 #include "fwd.hpp"
 #include "../../Physics/Layer/PhysicsLayer.h"
+#include "../../Physics/UserData/Physics_UserData.h"
 #include "detail/type_quat.hpp"
 
 namespace JPH
@@ -47,12 +48,13 @@ namespace NanamiEngine::Module::Component
         Physics::Constraints constraints_ = Physics::Constraints::None;
         Physics::Layer       layer_       = Physics::Layer::Default;
         JPH::BodyID bodyId_;
+        Physics::UserData userData_ = Physics::UserData(std::weak_ptr<GameObject::IGameObject>());
         
     private:
-        const std::pair<JPH::Vec3, JPH::Quat>& CalcWorldTransformInternal() const;
+        [[nodiscard]] const std::pair<JPH::Vec3, JPH::Quat>& CalcWorldTransformInternal() const;
         void ApplyTransformToBody(JPH::BodyInterface& bodyInterface, const JPH::Vec3& pos, const JPH::Quat& rot) const;
         void RecreateBody();
-        void OnAwake         () override;
+        virtual void OnAwake ();
         void OnBeginPhysics  () override;
         void OnUpdatedPhysics() override;
         void BasedOnDrawgui  () override;

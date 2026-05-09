@@ -107,7 +107,7 @@ static bool ExtractMeshFromDxModel(
 
 namespace NanamiEngine::Module::Component
 {
-    void StaticMeshCollider::OnStart()
+    void StaticMeshCollider::OnAwake()
     {
         const auto modelRenderer = Components().Catch<ModelRenderer>().lock();
         if (!modelRenderer)
@@ -152,7 +152,12 @@ namespace NanamiEngine::Module::Component
             0,
             false,
             IsGravity(),
-            &Components());
+            &userData_);
+    }
+
+    void StaticMeshCollider::OnStart()
+    {
+        
     }
 
     void StaticMeshCollider::OnDebugDraw() const

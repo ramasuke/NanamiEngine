@@ -26,6 +26,10 @@ namespace GameCore::Scene::Main
         template <typename T>
         requires std::derived_from<T, IGameScene>
         void RequestChangeScene();
+        
+        template<typename T>
+        requires std::derived_from<T, SceneContextBase>
+        std::shared_ptr<T> CatchContext();
 
     private:
         void ProcessRequests();
@@ -33,10 +37,6 @@ namespace GameCore::Scene::Main
         template <typename T>
         requires std::derived_from<T, IGameScene>
         void AddScene(std::shared_ptr<T> scene);
-
-        template<typename T>
-        requires std::derived_from<T, SceneContextBase>
-        std::shared_ptr<T> CatchContext();
 
         std::unordered_map<std::type_index, std::shared_ptr<IGameScene>> scenes_;
         std::weak_ptr<IGameScene> currentScene_;

@@ -55,6 +55,17 @@ void NanamiEngine::Module::Physics::AddForce(const JPH::BodyID& bodyId, const gl
     );
 }
 
+void NanamiEngine::Module::Physics::AddTorque(const JPH::BodyID& bodyId, const glm::vec3& torque)
+{
+    auto& bodyInterface =
+        Core::Application::ApplicationBase::Physics()
+        .GetPhysicsSystem()
+        .GetBodyInterface();
+
+    bodyInterface.AddTorque(bodyId, ToJPHVec3(torque));
+}
+
+
 JPH::RefConst<JPH::Shape> NanamiEngine::Module::Physics::CreateBoxShape(const JPH::Vec3& halfSize)
 {
     return new JPH::BoxShape(halfSize);

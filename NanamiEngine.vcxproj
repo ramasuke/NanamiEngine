@@ -4147,6 +4147,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\SwordManAvatarStateMachine.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\UseCanon\SwordManAvatarUseCanonState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Walk\SwordManAvatarWalkState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Event\SwordManAvatarStatusEvent.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Quest\Content\ActionInstructTutorial\Quest_SwordMan_ActionInstructTutorial.cpp">
@@ -5973,6 +5974,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\Canon\Prop_Canon.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.cpp">
@@ -8827,6 +8829,7 @@
     <ClCompile Include="Engine\Module\Physics\Layer\PhysicsLayer.cpp" />
     <ClCompile Include="Engine\Module\Physics\Physics_.cpp" />
     <ClCompile Include="Engine\Module\Physics\RaycastHit\RaycastHit.cpp" />
+    <ClCompile Include="Engine\Module\Physics\UserData\Physics_UserData.cpp" />
     <ClCompile Include="Engine\Module\Scene\GameObject\CopiedPrefabGameObject\CopiedPrefabGameObject.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -10053,6 +10056,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Run\SwordManAvatarRunState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\SwordManAvatarStateBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\SwordManAvatarStateMachine.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\UseCanon\SwordManAvatarUseCanonState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Walk\SwordManAvatarWalkState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Event\IObservableStatusEvent.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Event\SwordManAvatarStatusEvent.h" />
@@ -10120,6 +10124,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\SwordMan\SwordManAvatar.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\SwordMan\Traits\SwordManAvatarTraits.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\Canon\Prop_Canon.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.h" />
@@ -10271,6 +10276,7 @@
     <ClInclude Include="Engine\Module\Physics\Layer\PhysicsLayer.h" />
     <ClInclude Include="Engine\Module\Physics\Physics_.h" />
     <ClInclude Include="Engine\Module\Physics\RaycastHit\RaycastHit.h" />
+    <ClInclude Include="Engine\Module\Physics\UserData\Physics_UserData.h" />
     <ClInclude Include="Engine\Module\Scene\GameObject\CopiedPrefabGameObject\CopiedPrefabGameObject.h" />
     <ClInclude Include="Engine\Module\Scene\GameObject\Helper\GameObject.h" />
     <ClInclude Include="Engine\Module\Scene\GameObject\SceneGameObject\SceneGameObject.h" />
@@ -11272,6 +11278,7 @@
     <Folder Include="Assets\Art\Models\" />
     <Folder Include="Assets\Art\Textures\" />
     <Folder Include="Assets\Audio\" />
+    <Folder Include="Assets\Prefab\Bullet\" />
     <Folder Include="Assets\Prefab\Npc\Friendly\" />
     <Folder Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Content\" />
     <Folder Include="Assets\Tests\" />

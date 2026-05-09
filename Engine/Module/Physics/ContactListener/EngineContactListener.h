@@ -4,12 +4,19 @@
 
 #include "ContactedData/ContactedData.h"
 
+namespace JPH
+{
+    class PhysicsSystem;
+}
+
 namespace NanamiEngine::Module::Physics
 {
     class EngineContactListener final : public JPH::ContactListener
     {
     public:
-        EngineContactListener();
+        explicit EngineContactListener(
+            const JPH::PhysicsSystem& physicsSystem);
+        ~EngineContactListener();
         void OnContactAdded(
             const JPH::Body& body1,
             const JPH::Body& body2,
@@ -22,11 +29,11 @@ namespace NanamiEngine::Module::Physics
 
     private:
         std::vector<PendingEnter> pendingEnter_;
-        std::vector<ContactKey  > pendingExit_;
-
-        std::unordered_map<ContactKey, CachedContact, ContactKeyHash> activeSensorContacts_;
+        std::vector<PendingExit> pendingExit_;
 
         void TryTriggerEnter();
         void TryTriggerExit();
+        
+        const JPH::PhysicsSystem& physicsSystem_;  
     };
 }

@@ -7,7 +7,17 @@
 
 namespace NanamiEngine::Module::Physics
 {
-    struct ContactKey
+    struct UserData;
+}
+
+namespace NanamiEngine::Module::GameObject
+{
+    class ComponentGroup;
+}
+
+namespace NanamiEngine::Module::Physics
+{
+    struct ContactKey final
     {
         JPH::BodyID a_;
         JPH::BodyID b_;
@@ -15,22 +25,27 @@ namespace NanamiEngine::Module::Physics
         bool operator==(const ContactKey& rhs) const;
     };
 
-    struct ContactKeyHash
+    struct ContactKeyHash final
     {
         size_t operator()(const ContactKey& k) const;
     };
     
-    struct CachedContact
+    struct CachedContact final
     {
         void* sensorUserData_;
-        void* otherUserData_;
+        void* otherUserData_ ;
     };
 
+    struct PendingExit final 
+    {
+        ContactKey key_;
+    };
     
-    
-    struct PendingEnter
+    struct PendingEnter final
     {
         ContactKey key_;
         Manifold maniFold_;
+        UserData* sensorUserData_;
+        UserData* otherUserData_;
     };
 }
