@@ -199,5 +199,19 @@ namespace NanamiEngine::Module::Component
     {
         ImGuiHelper::OnDrawInputField("isGravity_", isGravity_);
         ImGuiHelper::OnDrawInputField("mass_", mass_);
+        if (ImGui::TreeNode("option"))
+        {
+            if (ImGui::Button("Set ZeloLinearVelocity"))
+            {
+                Physics::SetLinearVelocity(bodyId_, glm::vec3{0.0f, 0.0f, 0.0f});
+            }
+            if (ImGui::Button("Set ZeloAngularVelocity"))
+            {
+                (bodyId_, glm::vec3{0.0f, 0.0f, 0.0f});
+            }
+                
+            ImGui::TreePop();
+            ImGui::Spacing();
+        }
     }
 }

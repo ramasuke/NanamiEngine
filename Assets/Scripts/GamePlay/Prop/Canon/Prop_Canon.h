@@ -4,6 +4,7 @@
 #include "../../../../../Engine/Module/Asset/Sound/SoundFile.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../../../Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
+#include "../LibCore/cereal/glm/GlmHelper.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -27,6 +28,8 @@ namespace GamePlay::Prop
         [[serialize(1)]] float addRotateTorque_ = 3.0f;
         [[serialize(2)]] FIELD(CineMachine::CineMachineVirtualCamera) shootCamera_;
         [[serialize(2)]] FIELD(GameObject::IGameObject) shootBulletPos_;
+        [[serialize(3)]] glm::vec3 shootBulletDirection_ = glm::vec3(0.0f, 0.0f, 0.0f);
+        
         
 #pragma region Serialization Function
     public:
@@ -40,6 +43,7 @@ namespace GamePlay::Prop
             archive(CEREAL_NVP(addRotateTorque_));
             archive(CEREAL_NVP(shootCamera_));
             archive(CEREAL_NVP(shootBulletPos_));
+            archive(CEREAL_NVP(shootBulletDirection_));
         }
 
         template<class Archive>
@@ -51,6 +55,7 @@ namespace GamePlay::Prop
             if (version >= 1) archive(CEREAL_NVP(addRotateTorque_));
             if (version >= 2) archive(CEREAL_NVP(shootCamera_));
             if (version >= 2) archive(CEREAL_NVP(shootBulletPos_));
+            if (version >= 3) archive(CEREAL_NVP(shootBulletDirection_));
         }
 #pragma endregion
     };
@@ -59,7 +64,7 @@ namespace GamePlay::Prop
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Prop::Canon, 2);
+CEREAL_CLASS_VERSION(GamePlay::Prop::Canon, 3);
 CEREAL_REGISTER_TYPE(GamePlay::Prop::Canon);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, GamePlay::Prop::Canon);
 #pragma endregion

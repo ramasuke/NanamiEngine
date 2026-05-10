@@ -46,7 +46,7 @@ namespace NanamiEngine::Module::Component
         JPH::EMotionType emotionType_ = JPH::EMotionType::Static;
         bool isSensor_ = false;
         Physics::Constraints constraints_ = Physics::Constraints::None;
-        Physics::Layer       layer_       = Physics::Layer::Default;
+        Physics::Layer layer_       = Physics::Layer::Default;
         JPH::BodyID bodyId_;
         Physics::UserData userData_ = Physics::UserData(std::weak_ptr<GameObject::IGameObject>());
         

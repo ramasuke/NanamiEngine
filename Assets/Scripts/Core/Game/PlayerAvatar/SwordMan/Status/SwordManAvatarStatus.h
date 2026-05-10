@@ -64,7 +64,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] float                             ReinforceModeDuration_secs     () const override { return reinforceModeDuration_secs_; }
         [[nodiscard]] bool                              IsOnDisableReinforceMode       () const override { return reinforceModeDuring_secs_ > reinforceModeDuration_secs_; }
                       void                              AddEnhancePowerStack           (const EnhancePower& enhancePower);
-                      void                              AddOnDamageStack(std::unique_ptr<IDamageContext> damageContext) override;
+                      void                              AddOnDamageStack(std::unique_ptr<IDamage> damageContext) override;
                       void                              ApplyDamage();
                       void                              DiscardDamage();
         
@@ -101,7 +101,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serailize(0)]] float                             reinforceModeDuration_secs_;
         
         LibCore::Rx::SerializableSubject<bool>             isReinforceMode_;
-        std::queue<std::unique_ptr<IDamageContext>>        onDamagedStack_;
+        std::queue<std::unique_ptr<IDamage>>        onDamagedStack_;
         
         
 

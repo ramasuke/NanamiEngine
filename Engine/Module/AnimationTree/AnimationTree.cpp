@@ -77,7 +77,8 @@ AnimationTree::AnimationTree::AnimationTree(std::string filePath)
     }
 }
 
-void AnimationTree::AnimationTree::InitForAnimator(const int modelHandle)
+void AnimationTree::AnimationTree::InitForAnimator(
+    const int modelHandle)
 {
     currentNodes_.push_back(entryNode_);
     for (const auto& node : nodes_ | std::views::values)

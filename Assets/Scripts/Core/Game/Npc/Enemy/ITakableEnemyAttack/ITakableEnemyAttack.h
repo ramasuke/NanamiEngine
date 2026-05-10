@@ -3,7 +3,7 @@
 
 namespace GameCore
 {
-    struct IDamageContext;
+    struct IDamage;
 }
 
 
@@ -13,6 +13,6 @@ namespace GameCore::Npc::Enemy
     {
     public:
         virtual ~ITakableEnemyAttack() = default;
-        virtual void OnTakeDamage(std::unique_ptr<IDamageContext> context) = 0;
+        virtual void OnTakeDamage(std::unique_ptr<IDamage> context) = 0;
     };
 };

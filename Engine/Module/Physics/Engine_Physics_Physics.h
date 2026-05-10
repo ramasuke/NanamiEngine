@@ -30,6 +30,10 @@ namespace NanamiEngine::Module::Physics
     RaycastHit Raycast          (const glm::vec3  & origin, const glm::vec3& direction, float maxDistance, Layer layer);
     glm::vec3  GetLinearVelocity(const JPH::BodyID& bodyId                           );
     void SetLinearVelocity      (const JPH::BodyID& bodyId, const glm::vec3& velocity);
+    // NOTE: deg/s
+    glm::vec3 GetAngularVelocity(const JPH::BodyID& bodyId);
+    // NOTE: deg/s
+    void SetAngularVelocity(const JPH::BodyID& bodyId, const glm::vec3& angularVelocity); 
     void AddForce               (const JPH::BodyID& bodyId, const glm::vec3& velocity);
     void AddTorque(const JPH::BodyID& bodyId, const glm::vec3& torque);
 

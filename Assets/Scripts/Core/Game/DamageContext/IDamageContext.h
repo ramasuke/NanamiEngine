@@ -7,10 +7,10 @@ namespace GameCore::StatusParameter
 
 namespace GameCore
 {
-    struct IDamageContext
+    struct IDamage
     {
     public:
-        virtual ~IDamageContext() = default;
+        virtual ~IDamage() = default;
         virtual int DamageValue() = 0;
     };
 }

@@ -19,7 +19,7 @@ namespace GameCore::PlayerAvatar
 
 namespace GameCore
 {
-    struct IDamageContext;
+    struct IDamage;
 }
 
 namespace GameCore::StatusParameter
@@ -51,7 +51,7 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual float ReinforceModeDuration_secs() const = 0;
         [[nodiscard]] virtual bool  IsOnDisableReinforceMode() const = 0;
         virtual void OnDrawGui() = 0;
-        virtual void AddOnDamageStack(std::unique_ptr<IDamageContext> damageContext) = 0;
+        virtual void AddOnDamageStack(std::unique_ptr<IDamage> damageContext) = 0;
 
         template <class Archive>
         void save(Archive& archive, const uint32_t version) const

@@ -45,7 +45,8 @@ Scene::Scene::~Scene()
     }
 }
 
-void Scene::Scene::AddGameObject(const std::weak_ptr<Module::GameObject::IGameObject>& add)
+void Scene::Scene::AddGameObject(
+    const std::weak_ptr<Module::GameObject::IGameObject>& add)
 {
     Core::Application::ApplicationBase::ApplicationLifeCycle().OnUpdateFieldInittables();
     addGameObjectQueue_.push(add);

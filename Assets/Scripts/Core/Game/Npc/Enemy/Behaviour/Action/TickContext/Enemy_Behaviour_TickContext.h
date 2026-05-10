@@ -40,7 +40,7 @@ namespace GameCore::Npc::Enemy
 
 namespace GameCore
 {
-    struct IDamageContext;
+    struct IDamage;
 }
 
 namespace NanamiEngine::Module::Component
@@ -61,7 +61,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             const std::weak_ptr<GameObject::IGameObject>& enemyGameObject,
             const std::unique_ptr<EnemyStatus>& enemyStatus,
             const std::unique_ptr<BlackBoard::ParameterGroup>& parameters,
-            const std::shared_ptr<std::queue<std::unique_ptr<IDamageContext>>>& onDamagedStack);
+            const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack);
         ~TickContext();
         
 
@@ -71,7 +71,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[nodiscard]] Component::ColliderBase& EnemyCollider  () const { return *enemyCollider_  .lock(); }
         [[nodiscard]] EnemyStatus& EnemyStatus() const { return *enemyStatus_; }
         [[nodiscard]] const std::unique_ptr<BlackBoard::ParameterGroup>& Parameter() const { return parameters_; }
-        [[nodiscard]] const std::shared_ptr<std::queue<std::unique_ptr<IDamageContext>>>& OnDamaged() const { return onDamagedStack_; } 
+        [[nodiscard]] const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& OnDamaged() const { return onDamagedStack_; } 
         [[nodiscard]] bool IsOnDamage() const { return !onDamagedStack_->empty(); }
         [[nodiscard]] std::shared_ptr<IPlayerAvatar> Player() const;
         [[nodiscard]] const PlayerAvatar::IQuestGroup& PlayerQuest() const;
@@ -99,6 +99,6 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         const std::weak_ptr<Component::ColliderBase> enemyCollider_;
         const std::unique_ptr<Enemy::EnemyStatus>&   enemyStatus_;
         const std::unique_ptr<BlackBoard::ParameterGroup>& parameters_;
-        const std::shared_ptr<std::queue<std::unique_ptr<IDamageContext>>> onDamagedStack_;
+        const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>> onDamagedStack_;
     };
 }

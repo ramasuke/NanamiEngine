@@ -109,7 +109,9 @@ namespace NanamiEngine::Module::Physics
     void EngineContactListener::UnSubscribeEngineCollider(
         const JPH::BodyID& colliderId)
     {
-        sensorEnterGroup_.RemoveByCollider(colliderId);
-        sensorExitGroup_ .RemoveByCollider(colliderId);
+        collisionEnterGroup_.RemoveByCollider(colliderId);
+        collisionExitGroup_ .RemoveByCollider(colliderId);
+        sensorEnterGroup_   .RemoveByCollider(colliderId);
+        sensorExitGroup_    .RemoveByCollider(colliderId);
     }
 }

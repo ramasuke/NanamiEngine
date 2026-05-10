@@ -7,7 +7,7 @@ namespace GameCore::Npc
 {
     EnemyBase::EnemyBase()
         : status_(std::make_unique<Enemy::EnemyStatus>(1))
-        , onDamagedStack_(std::make_shared<std::queue<std::unique_ptr<IDamageContext>>>())
+        , onDamagedStack_(std::make_shared<std::queue<std::unique_ptr<IDamage>>>())
     {
         
     }
@@ -35,7 +35,7 @@ namespace GameCore::Npc
         DoUpdate();
     }
 
-    void EnemyBase::OnTakeDamage(std::unique_ptr<IDamageContext> context)
+    void EnemyBase::OnTakeDamage(std::unique_ptr<IDamage> context)
     {
         onDamagedStack_->push(std::move(context));
     }

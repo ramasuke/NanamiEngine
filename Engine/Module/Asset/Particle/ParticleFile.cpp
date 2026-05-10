@@ -7,6 +7,7 @@ namespace NanamiEngine::Module::Asset
     ParticleFile::ParticleFile(std::string contentPath)
         : contentPath_(std::move(contentPath))
     {
+        
     }
 
     void ParticleFile::OnEnableAsset()

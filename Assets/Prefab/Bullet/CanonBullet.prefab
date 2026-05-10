@@ -1,9 +1,9 @@
 {
-    "isActive_": false,
+    "isActive_": true,
     "name_": "CanonBullet",
     "components_": {
         "cereal_class_version": 0,
-        "componentCount": 2,
+        "componentCount": 3,
         "component_0": {
             "polymorphic_id": 2147483649,
             "polymorphic_name": "NanamiEngine::Module::Component::ModelRenderer",
@@ -80,6 +80,42 @@
                     "isSensor_": false
                 }
             }
+        },
+        "component_2": {
+            "polymorphic_id": 2147483651,
+            "polymorphic_name": "GamePlay::PlayerAvatar::Bullet::CannonBullet",
+            "ptr_wrapper": {
+                "id": 2147483652,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "C0205030-9D86-4B3E-8809-2097FB6F4A86"
+                        },
+                        "isEnable_": true
+                    },
+                    "explositionDuration_secs_": 1.5,
+                    "physicsDamage_": {
+                        "cereal_class_version": 0,
+                        "value_": 1111111
+                    },
+                    "explosionParticle_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "E1C47AEA-253F-4BB7-A868-86A32D53E5BE"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "transform_": {
@@ -96,27 +132,27 @@
             "value3": 0.0
         },
         "localScale_": {
-            "value0": 0.5,
-            "value1": 0.5,
-            "value2": 0.5
+            "value0": 0.20000000298023225,
+            "value1": 0.20000000298023225,
+            "value2": 0.20000000298023225
         },
         "worldMatrix_": {
             "value0": {
-                "value0": 0.5,
+                "value0": 0.20000000298023225,
                 "value1": 0.0,
                 "value2": 0.0,
                 "value3": 0.0
             },
             "value1": {
                 "value0": 0.0,
-                "value1": 0.5,
+                "value1": 0.20000000298023225,
                 "value2": 0.0,
                 "value3": 0.0
             },
             "value2": {
                 "value0": 0.0,
                 "value1": 0.0,
-                "value2": 0.5,
+                "value2": 0.20000000298023225,
                 "value3": 0.0
             },
             "value3": {

@@ -26,7 +26,7 @@ namespace GameCore::Npc::Enemy
 
     void BehaviourTree::Tick(const std::weak_ptr<GameObject::IGameObject>& enemyGameObject,
                              const std::unique_ptr<EnemyStatus>& enemyStatus,
-                             const std::shared_ptr<std::queue<std::unique_ptr<IDamageContext>>>& onDamagedStack) const
+                             const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack) const
     {
         entryNode_->Tick(Behaviour::Action::TickContext(enemyGameObject, enemyStatus, parameters_, onDamagedStack));
     }

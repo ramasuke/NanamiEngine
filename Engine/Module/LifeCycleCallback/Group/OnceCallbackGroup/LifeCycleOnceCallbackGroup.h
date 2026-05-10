@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <functional>
 #include <memory>
-#include <queue>
+#include <stack>
 
 namespace NanamiEngine::Core::Application
 {
@@ -10,28 +10,38 @@ namespace NanamiEngine::Core::Application
     {
     public:
         void Add(std::weak_ptr<T> add);
+        void AddedContentPop();
         void Invoke(const std::function<void(T&)>& func);
         void OnUpdatePushedContents();
 
     private:
-        std::queue<std::weak_ptr<T>> addContentQueue_;
-        std::queue<std::weak_ptr<T>> contents_;
+        std::stack<std::weak_ptr<T>> addContentStack_;
+        std::stack<std::weak_ptr<T>> contents_;
     };
 
     template <typename T>
     void LifeCycleOnceCallbackGroup<T>::Add(std::weak_ptr<T> add)
     {
-        addContentQueue_.push(add);
+        addContentStack_.push(add);
+    }
+
+    template <typename T>
+    void LifeCycleOnceCallbackGroup<T>::AddedContentPop()
+    {
+        if (!addContentStack_.empty())
+        {
+            addContentStack_.pop();
+        }
     }
 
     template <typename T>
     void LifeCycleOnceCallbackGroup<T>::OnUpdatePushedContents()
     {
-        while (!addContentQueue_.empty())
+        while (!addContentStack_.empty())
         {
-            auto& wp = addContentQueue_.front();
+            auto wp = addContentStack_.top();
             contents_.push(wp);
-            addContentQueue_.pop();
+            addContentStack_.pop();
         }
     }
 
@@ -40,14 +50,13 @@ namespace NanamiEngine::Core::Application
     {
         while (!contents_.empty())
         {
-            auto shared = contents_.front().lock();
+            auto shared = contents_.top().lock();
             contents_.pop();
 
             if (shared)
             {
                 func(*shared);
             }
-            // else: 破棄済みなので何もしない
         }
     }
 }

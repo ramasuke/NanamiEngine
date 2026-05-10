@@ -2,7 +2,7 @@
 
 namespace GameCore::Npc::Enemy
 {
-    void AttackArea::DoAttack(AttackTarget attackTarget, std::unique_ptr<IDamageContext> context)
+    void AttackArea::DoAttack(AttackTarget attackTarget, std::unique_ptr<IDamage> context)
     {
         attackTarget.Target().OnTakeDamage(std::move(context));
     }

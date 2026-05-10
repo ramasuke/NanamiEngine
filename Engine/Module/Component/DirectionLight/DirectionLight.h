@@ -14,7 +14,8 @@ namespace NanamiEngine::Module::Component
     
 #pragma region Serialization Function
 public:
-void OnDrawGui() {
+void OnDrawGui() override
+{
 }
 
 template<class Archive>

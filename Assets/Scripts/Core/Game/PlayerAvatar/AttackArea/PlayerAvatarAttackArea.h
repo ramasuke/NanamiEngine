@@ -6,7 +6,7 @@ namespace GameCore::PlayerAvatar
 {
     class PlayerAttackArea final : public GamePlay::AttackArea<ITakablePlayerAttack>
     {
-        void DoAttack(AttackTarget attackTarget, std::unique_ptr<IDamageContext> context) override;
+        void DoAttack(AttackTarget attackTarget, std::unique_ptr<IDamage> context) override;
     };
 }
 

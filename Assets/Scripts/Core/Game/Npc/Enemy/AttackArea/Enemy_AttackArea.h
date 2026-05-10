@@ -7,7 +7,7 @@ namespace GameCore::Npc::Enemy
 {
     class AttackArea final : public GamePlay::AttackArea<ITakableEnemyAttack>
     {
-        void DoAttack(AttackTarget attackTarget, std::unique_ptr<IDamageContext> context) override;
+        void DoAttack(AttackTarget attackTarget, std::unique_ptr<IDamage> context) override;
     };
 }
 

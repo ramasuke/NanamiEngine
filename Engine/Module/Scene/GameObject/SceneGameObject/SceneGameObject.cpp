@@ -60,8 +60,27 @@ std::shared_ptr<GameObject::IGameObject> Scene::SceneGameObject::CopyForInstanti
         copiedGameObject->Components(),
         copiedGameObject->Transform()
     );
+    Core::Application::ApplicationBase::ApplicationLifeCycle().OnUpdateFieldInittables();
     copied->InitGameObject(std::weak_ptr<IGameObject>(), copied);
 
+    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
+    auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
+    for (auto& initRender : copied->Components().Catches<LifeCycleCallback::IInitRenderable>())
+    {
+        windowLifeCycle.InitRenderableAddedContentPop();
+        initRender.lock()->InitRenderer();
+    }
+    for (auto& awakable : copied->Components().Catches<LifeCycleCallback::IAwakable>())
+    {
+        windowLifeCycle.AwakableAddedContentPop();
+        awakable.lock()->OnAwake();
+    }
+    for (auto& startable : copied->Components().Catches<LifeCycleCallback::IStartable>())
+    {
+        windowLifeCycle.StartableAddedContentPop();
+        startable.lock()->OnStart();
+    }
+    
     return copied;
 }
 

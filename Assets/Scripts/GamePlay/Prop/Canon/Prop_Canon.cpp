@@ -14,11 +14,11 @@ namespace GamePlay::Prop
 
     void Canon::Shoot() const
     {
-        const glm::vec3 canonForward = Transform().GetWorldRot() * glm::vec3(0.0f, 0.0f, 1.0f);
+        const glm::vec3 canonForward = Transform().GetWorldRot() * shootBulletDirection_;
         
         const auto bullet = Scene::GameObject::Instantiate(bulletPrefab_.get(), shootBulletPos_->Transform().GetWorldPos());
         const auto bulletCollider = bullet.lock()->Components().Catch<Component::ColliderBase>().lock();
-        Physics::AddForce(bulletCollider->BodyId(), canonForward);
+        Physics::AddForce(bulletCollider->BodyId(), canonForward * bulletForceSpeed_);
         Sound::SoundPlayer::PlaySe(*shootSound_.get(), Transform().GetWorldPos());
     }
     
@@ -41,5 +41,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("shootSound_", shootSound_);
         ImGuiHelper::OnDrawInputField("addRotateTorque_", addRotateTorque_);
         ImGuiHelper::OnDrawInputField("shootCamera_", shootCamera_);
+        ImGuiHelper::OnDrawInputField("shootBulletPos_", shootBulletPos_);
+        ImGuiHelper::OnDrawInputField("shootBulletDirection_", shootBulletDirection_);
     }
 }

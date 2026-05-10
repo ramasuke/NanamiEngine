@@ -9,6 +9,7 @@
 #include "../JoltPhysics/Jolt/Physics/Collision/Shape/CapsuleShape.h"
 #include "../JoltPhysics/Jolt/Physics/Collision/Shape/SphereShape.h"
 #include "BroadPhaseLayer/Engine_Physics_NonRaycastLayerFilter.h"
+#include "detail/func_trigonometric.inl"
 #include "LayerFilter/Engine_Physics_CustomObjectLayerFilter.h"
 
 JPH::Vec3 MultiplyPointInvCompat(const JPH::RMat44& m, const JPH::Vec3& p)
@@ -53,6 +54,35 @@ void NanamiEngine::Module::Physics::AddForce(const JPH::BodyID& bodyId, const gl
         bodyId,
         current + ToJPHVec3(velocity)
     );
+}
+
+glm::vec3 NanamiEngine::Module::Physics::GetAngularVelocity(const JPH::BodyID& bodyId)
+{
+    const auto& bodyInterface =
+        Core::Application::ApplicationBase::Physics()
+        .GetPhysicsSystem()
+        .GetBodyInterface();
+
+    // Jolt → rad/s
+    const JPH::Vec3 angVelRad = bodyInterface.GetAngularVelocity(bodyId);
+
+    // rad → deg
+    return glm::degrees(ToVec3(angVelRad));
+}
+
+void NanamiEngine::Module::Physics::SetAngularVelocity(
+    const JPH::BodyID& bodyId,
+    const glm::vec3& angularVelocity)
+{
+    auto& bodyInterface =
+        Core::Application::ApplicationBase::Physics()
+        .GetPhysicsSystem()
+        .GetBodyInterface();
+
+    // deg → rad
+    const glm::vec3 rad = glm::radians(angularVelocity);
+
+    bodyInterface.SetAngularVelocity(bodyId, ToJPHVec3(rad));
 }
 
 void NanamiEngine::Module::Physics::AddTorque(const JPH::BodyID& bodyId, const glm::vec3& torque)

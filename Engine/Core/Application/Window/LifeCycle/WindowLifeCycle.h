@@ -54,8 +54,12 @@ namespace NanamiEngine::Core::Application
         /** @brief 引数に対して動的にCallbackの受け取りを機能追加 */
         template<typename T>
         void DynamicAddCallback(std::weak_ptr<T> add);
-        std::unique_ptr<Coroutine::CoroutineScheduler>& Coroutine() { return coroutineScheduler_; } 
+        std::unique_ptr<Coroutine::CoroutineScheduler>& Coroutine() { return coroutineScheduler_; }
 
+        void InitRenderableAddedContentPop();
+        void AwakableAddedContentPop();
+        void StartableAddedContentPop();
+        
     private:
         LifeCycleOnceCallbackGroup<Module::LifeCycleCallback::IInitRenderable> initRenderableCallbacks_;
         LifeCycleOnceCallbackGroup<Module::LifeCycleCallback::IAwakable>       awakableCallbacks_;

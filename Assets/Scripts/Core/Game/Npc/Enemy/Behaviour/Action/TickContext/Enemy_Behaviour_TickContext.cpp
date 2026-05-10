@@ -15,7 +15,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         const std::weak_ptr<GameObject::IGameObject>& enemyGameObject,
         const std::unique_ptr<Enemy::EnemyStatus>& enemyStatus,
         const std::unique_ptr<BlackBoard::ParameterGroup>& parameters,
-        const std::shared_ptr<std::queue<std::unique_ptr<IDamageContext>>>& onDamagedStack)
+        const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack)
             : enemyGameObject_(enemyGameObject)
             , enemyAnimator_  (enemyGameObject.lock()->Components().Catch<Component::Animator>())
             , enemyCollider_  (enemyGameObject.lock()->Components().Catch<Component::ColliderBase>())

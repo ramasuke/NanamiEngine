@@ -11,7 +11,7 @@
 
 namespace GameCore
 {
-    struct IDamageContext;
+    struct IDamage;
 }
 
 namespace GamePlay
@@ -49,7 +49,7 @@ namespace GamePlay
         [[nodiscard]] const int                      & AttackTargetCount() const { return attackTargets_.size(); }
 
     protected:
-        virtual void DoAttack(AttackTarget attackTarget, std::unique_ptr<GameCore::IDamageContext> context) = 0;
+        virtual void DoAttack(AttackTarget attackTarget, std::unique_ptr<GameCore::IDamage> context) = 0;
         
     private:
         void OnTriggerEnter(const Physics::Manifold&, const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
@@ -82,7 +82,7 @@ namespace GamePlay
     {
         for (auto attackTarget : Targets())
         {
-            DoAttack(attackTarget, std::make_unique<GameCore::Damage::PhysicsContext>(fromObject, attackTarget.GameObject(), damagePower));
+            DoAttack(attackTarget, std::make_unique<GameCore::Damage::Physics>(fromObject, attackTarget.GameObject(), damagePower));
         }
         // Components().Catch<Component::ColliderBase>().lock()->OnDebugDraw();
     }

@@ -81,7 +81,7 @@ std::weak_ptr<Module::GameObject::IGameObject> Scene::GameObject::Instantiate(
 std::weak_ptr<Module::GameObject::IGameObject> Scene::GameObject::Instantiate(
     Asset::PrefabGameObjectFile& gameObject,
     const glm::vec3 position,
-    glm::quat rotation)
+    const glm::quat rotation)
 {
     auto copiedPrefab = gameObject.Content()->CopyForInstantiate();
     copiedPrefab->Transform().SetWorldPos(position);

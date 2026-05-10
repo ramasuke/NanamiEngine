@@ -47,7 +47,7 @@ namespace GamePlay::PlayerAvatar
         void OnDestroy               () override;
         void BasedOnDrawgui          () override;
         void SubscribeStateToAnimator();
-        void OnTakeDamage(std::unique_ptr<GameCore::IDamageContext> context) override
+        void OnTakeDamage(std::unique_ptr<GameCore::IDamage> context) override
         {
             status_->AddOnDamageStack(std::move(context));
         }
@@ -114,12 +114,13 @@ namespace GamePlay::PlayerAvatar
         cameraGroup_  = cameraGroup;
         cameraGroup_.lock()->Init(Entity().lock());
         SubscribeStateToAnimator();
+        status_->Init();
     }
     
     template <RequireType::Traits TraitsT>
     void PlayerAvatarBase<TraitsT>::OnAwake()
     {
-        status_->Init();
+        
     }
     
     template <RequireType::Traits TraitsT>

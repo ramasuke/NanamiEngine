@@ -105,7 +105,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         enhancePowerStack_.OnNext(addedEnhancePowerStackCount);
     }
 
-    void SwordManAvatarStatus::AddOnDamageStack(std::unique_ptr<IDamageContext> damageContext)
+    void SwordManAvatarStatus::AddOnDamageStack(std::unique_ptr<IDamage> damageContext)
     {
         onDamagedStack_.push(std::move(damageContext));
     }
@@ -122,7 +122,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStatus::DiscardDamage()
     {
-        std::queue<std::unique_ptr<IDamageContext>> empty;
+        std::queue<std::unique_ptr<IDamage>> empty;
         std::swap(onDamagedStack_, empty);
     }
 

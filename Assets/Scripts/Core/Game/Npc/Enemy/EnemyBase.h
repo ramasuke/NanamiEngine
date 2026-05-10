@@ -24,12 +24,12 @@ namespace GameCore::Npc
     private:
         void OnAwake () override;
         void OnUpdate() override;
-        void OnTakeDamage(std::unique_ptr<IDamageContext> context) override;
+        void OnTakeDamage(std::unique_ptr<IDamage> context) override;
 
         std::unique_ptr<Enemy::EnemyStatus> status_;
         FIELD(Asset::EnemyBehaviourFile) behaviourData_;
         std::shared_ptr<Enemy::BehaviourTree> behaviour_;
-        std::shared_ptr<std::queue<std::unique_ptr<IDamageContext>>> onDamagedStack_;
+        std::shared_ptr<std::queue<std::unique_ptr<IDamage>>> onDamagedStack_;
         
 #pragma region Serialization Function
     public:

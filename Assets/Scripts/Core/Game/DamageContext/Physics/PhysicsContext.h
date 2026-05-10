@@ -11,9 +11,9 @@ namespace NanamiEngine::Module::GameObject
 
 namespace GameCore::Damage
 {
-    struct PhysicsContext final : IDamageContext 
+    struct Physics final : IDamage
     {
-        PhysicsContext(GameObject::IGameObject& from, GameObject::IGameObject& to, PhysicsPower damageValue);
+        Physics(GameObject::IGameObject& from, GameObject::IGameObject& to, PhysicsPower damageValue);
         int DamageValue() override;
 
     private:

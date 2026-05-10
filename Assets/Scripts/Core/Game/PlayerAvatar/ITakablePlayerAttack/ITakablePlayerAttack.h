@@ -9,6 +9,6 @@ namespace GameCore::PlayerAvatar
     {
     public:
         virtual ~ITakablePlayerAttack() = default;
-        virtual void OnTakeDamage(std::unique_ptr<IDamageContext> context) = 0;
+        virtual void OnTakeDamage(std::unique_ptr<IDamage> damage) = 0;
     };
 }

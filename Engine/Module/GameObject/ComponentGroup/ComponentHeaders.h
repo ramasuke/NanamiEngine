@@ -8,6 +8,7 @@
 #include "../../../../Assets/Scripts/GamePlay/Npc/Enemy/FirstEventDragon/FirstEventDragon.h"
 #include "../../../../Assets/Scripts/GamePlay/Npc/Enemy/TrainingDummy/TrainingDummy.h"
 #include "../../../../Assets/Scripts/GamePlay/Npc/Friendly/FriendlyNpc.h"
+#include "../../../../Assets/Scripts/GamePlay/PlayerAvatar/Bullet/PlayerAvatar_Bullet_CannonBullet.h"
 #include "../../../../Assets/Scripts/GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
 #include "../../../../Assets/Scripts/GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../Assets/Scripts/GamePlay/Prop/AirShip/Prop_AirShip.h"

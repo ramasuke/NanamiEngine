@@ -36,8 +36,8 @@ namespace NanamiEngine::Module::Physics
 
         CollisionEnterGroup collisionEnterGroup_;
         CollisionExitGroup  collisionExitGroup_;
-        SensorEnterGroup sensorEnterGroup_;
-        SensorExitGroup  sensorExitGroup_;
+        SensorEnterGroup    sensorEnterGroup_;
+        SensorExitGroup     sensorExitGroup_;
         const JPH::PhysicsSystem& physicsSystem_;
     };
 }

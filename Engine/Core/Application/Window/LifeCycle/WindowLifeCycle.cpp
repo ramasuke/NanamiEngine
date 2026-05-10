@@ -101,4 +101,19 @@ namespace NanamiEngine::Core::Application
         uiRenderableCallbacks_    .OnUpdatePushedContents();
         guiRenderableCallbacks_   .OnUpdatePushedContents();
     }
+
+    void WindowLifeCycle::InitRenderableAddedContentPop()
+    {
+        initRenderableCallbacks_.AddedContentPop();
+    }
+
+    void WindowLifeCycle::AwakableAddedContentPop()
+    {
+        awakableCallbacks_.AddedContentPop();
+    }
+
+    void WindowLifeCycle::StartableAddedContentPop()
+    {
+        startableCallbacks_.AddedContentPop();        
+    }
 }
