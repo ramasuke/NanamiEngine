@@ -15,6 +15,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] InputRef<void     >& Jump        () const { return *jump_        ; }
         [[nodiscard]] InputRef<void     >& NormalAttack() const { return *normalAttack_; }
         [[nodiscard]] InputRef<void     >& DashAttack  () const { return *dashAttack_  ; }
+        [[nodiscard]] InputRef<void     >& CannonAttack() const { return *cannonAttack_; }
         [[nodiscard]] InputRef<void     >& Chat        () const { return *chat_        ; }
         [[nodiscard]] InputRef<void     >& OnReinforce () const { return *onReinforce_ ; }
         [[nodiscard]] InputRef<void     >& AvoidRolling() const { return *avoidRolling_; }
@@ -27,6 +28,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         Input<void     > jump_         = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_SPACE       ) || XInput().Buttons[XINPUT_BUTTON_B]; });
         Input<void     > normalAttack_ = MakeInputAction([this] { return GetMouseInput() & MOUSE_INPUT_LEFT  || XInput().RightTrigger; });
         Input<void     > dashAttack_   = MakeInputAction([this] { return GetMouseInput() & MOUSE_INPUT_LEFT  || XInput().RightTrigger; });
+        Input<void     > cannonAttack_ = MakeInputAction([this] { return GetMouseInput() & MOUSE_INPUT_LEFT  || XInput().RightTrigger; });
         Input<void     > chat_         = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_E           ) || XInput().Buttons[XINPUT_BUTTON_Y]; });
         Input<void     > onReinforce_  = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_F           ) || XInput().LeftTrigger;  });
         Input<void     > avoidRolling_ = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_LCONTROL    ) || XInput().Buttons[XINPUT_BUTTON_X]; });

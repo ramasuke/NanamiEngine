@@ -77,11 +77,7 @@ namespace NanamiEngine::Module::Component
     template <typename T> requires std::is_base_of_v<ComponentBase, T>
     std::shared_ptr<T> ComponentBase::RequireComponent()
     {
-        auto component = Components().Catch<T>();
-        if (component.expired())
-            return Components().Add<T>();
-        
-        return component.lock();
+        return Components().RequireComponent<T>();
     }
 
     // template <typename T>

@@ -34,10 +34,13 @@ namespace NanamiEngine::Module::GameObject
         template <class T, typename = std::enable_if_t<std::is_base_of_v<Component::ComponentBase, T>>>
         std::shared_ptr<T> Add();
         template <typename T>
-        void OnRemove();
-        template <class T>
+        void Remove();
+        template <typename T>
+        requires std::is_base_of_v<Component::ComponentBase, T>
+        std::shared_ptr<T> RequireComponent();
+        template <typename T>
         std::weak_ptr<T> Catch();
-        template <class T>
+        template <typename T>
         std::vector<std::weak_ptr<T>> Catches();
         void OnDrawGui();
         void SetEnable(bool enable) const;
@@ -66,7 +69,7 @@ namespace NanamiEngine::Module::GameObject
     }
 
     template <typename T>
-    void ComponentGroup::OnRemove()
+    void ComponentGroup::Remove()
     {
         auto it = std::remove_if(components_.begin(), components_.end(),
                                  [](const std::unique_ptr<Component::ComponentBase>& component)
@@ -77,7 +80,18 @@ namespace NanamiEngine::Module::GameObject
         components_.erase(it, components_.end());
     }
 
-    template <class T>
+    template <typename T>
+    requires std::is_base_of_v<Component::ComponentBase, T>
+    std::shared_ptr<T> ComponentGroup::RequireComponent()
+    {
+        auto component = Catch<T>();
+        if (component.expired())
+            return Add<T>();
+        
+        return component.lock();
+    }
+    
+    template <typename T>
     std::weak_ptr<T> ComponentGroup::Catch()
     {
         for (const auto& component : components_)
@@ -90,7 +104,7 @@ namespace NanamiEngine::Module::GameObject
         return std::weak_ptr<T>{};
     }
 
-    template <class T>
+    template <typename T>
     std::vector<std::weak_ptr<T>> ComponentGroup::Catches()
     {
         std::vector<std::weak_ptr<T>> result;

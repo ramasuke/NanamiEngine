@@ -1,17 +1,22 @@
 ﻿#include "Prop_Canon.h"
 
-#include "../../../../../Engine/Module/Component/Collider/ColliderBase.h"
-#include "../../../../../Engine/Module/Physics/Physics_.h"
+#include "../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
+#include "../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../Sound/SoundPlayer.h"
 
 namespace GamePlay::Prop
 {
-    void Canon::Shoot()
+    void Canon::Use() const
+    {
+        shootCamera_->SetPriority(100);
+    }
+
+    void Canon::Shoot() const
     {
         const glm::vec3 canonForward = Transform().GetWorldRot() * glm::vec3(0.0f, 0.0f, 1.0f);
         
-        const auto bullet = Scene::GameObject::Instantiate(bulletPrefab_.get(), Transform().GetWorldPos());
+        const auto bullet = Scene::GameObject::Instantiate(bulletPrefab_.get(), shootBulletPos_->Transform().GetWorldPos());
         const auto bulletCollider = bullet.lock()->Components().Catch<Component::ColliderBase>().lock();
         Physics::AddForce(bulletCollider->BodyId(), canonForward);
         Sound::SoundPlayer::PlaySe(*shootSound_.get(), Transform().GetWorldPos());
@@ -34,5 +39,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("bulletPrefab_", bulletPrefab_);
         ImGuiHelper::OnDrawInputField("bulletForceSpeed_", bulletForceSpeed_);
         ImGuiHelper::OnDrawInputField("shootSound_", shootSound_);
+        ImGuiHelper::OnDrawInputField("addRotateTorque_", addRotateTorque_);
+        ImGuiHelper::OnDrawInputField("shootCamera_", shootCamera_);
     }
 }

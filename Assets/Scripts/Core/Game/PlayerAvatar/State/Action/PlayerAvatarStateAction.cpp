@@ -1,9 +1,9 @@
 ﻿#include "PlayerAvatarStateAction.h"
 
 #include "../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../Engine/Module/Component/Collider/ICollider.h"
+#include "../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 #include "../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../../../Engine/Module/Physics/Physics_.h"
+#include "../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../CameraGroup/PlayerAvatarCameraGroupBase.h"
 #include "ext/quaternion_geometric.hpp"
 

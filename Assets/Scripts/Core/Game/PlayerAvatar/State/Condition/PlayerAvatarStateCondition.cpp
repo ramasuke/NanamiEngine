@@ -2,8 +2,11 @@
 
 #include "DxLib.h"
 #include "../../../../../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
-#include "../../../../../../../Engine/Module/Physics/Physics_.h"
+#include "../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../../../Engine/Module/Physics/Component/Listener/Collision/Engine_Physics_CollisionListener.h"
 #include "../../../../../GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
+#include "../../../../../GamePlay/Prop/AirShip/Prop_AirShip.h"
+#include "../../../../../GamePlay/Prop/Canon/Prop_Canon.h"
 
 namespace GameCore::PlayerAvatar::State
 {
@@ -31,5 +34,18 @@ namespace GameCore::PlayerAvatar::State
     bool PlayerAvatarStateCondition::IsChattable() const
     {
         return !stateContext_->ChattableArea().CatchChatTarget().expired();
+    }
+
+    bool PlayerAvatarStateCondition::CanUseCannon() const
+    {
+        const auto collisionListener = stateContext_->PlayerAvatarObject()->Components().Catch<Component::CollisionListener>();
+        for (const auto& gameobject : collisionListener.lock()->GetCollisionStayObjects() | std::views::values)
+        {
+            if (!gameobject.lock()->Components().Catch<GamePlay::Prop::Canon>().expired())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

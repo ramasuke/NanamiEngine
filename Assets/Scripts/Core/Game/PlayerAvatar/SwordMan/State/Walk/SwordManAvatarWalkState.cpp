@@ -10,6 +10,7 @@
 #include "../OnDisableReinforce/OnDisableReinforceState.h"
 #include "../OnEnableReinforce/OnEnableReinforceState.h"
 #include "../Run/SwordManAvatarRunState.h"
+#include "../UseCanon/SwordManAvatarUseCanonState.h"
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarWalkState::DoEnter()
 {
@@ -37,6 +38,8 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarWalkState::DoUpdate(
         OnChangeState<OnEnableReinforceState>();
     if (Input().NormalAttack().IsPressed())
         OnChangeState<SwordManAvatarNormalAttackState>();
+    if (Conditions().CanUseCannon())
+        OnChangeState<SwordManAvatarUseCannonState>();
     if (!Conditions().IsGround())
         OnChangeState<FloatingState>();
 }

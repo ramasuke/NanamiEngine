@@ -20,6 +20,7 @@ namespace GameCore::Scene
         boundryAirshipCollider_        .Init();
         firstEventDragonPrefab_        .Init();
         firstEventDragonSpawnPos_      .Init();
+        playerControllabeCanon_        .Init();
     }
     
     void FirstTouchDownMainIsLandSceneContext::OnDrawGui()

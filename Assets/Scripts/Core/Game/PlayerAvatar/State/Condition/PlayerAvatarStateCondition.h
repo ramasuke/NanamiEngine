@@ -7,8 +7,9 @@ namespace GameCore::PlayerAvatar::State
     {
         explicit PlayerAvatarStateCondition(const std::shared_ptr<IPlayerAvatarStateContext>& stateContext);
         
-        [[nodiscard]] bool IsGround   () const;
-        [[nodiscard]] bool IsChattable() const;
+        [[nodiscard]] bool IsGround    () const;
+        [[nodiscard]] bool IsChattable () const;
+        [[nodiscard]] bool CanUseCannon() const;
         
     private:
         const std::shared_ptr<IPlayerAvatarStateContext> stateContext_;

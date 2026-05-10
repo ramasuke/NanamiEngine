@@ -2,7 +2,7 @@
 
 #include "../../../../../Game.h"
 #include "../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../../Engine/Module/Component/Collider/ICollider.h"
+#include "../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 #include "../../../../../../../GamePlay/Ui/NpcChatting/NpcChatting.h"
 #include "../../../../../PlayerAvatar/PlayerAvatar.h"
 #include "../../../../../Scene/Main/Group/Main_GameSceneGroup.h"

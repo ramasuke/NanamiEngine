@@ -1,6 +1,6 @@
 ﻿#include "SwordManAvatarIdleState.h"
 
-#include "../../../../../../../../Engine/Module/Physics/Physics_.h"
+#include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
 #include "../Attack/Normal/SwordManAvatarNormalAttackState.h"
 #include "../AvoidRolling/SwordManAvatar_AvoidRolling.h"
@@ -10,6 +10,7 @@
 #include "../Jump/SwordManAvatarJumpState.h"
 #include "../OnDisableReinforce/OnDisableReinforceState.h"
 #include "../OnEnableReinforce/OnEnableReinforceState.h"
+#include "../UseCanon/SwordManAvatarUseCanonState.h"
 #include "../Walk/SwordManAvatarWalkState.h"
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoEnter()
@@ -37,6 +38,8 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoUpdate(
         OnChangeState<OnEnableReinforceState>();
     if (Conditions().IsChattable() && Input().Chat().IsPressed())
         OnChangeState<SwordManAvatarChattingState>();
+    if (Conditions().CanUseCannon())
+        OnChangeState<SwordManAvatarUseCannonState>();
     if (!Conditions().IsGround())
         OnChangeState<FloatingState>();
 }

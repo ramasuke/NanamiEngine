@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "vec3.hpp"
-#include "../../../../../Engine/Module/Component/Collider/ICollider.h"
+#include "../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 #include "StateMachine/EventScene/IPlayerAvatarEventSceneStateMachine.h"
 
 

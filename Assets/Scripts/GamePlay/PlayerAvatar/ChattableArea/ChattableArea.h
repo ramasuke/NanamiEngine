@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/Physics/ContactCallback/SensorEnterable/ISensorEnterable.h"
-#include "../../../../../Engine/Module/Physics/ContactCallback/ContactExitable/ISensorExitable.h"
-#include "../../../../../Engine/Module/Physics/ContactCallback/SensorStayable/ISensorStayable.h"
+#include "../../../../../Engine/Module/Physics/ContactCallback/SensorEnterable/Engine_Physics_ISensorEnterable.h"
+#include "../../../../../Engine/Module/Physics/ContactCallback/SensorExitable/Engine_Physics_ISensorExitable.h"
+#include "../../../../../Engine/Module/Physics/ContactCallback/SensorStayable/Engine_Physics_ISensorStayable.h"
 
 namespace GameCore::PlayerAvatar
 {

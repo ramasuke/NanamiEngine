@@ -1,7 +1,7 @@
 ﻿#include "Friendly_Behaviour_Action_SetLinearVelocity.h"
 
-#include "../../../../../../../../../../../../Engine/Module/Component/Collider/ICollider.h"
-#include "../../../../../../../../../../../../Engine/Module/Physics/Physics_.h"
+#include "../../../../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
+#include "../../../../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {

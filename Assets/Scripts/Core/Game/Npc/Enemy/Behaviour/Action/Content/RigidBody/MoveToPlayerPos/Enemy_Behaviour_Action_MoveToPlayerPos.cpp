@@ -1,9 +1,9 @@
 ﻿#include "Enemy_Behaviour_Action_MoveToPlayerPos.h"
 
 #include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../../../../Engine/Module/Component/Collider/ColliderBase.h"
+#include "../../../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
 #include "../../../../../../../PlayerAvatar/IPlayerAvatar.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Physics_.h"
+#include "../../../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {

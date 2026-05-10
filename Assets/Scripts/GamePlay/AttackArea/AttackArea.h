@@ -3,9 +3,9 @@
 #include <memory>
 
 #include "../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../Engine/Module/Component/Collider/ColliderBase.h"
-#include "../../../../Engine/Module/Physics/ContactCallback/SensorEnterable/ISensorEnterable.h"
-#include "../../../../Engine/Module/Physics/ContactCallback/ContactExitable/ISensorExitable.h"
+#include "../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
+#include "../../../../Engine/Module/Physics/ContactCallback/SensorEnterable/Engine_Physics_ISensorEnterable.h"
+#include "../../../../Engine/Module/Physics/ContactCallback/SensorExitable/Engine_Physics_ISensorExitable.h"
 #include "../../Core/Game/DamageContext/Physics/PhysicsContext.h"
 #include "../../Core/Game/DamageContext/Physics/PhysicsPower.h"
 

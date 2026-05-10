@@ -1,6 +1,6 @@
 ﻿#include "Prop_AirShip.h"
 
-#include "../../../../../Engine/Module/Component/Collider/ColliderBase.h"
+#include "../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "Jolt/Physics/Body/MotionType.h"
 

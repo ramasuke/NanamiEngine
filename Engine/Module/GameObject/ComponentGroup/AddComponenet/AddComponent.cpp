@@ -78,6 +78,12 @@ void GameObject::AddComponent::OnDrawColliderGui(std::shared_ptr<Component::Comp
         ImGui::TreePop();
         ImGui::Spacing();
     }
+    if (ImGui::TreeNode("Collision"))
+    {
+        OnDrawTryAddComponentGui<Component::CollisionListener >(addComponent);
+        ImGui::TreePop();
+        ImGui::Spacing();
+    }
 }
 
 void GameObject::AddComponent::OnDrawCinemachineGui(std::shared_ptr<Component::ComponentBase>& addComponent)
