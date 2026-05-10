@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../Engine/Module/Physics/ContactCallback/ContactExitable/ISensorExitable.h"
+#include "../../../Engine/Module/Physics/ContactCallback/SensorExitable/Engine_Physics_ISensorExitable.h"
 #include "../../Engine/Module/Component/ComponentBase.h"
 #include "../rxcpp/rx.hpp"
 #include "../rxcpp/subjects/rx-subject.hpp"
@@ -19,8 +19,7 @@ namespace NanamiEngine::R4
 
 #pragma region Serialization Function
     public:
-        void OnDrawGui() {
-        }
+        void OnDrawGui() override;
 
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const {

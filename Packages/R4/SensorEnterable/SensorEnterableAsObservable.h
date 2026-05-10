@@ -1,22 +1,29 @@
 ﻿#pragma once
-#include "../../../Engine/Module/Physics/ContactCallback/SensorEnterable/ISensorEnterable.h"
+#include "../../../Engine/Module/Physics/ContactCallback/SensorEnterable/Engine_Physics_ISensorEnterable.h"
 #include "../../Engine/Module/Component/ComponentBase.h"
 #include "../rxcpp/rx.hpp"
 #include "../rxcpp/subjects/rx-subject.hpp"
+#include "../../Engine/Module/Physics/ContactListener/ContactedData/Manifold/Engine_Physics_Manifold.h"
 
 namespace NanamiEngine::R4
 {
+    struct SensorEnterContext final
+    {
+        Physics::Manifold manifold_;
+        std::shared_ptr<GameObject::IGameObject> gameObject_;
+    };
+    
     class SensorEnterableAsObservable final : public Component::ComponentBase,
-                                  public Physics::Callback::ISensorEnterable
+                                              public Physics::Callback::ISensorEnterable
     {
     public:
-        [[nodiscard]] rxcpp::observable<std::pair<Physics::Manifold, std::shared_ptr<GameObject::IGameObject>>> OnAction() const;
+        [[nodiscard]] rxcpp::observable<SensorEnterContext> OnAction() const;
 
     private:
         void OnTriggerEnter(const Physics::Manifold& contactManifold,
                             const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
 
-        rxcpp::subjects::subject<std::pair<Physics::Manifold, std::shared_ptr<GameObject::IGameObject>>> onAction_;
+        rxcpp::subjects::subject<SensorEnterContext> onAction_;
         
 #pragma region Serialization Function
     public:

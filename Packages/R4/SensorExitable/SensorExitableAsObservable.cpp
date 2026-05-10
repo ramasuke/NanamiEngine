@@ -1,4 +1,4 @@
-﻿#include "SensorExitable.h"
+﻿#include "SensorExitableAsObservable.h"
 
 rxcpp::observable<std::shared_ptr<GameObject::IGameObject>> R4::
 SensorExitableAsObservable::OnAction() const
@@ -9,4 +9,9 @@ SensorExitableAsObservable::OnAction() const
 void R4::SensorExitableAsObservable::OnTriggerExit(const std::shared_ptr<GameObject::IGameObject>& gameObject)
 {
     onAction_.get_subscriber().on_next(gameObject);
+}
+
+void R4::SensorExitableAsObservable::OnDrawGui()
+{
+    
 }
