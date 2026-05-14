@@ -34,6 +34,16 @@ namespace GamePlay::Prop
         Physics::AddTorque(collider.lock()->BodyId(), glm::vec3(0.0f, -addRotateTorque_, 0.0f));
     }
 
+    void Canon::OnAwake()
+    {
+        basePos_ = Transform().GetWorldPos();   
+    }
+
+    void Canon::OnUpdate()
+    {
+        Transform().SetWorldPos(basePos_);
+    }
+
     void Canon::OnDrawGui()
     {
         ImGuiHelper::OnDrawInputField("bulletPrefab_", bulletPrefab_);

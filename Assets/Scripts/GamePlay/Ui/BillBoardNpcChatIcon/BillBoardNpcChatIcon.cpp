@@ -79,7 +79,7 @@ namespace GamePlay::Ui
         const float offset = std::sin(time * speed) * amplitude;
 
         ApplyFloating(chattableIcon_.get(), basePosChattable_, offset);
-        ApplyFloating(surpriseIcon_ .get(),  basePosSurprise_,  offset);
+        ApplyFloating(surpriseIcon_ .get(), basePosSurprise_,  offset);
     }
 
     void BillBoardNpcChatIcon::OnDrawGui()

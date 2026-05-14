@@ -28,8 +28,8 @@ namespace NanamiEngine::Core::MainWindow
     {
         mainScene_ = scene;
 
-        //NOTE: 
-        for (int totalSkipFrame = 0; totalSkipFrame < 60; totalSkipFrame++)
+        //NOTE:
+        for (int totalSkipFrame = 0; totalSkipFrame < 30; totalSkipFrame++)
         {
             Time::SkipNextFrame();
         }
@@ -123,7 +123,6 @@ namespace NanamiEngine::Core::MainWindow
         }
         else
         {
-            // Stopボタン
             if (ImGui::Button("Stop"))
             {
                 isPlayMode_ = !isPlayMode_;
@@ -145,7 +144,8 @@ namespace NanamiEngine::Core::MainWindow
             contents_.clear();
             const auto initScene = std::make_shared<Scene::Scene>("Assets/Scene/GameManage.scene");
             AddContent(initScene);
-            ChangeMainScene(initScene); 
+            ChangeMainScene(initScene);
+            Application::ApplicationBase::ResetPhysics();
         }
         ImGui::End();
     

@@ -3,6 +3,11 @@
 #include <string>
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 
+namespace NanamiEngine::Module::Component
+{
+    class ColliderBase;
+}
+
 namespace GamePlay::Ui
 {
     class BillBoardNpcChatIcon;
@@ -21,11 +26,6 @@ namespace GameCore::PlayerAvatar
 namespace NanamiEngine::Module::GameObject
 {
     class Transform;
-}
-
-namespace NanamiEngine::Module::Physics
-{
-    class ICollider;
 }
 
 namespace NanamiEngine::Module::Component
@@ -65,7 +65,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         [[nodiscard]] GameObject::IGameObject&         NpcGameObject() const { return *ownGameObject_.lock(); }
         [[nodiscard]] GameObject::Transform&           NpcTransform () const;
         [[nodiscard]] Component::Animator&             NpcAnimator  () const { return *npcAnimator_.lock(); }
-        [[nodiscard]] Physics::ICollider &             NpcCollider  () const { return *npcCollider_.lock(); }
+        [[nodiscard]] Component::ColliderBase&         NpcCollider  () const { return *npcCollider_.lock(); }
         [[nodiscard]] const std::string              & NpcName      () const { return npcName_;             }
         [[nodiscard]] const GamePlay::Ui::NpcChatting& ChatUi   () const;
         [[nodiscard]] const std::unique_ptr<BlackBoard::ParameterGroup>& Parameter() const { return parameters_; }
@@ -77,7 +77,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         const std::weak_ptr<GameObject::IGameObject> ownGameObject_;
         const std::weak_ptr<GamePlay::Ui::BillBoardNpcChatIcon> ownChatIcon_;
         const std::weak_ptr<Component::Animator> npcAnimator_;
-        const std::weak_ptr<Physics::ICollider > npcCollider_;
+        const std::weak_ptr<Component::ColliderBase> npcCollider_;
         bool& isChatting_;
         const std::unique_ptr<BlackBoard::ParameterGroup>& parameters_;
     };

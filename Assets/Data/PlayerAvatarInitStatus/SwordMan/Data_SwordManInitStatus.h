@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../../../../Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "../../../../Libs/LibCore/Rx/SerializableSubject/SerializableSubject.h"
-#include "../../../Scripts/Core/Game/DamageContext/Physics/PhysicsPower.h"
+#include "../../../Scripts/Core/Game/Damage/Physics/Game_Damage_PhysicsPower.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/Status/BasicParams/AttackParam/AttackParam.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/Status/EnahancePower/EnhancePower.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/SwordMan/Status/Quest/SwordMan_QuestGroup.h"

@@ -33,6 +33,7 @@ namespace NanamiEngine::Module::Component
         virtual ~ColliderBase() override;
         void SetMotionType(const JPH::EMotionType& type) override;
         void SetGravity   (bool isGravity);
+        void SetFreezePhysics(const Physics::Constraints& freeze);
 
         [[nodiscard]] virtual void OnDebugDraw() const = 0; 
         [[nodiscard]] bool IsGravity() const { return isGravity_; }

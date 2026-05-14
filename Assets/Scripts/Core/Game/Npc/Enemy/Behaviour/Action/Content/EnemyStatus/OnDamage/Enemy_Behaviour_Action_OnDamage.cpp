@@ -2,7 +2,7 @@
 
 #include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-#include "../../../../../../../DamageContext/IDamageContext.h"
+#include "../../../../../../../Damage/Game_Damage_IDamage.h"
 #include "../../../../../Status/EnemyStatus.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
@@ -25,7 +25,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             Scene::GameObject::Instantiate(*damageEffectPrefab_.get(), context.EnemyTransform().GetWorldPos() + damageEffectOffset_);
         }
         context.EnemyAnimator().Param<int>(ANIMATOR_PARAM_NAME).Set(animatorSetParam_);
-        return TickStatus::Success;
+        return isOnDamagedReturnBehaviour_ ? TickStatus::Success : TickStatus::Failure;
     }
 
     void Action::OnDamage::DoDrawGui()
@@ -33,5 +33,6 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("damageEffect_", damageEffectPrefab_);
         ImGuiHelper::OnDrawInputField("damageEffectOffset_", damageEffectOffset_);
         ImGuiHelper::OnDrawInputField("animatorSetParam_", animatorSetParam_);
+        ImGuiHelper::OnDrawInputField("isOnDamagedReturnBehaviour_", isOnDamagedReturnBehaviour_);
     }
 }

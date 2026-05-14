@@ -19,7 +19,9 @@ namespace GamePlay::Ui
     class NpcChatting final : public Component::ComponentBase
     {
     public:
-        Coroutine::Task<void> OnDisplayChatAsync(const std::string& npcName, const Asset::NpcChat& npcChat) const;
+        Coroutine::Task<void> OnDisplayChatAsync(
+            const std::string & npcName,
+            const Asset::NpcChat& npcChat) const;
 
     private:
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) textRenderer_;

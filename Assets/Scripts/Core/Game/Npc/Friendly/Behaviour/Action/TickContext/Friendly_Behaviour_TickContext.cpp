@@ -2,13 +2,13 @@
 
 #include "../../../../../Game.h"
 #include "../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 #include "../../../../../../../GamePlay/Ui/NpcChatting/NpcChatting.h"
 #include "../../../../../PlayerAvatar/PlayerAvatar.h"
 #include "../../../../../Scene/Main/Group/Main_GameSceneGroup.h"
 #include "../../../../../Scene/Sub/Content/ChattingUI/ChattingUIScene.h"
 #include "../../../../../Scene/Sub/Group/Sub_GameSceneGroup.h"
 #include "../../../../../Scene/Sub/Type/SubSceneType.h"
+#include "../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {
@@ -22,7 +22,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         , ownGameObject_(ownGameObject   )
         , ownChatIcon_  (ownChatIcon)
         , npcAnimator_  (ownGameObject.lock()->Components().Catch<Component::Animator>())
-        , npcCollider_  (ownGameObject.lock()->Components().Catch<Physics::ICollider >())
+        , npcCollider_  (ownGameObject.lock()->Components().Catch<Component::ColliderBase>())
         , isChatting_   (isChatting        )
         , parameters_   (parameters        )
     {

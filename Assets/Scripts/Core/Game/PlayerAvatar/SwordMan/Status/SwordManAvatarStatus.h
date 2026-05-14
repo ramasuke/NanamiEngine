@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "../../../DamageContext/Physics/PhysicsPower.h"
 #include "../../../StatusParameter/Health/Health.h"
 #include "../../../StatusParameter/MoveSpeed/MoveSpeed.h"
 #include "../../Status/IPlayerAvatarStatus.h"
@@ -11,6 +10,7 @@
 #include "../../../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../../../Engine/Module/Asset/Sound/SoundFile.h"
 #include "../../../../../../../Libs/LibCore/Rx/SerializableSubject/SerializableSubject.h"
+#include "../../../Damage/Physics/Game_Damage_PhysicsPower.h"
 #include "Event/SwordManAvatarStatusEvent.h"
 #include "Quest/SwordMan_QuestGroup.h"
 #include "../../../Engine/Module/Namespace/EngineNamespace.h"

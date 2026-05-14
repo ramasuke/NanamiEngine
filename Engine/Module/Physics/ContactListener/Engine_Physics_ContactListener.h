@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <vector>
 #include <../JoltPhysics/Jolt/Jolt.h>
 #include <../JoltPhysics/Jolt/Physics/Collision/ContactListener.h>
 
@@ -25,6 +24,7 @@ namespace NanamiEngine::Module::Physics
         void OnUpdate();
         
         void UnSubscribeEngineCollider(const JPH::BodyID& colliderId);
+        void ResetCollisionListener();
 
     private:
         void OnContactAdded(

@@ -8,9 +8,11 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 {
     class WaitSeconds final : public ActionBase
     {
+    public:
         TickStatus DoTick(const TickContext& context) override;
+        void Reset();
 
-        
+    private:
         [[serialize(0)]] float waitSeconds_ = 0.0f;
         float during_secs_ = 0.0f;
         

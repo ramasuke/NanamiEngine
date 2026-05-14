@@ -4,6 +4,7 @@
 #include "../../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
 #include "gtc/quaternion.hpp"
 
 namespace

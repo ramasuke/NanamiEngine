@@ -10,11 +10,12 @@
 #include "Time/Time.h"
 #include "../Physics/Physics.h"
 #include "LifeCycle/ApplicationLifeCycle.h"
-#include "TweenManager/TweenManager.h"
 #include "Window/Popup/Group/PopupWindowGroup.h"
 
 namespace NanamiEngine::Core::Application
 {
+    std::optional<Physics> ApplicationBase::physics = std::optional<Core::Physics>();
+    
     ApplicationBase::ApplicationBase()
     {
         /** ApplicationConfiguの初期化 */
@@ -41,6 +42,7 @@ namespace NanamiEngine::Core::Application
         MainWindows().Catch<MainWindow::GameWindow>()->AddContent     (initScene);
         MainWindows().Catch<MainWindow::GameWindow>()->ChangeMainScene(initScene);
 
+        physics.emplace();
         Physics().Initialize();
 
         /** Effekseerの初期化 */
@@ -96,22 +98,21 @@ namespace NanamiEngine::Core::Application
         static FileSystem::ObjectRegistry assetRegistry;
         return assetRegistry;
     }
-    
-    Physics& ApplicationBase::Physics_()
+
+    Physics& ApplicationBase::Physics()
     {
-        static Core::Physics physics;
-        return physics;
+        return physics.value();
     }
-    
-    TweenManager& ApplicationBase::TweenManager_()
+
+    void ApplicationBase::ResetPhysics()
     {
-        static Core::TweenManager tweenManager;
-        return tweenManager;
+        physics.emplace();
+        physics->Initialize();
     }
-    
+
     std::shared_ptr<MainWindow::GameWindow> ApplicationBase::GameWindow()
     {
         static std::shared_ptr<MainWindow::GameWindow> gameWindow = MainWindows().Catch<MainWindow::GameWindow>();;
         return gameWindow;
     }
-} 
+}

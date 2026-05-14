@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "PhysicsPower.h"
+#include "Game_Damage_PhysicsPower.h"
 #include "vec3.hpp"
-#include "../IDamageContext.h"
+#include "../Game_Damage_IDamage.h"
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 
 namespace NanamiEngine::Module::GameObject

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <memory>
 
-#include "../../DamageContext/IDamageContext.h"
+#include "../../Damage/Game_Damage_IDamage.h"
 
 namespace GameCore::PlayerAvatar
 {

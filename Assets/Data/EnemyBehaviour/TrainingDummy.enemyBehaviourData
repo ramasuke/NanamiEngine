@@ -16,7 +16,7 @@
                     },
                     "position_": {
                         "value0": 275.0,
-                        "value1": 90.0
+                        "value1": 79.0
                     }
                 },
                 "nextNode_": {
@@ -50,18 +50,18 @@
                                                     "value_": "2C342B13-F8E1-43B0-9824-EB70D1524E11"
                                                 },
                                                 "position_": {
-                                                    "value0": 184.0,
+                                                    "value0": 200.0,
                                                     "value1": 274.0
                                                 }
                                             },
-                                            "name_": "",
+                                            "name_": "OnDamage",
                                             "action_": {
                                                 "polymorphic_id": 2147483651,
                                                 "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::OnDamage",
                                                 "ptr_wrapper": {
                                                     "valid": 1,
                                                     "data": {
-                                                        "cereal_class_version": 1,
+                                                        "cereal_class_version": 2,
                                                         "value0": {
                                                             "cereal_class_version": 0
                                                         },
@@ -85,7 +85,8 @@
                                                             "value1": 0.0,
                                                             "value2": 0.0
                                                         },
-                                                        "value3": 1
+                                                        "value3": 1,
+                                                        "value4": true
                                                     }
                                                 }
                                             }
@@ -103,30 +104,39 @@
                                                     "value_": "B0789AD4-6723-400E-B525-261090EE4FCB"
                                                 },
                                                 "position_": {
-                                                    "value0": 383.0,
-                                                    "value1": 269.0
+                                                    "value0": 389.0,
+                                                    "value1": 274.0
                                                 }
                                             },
-                                            "name_": "",
+                                            "name_": "Idle Animation",
                                             "action_": {
                                                 "polymorphic_id": 2147483652,
                                                 "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::PlayAnimation",
                                                 "ptr_wrapper": {
                                                     "valid": 1,
                                                     "data": {
-                                                        "cereal_class_version": 1,
+                                                        "cereal_class_version": 2,
                                                         "value0": {},
                                                         "animatorSetParamNumber_": 0,
-                                                        "animationSound_": {
+                                                        "waitAnimationSound_secs_": {
                                                             "cereal_class_version": 0,
-                                                            "value0": {
-                                                                "polymorphic_id": 1073741824,
-                                                                "ptr_wrapper": {
-                                                                    "id": 2147483654,
-                                                                    "data": {
-                                                                        "cereal_class_version": 0,
-                                                                        "value0": {
-                                                                            "value_": "43ADCC10-3896-4528-B1E5-B72AAE090D80"
+                                                            "value0": {},
+                                                            "waitSeconds_": 0.0
+                                                        },
+                                                        "animationSound_": {
+                                                            "cereal_class_version": 1,
+                                                            "value0": {},
+                                                            "sound_": {
+                                                                "cereal_class_version": 0,
+                                                                "value0": {
+                                                                    "polymorphic_id": 1073741824,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483654,
+                                                                        "data": {
+                                                                            "cereal_class_version": 0,
+                                                                            "value0": {
+                                                                                "value_": "3DC6A786-14A5-4598-982B-8690EBAC2116"
+                                                                            }
                                                                         }
                                                                     }
                                                                 }

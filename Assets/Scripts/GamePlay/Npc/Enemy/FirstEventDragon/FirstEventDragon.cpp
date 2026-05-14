@@ -17,7 +17,7 @@ namespace GamePlay::Npc::Enemy
     {
         if (Transform().GetWorldPos().y < -100)
         {
-            Transform().SetLocalPos(glm::vec3{0.0f, 100.0f, 0.0f});
+            Transform().SetLocalPos(glm::vec3{0.0f, 300.0f, 0.0f});
         }
         
     }

@@ -1,6 +1,5 @@
 ﻿#include "Engine_Physics_CapsuleCollider.h"
 
-#include "../../../../../Core/Application/Time/Time.h"
 #include "../../../../../Core/Physics/Physics.h"
 #include "../../../../3DRender/Shapes/Shapes.h"
 #include "../../../../GameObject/Transform/Transform.h"

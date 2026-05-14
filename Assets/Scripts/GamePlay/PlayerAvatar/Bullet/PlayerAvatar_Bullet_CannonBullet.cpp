@@ -3,7 +3,7 @@
 #include "../../../../../Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../../Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
 #include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-#include "../../../Core/Game/DamageContext/Physics/PhysicsContext.h"
+#include "../../../Core/Game/Damage/Physics/Game_Damage_Physics.h"
 #include "../../../Core/Game/PlayerAvatar/ITakablePlayerAttack/ITakablePlayerAttack.h"
 
 namespace GamePlay::PlayerAvatar::Bullet

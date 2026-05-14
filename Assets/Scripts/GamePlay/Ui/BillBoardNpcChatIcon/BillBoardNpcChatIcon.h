@@ -18,7 +18,6 @@ namespace GamePlay::Ui
         void OnAwake () override;
         void OnUpdate() override;
 
-
         bool isShow_ = true;
         glm::vec3 basePosChattable_ = {};
         glm::vec3 basePosSurprise_  = {};

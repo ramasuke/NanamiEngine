@@ -7,7 +7,9 @@
 
 namespace GamePlay::Ui
 {
-    Coroutine::Task<void> NpcChatting::OnDisplayChatAsync(const std::string& npcName, const Asset::NpcChat& npcChat) const
+    Coroutine::Task<void> NpcChatting::OnDisplayChatAsync(
+        const std::string& npcName,
+        const Asset::NpcChat& npcChat) const
     {
         Entity().lock()->SetEnable(true);
         npcNameTextBox_->SetText(npcName);

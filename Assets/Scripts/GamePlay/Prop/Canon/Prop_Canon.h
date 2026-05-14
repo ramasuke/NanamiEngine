@@ -13,7 +13,9 @@ namespace NanamiEngine::Module::Component
 
 namespace GamePlay::Prop
 {
-    class Canon final : public Component::ComponentBase
+    class Canon final : public Component::ComponentBase,
+                        public LifeCycleCallback::IAwakable,
+                        public LifeCycleCallback::IUpdatable
     {
     public:
         void Use() const;
@@ -22,6 +24,10 @@ namespace GamePlay::Prop
         void LeftRotate();
 
     private:
+        void OnAwake() override;
+        void OnUpdate() override;
+
+        glm::vec3 basePos_ = glm::vec3(0, 0, 0);
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) bulletPrefab_;
         [[serialize(0)]] float bulletForceSpeed_ = 10.0f;
         [[serialize(0)]] FIELD(Asset::SoundFile) shootSound_;

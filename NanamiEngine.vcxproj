@@ -181,9 +181,9 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Data\PlayerAvatarInitStatus\SwordMan\Data_SwordManInitStatus.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\DamageContext\IDamageContext.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\DamageContext\Physics\PhysicsContext.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\DamageContext\Physics\PhysicsPower.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_Physics.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_PhysicsPower.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Game.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\MainProgression\MainProgression.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\AttackArea\Enemy_AttackArea.cpp" />
@@ -2699,6 +2699,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\RigidBody\FreezePhysics\Friendly_Behaviour_Action_SetFreezePhysics.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\RigidBody\MoveForRoute\Friendly_Behaviour_Action_MoveForRoute.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -3324,7 +3325,87 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Time\Timer\Friendly_Behaviour_Action_NodeTickTimer.cpp">
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>NanamiEngine\x64\Debug\</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>NanamiEngine\x64\Debug\</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <ConformanceMode>true</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <EnableVectorLength>NotSet</EnableVectorLength>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>NanamiEngine\x64\Debug\</ModuleDependenciesFile>
+      <ModuleOutputFile>NanamiEngine\x64\Debug\</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>NanamiEngine\x64\Debug\</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>NanamiEngine\x64\Debug\vc143.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>NanamiEngine\x64\Debug\NanamiEngine.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>NanamiEngine\x64\Debug\</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>NanamiEngine\x64\Debug\NanamiEngine.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>NanamiEngine\x64\Debug\</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <BuildStlModules>false</BuildStlModules>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LinkCompiled>true</LinkCompiled>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\FieldGameObject\Friendly_Behaviour_Action_FieldGameObject.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Friendly_Behaviour_ActionBase.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Position\Friendly_Behaviour_Action_Position.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\TickContext\Friendly_Behaviour_TickContext.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -5495,7 +5576,8 @@
     <ClCompile Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Entry\Npc_BehaviourEntryNode.cpp" />
     <ClCompile Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Npc_BehaviourNodeBase.cpp" />
     <ClCompile Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Npc_Behaviour_NodeFactory.cpp" />
-    <ClCompile Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\OnceSuccess\OnceSuccessNode.cpp" />
+    <ClCompile Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\OnceExecute\Npc_Behaviour_OnceExecute.cpp" />
+    <ClCompile Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\OnceSuccess\Npc_Behaviour_OnceSuccessNode.cpp" />
     <ClCompile Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\RandomSelector\Npc_Behaviour_RandomSelector.cpp" />
     <ClCompile Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Npc_Behaviour_Selector\Npc_Behaviour_SelectorNode.cpp" />
     <ClCompile Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Sequence\Npc_Behaviour_SequenceNode.cpp" />
@@ -6370,7 +6452,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Core\Application\LifeCycle\ApplicationLifeCycle.cpp" />
     <ClCompile Include="Engine\Core\Application\Time\Time.cpp" />
-    <ClCompile Include="Engine\Core\Application\TweenManager\TweenManager.cpp" />
     <ClCompile Include="Engine\Core\Application\Window\LifeCycle\WindowLifeCycle.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -8162,7 +8243,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Module\Asset\Factory\AssetFactory.cpp" />
-    <ClCompile Include="Engine\Module\ClientSaver\ClientSaver.cpp">
+    <ClCompile Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -10325,9 +10406,9 @@
     <ClInclude Include="Assets\Data\NpcChatText\Context\Data_Chat.h" />
     <ClInclude Include="Assets\Data\NpcChatText\Data_NpcChat.h" />
     <ClInclude Include="Assets\Data\PlayerAvatarInitStatus\SwordMan\Data_SwordManInitStatus.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\DamageContext\IDamageContext.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\DamageContext\Physics\PhysicsContext.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\DamageContext\Physics\PhysicsPower.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_Physics.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_PhysicsPower.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Game.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\MainProgression\MainProgression.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\AttackArea\Enemy_AttackArea.h" />
@@ -10382,6 +10463,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\Chat\Friendly_Behaviour_Action_ImplementChat.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\IsChatting\Friendly_Behaviour_Action_IsChat.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Chat\Chattable\Friendly_Behaviour_Action_Chat.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\RigidBody\FreezePhysics\Friendly_Behaviour_Action_SetFreezePhysics.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\RigidBody\MoveForRoute\Friendly_Behaviour_Action_MoveForRoute.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\RigidBody\SetLinearVelocity\Friendly_Behaviour_Action_SetLinearVelocity.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\NpcStatus\Transform\SetRotation\Friendly_Behaviour_Action_SetRotation.h" />
@@ -10391,7 +10473,10 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\PlayerStatus\Quest\CheckComplete\Friendly_Behaviour_Action_CheckCompleteQuest.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\PlayerStatus\Quest\GiveQuest\Friendly_Behaviour_Action_Quest.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\PlayerStatus\Quest\GiveQuest\SwordMan\Friendly_Behaviour_Action_SwordManQuest.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Time\Timer\Friendly_Behaviour_Action_NodeTickTimer.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\FieldGameObject\Friendly_Behaviour_Action_FieldGameObject.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Friendly_Behaviour_ActionBase.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Position\Friendly_Behaviour_Action_Position.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\TickContext\Friendly_Behaviour_TickContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Friendly_BehaviourTree.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\TickStatus\Friendly_Behaviour_TickStatus.h" />
@@ -10499,7 +10584,8 @@
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Npc_BehaviourNodeBase.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Npc_Behaviour_NodeFactory.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Npc_Behaviour_NodeHeaders.h" />
-    <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\OnceSuccess\OnceSuccessNode.h" />
+    <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\OnceExecute\Npc_Behaviour_OnceExecute.h" />
+    <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\OnceSuccess\Npc_Behaviour_OnceSuccessNode.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\RandomSelector\Npc_Behaviour_RandomSelector.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Npc_Behaviour_Selector\Npc_Behaviour_SelectorNode.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Sequence\Npc_Behaviour_SequenceNode.h" />
@@ -10538,7 +10624,6 @@
     <ClInclude Include="Engine\Core\Application\Game\GameApplication.h" />
     <ClInclude Include="Engine\Core\Application\LifeCycle\ApplicationLifeCycle.h" />
     <ClInclude Include="Engine\Core\Application\Time\Time.h" />
-    <ClInclude Include="Engine\Core\Application\TweenManager\TweenManager.h" />
     <ClInclude Include="Engine\Core\Application\Window\LifeCycle\WindowLifeCycle.h" />
     <ClInclude Include="Engine\Core\Application\Window\Main\Animator\AnimatorWindow.h" />
     <ClInclude Include="Engine\Core\Application\Window\Main\DrawGuiContext\MainWindowDrawGuiContext.h" />
@@ -10604,7 +10689,7 @@
     <ClInclude Include="Engine\Module\Asset\Sound\SoundFile.h" />
     <ClInclude Include="Engine\Module\Asset\Sprite\SpriteFile.h" />
     <ClInclude Include="Engine\Module\Asset\Factory\AssetFactory.h" />
-    <ClInclude Include="Engine\Module\ClientSaver\ClientSaver.h" />
+    <ClInclude Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.h" />
     <ClInclude Include="Engine\Module\Color\Color32.h" />
     <ClInclude Include="Engine\Module\Component\Animator\Animator.h" />
     <ClInclude Include="Engine\Module\Component\AudioSource\AudioSource.h" />
@@ -11684,6 +11769,7 @@
     <Folder Include="Assets\Audio\" />
     <Folder Include="Assets\Prefab\Bullet\" />
     <Folder Include="Assets\Prefab\Npc\Friendly\" />
+    <Folder Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Condition\IsDeath\" />
     <Folder Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Content\" />
     <Folder Include="Assets\Tests\" />
     <Folder Include="Engine\Render\" />

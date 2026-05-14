@@ -1,15 +1,11 @@
 ﻿#pragma once
 #include <memory>
+#include <optional>
 #include "Window/Main/Group/MainWindowGroup.h"
 
 namespace NanamiEngine::Core::Application
 {
     class ApplicationLifeCycle;
-}
-
-namespace NanamiEngine::Core
-{
-    class TweenManager;
 }
 
 namespace NanamiEngine::Core::PopupWindow
@@ -45,7 +41,7 @@ namespace NanamiEngine::Core::Application
         ApplicationBase();
         virtual ~ApplicationBase() = default;
         virtual void Run();
-        virtual void OnExit()   = 0;
+        virtual void OnExit() = 0;
         template <MainWindowType T>
         static void OnChangeWindow();
         static void OnChangeWindow(const std::shared_ptr<MainWindow::IMainWindow>& window);
@@ -56,19 +52,20 @@ namespace NanamiEngine::Core::Application
         static FileSystem::Directory                         & AssetsDirectory     () { return AssetsDirectory_     (); }
         static ApplicationLifeCycle                          & ApplicationLifeCycle() { return ApplicationLifeCycle_(); }
         static FileSystem::ObjectRegistry                    & ObjectRegistry      () { return ObjectRegistry_      (); }
-        static Physics                                       & Physics             () { return Physics_             (); }
+        static Physics                                       & Physics             ();
+        static void                                            ResetPhysics        ();
         static std::shared_ptr<MainWindow::GameWindow>         GameWindow          (); 
-        static TweenManager                                  & TweenManager        () { return TweenManager_        (); }
         
     protected:
         static std::shared_ptr<MainWindow::IMainWindow>& CurrentMainWindow    ();
-        static MainWindow ::MainWindowGroup            & MainWindows_         ();
+        static MainWindow::MainWindowGroup             & MainWindows_         ();
         static PopupWindow::PopupWindowGroup           & PopupWindows_        ();
-        static FileSystem ::Directory                  & AssetsDirectory_     ();
+        static FileSystem::Directory                   & AssetsDirectory_     ();
         static Application::ApplicationLifeCycle       & ApplicationLifeCycle_();
-        static FileSystem ::ObjectRegistry             & ObjectRegistry_      ();
-        static Core       ::Physics                    & Physics_             ();
-        static Core::TweenManager                      & TweenManager_        ();
+        static FileSystem::ObjectRegistry              & ObjectRegistry_      ();
+
+        //TODO: optionalである必要ないです。
+        static std::optional<Core::Physics> physics;
     };
 
     template <MainWindowType T>

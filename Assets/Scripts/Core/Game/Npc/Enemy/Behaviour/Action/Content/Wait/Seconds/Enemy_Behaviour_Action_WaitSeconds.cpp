@@ -16,6 +16,11 @@ namespace GameCore::Npc::Enemy::Behaviour
         return TickStatus::Running;
     }
 
+    void Action::WaitSeconds::Reset()
+    {
+        during_secs_ = 0.0f;
+    }
+
     void Action::WaitSeconds::DoDrawGui()
     {
         ImGuiHelper::OnDrawInputField("waitSeconds_", waitSeconds_);

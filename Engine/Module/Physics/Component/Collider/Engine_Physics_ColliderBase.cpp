@@ -122,19 +122,19 @@ namespace NanamiEngine::Module::Component
         const JPH::RMat44 bodyTransform =
             bodyInterface.GetCenterOfMassTransform(bodyId_);
     
-        const JPH::RVec3 pos = bodyTransform.GetTranslation();
+        const JPH::RVec3 position = bodyTransform.GetTranslation();
         const JPH::Quat  rotation = bodyTransform.GetQuaternion();
     
         if (emotionType_ == JPH::EMotionType::Dynamic)
         {
-            glm::vec3 newPos(pos.GetX(), pos.GetY(), pos.GetZ());
+            glm::vec3 newPos(position.GetX(), position.GetY(), position.GetZ());
             glm::quat newRot(rotation.GetW(), rotation.GetX(), rotation.GetY(), rotation.GetZ());
     
-            const glm::vec3 curPos = Transform().GetWorldPos();
+            const glm::vec3 currentPos = Transform().GetWorldPos();
     
-            if (HasConstraint(constraints_, Physics::Constraints::FreezePosX)) newPos.x = curPos.x;
-            if (HasConstraint(constraints_, Physics::Constraints::FreezePosY)) newPos.y = curPos.y;
-            if (HasConstraint(constraints_, Physics::Constraints::FreezePosZ)) newPos.z = curPos.z;
+            if (HasConstraint(constraints_, Physics::Constraints::FreezePosX)) newPos.x = currentPos.x;
+            if (HasConstraint(constraints_, Physics::Constraints::FreezePosY)) newPos.y = currentPos.y;
+            if (HasConstraint(constraints_, Physics::Constraints::FreezePosZ)) newPos.z = currentPos.z;
     
             // Freeze Rotation
             const glm::quat curRot = Transform().GetWorldRot();
@@ -194,7 +194,38 @@ namespace NanamiEngine::Module::Component
     
         RecreateBody();
     }
-    
+
+    void ColliderBase::SetFreezePhysics(const Physics::Constraints& freeze)
+    {
+        if (constraints_ == freeze)
+            return;
+
+        constraints_ = freeze;
+
+        if (BodyId().IsInvalid())
+            return;
+
+        auto& physics = Core::Application::ApplicationBase::Physics();
+        auto& bodyInterface = physics.GetPhysicsSystem().GetBodyInterface();
+
+        // 拘束違反を防ぐために、速度リセット
+        JPH::Vec3 linearVelocity = bodyInterface.GetLinearVelocity(bodyId_);
+        JPH::Vec3 angularVelocity = bodyInterface.GetAngularVelocity(bodyId_);
+
+        // Freeze Position
+        if (HasConstraint(constraints_, Physics::Constraints::FreezePosX)) linearVelocity.SetX(0.0f);
+        if (HasConstraint(constraints_, Physics::Constraints::FreezePosY)) linearVelocity.SetY(0.0f);
+        if (HasConstraint(constraints_, Physics::Constraints::FreezePosZ)) linearVelocity.SetZ(0.0f);
+
+        // Freeze Rotation
+        if (HasConstraint(constraints_, Physics::Constraints::FreezeRotX)) angularVelocity.SetX(0.0f);
+        if (HasConstraint(constraints_, Physics::Constraints::FreezeRotY)) angularVelocity.SetY(0.0f);
+        if (HasConstraint(constraints_, Physics::Constraints::FreezeRotZ)) angularVelocity.SetZ(0.0f);
+
+        bodyInterface.SetLinearVelocity (bodyId_, linearVelocity);
+        bodyInterface.SetAngularVelocity(bodyId_, angularVelocity);
+    }
+
     void ColliderBase::BasedOnDrawgui()
     {
         ImGuiHelper::OnDrawInputField("isGravity_", isGravity_);
@@ -207,7 +238,7 @@ namespace NanamiEngine::Module::Component
             }
             if (ImGui::Button("Set ZeloAngularVelocity"))
             {
-                (bodyId_, glm::vec3{0.0f, 0.0f, 0.0f});
+                Physics::SetAngularVelocity(bodyId_, glm::vec3{0.0f, 0.0f, 0.0f});
             }
                 
             ImGui::TreePop();
