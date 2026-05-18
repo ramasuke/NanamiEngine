@@ -1,0 +1,104 @@
+{
+    "Info": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0
+                },
+                "maxHealth_": {
+                    "cereal_class_version": 0,
+                    "value_": 100
+                },
+                "minHealth_": {
+                    "value_": 0
+                },
+                "health_": {
+                    "value": {
+                        "value_": 42
+                    }
+                },
+                "maxEnhancePowerStack_": {
+                    "cereal_class_version": 0,
+                    "value0": 30
+                },
+                "enhancePowerStack_": {
+                    "value": {
+                        "value0": 0
+                    }
+                },
+                "dashAttack_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value_": 10
+                    },
+                    "value1": {
+                        "value0": 10
+                    },
+                    "value2": 0.699999988079071,
+                    "value3": 0.800000011920929
+                },
+                "walkSpeed_": {
+                    "cereal_class_version": 0,
+                    "value_": 15.0
+                },
+                "runSpeed_": {
+                    "value_": 60.0
+                },
+                "moveRotateSpeed_": 12.0,
+                "jumpPower_": 64.0,
+                "onEnableReinforceDuration_secs_": 0.5,
+                "onDisableReinforceDuration_secs_": 0.0,
+                "reinforceRequireEnhance_": {
+                    "value0": 30
+                },
+                "damageStateDuration_secs_": 1.600000023841858,
+                "deathStateDuration_secs_": 2.0,
+                "reinforceModeDuring_secs_": 0.0,
+                "reinforceModeDuration_secs_": 0.0,
+                "quests_": {
+                    "polymorphic_id": 1073741824,
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "count": 1,
+                            "value0": {
+                                "polymorphic_id": 2147483649,
+                                "polymorphic_name": "GameCore::PlayerAvatar::SwordMan::Quest::ActionInstructTutorial",
+                                "ptr_wrapper": {
+                                    "id": 2147483650,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "cereal_class_version": 0
+                                        },
+                                        "questUiPrefab_": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "polymorphic_id": 1073741824,
+                                                "ptr_wrapper": {
+                                                    "id": 2147483651,
+                                                    "data": {
+                                                        "cereal_class_version": 0,
+                                                        "value0": {
+                                                            "cereal_class_version": 0,
+                                                            "value_": "1B743BAD-ECCF-4963-8A4E-307B866DA94C"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,70 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::NpcChat",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\NpcChatText/FirstDragon Attack Crisis.npcChat",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "3AFDB68C-DE62-4C45-83CC-6ED3E1FB9AA1"
+                    }
+                },
+                "count": 2,
+                "item_0": {
+                    "cereal_class_version": 0,
+                    "font_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "CC427302-8F13-467C-8DFA-FDDE864C72FE"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "text_": "ドラゴンが飛んだぞ！",
+                    "textColor_": {
+                        "cereal_class_version": 0,
+                        "r_": 220,
+                        "g_": 55,
+                        "b_": 55
+                    }
+                },
+                "item_1": {
+                    "font_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483651,
+                                "data": {
+                                    "value0": {
+                                        "value_": "014C1A3F-BF38-4C90-B8BD-71DA8CE106D7"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "text_": "",
+                    "textColor_": {
+                        "r_": 220,
+                        "g_": 55,
+                        "b_": 55
+                    }
+                }
+            }
+        }
+    }
+}
