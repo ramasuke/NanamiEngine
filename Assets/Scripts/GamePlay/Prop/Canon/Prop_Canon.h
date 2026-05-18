@@ -27,7 +27,9 @@ namespace GamePlay::Prop
         void OnAwake() override;
         void OnUpdate() override;
 
-        glm::vec3 basePos_ = glm::vec3(0, 0, 0);
+        
+        glm::vec3 position_;
+        
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) bulletPrefab_;
         [[serialize(0)]] float bulletForceSpeed_ = 10.0f;
         [[serialize(0)]] FIELD(Asset::SoundFile) shootSound_;

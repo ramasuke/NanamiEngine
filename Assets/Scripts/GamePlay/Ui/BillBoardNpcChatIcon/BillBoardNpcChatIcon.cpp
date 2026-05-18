@@ -21,13 +21,16 @@ namespace GamePlay::Ui
         }
     }
 
-    void BillBoardNpcChatIcon::Show()
+    void BillBoardNpcChatIcon::Show(
+        const bool chattableIcon,
+        const bool chattingIcon,
+        const bool surpriseIcon)
     {
         isShow_ = true;
 
-        if (chattableIcon_) chattableIcon_->SetEnable(true);
-        if (chattingIcon_)  chattingIcon_ ->SetEnable(true);
-        if (surpriseIcon_)  surpriseIcon_ ->SetEnable(true);
+        if (chattableIcon_) chattableIcon_->SetEnable(chattableIcon);
+        if (chattingIcon_)  chattingIcon_ ->SetEnable(chattingIcon);
+        if (surpriseIcon_)  surpriseIcon_ ->SetEnable(surpriseIcon);
     }
 
     void BillBoardNpcChatIcon::Hide()

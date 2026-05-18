@@ -4,11 +4,11 @@ namespace GameCore::Scene
 {
     void MainIslandSceneContext::Init()
     {
-        summonPlayerAvatarPrefab_.Init();
+        bgm_.Init();
     }
 
     void MainIslandSceneContext::OnDrawGui()
     {
-        ImGuiHelper::OnDrawInputField("summonPlayerAvatarPrefab_", summonPlayerAvatarPrefab_);
+        ImGuiHelper::OnDrawInputField("bgm_", bgm_);
     }
 }

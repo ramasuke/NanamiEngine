@@ -17,10 +17,7 @@ namespace GameCore::Scene::Main
         virtual void Init()      = 0;
         
         /** @brief currentSceneがthisに変更された時の処理  */
-        virtual void OnEnter()   = 0;
-        
-        /** @brief currentSceneがthisから変更された時の処理 */
-        virtual void OnExit ()   = 0;
+        virtual void Enter()    = 0;
         
         /**
          * @brief Sceneが変更されたされた時の後処理

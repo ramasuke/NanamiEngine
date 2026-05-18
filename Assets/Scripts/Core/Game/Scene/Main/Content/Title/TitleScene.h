@@ -11,8 +11,7 @@ namespace GameCore::Scene::Main
 
     private:
         void Init     () override;
-        void OnEnter  () override;
-        void OnExit   () override;
+        void Enter  () override;
         void Dispose  () override;
         void OnDrawGui() override;
 

@@ -9,7 +9,10 @@ namespace GamePlay::Ui
                                        public LifeCycleCallback::IUpdatable
     {
     public:
-        void Show();
+        void Show(
+            bool chattableIcon,
+            bool chattingIcon,
+            bool surpriseIcon);
         void Hide();
         void OnChattable();
         void OnExitChattable();

@@ -3,6 +3,7 @@
 #include "DxLib.h"
 #include "../../ApplicationBase.h"
 #include "../../../../Module/Asset/Asset.h"
+#include "../../../../Module/Scene/ShadowMap/ShadowMapSetting.h"
 #include "../../../Coroutine/Scheduler/CoroutineScheduler.h"
 #include "../../../Physics/Physics.h"
 #include "../../Time/Time.h"
@@ -26,12 +27,16 @@ namespace NanamiEngine::Core::Application
     {
         const VECTOR lightDir = VGet(-0.5f, -1.0f, -0.5f);
         SetLightDirection(lightDir);
-    
         constexpr COLOR_F difColor = {1.0f, 1.0f, 1.0f, 1.0f};
         SetLightDifColor(difColor);
+        
         shadowMapDxLibHandle_ = MakeShadowMap(1024, 1024);
         SetShadowMapLightDirection(shadowMapDxLibHandle_, VGet(-0.5f, -1.0f, -0.5f));
-        SetShadowMapDrawArea(shadowMapDxLibHandle_, VGet(-100.0f, -100.0f, -100.0f), VGet(100.0f, 100.0f, 100.0f));
+        const glm::vec3 position = Scene::ShadowMapSetting::GetRenderAreaPos();
+        const glm::vec3 size     = Scene::ShadowMapSetting::GetRenderAreaSize();
+        const VECTOR minPosition = VGet(position.x + -size.x, position.y + -size.y, position.z + -size.z);
+        const VECTOR maxPosition = VGet(position.x + size.x, position.y + size.y, position.z + size.z);
+        SetShadowMapDrawArea(shadowMapDxLibHandle_, minPosition, maxPosition);
     }
     
     WindowLifeCycle::~WindowLifeCycle() = default;
@@ -40,7 +45,6 @@ namespace NanamiEngine::Core::Application
     {
         if (Module::Asset::Asset::IsLoadingResource())
             return;
-
         
         initRenderableCallbacks_  .Invoke([](auto& obj) { obj.InitRenderer();     });
         awakableCallbacks_        .Invoke([](auto& obj) { obj.OnAwake();          });

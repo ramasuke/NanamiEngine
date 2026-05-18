@@ -23,9 +23,7 @@ namespace GameCore::PlayerAvatar
     
 #pragma region Serialization Function
 public:
-void BasedOnDrawgui() {
-    ImGuiHelper::OnDrawInputField("followFromBehindCamera_", followFromBehindCamera_);
-}
+void BasedOnDrawgui() override;
 
 template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {

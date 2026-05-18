@@ -86,22 +86,22 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serialize(0)]] float comboNormalAttackStateDuration_secs_;
         [[serialize(0)]] AttackParam<Damage::PhysicsPower> dashAttack_;
         
-        [[serialize(0)]] StatusParameter::MoveSpeed        walkSpeed_;
-        [[serialize(0)]] StatusParameter::MoveSpeed        runSpeed_ ;
-        [[serialize(0)]] float                             moveRotateSpeed_;
-        [[serialize(0)]] float                             jumpPower_;
-        [[serialize(0)]] float                             jumpCooldown_secs_;
-        [[serialize(0)]] float                             onEnableReinforceDuration_secs_;
-        [[serialize(0)]] float                             onDisableReinforceDuration_secs_;
-        [[serialize(0)]] EnhancePower                      reinforceRequireEnhance_;
-        [[serailize(0)]] float                             damageStateDuration_secs_;
-        [[serailize(0)]] float                             avoidRollingStateDuration_secs_;
-        [[serialize(0)]] float                             deathStateDuration_secs_;
-        [[serailize(0)]] float                             reinforceModeDuring_secs_ ;
-        [[serailize(0)]] float                             reinforceModeDuration_secs_;
+        [[serialize(0)]] StatusParameter::MoveSpeed walkSpeed_;
+        [[serialize(0)]] StatusParameter::MoveSpeed runSpeed_ ;
+        [[serialize(0)]] float                      moveRotateSpeed_;
+        [[serialize(0)]] float                      jumpPower_;
+        [[serialize(0)]] float                      jumpCooldown_secs_;
+        [[serialize(0)]] float                      onEnableReinforceDuration_secs_;
+        [[serialize(0)]] float                      onDisableReinforceDuration_secs_;
+        [[serialize(0)]] EnhancePower               reinforceRequireEnhance_;
+        [[serailize(0)]] float                      damageStateDuration_secs_;
+        [[serailize(0)]] float                      avoidRollingStateDuration_secs_;
+        [[serialize(0)]] float                      deathStateDuration_secs_;
+        [[serailize(0)]] float                      reinforceModeDuring_secs_ ;
+        [[serailize(0)]] float                      reinforceModeDuration_secs_;
         
-        LibCore::Rx::SerializableSubject<bool>             isReinforceMode_;
-        std::queue<std::unique_ptr<IDamage>>        onDamagedStack_;
+        LibCore::Rx::SerializableSubject<bool> isReinforceMode_;
+        std::queue<std::unique_ptr<IDamage>>   onDamagedStack_;
         
         
 

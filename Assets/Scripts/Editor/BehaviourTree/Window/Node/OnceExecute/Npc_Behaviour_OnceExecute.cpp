@@ -4,7 +4,6 @@
 #include "../../../../../../../Engine/Module/Gui/Graph/NodeOption/NodeOption.h"
 #include "cereal/archives/json.hpp"
 #include "cereal/archives/portable_binary.hpp"
-#include "../"
 
 namespace Editor::Npc::Behaviour
 {

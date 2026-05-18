@@ -52,7 +52,7 @@ namespace GameCore::PlayerAvatar
     {
         static_assert((std::constructible_from<StateTypes, const std::shared_ptr<StateContextT>&, const std::function<void(std::type_index)>&> && ...),
                       "All states must be constructible from (context, lambda)");
-
+    
         using FirstState = std::tuple_element_t<0, std::tuple<StateTypes...>>;
         OnChangeState(std::type_index(typeid(FirstState)));
     }

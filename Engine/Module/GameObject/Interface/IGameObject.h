@@ -30,7 +30,12 @@ namespace NanamiEngine::Module::GameObject
         
         virtual ~IGameObject() = default;
         virtual void InitGameObject(const std::weak_ptr<IGameObject>& parent, const std::shared_ptr<IGameObject>& ownPtr) = 0;
-        virtual void InitForCopied (const std::shared_ptr<IGameObject>& ownPtr, bool isActive, std::string name, ComponentGroup components, Transform transform) = 0;
+        virtual void InitForCopied (
+            const std::shared_ptr<IGameObject>& ownPtr,
+            bool isActive,
+            std::string name,
+            ComponentGroup components,
+            Transform transform) = 0;
         virtual std::shared_ptr<IGameObject> CopyForInstantiate() = 0;
         [[nodiscard]] virtual const std::string& Name     () const = 0;
         [[nodiscard]] virtual Transform&         Transform() = 0;

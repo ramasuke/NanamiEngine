@@ -1,5 +1,6 @@
 ﻿#include "Prop_Canon.h"
 
+#include "../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
 #include "../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
@@ -24,24 +25,22 @@ namespace GamePlay::Prop
     
     void Canon::RightRotate()
     {
-        const auto collider = Components().Catch<Component::ColliderBase>();
-        Physics::AddTorque(collider.lock()->BodyId(), glm::vec3(0.0f, addRotateTorque_, 0.0f));
+        Transform().Rotate(glm::vec3(0, addRotateTorque_ * Time::DeltaTime(), 0));
     }
 
     void Canon::LeftRotate()
     {
-        const auto collider = Components().Catch<Component::ColliderBase>();
-        Physics::AddTorque(collider.lock()->BodyId(), glm::vec3(0.0f, -addRotateTorque_, 0.0f));
+        Transform().Rotate(glm::vec3(0, -addRotateTorque_ * Time::DeltaTime(), 0));
     }
 
     void Canon::OnAwake()
     {
-        basePos_ = Transform().GetWorldPos();   
+        position_ = Transform().GetWorldPos();
     }
 
     void Canon::OnUpdate()
     {
-        Transform().SetWorldPos(basePos_);
+        Transform().SetWorldPos(position_);
     }
 
     void Canon::OnDrawGui()

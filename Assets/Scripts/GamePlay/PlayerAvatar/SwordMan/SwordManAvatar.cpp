@@ -2,7 +2,9 @@
 
 #include "../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "../../../../../Engine/Module/LocalPrefs/Engine_Module_LocalPrefs.h"
 #include "../../../Core/Game/PlayerAvatar/AttackArea/PlayerAvatarAttackArea.h"
+#include "../../../Core/Game/PlayerAvatar/Type/PlayerAvatarType.h"
 
 namespace GamePlay::PlayerAvatar::SwordMan
 {
@@ -54,6 +56,11 @@ namespace GamePlay::PlayerAvatar::SwordMan
     std::weak_ptr<Asset::SoundFile> SwordManAvatar::AvoidRollingSound() const
     {
         return avoidRollingSound_.get();
+    }
+
+    PlayerAvatarType SwordManAvatar::Type() const
+    {
+        return PlayerAvatarType::SwordMan;
     }
 
     void SwordManAvatar::OnDrawGui()

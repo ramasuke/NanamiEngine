@@ -180,7 +180,85 @@
       <AdditionalOptions>/bigobj </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Assets\Data\PlayerAvatarInitStatus\SwordMan\Data_SwordManInitStatus.cpp" />
+    <ClCompile Include="Assets\Data\PlayerAvatar\Factory\PlayerAvatarFactory.cpp">
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>NanamiEngine\x64\Debug\</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>NanamiEngine\x64\Debug\</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <ConformanceMode>true</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <EnableVectorLength>NotSet</EnableVectorLength>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>NanamiEngine\x64\Debug\</ModuleDependenciesFile>
+      <ModuleOutputFile>NanamiEngine\x64\Debug\</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>NanamiEngine\x64\Debug\</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>NanamiEngine\x64\Debug\vc143.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>NanamiEngine\x64\Debug\NanamiEngine.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>NanamiEngine\x64\Debug\</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>NanamiEngine\x64\Debug\NanamiEngine.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>NanamiEngine\x64\Debug\</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <BuildStlModules>false</BuildStlModules>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LinkCompiled>true</LinkCompiled>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\PlayerAvatar\InitStatus\SwordMan\Data_SwordManInitStatus.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_Physics.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_PhysicsPower.cpp" />
@@ -3645,9 +3723,9 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\AttackArea\PlayerAvatarAttackArea.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\CameraGroup\AllPlayerCameraGroup.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\CameraGroup\PlayerAvatarCameraGroupBase.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Chattable\IPlayerChattable.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Factory\PlayerAvatarFactory.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\InputAction\PlayerAvatarInputActionBase.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Input\IPlayerAvatarInput.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Input\Move\InputMove.cpp" />
@@ -3979,6 +4057,7 @@
       <AdditionalOptions>/bigobj </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\PlayerAvatarStatus.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Animation\SwordManAvatarAnimation.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -4700,6 +4779,7 @@
       <AdditionalOptions>/bigobj </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Type\PlayerAvatarType.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Base\Context\Main_GameSceneBaseContext.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -9611,6 +9691,7 @@
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Engine\Module\Scene\ShadowMap\ShadowMapSetting.cpp" />
     <ClCompile Include="Engine\Module\ScriptableObject\NullContextFile\NullContextFile.cpp" />
     <ClCompile Include="Engine\Module\ScriptableObject\ScriptableObject.cpp" />
     <ClCompile Include="Libs\glm\detail\glm.cpp" />
@@ -10405,7 +10486,8 @@
     <ClInclude Include="Assets\Data\FriendlyNpcWalkingRoute\Data_NpcWalkingRoute.h" />
     <ClInclude Include="Assets\Data\NpcChatText\Context\Data_Chat.h" />
     <ClInclude Include="Assets\Data\NpcChatText\Data_NpcChat.h" />
-    <ClInclude Include="Assets\Data\PlayerAvatarInitStatus\SwordMan\Data_SwordManInitStatus.h" />
+    <ClInclude Include="Assets\Data\PlayerAvatar\Factory\PlayerAvatarFactory.h" />
+    <ClInclude Include="Assets\Data\PlayerAvatar\InitStatus\SwordMan\Data_SwordManInitStatus.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_Physics.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_PhysicsPower.h" />
@@ -10486,9 +10568,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Animator\IPlayerAvatarAnimator.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Animator\PlayerAvatarAnimator.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\AttackArea\PlayerAvatarAttackArea.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\CameraGroup\AllPlayerCameraGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\CameraGroup\PlayerAvatarCameraGroupBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Chattable\IPlayerChattable.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Factory\PlayerAvatarFactory.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\InputAction\PlayerAvatarInputActionBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Input\IPlayerAvatarInput.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Input\Move\InputMove.h" />
@@ -10516,6 +10598,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\EnahancePower\EnhancePower.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Event\PlayerAvatar_IStatusEvent.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\IPlayerAvatarStatus.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\PlayerAvatarStatus.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Animation\SwordManAvatarAnimation.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\CameraGroup\SwordManAvatarCameraGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\InputAction\SwordManAvatarInputAction.h" />
@@ -10552,6 +10635,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Quest\SwordMan_ITakeableSwordManQuest.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Quest\SwordMan_QuestHeaders.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\SwordManAvatarStatus.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Type\PlayerAvatarType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Base\Context\Main_GameSceneBaseContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Base\Main_GameSceneBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\AboardAirShipMovie\AboardAirShipMovie.h" />
@@ -10770,6 +10854,7 @@
     <ClInclude Include="Engine\Module\Scene\GameObject\Helper\GameObject.h" />
     <ClInclude Include="Engine\Module\Scene\GameObject\SceneGameObject\SceneGameObject.h" />
     <ClInclude Include="Engine\Module\Scene\Scene.h" />
+    <ClInclude Include="Engine\Module\Scene\ShadowMap\ShadowMapSetting.h" />
     <ClInclude Include="Engine\Module\ScriptableObject\NullContextFile\NullContextFile.h" />
     <ClInclude Include="Engine\Module\ScriptableObject\ScriptableObject.h" />
     <ClInclude Include="Libs\cereal\include\cereal\access.hpp" />
@@ -11777,6 +11862,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Data\EnemyBehaviour\FirstEventDragon.enemyBehaviourData" />
+    <Content Include="Assets\Data\PlayerAvatar\InitStatus\SwordMan\SwordManInitStatus.swordManInitStatus" />
+    <Content Include="Assets\Data\PlayerAvatar\InitStatus\SwordMan\SwordManInitStatus.swordManInitStatus.meta" />
     <Content Include="Assets\Prefab\Npc\Enemy\FirstEventDragon.prefab" />
     <Content Include="Assets\Prefab\Npc\Enemy\FirstEventDragon.prefab.meta" />
     <Content Include="Assets\Prefab\Particle\ReinforcePlayerParticle.prefab" />

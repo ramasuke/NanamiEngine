@@ -10,6 +10,10 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         
 
         [[serialize(0)]] bool isShow_ = false;
+        [[serialize(1)]] bool chattableIcon_ = false; 
+        [[serialize(1)]] bool chattingIcon_  = false; 
+        [[serialize(1)]] bool surpriseIcon_  = false; 
+        
         
 #pragma region Serialization Function
     public:
@@ -18,12 +22,18 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<ActionBase>(this));
             archive(isShow_);
+            archive(chattableIcon_);
+            archive(chattingIcon_);
+            archive(surpriseIcon_);
         }
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ActionBase>(this));
             if (version >= 0) archive(isShow_);
+            if (version >= 1) archive(chattableIcon_);
+            if (version >= 1) archive(chattingIcon_);
+            if (version >= 1) archive(surpriseIcon_);
         }
 #pragma endregion
     };
@@ -31,6 +41,6 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
     REGISTER_FRIENDLY_ACTION_WITH_NAME(SetEnableShowChatIcon, "NpcStatus::ChatIcon::SetEnableShowChatIcon")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::SetEnableShowChatIcon, 0)
+CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::SetEnableShowChatIcon, 1)
 CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::SetEnableShowChatIcon)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::ActionBase, GameCore::Npc::Friendly::Behaviour::Action::SetEnableShowChatIcon)

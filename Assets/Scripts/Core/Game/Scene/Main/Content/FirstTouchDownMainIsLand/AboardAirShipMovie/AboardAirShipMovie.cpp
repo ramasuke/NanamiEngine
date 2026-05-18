@@ -1,8 +1,11 @@
 ﻿#include "AboardAirShipMovie.h"
 
 #include "../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
+#include "../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForObservable/Coroutine_WaitForObservable.h"
+#include "../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForSubscription/Coroutine_WaitForSubscription.h"
 #include "../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForTween/Coroutine_WaitForTween.h"
 #include "../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
+#include "../../../../../../../../../Engine/Core/Coroutine/Awaitable/Yield/Coroutine_WaitYield.h"
 #include "../../../../../../../../../Engine/Module/NanamiUI/BlendAnimationRenderer/BlendAnmiationRenderer.h"
 #include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../../../Libs/LibCore/Tween/Ease/Ease.h"
@@ -63,7 +66,8 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
     Coroutine::Task<void> AboardAirShipMovie::AirShipMovieStagingAsync()
     {
         using namespace PlayerAvatar::SwordMan::State;
-    
+
+        
         // Playerの操作不可能に変更
         playerAvatar_.lock()->GetEventSceneStateMachine().OnDisable();
         
@@ -119,7 +123,25 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         playerAvatar_.lock()->GetEventSceneStateMachine().OnChangeState(typeid(SwordManAvatarArmStretchState));
         co_await Coroutine::WaitForSeconds(static_cast<float>(Context()->PlayerArmStretchDuring_msecs()) / 1000);
         Context()->SecondVirtualCamera()->OnDisable();
+        
+        
     }
+
+    // Coroutine::Task<void> AboardAirShipMovie::ArmStretchAsync() const
+    // {
+    //     using namespace Coroutine;
+    //     co_await WaitForObservable(rxcpp::observable());
+    //     co_await WaitForSeconds(1.0f);
+    //     co_await WaitForSubscription(rxcpp::composite_subscription());
+    //     co_await WaitUntil([] { return true; });
+    //     co_await WaitYield();
+    //     
+    //     const auto tween = tweeny::from(Context()->AirShip()->Transform().GetWorldPos())
+    //                                 .to(Context()->AirShipFirstMoveFromTarget().GetWorldPos())
+    //                                 .during(Context()->AirShipFirstMoveDuring_msecs())
+    //                                 .via(Tween::Ease(EaseType::Linear));
+    //     co_await WaitForTween(Context()->AirShip()->Transform(), tween);
+    // }
 
     void AboardAirShipMovie::StartFadeInUi() const
     {

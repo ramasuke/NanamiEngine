@@ -17,17 +17,15 @@ namespace NanamiEngine::Module::Asset
         
     private:
         void OnDoubleClick() override;
+        void CopiedInit() override;
         
         [[serialize(0)]] std::string contentPath_;
         [[serialize(0)]] Guid guid_;
 #pragma region Serialization Function
 public:
-void OnDrawGui() {
-    LibCore::ImGuiHelper::OnDrawInputField("contentPath_", contentPath_);
-    LibCore::ImGuiHelper::OnDrawInputField("guid_", guid_);
-}
+void OnDrawGui() override;
 
-template<class Archive>
+        template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<AssetBase>(this));
     archive(CEREAL_NVP(contentPath_));

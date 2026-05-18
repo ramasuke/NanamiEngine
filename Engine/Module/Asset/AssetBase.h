@@ -22,6 +22,7 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] virtual std::string GetContentPath() const = 0;
         virtual void OnDoubleClick() {}
         virtual void OnSaveCallback() {}
+        virtual void CopiedInit() {}
     };
 }
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::AssetBase, 0);

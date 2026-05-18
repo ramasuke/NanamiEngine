@@ -8,6 +8,7 @@
 #include "../../Application/Window/Popup/Group/PopupWindowGroup.h"
 #include "../../Application/Window/Popup/Inspector/InspectorWindow.h"
 #include "cereal/archives/json.hpp"
+#include "cereal/archives/portable_binary.hpp"
 
 namespace NanamiEngine::Core::FileSystem
 {
@@ -43,7 +44,31 @@ namespace NanamiEngine::Core::FileSystem
         file.fileName_ = std::move(fileName);
         return file;
     }
-    
+
+    File File::Copy() const
+    {
+        File copied;
+        copied.fileName_ = fileName_;
+        copied.filePath_ = filePath_ + "_copy";
+
+        if (content_)
+        {
+            std::stringstream ss;
+            {
+                cereal::PortableBinaryOutputArchive oarchive(ss);
+                oarchive(content_);
+            }
+
+            {
+                cereal::PortableBinaryInputArchive iarchive(ss);
+                iarchive(copied.content_);
+                copied.content_->CopiedInit();
+            }
+        }
+        
+        return copied;
+    }
+
     void File::OnSave() const
     {
         if (!content_)

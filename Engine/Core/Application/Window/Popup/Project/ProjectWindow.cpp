@@ -89,7 +89,9 @@ void Core::PopupWindow::ProjectWindow::OnDrawDirectoryTree(FileSystem::Directory
 }
 
 
-void Core::PopupWindow::ProjectWindow::DrawDirectoryContents(FileSystem::Directory& directory, FileSystem::EditorDraggingHand& draggingHand)
+void Core::PopupWindow::ProjectWindow::DrawDirectoryContents(
+    FileSystem::Directory& directory,
+    FileSystem::EditorDraggingHand& draggingHand)
 {
     for (auto& file : directory.Files())
     {
@@ -100,6 +102,17 @@ void Core::PopupWindow::ProjectWindow::DrawDirectoryContents(FileSystem::Directo
             file.OnClick();
         }
 
+        // 右クリックメニュー
+        if (ImGui::BeginPopupContextItem())
+        {
+            if (ImGui::MenuItem("コピー"))
+            {
+                directory.AddFile(file.Copy());
+            }
+
+            ImGui::EndPopup();
+        }
+        
         // ドラッグ開始処理
         if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
         {

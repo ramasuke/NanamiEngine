@@ -4,7 +4,8 @@
 #include "../../../../../../../../../Engine/Module/Asset/Scene/SceneFile.h"
 #include "../../../../../../../../../Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
 #include "../../../../../../../../../Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
-#include "../../../../../../../../Data/PlayerAvatarInitStatus/SwordMan/Data_SwordManInitStatus.h"
+#include "../../../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
+#include "../../../../../../../../Data/PlayerAvatar/InitStatus/SwordMan/Data_SwordManInitStatus.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../../GamePlay/Prop/AirShip/Prop_AirShip.h"
 #include "../../../../../../../GamePlay/Prop/Canon/Prop_Canon.h"
@@ -36,7 +37,6 @@ namespace GameCore::Scene
         [[nodiscard]] GameObject::Transform&                                 PlayerFirstMoveTarget()                     const   { return playerFirstMoveTargetPos_->Transform(); }
         [[nodiscard]] int                                                    PlayerFirstMoveDuring_msecs()               const   { return playerFirstMoveDuring_msecs_; }
         [[nodiscard]] int                                                    PlayerArmStretchDuring_msecs()              const   { return playerArmStretchDuring_msecs_; }
-        [[nodiscard]] std::weak_ptr<PlayerAvatar::SwordMan::SwordManAvatarCameraGroup> CameraGroup()                     const   { return cameraGroup_.get(); }
         [[nodiscard]] std::weak_ptr<GamePlay::Ui::SampleTitleLogo>                     TitleLogo()                       const   { return titleLogo_.get(); }
         [[nodiscard]] const std::weak_ptr<GameObject::IGameObject>&                    ActionControlWayUI()              const   { return actionControlWayUi_.get(); }
         [[nodiscard]] const std::weak_ptr<GamePlay::Ui::PlayerStatus>&                 PlayerStatusUI()                  const   { return playerStatusUi_.get(); }
@@ -62,7 +62,6 @@ namespace GameCore::Scene
         [[serialize(6)]] FIELD(GameObject::IGameObject)               playerFirstMoveTargetPos_;
         [[serialize(7)]] int                                          playerFirstMoveDuring_msecs_ = 0;
         [[serialize(8)]] int                                          playerArmStretchDuring_msecs_ = 0;
-        [[serialize(9)]] FIELD(PlayerAvatar::SwordMan::SwordManAvatarCameraGroup) cameraGroup_;
         [[serialize(10)]] FIELD(GamePlay::Ui::SampleTitleLogo)        titleLogo_;
         [[serialize(11)]] FIELD(GameObject::IGameObject)              actionControlWayUi_;
         [[serialize(12)]] FIELD(GamePlay::Ui::PlayerStatus)           playerStatusUi_;
@@ -94,7 +93,6 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(playerFirstMoveTargetPos_));
     archive(CEREAL_NVP(playerFirstMoveDuring_msecs_));
     archive(CEREAL_NVP(playerArmStretchDuring_msecs_));
-    archive(CEREAL_NVP(cameraGroup_));
     archive(CEREAL_NVP(titleLogo_));
     archive(CEREAL_NVP(actionControlWayUi_));
     archive(CEREAL_NVP(playerStatusUi_));
@@ -123,7 +121,6 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 6) archive(CEREAL_NVP(playerFirstMoveTargetPos_));
     if (version >= 7) archive(CEREAL_NVP(playerFirstMoveDuring_msecs_));
     if (version >= 8) archive(CEREAL_NVP(playerArmStretchDuring_msecs_));
-    if (version >= 9) archive(CEREAL_NVP(cameraGroup_));
     if (version >= 10) archive(CEREAL_NVP(titleLogo_));
     if (version >= 11) archive(CEREAL_NVP(actionControlWayUi_));
     if (version >= 12) archive(CEREAL_NVP(playerStatusUi_));
@@ -133,13 +130,15 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 14) archive(CEREAL_NVP(firstEventDragonSpawnPos_));
     if (version >= 15) archive(CEREAL_NVP(playerAvatarInitStatus_));
     if (version >= 16) archive(CEREAL_NVP(playerControllabeCanon_));
+    [[serialize(17)]] FIELD(Asset::PlayerAvatarFactory) playerAvatarFactory_;
+    if (version == 17) archive(CEREAL_NVP(playerAvatarFactory_));
 }
 #pragma endregion
 };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::FirstTouchDownMainIsLandSceneContext, 16);
+CEREAL_CLASS_VERSION(GameCore::Scene::FirstTouchDownMainIsLandSceneContext, 18);
 CEREAL_REGISTER_TYPE(GameCore::Scene::FirstTouchDownMainIsLandSceneContext);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::SceneContextBase, GameCore::Scene::FirstTouchDownMainIsLandSceneContext);
 #pragma endregion

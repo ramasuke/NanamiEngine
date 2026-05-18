@@ -24,4 +24,9 @@ namespace GameCore::PlayerAvatar
         followFromBehindCamera_->Components().Catch<CineMachine::Behaviour::ThirdPersonCameraBehaviour>().lock()->SetTarget(playerAvatarObject);
         currentCamera_ = followFromBehindCamera_.get();
     }
+
+    void PlayerAvatarCameraGroupBase::BasedOnDrawgui()
+    {
+        ImGuiHelper::OnDrawInputField("followFromBehindCamera_", followFromBehindCamera_);
+    }
 }

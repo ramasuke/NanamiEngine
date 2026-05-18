@@ -2,7 +2,7 @@
 
 #include "../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
-#include "../../../../../../Data/PlayerAvatarInitStatus/SwordMan/Data_SwordManInitStatus.h"
+#include "../../../../../../Data/PlayerAvatar/InitStatus/SwordMan/Data_SwordManInitStatus.h"
 #include "../../../Damage/Game_Damage_IDamage.h"
 #include "Quest/SwordMan_QuestGroup.h"
 #include "Event/SwordManAvatarStatusEvent.h"

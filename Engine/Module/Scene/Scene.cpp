@@ -45,6 +45,20 @@ Scene::Scene::~Scene()
     }
 }
 
+void Scene::Scene::CopiedInit()
+{
+    for (auto& weakGameObject : gameObjects_ | std::views::values)
+    {
+        auto gameObject = weakGameObject.lock();
+        weakGameObject.lock()->InitForCopied(
+            gameObject,
+            gameObject->IsEnable(),
+            gameObject->Name(),
+            gameObject->Components(),
+            gameObject->Transform());
+    }
+}
+
 void Scene::Scene::AddGameObject(
     const std::weak_ptr<Module::GameObject::IGameObject>& add)
 {

@@ -6,7 +6,10 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::PlaySE::DoTick(const TickContext& context)
     {
-        GamePlay::Sound::SoundPlayer::PlaySe(*sound_.get(), context.EnemyTransform().GetWorldPos());
+        if (sound_)
+        {
+            GamePlay::Sound::SoundPlayer::PlaySe(*sound_.get(), context.EnemyTransform().GetWorldPos());
+        }
         
         return TickStatus::Success;
     }

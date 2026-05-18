@@ -10,7 +10,10 @@ namespace GameCore::Npc::Friendly::Behaviour
     {
         if (isShow_)
         {
-            context.OwnChatIcon().Show();
+            context.OwnChatIcon().Show(
+                chattableIcon_,
+                chattingIcon_,
+                surpriseIcon_);
         }
         else
         {
@@ -22,5 +25,8 @@ namespace GameCore::Npc::Friendly::Behaviour
     void Action::SetEnableShowChatIcon::DoDrawGui()
     {
         ImGuiHelper::OnDrawInputField("isShow_", isShow_);
+        ImGuiHelper::OnDrawInputField("chattableIcon_", chattableIcon_);
+        ImGuiHelper::OnDrawInputField("chattingIcon_", chattingIcon_);
+        ImGuiHelper::OnDrawInputField("surpriseIcon_", surpriseIcon_);
     }
 }

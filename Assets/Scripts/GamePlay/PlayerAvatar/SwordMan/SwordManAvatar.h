@@ -27,6 +27,7 @@ namespace GamePlay::PlayerAvatar::SwordMan
         [[nodiscard]] std::weak_ptr<Component::ParticleSystem> ReinforcingParticle  () const;
         [[nodiscard]] std::weak_ptr<Asset::SoundFile         > NormalAttackSound    () const;
         [[nodiscard]] std::weak_ptr<Asset::SoundFile         > AvoidRollingSound    () const;
+        [[nodiscard]] PlayerAvatarType Type() const override;
 
     private:
         [[serialize(1)]] FIELD(Asset::SoundFile) normalAttackSound_;

@@ -54,6 +54,8 @@ namespace GameCore
         [[nodiscard]] virtual const glm::vec3&                                   FeatStepPosition() const = 0;
         [[nodiscard]] virtual const NanamiEngine::Module::GameObject::Transform& PlayerTransform () const = 0;
         [[nodiscard]] virtual PlayerAvatar::IPlayerAvatarStatus                & PlayerStatus    () const = 0;
+        [[nodiscard]] virtual PlayerAvatar::PlayerAvatarType                     Type            () const = 0;
+        virtual void SaveStatus() = 0;
         static const std::vector<std::weak_ptr<IPlayerAvatar>>& PlayerAvatars();
         
     protected:

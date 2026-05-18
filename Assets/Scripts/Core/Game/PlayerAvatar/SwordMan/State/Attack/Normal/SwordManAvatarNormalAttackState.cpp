@@ -18,6 +18,12 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarNormalAttackState::DoUpdate()
     {
+        if (Status().IsDamaged())
+        {
+            OnChangeState<HurtState>();
+            return;
+        }
+
         TryComboAttack();
 
         if (Status().ComboNormalAttack().at(currentCombo_).Duration_secs() <= During_secs())

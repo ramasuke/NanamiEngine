@@ -18,18 +18,14 @@ namespace GameCore::Scene::Main
         scene_ = LoadMainScene();
     }
     
-    void TitleScene::OnEnter()
+    void TitleScene::Enter()
     {
         
     }
     
-    void TitleScene::OnExit()
-    {
-        GamePlay::Sound::SoundPlayer::StopAllBgm();
-    }
-    
     void TitleScene::Dispose()
     {
+        GamePlay::Sound::SoundPlayer::StopAllBgm();
         Core::Application::ApplicationBase::GameWindow()->RemoveContent(scene_.lock());
     }
     

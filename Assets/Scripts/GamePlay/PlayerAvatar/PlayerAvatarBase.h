@@ -8,6 +8,7 @@
 #include "../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../Core/Game/PlayerAvatar/StateMachine/PlayerAvatarStateMachine.h"
 #include "../../Core/Game/PlayerAvatar/RequireType/RequireType.h"
+#include "../../Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
 #include "../Ui/NpcChatting/NpcChatting.h"
 #include "ChattableArea/ChattableArea.h"
 #include "../../Engine/Module/GameObject/Transform/Transform.h"
@@ -39,7 +40,9 @@ namespace GamePlay::PlayerAvatar
         /** @brief PlayerAvatar<T>のCameraを取得 */
         [[nodiscard]] Physics::ICollider& Collider() const override { return *collider_.lock(); }
         [[nodiscard]] const GameObject::Transform& PlayerTransform() const override { return Transform(); }
-        Status& PlayerStatus() const override { return *status_; }
+        [[nodiscard]] Status& PlayerStatus() const override { return *status_; }
+        void SaveStatus() override;
+        
 
     private:
         void OnAwake                 () override;
@@ -162,7 +165,13 @@ namespace GamePlay::PlayerAvatar
             []{ }
         );
     }
-    
+
+    template <RequireType::Traits TraitsT>
+    void PlayerAvatarBase<TraitsT>::SaveStatus()
+    {
+        GameCore::PlayerAvatar::SaveStatus<Status, TraitsT>(status_);
+    }
+
     template <RequireType::Traits TraitsT>
     void PlayerAvatarBase<TraitsT>::BasedOnDrawgui()
     {

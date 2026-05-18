@@ -17,6 +17,7 @@ namespace NanamiEngine::Scene
         [[nodiscard]] std::string Name()    const           { return name_; }
         [[nodiscard]] const Guid& GetGuid() const override  { return guid_;    }
 
+        void CopiedInit();
         void AddGameObject(const std::weak_ptr<Module::GameObject::IGameObject>& add);
         void RemoveImplementAllGameObject();
         bool TryOnRemoveGameObject(const std::weak_ptr<Module::GameObject::IGameObject>& remove);

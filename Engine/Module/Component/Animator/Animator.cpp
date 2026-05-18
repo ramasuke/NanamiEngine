@@ -50,4 +50,11 @@ void Component::Animator::OnDrawGui()
             ImGui::Spacing();
         } 
     });
+    if (ImGui::TreeNode("Parameter"))
+    {
+        animationTree_->OnDrawGui();
+        
+        ImGui::TreePop();
+        ImGui::Spacing();
+    }
 }

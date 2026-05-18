@@ -13,7 +13,7 @@ namespace GameCore::Scene
         secondVirtualCamera_           .Init();
         cameraBrain_                   .Init();
         playerFirstMoveTargetPos_      .Init();
-        cameraGroup_                   .Init();
+        //swordmanCameraGroup_           .Init();
         titleLogo_                     .Init();
         actionControlWayUi_            .Init();
         playerStatusUi_                .Init();
@@ -39,7 +39,7 @@ namespace GameCore::Scene
         LibCore::ImGuiHelper::OnDrawInputField("playerFirstMoveTargetPos_", playerFirstMoveTargetPos_);
         LibCore::ImGuiHelper::OnDrawInputField("playerFirstMoveDuring_msecs_", playerFirstMoveDuring_msecs_);
         LibCore::ImGuiHelper::OnDrawInputField("playerArmStretchDuring_msecs_", playerArmStretchDuring_msecs_);
-        LibCore::ImGuiHelper::OnDrawInputField("cameraGroup_", cameraGroup_);
+        //LibCore::ImGuiHelper::OnDrawInputField("cameraGroup_", swordmanCameraGroup_);
         LibCore::ImGuiHelper::OnDrawInputField("titleLogo_", titleLogo_);
         LibCore::ImGuiHelper::OnDrawInputField("actionControlWayUi_", actionControlWayUi_);
         LibCore::ImGuiHelper::OnDrawInputField("playerStatusUi_", playerStatusUi_);

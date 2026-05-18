@@ -44,8 +44,8 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual LibCore::Rx::ReadOnlyReactiveContext<bool> IsEnableReinforce() const = 0;
         [[nodiscard]] virtual StatusParameter::MoveSpeed GetWalkSpeed() const = 0;
         [[nodiscard]] virtual StatusParameter::MoveSpeed GetRunSpeed () const = 0;
-        [[nodiscard]] virtual float GetMoveRotateSpeed() const = 0;
-        [[nodiscard]] virtual float GetJumpPower      () const = 0;
+        [[nodiscard]] virtual float GetMoveRotateSpeed  () const = 0;
+        [[nodiscard]] virtual float GetJumpPower        () const = 0;
         [[nodiscard]] virtual float GetJumpCooldown_secs() const = 0;
         [[nodiscard]] virtual float ReinforceModeDuring_secs() const = 0;
         [[nodiscard]] virtual float ReinforceModeDuration_secs() const = 0;
@@ -61,6 +61,7 @@ namespace GameCore::PlayerAvatar
         template <class Archive>
         void load(Archive& archive, const std::uint32_t version)
         {
+            
         }
     };
 }

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../../../../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "../../../../../../../../../Engine/Module/Asset/Sound/SoundFile.h"
 #include "../../../Context/Main_SceneContextBase.h"
 
 namespace GameCore::Scene
@@ -9,10 +10,10 @@ namespace GameCore::Scene
     public:
         void Init() override;
 
-         const std::shared_ptr<Asset::PrefabGameObjectFile>& SummonPlayerAvatarPrefab() const { return summonPlayerAvatarPrefab_.get(); } 
+        [[nodiscard]] const std::weak_ptr<Asset::SoundFile>& BGM() const { return bgm_.get(); }
         
     private:
-        [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) summonPlayerAvatarPrefab_;
+        [[serialize(1)]] FIELD(Asset::SoundFile) bgm_;
         
 #pragma region Serialization Function
 public:
@@ -21,13 +22,11 @@ void OnDrawGui() override;
         template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<SceneContextBase>(this));
-    archive(CEREAL_NVP(summonPlayerAvatarPrefab_));
 }
 
 template<class Archive>
 void load(Archive& archive, const std::uint32_t version) {
     archive(cereal::base_class<SceneContextBase>(this));
-    if (version >= 0) archive(CEREAL_NVP(summonPlayerAvatarPrefab_));
 }
 #pragma endregion
 };

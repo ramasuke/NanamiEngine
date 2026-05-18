@@ -48,14 +48,13 @@ namespace GameCore::Scene::Main
             
             if (const auto current = currentScene_.lock())
             {
-                current->OnExit ();
                 current->Dispose();
             }
 
             const auto& next = scenes_.at(changeRequest.type);
             next->Init();
             currentScene_ = next;
-            currentScene_.lock()->OnEnter();
+            currentScene_.lock()->Enter();
         }
 
         changeRequests_.clear();

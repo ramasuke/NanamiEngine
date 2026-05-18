@@ -32,6 +32,9 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         Coroutine::Task<void> AirShipMovieWalkPlayerAsync       ();
         Coroutine::Task<void> AirShipMovieArmStretchPlayerAsync ();
         void StartFadeInUi() const;
+
+        //無駄
+        // Coroutine::Task<void> AboardAirShipMovie::ArmStretchAsync() const;
         
         std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar> playerAvatar_;
         std::weak_ptr<FirstTouchDownMainIsLandSceneContext> context_;
