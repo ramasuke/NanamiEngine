@@ -8,7 +8,7 @@ namespace NanamiEngine::Core::MainWindow
     class AnimatorWindow final : public MainWindowBase<AnimationTree::AnimationTree>
     {   
     public:
-        explicit AnimatorWindow() = default;
+        explicit AnimatorWindow();
         
     private:
         void OnSave() override;

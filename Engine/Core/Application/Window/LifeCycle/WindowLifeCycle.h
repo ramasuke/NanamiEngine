@@ -40,7 +40,7 @@ namespace NanamiEngine::Core::Application
     class WindowLifeCycle final
     {
     public:
-        WindowLifeCycle();
+        explicit WindowLifeCycle(bool useShadowMap);
         ~WindowLifeCycle();
 
         /** @brief Game  用のライフサイクルの更新 */

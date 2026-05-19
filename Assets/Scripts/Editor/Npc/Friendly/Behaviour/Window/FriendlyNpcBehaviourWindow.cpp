@@ -2,6 +2,11 @@
 
 namespace Editor::Npc::Friendly
 {
+    FriendlyNpcBehaviourWindow::FriendlyNpcBehaviourWindow()
+        : MainWindowBase(false)
+    {
+    }
+
     void FriendlyNpcBehaviourWindow::OnSave()
     {
         for (const auto& behaviourTree : contents_ | std::views::values)

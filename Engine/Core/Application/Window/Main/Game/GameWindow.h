@@ -10,6 +10,8 @@ namespace NanamiEngine::Core::MainWindow
     class GameWindow final : public MainWindowBase<Scene::Scene>
     {
     public:
+        explicit GameWindow();
+
         void AddContent(const std::shared_ptr<Scene::Scene>& content) override;
         void ChangeMainScene(const std::shared_ptr<Scene::Scene>& scene);
         [[nodiscard]] Scene::Scene& MainScene() const { return *mainScene_.lock(); }

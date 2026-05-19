@@ -3,6 +3,7 @@
 #include "../../../../../Module/Scene/GameObject/SceneGameObject/SceneGameObject.h"
 
 Core::MainWindow::PrefabViewWindow::PrefabViewWindow()
+    : MainWindowBase(false)
 {
     
 }

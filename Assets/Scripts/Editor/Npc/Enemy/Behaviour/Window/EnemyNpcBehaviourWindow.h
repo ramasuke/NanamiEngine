@@ -7,6 +7,10 @@ namespace Editor::Npc::Enemy
 {
     class EnemyNpcBehaviourWindow final : public Core::MainWindow::MainWindowBase<GameCore::Npc::Enemy::BehaviourTree>
     {
+    public:
+        explicit EnemyNpcBehaviourWindow();
+
+    private:
         void OnSave() override;
         void OnDrawGui(Core::MainWindow::MainWindowDrawGuiContext context) override;
         void OnUpdate() override;

@@ -45,7 +45,8 @@ Scene::Scene::~Scene()
     }
 }
 
-void Scene::Scene::CopiedInit()
+void Scene::Scene::CopiedInit(
+    const std::string& contentPath)
 {
     for (auto& weakGameObject : gameObjects_ | std::views::values)
     {
@@ -57,6 +58,7 @@ void Scene::Scene::CopiedInit()
             gameObject->Components(),
             gameObject->Transform());
     }
+    filePath_ = contentPath;
 }
 
 void Scene::Scene::AddGameObject(

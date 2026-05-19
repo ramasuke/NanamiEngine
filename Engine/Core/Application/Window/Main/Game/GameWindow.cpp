@@ -11,6 +11,11 @@
 
 namespace NanamiEngine::Core::MainWindow
 {
+    GameWindow::GameWindow(): MainWindowBase(true)
+    {
+        
+    }
+    
     std::vector<std::shared_ptr<Scene::Scene>> GameWindow::Scenes() const
     {
         std::vector<std::shared_ptr<Scene::Scene>> result;

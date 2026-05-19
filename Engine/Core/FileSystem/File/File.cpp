@@ -3,6 +3,7 @@
 #include <ranges>
 #include <utility>
 
+#include <filesystem>
 #include "../../../Module/Asset/Sprite/SpriteFile.h"
 #include "../../../Module/Asset/Scene/SceneFile.h"
 #include "../../Application/Window/Popup/Group/PopupWindowGroup.h"
@@ -48,9 +49,26 @@ namespace NanamiEngine::Core::FileSystem
     File File::Copy() const
     {
         File copied;
-        copied.fileName_ = fileName_;
-        copied.filePath_ = filePath_ + "_copy";
 
+        //fileName_
+        {
+            std::filesystem::path p(fileName_);
+            std::string newName = p.stem().string() + "_copy" + p.extension().string();
+            copied.fileName_ = newName;
+        }
+
+        //filePath_
+        {
+            std::filesystem::path p(filePath_);
+            std::string newName = p.stem().string() + "_copy" + p.extension().string();
+
+            if (p.has_parent_path())
+                copied.filePath_ = (p.parent_path() / newName).string();
+            else
+                copied.filePath_ = newName;
+        }
+
+        //contentのコピー
         if (content_)
         {
             std::stringstream ss;
@@ -65,9 +83,10 @@ namespace NanamiEngine::Core::FileSystem
                 copied.content_->CopiedInit();
             }
         }
-        
+
         return copied;
     }
+
 
     void File::OnSave() const
     {

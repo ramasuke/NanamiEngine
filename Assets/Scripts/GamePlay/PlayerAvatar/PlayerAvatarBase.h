@@ -4,6 +4,7 @@
 #include "../../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../Engine/Module/Component/ModelRenderer/ModelRenderer.h"
+#include "../../../../Engine/Module/Scene/ShadowMap/ShadowMapSetting.h"
 #include "../../Core/Game/Npc/Enemy/ITakableEnemyAttack/ITakableEnemyAttack.h"
 #include "../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../Core/Game/PlayerAvatar/StateMachine/PlayerAvatarStateMachine.h"
@@ -136,6 +137,8 @@ namespace GamePlay::PlayerAvatar
         stateMachine_->OnUpdate();
         inputAction_ ->OnUpdate();
         status_      ->OnUpdate();
+        
+        Scene::ShadowMapSetting::SetRenderAreaPos(Transform().GetWorldPos());
     }
     
     template <RequireType::Traits TraitsT>

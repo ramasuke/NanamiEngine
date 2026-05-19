@@ -4,7 +4,7 @@
 
 namespace NanamiEngine::Scene
 {
-    glm::vec3 ShadowMapSetting::renderAreaSize_ = glm::vec3{0.0f, 0.0f, 0.0f};
+    glm::vec3 ShadowMapSetting::renderAreaSize_ = glm::vec3{100.0f, 100.0f, 100.0f};
     glm::vec3 ShadowMapSetting::renderAreaPos_  = glm::vec3{0.0f, 0.0f, 0.0f};
     
     void ShadowMapSetting::SetRenderAreaSize(

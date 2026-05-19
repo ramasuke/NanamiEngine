@@ -10,7 +10,7 @@
 
 namespace NanamiEngine::Core::Application
 {
-    WindowLifeCycle::WindowLifeCycle()
+    WindowLifeCycle::WindowLifeCycle(const bool useShadowMap)
         : coroutineScheduler_(std::make_unique<Coroutine::CoroutineScheduler>())
         , uiRenderableCallbacks_{
             [](const std::weak_ptr<Module::LifeCycleCallback::IUserInterfaceRenderable>& weakA,
@@ -25,18 +25,21 @@ namespace NanamiEngine::Core::Application
             }
         }
     {
-        const VECTOR lightDir = VGet(-0.5f, -1.0f, -0.5f);
-        SetLightDirection(lightDir);
-        constexpr COLOR_F difColor = {1.0f, 1.0f, 1.0f, 1.0f};
-        SetLightDifColor(difColor);
-        
-        shadowMapDxLibHandle_ = MakeShadowMap(1024, 1024);
-        SetShadowMapLightDirection(shadowMapDxLibHandle_, VGet(-0.5f, -1.0f, -0.5f));
-        const glm::vec3 position = Scene::ShadowMapSetting::GetRenderAreaPos();
-        const glm::vec3 size     = Scene::ShadowMapSetting::GetRenderAreaSize();
-        const VECTOR minPosition = VGet(position.x + -size.x, position.y + -size.y, position.z + -size.z);
-        const VECTOR maxPosition = VGet(position.x + size.x, position.y + size.y, position.z + size.z);
-        SetShadowMapDrawArea(shadowMapDxLibHandle_, minPosition, maxPosition);
+        if (useShadowMap)
+        {
+            const VECTOR lightDir = VGet(-0.5f, -1.0f, -0.5f);
+            SetLightDirection(lightDir);
+            constexpr COLOR_F difColor = {1.0f, 1.0f, 1.0f, 1.0f};
+            SetLightDifColor(difColor);
+            
+            shadowMapDxLibHandle_ = MakeShadowMap(1024, 1024);
+            SetShadowMapLightDirection(shadowMapDxLibHandle_, VGet(-0.5f, -1.0f, -0.5f));
+            const glm::vec3 position = Scene::ShadowMapSetting::GetRenderAreaPos();
+            const glm::vec3 size     = Scene::ShadowMapSetting::GetRenderAreaSize();
+            const VECTOR minPosition = VGet(position.x + -size.x, position.y + -size.y, position.z + -size.z);
+            const VECTOR maxPosition = VGet(position.x + size.x, position.y + size.y, position.z + size.z);
+            SetShadowMapDrawArea(shadowMapDxLibHandle_, minPosition, maxPosition);
+        }
     }
     
     WindowLifeCycle::~WindowLifeCycle() = default;

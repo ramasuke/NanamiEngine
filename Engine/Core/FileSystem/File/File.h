@@ -14,14 +14,15 @@ namespace NanamiEngine::Core::FileSystem
 
         [[nodiscard]] const std::string& GetName() const { return fileName_; }
         [[nodiscard]] const std::shared_ptr<Module::Asset::AssetBase>& GetContent() const { return content_; }
+        [[nodiscard]] File Copy() const;
 
-        File Copy()          const;
         void OnSave()        const;
         void OnClick()       const;
         void OnDoubleClick() const;
 
     private:
         explicit File() = default;
+        
         std::string filePath_;
         std::string fileName_;
         std::shared_ptr<Module::Asset::AssetBase> content_;

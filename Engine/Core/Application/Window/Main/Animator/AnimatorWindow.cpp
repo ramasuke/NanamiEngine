@@ -3,6 +3,11 @@
 
 namespace NanamiEngine::Core::MainWindow
 {
+    AnimatorWindow::AnimatorWindow()
+        : MainWindowBase(false)
+    {
+    }
+
     void AnimatorWindow::OnSave()
     {
         for (const auto& animationTree : contents_ | std::views::values)

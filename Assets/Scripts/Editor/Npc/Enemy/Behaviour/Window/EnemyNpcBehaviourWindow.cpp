@@ -2,6 +2,12 @@
 
 namespace Editor::Npc::Enemy
 {
+    EnemyNpcBehaviourWindow::EnemyNpcBehaviourWindow()
+        : MainWindowBase(false)
+    {
+        
+    }
+
     void EnemyNpcBehaviourWindow::OnSave()
     {
         for (const auto& behaviourTree : contents_ | std::views::values)

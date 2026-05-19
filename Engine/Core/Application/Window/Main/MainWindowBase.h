@@ -12,7 +12,8 @@ namespace NanamiEngine::Core::MainWindow
     class MainWindowBase : public IMainWindow
     {
     public:
-        virtual void AddContent   (const std::shared_ptr<ContentT>& content);
+        explicit MainWindowBase(bool useShadowMap);
+        virtual void AddContent(const std::shared_ptr<ContentT>& content);
         void RemoveContent(const std::shared_ptr<ContentT>& content);
         [[nodiscard]] Application::WindowLifeCycle& LifeCycle() override { return lifeCycle_; }
         
@@ -25,6 +26,13 @@ namespace NanamiEngine::Core::MainWindow
 
         Application::WindowLifeCycle lifeCycle_;
     };
+
+    template <typename ContentT> requires std::derived_from<ContentT, Module::Object::IObject>
+    MainWindowBase<ContentT>::MainWindowBase(const bool useShadowMap)
+        : lifeCycle_(useShadowMap)
+    {
+        
+    }
 
     template <typename ContentT> requires std::derived_from<ContentT, Module::Object::IObject>
     void MainWindowBase<ContentT>::AddContent(const std::shared_ptr<ContentT>& content)
