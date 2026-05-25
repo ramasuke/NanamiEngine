@@ -6,7 +6,7 @@
 #include "../../../Core/Game/Npc/Friendly/IFriendlyNpc.h"
 #include "../../../Core/Game/PlayerAvatar/Chattable/IPlayerChattable.h"
 #include "../../Ui/BillBoardNpcChatIcon/BillBoardNpcChatIcon.h"
-#include "../../Ui/NpcChatting/NpcChatting.h"
+#include "../../Ui/NpcChatting/Ui_NpcChatting.h"
 
 namespace GamePlay::Npc::Friendly
 {

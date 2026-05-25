@@ -5095,6 +5095,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\Context\GrassLandSceneContext.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\GrassLandScene.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\MainIslandScene\Context\MainIsLandSceneContext.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\MainIslandScene\MainIsLandScene.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\Title\Context\TitleSceneContext.cpp">
@@ -6145,10 +6147,11 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.cpp" />
-    <ClCompile Include="Assets\Scripts\GamePlay\Ui\NpcChatting\NpcChatting.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\NpcChatting\Ui_NpcChatting.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.cpp" />
-    <ClCompile Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\SampleTitleSceneUI.cpp" />
-    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Sample\SampleTitleLogo.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\UI_SampleTitleSceneUI.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Sample\UI_SampleTitleLogo.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Stage\Ui_StageSelect_StageUI.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\UI_StageSelect.cpp" />
     <ClCompile Include="Engine\Compiler\EngineCompiler.cpp" />
     <ClCompile Include="Engine\Core\Application\ApplicationBase.cpp">
@@ -8252,6 +8255,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Module\Asset\Factory\AssetFactory.cpp" />
     <ClCompile Include="Engine\Module\Component\ImageRenderer\Animation\ImageAnimationRenderer.cpp" />
+    <ClCompile Include="Engine\Module\GameObject\PrefabGameObject\PrefabCatchChild\PrefabCatchChild.cpp" />
     <ClCompile Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -10572,6 +10576,8 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\AboardAirShipMovie\AboardAirShipMovie.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\Context\FirstTouchDownMainIsLandSceneContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\FirstTouchDownMainIsLandScene.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\Context\GrassLandSceneContext.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\GrassLandScene.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\MainIslandScene\Context\MainIsLandSceneContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\MainIslandScene\MainIsLandScene.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\Title\Context\TitleSceneContext.h" />
@@ -10628,10 +10634,11 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.h" />
-    <ClInclude Include="Assets\Scripts\GamePlay\Ui\NpcChatting\NpcChatting.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\NpcChatting\Ui_NpcChatting.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.h" />
-    <ClInclude Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\SampleTitleSceneUI.h" />
-    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Sample\SampleTitleLogo.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\UI_SampleTitleSceneUI.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Sample\UI_SampleTitleLogo.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Stage\Ui_StageSelect_StageUI.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\UI_StageSelect.h" />
     <ClInclude Include="Engine\Compiler\EngineCompiler.h" />
     <ClInclude Include="Engine\Core\Application\ApplicationBase.h" />
@@ -10675,6 +10682,7 @@
     <ClInclude Include="Engine\Core\FileSystem\DraggingHand\EditorDraggingHand.h" />
     <ClInclude Include="Engine\Core\FileSystem\File\File.h" />
     <ClInclude Include="Engine\Core\Object\Field\Context\FieldContext.h" />
+    <ClInclude Include="Engine\Core\Object\Field\CreateField.h" />
     <ClInclude Include="Engine\Core\Object\Field\Field.h" />
     <ClInclude Include="Engine\Core\Object\Field\IInitializablePrefabField.h" />
     <ClInclude Include="Engine\Core\Object\Field\Interface\IFieldContext.h" />
@@ -10708,6 +10716,7 @@
     <ClInclude Include="Engine\Module\Asset\Sprite\SpriteFile.h" />
     <ClInclude Include="Engine\Module\Asset\Factory\AssetFactory.h" />
     <ClInclude Include="Engine\Module\Component\ImageRenderer\Animation\ImageAnimationRenderer.h" />
+    <ClInclude Include="Engine\Module\GameObject\PrefabGameObject\PrefabCatchChild\PrefabCatchChild.h" />
     <ClInclude Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.h" />
     <ClInclude Include="Engine\Module\Color\Color32.h" />
     <ClInclude Include="Engine\Module\Component\Animator\Animator.h" />
@@ -11791,6 +11800,7 @@
     <Folder Include="Assets\Prefab\Npc\Friendly\" />
     <Folder Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Condition\IsDeath\" />
     <Folder Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Content\" />
+    <Folder Include="Assets\Scripts\Core\Game\Scene\Main\Content\DrySand\" />
     <Folder Include="Assets\Tests\" />
     <Folder Include="Engine\Render\" />
   </ItemGroup>

@@ -8,11 +8,6 @@
 #include "../Interface/IFieldContext.h"
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 
-namespace NanamiEngine::Module::GameObject
-{
-    class IGameObject;
-}
-
 namespace NanamiEngine::Module::Component
 {
     class ComponentBase;

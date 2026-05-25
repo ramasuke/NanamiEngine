@@ -1,7 +1,7 @@
 ﻿#include "Friendly_Behaviour_Action_ImplementChat.h"
 
 #include "../../../../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
-#include "../../../../../../../../../../GamePlay/Ui/NpcChatting/NpcChatting.h"
+#include "../../../../../../../../../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {

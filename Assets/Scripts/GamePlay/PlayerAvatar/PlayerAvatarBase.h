@@ -10,7 +10,7 @@
 #include "../../Core/Game/PlayerAvatar/StateMachine/PlayerAvatarStateMachine.h"
 #include "../../Core/Game/PlayerAvatar/RequireType/RequireType.h"
 #include "../../Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
-#include "../Ui/NpcChatting/NpcChatting.h"
+#include "../Ui/NpcChatting/Ui_NpcChatting.h"
 #include "ChattableArea/ChattableArea.h"
 #include "../../Engine/Module/GameObject/Transform/Transform.h"
 

@@ -2,7 +2,7 @@
 
 #include "../../../../../Game.h"
 #include "../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../GamePlay/Ui/NpcChatting/NpcChatting.h"
+#include "../../../../../../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
 #include "../../../../../PlayerAvatar/PlayerAvatar.h"
 #include "../../../../../Scene/Main/Group/Main_GameSceneGroup.h"
 #include "../../../../../Scene/Sub/Content/ChattingUI/ChattingUIScene.h"

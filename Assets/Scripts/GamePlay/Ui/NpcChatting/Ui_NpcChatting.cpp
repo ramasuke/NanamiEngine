@@ -1,4 +1,4 @@
-﻿#include "NpcChatting.h"
+﻿#include "Ui_NpcChatting.h"
 
 #include "../../../../../Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../Data/NpcChatText/Data_NpcChat.h"

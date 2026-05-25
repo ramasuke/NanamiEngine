@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../../../GamePlay/Ui/NpcChatting/NpcChatting.h"
+#include "../../../../../../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
 #include "../../../Context/Sub_SceneContextBase.h"
 
 namespace GameCore::Scene::Sub

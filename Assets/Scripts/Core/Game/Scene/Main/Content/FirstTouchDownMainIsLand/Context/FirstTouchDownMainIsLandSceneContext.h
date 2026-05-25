@@ -10,7 +10,7 @@
 #include "../../../../../../../GamePlay/Prop/AirShip/Prop_AirShip.h"
 #include "../../../../../../../GamePlay/Prop/Canon/Prop_Canon.h"
 #include "../../../../../../../GamePlay/Ui/PlayerStatus/Ui_PlayerStatus.h"
-#include "../../../../../../../GamePlay/Ui/Sample/SampleTitleLogo.h"
+#include "../../../../../../../GamePlay/Ui/Sample/UI_SampleTitleLogo.h"
 #include "../../../Context/Main_SceneContextBase.h"
 
 namespace GameCore::Scene

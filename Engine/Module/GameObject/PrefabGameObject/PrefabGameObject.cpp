@@ -75,7 +75,7 @@ void GameObject::PrefabGameObject::OnDrawGui()
     transform_ .OnDrawGui();
     components_.OnDrawGui();
 
-    //=== CopiedObjectGuidList を表示 ===
+    //CopiedObjectGuidListを表示
     if (ImGui::TreeNodeEx("Copied Prefab Instances", ImGuiTreeNodeFlags_DefaultOpen))
     {
         if (copiedObjectGuidList_.empty())
