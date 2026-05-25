@@ -25,8 +25,8 @@ namespace GameCore::Scene::Main
         
     protected:
         /** @brief 以下からサンドボックスパターン */
-        [[nodiscard]] std::shared_ptr<ContextT>   Context()                    const { return context_;                              }
-        [[nodiscard]] MainScenarioProgression     GetMainScenarioProgression() const { return baseContext_.MainScenarioProgression(); }
+        [[nodiscard]] std::shared_ptr<ContextT>   Context()                    const { return context_; }
+        [[nodiscard]] GameProgresion     MainScenarioProgression()    const { return LoadGameProgression();   }
         [[nodiscard]] Sub::IGameSceneStack&       SubScene() const { return baseContext_.SubSceneStack(); }
         /**
          * @brief シーンをロードする

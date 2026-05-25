@@ -15,18 +15,22 @@ namespace GameCore::PlayerAvatar
 {
     template <typename T> concept PlayerAvatarState = std::derived_from<T, IPlayerAvatarState>;
     
-    template <typename StateT, typename... StateTypes>
+    template <typename StateT, typename DisableStateT, typename... StateTypes>
     requires PlayerAvatarState<StateT> && (PlayerAvatarState<StateTypes> && ...)
     class PlayerAvatarStateMachine final : public IPlayerAvatarStateMachine,
                                            public IPlayerAvatarEventSceneStateMachine
     {
     public:
+        using FirstState = std::tuple_element_t<0, std::tuple<StateTypes...>>;
+        
         template <typename StateContextT>
         explicit PlayerAvatarStateMachine(const std::shared_ptr<StateContextT>& context);
         
         void OnUpdate ();
         void OnDrawGui();
         rxcpp::observable<std::shared_ptr<StateT>> CurrentState() { return currentState_.get_observable(); }
+        void OnEnable () override;
+        void OnDisable() override;
         
     private:
         template <typename StateContextT>
@@ -34,60 +38,49 @@ namespace GameCore::PlayerAvatar
         template <typename CreateStateT, typename StateContextT>
         auto CreateState(const std::shared_ptr<StateContextT>& context);
         void OnChangeState(std::type_index type) override;
-        void OnEnable () override { isEnable_ = true ; }
-        void OnDisable() override { isEnable_ = false; }
         
         const std::unordered_map<std::type_index, std::shared_ptr<StateT>> states_;
         rxcpp::subjects::behavior<std::shared_ptr<StateT>> currentState_;
-        bool isEnable_;
     };
 
-    template <typename StateT, typename ... StateTypes>
+    template <typename StateT, typename DisableStateT, typename... StateTypes>
     requires PlayerAvatarState<StateT> && (PlayerAvatarState<StateTypes> && ...)
     template <typename StateContextT>
-    PlayerAvatarStateMachine<StateT, StateTypes...>::PlayerAvatarStateMachine(const std::shared_ptr<StateContextT>& context)
+    PlayerAvatarStateMachine<StateT, DisableStateT, StateTypes...>::PlayerAvatarStateMachine(const std::shared_ptr<StateContextT>& context)
         : states_      (CreateStates(context))
         , currentState_(nullptr)
-        , isEnable_    (true   )
     {
         static_assert((std::constructible_from<StateTypes, const std::shared_ptr<StateContextT>&, const std::function<void(std::type_index)>&> && ...),
                       "All states must be constructible from (context, lambda)");
     
-        using FirstState = std::tuple_element_t<0, std::tuple<StateTypes...>>;
         OnChangeState(std::type_index(typeid(FirstState)));
     }
 
-    template <typename StateT, typename ... StateTypes>
+    template <typename StateT, typename DisableStateT, typename... StateTypes>
     requires PlayerAvatarState<StateT> && (PlayerAvatarState<StateTypes> && ...)
-    void PlayerAvatarStateMachine<StateT, StateTypes...>::OnUpdate()
+    void PlayerAvatarStateMachine<StateT, DisableStateT, StateTypes...>::OnUpdate()
     {
-        if (!isEnable_)
-            return;
-        
         if (currentState_.get_value())
             currentState_.get_value()->OnUpdate();
     }
 
-    template <typename StateT, typename ... StateTypes>
+    template <typename StateT, typename DisableStateT, typename... StateTypes>
     requires PlayerAvatarState<StateT> && (PlayerAvatarState<StateTypes> && ...)
-    void PlayerAvatarStateMachine<StateT, StateTypes...>::OnChangeState(std::type_index type)
+    void PlayerAvatarStateMachine<StateT, DisableStateT, StateTypes...>::OnChangeState(std::type_index type)
     {
         assert(states_.contains(type) && ("Unknown state type: " + std::string(type.name())).c_str());
 
-        if (isEnable_ && currentState_.get_value())
+        if (currentState_.get_value())
             currentState_.get_value()->OnExit();
         
         currentState_.get_subscriber().on_next(states_.at(type));
-        
-        if (isEnable_)
-            currentState_.get_value()->OnEnter();
+        currentState_.get_value()->OnEnter();
     }
 
-    template <typename StateT, typename ... StateTypes>
+    template <typename StateT, typename DisableStateT, typename... StateTypes>
     requires PlayerAvatarState<StateT> && (PlayerAvatarState<StateTypes> && ...)
-    void PlayerAvatarStateMachine<StateT, StateTypes...>::OnDrawGui()
+    void PlayerAvatarStateMachine<StateT, DisableStateT, StateTypes...>::OnDrawGui()
     {
-        ImGui::Checkbox("isEnable", &isEnable_);
         ImGui::Text(("currentState: " + std::string(typeid(*currentState_.get_value()).name())).c_str());
 
         if (ImGui::TreeNode("States"))
@@ -106,20 +99,38 @@ namespace GameCore::PlayerAvatar
         }
     }
 
-    template <typename StateT, typename ... StateTypes>
+    template <typename StateT, typename DisableStateT, typename ... StateTypes>
+    requires PlayerAvatarState<StateT> && (PlayerAvatarState<StateTypes> && ...)
+    void PlayerAvatarStateMachine<StateT, DisableStateT, StateTypes...>::OnEnable()
+    {
+        OnChangeState(std::type_index(typeid(FirstState)));
+    }
+
+    template <typename StateT, typename DisableStateT, typename ... StateTypes>
+    requires PlayerAvatarState<StateT> && (PlayerAvatarState<StateTypes> && ...)
+    void PlayerAvatarStateMachine<StateT, DisableStateT, StateTypes...>::OnDisable()
+    {
+        OnChangeState(typeid(DisableStateT));
+    }
+
+    template <typename StateT, typename DisableStateT, typename... StateTypes>
     requires PlayerAvatarState<StateT> && (PlayerAvatarState<StateTypes> && ...)
     template <typename StateContextT>
-    auto PlayerAvatarStateMachine<StateT, StateTypes...>::CreateStates(const std::shared_ptr<StateContextT>& context)
+    auto PlayerAvatarStateMachine<StateT, DisableStateT, StateTypes...>::CreateStates(
+    const std::shared_ptr<StateContextT>& context)
     {
         std::unordered_map<std::type_index, std::shared_ptr<StateT>> result;
+        result.emplace(CreateState<DisableStateT>(context));
         (result.emplace(CreateState<StateTypes>(context)), ...);
+
         return result;
     }
 
-    template <typename StateT, typename ... StateTypes>
+
+    template <typename StateT, typename DisableStateT, typename... StateTypes>
     requires PlayerAvatarState<StateT> && (PlayerAvatarState<StateTypes> && ...)
     template <typename CreateStateT, typename StateContextT>
-    auto PlayerAvatarStateMachine<StateT, StateTypes...>::CreateState(
+    auto PlayerAvatarStateMachine<StateT, DisableStateT, StateTypes...>::CreateState(
         const std::shared_ptr<StateContextT>& context)
     {
         static_assert(

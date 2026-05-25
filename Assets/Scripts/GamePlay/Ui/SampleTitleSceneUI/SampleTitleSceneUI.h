@@ -12,6 +12,7 @@ namespace GamePlay::Ui
     private:
         void OnStart() override;
         void OnUpdate() override;
+        void OnGameStart();
 
         
         [[serialize(0)]] FIELD(NanamiUi::Button) gameStartButton_;

@@ -4,6 +4,7 @@ namespace GameCore::Scene
 {
     void MainIslandSceneContext::Init()
     {
+        SceneContextBase::Init();
         bgm_.Init();
     }
 

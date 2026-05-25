@@ -12,8 +12,8 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
     class TrySwordManQuest final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;
-
-        
+    
+    
         std::shared_ptr<ITakeableSwordManQuest> quest_;
         
 #pragma region Serialization Function

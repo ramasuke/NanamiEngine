@@ -11,7 +11,7 @@ namespace GameCore::PlayerAvatar
 
 namespace GameCore::PlayerAvatar::Quest
 {
-    class CompletedQuestGroup;
+    class ICompleteQuestGroup;
 }
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
@@ -32,7 +32,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         virtual ~ITakeableSwordManQuest() = default;
         virtual void StartQuest(
             const PlayerAvatar::SwordMan::IObservableStatusEvent& event,
-            PlayerAvatar::Quest::CompletedQuestGroup& completedQuestGroup) = 0;
+            PlayerAvatar::Quest::ICompleteQuestGroup& completedQuestGroup) = 0;
         virtual void OnDrawGui() = 0;
         [[nodiscard]] virtual const PlayerAvatar::QuestType& QuestType() const = 0;
         

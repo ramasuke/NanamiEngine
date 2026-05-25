@@ -6,6 +6,11 @@
 #include "StateMachine/EventScene/IPlayerAvatarEventSceneStateMachine.h"
 
 
+namespace NanamiEngine::Module::Component
+{
+    class ColliderBase;
+}
+
 namespace GameCore::PlayerAvatar
 {
     class IPlayerChattable;
@@ -48,7 +53,7 @@ namespace GameCore
 
         /** @brief EventScene用のStateMachine */
         [[nodiscard]] virtual PlayerAvatar::IPlayerAvatarEventSceneStateMachine& GetEventSceneStateMachine() const = 0;
-        [[nodiscard]] virtual NanamiEngine::Module::Physics::ICollider&          Collider        () const = 0;
+        [[nodiscard]] virtual NanamiEngine::Module::Component::ColliderBase    & Collider        () const = 0;
         [[nodiscard]] virtual GamePlay::PlayerAvatar::ChattableArea   &          ChattableArea   () const = 0;
         [[nodiscard]] virtual GamePlay::Ui::NpcChatting               &          NpcChattingUi   () const = 0;
         [[nodiscard]] virtual const glm::vec3&                                   FeatStepPosition() const = 0;
@@ -57,6 +62,8 @@ namespace GameCore
         [[nodiscard]] virtual PlayerAvatar::PlayerAvatarType                     Type            () const = 0;
         virtual void SaveStatus() = 0;
         static const std::vector<std::weak_ptr<IPlayerAvatar>>& PlayerAvatars();
+        virtual void EnableStateMachiine() = 0;
+        virtual void DisableStateMachine() = 0;
         
     protected:
         static std::vector<std::weak_ptr<IPlayerAvatar>>& PlayerAvatars_();

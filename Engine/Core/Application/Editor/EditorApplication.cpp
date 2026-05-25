@@ -30,9 +30,6 @@ void Core::Application::EditorApplication::Run()
         ImGuiWrapper::Instance().Update();
         ApplicationLifeCycle_().OnUpdate();
         GetMainWindow()->OnUpdate();
-        Effekseer_Sync3DSetting();
-        UpdateEffekseer3D();
-        DrawEffekseer3D();
         
         OnDrawGui();
         ImGui::EndFrame();

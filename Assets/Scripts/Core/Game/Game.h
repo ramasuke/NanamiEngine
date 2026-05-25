@@ -19,7 +19,7 @@ namespace GameCore::Scene::Main
 
 namespace GameCore
 {
-    enum class MainScenarioProgression;
+    enum class GameProgresion;
 }
 
 namespace GameCore
@@ -37,6 +37,8 @@ namespace GameCore
         [[nodiscard]] Scene::Sub:: GameSceneGroup& SubScenes() const;
 
     private:
+        void InitMainSceneGroup();
+        void InitSubSceneGroup();
         void OnAwake () override;
         void OnUpdate() override;
         
@@ -45,7 +47,7 @@ namespace GameCore
         std::shared_ptr<Scene::Sub::GameSceneGroup> subSceneGroup_;
         [[serialize(2)]] FIELD(GameObject::IGameObject) subSceneContexts_;
         
-        std::shared_ptr<MainScenarioProgression> mainScenarioProgression_;
+        std::shared_ptr<GameProgresion> mainScenarioProgression_;
         static Game* instance_;
         
 #pragma region Serialization Function

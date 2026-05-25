@@ -3,13 +3,14 @@
 #include "../../../../../../../../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 #include "../../../../../../../../PlayerAvatar/Quest/PlayerAvatar_IQuestGroup.h"
 #include "../../../../../../../../PlayerAvatar/Quest/Completed/PlayerAvatar_CompletedQuestGroup.h"
+#include "../../../../../../../../PlayerAvatar/Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {
     TickStatus Action::CheckCompleteQuest::DoTick(
         const TickContext& context)
     {
-        const auto isCompleted = context.PlayerQuest().Completed().CheckCompleted(questType_);
+        const auto isCompleted = context.PlayerCompleteQuest().CheckCompleted(questType_);
 
         return isCompleted ? TickStatus::Success : TickStatus::Failure;
     }

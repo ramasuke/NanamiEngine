@@ -105,7 +105,7 @@ void Core::PopupWindow::ProjectWindow::DrawDirectoryContents(
         // 右クリックメニュー
         if (ImGui::BeginPopupContextItem())
         {
-            if (ImGui::MenuItem("コピー"))
+            if (ImGui::MenuItem("Copy"))
             {
                 directory.AddFile(file.Copy());
             }

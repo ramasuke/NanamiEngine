@@ -145,7 +145,10 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
 
     void AboardAirShipMovie::StartFadeInUi() const
     {
-        context_.lock()->ActionControlWayUI().lock()->SetEnable(true);
+        const auto context = Context();
+        const auto wekUi = context->ActionControlWayUI();
+        const auto ui = wekUi.lock();
+        ui->SetEnable(true);
         
         const auto titleLogoBlendRenderer = context_.lock()->TitleLogo().lock()->Components().Catch<NanamiUi::BlendAnimationRenderer>();
         titleLogoBlendRenderer.lock()->SetAddBlendRate_secs(-titleLogoBlendRenderer.lock()->GetAddBlendRate_secs());

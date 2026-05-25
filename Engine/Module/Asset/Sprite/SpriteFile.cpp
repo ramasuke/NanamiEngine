@@ -18,6 +18,13 @@ namespace NanamiEngine::Module::Asset
         return DxLib::LoadGraph(contentPath_.c_str());
     }
 
+    void SpriteFile::OnDrawGui()
+    {
+        LibCore::ImGuiHelper::OnDrawInputField("contentPath_", contentPath_);
+        LibCore::ImGuiHelper::OnDrawInputField("guid_", guid_);
+        ImGui::Text(("dxLibId: " + std::to_string(dxLibId_)).c_str());
+    }
+
     std::string SpriteFile::GetContentPath() const
     {
         return contentPath_;

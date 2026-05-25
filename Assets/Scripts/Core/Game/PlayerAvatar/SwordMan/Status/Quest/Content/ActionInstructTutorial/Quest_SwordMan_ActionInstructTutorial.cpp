@@ -7,6 +7,7 @@
 #include "../../../../../../../../GamePlay/Ui/ActionInstructTutorial/SwordMan/Ui_SwordMan_ActionInstructTutorial.h"
 #include "../../../../../../Npc/Friendly/Behaviour/Action/TickContext/Friendly_Behaviour_TickContext.h"
 #include "../../../../../Quest/Completed/PlayerAvatar_CompletedQuestGroup.h"
+#include "../../../../../Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::Quest
 {
@@ -18,7 +19,7 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
     
     void ActionInstructTutorial::StartQuest(
         const IObservableStatusEvent& event,
-        PlayerAvatar::Quest::CompletedQuestGroup& completedQuestGroup)
+        PlayerAvatar::Quest::ICompleteQuestGroup& completedQuestGroup)
     {
         const auto questUi = Scene::GameObject::Instantiate(questUiPrefab_.get(), glm::vec3{0.0f, 0.0f, 0.0f});
         const auto actionInstructTutorialUi = questUi.lock()->Components().Catch<GamePlay::Ui::SwordManActionInstructTutorial>();
@@ -29,11 +30,11 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
         Coroutine::StartCoroutine(StartQuestAsync(completedQuestGroup));
     }
 
-    Coroutine::Task<void> ActionInstructTutorial::StartQuestAsync(PlayerAvatar::Quest::CompletedQuestGroup& completedQuestGroup)
+    Coroutine::Task<void> ActionInstructTutorial::StartQuestAsync(PlayerAvatar::Quest::ICompleteQuestGroup& completedQuestGroup)
     {
         co_await presenter_->SubscribeModelEventToViewAsync();
 
-        completedQuestGroup.Subscribe(QuestType());
+        completedQuestGroup.CompleteQuest(QuestType());
     }
 
     void ActionInstructTutorial::OnDrawGui()

@@ -7,6 +7,11 @@
 #include "../../../../../Quest/PlayerAvatar_QuestType.h"
 #include "cereal/types/polymorphic.hpp"
 
+namespace GameCore::PlayerAvatar::Quest
+{
+    class ICompleteQuestGroup;
+}
+
 namespace GameCore::PlayerAvatar::SwordMan::Quest
 {
     class ActionInstructTutorialPresenter;
@@ -23,10 +28,10 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
     private:
         void StartQuest(
             const IObservableStatusEvent& event,
-            PlayerAvatar::Quest::CompletedQuestGroup& completedQuestGroup) override;
+            PlayerAvatar::Quest::ICompleteQuestGroup& completedQuestGroup) override;
         [[nodiscard]] const PlayerAvatar::QuestType& QuestType() const override { return QuestType::SwordManActionInstructTutorial; }
 
-        Coroutine::Task<void> StartQuestAsync(PlayerAvatar::Quest::CompletedQuestGroup& completedQuestGroup);
+        Coroutine::Task<void> StartQuestAsync(PlayerAvatar::Quest::ICompleteQuestGroup& completedQuestGroup);
 
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) questUiPrefab_;
         std::unique_ptr<ActionInstructTutorialPresenter> presenter_;

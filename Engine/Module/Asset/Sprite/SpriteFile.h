@@ -8,7 +8,8 @@
 
 namespace NanamiEngine::Module::Asset
 {
-    class SpriteFile final : public AssetBase, public LifeCycleCallback::IEnablableAsset
+    class SpriteFile final : public AssetBase,
+                             public LifeCycleCallback::IEnablableAsset
     {
     public:
         explicit SpriteFile(std::string contentPath = "");
@@ -25,13 +26,9 @@ namespace NanamiEngine::Module::Asset
         int dxLibId_ = -1;
 #pragma region Serialization Function
 public:
-void OnDrawGui() {
-    LibCore::ImGuiHelper::OnDrawInputField("contentPath_", contentPath_);
-    LibCore::ImGuiHelper::OnDrawInputField("guid_", guid_);
-    ImGui::Text(("dxLibId: " + std::to_string(dxLibId_)).c_str());
-}
+void OnDrawGui() override;
 
-template<class Archive>
+        template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<AssetBase>(this));
     archive(cereal::base_class<LifeCycleCallback::IEnablableAsset>(this));

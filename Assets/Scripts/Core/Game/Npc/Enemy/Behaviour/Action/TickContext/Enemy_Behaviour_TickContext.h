@@ -8,6 +8,11 @@
 #include "../../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 
+namespace GameCore::PlayerAvatar::Quest
+{
+    class ICompleteQuestGroup;
+}
+
 namespace GameCore::PlayerAvatar
 {
     class IQuestGroup;
@@ -75,6 +80,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[nodiscard]] bool IsOnDamage() const { return !onDamagedStack_->empty(); }
         [[nodiscard]] std::shared_ptr<IPlayerAvatar> Player() const;
         [[nodiscard]] const PlayerAvatar::IQuestGroup& PlayerQuest() const;
+        [[nodiscard]] const PlayerAvatar::Quest::ICompleteQuestGroup& PlayerCompleteQuest() const;
 
         
         template<typename T>

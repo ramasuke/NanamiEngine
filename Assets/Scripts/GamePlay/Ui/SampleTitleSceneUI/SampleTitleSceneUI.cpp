@@ -3,6 +3,7 @@
 #include "../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../Core/Game/Game.h"
 #include "../../../Core/Game/Scene/Main/Content/FirstTouchDownMainIsLand/FirstTouchDownMainIsLandScene.h"
+#include "../../../Core/Game/Scene/Main/Content/MainIslandScene/MainIsLandScene.h"
 #include "../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
 
 namespace GamePlay::Ui
@@ -11,7 +12,7 @@ namespace GamePlay::Ui
     {
         gameStartButton_->OnClick().subscribe([this](NanamiUi::MouseState)
         {
-            GameCore::Game::Instance().Scenes().RequestChangeScene<GameCore::Scene::Main::FirstTouchDownMainIsLandScene>();
+            OnGameStart();
         });
         gameExitButton_ ->OnClick().subscribe([this](NanamiUi::MouseState)
         {
@@ -23,7 +24,22 @@ namespace GamePlay::Ui
     {
         
     }
-    
+
+    void SampleTitleScene::OnGameStart()
+    {
+        switch (GameCore::LoadGameProgression())
+        {
+        case GameCore::GameProgresion::FirstTouchDownMainIsLand:
+            GameCore::Game::Instance().Scenes().RequestChangeScene<GameCore::Scene::Main::FirstTouchDownMainIsLandScene>();
+            break;
+        case GameCore::GameProgresion::MainIsland:
+            GameCore::Game::Instance().Scenes().RequestChangeScene<GameCore::Scene::Main::MainIslandScene>();
+            break;
+        default: 
+            throw std::runtime_error("Gameの進行状況に応じたScene遷移が定義されていません。");
+        }
+    }
+
     void SampleTitleScene::OnDrawGui()
     {
         ImGuiHelper::OnDrawInputField("gameStartButton_", gameStartButton_);

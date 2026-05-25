@@ -1,6 +1,7 @@
 ﻿#include "WindowLifeCycle.h"
 
 #include "DxLib.h"
+#include "EffekseerForDXLib.h"
 #include "../../ApplicationBase.h"
 #include "../../../../Module/Asset/Asset.h"
 #include "../../../../Module/Scene/ShadowMap/ShadowMapSetting.h"
@@ -67,7 +68,10 @@ namespace NanamiEngine::Core::Application
         SetUseShadowMap( 0, shadowMapDxLibHandle_) ;
         renderableCallbacks_      .Invoke([](auto& obj) { obj.OnRender();         });
         SetUseShadowMap( 0, -1);
-    
+
+        Effekseer_Sync3DSetting();
+        UpdateEffekseer3D();
+        DrawEffekseer3D();
         uiRenderableCallbacks_    .Invoke([](auto& obj) { obj.OnUserInterfaceRender(); });
         guiRenderableCallbacks_   .Invoke([](auto& obj) { obj.OnDebugRender        (); });
     
@@ -94,7 +98,10 @@ namespace NanamiEngine::Core::Application
         SetUseShadowMap( 0, shadowMapDxLibHandle_) ;
         renderableCallbacks_.Invoke([](auto& obj) { obj.OnRender();       });
         SetUseShadowMap( 0, -1 );
-    
+
+        Effekseer_Sync3DSetting();
+        UpdateEffekseer3D();
+        DrawEffekseer3D();
         uiRenderableCallbacks_    .Invoke([](auto& obj) { obj.OnUserInterfaceRender(); });
         guiRenderableCallbacks_   .Invoke([](auto& obj) { obj.OnDebugRender();  });
         

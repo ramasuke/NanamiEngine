@@ -52,7 +52,7 @@ namespace NanamiEngine::Module::Asset
             const GameCore::PlayerAvatar::PlayerAvatarType& type,
             const glm::vec3& summonPosition,
             const std::shared_ptr<GameObject::IGameObject>& parent,
-            GameCore::PlayerAvatar::AllPlayerCameraGroup allCameraGroup);
+            const GameCore::PlayerAvatar::AllPlayerCameraGroup& allCameraGroup);
 
         template <typename AvatarT, typename TraitsT>
         [[nodiscard]] std::shared_ptr<AvatarT> LoadInitedPlayerAvatarImpl(

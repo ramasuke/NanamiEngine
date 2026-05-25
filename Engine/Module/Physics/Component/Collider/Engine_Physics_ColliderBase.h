@@ -43,7 +43,7 @@ namespace NanamiEngine::Module::Component
         [[nodiscard]] virtual JPH::RefConst<JPH::Shape> CreateColliderShape() const = 0;
         
 
-        glm::vec3 offset_ = glm::vec3( 0,  0,  0);
+        glm::vec3 offset_ = glm::vec3(0,  0,  0);
         JPH::EMotionType emotionType_ = JPH::EMotionType::Static;
         bool isSensor_ = false;
         Physics::Constraints constraints_ = Physics::Constraints::None;

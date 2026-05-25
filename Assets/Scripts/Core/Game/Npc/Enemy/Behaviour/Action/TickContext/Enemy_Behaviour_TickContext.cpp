@@ -4,6 +4,7 @@
 #include "../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
 #include "../../../../../PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../../PlayerAvatar/PlayerAvatar.h"
+#include "../../../../../PlayerAvatar/Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../../../../../PlayerAvatar/Status/IPlayerAvatarStatus.h"
 #include "../../../Status/EnemyStatus.h"
 
@@ -39,5 +40,10 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     const PlayerAvatar::IQuestGroup& TickContext::PlayerQuest() const
     {
         return Player()->PlayerStatus().Quest();
+    }
+
+    const PlayerAvatar::Quest::ICompleteQuestGroup& TickContext::PlayerCompleteQuest() const
+    {
+        return Player()->PlayerStatus().CompletedQuest();
     }
 }

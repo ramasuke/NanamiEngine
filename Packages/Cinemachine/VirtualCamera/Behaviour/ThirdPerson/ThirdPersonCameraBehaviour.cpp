@@ -1,6 +1,7 @@
 ﻿#include "ThirdPersonCameraBehaviour.h"
 #include "../../../Brain/CinemachineCameraBrain.h"
 #include "DxLib.h"
+#include "../../../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "gtx/rotate_vector.hpp"
 
@@ -52,16 +53,16 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     void ThirdPersonCameraBehaviour::UpdateMouseInput()
     {
-        int mx, my;
-        GetMousePoint(&mx, &my);
+        int mouseX, mouseY;
+        GetMousePoint(&mouseX, &mouseY);
 
-        static int cx = 640;
-        static int cy = 360;
+        static int centerX = Core::Application::Configuration::WINDOW_WIDTH_SIZE  / 2;
+        static int centerY = Core::Application::Configuration::WINDOW_HEIGHT_SIZE / 2;
 
-        const int dx = mx - cx;
-        const int dy = my - cy;
+        const int dx = mouseX - centerX;
+        const int dy = mouseY - centerY;
 
-        SetMousePoint(cx, cy);
+        SetMousePoint(centerX, centerY);
 
         yaw_   += dx * mouseSensitivity_;
         pitch_ += dy * mouseSensitivity_;

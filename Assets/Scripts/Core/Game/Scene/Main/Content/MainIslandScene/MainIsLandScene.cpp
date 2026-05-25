@@ -28,7 +28,7 @@ namespace GameCore::Scene::Main
         
          playerAvatar_ = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatar(
             PlayerAvatar::LoadType(),
-            glm::vec3{0.0f, 0.0f, 0.0f},
+            Context()->PlayerSpawnPoint(),
             nullptr,
             Context()->CameraGroup());
     }

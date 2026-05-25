@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <functional>
 #include <unordered_set>
 
 #include "../PlayerAvatar_QuestType.h"
@@ -21,7 +22,7 @@ namespace GameCore::PlayerAvatar::Quest
     class CompletedQuestGroup final
     {
     public:
-        CompletedQuestGroup();
+        explicit CompletedQuestGroup();
 
         void Subscribe(const QuestType& completeQuest);
         [[nodiscard]] bool CheckCompleted(const QuestType& quest) const;

@@ -7,6 +7,11 @@
 #include "../cereal/include/cereal/cereal.hpp"
 #include "EnahancePower/EnhancePower.h"
 
+namespace GameCore::PlayerAvatar::Quest
+{
+    class ICompleteQuestGroup;
+}
+
 namespace GameCore::PlayerAvatar
 {
     class IQuestGroup;
@@ -37,6 +42,7 @@ namespace GameCore::PlayerAvatar
         virtual void OnUpdate() = 0;
         [[nodiscard]] virtual IStatusEvent& Event() const = 0;
         [[nodiscard]] virtual IQuestGroup & Quest() const = 0;
+        [[nodiscard]] virtual Quest::ICompleteQuestGroup& CompletedQuest() const = 0;
         [[nodiscard]] virtual const StatusParameter::Health&                                MaxHealth() const = 0;
         [[nodiscard]] virtual LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Health> Health   () const = 0;
         [[nodiscard]] virtual const EnhancePower&                                MaxEnhancePowerStack() const = 0;

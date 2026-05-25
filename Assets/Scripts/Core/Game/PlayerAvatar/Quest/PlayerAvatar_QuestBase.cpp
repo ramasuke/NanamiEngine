@@ -8,7 +8,7 @@ namespace GameCore::PlayerAvatar
 
     void QuestBase::StartQuest(
         const SwordMan::IObservableStatusEvent& event,
-        Quest::CompletedQuestGroup& completedQuestGroup)
+        Quest::ICompleteQuestGroup& completedQuestGroup)
     {
         DoStartQuest(event);
     }

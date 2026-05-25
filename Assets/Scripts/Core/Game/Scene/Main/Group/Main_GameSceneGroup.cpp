@@ -9,21 +9,20 @@ namespace GameCore::Scene::Main
 {
     GameSceneGroup::GameSceneGroup(
         std::vector<std::weak_ptr<SceneContextBase>> sceneContexts,
-        const std::shared_ptr<MainScenarioProgression>& mainScenarioProgression,
         const std::shared_ptr<Sub::IGameSceneStack>& subSceneStack)
         : sceneContexts_(std::move(sceneContexts))
     {
         AddScene(std::make_shared<TitleScene>(
             CatchContext<TitleSceneContext>(),
-            GameSceneBaseContext(mainScenarioProgression, subSceneStack)));
+            GameSceneBaseContext(subSceneStack)));
 
         AddScene(std::make_shared<FirstTouchDownMainIsLandScene>(
             CatchContext<FirstTouchDownMainIsLandSceneContext>(),
-            GameSceneBaseContext(mainScenarioProgression, subSceneStack)));
+            GameSceneBaseContext(subSceneStack)));
 
         AddScene(std::make_shared<MainIslandScene>(
             CatchContext<MainIslandSceneContext>(),
-            GameSceneBaseContext(mainScenarioProgression, subSceneStack)));
+            GameSceneBaseContext(subSceneStack)));
     }
 
     void GameSceneGroup::Update()

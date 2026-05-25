@@ -2,6 +2,11 @@
 #include "../SwordMan/Status/Quest/SwordMan_ITakeableSwordManQuest.h"
 #include "cereal/types/polymorphic.hpp"
 
+namespace GameCore::PlayerAvatar::Quest
+{
+    class ICompleteQuestGroup;
+}
+
 namespace GameCore::PlayerAvatar
 {
     class IStatusEvent;
@@ -16,7 +21,7 @@ namespace GameCore::PlayerAvatar
         virtual ~QuestBase() override;
         void StartQuest(
             const SwordMan::IObservableStatusEvent& event,
-            Quest::CompletedQuestGroup& completedQuestGroup) override;
+            Quest::ICompleteQuestGroup& completedQuestGroup) override;
 
     protected:
         //templateMethodパターン

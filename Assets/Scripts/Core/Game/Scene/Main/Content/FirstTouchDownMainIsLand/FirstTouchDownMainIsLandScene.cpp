@@ -49,9 +49,11 @@ namespace GameCore::Scene::Main
         auto stateMachine = PlayerAvatar::SwordMan::CreateStateMachine(summonAvatarStatus, inputAction, playerAvatar_.lock(), Context()->CameraGroup().Swordman());
         playerAvatar_.lock()->Init(summonAvatarStatus, std::move(stateMachine), inputAction, Context()->CameraGroup().Swordman());
 
+        auto& context = *Context();
+        auto playerStatusUi = context.PlayerStatusUI();
         //StatusPresenter
         playerStatusPresenter_ = std::make_unique<SwordMan::StatusPresenter>(
-            *Context()->PlayerStatusUI().lock(),
+            *playerStatusUi.lock(),
             *summonAvatarStatus);
         
         // 船を降りるまでのMovieを開始
@@ -63,6 +65,7 @@ namespace GameCore::Scene::Main
     {
         PlayerAvatar::SaveType(*playerAvatar_.lock());
         playerAvatar_.lock()->SaveStatus();
+        SaveGameProgression(GameProgresion::MainIsland);
          
         GamePlay::Sound::SoundPlayer::StopBgm(Context()->BGM());
         Core::Application::ApplicationBase::GameWindow()->RemoveContent(scene_.lock());

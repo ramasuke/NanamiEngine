@@ -31,7 +31,7 @@ namespace NanamiEngine::Module::Asset
         const GameCore::PlayerAvatar::PlayerAvatarType& type,
         const glm::vec3& summonPosition,
         const std::shared_ptr<GameObject::IGameObject>& parent,
-        const GameCore::PlayerAvatar::AllPlayerCameraGroup allCameraGroup)
+        const GameCore::PlayerAvatar::AllPlayerCameraGroup& allCameraGroup)
     {
         std::shared_ptr<GameCore::IPlayerAvatar> playerAvatar;
 

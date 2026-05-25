@@ -58,6 +58,7 @@ void GameObject::AddComponent::OnDrawUiRendererGui(std::shared_ptr<Component::Co
         OnDrawTryAddComponentGui<Component::ImageRenderer        >(addComponent);
         OnDrawTryAddComponentGui<NanamiUi::BlendImageRenderer    >(addComponent);
         OnDrawTryAddComponentGui<NanamiUi::BlendAnimationRenderer>(addComponent);
+        OnDrawTryAddComponentGui<NanamiUi::ImageAnimationRenderer>(addComponent);
         OnDrawTryAddComponentGui<NanamiUi::Slider                >(addComponent);
         OnDrawTryAddComponentGui<NanamiUi::TextRenderer          >(addComponent);
         OnDrawTryAddComponentGui<NanamiUi::Billboard3D           >(addComponent);
@@ -179,20 +180,22 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
                 ImGui::TreePop();
                 ImGui::Spacing();
             }
-            if (ImGui::TreeNode("Prop"))
-            {
-                OnDrawTryAddComponentGui<GamePlay::Prop::AirShip>(addComponent);
-                OnDrawTryAddComponentGui<GamePlay::Prop::Canon  >(addComponent);
-                ImGui::TreePop();
-                ImGui::Spacing();
-            }
-            if (ImGui::TreeNode("Sound"))
-            {
-                OnDrawTryAddComponentGui<GamePlay::Sound::SoundPlayer>(addComponent);
-                OnDrawTryAddComponentGui<GamePlay::Sound::BgmPlayObject>(addComponent);
-                ImGui::TreePop();
-                ImGui::Spacing();
-            }
+            ImGui::TreePop();
+            ImGui::Spacing();
+        }
+
+        if (ImGui::TreeNode("Prop"))
+        {
+            OnDrawTryAddComponentGui<GamePlay::Prop::AirShip        >(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Prop::Canon          >(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Prop::IslandPedestial>(addComponent);
+            ImGui::TreePop();
+            ImGui::Spacing();
+        }
+        if (ImGui::TreeNode("Sound"))
+        {
+            OnDrawTryAddComponentGui<GamePlay::Sound::SoundPlayer>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Sound::BgmPlayObject>(addComponent);
             ImGui::TreePop();
             ImGui::Spacing();
         }

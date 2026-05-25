@@ -39,11 +39,12 @@ namespace GamePlay::PlayerAvatar
                   const std::weak_ptr<CameraGroup>& cameraGroup);
         [[nodiscard]] IPlayerAvatarEventSceneStateMachine& GetEventSceneStateMachine() const override { return *stateMachine_; }
         /** @brief PlayerAvatar<T>のCameraを取得 */
-        [[nodiscard]] Physics::ICollider& Collider() const override { return *collider_.lock(); }
+        [[nodiscard]] Component::ColliderBase& Collider() const override { return *collider_.lock(); }
         [[nodiscard]] const GameObject::Transform& PlayerTransform() const override { return Transform(); }
         [[nodiscard]] Status& PlayerStatus() const override { return *status_; }
         void SaveStatus() override;
-        
+        void EnableStateMachiine() override;
+        void DisableStateMachine() override;
 
     private:
         void OnAwake                 () override;
@@ -67,7 +68,7 @@ namespace GamePlay::PlayerAvatar
         std::shared_ptr<Status            > status_       = nullptr;
         std::shared_ptr<InputAction       > inputAction_  = nullptr;
         std::weak_ptr  <CameraGroup       > cameraGroup_;
-        std::weak_ptr  <Physics::ICollider> collider_   ;
+        std::weak_ptr  <Component::ColliderBase> collider_   ;
         [[serialize(0)]] FIELD(Ui::NpcChatting) chattingUi_;
         
     protected:
@@ -88,7 +89,7 @@ namespace GamePlay::PlayerAvatar
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 1) archive(CEREAL_NVP(chattingUi_));
         }
-        
+
 #pragma endregion
     };
     
@@ -109,7 +110,7 @@ namespace GamePlay::PlayerAvatar
         PlayerAvatars_().push_back(Components().Catch<IPlayerAvatar>());
         
         animatorComponent_ = RequireComponent<Component::Animator>();
-        collider_          = Components().Catch<Physics::ICollider>();
+        collider_          = Components().Catch<Component::ColliderBase>();
         
         status_       = std::move(status      );
         inputAction_  = std::move(inputAction );
@@ -173,6 +174,18 @@ namespace GamePlay::PlayerAvatar
     void PlayerAvatarBase<TraitsT>::SaveStatus()
     {
         GameCore::PlayerAvatar::SaveStatus<Status, TraitsT>(status_);
+    }
+
+    template <RequireType::Traits TraitsT>
+    void PlayerAvatarBase<TraitsT>::EnableStateMachiine()
+    {
+        stateMachine_->OnEnable();
+    }
+
+    template <RequireType::Traits TraitsT>
+    void PlayerAvatarBase<TraitsT>::DisableStateMachine()
+    {
+        stateMachine_->OnDisable();
     }
 
     template <RequireType::Traits TraitsT>

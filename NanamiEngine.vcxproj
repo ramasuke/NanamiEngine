@@ -254,7 +254,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /FS %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -3812,6 +3812,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_IComplteQuestGroup.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestFactory.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -4145,84 +4146,8 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\ClimbToTop\SwordManAvatarStateClimbToTop.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Context\SwordManAvatarStateContext.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Death\SwordManAvatar_DeathState.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Floating\FloatingState.cpp">
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <Optimization>Disabled</Optimization>
-      <SupportJustMyCode>true</SupportJustMyCode>
-      <AssemblerOutput>NoListing</AssemblerOutput>
-      <AssemblerListingLocation>NanamiEngine\x64\Debug\</AssemblerListingLocation>
-      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
-      <BrowseInformation>false</BrowseInformation>
-      <BrowseInformationFile>NanamiEngine\x64\Debug\</BrowseInformationFile>
-      <CompileAs>Default</CompileAs>
-      <ConformanceMode>true</ConformanceMode>
-      <DiagnosticsFormat>Column</DiagnosticsFormat>
-      <DisableLanguageExtensions>false</DisableLanguageExtensions>
-      <ErrorReporting>Prompt</ErrorReporting>
-      <ExpandAttributedSource>false</ExpandAttributedSource>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <EnableASAN>false</EnableASAN>
-      <EnableFuzzer>false</EnableFuzzer>
-      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
-      <EnableVectorLength>NotSet</EnableVectorLength>
-      <FloatingPointModel>Precise</FloatingPointModel>
-      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
-      <GenerateModuleDependencies>false</GenerateModuleDependencies>
-      <GenerateSourceDependencies>false</GenerateSourceDependencies>
-      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <IntrinsicFunctions>false</IntrinsicFunctions>
-      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <LanguageStandard_C>Default</LanguageStandard_C>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ModuleDependenciesFile>NanamiEngine\x64\Debug\</ModuleDependenciesFile>
-      <ModuleOutputFile>NanamiEngine\x64\Debug\</ModuleOutputFile>
-      <OmitDefaultLibName>false</OmitDefaultLibName>
-      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
-      <ObjectFileName>NanamiEngine\x64\Debug\</ObjectFileName>
-      <CallingConvention>Cdecl</CallingConvention>
-      <ProgramDataBaseFileName>NanamiEngine\x64\Debug\vc143.pdb</ProgramDataBaseFileName>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>NanamiEngine\x64\Debug\NanamiEngine.pch</PrecompiledHeaderOutputFile>
-      <PreprocessToFile>false</PreprocessToFile>
-      <PreprocessKeepComments>false</PreprocessKeepComments>
-      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
-      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
-      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
-      <ShowIncludes>false</ShowIncludes>
-      <SourceDependenciesFile>NanamiEngine\x64\Debug\</SourceDependenciesFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
-      <SmallerTypeCheck>false</SmallerTypeCheck>
-      <SpectreMitigation>false</SpectreMitigation>
-      <StructMemberAlignment>Default</StructMemberAlignment>
-      <TrackerLogDirectory>NanamiEngine\x64\Debug\NanamiEngine.tlog\</TrackerLogDirectory>
-      <TranslateIncludes>false</TranslateIncludes>
-      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
-      <TreatWarningAsError>false</TreatWarningAsError>
-      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <UseFullPaths>true</UseFullPaths>
-      <WarningLevel>Level3</WarningLevel>
-      <XMLDocumentationFileName>NanamiEngine\x64\Debug\</XMLDocumentationFileName>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <IntelJCCErratum>false</IntelJCCErratum>
-      <BuildStlModules>false</BuildStlModules>
-      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
-      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
-      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
-      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LinkCompiled>true</LinkCompiled>
-    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\DisableState\SwordManAvatar_DisableState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Floating\FloatingState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Hurt\SwordManAvatar_HurtState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Idle\SwordManAvatarIdleState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Jump\SwordManAvatarJumpState.cpp" />
@@ -6138,6 +6063,7 @@
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\Canon\Prop_Canon.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\IslandPedestial\Prop_IslandPedestial.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.cpp">
@@ -6223,6 +6149,7 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\SampleTitleSceneUI.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\Sample\SampleTitleLogo.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\UI_StageSelect.cpp" />
     <ClCompile Include="Engine\Compiler\EngineCompiler.cpp" />
     <ClCompile Include="Engine\Core\Application\ApplicationBase.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -8246,6 +8173,7 @@
     <ClCompile Include="Engine\Module\Asset\PrefabGameObject\PrefabGameObjectFile.cpp" />
     <ClCompile Include="Engine\Module\Asset\Scene\SceneFile.cpp" />
     <ClCompile Include="Engine\Module\Asset\Sound\SoundFile.cpp" />
+    <ClCompile Include="Engine\Module\Asset\Sprite\AnimationFile\SpriteAnimationFile.cpp" />
     <ClCompile Include="Engine\Module\Asset\Sprite\SpriteFile.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -8323,6 +8251,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Module\Asset\Factory\AssetFactory.cpp" />
+    <ClCompile Include="Engine\Module\Component\ImageRenderer\Animation\ImageAnimationRenderer.cpp" />
     <ClCompile Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -10581,6 +10510,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\PlayerAvatar.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Presenter\PlayerAvatar_StatusPresenter.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_CompletedQuestGroup.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_IComplteQuestGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestFactory.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_IQuestGroup.h" />
@@ -10610,6 +10540,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\ClimbToTop\SwordManAvatarStateClimbToTop.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Context\SwordManAvatarStateContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Death\SwordManAvatar_DeathState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\DisableState\SwordManAvatar_DisableState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Floating\FloatingState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Hurt\SwordManAvatar_HurtState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Idle\SwordManAvatarIdleState.h" />
@@ -10692,6 +10623,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\SwordMan\Traits\SwordManAvatarTraits.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\Canon\Prop_Canon.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\IslandPedestial\Prop_IslandPedestial.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.h" />
@@ -10700,6 +10632,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\SampleTitleSceneUI.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Sample\SampleTitleLogo.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\UI_StageSelect.h" />
     <ClInclude Include="Engine\Compiler\EngineCompiler.h" />
     <ClInclude Include="Engine\Core\Application\ApplicationBase.h" />
     <ClInclude Include="Engine\Core\Application\Configuration\ApplicationConfiguration.h" />
@@ -10771,8 +10704,10 @@
     <ClInclude Include="Engine\Module\Asset\PrefabGameObject\PrefabGameObjectFile.h" />
     <ClInclude Include="Engine\Module\Asset\Scene\SceneFile.h" />
     <ClInclude Include="Engine\Module\Asset\Sound\SoundFile.h" />
+    <ClInclude Include="Engine\Module\Asset\Sprite\AnimationFile\SpriteAnimationFile.h" />
     <ClInclude Include="Engine\Module\Asset\Sprite\SpriteFile.h" />
     <ClInclude Include="Engine\Module\Asset\Factory\AssetFactory.h" />
+    <ClInclude Include="Engine\Module\Component\ImageRenderer\Animation\ImageAnimationRenderer.h" />
     <ClInclude Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.h" />
     <ClInclude Include="Engine\Module\Color\Color32.h" />
     <ClInclude Include="Engine\Module\Component\Animator\Animator.h" />
@@ -11858,7 +11793,6 @@
     <Folder Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Content\" />
     <Folder Include="Assets\Tests\" />
     <Folder Include="Engine\Render\" />
-    <Folder Include="ClientSaverData\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Data\EnemyBehaviour\FirstEventDragon.enemyBehaviourData" />
@@ -11880,7 +11814,6 @@
     <Content Include="Assets\Scene\FirstTouchDownMainIsLandScene.scene.meta" />
     <Content Include="Assets\Scene\GameManage.scene" />
     <Content Include="Assets\Scene\GameManage.scene.meta" />
-    <Content Include="Assets\Scene\MainIsLandScene.scene.meta" />
     <Content Include="Assets\Scene\TitleScene.scene" />
     <Content Include="Assets\Scene\TitleScene.scene.meta" />
     <Content Include="Libs\cereal\include\cereal\external\LICENSE" />
@@ -12195,7 +12128,7 @@
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Z7 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -12217,7 +12150,7 @@
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Z7 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -12262,7 +12195,7 @@
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Z7 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)
 </ObjectFileName>

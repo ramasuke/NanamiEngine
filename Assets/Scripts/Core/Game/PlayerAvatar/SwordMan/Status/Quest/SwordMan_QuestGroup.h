@@ -5,11 +5,13 @@
 
 #include "SwordMan_ITakeableSwordManQuest.h"
 #include "../../../Quest/PlayerAvatar_IQuestGroup.h"
+#include "../../../Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "cereal/cereal.hpp"
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
-    class QuestGroup final : public IQuestGroup
+    class QuestGroup final : public IQuestGroup,
+                             public Quest::ICompleteQuestGroup
     {
     public:
         explicit QuestGroup(
@@ -20,10 +22,12 @@ namespace GameCore::PlayerAvatar::SwordMan
         void Subscribe(const std::shared_ptr<QuestBase>& addQuest) override;
         void Subscribe(const std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>& addQuest);
         void OnDrawGui();
-        [[nodiscard]] const Quest::CompletedQuestGroup& Completed() const override { return *completedQuests_; }
         [[nodiscard]] std::unique_ptr<QuestGroup> DeepCoy() const;
         
     private:
+        void CompleteQuest(const QuestType& completeQuest) override;
+        [[nodiscard]] bool CheckCompleted(const QuestType& quest) const override;
+        
         [[serialize(0)]] std::vector<std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>> quests_;
         const std::unique_ptr<Quest::CompletedQuestGroup> completedQuests_;
         std::shared_ptr<IObservableStatusEvent> event_;
@@ -53,7 +57,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
             for (std::size_t i = 0; i < count; ++i)
             {
-                std::unique_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest> quest;
+                std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest> quest;
                 archive(quest);
                 quests_.emplace_back(std::move(quest));
             }

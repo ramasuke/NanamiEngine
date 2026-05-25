@@ -8,7 +8,6 @@ namespace GameCore::PlayerAvatar
     {
         SwordManActionInstructTutorial = 0,
         
-        
         Kill10Slimes,
         FindLostRing,
     };

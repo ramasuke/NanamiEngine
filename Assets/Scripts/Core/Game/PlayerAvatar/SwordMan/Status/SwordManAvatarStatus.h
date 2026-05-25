@@ -35,6 +35,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] State::IStatusEventSubject& Subject   () const          { return *event_ ; }
         [[nodiscard]] IStatusEvent              & Event     () const override { return *event_ ; }
         [[nodiscard]] QuestGroup                & Quest     () const override { return *quests_; }
+        [[nodiscard]] Quest::ICompleteQuestGroup& CompletedQuest() const override { return *quests_; }
         
         [[nodiscard]] const StatusParameter::Health&                                MaxHealth() const override { return maxHealth_;           }
         [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Health> Health   () const override { return health_.AsReadOnly(); }

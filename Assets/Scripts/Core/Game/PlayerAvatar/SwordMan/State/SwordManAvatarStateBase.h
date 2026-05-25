@@ -40,7 +40,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         /** ---- 以下サンドボックスパターン ---- */
         /** @note Playerの行動に必要なパラメータと行動を取得できる関数群 */
         [[nodiscard]] GameObject::IGameObject   &            Player          () const { return *context_->PlayerAvatarObject    (); }
-        [[nodiscard]] Physics::ICollider        &            Collider        () const { return context_->PlayerAvatarCollider   (); }
+        [[nodiscard]] Component::ColliderBase   &            Collider        () const { return context_->PlayerAvatarCollider   (); }
         [[nodiscard]] GameObject::Transform     &            Transform       () const { return context_->PlayerAvatarTransform  (); }
         [[nodiscard]] SwordManAvatarInputAction &            Input           () const { return context_->Input                  (); }
         [[nodiscard]] SwordManAvatarStatus      &            Status          () const { return context_->Status                 (); }
@@ -58,6 +58,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] const Asset::SoundFile&                NormalAttackSound() const { return context_->NormalAttackSound(); } 
         [[nodiscard]] const Asset::SoundFile&                AvoidRollingSound() const { return context_->AvoidRollingSound(); } 
         
+        void ResetDuringTime();
         //現在のStateの持続時間を返す
         [[nodiscard]] float During_secs() const { return stateDuring_secs_; }
         void ChangeCamera(const std::weak_ptr<CineMachine::CineMachineVirtualCamera>& camera) const;

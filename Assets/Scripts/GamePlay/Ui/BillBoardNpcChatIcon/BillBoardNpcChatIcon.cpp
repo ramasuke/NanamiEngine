@@ -10,7 +10,10 @@ namespace GamePlay::Ui
 {
     namespace
     {
-        void ApplyFloating(const std::shared_ptr<GameObject::IGameObject>& object, const glm::vec3& basePos, const float offset)
+        void ApplyFloating(
+            const std::shared_ptr<GameObject::IGameObject>& object,
+            const glm::vec3& basePos,
+            const float offset)
         {
             if (!object)
                 return;

@@ -52,4 +52,9 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
     {
         return Player()->PlayerStatus().Quest();
     }
+
+    const PlayerAvatar::Quest::ICompleteQuestGroup& TickContext::PlayerCompleteQuest() const
+    {
+        return Player()->PlayerStatus().CompletedQuest();
+    }
 }

@@ -17,7 +17,6 @@ namespace GameCore::Scene::Main
     public:
         explicit GameSceneGroup(
             std::vector<std::weak_ptr<SceneContextBase>> sceneContexts,
-            const std::shared_ptr<MainScenarioProgression>& mainScenarioProgression,
             const std::shared_ptr<Sub::IGameSceneStack>& subSceneStack);
 
         void Update();

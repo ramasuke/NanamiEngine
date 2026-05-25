@@ -21,7 +21,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         
         for (const auto& quest : quests_)
         {
-            quest->StartQuest(*event_, *completedQuests_);
+            quest->StartQuest(*event_, *this);
         }
     }
 
@@ -33,7 +33,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     void QuestGroup::Subscribe(const std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>& addQuest)
     {
         quests_.push_back(addQuest);
-        addQuest->StartQuest(*event_, *completedQuests_);
+        addQuest->StartQuest(*event_, *this);
     }
 
     void QuestGroup::OnDrawGui()
@@ -61,5 +61,19 @@ namespace GameCore::PlayerAvatar::SwordMan
         }
 
         return copy;
+    }
+
+    void QuestGroup::CompleteQuest(const QuestType& completeQuest)
+    {
+        completedQuests_->Subscribe(completeQuest);
+        std::erase_if(quests_, [completeQuest](const auto& quest)
+        {
+            return quest->QuestType() == completeQuest;
+        });
+    }
+
+    bool QuestGroup::CheckCompleted(const QuestType& quest) const
+    {
+        return completedQuests_->CheckCompleted(quest);
     }
 }

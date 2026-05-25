@@ -3,6 +3,11 @@
 #include <string>
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 
+namespace GameCore::PlayerAvatar::Quest
+{
+    class ICompleteQuestGroup;
+}
+
 namespace NanamiEngine::Module::Component
 {
     class ColliderBase;
@@ -71,6 +76,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         [[nodiscard]] const std::unique_ptr<BlackBoard::ParameterGroup>& Parameter() const { return parameters_; }
         [[nodiscard]] std::shared_ptr<IPlayerAvatar> Player() const;
         [[nodiscard]] const PlayerAvatar::IQuestGroup& PlayerQuest() const;
+        [[nodiscard]] const PlayerAvatar::Quest::ICompleteQuestGroup& PlayerCompleteQuest() const;
         
     private:
         const std::string npcName_;

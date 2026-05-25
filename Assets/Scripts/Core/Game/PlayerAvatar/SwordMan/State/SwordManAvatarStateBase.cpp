@@ -17,7 +17,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     
     void SwordManAvatarStateBase::OnEnter()
     {
-        stateDuring_secs_ = 0.0f;
+        ResetDuringTime();
         DoEnter();
     }
     
@@ -30,6 +30,11 @@ namespace GameCore::PlayerAvatar::SwordMan
     void SwordManAvatarStateBase::OnExit()
     {
         DoExit();
+    }
+
+    void SwordManAvatarStateBase::ResetDuringTime()
+    {
+        stateDuring_secs_ = 0.0f;
     }
 
     void SwordManAvatarStateBase::ChangeCamera(const std::weak_ptr<CineMachine::CineMachineVirtualCamera>& camera) const

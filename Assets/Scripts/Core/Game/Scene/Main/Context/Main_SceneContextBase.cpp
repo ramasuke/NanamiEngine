@@ -8,7 +8,6 @@ namespace GameCore::Scene
     {
         playerSpawnPoint_   .Init();
         swordmanCameraGroup_.Init();
-        
     }
 
     glm::vec3 SceneContextBase::PlayerSpawnPoint() const
@@ -19,7 +18,7 @@ namespace GameCore::Scene
     PlayerAvatar::AllPlayerCameraGroup SceneContextBase::CameraGroup() const
     {
         return PlayerAvatar::AllPlayerCameraGroup(
-            swordmanCameraGroup_.get());;
+            swordmanCameraGroup_.get());
     }
 
     void SceneContextBase::BasedOnDrawgui()

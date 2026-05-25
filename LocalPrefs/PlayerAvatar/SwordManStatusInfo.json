@@ -17,7 +17,7 @@
                 },
                 "health_": {
                     "value": {
-                        "value_": 42
+                        "value_": 100
                     }
                 },
                 "maxEnhancePowerStack_": {
@@ -26,7 +26,7 @@
                 },
                 "enhancePowerStack_": {
                     "value": {
-                        "value0": 0
+                        "value0": 30
                     }
                 },
                 "dashAttack_": {
@@ -65,36 +65,7 @@
                         "valid": 1,
                         "data": {
                             "cereal_class_version": 0,
-                            "count": 1,
-                            "value0": {
-                                "polymorphic_id": 2147483649,
-                                "polymorphic_name": "GameCore::PlayerAvatar::SwordMan::Quest::ActionInstructTutorial",
-                                "ptr_wrapper": {
-                                    "id": 2147483650,
-                                    "data": {
-                                        "cereal_class_version": 0,
-                                        "value0": {
-                                            "cereal_class_version": 0
-                                        },
-                                        "questUiPrefab_": {
-                                            "cereal_class_version": 0,
-                                            "value0": {
-                                                "polymorphic_id": 1073741824,
-                                                "ptr_wrapper": {
-                                                    "id": 2147483651,
-                                                    "data": {
-                                                        "cereal_class_version": 0,
-                                                        "value0": {
-                                                            "cereal_class_version": 0,
-                                                            "value_": "1B743BAD-ECCF-4963-8A4E-307B866DA94C"
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "count": 0
                         }
                     }
                 }
