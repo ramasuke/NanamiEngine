@@ -12,7 +12,9 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     void SwordManAvatarJumpState::DoUpdate()
     {
         if (During_secs() > Status().GetJumpCooldown_secs())
+        {
             OnChangeState<FloatingState>();
+        }
     }
 
     void SwordManAvatarJumpState::DoExit()

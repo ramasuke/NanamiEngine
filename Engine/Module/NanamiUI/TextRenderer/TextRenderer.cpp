@@ -1,10 +1,8 @@
 ﻿#include "TextRenderer.h"
-
 #include "../../GameObject/Transform/Transform.h"
 
-std::string UTF8ToShiftJIS(const std::string& utf8)
+std::string Utf8ToShiftJis(const std::string& utf8)
 {
-    // UTF-8 → UTF-16
     int wideSize = MultiByteToWideChar(
         CP_UTF8, 0,
         utf8.c_str(), -1,
@@ -18,7 +16,6 @@ std::string UTF8ToShiftJIS(const std::string& utf8)
         wide.data(), wideSize
     );
 
-    // UTF-16 → Shift-JIS
     int sjisSize = WideCharToMultiByte(
         932, 0,
         wide.c_str(), -1,
@@ -37,71 +34,112 @@ std::string UTF8ToShiftJIS(const std::string& utf8)
     return sjis;
 }
 
-
-void NanamiUi::TextRenderer::SetText(const std::string& text)
+namespace NanamiEngine::Module::NanamiUi
 {
-    text_ = text;
-}
-
-void NanamiUi::TextRenderer::SetFont(const std::shared_ptr<Asset::TtfFontFile>& font)
-{
-    fontFile_ = font;
-}
-
-void NanamiUi::TextRenderer::SetTextColor(const Color32& color)
-{
-    textColor_ = color;
-}
-
-void NanamiUi::TextRenderer::OnUserInterfaceRender()
-{
-    if (!IsEnable())
-        return;
-    
-    if (fontFile_)
+    void TextRenderer::SetText(const std::string& text)
     {
-        DrawExtendStringFToHandle(
-            Transform().GetWorldPos().x,
-            Transform().GetWorldPos().y,
-            Transform().GetWorldScale().x,
-            Transform().GetWorldScale().y,
-            UTF8ToShiftJIS(text_).c_str(),
+        if (text_ == text) return;
+        text_ = text;
+        isDirty_ = true;
+    }
+    
+    void TextRenderer::SetFont(const std::shared_ptr<Asset::TtfFontFile>& font)
+    {
+        fontFile_ = font;
+        isDirty_ = true;
+    }
+    
+    void TextRenderer::SetTextColor(const Color32& color)
+    {
+        textColor_ = color;
+        isDirty_ = true;
+    }
+    
+    void TextRenderer::SetWorldMode(bool isWorld)
+    {
+        isWorldPos_ = isWorld;
+    }
+    
+    void TextRenderer::UpdateTextTexture()
+    {
+        if (!isDirty_ || !fontFile_) return;
+    
+        if (textScreen_ == -1)
+        {
+            textScreen_ = MakeScreen(screenW_, screenH_, TRUE);
+        }
+    
+        cachedSjis_ = Utf8ToShiftJis(text_);
+    
+        SetDrawScreen(textScreen_);
+        ClearDrawScreen();
+    
+        DrawStringToHandle(
+            0, 0,
+            cachedSjis_.c_str(),
             textColor_.ToDxColor(),
             fontFile_->DxLibHandle()
         );
+    
+        SetDrawScreen(DX_SCREEN_BACK);
+    
+        isDirty_ = false;
     }
-}
 
-void NanamiUi::TextRenderer::OnDrawGui()
-{
-    ImGui::Text("%s", std::to_string(IsEnable()).c_str());
-
-    if (ImGui::Button("ChangeIsEnable"))
+    void TextRenderer::OnDrawGui()
     {
-        SetEnable(!IsEnable());
+        ImGui::Checkbox("isWorldPos_", &isWorldPos_);
+
+        ImGuiHelper::OnDrawInputField("fontFile_", fontFile_);
+        ImGuiHelper::OnDrawInputField("renderOrder_", renderOrder_);
+
+        std::vector<char> buffer(1024);
+        strncpy_s(buffer.data(), buffer.size(), text_.c_str(), _TRUNCATE);
+
+        if (ImGui::InputTextMultiline("text_", buffer.data(), buffer.size()))
+        {
+            text_ = buffer.data();
+            isDirty_ = true;
+        }
+
+        ImGuiHelper::OnDrawInputField("textColor_", textColor_);
     }
 
-    ImGuiHelper::OnDrawInputField("fontFile_", fontFile_);
-    ImGuiHelper::OnDrawInputField("renderOrder_", renderOrder_);
-
-    std::vector<char> buffer(1024);
-
-    strncpy_s(
-        buffer.data(),
-        buffer.size(),
-        text_.c_str(),
-        _TRUNCATE
-    );
-    buffer.back() = '\0';
-
-    if (ImGui::InputTextMultiline(
-            "text_",
-            buffer.data(),
-            buffer.size(),
-            ImVec2(-FLT_MIN, 100.0f)))
+    void TextRenderer::OnUserInterfaceRender()
     {
-        text_ = buffer.data();
+        if (!IsEnable() || !fontFile_) return;
+    
+        if (!isWorldPos_)
+        {
+            // UI描画
+            DrawExtendStringFToHandle(
+                Transform().GetWorldPos().x,
+                Transform().GetWorldPos().y,
+                Transform().GetWorldScale().x,
+                Transform().GetWorldScale().y,
+                Utf8ToShiftJis(text_).c_str(),
+                textColor_.ToDxColor(),
+                fontFile_->DxLibHandle()
+            );
+        }
+        else
+        {
+            UpdateTextTexture();
+    
+            VECTOR pos = VGet(
+                Transform().GetWorldPos().x,
+                Transform().GetWorldPos().y,
+                Transform().GetWorldPos().z
+            );
+    
+            DrawBillboard3D(
+                pos,
+                0.5f, 0.5f,
+                Transform().GetWorldScale().z,
+                0.0f,
+                textScreen_,
+                TRUE
+            );
+        }
     }
-
-    ImGuiHelper::OnDrawInputField("textColor_", textColor_);
 }

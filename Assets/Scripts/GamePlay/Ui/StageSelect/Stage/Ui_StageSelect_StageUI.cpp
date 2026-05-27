@@ -9,10 +9,18 @@ namespace GamePlay::Ui
     void StageSelectStageUi::OnAwake()
     {
         selectButton_ = GameObject::CatchChild<NanamiUi::Button>(Entity(), selectButtonName_);
+        goTripButton_ = GameObject::CatchChild<NanamiUi::Button>(Entity(), goTripButtonName_);
         
-        // selectButton_->OnClick().subscribe([]
-        // {
-        //     GameCore::Game::Instance().Scenes().RequestChangeScene<>()
-        // });
+        // selectButton_->OnClick().subscribe(
+        //     rxcpp::composite_subscription(),
+        //     []
+        //     {
+        //         GameCore::Game::Instance().Scenes().RequestChangeScene<>();
+        //     });
+    }
+
+    void StageSelectStageUi::OnStart()
+    {
+        
     }
 }

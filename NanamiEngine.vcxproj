@@ -4861,6 +4861,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\DrySand\Context\DrySandSceneContext.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\DrySand\DrySandScene.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\AboardAirShipMovie\AboardAirShipMovie.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -10573,6 +10575,8 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Type\PlayerAvatarType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Base\Context\Main_GameSceneBaseContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Base\Main_GameSceneBase.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\DrySand\Context\DrySandSceneContext.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\DrySand\DrySandScene.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\AboardAirShipMovie\AboardAirShipMovie.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\Context\FirstTouchDownMainIsLandSceneContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\FirstTouchDownMainIsLandScene.h" />
@@ -11800,7 +11804,6 @@
     <Folder Include="Assets\Prefab\Npc\Friendly\" />
     <Folder Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Condition\IsDeath\" />
     <Folder Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Content\" />
-    <Folder Include="Assets\Scripts\Core\Game\Scene\Main\Content\DrySand\" />
     <Folder Include="Assets\Tests\" />
     <Folder Include="Engine\Render\" />
   </ItemGroup>

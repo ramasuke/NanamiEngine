@@ -26,7 +26,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     private:
         void SubscribeModelEventToView(
-            const GamePlay::Ui::PlayerStatus& playerStatusView,
-            const SwordManAvatarStatus& swordManStatusModel);
+            const GamePlay::Ui::PlayerStatus& view,
+            const SwordManAvatarStatus& model);
     };
 }

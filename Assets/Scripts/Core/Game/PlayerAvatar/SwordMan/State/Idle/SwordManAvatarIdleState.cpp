@@ -1,7 +1,6 @@
 ﻿#include "SwordManAvatarIdleState.h"
 
 #include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
-#include "../../../../../../../../Engine/Module/Scene/ShadowMap/ShadowMapSetting.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
 #include "../Attack/Normal/SwordManAvatarNormalAttackState.h"
 #include "../AvoidRolling/SwordManAvatar_AvoidRolling.h"

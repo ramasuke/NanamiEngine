@@ -61,7 +61,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             isAttacked_ = false;
 
             if (currentCombo_ >= static_cast<int>(comboNormalAttack.size()))
+            {
                 currentCombo_ = static_cast<int>(comboNormalAttack.size()) - 1;
+            }
+            return;
         }
 
         // 攻撃判定発生

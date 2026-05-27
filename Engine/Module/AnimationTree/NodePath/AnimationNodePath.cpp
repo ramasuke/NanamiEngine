@@ -122,7 +122,6 @@ void AnimationTree::AnimationNodePath::SubscribeUpdateNodeAnimationCallback()
         {
             TryAddNextCurrentNodePath(context);
         });
-
-    // ★安全なタイミングで解除（※ここはまだ危険な場合あり）
+    
     old.unsubscribe();
 }

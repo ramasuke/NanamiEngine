@@ -10,20 +10,34 @@ namespace NanamiEngine::Module::NanamiUi
                                public LifeCycleCallback::IUserInterfaceRenderable
     {
     public:
-        void SetText     (const std::string& text);
-        void SetFont     (const std::shared_ptr<Asset::TtfFontFile>& font);
-        void SetTextColor(const Color32& color   );
-        
+        void SetText(const std::string& text);
+        void SetFont(const std::shared_ptr<Asset::TtfFontFile>& font);
+        void SetTextColor(const Color32& color);
+        void SetWorldMode(bool isWorld);
+
     private:
         void OnUserInterfaceRender() override;
         [[nodiscard]] int GetRenderOrder() const override { return renderOrder_; }
 
+        void UpdateTextTexture();
+
+    private:
         [[serialize(0)]] FIELD(Asset::TtfFontFile) fontFile_;
         [[serialize(0)]] int renderOrder_ = 0;
         [[serialize(0)]] std::string text_;
-        [[serialize(0)]] Color32     textColor_;
-        
-#pragma region Serialization Function
+        [[serialize(0)]] Color32 textColor_;
+        [[serialize(0)]] bool isWorldPos_ = false;
+
+        // キャッシュ
+        std::string cachedSjis_;
+        bool isDirty_ = true;
+
+        // MakeScreen
+        int textScreen_ = -1;
+        int screenW_ = 256;
+        int screenH_ = 64;
+
+#pragma region Serialization
     public:
         void OnDrawGui() override;
 
@@ -35,6 +49,7 @@ namespace NanamiEngine::Module::NanamiUi
             archive(CEREAL_NVP(renderOrder_));
             archive(CEREAL_NVP(text_));
             archive(CEREAL_NVP(textColor_));
+            archive(CEREAL_NVP(isWorldPos_));
         }
 
         template<class Archive>
@@ -45,6 +60,8 @@ namespace NanamiEngine::Module::NanamiUi
             if (version >= 0) archive(CEREAL_NVP(renderOrder_));
             if (version >= 0) archive(CEREAL_NVP(text_));
             if (version >= 0) archive(CEREAL_NVP(textColor_));
+            if (version >= 1) archive(CEREAL_NVP(isWorldPos_));
+            isDirty_ = true;
         }
 #pragma endregion
     };

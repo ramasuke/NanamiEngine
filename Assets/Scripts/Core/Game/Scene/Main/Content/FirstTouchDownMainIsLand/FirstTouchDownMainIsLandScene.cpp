@@ -33,8 +33,8 @@ namespace GameCore::Scene::Main
         
         //PlayerAvatarの生成
         playerAvatar_ = Context()->PlayerAvatarFactory().SummonSwordManAvatar(
-              Context()->PlayerSpawnPoint()
-            , Context()->AirShip()->Entity().lock());
+            Context()->PlayerSpawnPoint(),
+            Context()->AirShip()->Entity().lock());
     }
     
     void FirstTouchDownMainIsLandScene::Enter()
@@ -44,7 +44,7 @@ namespace GameCore::Scene::Main
         
         //PlayerAvatarの初期化
         using namespace GameCore::PlayerAvatar;
-        auto inputAction = std::make_shared<RequireType::InputAction<SwordMan::SwordManAvatarTraits>>();
+        auto inputAction        = std::make_shared<RequireType::InputAction<SwordMan::SwordManAvatarTraits>>();
         auto summonAvatarStatus = std::make_shared<ContextT::SummonAvatarStatus>(Context()->PlayerAvatarInitStatus());
         auto stateMachine = PlayerAvatar::SwordMan::CreateStateMachine(summonAvatarStatus, inputAction, playerAvatar_.lock(), Context()->CameraGroup().Swordman());
         playerAvatar_.lock()->Init(summonAvatarStatus, std::move(stateMachine), inputAction, Context()->CameraGroup().Swordman());

@@ -36,24 +36,15 @@ namespace GameCore::Scene::Main
     void MainIslandScene::Enter()
     {
         GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
-        
-        // //PlayerAvatarの初期化
-        // const auto inputAction = std::make_shared<PlayerAvatar::RequireType::InputAction<PlayerAvatar::SwordMan::SwordManAvatarTraits>>();
-        // const auto summonAvatarStatus = std::make_shared<ContextT::SummonAvatarStatus>(Context()->PlayerAvatarInitStatus());
-        // auto stateMachine = PlayerAvatar::SwordMan::CreateStateMachine(summonAvatarStatus, inputAction, playerAvatar_.lock(), Context()->CameraGroup());
-        // playerAvatar_.lock()->Init(summonAvatarStatus, std::move(stateMachine), inputAction, Context()->CameraGroup());
-        // playerStatusPresenter_ = std::make_unique<PlayerAvatar::SwordMan::StatusPresenter>(
-        //     *Context()->PlayerStatusUI().lock(),
-        //     *summonAvatarStatus);
-        //
-        // // 船を降りるまでのMovieを開始
-        // aboardAirShipMovie_ = std::make_unique<FirstTouchDownMainIsLand::AboardAirShipMovie>(playerAvatar_, Context());
-        // Coroutine::StartCoroutine(aboardAirShipMovie_->ToTask());
     }
 
     void MainIslandScene::Dispose()
     {
+        PlayerAvatar::SaveType(*playerAvatar_.lock());
+        playerAvatar_.lock()->SaveStatus();
         
+        GamePlay::Sound::SoundPlayer::StopBgm(Context()->BGM());
+        Core::Application::ApplicationBase::GameWindow()->RemoveContent(scene_.lock());   
     }
 
     void MainIslandScene::OnDrawGui()

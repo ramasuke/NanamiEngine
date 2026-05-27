@@ -15,31 +15,29 @@ namespace GameCore::PlayerAvatar::SwordMan
     }
 
     void StatusPresenter::SubscribeModelEventToView(
-        const GamePlay::Ui::PlayerStatus& playerStatusView,
-        const SwordManAvatarStatus& swordManStatusModel)
+        const GamePlay::Ui::PlayerStatus& view,
+        const SwordManAvatarStatus& model)
     {
-        swordManStatusModel.Health().Subscribe(rxcpp::composite_subscription(), [&](const StatusParameter::Health currentHealth)
-            {
-                playerStatusView.UpdateHealthBar(swordManStatusModel.MaxHealth(), currentHealth);
-            });
-        swordManStatusModel.Event().OnDamage().subscribe(
-                rxcpp::composite_subscription(),
-                [&playerStatusView](StatusParameter::Health) { playerStatusView.OnDamageHealthBar(); },
-                [](const std::exception_ptr&) { },
-                [] { });
+        auto onDestroySubscription = rxcpp::composite_subscription();
         
-        swordManStatusModel.EnhancePowerStack().Subscribe(rxcpp::composite_subscription(), [&](const EnhancePower currentEnhancePowerStack)
+        model.Health().Subscribe(onDestroySubscription, [&](const StatusParameter::Health currentHealth)
             {
-                playerStatusView.UpdateEnhancePowerStackBar(swordManStatusModel.MaxEnhancePowerStack(), currentEnhancePowerStack);
+                view.UpdateHealthBar(model.MaxHealth(), currentHealth);
             });
-        swordManStatusModel.Event().OnAddEnhancePowerStack().subscribe(
-            rxcpp::composite_subscription(),
-            [&playerStatusView](EnhancePower) { playerStatusView.OnAddEnhancePowerStack(); },
-            [](const std::exception_ptr&) { },
-            [] { });    
-        swordManStatusModel.IsEnableReinforce().Subscribe(rxcpp::composite_subscription(), [&](const bool isEnableReinforce)
+        model.Event().OnDamage().subscribe(
+                onDestroySubscription,
+                [&view](StatusParameter::Health) { view.OnDamageHealthBar(); });
+        
+        model.EnhancePowerStack().Subscribe(onDestroySubscription, [&](const EnhancePower currentEnhancePowerStack)
+            {
+                view.UpdateEnhancePowerStackBar(model.MaxEnhancePowerStack(), currentEnhancePowerStack);
+            });
+        model.Event().OnAddEnhancePowerStack().subscribe(
+            onDestroySubscription,
+            [&view](EnhancePower) { view.OnAddEnhancePowerStack(); });    
+        model.IsEnableReinforce().Subscribe(onDestroySubscription, [&](const bool isEnableReinforce)
         {
-            playerStatusView.OnIsEnableReinforceMode(isEnableReinforce);
+            view.OnIsEnableReinforceMode(isEnableReinforce);
         });
     }
 }
