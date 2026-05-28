@@ -105,16 +105,16 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
     Coroutine::Task<void> AboardAirShipMovie::AirShipMovieWalkPlayerAsync()
     {
         using namespace PlayerAvatar::SwordMan::State;
-        playerAvatar_.lock()->Transform().LookAtY(Context()->PlayerFirstMoveTarget().GetWorldPos());
-        constexpr auto playerFirstMoveFrameResolution = 180;
-        playerAvatar_.lock()->GetEventSceneStateMachine().OnChangeState(typeid(SwordManAvatarWalkState));
-        const auto moveDirection = Context()->PlayerFirstMoveTarget().GetWorldPos() - playerAvatar_.lock()->Transform().GetWorldPos();
-        for (int i = 0; i < playerFirstMoveFrameResolution; i++)
-        {
-            const auto playerAvatar = playerAvatar_.lock(); 
-            playerAvatar->Transform().SetWorldPos(playerAvatar->Transform().GetWorldPos() + moveDirection / static_cast<float>(playerFirstMoveFrameResolution));
-            co_await Coroutine::WaitForSeconds(static_cast<float>(Context()->PlayerFirstMoveDuring_msecs()) / 1000 / playerFirstMoveFrameResolution);
-        }
+        const auto player = playerAvatar_.lock();
+        
+        player->Transform().LookAtY(Context()->PlayerFirstMoveTarget().GetWorldPos());
+        player->GetEventSceneStateMachine().OnChangeState(typeid(SwordManAvatarWalkState));
+
+        const auto tween = tweeny::from(player->Transform().GetWorldPos())
+            .to(Context()->PlayerFirstMoveTarget().GetWorldPos())
+            .during(1500.0f)
+            .via(Tween::Ease(EaseType::Linear));
+        co_await Coroutine::WaitForTween(player->Transform(), tween);
     }
     
     Coroutine::Task<void> AboardAirShipMovie::AirShipMovieArmStretchPlayerAsync()
@@ -123,25 +123,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         playerAvatar_.lock()->GetEventSceneStateMachine().OnChangeState(typeid(SwordManAvatarArmStretchState));
         co_await Coroutine::WaitForSeconds(static_cast<float>(Context()->PlayerArmStretchDuring_msecs()) / 1000);
         Context()->SecondVirtualCamera()->OnDisable();
-        
-        
     }
-
-    // Coroutine::Task<void> AboardAirShipMovie::ArmStretchAsync() const
-    // {
-    //     using namespace Coroutine;
-    //     co_await WaitForObservable(rxcpp::observable());
-    //     co_await WaitForSeconds(1.0f);
-    //     co_await WaitForSubscription(rxcpp::composite_subscription());
-    //     co_await WaitUntil([] { return true; });
-    //     co_await WaitYield();
-    //     
-    //     const auto tween = tweeny::from(Context()->AirShip()->Transform().GetWorldPos())
-    //                                 .to(Context()->AirShipFirstMoveFromTarget().GetWorldPos())
-    //                                 .during(Context()->AirShipFirstMoveDuring_msecs())
-    //                                 .via(Tween::Ease(EaseType::Linear));
-    //     co_await WaitForTween(Context()->AirShip()->Transform(), tween);
-    // }
 
     void AboardAirShipMovie::StartFadeInUi() const
     {

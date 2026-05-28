@@ -38,7 +38,9 @@ namespace NanamiEngine::Module::NanamiUi
 {
     void TextRenderer::SetText(const std::string& text)
     {
-        if (text_ == text) return;
+        if (text_ == text)
+            return;
+        
         text_ = text;
         isDirty_ = true;
     }
@@ -62,7 +64,8 @@ namespace NanamiEngine::Module::NanamiUi
     
     void TextRenderer::UpdateTextTexture()
     {
-        if (!isDirty_ || !fontFile_) return;
+        if (!isDirty_ || !fontFile_)
+            return;
     
         if (textScreen_ == -1)
         {
@@ -88,6 +91,10 @@ namespace NanamiEngine::Module::NanamiUi
 
     void TextRenderer::OnDrawGui()
     {
+        if (ImGui::Button("UpdateDisplayText"))
+        {
+            isDirty_ = true;
+        }
         ImGui::Checkbox("isWorldPos_", &isWorldPos_);
 
         ImGuiHelper::OnDrawInputField("fontFile_", fontFile_);
@@ -103,6 +110,12 @@ namespace NanamiEngine::Module::NanamiUi
         }
 
         ImGuiHelper::OnDrawInputField("textColor_", textColor_);
+        
+        if (isWorldPos_)
+        {
+            ImGuiHelper::OnDrawInputField("screenW_", screenW_);
+            ImGuiHelper::OnDrawInputField("screenH_", screenH_);
+        }
     }
 
     void TextRenderer::OnUserInterfaceRender()

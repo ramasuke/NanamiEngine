@@ -21,6 +21,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             AttackParam(Damage::PhysicsPower(2), EnhancePower(2), 0.9246376812f, 1.2855072464f),
             AttackParam(Damage::PhysicsPower(3), EnhancePower(3), 1.7f         , 2.0f         )}
         , comboNormalAttackStateDuration_secs_(2.0f)
+        , attackedShockedStateDuration_secs_  (1.0f)
         , dashAttack_                     (Damage::PhysicsPower(10), EnhancePower(10), 0.7f, 0.8f)
         , walkSpeed_                      (10.0f)
         , runSpeed_                       (40.0f)
@@ -50,6 +51,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         , decrementEnhancePowerStack_secs_    (initStatus.DecrementEnhancePowerStack_secs())
         , comboNormalAttack_                  (initStatus.ComboNormalAttack())
         , comboNormalAttackStateDuration_secs_(initStatus.ComboNormalAttackStateDuration_secs())
+        , attackedShockedStateDuration_secs_  (initStatus.AttackedShockedStateDuration_secs_())
         , dashAttack_                         (initStatus.DashAttack())
         , walkSpeed_                          (initStatus.GetWalkSpeed())
         , runSpeed_                           (initStatus.GetRunSpeed())
@@ -140,6 +142,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         LibCore::ImGuiHelper::OnDrawInputField("enhancePowerStack_", enhancePowerStack_);
         LibCore::ImGuiHelper::OnDrawInputField("comboNormalAttack_", comboNormalAttack_, [] {});
         LibCore::ImGuiHelper::OnDrawInputField("comboNormalAttackStateDuration_secs_", comboNormalAttackStateDuration_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("attackedShockedStateDuration_secs_", attackedShockedStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("dashAttack_", dashAttack_);
         LibCore::ImGuiHelper::OnDrawInputField("walkSpeed_", walkSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("runSpeed_", runSpeed_);

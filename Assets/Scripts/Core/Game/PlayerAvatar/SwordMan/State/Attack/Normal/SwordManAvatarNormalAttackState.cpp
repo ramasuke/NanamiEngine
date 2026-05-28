@@ -1,5 +1,6 @@
 ﻿#include "SwordManAvatarNormalAttackState.h"
 
+#include "../../../../../../../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
@@ -72,16 +73,32 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             return;
 
         isAttacked_ = true;
+        GamePlay::Sound::SoundPlayer::PlaySe(Resources().NormalAttackSound(), Transform().GetWorldPos());
+        StatusEvent().InvokeComboAttack();
 
         if (NormalAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
         {
+            Status().AddEnhancePowerStack(attackStatus.GetEnhance() * NormalAttackArea().AttackTargetCount());
             auto& particle = CatchPlayerInChild<Component::ParticleSystem>(GamePlay::PlayerAvatar::SwordMan::HIT_NORMAL_ATTACK_PARTICLE_NAME);
             particle.Play();
         }
+        else
+        {
+            const auto direction = NormalAttackArea().Transform().GetWorldPos() - Transform().GetWorldPos();
 
-        GamePlay::Sound::SoundPlayer::PlaySe(NormalAttackSound(), Transform().GetWorldPos());
-        Status().AddEnhancePowerStack(attackStatus.GetEnhance() * NormalAttackArea().AttackTargetCount());
-        StatusEvent().InvokeComboAttack();
+            Physics::LayerMask mask = Physics::CreateLayerMask();
+            Physics::AddLayer(mask, Physics::Layer::Default);
+            
+            const auto raycastHit = Physics::Raycast(
+                                            Transform().GetWorldPos() + glm::vec3(0.0f, 10.0f, 0.0f),
+                                            direction,
+                                            glm::length(direction),
+                                            mask);
+            if (raycastHit.Hit())
+            {
+                OnChangeState<AttackedShockedState>();
+            }
+        }
     }
 
     void SwordManAvatarNormalAttackState::ChangeToMoveOrIdle()

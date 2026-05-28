@@ -9,14 +9,17 @@ namespace NanamiEngine::Module::Component
     class Animator final : public ComponentBase,
                            public LifeCycleCallback::IAwakable,
                            public LifeCycleCallback::IUpdatable,
+                           public LifeCycleCallback::IStartable,
                            public LifeCycleCallback::ILateUpdatable
     {
     public:
         void OnAwake () override;
+        void OnStart () override;
         void OnUpdate() override {}
         void OnLateUpdate() override;
         template<typename T>
         AnimationTree::AnimationParameter<T>& Param(std::string paramName);
+        [[nodiscard]] int AnimationModelHandle() const { return modelDxLibHandle_; }
 
     private:
         void InitAnimationTree();
@@ -24,6 +27,7 @@ namespace NanamiEngine::Module::Component
         [[serialize(0)]] FIELD(Asset::AnimationTreeFile) animationTreeFile_;
         [[serialize(2)]] std::vector<std::unique_ptr<AnimationTree::AnimationSyncBase>> animationSyncs_;
         std::shared_ptr<AnimationTree::AnimationTree> animationTree_ = nullptr;
+        int modelDxLibHandle_ = -1;
         
 #pragma region Serialization Function
     public:

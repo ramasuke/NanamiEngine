@@ -1,6 +1,7 @@
 ﻿#include "SwordManAvatarStateBase.h"
 
 #include "../../../../../../../Engine/Core/Application/Time/Time.h"
+#include "../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
 #include "../../Chattable/IPlayerChattable.h"
 
@@ -30,6 +31,11 @@ namespace GameCore::PlayerAvatar::SwordMan
     void SwordManAvatarStateBase::OnExit()
     {
         DoExit();
+    }
+
+    Component::Animator& SwordManAvatarStateBase::Animator() const
+    {
+        return *Player().Components().Catch<Component::Animator>().lock();
     }
 
     void SwordManAvatarStateBase::ResetDuringTime()

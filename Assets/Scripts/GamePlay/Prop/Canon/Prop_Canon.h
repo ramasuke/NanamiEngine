@@ -3,6 +3,7 @@
 #include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../../Engine/Module/Asset/Sound/SoundFile.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
+#include "../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../../../../../Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
 
@@ -19,7 +20,7 @@ namespace GamePlay::Prop
     {
     public:
         void Use() const;
-        void Shoot() const;
+        void Shoot();
         void RightRotate();
         void LeftRotate();
 
@@ -38,6 +39,11 @@ namespace GamePlay::Prop
         [[serialize(2)]] FIELD(GameObject::IGameObject) shootBulletPos_;
         [[serialize(3)]] glm::vec3 shootBulletDirection_ = glm::vec3(0.0f, 0.0f, 0.0f);
         
+        [[serialize(4)]] float shootCooldown_secs_ = 10.0f;
+        float shootCooldownDuring_secs_ = 0.0f;
+
+        [[serialize(5)]] FIELD(NanamiUi::TextRenderer) cannonUi_; 
+        
         
 #pragma region Serialization Function
     public:
@@ -52,6 +58,8 @@ namespace GamePlay::Prop
             archive(CEREAL_NVP(shootCamera_));
             archive(CEREAL_NVP(shootBulletPos_));
             archive(CEREAL_NVP(shootBulletDirection_));
+            archive(CEREAL_NVP(shootCooldown_secs_));
+            archive(CEREAL_NVP(cannonUi_));
         }
 
         template<class Archive>
@@ -64,6 +72,8 @@ namespace GamePlay::Prop
             if (version >= 2) archive(CEREAL_NVP(shootCamera_));
             if (version >= 2) archive(CEREAL_NVP(shootBulletPos_));
             if (version >= 3) archive(CEREAL_NVP(shootBulletDirection_));
+            if (version >= 4) archive(CEREAL_NVP(shootCooldown_secs_));
+            if (version >= 5) archive(CEREAL_NVP(cannonUi_));
         }
 #pragma endregion
     };
@@ -72,7 +82,7 @@ namespace GamePlay::Prop
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Prop::Canon, 3);
+CEREAL_CLASS_VERSION(GamePlay::Prop::Canon, 5);
 CEREAL_REGISTER_TYPE(GamePlay::Prop::Canon);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, GamePlay::Prop::Canon);
 #pragma endregion

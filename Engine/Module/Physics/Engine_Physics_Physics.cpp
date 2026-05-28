@@ -1,5 +1,8 @@
 ﻿#include "Engine_Physics_Physics.h"
+
+#include "DxLib.h"
 #include "../../Core/Application/ApplicationBase.h"
+#include "../../Core/Application/Configuration/ApplicationConfiguration.h"
 #include "../../Core/Physics/Physics.h"
 #include "ext/quaternion_geometric.hpp"
 #include "../JoltPhysics/Jolt/Physics/Collision/CastResult.h"
@@ -11,6 +14,12 @@
 #include "BroadPhaseLayer/Engine_Physics_NonRaycastLayerFilter.h"
 #include "detail/func_trigonometric.inl"
 #include "LayerFilter/Engine_Physics_CustomObjectLayerFilter.h"
+#include "UserData/Engine_Physics_UserData.h"
+
+inline VECTOR ToDxVec(const glm::vec3& v)
+{
+    return VGet(v.x, v.y, v.z);
+}
 
 JPH::Vec3 MultiplyPointInvCompat(const JPH::RMat44& m, const JPH::Vec3& p)
 {
@@ -115,12 +124,17 @@ NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::Raycast
     const glm::vec3& origin,
     const glm::vec3& direction,
     float maxDistance,
-    Layer layer)
+    const LayerMask layerMask)
 {
+    if constexpr (Core::Application::Configuration::APPLICATION_MODE ==
+        Core::Application::Configuration::ApplicationMode::Editor)
+    {
+        DebugDrawRaycast(origin, direction, maxDistance);
+    }
+    
     const JPH::Vec3 originPos   = ToJPHVec3(origin);
     const JPH::Vec3 jphDirection = ToJPHVec3(glm::normalize(direction));
 
-    // RayCast → RRayCast に変換
     JPH::RayCast raycast(originPos, jphDirection * maxDistance);
     JPH::RRayCast rRaycast(raycast);
 
@@ -128,23 +142,22 @@ NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::Raycast
     const auto& physics = Core::Application::ApplicationBase::Physics().GetPhysicsSystem();
     const auto& query   = physics.GetNarrowPhaseQuery();
 
-    if (const CustomObjectLayerFilter layerFilter(static_cast<JPH::ObjectLayer>(ToIndex(layer))); !query.CastRay(
+    if (const CustomObjectLayerFilter layerFilter(layerMask); !query.CastRay(
             rRaycast,
             result,
             JPH::BroadPhaseLayerFilter(),
             layerFilter,
             NonRaycastLayerFilter()))
     {
-        return RaycastHit(false, {}, {});
+        return RaycastHit(false, {}, {}, std::shared_ptr<GameObject::IGameObject>());
     }
 
-    // --- 衝突点 ---
+    // 衝突点
     float dist = maxDistance * result.mFraction;
     JPH::Vec3 hitPosJ = originPos + jphDirection * dist;
     glm::vec3 hitPos  = ToVec3(hitPosJ);
 
     glm::vec3 hitNormal;
-
     {
         JPH::BodyLockRead lock(physics.GetBodyLockInterface(), result.mBodyID);
         const JPH::Body& body = lock.GetBody();
@@ -171,6 +184,31 @@ NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::Raycast
 
         hitNormal = ToVec3(worldNormal);
     }
+    
+    JPH::BodyID bodyID = result.mBodyID;
 
-    return RaycastHit(true, hitPos, hitNormal);
+    auto& physicsSystem = Core::Application::ApplicationBase::Physics().GetPhysicsSystem();
+    const JPH::BodyLockRead lock(physicsSystem.GetBodyLockInterface(), bodyID);
+    if (lock.Succeeded())
+    {
+        const JPH::Body& body = lock.GetBody();
+        const auto userData = ToUserData(body.GetUserData());
+        
+        return RaycastHit(true, hitPos, hitNormal, userData->Entity());
+    }
+    throw std::runtime_error("Raycast hit failed!");
+}
+
+void NanamiEngine::Module::Physics::DebugDrawRaycast(
+    const glm::vec3& origin,
+    const glm::vec3& direction,
+    const float maxDistance)
+{
+    const glm::vec3 end = origin + glm::normalize(direction) * maxDistance;
+
+    DrawLine3D(
+        ToDxVec(origin),
+        ToDxVec(end),
+        GetColor(0, 255, 0)
+    );
 }

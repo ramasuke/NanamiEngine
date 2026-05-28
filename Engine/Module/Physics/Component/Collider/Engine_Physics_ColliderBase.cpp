@@ -72,6 +72,7 @@ namespace NanamiEngine::Module::Component
             mass_,
             isSensor_,
             isGravity_,
+            layer_,
             &userData_
         );
     }
@@ -94,6 +95,7 @@ namespace NanamiEngine::Module::Component
             mass_,
             isSensor_,
             isGravity_,
+            layer_,
             &userData_
         );
     }
@@ -228,6 +230,7 @@ namespace NanamiEngine::Module::Component
 
     void ColliderBase::BasedOnDrawgui()
     {
+        DrawChoiceLayerGui("layer_", layer_);
         ImGuiHelper::OnDrawInputField("isGravity_", isGravity_);
         ImGuiHelper::OnDrawInputField("mass_", mass_);
         if (ImGui::TreeNode("option"))

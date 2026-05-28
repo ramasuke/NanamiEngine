@@ -29,6 +29,7 @@ namespace NanamiEngine::Module::Asset
 
         [[nodiscard]] const std::vector<GameCore::PlayerAvatar::AttackParam<GameCore::Damage::PhysicsPower>>& ComboNormalAttack() const { return comboNormalAttack_; }
         [[nodiscard]] float                                ComboNormalAttackStateDuration_secs() const { return comboNormalAttackStateDuration_secs_; }
+        [[nodiscard]] float                                AttackedShockedStateDuration_secs_() const { return attackedShockedStateDuration_secs_; }
         [[nodiscard]] GameCore::PlayerAvatar::AttackParam<GameCore::Damage::PhysicsPower> DashAttack() const { return dashAttack_;  }
         [[nodiscard]] GameCore::StatusParameter::MoveSpeed GetWalkSpeed        () const { return walkSpeed_;                }
         [[nodiscard]] GameCore::StatusParameter::MoveSpeed GetRunSpeed         () const { return runSpeed_ ;                }
@@ -56,6 +57,7 @@ namespace NanamiEngine::Module::Asset
         
         [[serialize(0)]] std::vector<GameCore::PlayerAvatar::AttackParam<GameCore::Damage::PhysicsPower>> comboNormalAttack_;
         [[serialize(2)]] float comboNormalAttackStateDuration_secs_;
+        [[serialize(4)]] float attackedShockedStateDuration_secs_;
         [[serialize(0)]] GameCore::PlayerAvatar::AttackParam<GameCore::Damage::PhysicsPower> dashAttack_;
         
         [[serialize(0)]] GameCore::StatusParameter::MoveSpeed walkSpeed_;
@@ -85,6 +87,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(maxEnhancePowerStack_));
             archive(CEREAL_NVP(enhancePowerStack_));
             archive(CEREAL_NVP(comboNormalAttackStateDuration_secs_));
+            archive(CEREAL_NVP(attackedShockedStateDuration_secs_));
             archive(CEREAL_NVP(dashAttack_));
             archive(CEREAL_NVP(walkSpeed_));
             archive(CEREAL_NVP(runSpeed_));
@@ -110,6 +113,7 @@ namespace NanamiEngine::Module::Asset
             if (version >= 0) archive(CEREAL_NVP(maxEnhancePowerStack_));
             if (version >= 0) archive(CEREAL_NVP(enhancePowerStack_));
             if (version >= 2) archive(CEREAL_NVP(comboNormalAttackStateDuration_secs_));
+            if (version >= 4) archive(CEREAL_NVP(attackedShockedStateDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(dashAttack_));
             if (version >= 0) archive(CEREAL_NVP(walkSpeed_));
             if (version >= 0) archive(CEREAL_NVP(runSpeed_));
@@ -131,7 +135,7 @@ namespace NanamiEngine::Module::Asset
 
 REGISTER_SCRIPTABLE_OBJECT(SwordManInitStatus, SWORD_MAN_INIT_STATUS_EXTENSION_LABEL)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 3);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 4);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManInitStatus);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManInitStatus);
 #pragma endregion

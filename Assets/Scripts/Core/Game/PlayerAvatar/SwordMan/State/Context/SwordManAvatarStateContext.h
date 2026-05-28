@@ -10,6 +10,11 @@
 
 namespace NanamiEngine::Module::Asset
 {
+    class SwordManAvatarResource;
+}
+
+namespace NanamiEngine::Module::Asset
+{
     class SoundFile;
 }
 
@@ -34,8 +39,7 @@ namespace GameCore::PlayerAvatar::SwordMan
                                             const std::weak_ptr  <PlayerAttackArea>& dashAttackArea,
                                             const std::weak_ptr<Component::ParticleSystem>& onReinforceParticle,
                                             const std::weak_ptr<Component::ParticleSystem>& reinforcingParticle,
-                                            const std::weak_ptr<Asset::SoundFile         >& normalAttackSound,
-                                            const std::weak_ptr<Asset::SoundFile         >& avoidRollingSound);
+                                            const std::weak_ptr<Asset::SwordManAvatarResource>& resources);
         
         [[nodiscard]] SwordManAvatarStatus     & Status () const { return *status_;             }
         [[nodiscard]] SwordManAvatarInputAction& Input  () const { return *inputAction_;        }
@@ -52,8 +56,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] PlayerAttackArea& DashAttackArea  () const { return *dashAttackArea_  .lock(); }
         [[nodiscard]] Component::ParticleSystem& OnReinforceParticle() const { return *onReinforceParticle_.lock(); } 
         [[nodiscard]] Component::ParticleSystem& ReinforcingParticle() const { return *reinforcingParticle_.lock(); }
-        [[nodiscard]] const Asset::SoundFile   & NormalAttackSound  () const { return *normalAttackSound_  .lock(); }
-        [[nodiscard]] const Asset::SoundFile   & AvoidRollingSound  () const { return *avoidRollingSound_  .lock(); }
+        [[nodiscard]] const Asset::SwordManAvatarResource   & Resources          () const { return *resources_  .lock(); }
 
 
     private:
@@ -66,8 +69,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         const std::weak_ptr  <PlayerAttackArea> dashAttackArea_;
         const std::weak_ptr<Component::ParticleSystem> onReinforceParticle_;
         const std::weak_ptr<Component::ParticleSystem> reinforcingParticle_;
-        const std::weak_ptr<Asset::SoundFile> normalAttackSound_;
-        const std::weak_ptr<Asset::SoundFile> avoidRollingSound_;
-        
+        const std::weak_ptr<Asset::SwordManAvatarResource> resources_;
     };
 }

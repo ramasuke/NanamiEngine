@@ -11,10 +11,17 @@ namespace GamePlay::Prop
     void Canon::Use() const
     {
         shootCamera_->SetPriority(100);
+        cannonUi_->Entity().lock()->SetEnable(true);
     }
 
-    void Canon::Shoot() const
+    void Canon::Shoot()
     {
+        if (shootCooldownDuring_secs_ <= 0.0f)
+            return;
+        
+        shootCooldownDuring_secs_ = shootCooldown_secs_;
+        
+        
         const glm::vec3 canonForward = Transform().GetWorldRot() * shootBulletDirection_;
         
         const auto bullet = Scene::GameObject::Instantiate(bulletPrefab_.get(), shootBulletPos_->Transform().GetWorldPos());
@@ -40,6 +47,9 @@ namespace GamePlay::Prop
 
     void Canon::OnUpdate()
     {
+        shootCooldownDuring_secs_ -= Time::DeltaTime();
+        shootCooldownDuring_secs_ = std::max(shootCooldownDuring_secs_, 0.0f);
+        cannonUi_->SetText("Cooldown: " + std::to_string(shootCooldownDuring_secs_));
         Transform().SetWorldPos(position_);
     }
 
@@ -52,5 +62,8 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("shootCamera_", shootCamera_);
         ImGuiHelper::OnDrawInputField("shootBulletPos_", shootBulletPos_);
         ImGuiHelper::OnDrawInputField("shootBulletDirection_", shootBulletDirection_);
+        ImGuiHelper::OnDrawInputField("shootCooldown_secs_", shootCooldown_secs_);
+        ImGuiHelper::OnDrawInputField("shootCooldownDuring_secs_", shootCooldownDuring_secs_);
+        ImGuiHelper::OnDrawInputField("cannonUi_", cannonUi_);
     }
 }

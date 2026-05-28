@@ -25,7 +25,7 @@ namespace NanamiEngine::Core::MainWindow
         [[nodiscard]] bool IsPlayMode() const { return isPlayMode_; }
         [[nodiscard]] bool IsPlaying () const { return isPlaying_; }
         [[nodiscard]] bool TryReplaceGameObject(const Guid& replaceGameObjectGuid, const std::shared_ptr<GameObject::IGameObject>& newGameObject) const;
-        void RemoveGameObject(const std::weak_ptr<GameObject::IGameObject>& removeGameObject) const;
+        void RemoveGameObject(const std::weak_ptr<GameObject::IGameObject>& removeGameObject);
 
     private:
         [[nodiscard]] std::vector<std::shared_ptr<Scene::Scene>> Scenes() const;
@@ -33,6 +33,7 @@ namespace NanamiEngine::Core::MainWindow
         void OnSave  () override;
         void OnDrawGui(MainWindowDrawGuiContext context) override;
 
+        std::queue<std::weak_ptr<GameObject::IGameObject>> removeGameObjectQueue_;
         Component::Editor3DCamera editorCamera_;
         std::weak_ptr<Scene::Scene> mainScene_;
         bool isPlayMode_ = false;

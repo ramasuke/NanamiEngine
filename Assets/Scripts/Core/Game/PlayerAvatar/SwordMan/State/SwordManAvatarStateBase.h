@@ -10,6 +10,11 @@
 #include "../Status/SwordManAvatarStatus.h"
 #include "Context/SwordManAvatarStateContext.h"
 
+namespace NanamiEngine::Module::Component
+{
+    class Animator;
+}
+
 namespace GameCore::PlayerAvatar::SwordMan
 {
     class SwordManAvatarStateBase : public IPlayerAvatarState
@@ -40,6 +45,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         /** ---- 以下サンドボックスパターン ---- */
         /** @note Playerの行動に必要なパラメータと行動を取得できる関数群 */
         [[nodiscard]] GameObject::IGameObject   &            Player          () const { return *context_->PlayerAvatarObject    (); }
+        [[nodiscard]] Component::Animator       &            Animator        () const;
         [[nodiscard]] Component::ColliderBase   &            Collider        () const { return context_->PlayerAvatarCollider   (); }
         [[nodiscard]] GameObject::Transform     &            Transform       () const { return context_->PlayerAvatarTransform  (); }
         [[nodiscard]] SwordManAvatarInputAction &            Input           () const { return context_->Input                  (); }
@@ -55,8 +61,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] Component::ParticleSystem& ReinforcingParticle() const { return context_->ReinforcingParticle(); }
         [[nodiscard]] PlayerAvatar::State::PlayerAvatarStateCondition Conditions() const { return PlayerAvatar::State::PlayerAvatarStateCondition(context_);}
         [[nodiscard]] PlayerAvatar::State::PlayerAvatarStateAction    Actions   () const { return PlayerAvatar::State::PlayerAvatarStateAction   (context_);}
-        [[nodiscard]] const Asset::SoundFile&                NormalAttackSound() const { return context_->NormalAttackSound(); } 
-        [[nodiscard]] const Asset::SoundFile&                AvoidRollingSound() const { return context_->AvoidRollingSound(); } 
+        [[nodiscard]] const Asset::SwordManAvatarResource&            Resources () const { return context_->Resources(); } 
         
         void ResetDuringTime();
         //現在のStateの持続時間を返す

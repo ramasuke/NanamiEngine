@@ -49,7 +49,7 @@ namespace NanamiEngine::Module::NanamiUi
             archive(CEREAL_NVP(renderOrder_));
             archive(CEREAL_NVP(text_));
             archive(CEREAL_NVP(textColor_));
-            archive(CEREAL_NVP(isWorldPos_));
+            if (version >= 1) archive(CEREAL_NVP(isWorldPos_));
         }
 
         template<class Archive>
@@ -68,7 +68,7 @@ namespace NanamiEngine::Module::NanamiUi
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::NanamiUi::TextRenderer, 0);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::NanamiUi::TextRenderer, 1);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::NanamiUi::TextRenderer);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, NanamiEngine::Module::NanamiUi::TextRenderer);
 #pragma endregion

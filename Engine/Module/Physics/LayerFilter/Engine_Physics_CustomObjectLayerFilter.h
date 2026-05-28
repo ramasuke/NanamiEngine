@@ -1,4 +1,5 @@
-﻿#include "Jolt/Jolt.h"
+﻿#include "../Layer/Engine_Physics_PhysicsLayer.h"
+#include "Jolt/Jolt.h"
 #include "Jolt/Physics/Collision/ObjectLayer.h"
 
 namespace NanamiEngine::Module::Physics
@@ -6,17 +7,16 @@ namespace NanamiEngine::Module::Physics
     class CustomObjectLayerFilter final : public JPH::ObjectLayerFilter
     {
     public:
-        explicit CustomObjectLayerFilter(const JPH::ObjectLayer layer)
-            : layer_(layer)
-        {
-        }
+        explicit CustomObjectLayerFilter(const LayerMask mask)
+            : mask_(mask)
+        {}
 
         [[nodiscard]] bool ShouldCollide(const JPH::ObjectLayer objectLayer) const override
         {
-            return objectLayer == layer_;
+            return (mask_ & (1u << objectLayer)) != 0;
         }
 
     private:
-        JPH::ObjectLayer layer_;
+        LayerMask mask_;
     };
 }

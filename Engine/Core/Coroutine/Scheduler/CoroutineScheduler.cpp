@@ -108,7 +108,7 @@ namespace Coroutine
     {
         std::unordered_set<void*> destroyed;
 
-        auto destroyIfNeeded = [&](std::coroutine_handle<> h)
+        auto destroyIfNeeded = [&](const std::coroutine_handle<> h)
         {
             if (!h) return;
 

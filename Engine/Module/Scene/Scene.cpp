@@ -36,6 +36,7 @@ Scene::Scene::Scene(const std::string& filePath)
 
 Scene::Scene::~Scene()
 {
+    //TODO: replace RemoveImplementAllGameObject()
     for (auto& weakGameObject : gameObjects_ | std::views::values)
     {
         if (const auto gameObject = weakGameObject.lock())
@@ -122,7 +123,6 @@ void Scene::Scene::OnUpdatePushedContents()
         const std::weak_ptr<Module::GameObject::IGameObject>& removeWeak = removeGameObjectQueue_.front();
         if (const std::shared_ptr<Module::GameObject::IGameObject> remove = removeWeak.lock())
         {
-            remove->ImplementDestroy();
             gameObjects_.erase(remove->GetGuid());
         }
         removeGameObjectQueue_.pop();

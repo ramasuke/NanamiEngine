@@ -3,6 +3,7 @@
 #include "ArmStretch/SwordManAvatarArmStretchState.h"
 #include "Attack/Dash/SwordManAvatarDashAttackState.h"
 #include "Attack/Normal/SwordManAvatarNormalAttackState.h"
+#include "AttackedShocked/SwordManAvatar_AttackedShockedState.h"
 #include "AvoidRolling/SwordManAvatar_AvoidRolling.h"
 #include "Chatting/SwordManAvatarChattingState.h"
 #include "ClimbToTop/SwordManAvatarStateClimbToTop.h"
@@ -33,6 +34,7 @@ namespace GameCore::PlayerAvatar::SwordMan
                                                                 , State::SwordManAvatarJumpState
                                                                 , State::FloatingState
                                                                 , State::SwordManAvatarNormalAttackState
+                                                                , State::AttackedShockedState
                                                                 , State::SwordManAvatarDashAttackState
                                                                 , State::SwordManAvatarStateClimbToTop
                                                                 , State::SwordManAvatarArmStretchState

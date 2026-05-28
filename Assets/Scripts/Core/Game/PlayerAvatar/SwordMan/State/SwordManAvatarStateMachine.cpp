@@ -20,8 +20,7 @@ namespace GameCore::PlayerAvatar::SwordMan
                 playerAvatar->CatchDashAttackArea(),
                 playerAvatar->OnReinforceParticle(),    
                 playerAvatar->ReinforcingParticle(),
-                playerAvatar->NormalAttackSound  (),
-                playerAvatar->AvoidRollingSound  ()
+                playerAvatar->Resources()
             ));
     }
 }

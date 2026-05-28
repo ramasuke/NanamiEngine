@@ -88,7 +88,7 @@ void Scene::SceneGameObject::OnDestroy() const
 {
     Core::Application::ApplicationBase::MainWindows()
         .Catch<Core::MainWindow::GameWindow>()
-        ->RemoveGameObject(std::weak_ptr(ownPtr_));
+        ->RemoveGameObject(ownPtr_);
 }
 
 void Scene::SceneGameObject::ImplementDestroy()
@@ -228,7 +228,7 @@ void Scene::SceneGameObject::OnDrawTreeGui()
             child->OnDrawTreeGui();
         }
         ImGui::TreePop();
-    }
+    }   
 
     ImGui::PopID();
 }

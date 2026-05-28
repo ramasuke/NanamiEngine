@@ -35,6 +35,7 @@ namespace NanamiEngine::Module::Asset
         LibCore::ImGuiHelper::OnDrawInputField("enhancePowerStack_", enhancePowerStack_);
         LibCore::ImGuiHelper::OnDrawInputField("comboNormalAttack_", comboNormalAttack_, [] {});
         LibCore::ImGuiHelper::OnDrawInputField("comboNormalAttackStateDuration_secs_", comboNormalAttackStateDuration_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("attackedShockedStateDuration_secs_", attackedShockedStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("dashAttack_", dashAttack_);
         LibCore::ImGuiHelper::OnDrawInputField("walkSpeed_", walkSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("runSpeed_", runSpeed_);

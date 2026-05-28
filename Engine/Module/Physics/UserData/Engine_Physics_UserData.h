@@ -24,4 +24,6 @@ namespace NanamiEngine::Module::Physics
     private:
         std::weak_ptr<GameObject::IGameObject> entity_;
     };
+    
+    UserData* ToUserData(uint64_t userData);
 }

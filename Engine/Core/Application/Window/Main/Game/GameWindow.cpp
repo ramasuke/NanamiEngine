@@ -32,8 +32,9 @@ namespace NanamiEngine::Core::MainWindow
     void GameWindow::ChangeMainScene(const std::shared_ptr<Scene::Scene>& scene)
     {
         mainScene_ = scene;
+        Application::ApplicationBase::ResetPhysics();
 
-        //NOTE:
+        //NOTE: 
         for (int totalSkipFrame = 0; totalSkipFrame < 30; totalSkipFrame++)
         {
             Time::SkipNextFrame();
@@ -49,13 +50,14 @@ namespace NanamiEngine::Core::MainWindow
         return nullptr;
     }
     
-    void GameWindow::RemoveGameObject(const std::weak_ptr<GameObject::IGameObject>& removeGameObject) const
+    void GameWindow::RemoveGameObject(const std::weak_ptr<GameObject::IGameObject>& removeGameObject)
     {
         for (const auto& scene : Scenes())
         {
             if (scene->TryOnRemoveGameObject(removeGameObject))
                 break;
         }
+        removeGameObjectQueue_.push(removeGameObject);
     }
     
     bool GameWindow::TryReplaceGameObject(
@@ -100,6 +102,15 @@ namespace NanamiEngine::Core::MainWindow
         for (const auto& content : contents_ | std::views::values)
         {
             content->OnUpdatePushedContents();
+        }
+        while (!removeGameObjectQueue_.empty())
+        {
+            const std::weak_ptr<GameObject::IGameObject>& removeWeak = removeGameObjectQueue_.front();
+            if (const std::shared_ptr<GameObject::IGameObject> remove = removeWeak.lock())
+            {
+                remove->ImplementDestroy();
+            }
+            removeGameObjectQueue_.pop();
         }
     }
     

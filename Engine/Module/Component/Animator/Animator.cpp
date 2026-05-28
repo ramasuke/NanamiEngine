@@ -7,16 +7,21 @@ void Component::Animator::OnAwake()
     InitAnimationTree();
 }
 
+void Component::Animator::OnStart()
+{
+    modelDxLibHandle_ = Entity().lock()->Components().Catch<ModelRenderer>().lock()->modelDxLibHandle_;
+}
+
 void Component::Animator::OnLateUpdate()
 {
     if (!animationTree_)
         return;
 
-    const auto modelDxLibHandle = Entity().lock()->Components().Catch<ModelRenderer>().lock()->modelDxLibHandle_;
-    animationTree_->OnUpdate(modelDxLibHandle);
+    modelDxLibHandle_ = Entity().lock()->Components().Catch<ModelRenderer>().lock()->modelDxLibHandle_;
+    animationTree_->OnUpdate(modelDxLibHandle_);
     for (const auto& animationSync : animationSyncs_)
     {
-        animationSync->UpdateSync(modelDxLibHandle);
+        animationSync->UpdateSync(modelDxLibHandle_);
     }
 }
 

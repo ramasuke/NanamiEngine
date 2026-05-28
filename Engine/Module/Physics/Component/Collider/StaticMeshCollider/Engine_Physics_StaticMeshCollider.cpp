@@ -152,6 +152,7 @@ namespace NanamiEngine::Module::Component
             0,
             false,
             IsGravity(),
+            layer_,
             &userData_);
     }
 

@@ -22,7 +22,7 @@ namespace NanamiEngine::CineMachine
 
     private:
         void OnAwake      () override;
-        void OnDestroy() override;
+        void OnDestroy    () override;
         void OnDrawGui    () override;
         void OnDebugRender() override;
         

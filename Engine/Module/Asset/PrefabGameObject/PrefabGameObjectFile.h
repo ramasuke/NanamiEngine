@@ -43,7 +43,7 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 0) archive(CEREAL_NVP(guid_));
 }
 #pragma endregion
-};
+    };
 }
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::PrefabGameObjectFile, 0);

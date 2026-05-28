@@ -48,8 +48,8 @@ namespace NanamiEngine::Module::Physics
             const JPH::Body& sensor = isSensor1 ? body1 : body2;
             const JPH::Body& other  = isSensor1 ? body2 : body1;
 
-            const auto sensorPtr = reinterpret_cast<UserData*>(sensor.GetUserData());
-            const auto otherPtr  = reinterpret_cast<UserData*>(other .GetUserData());
+            const auto sensorPtr = ToUserData(sensor.GetUserData());
+            const auto otherPtr  = ToUserData(other .GetUserData());
 
             assert(sensorPtr);
             assert(otherPtr);
@@ -71,8 +71,8 @@ namespace NanamiEngine::Module::Physics
             return;
         }
         
-        const auto body1Ptr = reinterpret_cast<UserData*>(body1.GetUserData());
-        const auto body2Ptr = reinterpret_cast<UserData*>(body2.GetUserData());
+        const auto body1Ptr = ToUserData(body1.GetUserData());
+        const auto body2Ptr = ToUserData(body2.GetUserData());
 
         assert(body1Ptr);
         assert(body2Ptr);

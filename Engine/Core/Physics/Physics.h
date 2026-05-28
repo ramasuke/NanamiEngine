@@ -5,6 +5,7 @@
 #include <../JoltPhysics/Jolt/Core/JobSystemThreadPool.h>
 
 #include "../../Module/Physics/ContactListener/Engine_Physics_ContactListener.h"
+#include "../../Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
 
 namespace NanamiEngine::Module::Physics
 {
@@ -41,6 +42,7 @@ namespace NanamiEngine::Core
             float mass,
             bool isSensor,
             bool isGravity,
+            Module::Physics::Layer layer,
             Module::Physics::UserData* userData);
 
     private:

@@ -61,13 +61,6 @@ namespace NanamiEngine::Module::Component
         ImGui::Text("Constraints");
         Physics::DrawConstraintCheckBoxsGui(constraints_);
 
-        int layerIndex = Physics::ToIndex(layer_);
-        if (ImGui::Combo("Layer", &layerIndex,
-            Physics::LAYER_NAMES, static_cast<int>(Physics::Layer::Count)))
-        {
-            layer_ = Physics::ToLayer(layerIndex);
-        }
-
         OnDebugDraw();
     }
 }

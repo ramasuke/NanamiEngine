@@ -48,16 +48,6 @@ namespace GamePlay::PlayerAvatar::SwordMan
         throw std::exception("not found REINFORCING_PARTICLE_NAME");
     }
 
-    std::weak_ptr<Asset::SoundFile> SwordManAvatar::NormalAttackSound() const
-    {
-        return normalAttackSound_.get();
-    }
-
-    std::weak_ptr<Asset::SoundFile> SwordManAvatar::AvoidRollingSound() const
-    {
-        return avoidRollingSound_.get();
-    }
-
     PlayerAvatarType SwordManAvatar::Type() const
     {
         return PlayerAvatarType::SwordMan;
@@ -65,7 +55,6 @@ namespace GamePlay::PlayerAvatar::SwordMan
 
     void SwordManAvatar::OnDrawGui()
     {
-        ImGuiHelper::OnDrawInputField("normalAttackSound_", normalAttackSound_);
-        ImGuiHelper::OnDrawInputField("avoidRollingSound_", avoidRollingSound_);
+        ImGuiHelper::OnDrawInputField("resources_", resources_);
     }
 }

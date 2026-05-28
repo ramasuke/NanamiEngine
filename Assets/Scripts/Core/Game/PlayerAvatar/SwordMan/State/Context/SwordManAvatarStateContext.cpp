@@ -13,20 +13,18 @@ namespace GameCore::PlayerAvatar::SwordMan
         const std::weak_ptr  <PlayerAttackArea>& dashAttackArea,
         const std::weak_ptr  <Component::ParticleSystem>& onReinforceParticle,
         const std::weak_ptr  <Component::ParticleSystem>& reinforcingParticle,
-        const std::weak_ptr<Asset::SoundFile           >& normalAttackSound,
-        const std::weak_ptr<Asset::SoundFile           >& avoidRollingSound
+        const std::weak_ptr<Asset::SwordManAvatarResource>& resources
         )
-        : status_            (status             )
-        , playerAvatarObject_(playerAvatar    )
-        , playerAvatar_      (playerAvatar.lock()->Components().Catch<IPlayerAvatar>())
-        , inputAction_       (inputAction        )
-        , cameraGroup_       (cameraGroup     )
-        , normalAttackArea_  (normalAttackArea)
-        , dashAttackArea_    (dashAttackArea  )
+        : status_             (status             )
+        , playerAvatarObject_ (playerAvatar    )
+        , playerAvatar_       (playerAvatar.lock()->Components().Catch<IPlayerAvatar>())
+        , inputAction_        (inputAction        )
+        , cameraGroup_        (cameraGroup     )
+        , normalAttackArea_   (normalAttackArea)
+        , dashAttackArea_     (dashAttackArea  )
         , onReinforceParticle_(onReinforceParticle)
         , reinforcingParticle_(reinforcingParticle)
-        , normalAttackSound_  (normalAttackSound)
-        , avoidRollingSound_  (avoidRollingSound)
+        , resources_          (resources          )
     {
         
     }

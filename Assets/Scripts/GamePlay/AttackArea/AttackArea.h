@@ -45,7 +45,7 @@ namespace GamePlay
         virtual ~AttackArea() = default;
         void PhysicsAttack(GameObject::IGameObject& fromObject, GameCore::Damage::PhysicsPower damagePower);
         bool TryPhysicsAttack(GameObject::IGameObject& fromObject, GameCore::Damage::PhysicsPower damagePower);
-        [[nodiscard]] const std::vector<AttackTarget>& Targets          () const { return attackTargets_;        }
+        [[nodiscard]] const std::vector<AttackTarget>& Targets          () const;
         [[nodiscard]] const int                      & AttackTargetCount() const { return attackTargets_.size(); }
 
     protected:
@@ -95,6 +95,27 @@ namespace GamePlay
         PhysicsAttack(fromObject, damagePower);
         return !Targets().empty();
     }
+
+    template <typename AttackTargetT>
+    const std::vector<typename AttackArea<AttackTargetT>::AttackTarget>&
+    AttackArea<AttackTargetT>::Targets() const
+    {
+        // const メソッドで消したいなら mutable を使う必要がある
+        auto& targets = const_cast<std::vector<AttackTarget>&>(attackTargets_);
+
+        targets.erase(
+            std::remove_if(
+                targets.begin(),
+                targets.end(),
+                [](const AttackTarget& t) {
+                    return t.IsExpired();
+                }),
+            targets.end()
+        );
+
+        return attackTargets_;
+    }
+
 
     template <typename AttackTargetT>
     void AttackArea<AttackTargetT>::OnTriggerEnter(

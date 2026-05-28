@@ -18,17 +18,12 @@ namespace GameCore::PlayerAvatar::State
 
     bool PlayerAvatarStateCondition::IsGround() const
     {
-        if constexpr (Core::Application::Configuration::APPLICATION_MODE ==
-            Core::Application::Configuration::ApplicationMode::Editor)
-        {
-            DrawLine3D(
-                VECTOR(stateContext_->PlayerAvatarFeatStepPos().x, stateContext_->PlayerAvatarFeatStepPos().y, stateContext_->PlayerAvatarFeatStepPos().z),
-                VECTOR(stateContext_->PlayerAvatarFeatStepPos().x, stateContext_->PlayerAvatarFeatStepPos().y - 13.0f, stateContext_->PlayerAvatarFeatStepPos().z),
-                GetColor(0, 255, 0));
-        }
+        Physics::LayerMask mask;
+        Physics::AddLayer(mask, Physics::Layer::Default);
+       
         return Physics::Raycast(stateContext_->PlayerAvatarFeatStepPos(),
                                 glm::vec3(0, -1, 0), 13.3f,
-                                Physics::Layer::Default).Hit();
+                                mask).Hit();
     }
 
     bool PlayerAvatarStateCondition::IsChattable() const

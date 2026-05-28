@@ -189,6 +189,7 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             OnDrawTryAddComponentGui<GamePlay::Prop::AirShip        >(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::Canon          >(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::IslandPedestial>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Prop::DestructibleObject>(addComponent);
             ImGui::TreePop();
             ImGui::Spacing();
         }

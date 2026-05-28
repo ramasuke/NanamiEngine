@@ -46,6 +46,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
         [[nodiscard]] const std::vector<AttackParam<Damage::PhysicsPower>>& ComboNormalAttack() const { return comboNormalAttack_; }
         [[nodiscard]] float                             ComboNormalAttackStateDuration_secs() const { return comboNormalAttackStateDuration_secs_; }
+        [[nodiscard]] float                             AttackedShockedStateDuration_secs  () const { return attackedShockedStateDuration_secs_; }
         [[nodiscard]] StatusParameter::MoveSpeed        GetWalkSpeed            () const override { return walkSpeed_;                }
         [[nodiscard]] StatusParameter::MoveSpeed        GetRunSpeed             () const override { return runSpeed_ ;                }
         [[nodiscard]] float                             GetMoveRotateSpeed      () const override { return moveRotateSpeed_;          }
@@ -85,6 +86,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
         [[serialize(0)]] std::vector<AttackParam<Damage::PhysicsPower>> comboNormalAttack_;
         [[serialize(0)]] float comboNormalAttackStateDuration_secs_;
+        [[serialize(0)]] float attackedShockedStateDuration_secs_;
         [[serialize(0)]] AttackParam<Damage::PhysicsPower> dashAttack_;
         
         [[serialize(0)]] StatusParameter::MoveSpeed walkSpeed_;
@@ -119,6 +121,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             archive(CEREAL_NVP(health_));
             archive(CEREAL_NVP(maxEnhancePowerStack_));
             archive(CEREAL_NVP(enhancePowerStack_));
+            archive(CEREAL_NVP(attackedShockedStateDuration_secs_));
             archive(CEREAL_NVP(dashAttack_));
             archive(CEREAL_NVP(walkSpeed_));
             archive(CEREAL_NVP(runSpeed_));
@@ -143,6 +146,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             if (version >= 0) archive(CEREAL_NVP(health_));
             if (version >= 0) archive(CEREAL_NVP(maxEnhancePowerStack_));
             if (version >= 0) archive(CEREAL_NVP(enhancePowerStack_));
+            if (version >= 1) archive(CEREAL_NVP(attackedShockedStateDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(dashAttack_));
             if (version >= 0) archive(CEREAL_NVP(walkSpeed_));
             if (version >= 0) archive(CEREAL_NVP(runSpeed_));
@@ -162,7 +166,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus, 0);
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus, 1);
 CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::IPlayerAvatarStatus, GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
 #pragma endregion

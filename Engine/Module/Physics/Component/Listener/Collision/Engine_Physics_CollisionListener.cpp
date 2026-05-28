@@ -2,12 +2,33 @@
 
 namespace NanamiEngine::Module::Component
 {
-    rxcpp::observable<CollisionListener::CollisionEnter> CollisionListener::OnCollisionEnterAsObservable() const
+    namespace
+    {
+        // 🔧 共通：expired削除
+        void RemoveExpired(CollisionListener::Container& container)
+        {
+            for (auto it = container.begin(); it != container.end();)
+            {
+                if (it->second.expired())
+                {
+                    it = container.erase(it);
+                }
+                else
+                {
+                    ++it;
+                }
+            }
+        }
+    }
+
+    rxcpp::observable<CollisionListener::CollisionEnter>
+    CollisionListener::OnCollisionEnterAsObservable() const
     {
         return onCollisionEnter_.get_observable();
     }
 
-    rxcpp::observable<CollisionListener::CollisionEnter> CollisionListener::OnTriggerEnterAsObservable() const
+    rxcpp::observable<CollisionListener::CollisionEnter>
+    CollisionListener::OnTriggerEnterAsObservable() const
     {
         return onTriggerEnter_.get_observable();
     }
@@ -15,24 +36,28 @@ namespace NanamiEngine::Module::Component
     const CollisionListener::Container&
     CollisionListener::GetCollisionEnterObjects() const
     {
+        RemoveExpired(const_cast<Container&>(collisionEnterSet_));
         return collisionEnterSet_;
     }
 
     const CollisionListener::Container&
     CollisionListener::GetCollisionStayObjects() const
     {
+        RemoveExpired(const_cast<Container&>(collisionStaySet_));
         return collisionStaySet_;
     }
 
     const CollisionListener::Container&
     CollisionListener::GetTriggerEnterObjects() const
     {
+        RemoveExpired(const_cast<Container&>(triggerEnterSet_));
         return triggerEnterSet_;
     }
 
     const CollisionListener::Container&
     CollisionListener::GetTriggerStayObjects() const
     {
+        RemoveExpired(const_cast<Container&>(triggerStaySet_));
         return triggerStaySet_;
     }
 
@@ -47,6 +72,7 @@ namespace NanamiEngine::Module::Component
 
         collisionEnterSet_[id] = other;
         collisionStaySet_ [id] = other;
+
         onCollisionEnter_.get_subscriber().on_next(CollisionEnter(manifold, other));
     }
 
@@ -73,13 +99,15 @@ namespace NanamiEngine::Module::Component
 
         triggerEnterSet_[id] = gameObject;
         triggerStaySet_ [id] = gameObject;
+
         onTriggerEnter_.get_subscriber().on_next(CollisionEnter(manifold, gameObject));
     }
 
     void CollisionListener::OnTriggerExit(
         const std::shared_ptr<GameObject::IGameObject>& other)
     {
-        if (!other) return;
+        if (!other)
+            return;
 
         const auto id = other->GetGuid();
 

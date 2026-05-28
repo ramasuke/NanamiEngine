@@ -24,7 +24,6 @@ namespace NanamiEngine::Module::Physics
         void OnUpdate();
         
         void UnSubscribeEngineCollider(const JPH::BodyID& colliderId);
-        void ResetCollisionListener();
 
     private:
         void OnContactAdded(

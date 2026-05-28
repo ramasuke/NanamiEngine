@@ -4,6 +4,7 @@
 
 #include "../../Module/GameObject/ComponentGroup/ComponentGroup.h"
 #include "../../Module/Physics/ContactListener/Engine_Physics_ContactListener.h"
+#include "../../Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
 #include "../../Module/Physics/UserData/Engine_Physics_UserData.h"
 #include "Jolt/Physics/Body/BodyCreationSettings.h"
 #include "Sample/SimpleBroadPhaseLayerInterface.h"
@@ -77,6 +78,7 @@ namespace NanamiEngine::Core
         const float mass,
         const bool isSensor,
         const bool isGravity,
+        const Module::Physics::Layer layer,
         Module::Physics::UserData* userData)
     {
         JPH::BodyCreationSettings settings(
@@ -95,6 +97,7 @@ namespace NanamiEngine::Core
         settings.mIsSensor = isSensor;
         assert(userData);
         settings.mUserData = reinterpret_cast<JPH::uint64>(userData);
+        settings.mObjectLayer = static_cast<JPH::ObjectLayer>(ToIndex(layer));
         if (!isGravity)
         {
             settings.mGravityFactor = 0.0f;

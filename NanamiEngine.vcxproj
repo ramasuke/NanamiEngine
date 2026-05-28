@@ -259,6 +259,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Data\PlayerAvatar\InitStatus\SwordMan\Data_SwordManInitStatus.cpp" />
+    <ClCompile Include="Assets\Data\PlayerAvatar\Resource\Data_SwordManAvatarResource.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_Physics.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_PhysicsPower.cpp" />
@@ -4139,6 +4140,7 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\CameraGroup\SwordManAvatarCameraGroup.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\InputAction\SwordManAvatarInputAction.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\ArmStretch\SwordManAvatarArmStretchState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\AttackedShocked\SwordManAvatar_AttackedShockedState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Dash\SwordManAvatarDashAttackState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Normal\SwordManAvatarNormalAttackState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\AvoidRolling\SwordManAvatar_AvoidRolling.cpp" />
@@ -6067,6 +6069,8 @@
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\Canon\Prop_Canon.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\DestructibleObject\DestructibleObject.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\IDestructibleObject.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\IslandPedestial\Prop_IslandPedestial.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.cpp" />
@@ -10423,6 +10427,7 @@
     <ClInclude Include="Assets\Data\NpcChatText\Data_NpcChat.h" />
     <ClInclude Include="Assets\Data\PlayerAvatar\Factory\PlayerAvatarFactory.h" />
     <ClInclude Include="Assets\Data\PlayerAvatar\InitStatus\SwordMan\Data_SwordManInitStatus.h" />
+    <ClInclude Include="Assets\Data\PlayerAvatar\Resource\Data_SwordManAvatarResource.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_Physics.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_PhysicsPower.h" />
@@ -10539,6 +10544,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\CameraGroup\SwordManAvatarCameraGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\InputAction\SwordManAvatarInputAction.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\ArmStretch\SwordManAvatarArmStretchState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\AttackedShocked\SwordManAvatar_AttackedShockedState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Dash\SwordManAvatarDashAttackState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Normal\SwordManAvatarNormalAttackState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\AvoidRolling\SwordManAvatar_AvoidRolling.h" />
@@ -10633,6 +10639,8 @@
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\SwordMan\Traits\SwordManAvatarTraits.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\Canon\Prop_Canon.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\DestructibleObject\DestructibleObject.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\IDestructibleObject.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\IslandPedestial\Prop_IslandPedestial.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.h" />
