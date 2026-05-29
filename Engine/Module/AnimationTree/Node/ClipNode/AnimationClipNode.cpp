@@ -1,5 +1,6 @@
 ﻿#include "AnimationClipNode.h"
 
+#include "DxLib.h"
 #include "../../../../Core/Application/Time/Time.h"
 #include "../../../../Core/Application/Window/Popup/Inspector/InspectorWindow.h"
 #include "../../../Gui/Graph/GraphGui.h"
@@ -16,7 +17,7 @@ void AnimationTree::AnimationClipNode::InitForGamePlay(const int modelHandle)
     animationFile_.Init();
     if (animationFile_)
     {
-        dxlibAnimationIndex_ = animationFile_->DxLibHandle();
+        dxlibAnimationIndex_ = animationFile_->LoadDxLibHandle();
         duration_secs_ = MV1GetAnimTotalTime(dxlibAnimationIndex_, 0);
         printf("アニメーションの再生時間: %.2f 秒\n", duration_secs_);
     }

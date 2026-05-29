@@ -1,0 +1,92 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::SwordManAvatarResource",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\PlayerAvatar\\Resource/SwordmanAvatarResource.swordManResource",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "ABEC6B9F-9559-47C1-81F0-6FE1C594D3C0"
+                    }
+                },
+                "normalAttackParticlePrefab_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "5986B9D6-BDBB-4B33-B96D-4F25B2FBBD1E"
+                                }
+                            }
+                        }
+                    }
+                },
+                "normalAttackSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "FE2EC2BF-5CF6-405A-8C16-3A4E2CC96680"
+                                }
+                            }
+                        }
+                    }
+                },
+                "avoidRollingSound_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483652,
+                            "data": {
+                                "value0": {
+                                    "value_": "07157678-3D00-46AF-89E8-BE783950A5FE"
+                                }
+                            }
+                        }
+                    }
+                },
+                "justAvoidRollingSound_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483653,
+                            "data": {
+                                "value0": {
+                                    "value_": "FE2EC2BF-5CF6-405A-8C16-3A4E2CC96680"
+                                }
+                            }
+                        }
+                    }
+                },
+                "jumpSound_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "9F4EEC08-C0AB-4EEB-9F65-C7B5CDB386EC"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

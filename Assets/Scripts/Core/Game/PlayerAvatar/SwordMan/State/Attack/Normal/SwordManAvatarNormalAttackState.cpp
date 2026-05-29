@@ -1,8 +1,8 @@
 ﻿#include "SwordManAvatarNormalAttackState.h"
 
-#include "../../../../../../../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../Input/PlayerAvatarInput_void.h"
@@ -79,8 +79,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         if (NormalAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
         {
             Status().AddEnhancePowerStack(attackStatus.GetEnhance() * NormalAttackArea().AttackTargetCount());
-            auto& particle = CatchPlayerInChild<Component::ParticleSystem>(GamePlay::PlayerAvatar::SwordMan::HIT_NORMAL_ATTACK_PARTICLE_NAME);
-            particle.Play();
+            Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), Transform().GetWorldPos());
         }
         else
         {

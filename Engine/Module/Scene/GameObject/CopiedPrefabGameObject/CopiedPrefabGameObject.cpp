@@ -2,6 +2,7 @@
 #include "../../../../Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../../../Libs/ImGui/ImGuiHelper.h"
 #include "../../../../Core/Application/Editor/EditorApplication.h"
+#include "../../../../Core/Application/Window/Main/PrefabView/PrefabViewWindow.h"
 #include "../../../../Core/Application/Window/Popup/Group/PopupWindowGroup.h"
 #include "../../../../Core/Application/Window/Popup/Inspector/InspectorWindow.h"
 #include "cereal/archives/portable_binary.hpp"
@@ -119,10 +120,17 @@ void Scene::CopiedPrefabGameObject::OnDrawGui()
     
     if (ImGui::Button("Delete"))
     {
-        Core::Application::ApplicationBase::MainWindows()
-            .Catch<Core::MainWindow::GameWindow>()
-            ->MainScene()
-            .RemoveGameObject(std::weak_ptr(ownPtr_));
+        if (Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::GameWindow>() == Core::Application::ApplicationBase::GetMainWindow())
+        {
+            Core::Application::ApplicationBase::MainWindows()
+                .Catch<Core::MainWindow::GameWindow>()
+                ->MainScene()
+                .RemoveGameObject(std::weak_ptr(ownPtr_));
+        }
+        else if (Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::PrefabViewWindow>() == Core::Application::ApplicationBase::GetMainWindow())
+        {
+            ImplementDestroy();
+        }
     }
 }
 

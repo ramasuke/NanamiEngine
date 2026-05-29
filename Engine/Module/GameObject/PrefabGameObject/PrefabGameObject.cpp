@@ -1,6 +1,7 @@
 ﻿#include "PrefabGameObject.h"
 
 #include "../../../../Libs/LibCore/cereal/PrefabExtractArchive/PrefabExtractArchive.h"
+#include "../../../Core/Application/Editor/EditorApplication.h"
 #include "../../../Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../Core/Application/Window/Popup/Group/PopupWindowGroup.h"
 #include "../../../Core/Application/Window/Popup/Inspector/InspectorWindow.h"
@@ -156,6 +157,21 @@ void GameObject::PrefabGameObject::OnDrawTreeGui()
     }
     hovered = ImGui::IsItemHovered();
 
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (ImGui::AcceptDragDropPayload(Core::FileSystem::EDITOR_DRAGGING_ITEM_PAYLOAD_TYPE))
+        {
+            if (const auto draggingObjectGuid = Core::Application::EditorApplication::FileDraggingHand().TakeDraggingItemGuid())
+            {
+                if (const auto draggingGameObject = Core::Application::ApplicationBase::ObjectRegistry().Catch<IGameObject>(draggingObjectGuid.value()).lock())
+                {
+                    draggingGameObject->Transform().SetParent(ownPtr_, false);
+                }
+            }
+        }    
+        ImGui::EndDragDropTarget();
+    }
+    
     ImGui::PopStyleColor(3);
 
     if (hovered)
@@ -163,7 +179,7 @@ void GameObject::PrefabGameObject::OnDrawTreeGui()
         const ImU32 color = ImGui::GetColorU32(ImGuiCol_HeaderHovered);
         ImGui::GetWindowDrawList()->AddRectFilled(buttonMin, buttonMax, color);
     }
-
+    
     if (open)
     {
         ImGui::TreePush("##tree");

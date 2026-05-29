@@ -2,6 +2,7 @@
 #include "../../../../Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../../../Libs/ImGui/ImGuiHelper.h"
 #include "../../../../Core/Application/Editor/EditorApplication.h"
+#include "../../../../Core/Application/Window/Main/PrefabView/PrefabViewWindow.h"
 #include "../../../../Core/Application/Window/Popup/Group/PopupWindowGroup.h"
 #include "../../../../Core/Application/Window/Popup/Inspector/InspectorWindow.h"
 #include "../Helper/GameObject.h"
@@ -124,10 +125,17 @@ void Scene::SceneGameObject::OnDrawGui()
 
     if (ImGui::Button("Delete"))
     {
-        Core::Application::ApplicationBase::MainWindows()
-            .Catch<Core::MainWindow::GameWindow>()
-            ->MainScene()
-            .RemoveGameObject(std::weak_ptr(ownPtr_));
+        if (Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::GameWindow>() == Core::Application::ApplicationBase::GetMainWindow())
+        {
+            Core::Application::ApplicationBase::MainWindows()
+                .Catch<Core::MainWindow::GameWindow>()
+                ->MainScene()
+                .RemoveGameObject(std::weak_ptr(ownPtr_));
+        }
+        else if (Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::PrefabViewWindow>() == Core::Application::ApplicationBase::GetMainWindow())
+        {
+            ImplementDestroy();
+        }
     }
     if (ImGui::Button("ResetGuid"))
     {
@@ -205,7 +213,7 @@ void Scene::SceneGameObject::OnDrawTreeGui()
             {
                 if (const auto draggingGameObject = Core::Application::ApplicationBase::ObjectRegistry().Catch<IGameObject>(draggingObjectGuid.value()).lock())
                 {
-                    draggingGameObject->Transform().SetParent(ownPtr_, false);
+                    draggingGameObject->Transform().SetParent(ownPtr_);
                 }
             }
         }    

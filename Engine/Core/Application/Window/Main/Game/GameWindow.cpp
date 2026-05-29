@@ -34,8 +34,9 @@ namespace NanamiEngine::Core::MainWindow
         mainScene_ = scene;
         Application::ApplicationBase::ResetPhysics();
 
-        //NOTE: 
-        for (int totalSkipFrame = 0; totalSkipFrame < 30; totalSkipFrame++)
+        //NOTE:
+        constexpr int skipFrame = 60;
+        for (int totalSkipFrame = 0; totalSkipFrame < skipFrame; totalSkipFrame++)
         {
             Time::SkipNextFrame();
         }

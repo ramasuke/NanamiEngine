@@ -6,7 +6,7 @@ void Component::ModelRenderer::InitRenderer()
 {
     if (mv1File_)
     {
-        modelDxLibHandle_ = mv1File_->DxLibHandle();
+        modelDxLibHandle_ = mv1File_->LoadDxLibHandle();
     }
 }
 
@@ -40,7 +40,7 @@ void Component::ModelRenderer::OnDrawGui()
     {
         if (mv1File_)
         {
-            modelDxLibHandle_ = mv1File_->DxLibHandle();
+            modelDxLibHandle_ = mv1File_->LoadDxLibHandle();
         }
     }
 }

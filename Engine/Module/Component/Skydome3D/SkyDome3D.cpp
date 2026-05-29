@@ -7,7 +7,7 @@ void Component::SkyDome3D::InitRenderer()
 {
     if (skyDomeModel_)
     {
-        skyDomeModelDxLibHandle_ = skyDomeModel_->DxLibHandle();
+        skyDomeModelDxLibHandle_ = skyDomeModel_->LoadDxLibHandle();
     }
 }
 

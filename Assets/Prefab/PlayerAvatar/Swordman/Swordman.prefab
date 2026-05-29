@@ -121,7 +121,7 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "value_": "9FE64CAD-F18D-41A6-AB3B-836242DB372C"
+                                        "value_": "26190D8B-86AE-49AF-B729-1542EF1B35C9"
                                     }
                                 }
                             }
@@ -134,7 +134,7 @@
                                 "id": 2147483656,
                                 "data": {
                                     "value0": {
-                                        "value_": "C3AA1649-A26B-42E8-AE33-3BB3FD3CCA4E"
+                                        "value_": "0B309295-8D59-403B-A59B-D0CA1FAE6945"
                                     }
                                 }
                             }
@@ -253,7 +253,7 @@
                 "value3": 1.0
             }
         },
-        "childCount": 9,
+        "childCount": 8,
         "child": {
             "polymorphic_id": 2147483654,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
@@ -959,101 +959,6 @@
                         "value0": {}
                     },
                     "isActive_": false,
-                    "name_": "HitNormalAttackParticle",
-                    "guid_": {
-                        "value_": "9397687B-055B-4038-A0EA-89205DA8A490"
-                    },
-                    "components_": {
-                        "componentCount": 1,
-                        "component_0": {
-                            "polymorphic_id": 11,
-                            "ptr_wrapper": {
-                                "id": 2147483680,
-                                "data": {
-                                    "value0": {
-                                        "guid_": {
-                                            "value_": "28E72C73-AA1A-4241-827D-E97C8CA4A108"
-                                        },
-                                        "isEnable_": true
-                                    },
-                                    "value1": {},
-                                    "value2": {},
-                                    "particleFile_": {
-                                        "value0": {
-                                            "polymorphic_id": 1073741824,
-                                            "ptr_wrapper": {
-                                                "id": 2147483681,
-                                                "data": {
-                                                    "value0": {
-                                                        "value_": "B09815C6-CA3D-4C9A-AC34-2C9D48886214"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "playingDuration_secs_": 0.0,
-                                    "isRoop_": false
-                                }
-                            }
-                        }
-                    },
-                    "transform_": {
-                        "localPos_": {
-                            "value0": 0.0,
-                            "value1": 180.0,
-                            "value2": -130.0
-                        },
-                        "localRot_": {
-                            "value0": 0.0,
-                            "value1": 0.0,
-                            "value2": 0.0,
-                            "value3": 0.0
-                        },
-                        "localScale_": {
-                            "value0": 50.0,
-                            "value1": 50.0,
-                            "value2": 50.0
-                        },
-                        "worldMatrix_": {
-                            "value0": {
-                                "value0": 4.0,
-                                "value1": 0.0,
-                                "value2": 0.0,
-                                "value3": 0.0
-                            },
-                            "value1": {
-                                "value0": 0.0,
-                                "value1": 4.0,
-                                "value2": 0.0,
-                                "value3": 0.0
-                            },
-                            "value2": {
-                                "value0": 0.0,
-                                "value1": 0.0,
-                                "value2": 4.0,
-                                "value3": 0.0
-                            },
-                            "value3": {
-                                "value0": 0.0,
-                                "value1": 14.399999618530274,
-                                "value2": -10.399999618530274,
-                                "value3": 1.0
-                            }
-                        },
-                        "childCount": 0
-                    }
-                }
-            }
-        },
-        "child": {
-            "polymorphic_id": 6,
-            "ptr_wrapper": {
-                "id": 2147483682,
-                "data": {
-                    "value0": {
-                        "value0": {}
-                    },
-                    "isActive_": false,
                     "name_": "ReinforceParticle",
                     "guid_": {
                         "value_": "7522117C-A46E-4CDA-A8BC-F1B8E165ACBB"
@@ -1063,7 +968,7 @@
                         "component_0": {
                             "polymorphic_id": 11,
                             "ptr_wrapper": {
-                                "id": 2147483683,
+                                "id": 2147483680,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -1077,7 +982,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483684,
+                                                "id": 2147483681,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "A483F945-9959-42AF-96E7-920351EDFD36"

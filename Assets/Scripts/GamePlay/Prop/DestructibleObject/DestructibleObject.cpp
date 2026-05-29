@@ -19,7 +19,7 @@ namespace GamePlay::Prop
         {
             if (destroyParticle_)
             {
-                Scene::GameObject::Instantiate(destroyParticle_.get(), Transform().GetWorldPos());
+                Scene::GameObject::Instantiate(destroyParticle_.get(), particlePos_->Transform().GetWorldPos());
             }
             Entity().lock()->OnDestroy();
         }
@@ -35,5 +35,6 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("currentHealth_", currentHealth_);
         ImGuiHelper::OnDrawInputField("onDamageParticle_", onDamageParticle_);
         ImGuiHelper::OnDrawInputField("destroyParticle_", destroyParticle_);
+        ImGuiHelper::OnDrawInputField("particlePos_", particlePos_);
     }
 }

@@ -39,6 +39,7 @@
 #include "../../Component/ImageRenderer/ImageRenderer.h"
 #include "../../Component/ImageRenderer/Animation/ImageAnimationRenderer.h"
 #include "../../Component/ModelRenderer/ModelRenderer.h"
+#include "../../Component/MovieRenderer/MovieRenderer.h"
 #include "../../Component/ParticleRenderer/ParticleSystem.h"
 #include "../../Component/SphereRenderer/SphereRenderer.h"
 #include "../../Component/Skydome3D/Skydome3D.h"

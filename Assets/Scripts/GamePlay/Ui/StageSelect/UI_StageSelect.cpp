@@ -15,6 +15,8 @@ namespace GamePlay::Ui
             auto selectStageUi = GameObject::CatchChild<StageSelectStageUi>(Entity(), buttonName);
             stageSelectButtons_.push_back(CreateField<StageSelectStageUi>(selectStageUi));
         }
+        stageSelectBackGroundMask_ = GameObject::CatchChild<NanamiUi::BlendImageRenderer>(Entity(), stageSelectBackGroundMaskName_);
+        worldMovieRenderer_ = GameObject::CatchChild<Component::MovieRenderer>(Entity(), worldMovieRendererName_);
     }
     void StageSelectUi::OnStart() { Coroutine::StartCoroutine(StartStageSelectAsync()); }
     

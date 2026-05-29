@@ -21,6 +21,7 @@ namespace GamePlay::Prop
         [[serialize(0)]] GameCore::StatusParameter::Health currentHealth_;
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) onDamageParticle_;
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) destroyParticle_;
+        [[serialize(1)]] FIELD(GameObject::IGameObject) particlePos_;
 
 #pragma region Serialization Function
     public:
@@ -32,6 +33,7 @@ namespace GamePlay::Prop
             archive(CEREAL_NVP(currentHealth_));
             archive(CEREAL_NVP(onDamageParticle_));
             archive(CEREAL_NVP(destroyParticle_));
+            archive(CEREAL_NVP(particlePos_));
         }
 
         template<class Archive>
@@ -40,13 +42,14 @@ namespace GamePlay::Prop
             if (version >= 0) archive(CEREAL_NVP(currentHealth_));
             if (version >= 0) archive(CEREAL_NVP(onDamageParticle_));
             if (version >= 0) archive(CEREAL_NVP(destroyParticle_));
+            if (version >= 1) archive(CEREAL_NVP(particlePos_));
         }
 #pragma endregion        
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Prop::DestructibleObject, 0);
+CEREAL_CLASS_VERSION(GamePlay::Prop::DestructibleObject, 1);
 CEREAL_REGISTER_TYPE(GamePlay::Prop::DestructibleObject);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GamePlay::Prop::DestructibleObject);
 #pragma endregion

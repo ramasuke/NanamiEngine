@@ -5,6 +5,8 @@
 
 void Component::ParticleSystem::Play()
 {
+    TryDeleteResource();
+    
     if (!IsEnable())
         return;
 
@@ -40,6 +42,7 @@ void Component::ParticleSystem::OnRender()
     if (isRoop_ && playingDuring_secs_ >= playingDuration_secs_)
     {
         firstUpdate_ = true;
+        TryDeleteResource();
         playingEffectHandle_ = PlayEffekseer3DEffect(resourceEffectHandle_);
         playingDuring_secs_  = 0;
     }
@@ -87,7 +90,16 @@ void Component::ParticleSystem::TryUpdateRenderScale()
 
 void Component::ParticleSystem::OnDestroy()
 {
-    
+    TryDeleteResource();
+}
+
+void Component::ParticleSystem::TryDeleteResource()
+{
+    if (playingEffectHandle_ != -1)
+    {
+        DeleteEffekseerEffect(playingEffectHandle_);
+        playingEffectHandle_ = -1;
+    }
 }
 
 void Component::ParticleSystem::OnDrawGui()
@@ -110,7 +122,6 @@ void Component::ParticleSystem::OnDrawGui()
     }
     if (ImGui::Button("Play Effect"))
     {
-        playingEffectHandle_ = PlayEffekseer3DEffect(resourceEffectHandle_);
-        firstUpdate_ = true;
+        Play();
     }
 }

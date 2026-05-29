@@ -8177,6 +8177,7 @@
       <AdditionalOptions>/bigobj </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Engine\Module\Asset\Movie\MovieFile.cpp" />
     <ClCompile Include="Engine\Module\Asset\MV1\MV1File.cpp" />
     <ClCompile Include="Engine\Module\Asset\Particle\ParticleFile.cpp" />
     <ClCompile Include="Engine\Module\Asset\PrefabGameObject\PrefabGameObjectFile.cpp" />
@@ -8261,6 +8262,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Module\Asset\Factory\AssetFactory.cpp" />
     <ClCompile Include="Engine\Module\Component\ImageRenderer\Animation\ImageAnimationRenderer.cpp" />
+    <ClCompile Include="Engine\Module\Component\MovieRenderer\MovieRenderer.cpp" />
     <ClCompile Include="Engine\Module\GameObject\PrefabGameObject\PrefabCatchChild\PrefabCatchChild.cpp" />
     <ClCompile Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -10719,6 +10721,7 @@
     <ClInclude Include="Engine\Module\Asset\Asset.h" />
     <ClInclude Include="Engine\Module\Asset\AssetBase.h" />
     <ClInclude Include="Engine\Module\Asset\Font\Ttf\TtfFontFile.h" />
+    <ClInclude Include="Engine\Module\Asset\Movie\MovieFile.h" />
     <ClInclude Include="Engine\Module\Asset\MV1\MV1File.h" />
     <ClInclude Include="Engine\Module\Asset\Particle\ParticleFile.h" />
     <ClInclude Include="Engine\Module\Asset\PrefabGameObject\PrefabGameObjectFile.h" />
@@ -10728,6 +10731,7 @@
     <ClInclude Include="Engine\Module\Asset\Sprite\SpriteFile.h" />
     <ClInclude Include="Engine\Module\Asset\Factory\AssetFactory.h" />
     <ClInclude Include="Engine\Module\Component\ImageRenderer\Animation\ImageAnimationRenderer.h" />
+    <ClInclude Include="Engine\Module\Component\MovieRenderer\MovieRenderer.h" />
     <ClInclude Include="Engine\Module\GameObject\PrefabGameObject\PrefabCatchChild\PrefabCatchChild.h" />
     <ClInclude Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.h" />
     <ClInclude Include="Engine\Module\Color\Color32.h" />

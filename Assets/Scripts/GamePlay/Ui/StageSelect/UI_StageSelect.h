@@ -3,7 +3,9 @@
 #include "../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
+#include "../../../../../Engine/Module/Component/MovieRenderer/MovieRenderer.h"
 #include "Stage/Ui_StageSelect_StageUI.h"
+#include "../cereal/include/cereal/types/vector.hpp"
 
 namespace GamePlay::Ui
 {
@@ -25,6 +27,12 @@ namespace GamePlay::Ui
         [[serialize(0)]] std::vector<std::string> stageSelectButtonNames_;
         std::vector<FIELD(StageSelectStageUi)> stageSelectButtons_;
         
+        [[serialize(1)]] std::string stageSelectBackGroundMaskName_;
+        [[serialize(1)]] FIELD(NanamiUi::BlendImageRenderer) stageSelectBackGroundMask_;
+        [[serialize(1)]] int stageSelectBackGroundMaskBlendRate_ = 50;
+        [[serialize(1)]] std::string worldMovieRendererName_;
+        FIELD(Component::MovieRenderer) worldMovieRenderer_;
+        
 #pragma region Serialization Function
     public:
         void OnDrawGui() override;
@@ -34,7 +42,11 @@ namespace GamePlay::Ui
             archive(cereal::base_class<Component::ComponentBase>(this));
             archive(CEREAL_NVP(backGroundMaskName_));
             archive(CEREAL_NVP(backGroundMaskBlendRate_));
-            //archive(CEREAL_NVP(stageSelectButtonNames_));
+            archive(CEREAL_NVP(stageSelectButtonNames_));
+            archive(CEREAL_NVP(stageSelectBackGroundMaskName_));
+            archive(CEREAL_NVP(stageSelectBackGroundMask_));
+            archive(CEREAL_NVP(stageSelectBackGroundMaskBlendRate_));
+            archive(CEREAL_NVP(worldMovieRendererName_));
         }
 
         template<typename Archive>
@@ -42,14 +54,18 @@ namespace GamePlay::Ui
             archive(cereal::base_class<Component::ComponentBase>(this));
             if (version >= 0) archive(CEREAL_NVP(backGroundMaskName_));
             if (version >= 0) archive(CEREAL_NVP(backGroundMaskBlendRate_));
-            //if (version >= 0) archive(CEREAL_NVP(stageSelectButtonNames_));
+            if (version >= 0) archive(CEREAL_NVP(stageSelectButtonNames_));
+            if (version >= 1) archive(CEREAL_NVP(stageSelectBackGroundMaskName_));
+            if (version >= 1) archive(CEREAL_NVP(stageSelectBackGroundMask_));
+            if (version >= 1) archive(CEREAL_NVP(stageSelectBackGroundMaskBlendRate_));
+            if (version >= 1) archive(CEREAL_NVP(worldMovieRendererName_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Ui::StageSelectUi, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::StageSelectUi, 1);
 CEREAL_REGISTER_TYPE(GamePlay::Ui::StageSelectUi);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GamePlay::Ui::StageSelectUi);
 #pragma endregion

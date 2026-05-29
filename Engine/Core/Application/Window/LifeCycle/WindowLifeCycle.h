@@ -76,6 +76,9 @@ namespace NanamiEngine::Core::Application
         LifeCycleCallbackGroup<Module::LifeCycleCallback::IDebugRenderable>             guiRenderableCallbacks_;
         
         int shadowMapDxLibHandle_ = -1;
+        
+        float fixedDeltaTime_ = 1.0f / 180.0f;
+        float accumulator_    = 0.0f;
     };
 
     template <typename T>

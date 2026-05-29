@@ -1,5 +1,7 @@
 ﻿#include "WindowLifeCycle.h"
 
+#include <algorithm>
+
 #include "DxLib.h"
 #include "EffekseerForDXLib.h"
 #include "../../ApplicationBase.h"
@@ -25,6 +27,7 @@ namespace NanamiEngine::Core::Application
                 return a->GetRenderOrder() < b->GetRenderOrder();
             }
         }
+        , fixedDeltaTime_(1.0f / 140.0f)
     {
         if (useShadowMap)
         {
@@ -53,15 +56,37 @@ namespace NanamiEngine::Core::Application
         initRenderableCallbacks_  .Invoke([](auto& obj) { obj.InitRenderer();     });
         awakableCallbacks_        .Invoke([](auto& obj) { obj.OnAwake();          });
         startableCallbacks_       .Invoke([](auto& obj) { obj.OnStart();          });
-        
-        beginPhysicsCallbacks_    .Invoke([](auto& obj) { obj.OnBeginPhysics();   });
-        ApplicationBase::Physics().Update(Time::DeltaTime());
-        endPhysicsCallbacks_      .Invoke([](auto& obj) { obj.OnUpdatedPhysics(); });
 
+        const float rawDeltaTime = Time::DeltaTime();
+
+        // 異常なフレーム時間を制限
+        const float deltaTime = (std::min)(rawDeltaTime, 0.1f);
+        // accumulatorに加算
+        accumulator_ += deltaTime;
+        //無限蓄積防止
+        const float maxAccumulation = fixedDeltaTime_ * 2.0f;
+        accumulator_ = (std::min)(accumulator_, maxAccumulation);
+        constexpr int maxStep = 2;
+        int step = 0;
+        while (accumulator_ >= fixedDeltaTime_ && step < maxStep)
+        {
+            beginPhysicsCallbacks_.Invoke([](auto& obj) { obj.OnBeginPhysics(); });
+            ApplicationBase::Physics().Update(fixedDeltaTime_);
+            endPhysicsCallbacks_.Invoke([](auto& obj) { obj.OnUpdatedPhysics(); });
+
+            accumulator_ -= fixedDeltaTime_;
+            step++;
+        }
+
+        if (step == maxStep)
+        {
+            accumulator_ = fixedDeltaTime_;
+        }
+        
         updatableCallbacks_       .Invoke([](auto& obj) { obj.OnUpdate();         });
         lateUpdatableCallbacks_   .Invoke([](auto& obj) { obj.OnLateUpdate();     });
         coroutineScheduler_      ->Invoke();
-        
+
         ShadowMap_DrawSetup(shadowMapDxLibHandle_);
         shadowRenderableCallbacks_.Invoke([](auto& obj) { obj.OnShadowRender();   });
         ShadowMap_DrawEnd();
