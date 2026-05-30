@@ -1,11 +1,11 @@
 ﻿#pragma once
-#include "../ComponentBase.h"
+#include "../../Component/ComponentBase.h"
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/Movie/MovieFile.h"
 
-namespace NanamiEngine::Module::Component
+namespace NanamiEngine::Module::NanamiUi
 {
-    class MovieRenderer final : public ComponentBase,
+    class MovieRenderer final : public Component::ComponentBase,
                                 public LifeCycleCallback::IInitRenderable,
                                 public LifeCycleCallback::IUserInterfaceRenderable,
                                 public LifeCycleCallback::IUpdatable
@@ -52,7 +52,7 @@ namespace NanamiEngine::Module::Component
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::MovieRenderer, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Component::MovieRenderer);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, NanamiEngine::Module::Component::MovieRenderer);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::NanamiUi::MovieRenderer, 0);
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::NanamiUi::MovieRenderer);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, NanamiEngine::Module::NanamiUi::MovieRenderer);
 #pragma endregion

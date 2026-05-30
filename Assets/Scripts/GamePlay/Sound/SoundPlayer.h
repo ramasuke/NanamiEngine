@@ -10,6 +10,7 @@ namespace GamePlay::Sound
                               public LifeCycleCallback::IUpdatable
     {
     public:
+        [[nodiscard]] static glm::vec3 Position();
         static void PlaySe(const Asset::SoundFile& sound, const glm::vec3& soundPosition);
         static void PlayBgm(const std::weak_ptr<Asset::SoundFile>& sound);
         static void StopAllBgm();

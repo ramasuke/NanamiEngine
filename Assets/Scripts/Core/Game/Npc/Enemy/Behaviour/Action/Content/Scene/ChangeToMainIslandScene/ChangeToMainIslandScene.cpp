@@ -9,7 +9,7 @@ namespace GameCore::Npc::Enemy::Behaviour
     TickStatus Action::ChangeToMainIslandScene::DoTick(
         const TickContext& context)
     {
-        Game::Instance().Scenes().RequestChangeScene<Scene::Main::MainIslandScene>();
+        Game::Instance().Scenes().RequestChangeScene(Scene::Main::SceneType::MainIsland);
         
         return TickStatus::Abort;
     }

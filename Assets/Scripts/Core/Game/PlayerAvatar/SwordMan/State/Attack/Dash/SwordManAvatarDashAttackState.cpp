@@ -2,6 +2,7 @@
 
 #include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../Idle/SwordManAvatarIdleState.h"
@@ -44,8 +45,8 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
         if (DashAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
         {
-            auto& particle = CatchPlayerInChild<Component::ParticleSystem>(GamePlay::PlayerAvatar::SwordMan::HIT_NORMAL_ATTACK_PARTICLE_NAME);
-            particle.Play();
+            Status().AddEnhancePowerStack(attackStatus.GetEnhance() * NormalAttackArea().AttackTargetCount());
+            Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos());
         }
 
         //GamePlay::Sound::SoundPlayer::PlaySe(DashAttackSound(), Transform().GetWorldPos());

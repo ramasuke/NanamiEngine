@@ -79,7 +79,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         if (NormalAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
         {
             Status().AddEnhancePowerStack(attackStatus.GetEnhance() * NormalAttackArea().AttackTargetCount());
-            Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), Transform().GetWorldPos());
+            Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos());
         }
         else
         {

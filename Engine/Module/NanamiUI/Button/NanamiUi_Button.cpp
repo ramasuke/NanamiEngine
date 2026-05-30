@@ -1,13 +1,14 @@
 ﻿#include "NanamiUi_Button.h"
 #include <DxLib.h>
 
+#include "../NanamiUi_IInteractivableRenderer.h"
 #include "../../GameObject/Transform/Transform.h"
 
 namespace NanamiEngine::Module
 {
     void NanamiUi::Button::OnAwake()
     {
-        
+        renderer_ = Components().Catch<IInteractivableRenderer>();  
     }
 
     void NanamiUi::Button::OnUpdate()
@@ -50,12 +51,25 @@ namespace NanamiEngine::Module
         onClick.get_subscriber().on_next(state);
     }
     
-    void NanamiUi::Button::TryHover() const
+    void NanamiUi::Button::TryHover()
     {
-        if (!CheckInnerMousePointer())
-            return;
+        bool isInside = CheckInnerMousePointer();
 
-        onHover.get_subscriber().on_next(Rx::unit{});
+        // 入った瞬間
+        if (isInside && !isHovering_)
+        {
+            isHovering_ = true;
+            onHover.get_subscriber().on_next(Rx::unit{});
+            if (const auto renderer = renderer_.lock())
+                renderer->SetSprite(onHoverSprite_.get());
+        }
+        // 出た瞬間
+        else if (!isInside && isHovering_)
+        {
+            isHovering_ = false;
+            if (const auto renderer = renderer_.lock())
+                renderer->SetSprite(onIdleSprite_.get());
+        }
     }
 
     void NanamiUi::Button::TryRelease()
@@ -87,6 +101,8 @@ namespace NanamiEngine::Module
             GetColor(0, 255, 0),
             false
         );
+        ImGuiHelper::OnDrawInputField("onIdleSprite_", onIdleSprite_);
+        ImGuiHelper::OnDrawInputField("onHoverSprite_", onHoverSprite_);
     }
 
     bool NanamiUi::Button::CheckInnerMousePointer() const

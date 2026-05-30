@@ -8262,7 +8262,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Module\Asset\Factory\AssetFactory.cpp" />
     <ClCompile Include="Engine\Module\Component\ImageRenderer\Animation\ImageAnimationRenderer.cpp" />
-    <ClCompile Include="Engine\Module\Component\MovieRenderer\MovieRenderer.cpp" />
+    <ClCompile Include="Engine\Module\Component\ParticleRenderer\PlayMode\ParticleSystem_PlayMode.cpp" />
     <ClCompile Include="Engine\Module\GameObject\PrefabGameObject\PrefabCatchChild\PrefabCatchChild.cpp" />
     <ClCompile Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -8760,6 +8760,162 @@
     <ClCompile Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\BlendAnimationRenderer\BlendAnmiationRenderer.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\Button\NanamiUi_Button.cpp" />
+    <ClCompile Include="Engine\Module\NanamiUI\MovieRenderer\MovieRenderer.cpp">
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>NanamiEngine\x64\Debug\</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>NanamiEngine\x64\Debug\</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <ConformanceMode>true</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <EnableVectorLength>NotSet</EnableVectorLength>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>NanamiEngine\x64\Debug\</ModuleDependenciesFile>
+      <ModuleOutputFile>NanamiEngine\x64\Debug\</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>NanamiEngine\x64\Debug\</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>NanamiEngine\x64\Debug\vc143.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>NanamiEngine\x64\Debug\NanamiEngine.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>NanamiEngine\x64\Debug\</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>NanamiEngine\x64\Debug\NanamiEngine.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>NanamiEngine\x64\Debug\</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <BuildStlModules>false</BuildStlModules>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LinkCompiled>true</LinkCompiled>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\NanamiUI\NanamiUi_IInteractivableRenderer.cpp">
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>NanamiEngine\x64\Debug\</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>NanamiEngine\x64\Debug\</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <ConformanceMode>true</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <EnableVectorLength>NotSet</EnableVectorLength>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>NanamiEngine\x64\Debug\</ModuleDependenciesFile>
+      <ModuleOutputFile>NanamiEngine\x64\Debug\</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>NanamiEngine\x64\Debug\</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>NanamiEngine\x64\Debug\vc143.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>NanamiEngine\x64\Debug\NanamiEngine.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>NanamiEngine\x64\Debug\</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>NanamiEngine\x64\Debug\NanamiEngine.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>NanamiEngine\x64\Debug\</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <BuildStlModules>false</BuildStlModules>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LinkCompiled>true</LinkCompiled>
+    </ClCompile>
     <ClCompile Include="Engine\Module\NanamiUI\Slider\NanamiUi_Slider.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\TextRenderer\TextRenderer.cpp" />
     <ClCompile Include="Engine\Module\Physics\BroadPhaseLayer\Engine_Physics_NonRaycastLayerFilter.cpp" />
@@ -9635,6 +9791,14 @@
     <ClCompile Include="Engine\Module\Scene\ShadowMap\ShadowMapSetting.cpp" />
     <ClCompile Include="Engine\Module\ScriptableObject\NullContextFile\NullContextFile.cpp" />
     <ClCompile Include="Engine\Module\ScriptableObject\ScriptableObject.cpp" />
+    <ClCompile Include="Libs\enet\callbacks.c" />
+    <ClCompile Include="Libs\enet\compress.c" />
+    <ClCompile Include="Libs\enet\host.c" />
+    <ClCompile Include="Libs\enet\list.c" />
+    <ClCompile Include="Libs\enet\packet.c" />
+    <ClCompile Include="Libs\enet\peer.c" />
+    <ClCompile Include="Libs\enet\protocol.c" />
+    <ClCompile Include="Libs\enet\win32.c" />
     <ClCompile Include="Libs\glm\detail\glm.cpp" />
     <ClCompile Include="Libs\glm\glm.cppm" />
     <ClCompile Include="Libs\ImGuizmo\GraphEditor.cpp" />
@@ -10596,8 +10760,8 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\Title\TitleScene.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Context\Main_SceneContextBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Group\Main_GameSceneGroup.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Group\RequestType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Main_IGameScene.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Type\MainSceneType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Base\Sub_GameSceneBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Content\ChattingUI\ChattingUIScene.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Content\ChattingUI\Context\ChattingUISceneContext.h" />
@@ -10731,7 +10895,7 @@
     <ClInclude Include="Engine\Module\Asset\Sprite\SpriteFile.h" />
     <ClInclude Include="Engine\Module\Asset\Factory\AssetFactory.h" />
     <ClInclude Include="Engine\Module\Component\ImageRenderer\Animation\ImageAnimationRenderer.h" />
-    <ClInclude Include="Engine\Module\Component\MovieRenderer\MovieRenderer.h" />
+    <ClInclude Include="Engine\Module\Component\ParticleRenderer\PlayMode\ParticleSystem_PlayMode.h" />
     <ClInclude Include="Engine\Module\GameObject\PrefabGameObject\PrefabCatchChild\PrefabCatchChild.h" />
     <ClInclude Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.h" />
     <ClInclude Include="Engine\Module\Color\Color32.h" />
@@ -10780,6 +10944,8 @@
     <ClInclude Include="Engine\Module\NanamiUI\BlendAnimationRenderer\BlendAnmiationRenderer.h" />
     <ClInclude Include="Engine\Module\NanamiUI\Button\NanamiUi_Button.h" />
     <ClInclude Include="Engine\Module\NanamiUI\MouseEvent\MouseState.h" />
+    <ClInclude Include="Engine\Module\NanamiUI\MovieRenderer\MovieRenderer.h" />
+    <ClInclude Include="Engine\Module\NanamiUI\NanamiUi_IInteractivableRenderer.h" />
     <ClInclude Include="Engine\Module\NanamiUI\Slider\NanamiUi_Slider.h" />
     <ClInclude Include="Engine\Module\NanamiUI\TextRenderer\TextRenderer.h" />
     <ClInclude Include="Engine\Module\Physics\BroadPhaseLayer\Engine_Physics_NonRaycastLayerFilter.h" />
@@ -10902,6 +11068,15 @@
     <ClInclude Include="Libs\cereal\include\cereal\types\variant.hpp" />
     <ClInclude Include="Libs\cereal\include\cereal\types\vector.hpp" />
     <ClInclude Include="Libs\cereal\include\cereal\version.hpp" />
+    <ClInclude Include="Libs\enet\include\enet\callbacks.h" />
+    <ClInclude Include="Libs\enet\include\enet\enet.h" />
+    <ClInclude Include="Libs\enet\include\enet\list.h" />
+    <ClInclude Include="Libs\enet\include\enet\protocol.h" />
+    <ClInclude Include="Libs\enet\include\enet\time.h" />
+    <ClInclude Include="Libs\enet\include\enet\types.h" />
+    <ClInclude Include="Libs\enet\include\enet\unix.h" />
+    <ClInclude Include="Libs\enet\include\enet\utility.h" />
+    <ClInclude Include="Libs\enet\include\enet\win32.h" />
     <ClInclude Include="Libs\glm\common.hpp" />
     <ClInclude Include="Libs\glm\detail\compute_common.hpp" />
     <ClInclude Include="Libs\glm\detail\compute_vector_decl.hpp" />

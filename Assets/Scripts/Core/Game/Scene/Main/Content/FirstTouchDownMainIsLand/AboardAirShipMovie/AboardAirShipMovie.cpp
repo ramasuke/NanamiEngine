@@ -109,6 +109,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         
         player->Transform().LookAtY(Context()->PlayerFirstMoveTarget().GetWorldPos());
         player->GetEventSceneStateMachine().OnChangeState(typeid(SwordManAvatarWalkState));
+        player->GetEventSceneStateMachine().OnDisable();
 
         const auto tween = tweeny::from(player->Transform().GetWorldPos())
             .to(Context()->PlayerFirstMoveTarget().GetWorldPos())

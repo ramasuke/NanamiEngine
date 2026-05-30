@@ -3,11 +3,14 @@
 #include "DxLib.h"
 #include "../../../Core/Application/Time/Time.h"
 
-namespace NanamiEngine::Module::Component
+namespace NanamiEngine::Module::NanamiUi
 {
     void MovieRenderer::InitRenderer()
     {
-        movieHandle_ = movieFile_->LoadDxLibHandle();
+        if (movieFile_)
+        {
+            movieHandle_ = movieFile_->LoadDxLibHandle();
+        }
     }
 
     void MovieRenderer::OnUserInterfaceRender()
@@ -15,7 +18,7 @@ namespace NanamiEngine::Module::Component
         if (!IsEnable())
             return;
 
-        if (isRoop_ && playingDuring_secs_ >= playingDuration_secs_)
+        if (isRoop_ && playingDuring_secs_ >= playingDuration_secs_ && movieFile_)
         {
             TryDeleteResource();
             movieHandle_ = movieFile_->LoadDxLibHandle();

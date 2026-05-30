@@ -121,7 +121,7 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "value_": "26190D8B-86AE-49AF-B729-1542EF1B35C9"
+                                        "value_": "D4F95201-07E2-4E81-A1DC-B048DDBB6F0E"
                                     }
                                 }
                             }
@@ -134,7 +134,7 @@
                                 "id": 2147483656,
                                 "data": {
                                     "value0": {
-                                        "value_": "0B309295-8D59-403B-A59B-D0CA1FAE6945"
+                                        "value_": "3C454FF5-B8EB-4E9D-91FC-CB1E0F87F858"
                                     }
                                 }
                             }
@@ -682,7 +682,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483671,
                                 "data": {
-                                    "cereal_class_version": 0,
+                                    "cereal_class_version": 1,
                                     "value0": {
                                         "guid_": {
                                             "value_": "16DA7886-D9C1-49A0-9A3B-13E0B652DD3B"
@@ -707,7 +707,7 @@
                                         }
                                     },
                                     "playingDuration_secs_": 3.0,
-                                    "isRoop_": true
+                                    "playMode_": 0
                                 }
                             }
                         }
@@ -802,7 +802,7 @@
                                         }
                                     },
                                     "playingDuration_secs_": 0.800000011920929,
-                                    "isRoop_": true
+                                    "playMode_": 0
                                 }
                             }
                         }
@@ -879,7 +879,7 @@
                                         "guid_": {
                                             "value_": "A9C525B2-3894-4779-806E-8736B53CC7FD"
                                         },
-                                        "isEnable_": true
+                                        "isEnable_": false
                                     },
                                     "value1": {},
                                     "value2": {},
@@ -896,8 +896,8 @@
                                             }
                                         }
                                     },
-                                    "playingDuration_secs_": 0.0,
-                                    "isRoop_": false
+                                    "playingDuration_secs_": 1.0,
+                                    "playMode_": 0
                                 }
                             }
                         }
@@ -905,7 +905,7 @@
                     "transform_": {
                         "localPos_": {
                             "value0": 0.0,
-                            "value1": 32.63999938964844,
+                            "value1": 32.880001068115237,
                             "value2": -33.880001068115237
                         },
                         "localRot_": {
@@ -940,7 +940,7 @@
                             },
                             "value3": {
                                 "value0": 0.0,
-                                "value1": 2.6111998558044435,
+                                "value1": 2.6303999423980715,
                                 "value2": -2.710400104522705,
                                 "value3": 1.0
                             }
@@ -992,7 +992,7 @@
                                         }
                                     },
                                     "playingDuration_secs_": 10.0,
-                                    "isRoop_": true
+                                    "playMode_": 0
                                 }
                             }
                         }

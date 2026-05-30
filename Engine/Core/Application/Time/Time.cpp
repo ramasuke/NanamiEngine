@@ -36,9 +36,7 @@ namespace NanamiEngine
     float Time::DeltaTime()
     {
         if (isSkipNextFrame_ > 0)
-        {
             return 0.0f;
-        }
         
         return deltaTime_;
     }

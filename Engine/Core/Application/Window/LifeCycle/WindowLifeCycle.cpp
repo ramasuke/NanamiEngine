@@ -27,7 +27,7 @@ namespace NanamiEngine::Core::Application
                 return a->GetRenderOrder() < b->GetRenderOrder();
             }
         }
-        , fixedDeltaTime_(1.0f / 140.0f)
+        , fixedDeltaTime_(1.0f / 180.0f)
     {
         if (useShadowMap)
         {
@@ -60,9 +60,11 @@ namespace NanamiEngine::Core::Application
         const float rawDeltaTime = Time::DeltaTime();
 
         // 異常なフレーム時間を制限
-        const float deltaTime = (std::min)(rawDeltaTime, 0.1f);
-        // accumulatorに加算
-        accumulator_ += deltaTime;
+        const float deltaTime = (std::min)(rawDeltaTime, 0.2f);
+        if (rawDeltaTime > 0.0f)
+        {
+            accumulator_ += deltaTime;
+        }
         //無限蓄積防止
         const float maxAccumulation = fixedDeltaTime_ * 2.0f;
         accumulator_ = (std::min)(accumulator_, maxAccumulation);
@@ -76,11 +78,6 @@ namespace NanamiEngine::Core::Application
 
             accumulator_ -= fixedDeltaTime_;
             step++;
-        }
-
-        if (step == maxStep)
-        {
-            accumulator_ = fixedDeltaTime_;
         }
         
         updatableCallbacks_       .Invoke([](auto& obj) { obj.OnUpdate();         });

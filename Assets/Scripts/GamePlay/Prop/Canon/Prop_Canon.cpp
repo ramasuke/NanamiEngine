@@ -22,11 +22,11 @@ namespace GamePlay::Prop
         shootCooldownDuring_secs_ = shootCooldown_secs_;
         
         
-        const glm::vec3 canonForward = Transform().GetWorldRot() * shootBulletDirection_;
+        const glm::vec3 cannonForward = Transform().GetWorldRot() * shootBulletDirection_;
         
         const auto bullet = Scene::GameObject::Instantiate(bulletPrefab_.get(), shootBulletPos_->Transform().GetWorldPos());
         const auto bulletCollider = bullet.lock()->Components().Catch<Component::ColliderBase>().lock();
-        Physics::AddForce(bulletCollider->BodyId(), canonForward * bulletForceSpeed_);
+        Physics::AddForce(bulletCollider->BodyId(), cannonForward * bulletForceSpeed_);
         Sound::SoundPlayer::PlaySe(*shootSound_.get(), Transform().GetWorldPos());
     }
     

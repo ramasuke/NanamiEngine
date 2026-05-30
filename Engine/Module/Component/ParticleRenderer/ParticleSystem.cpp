@@ -39,12 +39,25 @@ void Component::ParticleSystem::OnRender()
     if (!IsEnable())
         return;
 
-    if (isRoop_ && playingDuring_secs_ >= playingDuration_secs_)
+    switch (playMode_)
     {
-        firstUpdate_ = true;
-        TryDeleteResource();
-        playingEffectHandle_ = PlayEffekseer3DEffect(resourceEffectHandle_);
-        playingDuring_secs_  = 0;
+    case Particle::PlayMode::Loop:
+        if (playingDuring_secs_ >= playingDuration_secs_)
+        {
+            firstUpdate_ = true;
+            TryDeleteResource();
+            playingEffectHandle_ = PlayEffekseer3DEffect(resourceEffectHandle_);
+            playingDuring_secs_  = 0;
+        }
+        break;
+    case Particle::PlayMode::Destroy:
+        if (playingDuring_secs_ >= playingDuration_secs_)
+        {
+            Entity().lock()->OnDestroy();
+        }
+        break;
+    default:
+        throw std::exception("unknown type Play Mode"); 
     }
     
     TryUpdateRenderPos();
@@ -114,7 +127,7 @@ void Component::ParticleSystem::OnDrawGui()
     ImGuiHelper::OnDrawInputField("playingEffectHandle_", playingEffectHandle_);
     ImGuiHelper::OnDrawInputField("playingDuration_secs_", playingDuration_secs_);
     ImGuiHelper::OnDrawInputField("playingDuring_secs_", playingDuring_secs_);
-    ImGuiHelper::OnDrawInputField("isRoop_", isRoop_);
+    ImGuiHelper::OnDrawEnumField("playMode_", playMode_, Particle::SCENE_TYPES, Particle::ToString);
 
     if (ImGui::Button("Load EffectResource"))
     {

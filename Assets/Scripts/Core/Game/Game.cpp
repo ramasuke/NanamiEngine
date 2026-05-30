@@ -29,7 +29,7 @@ namespace GameCore
             sceneContexts_->Components().Catches<Scene::SceneContextBase>(),
             subSceneGroup_);
         
-        sceneGroup_->RequestChangeScene<Scene::Main::TitleScene>();
+        sceneGroup_->RequestChangeScene(Scene::Main::SceneType::Title);
     }
 
     void Game::InitSubSceneGroup()
@@ -56,15 +56,15 @@ namespace GameCore
         
         if (ImGui::Button("ChangeTitleScene"))
         {
-            sceneGroup_->RequestChangeScene<Scene::Main::TitleScene>();
+            sceneGroup_->RequestChangeScene(Scene::Main::SceneType::Title);
         }
         if (ImGui::Button("ChangeFirstTouchDownMainIsLandScene"))
         {
-            sceneGroup_->RequestChangeScene<Scene::Main::FirstTouchDownMainIsLandScene>();
+            sceneGroup_->RequestChangeScene(Scene::Main::SceneType::FirstTouchDownMainIsLand);
         }
         if (ImGui::Button("ChangeMainIsLandScene"))
         {
-            sceneGroup_->RequestChangeScene<Scene::Main::MainIslandScene>();
+            sceneGroup_->RequestChangeScene(Scene::Main::SceneType::MainIsland);
         }
 
         ImGuiHelper::OnDrawInputField("subSceneGroup_"      , subSceneGroup_   );

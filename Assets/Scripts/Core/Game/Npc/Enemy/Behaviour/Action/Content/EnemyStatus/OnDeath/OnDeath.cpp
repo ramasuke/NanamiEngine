@@ -14,12 +14,12 @@ namespace GameCore::Npc::Enemy::Behaviour
             return TickStatus::Failure;
         
         context.EnemyGameObject().OnDestroy();
-        Game::Instance().Scenes().RequestChangeScene<Scene::Main::TitleScene>();
+        // Game::Instance().Scenes().RequestChangeScene<Scene::Main::TitleScene>();
         return TickStatus::Success;
     }
 
     void Action::OnDeath::DoDrawGui()
-    {
+    {   
         ImGuiHelper::OnDrawInputField("animatorSetParam_", animatorSetParam_);
     }
 }

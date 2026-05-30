@@ -1,6 +1,7 @@
 ﻿#include "GrassLandScene.h"
 
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
+#include <stdexcept>
 #include "../../../../PlayerAvatar/PlayerAvatar.h"
 #include "../../../Sub/Group/Sub_IGameSceneGroup.h"
 #include "../../../Sub/Type/SubSceneType.h"
@@ -18,6 +19,11 @@ namespace GameCore::Scene::Main
 
     void GrassLandScene::Init()
     {
+        if (!Context())
+        {
+            throw std::runtime_error("GrassLandSceneContextが設定されていません。GameManage.sceneにGrassLandSceneContextを追加してください。");
+        }
+
         SubScene().Push(Sub::SceneType::ChattingUI);
         
         scene_ = LoadMainScene();

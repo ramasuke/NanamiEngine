@@ -30,10 +30,10 @@ namespace GamePlay::Ui
         switch (GameCore::LoadGameProgression())
         {
         case GameCore::GameProgresion::FirstTouchDownMainIsLand:
-            GameCore::Game::Instance().Scenes().RequestChangeScene<GameCore::Scene::Main::FirstTouchDownMainIsLandScene>();
+            GameCore::Game::Instance().Scenes().RequestChangeScene(GameCore::Scene::Main::SceneType::FirstTouchDownMainIsLand);
             break;
         case GameCore::GameProgresion::MainIsland:
-            GameCore::Game::Instance().Scenes().RequestChangeScene<GameCore::Scene::Main::MainIslandScene>();
+            GameCore::Game::Instance().Scenes().RequestChangeScene(GameCore::Scene::Main::SceneType::MainIsland);
             break;
         default: 
             throw std::runtime_error("Gameの進行状況に応じたScene遷移が定義されていません。");

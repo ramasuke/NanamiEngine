@@ -1,6 +1,7 @@
 ﻿#include "AddComponent.h"
 #include "../ComponentHeaders.h"
 #include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/AttackArea/PlayerAvatarAttackArea.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/StageSelect/UI_StageSelect.h"
 
 std::shared_ptr<Component::ComponentBase> GameObject::AddComponent::OnDrawGui()
 {
@@ -63,6 +64,7 @@ void GameObject::AddComponent::OnDrawUiRendererGui(std::shared_ptr<Component::Co
         OnDrawTryAddComponentGui<NanamiUi::TextRenderer          >(addComponent);
         OnDrawTryAddComponentGui<NanamiUi::Billboard3D           >(addComponent);
         OnDrawTryAddComponentGui<NanamiUi::Button                >(addComponent);
+        OnDrawTryAddComponentGui<NanamiUi::MovieRenderer         >(addComponent);
         ImGui::TreePop();
         ImGui::Spacing();
     }
@@ -140,6 +142,8 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             OnDrawTryAddComponentGui<GamePlay::Ui::PlayerStatus    >(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::SampleTitleScene>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::SwordManActionInstructTutorial>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::StageSelectUi>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::StageSelectStageUi>(addComponent);
             ImGui::TreePop();
             ImGui::Spacing();
         }

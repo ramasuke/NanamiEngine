@@ -4,16 +4,18 @@
 #include "../../Asset/Sprite/SpriteFile.h"
 #include "../../LifeCycleCallback/InitRenderable/IInitRenderable.h"
 #include "../../LifeCycleCallback/UserInterfaceRenderable/IUserInterfaceRenderable.h"
+#include "../../NanamiUI/NanamiUi_IInteractivableRenderer.h"
 
 namespace NanamiEngine::Module::Component
 {
     class ImageRenderer final : public ComponentBase,
                                 public LifeCycleCallback::IInitRenderable,
-                                public LifeCycleCallback::IUserInterfaceRenderable
+                                public LifeCycleCallback::IUserInterfaceRenderable,
+                                public NanamiUi::IInteractivableRenderer
     {
     public:
         [[nodiscard]] const std::weak_ptr<Asset::SpriteFile>& GetSprite() const { return spriteFile_.get(); }
-        void SetSprite(const std::weak_ptr<Asset::SpriteFile>& sprite);
+        void SetSprite(const std::weak_ptr<Asset::SpriteFile>& sprite) override;
         
     private:
         void InitRenderer         ()       override;

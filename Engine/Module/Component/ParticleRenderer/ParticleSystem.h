@@ -4,6 +4,7 @@
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/Particle/ParticleFile.h"
 #include "detail/type_quat.hpp"
+#include "PlayMode/ParticleSystem_PlayMode.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -16,22 +17,22 @@ namespace NanamiEngine::Module::Component
         void Play();
         
     private:
-        void OnUpdate           () override;
-        void InitRenderer       () override;
-        void OnRender           () override;
+        void OnUpdate    () override;
+        void InitRenderer() override;
+        void OnRender    () override;
         void TryUpdateRenderPos  ();
         void TryUpdateRenderRot  ();
         void TryUpdateRenderScale();
-        void OnDestroy          () override;
-        void TryDeleteResource     ();
+        void OnDestroy        () override;
+        void TryDeleteResource();
 
         FIELD(Asset::ParticleFile) particleFile_;
         int   resourceEffectHandle_ = -1;
         int   playingEffectHandle_  = -1;
         float playingDuration_secs_ = 0.0f;
         float playingDuring_secs_   = 0.0f;
-        bool  isRoop_ = true;
-        
+
+        Particle::PlayMode playMode_ = Particle::PlayMode::Loop;
         glm::vec3 prevPos_{};
         glm::quat prevRot_{};
         glm::vec3 prevScale_{};
@@ -48,7 +49,9 @@ namespace NanamiEngine::Module::Component
             archive(cereal::base_class<LifeCycleCallback::IRenderable>(this));
             archive(CEREAL_NVP(particleFile_));
             archive(CEREAL_NVP(playingDuration_secs_));
-            archive(CEREAL_NVP(isRoop_));
+            bool isRoop_ = true;
+            if (version == 0) archive(CEREAL_NVP(isRoop_));
+            if (version >= 1) archive(CEREAL_NVP(playMode_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
@@ -57,14 +60,16 @@ namespace NanamiEngine::Module::Component
             archive(cereal::base_class<LifeCycleCallback::IRenderable>(this));
             archive(CEREAL_NVP(particleFile_));
             archive(CEREAL_NVP(playingDuration_secs_));
-            archive(CEREAL_NVP(isRoop_));
+            bool isRoop_ = true;
+            if (version == 0) archive(CEREAL_NVP(isRoop_));
+            if (version >= 1) archive(CEREAL_NVP(playMode_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::ParticleSystem, 0);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::ParticleSystem, 1);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Component::ParticleSystem);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, NanamiEngine::Module::Component::ParticleSystem);
 #pragma endregion

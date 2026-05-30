@@ -7,7 +7,12 @@
 namespace GamePlay::Sound
 {
     SoundPlayer* SoundPlayer::instance_ = nullptr;
-    
+
+    glm::vec3 SoundPlayer::Position()
+    {
+        return instance_->Transform().GetWorldPos(); 
+    }
+
     void SoundPlayer::PlaySe(const Asset::SoundFile& sound, const glm::vec3& soundPosition)
     {
         instance_->audioSource_->Play(sound, soundPosition);
