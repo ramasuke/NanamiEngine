@@ -10,11 +10,12 @@
 #include "Time/Time.h"
 #include "../Physics/Physics.h"
 #include "LifeCycle/ApplicationLifeCycle.h"
+#include "../Network/NetworkSystem.h"
 #include "Window/Popup/Group/PopupWindowGroup.h"
 
 namespace NanamiEngine::Core::Application
 {
-    std::optional<Physics> ApplicationBase::physics = std::optional<Core::Physics>();
+    Physics ApplicationBase::physics_ = Core::Physics();
     
     ApplicationBase::ApplicationBase()
     {
@@ -42,7 +43,6 @@ namespace NanamiEngine::Core::Application
         MainWindows().Catch<MainWindow::GameWindow>()->AddContent     (initScene);
         MainWindows().Catch<MainWindow::GameWindow>()->ChangeMainScene(initScene);
 
-        physics.emplace();
         Physics().Initialize();
 
         /** Effekseerの初期化 */
@@ -55,6 +55,8 @@ namespace NanamiEngine::Core::Application
     void ApplicationBase::Run()
     {
         Time::Update();
+        //NetworkSystem().Update();
+        //NetworkSystem().PollPackets();
     }
     
     void ApplicationBase::OnChangeWindow(const std::shared_ptr<MainWindow::IMainWindow>& window)
@@ -99,15 +101,20 @@ namespace NanamiEngine::Core::Application
         return assetRegistry;
     }
 
+    Network::NetworkSystem& ApplicationBase::NetworkSystem()
+    {
+        static Network::NetworkSystem networkSystem;
+        return networkSystem;
+    }
+
     Physics& ApplicationBase::Physics()
     {
-        return physics.value();
+        return physics_;
     }
 
     void ApplicationBase::ResetPhysics()
     {
-        physics.emplace();
-        physics->Initialize();
+        physics_.Initialize();
     }
 
     std::shared_ptr<MainWindow::GameWindow> ApplicationBase::GameWindow()

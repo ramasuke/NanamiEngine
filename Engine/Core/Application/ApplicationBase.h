@@ -3,6 +3,11 @@
 #include <optional>
 #include "Window/Main/Group/MainWindowGroup.h"
 
+namespace NanamiEngine::Core::Network
+{
+    class NetworkSystem;
+}
+
 namespace NanamiEngine::Core::Application
 {
     class ApplicationLifeCycle;
@@ -63,9 +68,10 @@ namespace NanamiEngine::Core::Application
         static FileSystem::Directory                   & AssetsDirectory_     ();
         static Application::ApplicationLifeCycle       & ApplicationLifeCycle_();
         static FileSystem::ObjectRegistry              & ObjectRegistry_      ();
+        static Network::NetworkSystem                  & NetworkSystem        ();
 
         //TODO: optionalである必要ないです。
-        static std::optional<Core::Physics> physics;
+        static Core::Physics physics_;
     };
 
     template <MainWindowType T>
