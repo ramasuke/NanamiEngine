@@ -10,7 +10,7 @@ void GameCore::PlayerAvatar::SwordMan::State::OnDisableReinforceState::DoEnter()
     ReinforcingParticle().SetEnable(false);
 }
 
-void GameCore::PlayerAvatar::SwordMan::State::OnDisableReinforceState::DoUpdate()
+void GameCore::PlayerAvatar::SwordMan::State::OnDisableReinforceState::DoFixedUpdate()
 {
     if (During_secs() > Status().OnDisableReinforceDuration_secs())
     {
@@ -20,6 +20,11 @@ void GameCore::PlayerAvatar::SwordMan::State::OnDisableReinforceState::DoUpdate(
         reinforceParticle.SetEnable(false);
         OnChangeState<SwordManAvatarIdleState>();
     }
+}
+
+void GameCore::PlayerAvatar::SwordMan::State::OnDisableReinforceState::DoUpdate()
+{
+    
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::OnDisableReinforceState::DoExit()

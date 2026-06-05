@@ -25,7 +25,7 @@ namespace NanamiEngine::Module::Asset
     void SceneFile::OnDoubleClick()
     {
         Core::Application::ApplicationBase::OnChangeWindow<Core::MainWindow::GameWindow>();
-        Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::GameWindow>()->AddContent(LoadScene());
+        Core::Application::ApplicationBase::GameWindow()->AddContent(LoadScene());
     }
 
     void SceneFile::CopiedInit()

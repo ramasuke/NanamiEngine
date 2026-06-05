@@ -25,9 +25,10 @@ namespace GameCore::PlayerAvatar::SwordMan
 
         virtual ~SwordManAvatarStateBase() override = default;
         [[nodiscard]] virtual AnimationType AnimationType() const = 0;
-        void OnEnter () override;
-        void OnUpdate() override;
-        void OnExit  () override;
+        void OnEnter      () override;
+        void OnUpdate     () override;
+        void OnFixedUpdate() override;
+        void OnExit       () override;
         
     private:
         float stateDuring_secs_;
@@ -37,9 +38,10 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     protected:
         /** ---- 以下templateMethodパターン ---- */
-        virtual void DoEnter () = 0;
-        virtual void DoUpdate() = 0;
-        virtual void DoExit  () = 0;
+        virtual void DoEnter      () = 0;
+        virtual void DoUpdate     () = 0;
+        virtual void DoFixedUpdate() = 0;
+        virtual void DoExit       () = 0;
         
     protected:
         /** ---- 以下サンドボックスパターン ---- */
@@ -86,14 +88,14 @@ namespace GameCore::PlayerAvatar::SwordMan
             throw std::exception(("Object has not (object name:" + catchObjectName + ")").c_str());
         }
 
-protected:
-//Stateコンストラクタの生成マクロ
-#define DEFINE_STATE_CONSTRUCTOR(DerivedClass) \
-explicit DerivedClass( \
-    const std::shared_ptr<GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateContext>& context,\
-    std::function<void(std::type_index)> onChangeState) \
-    : SwordManAvatarStateBase(context, onChangeState) {}
-};
+    protected:
+        //State Ctor Generated Macro
+            #define DEFINE_STATE_CONSTRUCTOR(DerivedClass) \
+            explicit DerivedClass( \
+            const std::shared_ptr<GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateContext>& context, \
+            const std::function<void(std::type_index)>& onChangeState) \
+            : SwordManAvatarStateBase(context, onChangeState) {}
+    };
 
     template <typename StateT>
     requires std::derived_from<StateT, SwordManAvatarStateBase>

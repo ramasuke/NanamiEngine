@@ -10,6 +10,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         
     private:
         void DoEnter () override;
+        void DoFixedUpdate() override;
         void DoUpdate() override;
         void DoExit  () override;
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::OnEnableReinforce; }

@@ -8,9 +8,14 @@ void GameCore::PlayerAvatar::SwordMan::State::DisableState::DoEnter()
     
 }
 
-void GameCore::PlayerAvatar::SwordMan::State::DisableState::DoUpdate()
+void GameCore::PlayerAvatar::SwordMan::State::DisableState::DoFixedUpdate()
 {
     Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
+}
+
+void GameCore::PlayerAvatar::SwordMan::State::DisableState::DoUpdate()
+{
+    
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::DisableState::DoExit()

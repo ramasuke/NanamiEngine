@@ -52,9 +52,10 @@ namespace NanamiEngine::Module::Component
         Physics::UserData userData_ = Physics::UserData(std::weak_ptr<GameObject::IGameObject>());
         
     private:
-        [[nodiscard]] const std::pair<JPH::Vec3, JPH::Quat>& CalcWorldTransformInternal() const;
+        [[nodiscard]] std::pair<JPH::Vec3, JPH::Quat> CalcWorldTransformInternal() const;
         void ApplyTransformToBody(JPH::BodyInterface& bodyInterface, const JPH::Vec3& pos, const JPH::Quat& rot) const;
         void RecreateBody();
+        void RecreateBody(const JPH::Vec3& linearVelocity, const JPH::Vec3& angularVelocity);
         virtual void OnAwake ();
         void OnBeginPhysics  () override;
         void OnUpdatedPhysics() override;

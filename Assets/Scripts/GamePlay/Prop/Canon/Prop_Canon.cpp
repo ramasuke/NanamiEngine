@@ -16,7 +16,7 @@ namespace GamePlay::Prop
 
     void Canon::Shoot()
     {
-        if (shootCooldownDuring_secs_ <= 0.0f)
+        if (shootCooldownDuring_secs_ > 0.0f)
             return;
         
         shootCooldownDuring_secs_ = shootCooldown_secs_;

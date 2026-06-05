@@ -5,6 +5,11 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarArmStretchState::DoE
         
 }
 
+void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarArmStretchState::DoFixedUpdate()
+{
+    
+}
+
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarArmStretchState::DoUpdate()
 {
         

@@ -17,7 +17,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
     }
 
-    void SwordManAvatarDashAttackState::DoUpdate()
+    void SwordManAvatarDashAttackState::DoFixedUpdate()
     {
         TryDashAttack();
 
@@ -25,6 +25,11 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         {
             ChangeToMoveOrIdle();
         }
+    }
+
+    void SwordManAvatarDashAttackState::DoUpdate()
+    {
+        
     }
 
     void SwordManAvatarDashAttackState::DoExit()

@@ -1,7 +1,6 @@
 ﻿#include "NetworkSystem.h"
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "winmm.lib")
-
 #include <enet/enet.h>
 
 #include "../Application/Configuration/ApplicationConfiguration.h"
@@ -18,17 +17,17 @@ namespace NanamiEngine::Core::Network
             ENetAddress address{};
             address.host = ENET_HOST_ANY;
             address.port = 1234;
-
+        
             host_ = enet_host_create(&address, 32, 2, 0, 0);
         }
         if constexpr (Application::Configuration::NETWORK_MODE == Mode::Client)
         {
             host_ = enet_host_create(nullptr, 1, 2, 0, 0);
-
+        
             ENetAddress address{};
             enet_address_set_host(&address, "127.0.0.1");
             address.port = 1234;
-
+        
             peer_ = enet_host_connect(host_, &address, 2, 0);
         }
     }

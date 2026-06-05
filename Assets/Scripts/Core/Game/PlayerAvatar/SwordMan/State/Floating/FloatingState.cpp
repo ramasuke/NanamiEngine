@@ -14,7 +14,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         
     }
 
-    void FloatingState::DoUpdate()
+    void FloatingState::DoFixedUpdate()
     {
         //TODO:製作展葉の補助処理なので、本来は必要なし
         if (Transform().GetWorldPos().y < -100)
@@ -30,6 +30,11 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             OnChangeState<SwordManAvatarNormalAttackState>();
         if (Conditions().IsGround())
             OnChangeState<SwordManAvatarIdleState>();
+    }
+
+    void FloatingState::DoUpdate()
+    {
+        
     }
 
     void FloatingState::DoExit()

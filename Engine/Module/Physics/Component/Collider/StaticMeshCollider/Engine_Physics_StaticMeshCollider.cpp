@@ -153,6 +153,7 @@ namespace NanamiEngine::Module::Component
             false,
             IsGravity(),
             layer_,
+            JPH::EAllowedDOFs::All,
             &userData_);
     }
 

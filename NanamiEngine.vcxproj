@@ -8421,6 +8421,7 @@
     <ClCompile Include="Engine\Module\Component\ImageRenderer\Animation\ImageAnimationRenderer.cpp" />
     <ClCompile Include="Engine\Module\Component\ParticleRenderer\PlayMode\ParticleSystem_PlayMode.cpp" />
     <ClCompile Include="Engine\Module\GameObject\PrefabGameObject\PrefabCatchChild\PrefabCatchChild.cpp" />
+    <ClCompile Include="Engine\Module\LifeCycleCallback\FixedUpdate\IFixedUpdatable.cpp" />
     <ClCompile Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -9075,6 +9076,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Module\NanamiUI\Slider\NanamiUi_Slider.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\TextRenderer\TextRenderer.cpp" />
+    <ClCompile Include="Engine\Module\Network\Engine_Network_NetworkRunner.cpp" />
     <ClCompile Include="Engine\Module\Physics\BroadPhaseLayer\Engine_Physics_NonRaycastLayerFilter.cpp" />
     <ClCompile Include="Engine\Module\Physics\Component\Collider\Box\Engine_Physics_BoxCollider.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -11057,6 +11059,7 @@
     <ClInclude Include="Engine\Module\Component\ImageRenderer\Animation\ImageAnimationRenderer.h" />
     <ClInclude Include="Engine\Module\Component\ParticleRenderer\PlayMode\ParticleSystem_PlayMode.h" />
     <ClInclude Include="Engine\Module\GameObject\PrefabGameObject\PrefabCatchChild\PrefabCatchChild.h" />
+    <ClInclude Include="Engine\Module\LifeCycleCallback\FixedUpdate\IFixedUpdatable.h" />
     <ClInclude Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.h" />
     <ClInclude Include="Engine\Module\Color\Color32.h" />
     <ClInclude Include="Engine\Module\Component\Animator\Animator.h" />
@@ -11108,6 +11111,7 @@
     <ClInclude Include="Engine\Module\NanamiUI\NanamiUi_IInteractivableRenderer.h" />
     <ClInclude Include="Engine\Module\NanamiUI\Slider\NanamiUi_Slider.h" />
     <ClInclude Include="Engine\Module\NanamiUI\TextRenderer\TextRenderer.h" />
+    <ClInclude Include="Engine\Module\Network\Engine_Network_NetworkRunner.h" />
     <ClInclude Include="Engine\Module\Physics\BroadPhaseLayer\Engine_Physics_NonRaycastLayerFilter.h" />
     <ClInclude Include="Engine\Module\Physics\Component\Collider\Box\Engine_Physics_BoxCollider.h" />
     <ClInclude Include="Engine\Module\Physics\Component\Collider\Capsule\Engine_Physics_CapsuleCollider.h" />

@@ -26,7 +26,8 @@ namespace GameCore::PlayerAvatar
         template <typename StateContextT>
         explicit PlayerAvatarStateMachine(const std::shared_ptr<StateContextT>& context);
         
-        void OnUpdate ();
+        void OnUpdate     ();
+        void OnFixedUpdate();
         void OnDrawGui();
         rxcpp::observable<std::shared_ptr<StateT>> CurrentState() { return currentState_.get_observable(); }
         void OnEnable () override;
@@ -62,6 +63,14 @@ namespace GameCore::PlayerAvatar
     {
         if (currentState_.get_value())
             currentState_.get_value()->OnUpdate();
+    }
+
+    template <typename StateT, typename DisableStateT, typename ... StateTypes> requires PlayerAvatarState<StateT> && (
+        PlayerAvatarState<StateTypes> && ...)
+    void PlayerAvatarStateMachine<StateT, DisableStateT, StateTypes...>::OnFixedUpdate()
+    {
+        if (currentState_.get_value())
+            currentState_.get_value()->OnFixedUpdate();
     }
 
     template <typename StateT, typename DisableStateT, typename... StateTypes>

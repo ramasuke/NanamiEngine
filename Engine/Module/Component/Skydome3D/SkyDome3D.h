@@ -17,6 +17,7 @@ namespace NanamiEngine::Module::Component
         void OnUpdate     () override;
         void OnRender     () override;
         void OnDebugRender() override;
+        void OnDestroy() override;
 
         FIELD(Asset::Mv1File) skyDomeModel_;
         int skyDomeModelDxLibHandle_ = -1;

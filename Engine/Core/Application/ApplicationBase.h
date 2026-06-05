@@ -68,10 +68,9 @@ namespace NanamiEngine::Core::Application
         static FileSystem::Directory                   & AssetsDirectory_     ();
         static Application::ApplicationLifeCycle       & ApplicationLifeCycle_();
         static FileSystem::ObjectRegistry              & ObjectRegistry_      ();
-        static Network::NetworkSystem                  & NetworkSystem        ();
+        static std::optional<Network::NetworkSystem>   & NetworkSystem        ();
 
-        //TODO: optionalである必要ないです。
-        static Core::Physics physics_;
+        static std::optional<Core::Physics> physics_;
     };
 
     template <MainWindowType T>

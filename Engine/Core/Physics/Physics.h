@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <memory>
 #include "../JoltPhysics/Jolt/Jolt.h"
+#include <../JoltPhysics/Jolt/Physics/Body/AllowedDOFs.h>
 #include <../JoltPhysics/Jolt/Physics/PhysicsSystem.h>
 #include <../JoltPhysics/Jolt/Core/JobSystemThreadPool.h>
 
@@ -43,6 +44,7 @@ namespace NanamiEngine::Core
             bool isSensor,
             bool isGravity,
             Module::Physics::Layer layer,
+            JPH::EAllowedDOFs allowedDOFs,
             Module::Physics::UserData* userData);
 
     private:

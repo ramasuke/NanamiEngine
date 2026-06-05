@@ -18,7 +18,7 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoEnter()
     ChangeCamera(CameraGroup().FollowFromBehind());
 }
 
-void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoUpdate()
+void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoFixedUpdate()
 {
     Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
 
@@ -42,6 +42,11 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoUpdate(
         OnChangeState<SwordManAvatarUseCannonState>();
     if (!Conditions().IsGround())
         OnChangeState<FloatingState>();
+}
+
+void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoUpdate()
+{
+    
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoExit()

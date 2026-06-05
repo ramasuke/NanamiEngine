@@ -10,6 +10,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     private:
         void DoEnter() override;
+        void DoFixedUpdate() override;
         void DoUpdate() override;
         void DoExit() override;
 
@@ -18,6 +19,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::DashAttack; }
 
+    private:
         bool isAttacked_ = false;
     };
 }

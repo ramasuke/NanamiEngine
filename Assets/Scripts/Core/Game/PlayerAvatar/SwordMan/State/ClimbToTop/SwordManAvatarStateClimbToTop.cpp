@@ -9,6 +9,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         // ClimbingAsync();
     }
 
+    void SwordManAvatarStateClimbToTop::DoFixedUpdate()
+    {
+    }
+
     void SwordManAvatarStateClimbToTop::DoUpdate()
     {
         

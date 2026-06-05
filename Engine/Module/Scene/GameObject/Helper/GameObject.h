@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <memory>
 
-#include "fwd.hpp"
+#include "../glm/fwd.hpp"
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 
 namespace NanamiEngine::Scene

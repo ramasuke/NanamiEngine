@@ -15,7 +15,7 @@ void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoEnter()
     
 }
 
-void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoUpdate()
+void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoFixedUpdate()
 {
     //Change State
     if (Status().AttackedShockedStateDuration_secs() <= During_secs())
@@ -37,6 +37,11 @@ void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoUpdate()
         if (!Conditions().IsGround())
             OnChangeState<FloatingState>();
     }   
+}
+
+void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoUpdate()
+{
+    
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoExit()

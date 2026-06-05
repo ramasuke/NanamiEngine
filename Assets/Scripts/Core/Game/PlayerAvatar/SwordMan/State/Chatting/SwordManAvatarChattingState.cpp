@@ -12,6 +12,11 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         OnChangeState<SwordManAvatarIdleState>();
     }
 
+    void SwordManAvatarChattingState::DoFixedUpdate()
+    {
+        
+    }
+
     void SwordManAvatarChattingState::DoUpdate()
     {
         

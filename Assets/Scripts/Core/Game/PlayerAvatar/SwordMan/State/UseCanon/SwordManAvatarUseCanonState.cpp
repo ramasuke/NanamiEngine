@@ -12,7 +12,7 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoEn
     sceneContext.PlayerControllabeCanon().Use();
 }
 
-void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoUpdate()
+void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoFixedUpdate()
 {
     Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
     
@@ -31,6 +31,11 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoUp
     {
         cannon.Shoot();
     }
+}
+
+void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoUpdate()
+{
+    
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoExit()

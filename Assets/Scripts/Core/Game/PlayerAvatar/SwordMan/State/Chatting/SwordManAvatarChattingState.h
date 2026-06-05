@@ -9,9 +9,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         DEFINE_STATE_CONSTRUCTOR(SwordManAvatarChattingState)
 
     private:
-        void DoEnter () override;
-        void DoUpdate() override;
-        void DoExit  () override;
+        void DoEnter      () override;
+        void DoFixedUpdate() override;
+        void DoUpdate     () override;
+        void DoExit       () override;
         
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::Idle; }
     };

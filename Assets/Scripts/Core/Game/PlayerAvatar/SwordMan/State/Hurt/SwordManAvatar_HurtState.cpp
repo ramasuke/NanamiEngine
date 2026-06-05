@@ -22,7 +22,7 @@ void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoEnter()
         OnChangeState<DeathState>();
 }
 
-void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoUpdate()
+void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoFixedUpdate()
 {
     Status().DiscardDamage();
     if (Status().IsOnDisableReinforceMode())
@@ -43,6 +43,11 @@ void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoUpdate()
         OnChangeState<SwordManAvatarNormalAttackState>();
     if (!Conditions().IsGround())
         OnChangeState<FloatingState>();
+}
+
+void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoUpdate()
+{
+    
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoExit()

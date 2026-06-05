@@ -20,12 +20,15 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
         
     }
-    
-    void SwordManAvatarWalkState::DoUpdate()
+
+    void SwordManAvatarWalkState::DoFixedUpdate()
     {
         const auto inputMove = Input().Move().ReadValue();
         Actions().ForwardMove(Status().GetWalkSpeed() * glm::vec3(inputMove.x, 0.0f, inputMove.y), Status().GetMoveRotateSpeed());
-    
+    }
+
+    void SwordManAvatarWalkState::DoUpdate()
+    {
         if (Status().IsDamaged())
             OnChangeState<HurtState>();
         if (Status().IsOnDisableReinforceMode())

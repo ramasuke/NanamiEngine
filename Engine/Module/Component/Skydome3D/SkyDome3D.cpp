@@ -31,3 +31,8 @@ void Component::SkyDome3D::OnDebugRender()
         MV1SetPosition(skyDomeModelDxLibHandle_, Core::Application::ApplicationBase::GameWindow()->GetCameraDxPosition());
     }
 }
+
+void Component::SkyDome3D::OnDestroy()
+{
+    MV1DeleteModel(skyDomeModelDxLibHandle_);
+}

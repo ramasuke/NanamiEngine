@@ -79,13 +79,20 @@ namespace NanamiEngine::Core
         const bool isSensor,
         const bool isGravity,
         const Module::Physics::Layer layer,
+        const JPH::EAllowedDOFs allowedDOFs,
         Module::Physics::UserData* userData)
     {
+        const bool hasNoDOFs = allowedDOFs == JPH::EAllowedDOFs::None;
+        const JPH::EMotionType effectiveMotionType =
+            motionType == JPH::EMotionType::Dynamic && hasNoDOFs
+                ? JPH::EMotionType::Static
+                : motionType;
+
         JPH::BodyCreationSettings settings(
             shape,
             JPH::RVec3(position),
             rotation,
-            motionType,
+            effectiveMotionType,
             0
         );
         
@@ -98,12 +105,13 @@ namespace NanamiEngine::Core
         assert(userData);
         settings.mUserData = reinterpret_cast<JPH::uint64>(userData);
         settings.mObjectLayer = static_cast<JPH::ObjectLayer>(ToIndex(layer));
+        settings.mAllowedDOFs = hasNoDOFs ? JPH::EAllowedDOFs::All : allowedDOFs;
         if (!isGravity)
         {
             settings.mGravityFactor = 0.0f;
         }
 
-        if (motionType == JPH::EMotionType::Static)
+        if (effectiveMotionType == JPH::EMotionType::Static)
         {
             return physicsSystem_.GetBodyInterface().CreateAndAddBody(settings, JPH::EActivation::DontActivate);
         }

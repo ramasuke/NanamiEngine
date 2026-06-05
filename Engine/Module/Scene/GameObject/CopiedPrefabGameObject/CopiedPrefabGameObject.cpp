@@ -86,8 +86,7 @@ std::shared_ptr<GameObject::IGameObject> Scene::CopiedPrefabGameObject::CopyForI
 
 void Scene::CopiedPrefabGameObject::OnDestroy() const
 {
-    Core::Application::ApplicationBase::MainWindows()
-        .Catch<Core::MainWindow::GameWindow>()
+    Core::Application::ApplicationBase::GameWindow()
         ->RemoveGameObject(std::weak_ptr(ownPtr_));
 }
 
@@ -120,10 +119,9 @@ void Scene::CopiedPrefabGameObject::OnDrawGui()
     
     if (ImGui::Button("Delete"))
     {
-        if (Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::GameWindow>() == Core::Application::ApplicationBase::GetMainWindow())
+        if (Core::Application::ApplicationBase::GameWindow() == Core::Application::ApplicationBase::GetMainWindow())
         {
-            Core::Application::ApplicationBase::MainWindows()
-                .Catch<Core::MainWindow::GameWindow>()
+            Core::Application::ApplicationBase::GameWindow()
                 ->MainScene()
                 .RemoveGameObject(std::weak_ptr(ownPtr_));
         }

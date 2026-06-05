@@ -1,6 +1,7 @@
 ﻿#include "ApplicationBase.h"
 
 #include "EffekseerForDXLib.h"
+#include "../../Module/Scene/GameObject/Helper/GameObject.h"
 #include "../FileSystem/Directory/Directory.h"
 #include "../../Module/Scene/GameObject/SceneGameObject/SceneGameObject.h"
 #include "Window/Main/MainWindowBase.h"
@@ -15,7 +16,7 @@
 
 namespace NanamiEngine::Core::Application
 {
-    Physics ApplicationBase::physics_ = Core::Physics();
+    std::optional<Physics> ApplicationBase::physics_ = std::optional<Core::Physics>();
     
     ApplicationBase::ApplicationBase()
     {
@@ -43,6 +44,7 @@ namespace NanamiEngine::Core::Application
         MainWindows().Catch<MainWindow::GameWindow>()->AddContent     (initScene);
         MainWindows().Catch<MainWindow::GameWindow>()->ChangeMainScene(initScene);
 
+        physics_.emplace();
         Physics().Initialize();
 
         /** Effekseerの初期化 */
@@ -51,12 +53,16 @@ namespace NanamiEngine::Core::Application
         Effekseer_SetGraphicsDeviceLostCallbackFunctions();
     }
 
-    ///TODO: 呼び出し字の処理ではない実装がされているため実装を変えて、別で関数を作ったほうが良い。
+    ///TODO: 呼び出し時の処理ではない実装をしているため、override出来ない関数として作るのがベストな設計。
     void ApplicationBase::Run()
     {
         Time::Update();
-        //NetworkSystem().Update();
-        //NetworkSystem().PollPackets();
+        
+        if (NetworkSystem().has_value())
+        {
+            NetworkSystem()->Update();
+            NetworkSystem()->PollPackets();
+        }
     }
     
     void ApplicationBase::OnChangeWindow(const std::shared_ptr<MainWindow::IMainWindow>& window)
@@ -101,20 +107,21 @@ namespace NanamiEngine::Core::Application
         return assetRegistry;
     }
 
-    Network::NetworkSystem& ApplicationBase::NetworkSystem()
+    std::optional<Network::NetworkSystem>& ApplicationBase::NetworkSystem()
     {
-        static Network::NetworkSystem networkSystem;
+        static std::optional<Network::NetworkSystem> networkSystem;
         return networkSystem;
     }
 
     Physics& ApplicationBase::Physics()
     {
-        return physics_;
+        return physics_.value();
     }
 
     void ApplicationBase::ResetPhysics()
     {
-        physics_.Initialize();
+        physics_.emplace();
+        physics_->Initialize();
     }
 
     std::shared_ptr<MainWindow::GameWindow> ApplicationBase::GameWindow()

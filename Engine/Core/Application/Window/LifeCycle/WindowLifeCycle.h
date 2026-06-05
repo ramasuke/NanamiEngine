@@ -4,6 +4,7 @@
 
 #include "../../../../Module/LifeCycleCallback/Awake/IAwakable.h"
 #include "../../../../Module/LifeCycleCallback/BeginPhysics/IBeginPhysics.h"
+#include "../../../../Module/LifeCycleCallback/FixedUpdate/IFixedUpdatable.h"
 #include "../../../../Module/LifeCycleCallback/Group/LifeCycleCallbackGroup.h"
 #include "../../../../Module/LifeCycleCallback/Group/OnceCallbackGroup/LifeCycleOnceCallbackGroup.h"
 #include "../../../../Module/LifeCycleCallback/Group/SortCallbackGroup/LifeCycleSortCallbackGroup.h"
@@ -68,6 +69,7 @@ namespace NanamiEngine::Core::Application
         std::unique_ptr<Coroutine::CoroutineScheduler>                                  coroutineScheduler_;
         LifeCycleCallbackGroup<Module::LifeCycleCallback::IUpdatable>                   updatableCallbacks_;
         LifeCycleCallbackGroup<Module::LifeCycleCallback::ILateUpdatable>               lateUpdatableCallbacks_;
+        LifeCycleCallbackGroup<Module::LifeCycleCallback::IFixedUpdatable>              fixedUpdatableCallbacks_;
         LifeCycleCallbackGroup<Module::LifeCycleCallback::IBeginPhysics>                beginPhysicsCallbacks_;
         LifeCycleCallbackGroup<Module::LifeCycleCallback::IEndPhysics>                  endPhysicsCallbacks_;
         LifeCycleCallbackGroup<Module::LifeCycleCallback::IRenderable>                  renderableCallbacks_;
@@ -95,6 +97,8 @@ namespace NanamiEngine::Core::Application
             updatableCallbacks_.Add(add);
         if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::ILateUpdatable>)
             lateUpdatableCallbacks_.Add(add);
+        if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::IFixedUpdatable>)
+            fixedUpdatableCallbacks_.Add(add);
         if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::IBeginPhysics>)
             beginPhysicsCallbacks_.Add(add);
         if constexpr (std::derived_from<CallbackType, Module::LifeCycleCallback::IEndPhysics>)
@@ -124,6 +128,8 @@ namespace NanamiEngine::Core::Application
                 updatableCallbacks_.Add(updatable);
             if (auto lateUpdatable = std::dynamic_pointer_cast<Module::LifeCycleCallback::ILateUpdatable>(shared))
                 lateUpdatableCallbacks_.Add(lateUpdatable);
+            if (auto fixedUpdatable = std::dynamic_pointer_cast<Module::LifeCycleCallback::IFixedUpdatable>(shared))
+                fixedUpdatableCallbacks_.Add(fixedUpdatable);
             if (auto beginPhysics = std::dynamic_pointer_cast<Module::LifeCycleCallback::IBeginPhysics>(shared))
                 beginPhysicsCallbacks_.Add(beginPhysics);
             if (auto endPhysics = std::dynamic_pointer_cast<Module::LifeCycleCallback::IEndPhysics>(shared))

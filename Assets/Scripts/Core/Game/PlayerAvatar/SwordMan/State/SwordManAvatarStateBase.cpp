@@ -27,7 +27,12 @@ namespace GameCore::PlayerAvatar::SwordMan
         DoUpdate();
         stateDuring_secs_ += Time::DeltaTime();
     }
-    
+
+    void SwordManAvatarStateBase::OnFixedUpdate()
+    {
+        DoFixedUpdate();
+    }
+
     void SwordManAvatarStateBase::OnExit()
     {
         DoExit();

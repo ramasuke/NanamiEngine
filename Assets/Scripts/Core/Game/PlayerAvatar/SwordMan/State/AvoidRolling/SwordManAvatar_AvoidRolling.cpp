@@ -15,7 +15,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         StatusEvent().InvokeOnAvoidRolling();
     }
 
-    void AvoidRollingState::DoUpdate()
+    void AvoidRollingState::DoFixedUpdate()
     {
         if (Status().IsDamaged())
         {
@@ -44,6 +44,11 @@ namespace GameCore::PlayerAvatar::SwordMan::State
                 OnChangeState<SwordManAvatarIdleState>();
             }
         }
+    }
+
+    void AvoidRollingState::DoUpdate()
+    {
+        
     }
 
     void AvoidRollingState::DoExit()

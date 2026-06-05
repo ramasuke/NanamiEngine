@@ -27,11 +27,14 @@ void Component::ParticleSystem::OnUpdate()
 
 void Component::ParticleSystem::InitRenderer()
 {
-    if (!particleFile_ || !IsEnable())
+    if (!particleFile_)
         return;
 
     resourceEffectHandle_ = particleFile_->LoadDxLibHandle();
-    playingEffectHandle_  = PlayEffekseer3DEffect(resourceEffectHandle_);
+    if (IsEnable())
+    {
+        playingEffectHandle_  = PlayEffekseer3DEffect(resourceEffectHandle_);
+    }
 }
 
 void Component::ParticleSystem::OnRender()
@@ -131,6 +134,7 @@ void Component::ParticleSystem::OnDrawGui()
 
     if (ImGui::Button("Load EffectResource"))
     {
+        TryDeleteResource();
         resourceEffectHandle_ = particleFile_->LoadDxLibHandle();
     }
     if (ImGui::Button("Play Effect"))

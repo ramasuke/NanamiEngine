@@ -13,6 +13,10 @@ namespace GameCore::PlayerAvatar
         ///NOTE: 1フレームごとに呼ばれる
         virtual void OnUpdate() = 0;
 
+        ///Stateの更新処理
+        ///NOTE: 物理処理タイミングで呼ばれる
+        virtual void OnFixedUpdate() = 0;
+        
         ///Stateから抜けたときの処理
         virtual void OnExit  () = 0;
     };

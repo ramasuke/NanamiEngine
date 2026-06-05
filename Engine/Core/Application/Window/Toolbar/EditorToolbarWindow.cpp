@@ -22,6 +22,12 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
     );
     ImGui::SameLine();
 
+    if (ImGui::Button("Config"))
+    {
+        ImGui::OpenPopup("ConfigWindow");
+    }
+    ImGui::SameLine();
+    
     if (!Application::ApplicationBase::GameWindow()->IsPlaying())
     {
         if (ImGui::Button("Save"))
@@ -32,7 +38,6 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
     }
 
     ImGui::SameLine();
-
     if (ImGui::Button("PopupWindow")) {
         ImGui::OpenPopup("WindowPopup");
     }

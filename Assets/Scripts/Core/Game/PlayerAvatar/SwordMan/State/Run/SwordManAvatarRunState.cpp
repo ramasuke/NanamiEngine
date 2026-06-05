@@ -17,11 +17,14 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoEnter()
     StatusEvent().InvokeOnRun();   
 }
 
-void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoUpdate()
+void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoFixedUpdate()
 {
     const auto inputMove = Input().Move().ReadValue();
     Actions().ForwardMove(Status().GetRunSpeed() * glm::vec3(inputMove.x, 0.0f, inputMove.y), Status().GetMoveRotateSpeed());
+}
 
+void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoUpdate()
+{
     if (Status().IsDamaged())
         OnChangeState<HurtState>();
     if (Status().IsOnDisableReinforceMode())
@@ -41,7 +44,7 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoUpdate()
     if (Conditions().CanUseCannon())
         OnChangeState<SwordManAvatarUseCannonState>();
     if (!Conditions().IsGround())
-        OnChangeState<FloatingState>();
+        OnChangeState<FloatingState>();   
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoExit()

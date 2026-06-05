@@ -27,7 +27,7 @@ namespace NanamiEngine::Core::Application
                 return a->GetRenderOrder() < b->GetRenderOrder();
             }
         }
-        , fixedDeltaTime_(1.0f / 180.0f)
+        , fixedDeltaTime_(1.0f / 144.0f)
     {
         if (useShadowMap)
         {
@@ -58,7 +58,6 @@ namespace NanamiEngine::Core::Application
         startableCallbacks_       .Invoke([](auto& obj) { obj.OnStart();          });
 
         const float rawDeltaTime = Time::DeltaTime();
-
         // 異常なフレーム時間を制限
         const float deltaTime = (std::min)(rawDeltaTime, 0.2f);
         if (rawDeltaTime > 0.0f)
@@ -66,12 +65,13 @@ namespace NanamiEngine::Core::Application
             accumulator_ += deltaTime;
         }
         //無限蓄積防止
-        const float maxAccumulation = fixedDeltaTime_ * 2.0f;
+        constexpr int maxStep = 10;
+        const float maxAccumulation = fixedDeltaTime_ * static_cast<float>(maxStep);
         accumulator_ = (std::min)(accumulator_, maxAccumulation);
-        constexpr int maxStep = 2;
         int step = 0;
         while (accumulator_ >= fixedDeltaTime_ && step < maxStep)
         {
+            fixedUpdatableCallbacks_.Invoke([](auto& obj) { obj.OnFixedUpdate(); });
             beginPhysicsCallbacks_.Invoke([](auto& obj) { obj.OnBeginPhysics(); });
             ApplicationBase::Physics().Update(fixedDeltaTime_);
             endPhysicsCallbacks_.Invoke([](auto& obj) { obj.OnUpdatedPhysics(); });
@@ -104,6 +104,7 @@ namespace NanamiEngine::Core::Application
         endPhysicsCallbacks_      .OnUpdatePushedContents();
         updatableCallbacks_       .OnUpdatePushedContents();
         lateUpdatableCallbacks_   .OnUpdatePushedContents();
+        fixedUpdatableCallbacks_  .OnUpdatePushedContents();
         shadowRenderableCallbacks_.OnUpdatePushedContents();
         renderableCallbacks_      .OnUpdatePushedContents();
         uiRenderableCallbacks_    .OnUpdatePushedContents();
@@ -132,6 +133,7 @@ namespace NanamiEngine::Core::Application
         startableCallbacks_       .OnUpdatePushedContents();
         updatableCallbacks_       .OnUpdatePushedContents();
         lateUpdatableCallbacks_   .OnUpdatePushedContents();
+        fixedUpdatableCallbacks_  .OnUpdatePushedContents();
         shadowRenderableCallbacks_.OnUpdatePushedContents();
         renderableCallbacks_      .OnUpdatePushedContents();
         uiRenderableCallbacks_    .OnUpdatePushedContents();

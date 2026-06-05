@@ -10,6 +10,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     private:
         void DoEnter() override;
+        void DoFixedUpdate() override;
         void DoUpdate() override;
         void DoExit() override;
 
@@ -17,6 +18,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void ChangeToMoveOrIdle();
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::ComboAttack; }
 
+    private:
         int  currentCombo_ = 0;
         bool isAttacked_   = false;
     };

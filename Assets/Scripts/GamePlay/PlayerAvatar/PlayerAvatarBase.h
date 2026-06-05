@@ -4,6 +4,7 @@
 #include "../../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../Engine/Module/Component/ModelRenderer/ModelRenderer.h"
+#include "../../../../Engine/Module/LifeCycleCallback/FixedUpdate/IFixedUpdatable.h"
 #include "../../../../Engine/Module/Scene/ShadowMap/ShadowMapSetting.h"
 #include "../../Core/Game/Npc/Enemy/ITakableEnemyAttack/ITakableEnemyAttack.h"
 #include "../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
@@ -21,6 +22,7 @@ namespace GamePlay::PlayerAvatar
     class PlayerAvatarBase : public Component::ComponentBase,
                              public LifeCycleCallback::IAwakable,
                              public LifeCycleCallback::IUpdatable,
+                             public LifeCycleCallback::IFixedUpdatable,
                              public GameCore::IPlayerAvatar,
                              public GameCore::Npc::Enemy::ITakableEnemyAttack
     {
@@ -49,6 +51,7 @@ namespace GamePlay::PlayerAvatar
     private:
         void OnAwake                 () override;
         void OnUpdate                () override;
+        void OnFixedUpdate           () override;
         void OnDestroy               () override;
         void BasedOnDrawgui          () override;
         void SubscribeStateToAnimator();
@@ -89,7 +92,6 @@ namespace GamePlay::PlayerAvatar
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 1) archive(CEREAL_NVP(chattingUi_));
         }
-
 #pragma endregion
     };
     
@@ -141,7 +143,13 @@ namespace GamePlay::PlayerAvatar
         
         Scene::ShadowMapSetting::SetRenderAreaPos(Transform().GetWorldPos());
     }
-    
+
+    template <RequireType::Traits TraitsT>
+    void PlayerAvatarBase<TraitsT>::OnFixedUpdate()
+    {
+        stateMachine_->OnFixedUpdate();
+    }
+
     template <RequireType::Traits TraitsT>
     void PlayerAvatarBase<TraitsT>::OnDestroy()
     {

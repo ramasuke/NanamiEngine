@@ -17,7 +17,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         isAttacked_   = false;
     }
 
-    void SwordManAvatarNormalAttackState::DoUpdate()
+    void SwordManAvatarNormalAttackState::DoFixedUpdate()
     {
         if (Status().IsDamaged())
         {
@@ -35,6 +35,11 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         {
             ChangeToMoveOrIdle();
         }
+    }
+
+    void SwordManAvatarNormalAttackState::DoUpdate()
+    {
+        
     }
 
     void SwordManAvatarNormalAttackState::DoExit()

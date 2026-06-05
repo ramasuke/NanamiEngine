@@ -9,6 +9,11 @@ void GameCore::PlayerAvatar::SwordMan::State::DeathState::DoEnter()
     
 }
 
+void GameCore::PlayerAvatar::SwordMan::State::DeathState::DoFixedUpdate()
+{
+    
+}
+
 void GameCore::PlayerAvatar::SwordMan::State::DeathState::DoUpdate()
 {
     if (During_secs() > Status().DeathStateDuration_secs())
