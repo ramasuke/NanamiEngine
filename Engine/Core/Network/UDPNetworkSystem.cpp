@@ -114,7 +114,8 @@ namespace NanamiEngine::Core::Network
 
     void UDPNetworkSystem::SendTo(ENetPeer* target, const Packet& packet)
     {
-        if (!target) return;
+        if (!target)
+            return;
 
         ByteBuffer buffer = PacketCodec::Encode(packet);
 

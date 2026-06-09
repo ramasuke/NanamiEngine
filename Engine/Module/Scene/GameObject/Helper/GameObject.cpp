@@ -67,7 +67,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     return copiedPrefab;
 }
 
-std::weak_ptr<Module::GameObject::IGameObject> Scene::GameObject::Instantiate(
+std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     std::shared_ptr<Asset::PrefabGameObjectFile> prefab, const glm::vec3 position, glm::quat rotation)
 {
     auto copiedPrefab = prefab->Content()->CopyForInstantiate();
@@ -78,7 +78,7 @@ std::weak_ptr<Module::GameObject::IGameObject> Scene::GameObject::Instantiate(
     return copiedPrefab;
 }
 
-std::weak_ptr<Module::GameObject::IGameObject> Scene::GameObject::Instantiate(
+std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     Asset::PrefabGameObjectFile& gameObject,
     const glm::vec3 position,
     const glm::quat rotation)
@@ -91,7 +91,7 @@ std::weak_ptr<Module::GameObject::IGameObject> Scene::GameObject::Instantiate(
     return copiedPrefab;
 }
 
-std::weak_ptr<Module::GameObject::IGameObject> Scene::GameObject::Instantiate(
+std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     Module::GameObject::IGameObject& gameObject, const glm::vec3 position, const glm::quat rotation)
 {
     auto copiedPrefab = gameObject.CopyForInstantiate();
