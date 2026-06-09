@@ -42,10 +42,6 @@ namespace NanamiEngine::Core::Network
         std::queue<Packet> receivedQueue_;
         PlayerId playerId_ = PlayerId::Invalid();
         
-        using ServerIdPool = std::conditional_t<
-            Application::Configuration::NETWORK_MODE == Mode::Server,
-            std::queue<int>,
-            std::monostate>;
-        [[no_unique_address]] ServerIdPool availableIds_;
+        std::queue<int> availableIds_;
     };
 }

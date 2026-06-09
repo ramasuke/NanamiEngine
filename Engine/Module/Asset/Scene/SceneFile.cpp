@@ -33,10 +33,10 @@ namespace NanamiEngine::Module::Asset
         guid_ = Guid();
         auto scene = LoadScene();
 
-        std::filesystem::path p(contentPath_);
-        const auto stem      = p.stem().string();          // "scene"
-        const auto extension = p.extension().string();     // ".nscene"
-        const auto parent    = p.parent_path().string(); // "path/to"
+        const std::filesystem::path path(contentPath_);
+        const auto stem      = path.stem().string();        // "scene"
+        const auto extension = path.extension().string();   // ".nscene"
+        const auto parent    = path.parent_path().string(); // "path/to"
         const std::string newName = stem + "_copy" + extension;
 
         std::filesystem::path newPath;

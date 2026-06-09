@@ -47,7 +47,7 @@ namespace NanamiEngine::Core::Application
         virtual ~ApplicationBase() = default;
         virtual void Run();
         virtual void OnExit() = 0;
-        template <MainWindowType T>
+        template <MainWindow::MainWindowType T>
         static void OnChangeWindow();
         static void OnChangeWindow(const std::shared_ptr<MainWindow::IMainWindow>& window);
 
@@ -73,7 +73,7 @@ namespace NanamiEngine::Core::Application
         static std::optional<Core::Physics> physics_;
     };
 
-    template <MainWindowType T>
+    template <MainWindow::MainWindowType T>
     void ApplicationBase::OnChangeWindow()
     {
         CurrentMainWindow() = MainWindows_().Catch<T>();

@@ -6,9 +6,6 @@
 
 #include "../Interface/IMainWindow.h"
 
-template <typename T>
-concept MainWindowType = std::derived_from<T, NanamiEngine::Core::MainWindow::IMainWindow>;
-
 namespace NanamiEngine::Core::MainWindow
 {
     class MainWindowGroup final

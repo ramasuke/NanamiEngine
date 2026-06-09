@@ -13,4 +13,7 @@ namespace NanamiEngine::Core::MainWindow
         virtual void OnDrawGui(MainWindowDrawGuiContext context) = 0;
         virtual void OnSave() = 0;
     };
+    
+    template <typename T>
+    concept MainWindowType = std::derived_from<T, NanamiEngine::Core::MainWindow::IMainWindow>;
 }
