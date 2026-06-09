@@ -46,8 +46,7 @@ namespace NanamiEngine::Module::Asset
         void save(Archive& archive, const std::uint32_t version) const
         {
             archive(cereal::base_class<AssetBase>(this));
-            archive(cereal::base_class<LifeCycleCallback::IEnablableAsset>(this));
-
+            if (version == 0) archive(cereal::base_class<LifeCycleCallback::IEnablableAsset>(this));
             archive(CEREAL_NVP(fontName_));
             archive(CEREAL_NVP(size_));
             archive(CEREAL_NVP(thickness_));
@@ -60,8 +59,7 @@ namespace NanamiEngine::Module::Asset
         void load(Archive& archive, const std::uint32_t version)
         {
             archive(cereal::base_class<AssetBase>(this));
-            archive(cereal::base_class<LifeCycleCallback::IEnablableAsset>(this));
-
+            if (version == 0) archive(cereal::base_class<LifeCycleCallback::IEnablableAsset>(this));
             if (version >= 0) archive(CEREAL_NVP(fontName_));
             if (version >= 0) archive(CEREAL_NVP(size_));
             if (version >= 0) archive(CEREAL_NVP(thickness_));
@@ -74,7 +72,7 @@ namespace NanamiEngine::Module::Asset
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::TtfFontFile, 0);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::TtfFontFile, 1);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::TtfFontFile);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::TtfFontFile);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::TtfFontFile);

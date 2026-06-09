@@ -91,6 +91,17 @@ std::weak_ptr<Module::GameObject::IGameObject> Scene::GameObject::Instantiate(
     return copiedPrefab;
 }
 
+std::weak_ptr<Module::GameObject::IGameObject> Scene::GameObject::Instantiate(
+    Module::GameObject::IGameObject& gameObject, const glm::vec3 position, const glm::quat rotation)
+{
+    auto copiedPrefab = gameObject.CopyForInstantiate();
+    copiedPrefab->Transform().SetWorldPos(position);
+    copiedPrefab->Transform().SetWorldRot(rotation);
+
+    Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
+    return copiedPrefab;   
+}
+
 std::weak_ptr<Module::GameObject::IGameObject> Instantiate(
     const std::shared_ptr<GameObject::IGameObject>& gameObject,
     const glm::vec3& position,

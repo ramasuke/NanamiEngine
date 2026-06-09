@@ -1,6 +1,8 @@
 ﻿#include "PrefabGameObjectFile.h"
 
 #include "../../../Core/Application/Window/Main/PrefabView/PrefabViewWindow.h"
+#include "../../../Core/Network/Object/Registry/NetworkObjectRegistry.h"
+#include "../../Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
 
 Asset::PrefabGameObjectFile::PrefabGameObjectFile(std::string contentPath)
     : contentPath_(std::move(contentPath))
@@ -10,6 +12,11 @@ Asset::PrefabGameObjectFile::PrefabGameObjectFile(std::string contentPath)
 void Asset::PrefabGameObjectFile::OnEnableAsset()
 {
     content_ = std::make_shared<GameObject::PrefabGameObject>(contentPath_);
+    //NetworkObjectの場合
+    if (content_->Components().Catch<Network::NetworkGameObject>().lock())
+    {
+        Core::Application::ApplicationBase::NetworkPrefabObjectRegistry().Add(content_);
+    }
 }
 
 std::string Asset::PrefabGameObjectFile::GetContentPath() const

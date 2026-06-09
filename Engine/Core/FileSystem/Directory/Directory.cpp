@@ -26,7 +26,7 @@ namespace NanamiEngine::Core::FileSystem
                 if (LibCore::FilePath::IsExtension(filePath, ".meta"))
                     continue;
                 
-                files_.push_back(File::CreateOrLoad(filePath, fileName));
+                files_.push_back(File::CreateOrLoadFile(filePath, fileName));
             }
         }
     }

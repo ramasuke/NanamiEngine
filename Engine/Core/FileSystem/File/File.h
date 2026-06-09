@@ -9,8 +9,8 @@ namespace NanamiEngine::Core::FileSystem
     class File final
     {
     public:
-        [[nodiscard]] static File OnLoadForMeta(const std::string& filePath, std::string fileName);
-        [[nodiscard]] static File CreateOrLoad(std::string filePath, std::string fileName);
+        [[nodiscard]] static File LoadFileForMeta(const std::string& filePath, std::string fileName);
+        [[nodiscard]] static File CreateOrLoadFile(std::string filePath, std::string fileName);
 
         [[nodiscard]] const std::string& GetName() const { return fileName_; }
         [[nodiscard]] const std::shared_ptr<Module::Asset::AssetBase>& GetContent() const { return content_; }

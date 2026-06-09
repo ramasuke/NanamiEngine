@@ -24,10 +24,7 @@ namespace NanamiEngine::Module::Asset
         [[serialize(0)]] Guid guid_;
 #pragma region Serialization Function
 public:
-void OnDrawGui() {
-    LibCore::ImGuiHelper::OnDrawInputField("contentPath_", contentPath_);
-    LibCore::ImGuiHelper::OnDrawInputField("guid_", guid_);
-}
+void OnDrawGui() override;
 
 template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {

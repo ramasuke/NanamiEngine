@@ -153,7 +153,7 @@ void Core::PopupWindow::ProjectWindow::OnDrawToolbar()
                 const std::string filename = std::string(fileName) + extension;
 
                 currentDirectory_->AddFile(
-                    FileSystem::File::CreateOrLoad(
+                    FileSystem::File::CreateOrLoadFile(
                         currentDirectory_->GetPath() + "/" + filename,
                         filename
                     )

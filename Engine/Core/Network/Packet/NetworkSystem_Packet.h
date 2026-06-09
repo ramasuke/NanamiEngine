@@ -1,22 +1,34 @@
 ﻿#pragma once
+#include <cstdint>
+#include "ByteBuffer/Packet_ByteBuffer.h"
+
 namespace NanamiEngine::Core::Network
 {
-    enum class PacketType
+    typedef std::uint8_t PacketType;
+    enum class DefaultPacketType : PacketType
     {
-        Join,
-        SpawnPlayer,
-        Move,
+        AssignPlayerId     = 0,
+        SpawnNetworkObject = 1,
     };
 
     struct Packet final
     {
-        PacketType type_;
-
-        union
+        template<typename EPacketType>
+        requires(std::is_enum_v<EPacketType> || std::is_integral_v<EPacketType>)
+        static Packet Create(const EPacketType eType)
         {
-            struct { int playerId_; } Join;
-            struct { int playerId_; float x_, y_; } Spawn;
-            struct { int playerId_; float x_, y_; } Move;
-        };
+            const PacketType type = static_cast<PacketType>(eType);
+            return Packet(type);
+        }
+
+        [[nodiscard]] ByteBuffer& Data();
+        [[nodiscard]] const ByteBuffer& Data() const;
+        [[nodiscard]] PacketType Type() const { return type_; }
+
+    private:
+        explicit Packet(PacketType type);
+        
+        PacketType type_ = 0;
+        ByteBuffer data_;
     };
 }

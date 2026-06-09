@@ -134,6 +134,13 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
 {
     if (ImGui::TreeNode("GamePlay"))
     {
+        if (ImGui::TreeNode("Network"))
+        {
+            OnDrawTryAddComponentGui<GamePlay::Network::CustomNetworkRunner>(addComponent);
+            ImGui::TreePop();
+            ImGui::Spacing();
+        }
+        
         if (ImGui::TreeNode("UI"))
         {
             OnDrawTryAddComponentGui<GamePlay::Ui::NpcChatting         >(addComponent);

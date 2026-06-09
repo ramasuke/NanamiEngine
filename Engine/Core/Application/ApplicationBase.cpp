@@ -1,6 +1,7 @@
 ﻿#include "ApplicationBase.h"
 
 #include "EffekseerForDXLib.h"
+#include "../../Module/Network/Engine_Network_NetworkRunner.h"
 #include "../../Module/Scene/GameObject/Helper/GameObject.h"
 #include "../FileSystem/Directory/Directory.h"
 #include "../../Module/Scene/GameObject/SceneGameObject/SceneGameObject.h"
@@ -11,7 +12,7 @@
 #include "Time/Time.h"
 #include "../Physics/Physics.h"
 #include "LifeCycle/ApplicationLifeCycle.h"
-#include "../Network/NetworkSystem.h"
+#include "../Network/Object/Registry/NetworkObjectRegistry.h"
 #include "Window/Popup/Group/PopupWindowGroup.h"
 
 namespace NanamiEngine::Core::Application
@@ -57,12 +58,6 @@ namespace NanamiEngine::Core::Application
     void ApplicationBase::Run()
     {
         Time::Update();
-        
-        if (NetworkSystem().has_value())
-        {
-            NetworkSystem()->Update();
-            NetworkSystem()->PollPackets();
-        }
     }
     
     void ApplicationBase::OnChangeWindow(const std::shared_ptr<MainWindow::IMainWindow>& window)
@@ -107,10 +102,10 @@ namespace NanamiEngine::Core::Application
         return assetRegistry;
     }
 
-    std::optional<Network::NetworkSystem>& ApplicationBase::NetworkSystem()
+    Network::PrefabObjectRegistry& ApplicationBase::NetworkPrefabObjectRegistry()
     {
-        static std::optional<Network::NetworkSystem> networkSystem;
-        return networkSystem;
+        static Network::PrefabObjectRegistry networkPrefabRegistry;
+        return networkPrefabRegistry;
     }
 
     Physics& ApplicationBase::Physics()

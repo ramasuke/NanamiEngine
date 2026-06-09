@@ -25,3 +25,9 @@ void Asset::AnimationTreeFile::OnSaveCallback()
 {
     std::make_shared<AnimationTree::AnimationTree>(contentPath_)->OnSave();
 }
+
+void Asset::AnimationTreeFile::OnDrawGui()
+{
+    LibCore::ImGuiHelper::OnDrawInputField("contentPath_", contentPath_);
+    LibCore::ImGuiHelper::OnDrawInputField("guid_", guid_);
+}

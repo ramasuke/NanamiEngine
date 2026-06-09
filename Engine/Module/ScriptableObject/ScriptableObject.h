@@ -12,7 +12,7 @@ namespace NanamiEngine::Module
     public:
         explicit ScriptableObject(std::string contentPath = "");
         virtual ~ScriptableObject() override = default;
-        [[nodiscard]] const Guid& GetGuid()        const override { return guid_;           }
+        [[nodiscard]] const Guid& GetGuid()        const override { return guid_;        }
         [[nodiscard]] std::string GetContentPath() const override { return contentPath_; }
 
     private:

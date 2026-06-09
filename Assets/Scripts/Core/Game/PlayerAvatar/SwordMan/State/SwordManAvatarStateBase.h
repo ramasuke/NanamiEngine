@@ -89,7 +89,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         }
 
     protected:
-        //State Ctor Generated Macro
+        //State Ctor Generated macro
             #define DEFINE_STATE_CONSTRUCTOR(DerivedClass) \
             explicit DerivedClass( \
             const std::shared_ptr<GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateContext>& context, \

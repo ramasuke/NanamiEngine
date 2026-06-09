@@ -15,6 +15,12 @@ namespace NanamiEngine::Module::Asset
         
     }
 
+    void ParticleFile::OnDrawGui()
+    {
+        LibCore::ImGuiHelper::OnDrawInputField("contentPath_", contentPath_);
+        LibCore::ImGuiHelper::OnDrawInputField("guid_", guid_);
+    }
+
     const Guid& ParticleFile::GetGuid        () const { return guid_; }
     int         ParticleFile::LoadDxLibHandle() const
     {

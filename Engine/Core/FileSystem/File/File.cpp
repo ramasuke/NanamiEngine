@@ -13,7 +13,7 @@
 
 namespace NanamiEngine::Core::FileSystem
 {
-    File File::OnLoadForMeta(
+    File File::LoadFileForMeta(
         const std::string& filePath, std::string fileName)
     {
         File file;
@@ -23,7 +23,7 @@ namespace NanamiEngine::Core::FileSystem
         return std::move(file);
     }
     
-    File File::CreateOrLoad(
+    File File::CreateOrLoadFile(
         std::string filePath,
         std::string fileName)
     {
@@ -37,7 +37,7 @@ namespace NanamiEngine::Core::FileSystem
                 file.content_ = asset;
                 return std::move(file);
             }
-            return std::move(OnLoadForMeta(filePath, fileName));
+            return std::move(LoadFileForMeta(filePath, fileName));
         }
     
         File file;

@@ -5,7 +5,7 @@
 
 namespace NanamiEngine::Core::Network
 {
-    class NetworkSystem;
+    class PrefabObjectRegistry;
 }
 
 namespace NanamiEngine::Core::Application
@@ -59,7 +59,8 @@ namespace NanamiEngine::Core::Application
         static FileSystem::ObjectRegistry                    & ObjectRegistry      () { return ObjectRegistry_      (); }
         static Physics                                       & Physics             ();
         static void                                            ResetPhysics        ();
-        static std::shared_ptr<MainWindow::GameWindow>         GameWindow          (); 
+        static std::shared_ptr<MainWindow::GameWindow>         GameWindow          ();
+        static Network::PrefabObjectRegistry                 & NetworkPrefabObjectRegistry();
         
     protected:
         static std::shared_ptr<MainWindow::IMainWindow>& CurrentMainWindow    ();
@@ -68,7 +69,6 @@ namespace NanamiEngine::Core::Application
         static FileSystem::Directory                   & AssetsDirectory_     ();
         static Application::ApplicationLifeCycle       & ApplicationLifeCycle_();
         static FileSystem::ObjectRegistry              & ObjectRegistry_      ();
-        static std::optional<Network::NetworkSystem>   & NetworkSystem        ();
 
         static std::optional<Core::Physics> physics_;
     };

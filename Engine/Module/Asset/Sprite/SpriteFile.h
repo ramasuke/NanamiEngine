@@ -28,7 +28,7 @@ namespace NanamiEngine::Module::Asset
 public:
 void OnDrawGui() override;
 
-        template<class Archive>
+template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<AssetBase>(this));
     archive(cereal::base_class<LifeCycleCallback::IEnablableAsset>(this));
