@@ -4,7 +4,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 0,
+                "cereal_class_version": 1,
                 "value0": {
                     "cereal_class_version": 0
                 },
@@ -17,7 +17,7 @@
                 },
                 "health_": {
                     "value": {
-                        "value_": 86
+                        "value_": 100
                     }
                 },
                 "maxEnhancePowerStack_": {
@@ -26,9 +26,10 @@
                 },
                 "enhancePowerStack_": {
                     "value": {
-                        "value0": 0
+                        "value0": 3
                     }
                 },
+                "attackedShockedStateDuration_secs_": 0.30000001192092898,
                 "dashAttack_": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -43,13 +44,13 @@
                 },
                 "walkSpeed_": {
                     "cereal_class_version": 0,
-                    "value_": 15.0
+                    "value_": 24.0
                 },
                 "runSpeed_": {
-                    "value_": 60.0
+                    "value_": 70.0
                 },
-                "moveRotateSpeed_": 12.0,
-                "jumpPower_": 64.0,
+                "moveRotateSpeed_": 0.10000000149011612,
+                "jumpPower_": 90.0,
                 "onEnableReinforceDuration_secs_": 0.5,
                 "onDisableReinforceDuration_secs_": 0.0,
                 "reinforceRequireEnhance_": {

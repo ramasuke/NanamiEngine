@@ -1,5 +1,6 @@
 ﻿#include "SwordManAvatar_DisableState.h"
 
+#include "../../../../../../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "../../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 

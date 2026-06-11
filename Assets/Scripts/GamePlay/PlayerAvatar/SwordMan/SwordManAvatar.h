@@ -2,7 +2,7 @@
 #include "../PlayerAvatarBase.h"
 #include "../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
 #include "../../../Core/Game/PlayerAvatar/AttackArea/PlayerAvatarAttackArea.h"
-#include "Traits/SwordManAvatarTraits.h"
+#include "../../../Core/Game/PlayerAvatar/SwordMan/Traits/SwordManAvatarTraits.h"
 
 namespace NanamiEngine::Module::Component
 {

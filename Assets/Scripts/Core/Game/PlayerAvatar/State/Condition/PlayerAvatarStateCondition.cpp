@@ -21,7 +21,7 @@ namespace GameCore::PlayerAvatar::State
         Physics::LayerMask mask;
         Physics::AddLayer(mask, Physics::Layer::Default);
        
-        return Physics::Raycast(stateContext_->PlayerAvatarFeatStepPos(),
+        return Physics::Raycast(stateContext_->PlayerAvatarFeatStepPos() + glm::vec3(0.0f, 3.0f, 0.0f),
                                 glm::vec3(0, -1, 0), 8.3f,
                                 mask).Hit();
     }

@@ -17,6 +17,7 @@ namespace GameCore::Scene::Main
             const std::shared_ptr<Sub::IGameSceneStack>& subSceneStack);
 
         [[nodiscard]] Sub::IGameSceneStack& SubSceneStack() const { return *subSceneStack_; }
+        void ClearSubScenes() const;
         
     private:
         const std::shared_ptr<Sub::IGameSceneStack> subSceneStack_;

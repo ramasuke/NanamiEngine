@@ -3,10 +3,10 @@
 #include "../AssetBase.h"
 #include "../Factory/AssetFactory.h"
 
-constexpr auto SCENE_FILE_EXTENSION_LABEL = ".scene";
-
 namespace NanamiEngine::Module::Asset
 {
+    constexpr auto SCENE_FILE_EXTENSION_LABEL = ".scene";
+    
     class SceneFile final : public AssetBase
     {
     public:

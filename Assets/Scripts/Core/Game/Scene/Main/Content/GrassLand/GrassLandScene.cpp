@@ -29,11 +29,11 @@ namespace GameCore::Scene::Main
         scene_ = LoadMainScene();
         Context()->Init();
 
-        playerAvatar_ = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatar(
-            PlayerAvatar::LoadType(),
-            Context()->PlayerSpawnPoint(),
-            nullptr,
-            Context()->CameraGroup());
+        // playerAvatar_ = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatar(
+        //     PlayerAvatar::LoadType(),
+        //     Context()->PlayerSpawnPoint(),
+        //     nullptr,
+        //     Context()->CameraGroup());
     }
 
     void GrassLandScene::Enter()
@@ -41,7 +41,7 @@ namespace GameCore::Scene::Main
         GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
     }
 
-    void GrassLandScene::Dispose()
+    void GrassLandScene::DoDispose()
     {
         PlayerAvatar::SaveType(*playerAvatar_.lock());
         playerAvatar_.lock()->SaveStatus();

@@ -23,7 +23,7 @@ namespace GameCore::Scene::Main
         
     }
     
-    void TitleScene::Dispose()
+    void TitleScene::DoDispose()
     {
         GamePlay::Sound::SoundPlayer::StopAllBgm();
         Core::Application::ApplicationBase::GameWindow()->RemoveContent(scene_.lock());

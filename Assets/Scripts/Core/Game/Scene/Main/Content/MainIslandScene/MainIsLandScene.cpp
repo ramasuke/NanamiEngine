@@ -38,13 +38,14 @@ namespace GameCore::Scene::Main
         GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
     }
 
-    void MainIslandScene::Dispose()
+    void MainIslandScene::DoDispose()
     {
         PlayerAvatar::SaveType(*playerAvatar_.lock());
         playerAvatar_.lock()->SaveStatus();
+        SaveGameProgression(GameProgresion::GrassLandStage);
         
         GamePlay::Sound::SoundPlayer::StopBgm(Context()->BGM());
-        Core::Application::ApplicationBase::GameWindow()->RemoveContent(scene_.lock());   
+        Core::Application::ApplicationBase::GameWindow()->RemoveContent(scene_.lock());
     }
 
     void MainIslandScene::OnDrawGui()

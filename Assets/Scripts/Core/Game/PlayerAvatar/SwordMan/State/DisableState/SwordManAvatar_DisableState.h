@@ -13,6 +13,8 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoFixedUpdate() override;
         void DoUpdate     () override;
         void DoExit       () override;
+        
+        bool MouseLock() override { return false; }
 
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override;
     };

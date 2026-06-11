@@ -31,6 +31,41 @@ void Scene::CopiedPrefabGameObject::InitForCopied(const std::shared_ptr<IGameObj
     guid_       = Guid();
 }
 
+void Scene::CopiedPrefabGameObject::InvokeInitAwakeCallbacks()
+{
+    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
+    auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
+    for (auto& initRender : Components().Catches<LifeCycleCallback::IInitRenderable>())
+    {
+        windowLifeCycle.InitRenderableAddedContentPop();
+        initRender.lock()->InitRenderer();
+    }
+    for (auto& awakable : Components().Catches<LifeCycleCallback::IAwakable>())
+    {
+        windowLifeCycle.AwakableAddedContentPop();
+        awakable.lock()->OnAwake();
+    }
+    for (const auto& child : Transform().GetChildren())
+    {
+        child->InvokeInitAwakeCallbacks();
+    }
+}
+
+void Scene::CopiedPrefabGameObject::InvokeInitStartCallbacks()
+{
+    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
+    auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
+    for (auto& startable : Components().Catches<LifeCycleCallback::IStartable>())
+    {
+        windowLifeCycle.StartableAddedContentPop();
+        startable.lock()->OnStart();
+    }
+    for (const auto& child : Transform().GetChildren())
+    {
+        child->InvokeInitStartCallbacks();
+    }
+}
+
 void Scene::CopiedPrefabGameObject::SetEnable(const bool enable)
 {
     Transform().OnEnable(enable);
@@ -62,24 +97,8 @@ std::shared_ptr<GameObject::IGameObject> Scene::CopiedPrefabGameObject::CopyForI
     );
     Core::Application::ApplicationBase::ApplicationLifeCycle().OnUpdateFieldInittables();
     copied->InitGameObject(std::weak_ptr<IGameObject>(), copied);
-    
-    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
-    auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
-    for (auto& initRender : copied->Components().Catches<LifeCycleCallback::IInitRenderable>())
-    {
-        windowLifeCycle.InitRenderableAddedContentPop();
-        initRender.lock()->InitRenderer();
-    }
-    for (auto& awakable : copied->Components().Catches<LifeCycleCallback::IAwakable>())
-    {
-        windowLifeCycle.AwakableAddedContentPop();
-        awakable.lock()->OnAwake();
-    }
-    for (auto& startable : copied->Components().Catches<LifeCycleCallback::IStartable>())
-    {
-        windowLifeCycle.StartableAddedContentPop();
-        startable.lock()->OnStart();
-    }
+    copied->InvokeInitAwakeCallbacks();
+    copied->InvokeInitStartCallbacks();
     
     return copied;
 }
@@ -122,8 +141,7 @@ void Scene::CopiedPrefabGameObject::OnDrawGui()
         if (Core::Application::ApplicationBase::GameWindow() == Core::Application::ApplicationBase::GetMainWindow())
         {
             Core::Application::ApplicationBase::GameWindow()
-                ->MainScene()
-                .RemoveGameObject(std::weak_ptr(ownPtr_));
+                ->RemoveGameObject(std::weak_ptr(ownPtr_));
         }
         else if (Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::PrefabViewWindow>() == Core::Application::ApplicationBase::GetMainWindow())
         {

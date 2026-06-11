@@ -113,6 +113,7 @@ void GameObject::AddComponent::OnDrawGameCoreGui(std::shared_ptr<Component::Comp
                 OnDrawTryAddComponentGui<GameCore::Scene::TitleSceneContext>(addComponent);
                 OnDrawTryAddComponentGui<GameCore::Scene::FirstTouchDownMainIsLandSceneContext>(addComponent);
                 OnDrawTryAddComponentGui<GameCore::Scene::MainIslandSceneContext>(addComponent);
+                OnDrawTryAddComponentGui<GameCore::Scene::GrassLandSceneContext>(addComponent);
                 ImGui::TreePop();
                 ImGui::Spacing();
             }

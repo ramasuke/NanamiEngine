@@ -49,6 +49,13 @@ namespace NanamiEngine::Core::Application
     template <LifeCycleCallbackType T>
     void LifeCycleSortCallbackGroup<T>::OnUpdatePushedContents()
     {
+        // 削除
+        while (!removeContentQueue_.empty())
+        {
+            contents_.erase(removeContentQueue_.front());
+            removeContentQueue_.pop();
+        }
+        
         // 追加
         while (!addContentQueue_.empty())
         {
@@ -61,15 +68,7 @@ namespace NanamiEngine::Core::Application
 
             addContentQueue_.pop();
         }
-
-        // 削除
-        while (!removeContentQueue_.empty())
-        {
-            contents_.erase(removeContentQueue_.front());
-            removeContentQueue_.pop();
-        }
     }
-
 
     template <LifeCycleCallbackType T>
     void LifeCycleSortCallbackGroup<T>::Invoke(const std::function<void(T&)>& func)

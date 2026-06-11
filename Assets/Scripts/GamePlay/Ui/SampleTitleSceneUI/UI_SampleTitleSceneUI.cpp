@@ -35,6 +35,9 @@ namespace GamePlay::Ui
         case GameCore::GameProgresion::MainIsland:
             GameCore::Game::Instance().Scenes().RequestChangeScene(GameCore::Scene::Main::SceneType::MainIsland);
             break;
+        case GameCore::GameProgresion::GrassLandStage:
+            GameCore::Game::Instance().Scenes().RequestChangeScene(GameCore::Scene::Main::SceneType::GrassLand);
+            break;
         default: 
             throw std::runtime_error("Gameの進行状況に応じたScene遷移が定義されていません。");
         }

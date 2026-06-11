@@ -16,8 +16,9 @@ namespace NanamiEngine::Module::GameObject
         explicit PrefabGameObject(const std::string& filePath = "");
         
         void InitGameObject(const std::weak_ptr<IGameObject>& parent, const std::shared_ptr<IGameObject>& ownPtr) override;
-        void InitForCopied(const std::shared_ptr<IGameObject>& ownPtr, bool isActive, std::string name,
-            ComponentGroup components, GameObject::Transform transform) override;
+        void InitForCopied(const std::shared_ptr<IGameObject>& ownPtr, bool isActive, std::string name, ComponentGroup components, GameObject::Transform transform) override;
+        void InvokeInitAwakeCallbacks() override;
+        void InvokeInitStartCallbacks() override;
         void InitPrefab(const std::string& filePath);
         [[nodiscard]] const Guid& GetGuid() const   override { return guid_;         }
         ComponentGroup& Components()                override { return components_;   }

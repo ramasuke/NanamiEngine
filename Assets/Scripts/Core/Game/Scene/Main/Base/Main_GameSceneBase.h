@@ -20,11 +20,16 @@ namespace GameCore::Scene::Main
         virtual ~GameMainSceneBase() override = default;
         
     private:
+        void Dispose() override;
+        
         std::shared_ptr<ContextT> context_;
         GameSceneBaseContext      baseContext_;
         
     protected:
-        /** @brief 以下からサンドボックスパターン */
+        /** template method pattern */
+        virtual void DoDispose() = 0;
+        
+        /** @brief SandBox pattern */
         [[nodiscard]] std::shared_ptr<ContextT>   Context()                    const { return context_; }
         [[nodiscard]] GameProgresion     MainScenarioProgression()    const { return LoadGameProgression();   }
         [[nodiscard]] Sub::IGameSceneStack&       SubScene() const { return baseContext_.SubSceneStack(); }
@@ -44,7 +49,14 @@ namespace GameCore::Scene::Main
     {
         
     }
-    
+
+    template <typename ContextT> requires std::derived_from<ContextT, SceneContextBase>
+    void GameMainSceneBase<ContextT>::Dispose()
+    {
+        DoDispose();
+        baseContext_.ClearSubScenes();
+    }
+
     template <typename ContextT> requires std::derived_from<ContextT, SceneContextBase>
     std::weak_ptr<NanamiEngine::Scene::Scene> GameMainSceneBase<ContextT>::LoadMainScene() const
     {

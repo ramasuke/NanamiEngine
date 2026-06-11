@@ -11,6 +11,8 @@ namespace NanamiEngine::Scene
     public:
         void InitGameObject(const std::weak_ptr<IGameObject>& parent, const std::shared_ptr<IGameObject>& ownPtr) override;
         void InitForCopied(const std::shared_ptr<IGameObject>& ownPtr, bool isActive, std::string name, Module::GameObject::ComponentGroup components, Module::GameObject::Transform transform) override;
+        void InvokeInitAwakeCallbacks() override;
+        void InvokeInitStartCallbacks() override;
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
         [[nodiscard]] const std::string& Name() const override { return name_; }
         Module::GameObject::ComponentGroup& Components() override { return components_; }

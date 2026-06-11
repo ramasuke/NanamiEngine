@@ -1,6 +1,7 @@
 ﻿#include "MainProgression.h"
 
 #include "../../../../../Engine/Module/LocalPrefs/Engine_Module_LocalPrefs.h"
+#include "../../../../../Engine/Module/LocalPrefs/Editor/Engine_Module_LocalPrefs_Editor_ToolBar.h"
 
 namespace GameCore
 {
@@ -19,4 +20,10 @@ namespace GameCore
             PROGRESSION_SAVE_FILE_KEY,
             GameProgresion::FirstTouchDownMainIsLand);
     }
+
+    REGISTER_LOCAL_PREF_WITH_PATH(
+        GameProgresion,
+        PROGRESSION_SAVE_FILE_KEY,
+        GameProgresion::FirstTouchDownMainIsLand,
+        PROGRESSION_SAVE_FILE_PATH)
 }

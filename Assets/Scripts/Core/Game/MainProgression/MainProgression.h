@@ -8,6 +8,7 @@ namespace GameCore
     {
         FirstTouchDownMainIsLand = 0,
         MainIsland = 1,
+        GrassLandStage = 2,
     };
     
     void SaveGameProgression(const GameProgresion& progression);

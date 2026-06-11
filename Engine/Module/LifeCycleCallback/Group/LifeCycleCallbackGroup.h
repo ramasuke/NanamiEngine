@@ -47,18 +47,18 @@ namespace NanamiEngine::Core::Application
     template <LifeCycleCallbackType T>
     void LifeCycleCallbackGroup<T>::OnUpdatePushedContents()
     {
-        while (!addContentQueue_.empty())
-        {
-            auto& weakPtr = addContentQueue_.front();
-            contents_.insert(weakPtr);
-            addContentQueue_.pop();
-        }
-
         while (!removeContentQueue_.empty())
         {
             auto& weakPtr = removeContentQueue_.front();
             contents_.erase(weakPtr);
             removeContentQueue_.pop();
+        }
+        
+        while (!addContentQueue_.empty())
+        {
+            auto& weakPtr = addContentQueue_.front();
+            contents_.insert(weakPtr);
+            addContentQueue_.pop();
         }
     }
 }

@@ -66,6 +66,10 @@ namespace GameCore
         {
             sceneGroup_->RequestChangeScene(Scene::Main::SceneType::MainIsland);
         }
+        if (ImGui::Button("ChangeGrassLandScene"))
+        {
+            sceneGroup_->RequestChangeScene(Scene::Main::SceneType::GrassLand);
+        }
 
         ImGuiHelper::OnDrawInputField("subSceneGroup_"      , subSceneGroup_   );
         ImGuiHelper::OnDrawInputField("subSceneContexts_"   , subSceneContexts_);

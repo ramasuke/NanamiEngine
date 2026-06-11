@@ -13,5 +13,6 @@ namespace GameCore::Scene::Sub
         virtual ~IGameSceneStack() = default;
         virtual void Push(const SceneType& type) = 0;
         virtual void Pop (const SceneType& type) = 0;
+        virtual void Clear() = 0;
     };
 }

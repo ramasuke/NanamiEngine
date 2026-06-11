@@ -50,6 +50,41 @@ void GameObject::PrefabGameObject::InitForCopied(const std::shared_ptr<IGameObje
     guid_       = Guid();
 }
 
+void GameObject::PrefabGameObject::InvokeInitAwakeCallbacks()
+{
+    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
+    auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
+    for (auto& initRender : Components().Catches<LifeCycleCallback::IInitRenderable>())
+    {
+        windowLifeCycle.InitRenderableAddedContentPop();
+        initRender.lock()->InitRenderer();
+    }
+    for (auto& awakable : Components().Catches<LifeCycleCallback::IAwakable>())
+    {
+        windowLifeCycle.AwakableAddedContentPop();
+        awakable.lock()->OnAwake();
+    }
+    for (const auto& child : Transform().GetChildren())
+    {
+        child->InvokeInitAwakeCallbacks();
+    }
+}
+
+void GameObject::PrefabGameObject::InvokeInitStartCallbacks()
+{
+    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
+    auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
+    for (auto& startable : Components().Catches<LifeCycleCallback::IStartable>())
+    {
+        windowLifeCycle.StartableAddedContentPop();
+        startable.lock()->OnStart();
+    }
+    for (const auto& child : Transform().GetChildren())
+    {
+        child->InvokeInitStartCallbacks();
+    }
+}
+
 void GameObject::PrefabGameObject::InitPrefab(const std::string& filePath)
 {
     filePath_ = filePath;
@@ -272,25 +307,9 @@ CopyForInstantiate()
     );
     Core::Application::ApplicationBase::ApplicationLifeCycle().OnUpdateFieldInittables();
     copied->InitGameObject(std::weak_ptr<IGameObject>(), copied);
+    copied->InvokeInitAwakeCallbacks();
+    copied->InvokeInitStartCallbacks();
     
-    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
-    auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
-    for (auto& initRender : copied->Components().Catches<LifeCycleCallback::IInitRenderable>())
-    {
-        windowLifeCycle.InitRenderableAddedContentPop();
-        initRender.lock()->InitRenderer();
-    }
-    for (auto& awakable : copied->Components().Catches<LifeCycleCallback::IAwakable>())
-    {
-        windowLifeCycle.AwakableAddedContentPop();
-        awakable.lock()->OnAwake();
-    }
-    for (auto& startable : copied->Components().Catches<LifeCycleCallback::IStartable>())
-    {
-        windowLifeCycle.StartableAddedContentPop();
-        startable.lock()->OnStart();
-    }
-
     return copied;
 }
 

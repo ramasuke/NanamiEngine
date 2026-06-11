@@ -25,6 +25,14 @@ namespace GameCore::Scene::Sub
         changeRequests_.emplace_back(ChangeRequestType::Pop, type);
     }
 
+    void GameSceneGroup::Clear()
+    {
+        for (const auto& type : scenes_ | std::views::keys)
+        {
+            changeRequests_.emplace_back(ChangeRequestType::Pop, type);
+        }
+    }
+
     void GameSceneGroup::Update()
     {
         ProcessRequests();

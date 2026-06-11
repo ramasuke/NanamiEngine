@@ -17,10 +17,10 @@ void Scene::SceneGameObject::InitGameObject(const std::weak_ptr<IGameObject>& pa
 }
 
 void Scene::SceneGameObject::InitForCopied(const std::shared_ptr<IGameObject>& ownPtr,
-                                                                      const bool isActive,
-                                                                      std::string name,
-                                                                      Module::GameObject::ComponentGroup components,
-                                                                      Module::GameObject::Transform transform)
+                                           const bool isActive,
+                                           std::string name,
+                                           Module::GameObject::ComponentGroup components,
+                                           Module::GameObject::Transform transform)
 {
     ownPtr_     = ownPtr;
     isActive_   = isActive;
@@ -30,6 +30,41 @@ void Scene::SceneGameObject::InitForCopied(const std::shared_ptr<IGameObject>& o
     transform_  = std::move(transform);
     transform_  .InitForCopied();
     guid_       = Guid();
+}
+
+void Scene::SceneGameObject::InvokeInitAwakeCallbacks()
+{
+    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
+    auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
+    for (auto& initRender : Components().Catches<LifeCycleCallback::IInitRenderable>())
+    {
+        windowLifeCycle.InitRenderableAddedContentPop();
+        initRender.lock()->InitRenderer();
+    }
+    for (auto& awakable : Components().Catches<LifeCycleCallback::IAwakable>())
+    {
+        windowLifeCycle.AwakableAddedContentPop();
+        awakable.lock()->OnAwake();
+    }
+    for (const auto& child : Transform().GetChildren())
+    {
+        child->InvokeInitAwakeCallbacks();
+    }
+}
+
+void Scene::SceneGameObject::InvokeInitStartCallbacks()
+{
+    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
+    auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
+    for (auto& startable : Components().Catches<LifeCycleCallback::IStartable>())
+    {
+        windowLifeCycle.StartableAddedContentPop();
+        startable.lock()->OnStart();
+    }
+    for (const auto& child : Transform().GetChildren())
+    {
+        child->InvokeInitStartCallbacks();
+    }
 }
 
 void Scene::SceneGameObject::SetEnable(const bool enable)
@@ -63,25 +98,8 @@ std::shared_ptr<GameObject::IGameObject> Scene::SceneGameObject::CopyForInstanti
     );
     Core::Application::ApplicationBase::ApplicationLifeCycle().OnUpdateFieldInittables();
     copied->InitGameObject(std::weak_ptr<IGameObject>(), copied);
-
-    //REFACTOR: コールバックの実行順序が分からなくなってしまうクソコード、しかしリファクタリングするためにはWindowのコールバックをComponentGroupが発火するようにしなければならないため、修正箇所が多すぎるので放置。
-    auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
-    for (auto& initRender : copied->Components().Catches<LifeCycleCallback::IInitRenderable>())
-    {
-        windowLifeCycle.InitRenderableAddedContentPop();
-        initRender.lock()->InitRenderer();
-    }
-    for (auto& awakable : copied->Components().Catches<LifeCycleCallback::IAwakable>())
-    {
-        windowLifeCycle.AwakableAddedContentPop();
-        awakable.lock()->OnAwake();
-    }
-    for (auto& startable : copied->Components().Catches<LifeCycleCallback::IStartable>())
-    {
-        windowLifeCycle.StartableAddedContentPop();
-        startable.lock()->OnStart();
-    }
-    
+    copied->InvokeInitAwakeCallbacks();
+    copied->InvokeInitStartCallbacks();
     return copied;
 }
 
@@ -127,8 +145,7 @@ void Scene::SceneGameObject::OnDrawGui()
         if (Core::Application::ApplicationBase::GameWindow() == Core::Application::ApplicationBase::GetMainWindow())
         {
             Core::Application::ApplicationBase::GameWindow()
-                ->MainScene()
-                .RemoveGameObject(std::weak_ptr(ownPtr_));
+                ->RemoveGameObject(ownPtr_);
         }
         else if (Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::PrefabViewWindow>() == Core::Application::ApplicationBase::GetMainWindow())
         {

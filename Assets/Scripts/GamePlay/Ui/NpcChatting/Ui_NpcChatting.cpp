@@ -11,7 +11,11 @@ namespace GamePlay::Ui
         const std::string& npcName,
         const Asset::NpcChat& npcChat) const
     {
+        if (!npcNameTextBox_)
+            co_return;
+        
         Entity().lock()->SetEnable(true);
+        
         npcNameTextBox_->SetText(npcName);
         
         const float chatCharInterval_secs         = GameCore::GameSettings::GetInstance().GetChatTextCharInterval_secs();
@@ -19,6 +23,9 @@ namespace GamePlay::Ui
 
         for (const auto& chat : npcChat.Get())
         {
+            if (!textRenderer_)
+                break;
+            
             textRenderer_->SetFont(chat.Font());
             textRenderer_->SetTextColor(chat.TextColor());
 
@@ -29,10 +36,15 @@ namespace GamePlay::Ui
             for (const char charCharText : fullText)
             {
                 currentText.push_back(charCharText);
+                if (!textRenderer_)
+                    break;
+                
                 textRenderer_->SetText(currentText);
-
                 co_await Coroutine::WaitForSeconds(chatCharInterval_secs);
             }
+
+            if (!textRenderer_)
+                break;
             
             co_await Coroutine::WaitForSeconds(chatTextSentenceInterval_secs);
         }

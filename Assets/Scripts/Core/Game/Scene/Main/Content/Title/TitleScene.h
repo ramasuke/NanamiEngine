@@ -7,12 +7,12 @@ namespace GameCore::Scene::Main
     class TitleScene final : public GameMainSceneBase<TitleSceneContext>
     {
     public:
-        explicit TitleScene(const std::weak_ptr<TitleSceneContext>& coSntext, GameSceneBaseContext baseContext);
+        explicit TitleScene(const std::weak_ptr<TitleSceneContext>& context, GameSceneBaseContext baseContext);
 
     private:
         void Init     () override;
         void Enter    () override;
-        void Dispose  () override;
+        void DoDispose() override;
         void OnDrawGui() override;
 
     private:

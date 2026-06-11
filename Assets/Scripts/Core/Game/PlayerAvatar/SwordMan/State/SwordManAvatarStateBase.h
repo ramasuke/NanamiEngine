@@ -29,6 +29,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         void OnUpdate     () override;
         void OnFixedUpdate() override;
         void OnExit       () override;
+        [[nodiscard]] virtual bool MouseLock() { return true; }
         
     private:
         float stateDuring_secs_;

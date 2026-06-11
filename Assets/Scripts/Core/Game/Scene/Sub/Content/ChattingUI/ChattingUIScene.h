@@ -7,12 +7,14 @@ namespace GameCore::Scene::Sub
     class ChattingUIScene final : public GameSceneBase<ChattingUISceneContext> 
     {
     public:
-        explicit ChattingUIScene    (const std::shared_ptr<ChattingUISceneContext>& sceneContext);
+        explicit ChattingUIScene(const std::shared_ptr<ChattingUISceneContext>& sceneContext);
         [[nodiscard]] ChattingUISceneContext& Context() const { return SceneContext(); }
 
-    protected:
+    private:
         void DoInit   () override;
         void DoDispose() override;
         void DoDrawGui() override;
+        
+        std::weak_ptr<NanamiEngine::Scene::Scene> scene_;
     };
 }

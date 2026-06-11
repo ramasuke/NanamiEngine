@@ -47,6 +47,9 @@ namespace GamePlay::Prop
 
     void Canon::OnUpdate()
     {
+        if (!cannonUi_)
+            return;
+        
         shootCooldownDuring_secs_ -= Time::DeltaTime();
         shootCooldownDuring_secs_ = std::max(shootCooldownDuring_secs_, 0.0f);
         cannonUi_->SetText("Cooldown: " + std::to_string(shootCooldownDuring_secs_));

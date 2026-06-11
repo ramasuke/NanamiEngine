@@ -61,7 +61,7 @@ namespace GameCore::Scene::Main
         Coroutine::StartCoroutine(aboardAirShipMovie_->ToTask());
     }
 
-    void FirstTouchDownMainIsLandScene::Dispose()
+    void FirstTouchDownMainIsLandScene::DoDispose()
     {
         PlayerAvatar::SaveType(*playerAvatar_.lock());
         playerAvatar_.lock()->SaveStatus();

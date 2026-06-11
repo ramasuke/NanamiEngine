@@ -12,13 +12,13 @@ namespace GameCore::Scene::Sub
 
     void ChattingUIScene::DoInit()
     {
-        LoadScene();
+        scene_ = LoadScene();
         Context().Initialize();
     }
 
     void ChattingUIScene::DoDispose()
     {
-        
+        Core::Application::ApplicationBase::GameWindow()->RemoveContent(scene_.lock());   
     }
 
     void ChattingUIScene::DoDrawGui()

@@ -55,8 +55,8 @@ namespace NanamiEngine::Module::Physics
             assert(otherPtr);
 
             sensorEnterGroup_.Add({
-                { sensor.GetID(), other.GetID() },
-                {
+                .key_ = { sensor.GetID(), other.GetID() },
+                .maniFold_ = {
                     {
                         manifold.mWorldSpaceNormal.GetX(),
                         manifold.mWorldSpaceNormal.GetY(),
@@ -64,8 +64,8 @@ namespace NanamiEngine::Module::Physics
                     },
                     manifold.mPenetrationDepth
                 },
-                sensorPtr,
-                otherPtr
+                .sensorUserData_ = sensorPtr,
+                .otherUserData_ = otherPtr
             });
 
             return;

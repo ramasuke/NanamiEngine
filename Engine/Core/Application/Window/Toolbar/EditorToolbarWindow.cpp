@@ -4,6 +4,7 @@
 #include "../../../FileSystem/Directory/Directory.h"
 #include "../../Configuration/ApplicationConfiguration.h"
 #include "../../ApplicationBase.h"
+#include "../../../../Module/LocalPrefs/Editor/Engine_Module_LocalPrefs_Editor_ToolBar.h"
 #include "../Main/Factory/MainWindowFactory.h"
 #include "../Main/Game/GameWindow.h"
 #include "../Popup/Group/PopupWindowGroup.h"
@@ -27,6 +28,12 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
         ImGui::OpenPopup("ConfigWindow");
     }
     ImGui::SameLine();
+
+    if (ImGui::BeginPopup("ConfigWindow"))
+    {
+        
+        ImGui::EndPopup();
+    }
     
     if (!Application::ApplicationBase::GameWindow()->IsPlaying())
     {
@@ -70,6 +77,25 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
                 Application::ApplicationBase::OnChangeWindow(loadWindow());
             }
         }
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::Button("LocalPrefs"))
+    {
+        ImGui::OpenPopup("LocalPrefsWindow");
+    }
+    ImGui::SameLine();
+
+    if (ImGui::BeginPopup("LocalPrefsWindow"))
+    {
+        for (const auto& [key, typeName, subPath, saveDefault] : LocalPrefs::Editor::LocalPrefsRegistry::GetInstance().GetPrefsList())
+        {
+            if (ImGui::Button(("key: " + key + ", typeName: " + typeName + ", subPath: " + subPath).c_str()))
+            {
+                saveDefault();
+            }
+        }
+        
         ImGui::EndPopup();
     }
     ImGui::End();

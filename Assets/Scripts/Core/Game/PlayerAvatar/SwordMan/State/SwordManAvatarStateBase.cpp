@@ -1,5 +1,6 @@
 ﻿#include "SwordManAvatarStateBase.h"
 
+#include "../../../../../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
@@ -24,6 +25,13 @@ namespace GameCore::PlayerAvatar::SwordMan
     
     void SwordManAvatarStateBase::OnUpdate()
     {
+        if (MouseLock())
+        {
+            static int centerX = Core::Application::Configuration::WINDOW_WIDTH_SIZE  / 2;
+            static int centerY = Core::Application::Configuration::WINDOW_HEIGHT_SIZE / 2;
+            SetMousePoint(centerX, centerY);
+        }
+        
         DoUpdate();
         stateDuring_secs_ += Time::DeltaTime();
     }

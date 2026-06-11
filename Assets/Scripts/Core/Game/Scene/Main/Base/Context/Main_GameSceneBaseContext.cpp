@@ -1,5 +1,7 @@
 ﻿#include "Main_GameSceneBaseContext.h"
 
+#include "../../../Sub/Group/Sub_IGameSceneGroup.h"
+
 namespace GameCore::Scene::Main
 {
     GameSceneBaseContext::GameSceneBaseContext(
@@ -7,5 +9,10 @@ namespace GameCore::Scene::Main
         : subSceneStack_(subSceneStack)
     {
         
+    }
+
+    void GameSceneBaseContext::ClearSubScenes() const
+    {
+        subSceneStack_->Clear();
     }
 }

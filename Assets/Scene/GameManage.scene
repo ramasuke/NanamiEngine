@@ -131,7 +131,7 @@
                                     "value_": "938584F7-A185-47E2-9B6D-AEEDE0B07FF6"
                                 },
                                 "components_": {
-                                    "componentCount": 3,
+                                    "componentCount": 4,
                                     "component_0": {
                                         "polymorphic_id": 2147483651,
                                         "polymorphic_name": "GameCore::Scene::TitleSceneContext",
@@ -631,6 +631,89 @@
                                                 }
                                             }
                                         }
+                                    },
+                                    "component_3": {
+                                        "polymorphic_id": 2147483654,
+                                        "polymorphic_name": "GameCore::Scene::GrassLandSceneContext",
+                                        "ptr_wrapper": {
+                                            "id": 2147483689,
+                                            "data": {
+                                                "cereal_class_version": 1,
+                                                "value0": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "6FC0C26B-6743-4FF5-AE07-AE0D738672CC"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "loadSceneFile_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483690,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "184B040B-376C-43E6-A8AC-AB0B839E0EB9"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "playerSpawnPoint_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483691,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "87264C60-0A8E-4D4F-B3B7-61B9792BD6BD"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "swordmanCameraGroup_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483692,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "FBEF1878-FDFF-4F6B-9742-032B781CAB2A"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "playerAvatarFactory_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483693,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "8A77D9A4-21BE-4509-99E7-4CA85FF571E7"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "bgm_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147483694,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "3BB73C00-3CDA-4714-A248-D3875704873C"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 },
                                 "transform_": {
@@ -684,7 +767,7 @@
                     "child": {
                         "polymorphic_id": 1,
                         "ptr_wrapper": {
-                            "id": 2147483689,
+                            "id": 2147483695,
                             "data": {
                                 "value0": {
                                     "value0": {}
@@ -697,10 +780,10 @@
                                 "components_": {
                                     "componentCount": 1,
                                     "component_0": {
-                                        "polymorphic_id": 2147483654,
+                                        "polymorphic_id": 2147483655,
                                         "polymorphic_name": "GameCore::Scene::Sub::ChattingUISceneContext",
                                         "ptr_wrapper": {
-                                            "id": 2147483690,
+                                            "id": 2147483696,
                                             "data": {
                                                 "cereal_class_version": 1,
                                                 "value0": {
@@ -715,7 +798,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483691,
+                                                                "id": 2147483697,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "896A4B04-93BC-4BF6-8C54-517174FA9BAD"
@@ -730,7 +813,7 @@
                                                     "value0": {
                                                         "polymorphic_id": 1073741824,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483692,
+                                                            "id": 2147483698,
                                                             "data": {
                                                                 "cereal_class_version": 0,
                                                                 "value0": {

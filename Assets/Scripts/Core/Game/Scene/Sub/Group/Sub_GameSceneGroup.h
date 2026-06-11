@@ -21,6 +21,7 @@ namespace GameCore::Scene::Sub
 
         void Push(const SceneType& type) override;
         void Pop(const SceneType& type) override;
+        void Clear() override;
 
         void Update();
         void OnDrawGui() const;
@@ -32,6 +33,7 @@ namespace GameCore::Scene::Sub
     private:
         void ProcessRequests();
 
+    private:
         std::unordered_map<SceneType, std::shared_ptr<IGameScene>> scenes_;
         std::unique_ptr<SceneFactory> factory_;
 

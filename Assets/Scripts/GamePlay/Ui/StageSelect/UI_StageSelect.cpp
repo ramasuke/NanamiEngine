@@ -12,28 +12,35 @@ namespace GamePlay::Ui
     void StageSelectUi::OnAwake()
     {
         backGroundMask_ = GameObject::CatchChild<NanamiUi::BlendImageRenderer>(Entity(), backGroundMaskName_);
+        stageSelectBackGroundMask_ = GameObject::CatchChild<NanamiUi::BlendImageRenderer>(Entity(), stageSelectBackGroundMaskName_);
+        worldMovieRenderer_        = GameObject::CatchChild<NanamiUi::MovieRenderer>(Entity(), worldMovieRendererName_);
+        worldEnterButton_          = GameObject::CatchChild<NanamiUi::Button>(Entity(), worldEnterButtonName_);
+    }
+    
+    void StageSelectUi::OnStart()
+    {
         for (const auto& buttonName : stageSelectButtonNames_)
         {
             auto selectStageUi = GameObject::CatchChild<StageSelectStageUi>(Entity(), buttonName);
-            selectStageUi->SubscribeOnClickSelectButton([this, selectStageUi]
+            std::weak_ptr weakSelectStageUi = selectStageUi;
+            selectStageUi->SubscribeOnClickSelectButton([this, weakSelectStageUi]
             {
-                selectedSceneType_ = selectStageUi->SceneType();
+                selectedSceneType_ = weakSelectStageUi.lock()->SceneType();
                 hasSelectedSceneType_ = true;
             });
             stageSelectButtons_.push_back(CreateField<StageSelectStageUi>(selectStageUi));
         }
-        stageSelectBackGroundMask_ = GameObject::CatchChild<NanamiUi::BlendImageRenderer>(Entity(), stageSelectBackGroundMaskName_);
-        worldMovieRenderer_        = GameObject::CatchChild<NanamiUi::MovieRenderer>(Entity(), worldMovieRendererName_);
-        worldEnterButton_          = GameObject::CatchChild<NanamiUi::Button>(Entity(), worldEnterButtonName_);
+
         worldEnterButton_->OnClick().subscribe([this](NanamiUi::MouseState)
         {
             if (!hasSelectedSceneType_)
                 return;
             
-            // GameCore::Game::Instance().Scenes().RequestChangeScene(selectedSceneType_);
+            GameCore::Game::Instance().Scenes().RequestChangeScene(selectedSceneType_);
         });
+        
+        Coroutine::StartCoroutine(StartStageSelectAsync());
     }
-    void StageSelectUi::OnStart() { Coroutine::StartCoroutine(StartStageSelectAsync()); }
 
     void StageSelectUi::OnDestroy()
     {

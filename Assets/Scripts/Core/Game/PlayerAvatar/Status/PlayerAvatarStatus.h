@@ -1,7 +1,4 @@
 ﻿#pragma once
-#include <type_traits>
-
-#include "IPlayerAvatarStatus.h"
 #include "../../../../../../Engine/Module/LocalPrefs/Engine_Module_LocalPrefs.h"
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 
