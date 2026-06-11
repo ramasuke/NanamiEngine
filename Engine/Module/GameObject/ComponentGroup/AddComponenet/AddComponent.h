@@ -14,6 +14,7 @@ namespace NanamiEngine::Module::GameObject
         static void OnDrawUiRendererGui (std::shared_ptr<Component::ComponentBase>& addComponent);
         static void OnDrawColliderGui   (std::shared_ptr<Component::ComponentBase>& addComponent);
         static void OnDrawCinemachineGui(std::shared_ptr<Component::ComponentBase>& addComponent);
+        static void OnDrawNetworkGui    (std::shared_ptr<Component::ComponentBase>& addComponent);
         static void OnDrawGameCoreGui   (std::shared_ptr<Component::ComponentBase>& addComponent);
         static void OnDrawGamePlayGui   (std::shared_ptr<Component::ComponentBase>& addComponent);
         

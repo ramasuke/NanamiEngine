@@ -17,7 +17,7 @@ namespace GameCore::Scene::Main
     private:
         void Init     () override;
         void Enter    () override;
-        void DoDispose  () override;
+        void DoDispose() override;
         void OnDrawGui() override;
         
         std::weak_ptr<NanamiEngine::Scene::Scene> scene_;

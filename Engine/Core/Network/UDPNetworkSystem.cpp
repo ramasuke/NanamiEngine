@@ -2,7 +2,7 @@
 
 #include "../../Module/GameObject/PrefabGameObject/PrefabGameObject.h"
 #include "../Application/ApplicationBase.h"
-#include "../Application/Configuration/ApplicationConfiguration.h"
+#include "../Application/Configuration/Network/ApplicationConfiguration_Network.h"
 #include "Packet/Codec/Packet_Codec.h"
 
 namespace NanamiEngine::Core::Network
@@ -99,7 +99,7 @@ namespace NanamiEngine::Core::Network
 
     void UDPNetworkSystem::Send(const Packet& packet)
     {
-        ByteBuffer buffer = PacketCodec::Encode(packet);
+        const ByteBuffer buffer = PacketCodec::Encode(packet);
         ENetPacket* p = enet_packet_create(
             buffer.Data(),
             buffer.Size(),

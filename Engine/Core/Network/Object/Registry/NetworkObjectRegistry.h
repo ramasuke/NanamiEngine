@@ -15,7 +15,6 @@ namespace NanamiEngine::Core::Network
     {
     public:
         void Add(const std::weak_ptr<Module::GameObject::PrefabGameObject>& object);
-        void Remove(const Guid& guid);
 
         [[nodiscard]] std::weak_ptr<Module::GameObject::PrefabGameObject> Catch(const Guid& guid) const;
 

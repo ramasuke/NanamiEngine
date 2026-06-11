@@ -22,14 +22,15 @@ namespace NanamiEngine::Core::Application
     ApplicationBase::ApplicationBase()
     {
         /** ApplicationConfiguの初期化 */
-        ChangeWindowMode     (true          );
-        SetGraphMode         (Configuration::WINDOW_WIDTH_SIZE, Configuration::WINDOW_HEIGHT_SIZE, Configuration::WINDOW_COLOR_SCALE);
-        SetUseDirect3DVersion(DX_DIRECT3D_11);
-        SetUseZBuffer3D      (TRUE          );
-        SetWriteZBuffer3D    (TRUE          );
-        SetDrawScreen        (DX_SCREEN_BACK);
-        SetUseIMEFlag        (TRUE          );
-        DxLib_Init           (              );
+        SetDoubleStartValidFlag(true          );
+        ChangeWindowMode       (true          );
+        SetGraphMode           (Configuration::WINDOW_WIDTH_SIZE, Configuration::WINDOW_HEIGHT_SIZE, Configuration::WINDOW_COLOR_SCALE);
+        SetUseDirect3DVersion  (DX_DIRECT3D_11);
+        SetUseZBuffer3D        (TRUE          );
+        SetWriteZBuffer3D      (TRUE          );
+        SetDrawScreen          (DX_SCREEN_BACK);
+        SetUseIMEFlag          (TRUE          );
+        DxLib_Init             (              );
 
         /** リソースの初期化 */
         SetUseASyncLoadFlag(true);

@@ -47,7 +47,7 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar> SummonSwordManAvatar(
               const glm::vec3& summonPosition
             , const std::shared_ptr<GameObject::IGameObject>& parent);
-        
+
         [[nodiscard]] std::shared_ptr<GameCore::IPlayerAvatar> LoadInitedPlayerAvatar(
             const GameCore::PlayerAvatar::PlayerAvatarType& type,
             const glm::vec3& summonPosition,

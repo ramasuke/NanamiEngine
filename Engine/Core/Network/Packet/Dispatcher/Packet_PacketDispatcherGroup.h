@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "Module/Packet_Dispatch_AssignPlayerId.h"
-#include "Module/Packet_Dispatch_SpawnNetworkObject.h"
+#include "Module/AssignPlayerId/Packet_Dispatch_AssignPlayerId.h"
+#include "Module/SpawnNetworkObject/Packet_Dispatch_SpawnNetworkObject.h"
 
 namespace NanamiEngine::Core::Network
 {

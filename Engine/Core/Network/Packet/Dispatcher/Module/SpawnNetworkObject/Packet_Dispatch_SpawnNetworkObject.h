@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "../glm/fwd.hpp"
-#include "../Packet_Dispath_PacketDispatcherBase.h"
+#include "../../Packet_Dispatch_PacketDispatcherBase.h"
 
 namespace NanamiEngine::Module::GameObject
 {
@@ -19,7 +19,7 @@ namespace NanamiEngine::Core::Network
     public:
         DEFINE_PACKET_DEFAULT_CONSTRUCTOR(SpawnNetworkObject)
         
-        void DispatchSendPacket(
+        std::shared_ptr<Module::GameObject::IGameObject> DispatchSendPacket(
             Module::Asset::PrefabGameObjectFile& prefabFile,
             glm::vec3 position,
             glm::quat rotation) const;

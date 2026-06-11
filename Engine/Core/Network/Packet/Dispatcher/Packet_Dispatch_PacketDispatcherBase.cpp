@@ -1,4 +1,4 @@
-﻿#include "Packet_Dispath_PacketDispatcherBase.h"
+﻿#include "Packet_Dispatch_PacketDispatcherBase.h"
 
 #include "../../IPacketSender.h"
 #include "../../IPlayerIdProvider.h"
@@ -14,7 +14,7 @@ namespace NanamiEngine::Core::Network
     {
     }
 
-    void PacketDispatcherBase::SystemSendPacket(const Packet& packet) const
+    void PacketDispatcherBase::SendPacket(const Packet& packet) const
     {
         packetSender.Send(packet);
     }

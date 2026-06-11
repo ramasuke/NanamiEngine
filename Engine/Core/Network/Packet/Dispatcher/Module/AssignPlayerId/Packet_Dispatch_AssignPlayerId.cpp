@@ -1,6 +1,6 @@
 ﻿#include "Packet_Dispatch_AssignPlayerId.h"
 
-#include "../../../Engine_Network_INetworkSystem.h"
+#include "../../../../Engine_Network_INetworkSystem.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -13,7 +13,7 @@ namespace NanamiEngine::Core::Network
     
     void ReceivedAssignPlayerId::ReceivePacket(const Packet& packet)
     {
-        size_t offset;
+        size_t offset = 0;
         const auto playerId = packet.Data().Read<struct PlayerId>(offset);
         networkSystem_.SetPlayerId(playerId);
     }

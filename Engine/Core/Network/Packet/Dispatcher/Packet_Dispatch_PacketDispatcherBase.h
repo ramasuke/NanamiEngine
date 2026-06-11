@@ -30,7 +30,7 @@ namespace NanamiEngine::Core::Network
         virtual void ReceivePacket(const Packet& packet) = 0;
 
         /** サンドボックスパターン */
-        void SystemSendPacket(const Packet& packet) const;
+        void SendPacket(const Packet& packet) const;
         [[nodiscard]] PrefabObjectRegistry& NetworkObjectRegistry() const;
         [[nodiscard]] PlayerId PlayerId() const;
 

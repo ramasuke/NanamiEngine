@@ -3,6 +3,11 @@
 
 namespace NanamiEngine::Core::Network
 {
+    class DefaultPacketDispatcher;
+}
+
+namespace NanamiEngine::Core::Network
+{
     struct Packet;
 }
 
@@ -16,12 +21,13 @@ namespace NanamiEngine::Core::Network
     class IPacketSender;
 }
 
-namespace GamePlay::Network
+namespace GameCore::Network
 {
     class CustomDispatcherGroup final
     {
     public:
         explicit CustomDispatcherGroup(
+            Core::Network::DefaultPacketDispatcher& defaultDispatchers,
             Core::Network::IPacketSender& packetSender,
             Core::Network::IPlayerIdProvider& playerIdProvider);
         

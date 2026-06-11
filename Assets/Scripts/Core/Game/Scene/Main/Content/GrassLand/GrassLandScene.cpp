@@ -28,12 +28,13 @@ namespace GameCore::Scene::Main
         
         scene_ = LoadMainScene();
         Context()->Init();
+        Context()->NetworkRunner().Initialize();
 
-        // playerAvatar_ = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatar(
-        //     PlayerAvatar::LoadType(),
-        //     Context()->PlayerSpawnPoint(),
-        //     nullptr,
-        //     Context()->CameraGroup());
+        playerAvatar_ = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatar(
+            PlayerAvatar::LoadType(),
+            Context()->PlayerSpawnPoint(),
+            nullptr,
+            Context()->CameraGroup());
     }
 
     void GrassLandScene::Enter()
@@ -52,5 +53,6 @@ namespace GameCore::Scene::Main
 
     void GrassLandScene::OnDrawGui()
     {
+        
     }
 }

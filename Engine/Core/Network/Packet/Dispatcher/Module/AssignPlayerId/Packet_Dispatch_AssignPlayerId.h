@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../Packet_Dispath_PacketDispatcherBase.h"
+#include "../../Packet_Dispatch_PacketDispatcherBase.h"
 
 namespace NanamiEngine::Core::Network
 {

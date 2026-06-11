@@ -18,6 +18,7 @@ std::shared_ptr<Component::ComponentBase> GameObject::AddComponent::OnDrawGui()
         OnDrawSoundGui      (addComponent);
         OnDrawColliderGui   (addComponent);
         OnDrawCinemachineGui(addComponent);
+        OnDrawNetworkGui    (addComponent);
         OnDrawGameCoreGui   (addComponent);
         OnDrawGamePlayGui   (addComponent);
         ImGui::EndPopup();
@@ -100,11 +101,27 @@ void GameObject::AddComponent::OnDrawCinemachineGui(std::shared_ptr<Component::C
     }
 }
 
+void GameObject::AddComponent::OnDrawNetworkGui(std::shared_ptr<Component::ComponentBase>& addComponent)
+{
+    if (ImGui::TreeNode("Network"))
+    {
+        if (ImGui::TreeNode("Component"))
+        {
+            OnDrawTryAddComponentGui<Network::NetworkGameObject>(addComponent);
+            OnDrawTryAddComponentGui<Network::NetworkTransform >(addComponent);
+            ImGui::TreePop();
+            ImGui::Spacing();
+        }
+        
+        ImGui::TreePop();
+        ImGui::Spacing();
+    }
+}
+
 void GameObject::AddComponent::OnDrawGameCoreGui(std::shared_ptr<Component::ComponentBase>& addComponent)
 {
     if (ImGui::TreeNode("GameCore"))
     {
-        
         OnDrawTryAddComponentGui<GameCore::Game>(addComponent);
         if (ImGui::TreeNode("Scene"))
         {

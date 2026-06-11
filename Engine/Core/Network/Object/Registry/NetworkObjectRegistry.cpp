@@ -12,11 +12,6 @@ namespace NanamiEngine::Core::Network
         }
     }
 
-    void PrefabObjectRegistry::Remove(const Guid& guid)
-    {
-        assets_.erase(guid);
-    }
-
     std::weak_ptr<Module::GameObject::PrefabGameObject>
     PrefabObjectRegistry::Catch(const Guid& guid) const
     {

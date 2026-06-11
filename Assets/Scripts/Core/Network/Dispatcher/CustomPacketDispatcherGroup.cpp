@@ -1,8 +1,11 @@
 ﻿#include "CustomPacketDispatcherGroup.h"
 
-namespace GamePlay::Network
+#include "../../../../../Engine/Core/Network/Packet/Dispatcher/Packet_PacketDispatcherGroup.h"
+
+namespace GameCore::Network
 {
     CustomDispatcherGroup::CustomDispatcherGroup(
+        Core::Network::DefaultPacketDispatcher& defaultDispatchers,
         Core::Network::IPacketSender& packetSender,
         Core::Network::IPlayerIdProvider& playerIdProvider)
     {
