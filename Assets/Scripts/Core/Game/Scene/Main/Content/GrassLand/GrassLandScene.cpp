@@ -29,7 +29,7 @@ namespace GameCore::Scene::Main
         scene_ = LoadMainScene();
         Context()->Init();
         Context()->NetworkRunner().Initialize();
-
+        
         playerAvatar_ = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatar(
             PlayerAvatar::LoadType(),
             Context()->PlayerSpawnPoint(),
@@ -40,6 +40,10 @@ namespace GameCore::Scene::Main
     void GrassLandScene::Enter()
     {
         GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
+        Context()->NetworkRunner()
+            .DefaultDispatcher()
+            .Spawn()
+            .DispatchSendPacket(Context()->SampleSpawnPrefab(), glm::vec3(), glm::quat());
     }
 
     void GrassLandScene::DoDispose()

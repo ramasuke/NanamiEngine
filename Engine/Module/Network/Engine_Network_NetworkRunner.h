@@ -22,12 +22,10 @@ namespace NanamiEngine::Module::Network
                               public LifeCycleCallback::IUpdatable
     {
     public:
-        virtual ~NetworkRunnerBase() = default;
-        
         /** API: 手動呼び出しの初期化 */
         void Initialize();
         /** API: Defaultで設定されているPacket割り当て処理一覧 */
-        const Core::Network::DefaultPacketDispatcher& DefaultDispatcher();
+        Core::Network::DefaultPacketDispatcher& DefaultDispatcher();
 
     private:
         void OnUpdate() override;

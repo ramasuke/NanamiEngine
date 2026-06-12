@@ -1,20 +1,20 @@
 ﻿#pragma once
 #include "../../../Engine/Module/Network/Engine_Network_NetworkRunner.h"
-#include "../../Core/Network/Dispatcher/CustomPacketDispatcherGroup.h"
+#include "../../Core/Network/Packet/Dispatcher/CustomPacketDispatcherGroup.h"
 
 namespace GamePlay::Network
 {
     class CustomNetworkRunner final : public Module::Network::NetworkRunnerBase
     {
     public:
-        [[nodiscard]] CustomDispatcherGroup& CustomDispatcher();
+        [[nodiscard]] GameCore::Network::CustomDispatcherGroup& CustomDispatcher();
 
     private:
         void DoInitialize() override;
         void DoDispatchReceivedPacket(const Core::Network::Packet& packet) override;
         [[nodiscard]] std::unique_ptr<Core::Network::INetworkSystem> DoCreateUseNetworkSystem() const override;
         
-        std::optional<CustomDispatcherGroup> customDispatcherGroup_;
+        std::optional<GameCore::Network::CustomDispatcherGroup> customDispatcherGroup_;
         
 #pragma region Serialization Function
     public:

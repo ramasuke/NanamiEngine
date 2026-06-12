@@ -5,6 +5,7 @@
 namespace NanamiEngine::Core::Network
 {
     typedef std::uint8_t PacketType;
+    
     enum class DefaultPacketType : PacketType
     {
         AssignPlayerId     = 0,

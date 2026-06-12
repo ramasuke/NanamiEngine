@@ -4,7 +4,7 @@
 
 namespace GamePlay::Network
 {
-    CustomDispatcherGroup& CustomNetworkRunner::CustomDispatcher()
+    GameCore::Network::CustomDispatcherGroup& CustomNetworkRunner::CustomDispatcher()
     {
         assert(customDispatcherGroup_, "customPacketDispatcher is null");
         return customDispatcherGroup_.value();
@@ -12,7 +12,7 @@ namespace GamePlay::Network
 
     void CustomNetworkRunner::DoInitialize()
     {
-        customDispatcherGroup_.emplace(PacketSender(), PlayerIdProvider());
+        customDispatcherGroup_.emplace(DefaultDispatcher(), PacketSender(), PlayerIdProvider());
     }
 
     void CustomNetworkRunner::DoDispatchReceivedPacket(const Core::Network::Packet& packet)

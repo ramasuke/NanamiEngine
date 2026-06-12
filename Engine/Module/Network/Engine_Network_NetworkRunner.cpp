@@ -4,7 +4,7 @@
 
 namespace NanamiEngine::Module::Network
 {
-    const Core::Network::DefaultPacketDispatcher& NetworkRunnerBase::DefaultDispatcher()
+    Core::Network::DefaultPacketDispatcher& NetworkRunnerBase::DefaultDispatcher()
     {
         assert(defaultPacketDispatcher_, "defaultPacketDispatcher is null");
         return defaultPacketDispatcher_.value();
