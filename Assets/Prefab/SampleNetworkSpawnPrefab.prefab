@@ -1,50 +1,27 @@
 {
     "isActive_": false,
-    "name_": "SampleParticle",
+    "name_": "SampleNetworkSpawn",
     "guid_": {
         "cereal_class_version": 0,
-        "value_": "FEF9778A-D37E-4E48-83E0-D0360BB938BF"
+        "value_": "774423FD-32AD-4E29-BEA1-64390FEFCD59"
     },
     "components_": {
         "cereal_class_version": 0,
         "componentCount": 1,
         "component_0": {
             "polymorphic_id": 2147483649,
-            "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
+            "polymorphic_name": "Network::NetworkGameObject",
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 1,
+                    "cereal_class_version": 0,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
-                            "value_": "BB3BDD89-6988-45AB-A227-4DA7B5B67D64"
+                            "value_": "85AFCA99-1F3A-4E40-AEBF-8D43E7D6ED8E"
                         },
                         "isEnable_": true
-                    },
-                    "value1": {
-                        "cereal_class_version": 0
-                    },
-                    "value2": {
-                        "cereal_class_version": 0
-                    },
-                    "particleFile_": {
-                        "cereal_class_version": 0,
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483650,
-                                "data": {
-                                    "cereal_class_version": 0,
-                                    "value0": {
-                                        "value_": "CA21D9E5-5810-46E8-990B-556862930AF0"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "playingDuration_secs_": 10.0,
-                    "playMode_": 1
+                    }
                 }
             }
         }

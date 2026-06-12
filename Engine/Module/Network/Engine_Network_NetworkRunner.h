@@ -3,17 +3,10 @@
 
 #include "../../Core/Network/Engine_Network_INetworkSystem.h"
 #include "../../Core/Network/Packet/Dispatcher/Packet_PacketDispatcherGroup.h"
+#define WIN32_LEAN_AND_MEAN
+#include "../../Core/Object/Field/Field.h"
+#include "../Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../Component/ComponentBase.h"
-
-namespace NanamiEngine::Module::GameObject
-{
-    class IGameObject;
-}
-
-namespace NanamiEngine::Module::Asset
-{
-    class PrefabGameObjectFile;
-}
 
 namespace NanamiEngine::Module::Network
 {
@@ -45,26 +38,30 @@ namespace NanamiEngine::Module::Network
     private:
         std::optional<Core::Network::DefaultPacketDispatcher> defaultPacketDispatcher_;
         std::unique_ptr<Core::Network::INetworkSystem> networkSystem_;
+        [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) sampleSpawnPrefab_;
+        
         
 #pragma region Serialization Function
     public:
-        void OnDrawGui() override;
+        void BasedOnDrawgui() override;
 
         template<class Archive>
             void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<ComponentBase>(this));
+            archive(CEREAL_NVP(sampleSpawnPrefab_));
         }
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
+            if (version >= 1) archive(CEREAL_NVP(sampleSpawnPrefab_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(Network::NetworkRunnerBase, 0);
+CEREAL_CLASS_VERSION(Network::NetworkRunnerBase, 1);
 CEREAL_REGISTER_TYPE(Network::NetworkRunnerBase);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, Network::NetworkRunnerBase);
 #pragma endregion

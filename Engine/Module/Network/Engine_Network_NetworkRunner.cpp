@@ -43,7 +43,16 @@ namespace NanamiEngine::Module::Network
         return *networkSystem_;
     }
 
-    void NetworkRunnerBase::OnDrawGui()
+    void NetworkRunnerBase::BasedOnDrawgui()
     {
+        if (networkSystem_)
+        {
+            ImGui::Text(("playerId: " + networkSystem_->GetPlayerId().ToString()).c_str());
+        }
+        ImGuiHelper::OnDrawInputField("sampleSpawnPrefab_", sampleSpawnPrefab_);
+        if (ImGui::Button("Sample Spawn Prefab"))
+        {
+            DefaultDispatcher().Spawn().DispatchSendPacket(*sampleSpawnPrefab_.get(), glm::vec3(0.0f, 0.0f, 0.0f), glm::quat());
+        }
     }
 }

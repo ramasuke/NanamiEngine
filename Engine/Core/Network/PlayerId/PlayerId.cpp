@@ -12,4 +12,9 @@ namespace NanamiEngine::Core::Network
     {
         return PlayerId(-1);
     }
+
+    std::string PlayerId::ToString() const
+    {
+        return std::to_string(playerId_);        
+    }
 }

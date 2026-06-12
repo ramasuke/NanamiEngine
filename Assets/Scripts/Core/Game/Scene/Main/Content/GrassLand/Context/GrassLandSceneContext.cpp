@@ -6,12 +6,10 @@ void GameCore::Scene::GrassLandSceneContext::Init()
     
     bgm_.Init();
     networkRunner_.Init();
-    sampleSpawnPrefab.Init();
 }
 
 void GameCore::Scene::GrassLandSceneContext::OnDrawGui()
 {
     ImGuiHelper::OnDrawInputField("bgm_", bgm_);
     ImGuiHelper::OnDrawInputField("networkRunner_", networkRunner_);
-    ImGuiHelper::OnDrawInputField("sampleSpawnPrefab", sampleSpawnPrefab);
 }

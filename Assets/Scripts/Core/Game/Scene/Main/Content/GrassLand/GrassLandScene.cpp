@@ -29,21 +29,17 @@ namespace GameCore::Scene::Main
         scene_ = LoadMainScene();
         Context()->Init();
         Context()->NetworkRunner().Initialize();
+    }
+
+    void GrassLandScene::Enter()
+    {
+        GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
         
         playerAvatar_ = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatar(
             PlayerAvatar::LoadType(),
             Context()->PlayerSpawnPoint(),
             nullptr,
             Context()->CameraGroup());
-    }
-
-    void GrassLandScene::Enter()
-    {
-        GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
-        Context()->NetworkRunner()
-            .DefaultDispatcher()
-            .Spawn()
-            .DispatchSendPacket(Context()->SampleSpawnPrefab(), glm::vec3(), glm::quat());
     }
 
     void GrassLandScene::DoDispose()

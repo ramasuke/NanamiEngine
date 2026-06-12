@@ -21,7 +21,10 @@ namespace GameCore::PlayerAvatar
 
     void PlayerAvatarCameraGroupBase::Init(const std::shared_ptr<GameObject::IGameObject>& playerAvatarObject)
     {
-        followFromBehindCamera_->Components().Catch<CineMachine::Behaviour::ThirdPersonCameraBehaviour>().lock()->SetTarget(playerAvatarObject);
+        auto& followCamera = followFromBehindCamera_->Components();
+        auto weakCamera =  followCamera.Catch<CineMachine::Behaviour::ThirdPersonCameraBehaviour>();
+        auto camera = weakCamera.lock();
+        camera->SetTarget(playerAvatarObject);
         currentCamera_ = followFromBehindCamera_.get();
     }
 

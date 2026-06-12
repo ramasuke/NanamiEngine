@@ -53,6 +53,6 @@ namespace NanamiEngine::Module::GameObject
     };
 }
 
-CEREAL_CLASS_VERSION(NanamiEngine::Module::GameObject::PrefabGameObject, 0);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::GameObject::PrefabGameObject, 1);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::GameObject::PrefabGameObject);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::GameObject::IGameObject, NanamiEngine::Module::GameObject::PrefabGameObject);

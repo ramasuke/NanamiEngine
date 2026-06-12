@@ -18,6 +18,7 @@ GameObject::PrefabGameObject::PrefabGameObject(const std::string& filePath)
     cereal::JSONInputArchive archive(ifStream);
     archive(CEREAL_NVP(isActive_    ));
     archive(CEREAL_NVP(name_        ));
+    archive(CEREAL_NVP(guid_        ));
     archive(CEREAL_NVP(components_  ));
     archive(CEREAL_NVP(transform_   ));
     
@@ -237,6 +238,7 @@ void GameObject::PrefabGameObject::OnSave()
     cereal::JSONOutputArchive archive(ifStream);
     archive(CEREAL_NVP(isActive_));
     archive(CEREAL_NVP(name_));
+    archive(CEREAL_NVP(guid_));
     archive(CEREAL_NVP(components_));
     archive(CEREAL_NVP(transform_));
     

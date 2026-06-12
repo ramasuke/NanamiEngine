@@ -17,7 +17,7 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] CineMachine::CineMachineVirtualCamera& CurrentCamera() const { return *currentCamera_.lock(); }
         
     private:
-        FIELD(CineMachine::CineMachineVirtualCamera) followFromBehindCamera_;
+        [[serialize(0)]] FIELD(CineMachine::CineMachineVirtualCamera) followFromBehindCamera_;
 
         std::weak_ptr<CineMachine::CineMachineVirtualCamera> currentCamera_;
     
