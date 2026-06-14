@@ -19,6 +19,12 @@ namespace NanamiEngine::Module::Network
         void Initialize();
         /** API: Defaultで設定されているPacket割り当て処理一覧 */
         Core::Network::DefaultPacketDispatcher& DefaultDispatcher();
+        
+        /** --- Defaultの通信処理API一覧 --- */
+        //API: Network上で共有するオブジェクトの生成処理
+        void Spawn(Asset::PrefabGameObjectFile& prefabFile, glm::vec3 position, glm::quat rotation) const;
+        
+        
 
     private:
         void OnUpdate() override;

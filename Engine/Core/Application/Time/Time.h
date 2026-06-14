@@ -11,12 +11,15 @@ namespace NanamiEngine
         static void SetTimeScale(float scale);
         static void SkipNextFrame();
         static float GetTimeScale();
+        static float GetFixedAlpha();
+        static void  SetFixedAlpha(float alpha);
 
     private:
         static int lastTime_;
         static float deltaTime_;
         static float timeScale_;
         static float currentTime_;
-        static int  isSkipNextFrame_;
+        static int   isSkipNextFrame_;
+        static float fixedAlpha_;
     };
 }

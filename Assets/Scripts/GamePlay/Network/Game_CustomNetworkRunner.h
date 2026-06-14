@@ -9,6 +9,11 @@ namespace GamePlay::Network
     public:
         [[nodiscard]] GameCore::Network::CustomDispatcherGroup& CustomDispatcher();
 
+        std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar> SpawnPlayerAvatar(
+            Module::Asset::PrefabGameObjectFile& prefabFile,
+            glm::vec3 position,
+            glm::quat rotation);
+
     private:
         void DoInitialize() override;
         void DoDispatchReceivedPacket(const Core::Network::Packet& packet) override;

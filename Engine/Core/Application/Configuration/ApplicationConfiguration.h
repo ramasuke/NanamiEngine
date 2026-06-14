@@ -7,10 +7,26 @@ namespace NanamiEngine::Core::Application::Configuration
         Editor,
         Game
     };
-    
+
     constexpr auto APPLICATION_MODE = ApplicationMode::Editor;
     
-    constexpr auto WINDOW_WIDTH_SIZE  = 1920;
-    constexpr auto WINDOW_HEIGHT_SIZE = 1080;
-    constexpr auto WINDOW_COLOR_SCALE = 16;
+    class AppConfiguration final
+    {
+    public:
+        static void Load();
+        static void Save();
+
+        [[nodiscard]] static int GetWindowWidth();
+        [[nodiscard]] static int GetWindowHeight();
+        [[nodiscard]] static int GetWindowColorScale();
+
+        static void SetWindowWidth(int width);
+        static void SetWindowHeight(int height);
+        static void SetWindowColorScale(int scale);
+
+    private:
+        static int windowWidth_;
+        static int windowHeight_;
+        static int windowColorScale_;
+    };
 }

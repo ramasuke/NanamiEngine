@@ -1,8 +1,11 @@
 ﻿#include "EditorToolbarWindow.h"
 
+#include <map>
+
 #include "ImGuiHelper.h"
 #include "../../../FileSystem/Directory/Directory.h"
 #include "../../Configuration/ApplicationConfiguration.h"
+#include "../../Configuration/Network/ApplicationConfiguration_Network.h"
 #include "../../ApplicationBase.h"
 #include "../../../../Module/LocalPrefs/Editor/Engine_Module_LocalPrefs_Editor_ToolBar.h"
 #include "../Main/Factory/MainWindowFactory.h"
@@ -13,7 +16,7 @@
 void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindows)
 {
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(Application::Configuration::WINDOW_WIDTH_SIZE, 17), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(Application::Configuration::DEFAULT_WINDOW_WIDTH_SIZE, 17), ImGuiCond_Always);
     ImGui::Begin("Toolbar", nullptr,
         ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_NoResize |
@@ -31,7 +34,65 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
 
     if (ImGui::BeginPopup("ConfigWindow"))
     {
-        
+        // === Application ===
+        ImGui::Text("Application");
+        ImGui::Separator();
+
+        int w = Application::Configuration::AppConfiguration::GetWindowWidth();
+        int h = Application::Configuration::AppConfiguration::GetWindowHeight();
+        int s = Application::Configuration::AppConfiguration::GetWindowColorScale();
+
+        ImGui::SetNextItemWidth(100);
+        const bool wChanged = ImGui::InputInt("Window Width",  &w);
+        ImGui::SetNextItemWidth(100);
+        const bool hChanged = ImGui::InputInt("Window Height", &h);
+        ImGui::SetNextItemWidth(100);
+        const bool sChanged = ImGui::InputInt("Color Scale",   &s);
+
+        if (wChanged || hChanged || sChanged)
+        {
+            Application::Configuration::AppConfiguration::SetWindowWidth(w);
+            Application::Configuration::AppConfiguration::SetWindowHeight(h);
+            Application::Configuration::AppConfiguration::SetWindowColorScale(s);
+            Application::Configuration::AppConfiguration::Save();
+        }
+        ImGui::TextDisabled("* Restart required to apply");
+
+        ImGui::Spacing();
+
+        // === Network ===
+        ImGui::Text("Network Mode");
+        ImGui::Separator();
+
+        auto currentMode = Application::Configuration::NetworkConfiguration::GetMode();
+        int  modeIndex   = currentMode == Core::Network::Mode::Server ? 0 : 1;
+
+        if (ImGui::RadioButton("Server", &modeIndex, 0) || ImGui::RadioButton("Client", &modeIndex, 1))
+        {
+            const auto newMode = modeIndex == 0 ? Core::Network::Mode::Server : Core::Network::Mode::Client;
+            Application::Configuration::NetworkConfiguration::SetMode(newMode);
+            Application::Configuration::NetworkConfiguration::Save();
+        }
+
+        if (currentMode == Core::Network::Mode::Server)
+        {
+            ImGui::Separator();
+            ImGui::Text("Server Type");
+
+            auto currentServerType = Application::Configuration::NetworkConfiguration::GetServerType();
+            int  serverTypeIndex   = currentServerType == Core::Network::ServerType::Relay ? 0 : 1;
+
+            if (ImGui::RadioButton("Relay", &serverTypeIndex, 0) ||
+                ImGui::RadioButton("Authoritative", &serverTypeIndex, 1))
+            {
+                const auto newType = serverTypeIndex == 0
+                    ? Core::Network::ServerType::Relay
+                    : Core::Network::ServerType::Authoritative;
+                Application::Configuration::NetworkConfiguration::SetServerType(newType);
+                Application::Configuration::NetworkConfiguration::Save();
+            }
+        }
+
         ImGui::EndPopup();
     }
     
@@ -88,14 +149,23 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
 
     if (ImGui::BeginPopup("LocalPrefsWindow"))
     {
-        for (const auto& [key, typeName, subPath, saveDefault] : LocalPrefs::Editor::LocalPrefsRegistry::GetInstance().GetPrefsList())
+        const auto& prefsList = LocalPrefs::Editor::LocalPrefsRegistry::GetInstance().GetPrefsList();
+
+        // subPath をカテゴリキーとしてグループ化 (アルファベット順、空文字は "General")
+        std::map<std::string, std::vector<size_t>> categoryMap;
+        for (size_t i = 0; i < prefsList.size(); ++i)
+            categoryMap[prefsList[i].subPath].push_back(i);
+
+        for (const auto& [subPath, indices] : categoryMap)
         {
-            if (ImGui::Button(("key: " + key + ", typeName: " + typeName + ", subPath: " + subPath).c_str()))
+            const std::string header = subPath.empty() ? "General" : subPath;
+            if (ImGui::CollapsingHeader(header.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
             {
-                saveDefault();
+                for (size_t idx : indices)
+                    prefsList[idx].drawEditGui();
             }
         }
-        
+
         ImGui::EndPopup();
     }
     ImGui::End();

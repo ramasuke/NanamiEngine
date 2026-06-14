@@ -1,6 +1,6 @@
 ﻿#include "Game_CustomNetworkRunner.h"
 
-#include "../../../Engine/Core/Network/UDPNetworkSystem.h"
+#include "../../../Engine/Core/Network/EnetUDPNetworkSystem.h"
 
 namespace GamePlay::Network
 {
@@ -22,11 +22,19 @@ namespace GamePlay::Network
 
     std::unique_ptr<Core::Network::INetworkSystem> CustomNetworkRunner::DoCreateUseNetworkSystem() const
     {
-        return std::make_unique<Core::Network::UDPNetworkSystem>();
+        return std::make_unique<Core::Network::EnetUDPNetworkSystem>();
+    }
+
+    std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar> CustomNetworkRunner::SpawnPlayerAvatar(
+        Module::Asset::PrefabGameObjectFile& prefabFile,
+        const glm::vec3 position,
+        const glm::quat rotation)
+    {
+        return customDispatcherGroup_->SpawnPlayer().DispatchSendPacket(prefabFile, position, rotation);
     }
 
     void CustomNetworkRunner::OnDrawGui()
     {
-        
+
     }
 }

@@ -27,8 +27,8 @@ namespace GameCore::PlayerAvatar::SwordMan
     {
         if (MouseLock())
         {
-            static int centerX = Core::Application::Configuration::WINDOW_WIDTH_SIZE  / 2;
-            static int centerY = Core::Application::Configuration::WINDOW_HEIGHT_SIZE / 2;
+            static int centerX = Core::Application::Configuration::AppConfiguration::GetWindowWidth()  / 2;
+            static int centerY = Core::Application::Configuration::AppConfiguration::GetWindowHeight() / 2;
             SetMousePoint(centerX, centerY);
         }
         

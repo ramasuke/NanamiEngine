@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Module/SpawnPlayer/Packet_Dispatch_SpawnPlayer.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -30,10 +31,12 @@ namespace GameCore::Network
             Core::Network::DefaultPacketDispatcher& defaultDispatchers,
             Core::Network::IPacketSender& packetSender,
             Core::Network::IPlayerIdProvider& playerIdProvider);
-        
+
         void DispatchReceivedPacket(const Core::Network::Packet& packet);
 
+        [[nodiscard]] SpawnPlayerDispatcher& SpawnPlayer() { return spawnPlayerDispatcher_; }
+
     private:
-        
+        SpawnPlayerDispatcher spawnPlayerDispatcher_;
     };
 }

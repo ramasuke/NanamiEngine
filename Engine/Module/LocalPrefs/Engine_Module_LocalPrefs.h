@@ -8,6 +8,8 @@
 #include <cereal/archives/json.hpp>
 #include <cereal/types/memory.hpp>
 
+// ゲーム側のデータ保存・復元用モジュール
+// セーブデータやプレイヤーの進行状況など、ゲーム固有のデータをローカルのJSONファイルに永続化するために使用する
 namespace NanamiEngine::Module::LocalPrefs
 {
     template<class T>
@@ -16,19 +18,27 @@ namespace NanamiEngine::Module::LocalPrefs
         cereal::JSONOutputArchive(ofstream)(value);
         cereal::JSONInputArchive(ifstream)(value);
     };
-    
+
+    // 保存先ルートフォルダ。実行ファイルからの相対パスで解決される
     constexpr auto LOCAL_PREFS_DATA_FOLDER_PATH = "LocalPrefs/";
     constexpr auto LOCAL_PREFS_DATA_FILE_EXTENSION_LABEL = ".json";
 
+    // NOTE: "LocalPrefs/[addPath][key].json" の形式でフルパスを組み立てる
     std::string BuildPath(const std::string& addPath, const std::string& key);
+    
+    // NOTE: ファイルパスの親ディレクトリが存在しない場合、再帰的に作成する
     void EnsureDirectory(const std::string& path);
 
+    // Save/Load の公開APIが共通で使う内部実装
+    // NOTE: 直接呼び出しは非推奨
     template<Serializable T>
     void SaveImpl(const std::string& fullPath,
                   const std::string& key,
                   const T& value)
     {
         EnsureDirectory(fullPath);
+
+        // 書き込み中にクラッシュしても既存ファイルが壊れないよう、一時ファイルに書いてからリネームする
         const std::string tmpPath = fullPath + ".tmp";
         try
         {
@@ -40,13 +50,15 @@ namespace NanamiEngine::Module::LocalPrefs
                 }
 
                 cereal::JSONOutputArchive archive(ofstream);
+                // JSON のルートキーをデータ型名ではなく key 文字列で固定することで、型名変更後も読み込めるようにする
                 archive(cereal::make_nvp(key, value));
             }
-
+            // ofstream のスコープを抜けてフラッシュ・クローズが完了した後にリネームする
             std::filesystem::rename(tmpPath, fullPath);
         }
         catch (const std::exception& exception)
         {
+            // 書き込み失敗時は中途半端な一時ファイルを削除してから上位に投げる
             std::filesystem::remove(tmpPath);
             throw std::runtime_error("Save failed: " + std::string(exception.what()));
         }
@@ -60,6 +72,7 @@ namespace NanamiEngine::Module::LocalPrefs
 
         if (!ifstream)
         {
+            // ファイルが存在しない場合は呼び出し側が適切に処理できるよう例外で通知する
             throw std::runtime_error("File not found: " + fullPath);
         }
 
@@ -68,6 +81,7 @@ namespace NanamiEngine::Module::LocalPrefs
             cereal::JSONInputArchive archive(ifstream);
 
             T value;
+            // SaveImpl と同じキー名を指定することで、JSON上のフィールドと型を対応付ける
             archive(cereal::make_nvp(key, value));
             return value;
         }
@@ -77,6 +91,8 @@ namespace NanamiEngine::Module::LocalPrefs
         }
     }
 
+    /** --- 公開API --- */
+    // ファイルが存在しない・破損している場合は例外を投げる。確実に存在することが前提のデータに使う
     template<Serializable T>
     void Save(const std::string& key, const T& value)
     {
@@ -84,6 +100,7 @@ namespace NanamiEngine::Module::LocalPrefs
         SaveImpl(path, key, value);
     }
 
+    // サブフォルダ付きで保存する。同じキー名のデータを種別ごとに分けたい場合に使う
     template<Serializable T>
     void SaveWithPath(const std::string& addPath,
                       const std::string& key,
@@ -108,6 +125,7 @@ namespace NanamiEngine::Module::LocalPrefs
         return LoadImpl<T>(path, key);
     }
 
+    // ファイルが存在しない・読み込みエラーの場合は例外を投げずに defaultValue を返す。初回起動時など未保存状態が正常なデータに使う
     template<Serializable T>
     T LoadOrDefault(const std::string& key, const T& defaultValue)
     {
@@ -124,6 +142,7 @@ namespace NanamiEngine::Module::LocalPrefs
         }
         catch (...)
         {
+            // JSONの破損やスキーマ不一致など、読み込みエラー全般をフォールバックとして握りつぶす
             return defaultValue;
         }
     }
@@ -131,7 +150,7 @@ namespace NanamiEngine::Module::LocalPrefs
     template<Serializable T>
     T LoadOrDefaultWithPath(const std::string& addPath,
                             const std::string& key,
-                            const T& defaultValue)
+                            T defaultValue)
     {
         const std::string path = BuildPath(addPath, key);
 
@@ -150,6 +169,7 @@ namespace NanamiEngine::Module::LocalPrefs
         }
     }
 
+    // ファイルの有無や読み込みの成否を optional で返す。呼び出し側が存在チェックと値取得を同時に行いたい場合に使用する
     template<Serializable T>
     std::optional<T> TryLoad(const std::string& key)
     {

@@ -18,11 +18,11 @@ namespace NanamiEngine::Core::Network
     constexpr auto PORT_ADDRESS         = 1234;
     constexpr int  MAX_CLIENTS          = 32;
     
-    class UDPNetworkSystem final : public INetworkSystem
+    class EnetUDPNetworkSystem final : public INetworkSystem
     {
     public:
-        explicit UDPNetworkSystem();
-        ~UDPNetworkSystem() override;
+        explicit EnetUDPNetworkSystem();
+        ~EnetUDPNetworkSystem() override;
         void Update() override;
         void Send(const Packet& packet) override;
         void SendTo(ENetPeer* target, const Packet& packet);

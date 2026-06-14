@@ -1,6 +1,7 @@
 ﻿#include "Engine_Network_NetworkRunner.h"
 
 #include "../../Core/Network/Engine_Network_INetworkSystem.h"
+#include "../../Core/Application/Configuration/Network/ApplicationConfiguration_Network.h"
 
 namespace NanamiEngine::Module::Network
 {
@@ -12,6 +13,7 @@ namespace NanamiEngine::Module::Network
 
     void NetworkRunnerBase::Initialize()
     {
+        Core::Application::Configuration::NetworkConfiguration::Load();
         networkSystem_ = DoCreateUseNetworkSystem();
         defaultPacketDispatcher_.emplace(*networkSystem_);
         DoInitialize();
@@ -52,7 +54,12 @@ namespace NanamiEngine::Module::Network
         ImGuiHelper::OnDrawInputField("sampleSpawnPrefab_", sampleSpawnPrefab_);
         if (ImGui::Button("Sample Spawn Prefab"))
         {
-            DefaultDispatcher().Spawn().DispatchSendPacket(*sampleSpawnPrefab_.get(), glm::vec3(0.0f, 0.0f, 0.0f), glm::quat());
+            Spawn(*sampleSpawnPrefab_.get(), glm::vec3(0.0f, 0.0f, 0.0f), glm::quat());
         }
+    }
+    
+    void NetworkRunnerBase::Spawn(Asset::PrefabGameObjectFile& prefabFile, const glm::vec3 position, const glm::quat rotation) const
+    {
+        defaultPacketDispatcher_->Spawn().DispatchSendPacket(prefabFile, position, rotation);
     }
 }

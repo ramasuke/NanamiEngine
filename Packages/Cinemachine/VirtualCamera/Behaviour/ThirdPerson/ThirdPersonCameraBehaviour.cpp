@@ -56,8 +56,8 @@ namespace NanamiEngine::CineMachine::Behaviour
         int mouseX, mouseY;
         GetMousePoint(&mouseX, &mouseY);
 
-        static int centerX = Core::Application::Configuration::WINDOW_WIDTH_SIZE  / 2;
-        static int centerY = Core::Application::Configuration::WINDOW_HEIGHT_SIZE / 2;
+        static int centerX = Core::Application::Configuration::AppConfiguration::GetWindowWidth () / 2;
+        static int centerY = Core::Application::Configuration::AppConfiguration::GetWindowHeight() / 2;
 
         const int dx = mouseX - centerX;
         const int dy = mouseY - centerY;
@@ -117,15 +117,15 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     void ThirdPersonCameraBehaviour::OnDrawGui()
     {
-        LibCore::ImGuiHelper::OnDrawInputField("minPitch_", minPitch_);
-        LibCore::ImGuiHelper::OnDrawInputField("maxPitch_", maxPitch_);
-        LibCore::ImGuiHelper::OnDrawInputField("mouseSensitivity_", mouseSensitivity_);
-        LibCore::ImGuiHelper::OnDrawInputField("distance_", distance_);
-        LibCore::ImGuiHelper::OnDrawInputField("target_", target_);
-        LibCore::ImGuiHelper::OnDrawInputField("follow_", follow_);
-        LibCore::ImGuiHelper::OnDrawInputField("lookAt_", lookAt_);
-        LibCore::ImGuiHelper::OnDrawInputField("followOffsetPos_", followOffsetPos_);
-        LibCore::ImGuiHelper::OnDrawInputField("lookAtOffsetPos_", lookAtOffsetPos_);
-        LibCore::ImGuiHelper::OnDrawInputField("cameraBrain_", cameraBrain_);
+        ImGuiHelper::OnDrawInputField("minPitch_", minPitch_);
+        ImGuiHelper::OnDrawInputField("maxPitch_", maxPitch_);
+        ImGuiHelper::OnDrawInputField("mouseSensitivity_", mouseSensitivity_);
+        ImGuiHelper::OnDrawInputField("distance_", distance_);
+        ImGuiHelper::OnDrawInputField("target_", target_);
+        ImGuiHelper::OnDrawInputField("follow_", follow_);
+        ImGuiHelper::OnDrawInputField("lookAt_", lookAt_);
+        ImGuiHelper::OnDrawInputField("followOffsetPos_", followOffsetPos_);
+        ImGuiHelper::OnDrawInputField("lookAtOffsetPos_", lookAtOffsetPos_);
+        ImGuiHelper::OnDrawInputField("cameraBrain_", cameraBrain_);
     }
 }

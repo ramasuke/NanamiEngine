@@ -7946,6 +7946,7 @@
     <ClCompile Include="Engine\Core\Network\IPacketSender.cpp" />
     <ClCompile Include="Engine\Core\Network\IPlayerIdProvider.cpp" />
     <ClCompile Include="Engine\Core\Network\Mode\NetworkSystem_Mode.cpp" />
+    <ClCompile Include="Engine\Core\Network\ObjectId\Engine_Network_NetworkObjectId.cpp" />
     <ClCompile Include="Engine\Core\Network\Object\INetworkObject.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -8187,7 +8188,7 @@
     <ClCompile Include="Engine\Core\Network\Packet\Dispatcher\Packet_PacketDispatcherGroup.cpp" />
     <ClCompile Include="Engine\Core\Network\Packet\SpawnNetworkObject\Packet_SpawnNetworkObject.cpp" />
     <ClCompile Include="Engine\Core\Network\PlayerId\PlayerId.cpp" />
-    <ClCompile Include="Engine\Core\Network\UDPNetworkSystem.cpp">
+    <ClCompile Include="Engine\Core\Network\EnetUDPNetworkSystem.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -9060,6 +9061,7 @@
     <ClCompile Include="Engine\Module\GameObject\PrefabGameObject\PrefabCatchChild\PrefabCatchChild.cpp" />
     <ClCompile Include="Engine\Module\LifeCycleCallback\FixedUpdate\IFixedUpdatable.cpp" />
     <ClCompile Include="Engine\Module\LocalPrefs\Editor\Engine_Module_LocalPrefs_Editor_ToolBar.cpp" />
+    <ClCompile Include="Engine\Module\ProjectConfig\Engine_Module_ProjectConfig.cpp" />
     <ClCompile Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -11822,6 +11824,7 @@
     <ClInclude Include="Engine\Core\Network\IPacketSender.h" />
     <ClInclude Include="Engine\Core\Network\IPlayerIdProvider.h" />
     <ClInclude Include="Engine\Core\Network\Mode\NetworkSystem_Mode.h" />
+    <ClInclude Include="Engine\Core\Network\ObjectId\Engine_Network_NetworkObjectId.h" />
     <ClInclude Include="Engine\Core\Network\Object\INetworkObject.h" />
     <ClInclude Include="Engine\Core\Network\Object\Registry\NetworkObjectRegistry.h" />
     <ClInclude Include="Engine\Core\Network\Packet\ByteBuffer\Packet_ByteBuffer.h" />
@@ -11832,7 +11835,7 @@
     <ClInclude Include="Engine\Core\Network\Packet\Dispatcher\Packet_PacketDispatcherGroup.h" />
     <ClInclude Include="Engine\Core\Network\Packet\SpawnNetworkObject\Packet_SpawnNetworkObject.h" />
     <ClInclude Include="Engine\Core\Network\PlayerId\PlayerId.h" />
-    <ClInclude Include="Engine\Core\Network\UDPNetworkSystem.h" />
+    <ClInclude Include="Engine\Core\Network\EnetUDPNetworkSystem.h" />
     <ClInclude Include="Engine\Core\Network\NullNetworkSystem.h" />
     <ClInclude Include="Engine\Core\Network\Packet\NetworkSystem_Packet.h" />
     <ClInclude Include="Engine\Core\Object\Field\Context\FieldContext.h" />
@@ -11876,6 +11879,7 @@
     <ClInclude Include="Engine\Module\LifeCycleCallback\FixedUpdate\IFixedUpdatable.h" />
     <ClInclude Include="Engine\Module\LocalPrefs\Editor\Engine_Module_LocalPrefs_Editor_ToolBar.h" />
     <ClInclude Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.h" />
+    <ClInclude Include="Engine\Module\ProjectConfig\Engine_Module_ProjectConfig.h" />
     <ClInclude Include="Engine\Module\Color\Color32.h" />
     <ClInclude Include="Engine\Module\Component\Animator\Animator.h" />
     <ClInclude Include="Engine\Module\Component\AudioSource\AudioSource.h" />

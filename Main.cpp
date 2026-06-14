@@ -15,7 +15,7 @@ void StartApplicationAsync()
 	}
 	else if constexpr (NanamiEngine::Core::Application::Configuration::APPLICATION_MODE == NanamiEngine::Core::Application::Configuration::ApplicationMode::Game)
 	{
-		// const std::unique_ptr<NanamiEngine::Core::Application::ApplicationBase> application = std::make_unique<NanamiEngine::Core::Application::Game::GameApplication>();
+		const std::unique_ptr<NanamiEngine::Core::Application::ApplicationBase> application = std::make_unique<NanamiEngine::Core::Application::Game::GameApplication>();
 	}
 	application->Run();
 	application->OnExit();

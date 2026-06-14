@@ -28,6 +28,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         SwordManAvatarStatus();
         explicit SwordManAvatarStatus(const Asset::SwordManInitStatus& initStatus);
         ~SwordManAvatarStatus() override;
+        SwordManAvatarStatus(SwordManAvatarStatus&&) noexcept = default;
+        SwordManAvatarStatus& operator=(SwordManAvatarStatus&&) noexcept = default;
         void Init    () override;
         void OnUpdate() override;
         

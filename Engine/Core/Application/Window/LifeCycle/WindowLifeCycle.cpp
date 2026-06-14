@@ -27,7 +27,7 @@ namespace NanamiEngine::Core::Application
                 return a->GetRenderOrder() < b->GetRenderOrder();
             }
         }
-        , fixedDeltaTime_(1.0f / 144.0f)
+        , fixedDeltaTime_(1.0f / 60.0f)
     {
         if (useShadowMap)
         {
@@ -71,6 +71,7 @@ namespace NanamiEngine::Core::Application
         int step = 0;
         while (accumulator_ >= fixedDeltaTime_ && step < maxStep)
         {
+            preFixedUpdateCallbacks_.Invoke([](auto& obj) { obj.OnPreFixedUpdate(); });
             fixedUpdatableCallbacks_.Invoke([](auto& obj) { obj.OnFixedUpdate(); });
             beginPhysicsCallbacks_.Invoke([](auto& obj) { obj.OnBeginPhysics(); });
             ApplicationBase::Physics().Update(fixedDeltaTime_);
@@ -79,6 +80,7 @@ namespace NanamiEngine::Core::Application
             accumulator_ -= fixedDeltaTime_;
             step++;
         }
+        Time::SetFixedAlpha(accumulator_ / fixedDeltaTime_);
         
         updatableCallbacks_       .Invoke([](auto& obj) { obj.OnUpdate();         });
         lateUpdatableCallbacks_   .Invoke([](auto& obj) { obj.OnLateUpdate();     });
@@ -105,6 +107,7 @@ namespace NanamiEngine::Core::Application
         updatableCallbacks_       .OnUpdatePushedContents();
         lateUpdatableCallbacks_   .OnUpdatePushedContents();
         fixedUpdatableCallbacks_  .OnUpdatePushedContents();
+        preFixedUpdateCallbacks_  .OnUpdatePushedContents();
         shadowRenderableCallbacks_.OnUpdatePushedContents();
         renderableCallbacks_      .OnUpdatePushedContents();
         uiRenderableCallbacks_    .OnUpdatePushedContents();

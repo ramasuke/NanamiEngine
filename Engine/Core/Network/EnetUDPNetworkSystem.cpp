@@ -1,4 +1,4 @@
-﻿#include "UDPNetworkSystem.h"
+﻿#include "EnetUDPNetworkSystem.h"
 
 #include "../../Module/GameObject/PrefabGameObject/PrefabGameObject.h"
 #include "../Application/ApplicationBase.h"
@@ -7,36 +7,36 @@
 
 namespace NanamiEngine::Core::Network
 {
-    UDPNetworkSystem::UDPNetworkSystem()
+    EnetUDPNetworkSystem::EnetUDPNetworkSystem()
     {
         enet_initialize();
         
-        if constexpr (Application::Configuration::NETWORK_MODE == Mode::Server)
+        if (Application::Configuration::NetworkConfiguration::IsServer())
         {
             ENetAddress address{};
             address.host = ENET_HOST_ANY;
             address.port = PORT_ADDRESS;
-        
+
             host_ = enet_host_create(&address, MAX_CLIENTS, 2, 0, 0);
-            
+
             for (int i = 0; i < MAX_CLIENTS; ++i)
             {
                 availableIds_.push(i);
             }
         }
-        if constexpr (Application::Configuration::NETWORK_MODE == Mode::Client)
+        else
         {
             host_ = enet_host_create(nullptr, 1, 2, 0, 0);
-            
+
             ENetAddress address{};
             enet_address_set_host(&address, CONNECT_PORT_ADDRESS);
             address.port = PORT_ADDRESS;
-        
+
             peer_ = enet_host_connect(host_, &address, 2, 0);
         }
     }
 
-    UDPNetworkSystem::~UDPNetworkSystem()
+    EnetUDPNetworkSystem::~EnetUDPNetworkSystem()
     {
         if (host_)
             enet_host_destroy(host_);
@@ -44,7 +44,7 @@ namespace NanamiEngine::Core::Network
         enet_deinitialize();
     }
 
-    void UDPNetworkSystem::Update()
+    void EnetUDPNetworkSystem::Update()
     {
         ENetEvent event;
 
@@ -54,11 +54,11 @@ namespace NanamiEngine::Core::Network
             {
             case ENET_EVENT_TYPE_CONNECT:
                 {
-                    if constexpr (Application::Configuration::NETWORK_MODE == Mode::Server)
+                    if (Application::Configuration::NetworkConfiguration::IsServer())
                     {
                         static int nextId = 0;
                         int assignedId = nextId++;
-            
+
                         event.peer->data = reinterpret_cast<void*>(static_cast<uintptr_t>(assignedId));
 
                         //設定されたIDを通知するパケット
@@ -67,9 +67,9 @@ namespace NanamiEngine::Core::Network
 
                         SendTo(event.peer, p);
                     }
-                    else if constexpr (Application::Configuration::NETWORK_MODE == Mode::Client)
+                    else
                     {
-                        
+
                     }
                     break;
                 }
@@ -97,7 +97,7 @@ namespace NanamiEngine::Core::Network
         }
     }
 
-    void UDPNetworkSystem::Send(const Packet& packet)
+    void EnetUDPNetworkSystem::Send(const Packet& packet)
     {
         const ByteBuffer buffer = PacketCodec::Encode(packet);
         ENetPacket* p = enet_packet_create(
@@ -106,13 +106,16 @@ namespace NanamiEngine::Core::Network
             ENET_PACKET_FLAG_RELIABLE
         );
 
-        if constexpr (Application::Configuration::NETWORK_MODE == Mode::Server)
+        if (Application::Configuration::NetworkConfiguration::IsServer())
             enet_host_broadcast(host_, 0, p);
         else
+        {
+            assert(peer_);
             enet_peer_send(peer_, 0, p);
+        }
     }
 
-    void UDPNetworkSystem::SendTo(ENetPeer* target, const Packet& packet)
+    void EnetUDPNetworkSystem::SendTo(ENetPeer* target, const Packet& packet)
     {
         if (!target)
             return;
@@ -128,17 +131,17 @@ namespace NanamiEngine::Core::Network
         enet_peer_send(target, 0, p);
     }
 
-    PlayerId UDPNetworkSystem::GetPlayerId() const
+    PlayerId EnetUDPNetworkSystem::GetPlayerId() const
     {
         return playerId_;
     }
 
-    void UDPNetworkSystem::SetPlayerId(const PlayerId playerId)
+    void EnetUDPNetworkSystem::SetPlayerId(const PlayerId playerId)
     {
         playerId_ = playerId;
     }
 
-    std::vector<Packet> UDPNetworkSystem::PollPackets()
+    std::vector<Packet> EnetUDPNetworkSystem::PollPackets()
     {
         std::vector<Packet> result;
         result.reserve(receivedQueue_.size());

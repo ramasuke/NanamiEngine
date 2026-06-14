@@ -22,9 +22,10 @@ namespace NanamiEngine::Core::Application
     ApplicationBase::ApplicationBase()
     {
         /** ApplicationConfiguの初期化 */
+        Configuration::AppConfiguration::Load();
         SetDoubleStartValidFlag(true          );
         ChangeWindowMode       (true          );
-        SetGraphMode           (Configuration::WINDOW_WIDTH_SIZE, Configuration::WINDOW_HEIGHT_SIZE, Configuration::WINDOW_COLOR_SCALE);
+        SetGraphMode           (Configuration::AppConfiguration::GetWindowWidth(), Configuration::AppConfiguration::GetWindowHeight(), Configuration::AppConfiguration::GetWindowColorScale());
         SetUseDirect3DVersion  (DX_DIRECT3D_11);
         SetUseZBuffer3D        (TRUE          );
         SetWriteZBuffer3D      (TRUE          );

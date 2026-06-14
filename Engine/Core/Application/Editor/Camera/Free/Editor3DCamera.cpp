@@ -53,7 +53,7 @@ namespace NanamiEngine::Module::Component
     
     glm::mat4 Editor3DCamera::GetProjectionMatrix() const
     {
-        constexpr float aspect = static_cast<float>(Core::Application::Configuration::WINDOW_WIDTH_SIZE) / static_cast<float>(Core::Application::Configuration::WINDOW_HEIGHT_SIZE);
+        constexpr float aspect = static_cast<float>(Core::Application::Configuration::DEFAULT_WINDOW_WIDTH_SIZE) / static_cast<float>(Core::Application::Configuration::DEFAULT_WINDOW_HEIGHT_SIZE);
         return glm::perspectiveLH_ZO(fov_, aspect, near_, far_);
     }
     

@@ -8,6 +8,7 @@ namespace NanamiEngine
     float Time::timeScale_       = 1.0f;
     float Time::currentTime_     = 0.0f;
     int   Time::isSkipNextFrame_ = 0;
+    float Time::fixedAlpha_      = 0.0f;
 
     void Time::Update()
     {
@@ -59,5 +60,15 @@ namespace NanamiEngine
     float Time::GetTimeScale()
     {
         return timeScale_;
+    }
+
+    float Time::GetFixedAlpha()
+    {
+        return fixedAlpha_;
+    }
+
+    void Time::SetFixedAlpha(const float alpha)
+    {
+        fixedAlpha_ = alpha;
     }
 }
