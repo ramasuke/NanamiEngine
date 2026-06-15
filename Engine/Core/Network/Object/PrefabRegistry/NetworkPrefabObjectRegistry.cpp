@@ -1,4 +1,4 @@
-﻿#include "NetworkObjectRegistry.h"
+﻿#include "NetworkPrefabObjectRegistry.h"
 
 #include "../../../../Module/GameObject/PrefabGameObject/PrefabGameObject.h"
 

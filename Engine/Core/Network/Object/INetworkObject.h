@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "../ObjectId/Engine_Network_NetworkObjectId.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -6,5 +7,8 @@ namespace NanamiEngine::Core::Network
     {
     public:
         virtual ~INetworkObject() = default;
+
+        [[nodiscard]] virtual NetworkObjectId GetNetworkObjectId() const = 0;
+        virtual void SetNetworkObjectId(NetworkObjectId id) = 0;
     };
 }

@@ -14,15 +14,26 @@ namespace NanamiEngine::Module::Asset
 
 namespace NanamiEngine::Core::Network
 {
+    class INetworkObjectInstanceRegistry;
+
     class SpawnNetworkObject final : public PacketDispatcherBase
     {
     public:
-        DEFINE_PACKET_DEFAULT_CONSTRUCTOR(SpawnNetworkObject)
-        
+        explicit SpawnNetworkObject(
+            const IPlayerIdProvider& playerIdProvider,
+            IPacketSender& packetSender,
+            INetworkObjectInstanceRegistry& instanceRegistry);
+
         std::shared_ptr<Module::GameObject::IGameObject> DispatchSendPacket(
             Module::Asset::PrefabGameObjectFile& prefabFile,
             glm::vec3 position,
-            glm::quat rotation) const;
-        void ReceivePacket(const Packet& packet) override;
+            glm::quat rotation);
+
+    protected:
+        void OnReceive(const Packet& packet) override;
+
+    private:
+        INetworkObjectInstanceRegistry& instanceRegistry_;
+        uint32_t nextNetworkObjectId_ = 1;
     };
 }

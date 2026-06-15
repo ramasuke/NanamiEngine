@@ -22,8 +22,9 @@ namespace NanamiEngine::Core::Network
             archive(CEREAL_NVP(playerId_));
         }
 
+        [[nodiscard]] int8_t Value() const { return playerId_; }
         [[nodiscard]] std::string ToString() const;
-        
+
     private:
         int8_t playerId_ = -1;
     };

@@ -1,7 +1,7 @@
 ﻿#include "PrefabGameObjectFile.h"
 
 #include "../../../Core/Application/Window/Main/PrefabView/PrefabViewWindow.h"
-#include "../../../Core/Network/Object/Registry/NetworkObjectRegistry.h"
+#include "../../../Core/Network/Object/PrefabRegistry/NetworkPrefabObjectRegistry.h"
 #include "../../Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
 
 Asset::PrefabGameObjectFile::PrefabGameObjectFile(std::string contentPath)

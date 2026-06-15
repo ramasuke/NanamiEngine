@@ -58,7 +58,7 @@ namespace NanamiEngine::Module::Network
         }
     }
     
-    void NetworkRunnerBase::Spawn(Asset::PrefabGameObjectFile& prefabFile, const glm::vec3 position, const glm::quat rotation) const
+    void NetworkRunnerBase::Spawn(Asset::PrefabGameObjectFile& prefabFile, const glm::vec3 position, const glm::quat rotation)
     {
         defaultPacketDispatcher_->Spawn().DispatchSendPacket(prefabFile, position, rotation);
     }

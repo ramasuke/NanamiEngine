@@ -5,6 +5,7 @@
 #include "../../Module/Scene/GameObject/Helper/GameObject.h"
 #include "../FileSystem/Directory/Directory.h"
 #include "../../Module/Scene/GameObject/SceneGameObject/SceneGameObject.h"
+#include "../Network/Object/PrefabRegistry/NetworkPrefabObjectRegistry.h"
 #include "Window/Main/MainWindowBase.h"
 #include "Window/Main/Game/GameWindow.h"
 #include "../Object/Registry/ObjectRegistry.h"
@@ -12,7 +13,6 @@
 #include "Time/Time.h"
 #include "../Physics/Physics.h"
 #include "LifeCycle/ApplicationLifeCycle.h"
-#include "../Network/Object/Registry/NetworkObjectRegistry.h"
 #include "Window/Popup/Group/PopupWindowGroup.h"
 
 namespace NanamiEngine::Core::Application

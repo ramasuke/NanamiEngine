@@ -8025,7 +8025,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Engine\Core\Network\Object\Registry\NetworkObjectRegistry.cpp" />
+    <ClCompile Include="Engine\Core\Network\Object\PrefabRegistry\NetworkPrefabObjectRegistry.cpp" />
+    <ClCompile Include="Engine\Core\Network\Object\Registry\NetworkObjectInstanceRegistry.cpp" />
     <ClCompile Include="Engine\Core\Network\Packet\ByteBuffer\Packet_ByteBuffer.cpp" />
     <ClCompile Include="Engine\Core\Network\Packet\Codec\Packet_Codec.cpp" />
     <ClCompile Include="Engine\Core\Network\Packet\Dispatcher\Module\AssignPlayerId\Packet_Dispatch_AssignPlayerId.cpp">
@@ -11826,7 +11827,9 @@
     <ClInclude Include="Engine\Core\Network\Mode\NetworkSystem_Mode.h" />
     <ClInclude Include="Engine\Core\Network\ObjectId\Engine_Network_NetworkObjectId.h" />
     <ClInclude Include="Engine\Core\Network\Object\INetworkObject.h" />
-    <ClInclude Include="Engine\Core\Network\Object\Registry\NetworkObjectRegistry.h" />
+    <ClInclude Include="Engine\Core\Network\Object\PrefabRegistry\NetworkPrefabObjectRegistry.h" />
+    <ClInclude Include="Engine\Core\Network\Object\Registry\INetworkObjectInstanceRegistry.h" />
+    <ClInclude Include="Engine\Core\Network\Object\Registry\NetworkObjectInstanceRegistry.h" />
     <ClInclude Include="Engine\Core\Network\Packet\ByteBuffer\Packet_ByteBuffer.h" />
     <ClInclude Include="Engine\Core\Network\Packet\Codec\Packet_Codec.h" />
     <ClInclude Include="Engine\Core\Network\Packet\Dispatcher\Module\AssignPlayerId\Packet_Dispatch_AssignPlayerId.h" />

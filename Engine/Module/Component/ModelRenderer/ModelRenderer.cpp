@@ -35,7 +35,7 @@ MATRIX Component::ModelRenderer::GetRenderMatrix() const
 {
     if (useFixedInterpolation_ && hasPrevCapture_)
     {
-        const float alpha     = NanamiEngine::Time::GetFixedAlpha();
+        const float alpha     = Time::GetFixedAlpha();
         const glm::vec3 pos   = glm::mix  (prevWorldPos_,   Transform().GetWorldPos(),   alpha);
         const glm::quat rot   = glm::slerp(prevWorldRot_,   Transform().GetWorldRot(),   alpha);
         const glm::vec3 scale = Transform().GetWorldScale();

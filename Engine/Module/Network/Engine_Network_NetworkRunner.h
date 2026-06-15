@@ -22,7 +22,7 @@ namespace NanamiEngine::Module::Network
         
         /** --- Defaultの通信処理API一覧 --- */
         //API: Network上で共有するオブジェクトの生成処理
-        void Spawn(Asset::PrefabGameObjectFile& prefabFile, glm::vec3 position, glm::quat rotation) const;
+        void Spawn(Asset::PrefabGameObjectFile& prefabFile, glm::vec3 position, glm::quat rotation);
         
         
 

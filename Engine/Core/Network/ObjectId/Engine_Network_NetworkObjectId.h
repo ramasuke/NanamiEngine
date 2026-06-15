@@ -22,8 +22,10 @@ namespace NanamiEngine::Core::Network
             archive(CEREAL_NVP(networkObjectId_));
         }
 
+        [[nodiscard]] uint32_t Value() const { return networkObjectId_; }
         [[nodiscard]] std::string ToString() const;
-
+        void OnDrawGui();
+        
     private:
         uint32_t networkObjectId_ = 0;
     };

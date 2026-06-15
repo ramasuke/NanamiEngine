@@ -7,7 +7,7 @@ namespace NanamiEngine::Core::Network
     DefaultPacketDispatcher::DefaultPacketDispatcher(
         INetworkSystem& networkSystem)
         : receivedAssignPlayerId_(networkSystem)
-        , spawnNetworkObject_(networkSystem, networkSystem)
+        , spawnNetworkObject_(networkSystem, networkSystem, instanceRegistry_)
     {
     }
 

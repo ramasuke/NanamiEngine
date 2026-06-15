@@ -68,6 +68,4 @@ void load(Archive& archive, const std::uint32_t version) {
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::ModelRenderer, 2);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Component::ModelRenderer);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, NanamiEngine::Module::Component::ModelRenderer);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IRenderable, NanamiEngine::Module::Component::ModelRenderer);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IPreFixedUpdate, NanamiEngine::Module::Component::ModelRenderer);
 #pragma endregion

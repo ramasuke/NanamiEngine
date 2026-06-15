@@ -59,13 +59,13 @@ namespace NanamiEngine::Core::Application
 
         const float rawDeltaTime = Time::DeltaTime();
         // 異常なフレーム時間を制限
-        const float deltaTime = (std::min)(rawDeltaTime, 0.2f);
+        const float deltaTime = (std::min)(rawDeltaTime, 0.3f);
         if (rawDeltaTime > 0.0f)
         {
             accumulator_ += deltaTime;
         }
         //無限蓄積防止
-        constexpr int maxStep = 10;
+        constexpr int maxStep = 1;
         const float maxAccumulation = fixedDeltaTime_ * static_cast<float>(maxStep);
         accumulator_ = (std::min)(accumulator_, maxAccumulation);
         int step = 0;
@@ -73,9 +73,9 @@ namespace NanamiEngine::Core::Application
         {
             preFixedUpdateCallbacks_.Invoke([](auto& obj) { obj.OnPreFixedUpdate(); });
             fixedUpdatableCallbacks_.Invoke([](auto& obj) { obj.OnFixedUpdate(); });
-            beginPhysicsCallbacks_.Invoke([](auto& obj) { obj.OnBeginPhysics(); });
+            beginPhysicsCallbacks_  .Invoke([](auto& obj) { obj.OnBeginPhysics(); });
             ApplicationBase::Physics().Update(fixedDeltaTime_);
-            endPhysicsCallbacks_.Invoke([](auto& obj) { obj.OnUpdatedPhysics(); });
+            endPhysicsCallbacks_    .Invoke([](auto& obj) { obj.OnUpdatedPhysics(); });
 
             accumulator_ -= fixedDeltaTime_;
             step++;

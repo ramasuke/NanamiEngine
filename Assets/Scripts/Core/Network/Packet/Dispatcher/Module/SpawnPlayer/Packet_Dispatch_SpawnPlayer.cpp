@@ -1,6 +1,7 @@
 ﻿#include "Packet_Dispatch_SpawnPlayer.h"
+
+#include "../../../../../../../../Engine/Core/Network/Object/PrefabRegistry/NetworkPrefabObjectRegistry.h"
 #include "../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-#include "../../../../../../../../Engine/Core/Network/Object/Registry/NetworkObjectRegistry.h"
 #include "../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 
 namespace GameCore::Network

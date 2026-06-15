@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../../../../../Core/Network/Object/INetworkObject.h"
+#include "../../../../../Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
 #include "../../../../Component/ComponentBase.h"
 #include "../../../../LifeCycleCallback/Awake/IAwakable.h"
 
@@ -8,8 +9,13 @@ namespace NanamiEngine::Module::Network
     class NetworkTransform final : public Component::ComponentBase,
                                    public Core::Network::INetworkObject
     {
+    public:
+        [[nodiscard]] Core::Network::NetworkObjectId GetNetworkObjectId() const override { return networkObjectId_; }
+        void SetNetworkObjectId(Core::Network::NetworkObjectId id) override { networkObjectId_ = id; }
+
     private:
-        
+        Core::Network::NetworkObjectId networkObjectId_ = Core::Network::NetworkObjectId::Invalid();
+
 #pragma region Serialization Function
     public:
         void OnDrawGui() override;
