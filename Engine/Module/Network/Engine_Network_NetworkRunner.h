@@ -27,6 +27,8 @@ namespace NanamiEngine::Module::Network
         [[nodiscard]] Core::Network::PlayerId GetPlayerId() const;
         /** API: Defaultで設定されているPacket割り当て処理一覧 */
         Core::Network::DefaultPacketDispatcher& DefaultDispatcher();
+        /** API: パケット送信（NetworkTransform等のコンポーネントから呼ぶ） */
+        void SendNetworkPacket(const Core::Network::Packet& packet);
         
         /** --- Defaultの通信処理API一覧 --- */
         //API: Network上のサーバーと接続してネットワーク上でクライアント登録されるまで待つAsync
@@ -50,8 +52,8 @@ namespace NanamiEngine::Module::Network
         [[nodiscard]] Core::Network::IPlayerIdProvider& PlayerIdProvider() const;
         
     private:
-        std::optional<Core::Network::DefaultPacketDispatcher> defaultPacketDispatcher_;
         std::unique_ptr<Core::Network::INetworkSystem> networkSystem_;
+        std::optional<Core::Network::DefaultPacketDispatcher> defaultPacketDispatcher_;
         [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) sampleSpawnPrefab_;
 
         static NetworkRunnerBase* s_instance_;

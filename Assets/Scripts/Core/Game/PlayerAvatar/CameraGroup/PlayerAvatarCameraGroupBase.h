@@ -17,6 +17,7 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] CineMachine::CineMachineVirtualCamera& CurrentCamera() const { return *currentCamera_.lock(); }
         
     private:
+        [[serialize(1)]] std::string                                  followFromBehindCameraName_;
         [[serialize(0)]] FIELD(CineMachine::CineMachineVirtualCamera) followFromBehindCamera_;
 
         std::weak_ptr<CineMachine::CineMachineVirtualCamera> currentCamera_;
@@ -28,12 +29,14 @@ void BasedOnDrawgui() override;
 template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<ComponentBase>(this));
+    archive(CEREAL_NVP(followFromBehindCameraName_));
     archive(CEREAL_NVP(followFromBehindCamera_));
 }
 
 template<class Archive>
 void load(Archive& archive, const std::uint32_t version) {
     archive(cereal::base_class<ComponentBase>(this));
+    if (version >= 1) archive(CEREAL_NVP(followFromBehindCameraName_));
     if (version >= 0) archive(CEREAL_NVP(followFromBehindCamera_));
 }
 #pragma endregion
@@ -41,7 +44,7 @@ void load(Archive& archive, const std::uint32_t version) {
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase, 0);
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase, 1);
 CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase);
 #pragma endregion

@@ -25,6 +25,12 @@ namespace NanamiEngine::Core::Application::Configuration
 
         [[nodiscard]] static const char*        GetServerAddress();
 
+        [[nodiscard]] static int  GetMaxClients();
+        static void               SetMaxClients(int maxClients);
+
+        [[nodiscard]] static int  GetUnreliableSendRate();
+        static void               SetUnreliableSendRate(int hz);
+
         static void DrawConfigGUI();
 
     private:
@@ -32,5 +38,7 @@ namespace NanamiEngine::Core::Application::Configuration
         static Network::ServerType       serverType_;
         static Network::ConnectionTarget connectionTarget_;
         static std::string               lanAddress_;
+        static int                       maxClients_;
+        static int                       unreliableSendRate_;
     };
 }

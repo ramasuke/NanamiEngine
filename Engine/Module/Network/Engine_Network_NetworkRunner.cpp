@@ -5,7 +5,7 @@
 #include "../../Core/Coroutine/Awaitable/WaitForObservable/Coroutine_WaitForObservable.h"
 #include "../../Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
 
-NanamiEngine::Module::Network::NetworkRunnerBase* NanamiEngine::Module::Network::NetworkRunnerBase::s_instance_ = nullptr;
+Network::NetworkRunnerBase* Network::NetworkRunnerBase::s_instance_ = nullptr;
 
 namespace NanamiEngine::Module::Network
 {
@@ -35,7 +35,7 @@ namespace NanamiEngine::Module::Network
     {
         Core::Application::Configuration::NetworkConfiguration::Load();
         networkSystem_ = DoCreateUseNetworkSystem();
-        defaultPacketDispatcher_.emplace(*networkSystem_);
+        defaultPacketDispatcher_.emplace(*networkSystem_, networkSystem_->GetInstanceRegistry());
         DoInitialize();
     }
 
@@ -58,6 +58,11 @@ namespace NanamiEngine::Module::Network
             defaultPacketDispatcher_->DispatchReceivedPacket(packet);
             DoDispatchReceivedPacket(packet);
         }
+    }
+
+    void NetworkRunnerBase::SendNetworkPacket(const Core::Network::Packet& packet)
+    {
+        PacketSender().Send(packet);
     }
 
     Core::Network::IPacketSender& NetworkRunnerBase::PacketSender() const

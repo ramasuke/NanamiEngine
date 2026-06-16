@@ -5,6 +5,7 @@
 #include "DxLib.h"
 #include "EffekseerForDXLib.h"
 #include "../../ApplicationBase.h"
+#include "../../Configuration/ApplicationConfiguration.h"
 #include "../../../../Module/Asset/Asset.h"
 #include "../../../../Module/Scene/ShadowMap/ShadowMapSetting.h"
 #include "../../../Coroutine/Scheduler/CoroutineScheduler.h"
@@ -23,21 +24,23 @@ namespace NanamiEngine::Core::Application
                 const auto b = weakB.lock();
                 if (!a || !b)
                     return false;
-                
+
                 return a->GetRenderOrder() < b->GetRenderOrder();
             }
         }
-        , fixedDeltaTime_(1.0f / 144.0f)
     {
+        using Cfg = Configuration::AppConfiguration;
+        fixedDeltaTime_ = 1.0f / static_cast<float>(Cfg::GetFixedUpdateRate());
+
         if (useShadowMap)
         {
-            const VECTOR lightDir = VGet(-0.5f, -1.0f, -0.5f);
+            const VECTOR lightDir = VGet(Cfg::GetLightDirX(), Cfg::GetLightDirY(), Cfg::GetLightDirZ());
             SetLightDirection(lightDir);
-            constexpr COLOR_F difColor = {1.0f, 1.0f, 1.0f, 1.0f};
+            const COLOR_F difColor = {Cfg::GetLightDifR(), Cfg::GetLightDifG(), Cfg::GetLightDifB(), 1.0f};
             SetLightDifColor(difColor);
-            
-            shadowMapDxLibHandle_ = MakeShadowMap(1024, 1024);
-            SetShadowMapLightDirection(shadowMapDxLibHandle_, VGet(-0.5f, -1.0f, -0.5f));
+
+            shadowMapDxLibHandle_ = MakeShadowMap(Cfg::GetShadowMapWidth(), Cfg::GetShadowMapHeight());
+            SetShadowMapLightDirection(shadowMapDxLibHandle_, lightDir);
             const glm::vec3 position = Scene::ShadowMapSetting::GetRenderAreaPos();
             const glm::vec3 size     = Scene::ShadowMapSetting::GetRenderAreaSize();
             const VECTOR minPosition = VGet(position.x + -size.x, position.y + -size.y, position.z + -size.z);
@@ -58,14 +61,12 @@ namespace NanamiEngine::Core::Application
         startableCallbacks_       .Invoke([](auto& obj) { obj.OnStart();          });
 
         const float rawDeltaTime = Time::DeltaTime();
-        // 異常なフレーム時間を制限
-        const float deltaTime = (std::min)(rawDeltaTime, 0.3f);
+        const float deltaTime = (std::min)(rawDeltaTime, Configuration::AppConfiguration::GetMaxDeltaTime());
         if (rawDeltaTime > 0.0f)
         {
             accumulator_ += deltaTime;
         }
-        //無限蓄積防止
-        constexpr int maxStep = 1;
+        const int   maxStep         = Configuration::AppConfiguration::GetMaxPhysicsStep();
         const float maxAccumulation = fixedDeltaTime_ * static_cast<float>(maxStep);
         accumulator_ = (std::min)(accumulator_, maxAccumulation);
         int step = 0;

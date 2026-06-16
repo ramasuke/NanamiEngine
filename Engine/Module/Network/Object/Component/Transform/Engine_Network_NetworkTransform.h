@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../../../../../Core/Network/Object/INetworkObject.h"
+#include "../../../../../Core/Network/Object/Tickable/INetworkTickable.h"
 #include "../../../../../Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
 #include "../../../../Component/ComponentBase.h"
 #include "../../../../LifeCycleCallback/Awake/IAwakable.h"
@@ -7,9 +8,11 @@
 namespace NanamiEngine::Module::Network
 {
     class NetworkTransform final : public Component::ComponentBase,
-                                   public Core::Network::INetworkObject
+                                   public Core::Network::INetworkObject,
+                                   public Core::Network::INetworkTickable
     {
     public:
+        void NetworkedTick() override;
 
 #pragma region Serialization Function
     public:

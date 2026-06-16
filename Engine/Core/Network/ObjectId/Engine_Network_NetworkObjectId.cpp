@@ -19,6 +19,11 @@ namespace NanamiEngine::Core::Network
         return std::to_string(networkObjectId_);
     }
 
+    bool NetworkObjectId::IsOwnerBy(const PlayerId playerId) const
+    {
+        return static_cast<uint8_t>(playerId.Value()) == static_cast<uint8_t>(networkObjectId_ >> 16);
+    }
+
     void NetworkObjectId::OnDrawGui()
     {
         ImGui::Text(("id" + std::to_string(networkObjectId_)).c_str());

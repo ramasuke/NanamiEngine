@@ -34,33 +34,7 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
 
     if (ImGui::BeginPopup("ConfigWindow"))
     {
-        // === Application ===
-        ImGui::Text("Application");
-        ImGui::Separator();
-
-        int w = Application::Configuration::AppConfiguration::GetWindowWidth();
-        int h = Application::Configuration::AppConfiguration::GetWindowHeight();
-        int s = Application::Configuration::AppConfiguration::GetWindowColorScale();
-
-        ImGui::SetNextItemWidth(100);
-        const bool wChanged = ImGui::InputInt("Window Width",  &w);
-        ImGui::SetNextItemWidth(100);
-        const bool hChanged = ImGui::InputInt("Window Height", &h);
-        ImGui::SetNextItemWidth(100);
-        const bool sChanged = ImGui::InputInt("Color Scale",   &s);
-
-        if (wChanged || hChanged || sChanged)
-        {
-            Application::Configuration::AppConfiguration::SetWindowWidth(w);
-            Application::Configuration::AppConfiguration::SetWindowHeight(h);
-            Application::Configuration::AppConfiguration::SetWindowColorScale(s);
-            Application::Configuration::AppConfiguration::Save();
-        }
-        ImGui::TextDisabled("* Restart required to apply");
-
-        ImGui::Spacing();
-
-        // === Network ===
+        Application::Configuration::AppConfiguration::DrawConfigGUI();
         Application::Configuration::NetworkConfiguration::DrawConfigGUI();
 
         ImGui::EndPopup();

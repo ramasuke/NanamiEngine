@@ -5,9 +5,12 @@
 namespace NanamiEngine::Core::Network
 {
     DefaultPacketDispatcher::DefaultPacketDispatcher(
-        INetworkSystem& networkSystem)
-        : receivedAssignPlayerId_(networkSystem)
-        , spawnNetworkObject_(networkSystem, networkSystem, instanceRegistry_)
+        INetworkSystem& networkSystem,
+        INetworkObjectInstanceRegistry& instanceRegistry)
+        : instanceRegistry_(instanceRegistry)
+        , receivedAssignPlayerId_(networkSystem)
+        , spawnNetworkObject_(networkSystem, networkSystem, instanceRegistry)
+        , syncTransform_(networkSystem, networkSystem, instanceRegistry)
     {
     }
 
@@ -21,6 +24,9 @@ namespace NanamiEngine::Core::Network
             break;
         case DefaultPacketType::SpawnNetworkObject:
             spawnNetworkObject_.ReceivePacket(packet);
+            break;
+        case DefaultPacketType::SyncTransform:
+            syncTransform_.ReceivePacket(packet);
             break;
         }
     }

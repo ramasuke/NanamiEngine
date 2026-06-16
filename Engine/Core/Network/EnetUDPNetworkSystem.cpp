@@ -3,6 +3,7 @@
 #include "../../Module/GameObject/PrefabGameObject/PrefabGameObject.h"
 #include "../Application/ApplicationBase.h"
 #include "../Application/Configuration/Network/ApplicationConfiguration_Network.h"
+#include "../Application/Time/Time.h"
 #include "Packet/Codec/Packet_Codec.h"
 
 namespace NanamiEngine::Core::Network
@@ -17,9 +18,10 @@ namespace NanamiEngine::Core::Network
             address.host = ENET_HOST_ANY;
             address.port = PORT_ADDRESS;
 
-            host_ = enet_host_create(&address, MAX_CLIENTS, 2, 0, 0);
+            const int maxClients = Application::Configuration::NetworkConfiguration::GetMaxClients();
+            host_ = enet_host_create(&address, maxClients, 2, 0, 0);
 
-            for (int i = 0; i < MAX_CLIENTS; ++i)
+            for (int i = 0; i < maxClients; ++i)
             {
                 availableIds_.push(i);
             }
@@ -51,6 +53,12 @@ namespace NanamiEngine::Core::Network
 
     void EnetUDPNetworkSystem::Update()
     {
+        const float sendInterval = 1.0f / static_cast<float>(Application::Configuration::NetworkConfiguration::GetUnreliableSendRate());
+        unreliableAccumulator_ += Time::DeltaTime();
+        unreliableSendAllowed_ = unreliableAccumulator_ >= sendInterval;
+        if (unreliableSendAllowed_)
+            unreliableAccumulator_ = 0.0f;
+
         ENetEvent event;
 
         while (enet_host_service(host_, &event, 0) > 0)
@@ -100,23 +108,28 @@ namespace NanamiEngine::Core::Network
                 break;
             }
         }
+
+        instanceRegistry_.GetTickableRegistry().TickAll();
     }
 
     void EnetUDPNetworkSystem::Send(const Packet& packet)
     {
-        const ByteBuffer buffer = PacketCodec::Encode(packet);
-        ENetPacket* p = enet_packet_create(
-            buffer.Data(),
-            buffer.Size(),
-            ENET_PACKET_FLAG_RELIABLE
-        );
+        const bool isUnreliable = packet.Delivery() == DeliveryMode::Unreliable;
+        if (isUnreliable && !unreliableSendAllowed_)
+            return;
+
+        const ByteBuffer  buffer = PacketCodec::Encode(packet);
+        const enet_uint32 flag   = isUnreliable ? 0 : ENET_PACKET_FLAG_RELIABLE;
+        const enet_uint8  ch     = isUnreliable ? 1 : 0;
+
+        ENetPacket* p = enet_packet_create(buffer.Data(), buffer.Size(), flag);
 
         if (Application::Configuration::NetworkConfiguration::IsServer())
-            enet_host_broadcast(host_, 0, p);
+            enet_host_broadcast(host_, ch, p);
         else
         {
             assert(peer_);
-            enet_peer_send(peer_, 0, p);
+            enet_peer_send(peer_, ch, p);
         }
     }
 
@@ -125,15 +138,16 @@ namespace NanamiEngine::Core::Network
         if (!target)
             return;
 
+        const bool isUnreliable = (packet.Delivery() == DeliveryMode::Unreliable);
         ByteBuffer buffer = PacketCodec::Encode(packet);
 
         ENetPacket* p = enet_packet_create(
             buffer.Data(),
             buffer.Size(),
-            ENET_PACKET_FLAG_RELIABLE
+            isUnreliable ? 0 : ENET_PACKET_FLAG_RELIABLE
         );
 
-        enet_peer_send(target, 0, p);
+        enet_peer_send(target, isUnreliable ? 1 : 0, p);
     }
 
     PlayerId EnetUDPNetworkSystem::GetPlayerId() const
@@ -158,5 +172,10 @@ namespace NanamiEngine::Core::Network
         }
 
         return result;
+    }
+
+    INetworkObjectInstanceRegistry& EnetUDPNetworkSystem::GetInstanceRegistry()
+    {
+        return instanceRegistry_;
     }
 }

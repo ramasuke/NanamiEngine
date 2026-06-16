@@ -2,6 +2,7 @@
 #include <unordered_map>
 
 #include "INetworkObjectInstanceRegistry.h"
+#include "../Tickable/NetworkTickableRegistry.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -18,8 +19,13 @@ namespace NanamiEngine::Core::Network
         [[nodiscard]] std::weak_ptr<Module::GameObject::IGameObject>
             Find(NetworkObjectId id) const override;
 
+        [[nodiscard]] INetworkTickableRegistry& GetTickableRegistry() { return tickableRegistry_; }
+
     private:
+        void RegisterTickables(const std::weak_ptr<Module::GameObject::IGameObject>& weakObject);
+
         std::unordered_map<uint32_t, std::weak_ptr<Module::GameObject::IGameObject>> instances_;
         uint32_t nextId_ = 1;
+        NetworkTickableRegistry tickableRegistry_;
     };
 }

@@ -1,5 +1,6 @@
 ﻿#include "PlayerAvatarCameraGroupBase.h"
 
+#include "../../../../../../Engine/Module/GameObject/PrefabGameObject/PrefabCatchChild/PrefabCatchChild.h"
 #include "../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
 
 namespace GameCore::PlayerAvatar
@@ -21,6 +22,8 @@ namespace GameCore::PlayerAvatar
 
     void PlayerAvatarCameraGroupBase::Init(const std::shared_ptr<GameObject::IGameObject>& playerAvatarObject)
     {
+        followFromBehindCamera_ = GameObject::CatchChild<CineMachine::CineMachineVirtualCamera>(Entity(), followFromBehindCameraName_);
+        
         auto& followCamera = followFromBehindCamera_->Components();
         auto weakCamera =  followCamera.Catch<CineMachine::Behaviour::ThirdPersonCameraBehaviour>();
         auto camera = weakCamera.lock();
@@ -30,6 +33,7 @@ namespace GameCore::PlayerAvatar
 
     void PlayerAvatarCameraGroupBase::BasedOnDrawgui()
     {
+        ImGuiHelper::OnDrawInputField("followFromBehindCameraName_", followFromBehindCameraName_);
         ImGuiHelper::OnDrawInputField("followFromBehindCamera_", followFromBehindCamera_);
     }
 }

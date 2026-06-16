@@ -3,11 +3,13 @@
 #include <compare>
 
 #include "../cereal/include/cereal/cereal.hpp"
+#include "../PlayerId/PlayerId.h"
 
 namespace NanamiEngine::Core::Network
 {
     /**
      * ネットワーク上で共有されるオブジェクトの識別子
+     * フォーマット: 上位16bit = PlayerId, 下位16bit = オブジェクトインデックス
      */
     struct NetworkObjectId final
     {
@@ -24,8 +26,12 @@ namespace NanamiEngine::Core::Network
 
         [[nodiscard]] uint32_t Value() const { return networkObjectId_; }
         [[nodiscard]] std::string ToString() const;
-        void OnDrawGui();
         
+        /** このオブジェクトIDが指定したPlayerIdに属するか判別する */
+        [[nodiscard]] bool IsOwnerBy(PlayerId playerId) const;
+        
+        void OnDrawGui();
+
     private:
         uint32_t networkObjectId_ = 0;
     };

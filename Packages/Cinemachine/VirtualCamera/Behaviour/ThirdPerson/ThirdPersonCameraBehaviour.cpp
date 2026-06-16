@@ -98,8 +98,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         const glm::mat4 rot  = rotY * rotX;
 
         const glm::vec3 offset(0, 0, distance_);
-        const glm::vec3 rotatedOffset =
-            glm::vec3(rot * glm::vec4(offset, 1.0f));
+        const glm::vec3 rotatedOffset = glm::vec3(rot * glm::vec4(offset, 1.0f));
 
         follow_->followOffset_ = (lookAtPos + rotatedOffset) - targetPos;
     }
