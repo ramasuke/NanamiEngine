@@ -30,7 +30,8 @@ namespace GameCore::Scene::Main
             PlayerAvatar::LoadType(),
             Context()->PlayerSpawnPoint(),
             nullptr,
-            Context()->CameraGroup());
+            Context()->CameraGroup(),
+            true);
     }
 
     void MainIslandScene::Enter()

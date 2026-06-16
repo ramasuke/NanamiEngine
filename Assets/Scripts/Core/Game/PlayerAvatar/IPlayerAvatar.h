@@ -54,10 +54,10 @@ namespace GameCore
         /** @brief EventScene用のStateMachine */
         [[nodiscard]] virtual PlayerAvatar::IPlayerAvatarEventSceneStateMachine& GetEventSceneStateMachine() const = 0;
         [[nodiscard]] virtual NanamiEngine::Module::Component::ColliderBase    & Collider        () const = 0;
-        [[nodiscard]] virtual GamePlay::PlayerAvatar::ChattableArea   &          ChattableArea   () const = 0;
-        [[nodiscard]] virtual GamePlay::Ui::NpcChatting               &          NpcChattingUi   () const = 0;
+        [[nodiscard]] virtual GamePlay::PlayerAvatar::ChattableArea            & ChattableArea   () const = 0;
+        [[nodiscard]] virtual GamePlay::Ui::NpcChatting                        & NpcChattingUi   () const = 0;
         [[nodiscard]] virtual const glm::vec3&                                   FeatStepPosition() const = 0;
-        [[nodiscard]] virtual const NanamiEngine::Module::GameObject::Transform& PlayerTransform () const = 0;
+        [[nodiscard]] virtual NanamiEngine::Module::GameObject::Transform      & PlayerTransform () const = 0;
         [[nodiscard]] virtual PlayerAvatar::IPlayerAvatarStatus                & PlayerStatus    () const = 0;
         [[nodiscard]] virtual PlayerAvatar::PlayerAvatarType                     Type            () const = 0;
         virtual void SaveStatus() = 0;

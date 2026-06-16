@@ -16,6 +16,7 @@ namespace GameCore::Scene::Main
         
     private:
         void Init     () override;
+        Coroutine::Task<void> OnEnterAsync();
         void Enter    () override;
         void DoDispose() override;
         void OnDrawGui() override;

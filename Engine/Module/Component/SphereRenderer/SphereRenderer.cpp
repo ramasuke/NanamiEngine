@@ -12,9 +12,18 @@ namespace NanamiEngine::Module::Component
             Transform().GetDxWorldPos(),
             radius_,
             divNum_,
-            color_.ToDxColor(),
+            color_    .ToDxColor(),
             edgeColor_.ToDxColor(),
             fill_ ? TRUE : FALSE
         );
+    }
+
+    void SphereRenderer::OnDrawGui()
+    {
+        ImGuiHelper::OnDrawInputField("radius_"   , radius_   );
+        ImGuiHelper::OnDrawInputField("divNum_"   , divNum_   );
+        ImGuiHelper::OnDrawInputField("color_"    , color_    );
+        ImGuiHelper::OnDrawInputField("edgeColor_", edgeColor_);
+        ImGuiHelper::OnDrawInputField("fill_"     , fill_     );
     }
 }

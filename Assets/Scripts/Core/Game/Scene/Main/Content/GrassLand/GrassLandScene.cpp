@@ -2,6 +2,8 @@
 
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include <stdexcept>
+
+#include "../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../PlayerAvatar/PlayerAvatar.h"
 #include "../../../Sub/Group/Sub_IGameSceneGroup.h"
 #include "../../../Sub/Type/SubSceneType.h"
@@ -28,18 +30,25 @@ namespace GameCore::Scene::Main
         
         scene_ = LoadMainScene();
         Context()->Init();
+
         Context()->NetworkRunner().Initialize();
+        Coroutine::StartCoroutine(OnEnterAsync());
+    }
+
+    Coroutine::Task<void> GrassLandScene::OnEnterAsync()
+    {
+        co_await Context()->NetworkRunner().OnConnectedAsync();
+        
+        GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
+        playerAvatar_ = Context()->NetworkRunner().SpawnPlayerAvatar(
+            PlayerAvatar::LoadType(),
+            Context()->PlayerSpawnPoint(),
+            glm::quat());
     }
 
     void GrassLandScene::Enter()
     {
-        GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
         
-        playerAvatar_ = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatar(
-            PlayerAvatar::LoadType(),
-            Context()->PlayerSpawnPoint(),
-            nullptr,
-            Context()->CameraGroup());
     }
 
     void GrassLandScene::DoDispose()

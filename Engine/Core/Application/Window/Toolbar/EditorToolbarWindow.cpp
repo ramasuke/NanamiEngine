@@ -61,37 +61,7 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
         ImGui::Spacing();
 
         // === Network ===
-        ImGui::Text("Network Mode");
-        ImGui::Separator();
-
-        auto currentMode = Application::Configuration::NetworkConfiguration::GetMode();
-        int  modeIndex   = currentMode == Core::Network::Mode::Server ? 0 : 1;
-
-        if (ImGui::RadioButton("Server", &modeIndex, 0) || ImGui::RadioButton("Client", &modeIndex, 1))
-        {
-            const auto newMode = modeIndex == 0 ? Core::Network::Mode::Server : Core::Network::Mode::Client;
-            Application::Configuration::NetworkConfiguration::SetMode(newMode);
-            Application::Configuration::NetworkConfiguration::Save();
-        }
-
-        if (currentMode == Core::Network::Mode::Server)
-        {
-            ImGui::Separator();
-            ImGui::Text("Server Type");
-
-            auto currentServerType = Application::Configuration::NetworkConfiguration::GetServerType();
-            int  serverTypeIndex   = currentServerType == Core::Network::ServerType::Relay ? 0 : 1;
-
-            if (ImGui::RadioButton("Relay", &serverTypeIndex, 0) ||
-                ImGui::RadioButton("Authoritative", &serverTypeIndex, 1))
-            {
-                const auto newType = serverTypeIndex == 0
-                    ? Core::Network::ServerType::Relay
-                    : Core::Network::ServerType::Authoritative;
-                Application::Configuration::NetworkConfiguration::SetServerType(newType);
-                Application::Configuration::NetworkConfiguration::Save();
-            }
-        }
+        Application::Configuration::NetworkConfiguration::DrawConfigGUI();
 
         ImGui::EndPopup();
     }

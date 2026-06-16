@@ -25,7 +25,9 @@ namespace NanamiEngine::Core::Network
                 OnServerAuthoritativeReceive(packet);
         }
         else
+        {
             OnReceive(packet);
+        }
     }
 
     void PacketDispatcherBase::OnServerRelayReceive(const Packet& packet)

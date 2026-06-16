@@ -13,4 +13,10 @@ namespace NanamiEngine::Core::Network
         Relay,        // 受信パケットをそのまま全クライアントへブロードキャスト
         Authoritative // サーバーで処理し、選択的にブロードキャスト（OnServerReceive override で制御）
     };
+
+    enum class ConnectionTarget
+    {
+        Localhost,
+        LAN
+    };
 }

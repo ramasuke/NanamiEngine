@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <cassert>
 #include <iosfwd>
 #include <vector>
 
@@ -40,6 +41,7 @@ namespace NanamiEngine::Core::Network
         template<typename T>
         T ReadRaw(size_t& offset) const
         {
+            assert(offset + sizeof(T) <= data_.size());
             T value;
             memcpy(&value, data_.data() + offset, sizeof(T));
             offset += sizeof(T);
@@ -53,6 +55,7 @@ namespace NanamiEngine::Core::Network
             const uint32_t size = ReadRaw<uint32_t>(offset);
 
             // バイナリ取り出し
+            assert(offset + size <= data_.size());
             const std::string str(reinterpret_cast<const char*>(data_.data() + offset), size);
             offset += size;
 

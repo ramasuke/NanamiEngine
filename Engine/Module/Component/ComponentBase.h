@@ -89,3 +89,7 @@ namespace NanamiEngine::Module::Component
     // }
 }
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::ComponentBase, 0);
+#define ENGINE_REGISTER_COMPONENT(TYPE, VERSION)                                                \
+    CEREAL_CLASS_VERSION(TYPE, VERSION);                                                        \
+    CEREAL_REGISTER_TYPE(TYPE);                                                                 \
+    CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, TYPE);

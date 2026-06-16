@@ -2,9 +2,29 @@
 
 #include "../../Core/Network/Engine_Network_INetworkSystem.h"
 #include "../../Core/Application/Configuration/Network/ApplicationConfiguration_Network.h"
+#include "../../Core/Coroutine/Awaitable/WaitForObservable/Coroutine_WaitForObservable.h"
+#include "../../Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
+
+NanamiEngine::Module::Network::NetworkRunnerBase* NanamiEngine::Module::Network::NetworkRunnerBase::s_instance_ = nullptr;
 
 namespace NanamiEngine::Module::Network
 {
+    NetworkRunnerBase::NetworkRunnerBase()
+    {
+        s_instance_ = this;
+    }
+
+    NetworkRunnerBase::~NetworkRunnerBase()
+    {
+        if (s_instance_ == this) s_instance_ = nullptr;
+    }
+
+    NetworkRunnerBase& NetworkRunnerBase::Instance()
+    {
+        assert(s_instance_ != nullptr);
+        return *s_instance_;
+    }
+
     Core::Network::DefaultPacketDispatcher& NetworkRunnerBase::DefaultDispatcher()
     {
         assert(defaultPacketDispatcher_, "defaultPacketDispatcher is null");
@@ -17,6 +37,11 @@ namespace NanamiEngine::Module::Network
         networkSystem_ = DoCreateUseNetworkSystem();
         defaultPacketDispatcher_.emplace(*networkSystem_);
         DoInitialize();
+    }
+
+    Core::Network::PlayerId NetworkRunnerBase::GetPlayerId() const
+    {
+        return PlayerIdProvider().GetPlayerId();
     }
 
     void NetworkRunnerBase::OnUpdate()
@@ -61,5 +86,10 @@ namespace NanamiEngine::Module::Network
     void NetworkRunnerBase::Spawn(Asset::PrefabGameObjectFile& prefabFile, const glm::vec3 position, const glm::quat rotation)
     {
         defaultPacketDispatcher_->Spawn().DispatchSendPacket(prefabFile, position, rotation);
+    }
+
+    Coroutine::Task<void> NetworkRunnerBase::OnConnectedAsync()
+    {
+        co_await Coroutine::WaitForObservable(defaultPacketDispatcher_->ReceivedAssignPlayerId().OnAssignedPlayerId());
     }
 }

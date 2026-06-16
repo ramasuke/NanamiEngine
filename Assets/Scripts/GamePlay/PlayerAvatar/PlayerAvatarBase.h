@@ -39,10 +39,11 @@ namespace GamePlay::PlayerAvatar
                   std::unique_ptr<StateMachine> stateMachine,
                   std::shared_ptr<InputAction > inputAction ,
                   const std::weak_ptr<CameraGroup>& cameraGroup);
+        
         [[nodiscard]] IPlayerAvatarEventSceneStateMachine& GetEventSceneStateMachine() const override { return *stateMachine_; }
         /** @brief PlayerAvatar<T>のCameraを取得 */
         [[nodiscard]] Component::ColliderBase& Collider() const override { return *collider_.lock(); }
-        [[nodiscard]] const GameObject::Transform& PlayerTransform() const override { return Transform(); }
+        [[nodiscard]] GameObject::Transform& PlayerTransform() const override { return Transform(); }
         [[nodiscard]] Status& PlayerStatus() const override { return *status_; }
         void SaveStatus() override;
         void EnableStateMachiine() override;

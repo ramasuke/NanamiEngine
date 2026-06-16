@@ -13,6 +13,18 @@ void GameCore::PlayerAvatar::PlayerAvatarInputActionBase::OnUpdate()
     }
 }
 
+void GameCore::PlayerAvatar::PlayerAvatarInputActionBase::Enable()
+{
+    for (const auto& input : inputs_)
+        input->Enable();
+}
+
+void GameCore::PlayerAvatar::PlayerAvatarInputActionBase::Disable()
+{
+    for (const auto& input : inputs_)
+        input->Disable();
+}
+
 GameCore::PlayerAvatar::PlayerAvatarInputActionBase::Input<void> GameCore::PlayerAvatar::
 PlayerAvatarInputActionBase::MakeInputAction(const std::function<bool()>& checkInput)
 {

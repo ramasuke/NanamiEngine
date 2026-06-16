@@ -30,7 +30,9 @@ namespace GameCore::Network
         explicit CustomDispatcherGroup(
             Core::Network::DefaultPacketDispatcher& defaultDispatchers,
             Core::Network::IPacketSender& packetSender,
-            Core::Network::IPlayerIdProvider& playerIdProvider);
+            const Core::Network::IPlayerIdProvider& playerIdProvider,
+            Asset::PlayerAvatarFactory& playerAvatarFactory,
+            const PlayerAvatar::AllPlayerCameraGroup& cameraGroup);
 
         void DispatchReceivedPacket(const Core::Network::Packet& packet);
 

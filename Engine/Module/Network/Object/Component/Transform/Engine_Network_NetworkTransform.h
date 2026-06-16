@@ -10,11 +10,6 @@ namespace NanamiEngine::Module::Network
                                    public Core::Network::INetworkObject
     {
     public:
-        [[nodiscard]] Core::Network::NetworkObjectId GetNetworkObjectId() const override { return networkObjectId_; }
-        void SetNetworkObjectId(Core::Network::NetworkObjectId id) override { networkObjectId_ = id; }
-
-    private:
-        Core::Network::NetworkObjectId networkObjectId_ = Core::Network::NetworkObjectId::Invalid();
 
 #pragma region Serialization Function
     public:
@@ -35,5 +30,5 @@ namespace NanamiEngine::Module::Network
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(Network::NetworkTransform, 0);
 CEREAL_REGISTER_TYPE(Network::NetworkTransform);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IRenderable, Network::NetworkTransform);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, Network::NetworkTransform);
 #pragma endregion

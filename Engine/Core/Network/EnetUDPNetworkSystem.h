@@ -14,8 +14,7 @@ struct _ENetPeer;
 
 namespace NanamiEngine::Core::Network
 {
-    constexpr auto CONNECT_PORT_ADDRESS = "127.0.0.1";
-    constexpr auto PORT_ADDRESS         = 1234;
+    constexpr auto PORT_ADDRESS = 1234;
     constexpr int  MAX_CLIENTS          = 32;
     
     class EnetUDPNetworkSystem final : public INetworkSystem

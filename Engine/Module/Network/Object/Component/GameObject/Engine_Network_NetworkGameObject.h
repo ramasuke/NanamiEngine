@@ -9,8 +9,8 @@ namespace NanamiEngine::Module::Network
                                     public Core::Network::INetworkObject
     {
     public:
-        [[nodiscard]] Core::Network::NetworkObjectId GetNetworkObjectId() const override { return networkObjectId_; }
-        void SetNetworkObjectId(Core::Network::NetworkObjectId id) override { networkObjectId_ = id; }
+        [[nodiscard]] Core::Network::NetworkObjectId GetNetworkObjectId() const { return networkObjectId_; }
+        void SetNetworkObjectId(const Core::Network::NetworkObjectId id) { networkObjectId_ = id; }
 
     private:
         Core::Network::NetworkObjectId networkObjectId_ = Core::Network::NetworkObjectId::Invalid();

@@ -27,7 +27,7 @@ namespace NanamiEngine::Core::Application
                 return a->GetRenderOrder() < b->GetRenderOrder();
             }
         }
-        , fixedDeltaTime_(1.0f / 60.0f)
+        , fixedDeltaTime_(1.0f / 144.0f)
     {
         if (useShadowMap)
         {

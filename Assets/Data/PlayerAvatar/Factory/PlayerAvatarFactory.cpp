@@ -31,7 +31,8 @@ namespace NanamiEngine::Module::Asset
         const GameCore::PlayerAvatar::PlayerAvatarType& type,
         const glm::vec3& summonPosition,
         const std::shared_ptr<GameObject::IGameObject>& parent,
-        const GameCore::PlayerAvatar::AllPlayerCameraGroup& allCameraGroup)
+        const GameCore::PlayerAvatar::AllPlayerCameraGroup& allCameraGroup,
+        const bool enableInputAction)
     {
         std::shared_ptr<GameCore::IPlayerAvatar> playerAvatar;
 
@@ -45,7 +46,8 @@ namespace NanamiEngine::Module::Asset
                     swordManPrefab_.get(),
                     summonPosition,
                     parent,
-                    allCameraGroup.Swordman());
+                    allCameraGroup.Swordman(),
+                    enableInputAction);
                 break;
             }
 

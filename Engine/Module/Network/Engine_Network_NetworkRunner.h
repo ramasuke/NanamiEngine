@@ -4,6 +4,7 @@
 #include "../../Core/Network/Engine_Network_INetworkSystem.h"
 #include "../../Core/Network/Packet/Dispatcher/Packet_PacketDispatcherGroup.h"
 #define WIN32_LEAN_AND_MEAN
+#include "../../Core/Coroutine/Task/Task.h"
 #include "../../Core/Object/Field/Field.h"
 #include "../Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../Component/ComponentBase.h"
@@ -15,16 +16,23 @@ namespace NanamiEngine::Module::Network
                               public LifeCycleCallback::IUpdatable
     {
     public:
+        NetworkRunnerBase();
+        ~NetworkRunnerBase() override;
+
+        [[nodiscard]] static NetworkRunnerBase& Instance();
+
         /** API: 手動呼び出しの初期化 */
         void Initialize();
+        /** API: PlayerIDの取得 */
+        [[nodiscard]] Core::Network::PlayerId GetPlayerId() const;
         /** API: Defaultで設定されているPacket割り当て処理一覧 */
         Core::Network::DefaultPacketDispatcher& DefaultDispatcher();
         
         /** --- Defaultの通信処理API一覧 --- */
+        //API: Network上のサーバーと接続してネットワーク上でクライアント登録されるまで待つAsync
+        Coroutine::Task<void> OnConnectedAsync();
         //API: Network上で共有するオブジェクトの生成処理
         void Spawn(Asset::PrefabGameObjectFile& prefabFile, glm::vec3 position, glm::quat rotation);
-        
-        
 
     private:
         void OnUpdate() override;
@@ -37,7 +45,7 @@ namespace NanamiEngine::Module::Network
         virtual void DoDispatchReceivedPacket(const Core::Network::Packet& packet) = 0;
         [[nodiscard]] virtual std::unique_ptr<Core::Network::INetworkSystem> DoCreateUseNetworkSystem() const = 0;
         
-        /**SandBox pattern*/
+        /** SandBox pattern */
         [[nodiscard]] Core::Network::IPacketSender    & PacketSender() const;
         [[nodiscard]] Core::Network::IPlayerIdProvider& PlayerIdProvider() const;
         
@@ -45,6 +53,8 @@ namespace NanamiEngine::Module::Network
         std::optional<Core::Network::DefaultPacketDispatcher> defaultPacketDispatcher_;
         std::unique_ptr<Core::Network::INetworkSystem> networkSystem_;
         [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) sampleSpawnPrefab_;
+
+        static NetworkRunnerBase* s_instance_;
         
         
 #pragma region Serialization Function

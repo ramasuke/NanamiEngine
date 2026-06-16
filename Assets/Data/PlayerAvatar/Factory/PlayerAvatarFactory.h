@@ -52,14 +52,16 @@ namespace NanamiEngine::Module::Asset
             const GameCore::PlayerAvatar::PlayerAvatarType& type,
             const glm::vec3& summonPosition,
             const std::shared_ptr<GameObject::IGameObject>& parent,
-            const GameCore::PlayerAvatar::AllPlayerCameraGroup& allCameraGroup);
+            const GameCore::PlayerAvatar::AllPlayerCameraGroup& allCameraGroup,
+            bool enableInputAction);
 
         template <typename AvatarT, typename TraitsT>
         [[nodiscard]] std::shared_ptr<AvatarT> LoadInitedPlayerAvatarImpl(
               const std::shared_ptr<PrefabGameObjectFile>& prefabFile
             , const glm::vec3& summonPosition
             , const std::shared_ptr<GameObject::IGameObject>& parent
-            , std::shared_ptr<GameCore::PlayerAvatar::RequireType::CameraGroup<TraitsT>> cameraGroup);
+            , std::shared_ptr<GameCore::PlayerAvatar::RequireType::CameraGroup<TraitsT>> cameraGroup
+            , bool enableInputAction);
 
         
     private:
@@ -89,7 +91,8 @@ namespace NanamiEngine::Module::Asset
         const std::shared_ptr<PrefabGameObjectFile>& prefabFile,
         const glm::vec3& summonPosition,
         const std::shared_ptr<GameObject::IGameObject>& parent,
-        std::shared_ptr<GameCore::PlayerAvatar::RequireType::CameraGroup<TraitsT>> cameraGroup)
+        std::shared_ptr<GameCore::PlayerAvatar::RequireType::CameraGroup<TraitsT>> cameraGroup,
+        bool enableInputAction)
     {
         using namespace GameCore::PlayerAvatar;
         using Status = RequireType::Status<TraitsT>;
@@ -101,6 +104,7 @@ namespace NanamiEngine::Module::Asset
         
         //Init
         auto inputAction  = std::make_shared<Input>();
+        enableInputAction ? inputAction->Enable() : inputAction->Disable(); 
         auto status       = GameCore::PlayerAvatar::LoadStatus<Status, TraitsT>();
         auto stateMachine = TraitsT::CreateStateMachine(status, inputAction, playerAvatar, cameraGroup);
         

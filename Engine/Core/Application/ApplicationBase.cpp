@@ -10,6 +10,7 @@
 #include "Window/Main/Game/GameWindow.h"
 #include "../Object/Registry/ObjectRegistry.h"
 #include "Configuration/ApplicationConfiguration.h"
+#include "Configuration/Network/ApplicationConfiguration_Network.h"
 #include "Time/Time.h"
 #include "../Physics/Physics.h"
 #include "LifeCycle/ApplicationLifeCycle.h"
@@ -23,6 +24,7 @@ namespace NanamiEngine::Core::Application
     {
         /** ApplicationConfiguの初期化 */
         Configuration::AppConfiguration::Load();
+        Configuration::NetworkConfiguration::Load();
         SetDoubleStartValidFlag(true          );
         ChangeWindowMode       (true          );
         SetGraphMode           (Configuration::AppConfiguration::GetWindowWidth(), Configuration::AppConfiguration::GetWindowHeight(), Configuration::AppConfiguration::GetWindowColorScale());

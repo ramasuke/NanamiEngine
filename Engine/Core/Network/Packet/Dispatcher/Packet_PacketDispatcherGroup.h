@@ -10,13 +10,15 @@ namespace NanamiEngine::Core::Network
     public:
         explicit DefaultPacketDispatcher(
             INetworkSystem& networkSystem);
+        
         [[nodiscard]] SpawnNetworkObject& Spawn() { return spawnNetworkObject_; }
+        [[nodiscard]] ReceivedAssignPlayerId& ReceivedAssignPlayerId() { return receivedAssignPlayerId_; }
 
         void DispatchReceivedPacket(const Packet& packet);
 
     private:
         NetworkObjectInstanceRegistry instanceRegistry_;
-        ReceivedAssignPlayerId receivedAssignPlayerId_;
+        Network::ReceivedAssignPlayerId receivedAssignPlayerId_;
         SpawnNetworkObject spawnNetworkObject_;
     };
 }

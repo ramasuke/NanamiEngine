@@ -11,6 +11,8 @@ namespace GameCore::PlayerAvatar
     public:
         virtual ~PlayerAvatarInputActionBase() = default;
         void OnUpdate();
+        void Enable();
+        void Disable();
         virtual void OnDrawGui() = 0;
 
     protected:

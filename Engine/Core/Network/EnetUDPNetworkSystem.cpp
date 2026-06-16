@@ -23,13 +23,18 @@ namespace NanamiEngine::Core::Network
             {
                 availableIds_.push(i);
             }
+
+            //Clientと同樣にPlayerIdを設定するPacketを自分自身に送信
+            Packet packet = Packet::Create(DefaultPacketType::AssignPlayerId);
+            packet.Data().Write(playerId_);
+            receivedQueue_.push(packet);
         }
         else
         {
             host_ = enet_host_create(nullptr, 1, 2, 0, 0);
 
             ENetAddress address{};
-            enet_address_set_host(&address, CONNECT_PORT_ADDRESS);
+            enet_address_set_host(&address, Application::Configuration::NetworkConfiguration::GetServerAddress());
             address.port = PORT_ADDRESS;
 
             peer_ = enet_host_connect(host_, &address, 2, 0);
@@ -69,7 +74,7 @@ namespace NanamiEngine::Core::Network
                     }
                     else
                     {
-
+                        
                     }
                     break;
                 }

@@ -13,6 +13,8 @@ namespace GameCore::PlayerAvatar
             : checkInput_(std::move(checkInput)) {}
 
         void OnUpdate() override;
+        void Enable()  override { SetActive(true ); }
+        void Disable() override { SetActive(false); }
         [[nodiscard]] bool IsPressed()       const;
         [[nodiscard]] bool IsUpdatePressed() const;
         [[nodiscard]] bool IsReleased()      const;
