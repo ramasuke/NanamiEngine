@@ -442,3 +442,66 @@ void AnimationTree::AnimationTree::CreateNode()
     const auto node = std::make_shared<AnimationClipNode>();
     nodes_[node->GetGuid()] = node;
 }
+
+AnimationTree::AnimationStateSnapshot AnimationTree::AnimationTree::GetCurrentState() const
+{
+    AnimationStateSnapshot snap;
+    bool primarySet = false;
+
+    for (const auto& node : currentNodes_)
+    {
+        auto* clip = dynamic_cast<AnimationClipNode*>(node.get());
+        if (!clip)
+            continue;
+
+        if (!primarySet)
+        {
+            snap.primaryGuid       = clip->GetGuid();
+            snap.primaryDuringSecs = clip->GetDuringSecs();
+            snap.primaryBlendRate  = clip->GetBlendRate();
+            primarySet = true;
+        }
+        else
+        {
+            snap.isBlending          = true;
+            snap.secondaryGuid       = clip->GetGuid();
+            snap.secondaryDuringSecs = clip->GetDuringSecs();
+            snap.secondaryBlendRate  = clip->GetBlendRate();
+            break;
+        }
+    }
+    return snap;
+}
+
+void AnimationTree::AnimationTree::ApplyRemoteState(const AnimationStateSnapshot& state, const int modelHandle)
+{
+    for (const auto& node : currentNodes_)
+        node->OnExitNode(modelHandle);
+    currentNodes_.clear();
+    currentNodePath_ = nullptr;
+
+    const auto primaryNode = FindNode(state.primaryGuid).lock();
+    if (primaryNode)
+    {
+        if (auto* clip = dynamic_cast<AnimationClipNode*>(primaryNode.get()))
+        {
+            clip->SetDuringSecs(state.primaryDuringSecs);
+            clip->OnUpdateBlendRate(state.primaryBlendRate);
+        }
+        currentNodes_.push_back(primaryNode);
+    }
+
+    if (state.isBlending)
+    {
+        const auto secondaryNode = FindNode(state.secondaryGuid).lock();
+        if (secondaryNode)
+        {
+            if (auto* clip = dynamic_cast<AnimationClipNode*>(secondaryNode.get()))
+            {
+                clip->SetDuringSecs(state.secondaryDuringSecs);
+                clip->OnUpdateBlendRate(state.secondaryBlendRate);
+            }
+            currentNodes_.push_back(secondaryNode);
+        }
+    }
+}

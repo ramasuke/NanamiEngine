@@ -48,6 +48,7 @@ namespace NanamiEngine::Module::Network
     {
         networkSystem_->Update();
         DispatchPollPackets();
+        defaultPacketDispatcher_->Update();
     }
 
     void NetworkRunnerBase::DispatchPollPackets()

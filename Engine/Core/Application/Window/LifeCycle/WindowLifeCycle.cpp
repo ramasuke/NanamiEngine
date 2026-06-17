@@ -16,30 +16,18 @@ namespace NanamiEngine::Core::Application
 {
     WindowLifeCycle::WindowLifeCycle(const bool useShadowMap)
         : coroutineScheduler_(std::make_unique<Coroutine::CoroutineScheduler>())
-        , uiRenderableCallbacks_{
-            [](const std::weak_ptr<Module::LifeCycleCallback::IUserInterfaceRenderable>& weakA,
-               const std::weak_ptr<Module::LifeCycleCallback::IUserInterfaceRenderable>& weakB)
-            {
-                const auto a = weakA.lock();
-                const auto b = weakB.lock();
-                if (!a || !b)
-                    return false;
-
-                return a->GetRenderOrder() < b->GetRenderOrder();
-            }
-        }
     {
-        using Cfg = Configuration::AppConfiguration;
-        fixedDeltaTime_ = 1.0f / static_cast<float>(Cfg::GetFixedUpdateRate());
+        using Config = Configuration::AppConfiguration;
+        fixedDeltaTime_ = 1.0f / static_cast<float>(Config::GetFixedUpdateRate());
 
         if (useShadowMap)
         {
-            const VECTOR lightDir = VGet(Cfg::GetLightDirX(), Cfg::GetLightDirY(), Cfg::GetLightDirZ());
+            const VECTOR lightDir = VGet(Config::GetLightDirX(), Config::GetLightDirY(), Config::GetLightDirZ());
             SetLightDirection(lightDir);
-            const COLOR_F difColor = {Cfg::GetLightDifR(), Cfg::GetLightDifG(), Cfg::GetLightDifB(), 1.0f};
+            const COLOR_F difColor = {Config::GetLightDifR(), Config::GetLightDifG(), Config::GetLightDifB(), 1.0f};
             SetLightDifColor(difColor);
 
-            shadowMapDxLibHandle_ = MakeShadowMap(Cfg::GetShadowMapWidth(), Cfg::GetShadowMapHeight());
+            shadowMapDxLibHandle_ = MakeShadowMap(Config::GetShadowMapWidth(), Config::GetShadowMapHeight());
             SetShadowMapLightDirection(shadowMapDxLibHandle_, lightDir);
             const glm::vec3 position = Scene::ShadowMapSetting::GetRenderAreaPos();
             const glm::vec3 size     = Scene::ShadowMapSetting::GetRenderAreaSize();

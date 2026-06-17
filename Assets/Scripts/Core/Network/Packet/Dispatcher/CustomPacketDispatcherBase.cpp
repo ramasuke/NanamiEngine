@@ -6,7 +6,9 @@ namespace GameCore::Network
         Core::Network::DefaultPacketDispatcher& defaultDispatchers,
         const Core::Network::IPlayerIdProvider& playerIdProvider,
         Core::Network::IPacketSender& packetSender)
-        : PacketDispatcherBase(playerIdProvider, packetSender), defaultDispatchers_(defaultDispatchers)
+        : PacketDispatcherBase(playerIdProvider, packetSender)
+        , defaultDispatchers_(defaultDispatchers)
+        , packetSender_(packetSender)
     {
     }
 }

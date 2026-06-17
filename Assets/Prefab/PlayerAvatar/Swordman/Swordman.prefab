@@ -125,7 +125,7 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "value_": "D0445D4A-71F1-454F-8A1F-F0A944230022"
+                                        "value_": "B5B95494-F582-495A-8482-0F054BA1BBBB"
                                     }
                                 }
                             }
@@ -138,7 +138,7 @@
                                 "id": 2147483656,
                                 "data": {
                                     "value0": {
-                                        "value_": "F319423F-EC6F-4874-8D3E-C53C7B3A3C22"
+                                        "value_": "C2E8C950-BBFF-44B4-9E94-D6AC13F59809"
                                     }
                                 }
                             }
@@ -234,12 +234,15 @@
             "ptr_wrapper": {
                 "id": 2147483661,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
-                        "guid_": {
-                            "value_": "CC9F65DC-9214-453A-9039-A603D1AE32C6"
-                        },
-                        "isEnable_": true
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "guid_": {
+                                "value_": "CC9F65DC-9214-453A-9039-A603D1AE32C6"
+                            },
+                            "isEnable_": true
+                        }
                     }
                 }
             }

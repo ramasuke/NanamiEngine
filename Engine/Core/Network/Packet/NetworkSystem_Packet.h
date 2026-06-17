@@ -13,6 +13,7 @@ namespace NanamiEngine::Core::Network
         AssignPlayerId     = 0,
         SpawnNetworkObject = 1,
         SyncTransform      = 2,
+        SyncAnimation      = 3,
     };
 
     struct Packet final

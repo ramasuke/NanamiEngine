@@ -3,7 +3,6 @@
 #include "../../../Scripts/Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../Scripts/Core/Game/PlayerAvatar/CameraGroup/AllPlayerCameraGroup.h"
 #include "../../../Scripts/GamePlay/PlayerAvatar/PlayerAvatarBase.h"
 #include "../../../Scripts/GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
@@ -31,7 +30,6 @@ namespace NanamiEngine::Module::Asset
         const GameCore::PlayerAvatar::PlayerAvatarType& type,
         const glm::vec3& summonPosition,
         const std::shared_ptr<GameObject::IGameObject>& parent,
-        const GameCore::PlayerAvatar::AllPlayerCameraGroup& allCameraGroup,
         const bool enableInputAction)
     {
         std::shared_ptr<GameCore::IPlayerAvatar> playerAvatar;
@@ -40,13 +38,22 @@ namespace NanamiEngine::Module::Asset
         {
         case GameCore::PlayerAvatar::PlayerAvatarType::SwordMan:
             {
+                std::weak_ptr<GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup> swordmanCameraGroup;
+                if (enableInputAction)
+                {
+                    swordmanCameraGroup = Scene::GameObject::Instantiate(swordManCameraGroupPrefab_.get(), summonPosition)
+                        .lock()
+                        ->Components()
+                        .Catch<GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup>();
+                }
+                
                 playerAvatar = LoadInitedPlayerAvatarImpl<
                     GamePlay::PlayerAvatar::SwordMan::SwordManAvatar,
                     GameCore::PlayerAvatar::SwordMan::SwordManAvatarTraits>(
                     swordManPrefab_.get(),
                     summonPosition,
                     parent,
-                    allCameraGroup.Swordman(),
+                    swordmanCameraGroup.lock(),
                     enableInputAction);
                 break;
             }
@@ -68,5 +75,6 @@ namespace NanamiEngine::Module::Asset
     {
         ScriptableObject::OnDrawGui();
         ImGuiHelper::OnDrawInputField("swordManPrefab_", swordManPrefab_);
+        ImGuiHelper::OnDrawInputField("swordManCameraGroupPrefab_", swordManCameraGroupPrefab_);
     }
 }

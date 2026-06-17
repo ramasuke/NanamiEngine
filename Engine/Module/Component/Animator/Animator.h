@@ -20,6 +20,7 @@ namespace NanamiEngine::Module::Component
         template<typename T>
         AnimationTree::AnimationParameter<T>& Param(std::string paramName);
         [[nodiscard]] int AnimationModelHandle() const { return modelDxLibHandle_; }
+        [[nodiscard]] AnimationTree::AnimationTree* GetAnimationTree() const { return animationTree_.get(); }
 
     private:
         void InitAnimationTree();

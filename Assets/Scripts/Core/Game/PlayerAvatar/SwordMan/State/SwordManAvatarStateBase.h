@@ -1,6 +1,5 @@
 ﻿#pragma once
-#include <typeindex>
-
+#include "SwordManAvatarStateType.h"
 #include "../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../State/IPlayerAvatarState.h"
 #include "../../State/Action/PlayerAvatarStateAction.h"
@@ -21,7 +20,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     {
     public:
         explicit SwordManAvatarStateBase(  const std::shared_ptr<SwordManAvatarStateContext>& context
-                                         , const std::function<void(std::type_index)>& onChangeState);
+                                         , const std::function<void(SwordManAvatarStateType)>& onChangeState);
 
         virtual ~SwordManAvatarStateBase() override = default;
         [[nodiscard]] virtual AnimationType AnimationType() const = 0;
@@ -34,7 +33,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     private:
         float stateDuring_secs_;
         std::shared_ptr<SwordManAvatarStateContext> context_;
-        std::function<void(std::type_index)> onChangeState_;
+        std::function<void(SwordManAvatarStateType)> onChangeState_;
         static inline const auto CHATTABLE_ICON_OBJECT_NAME = "ChattableIcon";
 
     protected:
@@ -94,7 +93,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             #define DEFINE_STATE_CONSTRUCTOR(DerivedClass) \
             explicit DerivedClass( \
             const std::shared_ptr<GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateContext>& context, \
-            const std::function<void(std::type_index)>& onChangeState) \
+            const std::function<void(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateType)>& onChangeState) \
             : SwordManAvatarStateBase(context, onChangeState) {}
     };
 
@@ -122,6 +121,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         requires std::derived_from<StateT, SwordManAvatarStateBase>
     void SwordManAvatarStateBase::OnChangeState() const
     {
-        onChangeState_(typeid(StateT));
+        onChangeState_(StateT::kStateType);
     }
 }

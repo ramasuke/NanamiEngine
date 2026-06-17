@@ -79,10 +79,12 @@ namespace NanamiEngine::Core::Network
                         p.Data().Write(assignedId);
 
                         SendTo(event.peer, p);
+
+                        onConnectPlayer_.get_subscriber().on_next(&event);
                     }
                     else
                     {
-                        
+
                     }
                     break;
                 }
@@ -158,6 +160,11 @@ namespace NanamiEngine::Core::Network
     void EnetUDPNetworkSystem::SetPlayerId(const PlayerId playerId)
     {
         playerId_ = playerId;
+    }
+
+    rxcpp::observable<ENetEvent*> EnetUDPNetworkSystem::OnConnectPlayer()
+    {
+        return onConnectPlayer_.get_observable();
     }
 
     std::vector<Packet> EnetUDPNetworkSystem::PollPackets()

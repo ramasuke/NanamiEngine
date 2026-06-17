@@ -16,7 +16,7 @@
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
-                        "cereal_class_version": 0,
+                        "cereal_class_version": 1,
                         "value0": {
                             "cereal_class_version": 0,
                             "guid_": {
@@ -24,6 +24,7 @@
                             },
                             "isEnable_": true
                         },
+                        "followFromBehindCameraName_": "FollowFromBehind",
                         "followFromBehindCamera_": {
                             "cereal_class_version": 0,
                             "value0": {
@@ -229,10 +230,10 @@
                                     "value1": {},
                                     "value2": {},
                                     "value3": {},
-                                    "minPitch_": -0.30000001192092898,
-                                    "maxPitch_": 0.20000000298023225,
+                                    "minPitch_": -0.5,
+                                    "maxPitch_": -0.10000000149011612,
                                     "mouseSensitivity_": 0.004999999888241291,
-                                    "distance_": 11.0,
+                                    "distance_": 16.100000381469728,
                                     "target_": {
                                         "value0": {
                                             "polymorphic_id": 1073741824,
@@ -278,12 +279,12 @@
                                     },
                                     "followOffsetPos_": {
                                         "value0": -0.15000000596046449,
-                                        "value1": 15.0,
+                                        "value1": 20.0,
                                         "value2": 0.0
                                     },
                                     "lookAtOffsetPos_": {
                                         "value0": -0.15000000596046449,
-                                        "value1": 15.0,
+                                        "value1": 20.0,
                                         "value2": 0.0
                                     },
                                     "cameraBrain_": {

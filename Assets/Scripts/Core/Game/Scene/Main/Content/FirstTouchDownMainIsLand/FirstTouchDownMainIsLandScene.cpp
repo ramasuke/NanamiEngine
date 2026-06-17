@@ -46,8 +46,14 @@ namespace GameCore::Scene::Main
         using namespace GameCore::PlayerAvatar;
         auto inputAction        = std::make_shared<RequireType::InputAction<SwordMan::SwordManAvatarTraits>>();
         auto summonAvatarStatus = std::make_shared<ContextT::SummonAvatarStatus>(Context()->PlayerAvatarInitStatus());
-        auto stateMachine = PlayerAvatar::SwordMan::CreateStateMachine(summonAvatarStatus, inputAction, playerAvatar_.lock(), Context()->CameraGroup().Swordman());
-        playerAvatar_.lock()->Init(summonAvatarStatus, std::move(stateMachine), inputAction, Context()->CameraGroup().Swordman());
+        const auto swordmanCameraGroup =
+                    NanamiEngine::Scene::GameObject::Instantiate(Context()->SwordManCameraGroupPrefab(), Context()->PlayerSpawnPoint())
+                        .lock()
+                        ->Components()
+                        .Catch<GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup>();
+        
+        auto stateMachine = PlayerAvatar::SwordMan::CreateStateMachine(summonAvatarStatus, inputAction, playerAvatar_.lock(), swordmanCameraGroup.lock());
+        playerAvatar_.lock()->Init(summonAvatarStatus, std::move(stateMachine), inputAction, swordmanCameraGroup.lock());
 
         auto& context = *Context();
         auto playerStatusUi = context.PlayerStatusUI();

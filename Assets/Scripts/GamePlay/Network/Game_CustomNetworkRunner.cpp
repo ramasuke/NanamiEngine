@@ -12,14 +12,11 @@ namespace GamePlay::Network
 
     void CustomNetworkRunner::DoInitialize()
     {
-        auto cameraGroup = GameCore::PlayerAvatar::AllPlayerCameraGroup(swordmanCameraGroup_.get());
-        
         customDispatcherGroup_.emplace(
             DefaultDispatcher(),
             PacketSender(),
             PlayerIdProvider(),
-            *playerAvatarFactory_.get(),
-            cameraGroup);
+            *playerAvatarFactory_.get());
     }
 
     void CustomNetworkRunner::DoDispatchReceivedPacket(const Core::Network::Packet& packet)
@@ -46,6 +43,5 @@ namespace GamePlay::Network
     void CustomNetworkRunner::OnDrawGui()
     {
         ImGuiHelper::OnDrawInputField("playerAvatarFactory_", playerAvatarFactory_);
-        ImGuiHelper::OnDrawInputField("swordmanCameraGroup_", swordmanCameraGroup_);
     }
 }

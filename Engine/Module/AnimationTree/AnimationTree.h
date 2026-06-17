@@ -8,6 +8,24 @@
 
 namespace NanamiEngine::Module::AnimationTree
 {
+    struct AnimationStateSnapshot final
+    {
+        Guid  primaryGuid;
+        float primaryDuringSecs  = 0.f;
+        float primaryBlendRate   = 1.f;
+
+        bool  isBlending          = false;
+        Guid  secondaryGuid;
+        float secondaryDuringSecs = 0.f;
+        float secondaryBlendRate  = 0.f;
+
+        template<class Archive>
+        void serialize(Archive& archive)
+        {
+            archive(primaryGuid, primaryDuringSecs, primaryBlendRate, isBlending, secondaryGuid, secondaryDuringSecs, secondaryBlendRate);
+        }
+    };
+
     class AnimationTree final : public Object::IObject
     {
     public:
@@ -20,9 +38,12 @@ namespace NanamiEngine::Module::AnimationTree
         void OnDrawDraggingNodeGui(ImDrawList* drawList, ImVec2 offset) const;
         void OnDrawGui() override;
         [[nodiscard]] BlackBoard::ParameterGroup& Param() const { return *additionConditionParameters_; }
-        
+
         /** @warning Playモード時は呼び出し必須 */
         void InitForAnimator(int modelHandle);
+
+        [[nodiscard]] AnimationStateSnapshot GetCurrentState() const;
+        void ApplyRemoteState(const AnimationStateSnapshot& state, int modelHandle);
 
     private:
         void AddCurrentNode    (const std::shared_ptr<IAnimationNode>& node);

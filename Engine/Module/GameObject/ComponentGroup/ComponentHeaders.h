@@ -51,6 +51,7 @@
 #include "../../NanamiUI/Slider/NanamiUi_Slider.h"
 #include "../../NanamiUI/TextRenderer/TextRenderer.h"
 #include "../../Network/Engine_Network_NetworkRunner.h"
+#include "../../Network/Object/Component/Animator/NetworkAnimator.h"
 #include "../../Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
 #include "../../Network/Object/Component/Transform/Engine_Network_NetworkTransform.h"
 #include "../../Physics/Component/Listener/Collision/Engine_Physics_CollisionListener.h"

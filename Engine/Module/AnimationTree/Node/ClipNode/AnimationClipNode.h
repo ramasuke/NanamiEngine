@@ -26,6 +26,10 @@ namespace NanamiEngine::Module::AnimationTree
         [[nodiscard]] float       GetAnimDuration_secs() const override { return duration_secs_ - blendAnimationOffset_secs_; }
         rxcpp::observable<UpdateCallbackContext> OnUpdated() override;
 
+        [[nodiscard]] float GetDuringSecs() const { return during_secs_; }
+        void                SetDuringSecs(float secs) { during_secs_ = secs; }
+        [[nodiscard]] float GetBlendRate () const { return blendRate_;    }
+
     private:
         FIELD(Asset::Mv1File) animationFile_;
         std::string           name_ = "ClipNode";

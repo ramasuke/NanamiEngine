@@ -7,7 +7,8 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
     public:
         DEFINE_STATE_CONSTRUCTOR(OnDisableReinforceState)
-        
+        static constexpr SwordManAvatarStateType kStateType = SwordManAvatarStateType::OnDisableReinforce;
+
     private:
         void DoEnter () override;
         void DoFixedUpdate() override;

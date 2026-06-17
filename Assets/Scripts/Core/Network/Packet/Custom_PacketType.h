@@ -3,7 +3,7 @@
 
 namespace GameCore::Network
 {
-    enum class EPacketType : NanamiEngine::Core::Network::PacketType 
+    enum class EPacketType : NanamiEngine::Core::Network::PacketType
     {
         SpawnPlayerAvatar = 101,
     };

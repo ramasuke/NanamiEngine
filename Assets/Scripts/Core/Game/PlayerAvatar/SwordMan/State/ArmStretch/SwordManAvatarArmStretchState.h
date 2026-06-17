@@ -8,7 +8,8 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
     public:
         DEFINE_STATE_CONSTRUCTOR(SwordManAvatarArmStretchState)
-        
+        static constexpr SwordManAvatarStateType kStateType = SwordManAvatarStateType::ArmStretch;
+
     private:
         void DoEnter () override;
         void DoFixedUpdate() override;

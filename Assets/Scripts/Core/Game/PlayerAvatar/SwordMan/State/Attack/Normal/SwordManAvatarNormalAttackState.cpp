@@ -6,7 +6,10 @@
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../Input/PlayerAvatarInput_void.h"
+#include "../../AttackedShocked/SwordManAvatar_AttackedShockedState.h"
+#include "../../Hurt/SwordManAvatar_HurtState.h"
 #include "../../Idle/SwordManAvatarIdleState.h"
+#include "../../Walk/SwordManAvatarWalkState.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::State
 {

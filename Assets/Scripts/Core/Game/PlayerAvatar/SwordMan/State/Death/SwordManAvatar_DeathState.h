@@ -7,7 +7,8 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
     public:
         DEFINE_STATE_CONSTRUCTOR(DeathState)
-        
+        static constexpr SwordManAvatarStateType kStateType = SwordManAvatarStateType::Death;
+
     private:
         void DoEnter () override;
         void DoFixedUpdate() override;

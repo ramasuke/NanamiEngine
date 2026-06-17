@@ -9,13 +9,13 @@
 
 namespace NanamiEngine::Core::Application
 {
-    template <LifeCycleCallbackType T>
-    class LifeCycleSortCallbackGroup final 
+    template <LifeCycleCallbackType T,
+              typename Compare = std::function<bool(const std::shared_ptr<T>&,
+                                                    const std::shared_ptr<T>&)>>
+    class LifeCycleSortCallbackGroup final
     {
     public:
-        explicit LifeCycleSortCallbackGroup(
-            std::function<bool(const std::shared_ptr<T>&,
-                               const std::shared_ptr<T>&)> onSortFunction);
+        explicit LifeCycleSortCallbackGroup(Compare compare = Compare{});
 
         void Add(std::weak_ptr<T> add);
         void Invoke(const std::function<void(T&)>& func);
@@ -26,28 +26,25 @@ namespace NanamiEngine::Core::Application
         std::queue<Guid> removeContentQueue_;
         std::unordered_map<Guid, std::weak_ptr<T>, GuidHash> contents_;
 
-        const std::function<bool(const std::shared_ptr<T>&,
-                                 const std::shared_ptr<T>&)> onSortFunction_;
+        Compare comparator_;
     };
 
 
-    template <LifeCycleCallbackType T>
-    LifeCycleSortCallbackGroup<T>::LifeCycleSortCallbackGroup(
-        std::function<bool(const std::shared_ptr<T>&,
-                           const std::shared_ptr<T>&)> onSortFunction)
-        : onSortFunction_(onSortFunction)
+    template <LifeCycleCallbackType T, typename Compare>
+    LifeCycleSortCallbackGroup<T, Compare>::LifeCycleSortCallbackGroup(Compare compare)
+        : comparator_(std::move(compare))
     {
     }
 
-    template <LifeCycleCallbackType T>
-    void LifeCycleSortCallbackGroup<T>::Add(std::weak_ptr<T> add)
+    template <LifeCycleCallbackType T, typename Compare>
+    void LifeCycleSortCallbackGroup<T, Compare>::Add(std::weak_ptr<T> add)
     {
         addContentQueue_.push(add);
     }
 
 
-    template <LifeCycleCallbackType T>
-    void LifeCycleSortCallbackGroup<T>::OnUpdatePushedContents()
+    template <LifeCycleCallbackType T, typename Compare>
+    void LifeCycleSortCallbackGroup<T, Compare>::OnUpdatePushedContents()
     {
         // 削除
         while (!removeContentQueue_.empty())
@@ -70,13 +67,12 @@ namespace NanamiEngine::Core::Application
         }
     }
 
-    template <LifeCycleCallbackType T>
-    void LifeCycleSortCallbackGroup<T>::Invoke(const std::function<void(T&)>& func)
+    template <LifeCycleCallbackType T, typename Compare>
+    void LifeCycleSortCallbackGroup<T, Compare>::Invoke(const std::function<void(T&)>& func)
     {
         std::vector<std::shared_ptr<T>> sorted;
         sorted.reserve(contents_.size());
 
-        // lockして有効なものだけ収集
         for (auto& [guid, wp] : contents_)
         {
             if (auto sp = wp.lock())
@@ -89,13 +85,14 @@ namespace NanamiEngine::Core::Application
             }
         }
 
-        // ソート
-        std::sort(sorted.begin(), sorted.end(), onSortFunction_);
+        std::sort(sorted.begin(), sorted.end(), comparator_);
 
-        // 実行
-        for (auto& sharedPtr : sorted)
+        for (size_t i = 0; i < sorted.size(); ++i)
         {
-            func(*sharedPtr);
+            std::weak_ptr<T> wp = sorted[i];
+            sorted[i].reset();
+            if (auto sp = wp.lock())
+                func(*sp);
         }
     }
 }

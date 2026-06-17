@@ -8,15 +8,13 @@ namespace NanamiEngine::Module::Network
 {
     void NetworkTransform::NetworkedTick()
     {
+        if (!IsSelfSpawned())
+            return;
+
         const auto networkGameObject = Components().Catch<NetworkGameObject>().lock();
-        if (!networkGameObject)
-            return;
-
         const auto id = networkGameObject->GetNetworkObjectId();
-        if (id == Core::Network::NetworkObjectId::Invalid())
-            return;
 
-        NetworkRunnerBase::Instance().DefaultDispatcher().SyncTransform()
+        NetworkRunner().DefaultDispatcher().SyncTransform()
             .DispatchSendPacket(id, Transform().GetWorldPos(), Transform().GetWorldRot());
     }
 

@@ -1,23 +1,6 @@
-﻿#pragma once
+#pragma once
 #include "../../StateMachine/PlayerAvatarStateMachine.h"
-#include "ArmStretch/SwordManAvatarArmStretchState.h"
-#include "Attack/Dash/SwordManAvatarDashAttackState.h"
-#include "Attack/Normal/SwordManAvatarNormalAttackState.h"
-#include "AttackedShocked/SwordManAvatar_AttackedShockedState.h"
-#include "AvoidRolling/SwordManAvatar_AvoidRolling.h"
-#include "Chatting/SwordManAvatarChattingState.h"
-#include "ClimbToTop/SwordManAvatarStateClimbToTop.h"
-#include "Death/SwordManAvatar_DeathState.h"
-#include "DisableState/SwordManAvatar_DisableState.h"
-#include "Floating/FloatingState.h"
-#include "Hurt/SwordManAvatar_HurtState.h"
-#include "Idle/SwordManAvatarIdleState.h"
-#include "Jump/SwordManAvatarJumpState.h"
-#include "OnDisableReinforce/OnDisableReinforceState.h"
-#include "OnEnableReinforce/OnEnableReinforceState.h"
-#include "Run/SwordManAvatarRunState.h"
-#include "UseCanon/SwordManAvatarUseCanonState.h"
-#include "Walk/SwordManAvatarWalkState.h"
+#include "SwordManAvatarStateBase.h"
 
 namespace GamePlay::PlayerAvatar::SwordMan
 {
@@ -26,25 +9,19 @@ namespace GamePlay::PlayerAvatar::SwordMan
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
-    using SwordManAvatarStateMachine = PlayerAvatarStateMachine<  SwordManAvatarStateBase
-                                                                , State::DisableState 
-                                                                , State::SwordManAvatarIdleState
-                                                                , State::SwordManAvatarWalkState
-                                                                , State::SwordManAvatarRunState
-                                                                , State::SwordManAvatarJumpState
-                                                                , State::FloatingState
-                                                                , State::SwordManAvatarNormalAttackState
-                                                                , State::AttackedShockedState
-                                                                , State::SwordManAvatarDashAttackState
-                                                                , State::SwordManAvatarStateClimbToTop
-                                                                , State::SwordManAvatarArmStretchState
-                                                                , State::SwordManAvatarChattingState
-                                                                , State::OnEnableReinforceState
-                                                                , State::OnDisableReinforceState
-                                                                , State::HurtState
-                                                                , State::AvoidRollingState
-                                                                , State::DeathState
-                                                                , State::SwordManAvatarUseCannonState>;
+    class SwordManAvatarStateMachine final : public PlayerAvatarStateMachine
+    {
+    public:
+        explicit SwordManAvatarStateMachine(
+            StatesFactory factory,
+            SwordManAvatarStateType initialState,
+            SwordManAvatarStateType disableState);
+
+        rxcpp::observable<std::shared_ptr<SwordManAvatarStateBase>> CurrentState();
+
+    private:
+        rxcpp::subjects::behavior<std::shared_ptr<SwordManAvatarStateBase>> swordManCurrentState_;
+    };
 
     std::unique_ptr<SwordManAvatarStateMachine> CreateStateMachine(
           const std::shared_ptr<SwordManAvatarStatus     >& status

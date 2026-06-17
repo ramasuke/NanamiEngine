@@ -9,6 +9,7 @@ namespace NanamiEngine::Module::LifeCycleCallback
     public:
         virtual ~IUpdatable() = default;
         virtual void OnUpdate() = 0;
+        virtual int UpdatePriority() const { return 0; }
         
         template <class Archive>
         void save(Archive& archive, const std::uint32_t version) const { }

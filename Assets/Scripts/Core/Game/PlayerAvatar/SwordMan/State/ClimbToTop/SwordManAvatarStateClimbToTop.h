@@ -8,6 +8,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
     public:
         DEFINE_STATE_CONSTRUCTOR(SwordManAvatarStateClimbToTop)
+        static constexpr SwordManAvatarStateType kStateType = SwordManAvatarStateType::ClimbToTop;
 
     private:
         void DoEnter () override;

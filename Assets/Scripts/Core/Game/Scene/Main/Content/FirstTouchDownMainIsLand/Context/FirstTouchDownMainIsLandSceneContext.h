@@ -43,9 +43,10 @@ namespace GameCore::Scene
         [[nodiscard]] const std::weak_ptr<Asset::SoundFile>&                           BGM() const { return bgm_.get(); }
         [[nodiscard]] const GameObject::IGameObject&                                   BoundryAirShipCollider() const { return *boundryAirshipCollider_.get(); }
         [[nodiscard]] const std::weak_ptr<Asset::PrefabGameObjectFile>&                FirstEventDragonPrefab() const { return firstEventDragonPrefab_.get(); }
-        [[nodiscard]] const glm::vec3&                                                 FirstEventDragonSpawnPos() const { return firstEventDragonSpawnPos_->Transform().GetWorldPos(); }
-        [[nodiscard]] const Asset::SwordManInitStatus&                                 PlayerAvatarInitStatus  () const { return *playerAvatarInitStatus_.get(); }
-        [[nodiscard]] GamePlay::Prop::Canon&                                           PlayerControllabeCanon  () const { return *playerControllabeCanon_.get(); }
+        [[nodiscard]] const glm::vec3&                                                 FirstEventDragonSpawnPos () const { return firstEventDragonSpawnPos_->Transform().GetWorldPos(); }
+        [[nodiscard]] const Asset::SwordManInitStatus&                                 PlayerAvatarInitStatus   () const { return *playerAvatarInitStatus_.get(); }
+        [[nodiscard]] GamePlay::Prop::Canon&                                           PlayerControllabeCanon   () const { return *playerControllabeCanon_.get(); }
+        [[nodiscard]] Asset::PrefabGameObjectFile&                                     SwordManCameraGroupPrefab() const { return *swordManCameraGroupPrefab_.get(); }
         
     private:
         [[serialize(0)]] FIELD(GamePlay::Prop::AirShip)               airShip_;
@@ -71,6 +72,7 @@ namespace GameCore::Scene
         [[serialize(14)]] FIELD(GameObject::IGameObject)              firstEventDragonSpawnPos_;
         [[serialize(15)]] FIELD(Asset::SwordManInitStatus)            playerAvatarInitStatus_;
         [[serialize(16)]] FIELD(GamePlay::Prop::Canon)                playerControllabeCanon_;
+        [[serialize(19)]] FIELD(Asset::PrefabGameObjectFile)          swordManCameraGroupPrefab_;
         
 #pragma region Serialization Function
 public:
@@ -102,6 +104,7 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(firstEventDragonSpawnPos_));
     archive(CEREAL_NVP(playerAvatarInitStatus_));
     archive(CEREAL_NVP(playerControllabeCanon_));
+    archive(CEREAL_NVP(swordManCameraGroupPrefab_));
 }
 
 template<class Archive>
@@ -130,15 +133,14 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 14) archive(CEREAL_NVP(firstEventDragonSpawnPos_));
     if (version >= 15) archive(CEREAL_NVP(playerAvatarInitStatus_));
     if (version >= 16) archive(CEREAL_NVP(playerControllabeCanon_));
-    [[serialize(17)]] FIELD(Asset::PlayerAvatarFactory) playerAvatarFactory_;
-    if (version == 17) archive(CEREAL_NVP(playerAvatarFactory_));
+    if (version >= 19) archive(CEREAL_NVP(swordManCameraGroupPrefab_));
 }
 #pragma endregion
 };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::FirstTouchDownMainIsLandSceneContext, 18);
+CEREAL_CLASS_VERSION(GameCore::Scene::FirstTouchDownMainIsLandSceneContext, 19);
 CEREAL_REGISTER_TYPE(GameCore::Scene::FirstTouchDownMainIsLandSceneContext);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::SceneContextBase, GameCore::Scene::FirstTouchDownMainIsLandSceneContext);
 #pragma endregion

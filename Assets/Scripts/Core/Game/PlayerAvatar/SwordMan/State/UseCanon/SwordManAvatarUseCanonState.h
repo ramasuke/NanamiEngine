@@ -7,7 +7,8 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
     public:
         DEFINE_STATE_CONSTRUCTOR(SwordManAvatarUseCannonState)
-        
+        static constexpr SwordManAvatarStateType kStateType = SwordManAvatarStateType::UseCanon;
+
     private:
         void DoEnter () override;
         void DoFixedUpdate() override;

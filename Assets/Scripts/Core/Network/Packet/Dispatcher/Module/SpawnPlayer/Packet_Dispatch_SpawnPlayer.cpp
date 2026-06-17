@@ -1,5 +1,8 @@
-﻿#include "Packet_Dispatch_SpawnPlayer.h"
+#include "Packet_Dispatch_SpawnPlayer.h"
 
+#pragma comment(lib, "Ws2_32.lib")
+#pragma comment(lib, "winmm.lib")
+#include "enet/enet.h"
 #include "../../../../../../../../Engine/Core/Network/Packet/Dispatcher/Packet_PacketDispatcherGroup.h"
 #include "../../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
 #include "../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
@@ -10,21 +13,35 @@ namespace GameCore::Network
         Core::Network::DefaultPacketDispatcher& defaultDispatchers,
         const Core::Network::IPlayerIdProvider& playerIdProvider,
         Core::Network::IPacketSender& packetSender,
-        Asset::PlayerAvatarFactory& playerAvatarFactory,
-        PlayerAvatar::AllPlayerCameraGroup cameraGroup)
+        Asset::PlayerAvatarFactory& playerAvatarFactory)
             : CustomDispatcherBase(defaultDispatchers, playerIdProvider, packetSender)
             , playerAvatarFactory_(playerAvatarFactory)
-            , cameraGroup_(std::move(cameraGroup))
     {
+        if (IsServer())
+        {
+            newPlayerSubscription_ = PacketSender().OnConnectPlayer().subscribe(
+                [this](const ENetEvent* event)
+                {
+                    for (const auto& packet : spawnPacketHistory_)
+                        PacketSender().SendTo(event->peer, packet);
+                },
+                [](std::exception_ptr) {}
+            );
+        }
+    }
+
+    SpawnPlayerDispatcher::~SpawnPlayerDispatcher()
+    {
+        newPlayerSubscription_.unsubscribe();
     }
 
     std::weak_ptr<IPlayerAvatar>
     SpawnPlayerDispatcher::DispatchSendPacket(
         const PlayerAvatar::PlayerAvatarType type,
         const glm::vec3 position,
-        const glm::quat rotation) const
+        const glm::quat rotation)
     {
-        auto playerAvatar = playerAvatarFactory_.LoadInitedPlayerAvatar(type, position, nullptr, cameraGroup_, true);
+        auto playerAvatar = playerAvatarFactory_.LoadInitedPlayerAvatar(type, position, nullptr, true);
         auto gameObject = playerAvatar->PlayerTransform().GetGameObject();
 
         gameObject->Transform().SetWorldRot(rotation);
@@ -37,6 +54,10 @@ namespace GameCore::Network
         packet.Data().Write(position);
         packet.Data().Write(rotation);
         packet.Data().Write(networkObjectId);
+
+        if (IsServer())
+            spawnPacketHistory_.push_back(packet);
+
         SendPacket(packet);
 
         return playerAvatar;
@@ -54,8 +75,11 @@ namespace GameCore::Network
         if (playerId == PlayerId())
             return;
 
+        if (IsServer())
+            spawnPacketHistory_.push_back(packet);
+
         const auto type = static_cast<GameCore::PlayerAvatar::PlayerAvatarType>(avatarTypeInt);
-        auto playerAvatar = playerAvatarFactory_.LoadInitedPlayerAvatar(type, position, nullptr, cameraGroup_, false);
+        auto playerAvatar = playerAvatarFactory_.LoadInitedPlayerAvatar(type, position, nullptr, false);
         auto gameObject = playerAvatar->PlayerTransform().GetGameObject();
 
         gameObject->Transform().SetWorldRot(rotation);

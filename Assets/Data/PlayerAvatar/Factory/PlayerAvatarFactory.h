@@ -6,7 +6,6 @@
 #include "../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../Engine/Module/ScriptableObject/ScriptableObject.h"
-#include "../../../Scripts/Core/Game/PlayerAvatar/CameraGroup/AllPlayerCameraGroup.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/RequireType/RequireType.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/Type/PlayerAvatarType.h"
@@ -52,7 +51,6 @@ namespace NanamiEngine::Module::Asset
             const GameCore::PlayerAvatar::PlayerAvatarType& type,
             const glm::vec3& summonPosition,
             const std::shared_ptr<GameObject::IGameObject>& parent,
-            const GameCore::PlayerAvatar::AllPlayerCameraGroup& allCameraGroup,
             bool enableInputAction);
 
         template <typename AvatarT, typename TraitsT>
@@ -66,6 +64,7 @@ namespace NanamiEngine::Module::Asset
         
     private:
         [[serialize(0)]] FIELD(PrefabGameObjectFile) swordManPrefab_;
+        [[serialize(1)]] FIELD(PrefabGameObjectFile) swordManCameraGroupPrefab_;
         // [[serialize(0)]] std::weak_ptr<GameCore::PlayerAvatar::SwordMan::StatusPresenter> statusPresenter_; 
         
 #pragma region Serialization Function
@@ -76,12 +75,14 @@ namespace NanamiEngine::Module::Asset
         {
             archive(cereal::base_class<ScriptableObject>(this));
             archive(CEREAL_NVP(swordManPrefab_));
+            archive(CEREAL_NVP(swordManCameraGroupPrefab_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
         {
             archive(cereal::base_class<ScriptableObject>(this));
             archive(CEREAL_NVP(swordManPrefab_));
+            if (version >= 1) archive(CEREAL_NVP(swordManCameraGroupPrefab_));
         }
 #pragma endregion
     };
@@ -122,7 +123,7 @@ namespace NanamiEngine::Module::Asset
 
 REGISTER_SCRIPTABLE_OBJECT(PlayerAvatarFactory, PLAYER_AVATAR_FACTORY_EXTENSION_LABEL)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::PlayerAvatarFactory, 0);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::PlayerAvatarFactory, 1);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::PlayerAvatarFactory);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::PlayerAvatarFactory);
 #pragma endregion

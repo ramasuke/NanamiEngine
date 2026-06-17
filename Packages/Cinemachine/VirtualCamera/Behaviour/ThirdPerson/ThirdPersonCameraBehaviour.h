@@ -19,6 +19,7 @@ namespace NanamiEngine::CineMachine::Behaviour
     private:
         void OnAwake () override;
         void OnUpdate() override;
+        int  UpdatePriority() const override { return 1; }
         void MainCameraCallback() override;
 
         void UpdateMouseInput();

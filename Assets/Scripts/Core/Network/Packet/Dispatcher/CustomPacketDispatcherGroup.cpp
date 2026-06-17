@@ -9,9 +9,8 @@ namespace GameCore::Network
         Core::Network::DefaultPacketDispatcher& defaultDispatchers,
         Core::Network::IPacketSender& packetSender,
         const Core::Network::IPlayerIdProvider& playerIdProvider,
-        Asset::PlayerAvatarFactory& playerAvatarFactory,
-        const PlayerAvatar::AllPlayerCameraGroup& cameraGroup)
-        : spawnPlayerDispatcher_(defaultDispatchers, playerIdProvider, packetSender, playerAvatarFactory, cameraGroup)
+        Asset::PlayerAvatarFactory& playerAvatarFactory)
+        : spawnPlayerDispatcher_(defaultDispatchers, playerIdProvider, packetSender, playerAvatarFactory)
     {
     }
 

@@ -26,7 +26,6 @@ namespace GamePlay::Network
         
         std::optional<GameCore::Network::CustomDispatcherGroup> customDispatcherGroup_;
         [[serialize(1)]] FIELD(Asset::PlayerAvatarFactory) playerAvatarFactory_;
-        [[serialize(2)]] FIELD(GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup) swordmanCameraGroup_;
         
 #pragma region Serialization Function
     public:
@@ -36,21 +35,23 @@ namespace GamePlay::Network
             void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<NetworkRunnerBase>(this));
             archive(CEREAL_NVP(playerAvatarFactory_));
-            archive(CEREAL_NVP(swordmanCameraGroup_));
+            [[serialize(2)]] FIELD(GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup) swordmanCameraGroup_;
+            if (version == 2) archive(CEREAL_NVP(swordmanCameraGroup_));
         }
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<NetworkRunnerBase>(this));
             if (version >= 1) archive(CEREAL_NVP(playerAvatarFactory_));
-            if (version >= 2) archive(CEREAL_NVP(swordmanCameraGroup_));
+            [[serialize(2)]] FIELD(GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup) swordmanCameraGroup_;
+            if (version == 2) archive(CEREAL_NVP(swordmanCameraGroup_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Network::CustomNetworkRunner, 2);
+CEREAL_CLASS_VERSION(GamePlay::Network::CustomNetworkRunner, 3);
 CEREAL_REGISTER_TYPE(GamePlay::Network::CustomNetworkRunner);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(Network::NetworkRunnerBase, GamePlay::Network::CustomNetworkRunner);
 #pragma endregion

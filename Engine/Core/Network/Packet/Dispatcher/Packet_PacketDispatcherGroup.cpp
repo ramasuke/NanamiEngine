@@ -11,7 +11,18 @@ namespace NanamiEngine::Core::Network
         , receivedAssignPlayerId_(networkSystem)
         , spawnNetworkObject_(networkSystem, networkSystem, instanceRegistry)
         , syncTransform_(networkSystem, networkSystem, instanceRegistry)
+        , syncAnimation_(networkSystem, networkSystem, instanceRegistry)
     {
+    }
+
+    std::weak_ptr<Module::GameObject::IGameObject> DefaultPacketDispatcher::FindNetworkObject(const NetworkObjectId id) const
+    {
+        return instanceRegistry_.Find(id);
+    }
+
+    void DefaultPacketDispatcher::Update()
+    {
+        syncTransform_.Update();
     }
 
     void DefaultPacketDispatcher::DispatchReceivedPacket(const Packet& packet)
@@ -27,6 +38,9 @@ namespace NanamiEngine::Core::Network
             break;
         case DefaultPacketType::SyncTransform:
             syncTransform_.ReceivePacket(packet);
+            break;
+        case DefaultPacketType::SyncAnimation:
+            syncAnimation_.ReceivePacket(packet);
             break;
         }
     }

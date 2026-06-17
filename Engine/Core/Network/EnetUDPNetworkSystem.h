@@ -9,6 +9,7 @@
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "winmm.lib")
 #include "enet/enet.h"
+#include "operators/rx-all.hpp"
 
 struct _ENetHost;
 struct _ENetPeer;
@@ -31,6 +32,7 @@ namespace NanamiEngine::Core::Network
     private:
         [[nodiscard]] PlayerId GetPlayerId() const override;
         void SetPlayerId(PlayerId playerId) override;
+        rxcpp::observable<ENetEvent*> OnConnectPlayer() override;
 
     private:
         _ENetHost* host_ = nullptr;
@@ -44,6 +46,7 @@ namespace NanamiEngine::Core::Network
         float unreliableAccumulator_ = 0.0f;
         bool  unreliableSendAllowed_ = false;
 
+        rxcpp::subjects::subject<ENetEvent*> onConnectPlayer_;
         NetworkObjectInstanceRegistry instanceRegistry_;
     };
 }

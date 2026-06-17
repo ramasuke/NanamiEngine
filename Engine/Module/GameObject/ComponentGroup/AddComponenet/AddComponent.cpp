@@ -109,6 +109,7 @@ void GameObject::AddComponent::OnDrawNetworkGui(std::shared_ptr<Component::Compo
         {
             OnDrawTryAddComponentGui<Network::NetworkGameObject>(addComponent);
             OnDrawTryAddComponentGui<Network::NetworkTransform >(addComponent);
+            OnDrawTryAddComponentGui<Network::NetworkAnimator  >(addComponent);
             ImGui::TreePop();
             ImGui::Spacing();
         }

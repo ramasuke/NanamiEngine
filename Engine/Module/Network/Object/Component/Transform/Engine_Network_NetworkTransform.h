@@ -1,15 +1,10 @@
 ﻿#pragma once
-#include "../../../../../Core/Network/Object/INetworkObject.h"
-#include "../../../../../Core/Network/Object/Tickable/INetworkTickable.h"
+#include "../Engine_Network_NetworkComponent.h"
 #include "../../../../../Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
-#include "../../../../Component/ComponentBase.h"
-#include "../../../../LifeCycleCallback/Awake/IAwakable.h"
 
 namespace NanamiEngine::Module::Network
 {
-    class NetworkTransform final : public Component::ComponentBase,
-                                   public Core::Network::INetworkObject,
-                                   public Core::Network::INetworkTickable
+    class NetworkTransform final : public NetworkComponent
     {
     public:
         void NetworkedTick() override;
@@ -20,18 +15,21 @@ namespace NanamiEngine::Module::Network
 
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const {
-            archive(cereal::base_class<ComponentBase>(this));
+            archive(cereal::base_class<NetworkComponent>(this));
         }
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
-            archive(cereal::base_class<ComponentBase>(this));
+            if (version == 0)
+                archive(cereal::base_class<Component::ComponentBase>(this));
+            else
+                archive(cereal::base_class<NetworkComponent>(this));
         }
 #pragma endregion
     };
 }
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(Network::NetworkTransform, 0);
+CEREAL_CLASS_VERSION(Network::NetworkTransform, 1);
 CEREAL_REGISTER_TYPE(Network::NetworkTransform);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, Network::NetworkTransform);
 #pragma endregion

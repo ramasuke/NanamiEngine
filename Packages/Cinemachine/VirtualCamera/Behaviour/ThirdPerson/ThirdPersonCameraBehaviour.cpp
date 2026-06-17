@@ -62,7 +62,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         const int dx = mouseX - centerX;
         const int dy = mouseY - centerY;
 
-        // SetMousePoint(centerX, centerY);
+        SetMousePoint(centerX, centerY);
 
         yaw_   += dx * mouseSensitivity_;
         pitch_ += dy * mouseSensitivity_;

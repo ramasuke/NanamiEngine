@@ -6,6 +6,7 @@
 namespace NanamiEngine::Module::Network
 {
     class NetworkGameObject final : public Component::ComponentBase,
+                                    public LifeCycleCallback::IAwakable,
                                     public Core::Network::INetworkObject
     {
     public:
@@ -13,6 +14,8 @@ namespace NanamiEngine::Module::Network
         void SetNetworkObjectId(const Core::Network::NetworkObjectId id) { networkObjectId_ = id; }
 
     private:
+        void OnAwake() override;
+        
         Core::Network::NetworkObjectId networkObjectId_ = Core::Network::NetworkObjectId::Invalid();
 
 #pragma region Serialization Function

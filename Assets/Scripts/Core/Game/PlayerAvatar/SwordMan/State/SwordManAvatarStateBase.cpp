@@ -10,7 +10,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 {
     SwordManAvatarStateBase::SwordManAvatarStateBase(
         const std::shared_ptr<SwordManAvatarStateContext>& context
-        , const std::function<void(std::type_index)>& onChangeState)
+        , const std::function<void(SwordManAvatarStateType)>& onChangeState)
         : stateDuring_secs_(0.0f            )
         , context_         (context         )
         , onChangeState_   (onChangeState)
@@ -25,13 +25,6 @@ namespace GameCore::PlayerAvatar::SwordMan
     
     void SwordManAvatarStateBase::OnUpdate()
     {
-        if (MouseLock())
-        {
-            static int centerX = Core::Application::Configuration::AppConfiguration::GetWindowWidth()  / 2;
-            static int centerY = Core::Application::Configuration::AppConfiguration::GetWindowHeight() / 2;
-            SetMousePoint(centerX, centerY);
-        }
-        
         DoUpdate();
         stateDuring_secs_ += Time::DeltaTime();
     }
