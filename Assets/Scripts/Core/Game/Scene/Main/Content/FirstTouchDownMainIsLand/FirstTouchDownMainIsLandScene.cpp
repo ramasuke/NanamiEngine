@@ -50,7 +50,7 @@ namespace GameCore::Scene::Main
                     NanamiEngine::Scene::GameObject::Instantiate(Context()->SwordManCameraGroupPrefab(), Context()->PlayerSpawnPoint())
                         .lock()
                         ->Components()
-                        .Catch<GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup>();
+                        .Catch<SwordMan::SwordManAvatarCameraGroup>();
         
         auto stateMachine = PlayerAvatar::SwordMan::CreateStateMachine(summonAvatarStatus, inputAction, playerAvatar_.lock(), swordmanCameraGroup.lock(), true);
         playerAvatar_.lock()->Init(summonAvatarStatus, std::move(stateMachine), inputAction, swordmanCameraGroup.lock());
