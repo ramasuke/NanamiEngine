@@ -5,7 +5,10 @@
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoEnter()
 {
-    ChangeCamera(CameraGroup().FollowFromBehind());
+    if (!ExpiredCamera())
+    {
+        ChangeCamera(CameraGroup().FollowFromBehind());
+    }
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoFixedUpdate()

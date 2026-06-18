@@ -44,6 +44,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] SwordManAvatarStatus     & Status () const { return *status_;             }
         [[nodiscard]] SwordManAvatarInputAction& Input  () const { return *inputAction_;        }
         [[nodiscard]] SwordManAvatarCameraGroup& Camera () const { return *cameraGroup_.lock(); }
+        [[nodiscard]] bool ExpiredCamera                () const { return cameraGroup_.expired(); }
 
         [[nodiscard]] std::shared_ptr<GameObject::IGameObject> PlayerAvatarObject     () const override { return playerAvatarObject_.lock();                     }
         [[nodiscard]] GameObject::Transform                &   PlayerAvatarTransform  () const override { return playerAvatarObject_.lock()->Transform();     }

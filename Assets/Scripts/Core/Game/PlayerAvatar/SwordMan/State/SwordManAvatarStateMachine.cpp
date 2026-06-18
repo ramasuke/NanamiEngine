@@ -26,11 +26,12 @@ namespace GameCore::PlayerAvatar::SwordMan
     SwordManAvatarStateMachine::SwordManAvatarStateMachine(
         StatesFactory factory,
         const SwordManAvatarStateType initialState,
-        const SwordManAvatarStateType disableState)
-        : PlayerAvatarStateMachineBase<SwordManAvatarStateType>(std::move(factory), initialState, disableState)
+        const SwordManAvatarStateType disableState,
+        const bool isEnable)
+        : PlayerAvatarStateMachineBase(std::move(factory), initialState, disableState, isEnable)
         , swordManCurrentState_(nullptr)
     {
-        PlayerAvatarStateMachineBase<SwordManAvatarStateType>::CurrentState()
+        PlayerAvatarStateMachineBase::CurrentState()
             .subscribe([this](const std::shared_ptr<IPlayerAvatarState>& state)
             {
                 swordManCurrentState_.get_subscriber().on_next(
@@ -51,7 +52,8 @@ namespace GameCore::PlayerAvatar::SwordMan
           const std::shared_ptr<SwordManAvatarStatus     >& status
         , const std::shared_ptr<SwordManAvatarInputAction>& input
         , const std::shared_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& playerAvatar
-        , const std::weak_ptr<SwordManAvatarCameraGroup>& cameraGroup)
+        , const std::weak_ptr<SwordManAvatarCameraGroup>& cameraGroup
+        , const bool isEnable)
     {
         auto context = std::make_shared<SwordManAvatarStateContext>(
             status,
@@ -92,7 +94,8 @@ namespace GameCore::PlayerAvatar::SwordMan
                 };
             },
             SwordManAvatarStateType::Idle,
-            SwordManAvatarStateType::Disable
+            SwordManAvatarStateType::Disable,
+            isEnable
         );
     }
 }

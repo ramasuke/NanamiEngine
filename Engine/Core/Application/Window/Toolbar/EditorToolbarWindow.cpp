@@ -39,6 +39,10 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
         {
             if (ImGui::BeginTabItem("Application"))
             {
+                if (ImGui::Button("Reload Assets"))
+                {
+                    Application::ApplicationBase::ResetAssetsDirectory();
+                }
                 Application::Configuration::AppConfiguration::DrawConfigGUI();
                 ImGui::EndTabItem();
             }
@@ -65,10 +69,6 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
             Application::ApplicationBase::AssetsDirectory().OnSave();
         }
         ImGui::SameLine();
-        if (ImGui::Button("Reload Assets"))
-        {
-            Application::ApplicationBase::ResetAssetsDirectory();
-        }
     }
 
     ImGui::SameLine();

@@ -130,7 +130,8 @@ namespace GamePlay::PlayerAvatar
         stateMachine_ = std::move(stateMachine);
         animator_     = std::make_unique<Animator>(animatorComponent_);
         cameraGroup_  = cameraGroup;
-        cameraGroup_.lock()->Init(Entity().lock());
+        if (!cameraGroup_.expired())
+            cameraGroup_.lock()->Init(Entity().lock());
         SubscribeStateToAnimator();
         status_->Init();
     }

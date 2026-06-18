@@ -52,7 +52,7 @@ namespace GameCore::Scene::Main
                         ->Components()
                         .Catch<GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup>();
         
-        auto stateMachine = PlayerAvatar::SwordMan::CreateStateMachine(summonAvatarStatus, inputAction, playerAvatar_.lock(), swordmanCameraGroup.lock());
+        auto stateMachine = PlayerAvatar::SwordMan::CreateStateMachine(summonAvatarStatus, inputAction, playerAvatar_.lock(), swordmanCameraGroup.lock(), true);
         playerAvatar_.lock()->Init(summonAvatarStatus, std::move(stateMachine), inputAction, swordmanCameraGroup.lock());
 
         auto& context = *Context();

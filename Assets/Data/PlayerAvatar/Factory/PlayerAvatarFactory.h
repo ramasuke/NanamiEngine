@@ -107,7 +107,7 @@ namespace NanamiEngine::Module::Asset
         auto inputAction  = std::make_shared<Input>();
         enableInputAction ? inputAction->Enable() : inputAction->Disable(); 
         auto status       = GameCore::PlayerAvatar::LoadStatus<Status, TraitsT>();
-        auto stateMachine = TraitsT::CreateStateMachine(status, inputAction, playerAvatar, cameraGroup);
+        auto stateMachine = TraitsT::CreateStateMachine(status, inputAction, playerAvatar, cameraGroup, enableInputAction);
         
         playerAvatar->Init(
             status,

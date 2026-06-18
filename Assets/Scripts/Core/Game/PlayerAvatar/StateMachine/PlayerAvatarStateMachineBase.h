@@ -26,12 +26,14 @@ namespace GameCore::PlayerAvatar
         explicit PlayerAvatarStateMachineBase(
             StatesFactory factory,
             StateTypeT initialState,
-            StateTypeT disableState)
+            StateTypeT disableState,
+            const bool isEnable)
             : states_           (factory([this](StateTypeT type){ OnChangeState(type); }))
             , currentState_     (nullptr)
             , currentStateType_ (initialState)
             , initialState_     (initialState)
             , disableState_     (disableState)
+            , isEnable_         (isEnable    )
         {
             OnChangeState(initialState_);
         }
@@ -40,6 +42,9 @@ namespace GameCore::PlayerAvatar
 
         void OnUpdate() override
         {
+            if (!isEnable_)
+                return;
+            
             if (currentState_.get_value())
                 currentState_.get_value()->OnUpdate();
         }
@@ -60,6 +65,9 @@ namespace GameCore::PlayerAvatar
         
         void OnFixedUpdate() override
         {
+            if (!isEnable_)
+                return;
+            
             if (currentState_.get_value())
                 currentState_.get_value()->OnFixedUpdate();
         }
@@ -96,13 +104,14 @@ namespace GameCore::PlayerAvatar
         virtual void OnChangeState(StateTypeT type)
         {
             assert(states_.contains(type));
-
-            if (currentState_.get_value())
+            
+            if (currentState_.get_value() && isEnable_)
                 currentState_.get_value()->OnExit();
 
             currentStateType_ = type;
             currentState_.get_subscriber().on_next(states_.at(type));
-            currentState_.get_value()->OnEnter();
+            if (isEnable_)
+                currentState_.get_value()->OnEnter();
         }
 
         [[nodiscard]] uint8_t GetCurrentStateValue() const
@@ -120,6 +129,7 @@ namespace GameCore::PlayerAvatar
         }
 
     private:
+        bool isEnable_ = false; 
         const StateMap states_;
         rxcpp::subjects::behavior<std::shared_ptr<IPlayerAvatarState>> currentState_;
         StateTypeT       currentStateType_;

@@ -10,13 +10,15 @@ namespace GameCore::PlayerAvatar::SwordMan
         const std::shared_ptr<SwordManAvatarStatus     >& status, 
         const std::shared_ptr<SwordManAvatarInputAction>& input, 
         const std::shared_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& playerAvatar, 
-        const std::weak_ptr<SwordManAvatarCameraGroup>& cameraGroup)
+        const std::weak_ptr<SwordManAvatarCameraGroup>& cameraGroup,
+        const bool isEnable)
     {
         return std::move(SwordMan::CreateStateMachine(
             status,
             input,
             playerAvatar,
-            cameraGroup));
+            cameraGroup,
+            isEnable));
     }
     
     REGISTER_LOCAL_PREF_WITH_PATH(

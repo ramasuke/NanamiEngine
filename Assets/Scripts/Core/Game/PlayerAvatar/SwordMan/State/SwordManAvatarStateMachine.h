@@ -22,7 +22,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         explicit SwordManAvatarStateMachine(
             StatesFactory factory,
             SwordManAvatarStateType initialState,
-            SwordManAvatarStateType disableState);
+            SwordManAvatarStateType disableState,
+            bool isEnable);
 
         void OnChangeState(SwordManAvatarStateType type) override;
         void OnEnable()  override;
@@ -38,5 +39,6 @@ namespace GameCore::PlayerAvatar::SwordMan
           const std::shared_ptr<SwordManAvatarStatus     >& status
         , const std::shared_ptr<SwordManAvatarInputAction>& input
         , const std::shared_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& playerAvatar
-        , const std::weak_ptr<SwordManAvatarCameraGroup>& cameraGroup);
+        , const std::weak_ptr<SwordManAvatarCameraGroup>& cameraGroup
+        , bool isEnable);
 }

@@ -54,6 +54,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] SwordManAvatarStatus      &            Status          () const { return context_->Status                 (); }
         [[nodiscard]] State::IStatusEventSubject&            StatusEvent     () const { return context_->Status().Subject       (); }
         [[nodiscard]] SwordManAvatarCameraGroup &            CameraGroup     () const { return context_->Camera                 (); }
+        [[nodiscard]] bool                                   ExpiredCamera   () const { return context_->ExpiredCamera(); }
         [[nodiscard]] GamePlay::Ui::NpcChatting &            NpcChattingUi   () const { return context_->NpcChattingUi          (); }
         [[nodiscard]] glm::vec3                              FeatStepPos     () const { return context_->PlayerAvatarFeatStepPos();}
         [[nodiscard]] GamePlay::PlayerAvatar::ChattableArea& ChattableArea   () const { return context_->ChattableArea          (); }
