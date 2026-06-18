@@ -7,7 +7,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
     public:
         DEFINE_STATE_CONSTRUCTOR(DisableState)
-        static constexpr SwordManAvatarStateType kStateType = SwordManAvatarStateType::Disable;
 
     private:
         void DoEnter      () override;

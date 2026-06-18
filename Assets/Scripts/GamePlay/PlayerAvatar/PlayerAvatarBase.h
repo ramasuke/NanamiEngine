@@ -1,14 +1,16 @@
 ﻿#pragma once
 #include <utility>
 
+#include "../Network/Game_CustomNetworkRunner.h"
 #include "../../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../Engine/Module/Component/ModelRenderer/ModelRenderer.h"
 #include "../../../../Engine/Module/LifeCycleCallback/FixedUpdate/IFixedUpdatable.h"
+#include "../../../../Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
 #include "../../../../Engine/Module/Scene/ShadowMap/ShadowMapSetting.h"
 #include "../../Core/Game/Npc/Enemy/ITakableEnemyAttack/ITakableEnemyAttack.h"
 #include "../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
-#include "../../Core/Game/PlayerAvatar/StateMachine/PlayerAvatarStateMachine.h"
+#include "../../Core/Game/PlayerAvatar/StateMachine/PlayerAvatarStateMachineBase.h"
 #include "../../Core/Game/PlayerAvatar/RequireType/RequireType.h"
 #include "../../Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
 #include "../Ui/NpcChatting/Ui_NpcChatting.h"
@@ -19,7 +21,7 @@ namespace GamePlay::PlayerAvatar
 {
     using namespace GameCore::PlayerAvatar;
     template <RequireType::Traits TraitsT>
-    class PlayerAvatarBase : public Component::ComponentBase,
+    class PlayerAvatarBase : public Module::Network::NetworkComponent,
                              public LifeCycleCallback::IAwakable,
                              public LifeCycleCallback::IUpdatable,
                              public LifeCycleCallback::IFixedUpdatable,
@@ -52,6 +54,7 @@ namespace GamePlay::PlayerAvatar
     private:
         void OnAwake                 () override;
         void OnUpdate                () override;
+        void NetworkedTick           () override;
         void OnFixedUpdate           () override;
         void OnDestroy               () override;
         void BasedOnDrawgui          () override;
@@ -60,6 +63,7 @@ namespace GamePlay::PlayerAvatar
         {
             status_->AddOnDamageStack(std::move(context));
         }
+        void ApplySyncState(uint8_t stateValue) override;
 
         [[nodiscard]] Ui::NpcChatting            & NpcChattingUi   () const override { return *chattingUi_.get(); }
         [[nodiscard]] PlayerAvatar::ChattableArea& ChattableArea   () const override;
@@ -84,13 +88,19 @@ namespace GamePlay::PlayerAvatar
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const
         {
-            archive(cereal::base_class<ComponentBase>(this));
+            if (version <= 1)
+                archive(cereal::base_class<ComponentBase>(this));
+            else if (version >= 2)
+                archive(cereal::base_class<NetworkComponent>(this));
             archive(CEREAL_NVP(chattingUi_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
         {
-            archive(cereal::base_class<ComponentBase>(this));
+            if (version <= 1)
+                archive(cereal::base_class<ComponentBase>(this));
+            else if (version >= 2)
+                archive(cereal::base_class<NetworkComponent>(this));
             if (version >= 1) archive(CEREAL_NVP(chattingUi_));
         }
 #pragma endregion
@@ -134,15 +144,17 @@ namespace GamePlay::PlayerAvatar
     template <RequireType::Traits TraitsT>
     void PlayerAvatarBase<TraitsT>::OnUpdate()
     {
-        if (Transform().GetWorldPos().y < -100)
-        {
-            Transform().SetLocalPos(glm::vec3{0.0f, 100.0f, 0.0f});
-        }
         stateMachine_->OnUpdate();
         inputAction_ ->OnUpdate();
         status_      ->OnUpdate();
         
         Scene::ShadowMapSetting::SetRenderAreaPos(Transform().GetWorldPos());
+    }
+
+    template <RequireType::Traits TraitsT>
+    void PlayerAvatarBase<TraitsT>::NetworkedTick()
+    {
+        stateMachine_->NetworkTick(GetNetworkObjectId(), HasStateAuthority());
     }
 
     template <RequireType::Traits TraitsT>
@@ -177,6 +189,12 @@ namespace GamePlay::PlayerAvatar
             [](const std::exception_ptr&){ },
             []{ }
         );
+    }
+
+    template <RequireType::Traits TraitsT>
+    void PlayerAvatarBase<TraitsT>::ApplySyncState(uint8_t stateValue)
+    {
+        stateMachine_->ApplySyncState(stateValue);
     }
 
     template <RequireType::Traits TraitsT>
@@ -247,7 +265,7 @@ namespace GamePlay::PlayerAvatar
     // PlayerAvatarBase<Traits>をcerealに登録するマクロ
 #define REGISTER_PLAYER_AVATAR_BASE(TraitsType)                                  \
 CEREAL_CLASS_VERSION(                                                            \
-GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>, 1) \
+GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>, 2) \
 CEREAL_REGISTER_TYPE(                                                            \
 GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>)    \
 CEREAL_REGISTER_POLYMORPHIC_RELATION(                                            \

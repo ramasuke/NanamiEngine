@@ -53,4 +53,21 @@ namespace GameCore::PlayerAvatar::SwordMan
     {
         CameraGroup().ChangeCamera(camera);
     }
+
+    void SwordManAvatarStateBase::OnChangeState(SwordManAvatarStateType type) const
+    {
+        onChangeState_(type);
+    }
+
+    void SwordManAvatarStateBase::OnTryChangeState(SwordManAvatarStateType type, const std::function<bool()>& check) const
+    {
+        if (check())
+            OnChangeState(type);
+    }
+
+    void SwordManAvatarStateBase::OnTryChangeState(SwordManAvatarStateType type, const bool check) const
+    {
+        if (check)
+            OnChangeState(type);
+    }
 }

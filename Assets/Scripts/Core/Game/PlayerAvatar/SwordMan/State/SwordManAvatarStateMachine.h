@@ -1,5 +1,6 @@
 #pragma once
-#include "../../StateMachine/PlayerAvatarStateMachine.h"
+#include "../../StateMachine/PlayerAvatarStateMachineBase.h"
+#include "../../StateMachine/EventScene/IPlayerAvatarEventSceneStateMachine.h"
 #include "SwordManAvatarStateBase.h"
 
 namespace GamePlay::PlayerAvatar::SwordMan
@@ -9,15 +10,25 @@ namespace GamePlay::PlayerAvatar::SwordMan
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
-    class SwordManAvatarStateMachine final : public PlayerAvatarStateMachine
+    class SwordManAvatarStateMachine final : public PlayerAvatarStateMachineBase<SwordManAvatarStateType>,
+                                             public IPlayerAvatarEventSceneStateMachine
     {
     public:
+        using Base = PlayerAvatarStateMachineBase;
+        using Base::StatesFactory;
+        using Base::OnChangeStateCallback;
+        using Base::StateMap;
+
         explicit SwordManAvatarStateMachine(
             StatesFactory factory,
             SwordManAvatarStateType initialState,
             SwordManAvatarStateType disableState);
 
-        rxcpp::observable<std::shared_ptr<SwordManAvatarStateBase>> CurrentState();
+        void OnChangeState(SwordManAvatarStateType type) override;
+        void OnEnable()  override;
+        void OnDisable() override;
+
+        rxcpp::observable<std::shared_ptr<SwordManAvatarStateBase>> CurrentState() const;
 
     private:
         rxcpp::subjects::behavior<std::shared_ptr<SwordManAvatarStateBase>> swordManCurrentState_;

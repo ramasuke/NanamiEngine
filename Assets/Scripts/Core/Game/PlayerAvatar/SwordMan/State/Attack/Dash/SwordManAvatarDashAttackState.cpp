@@ -1,13 +1,10 @@
-﻿#include "SwordManAvatarDashAttackState.h"
+#include "SwordManAvatarDashAttackState.h"
 
 #include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../../GamePlay/Sound/SoundPlayer.h"
-#include "../../Hurt/SwordManAvatar_HurtState.h"
-#include "../../Idle/SwordManAvatarIdleState.h"
-#include "../../Walk/SwordManAvatarWalkState.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::State
 {
@@ -31,7 +28,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarDashAttackState::DoUpdate()
     {
-        
+
     }
 
     void SwordManAvatarDashAttackState::DoExit()
@@ -64,15 +61,15 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
         if (Status().IsDamaged())
         {
-            OnChangeState<HurtState>();
+            OnChangeState(SwordManAvatarStateType::Hurt);
         }
         else if (Input().Move().IsUpdatePressed())
         {
-            OnChangeState<SwordManAvatarWalkState>();
+            OnChangeState(SwordManAvatarStateType::Walk);
         }
         else
         {
-            OnChangeState<SwordManAvatarIdleState>();
+            OnChangeState(SwordManAvatarStateType::Idle);
         }
     }
 }

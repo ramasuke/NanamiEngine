@@ -1,12 +1,9 @@
-﻿#include "SwordManAvatar_AvoidRolling.h"
+#include "SwordManAvatar_AvoidRolling.h"
 
 #include "../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
-#include "../Hurt/SwordManAvatar_HurtState.h"
-#include "../Idle/SwordManAvatarIdleState.h"
-#include "../Walk/SwordManAvatarWalkState.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::State
 {
@@ -25,36 +22,36 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             {
                 auto& successAvoidRollingParticle = CatchPlayerInChild<Component::ParticleSystem>(GamePlay::PlayerAvatar::SwordMan::SUCCESS_AVOID_ROLLING_PARTICLE_NAME);
                 successAvoidRollingParticle.Play();
-                GamePlay::Sound::SoundPlayer::PlaySe(Resources().JustAvoidRollingSound(), Transform().GetWorldPos());   
+                GamePlay::Sound::SoundPlayer::PlaySe(Resources().JustAvoidRollingSound(), Transform().GetWorldPos());
             }
             Status().DiscardDamage();
             isAvoided_ = true;
         }
-        
+
         if (Status().AvoidRollingStateDuration_secs() <= During_secs())
         {
             if (Status().IsDamaged())
             {
-                OnChangeState<HurtState>();
+                OnChangeState(SwordManAvatarStateType::Hurt);
             }
             if (Input().Move().IsUpdatePressed())
             {
-                OnChangeState<SwordManAvatarWalkState>();
+                OnChangeState(SwordManAvatarStateType::Walk);
             }
             else
             {
-                OnChangeState<SwordManAvatarIdleState>();
+                OnChangeState(SwordManAvatarStateType::Idle);
             }
         }
     }
 
     void AvoidRollingState::DoUpdate()
     {
-        
+
     }
 
     void AvoidRollingState::DoExit()
     {
-        
+
     }
 }

@@ -1,17 +1,14 @@
-﻿#include "FloatingState.h"
+#include "FloatingState.h"
 
 #include "../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
 #include "../Attack/Normal/SwordManAvatarNormalAttackState.h"
-#include "../Idle/SwordManAvatarIdleState.h"
-#include "../Run/SwordManAvatarRunState.h"
-#include "../Walk/SwordManAvatarWalkState.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::State
 {
     void FloatingState::DoEnter()
     {
-        
+
     }
 
     void FloatingState::DoFixedUpdate()
@@ -22,23 +19,27 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             Transform().SetLocalPos(glm::vec3{0.0f, 100.0f, 0.0f});
         }
 
-        if (Input().Move().IsUpdatePressed() && Input().Run().IsUpdatePressed())
-            OnChangeState<SwordManAvatarRunState>();
-        if (Input().Move().IsUpdatePressed())
-            OnChangeState<SwordManAvatarWalkState>();
-        if (Input().NormalAttack().IsPressed())
-            OnChangeState<SwordManAvatarNormalAttackState>();
+        
         if (Conditions().IsGround())
-            OnChangeState<SwordManAvatarIdleState>();
+        {
+            if (Input().NormalAttack().IsPressed())
+                OnChangeState(SwordManAvatarStateType::NormalAttack);
+            else if (Input().Move().IsUpdatePressed() && Input().Run().IsUpdatePressed())
+                OnChangeState(SwordManAvatarStateType::Run);
+            else if (Input().Move().IsUpdatePressed())
+                OnChangeState(SwordManAvatarStateType::Walk);
+            else 
+                OnChangeState(SwordManAvatarStateType::Idle);
+        }
     }
 
     void FloatingState::DoUpdate()
     {
-        
+
     }
 
     void FloatingState::DoExit()
     {
-        
+
     }
 }

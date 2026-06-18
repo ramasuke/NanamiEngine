@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 #include "Module/SpawnPlayer/Packet_Dispatch_SpawnPlayer.h"
+#include "Module/SyncAvatarState/Packet_Dispatch_SyncAvatarState.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -35,9 +36,11 @@ namespace GameCore::Network
 
         void DispatchReceivedPacket(const Core::Network::Packet& packet);
 
-        [[nodiscard]] SpawnPlayerDispatcher& SpawnPlayer() { return spawnPlayerDispatcher_; }
+        [[nodiscard]] SpawnPlayerDispatcher&    SpawnPlayer()    { return spawnPlayerDispatcher_; }
+        [[nodiscard]] SyncAvatarStateDispatcher& SyncAvatarState() { return syncAvatarStateDispatcher_; }
 
     private:
-        SpawnPlayerDispatcher spawnPlayerDispatcher_;
+        SpawnPlayerDispatcher    spawnPlayerDispatcher_;
+        SyncAvatarStateDispatcher syncAvatarStateDispatcher_;
     };
 }

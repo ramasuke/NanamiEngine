@@ -11,6 +11,7 @@ namespace GameCore::Network
         const Core::Network::IPlayerIdProvider& playerIdProvider,
         Asset::PlayerAvatarFactory& playerAvatarFactory)
         : spawnPlayerDispatcher_(defaultDispatchers, playerIdProvider, packetSender, playerAvatarFactory)
+        , syncAvatarStateDispatcher_(defaultDispatchers, playerIdProvider, packetSender)
     {
     }
 
@@ -21,6 +22,9 @@ namespace GameCore::Network
         {
         case EPacketType::SpawnPlayerAvatar:
             spawnPlayerDispatcher_.ReceivePacket(packet);
+            break;
+        case EPacketType::SyncAvatarState:
+            syncAvatarStateDispatcher_.ReceivePacket(packet);
             break;
         }
     }

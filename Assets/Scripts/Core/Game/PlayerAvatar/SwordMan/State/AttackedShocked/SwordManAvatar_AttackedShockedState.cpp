@@ -1,18 +1,10 @@
-﻿#include "SwordManAvatar_AttackedShockedState.h"
+#include "SwordManAvatar_AttackedShockedState.h"
 
 #include "../../../Input/PlayerAvatarInput_void.h"
-#include "../Attack/Normal/SwordManAvatarNormalAttackState.h"
-#include "../AvoidRolling/SwordManAvatar_AvoidRolling.h"
-#include "../Floating/FloatingState.h"
-#include "../Idle/SwordManAvatarIdleState.h"
-#include "../Jump/SwordManAvatarJumpState.h"
-#include "../OnDisableReinforce/OnDisableReinforceState.h"
-#include "../Run/SwordManAvatarRunState.h"
-#include "../Walk/SwordManAvatarWalkState.h"
 
 void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoEnter()
 {
-    
+
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoFixedUpdate()
@@ -21,30 +13,30 @@ void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoFixedUpdat
     if (Status().AttackedShockedStateDuration_secs() <= During_secs())
     {
         if (Status().IsOnDisableReinforceMode())
-            OnChangeState<OnDisableReinforceState>();
+            OnChangeState(SwordManAvatarStateType::OnDisableReinforce);
         if (!Input().Move().IsUpdatePressed())
-            OnChangeState<SwordManAvatarIdleState>();
+            OnChangeState(SwordManAvatarStateType::Idle);
         if (Input().Move().IsUpdatePressed())
-            OnChangeState<SwordManAvatarWalkState>();
+            OnChangeState(SwordManAvatarStateType::Walk);
         if (Input().Run().IsUpdatePressed())
-            OnChangeState<SwordManAvatarRunState>();
+            OnChangeState(SwordManAvatarStateType::Run);
         if (Input().Jump().IsPressed())
-            OnChangeState<SwordManAvatarJumpState>();
+            OnChangeState(SwordManAvatarStateType::Jump);
         if (Input().AvoidRolling().IsPressed())
-            OnChangeState<AvoidRollingState>();
+            OnChangeState(SwordManAvatarStateType::AvoidRolling);
         if (Input().NormalAttack().IsPressed())
-            OnChangeState<SwordManAvatarNormalAttackState>();
+            OnChangeState(SwordManAvatarStateType::NormalAttack);
         if (!Conditions().IsGround())
-            OnChangeState<FloatingState>();
-    }   
+            OnChangeState(SwordManAvatarStateType::Floating);
+    }
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoUpdate()
 {
-    
+
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoExit()
 {
-    
+
 }

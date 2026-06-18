@@ -12,6 +12,11 @@ namespace GamePlay::Network
     class CustomNetworkRunner final : public Module::Network::NetworkRunnerBase
     {
     public:
+        [[nodiscard]] static CustomNetworkRunner& Instance()
+        {
+            return static_cast<CustomNetworkRunner&>(NetworkRunnerBase::Instance());
+        }
+
         [[nodiscard]] GameCore::Network::CustomDispatcherGroup& CustomDispatcher();
 
         std::weak_ptr<GameCore::IPlayerAvatar> SpawnPlayerAvatar(

@@ -1,6 +1,7 @@
 #pragma once
 #include "../../../../Core/Network/Object/INetworkObject.h"
 #include "../../../../Core/Network/Object/Tickable/INetworkTickable.h"
+#include "../../../../Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
 #include "../../../Component/ComponentBase.h"
 
 namespace NanamiEngine::Module::Network
@@ -13,7 +14,9 @@ namespace NanamiEngine::Module::Network
     {
     protected:
         /** API: 自身がSpawnしたオブジェクトかを判別する */
-        [[nodiscard]] bool IsSelfSpawned() const;
+        [[nodiscard]] bool HasStateAuthority() const;
+        /** API: このオブジェクトのNetworkObjectIdを取得する */
+        [[nodiscard]] Core::Network::NetworkObjectId GetNetworkObjectId() const;
         /** API: シングルトンのNetworkRunnerへのサンドボックスアクセス */
         [[nodiscard]] NetworkRunnerBase& NetworkRunner() const;
 

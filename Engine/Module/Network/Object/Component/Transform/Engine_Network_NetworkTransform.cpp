@@ -8,7 +8,7 @@ namespace NanamiEngine::Module::Network
 {
     void NetworkTransform::NetworkedTick()
     {
-        if (!IsSelfSpawned())
+        if (!HasStateAuthority())
             return;
 
         const auto networkGameObject = Components().Catch<NetworkGameObject>().lock();

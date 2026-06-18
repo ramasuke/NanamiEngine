@@ -7,7 +7,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
     public:
         DEFINE_STATE_CONSTRUCTOR(SwordManAvatarDashAttackState)
-        static constexpr SwordManAvatarStateType kStateType = SwordManAvatarStateType::DashAttack;
 
     private:
         void DoEnter() override;

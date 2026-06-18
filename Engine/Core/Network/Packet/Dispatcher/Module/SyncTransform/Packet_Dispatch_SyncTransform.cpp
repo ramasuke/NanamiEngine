@@ -41,7 +41,7 @@ namespace NanamiEngine::Core::Network
         using Network::ConnectionTarget;
 
         const float sendInterval    = 1.0f / static_cast<float>(Configuration::GetUnreliableSendRate());
-        const float latencyEstimate = (Configuration::GetConnectionTarget() == ConnectionTarget::LAN)
+        const float latencyEstimate = Configuration::GetConnectionTarget() == ConnectionTarget::LAN
                                       ? 0.01f
                                       : 0.0f;
         const float interpolationDelay = sendInterval * 2.0f + latencyEstimate;
@@ -80,7 +80,7 @@ namespace NanamiEngine::Core::Network
             }
 
             const float span = to->receiveTime - from->receiveTime;
-            const float t    = (span > 0.0f) ? (renderTime - from->receiveTime) / span : 1.0f;
+            const float t    = span > 0.0f ? (renderTime - from->receiveTime) / span : 1.0f;
 
             gameObject->Transform().SetWorldPos(glm::mix(from->position, to->position, t));
             gameObject->Transform().SetWorldRot(glm::slerp(from->rotation, to->rotation, t));

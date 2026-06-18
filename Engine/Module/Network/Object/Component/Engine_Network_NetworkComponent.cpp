@@ -5,7 +5,7 @@
 
 namespace NanamiEngine::Module::Network
 {
-    bool NetworkComponent::IsSelfSpawned() const
+    bool NetworkComponent::HasStateAuthority() const
     {
         const auto networkGameObject = Components().Catch<NetworkGameObject>().lock();
         if (!networkGameObject)
@@ -16,6 +16,14 @@ namespace NanamiEngine::Module::Network
             return false;
 
         return id.IsOwnerBy(NetworkRunner().GetPlayerId());
+    }
+
+    Core::Network::NetworkObjectId NetworkComponent::GetNetworkObjectId() const
+    {
+        const auto networkGameObject = Components().Catch<NetworkGameObject>().lock();
+        if (!networkGameObject)
+            return Core::Network::NetworkObjectId::Invalid();
+        return networkGameObject->GetNetworkObjectId();
     }
 
     NetworkRunnerBase& NetworkComponent::NetworkRunner() const

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <memory>
 
-#include "vec3.hpp"
+#include "../glm/vec3.hpp"
 #include "../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 #include "StateMachine/EventScene/IPlayerAvatarEventSceneStateMachine.h"
 
@@ -64,6 +64,7 @@ namespace GameCore
         static const std::vector<std::weak_ptr<IPlayerAvatar>>& PlayerAvatars();
         virtual void EnableStateMachiine() = 0;
         virtual void DisableStateMachine() = 0;
+        virtual void ApplySyncState(uint8_t stateValue) = 0;
         
     protected:
         static std::vector<std::weak_ptr<IPlayerAvatar>>& PlayerAvatars_();

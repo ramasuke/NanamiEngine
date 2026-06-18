@@ -1,4 +1,4 @@
-﻿#include "SwordManAvatarNormalAttackState.h"
+#include "SwordManAvatarNormalAttackState.h"
 
 #include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
@@ -6,10 +6,6 @@
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../Input/PlayerAvatarInput_void.h"
-#include "../../AttackedShocked/SwordManAvatar_AttackedShockedState.h"
-#include "../../Hurt/SwordManAvatar_HurtState.h"
-#include "../../Idle/SwordManAvatarIdleState.h"
-#include "../../Walk/SwordManAvatarWalkState.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::State
 {
@@ -24,7 +20,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
         if (Status().IsDamaged())
         {
-            OnChangeState<HurtState>();
+            OnChangeState(SwordManAvatarStateType::Hurt);
             return;
         }
 
@@ -42,12 +38,12 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarNormalAttackState::DoUpdate()
     {
-        
+
     }
 
     void SwordManAvatarNormalAttackState::DoExit()
     {
-        
+
     }
 
     void SwordManAvatarNormalAttackState::TryComboAttack()
@@ -95,7 +91,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
             Physics::LayerMask mask = Physics::CreateLayerMask();
             Physics::AddLayer(mask, Physics::Layer::Default);
-            
+
             const auto raycastHit = Physics::Raycast(
                                             Transform().GetWorldPos() + glm::vec3(0.0f, 10.0f, 0.0f),
                                             direction,
@@ -103,7 +99,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
                                             mask);
             if (raycastHit.Hit())
             {
-                OnChangeState<AttackedShockedState>();
+                OnChangeState(SwordManAvatarStateType::AttackedShocked);
             }
         }
     }
@@ -112,15 +108,15 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
         if (Status().IsDamaged())
         {
-            OnChangeState<HurtState>();
+            OnChangeState(SwordManAvatarStateType::Hurt);
         }
         else if (Input().Move().IsUpdatePressed())
         {
-            OnChangeState<SwordManAvatarWalkState>();
+            OnChangeState(SwordManAvatarStateType::Walk);
         }
         else
         {
-            OnChangeState<SwordManAvatarIdleState>();
+            OnChangeState(SwordManAvatarStateType::Idle);
         }
     }
 }

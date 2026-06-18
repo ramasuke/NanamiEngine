@@ -1,8 +1,7 @@
-﻿#include "SwordManAvatarJumpState.h"
+#include "SwordManAvatarJumpState.h"
 
 #include "../../../../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
-#include "../Floating/FloatingState.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::State
 {
@@ -16,17 +15,17 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
         if (During_secs() > Status().GetJumpCooldown_secs())
         {
-            OnChangeState<FloatingState>();
+            OnChangeState(SwordManAvatarStateType::Floating);
         }
     }
 
     void SwordManAvatarJumpState::DoUpdate()
     {
-        
+
     }
 
     void SwordManAvatarJumpState::DoExit()
     {
-        
+
     }
 }

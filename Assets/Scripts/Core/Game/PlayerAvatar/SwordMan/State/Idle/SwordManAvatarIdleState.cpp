@@ -1,17 +1,7 @@
-﻿#include "SwordManAvatarIdleState.h"
+#include "SwordManAvatarIdleState.h"
 
 #include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
-#include "../Attack/Normal/SwordManAvatarNormalAttackState.h"
-#include "../AvoidRolling/SwordManAvatar_AvoidRolling.h"
-#include "../Chatting/SwordManAvatarChattingState.h"
-#include "../Floating/FloatingState.h"
-#include "../Hurt/SwordManAvatar_HurtState.h"
-#include "../Jump/SwordManAvatarJumpState.h"
-#include "../OnDisableReinforce/OnDisableReinforceState.h"
-#include "../OnEnableReinforce/OnEnableReinforceState.h"
-#include "../UseCanon/SwordManAvatarUseCanonState.h"
-#include "../Walk/SwordManAvatarWalkState.h"
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoEnter()
 {
@@ -23,33 +13,33 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoFixedUp
     Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
 
     if (Status().IsDamaged())
-        OnChangeState<HurtState>();
+        OnChangeState(SwordManAvatarStateType::Hurt);
     if (Status().IsOnDisableReinforceMode())
-        OnChangeState<OnDisableReinforceState>();
+        OnChangeState(SwordManAvatarStateType::OnDisableReinforce);
     if (Input().Move().IsUpdatePressed())
-        OnChangeState<SwordManAvatarWalkState>();
+        OnChangeState(SwordManAvatarStateType::Walk);
     if (Input().Jump().IsPressed())
-        OnChangeState<SwordManAvatarJumpState>();
+        OnChangeState(SwordManAvatarStateType::Jump);
     if (Input().AvoidRolling().IsPressed())
-        OnChangeState<AvoidRollingState>();
+        OnChangeState(SwordManAvatarStateType::AvoidRolling);
     if (Input().NormalAttack().IsPressed())
-        OnChangeState<SwordManAvatarNormalAttackState>();
+        OnChangeState(SwordManAvatarStateType::NormalAttack);
     if (Status().CanReinforce() && Input().OnReinforce().IsPressed())
-        OnChangeState<OnEnableReinforceState>();
+        OnChangeState(SwordManAvatarStateType::OnEnableReinforce);
     if (Conditions().IsChattable() && Input().Chat().IsPressed())
-        OnChangeState<SwordManAvatarChattingState>();
+        OnChangeState(SwordManAvatarStateType::Chatting);
     if (Conditions().CanUseCannon())
-        OnChangeState<SwordManAvatarUseCannonState>();
+        OnChangeState(SwordManAvatarStateType::UseCanon);
     if (!Conditions().IsGround())
-        OnChangeState<FloatingState>();
+        OnChangeState(SwordManAvatarStateType::Floating);
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoUpdate()
 {
-    
+
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoExit()
 {
-    
+
 }

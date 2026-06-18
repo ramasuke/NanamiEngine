@@ -1,8 +1,7 @@
-﻿#include "OnEnableReinforceState.h"
+#include "OnEnableReinforceState.h"
 
 #include "../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
-#include "../Idle/SwordManAvatarIdleState.h"
 
 void GameCore::PlayerAvatar::SwordMan::State::OnEnableReinforceState::DoEnter()
 {
@@ -16,19 +15,19 @@ void GameCore::PlayerAvatar::SwordMan::State::OnEnableReinforceState::DoFixedUpd
     {
         OnReinforceParticle().SetEnable(true);
         ReinforcingParticle().SetEnable(true);
-        
+
         auto& reinforceParticle = CatchPlayerInChild<Component::ParticleSystem>(GamePlay::PlayerAvatar::SwordMan::REINFORCE_PARTICLE_NAME);
         reinforceParticle.SetEnable(true);
-        OnChangeState<SwordManAvatarIdleState>();
+        OnChangeState(SwordManAvatarStateType::Idle);
     }
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::OnEnableReinforceState::DoUpdate()
 {
-    
+
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::OnEnableReinforceState::DoExit()
 {
-    
+
 }

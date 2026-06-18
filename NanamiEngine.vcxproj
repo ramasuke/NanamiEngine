@@ -3896,7 +3896,6 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestType.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\StateMachine\EventScene\IPlayerAvatarEventSceneStateMachine.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\StateMachine\IPlayerAvatarStateMachine.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\StateMachine\PlayerAvatarStateMachine.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\State\Action\PlayerAvatarStateAction.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -5894,6 +5893,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SyncAvatarState\Packet_Dispatch_SyncAvatarState.cpp" />
     <ClCompile Include="Engine\Core\Network\Packet\Dispatcher\Module\SyncAnimation\Packet_Dispatch_SyncAnimation.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -11887,7 +11887,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\RequireType\RequireType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\StateMachine\EventScene\IPlayerAvatarEventSceneStateMachine.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\StateMachine\IPlayerAvatarStateMachine.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\StateMachine\PlayerAvatarStateMachine.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\StateMachine\PlayerAvatarStateMachineBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\Action\PlayerAvatarStateAction.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\Condition\PlayerAvatarStateCondition.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\Context\IPlayerAvatarStateContext.h" />
@@ -11973,6 +11973,7 @@
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\CustomPacketDispatcherBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\CustomPacketDispatcherGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SpawnPlayer\Packet_Dispatch_SpawnPlayer.h" />
+    <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SyncAvatarState\Packet_Dispatch_SyncAvatarState.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Type\BehaviourTreeType.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\DrawNodeHelper.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Entry\Npc_BehaviourEntryNode.h" />

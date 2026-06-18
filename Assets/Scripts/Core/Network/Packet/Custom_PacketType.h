@@ -6,5 +6,6 @@ namespace GameCore::Network
     enum class EPacketType : NanamiEngine::Core::Network::PacketType
     {
         SpawnPlayerAvatar = 101,
+        SyncAvatarState   = 102,
     };
 }
