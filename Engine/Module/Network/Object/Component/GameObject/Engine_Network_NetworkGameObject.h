@@ -34,8 +34,4 @@ namespace NanamiEngine::Module::Network
 #pragma endregion
     };
 }
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(Network::NetworkGameObject, 0);
-CEREAL_REGISTER_TYPE(Network::NetworkGameObject);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, Network::NetworkGameObject);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(Network::NetworkGameObject, 0)

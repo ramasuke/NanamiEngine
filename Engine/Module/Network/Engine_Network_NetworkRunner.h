@@ -78,8 +78,4 @@ namespace NanamiEngine::Module::Network
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(Network::NetworkRunnerBase, 1);
-CEREAL_REGISTER_TYPE(Network::NetworkRunnerBase);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, Network::NetworkRunnerBase);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(Network::NetworkRunnerBase, 1)

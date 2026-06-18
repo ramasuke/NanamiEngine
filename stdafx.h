@@ -1,0 +1,12 @@
+#pragma once
+#include "DxLib.h"
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <memory>
+#include <unordered_map>
+#include <map>
+#include <functional>
+#include <optional>
+#include <array>

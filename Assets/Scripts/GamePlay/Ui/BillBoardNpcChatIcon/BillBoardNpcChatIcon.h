@@ -51,8 +51,4 @@ namespace GamePlay::Ui
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Ui::BillBoardNpcChatIcon, 1);
-CEREAL_REGISTER_TYPE(GamePlay::Ui::BillBoardNpcChatIcon);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, GamePlay::Ui::BillBoardNpcChatIcon);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::BillBoardNpcChatIcon, 1)

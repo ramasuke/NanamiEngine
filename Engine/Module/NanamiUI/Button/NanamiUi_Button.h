@@ -68,8 +68,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiUi::Button, 1);
-CEREAL_REGISTER_TYPE(NanamiUi::Button);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, NanamiUi::Button);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(NanamiUi::Button, 1)

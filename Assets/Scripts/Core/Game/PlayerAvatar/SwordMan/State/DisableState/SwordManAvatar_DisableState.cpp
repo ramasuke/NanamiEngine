@@ -1,12 +1,15 @@
 ﻿#include "SwordManAvatar_DisableState.h"
 
-#include "../../../../../../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "../../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
 
 void GameCore::PlayerAvatar::SwordMan::State::DisableState::DoEnter()
 {
-    
+    if (!ExpiredCamera())
+    {
+        CameraGroup().FollowFromBehind().lock()->Components().Catch<CineMachine::Behaviour::ThirdPersonCameraBehaviour>().lock()->SetEnable(false);
+    }
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::DisableState::DoFixedUpdate()
@@ -21,6 +24,10 @@ void GameCore::PlayerAvatar::SwordMan::State::DisableState::DoUpdate()
 
 void GameCore::PlayerAvatar::SwordMan::State::DisableState::DoExit()
 {
+    if (!ExpiredCamera())
+    {
+        CameraGroup().FollowFromBehind().lock()->Components().Catch<CineMachine::Behaviour::ThirdPersonCameraBehaviour>().lock()->SetEnable(true);
+    }
 }
 
 GameCore::PlayerAvatar::SwordMan::AnimationType GameCore::PlayerAvatar::SwordMan::State::DisableState::

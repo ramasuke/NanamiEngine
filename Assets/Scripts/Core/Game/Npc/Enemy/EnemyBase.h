@@ -52,8 +52,4 @@ namespace GameCore::Npc
 #pragma endregion
     };
 };
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Npc::EnemyBase, 2);
-CEREAL_REGISTER_TYPE(GameCore::Npc::EnemyBase);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GameCore::Npc::EnemyBase);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(GameCore::Npc::EnemyBase, 2)

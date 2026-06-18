@@ -15,6 +15,7 @@ namespace NanamiEngine::CineMachine::Behaviour
     public:
         void SetTarget(const std::shared_ptr<GameObject::IGameObject>& target);
         void SetLookAtOffsetPos(const glm::vec3& offsetPos);
+        void SetEnableLockMousePos(bool enable);
 
     private:
         void OnAwake () override;
@@ -28,6 +29,8 @@ namespace NanamiEngine::CineMachine::Behaviour
         void UpdateFollowTargetBehaviour() const;
         void UpdateLookAtTargetBehaviour() const;
 
+
+        bool isLockMousePos_ = true;
         
         float yaw_              = 0.0f;
         float pitch_            = 0.2f;
@@ -88,11 +91,7 @@ void load(Archive& archive, const std::uint32_t version) {
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(CineMachine::Behaviour::ThirdPersonCameraBehaviour, 3);
-CEREAL_REGISTER_TYPE(CineMachine::Behaviour::ThirdPersonCameraBehaviour);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
+ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ThirdPersonCameraBehaviour, 3)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IAwakable, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IUpdatable, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
-#pragma endregion

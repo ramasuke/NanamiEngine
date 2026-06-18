@@ -81,8 +81,4 @@ namespace GamePlay::Prop
     
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Prop::Canon, 5);
-CEREAL_REGISTER_TYPE(GamePlay::Prop::Canon);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, GamePlay::Prop::Canon);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::Canon, 5)

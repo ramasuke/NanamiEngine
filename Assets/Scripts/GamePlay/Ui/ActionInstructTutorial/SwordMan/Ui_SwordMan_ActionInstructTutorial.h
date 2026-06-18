@@ -54,8 +54,4 @@ namespace GamePlay::Ui
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Ui::SwordManActionInstructTutorial, 3);
-CEREAL_REGISTER_TYPE(GamePlay::Ui::SwordManActionInstructTutorial);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GamePlay::Ui::SwordManActionInstructTutorial);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::SwordManActionInstructTutorial, 3)

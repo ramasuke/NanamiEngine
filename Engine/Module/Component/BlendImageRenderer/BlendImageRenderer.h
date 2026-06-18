@@ -53,8 +53,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::NanamiUi::BlendImageRenderer, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::NanamiUi::BlendImageRenderer);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, NanamiEngine::Module::NanamiUi::BlendImageRenderer);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::BlendImageRenderer, 0)

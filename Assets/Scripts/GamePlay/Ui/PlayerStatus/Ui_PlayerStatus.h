@@ -81,9 +81,5 @@ namespace GamePlay::Ui
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Ui::PlayerStatus, 5);
-CEREAL_REGISTER_TYPE(GamePlay::Ui::PlayerStatus);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, GamePlay::Ui::PlayerStatus);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PlayerStatus, 5)
 

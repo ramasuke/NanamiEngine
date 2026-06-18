@@ -48,8 +48,4 @@ namespace NanamiEngine::Module::Component
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::StaticMeshCollider, 2);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Component::StaticMeshCollider);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, NanamiEngine::Module::Component::StaticMeshCollider);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::StaticMeshCollider, 2)

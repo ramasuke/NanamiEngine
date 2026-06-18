@@ -47,8 +47,4 @@ namespace NanamiEngine::Module::Component
 #pragma endregion
     };
 }
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::BoxCollider, 5);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Component::BoxCollider);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, NanamiEngine::Module::Component::BoxCollider);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::BoxCollider, 5)

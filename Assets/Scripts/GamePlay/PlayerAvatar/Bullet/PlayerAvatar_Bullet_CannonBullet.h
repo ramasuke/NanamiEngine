@@ -49,8 +49,4 @@ namespace GamePlay::PlayerAvatar::Bullet
     
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::Bullet::CannonBullet, 0);
-CEREAL_REGISTER_TYPE(GamePlay::PlayerAvatar::Bullet::CannonBullet);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, GamePlay::PlayerAvatar::Bullet::CannonBullet);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::Bullet::CannonBullet, 0)

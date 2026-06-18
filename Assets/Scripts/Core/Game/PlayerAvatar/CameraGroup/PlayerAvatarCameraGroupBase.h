@@ -43,8 +43,4 @@ void load(Archive& archive, const std::uint32_t version) {
 };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase, 1);
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase, 1)

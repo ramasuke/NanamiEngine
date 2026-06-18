@@ -28,8 +28,4 @@ namespace NanamiEngine::Module::Network
 #pragma endregion
     };
 }
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(Network::NetworkTransform, 1);
-CEREAL_REGISTER_TYPE(Network::NetworkTransform);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, Network::NetworkTransform);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(Network::NetworkTransform, 1)

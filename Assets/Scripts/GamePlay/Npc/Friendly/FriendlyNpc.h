@@ -62,6 +62,4 @@ namespace GamePlay::Npc::Friendly
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Npc::Friendly::FriendlyNpc, 6)
-CEREAL_REGISTER_TYPE(GamePlay::Npc::Friendly::FriendlyNpc) 
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GamePlay::Npc::Friendly::FriendlyNpc)
+ENGINE_REGISTER_COMPONENT(GamePlay::Npc::Friendly::FriendlyNpc, 6)

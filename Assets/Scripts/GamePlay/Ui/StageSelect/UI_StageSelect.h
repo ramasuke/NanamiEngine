@@ -78,8 +78,4 @@ namespace GamePlay::Ui
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Ui::StageSelectUi, 1);
-CEREAL_REGISTER_TYPE(GamePlay::Ui::StageSelectUi);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GamePlay::Ui::StageSelectUi);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::StageSelectUi, 1)

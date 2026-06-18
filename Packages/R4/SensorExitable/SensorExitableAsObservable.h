@@ -36,8 +36,4 @@ namespace NanamiEngine::R4
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::R4::SensorExitableAsObservable, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::R4::SensorExitableAsObservable);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, NanamiEngine::R4::SensorExitableAsObservable);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(NanamiEngine::R4::SensorExitableAsObservable, 0)

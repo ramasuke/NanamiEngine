@@ -47,8 +47,4 @@ namespace NanamiEngine::Module::Component
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::AudioSource, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Component::AudioSource);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, NanamiEngine::Module::Component::AudioSource);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::AudioSource, 0)

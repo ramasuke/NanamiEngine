@@ -44,8 +44,4 @@ namespace GamePlay::Sound
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Sound::SoundPlayer, 0);
-CEREAL_REGISTER_TYPE(GamePlay::Sound::SoundPlayer);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, GamePlay::Sound::SoundPlayer);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(GamePlay::Sound::SoundPlayer, 0)

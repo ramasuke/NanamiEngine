@@ -51,8 +51,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::NanamiUi::MovieRenderer, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::NanamiUi::MovieRenderer);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, NanamiEngine::Module::NanamiUi::MovieRenderer);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::MovieRenderer, 0)

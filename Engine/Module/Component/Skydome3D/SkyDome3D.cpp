@@ -36,3 +36,10 @@ void Component::SkyDome3D::OnDestroy()
 {
     MV1DeleteModel(skyDomeModelDxLibHandle_);
 }
+
+void Component::SkyDome3D::OnDrawGui()
+{
+    ImGuiHelper::OnDrawInputField("skyDomeModel_", skyDomeModel_);
+    ImGuiHelper::OnDrawInputField("skyDomeModelDxLibHandle_", skyDomeModelDxLibHandle_);
+    ImGuiHelper::OnDrawInputField("mainCamera_", mainCamera_);
+}

@@ -67,8 +67,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::NanamiUi::TextRenderer, 1);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::NanamiUi::TextRenderer);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, NanamiEngine::Module::NanamiUi::TextRenderer);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::TextRenderer, 1)

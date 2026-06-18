@@ -37,8 +37,4 @@ namespace GamePlay::Prop
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Prop::AirShip, 1);
-CEREAL_REGISTER_TYPE(GamePlay::Prop::AirShip);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, GamePlay::Prop::AirShip);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::AirShip, 1)

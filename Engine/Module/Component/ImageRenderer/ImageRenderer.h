@@ -49,9 +49,5 @@ void load(Archive& archive, const std::uint32_t version) {
 };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::ImageRenderer, 2);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Component::ImageRenderer);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, NanamiEngine::Module::Component::ImageRenderer);
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::ImageRenderer, 2)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IUserInterfaceRenderable, NanamiEngine::Module::Component::ImageRenderer);
-#pragma endregion

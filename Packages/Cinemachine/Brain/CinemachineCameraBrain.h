@@ -87,9 +87,5 @@ namespace NanamiEngine::CineMachine
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::CineMachine::CinemachineCameraBrain, 2);
-CEREAL_REGISTER_TYPE(NanamiEngine::CineMachine::CinemachineCameraBrain);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase,NanamiEngine::CineMachine::CinemachineCameraBrain);
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::CinemachineCameraBrain, 2)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IUpdatable, NanamiEngine::CineMachine::CinemachineCameraBrain);
-#pragma endregion

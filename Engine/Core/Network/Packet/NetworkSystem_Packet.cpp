@@ -7,7 +7,7 @@ namespace NanamiEngine::Core::Network
     Packet::Packet(const PacketType type)
         : type_(type)
     {
-        assert(type <= std::numeric_limits<PacketType>::max());
+        assert(type <= (std::numeric_limits<PacketType>::max)());
     }
 
     ByteBuffer& Packet::Data()

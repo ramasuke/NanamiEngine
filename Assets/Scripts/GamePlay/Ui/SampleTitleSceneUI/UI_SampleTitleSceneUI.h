@@ -38,8 +38,4 @@ namespace GamePlay::Ui
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Ui::SampleTitleScene, 0);
-CEREAL_REGISTER_TYPE(GamePlay::Ui::SampleTitleScene);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, GamePlay::Ui::SampleTitleScene);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::SampleTitleScene, 0)

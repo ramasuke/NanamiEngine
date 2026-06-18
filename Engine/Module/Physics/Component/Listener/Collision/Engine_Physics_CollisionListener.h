@@ -63,8 +63,4 @@ namespace NanamiEngine::Module::Component
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(Component::CollisionListener, 0);
-CEREAL_REGISTER_TYPE(Component::CollisionListener);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, Component::CollisionListener);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(Component::CollisionListener, 0)

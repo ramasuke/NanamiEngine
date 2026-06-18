@@ -17,7 +17,6 @@ Core::Application::EditorApplication::EditorApplication()
     SetMouseDispFlag(true          );
 
     ImGuiWrapper::CreateInstance();
-    OnCompileEditorCompiler();
 }
 
 void Core::Application::EditorApplication::Run()
@@ -50,14 +49,6 @@ void Core::Application::EditorApplication::OnDrawGui()
     GetMainWindow()->OnDrawGui(MainWindow::MainWindowDrawGuiContext(FileDraggingHand()));
     PopupWindows_().OnDraw(FileDraggingHand());
 }
-    
-void Core::Application::EditorApplication::OnCompileEditorCompiler()
-{
-    // Compiler::EngineCompiler::ProcessHeaderFiles("Assets/Scripts"  , true);
-    // Compiler::EngineCompiler::ProcessHeaderFiles("Engine/Module/Component"  , true);
-    // Compiler::EngineCompiler::ProcessHeaderFiles("Packages", true);
-}
-
 Core::FileSystem::EditorDraggingHand& Core::Application::EditorApplication::FileDraggingHand()
 {
     static FileSystem::EditorDraggingHand fileDraggingHand;

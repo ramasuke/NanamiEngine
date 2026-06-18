@@ -1,0 +1,14 @@
+CompileFlags:
+  Add:
+    - --driver-mode=cl
+    - /std:c++20
+    - /ILibs/glm
+    - /ILibs/プロジェクトに追加すべきファイル_VC用
+    - /ILibs/cereal/include
+    - /ILibs/ImGui
+    - /ILibs/ImGuizmo
+    - /ILibs/rxcpp
+    - /ILibs/JoltPhysics
+    - /ILibs/tweeny
+    - /D_WINDOWS
+    - /D_MBCS

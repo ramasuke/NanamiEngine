@@ -53,8 +53,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiUi::Slider, 0);
-CEREAL_REGISTER_TYPE(NanamiUi::Slider);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, NanamiUi::Slider);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(NanamiUi::Slider, 0)

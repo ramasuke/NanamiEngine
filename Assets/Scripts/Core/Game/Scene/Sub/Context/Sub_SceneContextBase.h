@@ -37,8 +37,4 @@ namespace GameCore::Scene::Sub
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::Sub::SceneContextBase, 1);
-CEREAL_REGISTER_TYPE(GameCore::Scene::Sub::SceneContextBase);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GameCore::Scene::Sub::SceneContextBase);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(GameCore::Scene::Sub::SceneContextBase, 1)

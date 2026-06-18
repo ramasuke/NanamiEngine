@@ -45,8 +45,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiUi::Billboard3D, 2);
-CEREAL_REGISTER_TYPE(NanamiUi::Billboard3D);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Component::ComponentBase, NanamiUi::Billboard3D);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(NanamiUi::Billboard3D, 2)

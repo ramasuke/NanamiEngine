@@ -241,7 +241,7 @@
                                         "ptr_wrapper": {
                                             "id": 2147483657,
                                             "data": {
-                                                "cereal_class_version": 0,
+                                                "cereal_class_version": 1,
                                                 "value0": {
                                                     "guid_": {
                                                         "value_": "CB8D64A7-5CD8-42F8-B491-4C5F4D0C1A18"
@@ -271,7 +271,8 @@
                                                     "r_": 0,
                                                     "g_": 0,
                                                     "b_": 0
-                                                }
+                                                },
+                                                "isWorldPos_": false
                                             }
                                         }
                                     }
@@ -430,7 +431,8 @@
                                                                     "r_": 0,
                                                                     "g_": 0,
                                                                     "b_": 0
-                                                                }
+                                                                },
+                                                                "isWorldPos_": false
                                                             }
                                                         }
                                                     }

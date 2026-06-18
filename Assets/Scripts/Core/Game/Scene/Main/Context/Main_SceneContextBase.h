@@ -47,8 +47,4 @@ void load(Archive& archive, const std::uint32_t version) {
 #pragma endregion
 };
 }
-#pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::SceneContextBase, 4);
-CEREAL_REGISTER_TYPE(GameCore::Scene::SceneContextBase);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GameCore::Scene::SceneContextBase);
-#pragma endregion
+ENGINE_REGISTER_COMPONENT(GameCore::Scene::SceneContextBase, 4)
