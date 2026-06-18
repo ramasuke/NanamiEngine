@@ -399,44 +399,59 @@ namespace NanamiEngine::Module::GameObject
     {
         if (ImGui::CollapsingHeader("Transform"))
         {
-            // GUI スライダー
-            glm::vec3 pos = localPos_;
-            if (ImGui::DragFloat3("Position", &pos.x, 0.01f))
+            // Local (editable) — open by default
+            if (ImGui::TreeNodeEx("Local", ImGuiTreeNodeFlags_DefaultOpen))
             {
-                SetLocalPos(pos);
-                UpdateMatrix();
+                glm::vec3 pos = localPos_;
+                if (ImGui::DragFloat3("Position##L", &pos.x, 0.01f))
+                {
+                    SetLocalPos(pos);
+                    UpdateMatrix();
+                }
+
+                glm::vec3 euler = guiLocalEuler_;
+                if (ImGui::DragFloat3("Rotation##L", &euler.x, 0.5f))
+                {
+                    guiLocalEuler_ = euler;
+                    SetLocalRot(glm::quat(glm::radians(euler)));
+                    UpdateMatrix();
+                }
+
+                glm::vec3 scale = localScale_;
+                if (ImGui::DragFloat3("Scale##L", &scale.x, 0.01f))
+                {
+                    SetLocalScale(scale);
+                    UpdateMatrix();
+                }
+                ImGui::TreePop();
             }
-    
-            glm::vec3 euler = guiLocalEuler_;
-            if (ImGui::DragFloat3("Rotation", &euler.x, 0.5f))
+
+            // World (read-only)
+            if (ImGui::TreeNode("World"))
             {
-                guiLocalEuler_ = euler;
-                SetLocalRot(glm::quat(glm::radians(euler)));
-                UpdateMatrix();
+                ImGui::BeginDisabled(true);
+                glm::vec3 worldPos   = GetWorldPos();
+                ImGui::DragFloat3("Position##W", &worldPos.x, 0.01f);
+                glm::vec3 worldEuler = GetWorldEulerAngle();
+                ImGui::DragFloat3("Rotation##W", &worldEuler.x, 0.5f);
+                glm::vec3 worldScale = GetWorldScale();
+                ImGui::DragFloat3("Scale##W",    &worldScale.x, 0.01f);
+                ImGui::EndDisabled();
+                ImGui::TreePop();
             }
-    
-            glm::vec3 scale = localScale_;
-            if (ImGui::DragFloat3("Scale", &scale.x, 0.01f))
-            {
-                SetLocalScale(scale);
-                UpdateMatrix();
-            }
-            
+
+            // Option
             if (ImGui::TreeNode("Option"))
             {
                 if (ImGui::Button("Set camera position"))
-                {
                     SetWorldPos(Core::Application::ApplicationBase::GameWindow()->GetCameraPosition());
-                }
                 if (ImGui::Button("Set camera rotation"))
-                {
                     SetWorldRot(Core::Application::ApplicationBase::GameWindow()->GetCameraRotation());
-                }
                 ImGui::Spacing();
                 ImGui::TreePop();
             }
         }
-        
+
         if (Core::Application::ApplicationBase::GameWindow()->IsPlayMode())
         {
             OnDrawGuizmoGui();
