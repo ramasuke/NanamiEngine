@@ -6,6 +6,7 @@
 #include "../../../FileSystem/Directory/Directory.h"
 #include "../../Configuration/ApplicationConfiguration.h"
 #include "../../Configuration/Network/ApplicationConfiguration_Network.h"
+#include "../../Configuration/Physics/ApplicationConfiguration_Physics.h"
 #include "../../ApplicationBase.h"
 #include "../../../../Module/LocalPrefs/Editor/Engine_Module_LocalPrefs_Editor_ToolBar.h"
 #include "../Main/Factory/MainWindowFactory.h"
@@ -34,9 +35,25 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
 
     if (ImGui::BeginPopup("ConfigWindow"))
     {
-        Application::Configuration::AppConfiguration::DrawConfigGUI();
-        Application::Configuration::NetworkConfiguration::DrawConfigGUI();
-
+        if (ImGui::BeginTabBar("ConfigTabs"))
+        {
+            if (ImGui::BeginTabItem("Application"))
+            {
+                Application::Configuration::AppConfiguration::DrawConfigGUI();
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Network"))
+            {
+                Application::Configuration::NetworkConfiguration::DrawConfigGUI();
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Physics"))
+            {
+                Application::Configuration::PhysicsConfiguration::DrawConfigGUI();
+                ImGui::EndTabItem();
+            }
+            ImGui::EndTabBar();
+        }
         ImGui::EndPopup();
     }
     
@@ -46,6 +63,11 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
         {
             Application::ApplicationBase::MainWindows    ().OnSave();
             Application::ApplicationBase::AssetsDirectory().OnSave();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Reload Assets"))
+        {
+            Application::ApplicationBase::ResetAssetsDirectory();
         }
     }
 

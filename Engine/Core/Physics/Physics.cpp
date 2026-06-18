@@ -1,6 +1,7 @@
 ﻿#include "Physics.h"
 
 #include <../JoltPhysics/Jolt/RegisterTypes.h>
+#include "../Application/Configuration/Physics/ApplicationConfiguration_Physics.h"
 
 #include "../../Module/GameObject/ComponentGroup/ComponentGroup.h"
 #include "../../Module/Physics/ContactListener/Engine_Physics_ContactListener.h"
@@ -29,7 +30,8 @@ namespace NanamiEngine::Core
 
     void Physics::Initialize()
     {
-        tempAllocator_ = std::make_unique<JPH::TempAllocatorImpl>(10 * 1024 * 1024);
+        const auto tempAllocatorSize = Application::Configuration::PhysicsConfiguration::GetTempAllocatorSizeMB() * 1024 * 1024;
+        tempAllocator_ = std::make_unique<JPH::TempAllocatorImpl>(tempAllocatorSize);
         jobSystem_ = std::make_unique<JPH::JobSystemThreadPool>(
             JPH::cMaxPhysicsJobs,
             JPH::cMaxPhysicsBarriers,
@@ -42,19 +44,23 @@ namespace NanamiEngine::Core
         static const JPH::ObjectVsBroadPhaseLayerFilter OBJECT_VS_BROAD_PHASE_LAYER_FILTER;
 
         physicsSystem_.Init(
-            1024, 0, 1024, 1024,
+            Application::Configuration::PhysicsConfiguration::GetMaxBodies(),
+            0,
+            Application::Configuration::PhysicsConfiguration::GetMaxBodyPairs(),
+            Application::Configuration::PhysicsConfiguration::GetMaxContactConstraints(),
             BROAD_PHASE_LAYER_INTERFACE,
             OBJECT_VS_BROAD_PHASE_LAYER_FILTER,
             OBJECT_LAYER_PAIR_FILTER
         );
-        physicsSystem_.SetGravity(JPH::Vec3(0, GRAVITY_SCALE, 0));
+        physicsSystem_.SetGravity(JPH::Vec3(0, Application::Configuration::PhysicsConfiguration::GetGravityScale(), 0));
         contactListener_ = std::make_unique<Module::Physics::EngineContactListener>(physicsSystem_);
         physicsSystem_.SetContactListener(contactListener_.get());
     }
 
     void Physics::Update(const float deltaTime)
     {
-        physicsSystem_.Update(deltaTime, IN_COLLISION_STEPS, tempAllocator_.get(), jobSystem_.get());
+        physicsSystem_.SetGravity(JPH::Vec3(0, Application::Configuration::PhysicsConfiguration::GetGravityScale(), 0));
+        physicsSystem_.Update(deltaTime, Application::Configuration::PhysicsConfiguration::GetCollisionSteps(), tempAllocator_.get(), jobSystem_.get());
         contactListener_->OnUpdate();
     }
 

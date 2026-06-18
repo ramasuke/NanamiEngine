@@ -11,6 +11,7 @@
 #include "../Object/Registry/ObjectRegistry.h"
 #include "Configuration/ApplicationConfiguration.h"
 #include "Configuration/Network/ApplicationConfiguration_Network.h"
+#include "Configuration/Physics/ApplicationConfiguration_Physics.h"
 #include "Time/Time.h"
 #include "../Physics/Physics.h"
 #include "LifeCycle/ApplicationLifeCycle.h"
@@ -18,13 +19,15 @@
 
 namespace NanamiEngine::Core::Application
 {
-    std::optional<Physics> ApplicationBase::physics_ = std::optional<Core::Physics>();
+    std::optional<Physics>             ApplicationBase::physics_         = std::optional<Core::Physics>();
+    std::optional<FileSystem::Directory> ApplicationBase::assetsDirectory_ = std::nullopt;
     
     ApplicationBase::ApplicationBase()
     {
         /** ApplicationConfiguの初期化 */
         Configuration::AppConfiguration::Load();
         Configuration::NetworkConfiguration::Load();
+        Configuration::PhysicsConfiguration::Load();
         SetDoubleStartValidFlag(true          );
         ChangeWindowMode       (true          );
         SetGraphMode           (Configuration::AppConfiguration::GetWindowWidth(), Configuration::AppConfiguration::GetWindowHeight(), Configuration::AppConfiguration::GetWindowColorScale());
@@ -37,7 +40,7 @@ namespace NanamiEngine::Core::Application
 
         /** リソースの初期化 */
         SetUseASyncLoadFlag(true);
-        AssetsDirectory_   (    );
+        assetsDirectory_.emplace(Configuration::AppConfiguration::GetAssetsDirectoryPath());
 
         /** Windowの初期化 */
         SetUseSetDrawScreenSettingReset(false);
@@ -53,7 +56,7 @@ namespace NanamiEngine::Core::Application
         Physics().Initialize();
 
         /** Effekseerの初期化 */
-        Effekseer_Init(8000);
+        Effekseer_Init(Configuration::AppConfiguration::GetParticleMax());
         SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
         Effekseer_SetGraphicsDeviceLostCallbackFunctions();
     }
@@ -90,8 +93,12 @@ namespace NanamiEngine::Core::Application
     
     FileSystem::Directory& ApplicationBase::AssetsDirectory_()
     {
-        static auto assetsDirectory = FileSystem::Directory("Assets");
-        return assetsDirectory;
+        return assetsDirectory_.value();
+    }
+
+    void ApplicationBase::ResetAssetsDirectory()
+    {
+        assetsDirectory_.emplace(Configuration::AppConfiguration::GetAssetsDirectoryPath());
     }
     
     ApplicationLifeCycle& ApplicationBase::ApplicationLifeCycle_()

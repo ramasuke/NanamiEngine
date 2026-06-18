@@ -18,7 +18,6 @@ namespace NanamiEngine::Core::Application
         : coroutineScheduler_(std::make_unique<Coroutine::CoroutineScheduler>())
     {
         using Config = Configuration::AppConfiguration;
-        fixedDeltaTime_ = 1.0f / static_cast<float>(Config::GetFixedUpdateRate());
 
         if (useShadowMap)
         {
@@ -55,21 +54,22 @@ namespace NanamiEngine::Core::Application
             accumulator_ += deltaTime;
         }
         const int   maxStep         = Configuration::AppConfiguration::GetMaxPhysicsStep();
-        const float maxAccumulation = fixedDeltaTime_ * static_cast<float>(maxStep);
+        const auto fixedDeltaTime = 1.0f / static_cast<float>(Configuration::AppConfiguration::GetFixedUpdateRate());
+        const float maxAccumulation = fixedDeltaTime * static_cast<float>(maxStep);
         accumulator_ = (std::min)(accumulator_, maxAccumulation);
         int step = 0;
-        while (accumulator_ >= fixedDeltaTime_ && step < maxStep)
+        while (accumulator_ >= fixedDeltaTime && step < maxStep)
         {
             preFixedUpdateCallbacks_.Invoke([](auto& obj) { obj.OnPreFixedUpdate(); });
             fixedUpdatableCallbacks_.Invoke([](auto& obj) { obj.OnFixedUpdate(); });
             beginPhysicsCallbacks_  .Invoke([](auto& obj) { obj.OnBeginPhysics(); });
-            ApplicationBase::Physics().Update(fixedDeltaTime_);
+            ApplicationBase::Physics().Update(fixedDeltaTime);
             endPhysicsCallbacks_    .Invoke([](auto& obj) { obj.OnUpdatedPhysics(); });
 
-            accumulator_ -= fixedDeltaTime_;
+            accumulator_ -= fixedDeltaTime;
             step++;
         }
-        Time::SetFixedAlpha(accumulator_ / fixedDeltaTime_);
+        Time::SetFixedAlpha(accumulator_ / fixedDeltaTime);
         
         updatableCallbacks_       .Invoke([](auto& obj) { obj.OnUpdate();         });
         lateUpdatableCallbacks_   .Invoke([](auto& obj) { obj.OnLateUpdate();     });

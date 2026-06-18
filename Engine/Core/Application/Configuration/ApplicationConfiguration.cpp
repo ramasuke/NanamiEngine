@@ -18,6 +18,8 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEFAULT_LIGHT_DIF_B        = 1.0f;
     constexpr auto DEFAULT_MAX_DELTA_TIME     = 0.3f;
     constexpr auto DEFAULT_MAX_PHYSICS_STEP   = 1;
+    constexpr auto DEFAULT_PARTICLE_MAX             = 8000;
+    constexpr auto DEFAULT_ASSETS_DIRECTORY_PATH   = "Assets";
 
     int   AppConfiguration::windowWidth_      = DEFAULT_WINDOW_WIDTH_SIZE;
     int   AppConfiguration::windowHeight_     = DEFAULT_WINDOW_HEIGHT_SIZE;
@@ -33,6 +35,8 @@ namespace NanamiEngine::Core::Application::Configuration
     float AppConfiguration::lightDifB_        = DEFAULT_LIGHT_DIF_B;
     float AppConfiguration::maxDeltaTime_     = DEFAULT_MAX_DELTA_TIME;
     int   AppConfiguration::maxPhysicsStep_   = DEFAULT_MAX_PHYSICS_STEP;
+    int         AppConfiguration::particleMax_           = DEFAULT_PARTICLE_MAX;
+    std::string AppConfiguration::assetsDirectoryPath_   = DEFAULT_ASSETS_DIRECTORY_PATH;
 
     constexpr auto APP_CONFIG_PATH            = "Application/";
     constexpr auto APP_CONFIG_WIDTH_KEY       = "WindowWidth";
@@ -49,6 +53,8 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto APP_CONFIG_LIGHT_DB_KEY    = "LightDifB";
     constexpr auto APP_CONFIG_MAX_DT_KEY      = "MaxDeltaTime";
     constexpr auto APP_CONFIG_MAX_STEP_KEY    = "MaxPhysicsStep";
+    constexpr auto APP_CONFIG_PARTICLE_MAX_KEY       = "ParticleMax";
+    constexpr auto APP_CONFIG_ASSETS_DIR_PATH_KEY    = "AssetsDirectoryPath";
 
     void AppConfiguration::Load()
     {
@@ -64,8 +70,10 @@ namespace NanamiEngine::Core::Application::Configuration
         lightDifR_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DR_KEY,   DEFAULT_LIGHT_DIF_R);
         lightDifG_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DG_KEY,   DEFAULT_LIGHT_DIF_G);
         lightDifB_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DB_KEY,   DEFAULT_LIGHT_DIF_B);
-        maxDeltaTime_     = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_MAX_DT_KEY,     DEFAULT_MAX_DELTA_TIME);
-        maxPhysicsStep_   = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_MAX_STEP_KEY,   DEFAULT_MAX_PHYSICS_STEP);
+        maxDeltaTime_     = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_MAX_DT_KEY,       DEFAULT_MAX_DELTA_TIME);
+        maxPhysicsStep_   = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_MAX_STEP_KEY,     DEFAULT_MAX_PHYSICS_STEP);
+        particleMax_         = Module::ProjectConfig::LoadOrDefaultWithPath<int>        (APP_CONFIG_PATH, APP_CONFIG_PARTICLE_MAX_KEY,    DEFAULT_PARTICLE_MAX);
+        assetsDirectoryPath_ = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(APP_CONFIG_PATH, APP_CONFIG_ASSETS_DIR_PATH_KEY, std::string(DEFAULT_ASSETS_DIRECTORY_PATH));
     }
 
     void AppConfiguration::Save()
@@ -82,8 +90,10 @@ namespace NanamiEngine::Core::Application::Configuration
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DR_KEY,   lightDifR_);
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DG_KEY,   lightDifG_);
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DB_KEY,   lightDifB_);
-        Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_MAX_DT_KEY,     maxDeltaTime_);
-        Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_MAX_STEP_KEY,   maxPhysicsStep_);
+        Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_MAX_DT_KEY,       maxDeltaTime_);
+        Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_MAX_STEP_KEY,     maxPhysicsStep_);
+        Module::ProjectConfig::SaveWithPath<int>        (APP_CONFIG_PATH, APP_CONFIG_PARTICLE_MAX_KEY,    particleMax_);
+        Module::ProjectConfig::SaveWithPath<std::string>(APP_CONFIG_PATH, APP_CONFIG_ASSETS_DIR_PATH_KEY, assetsDirectoryPath_);
     }
 
     int   AppConfiguration::GetWindowWidth()        { return windowWidth_; }
@@ -119,6 +129,12 @@ namespace NanamiEngine::Core::Application::Configuration
     void  AppConfiguration::SetMaxDeltaTime(float t)    { maxDeltaTime_    = t; }
     int   AppConfiguration::GetMaxPhysicsStep()         { return maxPhysicsStep_; }
     void  AppConfiguration::SetMaxPhysicsStep(int step) { maxPhysicsStep_  = step; }
+
+    int   AppConfiguration::GetParticleMax()        { return particleMax_; }
+    void  AppConfiguration::SetParticleMax(int max) { particleMax_ = max; }
+
+    const std::string& AppConfiguration::GetAssetsDirectoryPath()                  { return assetsDirectoryPath_; }
+    void               AppConfiguration::SetAssetsDirectoryPath(const std::string& path) { assetsDirectoryPath_ = path; }
 
     void AppConfiguration::DrawConfigGUI()
     {
@@ -215,6 +231,34 @@ namespace NanamiEngine::Core::Application::Configuration
             Save();
         }
         ImGui::TextDisabled("* Restart required to apply");
+
+        ImGui::Spacing();
+        ImGui::Text("Effekseer");
+        ImGui::Separator();
+
+        int particleMax = GetParticleMax();
+        ImGui::SetNextItemWidth(100);
+        if (ImGui::InputInt("Particle Max", &particleMax))
+        {
+            if (particleMax < 1) particleMax = 1;
+            SetParticleMax(particleMax);
+            Save();
+        }
+        ImGui::TextDisabled("* Restart required to apply");
+
+        ImGui::Spacing();
+        ImGui::Text("Assets");
+        ImGui::Separator();
+
+        char assetsPathBuf[256] = {};
+        snprintf(assetsPathBuf, sizeof(assetsPathBuf), "%s", assetsDirectoryPath_.c_str());
+        ImGui::SetNextItemWidth(200);
+        if (ImGui::InputText("Assets Directory", assetsPathBuf, sizeof(assetsPathBuf)))
+        {
+            assetsDirectoryPath_ = assetsPathBuf;
+            Save();
+        }
+        ImGui::TextDisabled("* Use 'Reload Assets' to apply");
 
         ImGui::Spacing();
     }

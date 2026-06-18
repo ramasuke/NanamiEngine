@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <string>
 
 namespace NanamiEngine::Core::Application::Configuration
 {
@@ -50,6 +51,12 @@ namespace NanamiEngine::Core::Application::Configuration
         [[nodiscard]] static int   GetMaxPhysicsStep();
         static void                SetMaxPhysicsStep(int step);
 
+        [[nodiscard]] static int               GetParticleMax();
+        static void                            SetParticleMax(int max);
+
+        [[nodiscard]] static const std::string& GetAssetsDirectoryPath();
+        static void                             SetAssetsDirectoryPath(const std::string& path);
+
         static void DrawConfigGUI();
 
     private:
@@ -70,7 +77,9 @@ namespace NanamiEngine::Core::Application::Configuration
         static float lightDifG_;
         static float lightDifB_;
 
-        static float maxDeltaTime_;
-        static int   maxPhysicsStep_;
+        static float       maxDeltaTime_;
+        static int         maxPhysicsStep_;
+        static int         particleMax_;
+        static std::string assetsDirectoryPath_;
     };
 }

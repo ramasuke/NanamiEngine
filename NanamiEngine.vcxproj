@@ -5894,6 +5894,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SyncAvatarState\Packet_Dispatch_SyncAvatarState.cpp" />
+    <ClCompile Include="Engine\Core\Application\Configuration\Physics\ApplicationConfiguration_Physics.cpp" />
     <ClCompile Include="Engine\Core\Network\Packet\Dispatcher\Module\SyncAnimation\Packet_Dispatch_SyncAnimation.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -12021,6 +12022,7 @@
     <ClInclude Include="Engine\Core\Application\ApplicationBase.h" />
     <ClInclude Include="Engine\Core\Application\Configuration\ApplicationConfiguration.h" />
     <ClInclude Include="Engine\Core\Application\Configuration\Network\ApplicationConfiguration_Network.h" />
+    <ClInclude Include="Engine\Core\Application\Configuration\Physics\ApplicationConfiguration_Physics.h" />
     <ClInclude Include="Engine\Core\Application\Editor\Camera\Free\Editor3DCamera.h" />
     <ClInclude Include="Engine\Core\Application\Editor\EditorApplication.h" />
     <ClInclude Include="Engine\Core\Application\Game\GameApplication.h" />

@@ -20,9 +20,6 @@ namespace NanamiEngine::Module::GameObject
 
 namespace NanamiEngine::Core
 {
-    constexpr auto GRAVITY_SCALE = -360.8f;
-    constexpr auto IN_COLLISION_STEPS = 1;
-    
     class Physics final
     {
     public:

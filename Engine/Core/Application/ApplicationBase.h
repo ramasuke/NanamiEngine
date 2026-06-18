@@ -59,6 +59,7 @@ namespace NanamiEngine::Core::Application
         static FileSystem::ObjectRegistry                    & ObjectRegistry      () { return ObjectRegistry_      (); }
         static Physics                                       & Physics             ();
         static void                                            ResetPhysics        ();
+        static void                                            ResetAssetsDirectory();
         static std::shared_ptr<MainWindow::GameWindow>         GameWindow          ();
         static Network::PrefabObjectRegistry                 & NetworkPrefabObjectRegistry();
         
@@ -70,7 +71,8 @@ namespace NanamiEngine::Core::Application
         static Application::ApplicationLifeCycle       & ApplicationLifeCycle_();
         static FileSystem::ObjectRegistry              & ObjectRegistry_      ();
 
-        static std::optional<Core::Physics> physics_;
+        static std::optional<Core::Physics>          physics_;
+        static std::optional<FileSystem::Directory>  assetsDirectory_;
     };
 
     template <MainWindow::MainWindowType T>
