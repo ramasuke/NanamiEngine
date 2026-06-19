@@ -10,6 +10,7 @@
 #include "../../../Core/Coroutine/Task/Task.h"
 #include "../../LifeCycleCallback/InitRenderable/IInitRenderable.h"
 #include "../../LifeCycleCallback/PreFixedUpdate/IPreFixedUpdate.h"
+#include "../../LifeCycleCallback/UpdatedPhysics/IEndPhysics.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -17,7 +18,8 @@ namespace NanamiEngine::Module::Component
                                 public LifeCycleCallback::IInitRenderable,
                                 public LifeCycleCallback::IShadowRenderable,
                                 public LifeCycleCallback::IRenderable,
-                                public LifeCycleCallback::IPreFixedUpdate
+                                public LifeCycleCallback::IPreFixedUpdate,
+                                public LifeCycleCallback::IEndPhysics
     {
     public:
         int modelDxLibHandle_ = -1;
@@ -28,6 +30,7 @@ namespace NanamiEngine::Module::Component
         void OnRender        () override;
         void OnDestroy       () override;
         void OnPreFixedUpdate() override;
+        void OnUpdatedPhysics() override;
 
         [[nodiscard]] MATRIX GetRenderMatrix() const;
 
@@ -36,7 +39,10 @@ namespace NanamiEngine::Module::Component
 
         glm::vec3 prevWorldPos_   {};
         glm::quat prevWorldRot_   {};
+        glm::vec3 currWorldPos_   {};
+        glm::quat currWorldRot_   {};
         bool      hasPrevCapture_ = false;
+        bool      hasCurrCapture_ = false;
         
 #pragma region Serialization Function
 public:
@@ -48,6 +54,7 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<LifeCycleCallback::IInitRenderable>(this));
     archive(cereal::base_class<LifeCycleCallback::IShadowRenderable>(this));
     archive(cereal::base_class<LifeCycleCallback::IRenderable>(this));
+    archive(cereal::base_class<LifeCycleCallback::IEndPhysics>(this));
     archive(CEREAL_NVP(mv1File_));
     archive(CEREAL_NVP(useFixedInterpolation_));
 }
@@ -58,10 +65,11 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 1) archive(cereal::base_class<LifeCycleCallback::IInitRenderable>(this));
     if (version >= 1) archive(cereal::base_class<LifeCycleCallback::IShadowRenderable>(this));
     archive(cereal::base_class<LifeCycleCallback::IRenderable>(this));
+    if (version >= 3) archive(cereal::base_class<LifeCycleCallback::IEndPhysics>(this));
     if (version >= 0) archive(CEREAL_NVP(mv1File_));
     if (version >= 2) archive(CEREAL_NVP(useFixedInterpolation_));
 }
 #pragma endregion
 };
 }
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::ModelRenderer, 2)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::ModelRenderer, 3)
