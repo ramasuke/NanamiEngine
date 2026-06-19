@@ -15,6 +15,7 @@
 #include "../../../../Assets/Scripts/GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
 #include "../../../../Assets/Scripts/GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../Assets/Scripts/GamePlay/Prop/AirShip/Prop_AirShip.h"
+#include "../../../../Assets/Scripts/GamePlay/Prop/ProximityReveal/ProximityReveal.h"
 #include "../../../../Assets/Scripts/GamePlay/Prop/Canon/Prop_Canon.h"
 #include "../../../../Assets/Scripts/GamePlay/Prop/DestructibleObject/DestructibleObject.h"
 #include "../../../../Assets/Scripts/GamePlay/Prop/IslandPedestial/Prop_IslandPedestial.h"

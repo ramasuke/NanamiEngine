@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" />
+    <None Include="Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.hlsl" />
     <ClCompile Include="Assets\Data\EnemyBehaviour\Data_EnemyBehaviourFile.cpp" />
     <ClCompile Include="Assets\Data\EventNpcWalkingRoute\Data_EventNpcWalkingRoute.cpp" />
     <ClCompile Include="Assets\Data\EventNpcWalkingRoute\RoutePoint\Data_Event_Npc_WalkingRoute_RoutePoint.cpp" />
@@ -5894,6 +5896,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SyncAvatarState\Packet_Dispatch_SyncAvatarState.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\ProximityReveal\ProximityReveal.cpp" />
     <ClCompile Include="Engine\Core\Application\Configuration\Physics\ApplicationConfiguration_Physics.cpp" />
     <ClCompile Include="Engine\Core\Network\Packet\Dispatcher\Module\SyncAnimation\Packet_Dispatch_SyncAnimation.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -9129,6 +9132,9 @@
       <AdditionalOptions>/bigobj </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Engine\Module\Asset\Hlsl\HlslFile.cpp" />
+    <ClCompile Include="Engine\Module\Asset\Hlsl\HlslPsFile.cpp" />
+    <ClCompile Include="Engine\Module\Asset\Hlsl\HlslVsFile.cpp" />
     <ClCompile Include="Engine\Module\Asset\Movie\MovieFile.cpp" />
     <ClCompile Include="Engine\Module\Asset\MV1\MV1File.cpp" />
     <ClCompile Include="Engine\Module\Asset\Particle\ParticleFile.cpp" />
@@ -12685,6 +12691,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\DestructibleObject\DestructibleObject.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\IDestructibleObject.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\IslandPedestial\Prop_IslandPedestial.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\ProximityReveal\ProximityReveal.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.h" />
@@ -12788,6 +12795,9 @@
     <ClInclude Include="Engine\Module\Asset\Asset.h" />
     <ClInclude Include="Engine\Module\Asset\AssetBase.h" />
     <ClInclude Include="Engine\Module\Asset\Font\Ttf\TtfFontFile.h" />
+    <ClInclude Include="Engine\Module\Asset\Hlsl\HlslFile.h" />
+    <ClInclude Include="Engine\Module\Asset\Hlsl\HlslPsFile.h" />
+    <ClInclude Include="Engine\Module\Asset\Hlsl\HlslVsFile.h" />
     <ClInclude Include="Engine\Module\Asset\Movie\MovieFile.h" />
     <ClInclude Include="Engine\Module\Asset\MV1\MV1File.h" />
     <ClInclude Include="Engine\Module\Asset\Particle\ParticleFile.h" />
@@ -14288,6 +14298,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PreBuildEvent>
+      <Command>"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.vso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.pso"</Command>
+    </PreBuildEvent>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
@@ -14314,6 +14328,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PreBuildEvent>
+      <Command>"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.vso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.pso"</Command>
+    </PreBuildEvent>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>

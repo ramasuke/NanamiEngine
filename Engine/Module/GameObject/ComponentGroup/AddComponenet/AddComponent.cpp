@@ -220,6 +220,7 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             OnDrawTryAddComponentGui<GamePlay::Prop::Canon          >(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::IslandPedestial>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::DestructibleObject>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Prop::ProximityReveal   >(addComponent);
             ImGui::TreePop();
             ImGui::Spacing();
         }

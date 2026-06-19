@@ -7,6 +7,8 @@
 #include "../../../Module/Asset/Sprite/SpriteFile.h"
 #include "../../../Module/Asset/Scene/SceneFile.h"
 #include "../../../Module/Asset/Hlsl/HlslFile.h"
+#include "../../../Module/Asset/Hlsl/HlslVsFile.h"
+#include "../../../Module/Asset/Hlsl/HlslPsFile.h"
 #include "../../Application/Window/Popup/Group/PopupWindowGroup.h"
 #include "../../Application/Window/Popup/Inspector/InspectorWindow.h"
 #include "cereal/archives/json.hpp"

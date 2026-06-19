@@ -10,6 +10,9 @@ namespace NanamiEngine::Module::Component
     {
         if (mv1File_)
             modelDxLibHandle_ = mv1File_->LoadDxLibHandle();
+
+        if (HasCustomShader())
+            cbHandle_ = CreateShaderConstantBuffer(256);
     }
     
     void ModelRenderer::OnPreFixedUpdate()
@@ -78,35 +81,80 @@ namespace NanamiEngine::Module::Component
     {
         if (!IsEnable())
             return;
-    
+
+        // カスタムシェーダーが設定されている場合はシャドウをスキップ
+        // （透明度制御がシェーダー側にあるため、影だけ落ちる状態を防ぐ）
+        if (HasCustomShader())
+            return;
+
         MV1SetMatrix(modelDxLibHandle_, GetRenderMatrix());
         MV1DrawModel(modelDxLibHandle_);
     }
     
+    bool ModelRenderer::HasCustomShader() const
+    {
+        return vsFile_ && psFile_
+            && vsFile_->GetVsHandle() != -1
+            && psFile_->GetPsHandle() != -1;
+    }
+
+    void ModelRenderer::ApplyCustomShader()
+    {
+        SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+        SetWriteZBuffer3D(FALSE);
+        SetUseVertexShader(vsFile_->GetVsHandle());
+        SetUsePixelShader(psFile_->GetPsHandle());
+        if (cbHandle_ != -1)
+            SetShaderConstantBuffer(cbHandle_, DX_SHADERTYPE_PIXEL, 1);
+        MV1SetUseOrigShader(TRUE);
+    }
+
+    void ModelRenderer::RestoreCustomShader()
+    {
+        MV1SetUseOrigShader(FALSE);
+        SetUseVertexShader(-1);
+        SetUsePixelShader(-1);
+        SetUseLighting(TRUE);
+        SetWriteZBuffer3D(TRUE);
+        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+    }
+
     void ModelRenderer::OnRender()
     {
         if (!IsEnable())
             return;
-    
+
         MV1SetMatrix(modelDxLibHandle_, GetRenderMatrix());
-        MV1DrawModel(modelDxLibHandle_);
+
+        if (HasCustomShader())
+        {
+            ApplyCustomShader();
+            MV1DrawModel(modelDxLibHandle_);
+            RestoreCustomShader();
+        }
+        else
+        {
+            MV1DrawModel(modelDxLibHandle_);
+        }
     }
-    
+
     void ModelRenderer::OnDestroy()
     {
         MV1DeleteModel(modelDxLibHandle_);
+        if (cbHandle_ != -1)
+            DeleteShaderConstantBuffer(cbHandle_);
     }
-    
+
     void ModelRenderer::OnDrawGui()
     {
-        ImGuiHelper::OnDrawInputField("mv1File_", mv1File_);
+        ImGuiHelper::OnDrawInputField("mv1File_",              mv1File_);
+        ImGuiHelper::OnDrawInputField("vsFile_",               vsFile_);
+        ImGuiHelper::OnDrawInputField("psFile_",               psFile_);
         ImGuiHelper::OnDrawInputField("useFixedInterpolation_", useFixedInterpolation_);
         if (ImGui::Button("OnUpdateDxLibHandle"))
         {
             if (mv1File_)
-            {
                 modelDxLibHandle_ = mv1File_->LoadDxLibHandle();
-            }
         }
     }
 }

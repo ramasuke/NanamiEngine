@@ -14,7 +14,7 @@ namespace NanamiEngine::Module::Asset
 
     void HlslFile::OnDrawGui()
     {
-        ImGuiHelper::OnDrawInputField("contentPath_", contentPath_);
-        ImGuiHelper::OnDrawInputField("guid_", guid_);
+        LibCore::ImGuiHelper::OnDrawInputField("contentPath_", contentPath_);
+        LibCore::ImGuiHelper::OnDrawInputField("guid_", guid_);
     }
 }

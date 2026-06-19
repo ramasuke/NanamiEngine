@@ -7,6 +7,11 @@ namespace GameCore::PlayerAvatar
 {
     std::shared_ptr<IPlayerAvatar> Owner()
     {
+        if (IPlayerAvatar::PlayerAvatars().empty())
+        {
+            //TODO: 本来はNullObjectPatternを使用した方が適切
+            return nullptr;
+        }
         //TODO: Network上の自身が操作しているPlayerを取得するように変更必須
         return IPlayerAvatar::PlayerAvatars().at(0).lock();
     }

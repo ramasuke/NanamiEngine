@@ -6,6 +6,8 @@
 
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/MV1/MV1File.h"
+#include "../../Asset/Hlsl/HlslVsFile.h"
+#include "../../Asset/Hlsl/HlslPsFile.h"
 #include "../ComponentBase.h"
 #include "../../../Core/Coroutine/Task/Task.h"
 #include "../../LifeCycleCallback/InitRenderable/IInitRenderable.h"
@@ -23,6 +25,7 @@ namespace NanamiEngine::Module::Component
     {
     public:
         int modelDxLibHandle_ = -1;
+        int cbHandle_         = -1;
 
     private:
         void InitRenderer    () override;
@@ -33,8 +36,13 @@ namespace NanamiEngine::Module::Component
         void OnUpdatedPhysics() override;
 
         [[nodiscard]] MATRIX GetRenderMatrix() const;
+        [[nodiscard]] bool   HasCustomShader () const;
+        void ApplyCustomShader  ();
+        void RestoreCustomShader();
 
-        FIELD(Asset::Mv1File) mv1File_;
+        FIELD(Asset::Mv1File)    mv1File_;
+        FIELD(Asset::HlslVsFile) vsFile_;
+        FIELD(Asset::HlslPsFile) psFile_;
         bool useFixedInterpolation_ = false;
 
         glm::vec3 prevWorldPos_   {};
@@ -57,6 +65,8 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<LifeCycleCallback::IEndPhysics>(this));
     archive(CEREAL_NVP(mv1File_));
     archive(CEREAL_NVP(useFixedInterpolation_));
+    archive(CEREAL_NVP(vsFile_));
+    archive(CEREAL_NVP(psFile_));
 }
 
 template<class Archive>
@@ -68,8 +78,10 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 3) archive(cereal::base_class<LifeCycleCallback::IEndPhysics>(this));
     if (version >= 0) archive(CEREAL_NVP(mv1File_));
     if (version >= 2) archive(CEREAL_NVP(useFixedInterpolation_));
+    if (version >= 4) archive(CEREAL_NVP(vsFile_));
+    if (version >= 4) archive(CEREAL_NVP(psFile_));
 }
 #pragma endregion
 };
 }
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::ModelRenderer, 3)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::ModelRenderer, 4)

@@ -170,7 +170,8 @@ void CineMachine::CinemachineCameraBrain::UnSubscribeVirtualCamera(
             return camera.get() == virtualCamera.lock();
         });
 
-    auto cameraBrain = cameraBrain_; 
+    if (cameraBrain_->virtualCameras_.empty())
+        return;
     
     cameraBrain_->currentVirtualCamera_ =
         *std::ranges::max_element(
