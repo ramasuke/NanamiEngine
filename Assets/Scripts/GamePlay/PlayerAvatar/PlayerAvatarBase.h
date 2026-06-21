@@ -126,6 +126,7 @@ namespace GamePlay::PlayerAvatar
         collider_          = Components().Catch<Component::ColliderBase>();
         
         status_       = std::move(status      );
+        RegisterSyncObject(status_);
         inputAction_  = std::move(inputAction );
         stateMachine_ = std::move(stateMachine);
         animator_     = std::make_unique<Animator>(animatorComponent_);

@@ -4,6 +4,7 @@
 #include "Module/SyncTransform/Packet_Dispatch_SyncTransform.h"
 #include "Module/SyncAnimation/Packet_Dispatch_SyncAnimation.h"
 #include "../../Object/Registry/INetworkObjectInstanceRegistry.h"
+#include "Module/SyncParameter/Packet_Dispatch_SyncParameter.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -18,6 +19,7 @@ namespace NanamiEngine::Core::Network
         [[nodiscard]] ReceivedAssignPlayerId&  ReceivedAssignPlayerId() { return receivedAssignPlayerId_; }
         [[nodiscard]] SyncTransformDispatcher& SyncTransform() { return syncTransform_; }
         [[nodiscard]] SyncAnimationDispatcher& SyncAnimation() { return syncAnimation_; }
+        [[nodiscard]] SyncParameterDispatcher& SyncParameter() { return syncParameter_; }
 
         [[nodiscard]] std::weak_ptr<Module::GameObject::IGameObject> FindNetworkObject(NetworkObjectId id) const;
 
@@ -30,5 +32,6 @@ namespace NanamiEngine::Core::Network
         SpawnNetworkObject spawnNetworkObject_;
         SyncTransformDispatcher syncTransform_;
         SyncAnimationDispatcher syncAnimation_;
+        SyncParameterDispatcher syncParameter_;
     };
 }

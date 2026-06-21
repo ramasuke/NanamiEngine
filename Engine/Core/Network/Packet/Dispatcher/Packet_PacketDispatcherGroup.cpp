@@ -12,6 +12,7 @@ namespace NanamiEngine::Core::Network
         , spawnNetworkObject_(networkSystem, networkSystem, instanceRegistry)
         , syncTransform_(networkSystem, networkSystem, instanceRegistry)
         , syncAnimation_(networkSystem, networkSystem, instanceRegistry)
+        , syncParameter_(networkSystem, networkSystem)
     {
     }
 
@@ -42,6 +43,10 @@ namespace NanamiEngine::Core::Network
         case DefaultPacketType::SyncAnimation:
             syncAnimation_.ReceivePacket(packet);
             break;
+        case DefaultPacketType::SyncParameter:
+            syncParameter_.ReceivePacket(packet);
+            break;
         }
+
     }
 }

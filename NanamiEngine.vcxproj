@@ -5898,6 +5898,12 @@
     <ClCompile Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SyncAvatarState\Packet_Dispatch_SyncAvatarState.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\ProximityReveal\ProximityReveal.cpp" />
     <ClCompile Include="Engine\Core\Application\Configuration\Physics\ApplicationConfiguration_Physics.cpp" />
+    <ClCompile Include="Engine\Core\Network\Object\Awakable\INetworkAwakable.cpp" />
+    <ClCompile Include="Engine\Core\Network\Object\Creator\NetworkParamCreator.cpp" />
+    <ClCompile Include="Engine\Core\Network\Object\NetworkObjectBase.cpp" />
+    <ClCompile Include="Engine\Core\Network\Object\SyncParameter\Id\Network_SyncParameter_Id.cpp" />
+    <ClCompile Include="Engine\Core\Network\Object\SyncParameter\Network_INetworkSyncParameter.cpp" />
+    <ClCompile Include="Engine\Core\Network\Object\SyncParameter\Network_SyncParameter.cpp" />
     <ClCompile Include="Engine\Core\Network\Packet\Dispatcher\Module\SyncAnimation\Packet_Dispatch_SyncAnimation.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -8266,6 +8272,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Network\Packet\Dispatcher\Module\SyncParameter\Packet_Dispatch_SyncParameter.cpp" />
+    <ClCompile Include="Engine\Core\Network\Packet\Dispatcher\Module\SyncParameter\Registry\Packet_Dispatch_SyncParameter_Registry.cpp" />
     <ClCompile Include="Engine\Core\Network\Packet\Dispatcher\Module\SyncTransform\Packet_Dispatch_SyncTransform.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -12749,10 +12757,16 @@
     <ClInclude Include="Engine\Core\Network\IPlayerIdProvider.h" />
     <ClInclude Include="Engine\Core\Network\Mode\NetworkSystem_Mode.h" />
     <ClInclude Include="Engine\Core\Network\ObjectId\Engine_Network_NetworkObjectId.h" />
+    <ClInclude Include="Engine\Core\Network\Object\Creator\NetworkParamCreator.h" />
     <ClInclude Include="Engine\Core\Network\Object\INetworkObject.h" />
+    <ClInclude Include="Engine\Core\Network\Object\NetworkObjectBase.h" />
+    <ClInclude Include="Engine\Core\Network\Object\Awakable\INetworkAwakable.h" />
     <ClInclude Include="Engine\Core\Network\Object\PrefabRegistry\NetworkPrefabObjectRegistry.h" />
     <ClInclude Include="Engine\Core\Network\Object\Registry\INetworkObjectInstanceRegistry.h" />
     <ClInclude Include="Engine\Core\Network\Object\Registry\NetworkObjectInstanceRegistry.h" />
+    <ClInclude Include="Engine\Core\Network\Object\SyncParameter\Id\Network_SyncParameter_Id.h" />
+    <ClInclude Include="Engine\Core\Network\Object\SyncParameter\Network_INetworkSyncParameter.h" />
+    <ClInclude Include="Engine\Core\Network\Object\SyncParameter\Network_SyncParameter.h" />
     <ClInclude Include="Engine\Core\Network\Object\Tickable\INetworkTickable.h" />
     <ClInclude Include="Engine\Core\Network\Object\Tickable\INetworkTickableRegistry.h" />
     <ClInclude Include="Engine\Core\Network\Object\Tickable\NetworkTickableRegistry.h" />
@@ -12761,6 +12775,8 @@
     <ClInclude Include="Engine\Core\Network\Packet\Dispatcher\Module\AssignPlayerId\Packet_Dispatch_AssignPlayerId.h" />
     <ClInclude Include="Engine\Core\Network\Packet\Dispatcher\Module\SpawnNetworkObject\Packet_Dispatch_SpawnNetworkObject.h" />
     <ClInclude Include="Engine\Core\Network\Packet\Dispatcher\Module\SyncAnimation\Packet_Dispatch_SyncAnimation.h" />
+    <ClInclude Include="Engine\Core\Network\Packet\Dispatcher\Module\SyncParameter\Packet_Dispatch_SyncParameter.h" />
+    <ClInclude Include="Engine\Core\Network\Packet\Dispatcher\Module\SyncParameter\Registry\Packet_Dispatch_SyncParameter_Registry.h" />
     <ClInclude Include="Engine\Core\Network\Packet\Dispatcher\Module\SyncTransform\Packet_Dispatch_SyncTransform.h" />
     <ClInclude Include="Engine\Core\Network\Packet\Dispatcher\Packet_Dispatch_PacketDispatcherBase.h" />
     <ClInclude Include="Engine\Core\Network\Packet\Dispatcher\Packet_PacketDispatcherGroup.h" />

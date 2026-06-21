@@ -6,6 +6,7 @@
 #include "EffekseerForDXLib.h"
 #include "../../ApplicationBase.h"
 #include "../../Configuration/ApplicationConfiguration.h"
+#include "../../Configuration/Physics/ApplicationConfiguration_Physics.h"
 #include "../../../../Module/Asset/Asset.h"
 #include "../../../../Module/Scene/ShadowMap/ShadowMapSetting.h"
 #include "../../../Coroutine/Scheduler/CoroutineScheduler.h"
@@ -48,13 +49,13 @@ namespace NanamiEngine::Core::Application
         startableCallbacks_       .Invoke([](auto& obj) { obj.OnStart();          });
 
         const float rawDeltaTime = Time::DeltaTime();
-        const float deltaTime = (std::min)(rawDeltaTime, Configuration::AppConfiguration::GetMaxDeltaTime());
+        const float deltaTime = (std::min)(rawDeltaTime, Configuration::PhysicsConfiguration::GetMaxDeltaTime());
         if (rawDeltaTime > 0.0f)
         {
             accumulator_ += deltaTime;
         }
-        const int   maxStep         = Configuration::AppConfiguration::GetMaxPhysicsStep();
-        const auto fixedDeltaTime = 1.0f / static_cast<float>(Configuration::AppConfiguration::GetFixedUpdateRate());
+        const int   maxStep         = Configuration::PhysicsConfiguration::GetMaxPhysicsStep();
+        const auto fixedDeltaTime = 1.0f / static_cast<float>(Configuration::PhysicsConfiguration::GetFixedUpdateRate());
         const float maxAccumulation = fixedDeltaTime * static_cast<float>(maxStep);
         accumulator_ = (std::min)(accumulator_, maxAccumulation);
         int step = 0;

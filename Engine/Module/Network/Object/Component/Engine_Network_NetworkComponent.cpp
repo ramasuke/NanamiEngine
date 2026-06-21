@@ -1,29 +1,28 @@
 ﻿#include "Engine_Network_NetworkComponent.h"
 
-#include "GameObject/Engine_Network_NetworkGameObject.h"
 #include "../../Engine_Network_NetworkRunner.h"
 
 namespace NanamiEngine::Module::Network
 {
+    void NetworkComponent::NetworkAwake(const NetworkObjectId id)
+    {
+        objectId_ = id;
+        localIndex_ = 0;
+        for (const auto& obj : networkObjects_)
+            obj->NetworkAwake(id, localIndex_);
+    }
+
     bool NetworkComponent::HasStateAuthority() const
     {
-        const auto networkGameObject = Components().Catch<NetworkGameObject>().lock();
-        if (!networkGameObject)
+        if (objectId_ == Core::Network::NetworkObjectId::Invalid())
             return false;
 
-        const auto id = networkGameObject->GetNetworkObjectId();
-        if (id == Core::Network::NetworkObjectId::Invalid())
-            return false;
-
-        return id.IsOwnerBy(NetworkRunner().GetPlayerId());
+        return objectId_.IsOwnerBy(NetworkRunner().GetPlayerId());
     }
 
     Core::Network::NetworkObjectId NetworkComponent::GetNetworkObjectId() const
     {
-        const auto networkGameObject = Components().Catch<NetworkGameObject>().lock();
-        if (!networkGameObject)
-            return Core::Network::NetworkObjectId::Invalid();
-        return networkGameObject->GetNetworkObjectId();
+        return objectId_;
     }
 
     NetworkRunnerBase& NetworkComponent::NetworkRunner() const

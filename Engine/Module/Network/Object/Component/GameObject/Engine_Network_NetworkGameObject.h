@@ -11,7 +11,7 @@ namespace NanamiEngine::Module::Network
     {
     public:
         [[nodiscard]] Core::Network::NetworkObjectId GetNetworkObjectId() const { return networkObjectId_; }
-        void SetNetworkObjectId(const Core::Network::NetworkObjectId id) { networkObjectId_ = id; }
+        void SetNetworkObjectId(Core::Network::NetworkObjectId id);
 
     private:
         void OnAwake() override;

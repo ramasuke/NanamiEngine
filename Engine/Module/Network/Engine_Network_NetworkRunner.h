@@ -20,6 +20,7 @@ namespace NanamiEngine::Module::Network
         ~NetworkRunnerBase() override;
 
         [[nodiscard]] static NetworkRunnerBase& Instance();
+        [[nodiscard]] static NetworkRunnerBase* TryGetInstance() { return s_instance_; }
 
         /** API: 手動呼び出しの初期化 */
         void Initialize();

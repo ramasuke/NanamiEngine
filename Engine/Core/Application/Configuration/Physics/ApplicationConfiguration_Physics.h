@@ -8,6 +8,15 @@ namespace NanamiEngine::Core::Application::Configuration
         static void Load();
         static void Save();
 
+        [[nodiscard]] static int   GetFixedUpdateRate();
+        static void                SetFixedUpdateRate(int rate);
+
+        [[nodiscard]] static float GetMaxDeltaTime();
+        static void                SetMaxDeltaTime(float t);
+
+        [[nodiscard]] static int   GetMaxPhysicsStep();
+        static void                SetMaxPhysicsStep(int step);
+
         [[nodiscard]] static float GetGravityScale();
         static void                SetGravityScale(float scale);
 
@@ -29,6 +38,10 @@ namespace NanamiEngine::Core::Application::Configuration
         static void DrawConfigGUI();
 
     private:
+        static int   fixedUpdateRate_;
+        static float maxDeltaTime_;
+        static int   maxPhysicsStep_;
+
         static float gravityScale_;
         static int   collisionSteps_;
         static int   tempAllocatorSizeMB_;

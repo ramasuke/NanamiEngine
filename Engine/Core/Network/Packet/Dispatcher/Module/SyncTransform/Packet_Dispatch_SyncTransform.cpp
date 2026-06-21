@@ -30,7 +30,7 @@ namespace NanamiEngine::Core::Network
             return;
 
         auto& buffer = snapshotBuffer_[networkObjectId.Value()];
-        buffer.push_back({ Time::CurrentTime(), position, rotation });
+        buffer.push_back({.receiveTime = Time::CurrentTime(), .position = position, .rotation = rotation });
         if (buffer.size() > kMaxBufferSize)
             buffer.pop_front();
     }

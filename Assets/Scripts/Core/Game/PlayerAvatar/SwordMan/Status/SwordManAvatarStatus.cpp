@@ -13,7 +13,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         : event_ (std::make_shared<StatusEvent>())
         , quests_(std::make_unique<QuestGroup>())
         , maxHealth_(100)
-        , health_(StatusParameter::Health(100))
         , maxEnhancePowerStack_(30)
         , enhancePowerStack_(EnhancePower(0))
         , comboNormalAttack_ {
@@ -45,7 +44,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         , quests_                             (initStatus.Quest().DeepCoy())
         , maxHealth_                          (initStatus.MaxHealth())
         , minHealth_                          (initStatus.MinHealth())
-        , health_                             (initStatus.Health())
+        , currentHealth_                      (SyncParamFactory::Create<StatusParameter::Health>(this, initStatus.Health()))
         , maxEnhancePowerStack_               (initStatus.MaxEnhancePowerStack())
         , enhancePowerStack_                  (initStatus.EnhancePowerStack())
         , decrementEnhancePowerStack_secs_    (initStatus.DecrementEnhancePowerStack_secs())
@@ -118,7 +117,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         {
             const auto damageContext = std::move(onDamagedStack_.front());
             onDamagedStack_.pop();
-            health_.OnNext(StatusParameter::Health(health_.get().Value() - damageContext->DamageValue()));
+            onChangeHealth_.get_subscriber().on_next(StatusParameter::Health(currentHealth_->Get().Value() - damageContext->DamageValue()));
         }
     }
 
@@ -137,7 +136,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     {
         LibCore::ImGuiHelper::OnDrawInputField("quests_", quests_);
         LibCore::ImGuiHelper::OnDrawInputField("maxHealth_", maxHealth_);
-        LibCore::ImGuiHelper::OnDrawInputField("health_", health_);
+        LibCore::ImGuiHelper::OnDrawInputField("health_", currentHealth_);
         LibCore::ImGuiHelper::OnDrawInputField("maxEnhancePowerStack_", maxEnhancePowerStack_);
         LibCore::ImGuiHelper::OnDrawInputField("enhancePowerStack_", enhancePowerStack_);
         LibCore::ImGuiHelper::OnDrawInputField("comboNormalAttack_", comboNormalAttack_, [] {});

@@ -7,7 +7,6 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEFAULT_WINDOW_WIDTH_SIZE  = 1920;
     constexpr auto DEFAULT_WINDOW_HEIGHT_SIZE = 1080;
     constexpr auto DEFAULT_WINDOW_COLOR_SCALE = 16;
-    constexpr auto DEFAULT_FIXED_UPDATE_RATE  = 144;
     constexpr auto DEFAULT_SHADOW_MAP_WIDTH   = 1024;
     constexpr auto DEFAULT_SHADOW_MAP_HEIGHT  = 1024;
     constexpr auto DEFAULT_LIGHT_DIR_X        = -0.5f;
@@ -16,15 +15,12 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEFAULT_LIGHT_DIF_R        = 1.0f;
     constexpr auto DEFAULT_LIGHT_DIF_G        = 1.0f;
     constexpr auto DEFAULT_LIGHT_DIF_B        = 1.0f;
-    constexpr auto DEFAULT_MAX_DELTA_TIME     = 0.3f;
-    constexpr auto DEFAULT_MAX_PHYSICS_STEP   = 1;
     constexpr auto DEFAULT_PARTICLE_MAX             = 8000;
     constexpr auto DEFAULT_ASSETS_DIRECTORY_PATH   = "Assets";
 
     int   AppConfiguration::windowWidth_      = DEFAULT_WINDOW_WIDTH_SIZE;
     int   AppConfiguration::windowHeight_     = DEFAULT_WINDOW_HEIGHT_SIZE;
     int   AppConfiguration::windowColorScale_ = DEFAULT_WINDOW_COLOR_SCALE;
-    int   AppConfiguration::fixedUpdateRate_  = DEFAULT_FIXED_UPDATE_RATE;
     int   AppConfiguration::shadowMapWidth_   = DEFAULT_SHADOW_MAP_WIDTH;
     int   AppConfiguration::shadowMapHeight_  = DEFAULT_SHADOW_MAP_HEIGHT;
     float AppConfiguration::lightDirX_        = DEFAULT_LIGHT_DIR_X;
@@ -33,8 +29,6 @@ namespace NanamiEngine::Core::Application::Configuration
     float AppConfiguration::lightDifR_        = DEFAULT_LIGHT_DIF_R;
     float AppConfiguration::lightDifG_        = DEFAULT_LIGHT_DIF_G;
     float AppConfiguration::lightDifB_        = DEFAULT_LIGHT_DIF_B;
-    float AppConfiguration::maxDeltaTime_     = DEFAULT_MAX_DELTA_TIME;
-    int   AppConfiguration::maxPhysicsStep_   = DEFAULT_MAX_PHYSICS_STEP;
     int         AppConfiguration::particleMax_           = DEFAULT_PARTICLE_MAX;
     std::string AppConfiguration::assetsDirectoryPath_   = DEFAULT_ASSETS_DIRECTORY_PATH;
 
@@ -42,7 +36,6 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto APP_CONFIG_WIDTH_KEY       = "WindowWidth";
     constexpr auto APP_CONFIG_HEIGHT_KEY      = "WindowHeight";
     constexpr auto APP_CONFIG_SCALE_KEY       = "WindowColorScale";
-    constexpr auto APP_CONFIG_FIXED_RATE_KEY  = "FixedUpdateRate";
     constexpr auto APP_CONFIG_SHADOW_W_KEY    = "ShadowMapWidth";
     constexpr auto APP_CONFIG_SHADOW_H_KEY    = "ShadowMapHeight";
     constexpr auto APP_CONFIG_LIGHT_DX_KEY    = "LightDirX";
@@ -51,8 +44,6 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto APP_CONFIG_LIGHT_DR_KEY    = "LightDifR";
     constexpr auto APP_CONFIG_LIGHT_DG_KEY    = "LightDifG";
     constexpr auto APP_CONFIG_LIGHT_DB_KEY    = "LightDifB";
-    constexpr auto APP_CONFIG_MAX_DT_KEY      = "MaxDeltaTime";
-    constexpr auto APP_CONFIG_MAX_STEP_KEY    = "MaxPhysicsStep";
     constexpr auto APP_CONFIG_PARTICLE_MAX_KEY       = "ParticleMax";
     constexpr auto APP_CONFIG_ASSETS_DIR_PATH_KEY    = "AssetsDirectoryPath";
 
@@ -61,7 +52,6 @@ namespace NanamiEngine::Core::Application::Configuration
         windowWidth_      = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_WIDTH_KEY,      DEFAULT_WINDOW_WIDTH_SIZE);
         windowHeight_     = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_HEIGHT_KEY,     DEFAULT_WINDOW_HEIGHT_SIZE);
         windowColorScale_ = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SCALE_KEY,      DEFAULT_WINDOW_COLOR_SCALE);
-        fixedUpdateRate_  = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_FIXED_RATE_KEY, DEFAULT_FIXED_UPDATE_RATE);
         shadowMapWidth_   = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_W_KEY,   DEFAULT_SHADOW_MAP_WIDTH);
         shadowMapHeight_  = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_H_KEY,   DEFAULT_SHADOW_MAP_HEIGHT);
         lightDirX_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DX_KEY,   DEFAULT_LIGHT_DIR_X);
@@ -70,8 +60,6 @@ namespace NanamiEngine::Core::Application::Configuration
         lightDifR_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DR_KEY,   DEFAULT_LIGHT_DIF_R);
         lightDifG_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DG_KEY,   DEFAULT_LIGHT_DIF_G);
         lightDifB_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DB_KEY,   DEFAULT_LIGHT_DIF_B);
-        maxDeltaTime_     = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_MAX_DT_KEY,       DEFAULT_MAX_DELTA_TIME);
-        maxPhysicsStep_   = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_MAX_STEP_KEY,     DEFAULT_MAX_PHYSICS_STEP);
         particleMax_         = Module::ProjectConfig::LoadOrDefaultWithPath<int>        (APP_CONFIG_PATH, APP_CONFIG_PARTICLE_MAX_KEY,    DEFAULT_PARTICLE_MAX);
         assetsDirectoryPath_ = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(APP_CONFIG_PATH, APP_CONFIG_ASSETS_DIR_PATH_KEY, std::string(DEFAULT_ASSETS_DIRECTORY_PATH));
     }
@@ -81,7 +69,6 @@ namespace NanamiEngine::Core::Application::Configuration
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_WIDTH_KEY,      windowWidth_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_HEIGHT_KEY,     windowHeight_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SCALE_KEY,      windowColorScale_);
-        Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_FIXED_RATE_KEY, fixedUpdateRate_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_W_KEY,   shadowMapWidth_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_H_KEY,   shadowMapHeight_);
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DX_KEY,   lightDirX_);
@@ -90,8 +77,6 @@ namespace NanamiEngine::Core::Application::Configuration
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DR_KEY,   lightDifR_);
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DG_KEY,   lightDifG_);
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DB_KEY,   lightDifB_);
-        Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_MAX_DT_KEY,       maxDeltaTime_);
-        Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_MAX_STEP_KEY,     maxPhysicsStep_);
         Module::ProjectConfig::SaveWithPath<int>        (APP_CONFIG_PATH, APP_CONFIG_PARTICLE_MAX_KEY,    particleMax_);
         Module::ProjectConfig::SaveWithPath<std::string>(APP_CONFIG_PATH, APP_CONFIG_ASSETS_DIR_PATH_KEY, assetsDirectoryPath_);
     }
@@ -102,9 +87,6 @@ namespace NanamiEngine::Core::Application::Configuration
     void  AppConfiguration::SetWindowWidth(int w)   { windowWidth_      = w; }
     void  AppConfiguration::SetWindowHeight(int h)  { windowHeight_     = h; }
     void  AppConfiguration::SetWindowColorScale(int s) { windowColorScale_ = s; }
-
-    int   AppConfiguration::GetFixedUpdateRate()        { return fixedUpdateRate_; }
-    void  AppConfiguration::SetFixedUpdateRate(int r)   { fixedUpdateRate_  = r; }
 
     int   AppConfiguration::GetShadowMapWidth()         { return shadowMapWidth_; }
     int   AppConfiguration::GetShadowMapHeight()        { return shadowMapHeight_; }
@@ -124,11 +106,6 @@ namespace NanamiEngine::Core::Application::Configuration
     void  AppConfiguration::SetLightDifR(float r)       { lightDifR_ = r; }
     void  AppConfiguration::SetLightDifG(float g)       { lightDifG_ = g; }
     void  AppConfiguration::SetLightDifB(float b)       { lightDifB_ = b; }
-
-    float AppConfiguration::GetMaxDeltaTime()           { return maxDeltaTime_; }
-    void  AppConfiguration::SetMaxDeltaTime(float t)    { maxDeltaTime_    = t; }
-    int   AppConfiguration::GetMaxPhysicsStep()         { return maxPhysicsStep_; }
-    void  AppConfiguration::SetMaxPhysicsStep(int step) { maxPhysicsStep_  = step; }
 
     int   AppConfiguration::GetParticleMax()        { return particleMax_; }
     void  AppConfiguration::SetParticleMax(int max) { particleMax_ = max; }
@@ -160,29 +137,6 @@ namespace NanamiEngine::Core::Application::Configuration
             Save();
         }
         ImGui::TextDisabled("* Restart required to apply");
-
-        ImGui::Spacing();
-        ImGui::Text("Physics");
-        ImGui::Separator();
-
-        int  fixedRate = GetFixedUpdateRate();
-        float maxDt    = GetMaxDeltaTime();
-        int  maxStep   = GetMaxPhysicsStep();
-
-        ImGui::SetNextItemWidth(100);
-        const bool frChanged   = ImGui::InputInt("Fixed Update Rate (Hz)", &fixedRate);
-        ImGui::SetNextItemWidth(100);
-        const bool maxDtChanged = ImGui::InputFloat("Max Delta Time",       &maxDt, 0.0f, 0.0f, "%.3f");
-        ImGui::SetNextItemWidth(100);
-        const bool msChanged   = ImGui::InputInt("Max Physics Steps",      &maxStep);
-
-        if (frChanged || maxDtChanged || msChanged)
-        {
-            SetFixedUpdateRate(fixedRate);
-            SetMaxDeltaTime(maxDt);
-            SetMaxPhysicsStep(maxStep);
-            Save();
-        }
 
         ImGui::Spacing();
         ImGui::Text("Shadow Map");

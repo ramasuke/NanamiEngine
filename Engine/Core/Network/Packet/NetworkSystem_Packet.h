@@ -14,6 +14,7 @@ namespace NanamiEngine::Core::Network
         SpawnNetworkObject = 1,
         SyncTransform      = 2,
         SyncAnimation      = 3,
+        SyncParameter      = 4,
     };
 
     struct Packet final

@@ -32,12 +32,11 @@ namespace NanamiEngine::Core::Network
         // engine 固有のディスパッチャー (AssignPlayerId 等) は引き続きここをオーバーライドして直接処理できる。
         virtual void ReceivePacket(const Packet& packet);
 
+    protected:
         /** サンドボックスパターン */
         void SendPacket(const Packet& packet) const;
         [[nodiscard]] PrefabObjectRegistry& NetworkObjectRegistry() const;
         [[nodiscard]] PlayerId PlayerId() const;
-
-    protected:
         [[nodiscard]] bool IsServer() const;
 
         // Relay モード時にサーバーが呼ぶ。デフォルト: SendPacket（broadcast）+ OnReceive。

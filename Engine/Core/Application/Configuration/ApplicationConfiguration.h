@@ -24,9 +24,6 @@ namespace NanamiEngine::Core::Application::Configuration
         static void                SetWindowHeight(int height);
         static void                SetWindowColorScale(int scale);
 
-        [[nodiscard]] static int   GetFixedUpdateRate();
-        static void                SetFixedUpdateRate(int rate);
-
         [[nodiscard]] static int   GetShadowMapWidth();
         [[nodiscard]] static int   GetShadowMapHeight();
         static void                SetShadowMapWidth(int w);
@@ -46,11 +43,6 @@ namespace NanamiEngine::Core::Application::Configuration
         static void                SetLightDifG(float g);
         static void                SetLightDifB(float b);
 
-        [[nodiscard]] static float GetMaxDeltaTime();
-        static void                SetMaxDeltaTime(float t);
-        [[nodiscard]] static int   GetMaxPhysicsStep();
-        static void                SetMaxPhysicsStep(int step);
-
         [[nodiscard]] static int               GetParticleMax();
         static void                            SetParticleMax(int max);
 
@@ -64,8 +56,6 @@ namespace NanamiEngine::Core::Application::Configuration
         static int windowHeight_;
         static int windowColorScale_;
 
-        static int fixedUpdateRate_;
-
         static int shadowMapWidth_;
         static int shadowMapHeight_;
 
@@ -77,8 +67,6 @@ namespace NanamiEngine::Core::Application::Configuration
         static float lightDifG_;
         static float lightDifB_;
 
-        static float       maxDeltaTime_;
-        static int         maxPhysicsStep_;
         static int         particleMax_;
         static std::string assetsDirectoryPath_;
     };

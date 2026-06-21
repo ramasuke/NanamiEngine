@@ -1,6 +1,4 @@
 ﻿#pragma once
-#include <assert.h>
-
 #include "cereal/cereal.hpp"
 
 namespace GameCore::StatusParameter

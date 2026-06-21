@@ -19,7 +19,7 @@ namespace NanamiEngine::Core::Network
         template<typename Archive>
         void serialize(Archive& archive)
         {
-            archive(CEREAL_NVP(playerId_));
+            archive(playerId_);
         }
 
         [[nodiscard]] int8_t Value() const { return playerId_; }
