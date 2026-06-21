@@ -4,7 +4,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 1,
+                "cereal_class_version": 2,
                 "value0": {
                     "cereal_class_version": 0
                 },
@@ -15,9 +15,15 @@
                 "minHealth_": {
                     "value_": 0
                 },
-                "health_": {
-                    "value": {
-                        "value_": 100
+                "currentHealth_": {
+                    "polymorphic_id": 1073741824,
+                    "ptr_wrapper": {
+                        "id": 2147483650,
+                        "data": {
+                            "value0": {
+                                "value_": 100
+                            }
+                        }
                     }
                 },
                 "maxEnhancePowerStack_": {
@@ -26,7 +32,7 @@
                 },
                 "enhancePowerStack_": {
                     "value": {
-                        "value0": 0
+                        "value0": 30
                     }
                 },
                 "attackedShockedStateDuration_secs_": 0.30000001192092898,

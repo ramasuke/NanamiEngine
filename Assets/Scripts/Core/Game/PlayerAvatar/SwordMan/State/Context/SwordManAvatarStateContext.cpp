@@ -11,9 +11,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         const std::weak_ptr  <SwordManAvatarCameraGroup>& cameraGroup     ,
         const std::weak_ptr  <PlayerAttackArea>& normalAttackArea,
         const std::weak_ptr  <PlayerAttackArea>& dashAttackArea,
-        const std::weak_ptr  <Component::ParticleSystem>& onReinforceParticle,
-        const std::weak_ptr  <Component::ParticleSystem>& reinforcingParticle,
-        const std::weak_ptr<Asset::SwordManAvatarResource>& resources
+        const std::weak_ptr  <Asset::SwordManAvatarResource>& resources
         )
         : status_             (status             )
         , playerAvatarObject_ (playerAvatar    )
@@ -22,8 +20,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         , cameraGroup_        (cameraGroup     )
         , normalAttackArea_   (normalAttackArea)
         , dashAttackArea_     (dashAttackArea  )
-        , onReinforceParticle_(onReinforceParticle)
-        , reinforcingParticle_(reinforcingParticle)
         , resources_          (resources          )
     {
         

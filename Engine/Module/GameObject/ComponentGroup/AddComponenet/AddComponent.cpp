@@ -1,6 +1,7 @@
 ﻿#include "AddComponent.h"
 #include "../ComponentHeaders.h"
 #include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/AttackArea/PlayerAvatarAttackArea.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h"
 #include "../../../../../Assets/Scripts/GamePlay/Ui/StageSelect/UI_StageSelect.h"
 
 std::shared_ptr<Component::ComponentBase> GameObject::AddComponent::OnDrawGui()
@@ -170,6 +171,7 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             OnDrawTryAddComponentGui<GamePlay::Ui::SwordManActionInstructTutorial>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::StageSelectUi>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::StageSelectStageUi>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::DealDamageTextBillBoard>(addComponent);
             ImGui::TreePop();
             ImGui::Spacing();
         }

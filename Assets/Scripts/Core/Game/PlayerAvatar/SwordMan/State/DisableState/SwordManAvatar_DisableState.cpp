@@ -9,6 +9,12 @@ void GameCore::PlayerAvatar::SwordMan::State::DisableState::DoEnter()
     if (!ExpiredCamera())
     {
         CameraGroup().FollowFromBehind().lock()->Components().Catch<CineMachine::Behaviour::ThirdPersonCameraBehaviour>().lock()->SetEnable(false);
+        
+        CameraGroup()
+            .FollowFromBehind().lock()
+            ->Components()
+            .Catch<CineMachine::Behaviour::ThirdPersonCameraBehaviour>().lock()
+            ->SetEnableLockMousePos(false);
     }
 }
 

@@ -26,7 +26,7 @@ namespace GamePlay::Ui
         glm::vec3 basePosSurprise_  = {};
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattableIcon_; 
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattingIcon_;
-        [[serialize(0)]] FIELD(GameObject::IGameObject) surpriseIcon_;
+        [[serialize(1)]] FIELD(GameObject::IGameObject) surpriseIcon_;
         
 #pragma region Serialization Function
     public:

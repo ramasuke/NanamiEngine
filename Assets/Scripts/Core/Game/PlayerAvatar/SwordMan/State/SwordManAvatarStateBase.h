@@ -60,8 +60,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] GamePlay::PlayerAvatar::ChattableArea& ChattableArea   () const { return context_->ChattableArea          (); }
         [[nodiscard]] PlayerAttackArea& NormalAttackArea() const { return context_->NormalAttackArea(); }
         [[nodiscard]] PlayerAttackArea& DashAttackArea  () const { return context_->DashAttackArea  (); }
-        [[nodiscard]] Component::ParticleSystem& OnReinforceParticle() const { return context_->OnReinforceParticle(); }
-        [[nodiscard]] Component::ParticleSystem& ReinforcingParticle() const { return context_->ReinforcingParticle(); }
         [[nodiscard]] PlayerAvatar::State::PlayerAvatarStateCondition Conditions() const { return PlayerAvatar::State::PlayerAvatarStateCondition(context_);}
         [[nodiscard]] PlayerAvatar::State::PlayerAvatarStateAction    Actions   () const { return PlayerAvatar::State::PlayerAvatarStateAction   (context_);}
         [[nodiscard]] const Asset::SwordManAvatarResource&            Resources () const { return context_->Resources(); }

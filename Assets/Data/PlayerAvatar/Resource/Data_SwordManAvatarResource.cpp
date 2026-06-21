@@ -10,6 +10,7 @@ namespace NanamiEngine::Module::Asset
     void SwordManAvatarResource::OnDrawGui()
     {
         ImGuiHelper::OnDrawInputField("normalAttackParticlePrefab_",normalAttackParticlePrefab_);
+        ImGuiHelper::OnDrawInputField("dealDamageTextBillBoardPrefab_",dealDamageTextBillBoardPrefab_);
         ImGuiHelper::OnDrawInputField("normalAttackSound_", normalAttackSound_);
         ImGuiHelper::OnDrawInputField("avoidRollingSound_", avoidRollingSound_);
         ImGuiHelper::OnDrawInputField("justAvoidRollingSound_", justAvoidRollingSound_);

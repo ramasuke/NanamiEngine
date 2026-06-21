@@ -62,8 +62,6 @@ namespace GameCore::PlayerAvatar::SwordMan
             cameraGroup,
             playerAvatar->CatchNormalAttackArea(),
             playerAvatar->CatchDashAttackArea(),
-            playerAvatar->OnReinforceParticle(),
-            playerAvatar->ReinforcingParticle(),
             playerAvatar->Resources()
         );
 

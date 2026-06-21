@@ -1,6 +1,7 @@
 #include "SwordManAvatarIdleState.h"
 
 #include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoEnter()
@@ -8,6 +9,15 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoEnter()
     if (!ExpiredCamera())
     {
         ChangeCamera(CameraGroup().FollowFromBehind());
+        
+        if (CameraGroup().FollowFromBehind().lock())
+        {
+        CameraGroup()
+            .FollowFromBehind().lock()
+            ->Components()
+            .Catch<CineMachine::Behaviour::ThirdPersonCameraBehaviour>().lock()
+            ->SetEnableLockMousePos(true);
+        }
     }
 }
 

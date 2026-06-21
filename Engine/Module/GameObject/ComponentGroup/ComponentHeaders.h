@@ -23,6 +23,7 @@
 #include "../../../../Assets/Scripts/GamePlay/Sound/Sample/BgmPlayer.h"
 #include "../../../../Assets/Scripts/GamePlay/Ui/ActionInstructTutorial/SwordMan/Ui_SwordMan_ActionInstructTutorial.h"
 #include "../../../../Assets/Scripts/GamePlay/Ui/BillBoardNpcChatIcon/BillBoardNpcChatIcon.h"
+#include "../../../../Assets/Scripts/GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h"
 #include "../../../../Assets/Scripts/GamePlay/Ui/NpcChatting/Ui_NpcChatting.h" 
 #include "../../../../Assets/Scripts/GamePlay/Ui/Sample/UI_SampleTitleLogo.h"
 #include "../../../../Assets/Scripts/GamePlay/Ui/SampleTitleSceneUI/UI_SampleTitleSceneUI.h"

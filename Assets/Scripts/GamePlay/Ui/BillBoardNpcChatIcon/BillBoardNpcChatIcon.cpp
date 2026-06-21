@@ -77,6 +77,12 @@ namespace GamePlay::Ui
         if (!isShow_)
             return;
 
+        if (chattableIcon_ && basePosChattable_ == glm::vec3{})
+            basePosChattable_ = chattableIcon_->Transform().GetLocalPos();
+
+        if (surpriseIcon_ && basePosSurprise_ == glm::vec3{})
+            basePosSurprise_ = surpriseIcon_->Transform().GetLocalPos();
+
         const float time = Time::CurrentTime();
 
         constexpr float amplitude = 0.2f;

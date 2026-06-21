@@ -71,6 +71,10 @@ namespace NanamiEngine::Core::Network
         void OnDrawGui()
         {
             LibCore::ImGuiHelper::OnDrawInputField("parameter_", parameter_);
+            if (ImGui::Button("Send Change Parameter Packet"))
+            {
+                SyncSendParam(*this);
+            }
         }
 
         template <typename Archive>

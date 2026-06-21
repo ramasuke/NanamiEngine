@@ -10,6 +10,7 @@ namespace NanamiEngine::Module::NanamiUi
                                public LifeCycleCallback::IUserInterfaceRenderable
     {
     public:
+        ~TextRenderer();
         void SetText(const std::string& text);
         void SetFont(const std::shared_ptr<Asset::TtfFontFile>& font);
         void SetTextColor(const Color32& color);

@@ -20,7 +20,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     {
         auto onDestroySubscription = rxcpp::composite_subscription();
         
-    model.OnChangeHealth().subscribe(onDestroySubscription, [&](const StatusParameter::Health currentHealth)
+        model.OnChangeHealth().subscribe(onDestroySubscription, [&](const StatusParameter::Health currentHealth)
             {
                 view.UpdateHealthBar(model.MaxHealth(), currentHealth);
             });

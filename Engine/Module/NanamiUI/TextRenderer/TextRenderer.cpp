@@ -1,5 +1,6 @@
 ﻿#include "TextRenderer.h"
 #include "../../GameObject/Transform/Transform.h"
+#include <sstream>
 
 std::string Utf8ToShiftJis(const std::string& utf8)
 {
@@ -36,6 +37,15 @@ std::string Utf8ToShiftJis(const std::string& utf8)
 
 namespace NanamiEngine::Module::NanamiUi
 {
+    TextRenderer::~TextRenderer()
+    {
+        if (textScreen_ != -1)
+        {
+            DeleteGraph(textScreen_);
+            textScreen_ = -1;
+        }
+    }
+
     void TextRenderer::SetText(const std::string& text)
     {
         if (text_ == text)
@@ -57,7 +67,7 @@ namespace NanamiEngine::Module::NanamiUi
         isDirty_ = true;
     }
     
-    void TextRenderer::SetWorldMode(bool isWorld)
+    void TextRenderer::SetWorldMode(const bool isWorld)
     {
         isWorldPos_ = isWorld;
     }
@@ -66,26 +76,48 @@ namespace NanamiEngine::Module::NanamiUi
     {
         if (!isDirty_ || !fontFile_)
             return;
-    
+
+        cachedSjis_ = Utf8ToShiftJis(text_);
+
+        const int fontHandle = fontFile_->DxLibHandle();
+        const int lineHeight = GetFontSizeToHandle(fontHandle);
+
+        // テキストの実サイズを計算（複数行対応）
+        int newW = 1;
+        int lineCount = 0;
+        std::istringstream ss(cachedSjis_);
+        std::string line;
+        while (std::getline(ss, line))
+        {
+            if (!line.empty() && line.back() == '\r')
+                line.pop_back();
+            const int lineW = GetDrawStringWidthToHandle(line.c_str(), static_cast<int>(line.size()), fontHandle);
+            newW = std::max(newW, lineW);
+            ++lineCount;
+        }
+        if (lineCount == 0) lineCount = 1;
+        const int newH = std::max(lineHeight * lineCount, 1);
+        newW = std::max(newW, 1);
+
+        // サイズが変わった場合は古いスクリーンを解放して再生成
+        if (textScreen_ != -1 && (screenW_ != newW || screenH_ != newH))
+        {
+            DeleteGraph(textScreen_);
+            textScreen_ = -1;
+        }
+        screenW_ = newW;
+        screenH_ = newH;
+
         if (textScreen_ == -1)
         {
             textScreen_ = MakeScreen(screenW_, screenH_, TRUE);
         }
-    
-        cachedSjis_ = Utf8ToShiftJis(text_);
-    
+
         SetDrawScreen(textScreen_);
         ClearDrawScreen();
-    
-        DrawStringToHandle(
-            0, 0,
-            cachedSjis_.c_str(),
-            textColor_.ToDxColor(),
-            fontFile_->DxLibHandle()
-        );
-    
+        DrawStringToHandle(0, 0, cachedSjis_.c_str(), textColor_.ToDxColor(), fontHandle);
         SetDrawScreen(DX_SCREEN_BACK);
-    
+
         isDirty_ = false;
     }
 
@@ -113,8 +145,7 @@ namespace NanamiEngine::Module::NanamiUi
         
         if (isWorldPos_)
         {
-            ImGuiHelper::OnDrawInputField("screenW_", screenW_);
-            ImGuiHelper::OnDrawInputField("screenH_", screenH_);
+            ImGui::Text("screenW_: %d  screenH_: %d", screenW_, screenH_);
         }
     }
 
@@ -124,7 +155,6 @@ namespace NanamiEngine::Module::NanamiUi
     
         if (!isWorldPos_)
         {
-            // UI描画
             DrawExtendStringFToHandle(
                 Transform().GetWorldPos().x,
                 Transform().GetWorldPos().y,

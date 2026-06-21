@@ -23,10 +23,8 @@ namespace GamePlay::PlayerAvatar::SwordMan
     {
     public:
         [[nodiscard]] std::weak_ptr<Asset::SwordManAvatarResource> Resources() const { return resources_.get(); }
-        [[nodiscard]] std::weak_ptr<PlayerAttackArea         > CatchNormalAttackArea() const;
-        [[nodiscard]] std::weak_ptr<PlayerAttackArea         > CatchDashAttackArea  () const;
-        [[nodiscard]] std::weak_ptr<Component::ParticleSystem> OnReinforceParticle  () const;
-        [[nodiscard]] std::weak_ptr<Component::ParticleSystem> ReinforcingParticle  () const;
+        [[nodiscard]] std::weak_ptr<PlayerAttackArea> CatchNormalAttackArea() const;
+        [[nodiscard]] std::weak_ptr<PlayerAttackArea> CatchDashAttackArea  () const;
         [[nodiscard]] PlayerAvatarType Type() const override;
 
     private:
@@ -41,8 +39,8 @@ namespace GamePlay::PlayerAvatar::SwordMan
             archive(cereal::base_class<PlayerAvatarBase>(this));
             [[serialize(1)]] FIELD(Asset::SoundFile) normalAttackSound_;
             [[serialize(2)]] FIELD(Asset::SoundFile) avoidRollingSound_;
-            archive(CEREAL_NVP(normalAttackSound_));
-            archive(CEREAL_NVP(avoidRollingSound_));
+            if(version <= 3) archive(CEREAL_NVP(normalAttackSound_));
+            if(version <= 3) archive(CEREAL_NVP(avoidRollingSound_));
             archive(CEREAL_NVP(resources_));
         }
 
@@ -52,8 +50,8 @@ namespace GamePlay::PlayerAvatar::SwordMan
             archive(cereal::base_class<PlayerAvatarBase>(this));
             [[serialize(1)]] FIELD(Asset::SoundFile) normalAttackSound_;
             [[serialize(2)]] FIELD(Asset::SoundFile) avoidRollingSound_;
-            if (version >= 1) archive(CEREAL_NVP(normalAttackSound_));
-            if (version >= 2) archive(CEREAL_NVP(avoidRollingSound_));
+            if (version <= 3) archive(CEREAL_NVP(normalAttackSound_));
+            if (version <= 3) archive(CEREAL_NVP(avoidRollingSound_));
             if (version >= 3) archive(CEREAL_NVP(resources_));
         }
 #pragma endregion
@@ -62,7 +60,7 @@ namespace GamePlay::PlayerAvatar::SwordMan
 
 REGISTER_PLAYER_AVATAR_BASE(SwordMan::SwordManAvatarTraits)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::SwordMan::SwordManAvatar, 3);
+CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::SwordMan::SwordManAvatar, 4);
 CEREAL_REGISTER_TYPE(GamePlay::PlayerAvatar::SwordMan::SwordManAvatar);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::SwordMan::SwordManAvatarTraits>, GamePlay::PlayerAvatar::SwordMan::SwordManAvatar);
 #pragma endregion

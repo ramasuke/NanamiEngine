@@ -15,6 +15,7 @@ namespace NanamiEngine::Module::Asset
     public:
         explicit SwordManAvatarResource(const std::string& contentPath = "");
         [[nodiscard]] PrefabGameObjectFile& NormalAttackParticlePrefab() const { return *normalAttackParticlePrefab_.get(); }
+        [[nodiscard]] PrefabGameObjectFile& DealDamageTextBillBoardPrefab() const { return *dealDamageTextBillBoardPrefab_.get(); }
         [[nodiscard]] SoundFile& NormalAttackSound    () const { return *normalAttackSound_    .get(); }
         [[nodiscard]] SoundFile& AvoidRollingSound    () const { return *avoidRollingSound_    .get(); }
         [[nodiscard]] SoundFile& JustAvoidRollingSound() const { return *justAvoidRollingSound_.get(); }
@@ -22,6 +23,7 @@ namespace NanamiEngine::Module::Asset
         
     private:
         [[serialize(0)]] FIELD(PrefabGameObjectFile) normalAttackParticlePrefab_;
+        [[serialize(2)]] FIELD(PrefabGameObjectFile) dealDamageTextBillBoardPrefab_;
         [[serialize(0)]] FIELD(SoundFile) normalAttackSound_;
         [[serialize(0)]] FIELD(SoundFile) avoidRollingSound_;
         [[serialize(0)]] FIELD(SoundFile) justAvoidRollingSound_;
@@ -37,6 +39,7 @@ namespace NanamiEngine::Module::Asset
         {
             archive(cereal::base_class<ScriptableObject>(this));
             archive(CEREAL_NVP(normalAttackParticlePrefab_));
+            archive(CEREAL_NVP(dealDamageTextBillBoardPrefab_));
             archive(CEREAL_NVP(normalAttackSound_));
             archive(CEREAL_NVP(avoidRollingSound_));
             archive(CEREAL_NVP(justAvoidRollingSound_));
@@ -48,6 +51,7 @@ namespace NanamiEngine::Module::Asset
         {
             archive(cereal::base_class<ScriptableObject>(this));
             if (version >= 0) archive(CEREAL_NVP(normalAttackParticlePrefab_));
+            if (version >= 2) archive(CEREAL_NVP(dealDamageTextBillBoardPrefab_));
             if (version >= 0) archive(CEREAL_NVP(normalAttackSound_));
             if (version >= 0) archive(CEREAL_NVP(avoidRollingSound_));
             if (version >= 0) archive(CEREAL_NVP(justAvoidRollingSound_));
@@ -59,7 +63,7 @@ namespace NanamiEngine::Module::Asset
 
 REGISTER_SCRIPTABLE_OBJECT(SwordManAvatarResource, SWORD_MAN_RESOURCE_EXTENSION_LABEL)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 1);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 2);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManAvatarResource);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManAvatarResource);
 #pragma endregion

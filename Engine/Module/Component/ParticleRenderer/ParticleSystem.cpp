@@ -31,9 +31,9 @@ void Component::ParticleSystem::InitRenderer()
         return;
 
     resourceEffectHandle_ = particleFile_->LoadDxLibHandle();
-    if (IsEnable())
+    if (IsEnable() && playMode_ != Particle::PlayMode::Manual)
     {
-        playingEffectHandle_  = PlayEffekseer3DEffect(resourceEffectHandle_);
+        playingEffectHandle_ = PlayEffekseer3DEffect(resourceEffectHandle_);
     }
 }
 
@@ -59,8 +59,10 @@ void Component::ParticleSystem::OnRender()
             Entity().lock()->OnDestroy();
         }
         break;
+    case Particle::PlayMode::Manual:
+        break;
     default:
-        throw std::exception("unknown type Play Mode"); 
+        throw std::exception("unknown type Play Mode");
     }
     
     TryUpdateRenderPos();

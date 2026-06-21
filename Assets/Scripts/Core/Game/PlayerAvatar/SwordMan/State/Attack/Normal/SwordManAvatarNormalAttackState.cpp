@@ -5,6 +5,7 @@
 #include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../../GamePlay/Sound/SoundPlayer.h"
+#include "../../../../../../../GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h"
 #include "../../../../Input/PlayerAvatarInput_void.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::State
@@ -49,6 +50,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     void SwordManAvatarNormalAttackState::TryComboAttack()
     {
         const auto& comboNormalAttack = Status().ComboNormalAttack();
+
         if (comboNormalAttack.empty())
             return;
 
@@ -56,51 +58,71 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             return;
 
         const auto& attackStatus = comboNormalAttack[currentCombo_];
+
         if (During_secs() <= attackStatus.OccurrenceDuration_secs())
             return;
 
-        // 次コンボ入力受付
-        if (During_secs() < attackStatus.Duration_secs() && Input().NormalAttack().IsPressed())
+        // 攻撃判定発生（このコンボでまだ攻撃していない場合のみ）
+        if (!isAttacked_)
         {
-            currentCombo_++;
-            isAttacked_ = false;
+            isAttacked_ = true;
+            GamePlay::Sound::SoundPlayer::PlaySe(Resources().NormalAttackSound(), Transform().GetWorldPos());
+            StatusEvent().InvokeComboAttack();
 
-            if (currentCombo_ >= static_cast<int>(comboNormalAttack.size()))
+            if (NormalAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
             {
-                currentCombo_ = static_cast<int>(comboNormalAttack.size()) - 1;
+                Status().AddEnhancePowerStack(attackStatus.GetEnhance() * NormalAttackArea().AttackTargetCount());
+                const float yaw = glm::eulerAngles(Transform().GetWorldRot()).y;
+                const glm::quat yRot = glm::angleAxis(yaw, glm::vec3(0.0f, 1.0f, 0.0f));
+                Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos(), yRot);
+                DealDamageText(attackStatus.AttackPower());
             }
-            return;
+            else
+            {
+                const auto direction = NormalAttackArea().Transform().GetWorldPos() - Transform().GetWorldPos();
+
+                Physics::LayerMask mask = Physics::CreateLayerMask();
+                Physics::AddLayer(mask, Physics::Layer::Default);
+
+                const auto raycastHit = Physics::Raycast(
+                                                Transform().GetWorldPos() + glm::vec3(0.0f, 0.0f, 0.0f),
+                                                direction,
+                                                glm::length(direction),
+                                                mask);
+                if (raycastHit.Hit())
+                {
+                    OnChangeState(SwordManAvatarStateType::AttackedShocked);
+                }
+            }
         }
 
-        // 攻撃判定発生
-        if (isAttacked_)
-            return;
-
-        isAttacked_ = true;
-        GamePlay::Sound::SoundPlayer::PlaySe(Resources().NormalAttackSound(), Transform().GetWorldPos());
-        StatusEvent().InvokeComboAttack();
-
-        if (NormalAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
+        // 次コンボ入力受付（攻撃済みの場合のみ受け付ける）
+        if (isAttacked_ && During_secs() < attackStatus.Duration_secs() && Input().NormalAttack().IsUpdatePressed())
         {
-            Status().AddEnhancePowerStack(attackStatus.GetEnhance() * NormalAttackArea().AttackTargetCount());
-            Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos());
-        }
-        else
-        {
-            const auto direction = NormalAttackArea().Transform().GetWorldPos() - Transform().GetWorldPos();
-
-            Physics::LayerMask mask = Physics::CreateLayerMask();
-            Physics::AddLayer(mask, Physics::Layer::Default);
-
-            const auto raycastHit = Physics::Raycast(
-                                            Transform().GetWorldPos() + glm::vec3(0.0f, 10.0f, 0.0f),
-                                            direction,
-                                            glm::length(direction),
-                                            mask);
-            if (raycastHit.Hit())
+            if (currentCombo_ + 1 < static_cast<int>(comboNormalAttack.size()))
             {
-                OnChangeState(SwordManAvatarStateType::AttackedShocked);
+                currentCombo_++;
+                isAttacked_ = false;
             }
+        }
+    }
+
+    void SwordManAvatarNormalAttackState::DealDamageText(const Damage::PhysicsPower power)
+    {
+        const auto direction = NormalAttackArea().Transform().GetWorldPos() - Transform().GetWorldPos();
+
+        Physics::LayerMask mask = Physics::CreateLayerMask();
+        Physics::AddLayer(mask, Physics::Layer::Default);
+
+        const auto raycastHit = Physics::Raycast(
+                                        Transform().GetWorldPos() + glm::vec3(0.0f, 0.0f, 0.0f),
+                                        direction,
+                                        glm::length(direction) * 100.0f,
+                                        mask);
+        if (raycastHit.Hit())
+        {
+            const auto damageText = Scene::GameObject::Instantiate(Resources().DealDamageTextBillBoardPrefab(), raycastHit.Position());
+            damageText.lock()->Components().Catch<GamePlay::Ui::DealDamageTextBillBoard>().lock()->Play(power.Value());
         }
     }
 

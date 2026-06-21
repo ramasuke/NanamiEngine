@@ -14,7 +14,9 @@ namespace NanamiEngine::Module::Network
         const auto networkGameObject = Components().Catch<NetworkGameObject>().lock();
         const auto id = networkGameObject->GetNetworkObjectId();
 
-        NetworkRunner().DefaultDispatcher().SyncTransform()
+        NetworkRunner()
+            .DefaultDispatcher()
+            .SyncTransform()
             .DispatchSendPacket(id, Transform().GetWorldPos(), Transform().GetWorldRot());
     }
 

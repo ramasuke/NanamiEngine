@@ -6,14 +6,15 @@
 void GameCore::PlayerAvatar::SwordMan::State::OnDisableReinforceState::DoEnter()
 {
     Status().OnDisableReinforce();
-    ReinforcingParticle().SetEnable(false);
+    
+    // ReinforcingParticle().SetEnable(false);
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::OnDisableReinforceState::DoFixedUpdate()
 {
     if (During_secs() > Status().OnDisableReinforceDuration_secs())
     {
-        OnReinforceParticle().SetEnable(false);
+        // OnReinforceParticle().SetEnable(false);
 
         auto& reinforceParticle = CatchPlayerInChild<Component::ParticleSystem>(GamePlay::PlayerAvatar::SwordMan::REINFORCE_PARTICLE_NAME);
         reinforceParticle.SetEnable(false);

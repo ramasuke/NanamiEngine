@@ -16,7 +16,7 @@ namespace NanamiEngine::Module::Component
         Render3D::Shapes::DrawCapsule3D(
             drawPosition,
             radius_ * Transform().GetWorldScale().z,
-            height_ * Transform().GetWorldScale().y,
+            height_ * 0.5f * Transform().GetWorldScale().y,
             drawRotation,
             GetColor(200, 200, 0)
         );

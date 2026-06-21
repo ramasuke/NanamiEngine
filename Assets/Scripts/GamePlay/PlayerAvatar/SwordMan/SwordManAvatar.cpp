@@ -1,8 +1,7 @@
 ﻿#include "SwordManAvatar.h"
 
 #include "../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../Engine/Module/LocalPrefs/Engine_Module_LocalPrefs.h"
+#include "../../../../../Engine/Module/GameObject/PrefabGameObject/PrefabCatchChild/PrefabCatchChild.h"
 #include "../../../Core/Game/PlayerAvatar/AttackArea/PlayerAvatarAttackArea.h"
 #include "../../../Core/Game/PlayerAvatar/Type/PlayerAvatarType.h"
 
@@ -10,42 +9,12 @@ namespace GamePlay::PlayerAvatar::SwordMan
 {
     std::weak_ptr<PlayerAttackArea> SwordManAvatar::CatchNormalAttackArea() const
     {
-        for (const auto& child : Transform().GetChildren())
-        {
-            if (child->Name() == NORMAL_ATTACK_AREA_NAME)
-                return child->Components().Catch<PlayerAttackArea>(); 
-        }
-        throw std::exception("not found featStepPosition");
+        return GameObject::CatchChild<PlayerAttackArea>(Entity(), NORMAL_ATTACK_AREA_NAME);
     }
     
     std::weak_ptr<PlayerAttackArea> SwordManAvatar::CatchDashAttackArea() const
     {
-        for (const auto& child : Transform().GetChildren())
-        {
-            if (child->Name() == DASH_ATTACK_AREA_NAME)
-                return child->Components().Catch<PlayerAttackArea>();
-        }
-        throw std::exception("not found featStepPosition");
-    }
-
-    std::weak_ptr<Component::ParticleSystem> SwordManAvatar::OnReinforceParticle() const
-    {
-        for (const auto& child : Transform().GetChildren())
-        {
-            if (child->Name() == ON_REINFORCE_PARTICLE_NAME)
-                return child->Components().Catch<Component::ParticleSystem>();
-        }
-        throw std::exception("not found ON_REINFORCE_PARTICLE_NAME");
-    }
-
-    std::weak_ptr<Component::ParticleSystem> SwordManAvatar::ReinforcingParticle() const
-    {
-        for (const auto& child : Transform().GetChildren())
-        {
-            if (child->Name() == REINFORCING_PARTICLE_NAME)
-                return child->Components().Catch<Component::ParticleSystem>();
-        }
-        throw std::exception("not found REINFORCING_PARTICLE_NAME");
+        return GameObject::CatchChild<PlayerAttackArea>(Entity(), DASH_ATTACK_AREA_NAME);
     }
 
     PlayerAvatarType SwordManAvatar::Type() const

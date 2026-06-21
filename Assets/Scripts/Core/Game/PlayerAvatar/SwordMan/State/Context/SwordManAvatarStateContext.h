@@ -33,12 +33,10 @@ namespace GameCore::PlayerAvatar::SwordMan
     public:
         explicit SwordManAvatarStateContext(const std::shared_ptr<SwordManAvatarStatus     >& status      ,
                                             const std::shared_ptr<SwordManAvatarInputAction>& inputAction ,
-                                            const std::weak_ptr  <GameObject::IGameObject  >& playerAvatar,
-                                            const std::weak_ptr  <SwordManAvatarCameraGroup>& cameraGroup ,
-                                            const std::weak_ptr  <PlayerAttackArea>& normalAttackArea,
-                                            const std::weak_ptr  <PlayerAttackArea>& dashAttackArea,
-                                            const std::weak_ptr<Component::ParticleSystem>& onReinforceParticle,
-                                            const std::weak_ptr<Component::ParticleSystem>& reinforcingParticle,
+                                            const std::weak_ptr<GameObject::IGameObject  >& playerAvatar,
+                                            const std::weak_ptr<SwordManAvatarCameraGroup>& cameraGroup ,
+                                            const std::weak_ptr<PlayerAttackArea>& normalAttackArea,
+                                            const std::weak_ptr<PlayerAttackArea>& dashAttackArea,
                                             const std::weak_ptr<Asset::SwordManAvatarResource>& resources);
         
         [[nodiscard]] SwordManAvatarStatus     & Status () const { return *status_;             }
@@ -55,8 +53,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] const glm::vec3&                         PlayerAvatarFeatStepPos() const override { return playerAvatar_      .lock()->FeatStepPosition(); }
         [[nodiscard]] PlayerAttackArea& NormalAttackArea() const { return *normalAttackArea_.lock(); }
         [[nodiscard]] PlayerAttackArea& DashAttackArea  () const { return *dashAttackArea_  .lock(); }
-        [[nodiscard]] Component::ParticleSystem& OnReinforceParticle() const { return *onReinforceParticle_.lock(); } 
-        [[nodiscard]] Component::ParticleSystem& ReinforcingParticle() const { return *reinforcingParticle_.lock(); }
         [[nodiscard]] const Asset::SwordManAvatarResource   & Resources          () const { return *resources_  .lock(); }
 
 
@@ -68,8 +64,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         const std::weak_ptr  <SwordManAvatarCameraGroup> cameraGroup_; 
         const std::weak_ptr  <PlayerAttackArea> normalAttackArea_; 
         const std::weak_ptr  <PlayerAttackArea> dashAttackArea_;
-        const std::weak_ptr<Component::ParticleSystem> onReinforceParticle_;
-        const std::weak_ptr<Component::ParticleSystem> reinforcingParticle_;
         const std::weak_ptr<Asset::SwordManAvatarResource> resources_;
     };
 }
