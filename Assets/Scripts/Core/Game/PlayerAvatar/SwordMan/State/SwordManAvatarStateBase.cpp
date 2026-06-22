@@ -65,7 +65,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             OnChangeState(type);
     }
 
-    void SwordManAvatarStateBase::OnTryChangeState(SwordManAvatarStateType type, const bool check) const
+    void SwordManAvatarStateBase::OnTryChangeState(const SwordManAvatarStateType type, const bool check) const
     {
         if (check)
             OnChangeState(type);

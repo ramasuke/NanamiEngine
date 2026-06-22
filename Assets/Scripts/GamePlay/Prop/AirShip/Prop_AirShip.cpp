@@ -12,6 +12,13 @@ namespace GamePlay::Prop
         {
             collider.lock()->SetMotionType(JPH::EMotionType::Dynamic);
         }
+        for (const auto child : Transform().GetAllChildren())
+        {
+            for (const auto& collider : child->Components().Catches<Component::ColliderBase>())
+            {
+                collider.lock()->SetMotionType(JPH::EMotionType::Dynamic);
+            }
+        }
         
         shootDownParticle_->SetEnable(true);
     }

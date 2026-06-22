@@ -15,7 +15,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoExit() override;
 
         void TryComboAttack();
-        /** 与えたダメージを表示するTextを生成 */
         void DealDamageText(Damage::PhysicsPower power);
         void ChangeToMoveOrIdle();
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::ComboAttack; }

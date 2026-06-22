@@ -146,8 +146,8 @@ namespace GamePlay::PlayerAvatar
     template <RequireType::Traits TraitsT>
     void PlayerAvatarBase<TraitsT>::OnUpdate()
     {
-        stateMachine_->OnUpdate();
         inputAction_ ->OnUpdate();
+        stateMachine_->OnUpdate();
         status_      ->OnUpdate();
         
         Scene::ShadowMapSetting::SetRenderAreaPos(Transform().GetWorldPos());
