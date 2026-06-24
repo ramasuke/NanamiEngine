@@ -3735,7 +3735,6 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\IPlayerAvatar.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\ITakablePlayerAttack\ITakablePlayerAttack.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\PlayerAvatar.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Presenter\PlayerAvatar_StatusPresenter.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_CompletedQuestGroup.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -4060,6 +4059,8 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\PlayerAvatarStatus.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Presenter\PlayerAvatar_OtherPlayer_StatusPresenter.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Presenter\PlayerAvatar_StatusPresenterBase.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Animation\SwordManAvatarAnimation.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -4237,6 +4238,7 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\UseCanon\SwordManAvatarUseCanonState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Walk\SwordManAvatarWalkState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Event\SwordManAvatarStatusEvent.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Presenter\PlayerAvatar_SwordMan_StatusPresenter.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Quest\Content\ActionInstructTutorial\Quest_SwordMan_ActionInstructTutorial.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -5574,6 +5576,8 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Base\Sub_GameSceneBase.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Content\ChattingUI\ChattingUIScene.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Content\ChattingUI\Context\ChattingUISceneContext.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Content\OtherPlayerStatusUI\Context\OtherPlayerStatusUiSceneContext.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Content\OtherPlayerStatusUI\OtherPlayerStatusUIScene.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Context\Sub_SceneContextBase.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Factory\SubSceneFactory.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Group\Sub_GameSceneGroup.cpp">
@@ -5896,8 +5900,14 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SyncAvatarState\Packet_Dispatch_SyncAvatarState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SyncBehaviourTree\Packet_Dispatch_SyncBehaviourTree.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\GamePlay_Enemy_Hyena.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\NetworkBehaviourTree\GamePlay_NetworkBehaviourTree.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Projectile\GamePlay_Enemy_IAttackProjectile.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Projectile\GamePlay_Enemy_ProjectileAttackArea.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\ProximityReveal\ProximityReveal.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\DealDamageTextBillBoard\UI_DealDamageTextBillBoard.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\OtherPlayerStatusUIGroup\OtherPlayerStatusUiGroup.cpp" />
     <ClCompile Include="Engine\Core\Application\Configuration\Physics\ApplicationConfiguration_Physics.cpp" />
     <ClCompile Include="Engine\Core\Network\Object\Awakable\INetworkAwakable.cpp" />
     <ClCompile Include="Engine\Core\Network\Object\Creator\NetworkParamCreator.cpp" />
@@ -6386,7 +6396,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\FirstEventDragon\FirstEventDragon.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\FirstEventDragon\GamePlay_Enemy_FirstEventDragon.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\TrainingDummy\TrainingDummy.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Friendly\FriendlyNpc.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\Bullet\PlayerAvatar_Bullet_CannonBullet.cpp" />
@@ -12311,6 +12321,7 @@
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\Follow\VirtualCameraFollowBehaviour.cpp" />
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\IVirtualCameraBehaviour.cpp" />
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\LookAt\VirtualCameraLookAtBehaviour.cpp" />
+    <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\Shake\ShakeCameraBehaviour.cpp" />
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\ThirdPerson\ThirdPersonCameraBehaviour.cpp" />
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\CineMachineVirtualCamera.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -12570,7 +12581,6 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\IPlayerAvatar.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\ITakablePlayerAttack\ITakablePlayerAttack.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\PlayerAvatar.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Presenter\PlayerAvatar_StatusPresenter.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_CompletedQuestGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_IComplteQuestGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestFactory.h" />
@@ -12591,6 +12601,8 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Event\PlayerAvatar_IStatusEvent.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\IPlayerAvatarStatus.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\PlayerAvatarStatus.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Presenter\PlayerAvatar_OtherPlayer_StatusPresenter.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Presenter\PlayerAvatar_StatusPresenterBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Animation\SwordManAvatarAnimation.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\CameraGroup\SwordManAvatarCameraGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\InputAction\SwordManAvatarInputAction.h" />
@@ -12619,6 +12631,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Walk\SwordManAvatarWalkState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Event\IObservableStatusEvent.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Event\SwordManAvatarStatusEvent.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Presenter\PlayerAvatar_SwordMan_StatusPresenter.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Quest\Content\ActionInstructTutorial\Quest_SwordMan_ActionInstructTutorial.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Quest\Content\ActionInstructTutorial\Quest_SwordMan_ActionInstructTutorialModel.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Quest\Content\ActionInstructTutorial\Quest_SwordMan_ActionInstructTutorialPresenter.h" />
@@ -12652,6 +12665,8 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Base\Sub_GameSceneBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Content\ChattingUI\ChattingUIScene.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Content\ChattingUI\Context\ChattingUISceneContext.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Content\OtherPlayerStatusUI\Context\OtherPlayerStatusUiSceneContext.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Content\OtherPlayerStatusUI\OtherPlayerStatusUIScene.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Context\Sub_SceneContextBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Factory\SubSceneFactory.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Group\ChangeRequest.h" />
@@ -12667,6 +12682,7 @@
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\CustomPacketDispatcherGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SpawnPlayer\Packet_Dispatch_SpawnPlayer.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SyncAvatarState\Packet_Dispatch_SyncAvatarState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SyncBehaviourTree\Packet_Dispatch_SyncBehaviourTree.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Type\BehaviourTreeType.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\DrawNodeHelper.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Entry\Npc_BehaviourEntryNode.h" />
@@ -12688,7 +12704,11 @@
     <ClInclude Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Window\FriendlyNpcBehaviourWindow.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\AttackArea\AttackArea.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Network\Game_CustomNetworkRunner.h" />
-    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\FirstEventDragon\FirstEventDragon.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\FirstEventDragon\GamePlay_Enemy_FirstEventDragon.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\GamePlay_Enemy_Hyena.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\NetworkBehaviourTree\GamePlay_NetworkBehaviourTree.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\Projectile\GamePlay_Enemy_IAttackProjectile.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\Projectile\GamePlay_Enemy_ProjectileAttackArea.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\TrainingDummy\TrainingDummy.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Npc\Friendly\FriendlyNpc.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\Bullet\PlayerAvatar_Bullet_CannonBullet.h" />
@@ -12707,6 +12727,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\DealDamageTextBillBoard\UI_DealDamageTextBillBoard.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\NpcChatting\Ui_NpcChatting.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\OtherPlayerStatusUIGroup\OtherPlayerStatusUiGroup.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\UI_SampleTitleSceneUI.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Sample\UI_SampleTitleLogo.h" />
@@ -13916,6 +13937,7 @@
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\Follow\VirtualCameraFollowBehaviour.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\IVirtualCameraBehaviour.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\LookAt\VirtualCameraLookAtBehaviour.h" />
+    <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\Shake\ShakeCameraBehaviour.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\ThirdPerson\ThirdPersonCameraBehaviour.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\CineMachineVirtualCamera.h" />
     <ClInclude Include="Packages\R4\SensorEnterable\SensorEnterableAsObservable.h" />
@@ -13956,6 +13978,8 @@
     <Content Include="Assets\Scene\FirstTouchDownMainIsLandScene.scene.meta" />
     <Content Include="Assets\Scene\GameManage.scene" />
     <Content Include="Assets\Scene\GameManage.scene.meta" />
+    <Content Include="Assets\Scene\MainIslandScene.scene" />
+    <Content Include="Assets\Scene\MainIslandScene.scene.meta" />
     <Content Include="Assets\Scene\TitleScene.scene" />
     <Content Include="Assets\Scene\TitleScene.scene.meta" />
     <Content Include="Libs\cereal\include\cereal\external\LICENSE" />
@@ -14276,7 +14300,7 @@
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
       <EnableUnitySupport>true</EnableUnitySupport>
-      <UnityFilesPerBatch>8</UnityFilesPerBatch>
+      <UnityFilesPerBatch>32</UnityFilesPerBatch>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -14303,7 +14327,7 @@
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
       <EnableUnitySupport>true</EnableUnitySupport>
-      <UnityFilesPerBatch>8</UnityFilesPerBatch>
+      <UnityFilesPerBatch>32</UnityFilesPerBatch>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -14335,7 +14359,7 @@
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
       <EnableUnitySupport>true</EnableUnitySupport>
-      <UnityFilesPerBatch>8</UnityFilesPerBatch>
+      <UnityFilesPerBatch>32</UnityFilesPerBatch>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -14368,7 +14392,7 @@
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
       <EnableUnitySupport>true</EnableUnitySupport>
-      <UnityFilesPerBatch>8</UnityFilesPerBatch>
+      <UnityFilesPerBatch>32</UnityFilesPerBatch>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

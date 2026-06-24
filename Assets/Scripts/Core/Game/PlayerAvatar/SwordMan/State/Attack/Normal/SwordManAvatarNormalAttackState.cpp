@@ -109,19 +109,23 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarNormalAttackState::DealDamageText(const Damage::PhysicsPower power)
     {
-        const auto direction = NormalAttackArea().Transform().GetWorldPos() - Transform().GetWorldPos();
-
         Physics::LayerMask mask = Physics::CreateLayerMask();
         Physics::AddLayer(mask, Physics::Layer::Default);
 
-        const auto raycastHit = Physics::Raycast(
-                                        Transform().GetWorldPos() + glm::vec3(0.0f, 0.0f, 0.0f),
-                                        direction,
-                                        glm::length(direction) * 100.0f,
-                                        mask);
-        if (raycastHit.Hit())
+        for (const auto& attackTarget : NormalAttackArea().Targets())
         {
-            const auto damageText = Scene::GameObject::Instantiate(Resources().DealDamageTextBillBoardPrefab(), raycastHit.Position());
+            const auto origin    = Transform().GetWorldPos();
+            const auto targetPos = attackTarget.GameObject().Transform().GetWorldPos();
+            const auto direction = targetPos - origin;
+
+            const auto raycastHit = Physics::Raycast(
+                                            origin,
+                                            direction,
+                                            glm::length(direction),
+                                            mask);
+
+            const auto textPos = raycastHit.Hit() ? raycastHit.Position() : targetPos;
+            const auto damageText = Scene::GameObject::Instantiate(Resources().DealDamageTextBillBoardPrefab(), textPos);
             damageText.lock()->Components().Catch<GamePlay::Ui::DealDamageTextBillBoard>().lock()->Play(power.Value());
         }
     }

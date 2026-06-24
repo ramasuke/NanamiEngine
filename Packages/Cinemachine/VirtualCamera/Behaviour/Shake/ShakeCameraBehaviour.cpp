@@ -1,0 +1,108 @@
+﻿#include "ShakeCameraBehaviour.h"
+
+#include "DxLib.h"
+#include "gtc/noise.hpp"
+#include "../../../../../Engine/Core/Application/Time/Time.h"
+#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+
+namespace NanamiEngine::CineMachine::Behaviour
+{
+    ShakeCameraBehaviour* ShakeCameraBehaviour::instance_ = nullptr;
+
+    void ShakeCameraBehaviour::Shake(const float intensity, const float duration)
+    {
+        if (duration <= 0.0f)
+            return;
+
+        trauma_   = std::clamp(trauma_ + intensity, 0.0f, 1.0f);
+        duration_ = duration;
+    }
+
+    void ShakeCameraBehaviour::Shake()
+    {
+        Shake(defaultIntensity_, defaultDuration_);
+    }
+
+    void ShakeCameraBehaviour::ShakeMainCamera(const float intensity, const float duration)
+    {
+        if (instance_ == nullptr)
+            return;
+        instance_->Shake(intensity, duration);
+    }
+
+    void ShakeCameraBehaviour::ShakeMainCamera()
+    {
+        if (instance_ == nullptr)
+            return;
+        instance_->Shake();
+    }
+
+    void ShakeCameraBehaviour::OnAwake()
+    {
+        instance_ = this;
+    }
+
+    void ShakeCameraBehaviour::OnDestroy()
+    {
+        if (instance_ == this)
+            instance_ = nullptr;
+    }
+
+    void ShakeCameraBehaviour::OnUpdate()
+    {
+        if (trauma_ <= 0.0f)
+            return;
+
+        trauma_ = std::max(0.0f, trauma_ - Time::DeltaTime() / duration_);
+    }
+
+    void ShakeCameraBehaviour::MainCameraCallback()
+    {
+        if (trauma_ <= 0.0f || !cameraBrain_)
+            return;
+
+        // trauma の二乗で自然な減衰カーブにする。
+        const float shake = trauma_ * trauma_;
+        const float t     = Time::CurrentTime() * frequency_;
+
+        // 軸ごとに別位相の Perlin ノイズ(おおよそ[-1,1])を引き、滑らかな揺れにする。
+        const glm::vec3 posNoise(
+            glm::perlin(glm::vec2(seed_.x,         t)),
+            glm::perlin(glm::vec2(seed_.y,         t)),
+            glm::perlin(glm::vec2(seed_.z,         t)));
+        const glm::vec3 rotNoise(
+            glm::perlin(glm::vec2(seed_.x + 101.0f, t)),
+            glm::perlin(glm::vec2(seed_.y + 211.0f, t)),
+            glm::perlin(glm::vec2(seed_.z + 307.0f, t)));
+
+        const glm::vec3 posOffset = shake * posAmplitude_ * posNoise;
+        const glm::vec3 angleRad  = shake * glm::radians(angleAmplitude_) * rotNoise;
+
+        // brain がこのフレームで確定させた最終 Transform に揺れを上乗せする。
+        const glm::vec3 brainPos = cameraBrain_->Transform().GetWorldPos();
+        const glm::quat brainRot = cameraBrain_->Transform().GetWorldRot();
+
+        const glm::vec3 shakenPos = brainPos + brainRot * posOffset; // カメラローカル軸で平行移動
+        const glm::quat shakenRot = brainRot * glm::quat(angleRad);  // 視線をローカル回転
+        const glm::vec3 forward   = shakenRot * glm::vec3(0, 0, 1);
+        const glm::vec3 target    = shakenPos + forward;
+
+        SetCameraPositionAndTarget_UpVecY(
+            {shakenPos.x, shakenPos.y, shakenPos.z},
+            {target.x,    target.y,    target.z});
+    }
+
+    void ShakeCameraBehaviour::OnDrawGui()
+    {
+        ImGuiHelper::OnDrawInputField("posAmplitude_",     posAmplitude_);
+        ImGuiHelper::OnDrawInputField("angleAmplitude_",   angleAmplitude_);
+        ImGuiHelper::OnDrawInputField("frequency_",        frequency_);
+        ImGuiHelper::OnDrawInputField("defaultIntensity_", defaultIntensity_);
+        ImGuiHelper::OnDrawInputField("defaultDuration_",  defaultDuration_);
+        ImGuiHelper::OnDrawInputField("seed_",             seed_);
+        ImGuiHelper::OnDrawInputField("cameraBrain_",      cameraBrain_);
+
+        if (ImGui::Button("Test Shake"))
+            Shake();
+    }
+}

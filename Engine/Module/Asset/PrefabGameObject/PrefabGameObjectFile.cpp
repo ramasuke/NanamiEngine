@@ -37,6 +37,11 @@ void Asset::PrefabGameObjectFile::OnSaveCallback()
     content_->OnSave();
 }
 
+void Asset::PrefabGameObjectFile::CopiedInit()
+{
+    AssetBase::CopiedInit();
+}
+
 void Asset::PrefabGameObjectFile::OnDrawGui()
 {
     ImGuiHelper::OnDrawInputField("contentPath_", contentPath_);

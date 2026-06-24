@@ -1401,10 +1401,20 @@
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
                                                                                                     "data": {
-                                                                                                        "cereal_class_version": 4,
+                                                                                                        "cereal_class_version": 5,
                                                                                                         "value0": {},
+                                                                                                        "physicsDamage_": {
+                                                                                                            "cereal_class_version": 0,
+                                                                                                            "value_": 0
+                                                                                                        },
                                                                                                         "spawnPosition_": {
+                                                                                                            "cereal_class_version": 1,
                                                                                                             "offset_": {
+                                                                                                                "value0": 0.0,
+                                                                                                                "value1": 0.0,
+                                                                                                                "value2": 0.0
+                                                                                                            },
+                                                                                                            "offsetRotation_": {
                                                                                                                 "value0": 0.0,
                                                                                                                 "value1": 0.0,
                                                                                                                 "value2": 0.0
@@ -1430,6 +1440,11 @@
                                                                                                             "offset_": {
                                                                                                                 "value0": 0.0,
                                                                                                                 "value1": -300.0,
+                                                                                                                "value2": 0.0
+                                                                                                            },
+                                                                                                            "offsetRotation_": {
+                                                                                                                "value0": 0.0,
+                                                                                                                "value1": 0.0,
                                                                                                                 "value2": 0.0
                                                                                                             },
                                                                                                             "mode_": 2,
@@ -1599,8 +1614,16 @@
                                                                                                     "valid": 1,
                                                                                                     "data": {
                                                                                                         "value0": {},
+                                                                                                        "physicsDamage_": {
+                                                                                                            "value_": 0
+                                                                                                        },
                                                                                                         "spawnPosition_": {
                                                                                                             "offset_": {
+                                                                                                                "value0": 0.0,
+                                                                                                                "value1": 0.0,
+                                                                                                                "value2": 0.0
+                                                                                                            },
+                                                                                                            "offsetRotation_": {
                                                                                                                 "value0": 0.0,
                                                                                                                 "value1": 0.0,
                                                                                                                 "value2": 0.0
@@ -1624,6 +1647,11 @@
                                                                                                             "offset_": {
                                                                                                                 "value0": 0.0,
                                                                                                                 "value1": -300.0,
+                                                                                                                "value2": 0.0
+                                                                                                            },
+                                                                                                            "offsetRotation_": {
+                                                                                                                "value0": 0.0,
+                                                                                                                "value1": 0.0,
                                                                                                                 "value2": 0.0
                                                                                                             },
                                                                                                             "mode_": 2,
@@ -2434,7 +2462,7 @@
                                                                                                                 },
                                                                                                                 "position_": {
                                                                                                                     "value0": 845.0,
-                                                                                                                    "value1": 800.0
+                                                                                                                    "value1": 802.0
                                                                                                                 }
                                                                                                             },
                                                                                                             "name_": "RotateToPlayer",
@@ -2634,7 +2662,6 @@
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "attackAreaName_": "Attack1",
                                                                                                                                                                         "attackPower_": {
-                                                                                                                                                                            "cereal_class_version": 0,
                                                                                                                                                                             "value_": 4
                                                                                                                                                                         },
                                                                                                                                                                         "normalAttackOccurrenceDuration_secs_": 1.7000000476837159,
@@ -2993,11 +3020,11 @@
                                                                                                                                             "value0": {
                                                                                                                                                 "value0": {},
                                                                                                                                                 "guid_": {
-                                                                                                                                                    "value_": "B5717563-C269-4A61-BCAA-A15C1E940F8D"
+                                                                                                                                                    "value_": "F89878DD-E6C6-44AD-BD1A-118A2A092A71"
                                                                                                                                                 },
                                                                                                                                                 "position_": {
-                                                                                                                                                    "value0": 1468.0,
-                                                                                                                                                    "value1": 1036.0
+                                                                                                                                                    "value0": 1455.0,
+                                                                                                                                                    "value1": 1034.0
                                                                                                                                                 }
                                                                                                                                             },
                                                                                                                                             "children_": [
@@ -3009,14 +3036,14 @@
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
                                                                                                                                                                 "guid_": {
-                                                                                                                                                                    "value_": "6EAF01A3-A015-413D-9974-983F6F24552E"
+                                                                                                                                                                    "value_": "69CBA201-EDC7-4BE1-BABF-408CCE0F1B3E"
                                                                                                                                                                 },
                                                                                                                                                                 "position_": {
-                                                                                                                                                                    "value0": 1468.0,
-                                                                                                                                                                    "value1": 1104.0
+                                                                                                                                                                    "value0": 1456.0,
+                                                                                                                                                                    "value1": 1100.0
                                                                                                                                                                 }
                                                                                                                                                             },
-                                                                                                                                                            "name_": "Spitting Frame Animation",
+                                                                                                                                                            "name_": "SpittingFrame Animation",
                                                                                                                                                             "action_": {
                                                                                                                                                                 "polymorphic_id": 8,
                                                                                                                                                                 "ptr_wrapper": {
@@ -3026,7 +3053,7 @@
                                                                                                                                                                         "animatorSetParamNumber_": 14,
                                                                                                                                                                         "waitAnimationSound_secs_": {
                                                                                                                                                                             "value0": {},
-                                                                                                                                                                            "waitSeconds_": 1.2999999523162842
+                                                                                                                                                                            "waitSeconds_": 1.2000000476837159
                                                                                                                                                                         },
                                                                                                                                                                         "animationSound_": {
                                                                                                                                                                             "value0": {},
@@ -3051,48 +3078,28 @@
                                                                                                                                                     }
                                                                                                                                                 },
                                                                                                                                                 {
-                                                                                                                                                    "polymorphic_id": 2147483676,
-                                                                                                                                                    "polymorphic_name": "Editor::Npc::Behaviour::OnceSuccessNode",
+                                                                                                                                                    "polymorphic_id": 3,
                                                                                                                                                     "ptr_wrapper": {
                                                                                                                                                         "id": 2147483774,
                                                                                                                                                         "data": {
-                                                                                                                                                            "cereal_class_version": 0,
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
                                                                                                                                                                 "guid_": {
-                                                                                                                                                                    "value_": "E5567E7B-005C-4285-B676-680A08DDBF9C"
+                                                                                                                                                                    "value_": "4D7C8D2B-5765-4531-9F1F-6886B1BF63DB"
                                                                                                                                                                 },
                                                                                                                                                                 "position_": {
-                                                                                                                                                                    "value0": 1467.0,
-                                                                                                                                                                    "value1": 1170.0
+                                                                                                                                                                    "value0": 1456.0,
+                                                                                                                                                                    "value1": 1172.0
                                                                                                                                                                 }
                                                                                                                                                             },
-                                                                                                                                                            "child_": {
-                                                                                                                                                                "polymorphic_id": 3,
+                                                                                                                                                            "name_": "Roar Wait Secs",
+                                                                                                                                                            "action_": {
+                                                                                                                                                                "polymorphic_id": 14,
                                                                                                                                                                 "ptr_wrapper": {
-                                                                                                                                                                    "id": 2147483775,
+                                                                                                                                                                    "valid": 1,
                                                                                                                                                                     "data": {
-                                                                                                                                                                        "value0": {
-                                                                                                                                                                            "value0": {},
-                                                                                                                                                                            "guid_": {
-                                                                                                                                                                                "value_": "7E2786C7-0234-435C-A538-D6A673D97513"
-                                                                                                                                                                            },
-                                                                                                                                                                            "position_": {
-                                                                                                                                                                                "value0": 1599.0,
-                                                                                                                                                                                "value1": 1245.0
-                                                                                                                                                                            }
-                                                                                                                                                                        },
-                                                                                                                                                                        "name_": "Once Success Secs",
-                                                                                                                                                                        "action_": {
-                                                                                                                                                                            "polymorphic_id": 14,
-                                                                                                                                                                            "ptr_wrapper": {
-                                                                                                                                                                                "valid": 1,
-                                                                                                                                                                                "data": {
-                                                                                                                                                                                    "value0": {},
-                                                                                                                                                                                    "waitSeconds_": 1.0
-                                                                                                                                                                                }
-                                                                                                                                                                            }
-                                                                                                                                                                        }
+                                                                                                                                                                        "value0": {},
+                                                                                                                                                                        "waitSeconds_": 2.0
                                                                                                                                                                     }
                                                                                                                                                                 }
                                                                                                                                                             }
@@ -3102,29 +3109,37 @@
                                                                                                                                                 {
                                                                                                                                                     "polymorphic_id": 3,
                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                        "id": 2147483776,
+                                                                                                                                                        "id": 2147483775,
                                                                                                                                                         "data": {
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
                                                                                                                                                                 "guid_": {
-                                                                                                                                                                    "value_": "E071663C-DB3C-475E-9160-37B5B715F38B"
+                                                                                                                                                                    "value_": "D85C3DEF-5373-48FF-A1EE-CDFB774553B9"
                                                                                                                                                                 },
                                                                                                                                                                 "position_": {
-                                                                                                                                                                    "value0": 1466.0,
+                                                                                                                                                                    "value0": 1457.0,
                                                                                                                                                                     "value1": 1243.0
                                                                                                                                                                 }
                                                                                                                                                             },
-                                                                                                                                                            "name_": "RadiateProjectile",
+                                                                                                                                                            "name_": "FireBall Projectile",
                                                                                                                                                             "action_": {
                                                                                                                                                                 "polymorphic_id": 20,
                                                                                                                                                                 "ptr_wrapper": {
                                                                                                                                                                     "valid": 1,
                                                                                                                                                                     "data": {
                                                                                                                                                                         "value0": {},
+                                                                                                                                                                        "physicsDamage_": {
+                                                                                                                                                                            "value_": 0
+                                                                                                                                                                        },
                                                                                                                                                                         "spawnPosition_": {
                                                                                                                                                                             "offset_": {
                                                                                                                                                                                 "value0": 0.0,
                                                                                                                                                                                 "value1": 0.0,
+                                                                                                                                                                                "value2": 3.0
+                                                                                                                                                                            },
+                                                                                                                                                                            "offsetRotation_": {
+                                                                                                                                                                                "value0": 0.0,
+                                                                                                                                                                                "value1": -30.0,
                                                                                                                                                                                 "value2": 0.0
                                                                                                                                                                             },
                                                                                                                                                                             "mode_": 0,
@@ -3132,10 +3147,10 @@
                                                                                                                                                                                 "value0": {
                                                                                                                                                                                     "polymorphic_id": 1073741824,
                                                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                                                        "id": 2147483777,
+                                                                                                                                                                                        "id": 2147483776,
                                                                                                                                                                                         "data": {
                                                                                                                                                                                             "value0": {
-                                                                                                                                                                                                "value_": "C4CFB456-6551-42E6-9406-A13ABEBAE396"
+                                                                                                                                                                                                "value_": "A7517356-1760-4D14-8A7F-F67D0E68A573"
                                                                                                                                                                                             }
                                                                                                                                                                                         }
                                                                                                                                                                                     }
@@ -3146,6 +3161,11 @@
                                                                                                                                                                             "offset_": {
                                                                                                                                                                                 "value0": 0.0,
                                                                                                                                                                                 "value1": 0.0,
+                                                                                                                                                                                "value2": 100.0
+                                                                                                                                                                            },
+                                                                                                                                                                            "offsetRotation_": {
+                                                                                                                                                                                "value0": 0.0,
+                                                                                                                                                                                "value1": -30.0,
                                                                                                                                                                                 "value2": 0.0
                                                                                                                                                                             },
                                                                                                                                                                             "mode_": 0,
@@ -3153,31 +3173,227 @@
                                                                                                                                                                                 "value0": {
                                                                                                                                                                                     "polymorphic_id": 1073741824,
                                                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                                                        "id": 2147483778,
+                                                                                                                                                                                        "id": 2147483777,
                                                                                                                                                                                         "data": {
                                                                                                                                                                                             "value0": {
-                                                                                                                                                                                                "value_": "C04B728D-9B41-442C-9CD3-CE61F7373583"
+                                                                                                                                                                                                "value_": "4C7247DE-F8DC-4290-8716-6932546B833B"
                                                                                                                                                                                             }
                                                                                                                                                                                         }
                                                                                                                                                                                     }
                                                                                                                                                                                 }
                                                                                                                                                                             }
                                                                                                                                                                         },
-                                                                                                                                                                        "moveSpeed_": 5.0,
+                                                                                                                                                                        "moveSpeed_": 1.0,
                                                                                                                                                                         "projectilePrefab_": {
                                                                                                                                                                             "value0": {
                                                                                                                                                                                 "polymorphic_id": 1073741824,
                                                                                                                                                                                 "ptr_wrapper": {
-                                                                                                                                                                                    "id": 2147483779,
+                                                                                                                                                                                    "id": 2147483778,
                                                                                                                                                                                     "data": {
                                                                                                                                                                                         "value0": {
-                                                                                                                                                                                            "value_": "991F75D1-3A49-4B4B-A112-F8436CCA1172"
+                                                                                                                                                                                            "value_": "5324A4E2-D5D9-414B-B255-C060C5131525"
                                                                                                                                                                                         }
                                                                                                                                                                                     }
                                                                                                                                                                                 }
                                                                                                                                                                             }
                                                                                                                                                                         },
-                                                                                                                                                                        "isFinishedProjectileDestroy_": false
+                                                                                                                                                                        "isFinishedProjectileDestroy_": true
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        }
+                                                                                                                                                    }
+                                                                                                                                                },
+                                                                                                                                                {
+                                                                                                                                                    "polymorphic_id": 3,
+                                                                                                                                                    "ptr_wrapper": {
+                                                                                                                                                        "id": 2147483779,
+                                                                                                                                                        "data": {
+                                                                                                                                                            "value0": {
+                                                                                                                                                                "value0": {},
+                                                                                                                                                                "guid_": {
+                                                                                                                                                                    "value_": "B9757057-F4EB-4869-8191-C25CE2764167"
+                                                                                                                                                                },
+                                                                                                                                                                "position_": {
+                                                                                                                                                                    "value0": 1458.0,
+                                                                                                                                                                    "value1": 1310.0
+                                                                                                                                                                }
+                                                                                                                                                            },
+                                                                                                                                                            "name_": "FireBall Projectile",
+                                                                                                                                                            "action_": {
+                                                                                                                                                                "polymorphic_id": 20,
+                                                                                                                                                                "ptr_wrapper": {
+                                                                                                                                                                    "valid": 1,
+                                                                                                                                                                    "data": {
+                                                                                                                                                                        "value0": {},
+                                                                                                                                                                        "physicsDamage_": {
+                                                                                                                                                                            "value_": 0
+                                                                                                                                                                        },
+                                                                                                                                                                        "spawnPosition_": {
+                                                                                                                                                                            "offset_": {
+                                                                                                                                                                                "value0": 0.0,
+                                                                                                                                                                                "value1": 0.0,
+                                                                                                                                                                                "value2": 3.0
+                                                                                                                                                                            },
+                                                                                                                                                                            "offsetRotation_": {
+                                                                                                                                                                                "value0": 0.0,
+                                                                                                                                                                                "value1": 0.0,
+                                                                                                                                                                                "value2": 0.0
+                                                                                                                                                                            },
+                                                                                                                                                                            "mode_": 0,
+                                                                                                                                                                            "targetObject_": {
+                                                                                                                                                                                "value0": {
+                                                                                                                                                                                    "polymorphic_id": 1073741824,
+                                                                                                                                                                                    "ptr_wrapper": {
+                                                                                                                                                                                        "id": 2147483780,
+                                                                                                                                                                                        "data": {
+                                                                                                                                                                                            "value0": {
+                                                                                                                                                                                                "value_": "18B101D5-514B-4F5E-A6C5-51F8AD3C429C"
+                                                                                                                                                                                            }
+                                                                                                                                                                                        }
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        },
+                                                                                                                                                                        "targetPosition_": {
+                                                                                                                                                                            "offset_": {
+                                                                                                                                                                                "value0": 0.0,
+                                                                                                                                                                                "value1": 0.0,
+                                                                                                                                                                                "value2": 100.0
+                                                                                                                                                                            },
+                                                                                                                                                                            "offsetRotation_": {
+                                                                                                                                                                                "value0": 0.0,
+                                                                                                                                                                                "value1": 0.0,
+                                                                                                                                                                                "value2": 0.0
+                                                                                                                                                                            },
+                                                                                                                                                                            "mode_": 0,
+                                                                                                                                                                            "targetObject_": {
+                                                                                                                                                                                "value0": {
+                                                                                                                                                                                    "polymorphic_id": 1073741824,
+                                                                                                                                                                                    "ptr_wrapper": {
+                                                                                                                                                                                        "id": 2147483781,
+                                                                                                                                                                                        "data": {
+                                                                                                                                                                                            "value0": {
+                                                                                                                                                                                                "value_": "076CC92C-466F-4F8F-816F-5B732021027C"
+                                                                                                                                                                                            }
+                                                                                                                                                                                        }
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        },
+                                                                                                                                                                        "moveSpeed_": 1.0,
+                                                                                                                                                                        "projectilePrefab_": {
+                                                                                                                                                                            "value0": {
+                                                                                                                                                                                "polymorphic_id": 1073741824,
+                                                                                                                                                                                "ptr_wrapper": {
+                                                                                                                                                                                    "id": 2147483782,
+                                                                                                                                                                                    "data": {
+                                                                                                                                                                                        "value0": {
+                                                                                                                                                                                            "value_": "5324A4E2-D5D9-414B-B255-C060C5131525"
+                                                                                                                                                                                        }
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        },
+                                                                                                                                                                        "isFinishedProjectileDestroy_": true
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        }
+                                                                                                                                                    }
+                                                                                                                                                },
+                                                                                                                                                {
+                                                                                                                                                    "polymorphic_id": 3,
+                                                                                                                                                    "ptr_wrapper": {
+                                                                                                                                                        "id": 2147483783,
+                                                                                                                                                        "data": {
+                                                                                                                                                            "value0": {
+                                                                                                                                                                "value0": {},
+                                                                                                                                                                "guid_": {
+                                                                                                                                                                    "value_": "1CC6AB7B-CB25-4199-92F4-E8005D1807D0"
+                                                                                                                                                                },
+                                                                                                                                                                "position_": {
+                                                                                                                                                                    "value0": 1459.0,
+                                                                                                                                                                    "value1": 1381.0
+                                                                                                                                                                }
+                                                                                                                                                            },
+                                                                                                                                                            "name_": "FireBall Projectile",
+                                                                                                                                                            "action_": {
+                                                                                                                                                                "polymorphic_id": 20,
+                                                                                                                                                                "ptr_wrapper": {
+                                                                                                                                                                    "valid": 1,
+                                                                                                                                                                    "data": {
+                                                                                                                                                                        "value0": {},
+                                                                                                                                                                        "physicsDamage_": {
+                                                                                                                                                                            "value_": 0
+                                                                                                                                                                        },
+                                                                                                                                                                        "spawnPosition_": {
+                                                                                                                                                                            "offset_": {
+                                                                                                                                                                                "value0": 0.0,
+                                                                                                                                                                                "value1": 0.0,
+                                                                                                                                                                                "value2": 3.0
+                                                                                                                                                                            },
+                                                                                                                                                                            "offsetRotation_": {
+                                                                                                                                                                                "value0": 0.0,
+                                                                                                                                                                                "value1": 30.0,
+                                                                                                                                                                                "value2": 0.0
+                                                                                                                                                                            },
+                                                                                                                                                                            "mode_": 0,
+                                                                                                                                                                            "targetObject_": {
+                                                                                                                                                                                "value0": {
+                                                                                                                                                                                    "polymorphic_id": 1073741824,
+                                                                                                                                                                                    "ptr_wrapper": {
+                                                                                                                                                                                        "id": 2147483784,
+                                                                                                                                                                                        "data": {
+                                                                                                                                                                                            "value0": {
+                                                                                                                                                                                                "value_": "BE77B276-29DC-4BB2-BA7C-E1096C6355C9"
+                                                                                                                                                                                            }
+                                                                                                                                                                                        }
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        },
+                                                                                                                                                                        "targetPosition_": {
+                                                                                                                                                                            "offset_": {
+                                                                                                                                                                                "value0": 0.0,
+                                                                                                                                                                                "value1": 0.0,
+                                                                                                                                                                                "value2": 100.0
+                                                                                                                                                                            },
+                                                                                                                                                                            "offsetRotation_": {
+                                                                                                                                                                                "value0": 0.0,
+                                                                                                                                                                                "value1": 30.0,
+                                                                                                                                                                                "value2": 0.0
+                                                                                                                                                                            },
+                                                                                                                                                                            "mode_": 0,
+                                                                                                                                                                            "targetObject_": {
+                                                                                                                                                                                "value0": {
+                                                                                                                                                                                    "polymorphic_id": 1073741824,
+                                                                                                                                                                                    "ptr_wrapper": {
+                                                                                                                                                                                        "id": 2147483785,
+                                                                                                                                                                                        "data": {
+                                                                                                                                                                                            "value0": {
+                                                                                                                                                                                                "value_": "55434873-0985-436D-B0E8-91B7F634629F"
+                                                                                                                                                                                            }
+                                                                                                                                                                                        }
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        },
+                                                                                                                                                                        "moveSpeed_": 1.0,
+                                                                                                                                                                        "projectilePrefab_": {
+                                                                                                                                                                            "value0": {
+                                                                                                                                                                                "polymorphic_id": 1073741824,
+                                                                                                                                                                                "ptr_wrapper": {
+                                                                                                                                                                                    "id": 2147483786,
+                                                                                                                                                                                    "data": {
+                                                                                                                                                                                        "value0": {
+                                                                                                                                                                                            "value_": "5324A4E2-D5D9-414B-B255-C060C5131525"
+                                                                                                                                                                                        }
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        },
+                                                                                                                                                                        "isFinishedProjectileDestroy_": true
                                                                                                                                                                     }
                                                                                                                                                                 }
                                                                                                                                                             }
@@ -3225,10 +3441,10 @@
             "data": {
                 "value0": 2,
                 "value1": {
-                    "polymorphic_id": 2147483677,
+                    "polymorphic_id": 2147483676,
                     "polymorphic_name": "NanamiEngine::Module::AnimationTree::AnimationParameter<int>",
                     "ptr_wrapper": {
-                        "id": 2147483780,
+                        "id": 2147483787,
                         "data": {
                             "cereal_class_version": 0,
                             "value0": {
@@ -3240,9 +3456,9 @@
                     }
                 },
                 "value2": {
-                    "polymorphic_id": 29,
+                    "polymorphic_id": 28,
                     "ptr_wrapper": {
-                        "id": 2147483781,
+                        "id": 2147483788,
                         "data": {
                             "value0": {},
                             "name_": "DestroyIslandState",

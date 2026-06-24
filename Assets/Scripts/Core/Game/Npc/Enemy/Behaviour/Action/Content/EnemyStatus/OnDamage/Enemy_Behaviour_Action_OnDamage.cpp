@@ -16,7 +16,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         while (!damageStacks.empty())
         {
             const auto& onDamaged = damageStacks.front();
-            context.EnemyStatus().OnDamage(onDamaged->DamageValue());
+            context.EnemyStatus()->Get().OnDamage(onDamaged->DamageValue());
             damageStacks.pop();
         }
 

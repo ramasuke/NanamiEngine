@@ -15,7 +15,7 @@ std::weak_ptr<Scene::SceneGameObject> Scene::GameObject::Instantiate()
 }
 
 std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(Asset::PrefabGameObjectFile& prefab,
-    const std::shared_ptr<Module::GameObject::IGameObject>& parent)
+    std::shared_ptr<Module::GameObject::IGameObject> parent)
 {
     auto copiedPrefab = prefab.Content()->CopyForInstantiate();
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);

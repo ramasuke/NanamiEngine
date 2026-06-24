@@ -22,7 +22,7 @@ namespace NanamiEngine::Module::Asset
 namespace NanamiEngine::Scene::GameObject
 {
     std::weak_ptr<SceneGameObject> Instantiate();
-    std::weak_ptr<Module::GameObject::IGameObject> Instantiate(Module::Asset::PrefabGameObjectFile& prefab, const std::shared_ptr<Module::GameObject::IGameObject>& parent);
+    std::weak_ptr<Module::GameObject::IGameObject> Instantiate(Module::Asset::PrefabGameObjectFile& prefab, std::shared_ptr<Module::GameObject::IGameObject> parent = nullptr);
     std::weak_ptr<Module::GameObject::IGameObject> Instantiate(Module::Asset::PrefabGameObjectFile& prefab, const glm::vec3 position);
     std::weak_ptr<Module::GameObject::IGameObject> Instantiate(std::shared_ptr<Module::Asset::PrefabGameObjectFile> prefab, const glm::vec3 position);
     std::weak_ptr<Module::GameObject::IGameObject> Instantiate(const std::shared_ptr<Module::GameObject::IGameObject>&, const glm::vec3 position);

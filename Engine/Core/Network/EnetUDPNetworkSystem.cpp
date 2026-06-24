@@ -1,6 +1,7 @@
 ﻿#include "EnetUDPNetworkSystem.h"
 
 #include "../../Module/GameObject/PrefabGameObject/PrefabGameObject.h"
+#include "../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../Application/ApplicationBase.h"
 #include "../Application/Configuration/Network/ApplicationConfiguration_Network.h"
 #include "../Application/Time/Time.h"
@@ -103,7 +104,8 @@ namespace NanamiEngine::Core::Network
                 }
 
             case ENET_EVENT_TYPE_DISCONNECT:
-                // TODO: 切断イベント
+                // event.data == 0 ならタイムアウト系（相手が明示的に切ったのではない）
+                Module::Log("Disconnect peer="+ std::to_string((uint32_t)(uintptr_t)event.peer->data) + " data=" + std::to_string(event.data));
                 break;
 
             default:

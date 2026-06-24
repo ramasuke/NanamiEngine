@@ -5,11 +5,6 @@
 
 namespace GameCore::Npc::Enemy
 {
-    EnemyStatus::EnemyStatus(const int healthValue)
-        : health_(StatusParameter::Health(healthValue))
-    {
-    }
-
     void EnemyStatus::ManualUpdate()
     {
         arriveDuring_secs_ += NanamiEngine::Time::DeltaTime();
@@ -17,12 +12,13 @@ namespace GameCore::Npc::Enemy
 
     void EnemyStatus::OnDamage(const int damageValue)
     {
-        health_.OnNext(StatusParameter::Health(health_.get().Value() - damageValue));
+        currentHealth_->Set(StatusParameter::Health(currentHealth_->Get().Value() - damageValue));
     }
 
     void EnemyStatus::OnDrawGui()
     {
         LibCore::ImGuiHelper::OnDrawInputField("maxHealth_", maxHealth_);
-        LibCore::ImGuiHelper::OnDrawInputField("health_"   , health_   );
+        LibCore::ImGuiHelper::OnDrawInputField("currentHealth_", currentHealth_);
+        LibCore::ImGuiHelper::OnDrawInputField("arriveDuring_secs_", arriveDuring_secs_);
     }
 }

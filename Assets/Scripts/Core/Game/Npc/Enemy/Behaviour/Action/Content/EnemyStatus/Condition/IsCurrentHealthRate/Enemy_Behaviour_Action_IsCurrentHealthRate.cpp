@@ -6,10 +6,10 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::IsCurrentHealthRate::DoTick(const TickContext& context)
     {
-        const auto& currentHealth = context.EnemyStatus().Health();
-        const auto& maxHealth     = context.EnemyStatus().MaxHealth();
+        const auto& currentHealth = context.EnemyStatus()->Get().Health();
+        const auto& maxHealth     = context.EnemyStatus()->Get().MaxHealth();
 
-        float currentRate = (currentHealth.Value() / maxHealth) * 100.0f;
+        float currentRate = currentHealth / maxHealth * 100.0f;
         currentRate = std::clamp(currentRate, 0.0f, 100.0f);
 
         if (currentRate <= rate_)

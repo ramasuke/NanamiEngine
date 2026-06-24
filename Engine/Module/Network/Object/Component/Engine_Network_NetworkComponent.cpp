@@ -12,15 +12,20 @@ namespace NanamiEngine::Module::Network
             obj->NetworkAwake(id, localIndex_);
     }
 
+    void NetworkComponent::NetworkedTick()
+    {
+        
+    }
+
     bool NetworkComponent::HasStateAuthority() const
     {
-        if (objectId_ == Core::Network::NetworkObjectId::Invalid())
+        if (objectId_ == NetworkObjectId::Invalid())
             return false;
 
         return objectId_.IsOwnerBy(NetworkRunner().GetPlayerId());
     }
 
-    Core::Network::NetworkObjectId NetworkComponent::GetNetworkObjectId() const
+    NetworkObjectId NetworkComponent::GetNetworkObjectId() const
     {
         return objectId_;
     }

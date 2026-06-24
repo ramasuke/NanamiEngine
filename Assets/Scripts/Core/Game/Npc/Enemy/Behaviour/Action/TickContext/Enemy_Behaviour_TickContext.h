@@ -3,6 +3,7 @@
 #include <queue>
 #include <string>
 
+#include "../../../../../../../../../Engine/Core/Network/Object/Creator/NetworkParamCreator.h"
 #include "../../../../../../../../../Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
 #include "../../../../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
 #include "../../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
@@ -64,7 +65,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     {
         explicit TickContext(
             const std::weak_ptr<GameObject::IGameObject>& enemyGameObject,
-            const std::unique_ptr<EnemyStatus>& enemyStatus,
+            SyncParam<EnemyStatus>& enemyStatus,
             const std::unique_ptr<BlackBoard::ParameterGroup>& parameters,
             const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack);
         ~TickContext();
@@ -74,7 +75,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[nodiscard]] GameObject::Transform  & EnemyTransform () const;
         [[nodiscard]] Component::Animator    & EnemyAnimator  () const { return *enemyAnimator_  .lock(); }
         [[nodiscard]] Component::ColliderBase& EnemyCollider  () const { return *enemyCollider_  .lock(); }
-        [[nodiscard]] EnemyStatus& EnemyStatus() const { return *enemyStatus_; }
+        [[nodiscard]] SyncParam<EnemyStatus> & EnemyStatus    () const { return enemyStatus_; }
         [[nodiscard]] const std::unique_ptr<BlackBoard::ParameterGroup>& Parameter() const { return parameters_; }
         [[nodiscard]] const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& OnDamaged() const { return onDamagedStack_; } 
         [[nodiscard]] bool IsOnDamage() const { return !onDamagedStack_->empty(); }
@@ -103,7 +104,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         const std::weak_ptr<GameObject::IGameObject> enemyGameObject_;
         const std::weak_ptr<Component::Animator    > enemyAnimator_;
         const std::weak_ptr<Component::ColliderBase> enemyCollider_;
-        const std::unique_ptr<Enemy::EnemyStatus>&   enemyStatus_;
+        SyncParam<Enemy::EnemyStatus>&   enemyStatus_;
         const std::unique_ptr<BlackBoard::ParameterGroup>& parameters_;
         const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>> onDamagedStack_;
     };

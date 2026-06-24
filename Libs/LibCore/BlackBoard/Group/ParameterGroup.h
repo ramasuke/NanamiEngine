@@ -6,6 +6,8 @@
 
 #include "../AnimationParameter.h"
 #include "../IAnimationParameter.h"
+#include "../../Libs/rxcpp/operators/rx-all.hpp"
+#include "../../../../Engine/Core/Network/Packet/ByteBuffer/Packet_ByteBuffer.h"
 
 namespace NanamiEngine::Module::BlackBoard
 {
@@ -17,6 +19,11 @@ namespace NanamiEngine::Module::BlackBoard
         std::shared_ptr<AnimationTree::AnimationParameter<T>> Catch(const std::string& name) const;
 
         void OnDrawGui();
+
+        /// 全パラメータのいずれかが変化した際に ByteBuffer を emit する Observable
+        [[nodiscard]] rxcpp::observable<NanamiEngine::Core::Network::ByteBuffer> OnParameterChanged() const;
+        /// 受信した ByteBuffer を各パラメータへ適用する
+        void ApplyFromBuffer(const NanamiEngine::Core::Network::ByteBuffer& buffer, size_t& offset);
 
         template <typename Archive>
         void save(Archive& archive) const
@@ -45,10 +52,16 @@ namespace NanamiEngine::Module::BlackBoard
                 archive(param);
                 conditionParameters_.push_back(param);
             }
+
+            SubscribeToAllParameters();
         }
 
     private:
+        void SubscribeToAllParameters();
+
         std::vector<std::shared_ptr<AnimationTree::IAnimationParameter>> conditionParameters_;
+        rxcpp::subjects::subject<NanamiEngine::Core::Network::ByteBuffer> paramChangedSubject_;
+        rxcpp::composite_subscription subscriptions_;
     };
 
     template <typename T>

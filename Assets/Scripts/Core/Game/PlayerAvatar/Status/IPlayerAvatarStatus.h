@@ -44,7 +44,8 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual IQuestGroup & Quest() const = 0;
         [[nodiscard]] virtual Quest::ICompleteQuestGroup& CompletedQuest() const = 0;
         [[nodiscard]] virtual const StatusParameter::Health&                                MaxHealth() const = 0;
-        [[nodiscard]] virtual rxcpp::observable<StatusParameter::Health> OnChangeHealth   () const = 0;
+        [[nodiscard]] virtual rxcpp::observable<StatusParameter::Health> OnChangeHealth() const = 0;
+        [[nodiscard]] virtual StatusParameter::Health                    Health() const = 0;
         [[nodiscard]] virtual const EnhancePower&                                MaxEnhancePowerStack() const = 0;
         [[nodiscard]] virtual LibCore::Rx::ReadOnlyReactiveContext<EnhancePower> EnhancePowerStack() const = 0;
         [[nodiscard]] virtual LibCore::Rx::ReadOnlyReactiveContext<bool> IsEnableReinforce() const = 0;

@@ -10,6 +10,7 @@ using namespace NanamiEngine::Core::Network;
 
 namespace NanamiEngine::Core::Network
 {
+    /** ネットワーク上で共通の値を持つ可能性のあるオブジェクトに継承させるclass */
     class NetworkObjectBase : public INetworkObject
     {
     public:

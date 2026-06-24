@@ -8,14 +8,15 @@ namespace NanamiEngine::Module::Network
     void NetworkGameObject::SetNetworkObjectId(const Core::Network::NetworkObjectId id)
     {
         networkObjectId_ = id;
-        for (auto& awkable : Components().Catches<Core::Network::INetworkAwakable>())
-        {
-            awkable.lock()->NetworkAwake(networkObjectId_);
-        }
+        InitNetworkObject();
     }
 
-    void NetworkGameObject::OnAwake()
+    void NetworkGameObject::InitNetworkObject() const
     {
+        for (auto& awakable : Components().Catches<Core::Network::INetworkAwakable>())
+        {
+            awakable.lock()->NetworkAwake(networkObjectId_);
+        }
     }
 
     void NetworkGameObject::OnDrawGui()

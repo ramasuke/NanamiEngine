@@ -4,6 +4,7 @@
 #include "../Brain/CinemachineCameraBrain.h"
 #include "Behaviour/Follow/VirtualCameraFollowBehaviour.h"
 #include "Behaviour/LookAt/VirtualCameraLookAtBehaviour.h"
+#include "Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
 
 void CineMachine::CineMachineVirtualCamera::SetPriority(const int priority)
@@ -47,6 +48,7 @@ void CineMachine::CineMachineVirtualCamera::OnDrawGui()
         if (ImGui::Button("Add Follow"     )) Components().Add<Behaviour::VirtualCameraFollowBehaviour>();
         if (ImGui::Button("Add LookAt"     )) Components().Add<Behaviour::VirtualCameraLookAtBehaviour>();
         if (ImGui::Button("Add ThirdPerson")) Components().Add<Behaviour::ThirdPersonCameraBehaviour  >();
+        if (ImGui::Button("Add Shake"      )) Components().Add<Behaviour::ShakeCameraBehaviour        >();
         ImGui::EndPopup();
     }
 }

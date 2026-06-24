@@ -5,8 +5,8 @@
 
 namespace NanamiEngine::Module::Network
 {
+    /** Network上で共通のPrefabとして扱うために使用するクラス */
     class NetworkGameObject final : public Component::ComponentBase,
-                                    public LifeCycleCallback::IAwakable,
                                     public Core::Network::INetworkObject
     {
     public:
@@ -14,7 +14,7 @@ namespace NanamiEngine::Module::Network
         void SetNetworkObjectId(Core::Network::NetworkObjectId id);
 
     private:
-        void OnAwake() override;
+        void InitNetworkObject() const;
         
         Core::Network::NetworkObjectId networkObjectId_ = Core::Network::NetworkObjectId::Invalid();
 

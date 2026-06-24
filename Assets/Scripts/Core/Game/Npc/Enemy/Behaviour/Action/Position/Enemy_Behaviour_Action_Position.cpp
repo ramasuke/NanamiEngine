@@ -21,7 +21,8 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             {
                 const auto enemyPos = context.EnemyTransform().GetWorldPos();
                 const auto enemyRot = context.EnemyTransform().GetWorldRot();
-                return enemyPos + enemyRot * offset_;
+                const auto localRot = glm::quat(glm::radians(offsetRotation_));
+                return enemyPos + enemyRot * (localRot * offset_);
             }
         }
     }
@@ -36,6 +37,10 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         }
 
         ImGuiHelper::OnDrawInputField("offset_", offset_);
+        if (mode_ == Mode::EnemyOffset)
+        {
+            ImGuiHelper::OnDrawInputField("offsetRotation_", offsetRotation_);
+        }
         if (mode_ == Mode::TargetObject)
         {
             ImGuiHelper::OnDrawInputField("targetObject_", targetObject_);

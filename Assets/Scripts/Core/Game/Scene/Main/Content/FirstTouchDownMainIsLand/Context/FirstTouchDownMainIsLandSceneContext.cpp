@@ -13,10 +13,8 @@ namespace GameCore::Scene
         secondVirtualCamera_           .Init();
         cameraBrain_                   .Init();
         playerFirstMoveTargetPos_      .Init();
-        //swordmanCameraGroup_           .Init();
         titleLogo_                     .Init();
         actionControlWayUi_            .Init();
-        playerStatusUi_                .Init();
         boundryAirshipCollider_        .Init();
         firstEventDragonPrefab_        .Init();
         firstEventDragonSpawnPos_      .Init();
@@ -40,10 +38,8 @@ namespace GameCore::Scene
         ImGuiHelper::OnDrawInputField("playerFirstMoveTargetPos_", playerFirstMoveTargetPos_);
         ImGuiHelper::OnDrawInputField("playerFirstMoveDuring_msecs_", playerFirstMoveDuring_msecs_);
         ImGuiHelper::OnDrawInputField("playerArmStretchDuring_msecs_", playerArmStretchDuring_msecs_);
-        //LibCore::ImGuiHelper::OnDrawInputField("cameraGroup_", swordmanCameraGroup_);
         ImGuiHelper::OnDrawInputField("titleLogo_", titleLogo_);
         ImGuiHelper::OnDrawInputField("actionControlWayUi_", actionControlWayUi_);
-        ImGuiHelper::OnDrawInputField("playerStatusUi_", playerStatusUi_);
         ImGuiHelper::OnDrawInputField("bgm_", bgm_);
         ImGuiHelper::OnDrawInputField("boundryAirshipCollider_", boundryAirshipCollider_);
         ImGuiHelper::OnDrawInputField("firstEventDragonPrefab_", firstEventDragonPrefab_);

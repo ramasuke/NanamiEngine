@@ -7,7 +7,7 @@ namespace GameCore::Npc::Enemy::Behaviour
     TickStatus Action::ConditionArriveDuration::DoTick(
         const TickContext& context)
     {
-        if (context.EnemyStatus().ArriveDuration_secs() >= arriveDuration_secs_)
+        if (context.EnemyStatus()->Get().ArriveDuration_secs() >= arriveDuration_secs_)
         {
              return TickStatus::Success;
         }

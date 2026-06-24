@@ -1,6 +1,11 @@
 ﻿#pragma once
 #include "../../../../../../../../../Engine/Core/Coroutine/Task/Task.h"
 
+namespace GameCore
+{
+    class IPlayerAvatar;
+}
+
 namespace GameCore::Scene
 {
     class FirstTouchDownMainIsLandSceneContext;
@@ -13,12 +18,12 @@ namespace GamePlay::PlayerAvatar::SwordMan
 
 namespace GameCore::Scene::FirstTouchDownMainIsLand
 {
-    /** @brief AboardAirShipMovieに関連する処理を行うクラス*/
+    /** @brief AboardAirShipMovieに関連する処理を行うクラス */
     class AboardAirShipMovie final
     {
     public:
         explicit AboardAirShipMovie(
-              const std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& playerAvatar
+              const std::weak_ptr<IPlayerAvatar>& playerAvatar
             , const std::shared_ptr<FirstTouchDownMainIsLandSceneContext>& context);
 
         Coroutine::Task<void> ToTask() { co_await Invoke(); }
@@ -36,7 +41,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         //無駄
         // Coroutine::Task<void> AboardAirShipMovie::ArmStretchAsync() const;
         
-        std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar> playerAvatar_;
+        std::weak_ptr<IPlayerAvatar> playerAvatar_;
         std::weak_ptr<FirstTouchDownMainIsLandSceneContext> context_;
     };
 }

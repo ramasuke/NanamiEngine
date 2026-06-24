@@ -34,6 +34,7 @@ namespace NanamiEngine::Core::Network
         SyncParameter(SyncParameter&&) = delete;
         SyncParameter& operator=(SyncParameter&&) = delete;
 
+        [[nodiscard]] T& Get() { return parameter_; }
         [[nodiscard]] const T& Get() const { return parameter_; }
         [[nodiscard]] ParameterId GetId() const override { return id_; }
 

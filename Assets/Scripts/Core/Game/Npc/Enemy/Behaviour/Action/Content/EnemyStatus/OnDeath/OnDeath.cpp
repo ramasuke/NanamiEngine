@@ -10,11 +10,10 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::OnDeath::DoTick(const TickContext& context)
     {
-        if (context.EnemyStatus().Health().Value() > StatusParameter::Health(0))
+        if (context.EnemyStatus()->Get().Health() > StatusParameter::Health(0))
             return TickStatus::Failure;
         
         context.EnemyGameObject().OnDestroy();
-        // Game::Instance().Scenes().RequestChangeScene<Scene::Main::TitleScene>();
         return TickStatus::Success;
     }
 

@@ -43,6 +43,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         
         [[nodiscard]] const StatusParameter::Health&                                MaxHealth() const override { return maxHealth_;           }
         [[nodiscard]] rxcpp::observable<StatusParameter::Health>         OnChangeHealth() const override { return onChangeHealth_.get_observable(); }
+        [[nodiscard]] StatusParameter::Health                            Health() const override { return currentHealth_->Get(); }
         [[nodiscard]] bool                                               IsDeath  () const          { return minHealth_ >= currentHealth_->Get();   }          
         [[nodiscard]] const EnhancePower&                                MaxEnhancePowerStack() const override { return maxEnhancePowerStack_;           }
         [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<EnhancePower> EnhancePowerStack   () const override { return enhancePowerStack_   .AsReadOnly(); }

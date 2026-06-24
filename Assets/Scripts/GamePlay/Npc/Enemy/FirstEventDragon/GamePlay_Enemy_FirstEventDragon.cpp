@@ -1,4 +1,4 @@
-﻿#include "FirstEventDragon.h"
+﻿#include "GamePlay_Enemy_FirstEventDragon.h"
 
 #include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
 
@@ -7,9 +7,9 @@ namespace GamePlay::Npc::Enemy
     void FirstEventDragon::DoAwake()
     {
         healthBar_->Entity().lock()->SetEnable(true);
-        Status().Health().Subscribe(rxcpp::composite_subscription(), [&](const GameCore::StatusParameter::Health health)
+        NetworkStatus()->Get().HealthObservable().subscribe(rxcpp::composite_subscription(), [&](const GameCore::StatusParameter::Health health)
         {
-            healthBar_->SetValue(health / Status().MaxHealth());
+            healthBar_->SetValue(health / NetworkStatus()->Get().MaxHealth());
         });
     }
 

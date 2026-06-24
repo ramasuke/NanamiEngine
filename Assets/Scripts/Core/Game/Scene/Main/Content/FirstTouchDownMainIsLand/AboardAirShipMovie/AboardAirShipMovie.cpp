@@ -20,7 +20,7 @@
 namespace GameCore::Scene::FirstTouchDownMainIsLand
 {
     AboardAirShipMovie::AboardAirShipMovie(
-          const std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& playerAvatar
+          const std::weak_ptr<IPlayerAvatar>& playerAvatar
         , const std::shared_ptr<FirstTouchDownMainIsLandSceneContext>& context)
         : playerAvatar_(playerAvatar)
         , context_     (context     )
@@ -59,7 +59,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         
         co_await Coroutine::WaitForTween(Context()->AirShip()->Transform(), secondMoveTween);
         
-        playerAvatar_.lock()->Transform().SetParent(std::weak_ptr<GameObject::IGameObject>(), true);
+        playerAvatar_.lock()->PlayerTransform().SetParent(std::weak_ptr<GameObject::IGameObject>(), true);
         context_.lock()->BoundryAirShipCollider().OnDestroy();
     }
     
@@ -107,15 +107,15 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         using namespace PlayerAvatar::SwordMan::State;
         const auto player = playerAvatar_.lock();
         
-        player->Transform().LookAtY(Context()->PlayerFirstMoveTarget().GetWorldPos());
+        player->PlayerTransform().LookAtY(Context()->PlayerFirstMoveTarget().GetWorldPos());
         player->GetEventSceneStateMachine().OnChangeState(PlayerAvatar::SwordMan::SwordManAvatarStateType::Walk);
         player->GetEventSceneStateMachine().OnDisable();
 
-        const auto tween = tweeny::from(player->Transform().GetWorldPos())
+        const auto tween = tweeny::from(player->PlayerTransform().GetWorldPos())
             .to(Context()->PlayerFirstMoveTarget().GetWorldPos())
             .during(1500.0f)
             .via(Tween::Ease(EaseType::Linear));
-        co_await Coroutine::WaitForTween(player->Transform(), tween);
+        co_await Coroutine::WaitForTween(player->PlayerTransform(), tween);
     }
     
     Coroutine::Task<void> AboardAirShipMovie::AirShipMovieArmStretchPlayerAsync()

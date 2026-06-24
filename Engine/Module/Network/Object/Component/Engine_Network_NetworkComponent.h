@@ -13,21 +13,24 @@ namespace NanamiEngine::Module::Network
 {
     class NetworkRunnerBase;
 
+    /** ネットワーク上で共通の動作を持たせたい、もしくはネットワーク上で同期させたい処理がある場合に継承するコンポーネントクラス */
     class NetworkComponent : public Component::ComponentBase,
-                             public Core::Network::INetworkAwakable,
-                             public Core::Network::INetworkTickable
+                             public INetworkAwakable,
+                             public INetworkTickable
     {
     public:
-        void NetworkAwake(Core::Network::NetworkObjectId id) override;
-
+        
     protected:
+        virtual void NetworkAwake(NetworkObjectId id) override;
+        virtual void NetworkedTick() override;
+        
         template<typename T>
-        using SyncParam = std::shared_ptr<Core::Network::SyncParameter<T>>;
+        using SyncParam = std::shared_ptr<SyncParameter<T>>;
         
         template <typename T>
         SyncParam<T> CreateSyncParameter(T defaultValue = T())
         {
-            auto ptr = std::make_shared<Core::Network::SyncParameter<T>>(std::move(defaultValue));
+            auto ptr = std::make_shared<SyncParameter<T>>(std::move(defaultValue));
             networkObjects_.push_back(ptr);
             return ptr;
         }

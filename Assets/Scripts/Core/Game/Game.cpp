@@ -34,7 +34,8 @@ namespace GameCore
 
     void Game::InitSubSceneGroup()
     {
-        subSceneGroup_ = std::make_shared<Scene::Sub::GameSceneGroup>(subSceneContexts_->Components().Catches<Scene::Sub::SceneContextBase>());
+        auto sceneContexts = subSceneContexts_->Components().Catches<Scene::Sub::SceneContextBase>();
+        subSceneGroup_ = std::make_shared<Scene::Sub::GameSceneGroup>(sceneContexts);
     }
 
     void Game::OnAwake()

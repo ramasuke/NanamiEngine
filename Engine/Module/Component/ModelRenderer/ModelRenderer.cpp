@@ -79,7 +79,7 @@ namespace NanamiEngine::Module::Component
     
     void ModelRenderer::OnShadowRender()
     {
-        if (!IsEnable())
+        if (!IsEnable() || modelDxLibHandle_ == -1)
             return;
 
         // カスタムシェーダーが設定されている場合はシャドウをスキップ
@@ -100,6 +100,7 @@ namespace NanamiEngine::Module::Component
 
     void ModelRenderer::ApplyCustomShader()
     {
+        SetUseLighting(FALSE);
         SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
         SetWriteZBuffer3D(FALSE);
         SetUseVertexShader(vsFile_->GetVsHandle());
@@ -121,7 +122,7 @@ namespace NanamiEngine::Module::Component
 
     void ModelRenderer::OnRender()
     {
-        if (!IsEnable())
+        if (!IsEnable() || modelDxLibHandle_ == -1)
             return;
 
         MV1SetMatrix(modelDxLibHandle_, GetRenderMatrix());
@@ -155,6 +156,12 @@ namespace NanamiEngine::Module::Component
         {
             if (mv1File_)
                 modelDxLibHandle_ = mv1File_->LoadDxLibHandle();
+        }
+        if (ImGui::Button("OnUpdateShaderConstantBuffer"))
+        {
+            if (cbHandle_ != -1)
+                DeleteShaderConstantBuffer(cbHandle_);
+            cbHandle_ = HasCustomShader() ? CreateShaderConstantBuffer(256) : -1;
         }
     }
 }

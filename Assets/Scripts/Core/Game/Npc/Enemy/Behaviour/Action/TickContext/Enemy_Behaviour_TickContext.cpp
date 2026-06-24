@@ -12,7 +12,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 {
     TickContext::TickContext(
         const std::weak_ptr<GameObject::IGameObject>& enemyGameObject,
-        const std::unique_ptr<Enemy::EnemyStatus>& enemyStatus,
+        SyncParam<class EnemyStatus>& enemyStatus,
         const std::unique_ptr<BlackBoard::ParameterGroup>& parameters,
         const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack)
             : enemyGameObject_(enemyGameObject)

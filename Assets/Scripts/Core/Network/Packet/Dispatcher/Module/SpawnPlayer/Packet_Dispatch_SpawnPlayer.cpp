@@ -10,9 +10,9 @@
 namespace GameCore::Network
 {
     SpawnPlayerDispatcher::SpawnPlayerDispatcher(
-        Core::Network::DefaultPacketDispatcher& defaultDispatchers,
-        const Core::Network::IPlayerIdProvider& playerIdProvider,
-        Core::Network::IPacketSender& packetSender,
+        DefaultPacketDispatcher& defaultDispatchers,
+        const IPlayerIdProvider& playerIdProvider,
+        IPacketSender& packetSender,
         Asset::PlayerAvatarFactory& playerAvatarFactory)
             : CustomDispatcherBase(defaultDispatchers, playerIdProvider, packetSender)
             , playerAvatarFactory_(playerAvatarFactory)
@@ -47,8 +47,7 @@ namespace GameCore::Network
         gameObject->Transform().SetWorldRot(rotation);
         const auto networkObjectId = DefaultDispatch().Spawn().AllocateIdAndRegister(gameObject);
 
-        Core::Network::Packet packet = Core::Network::Packet::Create(
-            static_cast<Core::Network::PacketType>(EPacketType::SpawnPlayerAvatar));
+        Packet packet = Packet::Create(static_cast<PacketType>(EPacketType::SpawnPlayerAvatar));
         packet.Data().Write(PlayerId());
         packet.Data().Write(static_cast<int>(type));
         packet.Data().Write(position);
@@ -57,20 +56,20 @@ namespace GameCore::Network
 
         if (IsServer())
             spawnPacketHistory_.push_back(packet);
-
+        
         SendPacket(packet);
 
         return playerAvatar;
     }
 
-    void SpawnPlayerDispatcher::OnReceive(const Core::Network::Packet& packet)
+    void SpawnPlayerDispatcher::OnReceive(const Packet& packet)
     {
         size_t readOffset = 0;
-        const auto playerId        = packet.Data().Read<struct Core::Network::PlayerId>(readOffset);
+        const auto playerId        = packet.Data().Read<struct PlayerId>(readOffset);
         const auto avatarTypeInt   = packet.Data().Read<int>(readOffset);
         const auto position        = packet.Data().Read<glm::vec3>(readOffset);
         const auto rotation        = packet.Data().Read<glm::quat>(readOffset);
-        const auto networkObjectId = packet.Data().Read<Core::Network::NetworkObjectId>(readOffset);
+        const auto networkObjectId = packet.Data().Read<NetworkObjectId>(readOffset);
 
         if (playerId == PlayerId())
             return;
@@ -78,7 +77,7 @@ namespace GameCore::Network
         if (IsServer())
             spawnPacketHistory_.push_back(packet);
 
-        const auto type = static_cast<GameCore::PlayerAvatar::PlayerAvatarType>(avatarTypeInt);
+        const auto type = static_cast<PlayerAvatar::PlayerAvatarType>(avatarTypeInt);
         auto playerAvatar = playerAvatarFactory_.LoadInitedPlayerAvatar(type, position, nullptr, false);
         auto gameObject = playerAvatar->PlayerTransform().GetGameObject();
 

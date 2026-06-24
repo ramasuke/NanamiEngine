@@ -139,6 +139,7 @@ void GameObject::AddComponent::OnDrawGameCoreGui(std::shared_ptr<Component::Comp
             if (ImGui::TreeNode("Sub"))
             {
                 OnDrawTryAddComponentGui<GameCore::Scene::Sub::ChattingUISceneContext>(addComponent);
+                OnDrawTryAddComponentGui<GameCore::Scene::Sub::OtherPlayerStatusUiSceneContext>(addComponent);
                 ImGui::TreePop();
                 ImGui::Spacing();
             }
@@ -172,6 +173,7 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             OnDrawTryAddComponentGui<GamePlay::Ui::StageSelectUi>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::StageSelectStageUi>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::DealDamageTextBillBoard>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::OtherPlayerStatusUiGroup>(addComponent);
             ImGui::TreePop();
             ImGui::Spacing();
         }
@@ -181,6 +183,7 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             {
                 OnDrawTryAddComponentGui<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar           >(addComponent);
                 OnDrawTryAddComponentGui<GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup>(addComponent);
+                OnDrawTryAddComponentGui<GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter>(addComponent);
                 ImGui::TreePop();
                 ImGui::Spacing();    
             }
@@ -189,6 +192,13 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             if (ImGui::TreeNode("Bullet"))
             {
                 OnDrawTryAddComponentGui<GamePlay::PlayerAvatar::Bullet::CannonBullet>(addComponent);
+                ImGui::TreePop();
+                ImGui::Spacing();
+            }
+
+            if (ImGui::TreeNode("OtherPlayer"))
+            {
+                OnDrawTryAddComponentGui<GamePlay::PlayerAvatar::SwordMan::StatusPresenter>(addComponent);
                 ImGui::TreePop();
                 ImGui::Spacing();
             }
@@ -208,7 +218,15 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
                 OnDrawTryAddComponentGui<GameCore::Npc::Enemy::SampleEnemy>(addComponent);
                 OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::TrainingDummy>(addComponent);
                 OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::FirstEventDragon>(addComponent);
-                OnDrawTryAddComponentGui<GameCore::Npc::Enemy::AttackArea>(addComponent);
+                OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::Hyena>(addComponent);
+                OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::NetworkBehaviourTree>(addComponent);
+                if (ImGui::TreeNode("Attack"))
+                {
+                    OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::AttackProjectile>(addComponent);
+                    OnDrawTryAddComponentGui<GameCore::Npc::Enemy::AttackArea>(addComponent);
+                    ImGui::TreePop();
+                    ImGui::Spacing();
+                }
                 ImGui::TreePop();
                 ImGui::Spacing();
             }

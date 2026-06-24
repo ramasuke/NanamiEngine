@@ -3,6 +3,10 @@
 #include "DxLib.h"
 #include "../../../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../Engine/Module/Physics/RaycastHit/Engine_Physics_RaycastHit.h"
+#include "../../../../../Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
+#include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "gtx/rotate_vector.hpp"
 
 namespace
@@ -31,6 +35,11 @@ namespace NanamiEngine::CineMachine::Behaviour
         isLockMousePos_ = enable;
     }
 
+    void ThirdPersonCameraBehaviour::SetEnableImmediateApply(const bool enable)
+    {
+        isImmediateApply_ = enable;
+    }
+
     void ThirdPersonCameraBehaviour::OnAwake()
     {
         follow_ = RequireComponent<VirtualCameraFollowBehaviour>();
@@ -53,7 +62,15 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     void ThirdPersonCameraBehaviour::MainCameraCallback()
     {
-        // cameraBrain_->TransformRef().SetWorldMatrix(Transform().GetWorldMatrix());
+        if (!isImmediateApply_)
+            return;
+
+        if (!cameraBrain_)
+            return;
+
+        // ブレインの補完(mix/slerp)を無視し、仮想カメラのTransformを即時適用する。
+        // これによりThirdPersonの視点操作がカメラへ遅延なく反映される。
+        cameraBrain_->Transform().SetWorldMatrix(Transform().GetWorldMatrix());
     }
 
     void ThirdPersonCameraBehaviour::UpdateMouseInput()
@@ -108,7 +125,43 @@ namespace NanamiEngine::CineMachine::Behaviour
         const glm::vec3 offset(0, 0, distance_);
         const glm::vec3 rotatedOffset = glm::vec3(rot * glm::vec4(offset, 1.0f));
 
-        follow_->followOffset_ = (lookAtPos + rotatedOffset) - targetPos;
+        // 壁などにめり込まないよう、Playerからカメラへrayを飛ばして位置を補正する
+        const glm::vec3 adjustedOffset = ResolveCameraCollision(rotatedOffset);
+
+        follow_->followOffset_ = (lookAtPos + adjustedOffset) - targetPos;
+    }
+
+    glm::vec3 ThirdPersonCameraBehaviour::ResolveCameraCollision(const glm::vec3& desiredOffset) const
+    {
+        // Player取得（暫定実装: 本来はネットワーク上の自身が操作するPlayerを取得する）
+        const auto& playerAvatars = GameCore::IPlayerAvatar::PlayerAvatars();
+        if (playerAvatars.empty())
+            return desiredOffset;
+
+        const auto player = playerAvatars.at(0).lock();
+        if (!player)
+            return desiredOffset;
+
+        const float distance = glm::length(desiredOffset);
+        if (distance <= 0.0f)
+            return desiredOffset;
+
+        // Playerの注視点を起点に、カメラの理想位置へ向けてrayを飛ばす
+        const glm::vec3 origin    = player->PlayerTransform().GetWorldPos() + lookAtOffsetPos_;
+        const glm::vec3 direction = desiredOffset / distance;
+
+        Module::Physics::LayerMask mask = Module::Physics::CreateLayerMask();
+        Module::Physics::AddLayer(mask, Module::Physics::Layer::Default);
+
+        const Module::Physics::RaycastHit hit = Module::Physics::Raycast(origin, direction, distance, mask);
+        if (!hit.Hit())
+            return desiredOffset;
+
+        // 障害物の少し手前にカメラを配置する
+        const float hitDistance      = glm::length(hit.Position() - origin);
+        const float adjustedDistance = std::max(0.0f, hitDistance - collisionBuffer_);
+
+        return direction * adjustedDistance;
     }
 
     void ThirdPersonCameraBehaviour::UpdateLookAtTargetBehaviour() const
@@ -128,11 +181,13 @@ namespace NanamiEngine::CineMachine::Behaviour
         ImGuiHelper::OnDrawInputField("maxPitch_", maxPitch_);
         ImGuiHelper::OnDrawInputField("mouseSensitivity_", mouseSensitivity_);
         ImGuiHelper::OnDrawInputField("distance_", distance_);
+        ImGuiHelper::OnDrawInputField("collisionBuffer_", collisionBuffer_);
         ImGuiHelper::OnDrawInputField("target_", target_);
         ImGuiHelper::OnDrawInputField("follow_", follow_);
         ImGuiHelper::OnDrawInputField("lookAt_", lookAt_);
         ImGuiHelper::OnDrawInputField("followOffsetPos_", followOffsetPos_);
         ImGuiHelper::OnDrawInputField("lookAtOffsetPos_", lookAtOffsetPos_);
         ImGuiHelper::OnDrawInputField("cameraBrain_", cameraBrain_);
+        ImGuiHelper::OnDrawInputField("isImmediateApply_", isImmediateApply_);
     }
 }

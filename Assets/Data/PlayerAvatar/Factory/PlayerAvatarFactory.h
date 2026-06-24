@@ -10,11 +10,6 @@
 #include "../../../Scripts/Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/Type/PlayerAvatarType.h"
 
-namespace GameCore::PlayerAvatar::SwordMan
-{
-    class StatusPresenter;
-}
-
 namespace GamePlay::PlayerAvatar::SwordMan
 {
     class SwordManAvatar;
@@ -23,16 +18,6 @@ namespace GamePlay::PlayerAvatar::SwordMan
 namespace GameCore
 {
     class IPlayerAvatar;
-}
-
-namespace GameCore::PlayerAvatar
-{
-    enum class PlayerAvatarType;
-}
-
-namespace NanamiEngine::Module::GameObject
-{
-    class IGameObject;
 }
 
 namespace NanamiEngine::Module::Asset
@@ -58,14 +43,22 @@ namespace NanamiEngine::Module::Asset
               const std::shared_ptr<PrefabGameObjectFile>& prefabFile
             , const glm::vec3& summonPosition
             , const std::shared_ptr<GameObject::IGameObject>& parent
+            , std::shared_ptr<GameCore::PlayerAvatar::RequireType::Status<TraitsT>> status
             , std::shared_ptr<GameCore::PlayerAvatar::RequireType::CameraGroup<TraitsT>> cameraGroup
             , bool enableInputAction);
 
         
     private:
+        /** SwordMan */
         [[serialize(0)]] FIELD(PrefabGameObjectFile) swordManPrefab_;
         [[serialize(1)]] FIELD(PrefabGameObjectFile) swordManCameraGroupPrefab_;
-        // [[serialize(0)]] std::weak_ptr<GameCore::PlayerAvatar::SwordMan::StatusPresenter> statusPresenter_; 
+        [[serialize(2)]] FIELD(PrefabGameObjectFile) swordManStatusUiPrefab_;
+        [[serialize(2)]] FIELD(PrefabGameObjectFile) swordManStatusPresenterPrefab_;
+
+        /** Other PlayerAvatar */
+        [[serialize(4)]] FIELD(PrefabGameObjectFile) otherPlayerStatusUiGroupPrefab_;
+        [[serialize(2)]] FIELD(PrefabGameObjectFile) otherPlayerAvatarStatusUiPrefab_;
+        [[serialize(2)]] FIELD(PrefabGameObjectFile) otherPlayerAvatarStatusPresenterPrefab_;
         
 #pragma region Serialization Function
     public:
@@ -76,6 +69,11 @@ namespace NanamiEngine::Module::Asset
             archive(cereal::base_class<ScriptableObject>(this));
             archive(CEREAL_NVP(swordManPrefab_));
             archive(CEREAL_NVP(swordManCameraGroupPrefab_));
+            archive(CEREAL_NVP(swordManStatusUiPrefab_));
+            archive(CEREAL_NVP(swordManStatusPresenterPrefab_));
+            archive(CEREAL_NVP(otherPlayerAvatarStatusUiPrefab_));
+            archive(CEREAL_NVP(otherPlayerAvatarStatusPresenterPrefab_));
+            archive(CEREAL_NVP(otherPlayerStatusUiGroupPrefab_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
@@ -83,6 +81,11 @@ namespace NanamiEngine::Module::Asset
             archive(cereal::base_class<ScriptableObject>(this));
             archive(CEREAL_NVP(swordManPrefab_));
             if (version >= 1) archive(CEREAL_NVP(swordManCameraGroupPrefab_));
+            if (version >= 2) archive(CEREAL_NVP(swordManStatusUiPrefab_));
+            if (version >= 2) archive(CEREAL_NVP(swordManStatusPresenterPrefab_));
+            if (version >= 3) archive(CEREAL_NVP(otherPlayerAvatarStatusUiPrefab_));
+            if (version >= 3) archive(CEREAL_NVP(otherPlayerAvatarStatusPresenterPrefab_));
+            if (version >= 4) archive(CEREAL_NVP(otherPlayerStatusUiGroupPrefab_));
         }
 #pragma endregion
     };
@@ -92,6 +95,7 @@ namespace NanamiEngine::Module::Asset
         const std::shared_ptr<PrefabGameObjectFile>& prefabFile,
         const glm::vec3& summonPosition,
         const std::shared_ptr<GameObject::IGameObject>& parent,
+        std::shared_ptr<GameCore::PlayerAvatar::RequireType::Status<TraitsT>> status,
         std::shared_ptr<GameCore::PlayerAvatar::RequireType::CameraGroup<TraitsT>> cameraGroup,
         bool enableInputAction)
     {
@@ -106,7 +110,7 @@ namespace NanamiEngine::Module::Asset
         //Init
         auto inputAction  = std::make_shared<Input>();
         enableInputAction ? inputAction->Enable() : inputAction->Disable(); 
-        auto status       = GameCore::PlayerAvatar::LoadStatus<Status, TraitsT>();
+        // auto status       = GameCore::PlayerAvatar::LoadStatus<Status, TraitsT>();
         auto stateMachine = TraitsT::CreateStateMachine(status, inputAction, playerAvatar, cameraGroup, enableInputAction);
         
         playerAvatar->Init(
@@ -123,7 +127,7 @@ namespace NanamiEngine::Module::Asset
 
 REGISTER_SCRIPTABLE_OBJECT(PlayerAvatarFactory, PLAYER_AVATAR_FACTORY_EXTENSION_LABEL)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::PlayerAvatarFactory, 1);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::PlayerAvatarFactory, 3);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::PlayerAvatarFactory);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::PlayerAvatarFactory);
 #pragma endregion

@@ -17,9 +17,11 @@ namespace GameCore::StatusParameter
 
 namespace GamePlay::Ui
 {
-    class PlayerStatus final : public Component::ComponentBase
+    class PlayerStatus final : public Component::ComponentBase,
+                               public LifeCycleCallback::IAwakable
     {
     public:
+        void OnAwake() override;
         void UpdateHealthBar(
             const GameCore::StatusParameter::Health& maxHealth,
             const GameCore::StatusParameter::Health& health   ) const;
@@ -29,22 +31,27 @@ namespace GamePlay::Ui
             const GameCore::PlayerAvatar::EnhancePower& enhancePower) const;
         void OnAddEnhancePowerStack() const;
         void OnIsEnableReinforceMode(bool enable) const;
-        
+
     private:
         Coroutine::Task<void> OnDamagedHealth() const;
         Coroutine::Task<void> OnAddedEnhancePowerStack() const;
-        
-        [[serialize(0)]] FIELD(NanamiUi::Slider) healthBar_;
-        [[serialize(2)]] FIELD(Component::ImageRenderer) healthBarFrame_;
+
+        [[serialize(6)]] std::string healthBarName_;
+        FIELD(NanamiUi::Slider) healthBar_;
         [[serialize(2)]] float displayOnDamageHealthBarDuration_secs_ = 0.0f;
         [[serialize(2)]] FIELD(Asset::SpriteFile) onDamageHealthBarFrame_;
+        [[serialize(6)]] std::string healthBarFrameName_;
+        FIELD(Component::ImageRenderer) healthBarFrame_;
 
-        [[serialize(0)]] FIELD(NanamiUi::Slider) enhanceBar_;
-        [[serialize(4)]] FIELD(Component::ImageRenderer) enhancePowerStackBarFrame_;
+        [[serialize(6)]] std::string enhanceBarName_;
+        FIELD(NanamiUi::Slider) enhanceBar_;
         [[serialize(4)]] float displayOnAddEnhancePowerStackBarDuration_secs_ = 0.0f;
         [[serialize(4)]] FIELD(Asset::SpriteFile) onAddEnhancePowerStackBarFrame_;
-        [[serialize(5)]] FIELD(NanamiUi::BlendImageRenderer) onEnableReinforceMask_;
-        
+        [[serialize(6)]] std::string enhancePowerStackBarFrameName_;
+        FIELD(Component::ImageRenderer) enhancePowerStackBarFrame_;
+
+        [[serialize(6)]] std::string onEnableReinforceMaskName_;
+        FIELD(NanamiUi::BlendImageRenderer) onEnableReinforceMask_;
 
 #pragma region Serialization Function
     public:
@@ -53,33 +60,33 @@ namespace GamePlay::Ui
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<ComponentBase>(this));
-            archive(CEREAL_NVP(healthBar_));
-            archive(CEREAL_NVP(enhanceBar_));
-            archive(CEREAL_NVP(healthBarFrame_));
+            archive(CEREAL_NVP(healthBarName_));
             archive(CEREAL_NVP(displayOnDamageHealthBarDuration_secs_));
             archive(CEREAL_NVP(onDamageHealthBarFrame_));
-            archive(CEREAL_NVP(enhancePowerStackBarFrame_));
+            archive(CEREAL_NVP(healthBarFrameName_));
+            archive(CEREAL_NVP(enhanceBarName_));
             archive(CEREAL_NVP(displayOnAddEnhancePowerStackBarDuration_secs_));
             archive(CEREAL_NVP(onAddEnhancePowerStackBarFrame_));
-            archive(CEREAL_NVP(onEnableReinforceMask_));
+            archive(CEREAL_NVP(enhancePowerStackBarFrameName_));
+            archive(CEREAL_NVP(onEnableReinforceMaskName_));
         }
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
-            if (version >= 0) archive(CEREAL_NVP(healthBar_));
-            if (version >= 0) archive(CEREAL_NVP(enhanceBar_));
-            if (version >= 2) archive(CEREAL_NVP(healthBarFrame_));
-            if (version >= 2) archive(CEREAL_NVP(displayOnDamageHealthBarDuration_secs_));
-            if (version >= 2) archive(CEREAL_NVP(onDamageHealthBarFrame_));
-            if (version >= 4) archive(CEREAL_NVP(enhancePowerStackBarFrame_));
-            if (version >= 4) archive(CEREAL_NVP(displayOnAddEnhancePowerStackBarDuration_secs_));
-            if (version >= 4) archive(CEREAL_NVP(onAddEnhancePowerStackBarFrame_));
-            if (version >= 5) archive(CEREAL_NVP(onEnableReinforceMask_));
+            if (version >= 6) archive(CEREAL_NVP(healthBarName_));
+            if (version >= 6) archive(CEREAL_NVP(displayOnDamageHealthBarDuration_secs_));
+            if (version >= 6) archive(CEREAL_NVP(onDamageHealthBarFrame_));
+            if (version >= 6) archive(CEREAL_NVP(healthBarFrameName_));
+            if (version >= 6) archive(CEREAL_NVP(enhanceBarName_));
+            if (version >= 6) archive(CEREAL_NVP(displayOnAddEnhancePowerStackBarDuration_secs_));
+            if (version >= 6) archive(CEREAL_NVP(onAddEnhancePowerStackBarFrame_));
+            if (version >= 6) archive(CEREAL_NVP(enhancePowerStackBarFrameName_));
+            if (version >= 6) archive(CEREAL_NVP(onEnableReinforceMaskName_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PlayerStatus, 5)
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PlayerStatus, 6)
 

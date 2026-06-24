@@ -35,15 +35,22 @@ void CineMachine::CinemachineCameraBrain::OnUpdate()
     Transform().SetWorldPos(newPos);
     Transform().SetWorldRot(newRot);
 
-    const glm::vec3 forward = newRot * glm::vec3(0, 0, 1);
+    // 各仮想カメラビヘイビアにブレインTransformの上書き機会を与える。
+    // ThirdPersonCameraBehaviour等はここで補完を無視した即時適用を行う。
+    // カメラセットアップより前に呼ぶことで、上書き結果がそのフレームの描画へ反映される。
+    currentVirtualCamera_->MainCameraCallback();
+
+    // ビヘイビアによる上書き後の最終Transformでカメラをセットアップする。
+    const glm::vec3 finalPos = Transform().GetWorldPos();
+    const glm::quat finalRot = Transform().GetWorldRot();
+    const glm::vec3 forward   = finalRot * glm::vec3(0, 0, 1);
 
     SetupCamera_Perspective(fov_ * DX_PI_F / 180.0f);
     SetCameraNearFar(cameraNear_, cameraFar_);
     SetCameraPositionAndTarget_UpVecY(
-        {newPos.x, newPos.y, newPos.z},
-        {newPos.x + forward.x, newPos.y + forward.y, newPos.z + forward.z}
+        {finalPos.x, finalPos.y, finalPos.z},
+        {finalPos.x + forward.x, finalPos.y + forward.y, finalPos.z + forward.z}
     );
-    currentVirtualCamera_->MainCameraCallback();
 }
 
 void CineMachine::CinemachineCameraBrain::OnDebugRender()

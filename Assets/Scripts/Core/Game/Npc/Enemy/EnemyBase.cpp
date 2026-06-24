@@ -6,8 +6,7 @@
 namespace GameCore::Npc
 {
     EnemyBase::EnemyBase()
-        : status_(std::make_unique<Enemy::EnemyStatus>(1))
-        , onDamagedStack_(std::make_shared<std::queue<std::unique_ptr<IDamage>>>())
+        : onDamagedStack_(std::make_shared<std::queue<std::unique_ptr<IDamage>>>())
     {
         
     }
@@ -17,20 +16,19 @@ namespace GameCore::Npc
     void EnemyBase::OnAwake()
     {
         RequireComponent<Component::Animator>();
-
+        
         if (behaviourData_)
-        {
             behaviour_ = behaviourData_->OnLoadCopyContent();
-        }
+        
         DoAwake();
     }
 
     void EnemyBase::OnUpdate()
     {
-        status_->ManualUpdate();
+        currentStatus_->Get().ManualUpdate();
         if (behaviour_)
         {
-            behaviour_->Tick(Entity(), status_, onDamagedStack_);
+            behaviour_->Tick(Entity(), currentStatus_, onDamagedStack_);
         }
         DoUpdate();
     }
@@ -43,6 +41,11 @@ namespace GameCore::Npc
     void EnemyBase::BasedOnDrawgui()
     {
         ImGuiHelper::OnDrawInputField("behaviourData_", behaviourData_);
-        ImGuiHelper::OnDrawInputField("status_", status_) ;
+        ImGuiHelper::OnDrawInputField("currentStatus_", currentStatus_);
+        if (ImGui::Button("CreateCurrentStatus"))
+        {
+            currentStatus_ = CreateSyncParameter(Enemy::EnemyStatus());
+        }
+        ImGuiHelper::OnDrawInputField("isNetworkSyncStatus_", isNetworkSyncStatus_);
     }
 }

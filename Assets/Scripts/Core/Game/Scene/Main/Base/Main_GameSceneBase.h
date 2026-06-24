@@ -30,7 +30,7 @@ namespace GameCore::Scene::Main
         
         /** @brief SandBox pattern */
         [[nodiscard]] std::shared_ptr<ContextT>   Context()                    const { return context_; }
-        [[nodiscard]] GameProgresion     MainScenarioProgression()    const { return LoadGameProgression();   }
+        [[nodiscard]] GameProgresion              MainScenarioProgression()    const { return LoadGameProgression();   }
         [[nodiscard]] Sub::IGameSceneStack&       SubScene() const { return baseContext_.SubSceneStack(); }
         /**
          * @brief シーンをロードする

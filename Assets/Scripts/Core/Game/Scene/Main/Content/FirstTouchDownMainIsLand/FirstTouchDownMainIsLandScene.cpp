@@ -7,7 +7,6 @@
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
 #include "../../../../PlayerAvatar/PlayerAvatar.h"
-#include "../../../../PlayerAvatar/Presenter/PlayerAvatar_StatusPresenter.h"
 #include "../../../Sub/Group/Sub_IGameSceneGroup.h"
 #include "../../../Sub/Type/SubSceneType.h"
 #include "AboardAirShipMovie/AboardAirShipMovie.h"
@@ -30,37 +29,26 @@ namespace GameCore::Scene::Main
         
         scene_ = LoadMainScene();
         Context()->Init();
-        
-        //PlayerAvatarの生成
-        playerAvatar_ = Context()->PlayerAvatarFactory().SummonSwordManAvatar(
-            Context()->PlayerSpawnPoint(),
-            Context()->AirShip()->Entity().lock());
     }
     
     void FirstTouchDownMainIsLandScene::Enter()
     {
-        GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
-        playerAvatar_.lock()->Transform().SetLocalRot({glm::vec3{0.0f, 90.0f, 0.0f}});
+        auto& context = *Context();
         
+        GamePlay::Sound::SoundPlayer::PlayBgm(context.BGM());
         //PlayerAvatarの初期化
         using namespace GameCore::PlayerAvatar;
+        
         auto inputAction        = std::make_shared<RequireType::InputAction<SwordMan::SwordManAvatarTraits>>();
         auto summonAvatarStatus = std::make_shared<ContextT::SummonAvatarStatus>(Context()->PlayerAvatarInitStatus());
-        const auto swordmanCameraGroup =
-                    NanamiEngine::Scene::GameObject::Instantiate(Context()->SwordManCameraGroupPrefab(), Context()->PlayerSpawnPoint())
-                        .lock()
-                        ->Components()
-                        .Catch<SwordMan::SwordManAvatarCameraGroup>();
-        
-        auto stateMachine = PlayerAvatar::SwordMan::CreateStateMachine(summonAvatarStatus, inputAction, playerAvatar_.lock(), swordmanCameraGroup.lock(), true);
-        playerAvatar_.lock()->Init(summonAvatarStatus, std::move(stateMachine), inputAction, swordmanCameraGroup.lock());
 
-        auto& context = *Context();
-        auto playerStatusUi = context.PlayerStatusUI();
-        //StatusPresenter
-        playerStatusPresenter_ = std::make_unique<SwordMan::StatusPresenter>(
-            *playerStatusUi.lock(),
-            *summonAvatarStatus);
+        /** Player生成処理 */
+        playerAvatar_ = context.PlayerAvatarFactory().LoadInitedPlayerAvatar(
+            PlayerAvatarType::SwordMan,
+            context.PlayerSpawnPoint(),
+            context.AirShip()->Entity().lock(),
+            true);
+        playerAvatar_.lock()->PlayerTransform().SetLocalRot({glm::vec3{0.0f, 90.0f, 0.0f}});
         
         // 船を降りるまでのMovieを開始
         aboardAirShipMovie_ = std::make_unique<FirstTouchDownMainIsLand::AboardAirShipMovie>(playerAvatar_, Context());

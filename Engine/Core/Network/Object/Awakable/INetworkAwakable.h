@@ -7,6 +7,10 @@ namespace NanamiEngine::Core::Network
     {
     public:
         virtual ~INetworkAwakable() = default;
+        /**
+         * ネットワーク上のGameObjectとしての初期化Callback
+         * NOTE: 必ずIAwakableのAwake()とStart()より後に呼び出される。
+         */
         virtual void NetworkAwake(NetworkObjectId objectId) = 0;
     };
 }

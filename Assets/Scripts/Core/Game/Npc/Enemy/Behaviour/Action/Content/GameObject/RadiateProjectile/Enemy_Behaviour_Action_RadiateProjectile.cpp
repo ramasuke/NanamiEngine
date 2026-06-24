@@ -4,6 +4,7 @@
 #include "../../../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForTween/Coroutine_WaitForTween.h"
 #include "../../../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../../../../../Libs/LibCore/Tween/Ease/Ease.h"
+#include "../../../../../../../../../GamePlay/Npc/Enemy/Projectile/GamePlay_Enemy_IAttackProjectile.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -19,6 +20,12 @@ namespace GameCore::Npc::Enemy::Behaviour
             finalRot
         );
 
+        auto attackProjectile = projectile.lock()->Components().Catch<GamePlay::Npc::Enemy::IAttackProjectile>();
+        if (!attackProjectile.expired())
+        {
+            attackProjectile.lock()->SetDamage(physicsDamage_);
+        }
+        
         Coroutine::StartCoroutine(MoveProjectileAsync(context, projectile));
 
         return TickStatus::Success;
@@ -26,7 +33,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 
     void Action::RadiateProjectile::DoDrawGui()
     {
-        
+        ImGuiHelper::OnDrawInputField("physicsDamage_" , physicsDamage_);
         ImGuiHelper::OnDrawInputField("spawnPosition_" , spawnPosition_);
         ImGuiHelper::OnDrawInputField("targetPosition_", targetPosition_);
         ImGuiHelper::OnDrawInputField("moveSpeed_", moveSpeed_);

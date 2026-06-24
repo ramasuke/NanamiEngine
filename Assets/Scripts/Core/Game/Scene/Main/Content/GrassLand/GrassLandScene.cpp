@@ -27,6 +27,7 @@ namespace GameCore::Scene::Main
         }
 
         SubScene().Push(Sub::SceneType::ChattingUI);
+        SubScene().Push(Sub::SceneType::OtherPlayerStatus);
         
         scene_ = LoadMainScene();
         Context()->Init();

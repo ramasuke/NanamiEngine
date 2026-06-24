@@ -2,6 +2,7 @@
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 #include "Module/SpawnPlayer/Packet_Dispatch_SpawnPlayer.h"
 #include "Module/SyncAvatarState/Packet_Dispatch_SyncAvatarState.h"
+#include "Module/SyncBehaviourTree/Packet_Dispatch_SyncBehaviourTree.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -36,11 +37,13 @@ namespace GameCore::Network
 
         void DispatchReceivedPacket(const Core::Network::Packet& packet);
 
-        [[nodiscard]] SpawnPlayerDispatcher&    SpawnPlayer()    { return spawnPlayerDispatcher_; }
-        [[nodiscard]] SyncAvatarStateDispatcher& SyncAvatarState() { return syncAvatarStateDispatcher_; }
+        [[nodiscard]] SpawnPlayerDispatcher&       SpawnPlayer()       { return spawnPlayerDispatcher_; }
+        [[nodiscard]] SyncAvatarStateDispatcher&   SyncAvatarState()   { return syncAvatarStateDispatcher_; }
+        [[nodiscard]] SyncBehaviourTreeDispatcher& SyncBehaviourTree() { return syncBehaviourTreeDispatcher_; }
 
     private:
-        SpawnPlayerDispatcher    spawnPlayerDispatcher_;
-        SyncAvatarStateDispatcher syncAvatarStateDispatcher_;
+        SpawnPlayerDispatcher      spawnPlayerDispatcher_;
+        SyncAvatarStateDispatcher  syncAvatarStateDispatcher_;
+        SyncBehaviourTreeDispatcher syncBehaviourTreeDispatcher_;
     };
 }

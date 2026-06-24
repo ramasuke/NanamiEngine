@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../../../../../../Engine/Module/LocalPrefs/Engine_Module_LocalPrefs.h"
+#include "../RequireType/RequireType.h"
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 
 namespace GameCore::PlayerAvatar
@@ -12,9 +13,9 @@ namespace GameCore::PlayerAvatar
         LocalPrefs::SaveWithPath(TraitsT::STATUS_SAVE_FILE_PATH, PLAYER_AVATAR_STATUS_FILE_KEY, status);
     }
     
-    template<typename StatusT, typename TraitsT>
-    std::shared_ptr<StatusT> LoadStatus()
+    template<typename TraitsT>
+    std::shared_ptr<RequireType::Status<TraitsT>> LoadStatus()
     {
-        return LocalPrefs::LoadWithPath<std::shared_ptr<StatusT>>(TraitsT::STATUS_SAVE_FILE_PATH, PLAYER_AVATAR_STATUS_FILE_KEY);
+        return LocalPrefs::LoadWithPath<std::shared_ptr<RequireType::Status<TraitsT>>>(TraitsT::STATUS_SAVE_FILE_PATH, PLAYER_AVATAR_STATUS_FILE_KEY);
     }
 }

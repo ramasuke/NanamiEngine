@@ -16,6 +16,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         void SetTarget(const std::shared_ptr<GameObject::IGameObject>& target);
         void SetLookAtOffsetPos(const glm::vec3& offsetPos);
         void SetEnableLockMousePos(bool enable);
+        void SetEnableImmediateApply(bool enable);
 
     private:
         void OnAwake () override;
@@ -29,15 +30,23 @@ namespace NanamiEngine::CineMachine::Behaviour
         void UpdateFollowTargetBehaviour() const;
         void UpdateLookAtTargetBehaviour() const;
 
+        // Playerからカメラへrayを飛ばし、障害物にめり込まない位置までオフセットを縮める
+        [[nodiscard]] glm::vec3 ResolveCameraCollision(const glm::vec3& desiredOffset) const;
+
 
         bool isLockMousePos_ = true;
-        
+        // ブレインの補完を無視して仮想カメラのTransformを即時適用するか。
+        // ThirdPersonでは補完による視点の遅れが不自然なため既定で有効。
+        bool isImmediateApply_ = true;
+
         float yaw_              = 0.0f;
         float pitch_            = 0.2f;
         float minPitch_         = -1.2f;
         float maxPitch_         =  1.2f;
         float mouseSensitivity_ = 0.005f;
         float distance_         = 5.0f;
+        // 障害物にめり込まないようカメラを手前に寄せる際の余白
+        float collisionBuffer_  = 0.3f;
 
         FIELD(GameObject::IGameObject                ) cameraBrain_;
         FIELD(GameObject::IGameObject                ) target_;
@@ -68,6 +77,8 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(followOffsetPos_));
     archive(CEREAL_NVP(lookAtOffsetPos_));
     archive(CEREAL_NVP(cameraBrain_));
+    archive(CEREAL_NVP(isImmediateApply_));
+    archive(CEREAL_NVP(collisionBuffer_));
 }
 
 template<class Archive>
@@ -86,12 +97,14 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 1) archive(CEREAL_NVP(followOffsetPos_));
     if (version >= 2) archive(CEREAL_NVP(lookAtOffsetPos_));
     if (version >= 3) archive(CEREAL_NVP(cameraBrain_));
+    if (version >= 4) archive(CEREAL_NVP(isImmediateApply_));
+    if (version >= 5) archive(CEREAL_NVP(collisionBuffer_));
 }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ThirdPersonCameraBehaviour, 3)
+ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ThirdPersonCameraBehaviour, 5)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IAwakable, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IUpdatable, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::ThirdPersonCameraBehaviour);

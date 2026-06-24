@@ -4,8 +4,8 @@
 #include "../../../../../../../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
+#include "../../../../../../../Damage/Physics/Game_Damage_PhysicsPower.h"
 #include "../../../Position/Enemy_Behaviour_Action_Position.h"
-#include "../LibCore/cereal/glm/GlmHelper.h"
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
@@ -19,6 +19,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             std::weak_ptr<GameObject::IGameObject> projectileObject);
 
     private:
+        [[serialize(5)]] Damage::PhysicsPower physicsDamage_;
         [[serialize(3)]] Position spawnPosition_;
         [[serialize(3)]] Position targetPosition_;
         [[serialize(3)]] float moveSpeed_ = 5.0f;
@@ -30,6 +31,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         template<class Archive>
         void save(Archive& archive, const std::uint32_t) const {
             archive(cereal::base_class<ActionBase>(this));
+            archive(CEREAL_NVP(physicsDamage_));
             archive(CEREAL_NVP(spawnPosition_));
             archive(CEREAL_NVP(targetPosition_));
             archive(CEREAL_NVP(moveSpeed_));
@@ -39,6 +41,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
+            if (version >= 5) archive(CEREAL_NVP(physicsDamage_));
             if (version >= 3) archive(CEREAL_NVP(spawnPosition_));
             if (version >= 3) archive(CEREAL_NVP(targetPosition_)); 
             if (version >= 3) archive(CEREAL_NVP(moveSpeed_)); 
@@ -51,7 +54,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     REGISTER_ENEMY_ACTION_WITH_NAME(RadiateProjectile, "GameObject::RadiateProjectile")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::RadiateProjectile, 4)
+CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::RadiateProjectile, 5)
 CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::RadiateProjectile)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(
     GameCore::Npc::Enemy::Behaviour::ActionBase,

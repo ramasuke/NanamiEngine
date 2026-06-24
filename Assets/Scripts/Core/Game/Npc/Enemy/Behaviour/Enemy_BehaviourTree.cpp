@@ -2,6 +2,7 @@
 
 #include <fstream>
 
+#include "../../../../../../../Engine/Core/Network/Object/Creator/NetworkParamCreator.h"
 #include "../../../../../../../Engine/Module/Gui/Graph/GraphGui.h"
 #include "../../../../../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 #include "../../../../../Editor/BehaviourTree/Window/Node/Entry/Npc_BehaviourEntryNode.h"
@@ -24,9 +25,10 @@ namespace GameCore::Npc::Enemy
     }
     BehaviourTree::~BehaviourTree() = default;
 
-    void BehaviourTree::Tick(const std::weak_ptr<GameObject::IGameObject>& enemyGameObject,
-                             const std::unique_ptr<EnemyStatus>& enemyStatus,
-                             const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack) const
+    void BehaviourTree::Tick(
+        const std::weak_ptr<GameObject::IGameObject>& enemyGameObject,
+        SyncParam<EnemyStatus>& enemyStatus,
+        const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack) const
     {
         entryNode_->Tick(Behaviour::Action::TickContext(enemyGameObject, enemyStatus, parameters_, onDamagedStack));
     }

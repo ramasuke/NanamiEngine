@@ -2,11 +2,6 @@
 #include "../../Base/Main_GameSceneBase.h"
 #include "Context/FirstTouchDownMainIsLandSceneContext.h"
 
-namespace GameCore::PlayerAvatar::SwordMan
-{
-    class StatusPresenter;
-}
-
 namespace GameCore::Scene::FirstTouchDownMainIsLand
 {
     class AboardAirShipMovie;
@@ -28,8 +23,8 @@ namespace GameCore::Scene::Main
         void OnDrawGui() override;
 
         std::weak_ptr<NanamiEngine::Scene::Scene> scene_;
-        std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar> playerAvatar_;
+        std::weak_ptr<IPlayerAvatar> playerAvatar_;
         std::unique_ptr<FirstTouchDownMainIsLand::AboardAirShipMovie> aboardAirShipMovie_;
-        std::unique_ptr<PlayerAvatar::SwordMan::StatusPresenter> playerStatusPresenter_;
+        std::weak_ptr<GameObject::IGameObject> playerStatusPresenter_;
     };
 }

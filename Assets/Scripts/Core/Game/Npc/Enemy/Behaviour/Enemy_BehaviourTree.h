@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "../../../../../../../Engine/Core/Network/Object/Creator/NetworkParamCreator.h"
 #include "../../../../../../../Engine/Core/Object/IObject.h"
 #include "Action/TickContext/Enemy_Behaviour_TickContext.h"
 
@@ -24,12 +25,14 @@ namespace GameCore::Npc::Enemy
         ~BehaviourTree() override;
 
         void Tick(const std::weak_ptr<GameObject::IGameObject>& enemyGameObject,
-                  const std::unique_ptr<EnemyStatus>& enemyStatus,
+                  SyncParam<EnemyStatus>& enemyStatus,
                   const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack) const;
         void OnSave();
         void OnDrawGraphEditorGui();
         void OnDrawGui() override;
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
+        [[nodiscard]] BlackBoard::ParameterGroup& Parameters() const { return *parameters_; }
+        
         
     private:
         std::string filePath_;

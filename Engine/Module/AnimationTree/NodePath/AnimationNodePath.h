@@ -54,16 +54,9 @@ namespace NanamiEngine::Module::AnimationTree
         [[serialize(1)]] Guid visualFromNodeGuid_;
 #pragma region Serialization Function
 public:
-void OnDrawGui() override
-{
-    LibCore::ImGuiHelper::OnDrawInputField("additionConditionGroup_", additionConditionGroup_);
-    LibCore::ImGuiHelper::OnDrawInputField("transitionDuration_secs_", transitionDuration_secs_);
-    LibCore::ImGuiHelper::OnDrawInputField("fromNodeGuid_", fromNodeGuid_);
-    LibCore::ImGuiHelper::OnDrawInputField("nextNodeGuid_", nextNodeGuid_);
-    LibCore::ImGuiHelper::OnDrawInputField("visualFromNodeGuid_", visualFromNodeGuid_);
-}
+void OnDrawGui() override;
 
-template<class Archive>
+        template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<Object::IObject>(this));
     archive(CEREAL_NVP(additionConditionGroup_));

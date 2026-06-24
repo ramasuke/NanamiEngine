@@ -84,6 +84,15 @@ void AnimationTree::AnimationNodePath::TryAddNextCurrentNodePath(
     }
 }
 
+void AnimationTree::AnimationNodePath::OnDrawGui()
+{
+    ImGuiHelper::OnDrawInputField("additionConditionGroup_", additionConditionGroup_);
+    ImGuiHelper::OnDrawInputField("transitionDuration_secs_", transitionDuration_secs_);
+    ImGuiHelper::OnDrawInputField("fromNodeGuid_", fromNodeGuid_);
+    ImGuiHelper::OnDrawInputField("nextNodeGuid_", nextNodeGuid_);
+    ImGuiHelper::OnDrawInputField("visualFromNodeGuid_", visualFromNodeGuid_);
+}
+
 
 void AnimationTree::AnimationNodePath::OnUpdateNodeAnimationBlend()
 {

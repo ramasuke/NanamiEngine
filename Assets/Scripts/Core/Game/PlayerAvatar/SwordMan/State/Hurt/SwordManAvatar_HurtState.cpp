@@ -1,10 +1,14 @@
 #include "SwordManAvatar_HurtState.h"
 
 #include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
 
 void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoEnter()
 {
+    // 被弾の瞬間にカメラを揺らす(揺れ幅・長さは ShakeCameraBehaviour の設定値)。
+    NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::ShakeMainCamera();
+
     Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
     Status().ApplyDamage();
 

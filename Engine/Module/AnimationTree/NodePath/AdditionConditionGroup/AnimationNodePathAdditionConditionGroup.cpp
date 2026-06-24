@@ -5,11 +5,23 @@
 
 void NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionConditionGroup::OnDrawGui()
 {
-    for (auto& condition : conditions_)
+    int removeIndex = -1;
+    for (int i = 0; i < static_cast<int>(conditions_.size()); ++i)
     {
-        if (condition)
-            condition->OnDrawGui();
+        ImGui::PushID(i);
+
+        if (conditions_[i])
+            conditions_[i]->OnDrawGui();
+
+        if (ImGui::Button("Remove Condition"))
+            removeIndex = i;
+
+        ImGui::Separator();
+        ImGui::PopID();
     }
+
+    if (removeIndex >= 0)
+        conditions_.erase(conditions_.begin() + removeIndex);
 
     if (ImGui::Button("Add Condition"))
     {
