@@ -10,6 +10,7 @@
 #include "../JoltPhysics/Jolt/Physics/Collision/RayCast.h"
 #include "../JoltPhysics/Jolt/Physics/Collision/Shape/BoxShape.h"
 #include "../JoltPhysics/Jolt/Physics/Collision/Shape/CapsuleShape.h"
+#include "../JoltPhysics/Jolt/Physics/Collision/Shape/CylinderShape.h"
 #include "../JoltPhysics/Jolt/Physics/Collision/Shape/SphereShape.h"
 #include "BroadPhaseLayer/Engine_Physics_NonRaycastLayerFilter.h"
 #include "detail/func_trigonometric.inl"
@@ -118,6 +119,11 @@ JPH::RefConst<JPH::Shape> NanamiEngine::Module::Physics::CreateCapsuleShape(floa
 JPH::RefConst<JPH::Shape> NanamiEngine::Module::Physics::CreateSphereShape(const float radius)
 {
     return new JPH::SphereShape(radius);
+}
+
+JPH::RefConst<JPH::Shape> NanamiEngine::Module::Physics::CreateCylinderShape(float halfHeight, float radius)
+{
+    return new JPH::CylinderShape(halfHeight, radius);
 }
 
 NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::Raycast(

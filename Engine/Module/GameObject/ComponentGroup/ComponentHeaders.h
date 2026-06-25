@@ -63,4 +63,5 @@
 #include "../../Network/Object/Component/Animator/NetworkAnimator.h"
 #include "../../Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
 #include "../../Network/Object/Component/Transform/Engine_Network_NetworkTransform.h"
+#include "../../Physics/Component/Collider/Cylinder/Engine_Physics_CylinderCollider.h"
 #include "../../Physics/Component/Listener/Collision/Engine_Physics_CollisionListener.h"

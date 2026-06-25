@@ -23,12 +23,7 @@ namespace NanamiEngine::Module::Component
             archive(cereal::base_class<IAwakable    >(this));
             archive(cereal::base_class<IBeginPhysics>(this));
             archive(cereal::base_class<IEndPhysics  >(this));
-            archive(CEREAL_NVP(size_       ));
-            archive(CEREAL_NVP(offset_     ));
-            archive(CEREAL_NVP(emotionType_));
-            archive(CEREAL_NVP(layer_      ));
-            archive(CEREAL_NVP(constraints_));
-            archive(CEREAL_NVP(isSensor_   ));
+            archive(CEREAL_NVP(size_));
         }
 
         template<class Archive>
@@ -37,14 +32,17 @@ namespace NanamiEngine::Module::Component
             archive(cereal::base_class<LifeCycleCallback::IAwakable>(this));
             archive(cereal::base_class<LifeCycleCallback::IBeginPhysics>(this));
             archive(cereal::base_class<LifeCycleCallback::IEndPhysics>(this));
-            if (version >= 0) archive(CEREAL_NVP(size_       ));
-            if (version >= 0) archive(CEREAL_NVP(offset_     ));
-            if (version >= 0) archive(CEREAL_NVP(emotionType_));
-            if (version >= 2) archive(CEREAL_NVP(layer_      ));
-            if (version >= 3) archive(CEREAL_NVP(constraints_));
-            if (version >= 4) archive(CEREAL_NVP(isSensor_   ));
+            archive(CEREAL_NVP(size_));
+            // v5 以前はベースクラスのフィールドをここで保存していたため移行
+            if (version < 6) {
+                if (version >= 0) archive(CEREAL_NVP(offset_     ));
+                if (version >= 0) archive(CEREAL_NVP(emotionType_));
+                if (version >= 2) archive(CEREAL_NVP(layer_      ));
+                if (version >= 3) archive(CEREAL_NVP(constraints_));
+                if (version >= 4) archive(CEREAL_NVP(isSensor_   ));
+            }
         }
 #pragma endregion
     };
 }
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::BoxCollider, 5)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::BoxCollider, 6)

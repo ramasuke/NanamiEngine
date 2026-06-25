@@ -46,18 +46,26 @@ namespace Editor::Npc::Behaviour
         return NAME;
     }
 
+    int RandomSelectorNode::PickWeightedIndex()
+    {
+        const bool anyPositive = std::any_of(weights_.begin(), weights_.end(), [](int w){ return w > 0; });
+        if (!anyPositive)
+        {
+            std::uniform_int_distribution<int> uniform(0, static_cast<int>(children_.size()) - 1);
+            return uniform(rng_);
+        }
+        std::discrete_distribution<int> dist(weights_.begin(), weights_.end());
+        return dist(rng_);
+    }
+
     GameCore::Npc::Enemy::Behaviour::TickStatus
     RandomSelectorNode::Tick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
     {
         if (children_.empty())
             return GameCore::Npc::Enemy::Behaviour::TickStatus::Failure;
 
-        // Running中で無いため、新しく randomIndex を選ぶ
         if (currentRunningNodeIndex_ < 0)
-        {
-            std::uniform_int_distribution dist(0, static_cast<int>(children_.size()) - 1);
-            currentRunningNodeIndex_ = dist(rng_);
-        }
+            currentRunningNodeIndex_ = PickWeightedIndex();
 
         const auto& child = children_[currentRunningNodeIndex_];
         switch (const auto result = child->Tick(context))
@@ -82,12 +90,8 @@ namespace Editor::Npc::Behaviour
         if (children_.empty())
             return GameCore::Npc::Friendly::Behaviour::TickStatus::Failure;
 
-        // Running中で無いため、新しく randomIndex を選ぶ
         if (currentRunningNodeIndex_ < 0)
-        {
-            std::uniform_int_distribution dist(0, static_cast<int>(children_.size()) - 1);
-            currentRunningNodeIndex_ = dist(rng_);
-        }
+            currentRunningNodeIndex_ = PickWeightedIndex();
 
         const auto& child = children_[currentRunningNodeIndex_];
         switch (const auto result = child->Tick(context))
@@ -109,6 +113,7 @@ namespace Editor::Npc::Behaviour
     void RandomSelectorNode::SetConnectToNextNode(std::shared_ptr<NodeBase> nextNode)
     {
         children_.push_back(std::move(nextNode));
+        weights_.push_back(100);
     }
 
     void RandomSelectorNode::DoOnDrawGui()
@@ -119,7 +124,10 @@ namespace Editor::Npc::Behaviour
             return;
         }
 
-        ImGui::Text("Children");
+        int totalWeight = 0;
+        for (int w : weights_) totalWeight += w;
+
+        ImGui::Text("Children  (Total weight: %d)", totalWeight);
         ImGui::Separator();
 
         for (size_t i = 0; i < children_.size();)
@@ -129,27 +137,44 @@ namespace Editor::Npc::Behaviour
             // 並び替えボタン
             if (ImGui::ArrowButton("Up", ImGuiDir_Up))
             {
-                if (i > 0) std::swap(children_[i], children_[i - 1]);
+                if (i > 0)
+                {
+                    std::swap(children_[i], children_[i - 1]);
+                    std::swap(weights_[i], weights_[i - 1]);
+                }
             }
             ImGui::SameLine();
             if (ImGui::ArrowButton("Down", ImGuiDir_Down))
             {
                 if (i + 1 < children_.size())
+                {
                     std::swap(children_[i], children_[i + 1]);
+                    std::swap(weights_[i], weights_[i + 1]);
+                }
             }
             ImGui::SameLine();
 
-            //表示
-            const std::string label = std::format("Child {} : {}", i, children_[i]->NodeName());
+            // 重み入力
+            ImGui::SetNextItemWidth(60.0f);
+            ImGui::DragInt("##w", &weights_[i], 1.0f, 0, 100);
+            ImGui::SameLine();
 
+            // 実効確率表示
+            const float prob = totalWeight > 0 ? weights_[i] * 100.0f / static_cast<float>(totalWeight) : 0.0f;
+            ImGui::TextDisabled("(%.1f%%)", prob);
+            ImGui::SameLine();
+
+            // ラベル
+            const std::string label = std::format("Child {} : {}", i, children_[i]->NodeName());
             ImGui::Selectable(label.c_str(), false);
 
-            //右クリックメニュー
+            // 右クリックメニュー
             if (ImGui::BeginPopupContextItem("ChildContext"))
             {
                 if (ImGui::MenuItem("Delete"))
                 {
                     children_.erase(children_.begin() + i);
+                    weights_.erase(weights_.begin() + i);
                     ImGui::EndPopup();
                     ImGui::PopID();
                     continue;
@@ -167,13 +192,22 @@ namespace Editor::Npc::Behaviour
     {
         archive(cereal::base_class<NodeBase>(this));
         archive(CEREAL_NVP(children_));
+        archive(CEREAL_NVP(weights_));
     }
 
     template<class Archive>
-    void RandomSelectorNode::load(Archive& archive, const std::uint32_t)
+    void RandomSelectorNode::load(Archive& archive, const std::uint32_t version)
     {
         archive(cereal::base_class<NodeBase>(this));
         archive(CEREAL_NVP(children_));
+        if (version >= 1)
+        {
+            archive(CEREAL_NVP(weights_));
+        }
+        else
+        {
+            weights_.assign(children_.size(), 100);
+        }
     }
 
     template void RandomSelectorNode::save<cereal::JSONOutputArchive>( cereal::JSONOutputArchive&, const std::uint32_t) const;

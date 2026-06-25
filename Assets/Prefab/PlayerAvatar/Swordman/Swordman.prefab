@@ -176,12 +176,31 @@
             "ptr_wrapper": {
                 "id": 2147483658,
                 "data": {
-                    "cereal_class_version": 2,
+                    "cereal_class_version": 3,
                     "value0": {
-                        "guid_": {
-                            "value_": "ACE49D85-EFEF-4842-B7A5-B2E7B72D73B6"
+                        "cereal_class_version": 4,
+                        "value0": {
+                            "guid_": {
+                                "value_": "ACE49D85-EFEF-4842-B7A5-B2E7B72D73B6"
+                            },
+                            "isEnable_": true
                         },
-                        "isEnable_": true
+                        "mass_": 1.0,
+                        "isGravity_": true,
+                        "offset_": {
+                            "value0": 0.0,
+                            "value1": 113.9000015258789,
+                            "value2": 0.0
+                        },
+                        "offsetRotation_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "emotionType_": 2,
+                        "layer_": 1,
+                        "constraints_": 56,
+                        "isSensor_": false
                     },
                     "value1": {},
                     "value2": {
@@ -189,16 +208,7 @@
                     },
                     "value3": {},
                     "radius_": 49.61000061035156,
-                    "height_": 136.42999267578126,
-                    "offset_": {
-                        "value0": 0.0,
-                        "value1": 113.9000015258789,
-                        "value2": 0.0
-                    },
-                    "emotionType_": 2,
-                    "layer_": 1,
-                    "constraints_": 56,
-                    "isSensor_": false
+                    "height_": 136.42999267578126
                 }
             }
         },
@@ -410,26 +420,35 @@
                             "ptr_wrapper": {
                                 "id": 2147483665,
                                 "data": {
-                                    "cereal_class_version": 0,
+                                    "cereal_class_version": 1,
                                     "value0": {
-                                        "guid_": {
-                                            "value_": "8C946B1F-E13F-41A5-82DB-9836B5CE2CB3"
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "8C946B1F-E13F-41A5-82DB-9836B5CE2CB3"
+                                            },
+                                            "isEnable_": true
                                         },
-                                        "isEnable_": true
+                                        "mass_": 1.0,
+                                        "isGravity_": true,
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 22.229999542236329,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "emotionType_": 1,
+                                        "layer_": 0,
+                                        "constraints_": 0,
+                                        "isSensor_": true
                                     },
                                     "value1": {},
                                     "value2": {},
                                     "value3": {},
-                                    "radius_": 230.0,
-                                    "offset_": {
-                                        "value0": 0.0,
-                                        "value1": 22.229999542236329,
-                                        "value2": 0.0
-                                    },
-                                    "emotionType_": 1,
-                                    "layer_": 0,
-                                    "constraints_": 0,
-                                    "isSensor_": true
+                                    "radius_": 230.0
                                 }
                             }
                         }
@@ -662,24 +681,33 @@
                                                 "id": 2147483671,
                                                 "data": {
                                                     "value0": {
-                                                        "guid_": {
-                                                            "value_": "392E5BA6-7A87-4F05-931B-EB26BD9C7B66"
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "392E5BA6-7A87-4F05-931B-EB26BD9C7B66"
+                                                            },
+                                                            "isEnable_": true
                                                         },
-                                                        "isEnable_": true
+                                                        "mass_": 1.0,
+                                                        "isGravity_": true,
+                                                        "offset_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "emotionType_": 1,
+                                                        "layer_": 0,
+                                                        "constraints_": 0,
+                                                        "isSensor_": true
                                                     },
                                                     "value1": {},
                                                     "value2": {},
                                                     "value3": {},
-                                                    "radius_": 140.0,
-                                                    "offset_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0
-                                                    },
-                                                    "emotionType_": 1,
-                                                    "layer_": 0,
-                                                    "constraints_": 0,
-                                                    "isSensor_": true
+                                                    "radius_": 140.0
                                                 }
                                             }
                                         },
@@ -769,9 +797,8 @@
                                             "ptr_wrapper": {
                                                 "id": 2147483674,
                                                 "data": {
-                                                    "cereal_class_version": 5,
+                                                    "cereal_class_version": 6,
                                                     "value0": {
-                                                        "cereal_class_version": 3,
                                                         "value0": {
                                                             "guid_": {
                                                                 "value_": "DDD67489-5FC4-496E-B8D5-9DBB84A0A3DA"
@@ -779,7 +806,21 @@
                                                             "isEnable_": true
                                                         },
                                                         "mass_": 1.0,
-                                                        "isGravity_": true
+                                                        "isGravity_": true,
+                                                        "offset_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "emotionType_": 1,
+                                                        "layer_": 0,
+                                                        "constraints_": 56,
+                                                        "isSensor_": true
                                                     },
                                                     "value1": {},
                                                     "value2": {},
@@ -788,16 +829,7 @@
                                                         "value0": 100.0,
                                                         "value1": 200.0,
                                                         "value2": 400.0
-                                                    },
-                                                    "offset_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0
-                                                    },
-                                                    "emotionType_": 1,
-                                                    "layer_": 0,
-                                                    "constraints_": 56,
-                                                    "isSensor_": true
+                                                    }
                                                 }
                                             }
                                         },

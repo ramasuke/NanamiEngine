@@ -14,13 +14,32 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
-                        "cereal_class_version": 0,
-                        "guid_": {
-                            "value_": "4FBDEE59-7645-47E9-A685-89657D66B127"
+                        "cereal_class_version": 4,
+                        "value0": {
+                            "cereal_class_version": 0,
+                            "guid_": {
+                                "value_": "4FBDEE59-7645-47E9-A685-89657D66B127"
+                            },
+                            "isEnable_": true
                         },
-                        "isEnable_": true
+                        "mass_": 1.0,
+                        "isGravity_": true,
+                        "offset_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "offsetRotation_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "emotionType_": 1,
+                        "layer_": 0,
+                        "constraints_": 56,
+                        "isSensor_": true
                     },
                     "value1": {
                         "cereal_class_version": 0
@@ -31,16 +50,7 @@
                     "value3": {
                         "cereal_class_version": 0
                     },
-                    "radius_": 5.0,
-                    "offset_": {
-                        "value0": 0.0,
-                        "value1": 0.0,
-                        "value2": 0.0
-                    },
-                    "emotionType_": 1,
-                    "layer_": 0,
-                    "constraints_": 56,
-                    "isSensor_": true
+                    "radius_": 5.0
                 }
             }
         },

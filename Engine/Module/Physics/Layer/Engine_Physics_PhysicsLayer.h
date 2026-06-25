@@ -7,6 +7,7 @@ namespace NanamiEngine::Module::Physics
     {
         Default = 0,
         Player,
+        Enemy,
         Count
     };
 
@@ -23,7 +24,8 @@ namespace NanamiEngine::Module::Physics
     
     static constexpr const char* LAYER_NAMES[] = {
         "Default",
-        "Player"
+        "Player",
+        "Enemy"
     };
 
     static_assert(

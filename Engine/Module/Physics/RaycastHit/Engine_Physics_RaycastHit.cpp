@@ -13,3 +13,8 @@ NanamiEngine::Module::Physics::RaycastHit::RaycastHit(
       hitObject_(hitObject)
 {
 }
+
+bool NanamiEngine::Module::Physics::RaycastHit::Hit() const
+{
+    return hit_ && !hitObject_.expired();
+}

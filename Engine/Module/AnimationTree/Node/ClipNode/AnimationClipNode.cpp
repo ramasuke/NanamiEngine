@@ -18,7 +18,7 @@ void AnimationTree::AnimationClipNode::InitForGamePlay(const int modelHandle)
     if (animationFile_)
     {
         dxlibAnimationIndex_ = animationFile_->LoadDxLibHandle();
-        duration_secs_ = MV1GetAnimTotalTime(dxlibAnimationIndex_, 0);
+        duration_secs_ = MV1GetAnimTotalTime(dxlibAnimationIndex_, modelAnimationIndex_);
         printf("アニメーションの再生時間: %.2f 秒\n", duration_secs_);
     }
     else

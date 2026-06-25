@@ -38,7 +38,8 @@ namespace NanamiEngine::Module::Physics
     void AddForce               (const JPH::BodyID& bodyId, const glm::vec3& velocity);
     void AddTorque(const JPH::BodyID& bodyId, const glm::vec3& torque);
 
-    JPH::RefConst<JPH::Shape> CreateBoxShape    (const JPH::Vec3& halfSize     );
-    JPH::RefConst<JPH::Shape> CreateSphereShape (float radius                  );
-    JPH::RefConst<JPH::Shape> CreateCapsuleShape(float halfHeight, float radius);
+    JPH::RefConst<JPH::Shape> CreateBoxShape      (const JPH::Vec3& halfSize     );
+    JPH::RefConst<JPH::Shape> CreateSphereShape  (float radius                  );
+    JPH::RefConst<JPH::Shape> CreateCapsuleShape (float halfHeight, float radius);
+    JPH::RefConst<JPH::Shape> CreateCylinderShape(float halfHeight, float radius);
 }

@@ -10,42 +10,47 @@ namespace NanamiEngine::Module::Component
                                      public LifeCycleCallback::IStartable
     {
     public:
-        glm::vec3 offset_   = {0, 0, 0};
-        glm::vec3 rotation_ = {0, 0, 0};
-        glm::vec3 scale_    = {1.0f, 1.0f, 1.0f};
-        
+        // offset_ と offsetRotation_ は ColliderBase に定義済み
+        glm::vec3 scale_ = {1.0f, 1.0f, 1.0f};
+
     private:
         void OnAwake    () override;
         void OnStart    () override;
         void OnDebugDraw() const override;
-        [[nodiscard]] const JPH::BodyID& BodyId() const override { return bodyId_; }
         [[nodiscard]] JPH::RefConst<JPH::Shape> CreateColliderShape() const override;
 
-        JPH::BodyID bodyId_;
-        
 #pragma region Serialization Function
     public:
         void OnDrawGui() override;
-        
+
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const {
-            archive(cereal::base_class<ComponentBase>(this));
-            archive(CEREAL_NVP(offset_));
-            archive(CEREAL_NVP(layer_));
+            archive(cereal::base_class<ColliderBase>(this));
             archive(CEREAL_NVP(scale_));
-            archive(CEREAL_NVP(rotation_));
         }
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
-            archive(cereal::base_class<ComponentBase>(this));
-            if (version >= 0) archive(offset_);
-            if (version >= 0) archive(layer_);
-            if (version >= 1) archive(scale_);
-            if (version >= 2) archive(rotation_);
+            if (version >= 3) {
+                archive(cereal::base_class<ColliderBase>(this));
+                archive(CEREAL_NVP(scale_));
+            } else {
+                // v2 以前はフィールドを直接保存していたため移行 (NVP なしの位置引数)
+                archive(cereal::base_class<ComponentBase>(this));
+                glm::vec3 tmpOffset;
+                archive(tmpOffset);
+                offset_ = tmpOffset;
+                archive(layer_);
+                if (version >= 1) archive(scale_);
+                if (version >= 2) {
+                    glm::vec3 tmpRotation;
+                    archive(tmpRotation);
+                    offsetRotation_ = tmpRotation;
+                }
+            }
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::StaticMeshCollider, 2)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::StaticMeshCollider, 3)

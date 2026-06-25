@@ -109,6 +109,7 @@ namespace NanamiEngine::Module::Component
 {
     void StaticMeshCollider::OnAwake()
     {
+        userData_ = Physics::UserData(Entity());
         const auto modelRenderer = Components().Catch<ModelRenderer>().lock();
         if (!modelRenderer)
             return;
@@ -141,7 +142,7 @@ namespace NanamiEngine::Module::Component
             return;
         }
 
-        const glm::quat finalRot = GetFinalRotation(Transform(), rotation_);
+        const glm::quat finalRot = GetFinalRotation(Transform(), offsetRotation_);
         const glm::vec3 worldPos = GetFinalPosition(Transform(), offset_, finalRot);
 
         bodyId_ = Core::Application::ApplicationBase::Physics().CreateCollider(
@@ -187,7 +188,7 @@ namespace NanamiEngine::Module::Component
         if (verts.empty() || tris.empty())
             return;
 
-        const glm::quat q        = GetFinalRotation(Transform(), rotation_);
+        const glm::quat q        = GetFinalRotation(Transform(), offsetRotation_);
         const glm::vec3 worldPos = GetFinalPosition(Transform(), offset_, q);
 
         glm::mat4 m = glm::mat4_cast(q);
@@ -230,7 +231,7 @@ namespace NanamiEngine::Module::Component
             LogError("Create staticMeshCollider error");
 
         const glm::vec3 scale = Transform().GetWorldScale() * scale_;
-        const glm::quat rot   = glm::quat(glm::radians(rotation_));
+        const glm::quat rot   = glm::quat(glm::radians(offsetRotation_));
 
         for (auto& v : verts)
         {
@@ -250,7 +251,7 @@ namespace NanamiEngine::Module::Component
     {
         ImGuiHelper::OnDrawInputField("offset_", offset_);
         ImGuiHelper::OnDrawInputField("scale_", scale_);
-        ImGuiHelper::OnDrawInputField("rotation", rotation_);
+        ImGuiHelper::OnDrawInputField("offsetRotation_", offsetRotation_);
         int layerIndex = Physics::ToIndex(layer_);
         if (ImGui::Combo("Layer", &layerIndex, Physics::LAYER_NAMES, static_cast<int>(Physics::Layer::Count)))
         {

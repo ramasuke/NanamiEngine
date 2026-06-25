@@ -20,6 +20,11 @@ void Component::BoxCollider::OnDrawGui()
     {
         offset_ = offset;
     }
+    glm::vec3 offsetRot = offsetRotation_;
+    if(ImGui::DragFloat3(("offsetRotation##" + GetGuid().Value()).c_str(), &offsetRot.x, 0.1f))
+    {
+        offsetRotation_ = offsetRot;
+    }
     
     static const char* motionTypeNames[] = {
         "Static", "Kinematic", "Dynamic"
@@ -36,17 +41,16 @@ void Component::BoxCollider::OnDrawGui()
     
     int layerIndex = Physics::ToIndex(layer_);
     if (ImGui::Combo("Layer", &layerIndex, Physics::LAYER_NAMES, static_cast<int>(Physics::Layer::Count)))
-    {
-        layer_ = Physics::ToLayer(layerIndex);
-    }
+        SetLayer(Physics::ToLayer(layerIndex));
     OnDebugDraw();
 }
 
 void Component::BoxCollider::OnDebugDraw() const
 {
-    const glm::vec3 worldPos = Transform().GetWorldPos() + Transform().GetWorldRot() * offset_ * Transform().GetWorldScale();
-    const glm::quat worldRot = Transform().GetWorldRot();
-    const glm::vec3 halfSize = size_ * Transform().GetWorldScale() * 0.5f;
+    const glm::vec3 worldPos  = Transform().GetWorldPos() + Transform().GetWorldRot() * offset_ * Transform().GetWorldScale();
+    const glm::quat offsetRot = glm::quat(glm::radians(offsetRotation_));
+    const glm::quat worldRot  = Transform().GetWorldRot() * offsetRot;
+    const glm::vec3 halfSize  = size_ * Transform().GetWorldScale() * 0.5f;
 
     // OnDebugDrawDxCube
     std::array localVertices = {

@@ -79,6 +79,7 @@ void GameObject::AddComponent::OnDrawColliderGui(std::shared_ptr<Component::Comp
         OnDrawTryAddComponentGui<Component::BoxCollider       >(addComponent);
         OnDrawTryAddComponentGui<Component::SphereCollider    >(addComponent);
         OnDrawTryAddComponentGui<Component::CapsuleCollider   >(addComponent);
+        OnDrawTryAddComponentGui<Component::CylinderCollider  >(addComponent);
         OnDrawTryAddComponentGui<Component::StaticMeshCollider>(addComponent);
         ImGui::TreePop();
         ImGui::Spacing();

@@ -86,7 +86,8 @@ namespace NanamiEngine::Core
         const bool isGravity,
         const Module::Physics::Layer layer,
         const JPH::EAllowedDOFs allowedDOFs,
-        Module::Physics::UserData* userData)
+        Module::Physics::UserData* userData,
+        const float friction)
     {
         const bool hasNoDOFs = allowedDOFs == JPH::EAllowedDOFs::None;
         const JPH::EMotionType effectiveMotionType =
@@ -107,6 +108,7 @@ namespace NanamiEngine::Core
         settings.mMassPropertiesOverride = massProperty;
         settings.mOverrideMassProperties = JPH::EOverrideMassProperties::CalculateInertia;
 
+        settings.mFriction = friction;
         settings.mIsSensor = isSensor;
         assert(userData);
         settings.mUserData = reinterpret_cast<JPH::uint64>(userData);

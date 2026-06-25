@@ -17,6 +17,10 @@ namespace NanamiEngine::Module::Component
         if (ImGui::DragFloat3("Offset", &offset.x, 0.01f))
             offset_ = offset;
 
+        glm::vec3 offsetRot = offsetRotation_;
+        if (ImGui::DragFloat3("OffsetRotation", &offsetRot.x, 0.1f))
+            offsetRotation_ = offsetRot;
+
         static const char* motionTypeNames[] = {
             "Static", "Kinematic", "Dynamic"
         };

@@ -8,6 +8,7 @@
 #include "Jolt/Physics/Body/AllowedDOFs.h"
 #include "detail/type_quat.hpp"
 #include "ext/quaternion_geometric.hpp"
+#include "gtc/quaternion.hpp"
 
 namespace NanamiEngine::Module::Component
 {
@@ -50,16 +51,18 @@ namespace NanamiEngine::Module::Component
     std::pair<JPH::Vec3, JPH::Quat> ColliderBase::CalcWorldTransformInternal() const
     {
         const auto& transform = Transform();
-    
+
         const glm::vec3 worldPos =
             transform.GetWorldPos() +
             transform.GetWorldRot() * offset_ * transform.GetWorldScale();
-    
-        const glm::quat normRot = glm::normalize(transform.GetWorldRot());
-    
+
+        const glm::quat normRot    = glm::normalize(transform.GetWorldRot());
+        const glm::quat offsetRot  = glm::quat(glm::radians(offsetRotation_));
+        const glm::quat finalRot   = glm::normalize(normRot * offsetRot);
+
         return {
             JPH::Vec3(worldPos.x, worldPos.y, worldPos.z),
-            JPH::Quat(normRot.x, normRot.y, normRot.z, normRot.w)
+            JPH::Quat(finalRot.x, finalRot.y, finalRot.z, finalRot.w)
         };
     }
     
@@ -116,7 +119,8 @@ namespace NanamiEngine::Module::Component
             isGravity_,
             layer_,
             ToAllowedDOFs(constraints_),
-            &userData_
+            &userData_,
+            friction_
         );
 
         if (bodyInterface.GetMotionType(bodyId_) == JPH::EMotionType::Dynamic)
@@ -146,7 +150,8 @@ namespace NanamiEngine::Module::Component
             isGravity_,
             layer_,
             ToAllowedDOFs(constraints_),
-            &userData_
+            &userData_,
+            friction_
         );
     }
     
@@ -181,8 +186,10 @@ namespace NanamiEngine::Module::Component
             glm::vec3 newPos(position.GetX(), position.GetY(), position.GetZ());
             glm::quat newRot(rotation.GetW(), rotation.GetX(), rotation.GetY(), rotation.GetZ());
 
-            Transform().SetWorldPos(newPos - newRot * offset_ * Transform().GetWorldScale());
-            Transform().SetWorldRot(newRot);
+            const glm::quat offsetRot  = glm::quat(glm::radians(offsetRotation_));
+            const glm::quat worldRot   = glm::normalize(newRot * glm::conjugate(offsetRot));
+            Transform().SetWorldPos(newPos - worldRot * offset_ * Transform().GetWorldScale());
+            Transform().SetWorldRot(worldRot);
         }
     }
     
@@ -227,6 +234,32 @@ namespace NanamiEngine::Module::Component
         RecreateBody();
     }
 
+    void ColliderBase::SetLayer(const Physics::Layer layer)
+    {
+        if (layer_ == layer)
+            return;
+
+        layer_ = layer;
+
+        if (BodyId().IsInvalid())
+            return;
+
+        RecreateBody();
+    }
+
+    void ColliderBase::SetFriction(const float friction)
+    {
+        if (friction_ == friction)
+            return;
+
+        friction_ = friction;
+
+        if (BodyId().IsInvalid())
+            return;
+
+        RecreateBody();
+    }
+
     void ColliderBase::SetFreezePhysics(const Physics::Constraints& freeze)
     {
         if (constraints_ == freeze)
@@ -253,6 +286,8 @@ namespace NanamiEngine::Module::Component
         DrawChoiceLayerGui("layer_", layer_);
         ImGuiHelper::OnDrawInputField("isGravity_", isGravity_);
         ImGuiHelper::OnDrawInputField("mass_", mass_);
+        ImGuiHelper::OnDrawInputField("friction_", friction_);
+        ImGuiHelper::OnDrawInputField("offsetRotation_", offsetRotation_);
         if (ImGui::TreeNode("option"))
         {
             if (ImGui::Button("Set ZeloLinearVelocity"))

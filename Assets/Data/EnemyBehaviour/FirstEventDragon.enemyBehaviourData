@@ -1076,7 +1076,7 @@
                                                                     "data": {
                                                                         "cereal_class_version": 0,
                                                                         "value0": {},
-                                                                        "arriveDuration_secs_": 90.0
+                                                                        "arriveDuration_secs_": 200.0
                                                                     }
                                                                 }
                                                             }
@@ -1156,8 +1156,8 @@
                                                                                                     "value_": "8798B3BF-A152-4337-83FE-82E7F1B2B5FC"
                                                                                                 },
                                                                                                 "position_": {
-                                                                                                    "value0": 1262.0,
-                                                                                                    "value1": 518.0
+                                                                                                    "value0": 1264.0,
+                                                                                                    "value1": 517.0
                                                                                                 }
                                                                                             },
                                                                                             "name_": "Wait DestroyIsland",
@@ -1186,7 +1186,7 @@
                                                                                                 },
                                                                                                 "position_": {
                                                                                                     "value0": 1264.0,
-                                                                                                    "value1": 588.0
+                                                                                                    "value1": 591.0
                                                                                                 }
                                                                                             },
                                                                                             "name_": "Disable DestroyIsland Camera",
@@ -2383,8 +2383,8 @@
                                                                     "value_": "A81A770F-824D-4BD5-897A-E294D464F627"
                                                                 },
                                                                 "position_": {
-                                                                    "value0": 1129.0,
-                                                                    "value1": 518.0
+                                                                    "value0": 1127.0,
+                                                                    "value1": 460.0
                                                                 }
                                                             },
                                                             "children_": [
@@ -2399,8 +2399,8 @@
                                                                                     "value_": "60FDB75B-0DE6-47F2-9530-F5F9B42DE0DA"
                                                                                 },
                                                                                 "position_": {
-                                                                                    "value0": 975.0,
-                                                                                    "value1": 571.0
+                                                                                    "value0": 972.0,
+                                                                                    "value1": 574.0
                                                                                 }
                                                                             },
                                                                             "children_": [
@@ -2412,14 +2412,14 @@
                                                                                             "value0": {
                                                                                                 "value0": {},
                                                                                                 "guid_": {
-                                                                                                    "value_": "DFB1E5C4-ABF9-420C-B377-50C67AF3EEB9"
+                                                                                                    "value_": "72FD4153-3B78-4DD4-ADAB-BD1FBD21805D"
                                                                                                 },
                                                                                                 "position_": {
-                                                                                                    "value0": 975.0,
-                                                                                                    "value1": 644.0
+                                                                                                    "value0": 973.0,
+                                                                                                    "value1": 645.0
                                                                                                 }
                                                                                             },
-                                                                                            "name_": "State1",
+                                                                                            "name_": "State 1",
                                                                                             "action_": {
                                                                                                 "polymorphic_id": 11,
                                                                                                 "ptr_wrapper": {
@@ -2435,9 +2435,41 @@
                                                                                     }
                                                                                 },
                                                                                 {
-                                                                                    "polymorphic_id": 1,
+                                                                                    "polymorphic_id": 3,
                                                                                     "ptr_wrapper": {
                                                                                         "id": 2147483747,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "1B294EA7-28D5-460B-A63C-39B13A36D934"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 973.0,
+                                                                                                    "value1": 726.0
+                                                                                                }
+                                                                                            },
+                                                                                            "name_": "ToPlayerDistance",
+                                                                                            "action_": {
+                                                                                                "polymorphic_id": 2147483672,
+                                                                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance",
+                                                                                                "ptr_wrapper": {
+                                                                                                    "valid": 1,
+                                                                                                    "data": {
+                                                                                                        "cereal_class_version": 1,
+                                                                                                        "value0": {},
+                                                                                                        "distance_": 35.0,
+                                                                                                        "isInnerDistance_": false
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "polymorphic_id": 1,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483748,
                                                                                         "data": {
                                                                                             "value0": {
                                                                                                 "value0": {},
@@ -2445,44 +2477,11 @@
                                                                                                     "value_": "7DFF2B69-4F77-4075-B735-739DFD5A9D4B"
                                                                                                 },
                                                                                                 "position_": {
-                                                                                                    "value0": 974.0,
-                                                                                                    "value1": 720.0
+                                                                                                    "value0": 973.0,
+                                                                                                    "value1": 795.0
                                                                                                 }
                                                                                             },
                                                                                             "children_": [
-                                                                                                {
-                                                                                                    "polymorphic_id": 3,
-                                                                                                    "ptr_wrapper": {
-                                                                                                        "id": 2147483748,
-                                                                                                        "data": {
-                                                                                                            "value0": {
-                                                                                                                "value0": {},
-                                                                                                                "guid_": {
-                                                                                                                    "value_": "25CDA775-4D14-4EFD-AF8C-276031E5CD52"
-                                                                                                                },
-                                                                                                                "position_": {
-                                                                                                                    "value0": 845.0,
-                                                                                                                    "value1": 802.0
-                                                                                                                }
-                                                                                                            },
-                                                                                                            "name_": "RotateToPlayer",
-                                                                                                            "action_": {
-                                                                                                                "polymorphic_id": 2147483672,
-                                                                                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::RotateOnPlayer",
-                                                                                                                "ptr_wrapper": {
-                                                                                                                    "valid": 1,
-                                                                                                                    "data": {
-                                                                                                                        "cereal_class_version": 1,
-                                                                                                                        "value0": {},
-                                                                                                                        "rotateSpeed_": 60.0,
-                                                                                                                        "toleranceDeg_": 12.0,
-                                                                                                                        "offsetRotateDeg_": 0.0
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                },
                                                                                                 {
                                                                                                     "polymorphic_id": 3,
                                                                                                     "ptr_wrapper": {
@@ -2491,25 +2490,44 @@
                                                                                                             "value0": {
                                                                                                                 "value0": {},
                                                                                                                 "guid_": {
-                                                                                                                    "value_": "038A9A49-8954-4117-9490-232CE11DD9CB"
+                                                                                                                    "value_": "F3AFC96C-214F-4188-9484-F32499396BBC"
                                                                                                                 },
                                                                                                                 "position_": {
-                                                                                                                    "value0": 974.0,
-                                                                                                                    "value1": 801.0
+                                                                                                                    "value0": 973.0,
+                                                                                                                    "value1": 869.0
                                                                                                                 }
                                                                                                             },
-                                                                                                            "name_": "MoveToPlayer",
+                                                                                                            "name_": "ChasePlayer",
                                                                                                             "action_": {
                                                                                                                 "polymorphic_id": 2147483673,
-                                                                                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::MoveToPlayerPos",
+                                                                                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding",
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
                                                                                                                     "data": {
-                                                                                                                        "cereal_class_version": 0,
+                                                                                                                        "cereal_class_version": 2,
                                                                                                                         "value0": {},
+                                                                                                                        "heightGridMap_": {
+                                                                                                                            "cereal_class_version": 0,
+                                                                                                                            "value0": {
+                                                                                                                                "polymorphic_id": 1073741824,
+                                                                                                                                "ptr_wrapper": {
+                                                                                                                                    "id": 2147483750,
+                                                                                                                                    "data": {
+                                                                                                                                        "cereal_class_version": 0,
+                                                                                                                                        "value0": {
+                                                                                                                                            "value_": "32C78AA8-961C-406E-9861-7C55564C5B54"
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        },
                                                                                                                         "moveSpeed_": 30.0,
-                                                                                                                        "moveStartDistance_": 36.0,
-                                                                                                                        "animationNumber_": 3
+                                                                                                                        "rotateSpeed_": 120.0,
+                                                                                                                        "maxPathCellRange_": 1000,
+                                                                                                                        "maxClimbAngleDeg_": 45.0,
+                                                                                                                        "searchIntervalSec_": 0.30000001192092898,
+                                                                                                                        "animationNumber_": 3,
+                                                                                                                        "rotateToleranceDeg_": 10.0
                                                                                                                     }
                                                                                                                 }
                                                                                                             }
@@ -2527,7 +2545,7 @@
                                                                 {
                                                                     "polymorphic_id": 2,
                                                                     "ptr_wrapper": {
-                                                                        "id": 2147483750,
+                                                                        "id": 2147483751,
                                                                         "data": {
                                                                             "value0": {
                                                                                 "value0": {},
@@ -2535,15 +2553,15 @@
                                                                                     "value_": "5A94040F-228A-4E33-87E7-BF897CFF64FE"
                                                                                 },
                                                                                 "position_": {
-                                                                                    "value0": 1129.0,
-                                                                                    "value1": 601.0
+                                                                                    "value0": 1127.0,
+                                                                                    "value1": 570.0
                                                                                 }
                                                                             },
                                                                             "children_": [
                                                                                 {
                                                                                     "polymorphic_id": 3,
                                                                                     "ptr_wrapper": {
-                                                                                        "id": 2147483751,
+                                                                                        "id": 2147483752,
                                                                                         "data": {
                                                                                             "value0": {
                                                                                                 "value0": {},
@@ -2551,8 +2569,8 @@
                                                                                                     "value_": "53FF3E9B-354D-4B5C-90AC-561FF3015987"
                                                                                                 },
                                                                                                 "position_": {
-                                                                                                    "value0": 1130.0,
-                                                                                                    "value1": 673.0
+                                                                                                    "value0": 1128.0,
+                                                                                                    "value1": 671.0
                                                                                                 }
                                                                                             },
                                                                                             "name_": "Change To State2 ",
@@ -2573,7 +2591,7 @@
                                                                                 {
                                                                                     "polymorphic_id": 1,
                                                                                     "ptr_wrapper": {
-                                                                                        "id": 2147483752,
+                                                                                        "id": 2147483753,
                                                                                         "data": {
                                                                                             "value0": {
                                                                                                 "value0": {},
@@ -2589,7 +2607,7 @@
                                                                                                 {
                                                                                                     "polymorphic_id": 2,
                                                                                                     "ptr_wrapper": {
-                                                                                                        "id": 2147483753,
+                                                                                                        "id": 2147483754,
                                                                                                         "data": {
                                                                                                             "value0": {
                                                                                                                 "value0": {},
@@ -2606,9 +2624,9 @@
                                                                                                                     "polymorphic_id": 2147483674,
                                                                                                                     "polymorphic_name": "Editor::Npc::Behaviour::RandomSelectorNode",
                                                                                                                     "ptr_wrapper": {
-                                                                                                                        "id": 2147483754,
+                                                                                                                        "id": 2147483755,
                                                                                                                         "data": {
-                                                                                                                            "cereal_class_version": 0,
+                                                                                                                            "cereal_class_version": 1,
                                                                                                                             "value0": {
                                                                                                                                 "value0": {},
                                                                                                                                 "guid_": {
@@ -2623,7 +2641,7 @@
                                                                                                                                 {
                                                                                                                                     "polymorphic_id": 2,
                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                        "id": 2147483755,
+                                                                                                                                        "id": 2147483756,
                                                                                                                                         "data": {
                                                                                                                                             "value0": {
                                                                                                                                                 "value0": {},
@@ -2639,7 +2657,7 @@
                                                                                                                                                 {
                                                                                                                                                     "polymorphic_id": 3,
                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                        "id": 2147483756,
+                                                                                                                                                        "id": 2147483757,
                                                                                                                                                         "data": {
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
@@ -2676,7 +2694,7 @@
                                                                                                                                                                             "value0": {
                                                                                                                                                                                 "polymorphic_id": 1073741824,
                                                                                                                                                                                 "ptr_wrapper": {
-                                                                                                                                                                                    "id": 2147483757,
+                                                                                                                                                                                    "id": 2147483758,
                                                                                                                                                                                     "data": {
                                                                                                                                                                                         "value0": {
                                                                                                                                                                                             "value_": "6DE805D2-0B57-4A75-8700-B5C71EC9B0BD"
@@ -2698,7 +2716,7 @@
                                                                                                                                 {
                                                                                                                                     "polymorphic_id": 2,
                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                        "id": 2147483758,
+                                                                                                                                        "id": 2147483759,
                                                                                                                                         "data": {
                                                                                                                                             "value0": {
                                                                                                                                                 "value0": {},
@@ -2714,7 +2732,7 @@
                                                                                                                                                 {
                                                                                                                                                     "polymorphic_id": 3,
                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                        "id": 2147483759,
+                                                                                                                                                        "id": 2147483760,
                                                                                                                                                         "data": {
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
@@ -2749,7 +2767,7 @@
                                                                                                                                                                             "value0": {
                                                                                                                                                                                 "polymorphic_id": 1073741824,
                                                                                                                                                                                 "ptr_wrapper": {
-                                                                                                                                                                                    "id": 2147483760,
+                                                                                                                                                                                    "id": 2147483761,
                                                                                                                                                                                     "data": {
                                                                                                                                                                                         "value0": {
                                                                                                                                                                                             "value_": "6DE805D2-0B57-4A75-8700-B5C71EC9B0BD"
@@ -2771,7 +2789,7 @@
                                                                                                                                 {
                                                                                                                                     "polymorphic_id": 2,
                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                        "id": 2147483761,
+                                                                                                                                        "id": 2147483762,
                                                                                                                                         "data": {
                                                                                                                                             "value0": {
                                                                                                                                                 "value0": {},
@@ -2787,7 +2805,7 @@
                                                                                                                                                 {
                                                                                                                                                     "polymorphic_id": 3,
                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                        "id": 2147483762,
+                                                                                                                                                        "id": 2147483763,
                                                                                                                                                         "data": {
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
@@ -2822,7 +2840,7 @@
                                                                                                                                                                             "value0": {
                                                                                                                                                                                 "polymorphic_id": 1073741824,
                                                                                                                                                                                 "ptr_wrapper": {
-                                                                                                                                                                                    "id": 2147483763,
+                                                                                                                                                                                    "id": 2147483764,
                                                                                                                                                                                     "data": {
                                                                                                                                                                                         "value0": {
                                                                                                                                                                                             "value_": "4FF56704-684F-4DA7-909C-5A810B53E135"
@@ -2844,7 +2862,7 @@
                                                                                                                                 {
                                                                                                                                     "polymorphic_id": 2,
                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                        "id": 2147483764,
+                                                                                                                                        "id": 2147483765,
                                                                                                                                         "data": {
                                                                                                                                             "value0": {
                                                                                                                                                 "value0": {},
@@ -2860,7 +2878,7 @@
                                                                                                                                                 {
                                                                                                                                                     "polymorphic_id": 3,
                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                        "id": 2147483765,
+                                                                                                                                                        "id": 2147483766,
                                                                                                                                                         "data": {
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
@@ -2868,8 +2886,8 @@
                                                                                                                                                                     "value_": "C3184848-5798-402A-ADD1-244857D22BDC"
                                                                                                                                                                 },
                                                                                                                                                                 "position_": {
-                                                                                                                                                                    "value0": 1161.0,
-                                                                                                                                                                    "value1": 1102.0
+                                                                                                                                                                    "value0": 1162.0,
+                                                                                                                                                                    "value1": 1103.0
                                                                                                                                                                 }
                                                                                                                                                             },
                                                                                                                                                             "name_": "WeggingTail",
@@ -2895,7 +2913,7 @@
                                                                                                                                                                             "value0": {
                                                                                                                                                                                 "polymorphic_id": 1073741824,
                                                                                                                                                                                 "ptr_wrapper": {
-                                                                                                                                                                                    "id": 2147483766,
+                                                                                                                                                                                    "id": 2147483767,
                                                                                                                                                                                     "data": {
                                                                                                                                                                                         "value0": {
                                                                                                                                                                                             "value_": "FE2EC2BF-5CF6-405A-8C16-3A4E2CC96680"
@@ -2917,7 +2935,7 @@
                                                                                                                                 {
                                                                                                                                     "polymorphic_id": 2,
                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                        "id": 2147483767,
+                                                                                                                                        "id": 2147483768,
                                                                                                                                         "data": {
                                                                                                                                             "value0": {
                                                                                                                                                 "value0": {},
@@ -2933,7 +2951,7 @@
                                                                                                                                                 {
                                                                                                                                                     "polymorphic_id": 3,
                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                        "id": 2147483768,
+                                                                                                                                                        "id": 2147483769,
                                                                                                                                                         "data": {
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
@@ -2963,7 +2981,7 @@
                                                                                                                                                                                 "value0": {
                                                                                                                                                                                     "polymorphic_id": 1073741824,
                                                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                                                        "id": 2147483769,
+                                                                                                                                                                                        "id": 2147483770,
                                                                                                                                                                                         "data": {
                                                                                                                                                                                             "value0": {
                                                                                                                                                                                                 "value_": "5904A6C0-55FD-44EB-9301-629303274AFC"
@@ -2982,7 +3000,7 @@
                                                                                                                                                 {
                                                                                                                                                     "polymorphic_id": 3,
                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                        "id": 2147483770,
+                                                                                                                                                        "id": 2147483771,
                                                                                                                                                         "data": {
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
@@ -2990,8 +3008,8 @@
                                                                                                                                                                     "value_": "D4219EA7-E9B2-4382-A2F1-4EAEB624428D"
                                                                                                                                                                 },
                                                                                                                                                                 "position_": {
-                                                                                                                                                                    "value0": 1311.0,
-                                                                                                                                                                    "value1": 1172.0
+                                                                                                                                                                    "value0": 1310.0,
+                                                                                                                                                                    "value1": 1173.0
                                                                                                                                                                 }
                                                                                                                                                             },
                                                                                                                                                             "name_": "Wait LandingRoar",
@@ -3007,6 +3025,36 @@
                                                                                                                                                             }
                                                                                                                                                         }
                                                                                                                                                     }
+                                                                                                                                                },
+                                                                                                                                                {
+                                                                                                                                                    "polymorphic_id": 3,
+                                                                                                                                                    "ptr_wrapper": {
+                                                                                                                                                        "id": 2147483772,
+                                                                                                                                                        "data": {
+                                                                                                                                                            "value0": {
+                                                                                                                                                                "value0": {},
+                                                                                                                                                                "guid_": {
+                                                                                                                                                                    "value_": "2606F55E-E968-4E12-AA8F-9FAC36F2E706"
+                                                                                                                                                                },
+                                                                                                                                                                "position_": {
+                                                                                                                                                                    "value0": 1311.0,
+                                                                                                                                                                    "value1": 1245.0
+                                                                                                                                                                }
+                                                                                                                                                            },
+                                                                                                                                                            "name_": "State",
+                                                                                                                                                            "action_": {
+                                                                                                                                                                "polymorphic_id": 15,
+                                                                                                                                                                "ptr_wrapper": {
+                                                                                                                                                                    "valid": 1,
+                                                                                                                                                                    "data": {
+                                                                                                                                                                        "value0": {},
+                                                                                                                                                                        "keyName_": "State",
+                                                                                                                                                                        "value_": 1
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        }
+                                                                                                                                                    }
                                                                                                                                                 }
                                                                                                                                             ]
                                                                                                                                         }
@@ -3015,7 +3063,7 @@
                                                                                                                                 {
                                                                                                                                     "polymorphic_id": 2,
                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                        "id": 2147483771,
+                                                                                                                                        "id": 2147483773,
                                                                                                                                         "data": {
                                                                                                                                             "value0": {
                                                                                                                                                 "value0": {},
@@ -3024,14 +3072,14 @@
                                                                                                                                                 },
                                                                                                                                                 "position_": {
                                                                                                                                                     "value0": 1455.0,
-                                                                                                                                                    "value1": 1034.0
+                                                                                                                                                    "value1": 1033.0
                                                                                                                                                 }
                                                                                                                                             },
                                                                                                                                             "children_": [
                                                                                                                                                 {
                                                                                                                                                     "polymorphic_id": 3,
                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                        "id": 2147483772,
+                                                                                                                                                        "id": 2147483774,
                                                                                                                                                         "data": {
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
@@ -3061,7 +3109,7 @@
                                                                                                                                                                                 "value0": {
                                                                                                                                                                                     "polymorphic_id": 1073741824,
                                                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                                                        "id": 2147483773,
+                                                                                                                                                                                        "id": 2147483775,
                                                                                                                                                                                         "data": {
                                                                                                                                                                                             "value0": {
                                                                                                                                                                                                 "value_": "5904A6C0-55FD-44EB-9301-629303274AFC"
@@ -3080,7 +3128,7 @@
                                                                                                                                                 {
                                                                                                                                                     "polymorphic_id": 3,
                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                        "id": 2147483774,
+                                                                                                                                                        "id": 2147483776,
                                                                                                                                                         "data": {
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
@@ -3109,7 +3157,7 @@
                                                                                                                                                 {
                                                                                                                                                     "polymorphic_id": 3,
                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                        "id": 2147483775,
+                                                                                                                                                        "id": 2147483777,
                                                                                                                                                         "data": {
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
@@ -3135,7 +3183,7 @@
                                                                                                                                                                             "offset_": {
                                                                                                                                                                                 "value0": 0.0,
                                                                                                                                                                                 "value1": 0.0,
-                                                                                                                                                                                "value2": 3.0
+                                                                                                                                                                                "value2": -3.0
                                                                                                                                                                             },
                                                                                                                                                                             "offsetRotation_": {
                                                                                                                                                                                 "value0": 0.0,
@@ -3147,7 +3195,7 @@
                                                                                                                                                                                 "value0": {
                                                                                                                                                                                     "polymorphic_id": 1073741824,
                                                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                                                        "id": 2147483776,
+                                                                                                                                                                                        "id": 2147483778,
                                                                                                                                                                                         "data": {
                                                                                                                                                                                             "value0": {
                                                                                                                                                                                                 "value_": "A7517356-1760-4D14-8A7F-F67D0E68A573"
@@ -3161,7 +3209,7 @@
                                                                                                                                                                             "offset_": {
                                                                                                                                                                                 "value0": 0.0,
                                                                                                                                                                                 "value1": 0.0,
-                                                                                                                                                                                "value2": 100.0
+                                                                                                                                                                                "value2": -1000.0
                                                                                                                                                                             },
                                                                                                                                                                             "offsetRotation_": {
                                                                                                                                                                                 "value0": 0.0,
@@ -3173,7 +3221,7 @@
                                                                                                                                                                                 "value0": {
                                                                                                                                                                                     "polymorphic_id": 1073741824,
                                                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                                                        "id": 2147483777,
+                                                                                                                                                                                        "id": 2147483779,
                                                                                                                                                                                         "data": {
                                                                                                                                                                                             "value0": {
                                                                                                                                                                                                 "value_": "4C7247DE-F8DC-4290-8716-6932546B833B"
@@ -3183,12 +3231,12 @@
                                                                                                                                                                                 }
                                                                                                                                                                             }
                                                                                                                                                                         },
-                                                                                                                                                                        "moveSpeed_": 1.0,
+                                                                                                                                                                        "moveSpeed_": 100.0,
                                                                                                                                                                         "projectilePrefab_": {
                                                                                                                                                                             "value0": {
                                                                                                                                                                                 "polymorphic_id": 1073741824,
                                                                                                                                                                                 "ptr_wrapper": {
-                                                                                                                                                                                    "id": 2147483778,
+                                                                                                                                                                                    "id": 2147483780,
                                                                                                                                                                                     "data": {
                                                                                                                                                                                         "value0": {
                                                                                                                                                                                             "value_": "5324A4E2-D5D9-414B-B255-C060C5131525"
@@ -3207,7 +3255,7 @@
                                                                                                                                                 {
                                                                                                                                                     "polymorphic_id": 3,
                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                        "id": 2147483779,
+                                                                                                                                                        "id": 2147483781,
                                                                                                                                                         "data": {
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
@@ -3233,7 +3281,7 @@
                                                                                                                                                                             "offset_": {
                                                                                                                                                                                 "value0": 0.0,
                                                                                                                                                                                 "value1": 0.0,
-                                                                                                                                                                                "value2": 3.0
+                                                                                                                                                                                "value2": -3.0
                                                                                                                                                                             },
                                                                                                                                                                             "offsetRotation_": {
                                                                                                                                                                                 "value0": 0.0,
@@ -3245,7 +3293,7 @@
                                                                                                                                                                                 "value0": {
                                                                                                                                                                                     "polymorphic_id": 1073741824,
                                                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                                                        "id": 2147483780,
+                                                                                                                                                                                        "id": 2147483782,
                                                                                                                                                                                         "data": {
                                                                                                                                                                                             "value0": {
                                                                                                                                                                                                 "value_": "18B101D5-514B-4F5E-A6C5-51F8AD3C429C"
@@ -3259,7 +3307,7 @@
                                                                                                                                                                             "offset_": {
                                                                                                                                                                                 "value0": 0.0,
                                                                                                                                                                                 "value1": 0.0,
-                                                                                                                                                                                "value2": 100.0
+                                                                                                                                                                                "value2": -1000.0
                                                                                                                                                                             },
                                                                                                                                                                             "offsetRotation_": {
                                                                                                                                                                                 "value0": 0.0,
@@ -3271,7 +3319,7 @@
                                                                                                                                                                                 "value0": {
                                                                                                                                                                                     "polymorphic_id": 1073741824,
                                                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                                                        "id": 2147483781,
+                                                                                                                                                                                        "id": 2147483783,
                                                                                                                                                                                         "data": {
                                                                                                                                                                                             "value0": {
                                                                                                                                                                                                 "value_": "076CC92C-466F-4F8F-816F-5B732021027C"
@@ -3281,12 +3329,12 @@
                                                                                                                                                                                 }
                                                                                                                                                                             }
                                                                                                                                                                         },
-                                                                                                                                                                        "moveSpeed_": 1.0,
+                                                                                                                                                                        "moveSpeed_": 100.0,
                                                                                                                                                                         "projectilePrefab_": {
                                                                                                                                                                             "value0": {
                                                                                                                                                                                 "polymorphic_id": 1073741824,
                                                                                                                                                                                 "ptr_wrapper": {
-                                                                                                                                                                                    "id": 2147483782,
+                                                                                                                                                                                    "id": 2147483784,
                                                                                                                                                                                     "data": {
                                                                                                                                                                                         "value0": {
                                                                                                                                                                                             "value_": "5324A4E2-D5D9-414B-B255-C060C5131525"
@@ -3305,7 +3353,7 @@
                                                                                                                                                 {
                                                                                                                                                     "polymorphic_id": 3,
                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                        "id": 2147483783,
+                                                                                                                                                        "id": 2147483785,
                                                                                                                                                         "data": {
                                                                                                                                                             "value0": {
                                                                                                                                                                 "value0": {},
@@ -3314,7 +3362,7 @@
                                                                                                                                                                 },
                                                                                                                                                                 "position_": {
                                                                                                                                                                     "value0": 1459.0,
-                                                                                                                                                                    "value1": 1381.0
+                                                                                                                                                                    "value1": 1380.0
                                                                                                                                                                 }
                                                                                                                                                             },
                                                                                                                                                             "name_": "FireBall Projectile",
@@ -3331,7 +3379,7 @@
                                                                                                                                                                             "offset_": {
                                                                                                                                                                                 "value0": 0.0,
                                                                                                                                                                                 "value1": 0.0,
-                                                                                                                                                                                "value2": 3.0
+                                                                                                                                                                                "value2": -3.0
                                                                                                                                                                             },
                                                                                                                                                                             "offsetRotation_": {
                                                                                                                                                                                 "value0": 0.0,
@@ -3343,7 +3391,7 @@
                                                                                                                                                                                 "value0": {
                                                                                                                                                                                     "polymorphic_id": 1073741824,
                                                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                                                        "id": 2147483784,
+                                                                                                                                                                                        "id": 2147483786,
                                                                                                                                                                                         "data": {
                                                                                                                                                                                             "value0": {
                                                                                                                                                                                                 "value_": "BE77B276-29DC-4BB2-BA7C-E1096C6355C9"
@@ -3357,7 +3405,7 @@
                                                                                                                                                                             "offset_": {
                                                                                                                                                                                 "value0": 0.0,
                                                                                                                                                                                 "value1": 0.0,
-                                                                                                                                                                                "value2": 100.0
+                                                                                                                                                                                "value2": -100.0
                                                                                                                                                                             },
                                                                                                                                                                             "offsetRotation_": {
                                                                                                                                                                                 "value0": 0.0,
@@ -3369,7 +3417,7 @@
                                                                                                                                                                                 "value0": {
                                                                                                                                                                                     "polymorphic_id": 1073741824,
                                                                                                                                                                                     "ptr_wrapper": {
-                                                                                                                                                                                        "id": 2147483785,
+                                                                                                                                                                                        "id": 2147483787,
                                                                                                                                                                                         "data": {
                                                                                                                                                                                             "value0": {
                                                                                                                                                                                                 "value_": "55434873-0985-436D-B0E8-91B7F634629F"
@@ -3379,12 +3427,12 @@
                                                                                                                                                                                 }
                                                                                                                                                                             }
                                                                                                                                                                         },
-                                                                                                                                                                        "moveSpeed_": 1.0,
+                                                                                                                                                                        "moveSpeed_": 100.0,
                                                                                                                                                                         "projectilePrefab_": {
                                                                                                                                                                             "value0": {
                                                                                                                                                                                 "polymorphic_id": 1073741824,
                                                                                                                                                                                 "ptr_wrapper": {
-                                                                                                                                                                                    "id": 2147483786,
+                                                                                                                                                                                    "id": 2147483788,
                                                                                                                                                                                     "data": {
                                                                                                                                                                                         "value0": {
                                                                                                                                                                                             "value_": "5324A4E2-D5D9-414B-B255-C060C5131525"
@@ -3399,11 +3447,49 @@
                                                                                                                                                             }
                                                                                                                                                         }
                                                                                                                                                     }
+                                                                                                                                                },
+                                                                                                                                                {
+                                                                                                                                                    "polymorphic_id": 3,
+                                                                                                                                                    "ptr_wrapper": {
+                                                                                                                                                        "id": 2147483789,
+                                                                                                                                                        "data": {
+                                                                                                                                                            "value0": {
+                                                                                                                                                                "value0": {},
+                                                                                                                                                                "guid_": {
+                                                                                                                                                                    "value_": "31AFC947-A281-4A29-B4C7-36B37BEE7A00"
+                                                                                                                                                                },
+                                                                                                                                                                "position_": {
+                                                                                                                                                                    "value0": 1459.0,
+                                                                                                                                                                    "value1": 1456.0
+                                                                                                                                                                }
+                                                                                                                                                            },
+                                                                                                                                                            "name_": "State To 1",
+                                                                                                                                                            "action_": {
+                                                                                                                                                                "polymorphic_id": 15,
+                                                                                                                                                                "ptr_wrapper": {
+                                                                                                                                                                    "valid": 1,
+                                                                                                                                                                    "data": {
+                                                                                                                                                                        "value0": {},
+                                                                                                                                                                        "keyName_": "State",
+                                                                                                                                                                        "value_": 1
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        }
+                                                                                                                                                    }
                                                                                                                                                 }
                                                                                                                                             ]
                                                                                                                                         }
                                                                                                                                     }
                                                                                                                                 }
+                                                                                                                            ],
+                                                                                                                            "weights_": [
+                                                                                                                                100,
+                                                                                                                                100,
+                                                                                                                                100,
+                                                                                                                                70,
+                                                                                                                                130,
+                                                                                                                                100
                                                                                                                             ]
                                                                                                                         }
                                                                                                                     }
@@ -3444,7 +3530,7 @@
                     "polymorphic_id": 2147483676,
                     "polymorphic_name": "NanamiEngine::Module::AnimationTree::AnimationParameter<int>",
                     "ptr_wrapper": {
-                        "id": 2147483787,
+                        "id": 2147483790,
                         "data": {
                             "cereal_class_version": 0,
                             "value0": {
@@ -3458,7 +3544,7 @@
                 "value2": {
                     "polymorphic_id": 28,
                     "ptr_wrapper": {
-                        "id": 2147483788,
+                        "id": 2147483791,
                         "data": {
                             "value0": {},
                             "name_": "DestroyIslandState",

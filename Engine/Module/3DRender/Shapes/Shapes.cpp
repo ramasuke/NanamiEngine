@@ -116,6 +116,42 @@ void NanamiEngine::Module::Render3D::Shapes::DrawCapsule3D(
     }
 }
 
+void NanamiEngine::Module::Render3D::Shapes::DrawCylinder3D(
+    const glm::vec3& center,
+    float radius,
+    float halfHeight,
+    const glm::quat& rotation,
+    const int& color)
+{
+    constexpr int segment = 16;
+    std::array<glm::vec3, segment> bottom{};
+    std::array<glm::vec3, segment> top{};
+
+    for (int i = 0; i < segment; i++)
+    {
+        float t = static_cast<float>(i) / segment * glm::two_pi<float>();
+        float x = std::cos(t) * radius;
+        float z = std::sin(t) * radius;
+
+        bottom[i] = RotatePoint(glm::vec3(x, -halfHeight, z), rotation) + center;
+        top[i]    = RotatePoint(glm::vec3(x,  halfHeight, z), rotation) + center;
+    }
+
+    for (int i = 0; i < segment; i++)
+    {
+        int n = (i + 1) % segment;
+
+        DrawLine3D(VGet(bottom[i].x, bottom[i].y, bottom[i].z),
+                   VGet(bottom[n].x, bottom[n].y, bottom[n].z), color);
+
+        DrawLine3D(VGet(top[i].x, top[i].y, top[i].z),
+                   VGet(top[n].x, top[n].y, top[n].z), color);
+
+        DrawLine3D(VGet(bottom[i].x, bottom[i].y, bottom[i].z),
+                   VGet(top[i].x, top[i].y, top[i].z), color);
+    }
+}
+
 void NanamiEngine::Module::Render3D::Shapes::DrawMeshWireFrame3D(
     const std::vector<glm::vec3>& vertices,
     const std::vector<uint32_t>&  indices,

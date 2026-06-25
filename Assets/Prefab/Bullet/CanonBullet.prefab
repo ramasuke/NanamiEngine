@@ -89,12 +89,31 @@
             "ptr_wrapper": {
                 "id": 2147483653,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
-                        "guid_": {
-                            "value_": "C7DDE9D0-8E8E-43D9-B3BC-B05471BA4D89"
+                        "cereal_class_version": 4,
+                        "value0": {
+                            "guid_": {
+                                "value_": "C7DDE9D0-8E8E-43D9-B3BC-B05471BA4D89"
+                            },
+                            "isEnable_": true
                         },
-                        "isEnable_": true
+                        "mass_": 1.0,
+                        "isGravity_": true,
+                        "offset_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "offsetRotation_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "emotionType_": 2,
+                        "layer_": 0,
+                        "constraints_": 0,
+                        "isSensor_": false
                     },
                     "value1": {
                         "cereal_class_version": 0
@@ -103,16 +122,7 @@
                         "cereal_class_version": 0
                     },
                     "value3": {},
-                    "radius_": 32.150001525878909,
-                    "offset_": {
-                        "value0": 0.0,
-                        "value1": 0.0,
-                        "value2": 0.0
-                    },
-                    "emotionType_": 2,
-                    "layer_": 0,
-                    "constraints_": 0,
-                    "isSensor_": false
+                    "radius_": 32.150001525878909
                 }
             }
         },

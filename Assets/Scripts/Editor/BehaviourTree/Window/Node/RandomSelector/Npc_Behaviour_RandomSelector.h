@@ -27,7 +27,10 @@ namespace Editor::Npc::Behaviour
         void SetConnectToNextNode(std::shared_ptr<NodeBase> nextNode) override;
         void DoOnDrawGui() override;
 
+        [[nodiscard]] int PickWeightedIndex();
+
         std::vector<std::shared_ptr<NodeBase>> children_;
+        std::vector<int> weights_;
         std::mt19937 rng_{ std::random_device{}() };
         int currentRunningNodeIndex_ = -1;
 
@@ -50,7 +53,7 @@ namespace Editor::Npc::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(Editor::Npc::Behaviour::RandomSelectorNode, 0);
+CEREAL_CLASS_VERSION(Editor::Npc::Behaviour::RandomSelectorNode, 1);
 CEREAL_REGISTER_TYPE(Editor::Npc::Behaviour::RandomSelectorNode);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(
     Editor::Npc::Behaviour::NodeBase,

@@ -19,7 +19,7 @@ namespace NanamiEngine::Module::Physics
             const glm::vec3& normal,
             const std::weak_ptr<GameObject::IGameObject>& hitObject);
 
-        [[nodiscard]] bool Hit() const { return hit_; }
+        [[nodiscard]] bool Hit() const;
         [[nodiscard]] const glm::vec3& Position() const { return position_; }
         [[nodiscard]] const glm::vec3& Normal() const { return normal_; }
         [[nodiscard]] GameObject::IGameObject& HitObject() const { return *hitObject_.lock(); }

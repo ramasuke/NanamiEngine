@@ -7,7 +7,7 @@
     },
     "components_": {
         "cereal_class_version": 0,
-        "componentCount": 4,
+        "componentCount": 6,
         "component_0": {
             "polymorphic_id": 2147483649,
             "polymorphic_name": "NanamiEngine::Module::Component::ModelRenderer",
@@ -89,12 +89,31 @@
             "ptr_wrapper": {
                 "id": 2147483653,
                 "data": {
-                    "cereal_class_version": 2,
+                    "cereal_class_version": 3,
                     "value0": {
-                        "guid_": {
-                            "value_": "18F04318-DCF7-40AF-A52B-C61C499A3B8E"
+                        "cereal_class_version": 4,
+                        "value0": {
+                            "guid_": {
+                                "value_": "18F04318-DCF7-40AF-A52B-C61C499A3B8E"
+                            },
+                            "isEnable_": true
                         },
-                        "isEnable_": true
+                        "mass_": 1.0,
+                        "isGravity_": true,
+                        "offset_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": -62.04999923706055
+                        },
+                        "offsetRotation_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "emotionType_": 2,
+                        "layer_": 2,
+                        "constraints_": 40,
+                        "isSensor_": false
                     },
                     "value1": {
                         "cereal_class_version": 0
@@ -104,16 +123,7 @@
                     },
                     "value3": {},
                     "radius_": 61.9900016784668,
-                    "height_": 200.0,
-                    "offset_": {
-                        "value0": 0.0,
-                        "value1": 0.0,
-                        "value2": -62.04999923706055
-                    },
-                    "emotionType_": 2,
-                    "layer_": 0,
-                    "constraints_": 40,
-                    "isSensor_": false
+                    "height_": 200.0
                 }
             }
         },
@@ -140,7 +150,7 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "value_": "203B38D6-B9A1-4174-95E7-8DE54D028D15"
+                                        "value_": "D7ED44DC-AC50-4B15-9A86-2239DB355AFE"
                                     }
                                 }
                             }
@@ -177,7 +187,7 @@
                                     "data": {
                                         "cereal_class_version": 0,
                                         "value0": {
-                                            "value_": "D52E6E7B-2969-47D2-BF91-D77D9F30B9E0"
+                                            "value_": "0CFB8E83-FB56-489E-BE58-7395BE91C382"
                                         }
                                     }
                                 }
@@ -192,7 +202,7 @@
                                         "cereal_class_version": 3,
                                         "maxHealth_": {
                                             "cereal_class_version": 0,
-                                            "value_": 1
+                                            "value_": 10
                                         },
                                         "currentHealth_": {
                                             "polymorphic_id": 1073741824,
@@ -200,7 +210,7 @@
                                                 "id": 2147483659,
                                                 "data": {
                                                     "value0": {
-                                                        "value_": 1
+                                                        "value_": 10
                                                     }
                                                 }
                                             }
@@ -209,7 +219,43 @@
                                 }
                             }
                         },
-                        "isNetworkSyncStatus_": false
+                        "isNetworkSyncStatus_": true
+                    }
+                }
+            }
+        },
+        "component_4": {
+            "polymorphic_id": 2147483653,
+            "polymorphic_name": "Network::NetworkTransform",
+            "ptr_wrapper": {
+                "id": 2147483660,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "value0": {
+                            "guid_": {
+                                "value_": "C1325385-6A71-43E1-91D0-22F9BC2A06E1"
+                            },
+                            "isEnable_": true
+                        }
+                    }
+                }
+            }
+        },
+        "component_5": {
+            "polymorphic_id": 2147483654,
+            "polymorphic_name": "GamePlay::Npc::Enemy::NetworkBehaviourTree",
+            "ptr_wrapper": {
+                "id": 2147483661,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "value0": {
+                            "guid_": {
+                                "value_": "E62D37E1-00B6-45D9-A830-19AEB7AAC940"
+                            },
+                            "isEnable_": true
+                        }
                     }
                 }
             }
@@ -259,7 +305,437 @@
                 "value3": 1.0
             }
         },
-        "childCount": 0
+        "childCount": 4,
+        "child": {
+            "polymorphic_id": 2147483655,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483662,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": false,
+                    "name_": "AttackArea",
+                    "guid_": {
+                        "value_": "80F80F9F-36D5-4ED2-A676-F383DF7CDDFC"
+                    },
+                    "components_": {
+                        "componentCount": 0
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 100.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 100.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    }
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 7,
+            "ptr_wrapper": {
+                "id": 2147483663,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": false,
+                    "name_": "Attack1Area",
+                    "guid_": {
+                        "value_": "08B7E8EB-C9B1-4F2C-BAAC-884C52AE01FB"
+                    },
+                    "components_": {
+                        "componentCount": 2,
+                        "component_0": {
+                            "polymorphic_id": 2147483656,
+                            "polymorphic_name": "NanamiEngine::Module::Component::BoxCollider",
+                            "ptr_wrapper": {
+                                "id": 2147483664,
+                                "data": {
+                                    "cereal_class_version": 6,
+                                    "value0": {
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "78B847A9-3695-4C8A-B1E6-FF93D8B1C34E"
+                                            },
+                                            "isEnable_": true
+                                        },
+                                        "mass_": 1.0,
+                                        "isGravity_": false,
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "emotionType_": 1,
+                                        "layer_": 0,
+                                        "constraints_": 0,
+                                        "isSensor_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "value3": {},
+                                    "size_": {
+                                        "value0": 10.0,
+                                        "value1": 10.0,
+                                        "value2": 10.0
+                                    }
+                                }
+                            }
+                        },
+                        "component_1": {
+                            "polymorphic_id": 2147483657,
+                            "polymorphic_name": "GameCore::Npc::Enemy::AttackArea",
+                            "ptr_wrapper": {
+                                "id": 2147483665,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "33336FB2-FFCE-4342-99BC-C4CA98429AC5"
+                                        },
+                                        "isEnable_": true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 80.0,
+                            "value2": -40.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "localScale_": {
+                            "value0": 10.0,
+                            "value1": 15.0,
+                            "value2": 27.809999465942384
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 10.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 15.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 27.809999465942384,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 80.0,
+                                "value2": -40.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    }
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 7,
+            "ptr_wrapper": {
+                "id": 2147483666,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": false,
+                    "name_": "Attack2Area",
+                    "guid_": {
+                        "value_": "EFD7517E-67F7-48C7-AF12-24603F1B8AE1"
+                    },
+                    "components_": {
+                        "componentCount": 2,
+                        "component_0": {
+                            "polymorphic_id": 8,
+                            "ptr_wrapper": {
+                                "id": 2147483667,
+                                "data": {
+                                    "value0": {
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "AB722F92-939F-4801-BD3D-8F468317C4AC"
+                                            },
+                                            "isEnable_": true
+                                        },
+                                        "mass_": 1.0,
+                                        "isGravity_": false,
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "emotionType_": 1,
+                                        "layer_": 0,
+                                        "constraints_": 0,
+                                        "isSensor_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "value3": {},
+                                    "size_": {
+                                        "value0": 10.0,
+                                        "value1": 10.0,
+                                        "value2": 10.0
+                                    }
+                                }
+                            }
+                        },
+                        "component_1": {
+                            "polymorphic_id": 9,
+                            "ptr_wrapper": {
+                                "id": 2147483668,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "E476709D-AA23-4EF6-9F63-07768EA15C45"
+                                        },
+                                        "isEnable_": true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 80.0,
+                            "value2": -127.88999938964844
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "localScale_": {
+                            "value0": 10.0,
+                            "value1": 15.0,
+                            "value2": 27.809999465942384
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 10.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 15.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 27.809999465942384,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 80.0,
+                                "value2": -127.88999938964844,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    }
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 7,
+            "ptr_wrapper": {
+                "id": 2147483669,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": false,
+                    "name_": "Attack3Area",
+                    "guid_": {
+                        "value_": "CA24279F-2D69-4E4C-9B55-1BF5FE4290DF"
+                    },
+                    "components_": {
+                        "componentCount": 2,
+                        "component_0": {
+                            "polymorphic_id": 8,
+                            "ptr_wrapper": {
+                                "id": 2147483670,
+                                "data": {
+                                    "value0": {
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "796B8EA8-C72F-4872-8520-AEFF8DB72566"
+                                            },
+                                            "isEnable_": true
+                                        },
+                                        "mass_": 1.0,
+                                        "isGravity_": false,
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "emotionType_": 1,
+                                        "layer_": 0,
+                                        "constraints_": 0,
+                                        "isSensor_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "value3": {},
+                                    "size_": {
+                                        "value0": 10.0,
+                                        "value1": 10.0,
+                                        "value2": 10.0
+                                    }
+                                }
+                            }
+                        },
+                        "component_1": {
+                            "polymorphic_id": 9,
+                            "ptr_wrapper": {
+                                "id": 2147483671,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "167FEA76-9028-480B-8984-6E818709CD6A"
+                                        },
+                                        "isEnable_": true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 80.0,
+                            "value2": -184.55999755859376
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "localScale_": {
+                            "value0": 10.0,
+                            "value1": 15.0,
+                            "value2": 16.559999465942384
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 10.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 15.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 16.559999465942384,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 80.0,
+                                "value2": -184.55999755859376,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    }
+                }
+            }
+        }
     },
-    "value0": 0
+    "value0": 1,
+    "value1": {
+        "value_": "E4F22960-EF57-49ED-829C-7EF20A5DC90D"
+    }
 }

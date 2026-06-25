@@ -49,7 +49,7 @@
                             }
                         }
                     },
-                    "useFixedInterpolation_": false,
+                    "useFixedInterpolation_": true,
                     "vsFile_": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -199,41 +199,43 @@
         },
         "component_3": {
             "polymorphic_id": 2147483652,
-            "polymorphic_name": "NanamiEngine::Module::Component::BoxCollider",
+            "polymorphic_name": "NanamiEngine::Module::Component::CapsuleCollider",
             "ptr_wrapper": {
                 "id": 2147483660,
                 "data": {
-                    "cereal_class_version": 5,
+                    "cereal_class_version": 3,
                     "value0": {
-                        "cereal_class_version": 3,
+                        "cereal_class_version": 4,
                         "value0": {
                             "guid_": {
-                                "value_": "A757D288-B44D-4FB7-BE69-AA0D2E0667EA"
+                                "value_": "C0E80D28-64FC-4373-A145-FA19B2CD4B65"
                             },
                             "isEnable_": true
                         },
-                        "mass_": 999999986991104.0,
-                        "isGravity_": true
+                        "mass_": 999.0,
+                        "isGravity_": true,
+                        "offset_": {
+                            "value0": 0.0,
+                            "value1": 2300.0,
+                            "value2": 700.0
+                        },
+                        "offsetRotation_": {
+                            "value0": 90.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "emotionType_": 2,
+                        "layer_": 0,
+                        "constraints_": 56,
+                        "isSensor_": false
                     },
                     "value1": {},
                     "value2": {
                         "cereal_class_version": 0
                     },
                     "value3": {},
-                    "size_": {
-                        "value0": 3000.0,
-                        "value1": 8000.0,
-                        "value2": 3000.0
-                    },
-                    "offset_": {
-                        "value0": 0.0,
-                        "value1": 4015.43994140625,
-                        "value2": 0.0
-                    },
-                    "emotionType_": 2,
-                    "layer_": 0,
-                    "constraints_": 56,
-                    "isSensor_": false
+                    "radius_": 2300.0,
+                    "height_": 1200.0
                 }
             }
         }
@@ -560,10 +562,12 @@
                     "components_": {
                         "componentCount": 2,
                         "component_0": {
-                            "polymorphic_id": 4,
+                            "polymorphic_id": 2147483654,
+                            "polymorphic_name": "NanamiEngine::Module::Component::BoxCollider",
                             "ptr_wrapper": {
                                 "id": 2147483666,
                                 "data": {
+                                    "cereal_class_version": 6,
                                     "value0": {
                                         "value0": {
                                             "guid_": {
@@ -572,7 +576,21 @@
                                             "isEnable_": true
                                         },
                                         "mass_": 1.0,
-                                        "isGravity_": true
+                                        "isGravity_": true,
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 18.719999313354493,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "emotionType_": 1,
+                                        "layer_": 0,
+                                        "constraints_": 56,
+                                        "isSensor_": true
                                     },
                                     "value1": {},
                                     "value2": {},
@@ -581,21 +599,12 @@
                                         "value0": 6000.0,
                                         "value1": 6000.0,
                                         "value2": 6000.0
-                                    },
-                                    "offset_": {
-                                        "value0": 0.0,
-                                        "value1": 18.719999313354493,
-                                        "value2": 0.0
-                                    },
-                                    "emotionType_": 1,
-                                    "layer_": 0,
-                                    "constraints_": 56,
-                                    "isSensor_": true
+                                    }
                                 }
                             }
                         },
                         "component_1": {
-                            "polymorphic_id": 2147483654,
+                            "polymorphic_id": 2147483655,
                             "polymorphic_name": "GameCore::Npc::Enemy::AttackArea",
                             "ptr_wrapper": {
                                 "id": 2147483667,
@@ -675,7 +684,7 @@
                     "components_": {
                         "componentCount": 2,
                         "component_0": {
-                            "polymorphic_id": 4,
+                            "polymorphic_id": 6,
                             "ptr_wrapper": {
                                 "id": 2147483669,
                                 "data": {
@@ -687,7 +696,21 @@
                                             "isEnable_": true
                                         },
                                         "mass_": 1.0,
-                                        "isGravity_": true
+                                        "isGravity_": true,
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 18.719999313354493,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "emotionType_": 1,
+                                        "layer_": 0,
+                                        "constraints_": 56,
+                                        "isSensor_": true
                                     },
                                     "value1": {},
                                     "value2": {},
@@ -696,21 +719,12 @@
                                         "value0": 6000.0,
                                         "value1": 6000.0,
                                         "value2": 6000.0
-                                    },
-                                    "offset_": {
-                                        "value0": 0.0,
-                                        "value1": 18.719999313354493,
-                                        "value2": 0.0
-                                    },
-                                    "emotionType_": 1,
-                                    "layer_": 0,
-                                    "constraints_": 56,
-                                    "isSensor_": true
+                                    }
                                 }
                             }
                         },
                         "component_1": {
-                            "polymorphic_id": 6,
+                            "polymorphic_id": 7,
                             "ptr_wrapper": {
                                 "id": 2147483670,
                                 "data": {
@@ -788,7 +802,7 @@
                     "components_": {
                         "componentCount": 2,
                         "component_0": {
-                            "polymorphic_id": 4,
+                            "polymorphic_id": 6,
                             "ptr_wrapper": {
                                 "id": 2147483672,
                                 "data": {
@@ -800,7 +814,21 @@
                                             "isEnable_": true
                                         },
                                         "mass_": 1.0,
-                                        "isGravity_": true
+                                        "isGravity_": true,
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 18.719999313354493,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "emotionType_": 1,
+                                        "layer_": 0,
+                                        "constraints_": 56,
+                                        "isSensor_": true
                                     },
                                     "value1": {},
                                     "value2": {},
@@ -809,21 +837,12 @@
                                         "value0": 6000.0,
                                         "value1": 6000.0,
                                         "value2": 6000.0
-                                    },
-                                    "offset_": {
-                                        "value0": 0.0,
-                                        "value1": 18.719999313354493,
-                                        "value2": 0.0
-                                    },
-                                    "emotionType_": 1,
-                                    "layer_": 0,
-                                    "constraints_": 56,
-                                    "isSensor_": true
+                                    }
                                 }
                             }
                         },
                         "component_1": {
-                            "polymorphic_id": 6,
+                            "polymorphic_id": 7,
                             "ptr_wrapper": {
                                 "id": 2147483673,
                                 "data": {
@@ -901,7 +920,7 @@
                     "components_": {
                         "componentCount": 2,
                         "component_0": {
-                            "polymorphic_id": 4,
+                            "polymorphic_id": 6,
                             "ptr_wrapper": {
                                 "id": 2147483675,
                                 "data": {
@@ -913,7 +932,21 @@
                                             "isEnable_": true
                                         },
                                         "mass_": 1.0,
-                                        "isGravity_": true
+                                        "isGravity_": true,
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 18.209999084472658,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "emotionType_": 1,
+                                        "layer_": 0,
+                                        "constraints_": 56,
+                                        "isSensor_": true
                                     },
                                     "value1": {},
                                     "value2": {},
@@ -922,21 +955,12 @@
                                         "value0": 9000.0,
                                         "value1": 9000.0,
                                         "value2": 9000.0
-                                    },
-                                    "offset_": {
-                                        "value0": 0.0,
-                                        "value1": 18.209999084472658,
-                                        "value2": 0.0
-                                    },
-                                    "emotionType_": 1,
-                                    "layer_": 0,
-                                    "constraints_": 56,
-                                    "isSensor_": true
+                                    }
                                 }
                             }
                         },
                         "component_1": {
-                            "polymorphic_id": 6,
+                            "polymorphic_id": 7,
                             "ptr_wrapper": {
                                 "id": 2147483676,
                                 "data": {
@@ -1014,7 +1038,7 @@
                     "components_": {
                         "componentCount": 2,
                         "component_0": {
-                            "polymorphic_id": 4,
+                            "polymorphic_id": 6,
                             "ptr_wrapper": {
                                 "id": 2147483678,
                                 "data": {
@@ -1026,7 +1050,21 @@
                                             "isEnable_": true
                                         },
                                         "mass_": 1.0,
-                                        "isGravity_": true
+                                        "isGravity_": true,
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 20.0,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "emotionType_": 1,
+                                        "layer_": 0,
+                                        "constraints_": 56,
+                                        "isSensor_": true
                                     },
                                     "value1": {},
                                     "value2": {},
@@ -1035,21 +1073,12 @@
                                         "value0": 5000.0,
                                         "value1": 5000.0,
                                         "value2": 3000.0
-                                    },
-                                    "offset_": {
-                                        "value0": 0.0,
-                                        "value1": 20.0,
-                                        "value2": 0.0
-                                    },
-                                    "emotionType_": 1,
-                                    "layer_": 0,
-                                    "constraints_": 56,
-                                    "isSensor_": true
+                                    }
                                 }
                             }
                         },
                         "component_1": {
-                            "polymorphic_id": 6,
+                            "polymorphic_id": 7,
                             "ptr_wrapper": {
                                 "id": 2147483679,
                                 "data": {
@@ -1127,7 +1156,7 @@
                     "components_": {
                         "componentCount": 1,
                         "component_0": {
-                            "polymorphic_id": 2147483655,
+                            "polymorphic_id": 2147483656,
                             "polymorphic_name": "NanamiEngine::CineMachine::CineMachineVirtualCamera",
                             "ptr_wrapper": {
                                 "id": 2147483681,
@@ -1195,7 +1224,7 @@
             }
         }
     },
-    "value0": 6,
+    "value0": 30,
     "value1": {
         "value_": "229C831A-F63A-4526-AF8C-5EBB6421ADBD"
     },
@@ -1213,5 +1242,77 @@
     },
     "value6": {
         "value_": "E5482559-3596-4AE0-8B36-3489BBC7E63F"
+    },
+    "value7": {
+        "value_": "F9145DDD-6377-47E5-8988-2AF01C5BA185"
+    },
+    "value8": {
+        "value_": "293DBB56-07E7-4753-A12A-23A47FF2FE51"
+    },
+    "value9": {
+        "value_": "9FB17CC4-CB42-49D6-BA00-E6EC1F6732AF"
+    },
+    "value10": {
+        "value_": "7F0C07C2-060A-4615-AEDC-90B885F33567"
+    },
+    "value11": {
+        "value_": "C7A54FA1-50EC-4740-866C-D94889213AB3"
+    },
+    "value12": {
+        "value_": "FD7C95E9-73E1-49A1-90E0-FB15D78B053C"
+    },
+    "value13": {
+        "value_": "BE83E776-7895-49D6-B80D-1B219E44FBA3"
+    },
+    "value14": {
+        "value_": "52E3F448-31B0-4467-935D-77BCEB62135D"
+    },
+    "value15": {
+        "value_": "C55E75D7-9D4B-4C7B-8D20-A6070AFA0155"
+    },
+    "value16": {
+        "value_": "34655DD7-A6D1-4A96-9284-93C8BE548B3F"
+    },
+    "value17": {
+        "value_": "1C1E67F1-4ED5-4B6B-ACAB-FC1AC8D20FBD"
+    },
+    "value18": {
+        "value_": "FBEE082C-B84C-4779-A31A-89ECBE58D157"
+    },
+    "value19": {
+        "value_": "7E39BBFD-D267-4065-B7B4-A6BC3F682B4A"
+    },
+    "value20": {
+        "value_": "FD55EF25-2867-4FF7-B4ED-5F0696EACCA1"
+    },
+    "value21": {
+        "value_": "5C898B83-2094-4C7E-91FF-21C5B05C0CC6"
+    },
+    "value22": {
+        "value_": "5FBC4DE4-6793-484E-888A-FF31D2A3EDE4"
+    },
+    "value23": {
+        "value_": "8A631BFF-75D9-4F6C-BDDB-CE732E1272C4"
+    },
+    "value24": {
+        "value_": "59ABFAC1-22A3-425A-9787-2FB95F8F8327"
+    },
+    "value25": {
+        "value_": "9131786B-D28A-4261-8509-D88A4E0E6551"
+    },
+    "value26": {
+        "value_": "FCB6D243-1B80-438A-814E-DBF8573A7BB7"
+    },
+    "value27": {
+        "value_": "5B987EF4-025B-48E0-B8FD-A5022A841ED8"
+    },
+    "value28": {
+        "value_": "A6E645DE-3EED-4572-A8C5-7E540FE35AE0"
+    },
+    "value29": {
+        "value_": "685C2EC1-BEF6-442A-A67B-A0746584AF9C"
+    },
+    "value30": {
+        "value_": "1A62A730-15B8-4802-9544-10D6EA32B265"
     }
 }

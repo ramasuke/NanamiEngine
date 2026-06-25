@@ -11,8 +11,9 @@ namespace NanamiEngine::Module::Component
     void CapsuleCollider::OnDebugDraw() const
     {
         const auto drawPosition = CalcColliderWorldPos();
-        const auto drawRotation = Transform().GetWorldRot();
-    
+        const glm::quat offsetRot  = glm::quat(glm::radians(offsetRotation_));
+        const glm::quat drawRotation = Transform().GetWorldRot() * offsetRot;
+
         Render3D::Shapes::DrawCapsule3D(
             drawPosition,
             radius_ * Transform().GetWorldScale().z,
@@ -46,6 +47,10 @@ namespace NanamiEngine::Module::Component
         if (ImGui::DragFloat3("Offset", &offset.x, 0.01f))
             offset_ = offset;
 
+        glm::vec3 offsetRot = offsetRotation_;
+        if (ImGui::DragFloat3("OffsetRotation", &offsetRot.x, 0.1f))
+            offsetRotation_ = offsetRot;
+
         static const char* motionTypeNames[] = {
             "Static", "Kinematic", "Dynamic"
         };
@@ -60,6 +65,12 @@ namespace NanamiEngine::Module::Component
         ImGui::Separator();
         ImGui::Text("Constraints");
         Physics::DrawConstraintCheckBoxsGui(constraints_);
+
+        {
+            Physics::Layer currentLayer = layer_;
+            if (Physics::DrawChoiceLayerGui("Layer", currentLayer))
+                SetLayer(currentLayer);
+        }
 
         OnDebugDraw();
     }

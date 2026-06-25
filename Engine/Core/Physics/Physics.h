@@ -42,7 +42,8 @@ namespace NanamiEngine::Core
             bool isGravity,
             Module::Physics::Layer layer,
             JPH::EAllowedDOFs allowedDOFs,
-            Module::Physics::UserData* userData);
+            Module::Physics::UserData* userData,
+            float friction = 0.2f);
 
     private:
         std::unique_ptr<JPH::TempAllocatorImpl> tempAllocator_;

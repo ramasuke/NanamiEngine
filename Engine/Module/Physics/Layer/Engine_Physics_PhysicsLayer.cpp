@@ -2,16 +2,19 @@
 
 #include "ImGuiHelper.h"
 
-bool NanamiEngine::Module::Physics::DrawChoiceLayerGui(const char* label, Layer& layer)
+namespace NanamiEngine::Module::Physics
 {
-    int current = ToIndex(layer);
-    bool changed = false;
-
-    if (ImGui::Combo(label, &current, LAYER_NAMES, static_cast<int>(Layer::Count)))
+    bool DrawChoiceLayerGui(const char* label, Layer& layer)
     {
-        layer = ToLayer(current);
-        changed = true;
-    }
+        int current = ToIndex(layer);
+        bool changed = false;
 
-    return changed;
+        if (ImGui::Combo(label, &current, LAYER_NAMES, static_cast<int>(Layer::Count)))
+        {
+            layer = ToLayer(current);
+            changed = true;
+        }
+
+        return changed;
+    }
 }

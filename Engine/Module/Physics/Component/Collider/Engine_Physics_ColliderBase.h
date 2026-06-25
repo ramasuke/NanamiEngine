@@ -34,6 +34,8 @@ namespace NanamiEngine::Module::Component
         void SetMotionType(const JPH::EMotionType& type) override;
         void SetGravity   (bool isGravity);
         void SetFreezePhysics(const Physics::Constraints& freeze);
+        void SetLayer(Physics::Layer layer);
+        void SetFriction(float friction);
 
         [[nodiscard]] virtual void OnDebugDraw() const = 0; 
         [[nodiscard]] bool IsGravity() const { return isGravity_; }
@@ -41,13 +43,15 @@ namespace NanamiEngine::Module::Component
 
     protected:
         [[nodiscard]] virtual JPH::RefConst<JPH::Shape> CreateColliderShape() const = 0;
-        
 
-        glm::vec3 offset_ = glm::vec3(0,  0,  0);
-        JPH::EMotionType emotionType_ = JPH::EMotionType::Static;
-        bool isSensor_ = false;
-        Physics::Constraints constraints_ = Physics::Constraints::None;
-        Physics::Layer layer_       = Physics::Layer::Default;
+
+        [[serialize(4)]] glm::vec3 offset_         = glm::vec3(0, 0, 0);
+        [[serialize(4)]] glm::vec3 offsetRotation_  = glm::vec3(0, 0, 0);
+        [[serialize(4)]] JPH::EMotionType emotionType_ = JPH::EMotionType::Static;
+        [[serialize(4)]] bool isSensor_ = false;
+        [[serialize(4)]] Physics::Constraints constraints_ = Physics::Constraints::None;
+        [[serialize(4)]] Physics::Layer layer_       = Physics::Layer::Default;
+        [[serialize(5)]] float friction_             = 0.2f;
         JPH::BodyID bodyId_;
         Physics::UserData userData_ = Physics::UserData(std::weak_ptr<GameObject::IGameObject>());
         
@@ -64,7 +68,7 @@ namespace NanamiEngine::Module::Component
         
         [[serialize(3)]] bool isGravity_ = true;
         [[serialize(2)]] float mass_ = true;
-        
+
 #pragma region Serialization Function
     public:
         template<class Archive>
@@ -72,6 +76,15 @@ namespace NanamiEngine::Module::Component
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 2) archive(CEREAL_NVP(mass_));
             if (version >= 3) archive(CEREAL_NVP(isGravity_));
+            if (version >= 4) {
+                archive(CEREAL_NVP(offset_));
+                archive(CEREAL_NVP(offsetRotation_));
+                archive(CEREAL_NVP(emotionType_));
+                archive(CEREAL_NVP(layer_));
+                archive(CEREAL_NVP(constraints_));
+                archive(CEREAL_NVP(isSensor_));
+            }
+            if (version >= 5) archive(CEREAL_NVP(friction_));
         }
 
         template<class Archive>
@@ -79,11 +92,20 @@ namespace NanamiEngine::Module::Component
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 2) archive(CEREAL_NVP(mass_));
             if (version >= 3) archive(CEREAL_NVP(isGravity_));
+            if (version >= 4) {
+                archive(CEREAL_NVP(offset_));
+                archive(CEREAL_NVP(offsetRotation_));
+                archive(CEREAL_NVP(emotionType_));
+                archive(CEREAL_NVP(layer_));
+                archive(CEREAL_NVP(constraints_));
+                archive(CEREAL_NVP(isSensor_));
+            }
+            if (version >= 5) archive(CEREAL_NVP(friction_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::ColliderBase, 3);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::ColliderBase, 5);
 #pragma endregion

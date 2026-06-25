@@ -14,6 +14,12 @@ namespace NanamiEngine::Module::Render3D::Shapes
                        float halfHeight,
                        const glm::quat& rotation,
                        const int& color);
+    /** @brief 円柱のワイヤーフレーム描画 */
+    void DrawCylinder3D(const glm::vec3& center,
+                        float radius,
+                        float halfHeight,
+                        const glm::quat& rotation,
+                        const int& color);
     /** @brief 球のワイヤーフレーム描画 */
     void DrawSphere3D(const glm::vec3& center,
                       float radius,

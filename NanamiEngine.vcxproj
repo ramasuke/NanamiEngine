@@ -24,6 +24,7 @@
     <ClCompile Include="Assets\Data\EnemyBehaviour\Data_EnemyBehaviourFile.cpp" />
     <ClCompile Include="Assets\Data\EventNpcWalkingRoute\Data_EventNpcWalkingRoute.cpp" />
     <ClCompile Include="Assets\Data\EventNpcWalkingRoute\RoutePoint\Data_Event_Npc_WalkingRoute_RoutePoint.cpp" />
+    <ClCompile Include="Assets\Data\HeightGridMap\Data_HeightGridMap.cpp" />
     <ClCompile Include="Assets\Data\FriendlyNpcBehviour\Data_FriendNpcBehaviourFile.cpp" />
     <ClCompile Include="Assets\Data\FriendlyNpcStatus\Base\Data_FriendlyNpcBaseStatus.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -268,6 +269,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Game.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\MainProgression\MainProgression.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\AttackArea\Enemy_AttackArea.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ChasePlayerForPathFinding\Enemy_Behaviour_Action_ChasePlayerForPathFinding.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ToPlayerDistance\Enemy_Behaviour_Action_ToPlayerDistance.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ToPlayerRaycast\Enemy_Behaviour_Action_ToPlayerRaycast.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\PurposeCamera\Enemy_Behaviour_Action_PurposeCamera.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -9324,6 +9328,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Module\Network\Object\Component\Engine_Network_NetworkComponent.cpp" />
+    <ClCompile Include="Engine\Module\Physics\Component\Collider\Cylinder\Engine_Physics_CylinderCollider.cpp" />
     <ClCompile Include="Engine\Module\ProjectConfig\Engine_Module_ProjectConfig.cpp" />
     <ClCompile Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -12483,6 +12488,7 @@
     <ClInclude Include="Assets\Data\EnemyBehaviour\Data_EnemyBehaviourFile.h" />
     <ClInclude Include="Assets\Data\EventNpcWalkingRoute\Data_EventNpcWalkingRoute.h" />
     <ClInclude Include="Assets\Data\EventNpcWalkingRoute\RoutePoint\Data_Event_Npc_WalkingRoute_RoutePoint.h" />
+    <ClInclude Include="Assets\Data\HeightGridMap\Data_HeightGridMap.h" />
     <ClInclude Include="Assets\Data\FriendlyNpcBehviour\Data_FriendNpcBehaviourFile.h" />
     <ClInclude Include="Assets\Data\FriendlyNpcStatus\Base\Data_FriendlyNpcBaseStatus.h" />
     <ClInclude Include="Assets\Data\FriendlyNpcWalkingRoute\Data_NpcWalkingRoute.h" />
@@ -12497,6 +12503,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Game.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\MainProgression\MainProgression.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\AttackArea\Enemy_AttackArea.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ChasePlayerForPathFinding\Enemy_Behaviour_Action_ChasePlayerForPathFinding.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ToPlayerDistance\Enemy_Behaviour_Action_ToPlayerDistance.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ToPlayerRaycast\Enemy_Behaviour_Action_ToPlayerRaycast.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\PurposeCamera\Enemy_Behaviour_Action_PurposeCamera.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\ScenePurposeCamera\Enemy_Behaviour_Action_ScenePurposeCamera.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Attack\Enemy_Behaviour_Action_Attack.h" />
@@ -12855,6 +12864,7 @@
     <ClInclude Include="Engine\Module\LocalPrefs\Editor\Engine_Module_LocalPrefs_Editor_ToolBar.h" />
     <ClInclude Include="Engine\Module\LocalPrefs\Engine_Module_LocalPrefs.h" />
     <ClInclude Include="Engine\Module\Network\Object\Component\Animator\NetworkAnimator.h" />
+    <ClInclude Include="Engine\Module\Physics\Component\Collider\Cylinder\Engine_Physics_CylinderCollider.h" />
     <ClInclude Include="Engine\Module\ProjectConfig\Engine_Module_ProjectConfig.h" />
     <ClInclude Include="Engine\Module\Color\Color32.h" />
     <ClInclude Include="Engine\Module\Component\Animator\Animator.h" />
@@ -13953,6 +13963,8 @@
     <Folder Include="Assets\Audio\" />
     <Folder Include="Assets\Prefab\Bullet\" />
     <Folder Include="Assets\Prefab\Npc\Friendly\" />
+    <Folder Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ToPlayerDistance\" />
+    <Folder Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\WanderMove\" />
     <Folder Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Condition\IsDeath\" />
     <Folder Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Content\" />
     <Folder Include="Assets\Tests\" />
