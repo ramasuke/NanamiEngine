@@ -255,8 +255,8 @@
                                                                                     "value_": "604CDA87-F608-4BAE-88D4-1E2460633062"
                                                                                 },
                                                                                 "position_": {
-                                                                                    "value0": 839.0,
-                                                                                    "value1": 381.0
+                                                                                    "value0": 840.0,
+                                                                                    "value1": 380.0
                                                                                 }
                                                                             },
                                                                             "children_": [
@@ -284,7 +284,7 @@
                                                                                                     "data": {
                                                                                                         "cereal_class_version": 1,
                                                                                                         "value0": {},
-                                                                                                        "distance_": 20.0,
+                                                                                                        "distance_": 10.0,
                                                                                                         "isInnerDistance_": false
                                                                                                     }
                                                                                                 }
@@ -350,7 +350,7 @@
                                                                                                             0,
                                                                                                             1
                                                                                                         ],
-                                                                                                        "maxDistance_": 1000.0,
+                                                                                                        "maxDistance_": 300.0,
                                                                                                         "offsetY_": 10.0
                                                                                                     }
                                                                                                 }
@@ -399,9 +399,9 @@
                                                                                                         },
                                                                                                         "moveSpeed_": 20.0,
                                                                                                         "rotateSpeed_": 140.0,
-                                                                                                        "maxPathCellRange_": 200,
-                                                                                                        "maxClimbAngleDeg_": 5.0,
-                                                                                                        "searchIntervalSec_": 0.4000000059604645,
+                                                                                                        "maxPathCellRange_": 400,
+                                                                                                        "maxClimbAngleDeg_": 25.0,
+                                                                                                        "searchIntervalSec_": 0.20000000298023225,
                                                                                                         "animationNumber_": 0,
                                                                                                         "rotateToleranceDeg_": 10.0
                                                                                                     }
@@ -452,7 +452,7 @@
                                                                                                     "valid": 1,
                                                                                                     "data": {
                                                                                                         "value0": {},
-                                                                                                        "distance_": 20.0,
+                                                                                                        "distance_": 10.0,
                                                                                                         "isInnerDistance_": false
                                                                                                     }
                                                                                                 }

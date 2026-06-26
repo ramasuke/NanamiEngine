@@ -24,23 +24,67 @@ namespace GameCore::Npc::Enemy::Behaviour
             pathThread_.join();
     }
 
+    bool Action::ChasePlayerForPathFinding::HasLineOfSight(
+        const NanamiEngine::Module::Asset::HeightGridMap& grid,
+        int x0, int z0, int x1, int z1,
+        float maxSlopeTan, float orthoDist)
+    {
+        const int W = grid.DivisionsX();
+        const int H = grid.DivisionsZ();
+
+        int dx  = std::abs(x1 - x0);
+        int dz  = std::abs(z1 - z0);
+        int sx  = (x0 < x1) ? 1 : -1;
+        int sz  = (z0 < z1) ? 1 : -1;
+        int err = dx - dz;
+        int cx  = x0, cz = z0;
+
+        while (!(cx == x1 && cz == z1))
+        {
+            const int  prevX = cx;
+            const int  prevZ = cz;
+            const int  e2    = 2 * err;
+            const bool stepX = (e2 > -dz);
+            const bool stepZ = (e2 <  dx);
+            if (stepX) { err -= dz; cx += sx; }
+            if (stepZ) { err += dx; cz += sz; }
+
+            if (cx < 0 || cx >= W || cz < 0 || cz >= H) return false;
+
+            const float horiz = (stepX && stepZ) ? orthoDist * SQRT2 : orthoDist;
+            if (std::abs(grid.At(cx, cz).height - grid.At(prevX, prevZ).height) > maxSlopeTan * horiz)
+                return false;
+        }
+        return true;
+    }
+
     std::vector<glm::vec3> Action::ChasePlayerForPathFinding::FindPath(
         const NanamiEngine::Module::Asset::HeightGridMap& grid,
         const glm::vec3& start, const glm::vec3& goal,
         const int maxCellRange, const float maxClimbAngleDeg)
     {
-        int sx, sz, gx, gz;
-        if (!grid.WorldToCell(start, sx, sz)) return {}; 
-        if (!grid.WorldToCell(goal,  gx, gz)) return {};
-        if (sx == gx && sz == gz) return {};
-
         const int W = grid.DivisionsX();
         const int H = grid.DivisionsZ();
+        if (W <= 0 || H <= 0) return {};
 
-        const glm::vec2 cell      = grid.CellSize();
-        const float     orthoDist = (std::min)(std::abs(cell.x), std::abs(cell.y));
-        // ìoç‚â¬î\åXéŒÇÃê≥ê⁄ÅB çÇí·ç∑ <= maxSlopeTan * êÖïΩãóó£ Ç»ÇÁí çsâ¬î\
+        const glm::vec2 cell        = grid.CellSize();
+        const float     orthoDist   = (std::min)(std::abs(cell.x), std::abs(cell.y));
         const float     maxSlopeTan = std::tan(maxClimbAngleDeg * PI / 180.0f);
+
+        // „Ç∞„É™„ÉÉ„ÉâÂ§ñ„ÅÆÂ∫ßÊ®ô„ÇíÊúÄËøëÂÇç„Çª„É´„Å´„ÇØ„É©„É≥„Éó„Åó„Å¶Ëß£Ê±∫„Åô„Çã
+        const glm::vec3 gridOrigin = grid.CellToWorld(0, 0);
+        const auto resolveCell = [&](const glm::vec3& worldPos, int& outX, int& outZ) -> bool
+        {
+            if (grid.WorldToCell(worldPos, outX, outZ)) return true;
+            outX = std::clamp(static_cast<int>(std::round((worldPos.x - gridOrigin.x) / cell.x)), 0, W - 1);
+            outZ = std::clamp(static_cast<int>(std::round((worldPos.z - gridOrigin.z) / cell.y)), 0, H - 1);
+            return true;
+        };
+
+        int sx, sz, gx, gz;
+        if (!resolveCell(start, sx, sz)) return {};
+        if (!resolveCell(goal,  gx, gz)) return {};
+        if (sx == gx && sz == gz) return {};
 
         const auto index    = [W](int x, int z) { return z * W + x; };
         const auto inBounds = [W, H](int x, int z) { return x >= 0 && x < W && z >= 0 && z < H; };
@@ -63,9 +107,6 @@ namespace GameCore::Npc::Enemy::Behaviour
         gScore[index(sx, sz)] = 0.0f;
         open.push({heuristic(sx, sz), sx, sz});
 
-        static constexpr int DX[8] = {  1, -1,  0,  0,  1,  1, -1, -1 };
-        static constexpr int DZ[8] = {  0,  0,  1, -1,  1, -1,  1, -1 };
-
         bool reached = false;
         while (!open.empty())
         {
@@ -86,21 +127,19 @@ namespace GameCore::Npc::Enemy::Behaviour
 
             for (int d = 0; d < 8; ++d)
             {
-                const int nx = current.x + DX[d];
-                const int nz = current.z + DZ[d];
+                const int nx = current.x + kDirX[d];
+                const int nz = current.z + kDirZ[d];
 
                 if (!inBounds(nx, nz))
                     continue;
-                // íTçıÇãñâ¬Ç∑ÇÈÉZÉãîÕàÕÇí¥Ç¶ÇΩÇÁèúäO
                 if (std::abs(nx - sx) > maxCellRange || std::abs(nz - sz) > maxCellRange)
                     continue;
 
-                const bool  diagonal = (DX[d] != 0 && DZ[d] != 0);
+                const bool  diagonal = (kDirX[d] != 0 && kDirZ[d] != 0);
                 const float horiz    = diagonal ? orthoDist * SQRT2 : orthoDist;
                 if (horiz <= 0.0f)
                     continue;
 
-                // åXéŒîªíË
                 const float nHeight = grid.At(nx, nz).height;
                 if (std::abs(nHeight - curHeight) > maxSlopeTan * horiz)
                     continue;
@@ -109,6 +148,28 @@ namespace GameCore::Npc::Enemy::Behaviour
                 if (closed[ni])
                     continue;
 
+                // Theta*: Á•ñÁà∂„Éé„Éº„Éâ„Åã„Çâ nx,nz „Å∏„ÅÆ LoS „Åå„ÅÇ„Çå„Å∞Á•ñÁà∂„ÇíË¶™„Å´„Åô„Çã
+                const int parentCi = cameFrom[ci];
+                if (parentCi != -1)
+                {
+                    const int   px            = parentCi % W;
+                    const int   pz            = parentCi / W;
+                    if (HasLineOfSight(grid, px, pz, nx, nz, maxSlopeTan, orthoDist))
+                    {
+                        const float pdx           = static_cast<float>(nx - px) * cell.x;
+                        const float pdz           = static_cast<float>(nz - pz) * cell.y;
+                        const float tentativeViaP = gScore[parentCi] + std::sqrt(pdx * pdx + pdz * pdz);
+                        if (tentativeViaP < gScore[ni])
+                        {
+                            gScore[ni]   = tentativeViaP;
+                            cameFrom[ni] = parentCi;
+                            open.push({tentativeViaP + heuristic(nx, nz), nx, nz});
+                        }
+                        continue; // LoS „É´„Éº„Éà„ÅßÂà§Êñ≠Ê∏à„Åø„Å™„ÅÆ„ÅßÈÄöÂ∏∏ A* „ÅØË©¶„Åø„Å™„ÅÑ
+                    }
+                }
+
+                // ÈÄöÂ∏∏ A*: ÁèæÂú®„Éé„Éº„ÉâÁµåÁî±
                 const float tentative = gScore[ci] + horiz;
                 if (tentative < gScore[ni])
                 {
@@ -122,7 +183,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         if (!reached)
             return {};
 
-        // åoòHïúå≥: ÉSÅ[ÉãÇ©ÇÁénì_Ç÷íHÇËÅAénì_ÉZÉãÇèúÇ¢ÇƒîΩì]Ç∑ÇÈÅB
+        // ?o?H????: ?S?[??????n?_??H??A?n?_?Z????????????]????B
         std::vector<glm::vec3> path;
         const int startIdx = index(sx, sz);
         for (int cur = index(gx, gz); cur != -1 && cur != startIdx; cur = cameFrom[cur])
@@ -141,10 +202,16 @@ namespace GameCore::Npc::Enemy::Behaviour
         if (!grid)
             return TickStatus::Failure;
 
-        const glm::vec3 selfPos   = context.EnemyTransform().GetWorldPos();
-        const glm::vec3 playerPos = context.Player()->PlayerTransform().GetWorldPos();
+        const glm::vec3 selfPos = context.EnemyTransform().GetWorldPos();
 
-        // äÆóπçœÇ›ÇÃíTçıåãâ ÇéÊÇËçûÇﬁ
+        std::vector<glm::vec3> playerPositions;
+        for (const auto& player : context.AllPlayer())
+            playerPositions.push_back(player.lock()->PlayerTransform().GetWorldPos());
+
+        if (playerPositions.empty())
+            return TickStatus::Failure;
+
+        // ÔøΩÔøΩÔøΩÔøΩÔøΩœÇ›ÇÃíTÔøΩÔøΩÔøΩÔøΩÔøΩ ÇÔøΩÔøΩÔøΩËçûÔøΩÔøΩ
         if (isReady_.load(std::memory_order_acquire))
         {
             {
@@ -153,7 +220,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             }
             hasPath_     = !cachedPath_.empty();
             isReady_     = false;
-            isSearching_ = false; // éüÉtÉåÅ[ÉÄÇ≈êVÇΩÇ»íTçıÇãNìÆÇ≈Ç´ÇÈÇÊÇ§Ç…Ç∑ÇÈ
+            isSearching_ = false; // ???t???[????V????T?????N?????????????
         }
 
         if (!isSearching_)
@@ -169,26 +236,32 @@ namespace GameCore::Npc::Enemy::Behaviour
                 const auto  gridShared = grid;
                 const int   range      = maxPathCellRange_;
                 const float angle      = maxClimbAngleDeg_;
-                pathThread_ = std::thread([this, gridShared, selfPos, playerPos, range, angle]()
+                pathThread_ = std::thread([this, gridShared, selfPos, playerPositions, range, angle]()
                 {
-                    auto path = FindPath(*gridShared, selfPos, playerPos, range, angle);
+                    std::vector<glm::vec3> bestPath;
+                    for (const auto& goalPos : playerPositions)
+                    {
+                        auto path = FindPath(*gridShared, selfPos, goalPos, range, angle);
+                        if (!path.empty() && (bestPath.empty() || path.size() < bestPath.size()))
+                            bestPath = std::move(path);
+                    }
                     {
                         std::lock_guard<std::mutex> lock(mutex_);
-                        resultPath_ = std::move(path);
+                        resultPath_ = std::move(bestPath);
                     }
                     isReady_.store(true, std::memory_order_release);
                 });
             }
         }
 
-        /** ëOâÒÇÃíTçıÇ…ê¨å˜ÇµÇƒÇ¢ÇÍÇŒà⁄ìÆ */
-        // èââÒíTçıÇ™äÆóπÇ∑ÇÈÇ‹Ç≈ÇÕåoòHÇ™ñ≥Ç¢ÇÃÇ≈à⁄ìÆÇπÇ∏ Failure Çï‘Ç∑ÅB
+        /** ?O???T????????????????? */
+        // ????T???????????????o?H??????????????? Failure ?????B
         if (!hasPath_ || cachedPath_.empty())
             return TickStatus::Failure;
 
-        // ëOÉtÉåÅ[ÉÄÇ‹Ç≈Ç…åvéZÇµÇΩåoòHÇÃéüÇÃíÜåpì_Ç÷å¸Ç©Ç§
-        // åªç›à íuÇ…âûÇ∂ÇƒìûíBçœÇ›ÇÃíÜåpì_Çè¡îÔÇµÅAà⁄ìÆÇµÇΩï™ÇæÇØéüÇÃíÜåpì_Ç÷êiÇﬂÇÈÅB
-        // Ç±ÇÍÇ≈ searchIntervalSec_ Çë“ÇΩÇ∏Ç…é©êgÇÃà íuçXêVÇ÷í«è]Ç≈Ç´ÇÈÅB
+        // ?O?t???[??????v?Z?????o?H???????p?_???????
+        // ?????u?????????B??????p?_???????A???????????????????p?_??i???B
+        // ????? searchIntervalSec_ ??????????g???u?X?V???]?????B
         const glm::vec2 cellSize        = grid->CellSize();
         const float     halfCell        = 0.5f * (std::min)(std::abs(cellSize.x), std::abs(cellSize.y));
         const float     arrivalRadius   = (std::max)(halfCell, moveSpeed_ * Time::DeltaTime() * 1.5f);
@@ -200,10 +273,10 @@ namespace GameCore::Npc::Enemy::Behaviour
             toWaypoint.y = 0.0f;
             if (toWaypoint.x * toWaypoint.x + toWaypoint.z * toWaypoint.z > arrivalRadiusSq)
                 break;
-            cachedPath_.erase(cachedPath_.begin()); // ìûíBÇµÇΩÇÃÇ≈éüÇÃíÜåpì_Ç÷
+            cachedPath_.erase(cachedPath_.begin()); // ???B????????????p?_??
         }
 
-        // ëSíÜåpì_Ç…ìûíBÇµÇΩÇÁåoòHÇégÇ¢êÿÇ¡ÇΩÇÃÇ≈éüÇÃíTçıÇë“Ç¬
+        // ?S???p?_????B??????o?H???g?????????????T??????
         if (cachedPath_.empty())
         {
             hasPath_ = false;
@@ -220,10 +293,10 @@ namespace GameCore::Npc::Enemy::Behaviour
 
         toTarget = glm::normalize(toTarget);
         glm::vec3 velocity = toTarget * moveSpeed_;
-        velocity.y = Physics::GetLinearVelocity(context.EnemyCollider().BodyId()).y; // èdóÕê¨ï™ÇÕà€éù
+        velocity.y = Physics::GetLinearVelocity(context.EnemyCollider().BodyId()).y; // ?d?????????
         Physics::SetLinearVelocity(context.EnemyCollider().BodyId(), velocity);
 
-        // à⁄ìÆï˚å¸Ç÷âÒì]Ç≥ÇπÇÈ
+        // ??????????]??????
         auto& transform = context.EnemyTransform();
         glm::vec3 forward = transform.GetWorldRot() * glm::vec3(0, 0, -1);
         forward.y = 0.0f;
@@ -236,7 +309,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             if (angleRad > glm::radians(rotateToleranceDeg_))
             {
                 const glm::quat currentRot = transform.GetWorldRot();
-                const glm::quat deltaRot = (dot < -0.9999f)
+                const glm::quat deltaRot = dot < -0.9999f
                     ? glm::angleAxis(glm::pi<float>(), glm::vec3(0, 1, 0))
                     : glm::rotation(forward, toTarget);
 

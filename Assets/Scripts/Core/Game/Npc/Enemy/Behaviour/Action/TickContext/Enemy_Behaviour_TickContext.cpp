@@ -37,6 +37,11 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         return PlayerAvatar::Owner();
     }
 
+    const std::vector<std::weak_ptr<IPlayerAvatar>>& TickContext::AllPlayer()
+    {
+        return IPlayerAvatar::PlayerAvatars();
+    }
+
     const PlayerAvatar::IQuestGroup& TickContext::PlayerQuest() const
     {
         return Player()->PlayerStatus().Quest();

@@ -178,7 +178,7 @@
                 "data": {
                     "cereal_class_version": 3,
                     "value0": {
-                        "cereal_class_version": 4,
+                        "cereal_class_version": 5,
                         "value0": {
                             "guid_": {
                                 "value_": "ACE49D85-EFEF-4842-B7A5-B2E7B72D73B6"
@@ -200,7 +200,8 @@
                         "emotionType_": 2,
                         "layer_": 1,
                         "constraints_": 56,
-                        "isSensor_": false
+                        "isSensor_": false,
+                        "friction_": 0.20000000298023225
                     },
                     "value1": {},
                     "value2": {
@@ -443,7 +444,8 @@
                                         "emotionType_": 1,
                                         "layer_": 0,
                                         "constraints_": 0,
-                                        "isSensor_": true
+                                        "isSensor_": true,
+                                        "friction_": 0.20000000298023225
                                     },
                                     "value1": {},
                                     "value2": {},
@@ -702,7 +704,8 @@
                                                         "emotionType_": 1,
                                                         "layer_": 0,
                                                         "constraints_": 0,
-                                                        "isSensor_": true
+                                                        "isSensor_": true,
+                                                        "friction_": 0.20000000298023225
                                                     },
                                                     "value1": {},
                                                     "value2": {},
@@ -820,7 +823,8 @@
                                                         "emotionType_": 1,
                                                         "layer_": 0,
                                                         "constraints_": 56,
-                                                        "isSensor_": true
+                                                        "isSensor_": true,
+                                                        "friction_": 0.20000000298023225
                                                     },
                                                     "value1": {},
                                                     "value2": {},

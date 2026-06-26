@@ -80,6 +80,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[nodiscard]] const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& OnDamaged() const { return onDamagedStack_; } 
         [[nodiscard]] bool IsOnDamage() const { return !onDamagedStack_->empty(); }
         [[nodiscard]] std::shared_ptr<IPlayerAvatar> Player() const;
+        [[nodiscard]] static const std::vector<std::weak_ptr<IPlayerAvatar>>& AllPlayer();
         [[nodiscard]] const PlayerAvatar::IQuestGroup& PlayerQuest() const;
         [[nodiscard]] const PlayerAvatar::Quest::ICompleteQuestGroup& PlayerCompleteQuest() const;
 

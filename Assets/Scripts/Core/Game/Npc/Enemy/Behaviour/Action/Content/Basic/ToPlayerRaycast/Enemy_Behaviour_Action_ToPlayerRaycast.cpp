@@ -10,20 +10,26 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::ToPlayerRaycast::DoTick(const TickContext& context)
     {
-        const glm::vec3 selfPos   = context.EnemyTransform().GetWorldPos() + glm::vec3(0.0f, offsetY_, 0.0f);
-        const glm::vec3 playerPos = context.Player()->PlayerTransform().GetWorldPos() + glm::vec3(0.0f, offsetY_, 0.0f);
-        const glm::vec3 direction = playerPos - selfPos;
+        const glm::vec3 selfPos = context.EnemyTransform().GetWorldPos() + glm::vec3(0.0f, offsetY_, 0.0f);
 
         Physics::LayerMask mask = Physics::CreateLayerMask();
         for (const auto layer : layers_)
             Physics::AddLayer(mask, layer);
 
-        const auto hit = Physics::Raycast(selfPos, direction, maxDistance_, mask);
-        if (!hit.Hit())
-            return TickStatus::Failure;
-        
-        const auto player = hit.HitObject().Components().Catch<IPlayerAvatar>().lock();
-        return player ? TickStatus::Success : TickStatus::Failure;
+        for (const auto& player : context.AllPlayer())
+        {
+            const glm::vec3 playerPos = player.lock()->PlayerTransform().GetWorldPos() + glm::vec3(0.0f, offsetY_, 0.0f);
+            const glm::vec3 direction = playerPos - selfPos;
+
+            const auto hit = Physics::Raycast(selfPos, direction, maxDistance_, mask);
+            if (!hit.Hit())
+                continue;
+
+            const auto hitPlayer = hit.HitObject().Components().Catch<IPlayerAvatar>().lock();
+            if (hitPlayer)
+                return TickStatus::Success;
+        }
+        return TickStatus::Failure;
     }
 
     void Action::ToPlayerRaycast::DoDrawGui()

@@ -15,12 +15,12 @@
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** HeightGridMap‚ÌŠiqî•ñ‚©‚çX²‚Ì“o~‰Â”Û‚ğ”»’è‚µAA* Œo˜H’Tõ‚ğ•ÊƒXƒŒƒbƒh‚ÅÀs‚µ‚ÄƒvƒŒƒCƒ„[‚ÖŒü‚©‚¤ƒAƒNƒVƒ‡ƒ“B
+    /** HeightGridMapï¿½ÌŠiï¿½qï¿½ï¿½ñ‚©‚ï¿½Xï¿½ï¿½ï¿½Ì“oï¿½~ï¿½Â”Û‚ğ”»’è‚µï¿½AA* ï¿½oï¿½Hï¿½Tï¿½ï¿½ï¿½ï¿½ÊƒXï¿½ï¿½ï¿½bï¿½hï¿½Åï¿½ï¿½sï¿½ï¿½ï¿½Äƒvï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÖŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½B
      * NOTE:
-     * - 1ƒtƒŒ[ƒ€–Ú: ’TõƒXƒŒƒbƒh‚ğ‹N“®‚·‚é‚¾‚¯‚ÅˆÚ“®‚¹‚¸ Failure ‚ğ•Ô‚·B
-     * - 2ƒtƒŒ[ƒ€–ÚˆÈ~: ‘OƒtƒŒ[ƒ€‚Ü‚Å‚ÉŠ®—¹‚µ‚½Œo˜H‚ÅˆÚ“®‚·‚éB
-     *     ˆÚ“®‚Å‚«‚ê‚Î SetLinearVelocity ‚ÅˆÚ“®‚µ‚Ä SuccessA‚Å‚«‚È‚¯‚ê‚Î FailureB
-     * ’Tõ‚ÍŠ®—¹‚·‚é‚½‚Ñ‚ÉŒ»İˆÊ’u‚ğn“_‚Æ‚µ‚Ä’ÇÕ‚µ’¼‚·B
+     * - 1ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½: ï¿½Tï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½bï¿½hï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½é‚¾ï¿½ï¿½ï¿½ÅˆÚ“ï¿½ï¿½ï¿½ï¿½ï¿½ Failure ï¿½ï¿½Ô‚ï¿½ï¿½B
+     * - 2ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ÚˆÈ~: ï¿½Oï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ü‚Å‚ÉŠï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½Hï¿½ÅˆÚ“ï¿½ï¿½ï¿½ï¿½ï¿½B
+     *     ï¿½Ú“ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½ SetLinearVelocity ï¿½ÅˆÚ“ï¿½ï¿½ï¿½ï¿½ï¿½ Successï¿½Aï¿½Å‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ Failureï¿½B
+     * ï¿½Tï¿½ï¿½ï¿½ÍŠï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é‚½ï¿½Ñ‚ÉŒï¿½ï¿½İˆÊ’uï¿½ï¿½ï¿½nï¿½_ï¿½Æ‚ï¿½ï¿½Ä’ÇÕ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
      */
     class ChasePlayerForPathFinding final : public ActionBase
     {
@@ -32,29 +32,37 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         TickStatus DoTick(const TickContext& context) override;
         void       DoDrawGui() override;
 
-        // ƒ[ƒJ[ƒXƒŒƒbƒh‚ÅÀs‚³‚ê‚éŒo˜H’Tõ–{‘ÌBgrid ‚ÆˆÊ’u‚Ì‚İ‚ğQÆ‚·‚éƒˆ‚ÈŠÖ”B
-        // n“_ƒZƒ‹‚©‚ç–Ú“I’n‚Ü‚Åi‚Ş‚×‚«ƒZƒ‹‚·‚×‚Ä‚Ìƒ[ƒ‹ƒhÀ•W‚ğ•Ô‚·B
+        // ï¿½ï¿½ï¿½[ï¿½Jï¿½[ï¿½Xï¿½ï¿½ï¿½bï¿½hï¿½Åï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½oï¿½Hï¿½Tï¿½ï¿½ï¿½{ï¿½ÌBgrid ï¿½ÆˆÊ’uï¿½Ì‚İ‚ï¿½ï¿½Qï¿½Æ‚ï¿½ï¿½éƒï¿½ï¿½ï¿½ÈŠÖï¿½ï¿½B
+        // ï¿½nï¿½_ï¿½Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú“Iï¿½nï¿½Ü‚Åiï¿½Ş‚×‚ï¿½ï¿½Zï¿½ï¿½ï¿½ï¿½ï¿½×‚Ä‚Ìƒï¿½ï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Wï¿½ï¿½Ô‚ï¿½ï¿½B
         static std::vector<glm::vec3> FindPath(
             const Asset::HeightGridMap& grid,
             const glm::vec3& start, const glm::vec3& goal,
             int maxCellRange, float maxClimbAngleDeg);
 
+        static bool HasLineOfSight(
+            const Asset::HeightGridMap& grid,
+            int x0, int z0, int x1, int z1,
+            float maxSlopeTan, float orthoDist);
+
+        static constexpr int kDirX[8] = {  1, -1,  0,  0,  1,  1, -1, -1 };
+        static constexpr int kDirZ[8] = {  0,  0,  1, -1,  1, -1,  1, -1 };
+
         [[serialize(0)]] FIELD(NanamiEngine::Module::Asset::HeightGridMap) heightGridMap_;
-        [[serialize(0)]] float moveSpeed_           = 3.0f;  // ˆÚ“®‘¬“x
-        [[serialize(0)]] float rotateSpeed_         = 360.0f;// ˆÚ“®•ûŒü‚Ö‚Ì³–ÊY²‰ñ“]‘¬“x(“x/•b)
-        [[serialize(0)]] int   maxPathCellRange_    = 16;    // ’Tõ‚·‚éƒZƒ‹‚ÌÅ‘å”ÍˆÍ
-        [[serialize(0)]] float maxClimbAngleDeg_    = 45.0f; // ‰z‚¦‚ç‚ê‚éÅ‘åŒXÎŠp(“x)
-        [[serialize(0)]] float searchIntervalSec_   = 1.0f;  // Œo˜H’Tõ‚ğ‘–‚ç‚¹‚éŠÔŠu(•b)
-        [[serialize(0)]] int   animationNumber_     = -1;    // ˆÚ“®‚ÉÄ¶‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“”Ô†(-1‚Å–³Œø)
+        [[serialize(0)]] float moveSpeed_           = 3.0f;  // ï¿½Ú“ï¿½ï¿½ï¿½ï¿½x
+        [[serialize(0)]] float rotateSpeed_         = 360.0f;// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö‚Ìï¿½ï¿½ï¿½Yï¿½ï¿½ï¿½ï¿½]ï¿½ï¿½ï¿½x(ï¿½x/ï¿½b)
+        [[serialize(0)]] int   maxPathCellRange_    = 16;    // ï¿½Tï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½ÌÅ‘ï¿½Íˆï¿½
+        [[serialize(0)]] float maxClimbAngleDeg_    = 45.0f; // ï¿½zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å‘ï¿½Xï¿½ÎŠp(ï¿½x)
+        [[serialize(0)]] float searchIntervalSec_   = 1.0f;  // ï¿½oï¿½Hï¿½Tï¿½ï¿½ï¿½ğ‘–‚ç‚¹ï¿½ï¿½ÔŠu(ï¿½b)
+        [[serialize(0)]] int   animationNumber_     = -1;    // ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ÉÄï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ôï¿½(-1ï¿½Å–ï¿½ï¿½ï¿½)
 
-        [[serialize(0)]] float rotateToleranceDeg_ = 5.0f;  // ˆÚ“®•ûŒü‚ÌŠp“x(“x)ˆÈ‰º‚È‚ç‰ñ“]‚µ‚È‚¢(–³‘Ê‚È‰ñ“]–h~)
+        [[serialize(0)]] float rotateToleranceDeg_ = 5.0f;  // ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌŠpï¿½x(ï¿½x)ï¿½È‰ï¿½ï¿½È‚ï¿½ï¿½]ï¿½ï¿½ï¿½È‚ï¿½(ï¿½ï¿½ï¿½Ê‚È‰ï¿½]ï¿½hï¿½~)
 
-        std::atomic_bool       isSearching_{false}; // ’TõƒXƒŒƒbƒh‚ªÀs’†‚©
-        std::atomic_bool       isReady_{false};     // V‚µ‚¢’TõŒ‹‰Ê‚ğ—˜—p‰Â”\‚©
-        bool                   hasPath_ = false;    // ˆÚ“®‚Ég‚¦‚éŒo˜H‚ğ•Û‚µ‚Ä‚¢‚é‚©
-        float                  searchTimer_ = 0.0f; // Ÿ‚Ì’Tõ‚ğ‹N“®‚·‚é‚Ü‚Å‚Ìc‚èŠÔ(•b)
-        std::vector<glm::vec3> cachedPath_;         // ƒƒCƒ“ƒXƒŒƒbƒh‚ªˆÚ“®‚Ég‚¤Œo˜H
-        std::vector<glm::vec3> resultPath_;         // ƒ[ƒJ[ƒXƒŒƒbƒh‚ªŠi”[‚µ‚½Œo˜H
+        std::atomic_bool       isSearching_{false}; // ï¿½Tï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½bï¿½hï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½
+        std::atomic_bool       isReady_{false};     // ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Tï¿½ï¿½ï¿½ï¿½ï¿½Ê‚ğ—˜—pï¿½Â”\ï¿½ï¿½
+        bool                   hasPath_ = false;    // ï¿½Ú“ï¿½ï¿½Égï¿½ï¿½ï¿½ï¿½oï¿½Hï¿½ï¿½Ûï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚©
+        float                  searchTimer_ = 0.0f; // ï¿½ï¿½ï¿½Ì’Tï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚Å‚Ìcï¿½èï¿½ï¿½(ï¿½b)
+        std::vector<glm::vec3> cachedPath_;         // ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½bï¿½hï¿½ï¿½ï¿½Ú“ï¿½ï¿½Égï¿½ï¿½ï¿½oï¿½H
+        std::vector<glm::vec3> resultPath_;         // ï¿½ï¿½ï¿½[ï¿½Jï¿½[ï¿½Xï¿½ï¿½ï¿½bï¿½hï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½H
         std::mutex             mutex_;
         std::thread            pathThread_;
 
