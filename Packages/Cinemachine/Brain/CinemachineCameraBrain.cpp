@@ -21,26 +21,30 @@ void CineMachine::CinemachineCameraBrain::OnUpdate()
     if (!currentVirtualCamera_)
         return;
 
-    const glm::vec3 currentPos = Transform().GetWorldPos();
-    const glm::quat currentRot = Transform().GetWorldRot();
-
     const glm::vec3 targetPos = currentVirtualCamera_->Transform().GetWorldPos();
     const glm::quat targetRot = currentVirtualCamera_->Transform().GetWorldRot();
 
-    const float dt = Time::DeltaTime();
+    if (currentVirtualCamera_->WantsImmediateApply())
+    {
+        // lerp/slerpを完全にスキップしてVirtualCameraのTransformを即時適用する。
+        Transform().SetWorldPos(targetPos);
+        Transform().SetWorldRot(targetRot);
+    }
+    else
+    {
+        const glm::vec3 currentPos = Transform().GetWorldPos();
+        const glm::quat currentRot = Transform().GetWorldRot();
+        const float dt = Time::DeltaTime();
+        const glm::vec3 newPos = glm::mix(currentPos, targetPos, 1.0f - std::exp(-positionLerpSpeed_secs_ * dt));
+        const glm::quat newRot = glm::slerp(currentRot, targetRot, 1.0f - std::exp(-rotationSlerpSpeed_secs_ * dt));
+        Transform().SetWorldPos(newPos);
+        Transform().SetWorldRot(newRot);
+    }
 
-    const glm::vec3 newPos = glm::mix(currentPos, targetPos, 1.0f - std::exp(-positionLerpSpeed_secs_ * dt));
-    const glm::quat newRot = glm::slerp(currentRot, targetRot, 1.0f - std::exp(-rotationSlerpSpeed_secs_ * dt));
-
-    Transform().SetWorldPos(newPos);
-    Transform().SetWorldRot(newRot);
-
-    // 各仮想カメラビヘイビアにブレインTransformの上書き機会を与える。
-    // ThirdPersonCameraBehaviour等はここで補完を無視した即時適用を行う。
-    // カメラセットアップより前に呼ぶことで、上書き結果がそのフレームの描画へ反映される。
+    // ShakeCameraBehaviourなど、補完後にオフセットを加えるビヘイビアのコールバック。
     currentVirtualCamera_->MainCameraCallback();
 
-    // ビヘイビアによる上書き後の最終Transformでカメラをセットアップする。
+    // コールバック後の最終Transformでカメラをセットアップする。
     const glm::vec3 finalPos = Transform().GetWorldPos();
     const glm::quat finalRot = Transform().GetWorldRot();
     const glm::vec3 forward   = finalRot * glm::vec3(0, 0, 1);

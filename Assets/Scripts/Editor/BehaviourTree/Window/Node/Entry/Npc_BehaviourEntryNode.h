@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <memory>
+#include <vector>
 #include "../Npc_BehaviourNodeBase.h"
 #include "../../../../../../../Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
 #include "../../../Engine/Module/Namespace/EngineNamespace.h"
@@ -15,6 +16,11 @@ namespace Editor::Npc::Behaviour
         GameCore::Npc::Friendly::Behaviour::TickStatus Tick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context) override;
 
         [[nodiscard]] const std::string& NodeName() const override { return "EntryNode"; }
+        [[nodiscard]] std::vector<std::shared_ptr<NodeBase>> Children() const override
+        {
+            if (nextNode_) return { nextNode_ };
+            return {};
+        }
         void OnDrawGraphEditorGui(const ImVec2& offset, ImDrawList* drawList, const std::weak_ptr<NodeBase>& ownPtr) override;
 
     private:

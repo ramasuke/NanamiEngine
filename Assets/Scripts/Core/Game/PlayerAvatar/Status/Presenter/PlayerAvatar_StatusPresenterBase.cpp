@@ -38,6 +38,10 @@ namespace GamePlay::PlayerAvatar
         {
             view.OnIsEnableReinforceMode(isEnableReinforce);
         });
+
+        view.OnIsInjured(model.IsInjured());
+        model.OnBecomeInjured().subscribe(onDestroySubscription, [&view](LibCore::Rx::unit) { view.OnIsInjured(true); });
+        model.OnRecoverFromInjured().subscribe(onDestroySubscription, [&view](LibCore::Rx::unit) { view.OnIsInjured(false); });
     }
 
     void StatusPresenterBase::OnDrawGui()

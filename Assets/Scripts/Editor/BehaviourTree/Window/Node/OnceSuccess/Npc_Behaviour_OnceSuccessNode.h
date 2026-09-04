@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <memory>
+#include <vector>
 
 #include "../Npc_BehaviourNodeBase.h"
 #include "../../../../../../../Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
@@ -10,6 +11,11 @@ namespace Editor::Npc::Behaviour
     {
     public:
         [[nodiscard]] const std::string& NodeName() const override;
+        [[nodiscard]] std::vector<std::shared_ptr<NodeBase>> Children() const override
+        {
+            if (child_) return { child_ };
+            return {};
+        }
 
     private:
         [[nodiscard]] GameCore::Npc::Enemy   ::Behaviour::TickStatus Tick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context) override;

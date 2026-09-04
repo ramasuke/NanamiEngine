@@ -24,7 +24,7 @@ namespace NanamiEngine::Scene
         void OnDestroy()        const override;
         void ImplementDestroy() override;
         void OnDrawGui()        override;
-        void OnDrawTreeGui()    override;
+        void OnDrawTreeGui(bool drawChildren = true) override;
 
     private:
         bool isActive_    = false;

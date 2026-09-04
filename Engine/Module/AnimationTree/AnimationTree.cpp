@@ -505,3 +505,26 @@ void AnimationTree::AnimationTree::ApplyRemoteState(const AnimationStateSnapshot
         }
     }
 }
+
+std::optional<AnimationTree::ClipProgress> AnimationTree::AnimationTree::GetClipProgress(const std::string& clipName) const
+{
+    for (const auto& node : currentNodes_)
+    {
+        auto* clip = dynamic_cast<AnimationClipNode*>(node.get());
+        if (!clip || clip->Name() != clipName)
+            continue;
+
+        return clip->GetClipProgress();
+    }
+    return std::nullopt;
+}
+
+std::optional<AnimationTree::ClipProgress> AnimationTree::AnimationTree::GetCurrentClipProgress() const
+{
+    for (const auto& node : currentNodes_)
+    {
+        if (auto* clip = dynamic_cast<AnimationClipNode*>(node.get()))
+            return clip->GetClipProgress();
+    }
+    return std::nullopt;
+}

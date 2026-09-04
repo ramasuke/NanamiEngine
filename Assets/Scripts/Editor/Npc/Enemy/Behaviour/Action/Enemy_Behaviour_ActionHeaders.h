@@ -9,6 +9,7 @@
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Condition/Condition_ArriveDuration/Enemy_Behaviour_Action_ConditionArriveDuration.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Condition/IsCurrentHealthRate/Enemy_Behaviour_Action_IsCurrentHealthRate.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Condition/IsOnDamage/Enemy_Behaviour_Action_IsOnDamage.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Condition/IsTargetInAttackArea/Enemy_Behaviour_Action_IsTargetInAttackArea.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/RigidBody/MoveEventRoute/Enemy_Behaviour_Action_MoveEventRoute.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/RigidBody/MoveToPlayerPos/Enemy_Behaviour_Action_MoveToPlayerPos.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/OnDamage/Enemy_Behaviour_Action_OnDamage.h"

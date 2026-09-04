@@ -44,7 +44,10 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] const StatusParameter::Health&                                MaxHealth() const override { return maxHealth_;           }
         [[nodiscard]] rxcpp::observable<StatusParameter::Health>         OnChangeHealth() const override { return onChangeHealth_.get_observable(); }
         [[nodiscard]] StatusParameter::Health                            Health() const override { return currentHealth_->Get(); }
-        [[nodiscard]] bool                                               IsDeath  () const          { return minHealth_ >= currentHealth_->Get();   }          
+        [[nodiscard]] bool                                               IsDeath  () const          { return minHealth_ >= currentHealth_->Get();   }
+        [[nodiscard]] bool                                               IsInjured() const override;
+        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit>               OnBecomeInjured    () const override { return onBecomeInjured_    .get_observable(); }
+        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit>               OnRecoverFromInjured() const override { return onRecoverFromInjured_.get_observable(); }
         [[nodiscard]] const EnhancePower&                                MaxEnhancePowerStack() const override { return maxEnhancePowerStack_;           }
         [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<EnhancePower> EnhancePowerStack   () const override { return enhancePowerStack_   .AsReadOnly(); }
         [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<bool>         IsEnableReinforce   () const override { return isReinforceMode_.AsReadOnly(); }
@@ -109,6 +112,11 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serailize(0)]] float                      reinforceModeDuring_secs_ ;
         [[serailize(0)]] float                      reinforceModeDuration_secs_;
         
+        [[serialize(0)]] float                          injuredHealthRatio_ = 0.3f;
+        bool                                            wasInjured_         = false;
+        rxcpp::subjects::subject<LibCore::Rx::unit>     onBecomeInjured_;
+        rxcpp::subjects::subject<LibCore::Rx::unit>     onRecoverFromInjured_;
+
         LibCore::Rx::SerializableSubject<bool> isReinforceMode_;
         std::queue<std::unique_ptr<IDamage>>   onDamagedStack_;
         
@@ -142,6 +150,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             archive(CEREAL_NVP(deathStateDuration_secs_));
             archive(CEREAL_NVP(reinforceModeDuring_secs_));
             archive(CEREAL_NVP(reinforceModeDuration_secs_));
+            archive(CEREAL_NVP(injuredHealthRatio_));
             archive(CEREAL_NVP(quests_));
         }
 
@@ -169,6 +178,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             if (version >= 0) archive(CEREAL_NVP(deathStateDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(reinforceModeDuring_secs_));
             if (version >= 0) archive(CEREAL_NVP(reinforceModeDuration_secs_));
+            if (version >= 3) archive(CEREAL_NVP(injuredHealthRatio_));
             if (version >= 0) archive(CEREAL_NVP(quests_));
         }
     };
@@ -176,7 +186,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus, 2);
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus, 3);
 CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::IPlayerAvatarStatus, GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
 #pragma endregion

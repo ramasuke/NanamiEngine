@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 2,
+                "cereal_class_version": 3,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -94,6 +94,40 @@
                             "data": {
                                 "value0": {
                                     "value_": "9F4EEC08-C0AB-4EEB-9F65-C7B5CDB386EC"
+                                }
+                            }
+                        }
+                    }
+                },
+                "footstepParticlePrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483656,
+                            "data": {
+                                "value0": {
+                                    "value_": "1EB38507-99F1-4F97-ACE1-4B56075BE263"
+                                }
+                            }
+                        }
+                    }
+                },
+                "walkFootstepContactPhases_": [
+                    0.25,
+                    0.75
+                ],
+                "runFootstepContactPhases_": [
+                    0.2,
+                    0.7
+                ],
+                "footstepSound_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483657,
+                            "data": {
+                                "value0": {
+                                    "value_": "AC969EF0-74DD-4CD8-95FA-B8C9ACCB14F5"
                                 }
                             }
                         }

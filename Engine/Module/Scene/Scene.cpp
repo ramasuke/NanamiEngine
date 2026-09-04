@@ -1,6 +1,9 @@
 #include "Scene.h"
+#include <algorithm>
+#include <cctype>
 #include <ranges>
 #include <fstream>
+#include <string_view>
 
 #include "../Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../GameObject/PrefabGameObject/PrefabGameObject.h"
@@ -8,6 +11,24 @@
 #include "GameObject/CopiedPrefabGameObject/CopiedPrefabGameObject.h"
 #include "GameObject/Helper/GameObject.h"
 #include "GameObject/SceneGameObject/SceneGameObject.h"
+
+namespace
+{
+    /** @brief haystackにneedleが含まれるか大文字小文字を無視して判定する */
+    bool ContainsCaseInsensitive(const std::string_view haystack, const std::string_view needle)
+    {
+        if (needle.empty())
+            return true;
+
+        const auto equalsIgnoreCase = [](const char lhs, const char rhs)
+        {
+            return std::tolower(static_cast<unsigned char>(lhs)) ==
+                   std::tolower(static_cast<unsigned char>(rhs));
+        };
+
+        return !std::ranges::search(haystack, needle, equalsIgnoreCase).empty();
+    }
+}
 
 Scene::Scene::Scene(const std::string& filePath)
 {
@@ -129,7 +150,7 @@ void Scene::Scene::OnUpdatePushedContents()
     }
 }
 
-void Scene::Scene::OnDrawGui(const std::function<void(Scene*)>& onRemoveScene, Core::FileSystem::EditorDraggingHand& fileDraggingHand)
+void Scene::Scene::OnDrawGui(const std::function<void(Scene*)>& onRemoveScene, Core::FileSystem::EditorDraggingHand& fileDraggingHand, const std::string& searchFilter)
 {
     if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
     {
@@ -150,7 +171,31 @@ void Scene::Scene::OnDrawGui(const std::function<void(Scene*)>& onRemoveScene, C
     }
 
     OnDrawFileDropGui(fileDraggingHand);
-    
+
+    // 検索中は階層を無視して、子孫まで含めた全GameObjectから名前がマッチするものをフラットに一覧表示する
+    if (!searchFilter.empty())
+    {
+        const auto drawIfMatches = [&searchFilter](const std::shared_ptr<Module::GameObject::IGameObject>& gameObject)
+        {
+            if (gameObject && ContainsCaseInsensitive(gameObject->Name(), searchFilter))
+                gameObject->OnDrawTreeGui(false);
+        };
+
+        for (const std::weak_ptr<Module::GameObject::IGameObject>& weakGameObject : gameObjects_ | std::views::values)
+        {
+            const std::shared_ptr<Module::GameObject::IGameObject> rootGameObject = weakGameObject.lock();
+            if (!rootGameObject || rootGameObject->Transform().GetParent() != nullptr)
+                continue;
+
+            drawIfMatches(rootGameObject);
+            for (const auto& child : rootGameObject->Transform().GetAllChildren())
+            {
+                drawIfMatches(child);
+            }
+        }
+        return;
+    }
+
     // 通常のGameObject描画
     for (const std::weak_ptr<Module::GameObject::IGameObject>& weakGameObject : gameObjects_ | std::views::values)
     {

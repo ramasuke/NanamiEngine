@@ -1,0 +1,1025 @@
+{
+  "generated_from": "6a6e65b789c8e31e23fd186417de364fb4e567c8",
+  "actions": {
+    "Basic::ChasePlayerForPathFinding": {
+      "class": "ChasePlayerForPathFinding",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding",
+      "leaf": "ChasePlayerForPathFinding",
+      "version": 2,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Basic/ChasePlayerForPathFinding/Enemy_Behaviour_Action_ChasePlayerForPathFinding.h",
+      "params": [
+        {
+          "key": "heightGridMap_",
+          "member": "heightGridMap_",
+          "named": true,
+          "shape": "field",
+          "type": "HeightGridMap"
+        },
+        {
+          "key": "moveSpeed_",
+          "member": "moveSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "rotateSpeed_",
+          "member": "rotateSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxPathCellRange_",
+          "member": "maxPathCellRange_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "maxClimbAngleDeg_",
+          "member": "maxClimbAngleDeg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "searchIntervalSec_",
+          "member": "searchIntervalSec_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "animationNumber_",
+          "member": "animationNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "rotateToleranceDeg_",
+          "member": "rotateToleranceDeg_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "Basic::ToPlayerDistance": {
+      "class": "ToPlayerDistance",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance",
+      "leaf": "ToPlayerDistance",
+      "version": 1,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Basic/ToPlayerDistance/Enemy_Behaviour_Action_ToPlayerDistance.h",
+      "params": [
+        {
+          "key": "distance_",
+          "member": "distance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "isInnerDistance_",
+          "member": "isInnerDistance_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "Basic::ToPlayerRaycast": {
+      "class": "ToPlayerRaycast",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerRaycast",
+      "leaf": "ToPlayerRaycast",
+      "version": 2,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Basic/ToPlayerRaycast/Enemy_Behaviour_Action_ToPlayerRaycast.h",
+      "params": [
+        {
+          "key": "layers_",
+          "member": "layers_",
+          "named": true,
+          "shape": "vector",
+          "elem": "Layer"
+        },
+        {
+          "key": "maxDistance_",
+          "member": "maxDistance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "offsetY_",
+          "member": "offsetY_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "Basic::WanderMove": {
+      "class": "WanderMove",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::WanderMove",
+      "leaf": "WanderMove",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Basic/WanderMove/Enemy_Behaviour_Action_WanderMove.h",
+      "params": [
+        {
+          "key": "heightGridMap_",
+          "member": "heightGridMap_",
+          "named": true,
+          "shape": "field",
+          "type": "HeightGridMap"
+        },
+        {
+          "key": "wanderRadius_",
+          "member": "wanderRadius_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "waitTimeMin_",
+          "member": "waitTimeMin_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "waitTimeMax_",
+          "member": "waitTimeMax_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "moveSpeed_",
+          "member": "moveSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "rotateSpeed_",
+          "member": "rotateSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "rotateToleranceDeg_",
+          "member": "rotateToleranceDeg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxPathCellRange_",
+          "member": "maxPathCellRange_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "maxClimbAngleDeg_",
+          "member": "maxClimbAngleDeg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "searchIntervalSec_",
+          "member": "searchIntervalSec_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "animationMoveNumber_",
+          "member": "animationMoveNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "animationIdleNumber_",
+          "member": "animationIdleNumber_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "Camera::PurposeCamera": {
+      "class": "PurposeCamera",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::PurposeCamera",
+      "leaf": "PurposeCamera",
+      "version": 1,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Camera/PurposeCamera/Enemy_Behaviour_Action_PurposeCamera.h",
+      "params": [
+        {
+          "key": "prefabPurposeCamera_",
+          "member": "prefabPurposeCamera_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "priority_",
+          "member": "priority_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "Camera::ScenePurposeCamera": {
+      "class": "ScenePurposeCamera",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ScenePurposeCamera",
+      "leaf": "ScenePurposeCamera",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Camera/ScenePurposeCamera/Enemy_Behaviour_Action_ScenePurposeCamera.h",
+      "params": [
+        {
+          "key": "purposeCamera_",
+          "member": "purposeCamera_",
+          "named": true,
+          "shape": "field",
+          "type": "CineMachineVirtualCamera"
+        },
+        {
+          "key": "priority_",
+          "member": "priority_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "EnemyStatus::Condition::ArriveDuration": {
+      "class": "ConditionArriveDuration",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ConditionArriveDuration",
+      "leaf": "ConditionArriveDuration",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Condition/Condition_ArriveDuration/Enemy_Behaviour_Action_ConditionArriveDuration.h",
+      "params": [
+        {
+          "key": "arriveDuration_secs_",
+          "member": "arriveDuration_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "EnemyStatus::Condition::IsCurrentHealthRate": {
+      "class": "IsCurrentHealthRate",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::IsCurrentHealthRate",
+      "leaf": "IsCurrentHealthRate",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Condition/IsCurrentHealthRate/Enemy_Behaviour_Action_IsCurrentHealthRate.h",
+      "params": [
+        {
+          "key": "rate_",
+          "member": "rate_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "EnemyStatus::Condition::IsOnDamage": {
+      "class": "IsOnDamage",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::IsOnDamage",
+      "leaf": "IsOnDamage",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Condition/IsOnDamage/Enemy_Behaviour_Action_IsOnDamage.h",
+      "params": []
+    },
+    "EnemyStatus::Condition::IsTargetInAttackArea": {
+      "class": "IsTargetInAttackArea",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::IsTargetInAttackArea",
+      "leaf": "IsTargetInAttackArea",
+      "version": 1,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Condition/IsTargetInAttackArea/Enemy_Behaviour_Action_IsTargetInAttackArea.h",
+      "params": [
+        {
+          "key": "attackAreaName_",
+          "member": "attackAreaName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "isInner_",
+          "member": "isInner_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "EnemyStatus::OnDamage": {
+      "class": "OnDamage",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::OnDamage",
+      "leaf": "OnDamage",
+      "version": 2,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/OnDamage/Enemy_Behaviour_Action_OnDamage.h",
+      "params": [
+        {
+          "key": "value1",
+          "member": "damageEffectPrefab_",
+          "named": false,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "value2",
+          "member": "damageEffectOffset_",
+          "named": false,
+          "shape": "vec3"
+        },
+        {
+          "key": "value3",
+          "member": "animatorSetParam_",
+          "named": false,
+          "shape": "int"
+        },
+        {
+          "key": "value4",
+          "member": "isOnDamagedReturnBehaviour_",
+          "named": false,
+          "shape": "bool"
+        }
+      ]
+    },
+    "EnemyStatus::OnDeath": {
+      "class": "OnDeath",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::OnDeath",
+      "leaf": "OnDeath",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/OnDeath/OnDeath.h",
+      "params": [
+        {
+          "key": "value1",
+          "member": "animatorSetParam_",
+          "named": false,
+          "shape": "int"
+        }
+      ]
+    },
+    "EnemyStatus::PhysicsAttack": {
+      "class": "PhysicsAttack",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::PhysicsAttack",
+      "leaf": "PhysicsAttack",
+      "version": 4,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Attack/Enemy_Behaviour_Action_Attack.h",
+      "params": [
+        {
+          "key": "attackAreaName_",
+          "member": "attackAreaName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "attackPower_",
+          "member": "attackPower_",
+          "named": true,
+          "shape": "nested",
+          "type": "PhysicsPower"
+        },
+        {
+          "key": "normalAttackOccurrenceDuration_secs_",
+          "member": "normalAttackOccurrenceDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "normalAttackDuration_secs_",
+          "member": "normalAttackDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "animationNumber_",
+          "member": "animationNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "finishedAttackWriteBlackBoard_",
+          "member": "finishedAttackWriteBlackBoard_",
+          "named": true,
+          "shape": "nested",
+          "type": "WriteBlackBoard"
+        },
+        {
+          "key": "attackSound_",
+          "member": "attackSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        }
+      ]
+    },
+    "EnemyStatus::PlayAnimation": {
+      "class": "PlayAnimation",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::PlayAnimation",
+      "leaf": "PlayAnimation",
+      "version": 2,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/PlayAnimation/Enemy_Behaviour_Action_PlayAnimation.h",
+      "params": [
+        {
+          "key": "animatorSetParamNumber_",
+          "member": "animatorSetParamNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "waitAnimationSound_secs_",
+          "member": "waitAnimationSound_secs_",
+          "named": true,
+          "shape": "nested",
+          "type": "WaitSeconds"
+        },
+        {
+          "key": "animationSound_",
+          "member": "animationSound_",
+          "named": true,
+          "shape": "nested",
+          "type": "PlaySE"
+        }
+      ]
+    },
+    "GameObject::RadiateProjectile": {
+      "class": "RadiateProjectile",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::RadiateProjectile",
+      "leaf": "RadiateProjectile",
+      "version": 5,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/GameObject/RadiateProjectile/Enemy_Behaviour_Action_RadiateProjectile.h",
+      "params": [
+        {
+          "key": "physicsDamage_",
+          "member": "physicsDamage_",
+          "named": true,
+          "shape": "nested",
+          "type": "PhysicsPower"
+        },
+        {
+          "key": "spawnPosition_",
+          "member": "spawnPosition_",
+          "named": true,
+          "shape": "nested",
+          "type": "Position"
+        },
+        {
+          "key": "targetPosition_",
+          "member": "targetPosition_",
+          "named": true,
+          "shape": "nested",
+          "type": "Position"
+        },
+        {
+          "key": "moveSpeed_",
+          "member": "moveSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "projectilePrefab_",
+          "member": "projectilePrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "isFinishedProjectileDestroy_",
+          "member": "isFinishedProjectileDestroy_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "Other::Random": {
+      "class": "Random",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::Random",
+      "leaf": "Random",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/Random/Enemy_Behaviour_Action_Random.h",
+      "params": [
+        {
+          "key": "successRate_",
+          "member": "successRate_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "Other::ReadBlackBoard<Bool>": {
+      "class": "ReadBlackBoardBool",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ReadBlackBoardBool",
+      "leaf": "ReadBlackBoardBool",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/ReadBlackBoard/Enemy_Behaviour_Action_ReadBlackBoardBool.h",
+      "params": [
+        {
+          "key": "keyName_",
+          "member": "keyName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "equalValue_",
+          "member": "equalValue_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "Other::ReadBlackBoard<Int>": {
+      "class": "ReadBlackBoard",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ReadBlackBoard",
+      "leaf": "ReadBlackBoard",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/ReadBlackBoard/Enemy_Behaviour_Action_ReadBlackBoardInt.h",
+      "params": [
+        {
+          "key": "keyName_",
+          "member": "keyName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "equalValue_",
+          "member": "equalValue_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "Other::Sample::MoveFront": {
+      "class": "SampleMoveFront",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::SampleMoveFront",
+      "leaf": "SampleMoveFront",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/Sample/MoveFront/Enemy_Behaviour_Action_SampleMoveFront.h",
+      "params": []
+    },
+    "Other::WriteBlackBoard<Bool>": {
+      "class": "WriteBlackBoardBool",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoardBool",
+      "leaf": "WriteBlackBoardBool",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/WriteBlackBoard/Enemy_Behaviour_Action_WriteBlackBoardBool.h",
+      "params": [
+        {
+          "key": "keyName_",
+          "member": "keyName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "value_",
+          "member": "value_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "Other::WriteBlackBoard<Int>": {
+      "class": "WriteBlackBoard",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoard",
+      "leaf": "WriteBlackBoard",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/WriteBlackBoard/Enemy_Behaviour_Action_WriteBlackBoardInt.h",
+      "params": [
+        {
+          "key": "keyName_",
+          "member": "keyName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "value_",
+          "member": "value_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "Particle::GenerateParticle": {
+      "class": "GenerateParticle",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::GenerateParticle",
+      "leaf": "GenerateParticle",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Particle/GenerateParticle.h",
+      "params": [
+        {
+          "key": "offset_",
+          "member": "offset_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "lifeTime_",
+          "member": "lifeTime_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "isUseAbsolutePosition_",
+          "member": "isUseAbsolutePosition_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "particlePrefab_",
+          "member": "particlePrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        }
+      ]
+    },
+    "PlayerStatus::CheckCompleteQuest": {
+      "class": "CheckCompleteQuest",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::CheckCompleteQuest",
+      "leaf": "CheckCompleteQuest",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/PlayerStatus/CheckCompleteQuest/Enemy_Behaviour_Action_CheckCompleteQuest.h",
+      "params": [
+        {
+          "key": "questType_",
+          "member": "questType_",
+          "named": true,
+          "shape": "unknown",
+          "type": "QuestType"
+        }
+      ]
+    },
+    "RigidBody::ChangeEmotionType": {
+      "class": "ChangeColliderEmotionType",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ChangeColliderEmotionType",
+      "leaf": "ChangeColliderEmotionType",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/RigidBody/ChangeColliderEmotionType/Enemy_Behaviour_Action_ChangeColliderEmotionType.h",
+      "params": [
+        {
+          "key": "emotionType_",
+          "member": "emotionType_",
+          "named": true,
+          "shape": "unknown",
+          "type": "EMotionType"
+        },
+        {
+          "key": "colliders_",
+          "member": "colliders_",
+          "named": true,
+          "shape": "vector",
+          "elem": "FieldGameObject"
+        }
+      ]
+    },
+    "RigidBody::ChangeIsGravity": {
+      "class": "ChangeIsGravity",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ChangeIsGravity",
+      "leaf": "ChangeIsGravity",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/RigidBody/ChangeIsGravity/Enemy_Behaviour_Action_ChangeIsGravity.h",
+      "params": [
+        {
+          "key": "isGravity_",
+          "member": "isGravity_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "RigidBody::MoveEventRoute": {
+      "class": "MoveEventRoute",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::MoveEventRoute",
+      "leaf": "MoveEventRoute",
+      "version": 1,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/RigidBody/MoveEventRoute/Enemy_Behaviour_Action_MoveEventRoute.h",
+      "params": [
+        {
+          "key": "moveRoute_",
+          "member": "moveRoute_",
+          "named": true,
+          "shape": "field",
+          "type": "EventNpcWalkingRoute"
+        },
+        {
+          "key": "isOnceExecute_",
+          "member": "isOnceExecute_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "isRotateToMoveDir_",
+          "member": "isRotateToMoveDir_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "rotateSpeedDeg_",
+          "member": "rotateSpeedDeg_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "RigidBody::MoveToePlayerPos": {
+      "class": "MoveToPlayerPos",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::MoveToPlayerPos",
+      "leaf": "MoveToPlayerPos",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/RigidBody/MoveToPlayerPos/Enemy_Behaviour_Action_MoveToPlayerPos.h",
+      "params": [
+        {
+          "key": "moveSpeed_",
+          "member": "moveSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "moveStartDistance_",
+          "member": "moveStartDistance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "animationNumber_",
+          "member": "animationNumber_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "RigidBody::Other::ShootDownAirShip": {
+      "class": "ShootDownAirShip",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ShootDownAirShip",
+      "leaf": "ShootDownAirShip",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/RigidBody/ShootDownAirShip/Enemy_Behaviour_Action_ShootDownAirShip.h",
+      "params": [
+        {
+          "key": "shootDownAirShip_",
+          "member": "shootDownAirShip_",
+          "named": true,
+          "shape": "field",
+          "type": "AirShip"
+        }
+      ]
+    },
+    "RigidBody::SetLinearVelocity": {
+      "class": "SetLinearVelocity",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::SetLinearVelocity",
+      "leaf": "SetLinearVelocity",
+      "version": 1,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/RigidBody/SetVelocity/Enemy_Behaviour_Action_SetLinearVelocity.h",
+      "params": [
+        {
+          "key": "velocity_",
+          "member": "velocity_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "isGravity_",
+          "member": "isGravity_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "Scene::ChangeToMainIslandScene": {
+      "class": "ChangeToMainIslandScene",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ChangeToMainIslandScene",
+      "leaf": "ChangeToMainIslandScene",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Scene/ChangeToMainIslandScene/ChangeToMainIslandScene.h",
+      "params": [
+        {
+          "key": "sceneFile_",
+          "member": "sceneFile_",
+          "named": true,
+          "shape": "field",
+          "type": "SceneFile"
+        }
+      ]
+    },
+    "Sound::PlayBGM": {
+      "class": "PlayBGM",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::PlayBGM",
+      "leaf": "PlayBGM",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Sound/PlayBGM/Enemy_Behaviour_Action_PlayBGM.h",
+      "params": [
+        {
+          "key": "bgm_",
+          "member": "bgm_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        }
+      ]
+    },
+    "Sound::PlaySE": {
+      "class": "PlaySE",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::PlaySE",
+      "leaf": "PlaySE",
+      "version": 1,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Sound/PlaySE/Enemy_Behaviour_Action_PlaySE.h",
+      "params": [
+        {
+          "key": "sound_",
+          "member": "sound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        }
+      ]
+    },
+    "Transform::Rotation::AddRotation": {
+      "class": "AddRotation",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::AddRotation",
+      "leaf": "AddRotation",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Transform/Rotation/Add/Enemy_Behaviour_Action_AddRotation.h",
+      "params": [
+        {
+          "key": "yawStep_degree_",
+          "member": "yawStep_degree_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "Transform::Rotation::RotateOnPlayer": {
+      "class": "RotateOnPlayer",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::RotateOnPlayer",
+      "leaf": "RotateOnPlayer",
+      "version": 1,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Transform/Rotation/OnPlayer/Enemy_Behaviour_Action_RotateOnPlayer.h",
+      "params": [
+        {
+          "key": "rotateSpeed_",
+          "member": "rotateSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "toleranceDeg_",
+          "member": "toleranceDeg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "offsetRotateDeg_",
+          "member": "offsetRotateDeg_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "Wait::Seconds::WaitSeconds": {
+      "class": "WaitSeconds",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::WaitSeconds",
+      "leaf": "WaitSeconds",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Wait/Seconds/Enemy_Behaviour_Action_WaitSeconds.h",
+      "params": [
+        {
+          "key": "waitSeconds_",
+          "member": "waitSeconds_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    }
+  },
+  "structs": {
+    "PhysicsPower": {
+      "fqn": "PhysicsPower",
+      "version": 0,
+      "params": [
+        {
+          "key": "value_",
+          "member": "value_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "Position": {
+      "fqn": "Position",
+      "version": 1,
+      "params": [
+        {
+          "key": "offset_",
+          "member": "offset_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "offsetRotation_",
+          "member": "offsetRotation_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "mode_",
+          "member": "mode_",
+          "named": true,
+          "shape": "enum",
+          "type": "Mode"
+        },
+        {
+          "key": "targetObject_",
+          "member": "targetObject_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        }
+      ]
+    }
+  },
+  "by_fqn": {
+    "GameCore::Npc::Enemy::Behaviour::Action::AddRotation": "Transform::Rotation::AddRotation",
+    "GameCore::Npc::Enemy::Behaviour::Action::ChangeColliderEmotionType": "RigidBody::ChangeEmotionType",
+    "GameCore::Npc::Enemy::Behaviour::Action::ChangeIsGravity": "RigidBody::ChangeIsGravity",
+    "GameCore::Npc::Enemy::Behaviour::Action::ChangeToMainIslandScene": "Scene::ChangeToMainIslandScene",
+    "GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding": "Basic::ChasePlayerForPathFinding",
+    "GameCore::Npc::Enemy::Behaviour::Action::CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",
+    "GameCore::Npc::Enemy::Behaviour::Action::ConditionArriveDuration": "EnemyStatus::Condition::ArriveDuration",
+    "GameCore::Npc::Enemy::Behaviour::Action::GenerateParticle": "Particle::GenerateParticle",
+    "GameCore::Npc::Enemy::Behaviour::Action::IsCurrentHealthRate": "EnemyStatus::Condition::IsCurrentHealthRate",
+    "GameCore::Npc::Enemy::Behaviour::Action::IsOnDamage": "EnemyStatus::Condition::IsOnDamage",
+    "GameCore::Npc::Enemy::Behaviour::Action::IsTargetInAttackArea": "EnemyStatus::Condition::IsTargetInAttackArea",
+    "GameCore::Npc::Enemy::Behaviour::Action::MoveEventRoute": "RigidBody::MoveEventRoute",
+    "GameCore::Npc::Enemy::Behaviour::Action::MoveToPlayerPos": "RigidBody::MoveToePlayerPos",
+    "GameCore::Npc::Enemy::Behaviour::Action::OnDamage": "EnemyStatus::OnDamage",
+    "GameCore::Npc::Enemy::Behaviour::Action::OnDeath": "EnemyStatus::OnDeath",
+    "GameCore::Npc::Enemy::Behaviour::Action::PhysicsAttack": "EnemyStatus::PhysicsAttack",
+    "GameCore::Npc::Enemy::Behaviour::Action::PlayAnimation": "EnemyStatus::PlayAnimation",
+    "GameCore::Npc::Enemy::Behaviour::Action::PlayBGM": "Sound::PlayBGM",
+    "GameCore::Npc::Enemy::Behaviour::Action::PlaySE": "Sound::PlaySE",
+    "GameCore::Npc::Enemy::Behaviour::Action::PurposeCamera": "Camera::PurposeCamera",
+    "GameCore::Npc::Enemy::Behaviour::Action::RadiateProjectile": "GameObject::RadiateProjectile",
+    "GameCore::Npc::Enemy::Behaviour::Action::Random": "Other::Random",
+    "GameCore::Npc::Enemy::Behaviour::Action::ReadBlackBoard": "Other::ReadBlackBoard<Int>",
+    "GameCore::Npc::Enemy::Behaviour::Action::ReadBlackBoardBool": "Other::ReadBlackBoard<Bool>",
+    "GameCore::Npc::Enemy::Behaviour::Action::RotateOnPlayer": "Transform::Rotation::RotateOnPlayer",
+    "GameCore::Npc::Enemy::Behaviour::Action::SampleMoveFront": "Other::Sample::MoveFront",
+    "GameCore::Npc::Enemy::Behaviour::Action::ScenePurposeCamera": "Camera::ScenePurposeCamera",
+    "GameCore::Npc::Enemy::Behaviour::Action::SetLinearVelocity": "RigidBody::SetLinearVelocity",
+    "GameCore::Npc::Enemy::Behaviour::Action::ShootDownAirShip": "RigidBody::Other::ShootDownAirShip",
+    "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance": "Basic::ToPlayerDistance",
+    "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerRaycast": "Basic::ToPlayerRaycast",
+    "GameCore::Npc::Enemy::Behaviour::Action::WaitSeconds": "Wait::Seconds::WaitSeconds",
+    "GameCore::Npc::Enemy::Behaviour::Action::WanderMove": "Basic::WanderMove",
+    "GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoard": "Other::WriteBlackBoard<Int>",
+    "GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoardBool": "Other::WriteBlackBoard<Bool>"
+  },
+  "by_leaf": {
+    "AddRotation": "Transform::Rotation::AddRotation",
+    "ChangeColliderEmotionType": "RigidBody::ChangeEmotionType",
+    "ChangeIsGravity": "RigidBody::ChangeIsGravity",
+    "ChangeToMainIslandScene": "Scene::ChangeToMainIslandScene",
+    "ChasePlayerForPathFinding": "Basic::ChasePlayerForPathFinding",
+    "CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",
+    "ConditionArriveDuration": "EnemyStatus::Condition::ArriveDuration",
+    "GenerateParticle": "Particle::GenerateParticle",
+    "IsCurrentHealthRate": "EnemyStatus::Condition::IsCurrentHealthRate",
+    "IsOnDamage": "EnemyStatus::Condition::IsOnDamage",
+    "IsTargetInAttackArea": "EnemyStatus::Condition::IsTargetInAttackArea",
+    "MoveEventRoute": "RigidBody::MoveEventRoute",
+    "MoveToPlayerPos": "RigidBody::MoveToePlayerPos",
+    "OnDamage": "EnemyStatus::OnDamage",
+    "OnDeath": "EnemyStatus::OnDeath",
+    "PhysicsAttack": "EnemyStatus::PhysicsAttack",
+    "PlayAnimation": "EnemyStatus::PlayAnimation",
+    "PlayBGM": "Sound::PlayBGM",
+    "PlaySE": "Sound::PlaySE",
+    "PurposeCamera": "Camera::PurposeCamera",
+    "RadiateProjectile": "GameObject::RadiateProjectile",
+    "Random": "Other::Random",
+    "ReadBlackBoard": "Other::ReadBlackBoard<Int>",
+    "ReadBlackBoardBool": "Other::ReadBlackBoard<Bool>",
+    "RotateOnPlayer": "Transform::Rotation::RotateOnPlayer",
+    "SampleMoveFront": "Other::Sample::MoveFront",
+    "ScenePurposeCamera": "Camera::ScenePurposeCamera",
+    "SetLinearVelocity": "RigidBody::SetLinearVelocity",
+    "ShootDownAirShip": "RigidBody::Other::ShootDownAirShip",
+    "ToPlayerDistance": "Basic::ToPlayerDistance",
+    "ToPlayerRaycast": "Basic::ToPlayerRaycast",
+    "WaitSeconds": "Wait::Seconds::WaitSeconds",
+    "WanderMove": "Basic::WanderMove",
+    "WriteBlackBoard": "Other::WriteBlackBoard<Int>",
+    "WriteBlackBoardBool": "Other::WriteBlackBoard<Bool>"
+  },
+  "nodes": {
+    "Editor::Npc::Behaviour::EntryNode": {
+      "leaf": "EntryNode",
+      "version": 0
+    },
+    "Editor::Npc::Behaviour::SelectorNode": {
+      "leaf": "SelectorNode",
+      "version": 0
+    },
+    "Editor::Npc::Behaviour::SequenceNode": {
+      "leaf": "SequenceNode",
+      "version": 0
+    },
+    "Editor::Npc::Behaviour::RandomSelectorNode": {
+      "leaf": "RandomSelectorNode",
+      "version": 1
+    },
+    "Editor::Npc::Behaviour::OnceExecute": {
+      "leaf": "OnceExecute",
+      "version": 0
+    },
+    "Editor::Npc::Behaviour::OnceSuccessNode": {
+      "leaf": "OnceSuccessNode",
+      "version": 0
+    },
+    "Editor::Npc::Enemy::Behaviour::ActionNode": {
+      "leaf": "ActionNode",
+      "version": 1
+    }
+  }
+}

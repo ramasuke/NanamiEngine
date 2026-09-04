@@ -45,7 +45,7 @@ namespace NanamiEngine::Module::GameObject
         /** @brief GameObjectの全ての機能の有効無効を切り替える */
         virtual bool IsEnable () = 0;
         virtual void SetEnable(bool enable) = 0;
-        virtual void OnDrawTreeGui() = 0;
+        virtual void OnDrawTreeGui(bool drawChildren = true) = 0;
         virtual void OnDestroy() const {}
         
         ///WARNING: EngineApiなのでEngine内部コードでしか使用しないで下さい。

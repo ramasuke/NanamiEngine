@@ -16,7 +16,8 @@ namespace Editor::Npc::Behaviour
             const std::weak_ptr<NodeBase>& ownPtr) override;
 
         [[nodiscard]] const std::string& NodeName() const override { return "SequenceNode"; }
-        
+        [[nodiscard]] std::vector<std::shared_ptr<NodeBase>> Children() const override { return children_; }
+
     private:
         [[nodiscard]] GameCore::Npc::Enemy::Behaviour::TickStatus Tick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context) override;
         [[nodiscard]] GameCore::Npc::Friendly::Behaviour::TickStatus Tick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context) override;

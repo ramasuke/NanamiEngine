@@ -11,6 +11,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         ComboAttack     = 4,
         DashAttack      = 5,
         AvoidRolling    = 6,
+        InjuredWalk     = 7,
+        InjuredRun      = 8,
         ClimbToTop      = 11,
         AttackedShocked = 12,
         Hurt            = 31,

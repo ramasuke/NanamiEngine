@@ -2,6 +2,7 @@
 
 #include "../../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::State
@@ -19,6 +20,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarWalkState::DoUpdate()
     {
+        TryEmitFootstep(Resources().WalkFootstepContactPhases(), Resources().WalkFootstepSounds());
+
+        if (Status().IsInjured())
+            OnChangeState(SwordManAvatarStateType::InjuredWalk);
         if (Status().IsDamaged())
             OnChangeState(SwordManAvatarStateType::Hurt);
         if (Status().IsOnDisableReinforceMode())
@@ -26,7 +31,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         if (!Input().Move().IsUpdatePressed())
             OnChangeState(SwordManAvatarStateType::Idle);
         if (Input().Run().IsUpdatePressed())
-            OnChangeState(SwordManAvatarStateType::Run);
+            OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run);
         if (Input().Jump().IsPressed())
             OnChangeState(SwordManAvatarStateType::Jump);
         if (Input().AvoidRolling().IsPressed())

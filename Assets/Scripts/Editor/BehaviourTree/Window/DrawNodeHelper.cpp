@@ -12,6 +12,23 @@ namespace
 {
     std::stringstream s_copiedNodeBinary;
     bool s_hasCopiedNode = false;
+
+    // 親ノードをドラッグ移動したとき、ぶら下がっている子孫ノードを同じ量だけ平行移動させる。
+    // これにより Sequence 等のノードを動かすと、その配下のノード群が相対位置を保ったまま追従する。
+    void TranslateSubtree(const std::shared_ptr<Editor::Npc::Behaviour::NodeBase>& node, const glm::vec2& delta)
+    {
+        if (!node)
+            return;
+
+        for (const auto& child : node->Children())
+        {
+            if (!child)
+                continue;
+
+            child->PositionRef() += delta;
+            TranslateSubtree(child, delta);
+        }
+    }
 }
 
 void Editor::Npc::Behaviour::DrawGraphEditorGuiHelper::DrawNode(
@@ -22,10 +39,20 @@ void Editor::Npc::Behaviour::DrawGraphEditorGuiHelper::DrawNode(
     const Gui::Graph::NodeOption& option,
     const bool addNodeContextMenu)
 {
-    if (const auto node = drawNodeObj.lock(); !node)
+    const auto node = drawNodeObj.lock();
+    if (!node)
         return;
 
-    Gui::Graph::DrawNode(offset, positionRef, drawList, drawNodeObj, option, drawNodeObj.lock()->GetGuid());
+    const glm::vec2 beforePosition = positionRef;
+
+    Gui::Graph::DrawNode(offset, positionRef, drawList, drawNodeObj, option, node->GetGuid());
+
+    // このノードがドラッグ移動されたら、その分だけ子孫ノードも追従させる。
+    if (const glm::vec2 dragDelta = positionRef - beforePosition;
+        dragDelta.x != 0.0f || dragDelta.y != 0.0f)
+    {
+        TranslateSubtree(node, dragDelta);
+    }
 
     if (!addNodeContextMenu)
         return;
@@ -40,11 +67,11 @@ void Editor::Npc::Behaviour::DrawGraphEditorGuiHelper::DrawNode(
     // 右クリックでポップアップを開く
     if (hovered && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
     {
-        ImGui::OpenPopup(("NodeContextMenu##" + drawNodeObj.lock()->GetGuid().Value()).c_str());
+        ImGui::OpenPopup(("NodeContextMenu##" + node->GetGuid().Value()).c_str());
     }
 
     // --- ポップアップ ---
-    if (ImGui::BeginPopup(("NodeContextMenu##" + drawNodeObj.lock()->GetGuid().Value()).c_str()))
+    if (ImGui::BeginPopup(("NodeContextMenu##" + node->GetGuid().Value()).c_str()))
     {
         // Copy
         if (ImGui::MenuItem("Copy"))
@@ -58,8 +85,7 @@ void Editor::Npc::Behaviour::DrawGraphEditorGuiHelper::DrawNode(
         {
             if (ImGui::MenuItem("Paste"))
             {
-                const auto pastedNode = PasteNode();
-                if (const auto node = drawNodeObj.lock(); node && pastedNode)
+                if (const auto pastedNode = PasteNode())
                 {
                     node->SetConnectToNextNode(pastedNode);
                     pastedNode->PositionRef() = node->PositionRef() + glm::vec2(0.0f, 100.0f);
@@ -78,11 +104,8 @@ void Editor::Npc::Behaviour::DrawGraphEditorGuiHelper::DrawNode(
             if (ImGui::MenuItem(typeName.c_str()))
             {
                 const auto nextNode = createFunc();
-                if (auto node = drawNodeObj.lock())
-                {
-                    nextNode->PositionRef() = node->PositionRef() + glm::vec2(0.0f, 100.0f);
-                    node->SetConnectToNextNode(nextNode);
-                }
+                nextNode->PositionRef() = node->PositionRef() + glm::vec2(0.0f, 100.0f);
+                node->SetConnectToNextNode(nextNode);
                 ImGui::CloseCurrentPopup();
             }
         }

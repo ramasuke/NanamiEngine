@@ -11,6 +11,7 @@ namespace NanamiEngine::CineMachine
     public:
         virtual ~IVirtualCameraBehaviour() = default;
         virtual void MainCameraCallback() { }
+        virtual bool WantsImmediateApply() const { return false; }
         
         template <class Archive>
         void save(Archive& archive, const std::uint32_t version) const

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <memory>
+#include <vector>
 
 #include "Npc_Behaviour_NodeFactory.h"
 #include "vec2.hpp"
@@ -37,6 +38,10 @@ namespace Editor::Npc::Behaviour
         [[nodiscard]] glm::vec2&  PositionRef() { return position_; }
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
         void ResetGuid();
+
+        // このノードがGraphEditor上で直接ぶら下げている子ノード。
+        // 親ノードをドラッグ移動したときに子孫を追従させるために使用する。
+        [[nodiscard]] virtual std::vector<std::shared_ptr<NodeBase>> Children() const { return {}; }
 
     private:
         virtual void DoOnDrawGui() = 0;

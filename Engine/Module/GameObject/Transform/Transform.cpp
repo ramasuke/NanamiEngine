@@ -4,14 +4,12 @@
 #include <algorithm>
 
 #include "ImGuiHelper.h"
-#include "ImGuizmo.h"
 #include "../../../../Libs/LibCore/cereal/PrefabExtractArchive/PrefabExtractArchive.h"
 #include "../../../Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../Scene/GameObject/SceneGameObject/SceneGameObject.h"
 #include "../Interface/IGameObject.h"
 #include "cereal/archives/json.hpp"
 #include "cereal/archives/portable_binary.hpp"
-#include "gtc/type_ptr.hpp"
 
 namespace NanamiEngine::Module::GameObject
 {
@@ -102,12 +100,18 @@ namespace NanamiEngine::Module::GameObject
     void Transform::SetLocalMatrix(const glm::mat4& localMatrix)
     {
         localPos_   = glm::vec3(localMatrix[3]);
-        localRot_   = glm::quat_cast(localMatrix);
         localScale_ = {
             glm::length(glm::vec3(localMatrix[0])),
             glm::length(glm::vec3(localMatrix[1])),
             glm::length(glm::vec3(localMatrix[2]))
         };
+
+        // スケール成分を除去してから回転を抽出する（非等倍スケールで quat が歪むのを防ぐ）
+        glm::mat3 rotationBasis(localMatrix);
+        rotationBasis[0] = localScale_.x > 1e-8f ? rotationBasis[0] / localScale_.x : glm::vec3(1.0f, 0.0f, 0.0f);
+        rotationBasis[1] = localScale_.y > 1e-8f ? rotationBasis[1] / localScale_.y : glm::vec3(0.0f, 1.0f, 0.0f);
+        rotationBasis[2] = localScale_.z > 1e-8f ? rotationBasis[2] / localScale_.z : glm::vec3(0.0f, 0.0f, 1.0f);
+        localRot_   = glm::normalize(glm::quat_cast(rotationBasis));
 
         guiLocalEuler_ = glm::degrees(glm::eulerAngles(localRot_));
 
@@ -406,7 +410,6 @@ namespace NanamiEngine::Module::GameObject
                 if (ImGui::DragFloat3("Position##L", &pos.x, 0.01f))
                 {
                     SetLocalPos(pos);
-                    UpdateMatrix();
                 }
 
                 glm::vec3 euler = guiLocalEuler_;
@@ -414,14 +417,12 @@ namespace NanamiEngine::Module::GameObject
                 {
                     guiLocalEuler_ = euler;
                     SetLocalRot(glm::quat(glm::radians(euler)));
-                    UpdateMatrix();
                 }
 
                 glm::vec3 scale = localScale_;
                 if (ImGui::DragFloat3("Scale##L", &scale.x, 0.01f))
                 {
                     SetLocalScale(scale);
-                    UpdateMatrix();
                 }
                 ImGui::TreePop();
             }
@@ -450,75 +451,6 @@ namespace NanamiEngine::Module::GameObject
                 ImGui::Spacing();
                 ImGui::TreePop();
             }
-        }
-
-        if (Core::Application::ApplicationBase::GameWindow()->IsPlayMode())
-        {
-            OnDrawGuizmoGui();
-        }
-    }
-
-    void Transform::OnDrawGuizmoGui()
-    {
-        // ImGuizmo 操作
-        ImGuizmo::BeginFrame();
-        ImGuizmo::SetOrthographic(false);
-        ImGuizmo::SetDrawlist();
-
-        const ImGuiIO& io = ImGui::GetIO();
-        ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-            
-        // カメラのビュー
-        glm::mat4 view = Core::Application::ApplicationBase::GameWindow()->GetCameraViewMatrix();
-        glm::mat4 proj = Core::Application::ApplicationBase::GameWindow()->GetCameraProjectionMatrix();
-            
-        // ワールド行列を取得して Manipulate に渡す
-        glm::mat4 worldMatrix = GetWorldMatrix();
-            
-        static ImGuizmo::OPERATION operation = ImGuizmo::TRANSLATE;
-        static ImGuizmo::MODE mode = ImGuizmo::LOCAL;
-            
-        if (ImGui::IsKeyPressed(ImGuiKey_T)) operation = ImGuizmo::TRANSLATE;
-        if (ImGui::IsKeyPressed(ImGuiKey_R)) operation = ImGuizmo::ROTATE;
-        if (ImGui::IsKeyPressed(ImGuiKey_S)) operation = ImGuizmo::SCALE;
-            
-        ImGuizmo::Manipulate(
-            glm::value_ptr(view),
-            glm::value_ptr(proj),
-            operation,
-            mode,
-            glm::value_ptr(worldMatrix)
-        );
-            
-        // Manipulate で操作されている場合
-        if (ImGuizmo::IsUsing())
-        {
-            glm::vec3 translation, rotation, scale;
-            ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(worldMatrix), &translation.x, &rotation.x, &scale.x);
-            
-            if (const auto parentObj = parent_.lock())
-            {
-                // 親がいる場合はワールド行列からローカル行列に変換
-                glm::mat4 parentWorld = parentObj->Transform().GetWorldMatrix();
-                glm::mat4 localMatrix = glm::inverse(parentWorld) * worldMatrix;
-            
-                SetLocalPos(glm::vec3(localMatrix[3]));
-                SetLocalRot(glm::quat_cast(localMatrix));
-                SetLocalScale({
-                    glm::length(glm::vec3(localMatrix[0])),
-                    glm::length(glm::vec3(localMatrix[1])),
-                    glm::length(glm::vec3(localMatrix[2]))
-                });
-            }
-            else
-            {
-                SetLocalPos(translation);
-                SetLocalRot(glm::quat(glm::radians(rotation)));
-                SetLocalScale(scale);
-            }
-            
-            guiLocalEuler_ = rotation;
-            UpdateMatrix();
         }
     }
 

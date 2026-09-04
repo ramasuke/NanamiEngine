@@ -47,6 +47,9 @@ void Asset::PrefabGameObjectFile::OnDrawGui()
     ImGuiHelper::OnDrawInputField("contentPath_", contentPath_);
     ImGuiHelper::OnDrawInputField("guid_", guid_);
 
+    if (!content_)
+        return;
+    
     if (ImGui::TreeNode(("Content##" + guid_.Value()).c_str()))
     {
         content_->OnDrawGui();

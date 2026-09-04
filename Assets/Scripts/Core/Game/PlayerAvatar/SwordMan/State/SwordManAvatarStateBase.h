@@ -1,5 +1,10 @@
 #pragma once
+#include <string>
+#include <vector>
+
 #include "SwordManAvatarStateType.h"
+#include "../../../../../../../Engine/Core/Object/Field/Field.h"
+#include "../../../../../../../Engine/Module/Asset/Sound/SoundFile.h"
 #include "../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../State/IPlayerAvatarState.h"
 #include "../../State/Action/PlayerAvatarStateAction.h"
@@ -35,6 +40,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         std::shared_ptr<SwordManAvatarStateContext> context_;
         std::function<void(SwordManAvatarStateType)> onChangeState_;
         static inline const auto CHATTABLE_ICON_OBJECT_NAME = "ChattableIcon";
+        float prevFootstepNormalizedTime_ = -1.0f; ///< 前フレームのクリップ正規化時間（enter で -1 リセット）
 
     protected:
         /** ---- 以下templateMethodパターン ---- */
@@ -67,6 +73,13 @@ namespace GameCore::PlayerAvatar::SwordMan
         void ResetDuringTime();
         //現在のStateの持続時間を返す
         [[nodiscard]] float During_secs() const { return stateDuring_secs_; }
+        /**
+         * @brief 現在再生中クリップの正規化再生時間が接地フェーズを跨いだフレームで、足元にパーティクルと足音を出す
+         * @param contactPhases クリップ正規化時間 [0,1) の接地タイミング配列。空なら既定値を使用
+         * @param footstepSounds 足音の候補配列。鳴らすときにこの中からランダムで1つ選ばれる。空なら足音なし
+         */
+        void TryEmitFootstep(const std::vector<float>& contactPhases,
+                             const std::vector<FIELD(Asset::SoundFile)>& footstepSounds);
         void ChangeCamera(const std::weak_ptr<CineMachine::CineMachineVirtualCamera>& camera) const;
         void OnChangeState   (SwordManAvatarStateType type) const;
         void OnTryChangeState(SwordManAvatarStateType type, const std::function<bool()>& check) const;

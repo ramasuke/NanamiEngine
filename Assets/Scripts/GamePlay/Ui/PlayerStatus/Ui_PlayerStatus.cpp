@@ -15,6 +15,8 @@ namespace GamePlay::Ui
         enhanceBar_                = GameObject::CatchChild<NanamiUi::Slider>(Entity(), enhanceBarName_);
         enhancePowerStackBarFrame_ = GameObject::CatchChild<Component::ImageRenderer>(Entity(), enhancePowerStackBarFrameName_);
         onEnableReinforceMask_     = GameObject::CatchChild<NanamiUi::BlendImageRenderer>(Entity(), onEnableReinforceMaskName_);
+        if (!injuredUiObjectName_.empty())
+            injuredUiMask_ = GameObject::CatchChild<InjuredMaskUI>(Entity(), injuredUiObjectName_);
     }
 
     void PlayerStatus::UpdateHealthBar(
@@ -54,6 +56,11 @@ namespace GamePlay::Ui
         onEnableReinforceMask_->SetEnable(enable);
     }
 
+    void PlayerStatus::OnIsInjured(const bool isInjured) const
+    {
+        if (injuredUiMask_) injuredUiMask_->SetActive(isInjured);
+    }
+
     Coroutine::Task<void> PlayerStatus::OnAddedEnhancePowerStack() const
     {
         const auto previewSprite = enhancePowerStackBarFrame_->GetSprite(); 
@@ -78,5 +85,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("enhancePowerStackBarFrame_", enhancePowerStackBarFrame_);
         ImGuiHelper::OnDrawInputField("onEnableReinforceMaskName_", onEnableReinforceMaskName_);
         ImGuiHelper::OnDrawInputField("onEnableReinforceMask_", onEnableReinforceMask_);
+        ImGuiHelper::OnDrawInputField("injuredUiObjectName_", injuredUiObjectName_);
+        ImGuiHelper::OnDrawInputField("injuredUiMask_", injuredUiMask_);
     }
 }

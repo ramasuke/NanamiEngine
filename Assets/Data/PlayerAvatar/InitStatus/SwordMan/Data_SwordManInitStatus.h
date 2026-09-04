@@ -42,7 +42,8 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] float                                AvoidRollingStateDuration_secs () const { return avoidRollingStateDuration_secs_; }
         [[nodiscard]] float                                DeathStateDuration_secs        () const { return deathStateDuration_secs_; }
         [[nodiscard]] float                                ReinforceModeDuration_secs     () const { return reinforceModeDuration_secs_; }
-        
+        [[nodiscard]] float                                GetInjuredHealthRatio          () const { return injuredHealthRatio_; }
+
     private:
         [[serialize(0)]] std::unique_ptr<GameCore::PlayerAvatar::SwordMan::QuestGroup> quests_;
         
@@ -71,6 +72,7 @@ namespace NanamiEngine::Module::Asset
         [[serialize(0)]] float                                avoidRollingStateDuration_secs_;
         [[serialize(0)]] float                                deathStateDuration_secs_;
         [[serialize(0)]] float                                reinforceModeDuration_secs_;
+        [[serialize(5)]] float                                injuredHealthRatio_ = 0.3f;
 
 
 #pragma region Serialization Function
@@ -101,6 +103,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(avoidRollingStateDuration_secs_));
             archive(CEREAL_NVP(deathStateDuration_secs_));
             archive(CEREAL_NVP(reinforceModeDuration_secs_));
+            archive(CEREAL_NVP(injuredHealthRatio_));
             archive(CEREAL_NVP(quests_));
         }
         template<class Archive>
@@ -127,6 +130,7 @@ namespace NanamiEngine::Module::Asset
             if (version >= 3) archive(CEREAL_NVP(avoidRollingStateDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(deathStateDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(reinforceModeDuration_secs_));
+            if (version >= 5) archive(CEREAL_NVP(injuredHealthRatio_));
             if (version >= 0) archive(CEREAL_NVP(quests_));
         }
 #pragma endregion
@@ -135,7 +139,7 @@ namespace NanamiEngine::Module::Asset
 
 REGISTER_SCRIPTABLE_OBJECT(SwordManInitStatus, SWORD_MAN_INIT_STATUS_EXTENSION_LABEL)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 4);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 5);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManInitStatus);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManInitStatus);
 #pragma endregion

@@ -8,6 +8,15 @@
 namespace NanamiEngine::Module::AnimationTree
 {
     constexpr auto NODE_SIZE = ImVec2(120.0f, 60.0f);
+
+    /** @brief 特定クリップの再生進捗 */
+    struct ClipProgress final
+    {
+        float duringSecs    = 0.0f; ///< 再生経過秒
+        float durationSecs   = 0.0f; ///< クリップ全長（秒）
+        float normalizedTime = 0.0f; ///< duringSecs / durationSecs を [0,1] にクランプした値
+    };
+
     ///TODO: InterfaceをVisual可能AnimationNodeとLogicAnimationNodeで分離した方が良い(インターフェースの定義が要件に見合っていないため不適切)
     ///TODO: AnimationNodeBaseクラスを作成した方が共通化可能
     class IAnimationNode : public virtual Object::IObject

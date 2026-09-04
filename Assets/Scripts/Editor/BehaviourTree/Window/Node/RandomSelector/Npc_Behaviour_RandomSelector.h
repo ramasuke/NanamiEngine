@@ -16,6 +16,7 @@ namespace Editor::Npc::Behaviour
             ImDrawList* drawList,
             const std::weak_ptr<NodeBase>& ownPtr) override;
         [[nodiscard]] const std::string& NodeName() const override;
+        [[nodiscard]] std::vector<std::shared_ptr<NodeBase>> Children() const override { return children_; }
 
     private:
         [[nodiscard]] GameCore::Npc::Enemy::Behaviour::TickStatus

@@ -1,9 +1,78 @@
 ﻿#include "ProjectWindow.h"
 
+#include <algorithm>
+#include <cctype>
+#include <ranges>
+#include <string_view>
+
 #include "../../../../../Module/Asset/AnimationTree/AnimationTreeFile.h"
 #include "../../../../FileSystem/Directory/Directory.h"
+#include "../../../../FileSystem/DraggingHand/EditorDraggingHand.h"
 #include "../../../ApplicationBase.h"
 #include "../Inspector/InspectorWindow.h"
+
+namespace
+{
+    /** @brief haystackにneedleが含まれるか大文字小文字を無視して判定する */
+    bool ContainsCaseInsensitive(const std::string_view haystack, const std::string_view needle)
+    {
+        if (needle.empty())
+            return true;
+
+        const auto equalsIgnoreCase = [](const char lhs, const char rhs)
+        {
+            return std::tolower(static_cast<unsigned char>(lhs)) ==
+                   std::tolower(static_cast<unsigned char>(rhs));
+        };
+
+        return !std::ranges::search(haystack, needle, equalsIgnoreCase).empty();
+    }
+
+    /** @brief 1ファイル分の行（選択・右クリック・ドラッグ・ダブルクリック）を描画する */
+    void DrawFileEntry(
+        NanamiEngine::Core::FileSystem::Directory& owningDirectory,
+        NanamiEngine::Core::FileSystem::File& file,
+        NanamiEngine::Core::FileSystem::EditorDraggingHand& draggingHand)
+    {
+        namespace FileSystem = NanamiEngine::Core::FileSystem;
+
+        const std::string& name = file.GetName();
+
+        ImGui::PushID(&file);
+
+        if (ImGui::Selectable(name.c_str()))
+        {
+            file.OnClick();
+        }
+
+        // 右クリックメニュー
+        if (ImGui::BeginPopupContextItem())
+        {
+            if (ImGui::MenuItem("Copy"))
+            {
+                owningDirectory.AddFile(file.Copy());
+            }
+
+            ImGui::EndPopup();
+        }
+
+        // ドラッグ開始処理
+        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+        {
+            draggingHand.SetDraggingItem(file.GetContent()->GetGuid());
+            ImGui::SetDragDropPayload(FileSystem::EDITOR_DRAGGING_ITEM_PAYLOAD_TYPE, &file, sizeof(file));
+            ImGui::Text("Dragging %s", name.c_str());
+            ImGui::EndDragDropSource();
+        }
+
+        if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+        {
+            file.OnDoubleClick();
+        }
+
+        ImGui::PopID();
+    }
+}
 
 int Core::PopupWindow::ProjectWindow::counter_ = 0;
 
@@ -20,10 +89,36 @@ void Core::PopupWindow::ProjectWindow::OnDraw(const PopupWindowDrawGuiContext co
     ImGui::Checkbox("isLock", &isLockedContent_);
     OnDrawToolbar();
 
+    // フォルダ名・ファイル名の検索ボックス
+    const bool hasSearchText = searchBuffer_[0] != '\0';
+    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - (hasSearchText ? 55.0f : 0.0f));
+    ImGui::InputTextWithHint("##ProjectSearch", "Search...", searchBuffer_, sizeof(searchBuffer_));
+    if (hasSearchText)
+    {
+        ImGui::SameLine();
+        if (ImGui::SmallButton("Clear##ProjectSearch"))
+        {
+            searchBuffer_[0] = '\0';
+        }
+    }
+    const std::string searchText = searchBuffer_;
+
+    auto& assetsDirectory = Application::ApplicationBase::AssetsDirectory();
+
     ImGui::Columns(2, nullptr, true);
-    OnDrawDirectoryTree(Application::ApplicationBase::AssetsDirectory());
-    ImGui::NextColumn();
-    DrawDirectoryContents(*currentDirectory_, context.FileDraggingHand());
+    if (searchText.empty())
+    {
+        OnDrawDirectoryTree(assetsDirectory);
+        ImGui::NextColumn();
+        DrawDirectoryContents(*currentDirectory_, context.FileDraggingHand());
+    }
+    else
+    {
+        // 左: 名前がマッチするフォルダ / 右: 名前がマッチするファイル（どちらも全階層から）
+        OnDrawSearchedDirectoryTree(assetsDirectory, searchText);
+        ImGui::NextColumn();
+        DrawSearchedFiles(assetsDirectory, context.FileDraggingHand(), searchText);
+    }
     ImGui::Columns(1);
 
     ImGui::End();
@@ -95,37 +190,50 @@ void Core::PopupWindow::ProjectWindow::DrawDirectoryContents(
 {
     for (auto& file : directory.Files())
     {
-        const std::string& name = file.GetName();
+        DrawFileEntry(directory, file, draggingHand);
+    }
+}
 
-        if (ImGui::Selectable(name.c_str()))
+void Core::PopupWindow::ProjectWindow::OnDrawSearchedDirectoryTree(
+    FileSystem::Directory& directory,
+    const std::string& filter)
+{
+    if (ContainsCaseInsensitive(directory.GetName(), filter))
+    {
+        ImGui::PushID(&directory);
+        if (ImGui::Selectable(directory.GetName().c_str(), currentDirectory_ == &directory))
         {
-            file.OnClick();
+            currentDirectory_ = &directory;
         }
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", directory.GetPath().c_str());
+        }
+        ImGui::PopID();
+    }
 
-        // 右クリックメニュー
-        if (ImGui::BeginPopupContextItem())
-        {
-            if (ImGui::MenuItem("Copy"))
-            {
-                directory.AddFile(file.Copy());
-            }
+    for (auto& child : directory.GetDirectories())
+    {
+        OnDrawSearchedDirectoryTree(child, filter);
+    }
+}
 
-            ImGui::EndPopup();
-        }
-        
-        // ドラッグ開始処理
-        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+void Core::PopupWindow::ProjectWindow::DrawSearchedFiles(
+    FileSystem::Directory& directory,
+    FileSystem::EditorDraggingHand& draggingHand,
+    const std::string& filter)
+{
+    for (auto& file : directory.Files())
+    {
+        if (ContainsCaseInsensitive(file.GetName(), filter))
         {
-            draggingHand.SetDraggingItem(file.GetContent()->GetGuid());
-            ImGui::SetDragDropPayload(FileSystem::EDITOR_DRAGGING_ITEM_PAYLOAD_TYPE, &file, sizeof(file));
-            ImGui::Text("Dragging %s", name.c_str());
-            ImGui::EndDragDropSource();
+            DrawFileEntry(directory, file, draggingHand);
         }
+    }
 
-        if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-        {
-            file.OnDoubleClick();
-        }
+    for (auto& child : directory.GetDirectories())
+    {
+        DrawSearchedFiles(child, draggingHand, filter);
     }
 }
 

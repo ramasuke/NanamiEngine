@@ -960,7 +960,7 @@ namespace IMGUIZMO_NAMESPACE
       gContext.mWidth = width;
       gContext.mHeight = height;
       gContext.mXMax = gContext.mX + gContext.mWidth;
-      gContext.mYMax = gContext.mY + gContext.mXMax;
+      gContext.mYMax = gContext.mY + gContext.mHeight; // NanamiEngine: fixed upstream typo (was gContext.mY + gContext.mXMax)
       gContext.mDisplayRatio = width / height;
    }
 

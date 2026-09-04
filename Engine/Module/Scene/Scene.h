@@ -23,7 +23,7 @@ namespace NanamiEngine::Scene
         bool TryOnRemoveGameObject(const std::weak_ptr<Module::GameObject::IGameObject>& remove);
         void RemoveGameObject(const std::weak_ptr<Module::GameObject::IGameObject>& remove);
         void OnUpdatePushedContents();
-        void OnDrawGui(const std::function<void(Scene*)>& onRemoveScene, Core::FileSystem::EditorDraggingHand& fileDraggingHand);
+        void OnDrawGui(const std::function<void(Scene*)>& onRemoveScene, Core::FileSystem::EditorDraggingHand& fileDraggingHand, const std::string& searchFilter = "");
         void OnDrawGui() override { }
         void OnDrawFileDropGui(Core::FileSystem::EditorDraggingHand& fileDraggingHand);
         void OnSave();

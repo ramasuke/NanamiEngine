@@ -19,6 +19,7 @@ namespace NanamiEngine::CineMachine
         // VirtualCameraの完全無効化
         void OnDisable() { priority_.OnNext(DISABLE_PRIORITY); }
         void MainCameraCallback() const;
+        [[nodiscard]] bool WantsImmediateApply() const;
 
     private:
         void OnAwake      () override;

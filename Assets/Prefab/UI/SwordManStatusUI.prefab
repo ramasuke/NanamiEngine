@@ -14,7 +14,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 6,
+                    "cereal_class_version": 7,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
@@ -56,7 +56,8 @@
                         }
                     },
                     "enhancePowerStackBarFrameName_": "Madness",
-                    "onEnableReinforceMaskName_": "RageModeMaskUI"
+                    "onEnableReinforceMaskName_": "RageModeMaskUI",
+                    "injuredUiObjectName_": ""
                 }
             }
         }
@@ -105,7 +106,7 @@
                 "value3": 1.0
             }
         },
-        "childCount": 3,
+        "childCount": 4,
         "child": {
             "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
@@ -560,6 +561,70 @@
                                 }
                             }
                         }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    }
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483667,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": false,
+                    "name_": "InjuredMask",
+                    "guid_": {
+                        "value_": "DB013FA0-73AE-47FD-92E1-28B90BEABD29"
+                    },
+                    "components_": {
+                        "componentCount": 0
                     },
                     "transform_": {
                         "localPos_": {

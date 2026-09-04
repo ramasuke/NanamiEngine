@@ -1,0 +1,234 @@
+{
+    "entryNode_": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "A11DEE77-35E3-433E-99B4-54CF170FAD6D"
+                    },
+                    "position_": {
+                        "value0": 215.0,
+                        "value1": 40.0
+                    }
+                },
+                "nextNode_": {
+                    "polymorphic_id": 2147483649,
+                    "polymorphic_name": "Editor::Npc::Behaviour::SelectorNode",
+                    "ptr_wrapper": {
+                        "id": 2147483650,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "value0": {},
+                                "guid_": {
+                                    "value_": "a0000000-0000-4000-8000-000000000001"
+                                },
+                                "position_": {
+                                    "value0": 215.0,
+                                    "value1": 130.0
+                                }
+                            },
+                            "children_": [
+                                {
+                                    "polymorphic_id": 2147483650,
+                                    "polymorphic_name": "Editor::Npc::Behaviour::SequenceNode",
+                                    "ptr_wrapper": {
+                                        "id": 2147483651,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value0": {},
+                                                "guid_": {
+                                                    "value_": "a0000000-0000-4000-8000-000000000002"
+                                                },
+                                                "position_": {
+                                                    "value0": 120.0,
+                                                    "value1": 220.0
+                                                }
+                                            },
+                                            "children_": [
+                                                {
+                                                    "polymorphic_id": 2147483651,
+                                                    "polymorphic_name": "Editor::Npc::Enemy::Behaviour::ActionNode",
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483652,
+                                                        "data": {
+                                                            "cereal_class_version": 1,
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "a0000000-0000-4000-8000-000000000003"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 120.0,
+                                                                    "value1": 310.0
+                                                                }
+                                                            },
+                                                            "name_": "SeePlayer",
+                                                            "action_": {
+                                                                "polymorphic_id": 2147483652,
+                                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance",
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "cereal_class_version": 1,
+                                                                        "value0": {
+                                                                            "cereal_class_version": 0
+                                                                        },
+                                                                        "distance_": 7.0,
+                                                                        "isInnerDistance_": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483653,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "a0000000-0000-4000-8000-000000000004"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 120.0,
+                                                                    "value1": 400.0
+                                                                }
+                                                            },
+                                                            "name_": "Chase",
+                                                            "action_": {
+                                                                "polymorphic_id": 2147483653,
+                                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding",
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "cereal_class_version": 2,
+                                                                        "value0": {},
+                                                                        "heightGridMap_": {
+                                                                            "cereal_class_version": 0,
+                                                                            "value0": {
+                                                                                "polymorphic_id": 1073741824,
+                                                                                "ptr_wrapper": {
+                                                                                    "id": 2147483654,
+                                                                                    "data": {
+                                                                                        "cereal_class_version": 0,
+                                                                                        "value0": {
+                                                                                            "value_": "00000000-0000-0000-0000-000000000000"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        "moveSpeed_": 5.0,
+                                                                        "rotateSpeed_": 0.0,
+                                                                        "maxPathCellRange_": 0,
+                                                                        "maxClimbAngleDeg_": 0.0,
+                                                                        "searchIntervalSec_": 0.0,
+                                                                        "animationNumber_": 2,
+                                                                        "rotateToleranceDeg_": 0.0
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "polymorphic_id": 3,
+                                    "ptr_wrapper": {
+                                        "id": 2147483655,
+                                        "data": {
+                                            "value0": {
+                                                "value0": {},
+                                                "guid_": {
+                                                    "value_": "a0000000-0000-4000-8000-000000000005"
+                                                },
+                                                "position_": {
+                                                    "value0": 310.0,
+                                                    "value1": 220.0
+                                                }
+                                            },
+                                            "name_": "Wander",
+                                            "action_": {
+                                                "polymorphic_id": 2147483654,
+                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::WanderMove",
+                                                "ptr_wrapper": {
+                                                    "valid": 1,
+                                                    "data": {
+                                                        "cereal_class_version": 0,
+                                                        "value0": {},
+                                                        "heightGridMap_": {
+                                                            "value0": {
+                                                                "polymorphic_id": 1073741824,
+                                                                "ptr_wrapper": {
+                                                                    "id": 2147483656,
+                                                                    "data": {
+                                                                        "value0": {
+                                                                            "value_": "00000000-0000-0000-0000-000000000000"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "wanderRadius_": 12.0,
+                                                        "waitTimeMin_": 0.0,
+                                                        "waitTimeMax_": 0.0,
+                                                        "moveSpeed_": 2.5,
+                                                        "rotateSpeed_": 0.0,
+                                                        "rotateToleranceDeg_": 0.0,
+                                                        "maxPathCellRange_": 0,
+                                                        "maxClimbAngleDeg_": 0.0,
+                                                        "searchIntervalSec_": 0.0,
+                                                        "animationMoveNumber_": 0,
+                                                        "animationIdleNumber_": 0
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "parameters_": {
+        "ptr_wrapper": {
+            "valid": 1,
+            "data": {
+                "value0": 1,
+                "value1": {
+                    "polymorphic_id": 2147483655,
+                    "polymorphic_name": "NanamiEngine::Module::AnimationTree::AnimationParameter<int>",
+                    "ptr_wrapper": {
+                        "id": 2147483657,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "name_": "State",
+                            "value_": 0
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -60,19 +60,6 @@ namespace NanamiEngine::CineMachine::Behaviour
         UpdateLookAtTargetBehaviour();
     }
 
-    void ThirdPersonCameraBehaviour::MainCameraCallback()
-    {
-        if (!isImmediateApply_)
-            return;
-
-        if (!cameraBrain_)
-            return;
-
-        // ブレインの補完(mix/slerp)を無視し、仮想カメラのTransformを即時適用する。
-        // これによりThirdPersonの視点操作がカメラへ遅延なく反映される。
-        cameraBrain_->Transform().SetWorldMatrix(Transform().GetWorldMatrix());
-    }
-
     void ThirdPersonCameraBehaviour::UpdateMouseInput()
     {
         int mouseX, mouseY;

@@ -20,6 +20,16 @@ void CineMachine::CineMachineVirtualCamera::MainCameraCallback() const
     }
 }
 
+bool CineMachine::CineMachineVirtualCamera::WantsImmediateApply() const
+{
+    for (const auto& cameraBehaviour : cameraBehaviours_)
+    {
+        if (cameraBehaviour.lock()->WantsImmediateApply())
+            return true;
+    }
+    return false;
+}
+
 void CineMachine::CineMachineVirtualCamera::OnAwake()
 {
     cameraBehaviours_ = Components().Catches<IVirtualCameraBehaviour>();

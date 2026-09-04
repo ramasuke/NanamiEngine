@@ -1,4 +1,6 @@
 #pragma once
+#include <optional>
+
 #include "../ComponentBase.h"
 #include "../../../../Assets/Scripts/Core/Game/PlayerAvatar/Animator/AnimationSync/Transform/Animatoin_SyncTransform.h"
 #include "../../AnimationTree/Node/IAnimationNode.h"
@@ -21,6 +23,11 @@ namespace NanamiEngine::Module::Component
         AnimationTree::AnimationParameter<T>& Param(std::string paramName);
         [[nodiscard]] int AnimationModelHandle() const { return modelDxLibHandle_; }
         [[nodiscard]] AnimationTree::AnimationTree* GetAnimationTree() const { return animationTree_.get(); }
+
+        /** @brief 指定名クリップの再生進捗（秒・正規化）。再生中でなければ std::nullopt */
+        [[nodiscard]] std::optional<AnimationTree::ClipProgress> GetClipProgress(const std::string& clipName) const;
+        /** @brief 現在再生中（primary）のクリップの再生進捗。再生中のクリップが無ければ std::nullopt */
+        [[nodiscard]] std::optional<AnimationTree::ClipProgress> GetCurrentClipProgress() const;
 
     private:
         void InitAnimationTree();

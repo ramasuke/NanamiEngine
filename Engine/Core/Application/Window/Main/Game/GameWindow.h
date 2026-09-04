@@ -36,6 +36,7 @@ namespace NanamiEngine::Core::MainWindow
         std::queue<std::weak_ptr<GameObject::IGameObject>> removeGameObjectQueue_;
         Component::Editor3DCamera editorCamera_;
         std::weak_ptr<Scene::Scene> mainScene_;
+        char hierarchySearchBuffer_[128] = {};
         bool isPlayMode_ = false;
         bool isPlaying_  = false;
     };

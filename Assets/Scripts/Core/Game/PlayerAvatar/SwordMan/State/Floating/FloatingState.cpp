@@ -22,9 +22,9 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             if (Input().NormalAttack().IsPressed())
                 OnChangeState(SwordManAvatarStateType::NormalAttack);
             else if (Input().Move().IsUpdatePressed() && Input().Run().IsUpdatePressed())
-                OnChangeState(SwordManAvatarStateType::Run);
+                OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run);
             else if (Input().Move().IsUpdatePressed())
-                OnChangeState(SwordManAvatarStateType::Walk);
+                OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk);
             else 
                 OnChangeState(SwordManAvatarStateType::Idle);
         }

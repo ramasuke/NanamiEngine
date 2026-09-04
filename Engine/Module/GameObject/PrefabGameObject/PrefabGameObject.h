@@ -26,7 +26,7 @@ namespace NanamiEngine::Module::GameObject
 
         void ImplementDestroy() override;
         void OnDrawGui()        override;
-        void OnDrawTreeGui()    override;
+        void OnDrawTreeGui(bool drawChildren = true) override;
         void OnSave();
         void OnReplaceCopiedObjects();
         

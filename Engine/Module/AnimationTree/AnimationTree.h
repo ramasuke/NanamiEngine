@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <optional>
+
 #include "../../Core/Object/IObject.h"
 #include "../Asset/Factory/AssetFactory.h"
 #include "../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
@@ -44,6 +46,11 @@ namespace NanamiEngine::Module::AnimationTree
 
         [[nodiscard]] AnimationStateSnapshot GetCurrentState() const;
         void ApplyRemoteState(const AnimationStateSnapshot& state, int modelHandle);
+
+        /** @brief 指定名のクリップが現在再生中なら、その再生進捗を返す。再生中でなければ std::nullopt */
+        [[nodiscard]] std::optional<ClipProgress> GetClipProgress(const std::string& clipName) const;
+        /** @brief 現在再生中（primary）のクリップの再生進捗。再生中のクリップが無ければ std::nullopt */
+        [[nodiscard]] std::optional<ClipProgress> GetCurrentClipProgress() const;
 
     private:
         void AddCurrentNode    (const std::shared_ptr<IAnimationNode>& node);

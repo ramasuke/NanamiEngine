@@ -158,17 +158,18 @@ void Scene::SceneGameObject::OnDrawGui()
     }
 }
 
-void Scene::SceneGameObject::OnDrawTreeGui()
+void Scene::SceneGameObject::OnDrawTreeGui(const bool drawChildren)
 {
     ImGui::AlignTextToFramePadding();
     const float cursorY = ImGui::GetCursorPosY();
 
     ImGui::PushID(this);
 
-    const bool open = ImGui::TreeNodeEx(
-        "##tree",
-        ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_OpenOnArrow
-    );
+    ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_OpenOnArrow;
+    if (!drawChildren)
+        treeNodeFlags |= ImGuiTreeNodeFlags_Leaf;
+
+    const bool open = ImGui::TreeNodeEx("##tree", treeNodeFlags);
 
     ImGui::SameLine();
     ImGui::SetCursorPosY(cursorY);
@@ -243,7 +244,7 @@ void Scene::SceneGameObject::OnDrawTreeGui()
         ImGui::GetWindowDrawList()->AddRectFilled(buttonMin, buttonMax, color);
     }
 
-    if (open)
+    if (open && drawChildren)
     {
         ImGui::TreePush("##tree");
         for (const auto& child : transform_.GetChildren())
@@ -251,7 +252,7 @@ void Scene::SceneGameObject::OnDrawTreeGui()
             child->OnDrawTreeGui();
         }
         ImGui::TreePop();
-    }   
+    }
 
     ImGui::PopID();
 }

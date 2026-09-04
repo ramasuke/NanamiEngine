@@ -1,6 +1,7 @@
 ﻿#include "PlayerAvatarCameraGroupBase.h"
 
 #include "../../../../../../Engine/Module/GameObject/PrefabGameObject/PrefabCatchChild/PrefabCatchChild.h"
+#include "../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
 
 namespace GameCore::PlayerAvatar
@@ -29,6 +30,9 @@ namespace GameCore::PlayerAvatar
         auto camera = weakCamera.lock();
         camera->SetTarget(playerAvatarObject);
         currentCamera_ = followFromBehindCamera_.get();
+        
+        auto shakeCamera = followCamera.Catch<CineMachine::Behaviour::ShakeCameraBehaviour>().lock();
+        shakeCamera;
     }
 
     void PlayerAvatarCameraGroupBase::BasedOnDrawgui()

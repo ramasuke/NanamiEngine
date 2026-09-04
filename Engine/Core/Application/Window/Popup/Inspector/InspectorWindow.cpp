@@ -4,6 +4,7 @@
 #include "../../../../../Module/GameObject/Interface/IGameObject.h"
 
 int NanamiEngine::Core::PopupWindow::InspectorWindow::counter_ = 0;
+int NanamiEngine::Core::PopupWindow::InspectorWindow::selectionCounter_ = 0;
 
 NanamiEngine::Core::PopupWindow::InspectorWindow::InspectorWindow()
 {
@@ -27,5 +28,6 @@ void NanamiEngine::Core::PopupWindow::InspectorWindow::TryAddDisplayObject(
     if (!isLockedContent_)
     {
         displayGameObject_ = gameObject;
+        selectionOrder_    = ++selectionCounter_;
     }
 }

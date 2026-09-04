@@ -57,6 +57,17 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual float ReinforceModeDuring_secs() const = 0;
         [[nodiscard]] virtual float ReinforceModeDuration_secs() const = 0;
         [[nodiscard]] virtual bool  IsOnDisableReinforceMode() const = 0;
+        [[nodiscard]] virtual bool  IsInjured() const { return false; }
+        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit> OnBecomeInjured() const
+        {
+            static rxcpp::subjects::subject<LibCore::Rx::unit> s;
+            return s.get_observable();
+        }
+        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit> OnRecoverFromInjured() const
+        {
+            static rxcpp::subjects::subject<LibCore::Rx::unit> s;
+            return s.get_observable();
+        }
         virtual void OnDrawGui() = 0;
         virtual void AddOnDamageStack(std::unique_ptr<IDamage> damageContext) = 0;
 

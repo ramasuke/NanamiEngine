@@ -16,6 +16,7 @@
 #include "../../../../Assets/Scripts/GamePlay/Npc/Enemy/NetworkBehaviourTree/GamePlay_NetworkBehaviourTree.h"
 #include "../../../../Assets/Scripts/GamePlay/Npc/Enemy/Projectile/GamePlay_Enemy_ProjectileAttackArea.h"
 #include "../../../../Assets/Scripts/GamePlay/Npc/Enemy/TrainingDummy/TrainingDummy.h"
+#include "../../../../Assets/Scripts/GamePlay/Npc/Enemy/Tyrannosaurus/GamePlay_Enemy_Tyrannosaurus.h"
 #include "../../../../Assets/Scripts/GamePlay/Npc/Friendly/FriendlyNpc.h"
 #include "../../../../Assets/Scripts/GamePlay/PlayerAvatar/Bullet/PlayerAvatar_Bullet_CannonBullet.h"
 #include "../../../../Assets/Scripts/GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"

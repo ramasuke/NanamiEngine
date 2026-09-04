@@ -1,5 +1,7 @@
 ﻿#include "AnimationClipNode.h"
 
+#include <algorithm>
+
 #include "DxLib.h"
 #include "../../../../Core/Application/Time/Time.h"
 #include "../../../../Core/Application/Window/Popup/Inspector/InspectorWindow.h"
@@ -55,6 +57,17 @@ void AnimationTree::AnimationClipNode::OnExitNode(const int modelHandle)
 void AnimationTree::AnimationClipNode::OnUpdateBlendRate(const float blendRate)
 {
     blendRate_ = blendRate;
+}
+
+AnimationTree::ClipProgress AnimationTree::AnimationClipNode::GetClipProgress() const
+{
+    ClipProgress progress;
+    progress.duringSecs    = during_secs_;
+    progress.durationSecs   = duration_secs_;
+    progress.normalizedTime = (duration_secs_ > 0.0f)
+                                  ? std::clamp(during_secs_ / duration_secs_, 0.0f, 1.0f)
+                                  : 0.0f;
+    return progress;
 }
 
 Gui::Graph::NodeDrawResult AnimationTree::AnimationClipNode::OnDrawGraphEditorGui(

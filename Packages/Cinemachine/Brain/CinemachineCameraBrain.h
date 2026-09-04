@@ -15,6 +15,7 @@ namespace NanamiEngine::CineMachine
         void OnDrawGui() override;
         void ApplyVirtualCameraMatrix() const;
         void ApplyVirtualCameraMatrix(const CineMachineVirtualCamera& virtualCamera) const;
+        static CinemachineCameraBrain* Instance() { return cameraBrain_; }
         static void SubscribeVirtualCamera(const std::weak_ptr<CineMachineVirtualCamera>& virtualCamera);
         static void UnSubscribeVirtualCamera(const std::weak_ptr<CineMachineVirtualCamera>& virtualCamera);
         

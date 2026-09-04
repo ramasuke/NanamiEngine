@@ -220,6 +220,7 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
                 OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::TrainingDummy>(addComponent);
                 OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::FirstEventDragon>(addComponent);
                 OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::Hyena>(addComponent);
+                OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::Tyrannosaurus>(addComponent);
                 OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::NetworkBehaviourTree>(addComponent);
                 if (ImGui::TreeNode("Attack"))
                 {

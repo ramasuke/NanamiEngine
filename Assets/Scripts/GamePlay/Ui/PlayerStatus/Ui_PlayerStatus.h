@@ -4,6 +4,7 @@
 #include "../../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
 #include "../../../../../Engine/Module/Component/ImageRenderer/ImageRenderer.h"
 #include "../../../../../Engine/Module/NanamiUI/Slider/NanamiUi_Slider.h"
+#include "Ui_InjuredMask.h"
 
 namespace GameCore::PlayerAvatar
 {
@@ -31,6 +32,7 @@ namespace GamePlay::Ui
             const GameCore::PlayerAvatar::EnhancePower& enhancePower) const;
         void OnAddEnhancePowerStack() const;
         void OnIsEnableReinforceMode(bool enable) const;
+        void OnIsInjured(bool isInjured) const;
 
     private:
         Coroutine::Task<void> OnDamagedHealth() const;
@@ -53,6 +55,9 @@ namespace GamePlay::Ui
         [[serialize(6)]] std::string onEnableReinforceMaskName_;
         FIELD(NanamiUi::BlendImageRenderer) onEnableReinforceMask_;
 
+        [[serialize(7)]] std::string injuredUiObjectName_;
+        FIELD(InjuredMaskUI) injuredUiMask_;
+
 #pragma region Serialization Function
     public:
         void OnDrawGui() override;
@@ -69,6 +74,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(onAddEnhancePowerStackBarFrame_));
             archive(CEREAL_NVP(enhancePowerStackBarFrameName_));
             archive(CEREAL_NVP(onEnableReinforceMaskName_));
+            archive(CEREAL_NVP(injuredUiObjectName_));
         }
 
         template<class Archive>
@@ -83,10 +89,11 @@ namespace GamePlay::Ui
             if (version >= 6) archive(CEREAL_NVP(onAddEnhancePowerStackBarFrame_));
             if (version >= 6) archive(CEREAL_NVP(enhancePowerStackBarFrameName_));
             if (version >= 6) archive(CEREAL_NVP(onEnableReinforceMaskName_));
+            if (version >= 7) archive(CEREAL_NVP(injuredUiObjectName_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PlayerStatus, 6)
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PlayerStatus, 7)
 

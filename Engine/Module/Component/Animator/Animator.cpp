@@ -42,6 +42,22 @@ void Component::Animator::InitAnimationTree()
     }
 }
 
+std::optional<AnimationTree::ClipProgress> Component::Animator::GetClipProgress(const std::string& clipName) const
+{
+    if (!animationTree_)
+        return std::nullopt;
+
+    return animationTree_->GetClipProgress(clipName);
+}
+
+std::optional<AnimationTree::ClipProgress> Component::Animator::GetCurrentClipProgress() const
+{
+    if (!animationTree_)
+        return std::nullopt;
+
+    return animationTree_->GetCurrentClipProgress();
+}
+
 void Component::Animator::OnDrawGui()
 {
     ImGuiHelper::OnDrawInputField("animationTreeFile_", animationTreeFile_);

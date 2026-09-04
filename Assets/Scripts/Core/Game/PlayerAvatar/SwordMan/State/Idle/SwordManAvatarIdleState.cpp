@@ -30,7 +30,7 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoFixedUp
     if (Status().IsOnDisableReinforceMode())
         OnChangeState(SwordManAvatarStateType::OnDisableReinforce);
     if (Input().Move().IsUpdatePressed())
-        OnChangeState(SwordManAvatarStateType::Walk);
+        OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk);
     if (Input().Jump().IsPressed())
         OnChangeState(SwordManAvatarStateType::Jump);
     if (Input().AvoidRolling().IsPressed())

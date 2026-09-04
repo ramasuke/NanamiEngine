@@ -17,9 +17,9 @@ void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoFixedUpdat
         if (!Input().Move().IsUpdatePressed())
             OnChangeState(SwordManAvatarStateType::Idle);
         if (Input().Move().IsUpdatePressed())
-            OnChangeState(SwordManAvatarStateType::Walk);
+            OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk);
         if (Input().Run().IsUpdatePressed())
-            OnChangeState(SwordManAvatarStateType::Run);
+            OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run);
         if (Input().Jump().IsPressed())
             OnChangeState(SwordManAvatarStateType::Jump);
         if (Input().AvoidRolling().IsPressed())

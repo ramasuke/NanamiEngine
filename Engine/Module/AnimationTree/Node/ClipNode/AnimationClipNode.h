@@ -30,6 +30,9 @@ namespace NanamiEngine::Module::AnimationTree
         void                SetDuringSecs(float secs) { during_secs_ = secs; }
         [[nodiscard]] float GetBlendRate () const { return blendRate_;    }
 
+        [[nodiscard]] const std::string& Name() const { return name_; }
+        [[nodiscard]] ClipProgress GetClipProgress() const;
+
     private:
         FIELD(Asset::Mv1File) animationFile_;
         std::string           name_ = "ClipNode";

@@ -36,6 +36,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         , reinforceModeDuring_secs_       (0.0f )
         , reinforceModeDuration_secs_     (10.0f)
         , isReinforceMode_                (false)
+        , injuredHealthRatio_             (0.3f )
+        , wasInjured_                     (false)
     {
     }
 
@@ -65,6 +67,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         , deathStateDuration_secs_            (initStatus.DeathStateDuration_secs())
         , reinforceModeDuring_secs_           (0)
         , reinforceModeDuration_secs_         (initStatus.ReinforceModeDuration_secs())
+        , injuredHealthRatio_                 (initStatus.GetInjuredHealthRatio())
+        , wasInjured_                         (false)
     {
     }
 
@@ -81,6 +85,20 @@ namespace GameCore::PlayerAvatar::SwordMan
         {
             reinforceModeDuring_secs_ += Time::DeltaTime();
         }
+
+        const bool currentlyInjured = IsInjured();
+        if (currentlyInjured && !wasInjured_)
+            onBecomeInjured_.get_subscriber().on_next(LibCore::Rx::unit{});
+        else if (!currentlyInjured && wasInjured_)
+            onRecoverFromInjured_.get_subscriber().on_next(LibCore::Rx::unit{});
+        wasInjured_ = currentlyInjured;
+    }
+
+    bool SwordManAvatarStatus::IsInjured() const
+    {
+        const auto maxVal = static_cast<float>(maxHealth_.Value());
+        if (maxVal <= 0.0f) return false;
+        return static_cast<float>(currentHealth_->Get().Value()) / maxVal <= injuredHealthRatio_;
     }
 
     void SwordManAvatarStatus::OnEnableReinforce()

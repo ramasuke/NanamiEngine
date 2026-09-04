@@ -23,5 +23,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         AvoidRolling       = 15,
         Death              = 16,
         UseCanon           = 17,
+        InjuredWalk        = 18,
+        InjuredRun         = 19,
     };
 }

@@ -15,6 +15,8 @@
 #include "Jump/SwordManAvatarJumpState.h"
 #include "OnDisableReinforce/OnDisableReinforceState.h"
 #include "OnEnableReinforce/OnEnableReinforceState.h"
+#include "InjuredRun/SwordManAvatarInjuredRunState.h"
+#include "InjuredWalk/SwordManAvatarInjuredWalkState.h"
 #include "Run/SwordManAvatarRunState.h"
 #include "UseCanon/SwordManAvatarUseCanonState.h"
 #include "Walk/SwordManAvatarWalkState.h"
@@ -87,8 +89,10 @@ namespace GameCore::PlayerAvatar::SwordMan
                     {SwordManAvatarStateType::OnDisableReinforce, std::make_shared<OnDisableReinforceState>         (context, callback)},
                     {SwordManAvatarStateType::Hurt,               std::make_shared<HurtState>                      (context, callback)},
                     {SwordManAvatarStateType::AvoidRolling,       std::make_shared<AvoidRollingState>               (context, callback)},
-                    {SwordManAvatarStateType::Death,              std::make_shared<DeathState>                     (context, callback)},
-                    {SwordManAvatarStateType::UseCanon,           std::make_shared<SwordManAvatarUseCannonState>    (context, callback)},
+                    {SwordManAvatarStateType::Death,              std::make_shared<DeathState>                          (context, callback)},
+                    {SwordManAvatarStateType::UseCanon,           std::make_shared<SwordManAvatarUseCannonState>         (context, callback)},
+                    {SwordManAvatarStateType::InjuredWalk,        std::make_shared<SwordManAvatarInjuredWalkState>       (context, callback)},
+                    {SwordManAvatarStateType::InjuredRun,         std::make_shared<SwordManAvatarInjuredRunState>        (context, callback)},
                 };
             },
             SwordManAvatarStateType::Idle,

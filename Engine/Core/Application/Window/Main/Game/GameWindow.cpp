@@ -167,16 +167,34 @@ namespace NanamiEngine::Core::MainWindow
         ImGui::End();
     
         ImGui::Begin("Hierarchy");
+        
+        {
+            const bool hasSearchText = hierarchySearchBuffer_[0] != '\0';
+            ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - (hasSearchText ? 55.0f : 0.0f));
+            ImGui::InputTextWithHint("##HierarchySearch", "Search...", hierarchySearchBuffer_, sizeof(hierarchySearchBuffer_));
+            if (hasSearchText)
+            {
+                ImGui::SameLine();
+                if (ImGui::SmallButton("Clear##HierarchySearch"))
+                {
+                    hierarchySearchBuffer_[0] = '\0';
+                }
+            }
+        }
+        const std::string hierarchySearchText = hierarchySearchBuffer_;
+
         int index = 0;
         std::vector<Scene::Scene*> pendingRemoveScenes;
         for (const auto& content : contents_ | std::views::values)
         {
             const std::string headerLabel = content->Name() + "##" + std::to_string(index);
+            if (!hierarchySearchText.empty())
+                ImGui::SetNextItemOpen(true, ImGuiCond_Always);
             if (ImGui::CollapsingHeader(headerLabel.c_str()))
             {
                 ImGui::Indent();
                 content->OnDrawGui([&pendingRemoveScenes](Scene::Scene* scene) {pendingRemoveScenes.push_back(scene); },
-                                context.FileDraggingHand());
+                                context.FileDraggingHand(), hierarchySearchText);
                 ImGui::Unindent();
             }
             ++index;

@@ -19,10 +19,11 @@ namespace NanamiEngine::CineMachine::Behaviour
         void SetEnableImmediateApply(bool enable);
 
     private:
+        bool WantsImmediateApply() const override { return isImmediateApply_; }
+
         void OnAwake () override;
         void OnUpdate() override;
         int  UpdatePriority() const override { return 1; }
-        void MainCameraCallback() override;
 
         void UpdateMouseInput();
         void UpdateGamepadInput();

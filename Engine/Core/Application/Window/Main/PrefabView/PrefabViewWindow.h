@@ -17,8 +17,9 @@ namespace NanamiEngine::Core::MainWindow
         void OnDrawGui(MainWindowDrawGuiContext context)    override;
         void OnDrawAddChildGameObjectButton() const;
         void OnSave()       override;
-        
+
         Component::Editor3DCamera camera_;
+        char prefabSearchBuffer_[128] = {};
     };
 
     REGISTER_MAIN_WINDOW(PrefabViewWindow)

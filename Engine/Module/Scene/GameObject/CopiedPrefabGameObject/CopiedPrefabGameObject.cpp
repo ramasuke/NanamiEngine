@@ -150,17 +150,18 @@ void Scene::CopiedPrefabGameObject::OnDrawGui()
     }
 }
 
-void Scene::CopiedPrefabGameObject::OnDrawTreeGui()
+void Scene::CopiedPrefabGameObject::OnDrawTreeGui(const bool drawChildren)
 {
     ImGui::AlignTextToFramePadding();
     const float cursorY = ImGui::GetCursorPosY();
 
     ImGui::PushID(this);
 
-    const bool open = ImGui::TreeNodeEx(
-        "##tree",
-        ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_OpenOnArrow
-    );
+    ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_OpenOnArrow;
+    if (!drawChildren)
+        treeNodeFlags |= ImGuiTreeNodeFlags_Leaf;
+
+    const bool open = ImGui::TreeNodeEx("##tree", treeNodeFlags);
 
     ImGui::SameLine();
     ImGui::SetCursorPosY(cursorY);
@@ -229,7 +230,7 @@ void Scene::CopiedPrefabGameObject::OnDrawTreeGui()
         ImGui::GetWindowDrawList()->AddRectFilled(buttonMin, buttonMax, color);
     }
 
-    if (open)
+    if (open && drawChildren)
     {
         ImGui::TreePush("##tree");
         for (const auto& child : transform_.GetChildren())
