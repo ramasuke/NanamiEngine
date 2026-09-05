@@ -21,7 +21,7 @@ namespace NanamiEngine::Module::NanamiUi
         const int h = static_cast<int>(drawSize_.y);
         const int maskedScreen = MakeScreen(w, h, true);
 
-        // ---------- マスク生成フェーズ ----------
+        //マスク生成フェーズ
         SetDrawScreen(maskedScreen);
         ClsDrawScreen();
 
@@ -31,7 +31,7 @@ namespace NanamiEngine::Module::NanamiUi
         const float angle = renderRot  .z;
         const float scale = renderScale.x;
 
-        // ★ マスク内ローカル座標で描画
+        // マスク内ローカル座標で描画
         DrawRotaGraphF(
             drawPosition_.x,
             drawPosition_.y,
@@ -49,7 +49,7 @@ namespace NanamiEngine::Module::NanamiUi
         GraphFilter(maskedScreen, DX_GRAPH_FILTER_BRIGHT_CLIP, DX_CMP_LESS, 20, TRUE, GetColor(0, 255, 0), 0);
         SetDrawScreen(DX_SCREEN_BACK);
 
-        // ---------- 最終描画フェーズ ----------
+        //最終描画フェーズ
         const int x = static_cast<int>(worldPos.x);
         const int y = static_cast<int>(worldPos.y);
 

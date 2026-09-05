@@ -126,6 +126,12 @@
     <ClCompile Include="Engine\Core\Application\Window\Popup\Inspector\InspectorWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Window\Popup\Console\ConsoleWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Window\Popup\NetworkLogger\NetworkLoggerWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Core\Application\Window\Popup\Interface\IPopupWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -750,6 +756,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Chattable\IPlayerChattable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Wakeable\IPlayerWakeable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\InputAction\PlayerAvatarInputActionBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -834,12 +843,6 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Jump\SwordManAvatarJumpState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\OnDisableReinforce\OnDisableReinforceState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\OnEnableReinforce\OnEnableReinforceState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Run\SwordManAvatarRunState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -862,6 +865,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\StatusParameter\MoveSpeed\MoveSpeed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\StatusParameter\Stamina\Stamina.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Editor\BehaviourTree\Type\BehaviourTreeType.cpp">
@@ -898,6 +904,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\ChattableArea\ChattableArea.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\WakeUpArea\WakeUpArea.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\PlayerAvatarBase.cpp">
@@ -1288,6 +1297,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Death\SwordManAvatar_DeathState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Down\SwordManAvatar_DownState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\WakeUp\SwordManAvatar_WakeUpState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\DisableState\SwordManAvatar_DisableState.cpp">
@@ -3371,6 +3386,12 @@
     <ClInclude Include="Engine\Core\Application\Window\Popup\Inspector\InspectorWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Window\Popup\Console\ConsoleWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Window\Popup\NetworkLogger\NetworkLoggerWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Core\Application\Window\Popup\Interface\IPopupWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -4875,6 +4896,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Chattable\IPlayerChattable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Wakeable\IPlayerWakeable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\InputAction\PlayerAvatarInputActionBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -4965,12 +4989,6 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Jump\SwordManAvatarJumpState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\OnDisableReinforce\OnDisableReinforceState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\OnEnableReinforce\OnEnableReinforceState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Run\SwordManAvatarRunState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -4996,6 +5014,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\StatusParameter\MoveSpeed\MoveSpeed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\StatusParameter\Stamina\Stamina.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Type\BehaviourTreeType.h">
@@ -5038,6 +5059,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\ChattableArea\ChattableArea.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\WakeUpArea\WakeUpArea.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\PlayerAvatarBase.h">
@@ -5451,6 +5475,12 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Death\SwordManAvatar_DeathState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Down\SwordManAvatar_DownState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\WakeUp\SwordManAvatar_WakeUpState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\DisableState\SwordManAvatar_DisableState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5698,6 +5728,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\Log\NanamiEngine_Module_Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Exception\Engine_Module_Exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Serialization\Engine_Module_Serialization.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.h">
