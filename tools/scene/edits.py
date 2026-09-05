@@ -283,12 +283,36 @@ def _vec(n: int) -> OrderedObj:
 def _field_blob(field_type_leaf: str, guid: str = EMPTY_GUID) -> Ver:
     """A brand-new ``Field<T>`` param blob (mirrors ``tools.bt.edits._field_blob``
     - same shape, since this is the generic cereal FieldContext<T> layout, not
-    anything Scene/BT-specific)."""
+    anything Scene/BT-specific).
+
+    ``Field<T>``/``FieldContext<T>`` are real per-``T`` C++ template
+    instantiations, each independently version-tracked by cereal - but a
+    freshly-added field can land *anywhere* in the tree, while any real prior
+    occurrence of the exact same ``T`` elsewhere in the file (e.g. another
+    ``FIELD(Asset::SpriteFile)`` on a completely different component) reads
+    back tagged by structural fingerprint, not by this synthetic ``("type",
+    ...)`` key - so the writer's global once-per-key tracking can't tell the
+    two are the same real type and may wrongly treat this one as the first
+    occurrence, emitting a `cereal_class_version` cereal never expects there.
+    An unexpected extra version key here is not a harmless no-op: cereal's
+    JSON archive only *searches* for a named node when it doesn't already
+    know this type's version; on a real repeat occurrence it skips that
+    search entirely and reads the next value positionally, so a stray
+    version key silently shifts every following read - concretely, the very
+    next call in Field<T>::load() (an unnamed `archive(context_)`) ends up
+    treating an integer as an object, undefined behaviour in
+    rapidjson::GenericValue::MemberEnd(). Force `literal_presence=False`
+    (never emit) instead: on the rare case this genuinely is that type's
+    first appearance in the file, cereal fails loudly with a catchable
+    "NVP (cereal_class_version) not found" exception rather than silently
+    corrupting the load.
+    """
     guid_ver = Ver(("type", "Guid"), 0, OrderedObj([("value_", guid)]))
     holder = Ver(("type", f"FieldHolder<{field_type_leaf}>"), 0,
-                OrderedObj([("value0", guid_ver)]))
+                OrderedObj([("value0", guid_ver)]), literal_presence=False)
     ptr = Ptr(exact=True, null=False, fqn=None, wrapper="shared", data=holder)
-    return Ver(("type", f"Field<{field_type_leaf}>"), 0, OrderedObj([("value0", ptr)]))
+    return Ver(("type", f"Field<{field_type_leaf}>"), 0, OrderedObj([("value0", ptr)]),
+               literal_presence=False)
 
 
 def _param_blob(pinfo: dict) -> Any:
@@ -308,30 +332,111 @@ def _param_blob(pinfo: dict) -> Any:
     return Num.of_int(0)
 
 
-def component_body_blob(entry: dict, guid: str) -> OrderedObj:
+def _component_bases(entry: dict) -> list[dict]:
+    """The ordered ``base_class<>`` slots a brand-new instance must write
+    (``[{"leaf", "key"}]`` - see ``catalog_scan._parse_serializable``). A
+    catalog predating the ``bases`` field only knew the first base; fall back
+    to that so an old catalog degrades to the old single-slot behaviour rather
+    than crashing."""
+    bases = entry.get("bases")
+    if bases is None:
+        return [{"leaf": entry.get("immediate_base") or "ComponentBase", "key": "value0"}]
+    return bases
+
+
+def _unmodeled_bases(entry: dict, cat: catalog_mod.Catalog) -> list[str]:
+    """Base leaves this toolkit cannot construct from scratch: anything other
+    than ``ComponentBase`` whose own ``save()`` body is not known to be empty
+    (``ColliderBase``, ``NetworkComponent``, an unknown/ambiguous leaf...)."""
+    out: list[str] = []
+    for b in _component_bases(entry):
+        leaf = b["leaf"]
+        if leaf == "ComponentBase":
+            continue
+        info = cat.base_info(leaf)
+        if info is None or info.get("ambiguous") or not info.get("empty"):
+            out.append(leaf)
+    return out
+
+
+def _empty_base_blob(leaf: str, version: int) -> Ver:
+    """A brand-new slot for a field-less marker base (``IInitRenderable``,
+    ``IUserInterfaceRenderable``, ``IAwakable``...): an empty object that
+    *always* carries ``cereal_class_version``.
+
+    The engine writes that key only at the type's first occurrence in the file
+    and a bare ``{}`` afterwards, but this writer cannot tell whether an
+    earlier occurrence exists (the reader keeps existing slots keyed by
+    structural fingerprint, not by real type - the same blind spot
+    ``_field_blob`` describes), so it must pick one form that loads correctly
+    either way. Unlike ``Field<T>``, always emitting it is safe here: at the
+    type's first occurrence cereal searches for and reads the key; at any later
+    one ``loadClassVersion`` is skipped, the base's ``load()`` body is empty so
+    nothing inside the node is ever read, and ``finishNode()`` just advances
+    the parent iterator past the whole object - the extra key is never
+    touched. (``Field<T>`` broke precisely because an *unnamed* positional
+    read followed the stray key; there is no read at all inside an empty
+    base.) Omitting the key instead would fail the first-occurrence case with
+    "NVP (cereal_class_version) not found". The engine re-normalises the file
+    on its next save.
+    """
+    return Ver(("type", leaf), int(version), OrderedObj(), literal_presence=True)
+
+
+def component_body_blob(entry: dict, guid: str,
+                        cat: Optional[catalog_mod.Catalog] = None) -> OrderedObj:
     """A brand-new component's ``data`` blob (everything after its own class
-    version): ComponentBase's ``value0`` (``guid_``/``isEnable_``) followed by
-    each catalog param's default value, in catalog order."""
+    version): one unnamed ``valueN`` slot per ``base_class<>`` the component
+    archives, in archive order - ComponentBase's (``guid_``/``isEnable_``) and
+    an empty object for each marker mixin - followed by each catalog param's
+    default value, in catalog order. cereal reads the base slots positionally,
+    so every one of them must be present: dropping the mixin slots made the
+    engine read ``spriteFile_`` as a base class."""
+    cat = cat or catalog_mod.load()
     out = OrderedObj()
-    guid_ver = Ver(("type", "Guid"), 0, OrderedObj([("value_", guid)]))
-    base_body = OrderedObj([("guid_", guid_ver), ("isEnable_", True)])
-    out.append("value0", Ver(("type", "ComponentBase"), 0, base_body))
+    for b in _component_bases(entry):
+        leaf = b["leaf"]
+        if leaf == "ComponentBase":
+            guid_ver = Ver(("type", "Guid"), 0, OrderedObj([("value_", guid)]))
+            base_body = OrderedObj([("guid_", guid_ver), ("isEnable_", True)])
+            out.append(b["key"], Ver(("type", "ComponentBase"), 0, base_body))
+        else:
+            info = cat.base_info(leaf) or {}
+            out.append(b["key"], _empty_base_blob(leaf, info.get("version", 0)))
     for p in entry.get("params", []):
         out.append(p["key"], _param_blob(p))
     return out
 
 
-def new_component(entry: dict, *, guid: Optional[str] = None) -> model.Component:
-    if entry.get("immediate_base") not in (None, "ComponentBase"):
+def new_component(entry: dict, *, guid: Optional[str] = None,
+                  cat: Optional[catalog_mod.Catalog] = None) -> model.Component:
+    cat = cat or catalog_mod.load()
+    bases = _component_bases(entry)
+    missing = _unmodeled_bases(entry, cat)
+    if missing:
         raise EditError(
-            f"{entry['fqn']}: has an intermediate base ({entry['immediate_base']}) with its "
-            f"own fields this toolkit does not model yet - refusing to construct a new "
-            f"instance from scratch (it would be missing required data). Copy an existing "
-            f"GameObject/prefab that already has one, or add it via the in-engine editor."
+            f"{entry['fqn']}: has base class(es) with their own serialised fields this "
+            f"toolkit does not model yet ({', '.join(missing)}) - refusing to construct a "
+            f"new instance from scratch (it would be missing required data). Copy an "
+            f"existing GameObject/prefab that already has one, or add it via the in-engine "
+            f"editor."
+        )
+    if not any(b["leaf"] == "ComponentBase" for b in bases):
+        # Every modeled base is an empty mixin, yet nothing carries guid_/isEnable_.
+        raise EditError(
+            f"{entry['fqn']}: does not archive ComponentBase directly (bases: "
+            f"{', '.join(b['leaf'] for b in bases) or 'none'}) - this toolkit cannot construct "
+            f"a brand-new instance from scratch. Copy an existing GameObject/prefab that "
+            f"already has one, or add it via the in-engine editor."
+        )
+    if entry.get("interleaved_bases"):
+        raise EditError(
+            f"{entry['fqn']}: archives a base class after one of its own fields - this "
+            f"toolkit only models the bases-first layout; refusing to guess the slot order."
         )
     cguid = guid or mint_guid()
     return model.Component(fqn=entry["fqn"], class_version=int(entry.get("version", 0)),
-                           data=component_body_blob(entry, cguid))
+                           data=component_body_blob(entry, cguid, cat))
 
 
 def _find_param(entry: dict, key: str) -> Optional[dict]:
@@ -420,7 +525,7 @@ def add_component(target: Any, guid: str, component_type: str, *,
     except catalog_mod.CatalogError as e:
         raise EditError(str(e)) from e
     node = _require(target, guid)
-    comp = new_component(entry, guid=component_guid)
+    comp = new_component(entry, guid=component_guid, cat=cat)
     if params:
         for k, v in params.items():
             _set_one_param(comp, entry, k, v)

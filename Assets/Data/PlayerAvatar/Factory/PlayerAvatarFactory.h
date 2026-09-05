@@ -36,7 +36,8 @@ namespace NanamiEngine::Module::Asset
             const GameCore::PlayerAvatar::PlayerAvatarType& type,
             const glm::vec3& summonPosition,
             const std::shared_ptr<GameObject::IGameObject>& parent,
-            bool enableInputAction);
+            bool enableInputAction,
+            const std::shared_ptr<GameCore::PlayerAvatar::IPlayerAvatarStatus>& presetStatus);
 
         template <typename AvatarT, typename TraitsT>
         [[nodiscard]] std::shared_ptr<AvatarT> LoadInitedPlayerAvatarImpl(

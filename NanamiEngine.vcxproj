@@ -4146,6 +4146,7 @@
       <AdditionalOptions>/bigobj </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\NullPlayerAvatarStatus.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\PlayerAvatarStatus.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Presenter\PlayerAvatar_OtherPlayer_StatusPresenter.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Presenter\PlayerAvatar_StatusPresenterBase.cpp" />
@@ -12472,6 +12473,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\EnahancePower\EnhancePower.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Event\PlayerAvatar_IStatusEvent.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\IPlayerAvatarStatus.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\NullPlayerAvatarStatus.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\PlayerAvatarStatus.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Presenter\PlayerAvatar_OtherPlayer_StatusPresenter.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Presenter\PlayerAvatar_StatusPresenterBase.h" />

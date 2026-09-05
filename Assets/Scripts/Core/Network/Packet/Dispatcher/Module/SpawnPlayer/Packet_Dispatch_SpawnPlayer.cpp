@@ -6,6 +6,7 @@
 #include "../../../../../../../../Engine/Core/Network/Packet/Dispatcher/Packet_PacketDispatcherGroup.h"
 #include "../../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
 #include "../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
+#include "../../../../../Game/PlayerAvatar/Status/NullPlayerAvatarStatus.h"
 
 namespace GameCore::Network
 {
@@ -41,7 +42,8 @@ namespace GameCore::Network
         const glm::vec3 position,
         const glm::quat rotation)
     {
-        auto playerAvatar = playerAvatarFactory_.LoadInitedPlayerAvatar(type, position, nullptr, true);
+        auto playerAvatar = playerAvatarFactory_.LoadInitedPlayerAvatar(
+            type, position, nullptr, true, std::make_shared<PlayerAvatar::NullPlayerAvatarStatus>());
         auto gameObject = playerAvatar->PlayerTransform().GetGameObject();
 
         gameObject->Transform().SetWorldRot(rotation);
@@ -53,6 +55,12 @@ namespace GameCore::Network
         packet.Data().Write(position);
         packet.Data().Write(rotation);
         packet.Data().Write(networkObjectId);
+
+        // PlayerStatus()は参照しか返さないため、cerealのポリモーフィックシリアライズに渡すために
+        // 所有権を持たないshared_ptrでラップする(deleterは何もしない)。
+        const std::shared_ptr<PlayerAvatar::IPlayerAvatarStatus> status(
+            &playerAvatar->PlayerStatus(), [](PlayerAvatar::IPlayerAvatarStatus*) {});
+        packet.Data().Write(status);
 
         if (IsServer())
             spawnPacketHistory_.push_back(packet);
@@ -70,6 +78,7 @@ namespace GameCore::Network
         const auto position        = packet.Data().Read<glm::vec3>(readOffset);
         const auto rotation        = packet.Data().Read<glm::quat>(readOffset);
         const auto networkObjectId = packet.Data().Read<NetworkObjectId>(readOffset);
+        const auto status          = packet.Data().Read<std::shared_ptr<PlayerAvatar::IPlayerAvatarStatus>>(readOffset);
 
         if (playerId == PlayerId())
             return;
@@ -78,7 +87,7 @@ namespace GameCore::Network
             spawnPacketHistory_.push_back(packet);
 
         const auto type = static_cast<PlayerAvatar::PlayerAvatarType>(avatarTypeInt);
-        auto playerAvatar = playerAvatarFactory_.LoadInitedPlayerAvatar(type, position, nullptr, false);
+        auto playerAvatar = playerAvatarFactory_.LoadInitedPlayerAvatar(type, position, nullptr, false, status);
         auto gameObject = playerAvatar->PlayerTransform().GetGameObject();
 
         gameObject->Transform().SetWorldRot(rotation);

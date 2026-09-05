@@ -1278,6 +1278,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Event\PlayerAvatar_IStatusEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\NullPlayerAvatarStatus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\PlayerAvatarStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -5434,6 +5437,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Event\PlayerAvatar_IStatusEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\NullPlayerAvatarStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\PlayerAvatarStatus.h">

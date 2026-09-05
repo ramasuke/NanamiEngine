@@ -12,9 +12,13 @@ Stages (added as the toolkit is built - mirrors tools/bt/selftest.py):
   2. Scene/Prefab model round-trip: read -> write -> byte-identical, including
      the ordered polymorphic_id / ptr_wrapper.id / cereal_class_version
      bookkeeping sequences AND Transform's repeated "child" key count.
-  3. catalog.json freshness (regen-catalog --check).
+  3. catalog.json freshness (regen-catalog --check), plus the base-class slot
+     table: every base a component archives is known, and ImageRenderer's
+     layout is ComponentBase / IInitRenderable / IUserInterfaceRenderable.
   4. GameObject/Component edit + inverse round-trip (add-then-remove restores
-     the original bytes exactly).
+     the original bytes exactly), including a brand-new component keeping its
+     empty mixin-base slots (value1/value2...) and a component whose base has
+     its own fields (ColliderBase/NetworkComponent) still being refused.
   5. instantiate-prefab: two instantiations of the same prefab produce fresh,
      non-colliding guids and are tagged CopiedPrefabGameObject.
 """
@@ -102,7 +106,7 @@ def stage_formatting(r: Reporter) -> None:
 
 def stage_catalog(r: Reporter) -> None:
     try:
-        from tools.scene import catalog_scan
+        from tools.scene import catalog, catalog_scan
     except Exception:  # noqa: BLE001
         return
     r.section("stage 3: catalog freshness")
@@ -111,6 +115,31 @@ def stage_catalog(r: Reporter) -> None:
         r.ok("catalog.json fresh")
     else:
         r.fail("catalog.json fresh", msg)
+
+    # Base-class slots: every base some component archives must be in the
+    # bases table, and ImageRenderer's layout (the shape behind the
+    # add-component bug that dropped its mixin slots) must be recorded exactly.
+    try:
+        cat = catalog.load()
+        referenced = {b["leaf"] for e in cat.components.values() for b in e.get("bases", [])}
+        unknown = sorted(referenced - set(cat.bases))
+        if unknown:
+            raise AssertionError(
+                f"bases archived by components but missing from the bases table: {unknown}")
+        entry = cat.resolve_component("ImageRenderer")
+        got = [(b["leaf"], b["key"]) for b in entry["bases"]]
+        want = [("ComponentBase", "value0"), ("IInitRenderable", "value1"),
+                ("IUserInterfaceRenderable", "value2")]
+        if got != want:
+            raise AssertionError(f"ImageRenderer bases {got} != {want}")
+        for leaf in ("IInitRenderable", "IUserInterfaceRenderable"):
+            if not cat.base_info(leaf)["empty"]:
+                raise AssertionError(f"{leaf} should be an empty marker base")
+        if cat.base_info("ColliderBase")["empty"]:
+            raise AssertionError("ColliderBase has fields of its own and must not be marked empty")
+        r.ok("bases table complete; ImageRenderer = ComponentBase/IInitRenderable/IUserInterfaceRenderable")
+    except Exception:  # noqa: BLE001
+        r.fail("catalog base-class slots", traceback.format_exc())
 
 
 def stage_component_edits(r: Reporter) -> None:
@@ -167,6 +196,62 @@ def stage_component_edits(r: Reporter) -> None:
         r.ok("SampleNetworkSpawnPrefab.prefab add/remove Component inverse")
     except Exception:  # noqa: BLE001
         r.fail("component add/remove inverse", traceback.format_exc())
+
+    # Mixin base slots on a brand-new component - regression test for the bug
+    # where add-component wrote only ComponentBase's value0 and dropped the
+    # empty IInitRenderable/IUserInterfaceRenderable slots (value1/value2), so
+    # the engine then read spriteFile_ positionally as a base class.
+    try:
+        import re as _re
+
+        from tools.common.blob import Ver
+        from tools.scene import catalog
+        p = _REPO / "Assets/Prefab/UI/DealDamageText3D.prefab"
+        base = cereal_json.read_text(p)
+        prefab = reader.read_prefab(base)
+        cat = catalog.load()
+        root = prefab.root.guid
+        comp = edits.add_component(prefab, root, "ImageRenderer", cat=cat)
+        want = ["value0", "value1", "value2", "spriteFile_", "renderPriority_"]
+        if comp.data.keys() != want:
+            raise AssertionError(f"new ImageRenderer data keys {comp.data.keys()} != {want}")
+        for k in ("value1", "value2"):
+            v = comp.data[k]
+            if not (isinstance(v, Ver) and v.literal_presence is True and len(v.body) == 0):
+                raise AssertionError(f"{k} should be an empty, always-versioned base slot, got {v!r}")
+        out = writer.write_prefab(prefab)
+        if not _re.search(
+            r'"value1": \{\s*"cereal_class_version": 0\s*\},\s*'
+            r'"value2": \{\s*"cereal_class_version": 0\s*\},\s*"spriteFile_": \{',
+            out,
+        ):
+            raise AssertionError("written text lacks the value1/value2 mixin slots before spriteFile_")
+        again = reader.read_prefab(out).root.components[-1]
+        if again.fqn != comp.fqn or again.data.keys() != want:
+            raise AssertionError(f"re-read component keys {again.data.keys()} != {want}")
+        edits.remove_component(prefab, root, len(prefab.root.components) - 1)
+        if writer.write_prefab(prefab) != base:
+            raise AssertionError("add-then-remove ImageRenderer did not restore the original bytes")
+        r.ok("DealDamageText3D.prefab + ImageRenderer keeps its IInitRenderable/IUserInterfaceRenderable slots")
+
+        comp = edits.add_component(prefab, root, "ModelRenderer", cat=cat)
+        if comp.data.keys()[:5] != [f"value{i}" for i in range(5)]:
+            raise AssertionError(f"new ModelRenderer should have 5 base slots, got {comp.data.keys()}")
+        edits.remove_component(prefab, root, len(prefab.root.components) - 1)
+        r.ok("ModelRenderer -> value0..value4 (ComponentBase + 4 marker bases)")
+
+        for refused, base_leaf in (("BoxCollider", "ColliderBase"),
+                                   ("NetworkTransform", "NetworkComponent")):
+            try:
+                edits.add_component(prefab, root, refused, cat=cat)
+            except edits.EditError as e:
+                if base_leaf not in str(e):
+                    raise AssertionError(f"{refused} refused, but not because of {base_leaf}: {e}")
+            else:
+                raise AssertionError(f"{refused} (base {base_leaf} has its own fields) should be refused")
+        r.ok("BoxCollider/NetworkTransform (ColliderBase/NetworkComponent) still refused")
+    except Exception:  # noqa: BLE001
+        r.fail("mixin base slots on add-component", traceback.format_exc())
 
 
 def stage_instantiate_prefab(r: Reporter) -> None:

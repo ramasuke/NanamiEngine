@@ -4,6 +4,7 @@
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
 #include "../../../../PlayerAvatar/PlayerAvatar.h"
+#include "../../../../PlayerAvatar/Status/NullPlayerAvatarStatus.h"
 #include "../../../Sub/Group/Sub_IGameSceneGroup.h"
 #include "../../../Sub/Type/SubSceneType.h"
 
@@ -30,7 +31,8 @@ namespace GameCore::Scene::Main
             PlayerAvatar::LoadType(),
             Context()->PlayerSpawnPoint(),
             nullptr,
-            true);
+            true,
+            std::make_shared<GameCore::PlayerAvatar::NullPlayerAvatarStatus>());
     }
 
     void MainIslandScene::Enter()

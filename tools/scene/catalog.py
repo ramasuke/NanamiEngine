@@ -21,9 +21,18 @@ class Catalog:
         self.components: dict[str, dict] = data.get("components", {})
         self.by_leaf: dict[str, list[str]] = data.get("by_leaf", {})
         self.gameobject_shapes: dict[str, dict] = data.get("gameobject_shapes", {})
+        # base leaf -> {"fqn", "header", "version", "empty", ["ambiguous"]}
+        # (see catalog_scan._scan_bases); empty for a catalog predating it.
+        self.bases: dict[str, dict] = data.get("bases", {})
 
     def component_by_fqn(self, fqn: str) -> Optional[dict]:
         return self.components.get(fqn)
+
+    def base_info(self, leaf: str) -> Optional[dict]:
+        """What the scanner recorded about a component base class (see
+        ``catalog_scan._scan_bases``), or ``None`` if it never found its
+        definition."""
+        return self.bases.get(leaf)
 
     def resolve_component(self, spec: str) -> dict:
         """Resolve a component ``--type`` argument: an exact FQN, or a bare

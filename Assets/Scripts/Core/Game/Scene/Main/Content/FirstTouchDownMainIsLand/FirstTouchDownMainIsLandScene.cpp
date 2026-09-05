@@ -7,6 +7,7 @@
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
 #include "../../../../PlayerAvatar/PlayerAvatar.h"
+#include "../../../../PlayerAvatar/Status/NullPlayerAvatarStatus.h"
 #include "../../../Sub/Group/Sub_IGameSceneGroup.h"
 #include "../../../Sub/Type/SubSceneType.h"
 #include "AboardAirShipMovie/AboardAirShipMovie.h"
@@ -47,7 +48,8 @@ namespace GameCore::Scene::Main
             PlayerAvatarType::SwordMan,
             context.PlayerSpawnPoint(),
             context.AirShip()->Entity().lock(),
-            true);
+            true,
+            std::make_shared<NullPlayerAvatarStatus>());
         playerAvatar_.lock()->PlayerTransform().SetLocalRot({glm::vec3{0.0f, 90.0f, 0.0f}});
         
         // 船を降りるまでのMovieを開始

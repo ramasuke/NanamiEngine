@@ -37,13 +37,22 @@ Every mutating command supports `--dry-run` (prints a unified diff, writes nothi
   engine, since a scene's copy of a prefab is always a fully independent baked snapshot, never a
   live shared reference.
 * `add-component`'s catalog covers components registered via the `ENGINE_REGISTER_COMPONENT` macro
-  (a **direct** `ComponentBase` subclass, ~65 of them). Components with an intermediate C++ base
-  that owns its own fields (every Collider, via `ColliderBase`; any `EnemyBase`/gameplay-script
-  component) still round-trip losslessly, and `set-component-params` can still edit that
-  component's *own* fields — but `add-component --type <Name>` refuses to construct a **brand-new**
-  instance of such a type from scratch, since it doesn't know the intermediate base's required
+  (~65 of them). A brand-new instance is written with one unnamed `valueN` slot per base class the
+  component archives, in `save()` order — `ComponentBase` (`value0`: guid/enabled) plus an empty
+  object for every field-less lifecycle mixin (`IInitRenderable`, `IUserInterfaceRenderable`,
+  `IAwakable`, `IUpdatable`, `IRenderable`, ...; the catalog's `bases` table records which bases are
+  empty). cereal reads those slots positionally, so none of them is optional. Components with a base
+  that owns its **own fields** (every Collider, via `ColliderBase`; `NetworkComponent` subclasses; any
+  `EnemyBase`/gameplay-script component) still round-trip losslessly, and `set-component-params` can
+  still edit that component's *own* fields — but `add-component --type <Name>` refuses to construct a
+  **brand-new** instance of such a type from scratch, since it doesn't know the base's required
   fields and constructing one without them could produce something the engine fails to load. Copy
   an existing GameObject/prefab that already has one instead (or use `instantiate-prefab`).
+* A brand-new empty mixin slot is always written as `{"cereal_class_version": N}`, whereas the engine
+  writes that key only at the type's first occurrence in a file (`{}` afterwards). The toolkit can't
+  tell which occurrence it is, and the always-present form loads correctly either way, because
+  nothing is ever read *inside* an empty base (unlike a `Field<T>`, where a stray version key shifts
+  a positional read). The engine re-normalises the file on its next save.
 * A component param is only settable via `set-component-params`/`add-component --param` when its
   shape is one of `int | float | bool | string | vec2 | vec3 | field` (`catalog.SETTABLE_SHAPES`).
   `vector`/`nested`/`unknown`-shaped params round-trip losslessly but must be finished in the

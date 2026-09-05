@@ -37,7 +37,8 @@ namespace NanamiEngine::Module::Asset
         const GameCore::PlayerAvatar::PlayerAvatarType& type,
         const glm::vec3& summonPosition,
         const std::shared_ptr<GameObject::IGameObject>& parent,
-        const bool enableInputAction)
+        const bool enableInputAction,
+        const std::shared_ptr<GameCore::PlayerAvatar::IPlayerAvatarStatus>& presetStatus)
     {
         std::shared_ptr<GameCore::IPlayerAvatar> playerAvatar;
 
@@ -54,7 +55,10 @@ namespace NanamiEngine::Module::Asset
                         .Catch<GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup>();
                 }
 
-                auto status = GameCore::PlayerAvatar::LoadStatus<GameCore::PlayerAvatar::SwordMan::SwordManAvatarTraits>();
+                auto presetSwordManStatus = std::dynamic_pointer_cast<GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus>(presetStatus);
+                auto status = presetSwordManStatus
+                    ? presetSwordManStatus
+                    : GameCore::PlayerAvatar::LoadStatus<GameCore::PlayerAvatar::SwordMan::SwordManAvatarTraits>();
                 playerAvatar = LoadInitedPlayerAvatarImpl<
                     GamePlay::PlayerAvatar::SwordMan::SwordManAvatar,
                     GameCore::PlayerAvatar::SwordMan::SwordManAvatarTraits>(

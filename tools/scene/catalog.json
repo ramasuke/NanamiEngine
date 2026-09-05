@@ -1,5 +1,5 @@
 {
-  "generated_from": "d1ff644689c21ebf82951293541d2b586a377bd4",
+  "generated_from": "3a42d859e757f7c14398bbb64888cfbf17361ea2",
   "components": {
     "CineMachine::Behaviour::ShakeCameraBehaviour": {
       "class": "ShakeCameraBehaviour",
@@ -8,6 +8,25 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IAwakable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IUpdatable",
+          "key": "value2"
+        },
+        {
+          "leaf": "IVirtualCameraBehaviour",
+          "key": "value3"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h",
       "params": [
         {
@@ -62,6 +81,25 @@
       "version": 5,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IAwakable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IUpdatable",
+          "key": "value2"
+        },
+        {
+          "leaf": "IVirtualCameraBehaviour",
+          "key": "value3"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h",
       "params": [
         {
@@ -149,6 +187,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Physics/Component/Listener/Collision/Engine_Physics_CollisionListener.h",
       "params": []
     },
@@ -159,6 +204,17 @@
       "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IAwakable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/Core/Game/Game.h",
       "params": [
         {
@@ -184,6 +240,17 @@
       "version": 4,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "NetworkComponent",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/EnemyBase.h",
       "params": [
         {
@@ -215,6 +282,13 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/Core/Game/PlayerAvatar/CameraGroup/PlayerAvatarCameraGroupBase.h",
       "params": [
         {
@@ -239,6 +313,13 @@
       "version": 4,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/Core/Game/Scene/Main/Context/Main_SceneContextBase.h",
       "params": [
         {
@@ -278,6 +359,13 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/Core/Game/Scene/Sub/Context/Sub_SceneContextBase.h",
       "params": [
         {
@@ -296,6 +384,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Npc/Enemy/Projectile/GamePlay_Enemy_ProjectileAttackArea.h",
       "params": []
     },
@@ -306,6 +401,13 @@
       "version": 6,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Npc/Friendly/FriendlyNpc.h",
       "params": [
         {
@@ -344,6 +446,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/PlayerAvatar/Bullet/PlayerAvatar_Bullet_CannonBullet.h",
       "params": [
         {
@@ -375,6 +484,21 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "ISensorEnterable",
+          "key": "value1"
+        },
+        {
+          "leaf": "ISensorExitable",
+          "key": "value2"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h",
       "params": []
     },
@@ -385,6 +509,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/Core/Game/PlayerAvatar/Status/Presenter/PlayerAvatar_OtherPlayer_StatusPresenter.h",
       "params": []
     },
@@ -395,6 +526,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/Core/Game/PlayerAvatar/Status/Presenter/PlayerAvatar_StatusPresenterBase.h",
       "params": []
     },
@@ -405,6 +543,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/Core/Game/PlayerAvatar/SwordMan/Status/Presenter/PlayerAvatar_SwordMan_StatusPresenter.h",
       "params": []
     },
@@ -415,6 +560,13 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Prop/AirShip/Prop_AirShip.h",
       "params": [
         {
@@ -433,6 +585,13 @@
       "version": 5,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Prop/Canon/Prop_Canon.h",
       "params": [
         {
@@ -503,6 +662,13 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Prop/DestructibleObject/DestructibleObject.h",
       "params": [
         {
@@ -542,6 +708,13 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Prop/IslandPedestial/Prop_IslandPedestial.h",
       "params": [
         {
@@ -567,6 +740,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Prop/ProximityReveal/ProximityReveal.h",
       "params": [
         {
@@ -590,6 +770,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Sound/Sample/BgmPlayer.h",
       "params": [
         {
@@ -608,6 +795,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Sound/SoundPlayer.h",
       "params": []
     },
@@ -618,6 +812,13 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/BillBoardNpcChatIcon/BillBoardNpcChatIcon.h",
       "params": [
         {
@@ -650,6 +851,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h",
       "params": [
         {
@@ -685,6 +893,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/PlayerStatus/Ui_InjuredMask.h",
       "params": [
         {
@@ -714,6 +929,13 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/NpcChatting/Ui_NpcChatting.h",
       "params": [
         {
@@ -739,6 +961,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/OtherPlayerStatusUIGroup/OtherPlayerStatusUiGroup.h",
       "params": [
         {
@@ -756,6 +985,13 @@
       "version": 7,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/PlayerStatus/Ui_PlayerStatus.h",
       "params": [
         {
@@ -829,6 +1065,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/Sample/UI_SampleTitleLogo.h",
       "params": [
         {
@@ -852,6 +1095,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/SampleTitleSceneUI/UI_SampleTitleSceneUI.h",
       "params": [
         {
@@ -877,6 +1127,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/StageSelect/Stage/Ui_StageSelect_StageUI.h",
       "params": [
         {
@@ -909,6 +1166,13 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/StageSelect/UI_StageSelect.h",
       "params": [
         {
@@ -976,6 +1240,13 @@
       "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/ActionInstructTutorial/SwordMan/Ui_SwordMan_ActionInstructTutorial.h",
       "params": [
         {
@@ -1024,6 +1295,25 @@
       "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IUpdatable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IDebugRenderable",
+          "key": "value2"
+        },
+        {
+          "leaf": "IVirtualCameraBehaviour",
+          "key": "value3"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Packages/Cinemachine/VirtualCamera/Behaviour/Follow/VirtualCameraFollowBehaviour.h",
       "params": [
         {
@@ -1048,6 +1338,29 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IAwakable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IUpdatable",
+          "key": "value2"
+        },
+        {
+          "leaf": "IDebugRenderable",
+          "key": "value3"
+        },
+        {
+          "leaf": "IVirtualCameraBehaviour",
+          "key": "value4"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Packages/Cinemachine/VirtualCamera/Behaviour/LookAt/VirtualCameraLookAtBehaviour.h",
       "params": [
         {
@@ -1072,6 +1385,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h",
       "params": [
         {
@@ -1089,6 +1409,21 @@
       "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IAwakable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IUpdatable",
+          "key": "value2"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Packages/Cinemachine/Brain/CinemachineCameraBrain.h",
       "params": [
         {
@@ -1137,6 +1472,17 @@
       "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IAwakable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Component/Animator/Animator.h",
       "params": [
         {
@@ -1155,6 +1501,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Component/AudioSource/AudioSource.h",
       "params": [
         {
@@ -1184,6 +1537,25 @@
       "version": 6,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ColliderBase",
+      "bases": [
+        {
+          "leaf": "ColliderBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IAwakable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IBeginPhysics",
+          "key": "value2"
+        },
+        {
+          "leaf": "IEndPhysics",
+          "key": "value3"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Physics/Component/Collider/Box/Engine_Physics_BoxCollider.h",
       "params": [
         {
@@ -1201,6 +1573,25 @@
       "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ColliderBase",
+      "bases": [
+        {
+          "leaf": "ColliderBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IAwakable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IBeginPhysics",
+          "key": "value2"
+        },
+        {
+          "leaf": "IEndPhysics",
+          "key": "value3"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Physics/Component/Collider/Capsule/Engine_Physics_CapsuleCollider.h",
       "params": [
         {
@@ -1224,6 +1615,25 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ColliderBase",
+      "bases": [
+        {
+          "leaf": "ColliderBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IAwakable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IBeginPhysics",
+          "key": "value2"
+        },
+        {
+          "leaf": "IEndPhysics",
+          "key": "value3"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Physics/Component/Collider/Cylinder/Engine_Physics_CylinderCollider.h",
       "params": [
         {
@@ -1247,6 +1657,21 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IInitRenderable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IRenderable",
+          "key": "value2"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Component/DirectionLight/DirectionLight.h",
       "params": []
     },
@@ -1257,6 +1682,21 @@
       "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IInitRenderable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IUserInterfaceRenderable",
+          "key": "value2"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Component/ImageRenderer/ImageRenderer.h",
       "params": [
         {
@@ -1281,6 +1721,29 @@
       "version": 4,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IInitRenderable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IShadowRenderable",
+          "key": "value2"
+        },
+        {
+          "leaf": "IRenderable",
+          "key": "value3"
+        },
+        {
+          "leaf": "IEndPhysics",
+          "key": "value4"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Component/ModelRenderer/ModelRenderer.h",
       "params": [
         {
@@ -1319,6 +1782,21 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IInitRenderable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IRenderable",
+          "key": "value2"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Component/ParticleRenderer/ParticleSystem.h",
       "params": [
         {
@@ -1356,6 +1834,29 @@
       "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IInitRenderable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IRenderable",
+          "key": "value2"
+        },
+        {
+          "leaf": "IDebugRenderable",
+          "key": "value3"
+        },
+        {
+          "leaf": "IUpdatable",
+          "key": "value4"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Component/Skydome3D/SkyDome3D.h",
       "params": [
         {
@@ -1387,6 +1888,25 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ColliderBase",
+      "bases": [
+        {
+          "leaf": "ColliderBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IAwakable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IBeginPhysics",
+          "key": "value2"
+        },
+        {
+          "leaf": "IEndPhysics",
+          "key": "value3"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Physics/Component/Collider/Sphere/Engine_Physics_SphereCollider.h",
       "params": [
         {
@@ -1404,6 +1924,17 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IRenderable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Component/SphereRenderer/SphereRenderer.h",
       "params": [
         {
@@ -1447,6 +1978,13 @@
       "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ColliderBase",
+      "bases": [
+        {
+          "leaf": "ColliderBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Physics/Component/Collider/StaticMeshCollider/Engine_Physics_StaticMeshCollider.h",
       "params": [
         {
@@ -1464,6 +2002,21 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IInitRenderable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IUserInterfaceRenderable",
+          "key": "value2"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h",
       "params": [
         {
@@ -1501,6 +2054,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Component/ImageRenderer/Animation/ImageAnimationRenderer.h",
       "params": [
         {
@@ -1537,6 +2097,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/NanamiUI/MovieRenderer/MovieRenderer.h",
       "params": [
         {
@@ -1573,6 +2140,17 @@
       "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IUserInterfaceRenderable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h",
       "params": [
         {
@@ -1623,6 +2201,17 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "ISensorEnterable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Packages/R4/SensorEnterable/SensorEnterableAsObservable.h",
       "params": []
     },
@@ -1633,6 +2222,17 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "ISensorExitable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Packages/R4/SensorExitable/SensorExitableAsObservable.h",
       "params": []
     },
@@ -1643,6 +2243,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Packages/R4/SensorStayable/SensorStayableAsObservable.h",
       "params": []
     },
@@ -1653,6 +2260,13 @@
       "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/NanamiUI/BillBoard3D/DrawBillboard3D.h",
       "params": [
         {
@@ -1683,6 +2297,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/NanamiUI/BlendAnimationRenderer/BlendAnmiationRenderer.h",
       "params": [
         {
@@ -1700,6 +2321,13 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/NanamiUI/Button/NanamiUi_Button.h",
       "params": [
         {
@@ -1731,6 +2359,17 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IUserInterfaceRenderable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/NanamiUI/Slider/NanamiUi_Slider.h",
       "params": [
         {
@@ -1773,6 +2412,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h",
       "params": []
     },
@@ -1783,6 +2429,13 @@
       "version": 0,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h",
       "params": []
     },
@@ -1793,6 +2446,13 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Network/Engine_Network_NetworkRunner.h",
       "params": [
         {
@@ -1811,6 +2471,13 @@
       "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "NetworkComponent",
+      "bases": [
+        {
+          "leaf": "NetworkComponent",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
       "header": "Engine/Module/Network/Object/Component/Transform/Engine_Network_NetworkTransform.h",
       "params": []
     }
@@ -2007,6 +2674,98 @@
     "VirtualCameraLookAtBehaviour": [
       "NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour"
     ]
+  },
+  "bases": {
+    "ColliderBase": {
+      "fqn": "NanamiEngine::Module::Component::ColliderBase",
+      "header": "Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h",
+      "version": 5,
+      "empty": false
+    },
+    "ComponentBase": {
+      "fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "header": "Engine/Module/Component/ComponentBase.h",
+      "version": 0,
+      "empty": false
+    },
+    "IAwakable": {
+      "fqn": "NanamiEngine::Module::LifeCycleCallback::IAwakable",
+      "header": "Engine/Module/LifeCycleCallback/Awake/IAwakable.h",
+      "version": 0,
+      "empty": true
+    },
+    "IBeginPhysics": {
+      "fqn": "NanamiEngine::Module::LifeCycleCallback::IBeginPhysics",
+      "header": "Engine/Module/LifeCycleCallback/BeginPhysics/IBeginPhysics.h",
+      "version": 0,
+      "empty": true
+    },
+    "IDebugRenderable": {
+      "fqn": null,
+      "header": "Engine/Module/LifeCycleCallback/GuidRenderer/IDebugRenderable.h",
+      "version": 0,
+      "empty": true
+    },
+    "IEndPhysics": {
+      "fqn": "NanamiEngine::Module::LifeCycleCallback::IEndPhysics",
+      "header": "Engine/Module/LifeCycleCallback/UpdatedPhysics/IEndPhysics.h",
+      "version": 0,
+      "empty": true
+    },
+    "IInitRenderable": {
+      "fqn": null,
+      "header": "Engine/Module/LifeCycleCallback/InitRenderable/IInitRenderable.h",
+      "version": 0,
+      "empty": true
+    },
+    "IRenderable": {
+      "fqn": null,
+      "header": "Engine/Module/LifeCycleCallback/Render/IRenderable.h",
+      "version": 0,
+      "empty": true
+    },
+    "ISensorEnterable": {
+      "fqn": "NanamiEngine::Module::Physics::Callback::ISensorEnterable",
+      "header": "Engine/Module/Physics/ContactCallback/SensorEnterable/Engine_Physics_ISensorEnterable.h",
+      "version": 0,
+      "empty": true
+    },
+    "ISensorExitable": {
+      "fqn": "NanamiEngine::Module::Physics::Callback::ISensorExitable",
+      "header": "Engine/Module/Physics/ContactCallback/SensorExitable/Engine_Physics_ISensorExitable.h",
+      "version": 0,
+      "empty": true
+    },
+    "IShadowRenderable": {
+      "fqn": null,
+      "header": "Engine/Module/LifeCycleCallback/ShadowRenderable/IShadowRenderable.h",
+      "version": 0,
+      "empty": true
+    },
+    "IUpdatable": {
+      "fqn": "NanamiEngine::Module::LifeCycleCallback::IUpdatable",
+      "header": "Engine/Module/LifeCycleCallback/Update/IUpdatable.h",
+      "version": 0,
+      "empty": true
+    },
+    "IUserInterfaceRenderable": {
+      "fqn": "NanamiEngine::Module::LifeCycleCallback::IUserInterfaceRenderable",
+      "header": "Engine/Module/LifeCycleCallback/UserInterfaceRenderable/IUserInterfaceRenderable.h",
+      "version": 0,
+      "empty": true
+    },
+    "IVirtualCameraBehaviour": {
+      "fqn": null,
+      "header": "Packages/Cinemachine/VirtualCamera/Behaviour/IVirtualCameraBehaviour.h",
+      "version": 0,
+      "empty": true
+    },
+    "NetworkComponent": {
+      "fqn": null,
+      "header": "Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h",
+      "version": 0,
+      "empty": false
+    }
   },
   "gameobject_shapes": {
     "NanamiEngine::Scene::SceneGameObject": {
