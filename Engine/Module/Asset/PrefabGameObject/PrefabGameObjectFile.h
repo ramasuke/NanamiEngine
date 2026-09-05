@@ -21,6 +21,7 @@ namespace NanamiEngine::Module::Asset
         void OnDoubleClick() override;
         void OnSaveCallback() override;
         void CopiedInit() override;
+        void OnRenamed(const std::string& newContentPath) override;
         
         std::shared_ptr<GameObject::PrefabGameObject> content_;
         std::string contentPath_;

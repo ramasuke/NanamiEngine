@@ -36,7 +36,14 @@ _KIND_BY_FQN = {
     model.FQN_RANDOM: model.RandomSelector,
     model.FQN_ONCE_EXEC: model.OnceExecute,
     model.FQN_ONCE_SUCCESS: model.OnceSuccess,
-    model.FQN_ACTION_NODE: model.Action,
+    model.FQN_ACTION_NODE_ENEMY: model.Action,
+    model.FQN_ACTION_NODE_FRIENDLY: model.Action,
+}
+
+# which Tree.kind an ActionNode wrapper FQN implies (see tools/bt/npc_kind.py)
+_TREE_KIND_BY_ACTION_NODE_FQN = {
+    model.FQN_ACTION_NODE_ENEMY: "enemy",
+    model.FQN_ACTION_NODE_FRIENDLY: "friendly",
 }
 
 ANIM_PARAM_INT_FQN = "NanamiEngine::Module::AnimationTree::AnimationParameter<int>"
@@ -48,6 +55,9 @@ class _Ctx:
     def __init__(self, cat: catalog_mod.Catalog) -> None:
         self.cat = cat
         self.poly: dict[int, str] = {}
+        #: Tree.kind, set the first time an ActionNode wrapper is seen (a
+        #: file mixes only one flavor - see _read_node).
+        self.tree_kind: Optional[str] = None
 
     # -- pointer slot ---------------------------------------------------
     def ptr_slot(self, slot: OrderedObj):
@@ -138,7 +148,20 @@ def _tag_value(ctx: _Ctx, val: Any, pinfo: Optional[dict]) -> Any:
             leaf = pinfo.get("type", "?")
             sub = ctx.cat.type_by_leaf(leaf)
             return Ver(("type", leaf), v or 0, _tag_struct_body(ctx, body, sub))
-        return Ver(("fp", fingerprint(val)), v or 0, _tag_plain(ctx, body))
+        # Fallback: no catalog type info, so bucket by structural fingerprint.
+        # fingerprint() ignores field *values* (a Field<T> reference's GUID
+        # string, say), so two genuinely different C++ types that happen to
+        # serialise identically when opaque (any Field<T>/FieldHolder<T> looks
+        # the same regardless of T) would otherwise wrongly share one
+        # once-per-key version slot with each other's real occurrences -
+        # exactly the shape a FIELD(Asset::X) reference takes when it's
+        # embedded inside something outside any scanned catalog (e.g. a Quest
+        # object reached through a raw, un-modeled shared_ptr<ITakeable...>).
+        # literal_presence sidesteps that: reproduce whether *this* occurrence
+        # literally carried a cereal_class_version, instead of asking the
+        # writer's global "have I emitted this key before" tracking to decide.
+        return Ver(("fp", fingerprint(val)), v or 0, _tag_plain(ctx, body),
+                  literal_presence=(v is not None))
 
     if _is_guid_obj(val):
         return OrderedObj([("value_", val["value_"])])
@@ -159,7 +182,7 @@ def _tag_struct_body(ctx: _Ctx, body: OrderedObj, sub_entry: Optional[dict]) -> 
             vv, _ = _strip_ccv(v)
             out.append(k, Ver(("type", "ActionBase"), vv if vv is not None else 0, OrderedObj()))
             continue
-        pinfo = catalog_mod.load().param_by_key(sub_entry, k) if sub_entry else None
+        pinfo = ctx.cat.param_by_key(sub_entry, k) if sub_entry else None
         out.append(k, _tag_value(ctx, v, pinfo))
     return out
 
@@ -191,7 +214,7 @@ def _tag_action_data(ctx: _Ctx, adata: OrderedObj, cat_entry: Optional[dict]) ->
             members.append("value0", Ver(("type", "ActionBase"),
                                          vv if vv is not None else 0, OrderedObj()))
             continue
-        pinfo = catalog_mod.load().param_by_key(cat_entry, k) if cat_entry else None
+        pinfo = ctx.cat.param_by_key(cat_entry, k) if cat_entry else None
         members.append(k, _tag_value(ctx, v, pinfo))
     return (action_v if action_v is not None else -1), members
 
@@ -230,6 +253,14 @@ def _read_node(ctx: _Ctx, slot: OrderedObj):
         return model.OnceSuccess(guid=guid, pos=pos, child=_read_node(ctx, data["child_"]))
 
     # ActionNode
+    tk = _TREE_KIND_BY_ACTION_NODE_FQN.get(fqn)
+    if tk is not None:
+        if ctx.tree_kind is None:
+            ctx.tree_kind = tk
+        elif ctx.tree_kind != tk:
+            raise ValueError(
+                f"mixed ActionNode flavors in one file: {ctx.tree_kind!r} and {tk!r}"
+            )
     name = data["name_"]
     a_slot = data["action_"]
     a = ctx.ptr_slot(a_slot)
@@ -261,12 +292,17 @@ def _read_params(ctx: _Ctx, slot: OrderedObj) -> list[model.BbParam]:
     return out
 
 
-def read_tree(text: str, cat: catalog_mod.Catalog | None = None) -> model.Tree:
+def read_tree(text: str, cat: catalog_mod.Catalog | None = None,
+             kind: str | None = None) -> model.Tree:
+    """``kind`` (``"enemy"`` | ``"friendly"``), when given, is the caller's
+    expectation from the file's own extension - cross-checked against the
+    ActionNode flavor actually found in the data (see ``_read_node``) and
+    used as-is for a tree with no action nodes at all (nothing to detect)."""
     cat = cat or catalog_mod.load()
     ctx = _Ctx(cat)
     root = loads(text)
     if "entryNode_" not in root:
-        raise ValueError("not a .enemyBehaviourData file: missing entryNode_")
+        raise ValueError("not a .enemyBehaviourData/.friendBehaviourData file: missing entryNode_")
 
     es = ctx.ptr_slot(root["entryNode_"])
     edata = es["data"]
@@ -277,7 +313,12 @@ def read_tree(text: str, cat: catalog_mod.Catalog | None = None) -> model.Tree:
     params: list[model.BbParam] = []
     if "parameters_" in root:
         params = _read_params(ctx, root["parameters_"])
-    return model.Tree(entry=entry, params=params)
+
+    if ctx.tree_kind is not None and kind is not None and ctx.tree_kind != kind:
+        raise ValueError(
+            f"file kind mismatch: expected {kind!r} action nodes but found {ctx.tree_kind!r}"
+        )
+    return model.Tree(entry=entry, params=params, kind=ctx.tree_kind or kind or "enemy")
 
 
 def read_tree_file(path) -> model.Tree:

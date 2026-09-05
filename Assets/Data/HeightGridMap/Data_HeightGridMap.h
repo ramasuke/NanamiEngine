@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <limits>
 #include <string>
 #include <vector>
@@ -27,7 +27,7 @@ namespace NanamiEngine::Module::Asset
 {
     constexpr auto HEIGHT_GRID_MAP_EXTENSION_LABEL = ".heightGridMap";
 
-    /** XZ•½–Ê‚ÌƒOƒŠƒbƒhŠeƒZƒ‹‚©‚ç^‰º‚ÖRaycast‚µA°‚Ì‚‚³‚ğ•Û‚·‚é2.5Dƒ}ƒbƒv */
+    /** XZå¹³é¢ã®ã‚°ãƒªãƒƒãƒ‰å„ã‚»ãƒ«ã‹ã‚‰çœŸä¸‹ã¸Raycastã—ã€åºŠã®é«˜ã•ã‚’ä¿æŒã™ã‚‹2.5Dãƒãƒƒãƒ— */
     class HeightGridMap final : public ScriptableObject
     {
     public:
@@ -41,7 +41,7 @@ namespace NanamiEngine::Module::Asset
         }
 
 #pragma region Navigation Helper
-        /** ƒZƒ‹1ŒÂ‚ ‚½‚è‚Ìƒ[ƒ‹ƒhƒTƒCƒY */
+        /** ã‚»ãƒ«1å€‹ã‚ãŸã‚Šã®ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚µã‚¤ã‚º */
         [[nodiscard]] glm::vec2 CellSize() const;
         [[nodiscard]] bool      WorldToCell(const glm::vec3& world, int& outX, int& outZ) const;
         [[nodiscard]] glm::vec3 CellToWorld(int x, int z) const;
@@ -77,7 +77,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(samplingHeight_));
             archive(CEREAL_NVP(rayDistance_));
 
-            // map_ ‚Íƒf[ƒ^—Ê‚ª‘½‚­A“¯ˆê‚‚³i°‚È‚µƒZƒ“ƒ`ƒlƒ‹‚â•½’R’nj‚ª˜A‘±‚·‚é‚½‚ß
+            // map_ ã¯ãƒ‡ãƒ¼ã‚¿é‡ãŒå¤šãã€åŒä¸€é«˜ã•ï¼ˆåºŠãªã—ã‚»ãƒ³ãƒãƒãƒ«ã‚„å¹³å¦åœ°ï¼‰ãŒé€£ç¶šã™ã‚‹ãŸã‚
             const std::uint32_t cellCount = static_cast<std::uint32_t>(map_.size());
             archive(cereal::make_nvp("cellCount", cellCount));
 

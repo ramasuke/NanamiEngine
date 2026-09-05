@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <DxLib.h>
 #include <utility>
 #include <vector>
@@ -26,16 +26,16 @@ namespace NanamiEngine::Module::Component
                                 public LifeCycleCallback::IEndPhysics
     {
     public:
-        // DxLib(Direct3D 11) ‚Í’è”ƒoƒbƒtƒ@ƒXƒƒbƒg b0`b3 ‚ğ“à•”‚Åg—p‚µ‚Ä‚¢‚é‚½‚ßA
-        // ƒJƒXƒ^ƒ€ƒVƒF[ƒ_[—p‚Ì’è”ƒoƒbƒtƒ@‚Í b4 ‚ÉŠ„‚è“–‚Ä‚éB
-        // (HLSL ‘¤‚à register(b4) ‚Åó‚¯‚é•K—v‚ª‚ ‚é)
+        // DxLib(Direct3D 11) ã¯å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚¹ãƒ­ãƒƒãƒˆ b0ï½b3 ã‚’å†…éƒ¨ã§ä½¿ç”¨ã—ã¦ã„ã‚‹ãŸã‚ã€
+        // ã‚«ã‚¹ã‚¿ãƒ ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ç”¨ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¯ b4 ã«å‰²ã‚Šå½“ã¦ã‚‹ã€‚
+        // (HLSL å´ã‚‚ register(b4) ã§å—ã‘ã‚‹å¿…è¦ãŒã‚ã‚‹)
         static constexpr int CUSTOM_SHADER_CB_SLOT = 4;
         static constexpr int CUSTOM_SHADER_CB_SIZE = 256;
 
         int modelDxLibHandle_ = -1;
 
-        // ƒJƒXƒ^ƒ€ƒVƒF[ƒ_[—p‚Ì’è”ƒoƒbƒtƒ@ƒnƒ“ƒhƒ‹‚ğ•Ô‚·(–¢¶¬‚È‚ç¶¬‚·‚é)B
-        // vsFile_ / psFile_ ‚ª—LŒø‚Å‚È‚¢ê‡‚Í -1B
+        // ã‚«ã‚¹ã‚¿ãƒ ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ç”¨ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒãƒ³ãƒ‰ãƒ«ã‚’è¿”ã™(æœªç”Ÿæˆãªã‚‰ç”Ÿæˆã™ã‚‹)ã€‚
+        // vsFile_ / psFile_ ãŒæœ‰åŠ¹ã§ãªã„å ´åˆã¯ -1ã€‚
         [[nodiscard]] int GetOrCreateShaderConstantBufferHandle();
 
     private:
@@ -61,12 +61,12 @@ namespace NanamiEngine::Module::Component
         int  cbHandle_           = -1;
         bool customStateApplied_ = false;
 
-        // ƒgƒ‰ƒCƒAƒ“ƒOƒ‹ƒŠƒXƒg‚²‚Æ‚Éu„‘Ì—p’¸“_ƒVƒF[ƒ_[‚Å•`‰æ‚Å‚«‚é‚©v
-        // (4/8 ƒ{[ƒ“‚ÌƒXƒLƒ“ƒƒbƒVƒ…‚Í DxLib •W€ƒVƒF[ƒ_[‚ÉƒtƒH[ƒ‹ƒoƒbƒN‚·‚é)
+        // ãƒˆãƒ©ã‚¤ã‚¢ãƒ³ã‚°ãƒ«ãƒªã‚¹ãƒˆã”ã¨ã«ã€Œå‰›ä½“ç”¨é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã§æç”»ã§ãã‚‹ã‹ã€
+        // (4/8 ãƒœãƒ¼ãƒ³ã®ã‚¹ã‚­ãƒ³ãƒ¡ãƒƒã‚·ãƒ¥ã¯ DxLib æ¨™æº–ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã«ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯ã™ã‚‹)
         std::vector<bool> rigidTriangleList_;
         bool              allRigid_ = true;
 
-        // ƒJƒXƒ^ƒ€ƒVƒF[ƒ_[“K—p‘O‚Ìƒ}ƒeƒŠƒAƒ‹‚ÌƒuƒŒƒ“ƒhİ’è (mode, param) ‚Ì‘Ş”ğ
+        // ã‚«ã‚¹ã‚¿ãƒ ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼é©ç”¨å‰ã®ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ–ãƒ¬ãƒ³ãƒ‰è¨­å®š (mode, param) ã®é€€é¿
         std::vector<std::pair<int, int>> originalMaterialBlend_;
 
         glm::vec3 prevWorldPos_   {};

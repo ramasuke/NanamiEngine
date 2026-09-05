@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "DxLib.h"
 #include <../../Libs/glm/glm.hpp>
 #include <../../Libs/glm/gtc/matrix_transform.hpp>
@@ -53,9 +53,9 @@ namespace NanamiEngine::Module::GameObject
         
         void SetParent(const std::weak_ptr<IGameObject>& parent, bool keepWorldScale = true);
 
-        // siblingIndex ‚Íu©•ª©g‚ğœ‹‚·‚é‘Ov‚Ì parent ‚ÌqƒŠƒXƒg‚É‚¨‚¯‚é‘}“üˆÊ’u
-        // i0 = æ“ª, children.size() = ––”öjB“¯ˆêe“à‚Å‚Ì•À‚×‘Ö‚¦‚ÌƒCƒ“ƒfƒbƒNƒX•â³‚Í
-        // “à•”‚Å©“®“I‚És‚¤‚½‚ßAŒÄ‚Ño‚µ‘¤‚Í•â³•s—vB
+        // siblingIndex ã¯ã€Œè‡ªåˆ†è‡ªèº«ã‚’é™¤å»ã™ã‚‹å‰ã€ã® parent ã®å­ãƒªã‚¹ãƒˆã«ãŠã‘ã‚‹æŒ¿å…¥ä½ç½®
+        // ï¼ˆ0 = å…ˆé ­, children.size() = æœ«å°¾ï¼‰ã€‚åŒä¸€è¦ªå†…ã§ã®ä¸¦ã¹æ›¿ãˆæ™‚ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹è£œæ­£ã¯
+        // å†…éƒ¨ã§è‡ªå‹•çš„ã«è¡Œã†ãŸã‚ã€å‘¼ã³å‡ºã—å´ã¯è£œæ­£ä¸è¦ã€‚
         void SetParent(const std::weak_ptr<IGameObject>& parent, std::size_t siblingIndex, bool keepWorldScale = true);
         [[nodiscard]] std::shared_ptr<IGameObject> GetParent    () const { return parent_         .lock(); }
         [[nodiscard]] std::shared_ptr<IGameObject> GetGameObject() const { return ownerGameObject_.lock(); }

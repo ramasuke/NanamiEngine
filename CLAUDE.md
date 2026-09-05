@@ -22,27 +22,29 @@ of heap on the deep cereal template instantiations (`error C1060`). MSBuild live
 
 ## Source encoding
 
-`.h` / `.cpp` files are **Shift-JIS (CP932)**, not UTF-8. A Claude Code `PostToolUse`
-hook (`.claude/scripts/convert_to_shiftjis.ps1`) converts files written via Write/Edit
-back to CP932 automatically. Tools that write source files another way must emit
-CP932 themselves; `Scripts/convDx.ps1 <path>` converts on demand.
+`.h` / `.cpp` files are **UTF-8 with BOM** — write/edit them normally, no special handling
+needed. MSVC (v143 toolset) reads UTF-8-with-BOM source natively. If you ever encounter a
+`.h`/`.cpp` that decodes cleanly as Shift-JIS (CP932) but not as UTF-8, that's a leftover from
+files a since-removed PostToolUse hook force-converted; re-save it as UTF-8 with BOM to match
+the rest of the codebase rather than leaving it as the odd one out.
 
-## Enemy behaviour trees & actions
+## Behaviour trees & actions (Enemy + FriendlyNpc)
 
-To create or edit an enemy behaviour tree (`Assets/Data/EnemyBehaviour/*.enemyBehaviourData`)
-or add a new behaviour action, use the toolkit instead of hand-editing the cereal JSON:
+To create or edit a behaviour tree — enemy (`Assets/Data/EnemyBehaviour/*.enemyBehaviourData`)
+or friendly NPC (`Assets/Data/FriendlyNpcBehviour/*.friendBehaviourData`) — or add a new
+behaviour action, use the toolkit instead of hand-editing the cereal JSON:
 
 ```
-python -m tools.bt new-tree <Name>          # new tree + .meta
-python -m tools.bt show|validate <file>
+python -m tools.bt new-tree <Name> [--npc-kind enemy|friendly]     # new tree + .meta (default: enemy)
+python -m tools.bt show|validate <file>                        # flavor auto-detected from the file
 python -m tools.bt add-node|set-params|apply <file> ...
-python -m tools.bt add-action --name <X> --category "<Cat>" [--param n:type=default ...]
+python -m tools.bt add-action --name <X> --category "<Cat>" [--npc-kind friendly] [--param n:type=default ...]
 python tools/bt/selftest.py                 # run after touching tools/bt/{cereal_json,reader,writer,model}.py
 ```
 
 Full reference and the file-format notes: **`docs/BehaviourTree.md`**.
-If you add or rename an action, run `python -m tools.bt regen-catalog` and commit
-`tools/bt/catalog.json`.
+If you add or rename an action, run `python -m tools.bt regen-catalog [--npc-kind friendly]`
+and commit `tools/bt/catalog.json` / `catalog_friendly.json`.
 
 ## Scenes, GameObjects, Prefabs & Components
 
@@ -51,6 +53,7 @@ toolkit instead of hand-editing the cereal JSON:
 
 ```
 python -m tools.scene new-scene|new-prefab <Name> [--dir]     # new file + .meta
+python -m tools.scene copy-prefab <SourcePrefab> [--name] [--dir]  # duplicate + fresh guids
 python -m tools.scene show|validate <file>
 python -m tools.scene add-gameobject|set-transform|add-component|apply <file> ...
 python -m tools.scene instantiate-prefab <prefab> --into <file> [--parent]

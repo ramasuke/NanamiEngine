@@ -4,6 +4,7 @@
 #include "../../../../Core/Application/Editor/EditorApplication.h"
 #include "../../../../Core/FileSystem/DraggingHand/EditorDraggingHand.h"
 #include "ImGuiHelper.h"
+#include "../../../../Core/Object/Registry/ObjectRegistry.h"
 
 namespace NanamiEngine::Module::GameObject
 {

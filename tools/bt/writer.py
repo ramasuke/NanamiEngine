@@ -18,13 +18,19 @@ FIRST_BIT = 0x80000000
 
 ANIM_PARAM_INT_FQN = "NanamiEngine::Module::AnimationTree::AnimationParameter<int>"
 
+# Composite/control node dataclasses map to a single fixed fqn regardless of
+# tree flavor; model.Action does not - which ActionNode wrapper it gets
+# depends on Tree.kind (see _W.__init__ / node_slot).
 _FQN_BY_KIND = {
     model.Selector: model.FQN_SELECTOR,
     model.Sequence: model.FQN_SEQUENCE,
     model.RandomSelector: model.FQN_RANDOM,
     model.OnceExecute: model.FQN_ONCE_EXEC,
     model.OnceSuccess: model.FQN_ONCE_SUCCESS,
-    model.Action: model.FQN_ACTION_NODE,
+}
+_ACTION_NODE_FQN_BY_KIND = {
+    "enemy": model.FQN_ACTION_NODE_ENEMY,
+    "friendly": model.FQN_ACTION_NODE_FRIENDLY,
 }
 _LEAF = {
     model.FQN_SELECTOR: "SelectorNode",
@@ -32,16 +38,21 @@ _LEAF = {
     model.FQN_RANDOM: "RandomSelectorNode",
     model.FQN_ONCE_EXEC: "OnceExecute",
     model.FQN_ONCE_SUCCESS: "OnceSuccessNode",
-    model.FQN_ACTION_NODE: "ActionNode",
+    # both ActionNode flavors are literally named "ActionNode" in C++, and
+    # this key is purely our own bookkeeping label (never compared against
+    # the FQN), so one shared leaf name is correct for either.
+    model.FQN_ACTION_NODE_ENEMY: "ActionNode",
+    model.FQN_ACTION_NODE_FRIENDLY: "ActionNode",
 }
 
 
 class _W:
-    def __init__(self) -> None:
+    def __init__(self, kind: str = "enemy") -> None:
         self.k = 0
         self.poly_ctr = 0
         self.poly: dict[str, int] = {}
         self.emitted: set[tuple] = set()
+        self.action_node_fqn = _ACTION_NODE_FQN_BY_KIND[kind]
 
     def new_k(self) -> int:
         self.k += 1
@@ -90,7 +101,7 @@ class _W:
     def node_slot(self, node) -> OrderedObj:
         if node is None:
             return OrderedObj([("polymorphic_id", Num.of_int(0))])
-        fqn = _FQN_BY_KIND[type(node)]
+        fqn = self.action_node_fqn if isinstance(node, model.Action) else _FQN_BY_KIND[type(node)]
         slot = self.poly_slot(fqn, exact=False)
         kid = self.new_k()
         data = OrderedObj()
@@ -143,7 +154,10 @@ class _W:
             return o
         if isinstance(n, Ver):
             o = OrderedObj()
-            self.emit_ver(n.key, n.version, o)
+            if n.literal_presence is None:
+                self.emit_ver(n.key, n.version, o)
+            elif n.literal_presence:
+                o.insert(0, "cereal_class_version", Num.of_int(int(n.version)))
             for k, v in n.body.items():
                 o[k] = self.blob(v)
             return o
@@ -184,7 +198,7 @@ class _W:
 
 
 def write_tree(tree: model.Tree) -> str:
-    w = _W()
+    w = _W(kind=tree.kind)
     root = OrderedObj()
     root["entryNode_"] = w.entry_slot(tree.entry)
     root["parameters_"] = w.params_block(tree.params)

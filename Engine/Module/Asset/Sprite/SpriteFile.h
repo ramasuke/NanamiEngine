@@ -20,7 +20,8 @@ namespace NanamiEngine::Module::Asset
 
     private:
         [[nodiscard]] int         LoadGraph() const;
-        
+        void OnRenamed(const std::string& newContentPath) override { contentPath_ = newContentPath; }
+
         std::string contentPath_;
         Guid guid_;
         int dxLibId_ = -1;

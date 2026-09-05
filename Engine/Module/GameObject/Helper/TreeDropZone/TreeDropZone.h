@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <memory>
 #include <cstddef>
 
@@ -6,12 +6,12 @@ namespace NanamiEngine::Module::GameObject
 {
     class IGameObject;
 
-    // ƒqƒGƒ‰ƒ‹ƒL[ƒcƒŠ[ã‚ÅA‚ ‚éƒm[ƒh‚ÌqƒŠƒXƒg’†‚Ìu‘}“üˆÊ’uv‚ğ•\‚·”–‚¢ƒhƒ‰ƒbƒO&ƒhƒƒbƒv
-    // ó‚¯M‚ğ1‚Â•`‰æ‚·‚éBŠe IGameObject::OnDrawTreeGui À‘•‚ÍAq‚ğ•`‰æ‚·‚éƒ‹[ƒv‚Ì’†‚Å
-    // q‚Ì’¼‘O + ÅŒã‚Ìq‚ÌŒã‚ÌŒv (children.size() + 1) ‰ñA‚±‚ê‚ğŒÄ‚Ño‚·‘z’èB
+    // ãƒ’ã‚¨ãƒ©ãƒ«ã‚­ãƒ¼ãƒ„ãƒªãƒ¼ä¸Šã§ã€ã‚ã‚‹ãƒãƒ¼ãƒ‰ã®å­ãƒªã‚¹ãƒˆä¸­ã®ã€ŒæŒ¿å…¥ä½ç½®ã€ã‚’è¡¨ã™è–„ã„ãƒ‰ãƒ©ãƒƒã‚°&ãƒ‰ãƒ­ãƒƒãƒ—
+    // å—ã‘çš¿ã‚’1ã¤æç”»ã™ã‚‹ã€‚å„ IGameObject::OnDrawTreeGui å®Ÿè£…ã¯ã€å­ã‚’æç”»ã™ã‚‹ãƒ«ãƒ¼ãƒ—ã®ä¸­ã§
+    // å­ã®ç›´å‰ + æœ€å¾Œã®å­ã®å¾Œã®è¨ˆ (children.size() + 1) å›ã€ã“ã‚Œã‚’å‘¼ã³å‡ºã™æƒ³å®šã€‚
     //
-    // parent: ‘}“üæ‚Ìeiparent->Transform() ‚Ì children_ ‚É‘}“ü‚³‚ê‚éj
-    // insertIndex: ‘}“üˆÊ’uiƒhƒƒbƒv“_Aƒhƒ‰ƒbƒO’†ƒIƒuƒWƒFƒNƒgœ‹‘O‚Ì parent ‚ÌqƒŠƒXƒg‚É
-    //              ‚¨‚¯‚éƒCƒ“ƒfƒbƒNƒXB0=æ“ªAchildren.size()=––”öj
+    // parent: æŒ¿å…¥å…ˆã®è¦ªï¼ˆparent->Transform() ã® children_ ã«æŒ¿å…¥ã•ã‚Œã‚‹ï¼‰
+    // insertIndex: æŒ¿å…¥ä½ç½®ï¼ˆãƒ‰ãƒ­ãƒƒãƒ—æ™‚ç‚¹ã€ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆé™¤å»å‰ã® parent ã®å­ãƒªã‚¹ãƒˆã«
+    //              ãŠã‘ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã€‚0=å…ˆé ­ã€children.size()=æœ«å°¾ï¼‰
     void DrawSiblingInsertionDropZone(const std::shared_ptr<IGameObject>& parent, std::size_t insertIndex);
 }

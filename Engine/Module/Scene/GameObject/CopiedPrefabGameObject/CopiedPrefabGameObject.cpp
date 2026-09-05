@@ -1,4 +1,4 @@
-#include "CopiedPrefabGameObject.h"
+ï»¿#include "CopiedPrefabGameObject.h"
 #include "../../../GameObject/Helper/TreeDropZone/TreeDropZone.h"
 #include "../../../../Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../../../Libs/ImGui/ImGuiHelper.h"
@@ -34,7 +34,7 @@ void Scene::CopiedPrefabGameObject::InitForCopied(const std::shared_ptr<IGameObj
 
 void Scene::CopiedPrefabGameObject::InvokeInitAwakeCallbacks()
 {
-    //REFACTOR: ƒR[ƒ‹ƒoƒbƒN‚ÌÀs‡˜‚ª•ª‚©‚ç‚È‚­‚È‚Á‚Ä‚µ‚Ü‚¤ƒNƒ\ƒR[ƒhA‚µ‚©‚µƒŠƒtƒ@ƒNƒ^ƒŠƒ“ƒO‚·‚é‚½‚ß‚É‚ÍWindow‚ÌƒR[ƒ‹ƒoƒbƒN‚ğComponentGroup‚ª”­‰Î‚·‚é‚æ‚¤‚É‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢‚½‚ßAC³‰ÓŠ‚ª‘½‚·‚¬‚é‚Ì‚Å•ú’uB
+    //REFACTOR: ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã®å®Ÿè¡Œé †åºãŒåˆ†ã‹ã‚‰ãªããªã£ã¦ã—ã¾ã†ã‚¯ã‚½ã‚³ãƒ¼ãƒ‰ã€ã—ã‹ã—ãƒªãƒ•ã‚¡ã‚¯ã‚¿ãƒªãƒ³ã‚°ã™ã‚‹ãŸã‚ã«ã¯Windowã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ComponentGroupãŒç™ºç«ã™ã‚‹ã‚ˆã†ã«ã—ãªã‘ã‚Œã°ãªã‚‰ãªã„ãŸã‚ã€ä¿®æ­£ç®‡æ‰€ãŒå¤šã™ãã‚‹ã®ã§æ”¾ç½®ã€‚
     auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
     for (auto& initRender : Components().Catches<LifeCycleCallback::IInitRenderable>())
     {
@@ -54,7 +54,7 @@ void Scene::CopiedPrefabGameObject::InvokeInitAwakeCallbacks()
 
 void Scene::CopiedPrefabGameObject::InvokeInitStartCallbacks()
 {
-    //REFACTOR: ƒR[ƒ‹ƒoƒbƒN‚ÌÀs‡˜‚ª•ª‚©‚ç‚È‚­‚È‚Á‚Ä‚µ‚Ü‚¤ƒNƒ\ƒR[ƒhA‚µ‚©‚µƒŠƒtƒ@ƒNƒ^ƒŠƒ“ƒO‚·‚é‚½‚ß‚É‚ÍWindow‚ÌƒR[ƒ‹ƒoƒbƒN‚ğComponentGroup‚ª”­‰Î‚·‚é‚æ‚¤‚É‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢‚½‚ßAC³‰ÓŠ‚ª‘½‚·‚¬‚é‚Ì‚Å•ú’uB
+    //REFACTOR: ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã®å®Ÿè¡Œé †åºãŒåˆ†ã‹ã‚‰ãªããªã£ã¦ã—ã¾ã†ã‚¯ã‚½ã‚³ãƒ¼ãƒ‰ã€ã—ã‹ã—ãƒªãƒ•ã‚¡ã‚¯ã‚¿ãƒªãƒ³ã‚°ã™ã‚‹ãŸã‚ã«ã¯Windowã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ComponentGroupãŒç™ºç«ã™ã‚‹ã‚ˆã†ã«ã—ãªã‘ã‚Œã°ãªã‚‰ãªã„ãŸã‚ã€ä¿®æ­£ç®‡æ‰€ãŒå¤šã™ãã‚‹ã®ã§æ”¾ç½®ã€‚
     auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
     for (auto& startable : Components().Catches<LifeCycleCallback::IStartable>())
     {
@@ -75,7 +75,7 @@ void Scene::CopiedPrefabGameObject::SetEnable(const bool enable)
 
 std::shared_ptr<GameObject::IGameObject> Scene::CopiedPrefabGameObject::CopyForInstantiate()
 {
-    //this ‚ğƒoƒCƒiƒŠƒA[ƒJƒCƒu‚É•Û‘¶
+    //this ã‚’ãƒã‚¤ãƒŠãƒªã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã«ä¿å­˜
     std::stringstream stringStream;
     {
         cereal::PortableBinaryOutputArchive outputArchive(stringStream);
@@ -187,7 +187,7 @@ void Scene::CopiedPrefabGameObject::OnDrawTreeGui(const bool drawChildren)
         }
     }
 
-    // ‰EƒNƒŠƒbƒN‚³‚ê‚½‚Ìƒ|ƒbƒvƒAƒbƒv
+    // å³ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸæ™‚ã®ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—
     if (ImGui::BeginPopupContextItem(("Popup_" + name_).c_str()))
     {
         if (ImGui::MenuItem("ResetGuid"))
@@ -199,7 +199,7 @@ void Scene::CopiedPrefabGameObject::OnDrawTreeGui(const bool drawChildren)
     }
     
     const bool hovered = ImGui::IsItemHovered();
-    // ƒzƒo[’†‚Éƒhƒ‰ƒbƒOŠJn‚Å‚«‚é‚æ‚¤‚É‚·‚é
+    // ãƒ›ãƒãƒ¼ä¸­ã«ãƒ‰ãƒ©ãƒƒã‚°é–‹å§‹ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
     if (hovered && ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
     {
         ImGui::SetDragDropPayload(Core::FileSystem::EDITOR_DRAGGING_ITEM_PAYLOAD_TYPE, &ownPtr_, sizeof(ownPtr_));

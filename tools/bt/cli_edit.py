@@ -10,7 +10,8 @@ import sys
 from pathlib import Path
 
 from . import catalog as catalog_mod
-from . import edits, meta
+from . import edits
+from . import npc_kind
 from .cereal_json import read_text, to_file_bytes
 from .layout import DX, DY, auto_layout
 from .reader import read_tree
@@ -21,11 +22,7 @@ _REPO = Path(__file__).resolve().parents[2]
 
 
 def _path(arg: str) -> Path:
-    p = Path(arg)
-    if not str(p).endswith(meta.DATA_EXT):
-        p = Path(str(p) + meta.DATA_EXT)
-    if not p.is_absolute() and not p.exists():
-        p = _REPO / p
+    p = npc_kind.resolve_tree_path(arg, _REPO)
     if not p.exists():
         raise SystemExit(f"error: {p} not found")
     return p
@@ -33,13 +30,17 @@ def _path(arg: str) -> Path:
 
 def _load(path: Path):
     text = read_text(path)
-    return text, read_tree(text)
+    kind_obj = npc_kind.kind_for_path(path) or npc_kind.ENEMY
+    cat = catalog_mod.load(kind=kind_obj.name)
+    tree = read_tree(text, cat=cat, kind=kind_obj.name)
+    return text, tree, cat
 
 
-def _commit(path: Path, old_text: str, tree, *, dry_run: bool, layout: bool = False) -> int:
+def _commit(path: Path, old_text: str, tree, cat: catalog_mod.Catalog, *,
+           dry_run: bool, layout: bool = False) -> int:
     if layout:
         auto_layout(tree)
-    problems = validate(tree)
+    problems = validate(tree, cat=cat)
     hard = [p for p in problems if not p.startswith("note:")]
     for p in problems:
         print(("  " if p.startswith("note:") else "  ! ") + p, file=sys.stderr)
@@ -63,90 +64,90 @@ def _commit(path: Path, old_text: str, tree, *, dry_run: bool, layout: bool = Fa
 # ---------------------------------------------------------------------------
 def cmd_add_node(a: argparse.Namespace) -> int:
     path = _path(a.file)
-    text, tree = _load(path)
+    text, tree, cat = _load(path)
     pos = tuple(float(x) for x in a.pos.split(",")) if a.pos else None
     node = edits.add_node(tree, parent_guid=a.parent, kind=a.kind, name=a.name,
-                          action_type=a.type, index=a.index, weight=a.weight, pos=pos)
+                          action_type=a.type, index=a.index, weight=a.weight, pos=pos, cat=cat)
     print(f"new {a.kind} node: {node.guid}")
-    return _commit(path, text, tree, dry_run=a.dry_run,
+    return _commit(path, text, tree, cat, dry_run=a.dry_run,
                    layout=not a.no_layout and pos is None)
 
 
 def cmd_copy_node(a: argparse.Namespace) -> int:
     path = _path(a.file)
-    text, tree = _load(path)
+    text, tree, cat = _load(path)
     pos = tuple(float(x) for x in a.pos.split(",")) if a.pos else None
     node = edits.copy_node(tree, src_guid=a.node, parent_guid=a.parent, index=a.index,
                            weight=a.weight, pos=pos)
     print(f"copy of {a.node} -> {node.guid}  (run `show` to see the copied subtree's guids)")
-    return _commit(path, text, tree, dry_run=a.dry_run,
+    return _commit(path, text, tree, cat, dry_run=a.dry_run,
                    layout=not a.no_layout and pos is None)
 
 
 def cmd_remove_node(a: argparse.Namespace) -> int:
     path = _path(a.file)
-    text, tree = _load(path)
+    text, tree, cat = _load(path)
     edits.remove_node(tree, a.node)
-    return _commit(path, text, tree, dry_run=a.dry_run, layout=not a.no_layout)
+    return _commit(path, text, tree, cat, dry_run=a.dry_run, layout=not a.no_layout)
 
 
 def cmd_move_node(a: argparse.Namespace) -> int:
     path = _path(a.file)
-    text, tree = _load(path)
+    text, tree, cat = _load(path)
     edits.move_node(tree, guid=a.node, parent_guid=a.parent, index=a.index, weight=a.weight)
-    return _commit(path, text, tree, dry_run=a.dry_run, layout=not a.no_layout)
+    return _commit(path, text, tree, cat, dry_run=a.dry_run, layout=not a.no_layout)
 
 
 def cmd_set_params(a: argparse.Namespace) -> int:
     path = _path(a.file)
-    text, tree = _load(path)
+    text, tree, cat = _load(path)
     assignments = {}
     for kv in a.assignments:
         if "=" not in kv:
             raise SystemExit(f"error: expected KEY=VALUE, got {kv!r}")
         k, v = kv.split("=", 1)
         assignments[k] = v
-    touched = edits.set_params(tree, a.node, assignments)
+    touched = edits.set_params(tree, a.node, assignments, cat=cat)
     print(f"set {touched}")
-    return _commit(path, text, tree, dry_run=a.dry_run)
+    return _commit(path, text, tree, cat, dry_run=a.dry_run)
 
 
 def cmd_set_weight(a: argparse.Namespace) -> int:
     path = _path(a.file)
-    text, tree = _load(path)
+    text, tree, cat = _load(path)
     edits.set_weight(tree, child_guid=a.node, parent_guid=a.parent, index=a.index, weight=a.weight)
-    return _commit(path, text, tree, dry_run=a.dry_run)
+    return _commit(path, text, tree, cat, dry_run=a.dry_run)
 
 
 def cmd_bb_add(a: argparse.Namespace) -> int:
     path = _path(a.file)
-    text, tree = _load(path)
+    text, tree, cat = _load(path)
     edits.add_bb_param(tree, a.name, a.int)
-    return _commit(path, text, tree, dry_run=a.dry_run)
+    return _commit(path, text, tree, cat, dry_run=a.dry_run)
 
 
 def cmd_bb_remove(a: argparse.Namespace) -> int:
     path = _path(a.file)
-    text, tree = _load(path)
+    text, tree, cat = _load(path)
     edits.remove_bb_param(tree, a.name)
-    return _commit(path, text, tree, dry_run=a.dry_run)
+    return _commit(path, text, tree, cat, dry_run=a.dry_run)
 
 
 def cmd_apply(a: argparse.Namespace) -> int:
     path = _path(a.file)
-    text, tree = _load(path)
+    text, tree, cat = _load(path)
     ops = json.loads(Path(a.ops).read_text(encoding="utf-8"))
     if not isinstance(ops, list):
         raise SystemExit("error: ops file must be a JSON array of {op: ...} objects")
-    log = edits.apply(tree, ops)
+    log = edits.apply(tree, ops, cat=cat)
     for line in log:
         print("  " + line)
-    return _commit(path, text, tree, dry_run=a.dry_run, layout=not a.no_layout)
+    return _commit(path, text, tree, cat, dry_run=a.dry_run, layout=not a.no_layout)
 
 
 def cmd_layout(a: argparse.Namespace) -> int:
     path = _path(a.file)
-    text, tree = _load(path)
+    text, tree, _cat = _load(path)
     auto_layout(tree, dx=a.dx, dy=a.dy)
     new_text = write_tree(tree)
     if new_text == text:
@@ -164,8 +165,8 @@ def cmd_layout(a: argparse.Namespace) -> int:
 
 def cmd_validate(a: argparse.Namespace) -> int:
     path = _path(a.file)
-    _text, tree = _load(path)
-    problems = validate(tree)
+    _text, tree, cat = _load(path)
+    problems = validate(tree, cat=cat)
     if not problems:
         print("ok")
         return 0

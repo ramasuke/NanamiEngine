@@ -23,6 +23,7 @@ namespace NanamiEngine::Module::Asset
         virtual void OnDoubleClick() {}
         virtual void OnSaveCallback() {}
         virtual void CopiedInit() {}
+        virtual void OnRenamed(const std::string& newContentPath) {}
     };
 }
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::AssetBase, 0);

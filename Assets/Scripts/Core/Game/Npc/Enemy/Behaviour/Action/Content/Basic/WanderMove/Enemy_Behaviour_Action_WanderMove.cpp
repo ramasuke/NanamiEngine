@@ -1,4 +1,4 @@
-#include "Enemy_Behaviour_Action_WanderMove.h"
+ï»¿#include "Enemy_Behaviour_Action_WanderMove.h"
 
 #include <algorithm>
 #include <cmath>
@@ -21,7 +21,7 @@ namespace GameCore::Npc::Enemy::Behaviour
 
         const glm::vec3 selfPos = context.EnemyTransform().GetWorldPos();
 
-        // ‰‰ñ‚Ì‚İƒXƒ|[ƒ“’n“_‚ğ‹L˜^‚µA‘¦À‚ÉˆÚ“®ŠJn‚³‚¹‚é
+        // åˆå›ã®ã¿ã‚¹ãƒãƒ¼ãƒ³åœ°ç‚¹ã‚’è¨˜éŒ²ã—ã€å³åº§ã«ç§»å‹•é–‹å§‹ã•ã›ã‚‹
         if (!spawnPosInitialized_)
         {
             spawnPos_            = selfPos;
@@ -29,7 +29,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             currentWaitTime_     = 0.0f;
         }
 
-        // Idle: ‘Ò‹@‚µ‚Ä‚©‚çƒ‰ƒ“ƒ_ƒ€–Ú•W’n“_‚ğŒˆ’è‚µ‚Ä Moving ‚Ö
+        // Idle: å¾…æ©Ÿã—ã¦ã‹ã‚‰ãƒ©ãƒ³ãƒ€ãƒ ç›®æ¨™åœ°ç‚¹ã‚’æ±ºå®šã—ã¦ Moving ã¸
         if (state_ == State::Idle)
         {
             if (animationIdleNumber_ >= 0)
@@ -39,7 +39,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             if (waitTimer_ < currentWaitTime_)
                 return TickStatus::Running;
 
-            // ƒXƒ|[ƒ“’n“_‚ğ’†S‚É wanderRadius_ “à‚Åƒ‰ƒ“ƒ_ƒ€‚È–Ú•W’n“_‚ğ¶¬
+            // ã‚¹ãƒãƒ¼ãƒ³åœ°ç‚¹ã‚’ä¸­å¿ƒã« wanderRadius_ å†…ã§ãƒ©ãƒ³ãƒ€ãƒ ãªç›®æ¨™åœ°ç‚¹ã‚’ç”Ÿæˆ
             std::uniform_real_distribution<float> angleDist(0.0f, glm::pi<float>() * 2.0f);
             std::uniform_real_distribution<float> radiusDist(0.0f, wanderRadius_);
             const float angle  = angleDist(rng_);
@@ -51,14 +51,14 @@ namespace GameCore::Npc::Enemy::Behaviour
             return TickStatus::Running;
         }
 
-        // Moving: PathFinding ‚Å wanderTarget_ ‚ÖˆÚ“®‚·‚é
+        // Moving: PathFinding ã§ wanderTarget_ ã¸ç§»å‹•ã™ã‚‹
         pathFinder_.Tick(grid, selfPos, { wanderTarget_ },
                          maxPathCellRange_, maxClimbAngleDeg_, searchIntervalSec_);
 
         if (!pathFinder_.HasPath() || pathFinder_.Path().empty())
             return TickStatus::Running;
 
-        // “’BÏ‚İƒEƒFƒCƒ|ƒCƒ“ƒg‚ğ“Ç‚İ”ò‚Î‚µ‚Ä‘Oi
+        // åˆ°é”æ¸ˆã¿ã‚¦ã‚§ã‚¤ãƒã‚¤ãƒ³ãƒˆã‚’èª­ã¿é£›ã°ã—ã¦å‰é€²
         const glm::vec2 cellSize        = grid->CellSize();
         const float     halfCell        = 0.5f * (std::min)(std::abs(cellSize.x), std::abs(cellSize.y));
         const float     arrivalRadius   = (std::max)(halfCell, moveSpeed_ * Time::DeltaTime() * 1.5f);
@@ -74,7 +74,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             path.erase(path.begin());
         }
 
-        // ‘SƒEƒFƒCƒ|ƒCƒ“ƒg“’B ¨ Idle ‚É–ß‚èƒ‰ƒ“ƒ_ƒ€‘Ò‹@ŠÔ‚ğİ’è
+        // å…¨ã‚¦ã‚§ã‚¤ãƒã‚¤ãƒ³ãƒˆåˆ°é” â†’ Idle ã«æˆ»ã‚Šãƒ©ãƒ³ãƒ€ãƒ å¾…æ©Ÿæ™‚é–“ã‚’è¨­å®š
         if (path.empty())
         {
             pathFinder_.ClearPath();
@@ -98,7 +98,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         velocity.y = Physics::GetLinearVelocity(context.EnemyCollider().BodyId()).y;
         Physics::SetLinearVelocity(context.EnemyCollider().BodyId(), velocity);
 
-        // ˆÚ“®•ûŒü‚É‰ñ“]‚·‚é
+        // ç§»å‹•æ–¹å‘ã«å›è»¢ã™ã‚‹
         auto&     transform = context.EnemyTransform();
         glm::vec3 forward   = transform.GetWorldRot() * glm::vec3(0, 0, -1);
         forward.y = 0.0f;

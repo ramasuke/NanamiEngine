@@ -13,7 +13,9 @@ import json
 from pathlib import Path
 from typing import Any, Optional
 
-CATALOG_PATH = Path(__file__).with_name("catalog.json")
+from . import npc_kind
+
+CATALOG_PATH = npc_kind.ENEMY.catalog_path  # backward-compat alias
 
 # param shapes that `set-params` can coerce a CLI string into
 SETTABLE_SHAPES = {"int", "float", "bool", "string", "enum", "vec2", "vec3", "field"}
@@ -66,18 +68,18 @@ class Catalog:
         return None
 
 
-_cached: Optional[Catalog] = None
+_cached: dict[str, Catalog] = {}
 
 
-def load(path: Path | None = None, *, force: bool = False) -> Catalog:
+def load(kind: str = "enemy", path: Path | None = None, *, force: bool = False) -> Catalog:
     global _cached
-    if _cached is not None and not force and path is None:
-        return _cached
-    p = path or CATALOG_PATH
+    if path is None and not force and kind in _cached:
+        return _cached[kind]
+    p = path or npc_kind.by_name(kind).catalog_path
     if not p.exists():
         cat = Catalog({})
     else:
         cat = Catalog(json.loads(p.read_text(encoding="utf-8")))
     if path is None:
-        _cached = cat
+        _cached[kind] = cat
     return cat

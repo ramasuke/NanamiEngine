@@ -18,6 +18,7 @@ namespace NanamiEngine::Module::Asset
 
     private:
         void OnEnableAsset() override;
+        void OnRenamed(const std::string& newContentPath) override { contentPath_ = newContentPath; }
 
         std::string contentPath_;
         Guid        guid_;

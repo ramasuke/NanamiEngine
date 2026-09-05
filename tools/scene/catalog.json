@@ -1,5 +1,5 @@
 {
-  "generated_from": "8d6ad3b0f4c899495bb23841a0e8f6dacf641c87",
+  "generated_from": "d1ff644689c21ebf82951293541d2b586a377bd4",
   "components": {
     "CineMachine::Behaviour::ShakeCameraBehaviour": {
       "class": "ShakeCameraBehaviour",
@@ -1570,7 +1570,7 @@
       "class": "TextRenderer",
       "fqn": "NanamiEngine::Module::NanamiUi::TextRenderer",
       "leaf": "TextRenderer",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "header": "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h",
@@ -1606,6 +1606,13 @@
           "member": "isWorldPos_",
           "named": true,
           "shape": "bool"
+        },
+        {
+          "key": "textAlign_",
+          "member": "textAlign_",
+          "named": true,
+          "shape": "unknown",
+          "type": "TextAlign"
         }
       ]
     },

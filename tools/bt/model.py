@@ -15,16 +15,25 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
-# fully-qualified C++ type names as they appear in `polymorphic_name`
+# fully-qualified C++ type names as they appear in `polymorphic_name`.
+# The six composite/control node types are shared verbatim between the Enemy
+# and FriendlyNpc BehaviourTree flavors; only the ActionNode leaf differs (each
+# flavor wraps its own ActionBase hierarchy) - see tools/bt/npc_kind.py.
 FQN_ENTRY = "Editor::Npc::Behaviour::EntryNode"
 FQN_SELECTOR = "Editor::Npc::Behaviour::SelectorNode"
 FQN_SEQUENCE = "Editor::Npc::Behaviour::SequenceNode"
 FQN_RANDOM = "Editor::Npc::Behaviour::RandomSelectorNode"
 FQN_ONCE_EXEC = "Editor::Npc::Behaviour::OnceExecute"
 FQN_ONCE_SUCCESS = "Editor::Npc::Behaviour::OnceSuccessNode"
-FQN_ACTION_NODE = "Editor::Npc::Enemy::Behaviour::ActionNode"
 
-ACTION_FQN_PREFIX = "GameCore::Npc::Enemy::Behaviour::Action::"
+FQN_ACTION_NODE_ENEMY = "Editor::Npc::Enemy::Behaviour::ActionNode"
+FQN_ACTION_NODE_FRIENDLY = "Editor::Npc::Friendly::Behaviour::ActionNode"
+FQN_ACTION_NODE = FQN_ACTION_NODE_ENEMY  # backward-compat alias (enemy default)
+
+ACTION_FQN_PREFIX_ENEMY = "GameCore::Npc::Enemy::Behaviour::Action::"
+ACTION_FQN_PREFIX_FRIENDLY = "GameCore::Npc::Friendly::Behaviour::Action::"
+ACTION_FQN_PREFIX = ACTION_FQN_PREFIX_ENEMY  # backward-compat alias (enemy default)
+ACTION_FQN_PREFIXES = (ACTION_FQN_PREFIX_ENEMY, ACTION_FQN_PREFIX_FRIENDLY)
 
 # CEREAL_CLASS_VERSION of the editor node types (verified against source)
 NODE_CLASS_VERSION = {
@@ -34,7 +43,8 @@ NODE_CLASS_VERSION = {
     FQN_RANDOM: 1,
     FQN_ONCE_EXEC: 0,
     FQN_ONCE_SUCCESS: 0,
-    FQN_ACTION_NODE: 1,
+    FQN_ACTION_NODE_ENEMY: 1,
+    FQN_ACTION_NODE_FRIENDLY: 1,
 }
 
 
@@ -91,8 +101,9 @@ class Action(Node):
 
     @property
     def type_name(self) -> str:
-        if self.type_fqn.startswith(ACTION_FQN_PREFIX):
-            return self.type_fqn[len(ACTION_FQN_PREFIX):]
+        for prefix in ACTION_FQN_PREFIXES:
+            if self.type_fqn.startswith(prefix):
+                return self.type_fqn[len(prefix):]
         return self.type_fqn.rsplit("::", 1)[-1]
 
 
@@ -117,6 +128,10 @@ class BbParam:
 class Tree:
     entry: Entry
     params: list[BbParam] = field(default_factory=list)
+    #: which BehaviourTree flavor this file is - "enemy" | "friendly" (see
+    #: tools/bt/npc_kind.py). Selects which ActionNode FQN the writer wraps
+    #: every Action leaf in; irrelevant (and untested) for any other value.
+    kind: str = "enemy"
 
     # -- navigation helpers ------------------------------------------------
     def walk(self):

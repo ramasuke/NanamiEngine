@@ -1,4 +1,4 @@
-#include "Data_HeightGridMap.h"
+ï»¿#include "Data_HeightGridMap.h"
 
 #include <algorithm>
 
@@ -89,13 +89,13 @@ namespace NanamiEngine::Module::Asset
         if (displayDivisions < 1)
             return;
 
-        // •ªŠ„”‚ğ•ÏX‚µ‚Ä–¢ÄƒxƒCƒN‚Ìê‡Amap_ ‚ÌƒTƒCƒY‚ªŒ»İ‚Ì•ªŠ„”‚ÆH‚¢ˆá‚¤‚½‚ß
-        // ƒTƒCƒYˆê’v‚Ü‚ÅŠm”F‚·‚éi•sˆê’v‚È‚ç–¢ƒxƒCƒNˆµ‚¢‚Å samplingHeight_ •½–Ê‚ğ•`‚­jB
+        // åˆ†å‰²æ•°ã‚’å¤‰æ›´ã—ã¦æœªå†ãƒ™ã‚¤ã‚¯ã®å ´åˆã€map_ ã®ã‚µã‚¤ã‚ºãŒç¾åœ¨ã®åˆ†å‰²æ•°ã¨é£Ÿã„é•ã†ãŸã‚
+        // ã‚µã‚¤ã‚ºä¸€è‡´ã¾ã§ç¢ºèªã™ã‚‹ï¼ˆä¸ä¸€è‡´ãªã‚‰æœªãƒ™ã‚¤ã‚¯æ‰±ã„ã§ samplingHeight_ å¹³é¢ã‚’æãï¼‰ã€‚
         const size_t expectedCells = static_cast<size_t>(divisionsX_) * static_cast<size_t>(divisionsZ_);
         const bool baked = !map_.empty() && map_.size() == expectedCells;
 
-        // •\¦Šiq“_‚ÌY‚ğ‹‚ß‚éB–¢ƒxƒCƒN‚Í samplingHeight_A
-        // ƒxƒCƒNÏ‚İ‚È‚çÅ‚à‹ß‚¢ÀƒZƒ‹‚Ì‚‚³‚ğƒTƒ“ƒvƒŠƒ“ƒO‚·‚éB
+        // è¡¨ç¤ºæ ¼å­ç‚¹ã®Yã‚’æ±‚ã‚ã‚‹ã€‚æœªãƒ™ã‚¤ã‚¯æ™‚ã¯ samplingHeight_ã€
+        // ãƒ™ã‚¤ã‚¯æ¸ˆã¿ãªã‚‰æœ€ã‚‚è¿‘ã„å®Ÿã‚»ãƒ«ã®é«˜ã•ã‚’ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã™ã‚‹ã€‚
         const auto sampleHeight = [&](float worldX, float worldZ) -> float
         {
             if (!baked)
@@ -126,10 +126,10 @@ namespace NanamiEngine::Module::Asset
             return VGet(worldX, sampleHeight(worldX, worldZ), worldZ);
         };
 
-        // ƒxƒCƒNÏ‚İ‚Í°‚‚³‚É‰ˆ‚Á‚½Šiq‚ğƒVƒAƒ“A–¢ƒxƒCƒN‚Í samplingHeight_ •½–Ê‚ğ”’‚Å•`‰æ
+        // ãƒ™ã‚¤ã‚¯æ¸ˆã¿ã¯åºŠé«˜ã•ã«æ²¿ã£ãŸæ ¼å­ã‚’ã‚·ã‚¢ãƒ³ã€æœªãƒ™ã‚¤ã‚¯ã¯ samplingHeight_ å¹³é¢ã‚’ç™½ã§æç”»
         const int color = baked ? GetColor(0, 255, 255) : GetColor(255, 255, 255);
 
-        // c‰¡‚ÌŠiqü‚ğ•`‰æ
+        // ç¸¦æ¨ªã®æ ¼å­ç·šã‚’æç”»
         for (int gz = 0; gz <= displayDivisions; ++gz)
         {
             for (int gx = 0; gx <= displayDivisions; ++gx)

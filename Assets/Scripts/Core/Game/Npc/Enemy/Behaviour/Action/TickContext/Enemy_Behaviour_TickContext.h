@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <memory>
 #include <queue>
 #include <string>
@@ -59,6 +59,11 @@ namespace NanamiEngine::Module::GameObject
     class IGameObject;
 }
 
+namespace GamePlay::Ui
+{
+    class NpcChatting;
+}
+
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
     struct TickContext final
@@ -83,8 +88,9 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[nodiscard]] static const std::vector<std::weak_ptr<IPlayerAvatar>>& AllPlayer();
         [[nodiscard]] const PlayerAvatar::IQuestGroup& PlayerQuest() const;
         [[nodiscard]] const PlayerAvatar::Quest::ICompleteQuestGroup& PlayerCompleteQuest() const;
+        [[nodiscard]] const GamePlay::Ui::NpcChatting& ChatUi() const;
 
-        
+
         template<typename T>
         [[nodiscard]] T& CatchPrefabObject(const std::string& catchObjectName) const
         {

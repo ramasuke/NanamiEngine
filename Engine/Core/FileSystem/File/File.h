@@ -15,6 +15,7 @@ namespace NanamiEngine::Core::FileSystem
         [[nodiscard]] const std::string& GetName() const { return fileName_; }
         [[nodiscard]] const std::shared_ptr<Module::Asset::AssetBase>& GetContent() const { return content_; }
         [[nodiscard]] File Copy() const;
+        bool Rename(const std::string& newFileName);
 
         void OnSave()        const;
         void OnClick()       const;

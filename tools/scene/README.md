@@ -18,6 +18,7 @@ python -m tools.scene <command>        # or: python tools/scene.py <command>
 | `selftest` | correctness gate — run after touching `reader.py` / `writer.py` / `tools/common/*` |
 | `new-scene NAME [--dir]` | create `NAME.scene` (empty) + `.meta` (fresh GUID) |
 | `new-prefab NAME [--dir]` | create `NAME.prefab` (empty root GameObject) + `.meta` (fresh GUID) |
+| `copy-prefab SOURCE [--name] [--dir]` | duplicate a `.prefab` as a new standalone file + `.meta` (fresh asset GUID, every GameObject/Component guid re-minted, `copied_object_guids` cleared); default name is `<source stem>_copy` in the source's own directory |
 | `show FILE` | print a `.scene`/`.prefab` GameObject tree as a readable outline |
 | `validate FILE` | static checks (duplicate GUIDs, ...) |
 | `add-gameobject` / `remove-gameobject` / `move-gameobject` | structural edits (`move-gameobject` preserves world transform by default) |

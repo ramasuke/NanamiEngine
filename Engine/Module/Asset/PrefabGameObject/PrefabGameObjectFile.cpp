@@ -1,5 +1,7 @@
 ﻿#include "PrefabGameObjectFile.h"
 
+#include <filesystem>
+
 #include "../../../Core/Application/Window/Main/PrefabView/PrefabViewWindow.h"
 #include "../../../Core/Network/Object/PrefabRegistry/NetworkPrefabObjectRegistry.h"
 #include "../../Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
@@ -37,9 +39,34 @@ void Asset::PrefabGameObjectFile::OnSaveCallback()
     content_->OnSave();
 }
 
+void Asset::PrefabGameObjectFile::OnRenamed(const std::string& newContentPath)
+{
+    contentPath_ = newContentPath;
+    if (content_)
+        content_->InitPrefab(newContentPath);
+}
+
 void Asset::PrefabGameObjectFile::CopiedInit()
 {
-    AssetBase::CopiedInit();
+    guid_ = Guid();
+
+    const auto content = std::make_shared<GameObject::PrefabGameObject>(contentPath_);
+
+    const std::filesystem::path path(contentPath_);
+    const auto stem      = path.stem().string();
+    const auto extension = path.extension().string();
+    const auto parent    = path.parent_path().string();
+    const std::string newName = stem + "_copy" + extension;
+
+    std::filesystem::path newPath;
+    if (!parent.empty())
+        newPath = parent + "/" + newName;
+    else
+        newPath = newName;
+
+    content->CopiedInit(newPath.string());
+    content->OnSave();
+    contentPath_ = newPath.string();
 }
 
 void Asset::PrefabGameObjectFile::OnDrawGui()

@@ -13,16 +13,21 @@ import subprocess
 from pathlib import Path
 from typing import Any, Optional
 
-_REPO = Path(__file__).resolve().parents[2]
-ACTION_ROOT = _REPO / "Assets" / "Scripts" / "Core" / "Game" / "Npc" / "Enemy" / "Behaviour" / "Action"
-CONTENT_ROOT = ACTION_ROOT / "Content"
-CATALOG_PATH = Path(__file__).with_name("catalog.json")
+from . import npc_kind
 
-# extra helper structs (not registered actions) that appear as action members
-EXTRA_STRUCT_FILES = {
+_REPO = Path(__file__).resolve().parents[2]
+ACTION_ROOT = npc_kind.ENEMY.action_root
+CONTENT_ROOT = npc_kind.ENEMY.content_root
+CATALOG_PATH = npc_kind.ENEMY.catalog_path  # backward-compat alias
+
+# extra helper structs (not registered actions) that appear as action members.
+# Enemy has one of its own (damage's PhysicsPower) on top of the ones every
+# kind gets from NpcKind.extra_struct_files (e.g. Position).
+ENEMY_EXTRA_STRUCT_FILES = {
+    **npc_kind.ENEMY.extra_struct_files,
     "PhysicsPower": _REPO / "Assets/Scripts/Core/Game/Damage/Physics/Game_Damage_PhysicsPower.h",
-    "Position": ACTION_ROOT / "Position/Enemy_Behaviour_Action_Position.h",
 }
+EXTRA_STRUCT_FILES = ENEMY_EXTRA_STRUCT_FILES  # backward-compat alias
 
 _SKIP_DIRS = {"TickContext", "FieldGameObject", "Position"}
 
@@ -187,13 +192,27 @@ def _parse_serializable(body: str, known_types: set[str]) -> tuple[list[dict], l
     return params, [mm for mm, _ in order]
 
 
-def scan() -> dict[str, Any]:
-    headers = [p for p in CONTENT_ROOT.rglob("*.h")
-               if not any(part in _SKIP_DIRS for part in p.relative_to(CONTENT_ROOT).parts[:-1])]
+_BASE_NODES = {
+    "Editor::Npc::Behaviour::EntryNode": {"leaf": "EntryNode", "version": 0},
+    "Editor::Npc::Behaviour::SelectorNode": {"leaf": "SelectorNode", "version": 0},
+    "Editor::Npc::Behaviour::SequenceNode": {"leaf": "SequenceNode", "version": 0},
+    "Editor::Npc::Behaviour::RandomSelectorNode": {"leaf": "RandomSelectorNode", "version": 1},
+    "Editor::Npc::Behaviour::OnceExecute": {"leaf": "OnceExecute", "version": 0},
+    "Editor::Npc::Behaviour::OnceSuccessNode": {"leaf": "OnceSuccessNode", "version": 0},
+}
+
+
+def scan(kind: str = "enemy") -> dict[str, Any]:
+    cfg = npc_kind.by_name(kind)
+    content_root = cfg.content_root
+    extra_struct_files = ENEMY_EXTRA_STRUCT_FILES if kind == "enemy" else cfg.extra_struct_files
+
+    headers = [p for p in content_root.rglob("*.h")
+               if not any(part in _SKIP_DIRS for part in p.relative_to(content_root).parts[:-1])]
 
     # first pass: know every action class leaf name (needed to classify members)
     raw: list[tuple[Path, str]] = [(p, _read(p)) for p in headers]
-    known_leaves: set[str] = set(EXTRA_STRUCT_FILES)
+    known_leaves: set[str] = set(extra_struct_files)
     for _p, text in raw:
         for cm in RE_CLASS.finditer(text):
             known_leaves.add(cm.group(1))
@@ -210,22 +229,22 @@ def scan() -> dict[str, Any]:
         body = _balanced_block(text, cm.end())
 
         vt = RE_REGISTER_TYPE.search(text)
-        fqn = vt.group(1) if vt else f"GameCore::Npc::Enemy::Behaviour::Action::{cls}"
+        fqn = vt.group(1) if vt else f"{cfg.action_fqn_prefix}{cls}"
         cv = RE_CLASS_VERSION.search(text)
         version = int(cv.group(2)) if cv else 0
-        rn = RE_REG_ACTION_NAMED.search(text)
-        rb = RE_REG_ACTION_BARE.search(text)
+        rn = cfg.register_named_re.search(text)
+        rb = cfg.register_bare_re.search(text)
         display = rn.group(2) if rn else (rb.group(1) if rb else cls)
 
         params, _members = _parse_serializable(body, known_leaves)
-        rel = path.relative_to(CONTENT_ROOT).as_posix()
+        rel = path.relative_to(content_root).as_posix()
 
         actions[display] = {
             "class": cls,
             "fqn": fqn,
             "leaf": _leaf(fqn),
             "version": version,
-            "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/" + rel,
+            "header": f"{cfg.action_dir_rel}/Content/" + rel,
             "params": params,
         }
         by_fqn[fqn] = display
@@ -233,7 +252,7 @@ def scan() -> dict[str, Any]:
         by_leaf.setdefault(cls, display)
 
     structs: dict[str, dict] = {}
-    for leaf, path in EXTRA_STRUCT_FILES.items():
+    for leaf, path in extra_struct_files.items():
         if not path.exists():
             continue
         text = _read(path)
@@ -250,15 +269,8 @@ def scan() -> dict[str, Any]:
             "params": params,
         }
 
-    nodes = {
-        "Editor::Npc::Behaviour::EntryNode": {"leaf": "EntryNode", "version": 0},
-        "Editor::Npc::Behaviour::SelectorNode": {"leaf": "SelectorNode", "version": 0},
-        "Editor::Npc::Behaviour::SequenceNode": {"leaf": "SequenceNode", "version": 0},
-        "Editor::Npc::Behaviour::RandomSelectorNode": {"leaf": "RandomSelectorNode", "version": 1},
-        "Editor::Npc::Behaviour::OnceExecute": {"leaf": "OnceExecute", "version": 0},
-        "Editor::Npc::Behaviour::OnceSuccessNode": {"leaf": "OnceSuccessNode", "version": 0},
-        "Editor::Npc::Enemy::Behaviour::ActionNode": {"leaf": "ActionNode", "version": 1},
-    }
+    nodes = dict(_BASE_NODES)
+    nodes[cfg.action_node_fqn] = {"leaf": "ActionNode", "version": 1}
 
     return {
         "generated_from": _git_head(),
@@ -270,20 +282,21 @@ def scan() -> dict[str, Any]:
     }
 
 
-def write_catalog(data: dict[str, Any], path: Path | None = None) -> Path:
-    p = path or CATALOG_PATH
+def write_catalog(data: dict[str, Any], path: Path | None = None, kind: str = "enemy") -> Path:
+    p = path or npc_kind.by_name(kind).catalog_path
     p.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return p
 
 
-def check_fresh() -> tuple[bool, str]:
-    if not CATALOG_PATH.exists():
-        return False, "catalog.json missing"
-    current = json.dumps(scan().get("actions"), sort_keys=True)
-    on_disk = json.dumps(json.loads(CATALOG_PATH.read_text(encoding="utf-8")).get("actions"),
+def check_fresh(kind: str = "enemy") -> tuple[bool, str]:
+    p = npc_kind.by_name(kind).catalog_path
+    if not p.exists():
+        return False, f"{p.name} missing"
+    current = json.dumps(scan(kind).get("actions"), sort_keys=True)
+    on_disk = json.dumps(json.loads(p.read_text(encoding="utf-8")).get("actions"),
                          sort_keys=True)
     if current != on_disk:
-        return False, "catalog.json is stale - run: python -m tools.bt regen-catalog"
+        return False, f"{p.name} is stale - run: python -m tools.bt regen-catalog --npc-kind {kind}"
     return True, "ok"
 
 

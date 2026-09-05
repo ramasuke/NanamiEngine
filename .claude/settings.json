@@ -1,15 +1,2 @@
 {
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -NonInteractive -ExecutionPolicy Bypass -File .claude/scripts/convert_to_shiftjis.ps1"
-          }
-        ]
-      }
-    ]
-  }
 }

@@ -23,8 +23,9 @@ namespace NanamiEngine::Module::Asset
     private:
         void OnEnableAsset() override;
         void OnSaveCallback() override;
+        void OnRenamed(const std::string& newContentPath) override { contentPath_ = newContentPath; }
         void LoadSprite();
-        [[nodiscard]] const Guid& GetGuid() const override { return guid_; } 
+        [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
 
         
         [[serialize(0)]] std::vector<int> spritesDxlibHandle_;

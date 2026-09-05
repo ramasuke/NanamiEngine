@@ -1,4 +1,4 @@
-#include "HlslPsFile.h"
+ï»¿#include "HlslPsFile.h"
 #include <DxLib.h>
 #include "../../Log/NanamiEngine_Module_Log.h"
 
@@ -13,7 +13,7 @@ namespace NanamiEngine::Module::Asset
     {
         psHandle_ = LoadPixelShader(contentPath_.c_str());
         if (psHandle_ == -1)
-            LogError("HlslPsFile: ƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½: " + contentPath_);
+            LogError("HlslPsFile: ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ: " + contentPath_);
     }
 
     const Guid& HlslPsFile::GetGuid       () const { return guid_; }

@@ -1,11 +1,17 @@
-﻿#include "Enemy_Behaviour_TickContext.h"
+#include "Enemy_Behaviour_TickContext.h"
 
 #include "../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
+#include "../../../../../Game.h"
+#include "../../../../../../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
 #include "../../../../../PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../../PlayerAvatar/PlayerAvatar.h"
 #include "../../../../../PlayerAvatar/Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../../../../../PlayerAvatar/Status/IPlayerAvatarStatus.h"
+#include "../../../../../Scene/Main/Group/Main_GameSceneGroup.h"
+#include "../../../../../Scene/Sub/Content/ChattingUI/ChattingUIScene.h"
+#include "../../../../../Scene/Sub/Group/Sub_GameSceneGroup.h"
+#include "../../../../../Scene/Sub/Type/SubSceneType.h"
 #include "../../../Status/EnemyStatus.h"
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
@@ -50,5 +56,12 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     const PlayerAvatar::Quest::ICompleteQuestGroup& TickContext::PlayerCompleteQuest() const
     {
         return Player()->PlayerStatus().CompletedQuest();
+    }
+
+    const GamePlay::Ui::NpcChatting& TickContext::ChatUi() const
+    {
+        const auto& subScenes = Game::Instance().SubScenes();
+        const auto& chattingUIScene = subScenes.Catch<Scene::Sub::ChattingUIScene>(Scene::Sub::SceneType::ChattingUI);
+        return chattingUIScene->Context().Npc();
     }
 }

@@ -6,16 +6,18 @@ import argparse
 import sys
 
 from . import catalog_scan
+from . import npc_kind
 from . import scaffold
 
 
 def cmd_add_action(a: argparse.Namespace) -> int:
+    kind_obj = npc_kind.by_name(a.npc_kind)
     try:
         params = [scaffold.parse_param(s) for s in (a.param or [])]
         log = scaffold.add_action(
             a.name, a.category, params=params, version=a.version,
             subdir=a.subdir, filters=not a.no_filters,
-            encoding=a.encoding, dry_run=a.dry_run,
+            encoding=a.encoding, dry_run=a.dry_run, kind=kind_obj,
         )
     except scaffold.ScaffoldError as e:
         print(f"error: {e}", file=sys.stderr)
@@ -31,9 +33,10 @@ def cmd_add_action(a: argparse.Namespace) -> int:
 
 
 def cmd_remove_action(a: argparse.Namespace) -> int:
+    kind_obj = npc_kind.by_name(a.npc_kind)
     try:
         log = scaffold.remove_action(a.name, a.category, subdir=a.subdir,
-                                     filters=not a.no_filters, dry_run=a.dry_run)
+                                     filters=not a.no_filters, dry_run=a.dry_run, kind=kind_obj)
     except scaffold.ScaffoldError as e:
         print(f"error: {e}", file=sys.stderr)
         return 1
@@ -44,38 +47,45 @@ def cmd_remove_action(a: argparse.Namespace) -> int:
 
 def cmd_regen_catalog(a: argparse.Namespace) -> int:
     if a.check:
-        ok, msg = catalog_scan.check_fresh()
+        ok, msg = catalog_scan.check_fresh(kind=a.npc_kind)
         print(msg)
         return 0 if ok else 1
-    data = catalog_scan.scan()
-    path = catalog_scan.write_catalog(data)
+    data = catalog_scan.scan(kind=a.npc_kind)
+    path = catalog_scan.write_catalog(data, kind=a.npc_kind)
     print(f"wrote {path} ({len(data['actions'])} actions, {len(data['structs'])} structs)")
     return 0
 
 
 def register(sub: argparse._SubParsersAction) -> None:
+    kind_choices = sorted(npc_kind.BY_NAME)
+
     p = sub.add_parser("add-action", help="scaffold a C++ action and wire the build")
     p.add_argument("--name", required=True, help="C++ class name, e.g. FleeFromPlayer")
     p.add_argument("--category", required=True,
                    help='editor menu path, e.g. "Basic" or "Custom::AI"')
+    p.add_argument("--npc-kind", choices=kind_choices, default="enemy",
+                   help="which BehaviourTree flavor to scaffold for (default: enemy)")
     p.add_argument("--param", action="append", metavar="name:type[=default]",
                    help="scalar param (type: int|float|bool|string); repeatable")
     p.add_argument("--version", type=int, default=0,
                    help="CEREAL_CLASS_VERSION (default 0 = macro omitted)")
     p.add_argument("--subdir", help="folder under Content/ (default: category with :: -> /)")
     p.add_argument("--no-filters", action="store_true", help="skip the .vcxproj.filters edit")
-    p.add_argument("--encoding", default="cp932", choices=["cp932", "utf-8"])
+    p.add_argument("--encoding", default="utf-8-sig", choices=["utf-8-sig", "utf-8", "cp932"])
     p.add_argument("--dry-run", action="store_true")
     p.set_defaults(func=cmd_add_action)
 
     p = sub.add_parser("remove-action", help="undo add-action (files + 3 wiring points)")
     p.add_argument("--name", required=True)
     p.add_argument("--category", required=True)
+    p.add_argument("--npc-kind", choices=kind_choices, default="enemy")
     p.add_argument("--subdir")
     p.add_argument("--no-filters", action="store_true")
     p.add_argument("--dry-run", action="store_true")
     p.set_defaults(func=cmd_remove_action)
 
-    p = sub.add_parser("regen-catalog", help="rebuild tools/bt/catalog.json from the headers")
+    p = sub.add_parser("regen-catalog", help="rebuild tools/bt/catalog*.json from the headers")
+    p.add_argument("--npc-kind", choices=kind_choices, default="enemy",
+                   help="which catalog to rebuild (default: enemy)")
     p.add_argument("--check", action="store_true", help="exit non-zero if stale (no write)")
     p.set_defaults(func=cmd_regen_catalog)

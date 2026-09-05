@@ -29,7 +29,8 @@ namespace NanamiEngine::Module::GameObject
         void OnDrawTreeGui(bool drawChildren = true) override;
         void OnSave();
         void OnReplaceCopiedObjects();
-        
+        void CopiedInit(const std::string& contentPath);
+
         ///PrefabCopyに使用している関数群
         template <class Archive>
         void save(Archive& archive, const std::uint32_t version) const;

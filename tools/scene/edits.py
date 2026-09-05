@@ -358,12 +358,27 @@ def _coerce(shape: str, raw: str) -> Any:
     raise EditError(f"cannot set a param of shape {shape!r}")
 
 
-def _set_field_guid(ver: Ver, guid: str) -> None:
-    ptr = ver.body["value0"]
+def _set_field_guid(node: Any, guid: str) -> None:
+    # cereal only emits `cereal_class_version` the first time a given type is
+    # serialised in an archive - so a Field<T>/FieldHolder<T> at the first
+    # occurrence round-trips as a Ver, but every later occurrence of the same
+    # type (the common case) has no version key and round-trips as a plain
+    # OrderedObj instead. Accept both at each level.
+    if isinstance(node, Ver):
+        ptr = node.body["value0"]
+    elif isinstance(node, OrderedObj):
+        ptr = node["value0"]
+    else:
+        ptr = None
     if not isinstance(ptr, Ptr):
         raise EditError("field param does not have the expected Field<T> shape")
     holder = ptr.data
-    guid_node = holder.body["value0"] if isinstance(holder, Ver) else None
+    if isinstance(holder, Ver):
+        guid_node = holder.body["value0"]
+    elif isinstance(holder, OrderedObj):
+        guid_node = holder["value0"]
+    else:
+        guid_node = None
     if isinstance(guid_node, Ver):
         guid_node.body["value_"] = guid
     elif isinstance(guid_node, OrderedObj):
@@ -387,7 +402,7 @@ def _set_one_param(comp: model.Component, entry: dict, key: str, raw: str) -> st
         raise EditError(f"param {jkey!r} missing from the stored blob (regen-catalog?)")
     if shape == "field":
         node = comp.data[jkey]
-        if not isinstance(node, Ver):
+        if not isinstance(node, (Ver, OrderedObj)):
             raise EditError(f"{jkey}: expected a Field<T> blob")
         _set_field_guid(node, _coerce(shape, raw))
     else:
@@ -474,6 +489,24 @@ def instantiate_prefab(target: Any, prefab: model.Prefab, *,
         parent_node = _require(target, parent_guid)
         parent_node.transform.children.append(new_root)
     return new_root
+
+
+# ---------------------------------------------------------------------------
+# copy-prefab
+# ---------------------------------------------------------------------------
+def copy_prefab(prefab: model.Prefab) -> model.Prefab:
+    """Deep-copy a whole ``Prefab`` for saving as a brand-new standalone
+    ``.prefab`` file: fresh GUID for every GameObject/Component in the tree
+    (same ``_remint_guids`` rule as ``instantiate_prefab``) and an empty
+    ``copied_object_guids`` list, since this new file has no scene instances
+    of its own yet. Unlike ``instantiate_prefab``, the root's ``kind`` stays
+    ``KIND_PREFAB_ROOT`` - the result is still a real prefab asset, not a
+    scene-embedded instance."""
+    import copy as _copy
+
+    new_root = _copy.deepcopy(prefab.root)
+    _remint_guids(new_root)
+    return model.Prefab(root=new_root, copied_object_guids=[])
 
 
 # ---------------------------------------------------------------------------

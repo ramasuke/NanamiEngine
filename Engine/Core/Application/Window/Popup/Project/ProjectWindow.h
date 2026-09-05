@@ -7,11 +7,20 @@
 namespace NanamiEngine::Core::FileSystem
 {
     class Directory;
+    class File;
     class EditorDraggingHand;
 }
 
 namespace NanamiEngine::Core::PopupWindow
 {
+    /** @brief Project内でリネーム編集中のファイルの状態（同時に1件のみ） */
+    struct FileRenameState
+    {
+        FileSystem::File* target = nullptr;
+        char buffer[128] = {};
+        bool justStarted = false;
+    };
+
     class ProjectWindow final : public IPopupWindow
     {
     public:
@@ -32,6 +41,7 @@ namespace NanamiEngine::Core::PopupWindow
         bool isLockedContent_ = false;
         FileSystem::Directory* currentDirectory_;
         char searchBuffer_[128] = {};
+        FileRenameState renameState_;
     };
     
     REGISTER_POPUP_WINDOW(ProjectWindow);

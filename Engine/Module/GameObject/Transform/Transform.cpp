@@ -1,4 +1,4 @@
-#include "Transform.h"
+ï»¿#include "Transform.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include <gtx/quaternion.hpp>
 #include <algorithm>
@@ -82,7 +82,7 @@ namespace NanamiEngine::Module::GameObject
         {
             const glm::vec3 parentWorldScale = parentObj->Transform().GetWorldScale();
 
-            // ƒ[ƒŠ„–hŽ~
+            // ã‚¼ãƒ­å‰²é˜²æ­¢
             localScale_ = {
                 parentWorldScale.x != 0.0f ? worldScale.x / parentWorldScale.x : worldScale.x,
                 parentWorldScale.y != 0.0f ? worldScale.y / parentWorldScale.y : worldScale.y,
@@ -106,7 +106,7 @@ namespace NanamiEngine::Module::GameObject
             glm::length(glm::vec3(localMatrix[2]))
         };
 
-        // ƒXƒP[ƒ‹¬•ª‚ðœ‹Ž‚µ‚Ä‚©‚ç‰ñ“]‚ð’Šo‚·‚éi”ñ“™”{ƒXƒP[ƒ‹‚Å quat ‚ª˜c‚Þ‚Ì‚ð–h‚®j
+        // ã‚¹ã‚±ãƒ¼ãƒ«æˆåˆ†ã‚’é™¤åŽ»ã—ã¦ã‹ã‚‰å›žè»¢ã‚’æŠ½å‡ºã™ã‚‹ï¼ˆéžç­‰å€ã‚¹ã‚±ãƒ¼ãƒ«ã§ quat ãŒæ­ªã‚€ã®ã‚’é˜²ãï¼‰
         glm::mat3 rotationBasis(localMatrix);
         rotationBasis[0] = localScale_.x > 1e-8f ? rotationBasis[0] / localScale_.x : glm::vec3(1.0f, 0.0f, 0.0f);
         rotationBasis[1] = localScale_.y > 1e-8f ? rotationBasis[1] / localScale_.y : glm::vec3(0.0f, 1.0f, 0.0f);
@@ -213,16 +213,16 @@ namespace NanamiEngine::Module::GameObject
 
     glm::vec3 Transform::GetWorldEulerAngle() const
     {
-        // World‰ñ“]‚ð quat ‚Æ‚µ‚ÄŽæ“¾
+        // Worldå›žè»¢ã‚’ quat ã¨ã—ã¦å–å¾—
         const glm::quat worldRot = GetWorldRot();
 
-        // quat ¨ euler(rad)
+        // quat â†’ euler(rad)
         glm::vec3 eulerRad = glm::eulerAngles(worldRot);
 
-        // rad ¨ deg
+        // rad â†’ deg
         glm::vec3 eulerDeg = glm::degrees(eulerRad);
 
-        // 0 ~ 360 ‚É³‹K‰»
+        // 0 ~ 360 ã«æ­£è¦åŒ–
         auto normalize360 = [](float deg)
         {
             deg = std::fmod(deg, 360.0f);
@@ -284,7 +284,7 @@ namespace NanamiEngine::Module::GameObject
 
         const auto newParent = parent.lock();
 
-        // Ž©•ªŽ©gA‚Ü‚½‚ÍŽ©•ª‚ÌŽq‘·‚Ö‚ÌÄe•t‚¯‚ÍzŠÂŽQÆ‚ð¶‚Ý–Ø\‘¢‚ð”j‰ó‚·‚é‚½‚ß‹‘”Û‚·‚éB
+        // è‡ªåˆ†è‡ªèº«ã€ã¾ãŸã¯è‡ªåˆ†ã®å­å­«ã¸ã®å†è¦ªä»˜ã‘ã¯å¾ªç’°å‚ç…§ã‚’ç”Ÿã¿æœ¨æ§‹é€ ã‚’ç ´å£Šã™ã‚‹ãŸã‚æ‹’å¦ã™ã‚‹ã€‚
         if (newParent)
         {
             if (newParent == self)
@@ -353,7 +353,7 @@ namespace NanamiEngine::Module::GameObject
 
             result.emplace_back(child);
 
-            // child ‚Ì Transform ‚©‚ç‚³‚ç‚ÉŽæ“¾
+            // child ã® Transform ã‹ã‚‰ã•ã‚‰ã«å–å¾—
             const auto& childTransform = child->Transform();
             auto subChildren = childTransform.GetAllChildren();
 

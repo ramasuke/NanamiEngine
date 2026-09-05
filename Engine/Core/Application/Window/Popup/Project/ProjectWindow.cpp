@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <filesystem>
 #include <ranges>
 #include <string_view>
 
@@ -28,17 +29,88 @@ namespace
         return !std::ranges::search(haystack, needle, equalsIgnoreCase).empty();
     }
 
-    /** @brief 1ファイル分の行（選択・右クリック・ドラッグ・ダブルクリック）を描画する */
+    /** @brief ファイル名のstem部分として使用できない文字を含んでいないか判定する */
+    bool IsValidFileStem(const std::string_view stem)
+    {
+        if (stem.empty())
+            return false;
+
+        constexpr std::string_view forbidden = "\\/:*?\"<>|";
+        return stem.find_first_of(forbidden) == std::string_view::npos;
+    }
+
+    /** @brief 大文字小文字を無視して2つの文字列が等しいか判定する */
+    bool EqualsCaseInsensitive(const std::string_view lhs, const std::string_view rhs)
+    {
+        return lhs.size() == rhs.size() && ContainsCaseInsensitive(lhs, rhs);
+    }
+
+    /** @brief 同じディレクトリ内に同名(大文字小文字無視)のファイルが既に存在するか判定する */
+    bool IsStemTaken(
+        NanamiEngine::Core::FileSystem::Directory& directory,
+        const NanamiEngine::Core::FileSystem::File& file,
+        const std::string_view newStem,
+        const std::string_view extension)
+    {
+        const std::string newFileName = std::string(newStem) + std::string(extension);
+
+        for (auto& other : directory.Files())
+        {
+            if (&other != &file && EqualsCaseInsensitive(other.GetName(), newFileName))
+                return true;
+        }
+        return false;
+    }
+
+    /** @brief 1ファイル分の行（選択・右クリック・ドラッグ・ダブルクリック・リネーム）を描画する */
     void DrawFileEntry(
         NanamiEngine::Core::FileSystem::Directory& owningDirectory,
         NanamiEngine::Core::FileSystem::File& file,
-        NanamiEngine::Core::FileSystem::EditorDraggingHand& draggingHand)
+        NanamiEngine::Core::FileSystem::EditorDraggingHand& draggingHand,
+        NanamiEngine::Core::PopupWindow::FileRenameState& renameState)
     {
         namespace FileSystem = NanamiEngine::Core::FileSystem;
 
         const std::string& name = file.GetName();
 
         ImGui::PushID(&file);
+
+        const bool isRenaming = renameState.target == &file;
+
+        if (isRenaming)
+        {
+            if (renameState.justStarted)
+            {
+                ImGui::SetKeyboardFocusHere();
+                renameState.justStarted = false;
+            }
+
+            ImGui::SetNextItemWidth(-1);
+            const bool confirmed = ImGui::InputText(
+                "##Rename",
+                renameState.buffer,
+                sizeof(renameState.buffer),
+                ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll);
+
+            if (confirmed)
+            {
+                const std::string extension = std::filesystem::path(name).extension().string();
+                if (IsValidFileStem(renameState.buffer) &&
+                    !IsStemTaken(owningDirectory, file, renameState.buffer, extension))
+                {
+                    file.Rename(std::string(renameState.buffer) + extension);
+                }
+                renameState.target = nullptr;
+            }
+            else if (ImGui::IsItemDeactivated())
+            {
+                // Escapeまたはフォーカスロストでキャンセル
+                renameState.target = nullptr;
+            }
+
+            ImGui::PopID();
+            return;
+        }
 
         if (ImGui::Selectable(name.c_str()))
         {
@@ -51,6 +123,14 @@ namespace
             if (ImGui::MenuItem("Copy"))
             {
                 owningDirectory.AddFile(file.Copy());
+            }
+
+            if (ImGui::MenuItem("Rename"))
+            {
+                renameState.target = &file;
+                renameState.justStarted = true;
+                const std::string stem = std::filesystem::path(name).stem().string();
+                strncpy_s(renameState.buffer, sizeof(renameState.buffer), stem.c_str(), _TRUNCATE);
             }
 
             ImGui::EndPopup();
@@ -193,7 +273,7 @@ void Core::PopupWindow::ProjectWindow::DrawDirectoryContents(
 {
     for (auto& file : directory.Files())
     {
-        DrawFileEntry(directory, file, draggingHand);
+        DrawFileEntry(directory, file, draggingHand, renameState_);
     }
 }
 
@@ -230,7 +310,7 @@ void Core::PopupWindow::ProjectWindow::DrawSearchedFiles(
     {
         if (ContainsCaseInsensitive(file.GetName(), filter))
         {
-            DrawFileEntry(directory, file, draggingHand);
+            DrawFileEntry(directory, file, draggingHand, renameState_);
         }
     }
 

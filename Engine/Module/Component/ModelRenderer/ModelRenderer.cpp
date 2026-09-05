@@ -1,4 +1,4 @@
-#include "ModelRenderer.h"
+ï»¿#include "ModelRenderer.h"
 #include "../../../Core/Coroutine/Coroutine.h"
 #include "../../../Core/Application/Time/Time.h"
 #include "../../GameObject/Transform/Transform.h"
@@ -9,9 +9,9 @@ namespace NanamiEngine::Module::Component
 {
     namespace
     {
-        // DxLib(DX11) ‚Íƒgƒ‰ƒCƒAƒ“ƒOƒ‹ƒŠƒXƒg‚Ì’¸“_ƒ^ƒCƒv‚²‚Æ‚É’¸“_ƒŒƒCƒAƒEƒg‚ªˆÙ‚È‚éB
-        // „‘ÌƒƒbƒVƒ…—p‚Ì’¸“_ƒVƒF[ƒ_[‚Å•`‰æ‚Å‚«‚é‚Ì‚Íƒ{[ƒ“î•ñ‚ğ‚½‚È‚¢ƒ^ƒCƒv‚Ì‚İB
-        // (FREE_FRAME ‚Í DxLib ‘¤‚Å CPU ƒXƒLƒjƒ“ƒO‚³‚êA„‘ÌƒƒbƒVƒ…‚Æ‚µ‚Ä•`‰æ‚³‚ê‚é)
+        // DxLib(DX11) ã¯ãƒˆãƒ©ã‚¤ã‚¢ãƒ³ã‚°ãƒ«ãƒªã‚¹ãƒˆã®é ‚ç‚¹ã‚¿ã‚¤ãƒ—ã”ã¨ã«é ‚ç‚¹ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãŒç•°ãªã‚‹ã€‚
+        // å‰›ä½“ãƒ¡ãƒƒã‚·ãƒ¥ç”¨ã®é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã§æç”»ã§ãã‚‹ã®ã¯ãƒœãƒ¼ãƒ³æƒ…å ±ã‚’æŒãŸãªã„ã‚¿ã‚¤ãƒ—ã®ã¿ã€‚
+        // (FREE_FRAME ã¯ DxLib å´ã§ CPU ã‚¹ã‚­ãƒ‹ãƒ³ã‚°ã•ã‚Œã€å‰›ä½“ãƒ¡ãƒƒã‚·ãƒ¥ã¨ã—ã¦æç”»ã•ã‚Œã‚‹)
         bool IsRigidVertexType(const int vertexType)
         {
             switch (vertexType)
@@ -40,7 +40,7 @@ namespace NanamiEngine::Module::Component
         rigidTriangleList_.clear();
         originalMaterialBlend_.clear();
         allRigid_           = true;
-        customStateApplied_ = false; // V‚µ‚¢ƒnƒ“ƒhƒ‹‚ÍƒfƒtƒHƒ‹ƒgó‘Ô
+        customStateApplied_ = false; // æ–°ã—ã„ãƒãƒ³ãƒ‰ãƒ«ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆçŠ¶æ…‹
 
         if (modelDxLibHandle_ == -1)
             return;
@@ -133,8 +133,8 @@ namespace NanamiEngine::Module::Component
         if (!IsEnable() || modelDxLibHandle_ == -1)
             return;
 
-        // ƒJƒXƒ^ƒ€ƒVƒF[ƒ_[‚ªİ’è‚³‚ê‚Ä‚¢‚éê‡‚ÍƒVƒƒƒhƒE‚ğƒXƒLƒbƒv
-        // i“§–¾“x§Œä‚ªƒVƒF[ƒ_[‘¤‚É‚ ‚é‚½‚ßA‰e‚¾‚¯—‚¿‚éó‘Ô‚ğ–h‚®j
+        // ã‚«ã‚¹ã‚¿ãƒ ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚·ãƒ£ãƒ‰ã‚¦ã‚’ã‚¹ã‚­ãƒƒãƒ—
+        // ï¼ˆé€æ˜åº¦åˆ¶å¾¡ãŒã‚·ã‚§ãƒ¼ãƒ€ãƒ¼å´ã«ã‚ã‚‹ãŸã‚ã€å½±ã ã‘è½ã¡ã‚‹çŠ¶æ…‹ã‚’é˜²ãï¼‰
         if (HasCustomShader())
             return;
 
@@ -154,7 +154,7 @@ namespace NanamiEngine::Module::Component
         if (customStateApplied_)
             return;
 
-        // •œŒ³—p‚ÉŒ³‚Ìƒ}ƒeƒŠƒAƒ‹‚ÌƒuƒŒƒ“ƒhİ’è‚ğ‘Ş”ğ
+        // å¾©å…ƒç”¨ã«å…ƒã®ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ–ãƒ¬ãƒ³ãƒ‰è¨­å®šã‚’é€€é¿
         const int materialNum = MV1GetMaterialNum(modelDxLibHandle_);
         originalMaterialBlend_.clear();
         originalMaterialBlend_.reserve(materialNum);
@@ -165,8 +165,8 @@ namespace NanamiEngine::Module::Component
                 MV1GetMaterialDrawBlendParam(modelDxLibHandle_, i));
         }
 
-        // SetDrawBlendMode / SetWriteZBuffer3D ‚Íƒ‚ƒfƒ‹•`‰æ‚É‚Í”½‰f‚³‚ê‚È‚¢‚½‚ßA
-        // MV1 ê—p‚Ì API ‚ÅƒAƒ‹ƒtƒ@ƒuƒŒƒ“ƒh + Z ‘‚«‚İ–³‚µ‚É‚·‚é
+        // SetDrawBlendMode / SetWriteZBuffer3D ã¯ãƒ¢ãƒ‡ãƒ«æç”»ã«ã¯åæ˜ ã•ã‚Œãªã„ãŸã‚ã€
+        // MV1 å°‚ç”¨ã® API ã§ã‚¢ãƒ«ãƒ•ã‚¡ãƒ–ãƒ¬ãƒ³ãƒ‰ + Z æ›¸ãè¾¼ã¿ç„¡ã—ã«ã™ã‚‹
         MV1SetMaterialDrawBlendModeAll (modelDxLibHandle_, DX_BLENDMODE_ALPHA);
         MV1SetMaterialDrawBlendParamAll(modelDxLibHandle_, 255);
         MV1SetWriteZBuffer             (modelDxLibHandle_, FALSE);
@@ -207,8 +207,8 @@ namespace NanamiEngine::Module::Component
         }
         else
         {
-            // 4/8 ƒ{[ƒ“‚ÌƒXƒLƒ“ƒƒbƒVƒ…‚Í„‘Ì—p’¸“_ƒVƒF[ƒ_[‚Å‚Í•`‰æ‚Å‚«‚È‚¢‚½‚ßA
-            // ‚»‚Ìƒgƒ‰ƒCƒAƒ“ƒOƒ‹ƒŠƒXƒg‚¾‚¯ DxLib •W€ƒVƒF[ƒ_[‚Å•`‰æ‚·‚é(ƒtƒF[ƒh‚ÍŠ|‚©‚ç‚È‚¢)
+            // 4/8 ãƒœãƒ¼ãƒ³ã®ã‚¹ã‚­ãƒ³ãƒ¡ãƒƒã‚·ãƒ¥ã¯å‰›ä½“ç”¨é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã§ã¯æç”»ã§ããªã„ãŸã‚ã€
+            // ãã®ãƒˆãƒ©ã‚¤ã‚¢ãƒ³ã‚°ãƒ«ãƒªã‚¹ãƒˆã ã‘ DxLib æ¨™æº–ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã§æç”»ã™ã‚‹(ãƒ•ã‚§ãƒ¼ãƒ‰ã¯æ›ã‹ã‚‰ãªã„)
             const int listNum = (std::min)(MV1GetTriangleListNum(modelDxLibHandle_),
                                            static_cast<int>(rigidTriangleList_.size()));
             for (int i = 0; i < listNum; ++i)

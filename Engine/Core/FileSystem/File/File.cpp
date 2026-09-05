@@ -91,6 +91,44 @@ namespace NanamiEngine::Core::FileSystem
     }
 
 
+    bool File::Rename(const std::string& newFileName)
+    {
+        if (newFileName.empty() || newFileName == fileName_)
+            return false;
+
+        const std::filesystem::path oldPath(filePath_);
+        const std::filesystem::path newPath = oldPath.has_parent_path()
+            ? oldPath.parent_path() / newFileName
+            : std::filesystem::path(newFileName);
+
+        std::error_code ec;
+        if (std::filesystem::exists(oldPath))
+        {
+            std::filesystem::rename(oldPath, newPath, ec);
+            if (ec)
+                return false;
+        }
+
+        const std::filesystem::path oldMetaPath = filePath_ + ".meta";
+        if (std::filesystem::exists(oldMetaPath))
+        {
+            std::filesystem::rename(oldMetaPath, newPath.string() + ".meta", ec);
+            if (ec)
+                return false;
+        }
+
+        filePath_ = newPath.string();
+        fileName_ = newFileName;
+
+        if (content_)
+        {
+            content_->OnRenamed(filePath_);
+            OnSave();
+        }
+
+        return true;
+    }
+
     void File::OnSave() const
     {
         if (!content_)

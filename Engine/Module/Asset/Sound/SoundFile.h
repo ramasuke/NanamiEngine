@@ -15,6 +15,8 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] std::string GetContentPath() const override;
 
     private:
+        void OnRenamed(const std::string& newContentPath) override { contentPath_ = newContentPath; }
+
         std::string contentPath_;
         Guid guid_;
         int dxLibHandle_ = -1;

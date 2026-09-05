@@ -19,6 +19,7 @@ namespace NanamiEngine::Module::Asset
     private:
         void OnDoubleClick () override;
         void OnSaveCallback() override;
+        void OnRenamed(const std::string& newContentPath) override { contentPath_ = newContentPath; }
 
         [[serialize(0)]] std::string contentPath_;
         [[serialize(0)]] Guid guid_;

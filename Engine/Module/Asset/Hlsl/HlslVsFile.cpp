@@ -1,4 +1,4 @@
-#include "HlslVsFile.h"
+ï»¿#include "HlslVsFile.h"
 #include <DxLib.h>
 #include "../../Log/NanamiEngine_Module_Log.h"
 
@@ -13,7 +13,7 @@ namespace NanamiEngine::Module::Asset
     {
         vsHandle_ = LoadVertexShader(contentPath_.c_str());
         if (vsHandle_ == -1)
-            LogError("HlslVsFile: ’¸“_ƒVƒF[ƒ_[‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½: " + contentPath_);
+            LogError("HlslVsFile: é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ: " + contentPath_);
     }
 
     const Guid& HlslVsFile::GetGuid       () const { return guid_; }

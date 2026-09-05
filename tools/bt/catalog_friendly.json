@@ -1,0 +1,443 @@
+{
+  "generated_from": "d1ff644689c21ebf82951293541d2b586a377bd4",
+  "actions": {
+    "Camera::EnablePurposeCamera": {
+      "class": "PurposeCamera",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::PurposeCamera",
+      "leaf": "PurposeCamera",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/Camera/EnablePurposeCamera/Friendly_Behaviour_Action_PurposeCamera.h",
+      "params": [
+        {
+          "key": "purposeCamera_",
+          "member": "purposeCamera_",
+          "named": true,
+          "shape": "field",
+          "type": "CineMachineVirtualCamera"
+        },
+        {
+          "key": "onPurposeCameraEnable_",
+          "member": "onPurposeCameraEnable_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "GameObject::Instantiate": {
+      "class": "GameObjectInstantiate",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::GameObjectInstantiate",
+      "leaf": "GameObjectInstantiate",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/GameObject/Instantiate/Friendly_Behaviour_Action_GameObjectInstantaite.h",
+      "params": [
+        {
+          "key": "offset_",
+          "member": "offset_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "useAbsolutePosition_",
+          "member": "useAbsolutePosition_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "inheritRotation_",
+          "member": "inheritRotation_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "prefab_",
+          "member": "prefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        }
+      ]
+    },
+    "GameObject::SetEnable": {
+      "class": "GameObjectSetEnable",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::GameObjectSetEnable",
+      "leaf": "GameObjectSetEnable",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/GameObject/SetEnable/Friendly_Behaviour_Action_GameObjectSetEnable.h",
+      "params": [
+        {
+          "key": "enableGameObject_",
+          "member": "enableGameObject_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "isEnable_",
+          "member": "isEnable_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "NpcStatus::Animation::PlayAnimation": {
+      "class": "PlayAnimation",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::PlayAnimation",
+      "leaf": "PlayAnimation",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/Animation/PlayAnimation/Friendly_Behaviour_Action_PlayAnimation.h",
+      "params": [
+        {
+          "key": "animatorSetParamNumber_",
+          "member": "animatorSetParamNumber_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "NpcStatus::Chat::Chat": {
+      "class": "ImplementChat",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::ImplementChat",
+      "leaf": "ImplementChat",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/Chat/Chat/Friendly_Behaviour_Action_ImplementChat.h",
+      "params": [
+        {
+          "key": "value1",
+          "member": "chatData_",
+          "named": false,
+          "shape": "field",
+          "type": "NpcChat"
+        }
+      ]
+    },
+    "NpcStatus::Chat::ChattableChat": {
+      "class": "Chat",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::Chat",
+      "leaf": "Chat",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/Chat/Chattable/Friendly_Behaviour_Action_Chat.h",
+      "params": [
+        {
+          "key": "value1",
+          "member": "chatData_",
+          "named": false,
+          "shape": "field",
+          "type": "NpcChat"
+        }
+      ]
+    },
+    "NpcStatus::Chat::IsChatting": {
+      "class": "IsChat",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::IsChat",
+      "leaf": "IsChat",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/Chat/IsChatting/Friendly_Behaviour_Action_IsChat.h",
+      "params": []
+    },
+    "NpcStatus::ChatIcon::SetEnableShowChatIcon": {
+      "class": "SetEnableShowChatIcon",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::SetEnableShowChatIcon",
+      "leaf": "SetEnableShowChatIcon",
+      "version": 1,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/ChatIcon/Friendly_Behaviour_Action_SetEnableChatIcon.h",
+      "params": [
+        {
+          "key": "value1",
+          "member": "isShow_",
+          "named": false,
+          "shape": "bool"
+        },
+        {
+          "key": "value2",
+          "member": "chattableIcon_",
+          "named": false,
+          "shape": "bool"
+        },
+        {
+          "key": "value3",
+          "member": "chattingIcon_",
+          "named": false,
+          "shape": "bool"
+        },
+        {
+          "key": "value4",
+          "member": "surpriseIcon_",
+          "named": false,
+          "shape": "bool"
+        }
+      ]
+    },
+    "NpcStatus::RigidBody::MoveForRoute": {
+      "class": "MoveForRoute",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::MoveForRoute",
+      "leaf": "MoveForRoute",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/RigidBody/MoveForRoute/Friendly_Behaviour_Action_MoveForRoute.h",
+      "params": [
+        {
+          "key": "moveRoute_",
+          "member": "moveRoute_",
+          "named": true,
+          "shape": "field",
+          "type": "NpcWalkingRoute"
+        },
+        {
+          "key": "moveSpeed_",
+          "member": "moveSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "turnRotateSpeed_",
+          "member": "turnRotateSpeed_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "NpcStatus::RigidBody::SetFreezePhysics": {
+      "class": "SetFreezePhysics",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::SetFreezePhysics",
+      "leaf": "SetFreezePhysics",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/RigidBody/FreezePhysics/Friendly_Behaviour_Action_SetFreezePhysics.h",
+      "params": [
+        {
+          "key": "constraints_",
+          "member": "constraints_",
+          "named": true,
+          "shape": "unknown",
+          "type": "Constraints"
+        }
+      ]
+    },
+    "NpcStatus::RigidBody::SetLinearVelocity": {
+      "class": "SetLinearVelocity",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::SetLinearVelocity",
+      "leaf": "SetLinearVelocity",
+      "version": 1,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/RigidBody/SetLinearVelocity/Friendly_Behaviour_Action_SetLinearVelocity.h",
+      "params": [
+        {
+          "key": "setVelocity_",
+          "member": "setVelocity_",
+          "named": true,
+          "shape": "vec3"
+        }
+      ]
+    },
+    "NpcStatus::Transform::LookAtY": {
+      "class": "SetRotation",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::SetRotation",
+      "leaf": "SetRotation",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/Transform/SetRotation/Friendly_Behaviour_Action_SetRotation.h",
+      "params": [
+        {
+          "key": "lookAtDirection_",
+          "member": "lookAtDirection_",
+          "named": true,
+          "shape": "vec3"
+        }
+      ]
+    },
+    "Other::ReadBlackBoard": {
+      "class": "ReadBlackBoard",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::ReadBlackBoard",
+      "leaf": "ReadBlackBoard",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/Other/ReadBlackBoard/Friendly_Behaviour_Action_ReadBlackBoard.h",
+      "params": [
+        {
+          "key": "keyName_",
+          "member": "keyName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "equalValue_",
+          "member": "equalValue_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "Other::SummonFirstEventDragon": {
+      "class": "SampleFirstEventDragonChat",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::SampleFirstEventDragonChat",
+      "leaf": "SampleFirstEventDragonChat",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/Other/Sample/Friendly_Behaviour_Action_SampleFirstEventDragonChat.h",
+      "params": [
+        {
+          "key": "firstEventDragonPrefab_",
+          "member": "firstEventDragonPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "appearFirstEventDragonPosition_",
+          "member": "appearFirstEventDragonPosition_",
+          "named": true,
+          "shape": "vec3"
+        }
+      ]
+    },
+    "Other::WriteBlackBoard": {
+      "class": "WriteBlackBoard",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::WriteBlackBoard",
+      "leaf": "WriteBlackBoard",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/Other/WriteBlackBoard/Friendly_Behaviour_Action_WriteBlackBoard.h",
+      "params": [
+        {
+          "key": "keyName_",
+          "member": "keyName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "value_",
+          "member": "value_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "PlayerStatus::CheckCompleteQuest": {
+      "class": "CheckCompleteQuest",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::CheckCompleteQuest",
+      "leaf": "CheckCompleteQuest",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/PlayerStatus/Quest/CheckComplete/Friendly_Behaviour_Action_CheckCompleteQuest.h",
+      "params": [
+        {
+          "key": "questType_",
+          "member": "questType_",
+          "named": true,
+          "shape": "unknown",
+          "type": "QuestType"
+        }
+      ]
+    },
+    "PlayerStatus::Quest::TryGiveQuest": {
+      "class": "TryQuest",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::TryQuest",
+      "leaf": "TryQuest",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/PlayerStatus/Quest/GiveQuest/Friendly_Behaviour_Action_Quest.h",
+      "params": [
+        {
+          "key": "quest_",
+          "member": "quest_",
+          "named": true,
+          "shape": "unknown",
+          "type": "shared_ptr"
+        }
+      ]
+    },
+    "PlayerStatus::Quest::TrySwordManQuest": {
+      "class": "TrySwordManQuest",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::TrySwordManQuest",
+      "leaf": "TrySwordManQuest",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/PlayerStatus/Quest/GiveQuest/SwordMan/Friendly_Behaviour_Action_SwordManQuest.h",
+      "params": []
+    },
+    "Time::NodeTickTimer": {
+      "class": "NodeTickTimer",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::NodeTickTimer",
+      "leaf": "NodeTickTimer",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/Time/Timer/Friendly_Behaviour_Action_NodeTickTimer.h",
+      "params": [
+        {
+          "key": "duration_secs_",
+          "member": "duration_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    }
+  },
+  "structs": {
+    "Position": {
+      "fqn": "Position",
+      "version": 0,
+      "params": []
+    }
+  },
+  "by_fqn": {
+    "GameCore::Npc::Friendly::Behaviour::Action::Chat": "NpcStatus::Chat::ChattableChat",
+    "GameCore::Npc::Friendly::Behaviour::Action::CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",
+    "GameCore::Npc::Friendly::Behaviour::Action::GameObjectInstantiate": "GameObject::Instantiate",
+    "GameCore::Npc::Friendly::Behaviour::Action::GameObjectSetEnable": "GameObject::SetEnable",
+    "GameCore::Npc::Friendly::Behaviour::Action::ImplementChat": "NpcStatus::Chat::Chat",
+    "GameCore::Npc::Friendly::Behaviour::Action::IsChat": "NpcStatus::Chat::IsChatting",
+    "GameCore::Npc::Friendly::Behaviour::Action::MoveForRoute": "NpcStatus::RigidBody::MoveForRoute",
+    "GameCore::Npc::Friendly::Behaviour::Action::NodeTickTimer": "Time::NodeTickTimer",
+    "GameCore::Npc::Friendly::Behaviour::Action::PlayAnimation": "NpcStatus::Animation::PlayAnimation",
+    "GameCore::Npc::Friendly::Behaviour::Action::PurposeCamera": "Camera::EnablePurposeCamera",
+    "GameCore::Npc::Friendly::Behaviour::Action::ReadBlackBoard": "Other::ReadBlackBoard",
+    "GameCore::Npc::Friendly::Behaviour::Action::SampleFirstEventDragonChat": "Other::SummonFirstEventDragon",
+    "GameCore::Npc::Friendly::Behaviour::Action::SetEnableShowChatIcon": "NpcStatus::ChatIcon::SetEnableShowChatIcon",
+    "GameCore::Npc::Friendly::Behaviour::Action::SetFreezePhysics": "NpcStatus::RigidBody::SetFreezePhysics",
+    "GameCore::Npc::Friendly::Behaviour::Action::SetLinearVelocity": "NpcStatus::RigidBody::SetLinearVelocity",
+    "GameCore::Npc::Friendly::Behaviour::Action::SetRotation": "NpcStatus::Transform::LookAtY",
+    "GameCore::Npc::Friendly::Behaviour::Action::TryQuest": "PlayerStatus::Quest::TryGiveQuest",
+    "GameCore::Npc::Friendly::Behaviour::Action::TrySwordManQuest": "PlayerStatus::Quest::TrySwordManQuest",
+    "GameCore::Npc::Friendly::Behaviour::Action::WriteBlackBoard": "Other::WriteBlackBoard"
+  },
+  "by_leaf": {
+    "Chat": "NpcStatus::Chat::ChattableChat",
+    "CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",
+    "GameObjectInstantiate": "GameObject::Instantiate",
+    "GameObjectSetEnable": "GameObject::SetEnable",
+    "ImplementChat": "NpcStatus::Chat::Chat",
+    "IsChat": "NpcStatus::Chat::IsChatting",
+    "MoveForRoute": "NpcStatus::RigidBody::MoveForRoute",
+    "NodeTickTimer": "Time::NodeTickTimer",
+    "PlayAnimation": "NpcStatus::Animation::PlayAnimation",
+    "PurposeCamera": "Camera::EnablePurposeCamera",
+    "ReadBlackBoard": "Other::ReadBlackBoard",
+    "SampleFirstEventDragonChat": "Other::SummonFirstEventDragon",
+    "SetEnableShowChatIcon": "NpcStatus::ChatIcon::SetEnableShowChatIcon",
+    "SetFreezePhysics": "NpcStatus::RigidBody::SetFreezePhysics",
+    "SetLinearVelocity": "NpcStatus::RigidBody::SetLinearVelocity",
+    "SetRotation": "NpcStatus::Transform::LookAtY",
+    "TryQuest": "PlayerStatus::Quest::TryGiveQuest",
+    "TrySwordManQuest": "PlayerStatus::Quest::TrySwordManQuest",
+    "WriteBlackBoard": "Other::WriteBlackBoard"
+  },
+  "nodes": {
+    "Editor::Npc::Behaviour::EntryNode": {
+      "leaf": "EntryNode",
+      "version": 0
+    },
+    "Editor::Npc::Behaviour::SelectorNode": {
+      "leaf": "SelectorNode",
+      "version": 0
+    },
+    "Editor::Npc::Behaviour::SequenceNode": {
+      "leaf": "SequenceNode",
+      "version": 0
+    },
+    "Editor::Npc::Behaviour::RandomSelectorNode": {
+      "leaf": "RandomSelectorNode",
+      "version": 1
+    },
+    "Editor::Npc::Behaviour::OnceExecute": {
+      "leaf": "OnceExecute",
+      "version": 0
+    },
+    "Editor::Npc::Behaviour::OnceSuccessNode": {
+      "leaf": "OnceSuccessNode",
+      "version": 0
+    },
+    "Editor::Npc::Friendly::Behaviour::ActionNode": {
+      "leaf": "ActionNode",
+      "version": 1
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "generated_from": "6a6e65b789c8e31e23fd186417de364fb4e567c8",
+  "generated_from": "d1ff644689c21ebf82951293541d2b586a377bd4",
   "actions": {
     "Basic::ChasePlayerForPathFinding": {
       "class": "ChasePlayerForPathFinding",
@@ -473,6 +473,28 @@
         }
       ]
     },
+    "Other::Chat": {
+      "class": "Chat",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::Chat",
+      "leaf": "Chat",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/Chat/Enemy_Behaviour_Action_Chat.h",
+      "params": [
+        {
+          "key": "displayName_",
+          "member": "displayName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "chatData_",
+          "member": "chatData_",
+          "named": true,
+          "shape": "field",
+          "type": "NpcChat"
+        }
+      ]
+    },
     "Other::Random": {
       "class": "Random",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::Random",
@@ -924,6 +946,7 @@
     "GameCore::Npc::Enemy::Behaviour::Action::ChangeIsGravity": "RigidBody::ChangeIsGravity",
     "GameCore::Npc::Enemy::Behaviour::Action::ChangeToMainIslandScene": "Scene::ChangeToMainIslandScene",
     "GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding": "Basic::ChasePlayerForPathFinding",
+    "GameCore::Npc::Enemy::Behaviour::Action::Chat": "Other::Chat",
     "GameCore::Npc::Enemy::Behaviour::Action::CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",
     "GameCore::Npc::Enemy::Behaviour::Action::ConditionArriveDuration": "EnemyStatus::Condition::ArriveDuration",
     "GameCore::Npc::Enemy::Behaviour::Action::GenerateParticle": "Particle::GenerateParticle",
@@ -961,6 +984,7 @@
     "ChangeIsGravity": "RigidBody::ChangeIsGravity",
     "ChangeToMainIslandScene": "Scene::ChangeToMainIslandScene",
     "ChasePlayerForPathFinding": "Basic::ChasePlayerForPathFinding",
+    "Chat": "Other::Chat",
     "CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",
     "ConditionArriveDuration": "EnemyStatus::Condition::ArriveDuration",
     "GenerateParticle": "Particle::GenerateParticle",

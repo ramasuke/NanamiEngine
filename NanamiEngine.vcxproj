@@ -2229,6 +2229,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\Chat\Enemy_Behaviour_Action_Chat.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -12396,6 +12397,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Transform\Rotation\Add\Enemy_Behaviour_Action_AddRotation.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Transform\Rotation\OnPlayer\Enemy_Behaviour_Action_RotateOnPlayer.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Wait\Seconds\Enemy_Behaviour_Action_WaitSeconds.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\Chat\Enemy_Behaviour_Action_Chat.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\FieldGameObject\Enemy_Behaviour_Action_FieldGameObject.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Position\Enemy_Behaviour_Action_Position.h" />

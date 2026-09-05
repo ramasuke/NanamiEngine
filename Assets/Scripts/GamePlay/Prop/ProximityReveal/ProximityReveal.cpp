@@ -1,4 +1,4 @@
-#include "ProximityReveal.h"
+ï»¿#include "ProximityReveal.h"
 #include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
 
@@ -15,7 +15,7 @@ namespace GamePlay::Prop
         if (!renderer)
             return;
 
-        // ’è”ƒoƒbƒtƒ@‚Í ModelRenderer ‘¤‚Å’x‰„¶¬‚³‚ê‚é(ƒVƒF[ƒ_[–¢Ý’è‚È‚ç -1)
+        // å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¯ ModelRenderer å´ã§é…å»¶ç”Ÿæˆã•ã‚Œã‚‹(ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼æœªè¨­å®šãªã‚‰ -1)
         const int cbHandle = renderer->GetOrCreateShaderConstantBufferHandle();
         if (cbHandle == -1)
             return;
