@@ -33,10 +33,11 @@ namespace GamePlay::Ui
 
         worldEnterButton_->OnClick().subscribe([this](NanamiUi::MouseState)
         {
-            if (!hasSelectedSceneType_)
+            if (!hasSelectedSceneType_ || isEnteringWorld_)
                 return;
-            
-            GameCore::Game::Instance().Scenes().RequestChangeScene(selectedSceneType_);
+
+            isEnteringWorld_ = true;
+            Coroutine::StartCoroutine(EnterWorldAsync(selectedSceneType_));
         });
         
         Coroutine::StartCoroutine(StartStageSelectAsync());
@@ -54,11 +55,25 @@ namespace GamePlay::Ui
 
     Coroutine::Task<void> StageSelectUi::AppearBackGroundMaskAsync()
     {
-        for (int i = 0; i < backGroundMaskBlendRate_; i++)
+        co_await FadeBlendRateAsync(backGroundMask_.get(), 0, backGroundMaskBlendRate_);
+    }
+
+    Coroutine::Task<void> StageSelectUi::EnterWorldAsync(const GameCore::Scene::Main::SceneType sceneType)
+    {
+        co_await FadeBlendRateAsync(stageSelectBackGroundMask_.get(), 0, stageSelectBackGroundMaskBlendRate_);
+        GameCore::Game::Instance().Scenes().RequestChangeScene(sceneType);
+    }
+
+    Coroutine::Task<void> StageSelectUi::FadeBlendRateAsync(
+        const std::shared_ptr<NanamiUi::BlendImageRenderer> renderer, const int from, const int to)
+    {
+        const int step = to > from ? 1 : -1;
+        for (int rate = from; rate != to; rate += step)
         {
-            backGroundMask_->SetBlendRate(backGroundMaskBlendRate_);
+            renderer->SetBlendRate(rate);
             co_await Coroutine::WaitYield();
         }
+        renderer->SetBlendRate(to);
     }
 
     void StageSelectUi::OnDrawGui()

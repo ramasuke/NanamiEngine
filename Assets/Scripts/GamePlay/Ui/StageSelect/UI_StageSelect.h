@@ -22,9 +22,11 @@ namespace GamePlay::Ui
         void OnDestroy() override;
         Coroutine::Task<void> StartStageSelectAsync();
         Coroutine::Task<void> AppearBackGroundMaskAsync();
-        
+        Coroutine::Task<void> EnterWorldAsync(GameCore::Scene::Main::SceneType sceneType);
+        Coroutine::Task<void> FadeBlendRateAsync(std::shared_ptr<NanamiUi::BlendImageRenderer> renderer, int from, int to);
 
-        
+
+
         [[serialize(0)]] FIELD(Asset::SoundFile) bgm_; 
         
         [[serialize(0)]] std::string backGroundMaskName_;
@@ -39,6 +41,7 @@ namespace GamePlay::Ui
         [[serialize(1)]] std::string worldMovieRendererName_;
         FIELD(NanamiUi::MovieRenderer) worldMovieRenderer_;
         bool hasSelectedSceneType_ = false;
+        bool isEnteringWorld_ = false;
         GameCore::Scene::Main::SceneType selectedSceneType_ = GameCore::Scene::Main::SceneType::GrassLand;
         [[serialize(1)]] std::string worldEnterButtonName_;
         FIELD(NanamiUi::Button) worldEnterButton_;
