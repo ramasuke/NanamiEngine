@@ -10,7 +10,7 @@ namespace NanamiEngine::Core::PopupWindow
     public:
         InspectorWindow();
         ::Guid& Guid()  override { return guid_; }
-        void OnDraw(PopupWindowDrawGuiContext context)   override;
+        PopupWindowState OnDraw(PopupWindowDrawGuiContext context)   override;
         void TryAddDisplayObject(const std::weak_ptr<Module::Object::IObject>& gameObject);
 
         [[nodiscard]] std::weak_ptr<Module::Object::IObject> DisplayObject()   const { return displayGameObject_; }

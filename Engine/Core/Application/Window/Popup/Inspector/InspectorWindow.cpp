@@ -11,15 +11,18 @@ NanamiEngine::Core::PopupWindow::InspectorWindow::InspectorWindow()
     id_ = counter_++;
 }
 
-void NanamiEngine::Core::PopupWindow::InspectorWindow::OnDraw(PopupWindowDrawGuiContext context)
+NanamiEngine::Core::PopupWindow::PopupWindowState NanamiEngine::Core::PopupWindow::InspectorWindow::OnDraw(PopupWindowDrawGuiContext context)
 {
-    ImGui::Begin(("Inspector##" + std::to_string(id_)).c_str());
+    bool isOpen = true;
+    ImGui::Begin(("Inspector##" + std::to_string(id_)).c_str(), &isOpen);
     ImGui::Checkbox("isLock", &isLockedContent_);
     if (const auto gameObject = displayGameObject_.lock())
     {
         gameObject->OnDrawGui();
     }
     ImGui::End();
+
+    return isOpen ? PopupWindowState::Open : PopupWindowState::Closed;
 }
 
 void NanamiEngine::Core::PopupWindow::InspectorWindow::TryAddDisplayObject(

@@ -1,5 +1,6 @@
 #include "HlslPsFile.h"
 #include <DxLib.h>
+#include "../../Log/NanamiEngine_Module_Log.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -11,6 +12,8 @@ namespace NanamiEngine::Module::Asset
     void HlslPsFile::OnEnableAsset()
     {
         psHandle_ = LoadPixelShader(contentPath_.c_str());
+        if (psHandle_ == -1)
+            LogError("HlslPsFile: ピクセルシェーダーの読み込みに失敗しました: " + contentPath_);
     }
 
     const Guid& HlslPsFile::GetGuid       () const { return guid_; }

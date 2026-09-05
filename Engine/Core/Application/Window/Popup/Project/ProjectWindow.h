@@ -16,7 +16,7 @@ namespace NanamiEngine::Core::PopupWindow
     {
     public:
         explicit ProjectWindow();
-        void OnDraw(PopupWindowDrawGuiContext context)    override;
+        PopupWindowState OnDraw(PopupWindowDrawGuiContext context)    override;
         void OnDrawDirectoryTree(FileSystem::Directory& directory);
         void DrawDirectoryContents(FileSystem::Directory& directory, FileSystem::EditorDraggingHand& draggingHand);
         void OnDrawSearchedDirectoryTree(FileSystem::Directory& directory, const std::string& filter);

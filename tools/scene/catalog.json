@@ -1,0 +1,2018 @@
+{
+  "generated_from": "8d6ad3b0f4c899495bb23841a0e8f6dacf641c87",
+  "components": {
+    "CineMachine::Behaviour::ShakeCameraBehaviour": {
+      "class": "ShakeCameraBehaviour",
+      "fqn": "CineMachine::Behaviour::ShakeCameraBehaviour",
+      "leaf": "ShakeCameraBehaviour",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h",
+      "params": [
+        {
+          "key": "posAmplitude_",
+          "member": "posAmplitude_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "angleAmplitude_",
+          "member": "angleAmplitude_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "frequency_",
+          "member": "frequency_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "defaultIntensity_",
+          "member": "defaultIntensity_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "defaultDuration_",
+          "member": "defaultDuration_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "seed_",
+          "member": "seed_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "cameraBrain_",
+          "member": "cameraBrain_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        }
+      ]
+    },
+    "CineMachine::Behaviour::ThirdPersonCameraBehaviour": {
+      "class": "ThirdPersonCameraBehaviour",
+      "fqn": "CineMachine::Behaviour::ThirdPersonCameraBehaviour",
+      "leaf": "ThirdPersonCameraBehaviour",
+      "version": 5,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h",
+      "params": [
+        {
+          "key": "minPitch_",
+          "member": "minPitch_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxPitch_",
+          "member": "maxPitch_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "mouseSensitivity_",
+          "member": "mouseSensitivity_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "distance_",
+          "member": "distance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "target_",
+          "member": "target_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "follow_",
+          "member": "follow_",
+          "named": true,
+          "shape": "field",
+          "type": "VirtualCameraFollowBehaviour"
+        },
+        {
+          "key": "lookAt_",
+          "member": "lookAt_",
+          "named": true,
+          "shape": "field",
+          "type": "VirtualCameraLookAtBehaviour"
+        },
+        {
+          "key": "followOffsetPos_",
+          "member": "followOffsetPos_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "lookAtOffsetPos_",
+          "member": "lookAtOffsetPos_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "cameraBrain_",
+          "member": "cameraBrain_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "isImmediateApply_",
+          "member": "isImmediateApply_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "collisionBuffer_",
+          "member": "collisionBuffer_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "Component::CollisionListener": {
+      "class": "CollisionListener",
+      "fqn": "Component::CollisionListener",
+      "leaf": "CollisionListener",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Physics/Component/Listener/Collision/Engine_Physics_CollisionListener.h",
+      "params": []
+    },
+    "GameCore::Game": {
+      "class": "Game",
+      "fqn": "GameCore::Game",
+      "leaf": "Game",
+      "version": 2,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/Core/Game/Game.h",
+      "params": [
+        {
+          "key": "sceneContexts_",
+          "member": "sceneContexts_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "subSceneContexts_",
+          "member": "subSceneContexts_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        }
+      ]
+    },
+    "GameCore::Npc::EnemyBase": {
+      "class": "EnemyBase",
+      "fqn": "GameCore::Npc::EnemyBase",
+      "leaf": "EnemyBase",
+      "version": 4,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/EnemyBase.h",
+      "params": [
+        {
+          "key": "behaviourData_",
+          "member": "behaviourData_",
+          "named": true,
+          "shape": "field",
+          "type": "EnemyBehaviourFile"
+        },
+        {
+          "key": "currentStatus_",
+          "member": "currentStatus_",
+          "named": true,
+          "shape": "unknown",
+          "type": "SyncParam"
+        },
+        {
+          "key": "isNetworkSyncStatus_",
+          "member": "isNetworkSyncStatus_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase": {
+      "class": "PlayerAvatarCameraGroupBase",
+      "fqn": "GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase",
+      "leaf": "PlayerAvatarCameraGroupBase",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/Core/Game/PlayerAvatar/CameraGroup/PlayerAvatarCameraGroupBase.h",
+      "params": [
+        {
+          "key": "followFromBehindCameraName_",
+          "member": "followFromBehindCameraName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "followFromBehindCamera_",
+          "member": "followFromBehindCamera_",
+          "named": true,
+          "shape": "field",
+          "type": "CineMachineVirtualCamera"
+        }
+      ]
+    },
+    "GameCore::Scene::SceneContextBase": {
+      "class": "SceneContextBase",
+      "fqn": "GameCore::Scene::SceneContextBase",
+      "leaf": "SceneContextBase",
+      "version": 4,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/Core/Game/Scene/Main/Context/Main_SceneContextBase.h",
+      "params": [
+        {
+          "key": "loadSceneFile_",
+          "member": "loadSceneFile_",
+          "named": true,
+          "shape": "unknown",
+          "type": "SceneFile  )"
+        },
+        {
+          "key": "playerSpawnPoint_",
+          "member": "playerSpawnPoint_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "swordmanCameraGroup_",
+          "member": "swordmanCameraGroup_",
+          "named": true,
+          "shape": "field",
+          "type": "SwordManAvatarCameraGroup"
+        },
+        {
+          "key": "playerAvatarFactory_",
+          "member": "playerAvatarFactory_",
+          "named": true,
+          "shape": "field",
+          "type": "PlayerAvatarFactory"
+        }
+      ]
+    },
+    "GameCore::Scene::Sub::SceneContextBase": {
+      "class": "SceneContextBase",
+      "fqn": "GameCore::Scene::Sub::SceneContextBase",
+      "leaf": "SceneContextBase",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/Core/Game/Scene/Sub/Context/Sub_SceneContextBase.h",
+      "params": [
+        {
+          "key": "sceneFile_",
+          "member": "sceneFile_",
+          "named": true,
+          "shape": "field",
+          "type": "SceneFile"
+        }
+      ]
+    },
+    "GamePlay::Npc::Enemy::AttackProjectile": {
+      "class": "AttackProjectile",
+      "fqn": "GamePlay::Npc::Enemy::AttackProjectile",
+      "leaf": "AttackProjectile",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Npc/Enemy/Projectile/GamePlay_Enemy_ProjectileAttackArea.h",
+      "params": []
+    },
+    "GamePlay::Npc::Friendly::FriendlyNpc": {
+      "class": "FriendlyNpc",
+      "fqn": "GamePlay::Npc::Friendly::FriendlyNpc",
+      "leaf": "FriendlyNpc",
+      "version": 6,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Npc/Friendly/FriendlyNpc.h",
+      "params": [
+        {
+          "key": "name_",
+          "member": "name_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "friendlyNpcBehaviourFile_",
+          "member": "friendlyNpcBehaviourFile_",
+          "named": true,
+          "shape": "field",
+          "type": "FriendNpcBehaviourFile"
+        },
+        {
+          "key": "baseStatus_",
+          "member": "baseStatus_",
+          "named": true,
+          "shape": "field",
+          "type": "FriendlyNpcResources"
+        },
+        {
+          "key": "billboardNpcChatIcon_",
+          "member": "billboardNpcChatIcon_",
+          "named": true,
+          "shape": "field",
+          "type": "BillBoardNpcChatIcon"
+        }
+      ]
+    },
+    "GamePlay::PlayerAvatar::Bullet::CannonBullet": {
+      "class": "CannonBullet",
+      "fqn": "GamePlay::PlayerAvatar::Bullet::CannonBullet",
+      "leaf": "CannonBullet",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/PlayerAvatar/Bullet/PlayerAvatar_Bullet_CannonBullet.h",
+      "params": [
+        {
+          "key": "explositionDuration_secs_",
+          "member": "explositionDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "physicsDamage_",
+          "member": "physicsDamage_",
+          "named": true,
+          "shape": "unknown",
+          "type": "PhysicsPower"
+        },
+        {
+          "key": "explosionParticle_",
+          "member": "explosionParticle_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        }
+      ]
+    },
+    "GamePlay::PlayerAvatar::ChattableArea": {
+      "class": "ChattableArea",
+      "fqn": "GamePlay::PlayerAvatar::ChattableArea",
+      "leaf": "ChattableArea",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h",
+      "params": []
+    },
+    "GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter": {
+      "class": "StatusPresenter",
+      "fqn": "GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter",
+      "leaf": "StatusPresenter",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/Core/Game/PlayerAvatar/Status/Presenter/PlayerAvatar_OtherPlayer_StatusPresenter.h",
+      "params": []
+    },
+    "GamePlay::PlayerAvatar::StatusPresenterBase": {
+      "class": "StatusPresenterBase",
+      "fqn": "GamePlay::PlayerAvatar::StatusPresenterBase",
+      "leaf": "StatusPresenterBase",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/Core/Game/PlayerAvatar/Status/Presenter/PlayerAvatar_StatusPresenterBase.h",
+      "params": []
+    },
+    "GamePlay::PlayerAvatar::SwordMan::StatusPresenter": {
+      "class": "StatusPresenter",
+      "fqn": "GamePlay::PlayerAvatar::SwordMan::StatusPresenter",
+      "leaf": "StatusPresenter",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/Core/Game/PlayerAvatar/SwordMan/Status/Presenter/PlayerAvatar_SwordMan_StatusPresenter.h",
+      "params": []
+    },
+    "GamePlay::Prop::AirShip": {
+      "class": "AirShip",
+      "fqn": "GamePlay::Prop::AirShip",
+      "leaf": "AirShip",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Prop/AirShip/Prop_AirShip.h",
+      "params": [
+        {
+          "key": "shootDownParticle_",
+          "member": "shootDownParticle_",
+          "named": true,
+          "shape": "field",
+          "type": "ParticleSystem"
+        }
+      ]
+    },
+    "GamePlay::Prop::Canon": {
+      "class": "Canon",
+      "fqn": "GamePlay::Prop::Canon",
+      "leaf": "Canon",
+      "version": 5,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Prop/Canon/Prop_Canon.h",
+      "params": [
+        {
+          "key": "bulletPrefab_",
+          "member": "bulletPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "bulletForceSpeed_",
+          "member": "bulletForceSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "shootSound_",
+          "member": "shootSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "addRotateTorque_",
+          "member": "addRotateTorque_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "shootCamera_",
+          "member": "shootCamera_",
+          "named": true,
+          "shape": "field",
+          "type": "CineMachineVirtualCamera"
+        },
+        {
+          "key": "shootBulletPos_",
+          "member": "shootBulletPos_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "shootBulletDirection_",
+          "member": "shootBulletDirection_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "shootCooldown_secs_",
+          "member": "shootCooldown_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "cannonUi_",
+          "member": "cannonUi_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        }
+      ]
+    },
+    "GamePlay::Prop::DestructibleObject": {
+      "class": "DestructibleObject",
+      "fqn": "GamePlay::Prop::DestructibleObject",
+      "leaf": "DestructibleObject",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Prop/DestructibleObject/DestructibleObject.h",
+      "params": [
+        {
+          "key": "currentHealth_",
+          "member": "currentHealth_",
+          "named": true,
+          "shape": "unknown",
+          "type": "Health"
+        },
+        {
+          "key": "onDamageParticle_",
+          "member": "onDamageParticle_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "destroyParticle_",
+          "member": "destroyParticle_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "particlePos_",
+          "member": "particlePos_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        }
+      ]
+    },
+    "GamePlay::Prop::IslandPedestial": {
+      "class": "IslandPedestial",
+      "fqn": "GamePlay::Prop::IslandPedestial",
+      "leaf": "IslandPedestial",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Prop/IslandPedestial/Prop_IslandPedestial.h",
+      "params": [
+        {
+          "key": "stageSelectUiPrefab_",
+          "member": "stageSelectUiPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "collisionListener_",
+          "member": "collisionListener_",
+          "named": true,
+          "shape": "field",
+          "type": "CollisionListener"
+        }
+      ]
+    },
+    "GamePlay::Prop::ProximityReveal": {
+      "class": "ProximityReveal",
+      "fqn": "GamePlay::Prop::ProximityReveal",
+      "leaf": "ProximityReveal",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Prop/ProximityReveal/ProximityReveal.h",
+      "params": [
+        {
+          "key": "revealRadius_",
+          "member": "revealRadius_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "transitionWidth_",
+          "member": "transitionWidth_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Sound::BgmPlayObject": {
+      "class": "BgmPlayObject",
+      "fqn": "GamePlay::Sound::BgmPlayObject",
+      "leaf": "BgmPlayObject",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Sound/Sample/BgmPlayer.h",
+      "params": [
+        {
+          "key": "bgm_",
+          "member": "bgm_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        }
+      ]
+    },
+    "GamePlay::Sound::SoundPlayer": {
+      "class": "SoundPlayer",
+      "fqn": "GamePlay::Sound::SoundPlayer",
+      "leaf": "SoundPlayer",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Sound/SoundPlayer.h",
+      "params": []
+    },
+    "GamePlay::Ui::BillBoardNpcChatIcon": {
+      "class": "BillBoardNpcChatIcon",
+      "fqn": "GamePlay::Ui::BillBoardNpcChatIcon",
+      "leaf": "BillBoardNpcChatIcon",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Ui/BillBoardNpcChatIcon/BillBoardNpcChatIcon.h",
+      "params": [
+        {
+          "key": "chattableIcon_",
+          "member": "chattableIcon_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "chattingIcon_",
+          "member": "chattingIcon_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "surpriseIcon_",
+          "member": "surpriseIcon_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        }
+      ]
+    },
+    "GamePlay::Ui::DealDamageTextBillBoard": {
+      "class": "DealDamageTextBillBoard",
+      "fqn": "GamePlay::Ui::DealDamageTextBillBoard",
+      "leaf": "DealDamageTextBillBoard",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h",
+      "params": [
+        {
+          "key": "riseTime_",
+          "member": "riseTime_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fallTime_",
+          "member": "fallTime_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "riseAmount_",
+          "member": "riseAmount_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fallAmount_",
+          "member": "fallAmount_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::InjuredMaskUI": {
+      "class": "InjuredMaskUI",
+      "fqn": "GamePlay::Ui::InjuredMaskUI",
+      "leaf": "InjuredMaskUI",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Ui/PlayerStatus/Ui_InjuredMask.h",
+      "params": [
+        {
+          "key": "minBlendRate_",
+          "member": "minBlendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "maxBlendRate_",
+          "member": "maxBlendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "cycleDuration_secs_",
+          "member": "cycleDuration_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::NpcChatting": {
+      "class": "NpcChatting",
+      "fqn": "GamePlay::Ui::NpcChatting",
+      "leaf": "NpcChatting",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Ui/NpcChatting/Ui_NpcChatting.h",
+      "params": [
+        {
+          "key": "textRenderer_",
+          "member": "textRenderer_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "npcNameTextBox_",
+          "member": "npcNameTextBox_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        }
+      ]
+    },
+    "GamePlay::Ui::OtherPlayerStatusUiGroup": {
+      "class": "OtherPlayerStatusUiGroup",
+      "fqn": "GamePlay::Ui::OtherPlayerStatusUiGroup",
+      "leaf": "OtherPlayerStatusUiGroup",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Ui/OtherPlayerStatusUIGroup/OtherPlayerStatusUiGroup.h",
+      "params": [
+        {
+          "key": "spacing_",
+          "member": "spacing_",
+          "named": true,
+          "shape": "vec3"
+        }
+      ]
+    },
+    "GamePlay::Ui::PlayerStatus": {
+      "class": "PlayerStatus",
+      "fqn": "GamePlay::Ui::PlayerStatus",
+      "leaf": "PlayerStatus",
+      "version": 7,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Ui/PlayerStatus/Ui_PlayerStatus.h",
+      "params": [
+        {
+          "key": "healthBarName_",
+          "member": "healthBarName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "displayOnDamageHealthBarDuration_secs_",
+          "member": "displayOnDamageHealthBarDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "onDamageHealthBarFrame_",
+          "member": "onDamageHealthBarFrame_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "healthBarFrameName_",
+          "member": "healthBarFrameName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "enhanceBarName_",
+          "member": "enhanceBarName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "displayOnAddEnhancePowerStackBarDuration_secs_",
+          "member": "displayOnAddEnhancePowerStackBarDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "onAddEnhancePowerStackBarFrame_",
+          "member": "onAddEnhancePowerStackBarFrame_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "enhancePowerStackBarFrameName_",
+          "member": "enhancePowerStackBarFrameName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "onEnableReinforceMaskName_",
+          "member": "onEnableReinforceMaskName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "injuredUiObjectName_",
+          "member": "injuredUiObjectName_",
+          "named": true,
+          "shape": "string"
+        }
+      ]
+    },
+    "GamePlay::Ui::SampleTitleLogo": {
+      "class": "SampleTitleLogo",
+      "fqn": "GamePlay::Ui::SampleTitleLogo",
+      "leaf": "SampleTitleLogo",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Ui/Sample/UI_SampleTitleLogo.h",
+      "params": [
+        {
+          "key": "titleLogoDuration_secs_",
+          "member": "titleLogoDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "titleLogoDuring_secs_",
+          "member": "titleLogoDuring_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::SampleTitleScene": {
+      "class": "SampleTitleScene",
+      "fqn": "GamePlay::Ui::SampleTitleScene",
+      "leaf": "SampleTitleScene",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Ui/SampleTitleSceneUI/UI_SampleTitleSceneUI.h",
+      "params": [
+        {
+          "key": "gameStartButton_",
+          "member": "gameStartButton_",
+          "named": true,
+          "shape": "field",
+          "type": "Button"
+        },
+        {
+          "key": "gameExitButton_",
+          "member": "gameExitButton_",
+          "named": true,
+          "shape": "field",
+          "type": "Button"
+        }
+      ]
+    },
+    "GamePlay::Ui::StageSelectStageUi": {
+      "class": "StageSelectStageUi",
+      "fqn": "GamePlay::Ui::StageSelectStageUi",
+      "leaf": "StageSelectStageUi",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Ui/StageSelect/Stage/Ui_StageSelect_StageUI.h",
+      "params": [
+        {
+          "key": "selectButtonHoverSound_",
+          "member": "selectButtonHoverSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "selectButtonClickSound_",
+          "member": "selectButtonClickSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "stageSceneType_",
+          "member": "stageSceneType_",
+          "named": true,
+          "shape": "unknown",
+          "type": "SceneType"
+        }
+      ]
+    },
+    "GamePlay::Ui::StageSelectUi": {
+      "class": "StageSelectUi",
+      "fqn": "GamePlay::Ui::StageSelectUi",
+      "leaf": "StageSelectUi",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Ui/StageSelect/UI_StageSelect.h",
+      "params": [
+        {
+          "key": "bgm_",
+          "member": "bgm_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "backGroundMaskName_",
+          "member": "backGroundMaskName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "backGroundMaskBlendRate_",
+          "member": "backGroundMaskBlendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "stageSelectButtonNames_",
+          "member": "stageSelectButtonNames_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "stageSelectBackGroundMaskName_",
+          "member": "stageSelectBackGroundMaskName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "stageSelectBackGroundMask_",
+          "member": "stageSelectBackGroundMask_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "stageSelectBackGroundMaskBlendRate_",
+          "member": "stageSelectBackGroundMaskBlendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "worldMovieRendererName_",
+          "member": "worldMovieRendererName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "worldEnterButtonName_",
+          "member": "worldEnterButtonName_",
+          "named": true,
+          "shape": "string"
+        }
+      ]
+    },
+    "GamePlay::Ui::SwordManActionInstructTutorial": {
+      "class": "SwordManActionInstructTutorial",
+      "fqn": "GamePlay::Ui::SwordManActionInstructTutorial",
+      "leaf": "SwordManActionInstructTutorial",
+      "version": 3,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Assets/Scripts/GamePlay/Ui/ActionInstructTutorial/SwordMan/Ui_SwordMan_ActionInstructTutorial.h",
+      "params": [
+        {
+          "key": "value1",
+          "member": "textBox_",
+          "named": false,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "value2",
+          "member": "textBoxName_",
+          "named": false,
+          "shape": "string"
+        },
+        {
+          "key": "value3",
+          "member": "attackButtonTutorialText_",
+          "named": false,
+          "shape": "string"
+        },
+        {
+          "key": "value4",
+          "member": "runButtonTutorialText_",
+          "named": false,
+          "shape": "string"
+        },
+        {
+          "key": "value5",
+          "member": "dashAttackButtonTutorialText_",
+          "named": false,
+          "shape": "string"
+        },
+        {
+          "key": "value6",
+          "member": "avoidButtonTutorialText_",
+          "named": false,
+          "shape": "string"
+        }
+      ]
+    },
+    "NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour": {
+      "class": "VirtualCameraFollowBehaviour",
+      "fqn": "NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour",
+      "leaf": "VirtualCameraFollowBehaviour",
+      "version": 2,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Packages/Cinemachine/VirtualCamera/Behaviour/Follow/VirtualCameraFollowBehaviour.h",
+      "params": [
+        {
+          "key": "followTarget_",
+          "member": "followTarget_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "followOffset_",
+          "member": "followOffset_",
+          "named": true,
+          "shape": "vec3"
+        }
+      ]
+    },
+    "NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour": {
+      "class": "VirtualCameraLookAtBehaviour",
+      "fqn": "NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour",
+      "leaf": "VirtualCameraLookAtBehaviour",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Packages/Cinemachine/VirtualCamera/Behaviour/LookAt/VirtualCameraLookAtBehaviour.h",
+      "params": [
+        {
+          "key": "target_",
+          "member": "target_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "lookAtTargetOffset_",
+          "member": "lookAtTargetOffset_",
+          "named": true,
+          "shape": "vec3"
+        }
+      ]
+    },
+    "NanamiEngine::CineMachine::CineMachineVirtualCamera": {
+      "class": "CineMachineVirtualCamera",
+      "fqn": "NanamiEngine::CineMachine::CineMachineVirtualCamera",
+      "leaf": "CineMachineVirtualCamera",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h",
+      "params": [
+        {
+          "key": "priority_",
+          "member": "priority_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "NanamiEngine::CineMachine::CinemachineCameraBrain": {
+      "class": "CinemachineCameraBrain",
+      "fqn": "NanamiEngine::CineMachine::CinemachineCameraBrain",
+      "leaf": "CinemachineCameraBrain",
+      "version": 2,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Packages/Cinemachine/Brain/CinemachineCameraBrain.h",
+      "params": [
+        {
+          "key": "currentVirtualCamera_",
+          "member": "currentVirtualCamera_",
+          "named": true,
+          "shape": "field",
+          "type": "CineMachineVirtualCamera"
+        },
+        {
+          "key": "positionLerpSpeed_secs_",
+          "member": "positionLerpSpeed_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "rotationSlerpSpeed_secs_",
+          "member": "rotationSlerpSpeed_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fov_",
+          "member": "fov_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "cameraNear_",
+          "member": "cameraNear_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "cameraFar_",
+          "member": "cameraFar_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::Animator": {
+      "class": "Animator",
+      "fqn": "NanamiEngine::Module::Component::Animator",
+      "leaf": "Animator",
+      "version": 3,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Component/Animator/Animator.h",
+      "params": [
+        {
+          "key": "animationTreeFile_",
+          "member": "animationTreeFile_",
+          "named": true,
+          "shape": "field",
+          "type": "AnimationTreeFile"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::AudioSource": {
+      "class": "AudioSource",
+      "fqn": "NanamiEngine::Module::Component::AudioSource",
+      "leaf": "AudioSource",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Component/AudioSource/AudioSource.h",
+      "params": [
+        {
+          "key": "listenableRadius_",
+          "member": "listenableRadius_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "isLoop_",
+          "member": "isLoop_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "volume_",
+          "member": "volume_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::BoxCollider": {
+      "class": "BoxCollider",
+      "fqn": "NanamiEngine::Module::Component::BoxCollider",
+      "leaf": "BoxCollider",
+      "version": 6,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ColliderBase",
+      "header": "Engine/Module/Physics/Component/Collider/Box/Engine_Physics_BoxCollider.h",
+      "params": [
+        {
+          "key": "size_",
+          "member": "size_",
+          "named": true,
+          "shape": "vec3"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::CapsuleCollider": {
+      "class": "CapsuleCollider",
+      "fqn": "NanamiEngine::Module::Component::CapsuleCollider",
+      "leaf": "CapsuleCollider",
+      "version": 3,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ColliderBase",
+      "header": "Engine/Module/Physics/Component/Collider/Capsule/Engine_Physics_CapsuleCollider.h",
+      "params": [
+        {
+          "key": "radius_",
+          "member": "radius_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "height_",
+          "member": "height_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::CylinderCollider": {
+      "class": "CylinderCollider",
+      "fqn": "NanamiEngine::Module::Component::CylinderCollider",
+      "leaf": "CylinderCollider",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ColliderBase",
+      "header": "Engine/Module/Physics/Component/Collider/Cylinder/Engine_Physics_CylinderCollider.h",
+      "params": [
+        {
+          "key": "radius_",
+          "member": "radius_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "height_",
+          "member": "height_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::DirectionLight": {
+      "class": "DirectionLight",
+      "fqn": "NanamiEngine::Module::Component::DirectionLight",
+      "leaf": "DirectionLight",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Component/DirectionLight/DirectionLight.h",
+      "params": []
+    },
+    "NanamiEngine::Module::Component::ImageRenderer": {
+      "class": "ImageRenderer",
+      "fqn": "NanamiEngine::Module::Component::ImageRenderer",
+      "leaf": "ImageRenderer",
+      "version": 2,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Component/ImageRenderer/ImageRenderer.h",
+      "params": [
+        {
+          "key": "spriteFile_",
+          "member": "spriteFile_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "renderPriority_",
+          "member": "renderPriority_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::ModelRenderer": {
+      "class": "ModelRenderer",
+      "fqn": "NanamiEngine::Module::Component::ModelRenderer",
+      "leaf": "ModelRenderer",
+      "version": 4,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Component/ModelRenderer/ModelRenderer.h",
+      "params": [
+        {
+          "key": "mv1File_",
+          "member": "mv1File_",
+          "named": true,
+          "shape": "field",
+          "type": "Mv1File"
+        },
+        {
+          "key": "useFixedInterpolation_",
+          "member": "useFixedInterpolation_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "vsFile_",
+          "member": "vsFile_",
+          "named": true,
+          "shape": "field",
+          "type": "HlslVsFile"
+        },
+        {
+          "key": "psFile_",
+          "member": "psFile_",
+          "named": true,
+          "shape": "field",
+          "type": "HlslPsFile"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::ParticleSystem": {
+      "class": "ParticleSystem",
+      "fqn": "NanamiEngine::Module::Component::ParticleSystem",
+      "leaf": "ParticleSystem",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Component/ParticleRenderer/ParticleSystem.h",
+      "params": [
+        {
+          "key": "particleFile_",
+          "member": "particleFile_",
+          "named": true,
+          "shape": "field",
+          "type": "ParticleFile"
+        },
+        {
+          "key": "playingDuration_secs_",
+          "member": "playingDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "isRoop_",
+          "member": "isRoop_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "playMode_",
+          "member": "playMode_",
+          "named": true,
+          "shape": "unknown",
+          "type": "PlayMode"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::SkyDome3D": {
+      "class": "SkyDome3D",
+      "fqn": "NanamiEngine::Module::Component::SkyDome3D",
+      "leaf": "SkyDome3D",
+      "version": 3,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Component/Skydome3D/SkyDome3D.h",
+      "params": [
+        {
+          "key": "skyDomeModel_",
+          "member": "skyDomeModel_",
+          "named": true,
+          "shape": "field",
+          "type": "Mv1File"
+        },
+        {
+          "key": "skyDomeModelDxLibHandle_",
+          "member": "skyDomeModelDxLibHandle_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "mainCamera_",
+          "member": "mainCamera_",
+          "named": true,
+          "shape": "field",
+          "type": "CinemachineCameraBrain"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::SphereCollider": {
+      "class": "SphereCollider",
+      "fqn": "NanamiEngine::Module::Component::SphereCollider",
+      "leaf": "SphereCollider",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ColliderBase",
+      "header": "Engine/Module/Physics/Component/Collider/Sphere/Engine_Physics_SphereCollider.h",
+      "params": [
+        {
+          "key": "radius_",
+          "member": "radius_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::SphereRenderer": {
+      "class": "SphereRenderer",
+      "fqn": "NanamiEngine::Module::Component::SphereRenderer",
+      "leaf": "SphereRenderer",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Component/SphereRenderer/SphereRenderer.h",
+      "params": [
+        {
+          "key": "radius_",
+          "member": "radius_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "divNum_",
+          "member": "divNum_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "color_",
+          "member": "color_",
+          "named": true,
+          "shape": "unknown",
+          "type": "Color32"
+        },
+        {
+          "key": "edgeColor_",
+          "member": "edgeColor_",
+          "named": true,
+          "shape": "unknown",
+          "type": "Color32"
+        },
+        {
+          "key": "fill_",
+          "member": "fill_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::StaticMeshCollider": {
+      "class": "StaticMeshCollider",
+      "fqn": "NanamiEngine::Module::Component::StaticMeshCollider",
+      "leaf": "StaticMeshCollider",
+      "version": 3,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ColliderBase",
+      "header": "Engine/Module/Physics/Component/Collider/StaticMeshCollider/Engine_Physics_StaticMeshCollider.h",
+      "params": [
+        {
+          "key": "scale_",
+          "member": "scale_",
+          "named": true,
+          "shape": "vec3"
+        }
+      ]
+    },
+    "NanamiEngine::Module::NanamiUi::BlendImageRenderer": {
+      "class": "BlendImageRenderer",
+      "fqn": "NanamiEngine::Module::NanamiUi::BlendImageRenderer",
+      "leaf": "BlendImageRenderer",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h",
+      "params": [
+        {
+          "key": "blendMode_",
+          "member": "blendMode_",
+          "named": true,
+          "shape": "unknown",
+          "type": "BlendMode"
+        },
+        {
+          "key": "blendRate_",
+          "member": "blendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "spriteFile_",
+          "member": "spriteFile_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "renderOrder_",
+          "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "NanamiEngine::Module::NanamiUi::ImageAnimationRenderer": {
+      "class": "ImageAnimationRenderer",
+      "fqn": "NanamiEngine::Module::NanamiUi::ImageAnimationRenderer",
+      "leaf": "ImageAnimationRenderer",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Component/ImageRenderer/Animation/ImageAnimationRenderer.h",
+      "params": [
+        {
+          "key": "animationFile_",
+          "member": "animationFile_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteAnimationFile"
+        },
+        {
+          "key": "renderPriority_",
+          "member": "renderPriority_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "animationDuration_secs_",
+          "member": "animationDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "isLoop_",
+          "member": "isLoop_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "NanamiEngine::Module::NanamiUi::MovieRenderer": {
+      "class": "MovieRenderer",
+      "fqn": "NanamiEngine::Module::NanamiUi::MovieRenderer",
+      "leaf": "MovieRenderer",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/NanamiUI/MovieRenderer/MovieRenderer.h",
+      "params": [
+        {
+          "key": "movieFile_",
+          "member": "movieFile_",
+          "named": true,
+          "shape": "field",
+          "type": "MovieFile"
+        },
+        {
+          "key": "playingDuration_secs_",
+          "member": "playingDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "isRoop_",
+          "member": "isRoop_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "renderOrder_",
+          "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "NanamiEngine::Module::NanamiUi::TextRenderer": {
+      "class": "TextRenderer",
+      "fqn": "NanamiEngine::Module::NanamiUi::TextRenderer",
+      "leaf": "TextRenderer",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h",
+      "params": [
+        {
+          "key": "fontFile_",
+          "member": "fontFile_",
+          "named": true,
+          "shape": "field",
+          "type": "TtfFontFile"
+        },
+        {
+          "key": "renderOrder_",
+          "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "text_",
+          "member": "text_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "textColor_",
+          "member": "textColor_",
+          "named": true,
+          "shape": "unknown",
+          "type": "Color32"
+        },
+        {
+          "key": "isWorldPos_",
+          "member": "isWorldPos_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "NanamiEngine::R4::SensorEnterableAsObservable": {
+      "class": "SensorEnterableAsObservable",
+      "fqn": "NanamiEngine::R4::SensorEnterableAsObservable",
+      "leaf": "SensorEnterableAsObservable",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Packages/R4/SensorEnterable/SensorEnterableAsObservable.h",
+      "params": []
+    },
+    "NanamiEngine::R4::SensorExitableAsObservable": {
+      "class": "SensorExitableAsObservable",
+      "fqn": "NanamiEngine::R4::SensorExitableAsObservable",
+      "leaf": "SensorExitableAsObservable",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Packages/R4/SensorExitable/SensorExitableAsObservable.h",
+      "params": []
+    },
+    "NanamiEngine::R4::SensorStayableAsObservable": {
+      "class": "SensorStayableAsObservable",
+      "fqn": "NanamiEngine::R4::SensorStayableAsObservable",
+      "leaf": "SensorStayableAsObservable",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Packages/R4/SensorStayable/SensorStayableAsObservable.h",
+      "params": []
+    },
+    "NanamiUi::Billboard3D": {
+      "class": "Billboard3D",
+      "fqn": "NanamiUi::Billboard3D",
+      "leaf": "Billboard3D",
+      "version": 2,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/NanamiUI/BillBoard3D/DrawBillboard3D.h",
+      "params": [
+        {
+          "key": "renderOrder_",
+          "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "spriteFile_",
+          "member": "spriteFile_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "angle_",
+          "member": "angle_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "NanamiUi::BlendAnimationRenderer": {
+      "class": "BlendAnimationRenderer",
+      "fqn": "NanamiUi::BlendAnimationRenderer",
+      "leaf": "BlendAnimationRenderer",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/NanamiUI/BlendAnimationRenderer/BlendAnmiationRenderer.h",
+      "params": [
+        {
+          "key": "addBlendRate_secs_",
+          "member": "addBlendRate_secs_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "NanamiUi::Button": {
+      "class": "Button",
+      "fqn": "NanamiUi::Button",
+      "leaf": "Button",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/NanamiUI/Button/NanamiUi_Button.h",
+      "params": [
+        {
+          "key": "eventAreaSize_",
+          "member": "eventAreaSize_",
+          "named": true,
+          "shape": "vec2"
+        },
+        {
+          "key": "onIdleSprite_",
+          "member": "onIdleSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "onHoverSprite_",
+          "member": "onHoverSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        }
+      ]
+    },
+    "NanamiUi::Slider": {
+      "class": "Slider",
+      "fqn": "NanamiUi::Slider",
+      "leaf": "Slider",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/NanamiUI/Slider/NanamiUi_Slider.h",
+      "params": [
+        {
+          "key": "gaugeSprite_",
+          "member": "gaugeSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "drawPosition_",
+          "member": "drawPosition_",
+          "named": true,
+          "shape": "vec2"
+        },
+        {
+          "key": "drawSize_",
+          "member": "drawSize_",
+          "named": true,
+          "shape": "vec2"
+        },
+        {
+          "key": "value_",
+          "member": "value_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "renderOrder_",
+          "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "Network::NetworkComponent": {
+      "class": "NetworkComponent",
+      "fqn": "Network::NetworkComponent",
+      "leaf": "NetworkComponent",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h",
+      "params": []
+    },
+    "Network::NetworkGameObject": {
+      "class": "NetworkGameObject",
+      "fqn": "Network::NetworkGameObject",
+      "leaf": "NetworkGameObject",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h",
+      "params": []
+    },
+    "Network::NetworkRunnerBase": {
+      "class": "NetworkRunnerBase",
+      "fqn": "Network::NetworkRunnerBase",
+      "leaf": "NetworkRunnerBase",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "header": "Engine/Module/Network/Engine_Network_NetworkRunner.h",
+      "params": [
+        {
+          "key": "sampleSpawnPrefab_",
+          "member": "sampleSpawnPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        }
+      ]
+    },
+    "Network::NetworkTransform": {
+      "class": "NetworkTransform",
+      "fqn": "Network::NetworkTransform",
+      "leaf": "NetworkTransform",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "NetworkComponent",
+      "header": "Engine/Module/Network/Object/Component/Transform/Engine_Network_NetworkTransform.h",
+      "params": []
+    }
+  },
+  "by_leaf": {
+    "AirShip": [
+      "GamePlay::Prop::AirShip"
+    ],
+    "Animator": [
+      "NanamiEngine::Module::Component::Animator"
+    ],
+    "AttackProjectile": [
+      "GamePlay::Npc::Enemy::AttackProjectile"
+    ],
+    "AudioSource": [
+      "NanamiEngine::Module::Component::AudioSource"
+    ],
+    "BgmPlayObject": [
+      "GamePlay::Sound::BgmPlayObject"
+    ],
+    "BillBoardNpcChatIcon": [
+      "GamePlay::Ui::BillBoardNpcChatIcon"
+    ],
+    "Billboard3D": [
+      "NanamiUi::Billboard3D"
+    ],
+    "BlendAnimationRenderer": [
+      "NanamiUi::BlendAnimationRenderer"
+    ],
+    "BlendImageRenderer": [
+      "NanamiEngine::Module::NanamiUi::BlendImageRenderer"
+    ],
+    "BoxCollider": [
+      "NanamiEngine::Module::Component::BoxCollider"
+    ],
+    "Button": [
+      "NanamiUi::Button"
+    ],
+    "CannonBullet": [
+      "GamePlay::PlayerAvatar::Bullet::CannonBullet"
+    ],
+    "Canon": [
+      "GamePlay::Prop::Canon"
+    ],
+    "CapsuleCollider": [
+      "NanamiEngine::Module::Component::CapsuleCollider"
+    ],
+    "ChattableArea": [
+      "GamePlay::PlayerAvatar::ChattableArea"
+    ],
+    "CineMachineVirtualCamera": [
+      "NanamiEngine::CineMachine::CineMachineVirtualCamera"
+    ],
+    "CinemachineCameraBrain": [
+      "NanamiEngine::CineMachine::CinemachineCameraBrain"
+    ],
+    "CollisionListener": [
+      "Component::CollisionListener"
+    ],
+    "CylinderCollider": [
+      "NanamiEngine::Module::Component::CylinderCollider"
+    ],
+    "DealDamageTextBillBoard": [
+      "GamePlay::Ui::DealDamageTextBillBoard"
+    ],
+    "DestructibleObject": [
+      "GamePlay::Prop::DestructibleObject"
+    ],
+    "DirectionLight": [
+      "NanamiEngine::Module::Component::DirectionLight"
+    ],
+    "EnemyBase": [
+      "GameCore::Npc::EnemyBase"
+    ],
+    "FriendlyNpc": [
+      "GamePlay::Npc::Friendly::FriendlyNpc"
+    ],
+    "Game": [
+      "GameCore::Game"
+    ],
+    "ImageAnimationRenderer": [
+      "NanamiEngine::Module::NanamiUi::ImageAnimationRenderer"
+    ],
+    "ImageRenderer": [
+      "NanamiEngine::Module::Component::ImageRenderer"
+    ],
+    "InjuredMaskUI": [
+      "GamePlay::Ui::InjuredMaskUI"
+    ],
+    "IslandPedestial": [
+      "GamePlay::Prop::IslandPedestial"
+    ],
+    "ModelRenderer": [
+      "NanamiEngine::Module::Component::ModelRenderer"
+    ],
+    "MovieRenderer": [
+      "NanamiEngine::Module::NanamiUi::MovieRenderer"
+    ],
+    "NetworkComponent": [
+      "Network::NetworkComponent"
+    ],
+    "NetworkGameObject": [
+      "Network::NetworkGameObject"
+    ],
+    "NetworkRunnerBase": [
+      "Network::NetworkRunnerBase"
+    ],
+    "NetworkTransform": [
+      "Network::NetworkTransform"
+    ],
+    "NpcChatting": [
+      "GamePlay::Ui::NpcChatting"
+    ],
+    "OtherPlayerStatusUiGroup": [
+      "GamePlay::Ui::OtherPlayerStatusUiGroup"
+    ],
+    "ParticleSystem": [
+      "NanamiEngine::Module::Component::ParticleSystem"
+    ],
+    "PlayerAvatarCameraGroupBase": [
+      "GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase"
+    ],
+    "PlayerStatus": [
+      "GamePlay::Ui::PlayerStatus"
+    ],
+    "ProximityReveal": [
+      "GamePlay::Prop::ProximityReveal"
+    ],
+    "SampleTitleLogo": [
+      "GamePlay::Ui::SampleTitleLogo"
+    ],
+    "SampleTitleScene": [
+      "GamePlay::Ui::SampleTitleScene"
+    ],
+    "SceneContextBase": [
+      "GameCore::Scene::SceneContextBase",
+      "GameCore::Scene::Sub::SceneContextBase"
+    ],
+    "SensorEnterableAsObservable": [
+      "NanamiEngine::R4::SensorEnterableAsObservable"
+    ],
+    "SensorExitableAsObservable": [
+      "NanamiEngine::R4::SensorExitableAsObservable"
+    ],
+    "SensorStayableAsObservable": [
+      "NanamiEngine::R4::SensorStayableAsObservable"
+    ],
+    "ShakeCameraBehaviour": [
+      "CineMachine::Behaviour::ShakeCameraBehaviour"
+    ],
+    "SkyDome3D": [
+      "NanamiEngine::Module::Component::SkyDome3D"
+    ],
+    "Slider": [
+      "NanamiUi::Slider"
+    ],
+    "SoundPlayer": [
+      "GamePlay::Sound::SoundPlayer"
+    ],
+    "SphereCollider": [
+      "NanamiEngine::Module::Component::SphereCollider"
+    ],
+    "SphereRenderer": [
+      "NanamiEngine::Module::Component::SphereRenderer"
+    ],
+    "StageSelectStageUi": [
+      "GamePlay::Ui::StageSelectStageUi"
+    ],
+    "StageSelectUi": [
+      "GamePlay::Ui::StageSelectUi"
+    ],
+    "StaticMeshCollider": [
+      "NanamiEngine::Module::Component::StaticMeshCollider"
+    ],
+    "StatusPresenter": [
+      "GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter",
+      "GamePlay::PlayerAvatar::SwordMan::StatusPresenter"
+    ],
+    "StatusPresenterBase": [
+      "GamePlay::PlayerAvatar::StatusPresenterBase"
+    ],
+    "SwordManActionInstructTutorial": [
+      "GamePlay::Ui::SwordManActionInstructTutorial"
+    ],
+    "TextRenderer": [
+      "NanamiEngine::Module::NanamiUi::TextRenderer"
+    ],
+    "ThirdPersonCameraBehaviour": [
+      "CineMachine::Behaviour::ThirdPersonCameraBehaviour"
+    ],
+    "VirtualCameraFollowBehaviour": [
+      "NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour"
+    ],
+    "VirtualCameraLookAtBehaviour": [
+      "NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour"
+    ]
+  },
+  "gameobject_shapes": {
+    "NanamiEngine::Scene::SceneGameObject": {
+      "leaf": "SceneGameObject",
+      "version": 0
+    },
+    "NanamiEngine::Module::GameObject::PrefabGameObject": {
+      "leaf": "PrefabGameObject",
+      "version": 1
+    },
+    "NanamiEngine::Scene::CopiedPrefabGameObject": {
+      "leaf": "CopiedPrefabGameObject",
+      "version": 0
+    }
+  }
+}

@@ -12,7 +12,7 @@ from pathlib import Path
 from . import catalog as catalog_mod
 from . import edits, meta
 from .cereal_json import read_text, to_file_bytes
-from .layout import auto_layout
+from .layout import DX, DY, auto_layout
 from .reader import read_tree
 from .validate import validate
 from .writer import write_tree
@@ -68,6 +68,17 @@ def cmd_add_node(a: argparse.Namespace) -> int:
     node = edits.add_node(tree, parent_guid=a.parent, kind=a.kind, name=a.name,
                           action_type=a.type, index=a.index, weight=a.weight, pos=pos)
     print(f"new {a.kind} node: {node.guid}")
+    return _commit(path, text, tree, dry_run=a.dry_run,
+                   layout=not a.no_layout and pos is None)
+
+
+def cmd_copy_node(a: argparse.Namespace) -> int:
+    path = _path(a.file)
+    text, tree = _load(path)
+    pos = tuple(float(x) for x in a.pos.split(",")) if a.pos else None
+    node = edits.copy_node(tree, src_guid=a.node, parent_guid=a.parent, index=a.index,
+                           weight=a.weight, pos=pos)
+    print(f"copy of {a.node} -> {node.guid}  (run `show` to see the copied subtree's guids)")
     return _commit(path, text, tree, dry_run=a.dry_run,
                    layout=not a.no_layout and pos is None)
 
@@ -193,6 +204,17 @@ def register(sub: argparse._SubParsersAction) -> None:
     _add_layout(p)
     p.set_defaults(func=cmd_add_node)
 
+    p = sub.add_parser("copy-node", help="deep-copy a node (and its subtree) under a new parent")
+    p.add_argument("file")
+    p.add_argument("--node", required=True, help="guid of the subtree to copy")
+    p.add_argument("--parent", required=True, help='destination parent guid, or "entry"')
+    p.add_argument("--index", type=int, help="insert position among siblings")
+    p.add_argument("--weight", type=int, default=100, help="RandomSelector weight")
+    p.add_argument("--pos", help="editor position X,Y for the copy's root (implies --no-layout)")
+    _add_dry(p)
+    _add_layout(p)
+    p.set_defaults(func=cmd_copy_node)
+
     p = sub.add_parser("remove-node", help="detach a node (and its subtree)")
     p.add_argument("file")
     p.add_argument("--node", required=True)
@@ -249,8 +271,8 @@ def register(sub: argparse._SubParsersAction) -> None:
     p = sub.add_parser("layout",
                        help="re-arrange nodes (selectors branch across, sequences stack down)")
     p.add_argument("file")
-    p.add_argument("--dx", type=float, default=190.0, help="leaf column width (default 190)")
-    p.add_argument("--dy", type=float, default=90.0, help="row / level step (default 90)")
+    p.add_argument("--dx", type=float, default=DX, help=f"leaf column width (default {DX:g})")
+    p.add_argument("--dy", type=float, default=DY, help=f"row / level step (default {DY:g})")
     _add_dry(p)
     p.set_defaults(func=cmd_layout)
 

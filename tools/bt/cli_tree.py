@@ -72,9 +72,12 @@ def cmd_show(args: argparse.Namespace) -> int:
 
 
 def _print_node(node, depth: int, cat, is_entry: bool = False) -> None:
+    # Full GUIDs, not truncated: every --node/--parent argument to the edit
+    # verbs needs the complete 36-char UUID, so a shortened id here would be
+    # unusable as copy-paste input for the very thing `show` is for.
     pad = "  " * depth
     if is_entry:
-        print(f"{pad}Entry  {node.guid[:8]}  pos={_p(node.pos)}")
+        print(f"{pad}Entry  {node.guid}  pos={_p(node.pos)}")
         if node.child is not None:
             _print_node(node.child, depth + 1, cat)
         return
@@ -85,7 +88,7 @@ def _print_node(node, depth: int, cat, is_entry: bool = False) -> None:
         extra = f"  weights={node.weights}"
     else:
         extra = ""
-    print(f"{pad}{kind}  {node.guid[:8]}  pos={_p(node.pos)}{extra}")
+    print(f"{pad}{kind}  {node.guid}  pos={_p(node.pos)}{extra}")
     for c in model.children_of(node):
         _print_node(c, depth + 1, cat)
 

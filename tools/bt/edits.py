@@ -7,6 +7,7 @@ batch of edit ops atomically (build -> apply all -> caller validates -> one writ
 
 from __future__ import annotations
 
+import copy
 from typing import Any, Optional
 
 from . import catalog as catalog_mod
@@ -187,6 +188,53 @@ def add_node(tree: model.Tree, *, parent_guid: str, kind: str, name: str | None 
     return node
 
 
+def _clone_node(node, mint):
+    """Deep-copy a node subtree, minting a fresh guid at every level (the
+    "pure tree" format forbids two nodes sharing a guid) and deep-copying
+    each Action's param blob so editing the clone can never mutate the
+    original."""
+    if isinstance(node, model.Action):
+        return model.Action(guid=mint(), pos=node.pos, name=node.name,
+                            type_fqn=node.type_fqn, action_version=node.action_version,
+                            params=copy.deepcopy(node.params))
+    if isinstance(node, model.RandomSelector):
+        return model.RandomSelector(guid=mint(), pos=node.pos,
+                                    children=[_clone_node(c, mint) for c in node.children],
+                                    weights=list(node.weights))
+    if isinstance(node, (model.Selector, model.Sequence)):
+        return type(node)(guid=mint(), pos=node.pos,
+                          children=[_clone_node(c, mint) for c in node.children])
+    if isinstance(node, model.OnceExecute):
+        return model.OnceExecute(guid=mint(), pos=node.pos, state=node.state,
+                                 child=_clone_node(node.child, mint) if node.child else None)
+    if isinstance(node, model.OnceSuccess):
+        return model.OnceSuccess(guid=mint(), pos=node.pos,
+                                 child=_clone_node(node.child, mint) if node.child else None)
+    raise EditError(f"cannot copy a node of type {type(node).__name__}")
+
+
+def copy_node(tree: model.Tree, *, src_guid: str, parent_guid: str,
+             index: int | None = None, weight: int = 100, pos=None):
+    """Deep-copy the subtree at ``src_guid`` and attach the copy under
+    ``parent_guid``. The two most common uses this unblocks: duplicating one
+    weighted branch of a `RandomSelector` with a couple of fields tweaked
+    (rather than rebuilding it node-by-node with `add-node`), and cloning a
+    whole alternate branch (e.g. an "enraged" attack pool) from an existing
+    one so only the diff needs hand-authoring afterwards.
+    """
+    src = tree.find(src_guid)
+    if src is None:
+        raise EditError(f"node not found: {src_guid}")
+    if isinstance(src, model.Entry):
+        raise EditError("cannot copy the entry node")
+    from . import meta as _meta
+    clone = _clone_node(src, _meta.mint_guid)
+    if pos is not None:
+        clone.pos = tuple(pos)
+    _attach(_resolve_parent(tree, parent_guid), clone, index, weight)
+    return clone
+
+
 def _detach(tree: model.Tree, guid: str):
     parent, kids, idx = _find_parent(tree, guid)
     if kids is None:  # entry child
@@ -233,15 +281,94 @@ def _coerce(shape: str, raw: str):
     raise EditError(f"cannot set a param of shape {shape!r}")
 
 
-def _set_field_guid(ver: Ver, guid: str) -> None:
-    ptr = ver.body["value0"]
-    holder = ptr.data
-    guid_ver = holder.body["value0"]
-    guid_ver.body["value_"] = guid
+def _unwrap_nested(val):
+    """The writable field container of a shape='nested' param's current value,
+    whichever representation this occurrence happens to use: ``Ver``-wrapped
+    (this exact slot carries a literal ``cereal_class_version`` - always true
+    for a struct freshly scaffolded by :func:`add_node`) or a plain
+    ``OrderedObj`` (an existing occurrence of a struct type this particular
+    file never version-tracks - see ``_tag_value`` in reader.py). Both forms
+    round-trip identically; this just picks the dict to index into next.
+    """
+    return val.body if isinstance(val, Ver) else val
+
+
+def _set_field_guid(val, guid: str) -> None:
+    """Write a shape='field' param's guid, whichever representation this slot
+    ended up in: the fully ``Ver``-tagged form (``Ver -> Ptr -> Ver -> Ver``)
+    a top-level catalog-typed member gets, or the flattened Ptr-only form
+    (``Ptr -> OrderedObj -> OrderedObj``) a FIELD(T) buried two-or-more levels
+    inside a plain-tagged (pinfo-losing) existing struct falls back to - see
+    ``_tag_value``/``_tag_plain`` in reader.py for why the two forms exist.
+    """
+    outer = val.body if isinstance(val, Ver) else val
+    holder = outer["value0"].data
+    inner = holder.body if isinstance(holder, Ver) else holder
+    guid_slot = inner["value0"]
+    target = guid_slot.body if isinstance(guid_slot, Ver) else guid_slot
+    target["value_"] = guid
+
+
+def _leaf_param(cat: catalog_mod.Catalog, entry: Optional[dict], key: str) -> dict:
+    for p in cat.params_of(entry):
+        if key in (p["key"], p["member"]):
+            return p
+    type_name = (entry or {}).get("class", entry)
+    raise EditError(f"{type_name}: no param {key!r} (see: show / validate)")
+
+
+def _set_nested_param(cat: catalog_mod.Catalog, node: model.Action, entry: Optional[dict],
+                      dotted_key: str, raw: str) -> str:
+    """Resolve a dotted path (e.g. ``attackPower_.value_`` or
+    ``spawnPosition_.targetObject_``) through one or more shape='nested'
+    struct members and write the leaf, working for both freshly-added nodes
+    and existing ones (see :func:`_unwrap_nested` / :func:`_set_field_guid`).
+    """
+    parts = dotted_key.split(".")
+    cur_entry = entry
+    container = node.params
+    for i, part in enumerate(parts):
+        pinfo = _leaf_param(cat, cur_entry, part)
+        jkey = pinfo["key"]
+        if jkey not in container:
+            raise EditError(f"param {jkey!r} missing from the stored blob; regen-catalog?")
+        val = container[jkey]
+        if i == len(parts) - 1:
+            shape = pinfo["shape"]
+            if shape == "field":
+                _set_field_guid(val, _coerce("field", raw))
+            elif shape in catalog_mod.SETTABLE_SHAPES:
+                container[jkey] = _coerce(shape, raw)
+            else:
+                raise EditError(
+                    f"{node.type_name}: {dotted_key} has shape {shape!r}; not settable"
+                )
+            return pinfo["member"]
+        if pinfo["shape"] != "nested":
+            raise EditError(
+                f"{node.type_name}: {'.'.join(parts[:i + 1])} is not a nested struct "
+                f"(shape {pinfo['shape']!r}); cannot descend into it"
+            )
+        container = _unwrap_nested(val)
+        cur_entry = cat.type_by_leaf(pinfo.get("type", "?"))
+        if cur_entry is None:
+            raise EditError(f"unknown nested struct type {pinfo.get('type')!r}")
+    raise EditError("empty dotted key")  # unreachable: dotted_key.split always has >=1 part
 
 
 def set_params(tree: model.Tree, guid: str, assignments: dict[str, str],
                cat: catalog_mod.Catalog | None = None) -> list[str]:
+    """Set one or more of an action's parameters.
+
+    A plain key (``rate_``) sets a top-level, directly-settable param, exactly
+    as before. A dotted key (``attackPower_.value_``,
+    ``spawnPosition_.targetObject_``, ``spawnPosition_.offset_``) reaches
+    inside shape='nested' struct members - e.g. the ``PhysicsPower``/
+    ``Position``/``WriteBlackBoard``/``WaitSeconds``/``PlaySE`` structs
+    embedded in ``PhysicsAttack``/``RadiateProjectile``/``PlayAnimation`` -
+    which a bare key cannot address (nested's own shape is never in
+    ``SETTABLE_SHAPES``).
+    """
     cat = cat or catalog_mod.load()
     node = tree.find(guid)
     if not isinstance(node, model.Action):
@@ -249,18 +376,16 @@ def set_params(tree: model.Tree, guid: str, assignments: dict[str, str],
     entry = cat.action_by_fqn(node.type_fqn)
     touched: list[str] = []
     for key, raw in assignments.items():
-        pinfo = None
-        for p in cat.params_of(entry):
-            if key in (p["key"], p["member"]):
-                pinfo = p
-                break
-        if pinfo is None:
-            raise EditError(f"{node.type_name}: no param {key!r} (see: show / validate)")
+        if "." in key:
+            touched.append(_set_nested_param(cat, node, entry, key, raw))
+            continue
+        pinfo = _leaf_param(cat, entry, key)
         shape = pinfo["shape"]
         if shape not in catalog_mod.SETTABLE_SHAPES:
             raise EditError(
                 f"{node.type_name}.{pinfo['member']} has shape {shape!r}; tools/bt v1 "
-                f"cannot set it - edit the .enemyBehaviourData by hand or in the editor"
+                f"cannot set it directly - reach inside it with a dotted key "
+                f"(e.g. {key}.<field>_) or edit the .enemyBehaviourData by hand"
             )
         jkey = pinfo["key"]
         if jkey not in node.params:
@@ -316,6 +441,11 @@ def apply(tree: model.Tree, ops: list[dict], cat: catalog_mod.Catalog | None = N
                              index=op.get("index"), weight=int(op.get("weight", 100)),
                              pos=op.get("pos"), node_guid=op.get("guid"), cat=cat)
                 log.append(f"add-node {op['kind']} -> {n.guid}")
+            elif kind == "copy-node":
+                n = copy_node(tree, src_guid=op["node"], parent_guid=op["parent"],
+                             index=op.get("index"), weight=int(op.get("weight", 100)),
+                             pos=op.get("pos"))
+                log.append(f"copy-node {op['node']} -> {n.guid} (under {op['parent']})")
             elif kind == "remove-node":
                 remove_node(tree, op["node"])
                 log.append(f"remove-node {op['node']}")

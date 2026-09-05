@@ -3,6 +3,7 @@
 #include "../../Asset/Font/Ttf/TtfFontFile.h"
 #include "../../Color/Color32.h"
 #include "../../Component/ComponentBase.h"
+#include "TextRenderer_TextAlign.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -10,11 +11,12 @@ namespace NanamiEngine::Module::NanamiUi
                                public LifeCycleCallback::IUserInterfaceRenderable
     {
     public:
-        ~TextRenderer();
+        ~TextRenderer() override;
         void SetText(const std::string& text);
         void SetFont(const std::shared_ptr<Asset::TtfFontFile>& font);
         void SetTextColor(const Color32& color);
         void SetWorldMode(bool isWorld);
+        void SetTextAlign(TextAlign align);
 
     private:
         void OnUserInterfaceRender() override;
@@ -28,6 +30,7 @@ namespace NanamiEngine::Module::NanamiUi
         [[serialize(0)]] std::string text_;
         [[serialize(0)]] Color32 textColor_;
         [[serialize(0)]] bool isWorldPos_ = false;
+        [[serialize(0)]] TextAlign textAlign_ = TextAlign::Left;
 
         // キャッシュ
         std::string cachedSjis_;
@@ -51,6 +54,7 @@ namespace NanamiEngine::Module::NanamiUi
             archive(CEREAL_NVP(text_));
             archive(CEREAL_NVP(textColor_));
             if (version >= 1) archive(CEREAL_NVP(isWorldPos_));
+            if (version >= 2) archive(CEREAL_NVP(textAlign_));
         }
 
         template<class Archive>
@@ -62,10 +66,11 @@ namespace NanamiEngine::Module::NanamiUi
             if (version >= 0) archive(CEREAL_NVP(text_));
             if (version >= 0) archive(CEREAL_NVP(textColor_));
             if (version >= 1) archive(CEREAL_NVP(isWorldPos_));
+            if (version >= 2) archive(CEREAL_NVP(textAlign_));
             isDirty_ = true;
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::TextRenderer, 1)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::TextRenderer, 2)

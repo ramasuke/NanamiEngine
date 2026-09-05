@@ -1,5 +1,7 @@
-// ProximityReveal コンポーネントが毎フレーム書き込む定数バッファ (b1)
-cbuffer ProximityBuffer : register(b1)
+// ProximityReveal コンポーネントが毎フレーム書き込む定数バッファ (b4)
+// DxLib(Direct3D 11) は b0～b3 を内部で使用するため、ユーザー定数バッファは b4 以降に置く
+// (ModelRenderer::CUSTOM_SHADER_CB_SLOT と一致させること)
+cbuffer ProximityBuffer : register(b4)
 {
     float3 playerWorldPos;
     float  revealRadius;      // この距離以内は alpha = 1.0

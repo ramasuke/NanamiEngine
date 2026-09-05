@@ -14,6 +14,8 @@ Stages (added as the toolkit is built):
   4. new-tree fidelity vs T-Rex.*.
   5. catalog freshness (regen-catalog --check).
   6. edit-then-inverse == original.
+  8. copy-node deep-copies independently, and a dotted-key set-params reaches
+     inside a shape='nested' param; both undo cleanly.
 """
 
 from __future__ import annotations
@@ -57,6 +59,23 @@ class Reporter:
         print(f"\n{self.passed}/{total} checks passed"
               + (f", {self.failed} FAILED" if self.failed else ""))
         return 1 if self.failed else 0
+
+
+def stage_ordered_obj_dup_keys(r: Reporter) -> None:
+    r.section("stage 0: OrderedObj duplicate-key fidelity")
+    try:
+        obj = cereal_json.loads('{"a": 1, "child": 10, "child": 20, "child": 30}')
+        assert len(obj) == 4, f"expected 4 pairs, got {len(obj)}"
+        vals = [v.value for k, v in obj.items() if k == "child"]
+        assert vals == [10, 20, 30], f"expected [10, 20, 30], got {vals}"
+        assert obj.values_for("child") == obj.values_for("child"), "values_for not stable"
+        assert [v.value for v in obj.values_for("child")] == [10, 20, 30]
+        rt = cereal_json.dumps(cereal_json.loads(cereal_json.dumps(obj)))
+        if rt != cereal_json.dumps(obj):
+            raise AssertionError("duplicate-key object does not round-trip stably")
+        r.ok("loads()/OrderedObj preserve duplicate sibling keys")
+    except Exception as e:  # noqa: BLE001
+        r.fail("OrderedObj duplicate-key fidelity", traceback.format_exc())
 
 
 def stage_formatting(r: Reporter) -> None:
@@ -224,8 +243,62 @@ def stage_scaffold(r: Reporter) -> None:
         r.fail("add-action dry-run", traceback.format_exc())
 
 
+def stage_copy_and_nested(r: Reporter) -> None:
+    try:
+        from tools.bt import edits  # noqa: F401
+    except Exception:  # noqa: BLE001
+        return
+    r.section("stage 8: copy-node + dotted-key nested set-params")
+    from tools.bt import edits, reader, writer
+    for name in ["TrainingDummy", "HyenaBehaviour"]:
+        p = BT_DIR / f"{name}.enemyBehaviourData"
+        try:
+            base = cereal_json.read_text(p)
+            tree = reader.read_tree(base)
+            target = tree.entry.child
+            if target is None or not hasattr(target, "children"):
+                r.ok(f"{p.name} (skipped: no composite root)")
+                continue
+
+            # add a PhysicsAttack action, reach its nested attackPower_.value_ and
+            # finishedAttackWriteBlackBoard_.keyName_/.value_ (shape='nested', not
+            # settable as a bare key) via a dotted key, deep-copy the whole node,
+            # confirm the clone is independent, then undo everything -> original bytes.
+            action_guid = "00000000-0000-4000-8000-000000000002"
+            edits.add_node(tree, parent_guid=target.guid, kind="action",
+                           action_type="EnemyStatus::PhysicsAttack", node_guid=action_guid)
+            edits.set_params(tree, action_guid, {
+                "attackPower_.value_": "7",
+                "finishedAttackWriteBlackBoard_.keyName_": "State",
+                "finishedAttackWriteBlackBoard_.value_": "1",
+            })
+            clone = edits.copy_node(tree, src_guid=action_guid, parent_guid=target.guid)
+            edits.set_params(tree, clone.guid, {"attackPower_.value_": "13"})
+
+            def power(guid: str) -> int:
+                from tools.bt.blob import Ver
+                n = tree.find(guid)
+                v = n.params["attackPower_"]
+                return (v.body if isinstance(v, Ver) else v)["value_"].value
+
+            if power(action_guid) != 7:
+                raise AssertionError(f"original attackPower_ changed: {power(action_guid)} != 7")
+            if power(clone.guid) != 13:
+                raise AssertionError(f"clone attackPower_ not independent: {power(clone.guid)} != 13")
+
+            edits.remove_node(tree, clone.guid)
+            edits.remove_node(tree, action_guid)
+            out = writer.write_tree(tree)
+            if out != base:
+                raise AssertionError("add(+dotted set-params)+copy+remove did not restore the original bytes")
+            r.ok(f"{p.name} copy-node + dotted set-params, then undo")
+        except Exception:  # noqa: BLE001
+            r.fail(p.name, traceback.format_exc())
+
+
 def main() -> int:
     r = Reporter()
+    stage_ordered_obj_dup_keys(r)
     stage_formatting(r)
     stage_tree_roundtrip(r)
     stage_meta_roundtrip(r)
@@ -233,6 +306,7 @@ def main() -> int:
     stage_catalog(r)
     stage_edits(r)
     stage_scaffold(r)
+    stage_copy_and_nested(r)
     return r.finish()
 
 

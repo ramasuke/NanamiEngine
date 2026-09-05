@@ -9734,6 +9734,7 @@
       <AdditionalIncludeDirectories>C:\Users\e29sw\OneDrive\デスクトップ\NanamiEngine\Libs\プロジェクトに追加すべきファイル_VC用;</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Engine\Module\GameObject\Helper\TreeDropZone\TreeDropZone.cpp" />
     <ClCompile Include="Engine\Module\GameObject\PrefabGameObject\PrefabGameObject.cpp" />
     <ClCompile Include="Engine\Module\GameObject\Transform\Transform.cpp" />
     <ClCompile Include="Engine\Module\Guid\Guid.cpp" />
@@ -9997,6 +9998,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Module\NanamiUI\Slider\NanamiUi_Slider.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\TextRenderer\TextRenderer.cpp" />
+    <ClCompile Include="Engine\Module\NanamiUI\TextRenderer\TextRenderer_TextAlign.cpp" />
     <ClCompile Include="Engine\Module\Physics\BroadPhaseLayer\Engine_Physics_NonRaycastLayerFilter.cpp" />
     <ClCompile Include="Engine\Module\Physics\Component\Collider\Box\Engine_Physics_BoxCollider.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -12747,6 +12749,7 @@
     <ClInclude Include="Engine\Module\GameObject\ComponentGroup\AddComponenet\AddComponent.h" />
     <ClInclude Include="Engine\Module\GameObject\ComponentGroup\ComponentGroup.h" />
     <ClInclude Include="Engine\Module\GameObject\ComponentGroup\ComponentHeaders.h" />
+    <ClInclude Include="Engine\Module\GameObject\Helper\TreeDropZone\TreeDropZone.h" />
     <ClInclude Include="Engine\Module\GameObject\Interface\IGameObject.h" />
     <ClInclude Include="Engine\Module\GameObject\PrefabGameObject\PrefabGameObject.h" />
     <ClInclude Include="Engine\Module\GameObject\Transform\Transform.h" />
@@ -12783,6 +12786,7 @@
     <ClInclude Include="Engine\Module\NanamiUI\NanamiUi_IInteractivableRenderer.h" />
     <ClInclude Include="Engine\Module\NanamiUI\Slider\NanamiUi_Slider.h" />
     <ClInclude Include="Engine\Module\NanamiUI\TextRenderer\TextRenderer.h" />
+    <ClInclude Include="Engine\Module\NanamiUI\TextRenderer\TextRenderer_TextAlign.h" />
     <ClInclude Include="Engine\Module\Physics\BroadPhaseLayer\Engine_Physics_NonRaycastLayerFilter.h" />
     <ClInclude Include="Engine\Module\Physics\Component\Collider\Box\Engine_Physics_BoxCollider.h" />
     <ClInclude Include="Engine\Module\Physics\Component\Collider\Capsule\Engine_Physics_CapsuleCollider.h" />

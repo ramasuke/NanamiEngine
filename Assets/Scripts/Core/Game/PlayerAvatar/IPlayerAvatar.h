@@ -36,7 +36,7 @@ namespace GamePlay::PlayerAvatar
     class ChattableArea;
 }
 
-namespace GamePlay::Ui
+    namespace GamePlay::Ui
 {
     class NpcChatting;
 }

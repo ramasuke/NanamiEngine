@@ -211,7 +211,8 @@ def add_action(name: str, category: str, *, params: list[Param] | None = None,
     win_h = _win(f"{ACTION_DIR_REL}/{rel_dir}/Enemy_Behaviour_Action_{name}.h")
     win_cpp = _win(f"{ACTION_DIR_REL}/{rel_dir}/Enemy_Behaviour_Action_{name}.cpp")
     splices = [vcxproj.Splice("ClCompile", win_cpp), vcxproj.Splice("ClInclude", win_h)]
-    log += vcxproj.apply_splices(VCXPROJ, FILTERS if filters else None, splices, dry_run=dry_run)
+    log += vcxproj.apply_splices(VCXPROJ, FILTERS if filters else None, splices,
+                                 anchor=vcxproj.CONTENT_ANCHOR, dry_run=dry_run)
     return log
 
 

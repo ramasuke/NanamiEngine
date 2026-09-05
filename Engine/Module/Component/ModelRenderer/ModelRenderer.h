@@ -1,5 +1,7 @@
-ï»¿#pragma once
+#pragma once
 #include <DxLib.h>
+#include <utility>
+#include <vector>
 #include <../../Libs/glm/glm.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <../../Libs/glm/gtx/quaternion.hpp>
@@ -24,8 +26,17 @@ namespace NanamiEngine::Module::Component
                                 public LifeCycleCallback::IEndPhysics
     {
     public:
+        // DxLib(Direct3D 11) ‚Í’è”ƒoƒbƒtƒ@ƒXƒƒbƒg b0`b3 ‚ğ“à•”‚Åg—p‚µ‚Ä‚¢‚é‚½‚ßA
+        // ƒJƒXƒ^ƒ€ƒVƒF[ƒ_[—p‚Ì’è”ƒoƒbƒtƒ@‚Í b4 ‚ÉŠ„‚è“–‚Ä‚éB
+        // (HLSL ‘¤‚à register(b4) ‚Åó‚¯‚é•K—v‚ª‚ ‚é)
+        static constexpr int CUSTOM_SHADER_CB_SLOT = 4;
+        static constexpr int CUSTOM_SHADER_CB_SIZE = 256;
+
         int modelDxLibHandle_ = -1;
-        int cbHandle_         = -1;
+
+        // ƒJƒXƒ^ƒ€ƒVƒF[ƒ_[—p‚Ì’è”ƒoƒbƒtƒ@ƒnƒ“ƒhƒ‹‚ğ•Ô‚·(–¢¶¬‚È‚ç¶¬‚·‚é)B
+        // vsFile_ / psFile_ ‚ª—LŒø‚Å‚È‚¢ê‡‚Í -1B
+        [[nodiscard]] int GetOrCreateShaderConstantBufferHandle();
 
     private:
         void InitRenderer    () override;
@@ -37,13 +48,26 @@ namespace NanamiEngine::Module::Component
 
         [[nodiscard]] MATRIX GetRenderMatrix() const;
         [[nodiscard]] bool   HasCustomShader () const;
-        void ApplyCustomShader  ();
-        void RestoreCustomShader();
+        void RefreshTriangleListInfo();
+        void ApplyCustomModelState  ();
+        void RestoreDefaultModelState();
+        void DrawWithCustomShader   ();
 
         FIELD(Asset::Mv1File)    mv1File_;
         FIELD(Asset::HlslVsFile) vsFile_;
         FIELD(Asset::HlslPsFile) psFile_;
         bool useFixedInterpolation_ = false;
+
+        int  cbHandle_           = -1;
+        bool customStateApplied_ = false;
+
+        // ƒgƒ‰ƒCƒAƒ“ƒOƒ‹ƒŠƒXƒg‚²‚Æ‚Éu„‘Ì—p’¸“_ƒVƒF[ƒ_[‚Å•`‰æ‚Å‚«‚é‚©v
+        // (4/8 ƒ{[ƒ“‚ÌƒXƒLƒ“ƒƒbƒVƒ…‚Í DxLib •W€ƒVƒF[ƒ_[‚ÉƒtƒH[ƒ‹ƒoƒbƒN‚·‚é)
+        std::vector<bool> rigidTriangleList_;
+        bool              allRigid_ = true;
+
+        // ƒJƒXƒ^ƒ€ƒVƒF[ƒ_[“K—p‘O‚Ìƒ}ƒeƒŠƒAƒ‹‚ÌƒuƒŒƒ“ƒhİ’è (mode, param) ‚Ì‘Ş”ğ
+        std::vector<std::pair<int, int>> originalMaterialBlend_;
 
         glm::vec3 prevWorldPos_   {};
         glm::quat prevWorldRot_   {};
@@ -51,7 +75,7 @@ namespace NanamiEngine::Module::Component
         glm::quat currWorldRot_   {};
         bool      hasPrevCapture_ = false;
         bool      hasCurrCapture_ = false;
-        
+
 #pragma region Serialization Function
 public:
 void OnDrawGui() override;

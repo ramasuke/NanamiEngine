@@ -2,6 +2,7 @@
 #include <memory>
 #include <ranges>
 #include <unordered_map>
+#include <vector>
 
 #include "../DrawGuiContext/PopupWindowDrawGuiContext.h"
 #include "../Interface/IPopupWindow.h"
@@ -72,10 +73,18 @@ namespace NanamiEngine::Core::PopupWindow
 
     inline void PopupWindowGroup::OnDraw(FileSystem::EditorDraggingHand& draggingHand)
     {
-        for (auto& window : popupWindows_ | std::views::values)
+        std::vector<::Guid> closedWindows;
+
+        for (auto& [guid, window] : popupWindows_)
         {
-            if (window)
-                window->OnDraw(PopupWindowDrawGuiContext(draggingHand));
+            if (!window)
+                continue;
+
+            if (window->OnDraw(PopupWindowDrawGuiContext(draggingHand)) == PopupWindowState::Closed)
+                closedWindows.push_back(guid);
         }
+
+        for (const auto& guid : closedWindows)
+            popupWindows_.erase(guid);
     }
 }

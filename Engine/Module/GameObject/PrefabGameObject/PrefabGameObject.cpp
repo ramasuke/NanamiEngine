@@ -1,5 +1,6 @@
-ï»¿#include "PrefabGameObject.h"
+#include "PrefabGameObject.h"
 
+#include "../Helper/TreeDropZone/TreeDropZone.h"
 #include "../../../../Libs/LibCore/cereal/PrefabExtractArchive/PrefabExtractArchive.h"
 #include "../../../Core/Application/Editor/EditorApplication.h"
 #include "../../../Core/Application/Window/Main/Game/GameWindow.h"
@@ -53,7 +54,7 @@ void GameObject::PrefabGameObject::InitForCopied(const std::shared_ptr<IGameObje
 
 void GameObject::PrefabGameObject::InvokeInitAwakeCallbacks()
 {
-    //REFACTOR: ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã®å®Ÿè¡Œé †åºãŒåˆ†ã‹ã‚‰ãªããªã£ã¦ã—ã¾ã†ã‚¯ã‚½ã‚³ãƒ¼ãƒ‰ã€ã—ã‹ã—ãƒªãƒ•ã‚¡ã‚¯ã‚¿ãƒªãƒ³ã‚°ã™ã‚‹ãŸã‚ã«ã¯Windowã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ComponentGroupãŒç™ºç«ã™ã‚‹ã‚ˆã†ã«ã—ãªã‘ã‚Œã°ãªã‚‰ãªã„ãŸã‚ã€ä¿®æ­£ç®‡æ‰€ãŒå¤šã™ãã‚‹ã®ã§æ”¾ç½®ã€‚
+    //REFACTOR: ƒR[ƒ‹ƒoƒbƒN‚ÌÀs‡˜‚ª•ª‚©‚ç‚È‚­‚È‚Á‚Ä‚µ‚Ü‚¤ƒNƒ\ƒR[ƒhA‚µ‚©‚µƒŠƒtƒ@ƒNƒ^ƒŠƒ“ƒO‚·‚é‚½‚ß‚É‚ÍWindow‚ÌƒR[ƒ‹ƒoƒbƒN‚ğComponentGroup‚ª”­‰Î‚·‚é‚æ‚¤‚É‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢‚½‚ßAC³‰ÓŠ‚ª‘½‚·‚¬‚é‚Ì‚Å•ú’uB
     auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
     for (auto& initRender : Components().Catches<LifeCycleCallback::IInitRenderable>())
     {
@@ -73,7 +74,7 @@ void GameObject::PrefabGameObject::InvokeInitAwakeCallbacks()
 
 void GameObject::PrefabGameObject::InvokeInitStartCallbacks()
 {
-    //REFACTOR: ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã®å®Ÿè¡Œé †åºãŒåˆ†ã‹ã‚‰ãªããªã£ã¦ã—ã¾ã†ã‚¯ã‚½ã‚³ãƒ¼ãƒ‰ã€ã—ã‹ã—ãƒªãƒ•ã‚¡ã‚¯ã‚¿ãƒªãƒ³ã‚°ã™ã‚‹ãŸã‚ã«ã¯Windowã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ComponentGroupãŒç™ºç«ã™ã‚‹ã‚ˆã†ã«ã—ãªã‘ã‚Œã°ãªã‚‰ãªã„ãŸã‚ã€ä¿®æ­£ç®‡æ‰€ãŒå¤šã™ãã‚‹ã®ã§æ”¾ç½®ã€‚
+    //REFACTOR: ƒR[ƒ‹ƒoƒbƒN‚ÌÀs‡˜‚ª•ª‚©‚ç‚È‚­‚È‚Á‚Ä‚µ‚Ü‚¤ƒNƒ\ƒR[ƒhA‚µ‚©‚µƒŠƒtƒ@ƒNƒ^ƒŠƒ“ƒO‚·‚é‚½‚ß‚É‚ÍWindow‚ÌƒR[ƒ‹ƒoƒbƒN‚ğComponentGroup‚ª”­‰Î‚·‚é‚æ‚¤‚É‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢‚½‚ßAC³‰ÓŠ‚ª‘½‚·‚¬‚é‚Ì‚Å•ú’uB
     auto& windowLifeCycle = Core::Application::ApplicationBase::GameWindow()->LifeCycle();
     for (auto& startable : Components().Catches<LifeCycleCallback::IStartable>())
     {
@@ -112,7 +113,7 @@ void GameObject::PrefabGameObject::OnDrawGui()
     transform_ .OnDrawGui();
     components_.OnDrawGui();
 
-    //CopiedObjectGuidListã‚’è¡¨ç¤º
+    //CopiedObjectGuidList‚ğ•\¦
     if (ImGui::TreeNodeEx("Copied Prefab Instances", ImGuiTreeNodeFlags_DefaultOpen))
     {
         if (copiedObjectGuidList_.empty())
@@ -134,7 +135,7 @@ void GameObject::PrefabGameObject::OnDrawGui()
                     ImGui::TreePop();
                 }
 
-                // å³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼
+                // ‰EƒNƒŠƒbƒNƒƒjƒ…[
                 if (ImGui::BeginPopupContextItem(nodeLabel.c_str()))
                 {
                     if (ImGui::MenuItem("erase"))
@@ -220,10 +221,13 @@ void GameObject::PrefabGameObject::OnDrawTreeGui(const bool drawChildren)
     if (open && drawChildren)
     {
         ImGui::TreePush("##tree");
-        for (const auto& child : transform_.GetChildren())
+        const auto children = transform_.GetChildren();
+        for (std::size_t i = 0; i < children.size(); ++i)
         {
-            child->OnDrawTreeGui();
+            Module::GameObject::DrawSiblingInsertionDropZone(ownPtr_, i);
+            children[i]->OnDrawTreeGui();
         }
+        Module::GameObject::DrawSiblingInsertionDropZone(ownPtr_, children.size());
         ImGui::TreePop();
     }
 
@@ -277,21 +281,21 @@ std::shared_ptr<GameObject::IGameObject> GameObject::PrefabGameObject::CopyForEd
 std::shared_ptr<GameObject::IGameObject> GameObject::PrefabGameObject::
 CopyForInstantiate()
 {
-    // 1. this ã‚’ãƒã‚¤ãƒŠãƒªã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã«ä¿å­˜
+    // 1. this ‚ğƒoƒCƒiƒŠƒA[ƒJƒCƒu‚É•Û‘¶
     std::stringstream stringStream;
     {
         cereal::PortableBinaryOutputArchive outputArchive(stringStream);
         outputArchive(*this);
     }
 
-    // 2. æ–°ã—ã„ Prefab ã‚’ç”Ÿæˆã—ã€stringStream ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰
+    // 2. V‚µ‚¢ Prefab ‚ğ¶¬‚µAstringStream ‚©‚çƒ[ƒh
     const auto copiedPrefab = std::make_shared<PrefabGameObject>();
     {
         cereal::PortableBinaryInputArchive inputArchive(stringStream);
         inputArchive(*copiedPrefab);
     }
 
-    // 3. PrefabExtractArchive ã‚’ä½¿ã£ã¦æŠ½å‡º
+    // 3. PrefabExtractArchive ‚ğg‚Á‚Ä’Šo
     LibCore::PrefabExtractArchive extractOriginal;
     LibCore::PrefabExtractArchive extractCopied;
 

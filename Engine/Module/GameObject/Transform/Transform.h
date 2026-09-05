@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include "DxLib.h"
 #include <../../Libs/glm/glm.hpp>
 #include <../../Libs/glm/gtc/matrix_transform.hpp>
@@ -52,6 +52,11 @@ namespace NanamiEngine::Module::GameObject
         [[nodiscard]] MATRIX           GetDxWorldMatrix () const;
         
         void SetParent(const std::weak_ptr<IGameObject>& parent, bool keepWorldScale = true);
+
+        // siblingIndex ‚Íu©•ª©g‚ğœ‹‚·‚é‘Ov‚Ì parent ‚ÌqƒŠƒXƒg‚É‚¨‚¯‚é‘}“üˆÊ’u
+        // i0 = æ“ª, children.size() = ––”öjB“¯ˆêe“à‚Å‚Ì•À‚×‘Ö‚¦‚ÌƒCƒ“ƒfƒbƒNƒX•â³‚Í
+        // “à•”‚Å©“®“I‚És‚¤‚½‚ßAŒÄ‚Ño‚µ‘¤‚Í•â³•s—vB
+        void SetParent(const std::weak_ptr<IGameObject>& parent, std::size_t siblingIndex, bool keepWorldScale = true);
         [[nodiscard]] std::shared_ptr<IGameObject> GetParent    () const { return parent_         .lock(); }
         [[nodiscard]] std::shared_ptr<IGameObject> GetGameObject() const { return ownerGameObject_.lock(); }
 

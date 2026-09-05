@@ -24,10 +24,10 @@ def validate(tree: model.Tree, cat: catalog_mod.Catalog | None = None) -> list[s
 
         if isinstance(node, model.RandomSelector):
             if len(node.weights) != len(node.children):
-                err(f"RandomSelector {node.guid[:8]}: {len(node.weights)} weights "
+                err(f"RandomSelector {node.guid}: {len(node.weights)} weights "
                     f"for {len(node.children)} children")
             if node.children and not any(w > 0 for w in node.weights):
-                err(f"RandomSelector {node.guid[:8]}: all weights are 0")
+                err(f"RandomSelector {node.guid}: all weights are 0")
         if isinstance(node, (model.OnceExecute, model.OnceSuccess)):
             pass  # single child enforced by the model
         if isinstance(node, model.Action):
@@ -51,17 +51,24 @@ def validate(tree: model.Tree, cat: catalog_mod.Catalog | None = None) -> list[s
 def _check_action(node: model.Action, cat: catalog_mod.Catalog, err) -> None:
     entry = cat.action_by_fqn(node.type_fqn)
     if entry is None:
-        err(f"action {node.guid[:8]}: unknown type {node.type_fqn!r} "
+        err(f"action {node.guid}: unknown type {node.type_fqn!r} "
             f"(not in catalog - run regen-catalog?)")
         return
     if node.params is None:
-        err(f"action {node.guid[:8]} ({node.type_name}): no params blob")
+        err(f"action {node.guid} ({node.type_name}): no params blob")
         return
     want = [p["key"] for p in cat.params_of(entry)]
     got = [k for k in node.params.keys() if k != "value0"]
     if want != got:
-        err(f"action {node.guid[:8]} ({node.type_name}): param keys {got} != catalog {want}")
+        err(f"action {node.guid} ({node.type_name}): param keys {got} != catalog {want}")
     for p in cat.params_of(entry):
         if p["shape"] == "unknown":
-            err(f"action {node.guid[:8]} ({node.type_name}): param {p['member']} has "
+            # Accepted v1 limitation (see docs/BehaviourTree.md), not an actionable
+            # defect: the param round-trips losslessly, it just can't be set via
+            # set-params. Must stay a "note:" - promoting it to a hard error would
+            # permanently block every CLI edit verb (add-node/set-params/apply all
+            # abort on any hard `validate` problem) for any file that happens to use
+            # such a param anywhere in its tree, with no way to resolve it via this
+            # tool.
+            err(f"note: action {node.guid} ({node.type_name}): param {p['member']} has "
                 f"unknown shape (type {p.get('type')!r}); round-trips but not settable")

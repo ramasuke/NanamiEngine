@@ -1,25 +1,76 @@
-ï»¿#include "ModelRenderer.h"
+#include "ModelRenderer.h"
 #include "../../../Core/Coroutine/Coroutine.h"
 #include "../../../Core/Application/Time/Time.h"
 #include "../../GameObject/Transform/Transform.h"
 #include <../../Libs/glm/gtc/matrix_transform.hpp>
+#include <algorithm>
 
 namespace NanamiEngine::Module::Component
 {
+    namespace
+    {
+        // DxLib(DX11) ‚Íƒgƒ‰ƒCƒAƒ“ƒOƒ‹ƒŠƒXƒg‚Ì’¸“_ƒ^ƒCƒv‚²‚Æ‚É’¸“_ƒŒƒCƒAƒEƒg‚ªˆÙ‚È‚éB
+        // „‘ÌƒƒbƒVƒ…—p‚Ì’¸“_ƒVƒF[ƒ_[‚Å•`‰æ‚Å‚«‚é‚Ì‚Íƒ{[ƒ“î•ñ‚ğ‚½‚È‚¢ƒ^ƒCƒv‚Ì‚İB
+        // (FREE_FRAME ‚Í DxLib ‘¤‚Å CPU ƒXƒLƒjƒ“ƒO‚³‚êA„‘ÌƒƒbƒVƒ…‚Æ‚µ‚Ä•`‰æ‚³‚ê‚é)
+        bool IsRigidVertexType(const int vertexType)
+        {
+            switch (vertexType)
+            {
+            case DX_MV1_VERTEX_TYPE_1FRAME:
+            case DX_MV1_VERTEX_TYPE_FREE_FRAME:
+            case DX_MV1_VERTEX_TYPE_NMAP_1FRAME:
+            case DX_MV1_VERTEX_TYPE_NMAP_FREE_FRAME:
+                return true;
+            default:
+                return false;
+            }
+        }
+    }
+
     void ModelRenderer::InitRenderer()
     {
         if (mv1File_)
             modelDxLibHandle_ = mv1File_->LoadDxLibHandle();
 
-        if (HasCustomShader())
-            cbHandle_ = CreateShaderConstantBuffer(256);
+        RefreshTriangleListInfo();
     }
-    
+
+    void ModelRenderer::RefreshTriangleListInfo()
+    {
+        rigidTriangleList_.clear();
+        originalMaterialBlend_.clear();
+        allRigid_           = true;
+        customStateApplied_ = false; // V‚µ‚¢ƒnƒ“ƒhƒ‹‚ÍƒfƒtƒHƒ‹ƒgó‘Ô
+
+        if (modelDxLibHandle_ == -1)
+            return;
+
+        const int listNum = MV1GetTriangleListNum(modelDxLibHandle_);
+        rigidTriangleList_.reserve(listNum);
+        for (int i = 0; i < listNum; ++i)
+        {
+            const bool rigid = IsRigidVertexType(MV1GetTriangleListVertexType(modelDxLibHandle_, i));
+            rigidTriangleList_.push_back(rigid);
+            allRigid_ = allRigid_ && rigid;
+        }
+    }
+
+    int ModelRenderer::GetOrCreateShaderConstantBufferHandle()
+    {
+        if (!HasCustomShader())
+            return -1;
+
+        if (cbHandle_ == -1)
+            cbHandle_ = CreateShaderConstantBuffer(CUSTOM_SHADER_CB_SIZE);
+
+        return cbHandle_;
+    }
+
     void ModelRenderer::OnPreFixedUpdate()
     {
         if (!useFixedInterpolation_)
             return;
-    
+
         if (hasCurrCapture_)
         {
             prevWorldPos_ = currWorldPos_;
@@ -33,16 +84,16 @@ namespace NanamiEngine::Module::Component
             hasPrevCapture_ = true;
         }
     }
-    
+
     void ModelRenderer::OnUpdatedPhysics()
     {
         if (!useFixedInterpolation_)
             return;
-    
+
         currWorldPos_   = Transform().GetWorldPos();
         currWorldRot_   = Transform().GetWorldRot();
         hasCurrCapture_ = true;
-    
+
         if (!hasPrevCapture_)
         {
             prevWorldPos_   = currWorldPos_;
@@ -50,7 +101,7 @@ namespace NanamiEngine::Module::Component
             hasPrevCapture_ = true;
         }
     }
-    
+
     static MATRIX GlmMatToDxMat(const glm::mat4& m)
     {
         MATRIX d;
@@ -60,7 +111,7 @@ namespace NanamiEngine::Module::Component
         d.m[3][0]=m[3][0]; d.m[3][1]=m[3][1]; d.m[3][2]=m[3][2]; d.m[3][3]=m[3][3];
         return d;
     }
-    
+
     MATRIX ModelRenderer::GetRenderMatrix() const
     {
         if (useFixedInterpolation_ && hasPrevCapture_ && hasCurrCapture_)
@@ -76,21 +127,21 @@ namespace NanamiEngine::Module::Component
         }
         return Transform().GetDxWorldMatrix();
     }
-    
+
     void ModelRenderer::OnShadowRender()
     {
         if (!IsEnable() || modelDxLibHandle_ == -1)
             return;
 
-        // ã‚«ã‚¹ã‚¿ãƒ ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚·ãƒ£ãƒ‰ã‚¦ã‚’ã‚¹ã‚­ãƒƒãƒ—
-        // ï¼ˆé€æ˜åº¦åˆ¶å¾¡ãŒã‚·ã‚§ãƒ¼ãƒ€ãƒ¼å´ã«ã‚ã‚‹ãŸã‚ã€å½±ã ã‘è½ã¡ã‚‹çŠ¶æ…‹ã‚’é˜²ãï¼‰
+        // ƒJƒXƒ^ƒ€ƒVƒF[ƒ_[‚ªİ’è‚³‚ê‚Ä‚¢‚éê‡‚ÍƒVƒƒƒhƒE‚ğƒXƒLƒbƒv
+        // i“§–¾“x§Œä‚ªƒVƒF[ƒ_[‘¤‚É‚ ‚é‚½‚ßA‰e‚¾‚¯—‚¿‚éó‘Ô‚ğ–h‚®j
         if (HasCustomShader())
             return;
 
         MV1SetMatrix(modelDxLibHandle_, GetRenderMatrix());
         MV1DrawModel(modelDxLibHandle_);
     }
-    
+
     bool ModelRenderer::HasCustomShader() const
     {
         return vsFile_ && psFile_
@@ -98,26 +149,78 @@ namespace NanamiEngine::Module::Component
             && psFile_->GetPsHandle() != -1;
     }
 
-    void ModelRenderer::ApplyCustomShader()
+    void ModelRenderer::ApplyCustomModelState()
     {
-        SetUseLighting(FALSE);
-        SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
-        SetWriteZBuffer3D(FALSE);
-        SetUseVertexShader(vsFile_->GetVsHandle());
-        SetUsePixelShader(psFile_->GetPsHandle());
-        if (cbHandle_ != -1)
-            SetShaderConstantBuffer(cbHandle_, DX_SHADERTYPE_PIXEL, 1);
-        MV1SetUseOrigShader(TRUE);
+        if (customStateApplied_)
+            return;
+
+        // •œŒ³—p‚ÉŒ³‚Ìƒ}ƒeƒŠƒAƒ‹‚ÌƒuƒŒƒ“ƒhİ’è‚ğ‘Ş”ğ
+        const int materialNum = MV1GetMaterialNum(modelDxLibHandle_);
+        originalMaterialBlend_.clear();
+        originalMaterialBlend_.reserve(materialNum);
+        for (int i = 0; i < materialNum; ++i)
+        {
+            originalMaterialBlend_.emplace_back(
+                MV1GetMaterialDrawBlendMode (modelDxLibHandle_, i),
+                MV1GetMaterialDrawBlendParam(modelDxLibHandle_, i));
+        }
+
+        // SetDrawBlendMode / SetWriteZBuffer3D ‚Íƒ‚ƒfƒ‹•`‰æ‚É‚Í”½‰f‚³‚ê‚È‚¢‚½‚ßA
+        // MV1 ê—p‚Ì API ‚ÅƒAƒ‹ƒtƒ@ƒuƒŒƒ“ƒh + Z ‘‚«‚İ–³‚µ‚É‚·‚é
+        MV1SetMaterialDrawBlendModeAll (modelDxLibHandle_, DX_BLENDMODE_ALPHA);
+        MV1SetMaterialDrawBlendParamAll(modelDxLibHandle_, 255);
+        MV1SetWriteZBuffer             (modelDxLibHandle_, FALSE);
+        customStateApplied_ = true;
     }
 
-    void ModelRenderer::RestoreCustomShader()
+    void ModelRenderer::RestoreDefaultModelState()
     {
+        if (!customStateApplied_)
+            return;
+
+        const int materialNum = static_cast<int>(originalMaterialBlend_.size());
+        for (int i = 0; i < materialNum; ++i)
+        {
+            MV1SetMaterialDrawBlendMode (modelDxLibHandle_, i, originalMaterialBlend_[i].first);
+            MV1SetMaterialDrawBlendParam(modelDxLibHandle_, i, originalMaterialBlend_[i].second);
+        }
+        MV1SetWriteZBuffer(modelDxLibHandle_, TRUE);
+        customStateApplied_ = false;
+    }
+
+    void ModelRenderer::DrawWithCustomShader()
+    {
+        ApplyCustomModelState();
+
+        SetUseVertexShader(vsFile_->GetVsHandle());
+        SetUsePixelShader (psFile_->GetPsHandle());
+        if (cbHandle_ != -1)
+        {
+            SetShaderConstantBuffer(cbHandle_, DX_SHADERTYPE_VERTEX, CUSTOM_SHADER_CB_SLOT);
+            SetShaderConstantBuffer(cbHandle_, DX_SHADERTYPE_PIXEL,  CUSTOM_SHADER_CB_SLOT);
+        }
+        MV1SetUseOrigShader(TRUE);
+
+        if (allRigid_)
+        {
+            MV1DrawModel(modelDxLibHandle_);
+        }
+        else
+        {
+            // 4/8 ƒ{[ƒ“‚ÌƒXƒLƒ“ƒƒbƒVƒ…‚Í„‘Ì—p’¸“_ƒVƒF[ƒ_[‚Å‚Í•`‰æ‚Å‚«‚È‚¢‚½‚ßA
+            // ‚»‚Ìƒgƒ‰ƒCƒAƒ“ƒOƒ‹ƒŠƒXƒg‚¾‚¯ DxLib •W€ƒVƒF[ƒ_[‚Å•`‰æ‚·‚é(ƒtƒF[ƒh‚ÍŠ|‚©‚ç‚È‚¢)
+            const int listNum = (std::min)(MV1GetTriangleListNum(modelDxLibHandle_),
+                                           static_cast<int>(rigidTriangleList_.size()));
+            for (int i = 0; i < listNum; ++i)
+            {
+                MV1SetUseOrigShader(rigidTriangleList_[i] ? TRUE : FALSE);
+                MV1DrawTriangleList(modelDxLibHandle_, i);
+            }
+        }
+
         MV1SetUseOrigShader(FALSE);
         SetUseVertexShader(-1);
-        SetUsePixelShader(-1);
-        SetUseLighting(TRUE);
-        SetWriteZBuffer3D(TRUE);
-        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+        SetUsePixelShader (-1);
     }
 
     void ModelRenderer::OnRender()
@@ -127,21 +230,21 @@ namespace NanamiEngine::Module::Component
 
         MV1SetMatrix(modelDxLibHandle_, GetRenderMatrix());
 
-        if (HasCustomShader())
+        if (!HasCustomShader())
         {
-            ApplyCustomShader();
+            RestoreDefaultModelState();
             MV1DrawModel(modelDxLibHandle_);
-            RestoreCustomShader();
+            return;
         }
-        else
-        {
-            MV1DrawModel(modelDxLibHandle_);
-        }
+
+        GetOrCreateShaderConstantBufferHandle();
+        DrawWithCustomShader();
     }
 
     void ModelRenderer::OnDestroy()
     {
-        MV1DeleteModel(modelDxLibHandle_);
+        if (modelDxLibHandle_ != -1)
+            MV1DeleteModel(modelDxLibHandle_);
         if (cbHandle_ != -1)
             DeleteShaderConstantBuffer(cbHandle_);
     }
@@ -155,13 +258,22 @@ namespace NanamiEngine::Module::Component
         if (ImGui::Button("OnUpdateDxLibHandle"))
         {
             if (mv1File_)
+            {
                 modelDxLibHandle_ = mv1File_->LoadDxLibHandle();
+                RefreshTriangleListInfo();
+            }
         }
         if (ImGui::Button("OnUpdateShaderConstantBuffer"))
         {
             if (cbHandle_ != -1)
+            {
                 DeleteShaderConstantBuffer(cbHandle_);
-            cbHandle_ = HasCustomShader() ? CreateShaderConstantBuffer(256) : -1;
+                cbHandle_ = -1;
+            }
+            GetOrCreateShaderConstantBufferHandle();
         }
+        ImGui::Text("cbHandle_: %d  (slot b%d)", cbHandle_, CUSTOM_SHADER_CB_SLOT);
+        ImGui::Text("triangleLists: %d  allRigid: %s",
+                    static_cast<int>(rigidTriangleList_.size()), allRigid_ ? "true" : "false");
     }
 }

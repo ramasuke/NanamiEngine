@@ -62,7 +62,7 @@ position_: {value0: x, value1: y} }` (`position_` is editor-canvas coords).
 | `Editor::Npc::Behaviour::EntryNode` | 0 | `nextNode_` |
 | `Editor::Npc::Behaviour::SelectorNode` | 0 | `children_[]` — first child to return Success/Running wins |
 | `Editor::Npc::Behaviour::SequenceNode` | 0 | `children_[]` — stops at first Failure/Running |
-| `Editor::Npc::Behaviour::RandomSelectorNode` | 1 | `children_[]`, `weights_[]` (one int per child) |
+| `Editor::Npc::Behaviour::RandomSelectorNode` | 1 | `children_[]`, `weights_[]` (one int per child) — picks **one** weighted child per tick and returns exactly what it returns, with **no fallback**: unlike `SelectorNode`, a child that fails makes the whole node fail that tick, it does not try another child. A branch can't be made conditional in isolation inside a `RandomSelector` — if that branch's guard fails, the pick is wasted, not retried — so a variant that's sometimes unavailable needs its own separate weighted pool (see `Editor::Npc::Behaviour::SelectorNode` above, gated by e.g. a blackboard condition, with each pool as one branch), not a guard clause on one child. Since the file is a "pure tree" (below), that second pool can't share nodes with the first — `copy-node` (below) clones one pool's whole subtree so only the diff (a swapped-in branch, a changed weight) needs hand-editing afterwards. |
 | `Editor::Npc::Behaviour::OnceExecute` | 0 | `child_`, `state_` |
 | `Editor::Npc::Behaviour::OnceSuccessNode` | 0 | `child_` |
 | `Editor::Npc::Enemy::Behaviour::ActionNode` | 1 | `name_` (label), `action_` (`unique_ptr<ActionBase>`) |
@@ -104,11 +104,13 @@ python -m tools.bt add-node    Wolf --parent entry --kind selector
 python -m tools.bt add-node    Wolf --parent <selector-guid> --kind action --name Chase --type "Basic::ChasePlayerForPathFinding"
 python -m tools.bt add-node    Wolf --parent <selector-guid> --kind action --name Wait  --type "Wait::Seconds::WaitSeconds"
 python -m tools.bt move-node   Wolf --node <guid> --parent <guid> --index 0
+python -m tools.bt copy-node   Wolf --node <guid> --parent <guid> --index 0 --weight 70  # deep copy, fresh guids throughout
 python -m tools.bt remove-node Wolf --node <guid>
 python -m tools.bt layout      Wolf                  # re-arrange all nodes tidily (--dx / --dy)
 
 # --- parameter edits ---
 python -m tools.bt set-params Wolf --node <action-guid> moveSpeed_=4.0 animationNumber_=2
+python -m tools.bt set-params Wolf --node <action-guid> attackPower_.value_=10 spawnPosition_.offset_=0,0,-3
 python -m tools.bt set-weight Wolf --node <child-guid> --weight 40
 python -m tools.bt add-bb-param Wolf --name State --int 0
 
@@ -120,6 +122,22 @@ python -m tools.bt apply Wolf ops.json     # ops.json = [{"op":"add-node",...}, 
 (`"Basic::ToPlayerDistance"`), the fully-qualified class, or the bare class leaf.
 Run `python -m tools.bt regen-catalog` and inspect `tools/bt/catalog.json` for the
 full list and each action's parameters.
+
+**Nested params.** `set-params` also accepts a **dotted key** to reach inside a
+shape-`nested` struct member (`attackPower_`/`finishedAttackWriteBlackBoard_` on
+`PhysicsAttack`, `spawnPosition_`/`targetPosition_`/`physicsDamage_` on
+`RadiateProjectile`, `waitAnimationSound_secs_`/`animationSound_` on
+`PlayAnimation`, …) — e.g. `attackPower_.value_=10`,
+`spawnPosition_.targetObject_=<guid>`, `spawnPosition_.offset_=0,0,-3`
+(a whole `vec2`/`vec3`/`field` leaf sets in one assignment; only the innermost
+scalar/vec/field leaf is ever the settable thing — you can't assign a whole
+nested struct at once, and a leaf whose own shape is `unknown` still isn't
+settable). This works on both a node you just `add-node`'d and a pre-existing
+one; `show`/`validate` still print the member as before, dotted or not — it's
+purely an addressing scheme for `set-params`, not a new node shape.
+
+`show` prints every GUID in full (36 chars) — copy it straight into
+`--node`/`--parent` on the next command.
 
 **Node positions.** `add-node` / `move-node` / `remove-node` / `apply` re-run a
 top-down auto-layout so nodes never overlap in the graph editor; pass `--no-layout`
@@ -139,9 +157,16 @@ in the prefab inspector, or edit the prefab JSON so the `behaviourData_` field's
   `PureTreeError` otherwise.
 * Blackboard: `AnimationParameter<int>` only.
 * Action params of shape `nested:*` (an embedded `WaitSeconds` / `PlaySE` / `Position`
-  / `PhysicsPower`) and `unknown` (a couple of enum members) are **not settable** by
-  `set-params` — they round-trip losslessly but finish them in the editor or by hand.
-  Everything else in the same action still edits normally.
+  / `PhysicsPower` / …) are reachable through `set-params` via a **dotted key**
+  (`attackPower_.value_=10`, `spawnPosition_.targetObject_=<guid>`) — see
+  "Nested params" above. A struct with no settable leaf at all, and a leaf whose
+  own shape is `unknown` (a couple of enum members, e.g.
+  `ChangeColliderEmotionType.emotionType_`), still round-trip losslessly but stay
+  **not settable**; finish those in the editor or by hand. Everything else edits
+  normally, dotted or not.
+* `RandomSelectorNode` has no fallback on a failed child (see the node-types table
+  above) — there is no way to make one branch of a random pool conditional without
+  affecting how often the pool "whiffs"; split into separate weighted pools instead.
 * `OnceExecute` / `OnceSuccess` writer support is implemented from source but no
   committed fixture exercises it.
 

@@ -1,4 +1,4 @@
-ï»¿#include "Transform.h"
+#include "Transform.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include <gtx/quaternion.hpp>
 #include <algorithm>
@@ -82,7 +82,7 @@ namespace NanamiEngine::Module::GameObject
         {
             const glm::vec3 parentWorldScale = parentObj->Transform().GetWorldScale();
 
-            // ã‚¼ãƒ­å‰²é˜²æ­¢
+            // ƒ[ƒŠ„–h~
             localScale_ = {
                 parentWorldScale.x != 0.0f ? worldScale.x / parentWorldScale.x : worldScale.x,
                 parentWorldScale.y != 0.0f ? worldScale.y / parentWorldScale.y : worldScale.y,
@@ -106,7 +106,7 @@ namespace NanamiEngine::Module::GameObject
             glm::length(glm::vec3(localMatrix[2]))
         };
 
-        // ã‚¹ã‚±ãƒ¼ãƒ«æˆåˆ†ã‚’é™¤å»ã—ã¦ã‹ã‚‰å›è»¢ã‚’æŠ½å‡ºã™ã‚‹ï¼ˆéç­‰å€ã‚¹ã‚±ãƒ¼ãƒ«ã§ quat ãŒæ­ªã‚€ã®ã‚’é˜²ãï¼‰
+        // ƒXƒP[ƒ‹¬•ª‚ğœ‹‚µ‚Ä‚©‚ç‰ñ“]‚ğ’Šo‚·‚éi”ñ“™”{ƒXƒP[ƒ‹‚Å quat ‚ª˜c‚Ş‚Ì‚ğ–h‚®j
         glm::mat3 rotationBasis(localMatrix);
         rotationBasis[0] = localScale_.x > 1e-8f ? rotationBasis[0] / localScale_.x : glm::vec3(1.0f, 0.0f, 0.0f);
         rotationBasis[1] = localScale_.y > 1e-8f ? rotationBasis[1] / localScale_.y : glm::vec3(0.0f, 1.0f, 0.0f);
@@ -213,16 +213,16 @@ namespace NanamiEngine::Module::GameObject
 
     glm::vec3 Transform::GetWorldEulerAngle() const
     {
-        // Worldå›è»¢ã‚’ quat ã¨ã—ã¦å–å¾—
+        // World‰ñ“]‚ğ quat ‚Æ‚µ‚Äæ“¾
         const glm::quat worldRot = GetWorldRot();
 
-        // quat â†’ euler(rad)
+        // quat ¨ euler(rad)
         glm::vec3 eulerRad = glm::eulerAngles(worldRot);
 
-        // rad â†’ deg
+        // rad ¨ deg
         glm::vec3 eulerDeg = glm::degrees(eulerRad);
 
-        // 0 ~ 360 ã«æ­£è¦åŒ–
+        // 0 ~ 360 ‚É³‹K‰»
         auto normalize360 = [](float deg)
         {
             deg = std::fmod(deg, 360.0f);
@@ -268,32 +268,75 @@ namespace NanamiEngine::Module::GameObject
     
     void Transform::SetParent(const std::weak_ptr<IGameObject>& parent, const bool keepWorldScale)
     {
+        if (parent_.lock() == parent.lock())
+            return;
+
+        const auto newParent = parent.lock();
+        const std::size_t appendIndex = newParent ? newParent->Transform().GetChildren().size() : 0;
+        SetParent(parent, appendIndex, keepWorldScale);
+    }
+
+    void Transform::SetParent(const std::weak_ptr<IGameObject>& parent, const std::size_t siblingIndex, const bool keepWorldScale)
+    {
+        const auto self = ownerGameObject_.lock();
+        if (!self)
+            return;
+
+        const auto newParent = parent.lock();
+
+        // ©•ª©gA‚Ü‚½‚Í©•ª‚Ìq‘·‚Ö‚ÌÄe•t‚¯‚ÍzŠÂQÆ‚ğ¶‚İ–Ø\‘¢‚ğ”j‰ó‚·‚é‚½‚ß‹‘”Û‚·‚éB
+        if (newParent)
+        {
+            if (newParent == self)
+                return;
+
+            for (const auto& descendant : GetAllChildren())
+            {
+                if (descendant == newParent)
+                    return;
+            }
+        }
+
         const glm::vec3 oldWorldPos   = GetWorldPos();
         const glm::quat oldWorldRot   = GetWorldRot();
         const glm::vec3 oldWorldScale = GetWorldScale();
 
-        if (parent_.lock() == parent.lock())
-            return;
+        const auto oldParent = parent_.lock();
+        constexpr std::size_t kNotFound = static_cast<std::size_t>(-1);
+        std::size_t oldIndex = kNotFound;
 
-        if (const auto oldParent = parent_.lock())
-            oldParent->Transform().RemoveChild(ownerGameObject_.lock());
+        if (oldParent)
+        {
+            auto& oldSiblings = oldParent->Transform().children_;
+            if (const auto it = std::ranges::find(oldSiblings, self); it != oldSiblings.end())
+            {
+                oldIndex = static_cast<std::size_t>(std::distance(oldSiblings.begin(), it));
+                oldSiblings.erase(it);
+            }
+        }
 
         parent_ = parent;
 
-        if (const auto newParent = parent_.lock())
-            newParent->Transform().AddChild(ownerGameObject_.lock());
+        if (newParent)
+        {
+            auto& newSiblings = newParent->Transform().children_;
+
+            std::size_t insertIndex = siblingIndex;
+            if (oldParent == newParent && oldIndex != kNotFound && oldIndex < insertIndex)
+                insertIndex -= 1;
+
+            insertIndex = std::min(insertIndex, newSiblings.size());
+
+            const bool alreadyExists = std::ranges::any_of(newSiblings, [&](const auto& c) { return c == self; });
+            if (!alreadyExists)
+                newSiblings.insert(newSiblings.begin() + static_cast<std::ptrdiff_t>(insertIndex), self);
+        }
 
         SetWorldPos(oldWorldPos);
         SetWorldRot(oldWorldRot);
 
         if (keepWorldScale)
-        {
             SetWorldScale(oldWorldScale);
-        }
-        else
-        {
-            
-        }
 
         UpdateMatrix();
     }
@@ -310,7 +353,7 @@ namespace NanamiEngine::Module::GameObject
 
             result.emplace_back(child);
 
-            // child ã® Transform ã‹ã‚‰ã•ã‚‰ã«å–å¾—
+            // child ‚Ì Transform ‚©‚ç‚³‚ç‚Éæ“¾
             const auto& childTransform = child->Transform();
             auto subChildren = childTransform.GetAllChildren();
 
@@ -403,7 +446,7 @@ namespace NanamiEngine::Module::GameObject
     {
         if (ImGui::CollapsingHeader("Transform"))
         {
-            // Local (editable) â€” open by default
+            // Local (editable) ? open by default
             if (ImGui::TreeNodeEx("Local", ImGuiTreeNodeFlags_DefaultOpen))
             {
                 glm::vec3 pos = localPos_;

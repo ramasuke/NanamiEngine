@@ -1,6 +1,7 @@
 ﻿#include "TextRenderer.h"
 #include "../../GameObject/Transform/Transform.h"
 #include <sstream>
+#include <vector>
 
 std::string Utf8ToShiftJis(const std::string& utf8)
 {
@@ -71,7 +72,13 @@ namespace NanamiEngine::Module::NanamiUi
     {
         isWorldPos_ = isWorld;
     }
-    
+
+    void TextRenderer::SetTextAlign(const TextAlign align)
+    {
+        textAlign_ = align;
+        isDirty_ = true;
+    }
+
     void TextRenderer::UpdateTextTexture()
     {
         if (!isDirty_ || !fontFile_)
@@ -83,8 +90,9 @@ namespace NanamiEngine::Module::NanamiUi
         const int lineHeight = GetFontSizeToHandle(fontHandle);
 
         // テキストの実サイズを計算（複数行対応）
+        std::vector<std::string> lines;
+        std::vector<int> lineWidths;
         int newW = 1;
-        int lineCount = 0;
         std::istringstream ss(cachedSjis_);
         std::string line;
         while (std::getline(ss, line))
@@ -93,10 +101,15 @@ namespace NanamiEngine::Module::NanamiUi
                 line.pop_back();
             const int lineW = GetDrawStringWidthToHandle(line.c_str(), static_cast<int>(line.size()), fontHandle);
             newW = std::max(newW, lineW);
-            ++lineCount;
+            lineWidths.push_back(lineW);
+            lines.push_back(std::move(line));
         }
-        if (lineCount == 0) lineCount = 1;
-        const int newH = std::max(lineHeight * lineCount, 1);
+        if (lines.empty())
+        {
+            lines.emplace_back();
+            lineWidths.push_back(0);
+        }
+        const int newH = std::max(lineHeight * static_cast<int>(lines.size()), 1);
         newW = std::max(newW, 1);
 
         // サイズが変わった場合は古いスクリーンを解放して再生成
@@ -115,7 +128,12 @@ namespace NanamiEngine::Module::NanamiUi
 
         SetDrawScreen(textScreen_);
         ClearDrawScreen();
-        DrawStringToHandle(0, 0, cachedSjis_.c_str(), textColor_.ToDxColor(), fontHandle);
+        const float alignFactor = ToAlignFactor(textAlign_);
+        for (size_t i = 0; i < lines.size(); ++i)
+        {
+            const int lineX = static_cast<int>((newW - lineWidths[i]) * alignFactor);
+            DrawStringToHandle(lineX, static_cast<int>(i) * lineHeight, lines[i].c_str(), textColor_.ToDxColor(), fontHandle);
+        }
         SetDrawScreen(DX_SCREEN_BACK);
 
         isDirty_ = false;
@@ -142,7 +160,8 @@ namespace NanamiEngine::Module::NanamiUi
         }
 
         ImGuiHelper::OnDrawInputField("textColor_", textColor_);
-        
+        ImGuiHelper::OnDrawEnumField("textAlign_", textAlign_, TEXT_ALIGNS, ToString);
+
         if (isWorldPos_)
         {
             ImGui::Text("screenW_: %d  screenH_: %d", screenW_, screenH_);
@@ -155,15 +174,50 @@ namespace NanamiEngine::Module::NanamiUi
     
         if (!isWorldPos_)
         {
-            DrawExtendStringFToHandle(
-                Transform().GetWorldPos().x,
-                Transform().GetWorldPos().y,
-                Transform().GetWorldScale().x,
-                Transform().GetWorldScale().y,
-                Utf8ToShiftJis(text_).c_str(),
-                textColor_.ToDxColor(),
-                fontFile_->DxLibHandle()
-            );
+            const float x = Transform().GetWorldPos().x;
+            const float y = Transform().GetWorldPos().y;
+            const float scaleX = Transform().GetWorldScale().x;
+            const float scaleY = Transform().GetWorldScale().y;
+            const int fontHandle = fontFile_->DxLibHandle();
+            const std::string sjis = Utf8ToShiftJis(text_);
+
+            if (textAlign_ == TextAlign::Left)
+            {
+                DrawExtendStringFToHandle(
+                    x, y,
+                    scaleX, scaleY,
+                    sjis.c_str(),
+                    textColor_.ToDxColor(),
+                    fontHandle
+                );
+            }
+            else
+            {
+                const float alignFactor = ToAlignFactor(textAlign_);
+                const float lineHeight = static_cast<float>(GetFontSizeToHandle(fontHandle)) * scaleY;
+
+                std::istringstream ss(sjis);
+                std::string line;
+                int lineIndex = 0;
+                while (std::getline(ss, line))
+                {
+                    if (!line.empty() && line.back() == '\r')
+                        line.pop_back();
+
+                    const int lineW = GetDrawExtendStringWidthToHandle(scaleX, line.c_str(), static_cast<int>(line.size()), fontHandle);
+                    const float lineX = x - static_cast<float>(lineW) * alignFactor;
+                    const float lineY = y + static_cast<float>(lineIndex) * lineHeight;
+
+                    DrawExtendStringFToHandle(
+                        lineX, lineY,
+                        scaleX, scaleY,
+                        line.c_str(),
+                        textColor_.ToDxColor(),
+                        fontHandle
+                    );
+                    ++lineIndex;
+                }
+            }
         }
         else
         {

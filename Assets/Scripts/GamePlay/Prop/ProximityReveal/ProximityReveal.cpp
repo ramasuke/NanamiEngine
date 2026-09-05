@@ -12,7 +12,12 @@ namespace GamePlay::Prop
     void ProximityReveal::OnUpdate()
     {
         const auto renderer = modelRenderer_.lock();
-        if (!renderer || renderer->cbHandle_ == -1)
+        if (!renderer)
+            return;
+
+        // 定数バッファは ModelRenderer 側で遅延生成される(シェーダー未設定なら -1)
+        const int cbHandle = renderer->GetOrCreateShaderConstantBufferHandle();
+        if (cbHandle == -1)
             return;
 
         const auto player = GameCore::PlayerAvatar::Owner();
@@ -21,13 +26,16 @@ namespace GamePlay::Prop
 
         const glm::vec3 pp = player->PlayerTransform().GetWorldPos();
 
-        auto* cb              = static_cast<ProximityCB*>(GetBufferShaderConstantBuffer(renderer->cbHandle_));
+        auto* cb = static_cast<ProximityCB*>(GetBufferShaderConstantBuffer(cbHandle));
+        if (!cb)
+            return;
+
         cb->playerPos[0]      = pp.x;
         cb->playerPos[1]      = pp.y;
         cb->playerPos[2]      = pp.z;
         cb->revealRadius      = revealRadius_;
         cb->transitionWidth   = transitionWidth_;
-        UpdateShaderConstantBuffer(renderer->cbHandle_);
+        UpdateShaderConstantBuffer(cbHandle);
     }
 
     void ProximityReveal::OnDrawGui()

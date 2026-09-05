@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from . import model
 
-DX = 190.0   # horizontal footprint of one leaf column   (node is 120 wide)
-DY = 90.0    # vertical step: parent -> child, and row-to-row inside a sequence
+DX = 127.0   # horizontal footprint of one leaf column   (node is 120 wide)
+DY = 60.0    # vertical step: parent -> child, and row-to-row inside a sequence
 X0 = 120.0
 Y0 = 40.0
 

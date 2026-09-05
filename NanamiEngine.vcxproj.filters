@@ -183,6 +183,9 @@
     <ClCompile Include="Engine\Module\GameObject\ComponentGroup\AddComponenet\AddComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Module\GameObject\Helper\TreeDropZone\TreeDropZone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Module\GameObject\PrefabGameObject\PrefabGameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -979,6 +982,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Module\NanamiUI\TextRenderer\TextRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\NanamiUI\TextRenderer\TextRenderer_TextAlign.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Module\ScriptableObject\NullContextFile\NullContextFile.cpp">
@@ -3425,6 +3431,9 @@
     <ClInclude Include="Engine\Module\GameObject\ComponentGroup\ComponentHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Module\GameObject\Helper\TreeDropZone\TreeDropZone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Module\GameObject\PrefabGameObject\PrefabGameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5107,6 +5116,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\NanamiUI\TextRenderer\TextRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\NanamiUI\TextRenderer\TextRenderer_TextAlign.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\ScriptableObject\NullContextFile\NullContextFile.h">

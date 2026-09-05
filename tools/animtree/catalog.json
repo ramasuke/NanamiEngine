@@ -1,0 +1,141 @@
+{
+  "generated_from": "8d6ad3b0f4c899495bb23841a0e8f6dacf641c87",
+  "node_types": {
+    "NanamiEngine::Module::AnimationTree::AnimationClipNode": {
+      "class": "AnimationClipNode",
+      "fqn": "NanamiEngine::Module::AnimationTree::AnimationClipNode",
+      "leaf": "AnimationClipNode",
+      "version": 2,
+      "singleton": false,
+      "header": "Engine/Module/AnimationTree/Node/ClipNode/AnimationClipNode.h",
+      "params": [
+        {
+          "key": "animationFile_",
+          "member": "animationFile_",
+          "named": true,
+          "shape": "field",
+          "type": "Mv1File"
+        },
+        {
+          "key": "name_",
+          "member": "name_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "position_",
+          "member": "position_",
+          "named": true,
+          "shape": "self_pos"
+        },
+        {
+          "key": "guid_",
+          "member": "guid_",
+          "named": true,
+          "shape": "self_guid"
+        },
+        {
+          "key": "speed_",
+          "member": "speed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "blendAnimationOffset_secs_",
+          "member": "blendAnimationOffset_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "modelAnimationIndex_",
+          "member": "modelAnimationIndex_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "NanamiEngine::Module::AnimationTree::AnimationVisualAnyStateNode": {
+      "class": "AnimationVisualAnyStateNode",
+      "fqn": "NanamiEngine::Module::AnimationTree::AnimationVisualAnyStateNode",
+      "leaf": "AnimationVisualAnyStateNode",
+      "version": 0,
+      "singleton": true,
+      "header": "Engine/Module/AnimationTree/Node/VisualAnyStateNode/AnimationVisualAnyStateNode.h",
+      "params": [
+        {
+          "key": "position_",
+          "member": "position_",
+          "named": true,
+          "shape": "self_pos"
+        },
+        {
+          "key": "guid_",
+          "member": "guid_",
+          "named": true,
+          "shape": "self_guid"
+        }
+      ]
+    },
+    "NanamiEngine::Module::AnimationTree::AnimatorEntryNode": {
+      "class": "AnimatorEntryNode",
+      "fqn": "NanamiEngine::Module::AnimationTree::AnimatorEntryNode",
+      "leaf": "AnimatorEntryNode",
+      "version": 0,
+      "singleton": true,
+      "header": "Engine/Module/AnimationTree/Node/EntryNode/AnimatorEntryNode.h",
+      "params": [
+        {
+          "key": "position_",
+          "member": "position_",
+          "named": true,
+          "shape": "self_pos"
+        },
+        {
+          "key": "guid_",
+          "member": "guid_",
+          "named": true,
+          "shape": "self_guid"
+        },
+        {
+          "key": "speed_",
+          "member": "speed_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    }
+  },
+  "by_leaf": {
+    "AnimationClipNode": "NanamiEngine::Module::AnimationTree::AnimationClipNode",
+    "AnimationVisualAnyStateNode": "NanamiEngine::Module::AnimationTree::AnimationVisualAnyStateNode",
+    "AnimatorEntryNode": "NanamiEngine::Module::AnimationTree::AnimatorEntryNode"
+  },
+  "conditions": {
+    "bool": {
+      "fqn": "NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<bool>",
+      "version": 0
+    },
+    "int": {
+      "fqn": "NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<int>",
+      "version": 0
+    },
+    "float": {
+      "fqn": "NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<float>",
+      "version": 0
+    }
+  },
+  "params": {
+    "bool": {
+      "fqn": "NanamiEngine::Module::AnimationTree::AnimationParameter<bool>",
+      "version": 0
+    },
+    "int": {
+      "fqn": "NanamiEngine::Module::AnimationTree::AnimationParameter<int>",
+      "version": 0
+    },
+    "float": {
+      "fqn": "NanamiEngine::Module::AnimationTree::AnimationParameter<float>",
+      "version": 0
+    }
+  }
+}

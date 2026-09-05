@@ -1,5 +1,6 @@
 #include "HlslVsFile.h"
 #include <DxLib.h>
+#include "../../Log/NanamiEngine_Module_Log.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -11,6 +12,8 @@ namespace NanamiEngine::Module::Asset
     void HlslVsFile::OnEnableAsset()
     {
         vsHandle_ = LoadVertexShader(contentPath_.c_str());
+        if (vsHandle_ == -1)
+            LogError("HlslVsFile: 頂点シェーダーの読み込みに失敗しました: " + contentPath_);
     }
 
     const Guid& HlslVsFile::GetGuid       () const { return guid_; }

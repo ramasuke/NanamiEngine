@@ -82,9 +82,10 @@ Core::PopupWindow::ProjectWindow::ProjectWindow()
     id_ = counter_++;
 }
 
-void Core::PopupWindow::ProjectWindow::OnDraw(const PopupWindowDrawGuiContext context)
+Core::PopupWindow::PopupWindowState Core::PopupWindow::ProjectWindow::OnDraw(const PopupWindowDrawGuiContext context)
 {
-    ImGui::Begin(("Project##" + std::to_string(id_)).c_str());
+    bool isOpen = true;
+    ImGui::Begin(("Project##" + std::to_string(id_)).c_str(), &isOpen);
 
     ImGui::Checkbox("isLock", &isLockedContent_);
     OnDrawToolbar();
@@ -122,6 +123,8 @@ void Core::PopupWindow::ProjectWindow::OnDraw(const PopupWindowDrawGuiContext co
     ImGui::Columns(1);
 
     ImGui::End();
+
+    return isOpen ? PopupWindowState::Open : PopupWindowState::Closed;
 }
 
 void Core::PopupWindow::ProjectWindow::OnDrawDirectoryTree(FileSystem::Directory& directory)
