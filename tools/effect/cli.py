@@ -35,6 +35,7 @@ _KIND_BUILDERS = {
     "sprite": lambda: p.drawing_values("sprite", p.sprite()),
     "ring": lambda: p.drawing_values("ring", p.ring()),
     "ribbon": lambda: p.drawing_values("ribbon", p.ribbon()),
+    "track": lambda: p.drawing_values("track", p.track()),
 }
 
 
@@ -49,6 +50,58 @@ def _resolve(arg: str) -> Path:
     if path.exists():
         return path.resolve()
     return _REPO / path
+
+
+# ---------------------------------------------------------------------------
+# compact CLI-flag value parsing (shared by add-node's dedicated flags)
+def _parse_bool(spec: str) -> bool:
+    return spec.lower() == "true"
+
+
+def _parse_pva(spec: str) -> dict:
+    """``"CENTER"`` -> a fixed value; ``"MIN:CENTER:MAX"`` -> a range."""
+    parts = spec.split(":")
+    if len(parts) == 1:
+        v = float(parts[0])
+        return {"center": v, "max": v, "min": v}
+    if len(parts) == 3:
+        mn, ctr, mx = (float(x) for x in parts)
+        return {"center": ctr, "max": mx, "min": mn}
+    raise CliError(f"bad value {spec!r}: expected CENTER or MIN:CENTER:MAX")
+
+
+def _parse_color(spec: str) -> dict:
+    """``"R:G:B[:A]"``, 0-255 ints, A defaults to 255."""
+    parts = spec.split(":")
+    if len(parts) not in (3, 4):
+        raise CliError(f"bad color {spec!r}: expected R:G:B[:A]")
+    vals = [int(x) for x in parts]
+    if len(vals) == 3:
+        vals.append(255)
+    return dict(zip("rgba", vals))
+
+
+def _parse_color_random(spec: str) -> dict:
+    """``"R,G,B[,A]"``, each channel itself ``CENTER`` or ``MIN:CENTER:MAX``."""
+    channels = spec.split(",")
+    if len(channels) not in (3, 4):
+        raise CliError(f"bad color-random {spec!r}: expected R,G,B[,A] "
+                        "(each CENTER or MIN:CENTER:MAX)")
+    names = ["r", "g", "b", "a"]
+    return {names[i]: _parse_pva(ch) for i, ch in enumerate(channels)}
+
+
+def _parse_fade(spec: str) -> dict:
+    """``"FRAME[:START_SPEED[:END_SPEED]]"``."""
+    parts = spec.split(":")
+    if not 1 <= len(parts) <= 3:
+        raise CliError(f"bad fade {spec!r}: expected FRAME[:START_SPEED[:END_SPEED]]")
+    out: dict = {"frame": float(parts[0])}
+    if len(parts) >= 2:
+        out["start_speed"] = float(parts[1])
+    if len(parts) >= 3:
+        out["end_speed"] = float(parts[2])
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -161,8 +214,9 @@ def cmd_validate(args: argparse.Namespace) -> int:
             walk(kids)
 
     for k in sorted(unknown_kinds):
-        problems.append(f"unsupported DrawingValues {k} (v1 only models sprite/ring/ribbon; "
-                         "this may still compile fine via the CUI, it just wasn't built by this toolkit)")
+        problems.append(f"unsupported DrawingValues {k} (this toolkit only models "
+                         f"{sorted(p.DRAWING_TYPE)}; this may still compile fine via the "
+                         "CUI, it just wasn't built by this toolkit)")
 
     if problems:
         print(f"{len(problems)} problem(s) in {path.name}:")
@@ -173,18 +227,120 @@ def cmd_validate(args: argparse.Namespace) -> int:
     return 0
 
 
+# ---------------------------------------------------------------------------
+# add-node: dedicated-flag -> presets kwargs (main/most-discoverable fields;
+# anything else stays reachable via --set dotted.path=value)
+def _common_kwargs_from_args(args: argparse.Namespace) -> dict:
+    kwargs: dict = {}
+    if args.life is not None:
+        kwargs["life"] = _parse_pva(args.life)
+    if args.max_generation is not None:
+        kwargs["max_generation"] = args.max_generation
+    if args.infinite is not None:
+        kwargs["infinite"] = args.infinite
+    return kwargs
+
+
+def _renderer_kwargs_from_args(args: argparse.Namespace) -> dict:
+    kwargs: dict = {}
+    if args.color_texture is not None:
+        kwargs["color_texture"] = args.color_texture
+    if args.fade_in is not None:
+        kwargs["fade_in"] = _parse_fade(args.fade_in)
+    if args.fade_out is not None:
+        kwargs["fade_out"] = _parse_fade(args.fade_out)
+    if args.uv_scroll is not None:
+        sx, _, sy = args.uv_scroll.partition(":")
+        kwargs["uv_scroll"] = {"speed": {"x": float(sx), "y": float(sy) if sy else 0.0}}
+    return kwargs
+
+
+def _generation_location_from_args(args: argparse.Namespace) -> Elem | None:
+    if args.generation_shape is None:
+        return None
+    if args.generation_shape == "circle":
+        return p.generation_location_circle(
+            division=float(args.division) if args.division is not None else None,
+            radius=_parse_pva(args.radius) if args.radius is not None else None,
+            angle_start=_parse_pva(args.angle_start) if args.angle_start is not None else None,
+            angle_end=_parse_pva(args.angle_end) if args.angle_end is not None else None,
+        )
+    if args.generation_shape == "sphere":
+        return p.generation_location_sphere(
+            radius=_parse_pva(args.radius) if args.radius is not None else None,
+        )
+    return p.generation_location_point()
+
+
+def _build_drawing(args: argparse.Namespace) -> Elem:
+    kind = args.kind
+    if kind == "sprite":
+        color_all = p.color("ColorAll_Fixed", **_parse_color(args.color)) if args.color else None
+        color_all_random = (p.random_color("ColorAll_Random", **_parse_color_random(args.color_random))
+                             if args.color_random else None)
+        return p.drawing_values("sprite", p.sprite(
+            billboard=int(args.billboard) if args.billboard is not None else 0,
+            color_all=color_all, color_all_random=color_all_random,
+        ))
+    if kind == "ring":
+        if args.color:
+            c = _parse_color(args.color)
+            block = p.ring(outer_color=p.color("OuterColor_Fixed", **c),
+                            center_color=p.color("CenterColor_Fixed", **c),
+                            inner_color=p.color("InnerColor_Fixed", **c))
+        else:
+            block = p.ring()
+        return p.drawing_values("ring", block)
+    if kind == "ribbon":
+        color_all = p.color("ColorAll_Fixed", **_parse_color(args.color)) if args.color else None
+        return p.drawing_values("ribbon", p.ribbon(color_all=color_all))
+    if kind == "model":
+        if not args.model:
+            raise CliError("--kind model requires --model PATH")
+        color_fixed = p.color("Color_Fixed", **_parse_color(args.color)) if args.color else None
+        return p.drawing_values("model", p.model(
+            model_path=args.model,
+            lighting=_parse_bool(args.lighting) if args.lighting is not None else None,
+            color_fixed=color_fixed,
+        ))
+    if kind == "track":
+        if args.track_color:
+            c = _parse_color(args.track_color)
+            block = p.track(
+                color_left=p.color("ColorLeft_Fixed", **c),
+                color_left_middle=p.color("ColorLeftMiddle_Fixed", **c),
+                color_center=p.color("ColorCenter_Fixed", **c),
+                color_center_middle=p.color("ColorCenterMiddle_Fixed", **c),
+                color_right=p.color("ColorRight_Fixed", **c),
+                color_right_middle=p.color("ColorRightMiddle_Fixed", **c),
+            )
+        else:
+            block = p.track()
+        return p.drawing_values("track", block)
+    raise CliError(f"unknown --kind {kind!r}")
+
+
 def cmd_add_node(args: argparse.Namespace) -> int:
     path = _resolve(args.file)
     proj = xmlio.read(path)
     parent = resolve_node(proj, args.parent)
     parent_children = parent.child_or_add("Children")
 
+    node_kwargs: dict = {}
+    common_kwargs = _common_kwargs_from_args(args)
+    if common_kwargs:
+        node_kwargs["common"] = p.common_values(**common_kwargs)
+    renderer_kwargs = _renderer_kwargs_from_args(args)
+    if renderer_kwargs:
+        node_kwargs["renderer_common"] = p.renderer_common(**renderer_kwargs)
+    gen_loc = _generation_location_from_args(args)
+    if gen_loc is not None:
+        node_kwargs["generation_location"] = gen_loc
+
     if args.kind == "group":
-        new_node = p.group_node(args.name)
-    elif args.kind in _KIND_BUILDERS:
-        new_node = p.node(args.name, drawing=_KIND_BUILDERS[args.kind]())
+        new_node = p.group_node(args.name, **node_kwargs)
     else:
-        raise CliError(f"unknown --kind {args.kind!r}")
+        new_node = p.node(args.name, drawing=_build_drawing(args), **node_kwargs)
 
     for assignment in args.set or []:
         key, _, value = assignment.partition("=")
@@ -222,6 +378,12 @@ def cmd_apply(args: argparse.Namespace) -> int:
             node_kind = op["kind"]
             if node_kind == "group":
                 new_node = p.group_node(op.get("name", "Node"))
+            elif node_kind == "model":
+                model_path = op.get("model")
+                if not model_path:
+                    raise CliError(f"op {i}: kind 'model' requires a 'model' path")
+                new_node = p.node(op.get("name", "Node"),
+                                   drawing=p.drawing_values("model", p.model(model_path=model_path)))
             elif node_kind in _KIND_BUILDERS:
                 new_node = p.node(op.get("name", "Node"), drawing=_KIND_BUILDERS[node_kind]())
             else:
@@ -340,10 +502,35 @@ def register(sub: argparse._SubParsersAction) -> None:
     sp = sub.add_parser("add-node", help="add a node under an existing node/root")
     sp.add_argument("file")
     sp.add_argument("--parent", default="", help='node path, e.g. "1.0" (default: root)')
-    sp.add_argument("--kind", required=True, choices=["sprite", "ring", "ribbon", "group"])
+    sp.add_argument("--kind", required=True,
+                     choices=["sprite", "ring", "ribbon", "model", "track", "group"])
     sp.add_argument("--name", default="Node")
+    # CommonValues
+    sp.add_argument("--life", default=None, metavar="CENTER|MIN:CENTER:MAX")
+    sp.add_argument("--max-generation", type=int, default=None)
+    sp.add_argument("--infinite", type=_parse_bool, default=None, metavar="true|false")
+    # RendererCommonValues
+    sp.add_argument("--color-texture", default=None, metavar="PATH")
+    sp.add_argument("--fade-in", default=None, metavar="FRAME[:START_SPEED[:END_SPEED]]")
+    sp.add_argument("--fade-out", default=None, metavar="FRAME[:START_SPEED[:END_SPEED]]")
+    sp.add_argument("--uv-scroll", default=None, metavar="SPEED_X:SPEED_Y")
+    # GenerationLocationValues
+    sp.add_argument("--generation-shape", choices=["circle", "sphere", "point"], default=None)
+    sp.add_argument("--radius", default=None, metavar="CENTER|MIN:CENTER:MAX (circle/sphere)")
+    sp.add_argument("--division", default=None, metavar="N (circle)")
+    sp.add_argument("--angle-start", default=None, metavar="CENTER|MIN:CENTER:MAX (circle)")
+    sp.add_argument("--angle-end", default=None, metavar="CENTER|MIN:CENTER:MAX (circle)")
+    # kind-specific
+    sp.add_argument("--billboard", default=None, metavar="N (sprite)")
+    sp.add_argument("--color", default=None, metavar="R:G:B[:A] (sprite/ribbon/ring/model)")
+    sp.add_argument("--color-random", default=None,
+                     metavar="R,G,B[,A] (sprite; each CENTER|MIN:CENTER:MAX)")
+    sp.add_argument("--model", default=None, metavar="PATH (required for --kind model)")
+    sp.add_argument("--lighting", default=None, metavar="true|false (model)")
+    sp.add_argument("--track-color", default=None,
+                     metavar="R:G:B[:A] (track; applies to all 6 rails)")
     sp.add_argument("--set", action="append", metavar="dotted.path=value",
-                     help="may be repeated")
+                     help="may be repeated; escape hatch for anything not covered above")
     sp.set_defaults(func=_wrap(cmd_add_node))
 
     sp = sub.add_parser("set-params", help="set fields on an existing node")

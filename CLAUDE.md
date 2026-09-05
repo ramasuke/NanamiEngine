@@ -106,5 +106,7 @@ python tools/effect/selftest.py             # run after touching tools/effect/{m
 `install` mints a fresh-GUID `.efkefc.meta` (`ParticleFile`, via `tools/common/meta_base.py` —
 shared with `tools/bt`/`tools/scene`) and, with `--project`, commits the `.efkproj` source under
 `Assets/Art/Effect/_Source/`. See **`tools/effect/README.md`** for the full command reference and
-v1 scope limits (only `Sprite`/`Ring`/`Ribbon` node kinds are modeled; the CUI compile step is
-pinned to a specific local Effekseer 1.7.3.0 install and is machine-specific).
+known scope limits (`Sprite`/`Ring`/`Ribbon`/`Model`/`Track` node kinds plus `SoundValues`/
+`LocationAbsValues` are modeled; FCurve/keyframed variants and project-root camera/viewer
+metadata are not; the CUI compile step is pinned to a specific local Effekseer 1.7.3.0 install
+and is machine-specific).

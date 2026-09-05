@@ -6,7 +6,7 @@
       <Node>
         <CommonValues>
           <MaxGeneration>
-            <Value>4</Value>
+            <Value>8</Value>
           </MaxGeneration>
           <GenerationTime>
             <Center>0</Center>
@@ -26,18 +26,18 @@
             <Velocity>
               <X>
                 <Center>0</Center>
-                <Max>0.6</Max>
-                <Min>-0.6</Min>
+                <Max>0.3</Max>
+                <Min>-0.3</Min>
               </X>
               <Y>
-                <Center>0.4</Center>
-                <Max>0.65</Max>
-                <Min>0.2</Min>
+                <Center>0</Center>
+                <Max>0.3</Max>
+                <Min>-0.3</Min>
               </Y>
               <Z>
                 <Center>0</Center>
-                <Max>0.6</Max>
-                <Min>-0.6</Min>
+                <Max>0.3</Max>
+                <Min>-0.3</Min>
               </Z>
             </Velocity>
           </PVA>
@@ -60,6 +60,11 @@
             </Scale>
           </PVA>
         </ScalingValues>
+        <GenerationLocationValues>
+          <EffectsRotation>True</EffectsRotation>
+          <Type>1</Type>
+          <Sphere />
+        </GenerationLocationValues>
         <RendererCommonValues>
           <Filter>1</Filter>
           <AlphaBlend>1</AlphaBlend>
