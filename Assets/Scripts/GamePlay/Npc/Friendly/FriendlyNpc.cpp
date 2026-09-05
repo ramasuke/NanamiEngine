@@ -10,11 +10,16 @@ namespace GamePlay::Npc::Friendly
 
     void FriendlyNpc::OnAwake()
     {
-        behaviour_ = friendlyNpcBehaviourFile_->OnLoadCopyContent();
+        if (friendlyNpcBehaviourFile_)
+            behaviour_ = friendlyNpcBehaviourFile_->OnLoadCopyContent();
     }
 
     void FriendlyNpc::OnUpdate()
     {
+        // BehaviourTree が未設定・読み込み失敗（OnLoadCopyContent が nullptr）の場合は何もしない
+        if (!behaviour_)
+            return;
+
         behaviour_->Tick(name_,
                          Entity(),
                          billboardNpcChatIcon_.get(),

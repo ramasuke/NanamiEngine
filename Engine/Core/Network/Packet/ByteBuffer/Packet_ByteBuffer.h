@@ -1,9 +1,11 @@
 ﻿#pragma once
-#include <cassert>
-#include <iosfwd>
+#include <cstring>
+#include <sstream>
+#include <string>
 #include <vector>
 
 #include "../cereal/include/cereal/archives/portable_binary.hpp"
+#include "../../../../Module/Exception/Engine_Module_Exception.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -41,7 +43,8 @@ namespace NanamiEngine::Core::Network
         template<typename T>
         T ReadRaw(size_t& offset) const
         {
-            assert(offset + sizeof(T) <= data_.size());
+            // 受信データは信頼できないので assert ではなく実行時に検証する（Release でも有効）
+            EnsureReadable(offset, sizeof(T));
             T value;
             memcpy(&value, data_.data() + offset, sizeof(T));
             offset += sizeof(T);
@@ -55,20 +58,30 @@ namespace NanamiEngine::Core::Network
             const uint32_t size = ReadRaw<uint32_t>(offset);
 
             // バイナリ取り出し
-            assert(offset + size <= data_.size());
+            EnsureReadable(offset, size);
             const std::string str(reinterpret_cast<const char*>(data_.data() + offset), size);
             offset += size;
 
-            // デシリアライズ
-            std::stringstream ss(str);
-            cereal::PortableBinaryInputArchive archive(ss);
+            // デシリアライズ（破損・改ざんされたペイロードは cereal が投げるので PacketDeserializeException に揃える）
+            try
+            {
+                std::stringstream ss(str);
+                cereal::PortableBinaryInputArchive archive(ss);
 
-            T value;
-            archive(value);
-            return value;
+                T value;
+                archive(value);
+                return value;
+            }
+            catch (const std::exception& exception)
+            {
+                throw Module::Exception::PacketDeserializeException(exception.what());
+            }
         }
-        
+
     private:
+        /** [offset, offset + size) がバッファ内に収まっているか検証し、超えていれば PacketDeserializeException を投げる */
+        void EnsureReadable(size_t offset, size_t size) const;
+
         std::vector<uint8_t> data_;
     };
 }

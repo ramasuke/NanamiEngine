@@ -11,6 +11,8 @@
 #include "../../../Module/Asset/Hlsl/HlslPsFile.h"
 #include "../../Application/Window/Popup/Group/PopupWindowGroup.h"
 #include "../../Application/Window/Popup/Inspector/InspectorWindow.h"
+#include "../../../Module/Exception/Engine_Module_Exception.h"
+#include "../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "cereal/archives/json.hpp"
 #include "cereal/archives/portable_binary.hpp"
 
@@ -140,10 +142,19 @@ namespace NanamiEngine::Core::FileSystem
     
         cereal::JSONOutputArchive archive(ofStream);
         archive(content_);
-    
-        content_->OnSaveCallback();
+
+        try
+        {
+            content_->OnSaveCallback();
+        }
+        catch (const Module::Exception::NanamiException& exception)
+        {
+            // OnSaveCallback は「元ファイルを読み直して保存」するため、壊れたファイルはここで止まる（空データで上書きしない）。
+            // Toolbar の Save（Directory::OnSave 経由）と Rename の両方の経路をここで受ける
+            Module::LogError("File: 保存に失敗しました: " + std::string(exception.what()));
+        }
     }
-    
+
     void File::OnClick() const
     {
         for (auto* inspector : Application::ApplicationBase::PopupWindows().Catch<PopupWindow::InspectorWindow>())
@@ -151,9 +162,21 @@ namespace NanamiEngine::Core::FileSystem
             inspector->TryAddDisplayObject(content_);
         }
     }
-    
+
     void File::OnDoubleClick() const
     {
-        content_->OnDoubleClick();
+        // 未登録の拡張子や .meta の読み込みに失敗したファイルは content_ が null
+        if (!content_)
+            return;
+
+        try
+        {
+            content_->OnDoubleClick();
+        }
+        catch (const Module::Exception::NanamiException& exception)
+        {
+            // Scene / Prefab / AnimationTree / BehaviourTree のダブルクリックによる読み込み失敗をここで一括して受ける
+            Module::LogError("File: 開けませんでした: " + std::string(exception.what()));
+        }
     }
 }

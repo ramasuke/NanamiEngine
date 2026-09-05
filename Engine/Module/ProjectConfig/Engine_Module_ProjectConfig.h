@@ -1,10 +1,14 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <fstream>
 #include <filesystem>
 #include <stdexcept>
 
 #include <cereal/archives/json.hpp>
+
+#include "../Exception/Engine_Module_Exception.h"
+#include "../Log/NanamiEngine_Module_Log.h"
+#include "../Serialization/Engine_Module_Serialization.h"
 
 namespace NanamiEngine::Module::ProjectConfig
 {
@@ -29,17 +33,21 @@ namespace NanamiEngine::Module::ProjectConfig
         EnsureDirectory(path);
         try
         {
+            Serialization::SaveJsonFile(tmpPath, [&](cereal::JSONOutputArchive& ar)
             {
-                std::ofstream os(tmpPath);
-                cereal::JSONOutputArchive ar(os);
                 ar(cereal::make_nvp(key, value));
-            }
+            });
             std::filesystem::rename(tmpPath, path);
+        }
+        catch (const Exception::SerializationException&)
+        {
+            std::filesystem::remove(tmpPath);
+            throw;
         }
         catch (const std::exception& e)
         {
             std::filesystem::remove(tmpPath);
-            throw std::runtime_error("ProjectConfig Save failed: " + std::string(e.what()));
+            throw Exception::SerializeException(path, e.what());
         }
     }
 
@@ -51,12 +59,18 @@ namespace NanamiEngine::Module::ProjectConfig
             return defaultValue;
         try
         {
-            std::ifstream is(path);
-            cereal::JSONInputArchive ar(is);
             T value;
-            ar(cereal::make_nvp(key, value));
+            Serialization::LoadJsonFile(path, [&](cereal::JSONInputArchive& ar)
+            {
+                ar(cereal::make_nvp(key, value));
+            });
             return value;
         }
-        catch (...) { return defaultValue; }
+        catch (const Exception::SerializationException& e)
+        {
+            // 設定ファイルの破損はデフォルト値で継続するが、黙って握りつぶさず警告を残す
+            LogWarning("ProjectConfig: " + std::string(e.what()) + " -> デフォルト値を使用します");
+            return defaultValue;
+        }
     }
 }

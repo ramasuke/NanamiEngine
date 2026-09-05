@@ -1,7 +1,10 @@
 ﻿#include "DrawNodeHelper.h"
 
 #include "imgui_internal.h"
+#include "../../../../../Engine/Module/Exception/Engine_Module_Exception.h"
 #include "../../../../../Engine/Module/Gui/Graph/GraphGui.h"
+#include "../../../../../Engine/Module/Log/NanamiEngine_Module_Log.h"
+#include "../../../../../Engine/Module/Serialization/Engine_Module_Serialization.h"
 #include "cereal/archives/portable_binary.hpp"
 #include "Node/Npc_BehaviourNodeBase.h"
 #include "Node/Npc_Behaviour_NodeFactory.h"
@@ -146,10 +149,22 @@ std::shared_ptr<Editor::Npc::Behaviour::NodeBase> Editor::Npc::Behaviour::DrawGr
     if (!s_hasCopiedNode)
         return nullptr;
 
+    // 2 回目以降の貼り付けでも先頭から読めるよう、読み取り位置を戻す
+    s_copiedNodeBinary.clear();
+    s_copiedNodeBinary.seekg(0);
+
     std::shared_ptr<NodeBase> newNode;
+    try
     {
-        cereal::PortableBinaryInputArchive archive(s_copiedNodeBinary);
-        archive(newNode);
+        NanamiEngine::Module::Serialization::LoadPortableBinary(s_copiedNodeBinary, "BehaviourTree clipboard", [&newNode](cereal::PortableBinaryInputArchive& archive)
+        {
+            archive(newNode);
+        });
+    }
+    catch (const NanamiEngine::Module::Exception::SerializationException& exception)
+    {
+        NanamiEngine::Module::LogError("DrawNodeHelper: ノードの貼り付けに失敗しました: " + std::string(exception.what()));
+        return nullptr;
     }
 
     if(newNode) newNode->ResetGuid();

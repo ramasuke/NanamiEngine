@@ -12,6 +12,9 @@
 #include "../../../Core/Object/Registry/ObjectRegistry.h"
 #include "../AssetBase.h"
 #include "../../../Core/Application/LifeCycle/ApplicationLifeCycle.h"
+#include "../../Exception/Engine_Module_Exception.h"
+#include "../../Log/NanamiEngine_Module_Log.h"
+#include "../../Serialization/Engine_Module_Serialization.h"
 #include "../cereal/include/cereal/archives/json.hpp"
 
 namespace NanamiEngine::Module::Asset
@@ -74,13 +77,23 @@ namespace NanamiEngine::Module::Asset
                 if (!LibCore::FilePath::IsExtension(filePath, extensionLabel))
                     return nullptr;
 
-                std::ifstream ifStream(filePath + ".meta");
-                if (!ifStream.is_open())
-                    return nullptr;
-
-                cereal::JSONInputArchive archive(ifStream);
                 std::shared_ptr<AssetBase> loaded;
-                archive(loaded);
+                try
+                {
+                    const bool exists = Serialization::LoadJsonFileIfExists(filePath + ".meta", [&loaded](cereal::JSONInputArchive& archive)
+                    {
+                        archive(loaded);
+                    });
+                    if (!exists)
+                        return nullptr;
+                }
+                catch (const Exception::SerializationException& exception)
+                {
+                    // 壊れた .meta が 1 つあっても起動時のスキャンや Reload Assets 全体を止めない。
+                    // このファイルは「中身の無い File」（content_ == nullptr）として扱われ、Save でも上書きされない
+                    LogError("AssetFactory: .meta の読み込みに失敗しました: " + std::string(exception.what()));
+                    return nullptr;
+                }
 
                 if (auto loadShared = std::dynamic_pointer_cast<T>(loaded))
                 {

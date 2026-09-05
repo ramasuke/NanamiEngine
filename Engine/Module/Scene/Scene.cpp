@@ -1,4 +1,4 @@
-#include "Scene.h"
+﻿#include "Scene.h"
 #include <algorithm>
 #include <cctype>
 #include <ranges>
@@ -7,6 +7,8 @@
 
 #include "../Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../GameObject/PrefabGameObject/PrefabGameObject.h"
+#include "../Log/NanamiEngine_Module_Log.h"
+#include "../Serialization/Engine_Module_Serialization.h"
 #include "cereal/archives/json.hpp"
 #include "GameObject/CopiedPrefabGameObject/CopiedPrefabGameObject.h"
 #include "GameObject/Helper/GameObject.h"
@@ -33,26 +35,26 @@ namespace
 Scene::Scene::Scene(const std::string& filePath)
 {
     filePath_ = filePath;
-    std::ifstream ifStream(filePath_);
-    if (!ifStream.is_open())
-        return;
-
-    cereal::JSONInputArchive archive(ifStream);
-    archive(cereal::make_nvp("name", name_));
-
-    std::size_t count = 0;
-    archive(cereal::make_nvp("gameObjectCount", count));
-
-    for (std::size_t i = 0; i < count; ++i)
+    // 未作成のファイルは空の Scene として扱う（新規作成 → Save のフローで使う）。
+    // 破損している場合は DeserializeException が投げられ、Scene は生成されない
+    NanamiEngine::Module::Serialization::LoadJsonFileIfExists(filePath_, [this](cereal::JSONInputArchive& archive)
     {
-        std::shared_ptr<Module::GameObject::IGameObject> gameObject;
-        archive(cereal::make_nvp("gameObject_" + std::to_string(i), gameObject));
-        if (gameObject)
+        archive(cereal::make_nvp("name", name_));
+
+        std::size_t count = 0;
+        archive(cereal::make_nvp("gameObjectCount", count));
+
+        for (std::size_t i = 0; i < count; ++i)
         {
-            gameObjects_[gameObject->GetGuid()] = gameObject;
-            gameObject->InitGameObject(std::weak_ptr<Module::GameObject::IGameObject>(), gameObject);
+            std::shared_ptr<Module::GameObject::IGameObject> gameObject;
+            archive(cereal::make_nvp("gameObject_" + std::to_string(i), gameObject));
+            if (gameObject)
+            {
+                gameObjects_[gameObject->GetGuid()] = gameObject;
+                gameObject->InitGameObject(std::weak_ptr<Module::GameObject::IGameObject>(), gameObject);
+            }
         }
-    }
+    });
 }
 
 Scene::Scene::~Scene()
@@ -218,7 +220,11 @@ void Scene::Scene::OnDrawFileDropGui(Core::FileSystem::EditorDraggingHand& fileD
             const auto draggingGuid = fileDraggingHand.TakeDraggingItemGuid();
             if (const auto prefabGameObjectFile = Core::Application::ApplicationBase::ObjectRegistry().Catch<Module::Asset::PrefabGameObjectFile>(draggingGuid.value()); !prefabGameObjectFile.expired())
             {
-                AddGameObject(prefabGameObjectFile.lock()->Content()->CopyForEditor());
+                // .prefab の読み込みに失敗している場合は Content() が null
+                if (const auto content = prefabGameObjectFile.lock()->Content())
+                    AddGameObject(content->CopyForEditor());
+                else
+                    NanamiEngine::Module::LogError("Scene: Prefab の内容が読み込まれていないため配置できません: " + prefabGameObjectFile.lock()->GetContentPath());
             }
             if (const auto sceneGameObject = Core::Application::ApplicationBase::ObjectRegistry().Catch<Module::GameObject::IGameObject>(draggingGuid.value()); !sceneGameObject.expired())
             {

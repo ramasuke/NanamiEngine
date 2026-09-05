@@ -21,4 +21,16 @@ namespace NanamiEngine::Core::Network
     {
         data_.insert(data_.end(), ptr, ptr + size);
     }
+
+    void ByteBuffer::EnsureReadable(const size_t offset, const size_t size) const
+    {
+        // offset + size のオーバーフローを避けるため差分で比較する
+        if (offset > data_.size() || size > data_.size() - offset)
+        {
+            throw Module::Exception::PacketDeserializeException(
+                "read out of range (offset=" + std::to_string(offset) +
+                ", size=" + std::to_string(size) +
+                ", buffer=" + std::to_string(data_.size()) + ")");
+        }
+    }
 }

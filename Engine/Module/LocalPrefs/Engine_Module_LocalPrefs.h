@@ -8,6 +8,10 @@
 #include <cereal/archives/json.hpp>
 #include <cereal/types/memory.hpp>
 
+#include "../Exception/Engine_Module_Exception.h"
+#include "../Log/NanamiEngine_Module_Log.h"
+#include "../Serialization/Engine_Module_Serialization.h"
+
 // ゲーム側のデータ保存・復元用モジュール
 // セーブデータやプレイヤーの進行状況など、ゲーム固有のデータをローカルのJSONファイルに永続化するために使用する
 namespace NanamiEngine::Module::LocalPrefs
@@ -42,25 +46,25 @@ namespace NanamiEngine::Module::LocalPrefs
         const std::string tmpPath = fullPath + ".tmp";
         try
         {
+            // JSON のルートキーをデータ型名ではなく key 文字列で固定することで、型名変更後も読み込めるようにする
+            Serialization::SaveJsonFile(tmpPath, [&](cereal::JSONOutputArchive& archive)
             {
-                std::ofstream ofstream(tmpPath);
-                if (!ofstream)
-                {
-                    throw std::runtime_error("Failed to open temp file: " + tmpPath);
-                }
-
-                cereal::JSONOutputArchive archive(ofstream);
-                // JSON のルートキーをデータ型名ではなく key 文字列で固定することで、型名変更後も読み込めるようにする
                 archive(cereal::make_nvp(key, value));
-            }
+            });
             // ofstream のスコープを抜けてフラッシュ・クローズが完了した後にリネームする
             std::filesystem::rename(tmpPath, fullPath);
         }
-        catch (const std::exception& exception)
+        catch (const Exception::SerializationException&)
         {
             // 書き込み失敗時は中途半端な一時ファイルを削除してから上位に投げる
             std::filesystem::remove(tmpPath);
-            throw std::runtime_error("Save failed: " + std::string(exception.what()));
+            throw;
+        }
+        catch (const std::exception& exception)
+        {
+            // rename 失敗（filesystem_error）なども SerializeException に揃える
+            std::filesystem::remove(tmpPath);
+            throw Exception::SerializeException(fullPath, exception.what());
         }
     }
 
@@ -68,27 +72,15 @@ namespace NanamiEngine::Module::LocalPrefs
     T LoadImpl(const std::string& fullPath,
                const std::string& key)
     {
-        std::ifstream ifstream(fullPath);
-
-        if (!ifstream)
+        T value;
+        // ファイルが無い → FileNotFoundException、破損 → DeserializeException。
+        // 呼び出し側が種類ごとに扱えるよう、型付き例外でそのまま通知する
+        Serialization::LoadJsonFile(fullPath, [&](cereal::JSONInputArchive& archive)
         {
-            // ファイルが存在しない場合は呼び出し側が適切に処理できるよう例外で通知する
-            throw std::runtime_error("File not found: " + fullPath);
-        }
-
-        try
-        {
-            cereal::JSONInputArchive archive(ifstream);
-
-            T value;
             // SaveImpl と同じキー名を指定することで、JSON上のフィールドと型を対応付ける
             archive(cereal::make_nvp(key, value));
-            return value;
-        }
-        catch (const std::exception& exception)
-        {
-            throw std::runtime_error("Load failed: " + std::string(exception.what()));
-        }
+        });
+        return value;
     }
 
     /** --- 公開API --- */
@@ -140,9 +132,10 @@ namespace NanamiEngine::Module::LocalPrefs
         {
             return LoadImpl<T>(path, key);
         }
-        catch (...)
+        catch (const Exception::SerializationException& exception)
         {
-            // JSONの破損やスキーマ不一致など、読み込みエラー全般をフォールバックとして握りつぶす
+            // JSONの破損やスキーマ不一致など、読み込みエラーはデフォルト値で継続するが、黙って握りつぶさず警告を残す
+            LogWarning("LocalPrefs: " + std::string(exception.what()) + " -> デフォルト値を使用します");
             return defaultValue;
         }
     }
@@ -163,8 +156,9 @@ namespace NanamiEngine::Module::LocalPrefs
         {
             return LoadImpl<T>(path, key);
         }
-        catch (...)
+        catch (const Exception::SerializationException& exception)
         {
+            LogWarning("LocalPrefs: " + std::string(exception.what()) + " -> デフォルト値を使用します");
             return defaultValue;
         }
     }
@@ -184,8 +178,9 @@ namespace NanamiEngine::Module::LocalPrefs
         {
             return LoadImpl<T>(path, key);
         }
-        catch (...)
+        catch (const Exception::SerializationException& exception)
         {
+            LogWarning("LocalPrefs: " + std::string(exception.what()) + " -> nullopt を返します");
             return std::nullopt;
         }
     }

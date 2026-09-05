@@ -9,6 +9,8 @@
 #include "../../Configuration/Physics/ApplicationConfiguration_Physics.h"
 #include "../../ApplicationBase.h"
 #include "../../../../Module/LocalPrefs/Editor/Engine_Module_LocalPrefs_Editor_ToolBar.h"
+#include "../../../../Module/Exception/Engine_Module_Exception.h"
+#include "../../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../Main/Factory/MainWindowFactory.h"
 #include "../Main/Game/GameWindow.h"
 #include "../Popup/Group/PopupWindowGroup.h"
@@ -41,7 +43,14 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
             {
                 if (ImGui::Button("Reload Assets"))
                 {
-                    Application::ApplicationBase::ResetAssetsDirectory();
+                    try
+                    {
+                        Application::ApplicationBase::ResetAssetsDirectory();
+                    }
+                    catch (const NanamiEngine::Module::Exception::NanamiException& exception)
+                    {
+                        NanamiEngine::Module::LogError("EditorToolbar: アセットの再読み込みに失敗しました: " + std::string(exception.what()));
+                    }
                 }
                 Application::Configuration::AppConfiguration::DrawConfigGUI();
                 ImGui::EndTabItem();
@@ -65,8 +74,15 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
     {
         if (ImGui::Button("Save"))
         {
-            Application::ApplicationBase::MainWindows    ().OnSave();
-            Application::ApplicationBase::AssetsDirectory().OnSave();
+            try
+            {
+                Application::ApplicationBase::MainWindows    ().OnSave();
+                Application::ApplicationBase::AssetsDirectory().OnSave();
+            }
+            catch (const NanamiEngine::Module::Exception::NanamiException& exception)
+            {
+                NanamiEngine::Module::LogError("EditorToolbar: 保存に失敗しました: " + std::string(exception.what()));
+            }
         }
         ImGui::SameLine();
     }

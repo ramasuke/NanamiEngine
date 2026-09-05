@@ -7,29 +7,30 @@
 #include "../../../Core/Application/Window/Popup/Group/PopupWindowGroup.h"
 #include "../../../Core/Application/Window/Popup/Inspector/InspectorWindow.h"
 #include "../../Scene/GameObject/CopiedPrefabGameObject/CopiedPrefabGameObject.h"
+#include "../../Serialization/Engine_Module_Serialization.h"
 #include "cereal/archives/portable_binary.hpp"
 
 GameObject::PrefabGameObject::PrefabGameObject(const std::string& filePath)
 {
     filePath_ = filePath;
-    std::ifstream ifStream(filePath_);
-    if (!ifStream.is_open())
-        return;
-
-    cereal::JSONInputArchive archive(ifStream);
-    archive(CEREAL_NVP(isActive_    ));
-    archive(CEREAL_NVP(name_        ));
-    archive(CEREAL_NVP(guid_        ));
-    archive(CEREAL_NVP(components_  ));
-    archive(CEREAL_NVP(transform_   ));
-    
-    size_t copiedObjectGuidListCount = 0;
-    archive(copiedObjectGuidListCount);
-    copiedObjectGuidList_.resize(copiedObjectGuidListCount);
-    for (size_t i = 0; i < copiedObjectGuidListCount; ++i)
+    // 未作成のファイルは空の Prefab として扱う（新規作成 → Save のフローで使う）。
+    // 破損している場合は DeserializeException が投げられ、Prefab は生成されない
+    NanamiEngine::Module::Serialization::LoadJsonFileIfExists(filePath_, [this](cereal::JSONInputArchive& archive)
     {
-        archive(copiedObjectGuidList_[i]);
-    }
+        archive(CEREAL_NVP(isActive_    ));
+        archive(CEREAL_NVP(name_        ));
+        archive(CEREAL_NVP(guid_        ));
+        archive(CEREAL_NVP(components_  ));
+        archive(CEREAL_NVP(transform_   ));
+
+        size_t copiedObjectGuidListCount = 0;
+        archive(copiedObjectGuidListCount);
+        copiedObjectGuidList_.resize(copiedObjectGuidListCount);
+        for (size_t i = 0; i < copiedObjectGuidListCount; ++i)
+        {
+            archive(copiedObjectGuidList_[i]);
+        }
+    });
 }
 
 void GameObject::PrefabGameObject::InitGameObject(const std::weak_ptr<IGameObject>& parent, const std::shared_ptr<IGameObject>& ownPtr)

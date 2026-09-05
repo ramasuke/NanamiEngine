@@ -8,6 +8,7 @@
 #include "../../Core/Application/Window/Popup/Group/PopupWindowGroup.h"
 #include "../../Core/Application/Window/Popup/Inspector/InspectorWindow.h"
 #include "../Gui/Graph/GraphGui.h"
+#include "../Serialization/Engine_Module_Serialization.h"
 #include "cereal/archives/json.hpp"
 #include "Node/ClipNode/AnimationClipNode.h"
 #include "Node/EntryNode/AnimatorEntryNode.h"
@@ -15,51 +16,53 @@
 AnimationTree::AnimationTree::AnimationTree(std::string filePath)
     : filePath_(std::move(filePath))
 {
-    std::ifstream ifStream(filePath_);
-    if (!ifStream.is_open())
+    // 未作成のファイルは空のツリーとして扱う（新規作成 → Save のフローで使う）。
+    // 破損している場合は DeserializeException が投げられ、ツリーは生成されない
+    const bool loaded = NanamiEngine::Module::Serialization::LoadJsonFileIfExists(filePath_, [this](cereal::JSONInputArchive& archive)
+    {
+        archive(cereal::make_nvp("additionParameters_", additionConditionParameters_));
+        archive(cereal::make_nvp("entryNode", entryNode_));
+        archive(cereal::make_nvp("visualAnyStateNode", visualAnyStateNode_));
+
+        std::size_t count = 0;
+        archive(cereal::make_nvp("nodesCount", count));
+
+        for (std::size_t i = 0; i < count; ++i)
+        {
+            std::shared_ptr<IAnimationNode> animationNode;
+            archive(cereal::make_nvp("nodes_" + std::to_string(i), animationNode));
+            if (animationNode)
+            {
+                nodes_[animationNode->GetGuid()] = animationNode;
+            }
+        }
+
+        std::size_t pathCount = 0;
+        archive(cereal::make_nvp("fromNodeNodePathCount", pathCount));
+
+        for (std::size_t i = 0; i < pathCount; ++i)
+        {
+            std::shared_ptr<AnimationNodePath> path;
+            archive(cereal::make_nvp("fromNodeNodePath_" + std::to_string(i), path));
+            if (path)
+            {
+                fromNodeNodePaths_.push_back(path);
+            }
+        }
+
+        std::size_t anyPathCount = 0;
+        archive(cereal::make_nvp("fromAnyStateNodeNodePathCount", anyPathCount));
+
+        for (std::size_t i = 0; i < anyPathCount; ++i)
+        {
+            std::shared_ptr<AnimationNodePath> path;
+            archive(cereal::make_nvp("fromAnyStateNodeNodePath_" + std::to_string(i), path));
+            if (path)
+                fromAnyStateNodeNodePaths_.push_back(path);
+        }
+    });
+    if (!loaded)
         return;
-
-    cereal::JSONInputArchive archive(ifStream);
-    archive(cereal::make_nvp("additionParameters_", additionConditionParameters_));
-    archive(cereal::make_nvp("entryNode", entryNode_));
-    archive(cereal::make_nvp("visualAnyStateNode", visualAnyStateNode_));
-
-    std::size_t count = 0;
-    archive(cereal::make_nvp("nodesCount", count));
-
-    for (std::size_t i = 0; i < count; ++i)
-    {
-        std::shared_ptr<IAnimationNode> animationNode;
-        archive(cereal::make_nvp("nodes_" + std::to_string(i), animationNode));
-        if (animationNode)
-        {
-            nodes_[animationNode->GetGuid()] = animationNode;
-        }
-    }
-
-    std::size_t pathCount = 0;
-    archive(cereal::make_nvp("fromNodeNodePathCount", pathCount));
-
-    for (std::size_t i = 0; i < pathCount; ++i)
-    {
-        std::shared_ptr<AnimationNodePath> path;
-        archive(cereal::make_nvp("fromNodeNodePath_" + std::to_string(i), path));
-        if (path)
-        {
-            fromNodeNodePaths_.push_back(path);
-        }
-    }
-
-    std::size_t anyPathCount = 0;
-    archive(cereal::make_nvp("fromAnyStateNodeNodePathCount", anyPathCount));
-
-    for (std::size_t i = 0; i < anyPathCount; ++i)
-    {
-        std::shared_ptr<AnimationNodePath> path;
-        archive(cereal::make_nvp("fromAnyStateNodeNodePath_" + std::to_string(i), path));
-        if (path)
-            fromAnyStateNodeNodePaths_.push_back(path);
-    }
 
     for (const auto& path : AllNodePaths())
     {

@@ -1,7 +1,9 @@
 ﻿#include "EnetUDPNetworkSystem.h"
 
+#include "../../Module/Exception/Engine_Module_Exception.h"
 #include "../../Module/GameObject/PrefabGameObject/PrefabGameObject.h"
 #include "../../Module/Log/NanamiEngine_Module_Log.h"
+#include "../../Module/Network/Engine_Network_PacketLog.h"
 #include "../Application/ApplicationBase.h"
 #include "../Application/Configuration/Network/ApplicationConfiguration_Network.h"
 #include "../Application/Time/Time.h"
@@ -92,12 +94,21 @@ namespace NanamiEngine::Core::Network
 
             case ENET_EVENT_TYPE_RECEIVE:
                 {
-                    Packet p = PacketCodec::Decode(
-                        event.packet->data,
-                        event.packet->dataLength
-                    );
+                    try
+                    {
+                        Packet p = PacketCodec::Decode(
+                            event.packet->data,
+                            event.packet->dataLength
+                        );
 
-                    receivedQueue_.push(p);
+                        Module::Network::LogPacket(Module::Network::PacketDirection::Receive, p.Type(), p.Delivery(), p.Data().Size());
+                        receivedQueue_.push(p);
+                    }
+                    catch (const Module::Exception::PacketDeserializeException& exception)
+                    {
+                        // ヘッダが不正な長さのパケットは捨てて受信ループを続ける
+                        Module::LogWarning("EnetUDPNetworkSystem: 受信パケットを破棄しました: " + std::string(exception.what()));
+                    }
 
                     enet_packet_destroy(event.packet);
                     break;
@@ -122,6 +133,8 @@ namespace NanamiEngine::Core::Network
         if (isUnreliable && !unreliableSendAllowed_)
             return;
 
+        Module::Network::LogPacket(Module::Network::PacketDirection::Send, packet.Type(), packet.Delivery(), packet.Data().Size());
+
         const ByteBuffer  buffer = PacketCodec::Encode(packet);
         const enet_uint32 flag   = isUnreliable ? 0 : ENET_PACKET_FLAG_RELIABLE;
         const enet_uint8  ch     = isUnreliable ? 1 : 0;
@@ -141,6 +154,8 @@ namespace NanamiEngine::Core::Network
     {
         if (!target)
             return;
+
+        Module::Network::LogPacket(Module::Network::PacketDirection::Send, packet.Type(), packet.Delivery(), packet.Data().Size());
 
         const bool isUnreliable = (packet.Delivery() == DeliveryMode::Unreliable);
         ByteBuffer buffer = PacketCodec::Encode(packet);

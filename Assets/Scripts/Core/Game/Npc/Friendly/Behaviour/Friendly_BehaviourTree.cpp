@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "../../../../../../../Engine/Module/Gui/Graph/GraphGui.h"
+#include "../../../../../../../Engine/Module/Serialization/Engine_Module_Serialization.h"
 #include "../../../../../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 #include "../../../../../Editor/BehaviourTree/Window/Node/Entry/Npc_BehaviourEntryNode.h"
 #include "../cereal/include/cereal/archives/json.hpp"
@@ -14,13 +15,13 @@ namespace GameCore::Npc::Friendly
         , entryNode_ (std::make_unique<Editor::Npc::Behaviour::EntryNode>())
         , parameters_(std::make_unique<BlackBoard::ParameterGroup       >())
     {
-        std::ifstream ifStream(filePath_);
-        if (!ifStream.is_open())
-            return;
-
-        cereal::JSONInputArchive archive(ifStream);
-        archive(cereal::make_nvp("entryNode_", entryNode_));
-        archive(cereal::make_nvp("parameters_", parameters_));
+        // 未作成のファイルは空のツリーとして扱う（新規作成 → Save のフローで使う）。
+        // 破損している場合は DeserializeException が投げられ、ツリーは生成されない
+        NanamiEngine::Module::Serialization::LoadJsonFileIfExists(filePath_, [this](cereal::JSONInputArchive& archive)
+        {
+            archive(cereal::make_nvp("entryNode_", entryNode_));
+            archive(cereal::make_nvp("parameters_", parameters_));
+        });
     }
     
     BehaviourTree::~BehaviourTree() = default;

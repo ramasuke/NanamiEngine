@@ -1,7 +1,10 @@
 ﻿#include "Main_GameSceneGroup.h"
 
 #include "../../../../../../../Engine/Core/Application/Time/Time.h"
+#include "../../../../../../../Engine/Module/Exception/Engine_Module_Exception.h"
+#include "../../../../../../../Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include <stdexcept>
+#include <utility>
 #include "../Content/FirstTouchDownMainIsLand/FirstTouchDownMainIsLandScene.h"
 #include "../Content/GrassLand/GrassLandScene.h"
 #include "../Content/MainIslandScene/MainIsLandScene.h"
@@ -53,23 +56,32 @@ namespace GameCore::Scene::Main
 
     void GameSceneGroup::ProcessRequests()
     {
-        for (const auto& changeRequest : changeRequests_)
+        // 例外で途中終了しても同じリクエストが次フレームに再実行されないよう、先にキューを空にしてから処理する
+        const auto changeRequests = std::exchange(changeRequests_, {});
+        for (const auto& changeRequest : changeRequests)
         {
             Time::SkipNextFrame();
             Time::SkipNextFrame();
-            
+
             if (const auto current = currentScene_.lock())
             {
                 current->Dispose();
             }
 
             const auto& next = scenes_.at(changeRequest);
-            next->Init();
-            currentScene_ = next;
-            currentScene_.lock()->Enter();
+            try
+            {
+                next->Init();
+                currentScene_ = next;
+                currentScene_.lock()->Enter();
+            }
+            catch (const NanamiEngine::Module::Exception::NanamiException& exception)
+            {
+                // Scene ファイルの破損などで遷移に失敗した。前の Scene は既に Dispose 済みなので currentScene_ は更新しない
+                // （GameWindow が次フレームで初期 Scene に戻す）
+                NanamiEngine::Module::LogError("GameSceneGroup: シーン遷移に失敗しました: " + std::string(exception.what()));
+            }
         }
-
-        changeRequests_.clear();
     }
 
     void GameSceneGroup::AddScene(const SceneType type, std::shared_ptr<IGameScene> scene)

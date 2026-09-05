@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include <coroutine>
+#include <exception>
+#include <string>
 
+#include "../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../../Application/ApplicationBase.h"
 #include "../../Application/Window/Main/Game/GameWindow.h"
 #include "../Scheduler/CoroutineScheduler.h"
@@ -27,6 +30,20 @@ namespace Coroutine
 
             void unhandled_exception()
             {
+                // コルーチン内で投げられた例外はここで止まり、await している側は「完了」として再開される。
+                // 黙って握りつぶさず、少なくともログには残す（保持して await_resume で再 throw する設計は今後の課題）
+                try
+                {
+                    throw;
+                }
+                catch (const std::exception& exception)
+                {
+                    NanamiEngine::Module::LogError(std::string("[Coroutine] ") + exception.what());
+                }
+                catch (...)
+                {
+                    NanamiEngine::Module::LogError("[Coroutine] unknown exception");
+                }
             }
 
             T& result() { return value_; }
@@ -83,6 +100,20 @@ namespace Coroutine
 
             void unhandled_exception()
             {
+                // コルーチン内で投げられた例外はここで止まり、await している側は「完了」として再開される。
+                // 黙って握りつぶさず、少なくともログには残す（保持して await_resume で再 throw する設計は今後の課題）
+                try
+                {
+                    throw;
+                }
+                catch (const std::exception& exception)
+                {
+                    NanamiEngine::Module::LogError(std::string("[Coroutine] ") + exception.what());
+                }
+                catch (...)
+                {
+                    NanamiEngine::Module::LogError("[Coroutine] unknown exception");
+                }
             }
 
             void await_resume() const noexcept

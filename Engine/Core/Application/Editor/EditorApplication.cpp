@@ -14,6 +14,8 @@
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 #include "../LifeCycle/ApplicationLifeCycle.h"
 #include "../Window/Popup/Group/PopupWindowGroup.h"
+#include "../../../Module/Exception/Engine_Module_Exception.h"
+#include "../../../Module/Log/NanamiEngine_Module_Log.h"
 
 namespace
 {
@@ -48,9 +50,19 @@ void Core::Application::EditorApplication::Run()
         ApplicationBase::Run();
         ImGuiWrapper::Instance().Update();
         ImGuizmo::BeginFrame();          // ImGui::NewFrame() 直後・フレーム1回だけ
-        ApplicationLifeCycle_().OnUpdate();
-        GetMainWindow()->OnUpdate();
-        
+
+        // 更新フェーズの最後の安全網。個々の読み込み失敗は回復できる境界で catch 済みなので、ここに来るのは想定外の経路。
+        // OnDrawGui は ImGui の Begin/End の対応を崩さないよう囲まない
+        try
+        {
+            ApplicationLifeCycle_().OnUpdate();
+            GetMainWindow()->OnUpdate();
+        }
+        catch (const Module::Exception::NanamiException& exception)
+        {
+            Module::LogError("[Frame] " + std::string(exception.what()));
+        }
+
         OnDrawGui();
         ImGui::EndFrame();
 

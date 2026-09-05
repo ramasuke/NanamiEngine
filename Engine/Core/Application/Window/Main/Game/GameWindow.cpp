@@ -7,6 +7,8 @@
 #include "../../../../../Module/Asset/Asset.h"
 #include "../../../../../Module/GameObject/Transform/Transform.h"
 #include "../../../../Coroutine/Scheduler/CoroutineScheduler.h"
+#include "../../../../../Module/Exception/Engine_Module_Exception.h"
+#include "../../../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../../../Time/Time.h"
 
 namespace NanamiEngine::Core::MainWindow
@@ -121,7 +123,8 @@ namespace NanamiEngine::Core::MainWindow
         if (!isPlayMode_)
         {
             ImGui::Text(("LoadingResource Count: " + std::to_string(Asset::Asset::GetLoadingResourceCount())).c_str());
-            ImGui::Text(("currentMainScene: " + mainScene_.lock()->Name()).c_str());
+            const auto mainScene = mainScene_.lock();
+            ImGui::Text(("currentMainScene: " + (mainScene ? mainScene->Name() : std::string("(none)"))).c_str());
             if (ImGui::Button("Reset EditorCamera"))
             {
                 editorCamera_ = Component::Editor3DCamera(); 
@@ -159,9 +162,16 @@ namespace NanamiEngine::Core::MainWindow
                 content->RemoveImplementAllGameObject();
             }
             contents_.clear();
-            const auto initScene = std::make_shared<Scene::Scene>("Assets/Scene/GameManage.scene");
-            AddContent(initScene);
-            ChangeMainScene(initScene);
+            try
+            {
+                const auto initScene = std::make_shared<Scene::Scene>("Assets/Scene/GameManage.scene");
+                AddContent(initScene);
+                ChangeMainScene(initScene);
+            }
+            catch (const Module::Exception::NanamiException& exception)
+            {
+                Module::LogError("GameWindow: 初期シーンの再読み込みに失敗しました: " + std::string(exception.what()));
+            }
             Application::ApplicationBase::ResetPhysics();
         }
         ImGui::End();

@@ -1,7 +1,10 @@
 ﻿#include "Sub_GameSceneGroup.h"
 
 #include <ranges>
+#include <utility>
 
+#include "../../../../../../../Engine/Module/Exception/Engine_Module_Exception.h"
+#include "../../../../../../../Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "../Sub_IGameScene.h"
 #include "../Factory/SubSceneFactory.h"
 
@@ -49,15 +52,25 @@ namespace GameCore::Scene::Sub
 
     void GameSceneGroup::ProcessRequests()
     {
-        for (const auto& changeRequest : changeRequests_)
+        // 例外で途中終了しても同じリクエストが次フレームに再実行されないよう、先にキューを空にしてから処理する
+        const auto changeRequests = std::exchange(changeRequests_, {});
+        for (const auto& changeRequest : changeRequests)
         {
             switch (changeRequest.type)
             {
             case ChangeRequestType::Push:
                 {
-                    const auto scene = factory_->Create(changeRequest.sceneType);
-                    scene->Init();
-                    scenes_[changeRequest.sceneType] = scene;
+                    try
+                    {
+                        const auto scene = factory_->Create(changeRequest.sceneType);
+                        scene->Init();
+                        scenes_[changeRequest.sceneType] = scene;
+                    }
+                    catch (const NanamiEngine::Module::Exception::NanamiException& exception)
+                    {
+                        // Scene ファイルの破損などで Push に失敗した。登録しないので Pop 側は何もしない
+                        NanamiEngine::Module::LogError("SubGameSceneGroup: シーンの Push に失敗しました: " + std::string(exception.what()));
+                    }
                     break;
                 }
             case ChangeRequestType::Pop:
@@ -71,7 +84,5 @@ namespace GameCore::Scene::Sub
                 }
             }
         }
-
-        changeRequests_.clear();
     }
 }

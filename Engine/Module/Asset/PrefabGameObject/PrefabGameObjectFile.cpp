@@ -5,6 +5,8 @@
 #include "../../../Core/Application/Window/Main/PrefabView/PrefabViewWindow.h"
 #include "../../../Core/Network/Object/PrefabRegistry/NetworkPrefabObjectRegistry.h"
 #include "../../Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
+#include "../../Exception/Engine_Module_Exception.h"
+#include "../../Log/NanamiEngine_Module_Log.h"
 
 Asset::PrefabGameObjectFile::PrefabGameObjectFile(std::string contentPath)
     : contentPath_(std::move(contentPath))
@@ -13,7 +15,17 @@ Asset::PrefabGameObjectFile::PrefabGameObjectFile(std::string contentPath)
 
 void Asset::PrefabGameObjectFile::OnEnableAsset()
 {
-    content_ = std::make_shared<GameObject::PrefabGameObject>(contentPath_);
+    try
+    {
+        content_ = std::make_shared<GameObject::PrefabGameObject>(contentPath_);
+    }
+    catch (const NanamiEngine::Module::Exception::SerializationException& exception)
+    {
+        // 壊れた Prefab は content_ を null のままにする。利用側（Instantiate / ダブルクリック / Save）は null チェックで継続する
+        NanamiEngine::Module::LogError("PrefabGameObjectFile: " + std::string(exception.what()));
+        return;
+    }
+
     //NetworkObjectの場合
     if (content_->Components().Catch<Network::NetworkGameObject>().lock())
     {
@@ -28,6 +40,9 @@ std::string Asset::PrefabGameObjectFile::GetContentPath() const
 
 void Asset::PrefabGameObjectFile::OnDoubleClick()
 {
+    if (!content_)
+        return;
+
     Core::Application::ApplicationBase::OnChangeWindow(Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::PrefabViewWindow>());
     Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::PrefabViewWindow>()->AddContent(content_);
     content_->InitGameObject(std::weak_ptr<GameObject::IGameObject>(), content_);
@@ -36,6 +51,10 @@ void Asset::PrefabGameObjectFile::OnDoubleClick()
 
 void Asset::PrefabGameObjectFile::OnSaveCallback()
 {
+    // 読み込みに失敗した Prefab は空データで上書きしない
+    if (!content_)
+        return;
+
     content_->OnSave();
 }
 

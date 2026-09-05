@@ -4,6 +4,8 @@
 #include "../../Core/Application/Configuration/Network/ApplicationConfiguration_Network.h"
 #include "../../Core/Coroutine/Awaitable/WaitForObservable/Coroutine_WaitForObservable.h"
 #include "../../Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
+#include "../Exception/Engine_Module_Exception.h"
+#include "../Log/NanamiEngine_Module_Log.h"
 
 Network::NetworkRunnerBase* Network::NetworkRunnerBase::s_instance_ = nullptr;
 
@@ -42,7 +44,7 @@ namespace NanamiEngine::Module::Network
     Core::Network::PlayerId NetworkRunnerBase::GetPlayerId() const
     {
         return PlayerIdProvider().GetPlayerId();
-    }
+    }   
 
     void NetworkRunnerBase::OnUpdate()
     {
@@ -56,8 +58,16 @@ namespace NanamiEngine::Module::Network
         const auto packets = networkSystem_->PollPackets();
         for (auto& packet : packets)
         {
-            defaultPacketDispatcher_->DispatchReceivedPacket(packet);
-            DoDispatchReceivedPacket(packet);
+            try
+            {
+                defaultPacketDispatcher_->DispatchReceivedPacket(packet);
+                DoDispatchReceivedPacket(packet);
+            }
+            catch (const Exception::PacketDeserializeException& exception)
+            {
+                // ペイロードが壊れている・改ざんされているパケットは 1 つだけ捨てて次へ進む
+                LogWarning("NetworkRunner: パケットの処理に失敗しました: " + std::string(exception.what()));
+            }
         }
     }
 

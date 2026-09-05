@@ -10,6 +10,8 @@
 #include "../../../../FileSystem/Directory/Directory.h"
 #include "../../../../FileSystem/DraggingHand/EditorDraggingHand.h"
 #include "../../../ApplicationBase.h"
+#include "../../../../../Module/Exception/Engine_Module_Exception.h"
+#include "../../../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../Inspector/InspectorWindow.h"
 
 namespace
@@ -122,7 +124,15 @@ namespace
         {
             if (ImGui::MenuItem("Copy"))
             {
-                owningDirectory.AddFile(file.Copy());
+                try
+                {
+                    owningDirectory.AddFile(file.Copy());
+                }
+                catch (const NanamiEngine::Module::Exception::NanamiException& exception)
+                {
+                    // Copy はコピー元を読み直すため（SceneFile / PrefabGameObjectFile::CopiedInit）、壊れたファイルはここで失敗する
+                    NanamiEngine::Module::LogError("ProjectWindow: コピーに失敗しました: " + std::string(exception.what()));
+                }
             }
 
             if (ImGui::MenuItem("Rename"))
@@ -137,7 +147,8 @@ namespace
         }
 
         // ドラッグ開始処理
-        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+        // 未登録の拡張子や読み込みに失敗したファイル（content_ == nullptr）はドラッグ対象にしない
+        if (file.GetContent() && ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
         {
             draggingHand.SetDraggingItem(file.GetContent()->GetGuid());
             ImGui::SetDragDropPayload(FileSystem::EDITOR_DRAGGING_ITEM_PAYLOAD_TYPE, &file, sizeof(file));

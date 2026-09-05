@@ -1,4 +1,4 @@
-#include "Packet_Dispatch_SpawnNetworkObject.h"
+﻿#include "Packet_Dispatch_SpawnNetworkObject.h"
 
 #include "../../../../../../Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../Engine_Network_INetworkSystem.h"
@@ -6,6 +6,7 @@
 #include "../../../../Object/Registry/INetworkObjectInstanceRegistry.h"
 #include "../../../../../../Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
 #include "../../../../Object/PrefabRegistry/NetworkPrefabObjectRegistry.h"
+#include "../../../../../../Module/Log/NanamiEngine_Module_Log.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -74,10 +75,18 @@ namespace NanamiEngine::Core::Network
         const glm::vec3 position,
         const glm::quat rotation)
     {
+        // .prefab の読み込みに失敗している場合は Content() が null
+        const auto prefabContent = prefabFile.Content();
+        if (!prefabContent)
+        {
+            Module::LogError("SpawnNetworkObject: Prefab の内容が読み込まれていないため Spawn できません: " + prefabFile.GetContentPath());
+            return nullptr;
+        }
+
         const auto assignedId = CreateNetworkObjectId();
         Packet packet = Packet::Create(DefaultPacketType::SpawnNetworkObject);
         packet.Data().Write(PlayerId());
-        packet.Data().Write(prefabFile.Content()->GetGuid());
+        packet.Data().Write(prefabContent->GetGuid());
         packet.Data().Write(position);
         packet.Data().Write(rotation);
         packet.Data().Write(assignedId);
