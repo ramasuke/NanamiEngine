@@ -6,14 +6,10 @@
 #include "../../../../../Engine/Module/NanamiUI/Slider/NanamiUi_Slider.h"
 #include "Ui_InjuredMask.h"
 
-namespace GameCore::PlayerAvatar
-{
-    struct EnhancePower;
-}
-
 namespace GameCore::StatusParameter
 {
     struct Health;
+    struct Stamina;
 }
 
 namespace GamePlay::Ui
@@ -27,16 +23,13 @@ namespace GamePlay::Ui
             const GameCore::StatusParameter::Health& maxHealth,
             const GameCore::StatusParameter::Health& health   ) const;
         void OnDamageHealthBar() const;
-        void UpdateEnhancePowerStackBar(
-            const GameCore::PlayerAvatar::EnhancePower& maxEnhancePower,
-            const GameCore::PlayerAvatar::EnhancePower& enhancePower) const;
-        void OnAddEnhancePowerStack() const;
-        void OnIsEnableReinforceMode(bool enable) const;
+        void UpdateStaminaBar(
+            const GameCore::StatusParameter::Stamina& maxStamina,
+            const GameCore::StatusParameter::Stamina& stamina) const;
         void OnIsInjured(bool isInjured) const;
 
     private:
         Coroutine::Task<void> OnDamagedHealth() const;
-        Coroutine::Task<void> OnAddedEnhancePowerStack() const;
 
         [[serialize(6)]] std::string healthBarName_;
         FIELD(NanamiUi::Slider) healthBar_;
@@ -45,15 +38,10 @@ namespace GamePlay::Ui
         [[serialize(6)]] std::string healthBarFrameName_;
         FIELD(Component::ImageRenderer) healthBarFrame_;
 
-        [[serialize(6)]] std::string enhanceBarName_;
-        FIELD(NanamiUi::Slider) enhanceBar_;
-        [[serialize(4)]] float displayOnAddEnhancePowerStackBarDuration_secs_ = 0.0f;
-        [[serialize(4)]] FIELD(Asset::SpriteFile) onAddEnhancePowerStackBarFrame_;
-        [[serialize(6)]] std::string enhancePowerStackBarFrameName_;
-        FIELD(Component::ImageRenderer) enhancePowerStackBarFrame_;
-
-        [[serialize(6)]] std::string onEnableReinforceMaskName_;
-        FIELD(NanamiUi::BlendImageRenderer) onEnableReinforceMask_;
+        [[serialize(8)]] std::string staminaBarName_;
+        FIELD(NanamiUi::Slider) staminaBar_;
+        [[serialize(8)]] std::string staminaBarFrameName_;
+        FIELD(Component::ImageRenderer) staminaBarFrame_;
 
         [[serialize(7)]] std::string injuredUiObjectName_;
         FIELD(InjuredMaskUI) injuredUiMask_;
@@ -69,11 +57,8 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(displayOnDamageHealthBarDuration_secs_));
             archive(CEREAL_NVP(onDamageHealthBarFrame_));
             archive(CEREAL_NVP(healthBarFrameName_));
-            archive(CEREAL_NVP(enhanceBarName_));
-            archive(CEREAL_NVP(displayOnAddEnhancePowerStackBarDuration_secs_));
-            archive(CEREAL_NVP(onAddEnhancePowerStackBarFrame_));
-            archive(CEREAL_NVP(enhancePowerStackBarFrameName_));
-            archive(CEREAL_NVP(onEnableReinforceMaskName_));
+            archive(CEREAL_NVP(staminaBarName_));
+            archive(CEREAL_NVP(staminaBarFrameName_));
             archive(CEREAL_NVP(injuredUiObjectName_));
         }
 
@@ -84,16 +69,13 @@ namespace GamePlay::Ui
             if (version >= 6) archive(CEREAL_NVP(displayOnDamageHealthBarDuration_secs_));
             if (version >= 6) archive(CEREAL_NVP(onDamageHealthBarFrame_));
             if (version >= 6) archive(CEREAL_NVP(healthBarFrameName_));
-            if (version >= 6) archive(CEREAL_NVP(enhanceBarName_));
-            if (version >= 6) archive(CEREAL_NVP(displayOnAddEnhancePowerStackBarDuration_secs_));
-            if (version >= 6) archive(CEREAL_NVP(onAddEnhancePowerStackBarFrame_));
-            if (version >= 6) archive(CEREAL_NVP(enhancePowerStackBarFrameName_));
-            if (version >= 6) archive(CEREAL_NVP(onEnableReinforceMaskName_));
+            if (version >= 8) archive(CEREAL_NVP(staminaBarName_));
+            if (version >= 8) archive(CEREAL_NVP(staminaBarFrameName_));
             if (version >= 7) archive(CEREAL_NVP(injuredUiObjectName_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PlayerStatus, 7)
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PlayerStatus, 8)
 

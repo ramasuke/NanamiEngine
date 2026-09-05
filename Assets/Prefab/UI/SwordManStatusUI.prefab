@@ -14,7 +14,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 7,
+                    "cereal_class_version": 8,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
@@ -40,23 +40,8 @@
                         }
                     },
                     "healthBarFrameName_": "Health",
-                    "enhanceBarName_": "MadnessBar",
-                    "displayOnAddEnhancePowerStackBarDuration_secs_": 0.4000000059604645,
-                    "onAddEnhancePowerStackBarFrame_": {
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483651,
-                                "data": {
-                                    "value0": {
-                                        "value_": "004B4D2A-0A1B-400B-9E00-620941D50A62"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "enhancePowerStackBarFrameName_": "Madness",
-                    "onEnableReinforceMaskName_": "RageModeMaskUI",
+                    "staminaBarName_": "StaminaBar",
+                    "staminaBarFrameName_": "Stamina",
                     "injuredUiObjectName_": ""
                 }
             }
@@ -106,7 +91,7 @@
                 "value3": 1.0
             }
         },
-        "childCount": 4,
+        "childCount": 3,
         "child": {
             "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
@@ -325,7 +310,7 @@
                         "value0": {}
                     },
                     "isActive_": true,
-                    "name_": "Madness",
+                    "name_": "Stamina",
                     "guid_": {
                         "value_": "C6F1145D-0B8F-4636-B3C8-C0B3D43ADCD7"
                     },
@@ -415,7 +400,7 @@
                                         "value0": {}
                                     },
                                     "isActive_": true,
-                                    "name_": "MadnessBar",
+                                    "name_": "StaminaBar",
                                     "guid_": {
                                         "value_": "3B293153-B618-4774-B841-40FE375D4FA4"
                                     },
@@ -516,104 +501,6 @@
             "polymorphic_id": 2,
             "ptr_wrapper": {
                 "id": 2147483664,
-                "data": {
-                    "value0": {
-                        "value0": {}
-                    },
-                    "isActive_": false,
-                    "name_": "RageModeMaskUI",
-                    "guid_": {
-                        "value_": "D0A022BB-3E56-41CB-93CF-F89488CB47B2"
-                    },
-                    "components_": {
-                        "componentCount": 1,
-                        "component_0": {
-                            "polymorphic_id": 2147483653,
-                            "polymorphic_name": "NanamiEngine::Module::NanamiUi::BlendImageRenderer",
-                            "ptr_wrapper": {
-                                "id": 2147483665,
-                                "data": {
-                                    "cereal_class_version": 0,
-                                    "value0": {
-                                        "guid_": {
-                                            "value_": "D9FAF348-FFC0-4ED4-95A5-A7B88C44DA2A"
-                                        },
-                                        "isEnable_": false
-                                    },
-                                    "value1": {},
-                                    "value2": {},
-                                    "blendMode_": 1,
-                                    "blendRate_": 25,
-                                    "spriteFile_": {
-                                        "value0": {
-                                            "polymorphic_id": 1073741824,
-                                            "ptr_wrapper": {
-                                                "id": 2147483666,
-                                                "data": {
-                                                    "value0": {
-                                                        "value_": "C8E4A3A2-DF33-43F7-9AE4-E6D569EBFC02"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "renderOrder_": 0
-                                }
-                            }
-                        }
-                    },
-                    "transform_": {
-                        "localPos_": {
-                            "value0": 0.0,
-                            "value1": 0.0,
-                            "value2": 0.0
-                        },
-                        "localRot_": {
-                            "value0": 0.0,
-                            "value1": 0.0,
-                            "value2": 0.0,
-                            "value3": 0.0
-                        },
-                        "localScale_": {
-                            "value0": 1.0,
-                            "value1": 1.0,
-                            "value2": 1.0
-                        },
-                        "worldMatrix_": {
-                            "value0": {
-                                "value0": 1.0,
-                                "value1": 0.0,
-                                "value2": 0.0,
-                                "value3": 0.0
-                            },
-                            "value1": {
-                                "value0": 0.0,
-                                "value1": 1.0,
-                                "value2": 0.0,
-                                "value3": 0.0
-                            },
-                            "value2": {
-                                "value0": 0.0,
-                                "value1": 0.0,
-                                "value2": 1.0,
-                                "value3": 0.0
-                            },
-                            "value3": {
-                                "value0": 0.0,
-                                "value1": 0.0,
-                                "value2": 0.0,
-                                "value3": 1.0
-                            }
-                        },
-                        "childCount": 0
-                    }
-                }
-            }
-        },
-        "child": {
-            "polymorphic_id": 2,
-            "ptr_wrapper": {
-                "id": 2147483667,
                 "data": {
                     "value0": {
                         "value0": {}

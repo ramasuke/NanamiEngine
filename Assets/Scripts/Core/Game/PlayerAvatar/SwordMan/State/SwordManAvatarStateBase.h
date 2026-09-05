@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <vector>
 
@@ -64,6 +64,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] GamePlay::Ui::NpcChatting &            NpcChattingUi   () const { return context_->NpcChattingUi          (); }
         [[nodiscard]] glm::vec3                              FeatStepPos     () const { return context_->PlayerAvatarFeatStepPos();}
         [[nodiscard]] GamePlay::PlayerAvatar::ChattableArea& ChattableArea   () const { return context_->ChattableArea          (); }
+        [[nodiscard]] GamePlay::PlayerAvatar::WakeUpArea   & WakeUpArea      () const { return context_->WakeUpArea             (); }
         [[nodiscard]] PlayerAttackArea& NormalAttackArea() const { return context_->NormalAttackArea(); }
         [[nodiscard]] PlayerAttackArea& DashAttackArea  () const { return context_->DashAttackArea  (); }
         [[nodiscard]] PlayerAvatar::State::PlayerAvatarStateCondition Conditions() const { return PlayerAvatar::State::PlayerAvatarStateCondition(context_);}

@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 5,
+                "cereal_class_version": 6,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -27,13 +27,13 @@
                 "health_": {
                     "value_": 100
                 },
-                "maxEnhancePowerStack_": {
+                "maxStamina_": {
                     "cereal_class_version": 0,
-                    "value0": 30
+                    "value_": 100.0
                 },
-                "enhancePowerStack_": {
-                    "value0": 0
-                },
+                "staminaDrainPerSecond_": 20.0,
+                "staminaRegenPerSecond_": 10.0,
+                "minStaminaRatioToResumeRun_": 0.30000001192092898,
                 "comboNormalAttackStateDuration_secs_": 2.0,
                 "attackedShockedStateDuration_secs_": 0.30000001192092898,
                 "dashAttack_": {
@@ -43,6 +43,7 @@
                         "value_": 10
                     },
                     "value1": {
+                        "cereal_class_version": 0,
                         "value0": 10
                     },
                     "value2": 0.699999988079071,
@@ -58,15 +59,9 @@
                 "moveRotateSpeed_": 0.09000000357627869,
                 "jumpPower_": 90.0,
                 "jumpCooldown_secs_": 0.5299999713897705,
-                "onEnableReinforceDuration_secs_": 0.5,
-                "onDisableReinforceDuration_secs_": 0.0,
-                "reinforceRequireEnhance_": {
-                    "value0": 30
-                },
                 "damageStateDuration_secs_": 0.699999988079071,
                 "avoidRollingStateDuration_secs_": 0.44999998807907107,
                 "deathStateDuration_secs_": 2.0,
-                "reinforceModeDuration_secs_": 0.0,
                 "injuredHealthRatio_": 0.30000001192092898,
                 "quests_": {
                     "polymorphic_id": 1073741824,

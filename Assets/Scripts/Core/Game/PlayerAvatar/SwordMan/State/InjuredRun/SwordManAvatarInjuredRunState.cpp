@@ -1,4 +1,4 @@
-#include "SwordManAvatarInjuredRunState.h"
+﻿#include "SwordManAvatarInjuredRunState.h"
 
 #include "../../../../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
@@ -8,6 +8,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     void SwordManAvatarInjuredRunState::DoEnter()
     {
         StatusEvent().InvokeOnRun();
+        Status().SetIsRunning(true);
     }
 
     void SwordManAvatarInjuredRunState::DoFixedUpdate()
@@ -22,13 +23,11 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
         if (Status().IsDamaged())
             OnChangeState(SwordManAvatarStateType::Hurt);
-        if (Status().IsOnDisableReinforceMode())
-            OnChangeState(SwordManAvatarStateType::OnDisableReinforce);
         if (!Status().IsInjured())
             OnChangeState(SwordManAvatarStateType::Run);
         if (!Input().Move().IsUpdatePressed())
             OnChangeState(SwordManAvatarStateType::Idle);
-        if (!Input().Run().IsUpdatePressed())
+        if (!Input().Run().IsUpdatePressed() || !Status().CanRun())
             OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk);
         if (Input().Jump().IsPressed())
             OnChangeState(SwordManAvatarStateType::Jump);
@@ -36,8 +35,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             OnChangeState(SwordManAvatarStateType::AvoidRolling);
         if (Input().DashAttack().IsPressed())
             OnChangeState(SwordManAvatarStateType::DashAttack);
-        if (Status().CanReinforce() && Input().OnReinforce().IsPressed())
-            OnChangeState(SwordManAvatarStateType::OnEnableReinforce);
         if (Conditions().CanUseCannon())
             OnChangeState(SwordManAvatarStateType::UseCanon);
         if (!Conditions().IsGround())
@@ -46,5 +43,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarInjuredRunState::DoExit()
     {
+        Status().SetIsRunning(false);
     }
 }

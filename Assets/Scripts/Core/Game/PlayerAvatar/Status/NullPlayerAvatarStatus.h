@@ -3,7 +3,6 @@
 
 #include "IPlayerAvatarStatus.h"
 #include "Event/PlayerAvatar_IStatusEvent.h"
-#include "EnahancePower/EnhancePower.h"
 #include "../Quest/PlayerAvatar_IQuestGroup.h"
 #include "../Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../../StatusParameter/Health/Health.h"
@@ -34,18 +33,15 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] rxcpp::observable<StatusParameter::Health> OnChangeHealth() const override;
         [[nodiscard]] StatusParameter::Health                            Health() const override;
 
-        [[nodiscard]] const EnhancePower&                                MaxEnhancePowerStack() const override;
-        [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<EnhancePower> EnhancePowerStack   () const override;
-        [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<bool>         IsEnableReinforce   () const override;
+        [[nodiscard]] const StatusParameter::Stamina&                                MaxStamina() const override;
+        [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Stamina> Stamina   () const override;
+        [[nodiscard]] bool                                                           CanRun    () const override;
 
         [[nodiscard]] StatusParameter::MoveSpeed GetWalkSpeed          () const override;
         [[nodiscard]] StatusParameter::MoveSpeed GetRunSpeed           () const override;
         [[nodiscard]] float                      GetMoveRotateSpeed    () const override;
         [[nodiscard]] float                      GetJumpPower          () const override;
         [[nodiscard]] float                      GetJumpCooldown_secs  () const override;
-        [[nodiscard]] float                      ReinforceModeDuring_secs  () const override;
-        [[nodiscard]] float                      ReinforceModeDuration_secs() const override;
-        [[nodiscard]] bool                       IsOnDisableReinforceMode  () const override;
 
         void OnDrawGui() override;
         void AddOnDamageStack(std::unique_ptr<IDamage> damageContext) override;
@@ -69,18 +65,16 @@ namespace GameCore::PlayerAvatar
         class NullStatusEvent final : public IStatusEvent
         {
         public:
-            [[nodiscard]] rxcpp::observable<StatusParameter::Health> OnDamage              () const override;
-            [[nodiscard]] rxcpp::observable<EnhancePower           > OnAddEnhancePowerStack() const override;
+            [[nodiscard]] rxcpp::observable<StatusParameter::Health> OnDamage() const override;
         };
 
         std::unique_ptr<NullQuestGroup        > quest_        ;
         std::unique_ptr<NullCompleteQuestGroup> completeQuest_;
         std::unique_ptr<NullStatusEvent       > event_        ;
 
-        StatusParameter::Health maxHealth_;
-        EnhancePower            maxEnhancePowerStack_;
+        StatusParameter::Health  maxHealth_;
+        StatusParameter::Stamina maxStamina_;
 
-        LibCore::Rx::SerializableSubject<EnhancePower> enhancePowerStack_;
-        LibCore::Rx::SerializableSubject<bool>          isReinforceMode_;
+        LibCore::Rx::SerializableSubject<StatusParameter::Stamina> stamina_;
     };
 }

@@ -4,8 +4,8 @@
 #include "../../../../../../Libs/LibCore/Rx/ReadOnlyReactiveContext/ReadOnlyReactiveContext.h"
 #include "../../../../../../Libs/LibCore/Rx/SerializableSubject/unit/unit.h"
 #include "../../StatusParameter/Health/Health.h"
+#include "../../StatusParameter/Stamina/Stamina.h"
 #include "../cereal/include/cereal/cereal.hpp"
-#include "EnahancePower/EnhancePower.h"
 
 namespace GameCore::PlayerAvatar::Quest
 {
@@ -46,18 +46,18 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual const StatusParameter::Health&                                MaxHealth() const = 0;
         [[nodiscard]] virtual rxcpp::observable<StatusParameter::Health> OnChangeHealth() const = 0;
         [[nodiscard]] virtual StatusParameter::Health                    Health() const = 0;
-        [[nodiscard]] virtual const EnhancePower&                                MaxEnhancePowerStack() const = 0;
-        [[nodiscard]] virtual LibCore::Rx::ReadOnlyReactiveContext<EnhancePower> EnhancePowerStack() const = 0;
-        [[nodiscard]] virtual LibCore::Rx::ReadOnlyReactiveContext<bool> IsEnableReinforce() const = 0;
+        [[nodiscard]] virtual const StatusParameter::Stamina&                                MaxStamina() const = 0;
+        [[nodiscard]] virtual LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Stamina> Stamina() const = 0;
+        [[nodiscard]] virtual bool CanRun() const = 0;
         [[nodiscard]] virtual StatusParameter::MoveSpeed GetWalkSpeed() const = 0;
         [[nodiscard]] virtual StatusParameter::MoveSpeed GetRunSpeed () const = 0;
         [[nodiscard]] virtual float GetMoveRotateSpeed  () const = 0;
         [[nodiscard]] virtual float GetJumpPower        () const = 0;
         [[nodiscard]] virtual float GetJumpCooldown_secs() const = 0;
-        [[nodiscard]] virtual float ReinforceModeDuring_secs() const = 0;
-        [[nodiscard]] virtual float ReinforceModeDuration_secs() const = 0;
-        [[nodiscard]] virtual bool  IsOnDisableReinforceMode() const = 0;
         [[nodiscard]] virtual bool  IsInjured() const { return false; }
+        [[nodiscard]] virtual bool  IsDowned () const { return false; }
+        [[nodiscard]] virtual bool  IsDeath  () const { return false; }
+        virtual void Revive() {}
         [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit> OnBecomeInjured() const
         {
             static rxcpp::subjects::subject<LibCore::Rx::unit> s;

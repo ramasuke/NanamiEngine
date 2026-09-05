@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <cstdint>
 
 namespace GameCore::PlayerAvatar::SwordMan
@@ -17,13 +17,13 @@ namespace GameCore::PlayerAvatar::SwordMan
         ClimbToTop         = 9,
         ArmStretch         = 10,
         Chatting           = 11,
-        OnEnableReinforce  = 12,
-        OnDisableReinforce = 13,
         Hurt               = 14,
         AvoidRolling       = 15,
         Death              = 16,
         UseCanon           = 17,
         InjuredWalk        = 18,
         InjuredRun         = 19,
+        Down               = 20,
+        WakeUp             = 21,
     };
 }

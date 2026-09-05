@@ -8,5 +8,6 @@ namespace GameCore::Network
         SpawnPlayerAvatar  = 101,
         SyncAvatarState    = 102,
         SyncBehaviourTree  = 103,
+        WakeUpPlayer       = 104,
     };
 }

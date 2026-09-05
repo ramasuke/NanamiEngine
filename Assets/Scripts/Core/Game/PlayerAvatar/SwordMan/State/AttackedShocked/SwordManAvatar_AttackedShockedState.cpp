@@ -1,4 +1,4 @@
-#include "SwordManAvatar_AttackedShockedState.h"
+﻿#include "SwordManAvatar_AttackedShockedState.h"
 
 #include "../../../Input/PlayerAvatarInput_void.h"
 
@@ -12,13 +12,11 @@ void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoFixedUpdat
     //Change State
     if (Status().AttackedShockedStateDuration_secs() <= During_secs())
     {
-        if (Status().IsOnDisableReinforceMode())
-            OnChangeState(SwordManAvatarStateType::OnDisableReinforce);
         if (!Input().Move().IsUpdatePressed())
             OnChangeState(SwordManAvatarStateType::Idle);
         if (Input().Move().IsUpdatePressed())
             OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk);
-        if (Input().Run().IsUpdatePressed())
+        if (Input().Run().IsUpdatePressed() && Status().CanRun())
             OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run);
         if (Input().Jump().IsPressed())
             OnChangeState(SwordManAvatarStateType::Jump);

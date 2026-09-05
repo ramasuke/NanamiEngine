@@ -913,12 +913,72 @@
                         "value0": {}
                     },
                     "isActive_": false,
-                    "name_": "ReinforceMode",
+                    "name_": "WakeUpArea",
                     "guid_": {
-                        "value_": "D364A6FB-6307-4BCC-A3FB-ED077D2074E0"
+                        "value_": "51C9E8C1-2617-42CE-90AE-D2B64F625435"
                     },
                     "components_": {
-                        "componentCount": 0
+                        "componentCount": 2,
+                        "component_0": {
+                            "polymorphic_id": 2147483662,
+                            "polymorphic_name": "GamePlay::PlayerAvatar::WakeUpArea",
+                            "ptr_wrapper": {
+                                "id": 2147483677,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "cereal_class_version": 0,
+                                        "guid_": {
+                                            "value_": "06A6CB3C-80ED-479F-B7D3-1D4143A30459"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value2": {
+                                        "cereal_class_version": 0
+                                    }
+                                }
+                            }
+                        },
+                        "component_1": {
+                            "polymorphic_id": 10,
+                            "ptr_wrapper": {
+                                "id": 2147483678,
+                                "data": {
+                                    "value0": {
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "D2F7FC38-7167-4502-882F-42D148EF52E2"
+                                            },
+                                            "isEnable_": true
+                                        },
+                                        "mass_": 1.0,
+                                        "isGravity_": true,
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 22.229999542236329,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "emotionType_": 1,
+                                        "layer_": 0,
+                                        "constraints_": 0,
+                                        "isSensor_": true,
+                                        "friction_": 0.20000000298023225
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "value3": {},
+                                    "radius_": 250.0
+                                }
+                            }
+                        }
                     },
                     "transform_": {
                         "localPos_": {
@@ -930,7 +990,7 @@
                             "value0": 0.0,
                             "value1": 0.0,
                             "value2": 0.0,
-                            "value3": 0.0
+                            "value3": 1.0
                         },
                         "localScale_": {
                             "value0": 1.0,
@@ -963,292 +1023,7 @@
                                 "value3": 1.0
                             }
                         },
-                        "childCount": 3,
-                        "child": {
-                            "polymorphic_id": 8,
-                            "ptr_wrapper": {
-                                "id": 2147483677,
-                                "data": {
-                                    "value0": {
-                                        "value0": {}
-                                    },
-                                    "isActive_": false,
-                                    "name_": "ReinforceParticle",
-                                    "guid_": {
-                                        "value_": "7522117C-A46E-4CDA-A8BC-F1B8E165ACBB"
-                                    },
-                                    "components_": {
-                                        "componentCount": 1,
-                                        "component_0": {
-                                            "polymorphic_id": 11,
-                                            "ptr_wrapper": {
-                                                "id": 2147483678,
-                                                "data": {
-                                                    "value0": {
-                                                        "guid_": {
-                                                            "value_": "3873FEA6-80B7-4721-B575-4830991623A8"
-                                                        },
-                                                        "isEnable_": false
-                                                    },
-                                                    "value1": {},
-                                                    "value2": {},
-                                                    "particleFile_": {
-                                                        "value0": {
-                                                            "polymorphic_id": 1073741824,
-                                                            "ptr_wrapper": {
-                                                                "id": 2147483679,
-                                                                "data": {
-                                                                    "value0": {
-                                                                        "value_": "A483F945-9959-42AF-96E7-920351EDFD36"
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    },
-                                                    "playingDuration_secs_": 10.0,
-                                                    "playMode_": 0
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "transform_": {
-                                        "localPos_": {
-                                            "value0": 8.0,
-                                            "value1": 0.0,
-                                            "value2": 4.799999713897705
-                                        },
-                                        "localRot_": {
-                                            "value0": 0.0,
-                                            "value1": 0.0,
-                                            "value2": 0.0,
-                                            "value3": 1.0
-                                        },
-                                        "localScale_": {
-                                            "value0": 21.119998931884767,
-                                            "value1": 1.9199999570846558,
-                                            "value2": 1.9199999570846558
-                                        },
-                                        "worldMatrix_": {
-                                            "value0": {
-                                                "value0": 21.119998931884767,
-                                                "value1": 0.0,
-                                                "value2": 0.0,
-                                                "value3": 0.0
-                                            },
-                                            "value1": {
-                                                "value0": 0.0,
-                                                "value1": 1.9199999570846558,
-                                                "value2": 0.0,
-                                                "value3": 0.0
-                                            },
-                                            "value2": {
-                                                "value0": 0.0,
-                                                "value1": 0.0,
-                                                "value2": 1.9199999570846558,
-                                                "value3": 0.0
-                                            },
-                                            "value3": {
-                                                "value0": 8.0,
-                                                "value1": 0.0,
-                                                "value2": 4.799999713897705,
-                                                "value3": 1.0
-                                            }
-                                        },
-                                        "childCount": 0
-                                    }
-                                }
-                            }
-                        },
-                        "child": {
-                            "polymorphic_id": 8,
-                            "ptr_wrapper": {
-                                "id": 2147483680,
-                                "data": {
-                                    "value0": {
-                                        "value0": {}
-                                    },
-                                    "isActive_": false,
-                                    "name_": "OnReinforceParticle",
-                                    "guid_": {
-                                        "value_": "B85E9103-6789-4D91-B25C-76A1724B06E8"
-                                    },
-                                    "components_": {
-                                        "componentCount": 1,
-                                        "component_0": {
-                                            "polymorphic_id": 11,
-                                            "ptr_wrapper": {
-                                                "id": 2147483681,
-                                                "data": {
-                                                    "value0": {
-                                                        "guid_": {
-                                                            "value_": "16DA7886-D9C1-49A0-9A3B-13E0B652DD3B"
-                                                        },
-                                                        "isEnable_": false
-                                                    },
-                                                    "value1": {},
-                                                    "value2": {},
-                                                    "particleFile_": {
-                                                        "value0": {
-                                                            "polymorphic_id": 1073741824,
-                                                            "ptr_wrapper": {
-                                                                "id": 2147483682,
-                                                                "data": {
-                                                                    "value0": {
-                                                                        "value_": "0D4CB9EA-654B-46BD-B42F-353F40CD88A3"
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    },
-                                                    "playingDuration_secs_": 3.0,
-                                                    "playMode_": 0
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "transform_": {
-                                        "localPos_": {
-                                            "value0": 0.0,
-                                            "value1": 12.0,
-                                            "value2": 0.0
-                                        },
-                                        "localRot_": {
-                                            "value0": 0.0,
-                                            "value1": 0.0,
-                                            "value2": 0.0,
-                                            "value3": 1.0
-                                        },
-                                        "localScale_": {
-                                            "value0": 8.0,
-                                            "value1": 8.0,
-                                            "value2": 8.0
-                                        },
-                                        "worldMatrix_": {
-                                            "value0": {
-                                                "value0": 8.0,
-                                                "value1": 0.0,
-                                                "value2": 0.0,
-                                                "value3": 0.0
-                                            },
-                                            "value1": {
-                                                "value0": 0.0,
-                                                "value1": 8.0,
-                                                "value2": 0.0,
-                                                "value3": 0.0
-                                            },
-                                            "value2": {
-                                                "value0": 0.0,
-                                                "value1": 0.0,
-                                                "value2": 8.0,
-                                                "value3": 0.0
-                                            },
-                                            "value3": {
-                                                "value0": 0.0,
-                                                "value1": 12.0,
-                                                "value2": 0.0,
-                                                "value3": 1.0
-                                            }
-                                        },
-                                        "childCount": 0
-                                    }
-                                }
-                            }
-                        },
-                        "child": {
-                            "polymorphic_id": 8,
-                            "ptr_wrapper": {
-                                "id": 2147483683,
-                                "data": {
-                                    "value0": {
-                                        "value0": {}
-                                    },
-                                    "isActive_": false,
-                                    "name_": "ReinforcingParticle",
-                                    "guid_": {
-                                        "value_": "C2C63C9B-0016-4D2D-BFAE-1DD6234B9EFE"
-                                    },
-                                    "components_": {
-                                        "componentCount": 1,
-                                        "component_0": {
-                                            "polymorphic_id": 11,
-                                            "ptr_wrapper": {
-                                                "id": 2147483684,
-                                                "data": {
-                                                    "value0": {
-                                                        "guid_": {
-                                                            "value_": "2823F56A-7F8A-40AC-AD0D-A841167C76B5"
-                                                        },
-                                                        "isEnable_": false
-                                                    },
-                                                    "value1": {},
-                                                    "value2": {},
-                                                    "particleFile_": {
-                                                        "value0": {
-                                                            "polymorphic_id": 1073741824,
-                                                            "ptr_wrapper": {
-                                                                "id": 2147483685,
-                                                                "data": {
-                                                                    "value0": {
-                                                                        "value_": "4EB9D341-626A-46EF-8C39-539C0FB9FD37"
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    },
-                                                    "playingDuration_secs_": 0.800000011920929,
-                                                    "playMode_": 0
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "transform_": {
-                                        "localPos_": {
-                                            "value0": 0.0,
-                                            "value1": 0.0,
-                                            "value2": 0.0
-                                        },
-                                        "localRot_": {
-                                            "value0": 0.0,
-                                            "value1": 0.0,
-                                            "value2": 0.0,
-                                            "value3": 1.0
-                                        },
-                                        "localScale_": {
-                                            "value0": 5.599999904632568,
-                                            "value1": 5.599999904632568,
-                                            "value2": 5.599999904632568
-                                        },
-                                        "worldMatrix_": {
-                                            "value0": {
-                                                "value0": 5.599999904632568,
-                                                "value1": 0.0,
-                                                "value2": 0.0,
-                                                "value3": 0.0
-                                            },
-                                            "value1": {
-                                                "value0": 0.0,
-                                                "value1": 5.599999904632568,
-                                                "value2": 0.0,
-                                                "value3": 0.0
-                                            },
-                                            "value2": {
-                                                "value0": 0.0,
-                                                "value1": 0.0,
-                                                "value2": 5.599999904632568,
-                                                "value3": 0.0
-                                            },
-                                            "value3": {
-                                                "value0": 0.0,
-                                                "value1": 0.0,
-                                                "value2": 0.0,
-                                                "value3": 1.0
-                                            }
-                                        },
-                                        "childCount": 0
-                                    }
-                                }
-                            }
-                        }
+                        "childCount": 0
                     }
                 }
             }

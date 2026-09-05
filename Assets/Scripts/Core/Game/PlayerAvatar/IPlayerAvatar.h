@@ -36,6 +36,11 @@ namespace GamePlay::PlayerAvatar
     class ChattableArea;
 }
 
+namespace GamePlay::PlayerAvatar
+{
+    class WakeUpArea;
+}
+
     namespace GamePlay::Ui
 {
     class NpcChatting;
@@ -55,6 +60,7 @@ namespace GameCore
         [[nodiscard]] virtual PlayerAvatar::IPlayerAvatarEventSceneStateMachine& GetEventSceneStateMachine() const = 0;
         [[nodiscard]] virtual NanamiEngine::Module::Component::ColliderBase    & Collider        () const = 0;
         [[nodiscard]] virtual GamePlay::PlayerAvatar::ChattableArea            & ChattableArea   () const = 0;
+        [[nodiscard]] virtual GamePlay::PlayerAvatar::WakeUpArea               & WakeUpArea      () const = 0;
         [[nodiscard]] virtual GamePlay::Ui::NpcChatting                        & NpcChattingUi   () const = 0;
         [[nodiscard]] virtual const glm::vec3&                                   FeatStepPosition() const = 0;
         [[nodiscard]] virtual NanamiEngine::Module::GameObject::Transform      & PlayerTransform () const = 0;

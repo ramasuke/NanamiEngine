@@ -1,4 +1,4 @@
-#include "SwordManAvatarWalkState.h"
+﻿#include "SwordManAvatarWalkState.h"
 
 #include "../../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
@@ -26,18 +26,14 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             OnChangeState(SwordManAvatarStateType::InjuredWalk);
         if (Status().IsDamaged())
             OnChangeState(SwordManAvatarStateType::Hurt);
-        if (Status().IsOnDisableReinforceMode())
-            OnChangeState(SwordManAvatarStateType::OnDisableReinforce);
         if (!Input().Move().IsUpdatePressed())
             OnChangeState(SwordManAvatarStateType::Idle);
-        if (Input().Run().IsUpdatePressed())
+        if (Input().Run().IsUpdatePressed() && Status().CanRun())
             OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run);
         if (Input().Jump().IsPressed())
             OnChangeState(SwordManAvatarStateType::Jump);
         if (Input().AvoidRolling().IsPressed())
             OnChangeState(SwordManAvatarStateType::AvoidRolling);
-        if (Status().CanReinforce() && Input().OnReinforce().IsPressed())
-            OnChangeState(SwordManAvatarStateType::OnEnableReinforce);
         if (Input().NormalAttack().IsPressed())
             OnChangeState(SwordManAvatarStateType::NormalAttack);
         if (Conditions().CanUseCannon())

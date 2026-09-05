@@ -9,6 +9,7 @@ namespace GameCore::PlayerAvatar::State
         
         [[nodiscard]] bool IsGround    () const;
         [[nodiscard]] bool IsChattable () const;
+        [[nodiscard]] bool CanWakeUp   () const;
         [[nodiscard]] bool CanUseCannon() const;
         
     private:

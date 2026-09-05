@@ -30,6 +30,7 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual GamePlay::Ui::NpcChatting            &   NpcChattingUi            () const = 0;
         [[nodiscard]] virtual PlayerAvatarCameraGroupBase          &   CameraGroup              () const = 0;
         [[nodiscard]] virtual GamePlay::PlayerAvatar::ChattableArea&   ChattableArea            () const = 0;
+        [[nodiscard]] virtual GamePlay::PlayerAvatar::WakeUpArea   &   WakeUpArea               () const = 0;
         [[nodiscard]] virtual const glm::vec3&                         PlayerAvatarFeatStepPos  () const = 0;
         
     };

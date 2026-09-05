@@ -13,6 +13,7 @@ namespace GameCore::Network
         : spawnPlayerDispatcher_(defaultDispatchers, playerIdProvider, packetSender, playerAvatarFactory)
         , syncAvatarStateDispatcher_(defaultDispatchers, playerIdProvider, packetSender)
         , syncBehaviourTreeDispatcher_(defaultDispatchers, playerIdProvider, packetSender)
+        , wakeUpPlayerDispatcher_(defaultDispatchers, playerIdProvider, packetSender)
     {
     }
 
@@ -29,6 +30,9 @@ namespace GameCore::Network
             break;
         case EPacketType::SyncBehaviourTree:
             syncBehaviourTreeDispatcher_.ReceivePacket(packet);
+            break;
+        case EPacketType::WakeUpPlayer:
+            wakeUpPlayerDispatcher_.ReceivePacket(packet);
             break;
         }
     }

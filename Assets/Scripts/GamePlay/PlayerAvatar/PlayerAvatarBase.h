@@ -15,6 +15,8 @@
 #include "../../Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
 #include "../Ui/NpcChatting/Ui_NpcChatting.h"
 #include "ChattableArea/ChattableArea.h"
+#include "WakeUpArea/WakeUpArea.h"
+#include "../../Core/Game/PlayerAvatar/Wakeable/IPlayerWakeable.h"
 #include "../../Engine/Module/GameObject/Transform/Transform.h"
 
 namespace GamePlay::PlayerAvatar
@@ -26,7 +28,8 @@ namespace GamePlay::PlayerAvatar
                              public LifeCycleCallback::IUpdatable,
                              public LifeCycleCallback::IFixedUpdatable,
                              public GameCore::IPlayerAvatar,
-                             public GameCore::Npc::Enemy::ITakableEnemyAttack
+                             public GameCore::Npc::Enemy::ITakableEnemyAttack,
+                             public GameCore::PlayerAvatar::IPlayerWakeable
     {
         using Animator     = RequireType::Animator    <TraitsT>;
         using StateMachine = RequireType::StateMachine<TraitsT>;
@@ -67,7 +70,14 @@ namespace GamePlay::PlayerAvatar
 
         [[nodiscard]] Ui::NpcChatting            & NpcChattingUi   () const override { return *chattingUi_.get(); }
         [[nodiscard]] PlayerAvatar::ChattableArea& ChattableArea   () const override;
+        [[nodiscard]] PlayerAvatar::WakeUpArea   & WakeUpArea      () const override;
         [[nodiscard]] const glm::vec3            & FeatStepPosition() const override;
+
+        void OnEnterWakeUpRange() override {}
+        void OnExitWakeUpRange () override {}
+        void RequestWakeUp     () override;
+        [[nodiscard]] bool IsDowned() const override { return status_->IsDowned(); }
+        [[nodiscard]] const GameObject::Transform& WakeableTransform() const override { return Transform(); }
 
         std::weak_ptr<Component::Animator> animatorComponent_;
 
@@ -238,7 +248,24 @@ namespace GamePlay::PlayerAvatar
         }
         throw std::exception("not found ChattableArea");
     }
-    
+
+    template <RequireType::Traits TraitsT>
+    WakeUpArea& PlayerAvatarBase<TraitsT>::WakeUpArea() const
+    {
+        for (const auto& child : Transform().GetChildren())
+        {
+            if (const auto wakeUpArea = child->Components().Catch<PlayerAvatar::WakeUpArea>().lock())
+                return *wakeUpArea;
+        }
+        throw std::exception("not found WakeUpArea");
+    }
+
+    template <RequireType::Traits TraitsT>
+    void PlayerAvatarBase<TraitsT>::RequestWakeUp()
+    {
+        GamePlay::Network::CustomNetworkRunner::Instance().CustomDispatcher().WakeUpPlayer().DispatchSendPacket(GetNetworkObjectId());
+    }
+
     template <RequireType::Traits TraitsT>
     const glm::vec3& PlayerAvatarBase<TraitsT>::FeatStepPosition() const
     {

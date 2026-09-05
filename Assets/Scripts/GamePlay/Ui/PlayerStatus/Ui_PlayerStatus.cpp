@@ -3,18 +3,17 @@
 #include "../../../../../Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../../Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
 #include "../../../../../Engine/Module/GameObject/PrefabGameObject/PrefabCatchChild/PrefabCatchChild.h"
-#include "../../../Core/Game/PlayerAvatar/Status/EnahancePower/EnhancePower.h"
 #include "../../../Core/Game/StatusParameter/Health/Health.h"
+#include "../../../Core/Game/StatusParameter/Stamina/Stamina.h"
 
 namespace GamePlay::Ui
 {
     void PlayerStatus::OnAwake()
     {
-        healthBar_                 = GameObject::CatchChild<NanamiUi::Slider>(Entity(), healthBarName_);
-        healthBarFrame_            = GameObject::CatchChild<Component::ImageRenderer>(Entity(), healthBarFrameName_);
-        enhanceBar_                = GameObject::CatchChild<NanamiUi::Slider>(Entity(), enhanceBarName_);
-        enhancePowerStackBarFrame_ = GameObject::CatchChild<Component::ImageRenderer>(Entity(), enhancePowerStackBarFrameName_);
-        onEnableReinforceMask_     = GameObject::CatchChild<NanamiUi::BlendImageRenderer>(Entity(), onEnableReinforceMaskName_);
+        healthBar_       = GameObject::CatchChild<NanamiUi::Slider>(Entity(), healthBarName_);
+        healthBarFrame_  = GameObject::CatchChild<Component::ImageRenderer>(Entity(), healthBarFrameName_);
+        staminaBar_      = GameObject::CatchChild<NanamiUi::Slider>(Entity(), staminaBarName_);
+        staminaBarFrame_ = GameObject::CatchChild<Component::ImageRenderer>(Entity(), staminaBarFrameName_);
         if (!injuredUiObjectName_.empty())
             injuredUiMask_ = GameObject::CatchChild<InjuredMaskUI>(Entity(), injuredUiObjectName_);
     }
@@ -31,42 +30,24 @@ namespace GamePlay::Ui
         Coroutine::StartCoroutine(OnDamagedHealth());
     }
 
-    void PlayerStatus::UpdateEnhancePowerStackBar(
-        const GameCore::PlayerAvatar::EnhancePower& maxEnhancePower,
-        const GameCore::PlayerAvatar::EnhancePower& enhancePower   ) const
+    void PlayerStatus::UpdateStaminaBar(
+        const GameCore::StatusParameter::Stamina& maxStamina,
+        const GameCore::StatusParameter::Stamina& stamina   ) const
     {
-        enhanceBar_->SetValue(enhancePower / maxEnhancePower);
+        staminaBar_->SetValue(stamina / maxStamina);
     }
 
     Coroutine::Task<void> PlayerStatus::OnDamagedHealth() const
     {
-        const auto previewSprite = healthBarFrame_->GetSprite(); 
+        const auto previewSprite = healthBarFrame_->GetSprite();
         healthBarFrame_->SetSprite(onDamageHealthBarFrame_.get());
         co_await Coroutine::WaitForSeconds(displayOnDamageHealthBarDuration_secs_);
         healthBarFrame_->SetSprite(previewSprite);
     }
 
-    void PlayerStatus::OnAddEnhancePowerStack() const
-    {
-        Coroutine::StartCoroutine(OnAddedEnhancePowerStack());
-    }
-
-    void PlayerStatus::OnIsEnableReinforceMode(const bool enable) const
-    {
-        onEnableReinforceMask_->SetEnable(enable);
-    }
-
     void PlayerStatus::OnIsInjured(const bool isInjured) const
     {
         if (injuredUiMask_) injuredUiMask_->SetActive(isInjured);
-    }
-
-    Coroutine::Task<void> PlayerStatus::OnAddedEnhancePowerStack() const
-    {
-        const auto previewSprite = enhancePowerStackBarFrame_->GetSprite(); 
-        enhancePowerStackBarFrame_->SetSprite(onAddEnhancePowerStackBarFrame_.get());
-        co_await Coroutine::WaitForSeconds(displayOnAddEnhancePowerStackBarDuration_secs_);
-        enhancePowerStackBarFrame_->SetSprite(previewSprite);
     }
 
     void PlayerStatus::OnDrawGui()
@@ -77,14 +58,10 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("onDamageHealthBarFrame_", onDamageHealthBarFrame_);
         ImGuiHelper::OnDrawInputField("healthBarFrameName_", healthBarFrameName_);
         ImGuiHelper::OnDrawInputField("healthBarFrame_", healthBarFrame_);
-        ImGuiHelper::OnDrawInputField("enhanceBarName_", enhanceBarName_);
-        ImGuiHelper::OnDrawInputField("enhanceBar_", enhanceBar_);
-        ImGuiHelper::OnDrawInputField("displayOnAddEnhancePowerStackBarDuration_secs_", displayOnAddEnhancePowerStackBarDuration_secs_);
-        ImGuiHelper::OnDrawInputField("onAddEnhancePowerStackBarFrame_", onAddEnhancePowerStackBarFrame_);
-        ImGuiHelper::OnDrawInputField("enhancePowerStackBarFrameName_", enhancePowerStackBarFrameName_);
-        ImGuiHelper::OnDrawInputField("enhancePowerStackBarFrame_", enhancePowerStackBarFrame_);
-        ImGuiHelper::OnDrawInputField("onEnableReinforceMaskName_", onEnableReinforceMaskName_);
-        ImGuiHelper::OnDrawInputField("onEnableReinforceMask_", onEnableReinforceMask_);
+        ImGuiHelper::OnDrawInputField("staminaBarName_", staminaBarName_);
+        ImGuiHelper::OnDrawInputField("staminaBar_", staminaBar_);
+        ImGuiHelper::OnDrawInputField("staminaBarFrameName_", staminaBarFrameName_);
+        ImGuiHelper::OnDrawInputField("staminaBarFrame_", staminaBarFrame_);
         ImGuiHelper::OnDrawInputField("injuredUiObjectName_", injuredUiObjectName_);
         ImGuiHelper::OnDrawInputField("injuredUiMask_", injuredUiMask_);
     }

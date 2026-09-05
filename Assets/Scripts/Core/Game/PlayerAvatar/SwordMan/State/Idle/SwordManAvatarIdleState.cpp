@@ -1,4 +1,4 @@
-#include "SwordManAvatarIdleState.h"
+﻿#include "SwordManAvatarIdleState.h"
 
 #include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
@@ -27,8 +27,6 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoFixedUp
 
     if (Status().IsDamaged())
         OnChangeState(SwordManAvatarStateType::Hurt);
-    if (Status().IsOnDisableReinforceMode())
-        OnChangeState(SwordManAvatarStateType::OnDisableReinforce);
     if (Input().Move().IsUpdatePressed())
         OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk);
     if (Input().Jump().IsPressed())
@@ -37,9 +35,9 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoFixedUp
         OnChangeState(SwordManAvatarStateType::AvoidRolling);
     if (Input().NormalAttack().IsPressed())
         OnChangeState(SwordManAvatarStateType::NormalAttack);
-    if (Status().CanReinforce() && Input().OnReinforce().IsPressed())
-        OnChangeState(SwordManAvatarStateType::OnEnableReinforce);
-    if (Conditions().IsChattable() && Input().Chat().IsPressed())
+    if (Conditions().CanWakeUp() && Input().Chat().IsPressed())
+        OnChangeState(SwordManAvatarStateType::WakeUp);
+    else if (Conditions().IsChattable() && Input().Chat().IsPressed())
         OnChangeState(SwordManAvatarStateType::Chatting);
     if (Conditions().CanUseCannon())
         OnChangeState(SwordManAvatarStateType::UseCanon);

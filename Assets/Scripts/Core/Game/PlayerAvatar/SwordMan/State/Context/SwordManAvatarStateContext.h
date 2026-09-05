@@ -50,6 +50,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] GamePlay::Ui::NpcChatting            &   NpcChattingUi          () const override { return playerAvatar_      .lock()->NpcChattingUi();    }
         [[nodiscard]] Component::ColliderBase              &   PlayerAvatarCollider   () const override { return playerAvatar_      .lock()->Collider();         }
         [[nodiscard]] GamePlay::PlayerAvatar::ChattableArea&   ChattableArea          () const override { return playerAvatar_      .lock()->ChattableArea();    }
+        [[nodiscard]] GamePlay::PlayerAvatar::WakeUpArea   &   WakeUpArea             () const override { return playerAvatar_      .lock()->WakeUpArea();       }
         [[nodiscard]] const glm::vec3&                         PlayerAvatarFeatStepPos() const override { return playerAvatar_      .lock()->FeatStepPosition(); }
         [[nodiscard]] PlayerAttackArea& NormalAttackArea() const { return *normalAttackArea_.lock(); }
         [[nodiscard]] PlayerAttackArea& DashAttackArea  () const { return *dashAttackArea_  .lock(); }

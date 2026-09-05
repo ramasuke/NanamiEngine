@@ -5,6 +5,7 @@
 #include "../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../Engine/Module/Physics/Component/Listener/Collision/Engine_Physics_CollisionListener.h"
 #include "../../../../../GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
+#include "../../../../../GamePlay/PlayerAvatar/WakeUpArea/WakeUpArea.h"
 #include "../../../../../GamePlay/Prop/AirShip/Prop_AirShip.h"
 #include "../../../../../GamePlay/Prop/Canon/Prop_Canon.h"
 
@@ -29,6 +30,11 @@ namespace GameCore::PlayerAvatar::State
     bool PlayerAvatarStateCondition::IsChattable() const
     {
         return !stateContext_->ChattableArea().CatchChatTarget().expired();
+    }
+
+    bool PlayerAvatarStateCondition::CanWakeUp() const
+    {
+        return !stateContext_->WakeUpArea().CatchWakeUpTarget().expired();
     }
 
     bool PlayerAvatarStateCondition::CanUseCannon() const

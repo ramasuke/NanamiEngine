@@ -13,11 +13,8 @@ namespace GamePlay::PlayerAvatar::SwordMan
 {
     constexpr auto NORMAL_ATTACK_AREA_NAME             = "NormalAttackArea";
     constexpr auto DASH_ATTACK_AREA_NAME               = "DashAttackArea";
-    constexpr auto ON_REINFORCE_PARTICLE_NAME          = "OnReinforceParticle";
-    constexpr auto REINFORCING_PARTICLE_NAME           = "ReinforcingParticle";
     constexpr auto SUCCESS_AVOID_ROLLING_PARTICLE_NAME = "SuccessAvoidRollingParticle";
     constexpr auto HIT_NORMAL_ATTACK_PARTICLE_NAME     = "HitNormalAttackParticle";
-    constexpr auto REINFORCE_PARTICLE_NAME             = "ReinforceParticle";
     
     class SwordManAvatar final : public PlayerAvatarBase<GameCore::PlayerAvatar::SwordMan::SwordManAvatarTraits>
     {

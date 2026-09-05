@@ -7,11 +7,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         onDamage_.get_subscriber().on_next(currentHealth);
     }
 
-    void StatusEvent::InvokeOnAddEnhancePowerStack(const EnhancePower& currentEnhancePowerStack) const
-    {
-        onAddEnhancePowerStack_.get_subscriber().on_next(currentEnhancePowerStack);
-    }
-
     void StatusEvent::InvokeOnDeath() const
     {
         onDeath_.get_subscriber().on_next(LibCore::Rx::unit{});

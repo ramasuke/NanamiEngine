@@ -1,4 +1,4 @@
-#include "Packet_Dispatch_SpawnPlayer.h"
+﻿#include "Packet_Dispatch_SpawnPlayer.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "winmm.lib")
@@ -58,8 +58,9 @@ namespace GameCore::Network
 
         // PlayerStatus()は参照しか返さないため、cerealのポリモーフィックシリアライズに渡すために
         // 所有権を持たないshared_ptrでラップする(deleterは何もしない)。
-        const std::shared_ptr<PlayerAvatar::IPlayerAvatarStatus> status(
-            &playerAvatar->PlayerStatus(), [](PlayerAvatar::IPlayerAvatarStatus*) {});
+        GameCore::PlayerAvatar::IPlayerAvatarStatus* statusPtr = &playerAvatar->PlayerStatus();
+        auto statusNoopDeleter = [](GameCore::PlayerAvatar::IPlayerAvatarStatus*) {};
+        const std::shared_ptr<GameCore::PlayerAvatar::IPlayerAvatarStatus> status(statusPtr, statusNoopDeleter);
         packet.Data().Write(status);
 
         if (IsServer())
@@ -78,7 +79,7 @@ namespace GameCore::Network
         const auto position        = packet.Data().Read<glm::vec3>(readOffset);
         const auto rotation        = packet.Data().Read<glm::quat>(readOffset);
         const auto networkObjectId = packet.Data().Read<NetworkObjectId>(readOffset);
-        const auto status          = packet.Data().Read<std::shared_ptr<PlayerAvatar::IPlayerAvatarStatus>>(readOffset);
+        const auto status          = packet.Data().Read<std::shared_ptr<GameCore::PlayerAvatar::IPlayerAvatarStatus>>(readOffset);
 
         if (playerId == PlayerId())
             return;

@@ -1,4 +1,4 @@
-#include "SwordManAvatarStateMachine.h"
+﻿#include "SwordManAvatarStateMachine.h"
 
 #include "ArmStretch/SwordManAvatarArmStretchState.h"
 #include "Attack/Dash/SwordManAvatarDashAttackState.h"
@@ -9,16 +9,16 @@
 #include "ClimbToTop/SwordManAvatarStateClimbToTop.h"
 #include "Death/SwordManAvatar_DeathState.h"
 #include "DisableState/SwordManAvatar_DisableState.h"
+#include "Down/SwordManAvatar_DownState.h"
 #include "Floating/FloatingState.h"
 #include "Hurt/SwordManAvatar_HurtState.h"
 #include "Idle/SwordManAvatarIdleState.h"
 #include "Jump/SwordManAvatarJumpState.h"
-#include "OnDisableReinforce/OnDisableReinforceState.h"
-#include "OnEnableReinforce/OnEnableReinforceState.h"
 #include "InjuredRun/SwordManAvatarInjuredRunState.h"
 #include "InjuredWalk/SwordManAvatarInjuredWalkState.h"
 #include "Run/SwordManAvatarRunState.h"
 #include "UseCanon/SwordManAvatarUseCanonState.h"
+#include "WakeUp/SwordManAvatar_WakeUpState.h"
 #include "Walk/SwordManAvatarWalkState.h"
 
 #include "../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
@@ -85,14 +85,14 @@ namespace GameCore::PlayerAvatar::SwordMan
                     {SwordManAvatarStateType::ClimbToTop,         std::make_shared<SwordManAvatarStateClimbToTop>   (context, callback)},
                     {SwordManAvatarStateType::ArmStretch,         std::make_shared<SwordManAvatarArmStretchState>   (context, callback)},
                     {SwordManAvatarStateType::Chatting,           std::make_shared<SwordManAvatarChattingState>     (context, callback)},
-                    {SwordManAvatarStateType::OnEnableReinforce,  std::make_shared<OnEnableReinforceState>          (context, callback)},
-                    {SwordManAvatarStateType::OnDisableReinforce, std::make_shared<OnDisableReinforceState>         (context, callback)},
                     {SwordManAvatarStateType::Hurt,               std::make_shared<HurtState>                      (context, callback)},
                     {SwordManAvatarStateType::AvoidRolling,       std::make_shared<AvoidRollingState>               (context, callback)},
                     {SwordManAvatarStateType::Death,              std::make_shared<DeathState>                          (context, callback)},
                     {SwordManAvatarStateType::UseCanon,           std::make_shared<SwordManAvatarUseCannonState>         (context, callback)},
                     {SwordManAvatarStateType::InjuredWalk,        std::make_shared<SwordManAvatarInjuredWalkState>       (context, callback)},
                     {SwordManAvatarStateType::InjuredRun,         std::make_shared<SwordManAvatarInjuredRunState>        (context, callback)},
+                    {SwordManAvatarStateType::Down,               std::make_shared<DownState>                            (context, callback)},
+                    {SwordManAvatarStateType::WakeUp,             std::make_shared<WakeUpState>                          (context, callback)},
                 };
             },
             SwordManAvatarStateType::Idle,

@@ -51,19 +51,19 @@ namespace GameCore::PlayerAvatar
         return StatusParameter::Health(0);
     }
 
-    const EnhancePower& NullPlayerAvatarStatus::MaxEnhancePowerStack() const
+    const StatusParameter::Stamina& NullPlayerAvatarStatus::MaxStamina() const
     {
-        return maxEnhancePowerStack_;
+        return maxStamina_;
     }
 
-    LibCore::Rx::ReadOnlyReactiveContext<EnhancePower> NullPlayerAvatarStatus::EnhancePowerStack() const
+    LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Stamina> NullPlayerAvatarStatus::Stamina() const
     {
-        return enhancePowerStack_.AsReadOnly();
+        return stamina_.AsReadOnly();
     }
 
-    LibCore::Rx::ReadOnlyReactiveContext<bool> NullPlayerAvatarStatus::IsEnableReinforce() const
+    bool NullPlayerAvatarStatus::CanRun() const
     {
-        return isReinforceMode_.AsReadOnly();
+        return false;
     }
 
     StatusParameter::MoveSpeed NullPlayerAvatarStatus::GetWalkSpeed() const
@@ -91,21 +91,6 @@ namespace GameCore::PlayerAvatar
         return 0.0f;
     }
 
-    float NullPlayerAvatarStatus::ReinforceModeDuring_secs() const
-    {
-        return 0.0f;
-    }
-
-    float NullPlayerAvatarStatus::ReinforceModeDuration_secs() const
-    {
-        return 0.0f;
-    }
-
-    bool NullPlayerAvatarStatus::IsOnDisableReinforceMode() const
-    {
-        return false;
-    }
-
     void NullPlayerAvatarStatus::OnDrawGui()
     {
     }
@@ -130,12 +115,6 @@ namespace GameCore::PlayerAvatar
     rxcpp::observable<StatusParameter::Health> NullPlayerAvatarStatus::NullStatusEvent::OnDamage() const
     {
         static rxcpp::subjects::subject<StatusParameter::Health> s;
-        return s.get_observable();
-    }
-
-    rxcpp::observable<EnhancePower> NullPlayerAvatarStatus::NullStatusEvent::OnAddEnhancePowerStack() const
-    {
-        static rxcpp::subjects::subject<EnhancePower> s;
         return s.get_observable();
     }
 }

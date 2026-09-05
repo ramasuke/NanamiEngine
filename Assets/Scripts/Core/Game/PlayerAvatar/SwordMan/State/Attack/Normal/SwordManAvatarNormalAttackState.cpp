@@ -1,4 +1,4 @@
-#include "SwordManAvatarNormalAttackState.h"
+﻿#include "SwordManAvatarNormalAttackState.h"
 
 #include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
@@ -82,7 +82,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
         if (NormalAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
         {
-            Status().AddEnhancePowerStack(attackStatus.GetEnhance() * NormalAttackArea().AttackTargetCount());
             const float yaw = glm::eulerAngles(Transform().GetWorldRot()).y;
             const glm::quat yRot = glm::angleAxis(yaw, glm::vec3(0.0f, 1.0f, 0.0f));
             Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos(), yRot);

@@ -1,4 +1,4 @@
-#include "SwordManAvatar_HurtState.h"
+﻿#include "SwordManAvatar_HurtState.h"
 
 #include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
@@ -13,7 +13,7 @@ void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoEnter()
     Status().ApplyDamage();
 
     if (Status().IsDeath())
-        OnChangeState(SwordManAvatarStateType::Death);
+        OnChangeState(SwordManAvatarStateType::Down);
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoFixedUpdate()
@@ -27,20 +27,16 @@ void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoUpdate()
     
     if (During_secs() >= Status().DamageStateDuration_secs())
     {
-        if (Status().IsOnDisableReinforceMode())
-            OnChangeState(SwordManAvatarStateType::OnDisableReinforce);
         if (!Input().Move().IsUpdatePressed())
             OnChangeState(SwordManAvatarStateType::Idle);
         if (Input().Move().IsUpdatePressed())
             OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk);
-        if (Input().Run().IsUpdatePressed())
+        if (Input().Run().IsUpdatePressed() && Status().CanRun())
             OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run);
         if (Input().Jump().IsPressed())
             OnChangeState(SwordManAvatarStateType::Jump);
         if (Input().AvoidRolling().IsPressed())
             OnChangeState(SwordManAvatarStateType::AvoidRolling);
-        if (Status().CanReinforce() && Input().OnReinforce().IsPressed())
-            OnChangeState(SwordManAvatarStateType::OnEnableReinforce);
         if (Input().NormalAttack().IsPressed())
             OnChangeState(SwordManAvatarStateType::NormalAttack);
         if (!Conditions().IsGround())

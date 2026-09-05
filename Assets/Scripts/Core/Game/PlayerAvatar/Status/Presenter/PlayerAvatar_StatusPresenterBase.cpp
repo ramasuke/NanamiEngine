@@ -27,17 +27,10 @@ namespace GamePlay::PlayerAvatar
                 onDestroySubscription,
                 [&view](GameCore::StatusParameter::Health) { view.OnDamageHealthBar(); });
         
-        model.EnhancePowerStack().Subscribe(onDestroySubscription, [&](const GameCore::PlayerAvatar::EnhancePower currentEnhancePowerStack)
+        model.Stamina().Subscribe(onDestroySubscription, [&](const GameCore::StatusParameter::Stamina currentStamina)
             {
-                view.UpdateEnhancePowerStackBar(model.MaxEnhancePowerStack(), currentEnhancePowerStack);
+                view.UpdateStaminaBar(model.MaxStamina(), currentStamina);
             });
-        model.Event().OnAddEnhancePowerStack().subscribe(
-            onDestroySubscription,
-            [&view](GameCore::PlayerAvatar::EnhancePower) { view.OnAddEnhancePowerStack(); });    
-        model.IsEnableReinforce().Subscribe(onDestroySubscription, [&](const bool isEnableReinforce)
-        {
-            view.OnIsEnableReinforceMode(isEnableReinforce);
-        });
 
         view.OnIsInjured(model.IsInjured());
         model.OnBecomeInjured().subscribe(onDestroySubscription, [&view](LibCore::Rx::unit) { view.OnIsInjured(true); });

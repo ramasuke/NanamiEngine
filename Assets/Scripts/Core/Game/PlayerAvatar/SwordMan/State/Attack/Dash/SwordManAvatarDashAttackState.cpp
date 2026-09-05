@@ -1,4 +1,4 @@
-#include "SwordManAvatarDashAttackState.h"
+﻿#include "SwordManAvatarDashAttackState.h"
 
 #include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
@@ -49,12 +49,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
         if (DashAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
         {
-            Status().AddEnhancePowerStack(attackStatus.GetEnhance() * NormalAttackArea().AttackTargetCount());
             Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos());
         }
 
         //GamePlay::Sound::SoundPlayer::PlaySe(DashAttackSound(), Transform().GetWorldPos());
-        Status().AddEnhancePowerStack(attackStatus.GetEnhance() * DashAttackArea().AttackTargetCount());
     }
 
     void SwordManAvatarDashAttackState::ChangeToMoveOrIdle()

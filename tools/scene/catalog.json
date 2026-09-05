@@ -1,5 +1,5 @@
 {
-  "generated_from": "3a42d859e757f7c14398bbb64888cfbf17361ea2",
+  "generated_from": "ab2c5fb38ef8fe413be89c5f5138f522081a5f82",
   "components": {
     "CineMachine::Behaviour::ShakeCameraBehaviour": {
       "class": "ShakeCameraBehaviour",
@@ -553,6 +553,31 @@
       "header": "Assets/Scripts/Core/Game/PlayerAvatar/SwordMan/Status/Presenter/PlayerAvatar_SwordMan_StatusPresenter.h",
       "params": []
     },
+    "GamePlay::PlayerAvatar::WakeUpArea": {
+      "class": "WakeUpArea",
+      "fqn": "GamePlay::PlayerAvatar::WakeUpArea",
+      "leaf": "WakeUpArea",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "ISensorEnterable",
+          "key": "value1"
+        },
+        {
+          "leaf": "ISensorExitable",
+          "key": "value2"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/PlayerAvatar/WakeUpArea/WakeUpArea.h",
+      "params": []
+    },
     "GamePlay::Prop::AirShip": {
       "class": "AirShip",
       "fqn": "GamePlay::Prop::AirShip",
@@ -982,7 +1007,7 @@
       "class": "PlayerStatus",
       "fqn": "GamePlay::Ui::PlayerStatus",
       "leaf": "PlayerStatus",
-      "version": 7,
+      "version": 8,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1020,33 +1045,14 @@
           "shape": "string"
         },
         {
-          "key": "enhanceBarName_",
-          "member": "enhanceBarName_",
+          "key": "staminaBarName_",
+          "member": "staminaBarName_",
           "named": true,
           "shape": "string"
         },
         {
-          "key": "displayOnAddEnhancePowerStackBarDuration_secs_",
-          "member": "displayOnAddEnhancePowerStackBarDuration_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "onAddEnhancePowerStackBarFrame_",
-          "member": "onAddEnhancePowerStackBarFrame_",
-          "named": true,
-          "shape": "field",
-          "type": "SpriteFile"
-        },
-        {
-          "key": "enhancePowerStackBarFrameName_",
-          "member": "enhancePowerStackBarFrameName_",
-          "named": true,
-          "shape": "string"
-        },
-        {
-          "key": "onEnableReinforceMaskName_",
-          "member": "onEnableReinforceMaskName_",
+          "key": "staminaBarFrameName_",
+          "member": "staminaBarFrameName_",
           "named": true,
           "shape": "string"
         },
@@ -2673,6 +2679,9 @@
     ],
     "VirtualCameraLookAtBehaviour": [
       "NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour"
+    ],
+    "WakeUpArea": [
+      "GamePlay::PlayerAvatar::WakeUpArea"
     ]
   },
   "bases": {

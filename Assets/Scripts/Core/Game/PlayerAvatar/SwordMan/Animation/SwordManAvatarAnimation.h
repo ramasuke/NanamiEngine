@@ -16,8 +16,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         ClimbToTop      = 11,
         AttackedShocked = 12,
         Hurt            = 31,
-        OnEnableReinforce  = 50,
-        OnDisableReinforce = 51,
         Chatting     = 20,
         ArmStretch   = 101,
         Death        = 300,
