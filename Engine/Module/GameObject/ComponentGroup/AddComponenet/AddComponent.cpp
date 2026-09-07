@@ -190,6 +190,7 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             }
             OnDrawTryAddComponentGui<GamePlay::PlayerAvatar::ChattableArea>(addComponent);
             OnDrawTryAddComponentGui<GameCore::PlayerAvatar::PlayerAttackArea   >(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::PlayerAvatar::LockOnDetectionArea>(addComponent);
             if (ImGui::TreeNode("Bullet"))
             {
                 OnDrawTryAddComponentGui<GamePlay::PlayerAvatar::Bullet::CannonBullet>(addComponent);

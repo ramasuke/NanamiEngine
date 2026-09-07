@@ -34,6 +34,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             OnChangeState(SwordManAvatarStateType::Jump);
         if (Input().AvoidRolling().IsPressed())
             OnChangeState(SwordManAvatarStateType::AvoidRolling);
+        UpdateLockOn();
         if (Input().NormalAttack().IsPressed())
             OnChangeState(SwordManAvatarStateType::NormalAttack);
         if (Conditions().CanUseCannon())

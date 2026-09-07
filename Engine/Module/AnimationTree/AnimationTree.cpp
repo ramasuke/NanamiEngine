@@ -73,9 +73,9 @@ AnimationTree::AnimationTree::AnimationTree(std::string filePath)
                                {
                                    RemoveCurrentNode(removeNode, -1);
                                },
-                               [this](AnimationNodePath* nodePath)
+                               [this](AnimationNodePath* nodePath, float timeScale)
                                {
-                                   AddCurrentNodePath(nodePath, -1);
+                                   AddCurrentNodePath(nodePath, -1, timeScale);
                                });
     }
 }
@@ -98,9 +98,9 @@ void AnimationTree::AnimationTree::InitForAnimator(
                                {
                                    RemoveCurrentNode(removeNode, modelHandle);
                                },
-                               [this, modelHandle](AnimationNodePath* nodePath)
+                               [this, modelHandle](AnimationNodePath* nodePath, float timeScale)
                                {
-                                   AddCurrentNodePath(nodePath, modelHandle);
+                                   AddCurrentNodePath(nodePath, modelHandle, timeScale);
                                });
     }
 
@@ -157,19 +157,19 @@ void AnimationTree::AnimationTree::OnSave()
     }
 }
 
-void AnimationTree::AnimationTree::OnUpdate(const int modelHandle) const
+void AnimationTree::AnimationTree::OnUpdate(const int modelHandle, const float timeScale) const
 {
     for (const auto nodesCopy = currentNodes_; const auto& node : nodesCopy)
-    {    
+    {
         if (!node)
             continue;
 
-        node->OnUpdateAnimation(modelHandle);
+        node->OnUpdateAnimation(modelHandle, timeScale);
     }
-    
+
     if (currentNodePath_)
     {
-        currentNodePath_->OnUpdateNodeAnimationBlend();
+        currentNodePath_->OnUpdateNodeAnimationBlend(timeScale);
     }
 }
 
@@ -392,7 +392,7 @@ void AnimationTree::AnimationTree::AddCurrentNode(const std::shared_ptr<IAnimati
     currentNodes_.push_back(node);
 }
 
-void AnimationTree::AnimationTree::AddCurrentNodePath(AnimationNodePath* nodePath, const int modelHandle)
+void AnimationTree::AnimationTree::AddCurrentNodePath(AnimationNodePath* nodePath, const int modelHandle, const float timeScale)
 {
     if (currentNodePath_)
     {
@@ -411,7 +411,7 @@ void AnimationTree::AnimationTree::AddCurrentNodePath(AnimationNodePath* nodePat
     }
     currentNodePath_ = nodePath;
     /** @note Animationが付与されていない条谷状態になる可能性があるため、Nodeを更新してAnimationを付与*/
-    nodePath->GetFromNode()->OnUpdateAnimation(modelHandle);
+    nodePath->GetFromNode()->OnUpdateAnimation(modelHandle, timeScale);
 }
 
 void AnimationTree::AnimationTree::RemoveCurrentNode(const std::shared_ptr<IAnimationNode>& node, const int modelHandle)

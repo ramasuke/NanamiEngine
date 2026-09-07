@@ -3,6 +3,7 @@
 #include "../../../../../../Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
 #include "../../../../../Data/EnemyBehaviour/Data_EnemyBehaviourFile.h"
 #include "../../PlayerAvatar/ITakablePlayerAttack/ITakablePlayerAttack.h"
+#include "../../PlayerAvatar/LockOnTarget/ILockOnTarget.h"
 #include "Status/EnemyStatus.h"
 
 namespace GameCore::Npc
@@ -10,7 +11,8 @@ namespace GameCore::Npc
     class EnemyBase : public Network::NetworkComponent,
                       public LifeCycleCallback::IAwakable,
                       public LifeCycleCallback::IUpdatable,
-                      public PlayerAvatar::ITakablePlayerAttack
+                      public PlayerAvatar::ITakablePlayerAttack,
+                      public PlayerAvatar::ILockOnTarget
     {
     public:
         explicit EnemyBase();
@@ -32,6 +34,7 @@ namespace GameCore::Npc
         FIELD(Asset::EnemyBehaviourFile) behaviourData_;
         std::shared_ptr<Enemy::BehaviourTree> behaviour_;
         std::shared_ptr<std::queue<std::unique_ptr<IDamage>>> onDamagedStack_;
+        bool hasNetworkBehaviourTree_ = false;
         
 #pragma region Serialization Function
     public:

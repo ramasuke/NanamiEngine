@@ -10,9 +10,9 @@ void AnimationTree::AnimatorEntryNode::OnUpdateBlendRate(float blendRate)
 {
 }
 
-void AnimationTree::AnimatorEntryNode::OnUpdateAnimation(int modelHandle)
+void AnimationTree::AnimatorEntryNode::OnUpdateAnimation(int modelHandle, float timeScale)
 {
-    onUpdate_.get_subscriber().on_next(UpdateCallbackContext(999, 0));
+    onUpdate_.get_subscriber().on_next(UpdateCallbackContext(999, 0, timeScale));
 }
 
 Gui::Graph::NodeDrawResult AnimationTree::AnimatorEntryNode::OnDrawGraphEditorGui(

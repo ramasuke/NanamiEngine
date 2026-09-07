@@ -33,6 +33,7 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoFixedUp
         OnChangeState(SwordManAvatarStateType::Jump);
     if (Input().AvoidRolling().IsPressed())
         OnChangeState(SwordManAvatarStateType::AvoidRolling);
+    UpdateLockOn();
     if (Input().NormalAttack().IsPressed())
         OnChangeState(SwordManAvatarStateType::NormalAttack);
     if (Conditions().CanWakeUp() && Input().Chat().IsPressed())

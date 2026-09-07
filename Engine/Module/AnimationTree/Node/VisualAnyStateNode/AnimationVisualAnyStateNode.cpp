@@ -7,7 +7,7 @@ namespace NanamiEngine::Module::AnimationTree
     {
     }
 
-    void AnimationVisualAnyStateNode::OnUpdateAnimation(int modelHandle)
+    void AnimationVisualAnyStateNode::OnUpdateAnimation(int modelHandle, float timeScale)
     {
     }
 

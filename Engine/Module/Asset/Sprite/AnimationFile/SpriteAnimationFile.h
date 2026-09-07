@@ -19,13 +19,13 @@ namespace NanamiEngine::Module::Asset
         explicit SpriteAnimationFile(std::string contentPath = "");
         [[nodiscard]] const std::vector<int>& GetSpritesHandle() const { return spritesDxlibHandle_; }
         [[nodiscard]] std::string GetContentPath() const override { return contentPath_; }
+        [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
 
     private:
         void OnEnableAsset() override;
         void OnSaveCallback() override;
         void OnRenamed(const std::string& newContentPath) override { contentPath_ = newContentPath; }
         void LoadSprite();
-        [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
 
         
         [[serialize(0)]] std::vector<int> spritesDxlibHandle_;

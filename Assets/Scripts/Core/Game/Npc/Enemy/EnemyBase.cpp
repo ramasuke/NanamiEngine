@@ -1,6 +1,9 @@
 ﻿#include "EnemyBase.h"
 
+#include "../../../../../../Engine/Core/Application/ApplicationBase.h"
 #include "../../../../../../Engine/Module/Component/Animator/Animator.h"
+#include "../../../../Editor/Npc/Enemy/Behaviour/Window/RunningEnemyBehaviourTreeWindow.h"
+#include "../../../../GamePlay/Npc/Enemy/NetworkBehaviourTree/GamePlay_NetworkBehaviourTree.h"
 #include "Behaviour/Enemy_BehaviourTree.h"
 
 namespace GameCore::Npc
@@ -16,19 +19,29 @@ namespace GameCore::Npc
     void EnemyBase::OnAwake()
     {
         RequireComponent<Component::Animator>();
-        
+
         if (behaviourData_)
             behaviour_ = behaviourData_->OnLoadCopyContent();
-        
+
+        hasNetworkBehaviourTree_ = Components().Catch<GamePlay::Npc::Enemy::NetworkBehaviourTree>().lock() != nullptr;
+
         DoAwake();
     }
 
     void EnemyBase::OnUpdate()
     {
-        currentStatus_->Get().ManualUpdate();
-        if (behaviour_)
+        // NetworkBehaviourTree が付与されており、かつ有効な NetworkObjectId を持つ個体だけ権威側限定でTickする。
+        // まだ有効なIDを持たない個体(スポーン経路未対応)は従来通り全ピアでローカルTickし続ける。
+        const bool isAuthorityGated = hasNetworkBehaviourTree_
+            && GetNetworkObjectId() != NanamiEngine::Core::Network::NetworkObjectId::Invalid();
+
+        if (!isAuthorityGated || HasStateAuthority())
         {
-            behaviour_->Tick(Entity(), currentStatus_, onDamagedStack_);
+            currentStatus_->Get().ManualUpdate();
+            if (behaviour_)
+            {
+                behaviour_->Tick(Entity(), currentStatus_, onDamagedStack_);
+            }
         }
         DoUpdate();
     }
@@ -47,5 +60,11 @@ namespace GameCore::Npc
             currentStatus_ = CreateSyncParameter(Enemy::EnemyStatus());
         }
         ImGuiHelper::OnDrawInputField("isNetworkSyncStatus_", isNetworkSyncStatus_);
+
+        if (behaviour_ && ImGui::Button("Show Running BehaviourTree"))
+        {
+            for (auto* window : Core::Application::ApplicationBase::PopupWindows().Catch<Editor::Npc::Enemy::RunningEnemyBehaviourTreeWindow>())
+                window->TryAddTarget(behaviour_);
+        }
     }
 }

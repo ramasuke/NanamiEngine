@@ -21,7 +21,7 @@ namespace Editor::Npc::Behaviour
     {
         const Gui::Graph::NodeOption nodeOption
         {
-            NODE_VISUAL_STYLE,
+            DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(*this, NODE_VISUAL_STYLE),
             "Sequence",
             true,
             false,
@@ -38,7 +38,7 @@ namespace Editor::Npc::Behaviour
         }
     }
 
-    GameCore::Npc::Enemy::Behaviour::TickStatus SequenceNode::Tick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
+    GameCore::Npc::Enemy::Behaviour::TickStatus SequenceNode::DoTick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
     {
         for (const auto& child : children_)
         {
@@ -61,7 +61,7 @@ namespace Editor::Npc::Behaviour
         return GameCore::Npc::Enemy::Behaviour::TickStatus::Success;
     }
 
-    GameCore::Npc::Friendly::Behaviour::TickStatus SequenceNode::Tick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context)
+    GameCore::Npc::Friendly::Behaviour::TickStatus SequenceNode::DoTick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context)
     {
         using TickStatus = GameCore::Npc::Friendly::Behaviour::TickStatus;
 

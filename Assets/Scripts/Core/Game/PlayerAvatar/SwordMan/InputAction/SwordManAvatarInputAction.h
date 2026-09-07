@@ -18,7 +18,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] InputRef<void     >& CannonAttack() const { return *cannonAttack_; }
         [[nodiscard]] InputRef<void     >& Chat        () const { return *chat_        ; }
         [[nodiscard]] InputRef<void     >& AvoidRolling() const { return *avoidRolling_; }
-        
+        [[nodiscard]] InputRef<void     >& LockOn      () const { return *lockOn_      ; }
+
         void OnDrawGui() override;
 
     private:
@@ -30,5 +31,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         Input<void     > cannonAttack_ = MakeInputAction([this] { return GetMouseInput() & MOUSE_INPUT_LEFT  || XInput().RightTrigger; });
         Input<void     > chat_         = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_E           ) || XInput().Buttons[XINPUT_BUTTON_Y]; });
         Input<void     > avoidRolling_ = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_LCONTROL    ) || XInput().Buttons[XINPUT_BUTTON_X]; });
+        Input<void     > lockOn_       = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_Q           ) || XInput().Buttons[XINPUT_BUTTON_RIGHT_THUMB]; });
     };
 }

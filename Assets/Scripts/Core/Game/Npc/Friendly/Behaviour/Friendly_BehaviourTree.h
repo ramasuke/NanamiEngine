@@ -31,12 +31,13 @@ namespace GameCore::Npc::Friendly
         void OnDrawGraphEditorGui();
         void OnDrawGui() override;
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
-        
+        [[nodiscard]] const std::string& GetFilePath() const { return filePath_; }
+
     private:
         std::string filePath_;
         Guid guid_;
 
         std::shared_ptr<Editor::Npc::Behaviour::EntryNode> entryNode_;
-        std::unique_ptr<BlackBoard::ParameterGroup> parameters_;  
+        std::unique_ptr<BlackBoard::ParameterGroup> parameters_;
     };
 }

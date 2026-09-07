@@ -41,6 +41,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         std::function<void(SwordManAvatarStateType)> onChangeState_;
         static inline const auto CHATTABLE_ICON_OBJECT_NAME = "ChattableIcon";
         float prevFootstepNormalizedTime_ = -1.0f; ///< 前フレームのクリップ正規化時間（enter で -1 リセット）
+        [[nodiscard]] bool IsLockOnTargetInRange() const;
+        [[nodiscard]] std::shared_ptr<GameObject::IGameObject> FindNearestLockOnTarget() const;
 
     protected:
         /** ---- 以下templateMethodパターン ---- */
@@ -65,8 +67,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] glm::vec3                              FeatStepPos     () const { return context_->PlayerAvatarFeatStepPos();}
         [[nodiscard]] GamePlay::PlayerAvatar::ChattableArea& ChattableArea   () const { return context_->ChattableArea          (); }
         [[nodiscard]] GamePlay::PlayerAvatar::WakeUpArea   & WakeUpArea      () const { return context_->WakeUpArea             (); }
-        [[nodiscard]] PlayerAttackArea& NormalAttackArea() const { return context_->NormalAttackArea(); }
-        [[nodiscard]] PlayerAttackArea& DashAttackArea  () const { return context_->DashAttackArea  (); }
+        [[nodiscard]] PlayerAttackArea& NormalAttackArea   () const { return context_->NormalAttackArea   (); }
+        [[nodiscard]] PlayerAttackArea& DashAttackArea     () const { return context_->DashAttackArea     (); }
+        [[nodiscard]] GamePlay::PlayerAvatar::LockOnDetectionArea& LockOnDetectionArea() const { return context_->LockOnDetectionArea(); }
         [[nodiscard]] PlayerAvatar::State::PlayerAvatarStateCondition Conditions() const { return PlayerAvatar::State::PlayerAvatarStateCondition(context_);}
         [[nodiscard]] PlayerAvatar::State::PlayerAvatarStateAction    Actions   () const { return PlayerAvatar::State::PlayerAvatarStateAction   (context_);}
         [[nodiscard]] const Asset::SwordManAvatarResource&            Resources () const { return context_->Resources(); }
@@ -82,6 +85,11 @@ namespace GameCore::PlayerAvatar::SwordMan
         void TryEmitFootstep(const std::vector<float>& contactPhases,
                              const std::vector<FIELD(Asset::SoundFile)>& footstepSounds);
         void ChangeCamera(const std::weak_ptr<CineMachine::CineMachineVirtualCamera>& camera) const;
+        /**
+         * @brief LockOn入力の読み取り・トグル・自動解除をまとめて処理する
+         * @note ロック中に対象が死亡/索敵範囲外になった場合は自動でFollowFromBehindへ戻す
+         */
+        void UpdateLockOn() const;
         void OnChangeState   (SwordManAvatarStateType type) const;
         void OnTryChangeState(SwordManAvatarStateType type, const std::function<bool()>& check) const;
         void OnTryChangeState(SwordManAvatarStateType type, bool check) const;

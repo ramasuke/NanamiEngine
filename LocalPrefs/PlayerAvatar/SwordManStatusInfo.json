@@ -1,0 +1,82 @@
+﻿{
+    "Info": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 5,
+                "value0": {
+                    "cereal_class_version": 0
+                },
+                "maxHealth_": {
+                    "cereal_class_version": 0,
+                    "value_": 100
+                },
+                "minHealth_": {
+                    "value_": 0
+                },
+                "currentHealth_": {
+                    "polymorphic_id": 1073741824,
+                    "ptr_wrapper": {
+                        "id": 2147483650,
+                        "data": {
+                            "value0": {
+                                "value_": 100
+                            }
+                        }
+                    }
+                },
+                "maxStamina_": {
+                    "cereal_class_version": 0,
+                    "value_": 200.0
+                },
+                "stamina_": {
+                    "value": {
+                        "value_": 200.0
+                    }
+                },
+                "staminaDrainPerSecond_": 10.0,
+                "staminaRegenPerSecond_": 80.0,
+                "minStaminaRatioToResumeRun_": 0.30000001192092898,
+                "attackedShockedStateDuration_secs_": 1.0,
+                "dashAttack_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value_": 10
+                    },
+                    "value1": {
+                        "cereal_class_version": 0,
+                        "value0": 10
+                    },
+                    "value2": 0.699999988079071,
+                    "value3": 0.800000011920929
+                },
+                "walkSpeed_": {
+                    "cereal_class_version": 0,
+                    "value_": 24.0
+                },
+                "runSpeed_": {
+                    "value_": 70.0
+                },
+                "moveRotateSpeed_": 10.0,
+                "jumpPower_": 68.5,
+                "damageStateDuration_secs_": 1.600000023841858,
+                "deathStateDuration_secs_": 2.0,
+                "injuredHealthRatio_": 0.30000001192092898,
+                "downStateDuration_secs_": 15.0,
+                "reviveHealthRatio_": 0.30000001192092898,
+                "quests_": {
+                    "polymorphic_id": 1073741824,
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "count": 0
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

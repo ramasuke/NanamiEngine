@@ -777,6 +777,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\ITakablePlayerAttack\ITakablePlayerAttack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\LockOnTarget\ILockOnTarget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\StateMachine\EventScene\IPlayerAvatarEventSceneStateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -885,6 +888,9 @@
     <ClCompile Include="Assets\Scripts\Editor\Npc\Enemy\Behaviour\Window\EnemyNpcBehaviourWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Editor\Npc\Enemy\Behaviour\Window\RunningEnemyBehaviourTreeWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Action\Friendly_Behaviour_ActionFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -892,6 +898,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Window\FriendlyNpcBehaviourWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Window\RunningFriendlyBehaviourTreeWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\AttackArea\AttackArea.cpp">
@@ -904,6 +913,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\ChattableArea\ChattableArea.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\LockOnDetectionArea\LockOnDetectionArea.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\WakeUpArea\WakeUpArea.cpp">
@@ -1021,6 +1033,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Libs\LibCore\Tween\Vec3Tween\Vec3Tween.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\LockOn\LockOnCameraBehaviour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\ThirdPerson\ThirdPersonCameraBehaviour.cpp">
@@ -1723,6 +1738,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Libs\enet\win32.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\SafeExecute\Engine_Module_SafeExecute.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -4920,6 +4938,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\ITakablePlayerAttack\ITakablePlayerAttack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\LockOnTarget\ILockOnTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\RequireType\RequireType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5037,6 +5058,9 @@
     <ClInclude Include="Assets\Scripts\Editor\Npc\Enemy\Behaviour\Window\EnemyNpcBehaviourWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Editor\Npc\Enemy\Behaviour\Window\RunningEnemyBehaviourTreeWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Action\Friendly_Behaviour_ActionFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5049,6 +5073,9 @@
     <ClInclude Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Window\FriendlyNpcBehaviourWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Window\RunningFriendlyBehaviourTreeWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\AttackArea\AttackArea.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5059,6 +5086,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\ChattableArea\ChattableArea.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\LockOnDetectionArea\LockOnDetectionArea.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\WakeUpArea\WakeUpArea.h">
@@ -5197,6 +5227,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Libs\プロジェクトに追加すべきファイル_VC用\EffekseerRendererDX9.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\LockOn\LockOnCameraBehaviour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\ThirdPerson\ThirdPersonCameraBehaviour.h">
@@ -5947,6 +5980,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Libs\enet\include\enet\win32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\SafeExecute\Engine_Module_SafeExecute.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

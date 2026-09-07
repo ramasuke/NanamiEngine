@@ -20,7 +20,7 @@ namespace Editor::Npc::Behaviour
     {
         const Gui::Graph::NodeOption nodeOption
         {
-            NODE_VISUAL_STYLE,
+            DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(*this, NODE_VISUAL_STYLE),
             "Selector",
             true,
             false,
@@ -38,7 +38,7 @@ namespace Editor::Npc::Behaviour
         }
     }
 
-    GameCore::Npc::Enemy::Behaviour::TickStatus SelectorNode::Tick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
+    GameCore::Npc::Enemy::Behaviour::TickStatus SelectorNode::DoTick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
     {
         using TickStatus = GameCore::Npc::Enemy::Behaviour::TickStatus;
 
@@ -63,7 +63,7 @@ namespace Editor::Npc::Behaviour
         return TickStatus::Failure;
     }
 
-    GameCore::Npc::Friendly::Behaviour::TickStatus SelectorNode::Tick(
+    GameCore::Npc::Friendly::Behaviour::TickStatus SelectorNode::DoTick(
         const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context)
     {
         using TickStatus = GameCore::Npc::Friendly::Behaviour::TickStatus;

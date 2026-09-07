@@ -28,9 +28,9 @@ namespace NanamiEngine::CineMachine::Behaviour
         float trauma_   = 0.0f;
         float duration_ = 0.4f;
 
-        glm::vec3 posAmplitude_   = glm::vec3(0.4f, 0.4f, 0.25f); // 位置揺れ幅
-        glm::vec3 angleAmplitude_ = glm::vec3(2.0f, 2.0f, 3.0f);  // 回転揺れ幅
-        float     frequency_      = 22.0f;                        // 揺れの速さ
+        glm::vec3 posAmplitude_   = glm::vec3(0.4f, 0.4f, 0.25f);
+        glm::vec3 angleAmplitude_ = glm::vec3(2.0f, 2.0f, 3.0f); 
+        float     frequency_      = 22.0f;                       
         float     defaultIntensity_ = 0.6f;
         float     defaultDuration_  = 0.4f;
         glm::vec3 seed_ = glm::vec3(13.37f, 71.13f, 42.42f);

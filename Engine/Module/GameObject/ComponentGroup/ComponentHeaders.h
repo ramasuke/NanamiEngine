@@ -20,6 +20,7 @@
 #include "../../../../Assets/Scripts/GamePlay/Npc/Friendly/FriendlyNpc.h"
 #include "../../../../Assets/Scripts/GamePlay/PlayerAvatar/Bullet/PlayerAvatar_Bullet_CannonBullet.h"
 #include "../../../../Assets/Scripts/GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
+#include "../../../../Assets/Scripts/GamePlay/PlayerAvatar/LockOnDetectionArea/LockOnDetectionArea.h"
 #include "../../../../Assets/Scripts/GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../Assets/Scripts/GamePlay/Prop/AirShip/Prop_AirShip.h"
 #include "../../../../Assets/Scripts/GamePlay/Prop/ProximityReveal/ProximityReveal.h"

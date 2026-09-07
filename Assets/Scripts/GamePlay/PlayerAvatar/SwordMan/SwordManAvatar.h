@@ -3,6 +3,7 @@
 #include "../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
 #include "../../../Core/Game/PlayerAvatar/AttackArea/PlayerAvatarAttackArea.h"
 #include "../../../Core/Game/PlayerAvatar/SwordMan/Traits/SwordManAvatarTraits.h"
+#include "../LockOnDetectionArea/LockOnDetectionArea.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -13,6 +14,7 @@ namespace GamePlay::PlayerAvatar::SwordMan
 {
     constexpr auto NORMAL_ATTACK_AREA_NAME             = "NormalAttackArea";
     constexpr auto DASH_ATTACK_AREA_NAME               = "DashAttackArea";
+    constexpr auto LOCK_ON_DETECTION_AREA_NAME         = "LockOnDetectionArea";
     constexpr auto SUCCESS_AVOID_ROLLING_PARTICLE_NAME = "SuccessAvoidRollingParticle";
     constexpr auto HIT_NORMAL_ATTACK_PARTICLE_NAME     = "HitNormalAttackParticle";
     
@@ -20,8 +22,9 @@ namespace GamePlay::PlayerAvatar::SwordMan
     {
     public:
         [[nodiscard]] std::weak_ptr<Asset::SwordManAvatarResource> Resources() const { return resources_.get(); }
-        [[nodiscard]] std::weak_ptr<PlayerAttackArea> CatchNormalAttackArea() const;
-        [[nodiscard]] std::weak_ptr<PlayerAttackArea> CatchDashAttackArea  () const;
+        [[nodiscard]] std::weak_ptr<PlayerAttackArea> CatchNormalAttackArea      () const;
+        [[nodiscard]] std::weak_ptr<PlayerAttackArea> CatchDashAttackArea        () const;
+        [[nodiscard]] std::weak_ptr<LockOnDetectionArea> CatchLockOnDetectionArea   () const;
         [[nodiscard]] PlayerAvatarType Type() const override;
 
     private:

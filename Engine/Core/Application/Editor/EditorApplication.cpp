@@ -14,8 +14,8 @@
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
 #include "../LifeCycle/ApplicationLifeCycle.h"
 #include "../Window/Popup/Group/PopupWindowGroup.h"
-#include "../../../Module/Exception/Engine_Module_Exception.h"
 #include "../../../Module/Log/NanamiEngine_Module_Log.h"
+#include "../../../Module/SafeExecute/Engine_Module_SafeExecute.h"
 
 namespace
 {
@@ -51,16 +51,18 @@ void Core::Application::EditorApplication::Run()
         ImGuiWrapper::Instance().Update();
         ImGuizmo::BeginFrame();          // ImGui::NewFrame() 直後・フレーム1回だけ
 
-        // 更新フェーズの最後の安全網。個々の読み込み失敗は回復できる境界で catch 済みなので、ここに来るのは想定外の経路。
+        // 更新フェーズの最後の安全網。コンポーネント単位の例外・SEH(nullptr参照等)は
+        // LifeCycleCallbackGroup 側で個別に捕捉済みなので、ここに来るのはコンポーネント発ではない
+        // コード経路(ApplicationLifeCycle_ 自体やライフサイクル管理コード等)からの想定外エラー。
         // OnDrawGui は ImGui の Begin/End の対応を崩さないよう囲まない
-        try
+        std::string frameErrorMessage;
+        if (!Module::SafeExecute([this]()
+            {
+                ApplicationLifeCycle_().OnUpdate();
+                GetMainWindow()->OnUpdate();
+            }, frameErrorMessage))
         {
-            ApplicationLifeCycle_().OnUpdate();
-            GetMainWindow()->OnUpdate();
-        }
-        catch (const Module::Exception::NanamiException& exception)
-        {
-            Module::LogError("[Frame] " + std::string(exception.what()));
+            Module::LogError("[Frame] " + frameErrorMessage);
         }
 
         OnDrawGui();

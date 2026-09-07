@@ -1,6 +1,5 @@
 ﻿#include "ShakeCameraBehaviour.h"
 
-#include "DxLib.h"
 #include "gtc/noise.hpp"
 #include "../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
@@ -10,7 +9,9 @@ namespace NanamiEngine::CineMachine::Behaviour
 {
     ShakeCameraBehaviour* ShakeCameraBehaviour::instance_ = nullptr;
 
-    void ShakeCameraBehaviour::Shake(const float intensity, const float duration)
+    void ShakeCameraBehaviour::Shake(
+        const float intensity,
+        const float duration)
     {
         if (duration <= 0.0f)
             return;
@@ -77,13 +78,10 @@ namespace NanamiEngine::CineMachine::Behaviour
         const glm::quat brainRot = CinemachineCameraBrain::Instance()->Transform().GetWorldRot();
 
         const glm::vec3 shakenPos = brainPos + brainRot * posOffset;
-        const glm::quat shakenRot = brainRot * glm::quat(angleRad); 
-        const glm::vec3 forward   = shakenRot * glm::vec3(0, 0, 1);
-        const glm::vec3 target    = shakenPos + forward;
+        const glm::quat shakenRot = brainRot * glm::quat(angleRad);
 
-        SetCameraPositionAndTarget_UpVecY(
-            {shakenPos.x, shakenPos.y, shakenPos.z},
-            {target.x,    target.y,    target.z});
+        CinemachineCameraBrain::Instance()->Transform().SetWorldPos(shakenPos);
+        CinemachineCameraBrain::Instance()->Transform().SetWorldRot(shakenRot);
     }
 
     void ShakeCameraBehaviour::OnDrawGui()

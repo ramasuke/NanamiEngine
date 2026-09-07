@@ -14,13 +14,13 @@ namespace Editor::Npc::Behaviour
         
     }
 
-    GameCore::Npc::Enemy::Behaviour::TickStatus EntryNode::Tick(
+    GameCore::Npc::Enemy::Behaviour::TickStatus EntryNode::DoTick(
         const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
     {
         return nextNode_->Tick(context);
     }
 
-    GameCore::Npc::Friendly::Behaviour::TickStatus EntryNode::Tick(
+    GameCore::Npc::Friendly::Behaviour::TickStatus EntryNode::DoTick(
         const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context)
     {
         return nextNode_->Tick(context);
@@ -33,7 +33,7 @@ namespace Editor::Npc::Behaviour
     {
         const Gui::Graph::NodeOption nodeOption
         {
-            NODE_VISUAL_STYLE,
+            DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(*this, NODE_VISUAL_STYLE),
             ENTRY_NODE_NAME,
             false,
             false,

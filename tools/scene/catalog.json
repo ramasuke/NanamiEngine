@@ -1,5 +1,5 @@
 {
-  "generated_from": "ab2c5fb38ef8fe413be89c5f5138f522081a5f82",
+  "generated_from": "2a96afcf08b8668f5d9991f3089310b158d5d6a3",
   "components": {
     "CineMachine::Behaviour::ShakeCameraBehaviour": {
       "class": "ShakeCameraBehaviour",
@@ -279,7 +279,7 @@
       "class": "PlayerAvatarCameraGroupBase",
       "fqn": "GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase",
       "leaf": "PlayerAvatarCameraGroupBase",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -303,6 +303,12 @@
           "named": true,
           "shape": "field",
           "type": "CineMachineVirtualCamera"
+        },
+        {
+          "key": "lockOnCameraName_",
+          "member": "lockOnCameraName_",
+          "named": true,
+          "shape": "string"
         }
       ]
     },
@@ -500,6 +506,31 @@
       ],
       "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h",
+      "params": []
+    },
+    "GamePlay::PlayerAvatar::LockOnDetectionArea": {
+      "class": "LockOnDetectionArea",
+      "fqn": "GamePlay::PlayerAvatar::LockOnDetectionArea",
+      "leaf": "LockOnDetectionArea",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "ISensorEnterable",
+          "key": "value1"
+        },
+        {
+          "leaf": "ISensorExitable",
+          "key": "value2"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/PlayerAvatar/LockOnDetectionArea/LockOnDetectionArea.h",
       "params": []
     },
     "GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter": {
@@ -1294,6 +1325,93 @@
         }
       ]
     },
+    "NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour": {
+      "class": "LockOnCameraBehaviour",
+      "fqn": "NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour",
+      "leaf": "LockOnCameraBehaviour",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IAwakable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IUpdatable",
+          "key": "value2"
+        },
+        {
+          "leaf": "IVirtualCameraBehaviour",
+          "key": "value3"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Packages/Cinemachine/VirtualCamera/Behaviour/LockOn/LockOnCameraBehaviour.h",
+      "params": [
+        {
+          "key": "isImmediateApply_",
+          "member": "isImmediateApply_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "distance_",
+          "member": "distance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "height_",
+          "member": "height_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "sideOffset_",
+          "member": "sideOffset_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "lookAtHeightOffset_",
+          "member": "lookAtHeightOffset_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "collisionBuffer_",
+          "member": "collisionBuffer_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "followTarget_",
+          "member": "followTarget_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "follow_",
+          "member": "follow_",
+          "named": true,
+          "shape": "field",
+          "type": "VirtualCameraFollowBehaviour"
+        },
+        {
+          "key": "lookAt_",
+          "member": "lookAt_",
+          "named": true,
+          "shape": "field",
+          "type": "VirtualCameraLookAtBehaviour"
+        }
+      ]
+    },
     "NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour": {
       "class": "VirtualCameraFollowBehaviour",
       "fqn": "NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour",
@@ -1475,7 +1593,7 @@
       "class": "Animator",
       "fqn": "NanamiEngine::Module::Component::Animator",
       "leaf": "Animator",
-      "version": 3,
+      "version": 4,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1497,6 +1615,12 @@
           "named": true,
           "shape": "field",
           "type": "AnimationTreeFile"
+        },
+        {
+          "key": "timeScale_",
+          "member": "timeScale_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -2575,6 +2699,12 @@
     ],
     "IslandPedestial": [
       "GamePlay::Prop::IslandPedestial"
+    ],
+    "LockOnCameraBehaviour": [
+      "NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour"
+    ],
+    "LockOnDetectionArea": [
+      "GamePlay::PlayerAvatar::LockOnDetectionArea"
     ],
     "ModelRenderer": [
       "NanamiEngine::Module::Component::ModelRenderer"

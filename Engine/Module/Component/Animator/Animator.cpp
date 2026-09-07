@@ -18,7 +18,7 @@ void Component::Animator::OnLateUpdate()
         return;
 
     modelDxLibHandle_ = Entity().lock()->Components().Catch<ModelRenderer>().lock()->modelDxLibHandle_;
-    animationTree_->OnUpdate(modelDxLibHandle_);
+    animationTree_->OnUpdate(modelDxLibHandle_, timeScale_);
     for (const auto& animationSync : animationSyncs_)
     {
         animationSync->UpdateSync(modelDxLibHandle_);
@@ -61,6 +61,7 @@ std::optional<AnimationTree::ClipProgress> Component::Animator::GetCurrentClipPr
 void Component::Animator::OnDrawGui()
 {
     ImGuiHelper::OnDrawInputField("animationTreeFile_", animationTreeFile_);
+    ImGuiHelper::OnDrawInputField("timeScale_", timeScale_);
     ImGuiHelper::OnDrawInputField("animationSyncs_", animationSyncs_, [this]
     {
         if (ImGui::TreeNode("Add Syncs"))

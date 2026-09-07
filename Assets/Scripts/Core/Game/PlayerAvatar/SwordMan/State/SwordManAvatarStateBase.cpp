@@ -11,6 +11,7 @@
 #include "../../../../../GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
 #include "../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../Chattable/IPlayerChattable.h"
+#include "../../Input/PlayerAvatarInput_void.h"
 
 namespace
 {
@@ -114,6 +115,59 @@ namespace GameCore::PlayerAvatar::SwordMan
     void SwordManAvatarStateBase::ChangeCamera(const std::weak_ptr<CineMachine::CineMachineVirtualCamera>& camera) const
     {
         CameraGroup().ChangeCamera(camera);
+    }
+
+    void SwordManAvatarStateBase::UpdateLockOn() const
+    {
+        if (CameraGroup().IsLockedOn() && !IsLockOnTargetInRange())
+            CameraGroup().ReleaseLockOn();
+
+        if (!Input().LockOn().IsPressed())
+            return;
+
+        if (CameraGroup().IsLockedOn())
+        {
+            CameraGroup().ReleaseLockOn();
+            return;
+        }
+
+        if (const auto target = FindNearestLockOnTarget())
+            CameraGroup().EngageLockOn(target);
+    }
+
+    bool SwordManAvatarStateBase::IsLockOnTargetInRange() const
+    {
+        const auto currentTarget = CameraGroup().LockOnTarget().lock();
+        if (!currentTarget)
+            return false;
+
+        for (const auto& candidate : LockOnDetectionArea().Candidates())
+            if (candidate.lock() == currentTarget)
+                return true;
+        return false; // 索敵範囲外に出た
+    }
+
+    std::shared_ptr<GameObject::IGameObject> SwordManAvatarStateBase::FindNearestLockOnTarget() const
+    {
+        std::shared_ptr<GameObject::IGameObject> nearestTarget;
+        float nearestDistanceSq = -1.0f;
+        const auto playerPos = Transform().GetWorldPos();
+
+        for (const auto& weakCandidate : LockOnDetectionArea().Candidates())
+        {
+            const auto candidate = weakCandidate.lock();
+            if (!candidate)
+                continue;
+
+            const glm::vec3 diff = candidate->Transform().GetWorldPos() - playerPos;
+            const float distanceSq = glm::dot(diff, diff);
+            if (nearestDistanceSq < 0.0f || distanceSq < nearestDistanceSq)
+            {
+                nearestDistanceSq = distanceSq;
+                nearestTarget = candidate;
+            }
+        }
+        return nearestTarget;
     }
 
     void SwordManAvatarStateBase::OnChangeState(SwordManAvatarStateType type) const

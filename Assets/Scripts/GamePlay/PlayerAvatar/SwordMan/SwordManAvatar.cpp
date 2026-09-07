@@ -17,6 +17,11 @@ namespace GamePlay::PlayerAvatar::SwordMan
         return GameObject::CatchChild<PlayerAttackArea>(Entity(), DASH_ATTACK_AREA_NAME);
     }
 
+    std::weak_ptr<LockOnDetectionArea> SwordManAvatar::CatchLockOnDetectionArea() const
+    {
+        return GameObject::CatchChild<LockOnDetectionArea>(Entity(), LOCK_ON_DETECTION_AREA_NAME);
+    }
+
     PlayerAvatarType SwordManAvatar::Type() const
     {
         return PlayerAvatarType::SwordMan;

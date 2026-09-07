@@ -48,7 +48,7 @@ namespace GameCore::PlayerAvatar::State
     
         // 実際に回す割合
         const float angleDiff = glm::angle(deltaRot);
-        const float t = angleDiff < 0.0001f ? 1.0f : glm::min(1.0f, rotateSpeed / angleDiff);
+        const float t = angleDiff < 0.0001f ? 1.0f : glm::min(1.0f, rotateSpeed * Time::DeltaTime() / angleDiff);
         
         // 徐々に回転
         playerTransform.SetWorldRot(glm::slerp(currentRot, targetRot, t));

@@ -24,14 +24,16 @@ namespace NanamiEngine::Module::AnimationTree
     public:
         struct UpdateCallbackContext
         {
-            UpdateCallbackContext(const float duringSecs, const float duringDeltaTimeSecs)
+            UpdateCallbackContext(const float duringSecs, const float duringDeltaTimeSecs, const float timeScale)
                 : during_secs_(duringSecs),
-                  duringDeltaTime_secs_(duringDeltaTimeSecs)
+                  duringDeltaTime_secs_(duringDeltaTimeSecs),
+                  timeScale_(timeScale)
             {
             }
 
             const float during_secs_;
             const float duringDeltaTime_secs_;
+            const float timeScale_;
         };
         
         template <class Archive>
@@ -48,7 +50,7 @@ namespace NanamiEngine::Module::AnimationTree
         virtual void  InitForGamePlay    (int modelHandle   ) = 0;
         
         virtual void  OnUpdateBlendRate(float blendRate   ) = 0;
-        virtual void  OnUpdateAnimation(int modelHandle   ) = 0;
+        virtual void  OnUpdateAnimation(int modelHandle, float timeScale) = 0;
         virtual void  OnExitNode       (int modelHandle   ) = 0;
         
         virtual rxcpp::observable<UpdateCallbackContext> OnUpdated() = 0;

@@ -1,5 +1,6 @@
-#include "ApplicationConfiguration.h"
+﻿#include "ApplicationConfiguration.h"
 #include "../../../Module/ProjectConfig/Engine_Module_ProjectConfig.h"
+#include "../../../Module/SafeExecute/Engine_Module_SafeExecute.h"
 #include "ImGuiHelper.h"
 
 namespace NanamiEngine::Core::Application::Configuration
@@ -46,6 +47,8 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto APP_CONFIG_LIGHT_DB_KEY    = "LightDifB";
     constexpr auto APP_CONFIG_PARTICLE_MAX_KEY       = "ParticleMax";
     constexpr auto APP_CONFIG_ASSETS_DIR_PATH_KEY    = "AssetsDirectoryPath";
+    constexpr auto APP_CONFIG_CRASH_RECOVERY_KEY     = "CrashRecoveryEnabled";
+    constexpr auto APP_CONFIG_DEBUGGER_FAILFAST_KEY  = "DebuggerFailFastEnabled";
 
     void AppConfiguration::Load()
     {
@@ -62,6 +65,11 @@ namespace NanamiEngine::Core::Application::Configuration
         lightDifB_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DB_KEY,   DEFAULT_LIGHT_DIF_B);
         particleMax_         = Module::ProjectConfig::LoadOrDefaultWithPath<int>        (APP_CONFIG_PATH, APP_CONFIG_PARTICLE_MAX_KEY,    DEFAULT_PARTICLE_MAX);
         assetsDirectoryPath_ = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(APP_CONFIG_PATH, APP_CONFIG_ASSETS_DIR_PATH_KEY, std::string(DEFAULT_ASSETS_DIRECTORY_PATH));
+
+        Module::SetCrashRecoveryEnabled(
+            Module::ProjectConfig::LoadOrDefaultWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_CRASH_RECOVERY_KEY, false));
+        Module::SetDebuggerFailFastEnabled(
+            Module::ProjectConfig::LoadOrDefaultWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_DEBUGGER_FAILFAST_KEY, true));
     }
 
     void AppConfiguration::Save()
@@ -79,6 +87,9 @@ namespace NanamiEngine::Core::Application::Configuration
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DB_KEY,   lightDifB_);
         Module::ProjectConfig::SaveWithPath<int>        (APP_CONFIG_PATH, APP_CONFIG_PARTICLE_MAX_KEY,    particleMax_);
         Module::ProjectConfig::SaveWithPath<std::string>(APP_CONFIG_PATH, APP_CONFIG_ASSETS_DIR_PATH_KEY, assetsDirectoryPath_);
+
+        Module::ProjectConfig::SaveWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_CRASH_RECOVERY_KEY, Module::IsCrashRecoveryEnabled());
+        Module::ProjectConfig::SaveWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_DEBUGGER_FAILFAST_KEY, Module::IsDebuggerFailFastEnabled());
     }
 
     int   AppConfiguration::GetWindowWidth()        { return windowWidth_; }
@@ -213,6 +224,39 @@ namespace NanamiEngine::Core::Application::Configuration
             Save();
         }
         ImGui::TextDisabled("* Use 'Reload Assets' to apply");
+
+        ImGui::Spacing();
+        ImGui::Text("Error Handling");
+        ImGui::Separator();
+
+        bool crashRecoveryEnabled = Module::IsCrashRecoveryEnabled();
+        if (ImGui::Checkbox("Crash Recovery (experimental)", &crashRecoveryEnabled))
+        {
+            Module::SetCrashRecoveryEnabled(crashRecoveryEnabled);
+            Save();
+        }
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("ONにすると、nullptr参照等のクラッシュ時にそのコンポーネントの処理だけ"
+                               "スキップしてログに出し、続行しようとします。\n"
+                               "OFF(デフォルト)では従来通り即座にクラッシュします(壊れた状態のまま"
+                               "動き続けるリスクを避けたい場合はOFFのままにしてください)。");
+        }
+
+        bool debuggerFailFastEnabled = Module::IsDebuggerFailFastEnabled();
+        if (ImGui::Checkbox("Fail-Fast When Debugger Attached", &debuggerFailFastEnabled))
+        {
+            Module::SetDebuggerFailFastEnabled(debuggerFailFastEnabled);
+            Save();
+        }
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("ON(デフォルト)の場合、Rider/Visual Studio等のデバッガがアタッチされている間は、"
+                               "Crash RecoveryがONでもこれを無視して常に通常通りクラッシュさせます"
+                               "(=デバッガがその場で止まります)。\n"
+                               "デバッグ中でもCrash Recoveryの継続動作自体を確認したい場合はOFFにしてください。\n"
+                               "(Crash RecoveryがOFFの場合、この設定は元々関係ありません)");
+        }
 
         ImGui::Spacing();
     }

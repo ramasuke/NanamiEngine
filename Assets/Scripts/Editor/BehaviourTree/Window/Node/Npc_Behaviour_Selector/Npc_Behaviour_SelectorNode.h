@@ -19,8 +19,8 @@ namespace Editor::Npc::Behaviour
         [[nodiscard]] std::vector<std::shared_ptr<NodeBase>> Children() const override { return children_; }
 
     private:
-        [[nodiscard]] GameCore::Npc::Enemy::Behaviour::TickStatus Tick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context) override;
-        [[nodiscard]] GameCore::Npc::Friendly::Behaviour::TickStatus Tick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context) override;
+        [[nodiscard]] GameCore::Npc::Enemy::Behaviour::TickStatus DoTick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context) override;
+        [[nodiscard]] GameCore::Npc::Friendly::Behaviour::TickStatus DoTick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context) override;
         void SetConnectToNextNode(std::shared_ptr<NodeBase> nextNode) override;
         void DoOnDrawGui() override;
 

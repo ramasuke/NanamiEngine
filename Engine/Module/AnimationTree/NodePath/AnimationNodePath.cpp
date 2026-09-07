@@ -7,7 +7,7 @@ void AnimationTree::AnimationNodePath::InitNodePath(
     const std::function<std::weak_ptr<IAnimationNode>(const Guid&)>& findNode,
     const std::function<void(const std::shared_ptr<IAnimationNode>&)>& onAddCurrentNode,
     const std::function<void(const std::shared_ptr<IAnimationNode>&)>& onRemoveCurrentNode,
-    const std::function<void(AnimationNodePath*)>& onAddNextCurrentNodePath)
+    const std::function<void(AnimationNodePath*, float)>& onAddNextCurrentNodePath)
 {
     additionParams_ = additionParams;
     fromNode_       = findNode(fromNodeGuid_);
@@ -71,7 +71,7 @@ void AnimationTree::AnimationNodePath::TryAddNextCurrentNodePath(
                 if (!isBlending_)
                 {
                     onAddCurrentNode_(nextNode_.lock());
-                    onAddNextCurrentNodePath_(this);
+                    onAddNextCurrentNodePath_(this, context.timeScale_);
                 }
                 isBlending_ = true;
             }
@@ -94,11 +94,11 @@ void AnimationTree::AnimationNodePath::OnDrawGui()
 }
 
 
-void AnimationTree::AnimationNodePath::OnUpdateNodeAnimationBlend()
+void AnimationTree::AnimationNodePath::OnUpdateNodeAnimationBlend(const float timeScale)
 {
     if (isBlending_)
     {
-        transitionDuring_secs_ += Time::DeltaTime();
+        transitionDuring_secs_ += Time::DeltaTime() * timeScale;
         const float blendRate = std::clamp(transitionDuring_secs_ / transitionDuration_secs_, 0.0f, 1.0f);
 
         fromNode_.lock()->OnUpdateBlendRate(1 - blendRate);

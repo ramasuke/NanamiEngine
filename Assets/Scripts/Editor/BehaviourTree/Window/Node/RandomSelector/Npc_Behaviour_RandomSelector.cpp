@@ -21,7 +21,7 @@ namespace Editor::Npc::Behaviour
     {
         const Gui::Graph::NodeOption nodeOption
         {
-            NODE_VISUAL_STYLE,
+            DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(*this, NODE_VISUAL_STYLE),
             "RandomSelector",
             true,
             false,
@@ -59,7 +59,7 @@ namespace Editor::Npc::Behaviour
     }
 
     GameCore::Npc::Enemy::Behaviour::TickStatus
-    RandomSelectorNode::Tick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
+    RandomSelectorNode::DoTick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
     {
         if (children_.empty())
             return GameCore::Npc::Enemy::Behaviour::TickStatus::Failure;
@@ -85,7 +85,7 @@ namespace Editor::Npc::Behaviour
     }
 
     GameCore::Npc::Friendly::Behaviour::TickStatus
-    RandomSelectorNode::Tick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context)
+    RandomSelectorNode::DoTick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context)
     {
         if (children_.empty())
             return GameCore::Npc::Friendly::Behaviour::TickStatus::Failure;

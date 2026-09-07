@@ -89,7 +89,7 @@
             "ptr_wrapper": {
                 "id": 2147483653,
                 "data": {
-                    "cereal_class_version": 3,
+                    "cereal_class_version": 4,
                     "value0": {
                         "guid_": {
                             "value_": "7036B3FB-483C-454F-A162-E5A7A9CDB44F"
@@ -114,7 +114,8 @@
                             }
                         }
                     },
-                    "animationSyncCount": 0
+                    "animationSyncCount": 0,
+                    "timeScale_": 1.0
                 }
             }
         },
@@ -308,7 +309,7 @@
                 "value3": 1.0
             }
         },
-        "childCount": 5,
+        "childCount": 6,
         "child": {
             "polymorphic_id": 2147483656,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
@@ -927,18 +928,13 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "cereal_class_version": 0,
                                         "guid_": {
                                             "value_": "06A6CB3C-80ED-479F-B7D3-1D4143A30459"
                                         },
                                         "isEnable_": true
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value2": {
-                                        "cereal_class_version": 0
-                                    }
+                                    "value1": {},
+                                    "value2": {}
                                 }
                             }
                         },
@@ -1018,6 +1014,125 @@
                             },
                             "value3": {
                                 "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    }
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 8,
+            "ptr_wrapper": {
+                "id": 2147483679,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": false,
+                    "name_": "LockOnDetectionArea",
+                    "guid_": {
+                        "value_": "6B067B37-999D-46F1-B434-D4BD9B979878"
+                    },
+                    "components_": {
+                        "componentCount": 2,
+                        "component_0": {
+                            "polymorphic_id": 10,
+                            "ptr_wrapper": {
+                                "id": 2147483680,
+                                "data": {
+                                    "value0": {
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "1B9AA31C-A49C-4CC7-97EC-9F7E6D7B6A1D"
+                                            },
+                                            "isEnable_": true
+                                        },
+                                        "mass_": 1.0,
+                                        "isGravity_": false,
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "emotionType_": 1,
+                                        "layer_": 0,
+                                        "constraints_": 63,
+                                        "isSensor_": true,
+                                        "friction_": 0.20000000298023225
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "value3": {},
+                                    "radius_": 3000.0
+                                }
+                            }
+                        },
+                        "component_1": {
+                            "polymorphic_id": 2147483663,
+                            "polymorphic_name": "GamePlay::PlayerAvatar::LockOnDetectionArea",
+                            "ptr_wrapper": {
+                                "id": 2147483681,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "6B60169A-000A-416C-B0ED-DC68C5F49B04"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {}
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -287.6048583984375,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 3.0,
+                            "value1": 3.0,
+                            "value2": 3.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.23999999463558198,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.23999999463558198,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.23999999463558198,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": -23.00838851928711,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 1.0

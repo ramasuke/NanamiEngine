@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "../../Guid/Guid.h"
 #include "../cereal/include/cereal/types/polymorphic.hpp""
 
 namespace NanamiEngine::Module::LifeCycleCallback
@@ -8,6 +9,7 @@ namespace NanamiEngine::Module::LifeCycleCallback
     public:
         virtual ~IEnablableAsset() = default;
         virtual void OnEnableAsset() = 0;
+        [[nodiscard]] virtual const Guid& GetGuid() const = 0;
         
         template <class Archive>
         void save(Archive& archive, const std::uint32_t version) const

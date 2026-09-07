@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "../../../../Module/Guid/Guid.h"
 
 namespace NanamiEngine::Core::Object
 {
@@ -7,5 +8,6 @@ namespace NanamiEngine::Core::Object
     public:
         ~IFieldContext() = default;
         virtual void Init() = 0;
+        [[nodiscard]] virtual const Guid& GetGuid() const = 0;
     };
 }

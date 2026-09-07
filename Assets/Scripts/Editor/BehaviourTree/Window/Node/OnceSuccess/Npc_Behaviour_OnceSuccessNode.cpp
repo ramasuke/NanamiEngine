@@ -15,7 +15,7 @@ namespace Editor::Npc::Behaviour
     }
 
     GameCore::Npc::Enemy::Behaviour::TickStatus
-    OnceSuccessNode::Tick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
+    OnceSuccessNode::DoTick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
     {
         if (!child_)
             return GameCore::Npc::Enemy::Behaviour::TickStatus::Failure;
@@ -35,7 +35,7 @@ namespace Editor::Npc::Behaviour
     }
 
     GameCore::Npc::Friendly::Behaviour::TickStatus
-    OnceSuccessNode::Tick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context)
+    OnceSuccessNode::DoTick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context)
     {
         if (!child_)
             return GameCore::Npc::Friendly::Behaviour::TickStatus::Failure;
@@ -65,7 +65,7 @@ namespace Editor::Npc::Behaviour
     {
         const Gui::Graph::NodeOption nodeOption
                 {
-                    NODE_VISUAL_STYLE,
+                    DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(*this, NODE_VISUAL_STYLE),
                     "OnceSuccessNode",
                     true,
                     false,

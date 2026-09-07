@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <optional>
 #include <string>
 
 #include "../Interface/IPopupWindow.h"
@@ -27,12 +28,22 @@ namespace NanamiEngine::Core::PopupWindow
         explicit ProjectWindow();
         PopupWindowState OnDraw(PopupWindowDrawGuiContext context)    override;
         void OnDrawDirectoryTree(FileSystem::Directory& directory);
-        void DrawDirectoryContents(FileSystem::Directory& directory, FileSystem::EditorDraggingHand& draggingHand);
+        void DrawDirectoryContents(
+            FileSystem::Directory& directory,
+            FileSystem::EditorDraggingHand& draggingHand,
+            const std::optional<::Guid>& highlightedAssetGuid,
+            bool scrollToHighlightPending);
         void OnDrawSearchedDirectoryTree(FileSystem::Directory& directory, const std::string& filter);
-        void DrawSearchedFiles(FileSystem::Directory& directory, FileSystem::EditorDraggingHand& draggingHand, const std::string& filter);
+        void DrawSearchedFiles(
+            FileSystem::Directory& directory,
+            FileSystem::EditorDraggingHand& draggingHand,
+            const std::string& filter,
+            const std::optional<::Guid>& highlightedAssetGuid,
+            bool scrollToHighlightPending);
         void OnDrawToolbar();
+        void RevealAsset(const ::Guid& assetGuid);
         ::Guid& Guid()      override { return guid_; }
-        
+
     private:
         //NOTE: ImGUIのラベル情報のために現在開いているProjectWindowの数をカウントする
         static int counter_;
@@ -40,6 +51,8 @@ namespace NanamiEngine::Core::PopupWindow
         ::Guid guid_;
         bool isLockedContent_ = false;
         FileSystem::Directory* currentDirectory_;
+        std::optional<::Guid> highlightedAssetGuid_;
+        std::string pendingRevealDirectoryPath_;
         char searchBuffer_[128] = {};
         FileRenameState renameState_;
     };

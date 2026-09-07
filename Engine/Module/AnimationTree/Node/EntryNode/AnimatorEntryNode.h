@@ -18,7 +18,7 @@ namespace NanamiEngine::Module::AnimationTree
         [[nodiscard]] glm::vec2   Position() const override { return position_;     }
         [[nodiscard]] float GetAnimDuration_secs() const override { return 0; }
         void OnUpdateBlendRate(float  blendRate) override;
-        void OnUpdateAnimation(int  modelHandle) override;
+        void OnUpdateAnimation(int  modelHandle, float timeScale) override;
         rxcpp::observable<UpdateCallbackContext> OnUpdated() override { return onUpdate_.get_observable(); }
         Gui::Graph::NodeDrawResult OnDrawGraphEditorGui(const ImVec2& offset, ImDrawList* drawList, std::weak_ptr<IAnimationNode> ownPtr) override;
         void OnExitNode(int modelHandle) override;

@@ -64,12 +64,47 @@ namespace
         return false;
     }
 
+    /** @brief 指定したguidのアセットを持つファイルが属するディレクトリを再帰的に探す */
+    NanamiEngine::Core::FileSystem::Directory* FindDirectoryContainingAsset(
+        NanamiEngine::Core::FileSystem::Directory& directory,
+        const ::Guid& guid)
+    {
+        for (auto& file : directory.Files())
+        {
+            if (file.GetContent() && file.GetContent()->GetGuid() == guid)
+                return &directory;
+        }
+
+        for (auto& child : directory.GetDirectories())
+        {
+            if (auto* found = FindDirectoryContainingAsset(child, guid))
+                return found;
+        }
+
+        return nullptr;
+    }
+
+    /** @brief ancestorがtargetの祖先（または同一）か、区切り文字の違いを無視して判定する */
+    bool IsAncestorOrSame(const std::filesystem::path& ancestor, const std::filesystem::path& target)
+    {
+        auto ancestorIt = ancestor.begin();
+        auto targetIt = target.begin();
+        for (; ancestorIt != ancestor.end(); ++ancestorIt, ++targetIt)
+        {
+            if (targetIt == target.end() || *ancestorIt != *targetIt)
+                return false;
+        }
+        return true;
+    }
+
     /** @brief 1ファイル分の行（選択・右クリック・ドラッグ・ダブルクリック・リネーム）を描画する */
     void DrawFileEntry(
         NanamiEngine::Core::FileSystem::Directory& owningDirectory,
         NanamiEngine::Core::FileSystem::File& file,
         NanamiEngine::Core::FileSystem::EditorDraggingHand& draggingHand,
-        NanamiEngine::Core::PopupWindow::FileRenameState& renameState)
+        NanamiEngine::Core::PopupWindow::FileRenameState& renameState,
+        const std::optional<::Guid>& highlightedAssetGuid,
+        const bool scrollToHighlightPending)
     {
         namespace FileSystem = NanamiEngine::Core::FileSystem;
 
@@ -114,9 +149,19 @@ namespace
             return;
         }
 
-        if (ImGui::Selectable(name.c_str()))
+        const bool isHighlighted =
+            highlightedAssetGuid.has_value() &&
+            file.GetContent() &&
+            file.GetContent()->GetGuid() == *highlightedAssetGuid;
+
+        if (ImGui::Selectable(name.c_str(), isHighlighted))
         {
             file.OnClick();
+        }
+
+        if (isHighlighted && scrollToHighlightPending)
+        {
+            ImGui::SetScrollHereY(0.3f);
         }
 
         // 右クリックメニュー
@@ -196,22 +241,26 @@ Core::PopupWindow::PopupWindowState Core::PopupWindow::ProjectWindow::OnDraw(con
     const std::string searchText = searchBuffer_;
 
     auto& assetsDirectory = Application::ApplicationBase::AssetsDirectory();
+    const bool scrollToHighlightPending = !pendingRevealDirectoryPath_.empty();
 
     ImGui::Columns(2, nullptr, true);
     if (searchText.empty())
     {
         OnDrawDirectoryTree(assetsDirectory);
         ImGui::NextColumn();
-        DrawDirectoryContents(*currentDirectory_, context.FileDraggingHand());
+        DrawDirectoryContents(*currentDirectory_, context.FileDraggingHand(), highlightedAssetGuid_, scrollToHighlightPending);
     }
     else
     {
         // 左: 名前がマッチするフォルダ / 右: 名前がマッチするファイル（どちらも全階層から）
         OnDrawSearchedDirectoryTree(assetsDirectory, searchText);
         ImGui::NextColumn();
-        DrawSearchedFiles(assetsDirectory, context.FileDraggingHand(), searchText);
+        DrawSearchedFiles(assetsDirectory, context.FileDraggingHand(), searchText, highlightedAssetGuid_, scrollToHighlightPending);
     }
     ImGui::Columns(1);
+
+    // Revealによるツリー自動展開/スクロールは1フレームだけ適用し、以降は畳めるようにする
+    pendingRevealDirectoryPath_.clear();
 
     ImGui::End();
 
@@ -221,6 +270,12 @@ Core::PopupWindow::PopupWindowState Core::PopupWindow::ProjectWindow::OnDraw(con
 void Core::PopupWindow::ProjectWindow::OnDrawDirectoryTree(FileSystem::Directory& directory)
 {
     ImGui::PushID(&directory);
+
+    if (!pendingRevealDirectoryPath_.empty() &&
+        IsAncestorOrSame(directory.GetPath(), pendingRevealDirectoryPath_))
+    {
+        ImGui::SetNextItemOpen(true);
+    }
 
     ImGui::AlignTextToFramePadding();
     const float cursorY = ImGui::GetCursorPosY();
@@ -248,7 +303,7 @@ void Core::PopupWindow::ProjectWindow::OnDrawDirectoryTree(FileSystem::Directory
     ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleColor(ImGuiCol_HeaderActive , ImVec4(0, 0, 0, 0));
 
-    if (ImGui::Selectable(directory.GetName().c_str(), false, ImGuiSelectableFlags_AllowDoubleClick, buttonSize))
+    if (ImGui::Selectable(directory.GetName().c_str(), currentDirectory_ == &directory, ImGuiSelectableFlags_AllowDoubleClick, buttonSize))
     {
         currentDirectory_ = &directory;
     }
@@ -280,11 +335,13 @@ void Core::PopupWindow::ProjectWindow::OnDrawDirectoryTree(FileSystem::Directory
 
 void Core::PopupWindow::ProjectWindow::DrawDirectoryContents(
     FileSystem::Directory& directory,
-    FileSystem::EditorDraggingHand& draggingHand)
+    FileSystem::EditorDraggingHand& draggingHand,
+    const std::optional<::Guid>& highlightedAssetGuid,
+    const bool scrollToHighlightPending)
 {
     for (auto& file : directory.Files())
     {
-        DrawFileEntry(directory, file, draggingHand, renameState_);
+        DrawFileEntry(directory, file, draggingHand, renameState_, highlightedAssetGuid, scrollToHighlightPending);
     }
 }
 
@@ -315,19 +372,21 @@ void Core::PopupWindow::ProjectWindow::OnDrawSearchedDirectoryTree(
 void Core::PopupWindow::ProjectWindow::DrawSearchedFiles(
     FileSystem::Directory& directory,
     FileSystem::EditorDraggingHand& draggingHand,
-    const std::string& filter)
+    const std::string& filter,
+    const std::optional<::Guid>& highlightedAssetGuid,
+    const bool scrollToHighlightPending)
 {
     for (auto& file : directory.Files())
     {
         if (ContainsCaseInsensitive(file.GetName(), filter))
         {
-            DrawFileEntry(directory, file, draggingHand, renameState_);
+            DrawFileEntry(directory, file, draggingHand, renameState_, highlightedAssetGuid, scrollToHighlightPending);
         }
     }
 
     for (auto& child : directory.GetDirectories())
     {
-        DrawSearchedFiles(child, draggingHand, filter);
+        DrawSearchedFiles(child, draggingHand, filter, highlightedAssetGuid, scrollToHighlightPending);
     }
 }
 
@@ -368,4 +427,20 @@ void Core::PopupWindow::ProjectWindow::OnDrawToolbar()
         ImGui::EndPopup();
     }
     ImGui::EndChild();
+}
+
+void Core::PopupWindow::ProjectWindow::RevealAsset(const ::Guid& assetGuid)
+{
+    FileSystem::Directory* owningDirectory =
+        FindDirectoryContainingAsset(Application::ApplicationBase::AssetsDirectory(), assetGuid);
+
+    if (!owningDirectory)
+        return;
+
+    searchBuffer_[0] = '\0'; // 検索中だとDrawSearchedFilesが名前フィルタで対象を隠してしまうため解除
+    currentDirectory_ = owningDirectory;
+    highlightedAssetGuid_ = assetGuid;
+    pendingRevealDirectoryPath_ = owningDirectory->GetPath();
+
+    ImGui::SetWindowFocus(("Project##" + std::to_string(id_)).c_str());
 }

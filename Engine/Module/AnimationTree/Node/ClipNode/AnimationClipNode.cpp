@@ -29,9 +29,9 @@ void AnimationTree::AnimationClipNode::InitForGamePlay(const int modelHandle)
     }
 }
 
-void AnimationTree::AnimationClipNode::OnUpdateAnimation(const int modelHandle)
+void AnimationTree::AnimationClipNode::OnUpdateAnimation(const int modelHandle, const float timeScale)
 {
-    during_secs_ += Time::DeltaTime() * speed_;
+    during_secs_ += Time::DeltaTime() * speed_ * timeScale;
     if (attachedAnimationIndex_ != -1)
     {
         MV1DetachAnim(modelHandle, attachedAnimationIndex_);
@@ -40,7 +40,7 @@ void AnimationTree::AnimationClipNode::OnUpdateAnimation(const int modelHandle)
 
     MV1SetAttachAnimTime(modelHandle, attachedAnimationIndex_, during_secs_);
     MV1SetAttachAnimBlendRate(modelHandle, attachedAnimationIndex_, blendRate_);
-    onUpdate_.get_subscriber().on_next(UpdateCallbackContext(during_secs_, Time::DeltaTime() * speed_));
+    onUpdate_.get_subscriber().on_next(UpdateCallbackContext(during_secs_, Time::DeltaTime() * speed_ * timeScale, timeScale));
     if (during_secs_ >= duration_secs_)
     {
         during_secs_ = 0;

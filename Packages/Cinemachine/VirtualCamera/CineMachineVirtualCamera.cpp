@@ -1,8 +1,10 @@
 ﻿#include "CineMachineVirtualCamera.h"
 
+#include "../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../Brain/CinemachineCameraBrain.h"
 #include "Behaviour/Follow/VirtualCameraFollowBehaviour.h"
+#include "Behaviour/LockOn/LockOnCameraBehaviour.h"
 #include "Behaviour/LookAt/VirtualCameraLookAtBehaviour.h"
 #include "Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
@@ -58,8 +60,16 @@ void CineMachine::CineMachineVirtualCamera::OnDrawGui()
         if (ImGui::Button("Add Follow"     )) Components().Add<Behaviour::VirtualCameraFollowBehaviour>();
         if (ImGui::Button("Add LookAt"     )) Components().Add<Behaviour::VirtualCameraLookAtBehaviour>();
         if (ImGui::Button("Add ThirdPerson")) Components().Add<Behaviour::ThirdPersonCameraBehaviour  >();
+        if (ImGui::Button("Add LockOn"     )) Components().Add<Behaviour::LockOnCameraBehaviour       >();
         if (ImGui::Button("Add Shake"      )) Components().Add<Behaviour::ShakeCameraBehaviour        >();
         ImGui::EndPopup();
+    }
+
+    if (ImGui::Button("Move EditorCamera Here"))
+    {
+        const auto gameWindow = Core::Application::ApplicationBase::GameWindow();
+        gameWindow->SetCameraPosition(Transform().GetWorldPos());
+        gameWindow->SetCameraRotation(Transform().GetWorldRot());
     }
 }
 

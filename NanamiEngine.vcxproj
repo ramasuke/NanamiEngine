@@ -3822,6 +3822,7 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Input\PlayerAvatarInput.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\IPlayerAvatar.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\ITakablePlayerAttack\ITakablePlayerAttack.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\LockOnTarget\ILockOnTarget.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\PlayerAvatar.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_CompletedQuestGroup.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -6256,6 +6257,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Editor\Npc\Enemy\Behaviour\Window\EnemyNpcBehaviourWindow.cpp" />
+    <ClCompile Include="Assets\Scripts\Editor\Npc\Enemy\Behaviour\Window\RunningEnemyBehaviourTreeWindow.cpp" />
     <ClCompile Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Action\Friendly_Behaviour_ActionFactory.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -6413,6 +6415,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Window\FriendlyNpcBehaviourWindow.cpp" />
+    <ClCompile Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Window\RunningFriendlyBehaviourTreeWindow.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\AttackArea\AttackArea.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Network\Game_CustomNetworkRunner.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -6497,6 +6500,7 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Friendly\FriendlyNpc.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\Bullet\PlayerAvatar_Bullet_CannonBullet.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\ChattableArea\ChattableArea.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\LockOnDetectionArea\LockOnDetectionArea.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\PlayerAvatarBase.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -12268,6 +12272,7 @@
     </ClCompile>
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\Follow\VirtualCameraFollowBehaviour.cpp" />
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\IVirtualCameraBehaviour.cpp" />
+    <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\LockOn\LockOnCameraBehaviour.cpp" />
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\LookAt\VirtualCameraLookAtBehaviour.cpp" />
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\Shake\ShakeCameraBehaviour.cpp" />
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\ThirdPerson\ThirdPersonCameraBehaviour.cpp" />
@@ -12426,6 +12431,7 @@
     </ClCompile>
     <ClCompile Include="Packages\R4\SensorExitable\SensorExitableAsObservable.cpp" />
     <ClCompile Include="Packages\R4\SensorStayable\SensorStayableAsObservable.cpp" />
+    <ClCompile Include="Engine\Module\SafeExecute\Engine_Module_SafeExecute.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assets\Data\EnemyBehaviour\Data_EnemyBehaviourFile.h" />
@@ -12536,6 +12542,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Input\PlayerAvatarInput_void.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\IPlayerAvatar.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\ITakablePlayerAttack\ITakablePlayerAttack.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\LockOnTarget\ILockOnTarget.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\PlayerAvatar.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_CompletedQuestGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_IComplteQuestGroup.h" />
@@ -12656,10 +12663,12 @@
     <ClInclude Include="Assets\Scripts\Editor\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionHeaders.h" />
     <ClInclude Include="Assets\Scripts\Editor\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionNode.h" />
     <ClInclude Include="Assets\Scripts\Editor\Npc\Enemy\Behaviour\Window\EnemyNpcBehaviourWindow.h" />
+    <ClInclude Include="Assets\Scripts\Editor\Npc\Enemy\Behaviour\Window\RunningEnemyBehaviourTreeWindow.h" />
     <ClInclude Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Action\Friendly_Behaviour_ActionFactory.h" />
     <ClInclude Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Action\Friendly_Behaviour_ActionHeaders.h" />
     <ClInclude Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Action\Friendly_Behaviour_ActionNode.h" />
     <ClInclude Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Window\FriendlyNpcBehaviourWindow.h" />
+    <ClInclude Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Window\RunningFriendlyBehaviourTreeWindow.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\AttackArea\AttackArea.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Network\Game_CustomNetworkRunner.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\FirstEventDragon\GamePlay_Enemy_FirstEventDragon.h" />
@@ -12672,6 +12681,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Npc\Friendly\FriendlyNpc.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\Bullet\PlayerAvatar_Bullet_CannonBullet.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\ChattableArea\ChattableArea.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\LockOnDetectionArea\LockOnDetectionArea.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\PlayerAvatarBase.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\SwordMan\SwordManAvatar.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.h" />
@@ -13905,6 +13915,7 @@
     <ClInclude Include="Packages\Cinemachine\Brain\CinemachineCameraBrain.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\Follow\VirtualCameraFollowBehaviour.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\IVirtualCameraBehaviour.h" />
+    <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\LockOn\LockOnCameraBehaviour.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\LookAt\VirtualCameraLookAtBehaviour.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\Shake\ShakeCameraBehaviour.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\ThirdPerson\ThirdPersonCameraBehaviour.h" />
@@ -13913,6 +13924,7 @@
     <ClInclude Include="Packages\R4\SensorExitable\SensorExitableAsObservable.h" />
     <ClInclude Include="Packages\R4\SensorStayable\SensorStayableAsObservable.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Engine\Module\SafeExecute\Engine_Module_SafeExecute.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Animations\" />

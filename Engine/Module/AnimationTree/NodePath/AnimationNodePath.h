@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../../Core/Object/Field/Field.h"
 #include "../../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 #include "../Node/IAnimationNode.h"
@@ -13,8 +13,8 @@ namespace NanamiEngine::Module::AnimationTree
                           const std::function<std::weak_ptr<IAnimationNode>(const Guid&)>& findNode,
                           const std::function<void(const std::shared_ptr<IAnimationNode>&)>& onAddCurrentNode,
                           const std::function<void(const std::shared_ptr<IAnimationNode>&)>& onRemoveCurrentNode,
-                          const std::function<void(AnimationNodePath*)>& onAddNextCurrentNodePath);
-        void OnUpdateNodeAnimationBlend();
+                          const std::function<void(AnimationNodePath*, float)>& onAddNextCurrentNodePath);
+        void OnUpdateNodeAnimationBlend(float timeScale);
         ///TODO: 初期化時に設定するようにした方が良い(カプセル化)
         void SetFromNode  (const std::shared_ptr<IAnimationNode>& node);
         void SetFromNodeForGraphEditorGui(const std::shared_ptr<IAnimationNode>& visualNode, const std::shared_ptr<IAnimationNode>& node);
@@ -39,7 +39,7 @@ namespace NanamiEngine::Module::AnimationTree
         std::weak_ptr<IAnimationNode> visualFromNode_;
         std::function<void(const std::shared_ptr<IAnimationNode>&)> onAddCurrentNode_;
         std::function<void(const std::shared_ptr<IAnimationNode>&)> onRemoveCurrentNode_;
-        std::function<void(AnimationNodePath*)> onAddNextCurrentNodePath_;
+        std::function<void(AnimationNodePath*, float)> onAddNextCurrentNodePath_;
         
         bool  isFirstBlendingAnimation_ = true;
         bool  isBlending_               = false;

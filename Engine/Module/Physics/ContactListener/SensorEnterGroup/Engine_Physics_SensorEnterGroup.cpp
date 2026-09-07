@@ -14,6 +14,7 @@ namespace NanamiEngine::Module::Physics
 
     void SensorEnterGroup::Add(const PendingEnter& enter)
     {
+        std::lock_guard lock(addMutex_);
         pending_.push_back(enter);
     }
 

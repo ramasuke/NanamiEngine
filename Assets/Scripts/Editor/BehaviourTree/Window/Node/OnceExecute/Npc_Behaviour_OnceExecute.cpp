@@ -13,7 +13,7 @@ namespace Editor::Npc::Behaviour
         return NAME;
     }
 
-    GameCore::Npc::Enemy::Behaviour::TickStatus OnceExecute::Tick(
+    GameCore::Npc::Enemy::Behaviour::TickStatus OnceExecute::DoTick(
         const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
     {
         return TickImpl<
@@ -21,7 +21,7 @@ namespace Editor::Npc::Behaviour
             GameCore::Npc::Enemy::Behaviour::TickStatus>(context);
     }
 
-    GameCore::Npc::Friendly::Behaviour::TickStatus OnceExecute::Tick(
+    GameCore::Npc::Friendly::Behaviour::TickStatus OnceExecute::DoTick(
         const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context)
     {
         return TickImpl<
@@ -41,7 +41,7 @@ namespace Editor::Npc::Behaviour
     {
         const Gui::Graph::NodeOption nodeOption
         {
-            NODE_VISUAL_STYLE,
+            DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(*this, NODE_VISUAL_STYLE),
             "OnceExecute",
             true,
             false,

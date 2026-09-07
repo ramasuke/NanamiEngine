@@ -6,153 +6,19 @@
       <Node>
         <CommonValues>
           <MaxGeneration>
-            <Value>1</Value>
+            <Value>18</Value>
           </MaxGeneration>
-          <GenerationTime>
-            <Center>0</Center>
-            <Max>0</Max>
-            <Min>0</Min>
-          </GenerationTime>
-          <Life>
-            <Center>80</Center>
-            <Max>80</Max>
-            <Min>80</Min>
-          </Life>
           <RemoveWhenLifeIsExtinct>True</RemoveWhenLifeIsExtinct>
-        </CommonValues>
-        <LocationValues>
-          <Type>0</Type>
-          <Fixed>
-            <Location>
-              <X>0</X>
-              <Y>0</Y>
-              <Z>0</Z>
-            </Location>
-          </Fixed>
-        </LocationValues>
-        <ScalingValues>
-          <Type>0</Type>
-          <Fixed>
-            <Scale>
-              <X>5.5</X>
-              <Y>5.5</Y>
-              <Z>5.5</Z>
-            </Scale>
-          </Fixed>
-        </ScalingValues>
-        <RendererCommonValues>
-          <Filter>0</Filter>
-          <AlphaBlend>2</AlphaBlend>
-          <ColorTexture>Texture/Particle01.png</ColorTexture>
-          <FadeInType>1</FadeInType>
-          <FadeIn>
-            <Frame>4</Frame>
-          </FadeIn>
-          <FadeOutType>1</FadeOutType>
-          <FadeOut>
-            <Frame>10</Frame>
-            <StartSpeed>0</StartSpeed>
-            <EndSpeed>-60</EndSpeed>
-          </FadeOut>
-        </RendererCommonValues>
-        <DrawingValues>
-          <Type>2</Type>
-          <Sprite>
-            <Billboard>0</Billboard>
-            <ColorAll_Fixed>
-              <R>255</R>
-              <G>150</G>
-              <B>60</B>
-              <A>170</A>
-            </ColorAll_Fixed>
-          </Sprite>
-        </DrawingValues>
-        <Name>Glow</Name>
-        <Children />
-      </Node>
-      <Node>
-        <CommonValues>
-          <MaxGeneration>
-            <Value>1</Value>
-          </MaxGeneration>
-          <GenerationTime>
-            <Center>0</Center>
-            <Max>0</Max>
-            <Min>0</Min>
-          </GenerationTime>
           <Life>
-            <Center>80</Center>
-            <Max>80</Max>
-            <Min>80</Min>
+            <Center>30</Center>
+            <Max>38</Max>
+            <Min>22</Min>
           </Life>
-          <RemoveWhenLifeIsExtinct>True</RemoveWhenLifeIsExtinct>
-        </CommonValues>
-        <LocationValues>
-          <Type>0</Type>
-          <Fixed>
-            <Location>
-              <X>0</X>
-              <Y>0</Y>
-              <Z>0</Z>
-            </Location>
-          </Fixed>
-        </LocationValues>
-        <ScalingValues>
-          <Type>0</Type>
-          <Fixed>
-            <Scale>
-              <X>2.4</X>
-              <Y>2.4</Y>
-              <Z>2.4</Z>
-            </Scale>
-          </Fixed>
-        </ScalingValues>
-        <RendererCommonValues>
-          <Filter>0</Filter>
-          <AlphaBlend>2</AlphaBlend>
-          <ColorTexture>Texture/Particle01.png</ColorTexture>
-          <FadeInType>1</FadeInType>
-          <FadeIn>
-            <Frame>2</Frame>
-          </FadeIn>
-          <FadeOutType>1</FadeOutType>
-          <FadeOut>
-            <Frame>8</Frame>
-            <StartSpeed>0</StartSpeed>
-            <EndSpeed>-70</EndSpeed>
-          </FadeOut>
-        </RendererCommonValues>
-        <DrawingValues>
-          <Type>2</Type>
-          <Sprite>
-            <Billboard>0</Billboard>
-            <ColorAll_Fixed>
-              <R>255</R>
-              <G>235</G>
-              <B>180</B>
-              <A>255</A>
-            </ColorAll_Fixed>
-          </Sprite>
-        </DrawingValues>
-        <Name>Core</Name>
-        <Children />
-      </Node>
-      <Node>
-        <CommonValues>
-          <MaxGeneration>
-            <Value>6</Value>
-          </MaxGeneration>
           <GenerationTime>
             <Center>2</Center>
-            <Max>4</Max>
-            <Min>0</Min>
+            <Max>3</Max>
+            <Min>1</Min>
           </GenerationTime>
-          <Life>
-            <Center>26</Center>
-            <Max>32</Max>
-            <Min>20</Min>
-          </Life>
-          <RemoveWhenLifeIsExtinct>True</RemoveWhenLifeIsExtinct>
         </CommonValues>
         <LocationValues>
           <Type>1</Type>
@@ -160,51 +26,177 @@
             <Velocity>
               <X>
                 <Center>0</Center>
-                <Max>0.6</Max>
-                <Min>-0.6</Min>
+                <Max>0.5</Max>
+                <Min>-0.5</Min>
               </X>
               <Y>
-                <Center>0</Center>
-                <Max>0.6</Max>
-                <Min>-0.6</Min>
+                <Center>0.4</Center>
+                <Max>0.7</Max>
+                <Min>0.2</Min>
               </Y>
               <Z>
                 <Center>0</Center>
-                <Max>0.6</Max>
-                <Min>-0.6</Min>
+                <Max>0.5</Max>
+                <Min>-0.5</Min>
               </Z>
             </Velocity>
+            <Acceleration>
+              <Y>
+                <Center>0.12</Center>
+                <Max>0.12</Max>
+                <Min>0.12</Min>
+              </Y>
+            </Acceleration>
           </PVA>
         </LocationValues>
         <ScalingValues>
-          <Type>1</Type>
-          <PVA>
-            <Scale>
+          <Type>2</Type>
+          <Easing>
+            <Start>
               <X>
-                <center>3.6</center>
-                <max>4.2</max>
-                <min>3</min>
+                <Center>1</Center>
+                <Max>1.2</Max>
+                <Min>0.8</Min>
               </X>
               <Y>
-                <center>3.6</center>
-                <max>4.2</max>
-                <min>3</min>
+                <Center>1</Center>
+                <Max>1.2</Max>
+                <Min>0.8</Min>
               </Y>
-              <DrawnAs>0</DrawnAs>
-            </Scale>
-          </PVA>
+            </Start>
+            <End>
+              <X>
+                <Center>2.6</Center>
+                <Max>3</Max>
+                <Min>2.2</Min>
+              </X>
+              <Y>
+                <Center>2.6</Center>
+                <Max>3</Max>
+                <Min>2.2</Min>
+              </Y>
+            </End>
+          </Easing>
         </ScalingValues>
+        <GenerationLocationValues>
+          <EffectsRotation>True</EffectsRotation>
+          <Type>1</Type>
+          <Sphere>
+            <Radius>
+              <Center>0.7</Center>
+              <Max>1.2</Max>
+              <Min>0.3</Min>
+            </Radius>
+          </Sphere>
+        </GenerationLocationValues>
         <RendererCommonValues>
-          <Filter>0</Filter>
-          <AlphaBlend>2</AlphaBlend>
-          <ColorTexture>Texture/Flame01.png</ColorTexture>
+          <ColorTexture>Texture/Fog3001.png</ColorTexture>
+          <Filter>1</Filter>
+          <AlphaBlend>1</AlphaBlend>
           <FadeInType>1</FadeInType>
           <FadeIn>
             <Frame>4</Frame>
           </FadeIn>
           <FadeOutType>1</FadeOutType>
           <FadeOut>
-            <Frame>10</Frame>
+            <Frame>16</Frame>
+            <StartSpeed>0</StartSpeed>
+            <EndSpeed>-55</EndSpeed>
+          </FadeOut>
+        </RendererCommonValues>
+        <DrawingValues>
+          <Type>2</Type>
+          <Sprite>
+            <Billboard>0</Billboard>
+            <ColorAll_Fixed>
+              <R>110</R>
+              <G>80</G>
+              <B>65</B>
+              <A>75</A>
+            </ColorAll_Fixed>
+          </Sprite>
+        </DrawingValues>
+        <Name>SmokeWisps</Name>
+        <Children />
+      </Node>
+      <Node>
+        <CommonValues>
+          <MaxGeneration>
+            <Value>24</Value>
+          </MaxGeneration>
+          <RemoveWhenLifeIsExtinct>True</RemoveWhenLifeIsExtinct>
+          <Life>
+            <Center>14</Center>
+            <Max>18</Max>
+            <Min>10</Min>
+          </Life>
+          <GenerationTime>
+            <Center>1</Center>
+            <Max>2</Max>
+            <Min>0</Min>
+          </GenerationTime>
+        </CommonValues>
+        <LocationValues>
+          <Type>0</Type>
+          <Fixed>
+            <Location>
+              <X>0</X>
+              <Y>0</Y>
+              <Z>0</Z>
+            </Location>
+          </Fixed>
+        </LocationValues>
+        <ScalingValues>
+          <Type>2</Type>
+          <Easing>
+            <Start>
+              <X>
+                <Center>4</Center>
+                <Max>4.4</Max>
+                <Min>3.6</Min>
+              </X>
+              <Y>
+                <Center>4</Center>
+                <Max>4.4</Max>
+                <Min>3.6</Min>
+              </Y>
+            </Start>
+            <End>
+              <X>
+                <Center>6</Center>
+                <Max>6.4</Max>
+                <Min>5.6</Min>
+              </X>
+              <Y>
+                <Center>6</Center>
+                <Max>6.4</Max>
+                <Min>5.6</Min>
+              </Y>
+            </End>
+          </Easing>
+        </ScalingValues>
+        <GenerationLocationValues>
+          <EffectsRotation>True</EffectsRotation>
+          <Type>1</Type>
+          <Sphere>
+            <Radius>
+              <Center>0</Center>
+              <Max>0.8</Max>
+              <Min>0</Min>
+            </Radius>
+          </Sphere>
+        </GenerationLocationValues>
+        <RendererCommonValues>
+          <ColorTexture>Texture/Particle02.png</ColorTexture>
+          <Filter>1</Filter>
+          <AlphaBlend>2</AlphaBlend>
+          <FadeInType>1</FadeInType>
+          <FadeIn>
+            <Frame>3</Frame>
+          </FadeIn>
+          <FadeOutType>1</FadeOutType>
+          <FadeOut>
+            <Frame>8</Frame>
             <StartSpeed>0</StartSpeed>
             <EndSpeed>-80</EndSpeed>
           </FadeOut>
@@ -215,31 +207,118 @@
             <Billboard>0</Billboard>
             <ColorAll_Fixed>
               <R>255</R>
-              <G>110</G>
-              <B>30</B>
-              <A>210</A>
+              <G>150</G>
+              <B>70</B>
+              <A>150</A>
             </ColorAll_Fixed>
           </Sprite>
         </DrawingValues>
-        <Name>Flame</Name>
+        <Name>CoreGlow</Name>
         <Children />
       </Node>
       <Node>
         <CommonValues>
           <MaxGeneration>
-            <Value>30</Value>
+            <Value>1</Value>
           </MaxGeneration>
+          <RemoveWhenLifeIsExtinct>True</RemoveWhenLifeIsExtinct>
+          <Life>
+            <Center>80</Center>
+            <Max>80</Max>
+            <Min>80</Min>
+          </Life>
           <GenerationTime>
-            <Center>1</Center>
-            <Max>2</Max>
+            <Center>0</Center>
+            <Max>0</Max>
             <Min>0</Min>
           </GenerationTime>
-          <Life>
-            <Center>14</Center>
-            <Max>18</Max>
-            <Min>9</Min>
-          </Life>
+        </CommonValues>
+        <LocationValues>
+          <Type>0</Type>
+          <Fixed>
+            <Location>
+              <X>0</X>
+              <Y>0</Y>
+              <Z>0</Z>
+            </Location>
+          </Fixed>
+        </LocationValues>
+        <RotationValues>
+          <Type>1</Type>
+          <PVA>
+            <Velocity>
+              <Z>
+                <Center>85</Center>
+                <Max>85</Max>
+                <Min>85</Min>
+              </Z>
+            </Velocity>
+          </PVA>
+        </RotationValues>
+        <ScalingValues>
+          <Type>0</Type>
+          <Fixed>
+            <Scale>
+              <X>5.2</X>
+              <Y>5.2</Y>
+              <Z>5.2</Z>
+            </Scale>
+          </Fixed>
+        </ScalingValues>
+        <RendererCommonValues>
+          <ColorTexture>Texture/FractalNoise_2.png</ColorTexture>
+          <Filter>1</Filter>
+          <AlphaBlend>2</AlphaBlend>
+          <FadeInType>1</FadeInType>
+          <FadeIn>
+            <Frame>6</Frame>
+          </FadeIn>
+          <FadeOutType>1</FadeOutType>
+          <FadeOut>
+            <Frame>10</Frame>
+            <StartSpeed>0</StartSpeed>
+            <EndSpeed>-80</EndSpeed>
+          </FadeOut>
+          <UV>3</UV>
+          <UVScroll>
+            <Start />
+            <Size />
+            <Speed>
+              <Y>-0.12</Y>
+            </Speed>
+          </UVScroll>
+        </RendererCommonValues>
+        <DrawingValues>
+          <Type>2</Type>
+          <Sprite>
+            <Billboard>0</Billboard>
+            <ColorAll_Fixed>
+              <R>255</R>
+              <G>110</G>
+              <B>45</B>
+              <A>80</A>
+            </ColorAll_Fixed>
+          </Sprite>
+        </DrawingValues>
+        <Name>Crackle</Name>
+        <Children />
+      </Node>
+      <Node>
+        <CommonValues>
+          <MaxGeneration>
+            <Value>10</Value>
+          </MaxGeneration>
           <RemoveWhenLifeIsExtinct>True</RemoveWhenLifeIsExtinct>
+          <Life>
+            <Center>18</Center>
+            <Max>24</Max>
+            <Min>12</Min>
+          </Life>
+          <GenerationTime>
+            <Center>2</Center>
+            <Max>4</Max>
+            <Min>0</Min>
+          </GenerationTime>
         </CommonValues>
         <LocationValues>
           <Type>1</Type>
@@ -247,42 +326,54 @@
             <Velocity>
               <X>
                 <Center>0</Center>
-                <Max>1.6</Max>
-                <Min>-1.6</Min>
+                <Max>1.2</Max>
+                <Min>-1.2</Min>
               </X>
               <Y>
-                <Center>0.8</Center>
-                <Max>1.6</Max>
-                <Min>0.2</Min>
+                <Center>0.3</Center>
+                <Max>0.9</Max>
+                <Min>0</Min>
               </Y>
               <Z>
                 <Center>0</Center>
-                <Max>1.6</Max>
-                <Min>-1.6</Min>
+                <Max>1.2</Max>
+                <Min>-1.2</Min>
               </Z>
             </Velocity>
             <Acceleration>
               <Y>
-                <Center>-1</Center>
-                <Max>-1</Max>
-                <Min>-1</Min>
+                <Center>0.3</Center>
+                <Max>0.3</Max>
+                <Min>0.3</Min>
               </Y>
             </Acceleration>
           </PVA>
         </LocationValues>
+        <RotationValues>
+          <Type>1</Type>
+          <PVA>
+            <Velocity>
+              <Z>
+                <Center>0</Center>
+                <Max>140</Max>
+                <Min>-140</Min>
+              </Z>
+            </Velocity>
+          </PVA>
+        </RotationValues>
         <ScalingValues>
           <Type>1</Type>
           <PVA>
             <Scale>
               <X>
-                <center>0.5</center>
-                <max>0.8</max>
-                <min>0.3</min>
+                <center>1.8</center>
+                <max>2.2</max>
+                <min>1.4</min>
               </X>
               <Y>
-                <center>0.5</center>
-                <max>0.8</max>
-                <min>0.3</min>
+                <center>1.8</center>
+                <max>2.2</max>
+                <min>1.4</min>
               </Y>
               <DrawnAs>0</DrawnAs>
             </Scale>
@@ -291,19 +382,25 @@
         <GenerationLocationValues>
           <EffectsRotation>True</EffectsRotation>
           <Type>1</Type>
-          <Sphere />
+          <Sphere>
+            <Radius>
+              <Center>0.4</Center>
+              <Max>1</Max>
+              <Min>0</Min>
+            </Radius>
+          </Sphere>
         </GenerationLocationValues>
         <RendererCommonValues>
-          <Filter>0</Filter>
+          <ColorTexture>Texture/Flame01.png</ColorTexture>
+          <Filter>1</Filter>
           <AlphaBlend>2</AlphaBlend>
-          <ColorTexture>Texture/Particle02.png</ColorTexture>
           <FadeInType>1</FadeInType>
           <FadeIn>
-            <Frame>1</Frame>
+            <Frame>2</Frame>
           </FadeIn>
           <FadeOutType>1</FadeOutType>
           <FadeOut>
-            <Frame>8</Frame>
+            <Frame>10</Frame>
             <StartSpeed>0</StartSpeed>
             <EndSpeed>-90</EndSpeed>
           </FadeOut>
@@ -314,10 +411,218 @@
             <Billboard>0</Billboard>
             <ColorAll_Fixed>
               <R>255</R>
-              <G>160</G>
-              <B>60</B>
-              <A>235</A>
+              <G>130</G>
+              <B>40</B>
+              <A>190</A>
             </ColorAll_Fixed>
+          </Sprite>
+        </DrawingValues>
+        <Name>FlameLicks</Name>
+        <Children />
+      </Node>
+      <Node>
+        <CommonValues>
+          <MaxGeneration>
+            <Value>30</Value>
+          </MaxGeneration>
+          <RemoveWhenLifeIsExtinct>True</RemoveWhenLifeIsExtinct>
+          <Life>
+            <Center>8</Center>
+            <Max>12</Max>
+            <Min>6</Min>
+          </Life>
+          <GenerationTime>
+            <Center>0</Center>
+            <Max>1</Max>
+            <Min>0</Min>
+          </GenerationTime>
+        </CommonValues>
+        <LocationValues>
+          <Type>0</Type>
+          <Fixed>
+            <Location>
+              <X>0</X>
+              <Y>0</Y>
+              <Z>0</Z>
+            </Location>
+          </Fixed>
+        </LocationValues>
+        <ScalingValues>
+          <Type>1</Type>
+          <PVA>
+            <Scale>
+              <X>
+                <center>2.2</center>
+                <max>2.6</max>
+                <min>1.8</min>
+              </X>
+              <Y>
+                <center>2.2</center>
+                <max>2.6</max>
+                <min>1.8</min>
+              </Y>
+              <DrawnAs>0</DrawnAs>
+            </Scale>
+          </PVA>
+        </ScalingValues>
+        <GenerationLocationValues>
+          <EffectsRotation>True</EffectsRotation>
+          <Type>1</Type>
+          <Sphere>
+            <Radius>
+              <Center>0</Center>
+              <Max>0.4</Max>
+              <Min>0</Min>
+            </Radius>
+          </Sphere>
+        </GenerationLocationValues>
+        <RendererCommonValues>
+          <ColorTexture>Texture/Particle01.png</ColorTexture>
+          <Filter>1</Filter>
+          <AlphaBlend>2</AlphaBlend>
+          <FadeInType>1</FadeInType>
+          <FadeIn>
+            <Frame>2</Frame>
+          </FadeIn>
+          <FadeOutType>1</FadeOutType>
+          <FadeOut>
+            <Frame>6</Frame>
+            <StartSpeed>0</StartSpeed>
+            <EndSpeed>-90</EndSpeed>
+          </FadeOut>
+        </RendererCommonValues>
+        <DrawingValues>
+          <Type>2</Type>
+          <Sprite>
+            <Billboard>0</Billboard>
+            <ColorAll_Fixed>
+              <R>255</R>
+              <G>235</G>
+              <B>190</B>
+              <A>255</A>
+            </ColorAll_Fixed>
+          </Sprite>
+        </DrawingValues>
+        <Name>CoreFlash</Name>
+        <Children />
+      </Node>
+      <Node>
+        <CommonValues>
+          <MaxGeneration>
+            <Value>26</Value>
+          </MaxGeneration>
+          <RemoveWhenLifeIsExtinct>True</RemoveWhenLifeIsExtinct>
+          <Life>
+            <Center>16</Center>
+            <Max>24</Max>
+            <Min>10</Min>
+          </Life>
+          <GenerationTime>
+            <Center>1</Center>
+            <Max>3</Max>
+            <Min>0</Min>
+          </GenerationTime>
+        </CommonValues>
+        <LocationValues>
+          <Type>1</Type>
+          <PVA>
+            <Velocity>
+              <X>
+                <Center>0</Center>
+                <Max>2.2</Max>
+                <Min>-2.2</Min>
+              </X>
+              <Y>
+                <Center>1</Center>
+                <Max>2</Max>
+                <Min>0.2</Min>
+              </Y>
+              <Z>
+                <Center>0</Center>
+                <Max>2.2</Max>
+                <Min>-2.2</Min>
+              </Z>
+            </Velocity>
+            <Acceleration>
+              <Y>
+                <Center>-2.5</Center>
+                <Max>-2.5</Max>
+                <Min>-2.5</Min>
+              </Y>
+            </Acceleration>
+          </PVA>
+        </LocationValues>
+        <ScalingValues>
+          <Type>1</Type>
+          <PVA>
+            <Scale>
+              <X>
+                <center>0.5</center>
+                <max>0.6</max>
+                <min>0.35</min>
+              </X>
+              <Y>
+                <center>0.5</center>
+                <max>0.6</max>
+                <min>0.35</min>
+              </Y>
+              <DrawnAs>0</DrawnAs>
+            </Scale>
+          </PVA>
+        </ScalingValues>
+        <GenerationLocationValues>
+          <EffectsRotation>True</EffectsRotation>
+          <Type>1</Type>
+          <Sphere>
+            <Radius>
+              <Center>0</Center>
+              <Max>1</Max>
+              <Min>0</Min>
+            </Radius>
+          </Sphere>
+        </GenerationLocationValues>
+        <RendererCommonValues>
+          <ColorTexture>Texture/glow_dot.png</ColorTexture>
+          <Filter>1</Filter>
+          <AlphaBlend>2</AlphaBlend>
+          <FadeInType>1</FadeInType>
+          <FadeIn>
+            <Frame>1</Frame>
+          </FadeIn>
+          <FadeOutType>1</FadeOutType>
+          <FadeOut>
+            <Frame>8</Frame>
+            <StartSpeed>0</StartSpeed>
+            <EndSpeed>-100</EndSpeed>
+          </FadeOut>
+        </RendererCommonValues>
+        <DrawingValues>
+          <Type>2</Type>
+          <Sprite>
+            <Billboard>0</Billboard>
+            <ColorAll>1</ColorAll>
+            <ColorAll_Random>
+              <R>
+                <Center>240</Center>
+                <Max>255</Max>
+                <Min>220</Min>
+              </R>
+              <G>
+                <Center>160</Center>
+                <Max>200</Max>
+                <Min>120</Min>
+              </G>
+              <B>
+                <Center>65</Center>
+                <Max>90</Max>
+                <Min>40</Min>
+              </B>
+              <A>
+                <Center>240</Center>
+                <Max>255</Max>
+                <Min>220</Min>
+              </A>
+            </ColorAll_Random>
           </Sprite>
         </DrawingValues>
         <Name>Embers</Name>

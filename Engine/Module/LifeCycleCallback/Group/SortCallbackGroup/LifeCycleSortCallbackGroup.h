@@ -3,9 +3,14 @@
 #include <functional>
 #include <memory>
 #include <queue>
+#include <string>
+#include <string_view>
+#include <typeinfo>
 #include <unordered_map>
 #include <vector>
 #include "../LifeCycle_CallbackableType.h"
+#include "../../../SafeExecute/Engine_Module_SafeExecute.h"
+#include "../../../Log/NanamiEngine_Module_Log.h"
 
 namespace NanamiEngine::Core::Application
 {
@@ -92,7 +97,17 @@ namespace NanamiEngine::Core::Application
             std::weak_ptr<T> wp = sorted[i];
             sorted[i].reset();
             if (auto sp = wp.lock())
-                func(*sp);
+            {
+                T* rawPtr = sp.get();
+                std::string errorMessage;
+                if (!Module::SafeExecute([&func, rawPtr]() { func(*rawPtr); }, errorMessage))
+                {
+                    const std::string_view fullName = typeid(*rawPtr).name();
+                    const size_t lastColon = fullName.rfind("::");
+                    const std::string_view shortName = lastColon != std::string_view::npos ? fullName.substr(lastColon + 2) : fullName;
+                    Module::LogError("[LifeCycleCallback] " + std::string(shortName) + " (" + rawPtr->GetGuid().Value() + "): " + errorMessage);
+                }
+            }
         }
     }
 }

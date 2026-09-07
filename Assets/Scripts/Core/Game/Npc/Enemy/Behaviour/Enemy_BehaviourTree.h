@@ -31,6 +31,7 @@ namespace GameCore::Npc::Enemy
         void OnDrawGraphEditorGui();
         void OnDrawGui() override;
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
+        [[nodiscard]] const std::string& GetFilePath() const { return filePath_; }
         [[nodiscard]] BlackBoard::ParameterGroup& Parameters() const { return *parameters_; }
         
         

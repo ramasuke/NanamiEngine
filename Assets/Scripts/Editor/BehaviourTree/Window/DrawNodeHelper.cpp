@@ -175,3 +175,43 @@ bool Editor::Npc::Behaviour::DrawGraphEditorGuiHelper::HasCopiedNode()
 {
     return s_hasCopiedNode;
 }
+
+NanamiEngine::Module::Gui::Graph::NodeVisualStyle Editor::Npc::Behaviour::DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(
+    const NodeBase& node,
+    const NanamiEngine::Module::Gui::Graph::NodeVisualStyle& baseStyle)
+{
+    ImU32 borderColor;
+
+    if (node.HasBeenTickedAsEnemy())
+    {
+        switch (node.LastEnemyTickStatus())
+        {
+        case GameCore::Npc::Enemy::Behaviour::TickStatus::Success: borderColor = IM_COL32(80 , 220, 80 , 255); break;
+        case GameCore::Npc::Enemy::Behaviour::TickStatus::Running: borderColor = IM_COL32(255, 210, 60 , 255); break;
+        case GameCore::Npc::Enemy::Behaviour::TickStatus::Failure: borderColor = IM_COL32(220, 80 , 80 , 255); break;
+        case GameCore::Npc::Enemy::Behaviour::TickStatus::Abort:   borderColor = IM_COL32(160, 140, 220, 255); break;
+        default: return baseStyle;
+        }
+    }
+    else if (node.HasBeenTickedAsFriendly())
+    {
+        switch (node.LastFriendlyTickStatus())
+        {
+        case GameCore::Npc::Friendly::Behaviour::TickStatus::Success: borderColor = IM_COL32(80 , 220, 80 , 255); break;
+        case GameCore::Npc::Friendly::Behaviour::TickStatus::Running: borderColor = IM_COL32(255, 210, 60 , 255); break;
+        case GameCore::Npc::Friendly::Behaviour::TickStatus::Failure: borderColor = IM_COL32(220, 80 , 80 , 255); break;
+        case GameCore::Npc::Friendly::Behaviour::TickStatus::Abort:   borderColor = IM_COL32(160, 140, 220, 255); break;
+        default: return baseStyle;
+        }
+    }
+    else
+    {
+        return baseStyle;
+    }
+
+    return NanamiEngine::Module::Gui::Graph::NodeVisualStyle(
+        baseStyle.BackgroundColor(),
+        borderColor,
+        baseStyle.PortColor(),
+        baseStyle.TextColor());
+}

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <optional>
 
 #include "../ComponentBase.h"
@@ -29,11 +29,15 @@ namespace NanamiEngine::Module::Component
         /** @brief 現在再生中（primary）のクリップの再生進捗。再生中のクリップが無ければ std::nullopt */
         [[nodiscard]] std::optional<AnimationTree::ClipProgress> GetCurrentClipProgress() const;
 
+        [[nodiscard]] float GetTimeScale() const { return timeScale_; }
+        void SetTimeScale(float timeScale) { timeScale_ = timeScale; }
+
     private:
         void InitAnimationTree();
-        
+
         [[serialize(0)]] FIELD(Asset::AnimationTreeFile) animationTreeFile_;
         [[serialize(2)]] std::vector<std::unique_ptr<AnimationTree::AnimationSyncBase>> animationSyncs_;
+        [[serialize(3)]] float timeScale_ = 1.0f;
         std::shared_ptr<AnimationTree::AnimationTree> animationTree_ = nullptr;
         int modelDxLibHandle_ = -1;
         
@@ -47,15 +51,16 @@ namespace NanamiEngine::Module::Component
             archive(cereal::base_class<LifeCycleCallback::IAwakable>(this));
             //archive(cereal::base_class<LifeCycleCallback::IUpdatable>(this));
             archive(CEREAL_NVP(animationTreeFile_));
-                    
+
             // 個別保存
             const std::size_t count = animationSyncs_.size();
             archive(cereal::make_nvp("animationSyncCount", count));
-            
+
             for (const auto& sync : animationSyncs_)
             {
                 archive(cereal::make_nvp("animationSync", sync));
             }
+            archive(CEREAL_NVP(timeScale_));
         }
     
         template<class Archive>
@@ -78,6 +83,7 @@ namespace NanamiEngine::Module::Component
                     animationSyncs_.push_back(std::move(sync));
                 }
             }
+            if (version >= 4) archive(CEREAL_NVP(timeScale_));
         }
 #pragma endregion
 };
@@ -91,4 +97,4 @@ namespace NanamiEngine::Module::Component
         return *animationTree_->Param().Catch<T>(paramName);
     }
 }
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::Animator, 3)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::Animator, 4)

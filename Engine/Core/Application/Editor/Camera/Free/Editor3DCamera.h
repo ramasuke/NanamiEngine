@@ -17,7 +17,10 @@ namespace NanamiEngine::Module::Component
 
         [[nodiscard]] glm::vec3 GetPosition () const { return cameraPosition_; }
         [[nodiscard]] glm::quat GetRotataion() const { return cameraRotation_; }
-        
+
+        void SetPosition(const glm::vec3& position) { cameraPosition_ = position; }
+        void SetRotation(const glm::quat& rotation) { cameraRotation_ = rotation; }
+
     private:
         void OnUpdateCameraRotation();
         void OnUpdateCameraPosition();

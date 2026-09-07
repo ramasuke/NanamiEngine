@@ -13,7 +13,7 @@ namespace NanamiEngine::Module::AnimationTree
     public:
         explicit AnimationClipNode(glm::vec2 position = glm::vec2(0, 0));
         void InitForGamePlay  (int   modelHandle) override;
-        void OnUpdateAnimation(int   modelHandle) override;
+        void OnUpdateAnimation(int   modelHandle, float timeScale) override;
         void OnExitNode       (int   modelHandle) override;
         void OnUpdateBlendRate(float blendRate  ) override;
 

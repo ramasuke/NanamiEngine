@@ -10,7 +10,7 @@ namespace NanamiEngine::Module::AnimationTree
     {
     public:
         void           InitForGamePlay  (int   modelHandle ) override;
-        void           OnUpdateAnimation(int   modelHandle ) override;
+        void           OnUpdateAnimation(int   modelHandle, float timeScale) override;
         void           OnExitNode       (int   modelHandle ) override;
         void           OnUpdateBlendRate(float blendRate   ) override;
         

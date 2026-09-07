@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <source_location>
 #include <string>
 #include <vector>
 
@@ -16,12 +17,11 @@ namespace NanamiEngine::Module
         LogLevel level;
         std::string text;
     };
-
-    // NOTE: Log/LogWarning/LogError/LogHistory/ClearLogHistory はすべて内部でmutexを
-    // 取っているためスレッドセーフ。別スレッド（例: ネットワークスレッド）から呼んでも良い。
-    void Log       (const std::string& text);
-    void LogWarning(const std::string& text);
-    void LogError  (const std::string& text);
+    
+    // NOTE: ログの発生元(ファイル名:行番号)が自動的にtextの先頭へ埋め込まれる。
+    void Log       (const std::string& text, std::source_location location = std::source_location::current());
+    void LogWarning(const std::string& text, std::source_location location = std::source_location::current());
+    void LogError  (const std::string& text, std::source_location location = std::source_location::current());
 
     /** @brief スレッドセーフなログ履歴のスナップショットを返す（ConsoleWindow等が使用） */
     std::vector<LogRecord> LogHistory();

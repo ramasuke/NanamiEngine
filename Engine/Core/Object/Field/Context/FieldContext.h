@@ -4,6 +4,8 @@
 
 #include "../../../../Module/GameObject/Interface/IGameObject.h"
 #include "../../../Application/Editor/EditorApplication.h"
+#include "../../../Application/Window/Popup/Project/ProjectWindow.h"
+#include "../../../Application/Window/Popup/Group/PopupWindowGroup.h"
 #include "../../Registry/ObjectRegistry.h"
 #include "../Interface/IFieldContext.h"
 #include "../../Engine/Module/Namespace/EngineNamespace.h"
@@ -55,7 +57,7 @@ namespace NanamiEngine::Core::Object
             content_ = content;
         }
 
-        [[nodiscard]] const Guid& Guid() const { return guid_; }
+        [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
 
         void OnDrawGui()
         {
@@ -70,7 +72,13 @@ namespace NanamiEngine::Core::Object
             {
                 if constexpr (std::is_base_of_v<Asset::AssetBase, T>)
                 {
-                    ImGui::Text("Asset: %s", content->GetContentPath().c_str());
+                    if (ImGui::Selectable(("Asset: " + content->GetContentPath()).c_str()))
+                    {
+                        for (auto* project : Application::ApplicationBase::PopupWindows().Catch<PopupWindow::ProjectWindow>())
+                        {
+                            project->RevealAsset(content->GetGuid());
+                        }
+                    }
                 }
                 else if constexpr (std::is_base_of_v<GameObject::IGameObject, T>)
                 {

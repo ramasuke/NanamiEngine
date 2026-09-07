@@ -7,6 +7,7 @@
 #include "../../../AttackArea/PlayerAvatarAttackArea.h"
 #include "../../../State/Context/IPlayerAvatarStateContext.h"
 #include "../../CameraGroup/SwordManAvatarCameraGroup.h"
+#include "../../../../../../GamePlay/PlayerAvatar/LockOnDetectionArea/LockOnDetectionArea.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -37,6 +38,7 @@ namespace GameCore::PlayerAvatar::SwordMan
                                             const std::weak_ptr<SwordManAvatarCameraGroup>& cameraGroup ,
                                             const std::weak_ptr<PlayerAttackArea>& normalAttackArea,
                                             const std::weak_ptr<PlayerAttackArea>& dashAttackArea,
+                                            const std::weak_ptr<GamePlay::PlayerAvatar::LockOnDetectionArea>& lockOnDetectionArea,
                                             const std::weak_ptr<Asset::SwordManAvatarResource>& resources);
         
         [[nodiscard]] SwordManAvatarStatus     & Status () const { return *status_;             }
@@ -52,8 +54,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] GamePlay::PlayerAvatar::ChattableArea&   ChattableArea          () const override { return playerAvatar_      .lock()->ChattableArea();    }
         [[nodiscard]] GamePlay::PlayerAvatar::WakeUpArea   &   WakeUpArea             () const override { return playerAvatar_      .lock()->WakeUpArea();       }
         [[nodiscard]] const glm::vec3&                         PlayerAvatarFeatStepPos() const override { return playerAvatar_      .lock()->FeatStepPosition(); }
-        [[nodiscard]] PlayerAttackArea& NormalAttackArea() const { return *normalAttackArea_.lock(); }
-        [[nodiscard]] PlayerAttackArea& DashAttackArea  () const { return *dashAttackArea_  .lock(); }
+        [[nodiscard]] PlayerAttackArea& NormalAttackArea   () const { return *normalAttackArea_   .lock(); }
+        [[nodiscard]] PlayerAttackArea& DashAttackArea     () const { return *dashAttackArea_     .lock(); }
+        [[nodiscard]] GamePlay::PlayerAvatar::LockOnDetectionArea& LockOnDetectionArea() const { return *lockOnDetectionArea_.lock(); }
         [[nodiscard]] const Asset::SwordManAvatarResource   & Resources          () const { return *resources_  .lock(); }
 
 
@@ -62,9 +65,10 @@ namespace GameCore::PlayerAvatar::SwordMan
         const std::weak_ptr  <GameObject::IGameObject  > playerAvatarObject_;
         const std::weak_ptr  <IPlayerAvatar            > playerAvatar_;
         const std::shared_ptr<SwordManAvatarInputAction> inputAction_;
-        const std::weak_ptr  <SwordManAvatarCameraGroup> cameraGroup_; 
-        const std::weak_ptr  <PlayerAttackArea> normalAttackArea_; 
+        const std::weak_ptr  <SwordManAvatarCameraGroup> cameraGroup_;
+        const std::weak_ptr  <PlayerAttackArea> normalAttackArea_;
         const std::weak_ptr  <PlayerAttackArea> dashAttackArea_;
+        const std::weak_ptr  <GamePlay::PlayerAvatar::LockOnDetectionArea> lockOnDetectionArea_;
         const std::weak_ptr<Asset::SwordManAvatarResource> resources_;
     };
 }

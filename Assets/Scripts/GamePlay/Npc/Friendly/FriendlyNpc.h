@@ -19,7 +19,8 @@ namespace GamePlay::Npc::Friendly
     public:
         explicit FriendlyNpc();
         ~FriendlyNpc() override;
-        
+        [[nodiscard]] std::shared_ptr<GameCore::Npc::Friendly::BehaviourTree> BehaviourTree() const { return behaviour_; }
+
     private:
         void OnAwake        () override;
         void OnUpdate       () override;
@@ -33,7 +34,7 @@ namespace GamePlay::Npc::Friendly
         [[serialize(2)]] FIELD(Asset::FriendlyNpcResources) baseStatus_;
         [[serialize(6)]] FIELD(Ui::BillBoardNpcChatIcon) billboardNpcChatIcon_;
         
-        std::unique_ptr<GameCore::Npc::Friendly::BehaviourTree> behaviour_;
+        std::shared_ptr<GameCore::Npc::Friendly::BehaviourTree> behaviour_;
         bool isChatting_  = false;
 
 #pragma region Serialization Function

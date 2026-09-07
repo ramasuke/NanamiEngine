@@ -64,6 +64,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             cameraGroup,
             playerAvatar->CatchNormalAttackArea(),
             playerAvatar->CatchDashAttackArea(),
+            playerAvatar->CatchLockOnDetectionArea(),
             playerAvatar->Resources()
         );
 

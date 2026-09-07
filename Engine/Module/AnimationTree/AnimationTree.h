@@ -34,7 +34,7 @@ namespace NanamiEngine::Module::AnimationTree
         explicit AnimationTree(std::string filePath = "");
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
         void OnSave();
-        void OnUpdate(int modelHandle) const;
+        void OnUpdate(int modelHandle, float timeScale) const;
         void OnDrawGraphEditorGui();
         void OnDrawAllNodeGui     (ImDrawList* drawList, ImVec2 offset);
         void OnDrawDraggingNodeGui(ImDrawList* drawList, ImVec2 offset) const;
@@ -54,7 +54,7 @@ namespace NanamiEngine::Module::AnimationTree
 
     private:
         void AddCurrentNode    (const std::shared_ptr<IAnimationNode>& node);
-        void AddCurrentNodePath(AnimationNodePath* nodePath, int modelHandle);
+        void AddCurrentNodePath(AnimationNodePath* nodePath, int modelHandle, float timeScale);
         void RemoveCurrentNode (const std::shared_ptr<IAnimationNode>& node, int modelHandle);
 
         [[nodiscard]] std::vector<std::shared_ptr<AnimationNodePath>> AllNodePaths() const;

@@ -21,6 +21,8 @@ namespace NanamiEngine::Core::MainWindow
         [[nodiscard]] glm::quat GetCameraRotation        () const { return editorCamera_.GetRotataion       (); }
         [[nodiscard]] glm::mat4 GetCameraViewMatrix      () const { return editorCamera_.GetViewMatrix      (); }
         [[nodiscard]] glm::mat4 GetCameraProjectionMatrix() const { return editorCamera_.GetProjectionMatrix(); }
+        void SetCameraPosition(const glm::vec3& position) { editorCamera_.SetPosition(position); }
+        void SetCameraRotation(const glm::quat& rotation) { editorCamera_.SetRotation(rotation); }
 
         [[nodiscard]] bool IsPlayMode() const { return isPlayMode_; }
         [[nodiscard]] bool IsPlaying () const { return isPlaying_; }

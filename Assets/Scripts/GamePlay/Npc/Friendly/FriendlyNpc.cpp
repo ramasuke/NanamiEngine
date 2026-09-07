@@ -1,7 +1,9 @@
 ﻿#include "FriendlyNpc.h"
 
+#include "../../../../../Engine/Core/Application/ApplicationBase.h"
 #include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../Core/Game/Npc/Friendly/Behaviour/Friendly_BehaviourTree.h"
+#include "../../../Editor/Npc/Friendly/Behaviour/Window/RunningFriendlyBehaviourTreeWindow.h"
 
 namespace GamePlay::Npc::Friendly
 {
@@ -52,5 +54,11 @@ namespace GamePlay::Npc::Friendly
         ImGuiHelper::OnDrawInputField("friendlyNpcBehaviourFile_", friendlyNpcBehaviourFile_);
         ImGuiHelper::OnDrawInputField("baseStatus_"              , baseStatus_              );
         ImGuiHelper::OnDrawInputField("billboardNpcChatIcon_"    , billboardNpcChatIcon_    );
+
+        if (behaviour_ && ImGui::Button("実行中のBehaviourTreeを表示"))
+        {
+            for (auto* window : Core::Application::ApplicationBase::PopupWindows().Catch<Editor::Npc::Friendly::RunningFriendlyBehaviourTreeWindow>())
+                window->TryAddTarget(behaviour_);
+        }
     }
 }

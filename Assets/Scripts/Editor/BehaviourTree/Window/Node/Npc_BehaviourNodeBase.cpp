@@ -16,4 +16,18 @@ namespace Editor::Npc::Behaviour
         ImGui::Text(("guid_: " + guid_.Value()).c_str());
         DoOnDrawGui();
     }
+
+    GameCore::Npc::Enemy::Behaviour::TickStatus NodeBase::Tick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
+    {
+        lastEnemyTickStatus_ = DoTick(context);
+        hasBeenTickedAsEnemy_ = true;
+        return lastEnemyTickStatus_;
+    }
+
+    GameCore::Npc::Friendly::Behaviour::TickStatus NodeBase::Tick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context)
+    {
+        lastFriendlyTickStatus_ = DoTick(context);
+        hasBeenTickedAsFriendly_ = true;
+        return lastFriendlyTickStatus_;
+    }
 }

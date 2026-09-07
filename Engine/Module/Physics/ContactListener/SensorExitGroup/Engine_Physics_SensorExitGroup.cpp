@@ -22,6 +22,7 @@ namespace NanamiEngine::Module::Physics
 
     void SensorExitGroup::Add(const PendingExit& exit)
     {
+        std::lock_guard lock(addMutex_);
         pending_.push_back(exit);
     }
 

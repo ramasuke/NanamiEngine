@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 3,
+                "cereal_class_version": 4,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -117,22 +117,11 @@
                     0.75
                 ],
                 "runFootstepContactPhases_": [
-                    0.2,
-                    0.7
+                    0.20000000298023225,
+                    0.699999988079071
                 ],
-                "footstepSound_": {
-                    "value0": {
-                        "polymorphic_id": 1073741824,
-                        "ptr_wrapper": {
-                            "id": 2147483657,
-                            "data": {
-                                "value0": {
-                                    "value_": "AC969EF0-74DD-4CD8-95FA-B8C9ACCB14F5"
-                                }
-                            }
-                        }
-                    }
-                }
+                "walkFootstepSoundCount": 0,
+                "runFootstepSoundCount": 0
             }
         }
     }

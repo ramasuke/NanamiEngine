@@ -2,6 +2,12 @@
 #include <functional>
 #include <memory>
 #include <stack>
+#include <string>
+#include <string_view>
+#include <typeinfo>
+
+#include "../../../SafeExecute/Engine_Module_SafeExecute.h"
+#include "../../../Log/NanamiEngine_Module_Log.h"
 
 namespace NanamiEngine::Core::Application
 {
@@ -55,7 +61,15 @@ namespace NanamiEngine::Core::Application
 
             if (shared)
             {
-                func(*shared);
+                T* rawPtr = shared.get();
+                std::string errorMessage;
+                if (!Module::SafeExecute([&func, rawPtr]() { func(*rawPtr); }, errorMessage))
+                {
+                    const std::string_view fullName = typeid(*rawPtr).name();
+                    const size_t lastColon = fullName.rfind("::");
+                    const std::string_view shortName = lastColon != std::string_view::npos ? fullName.substr(lastColon + 2) : fullName;
+                    Module::LogError("[LifeCycleCallback] " + std::string(shortName) + " (" + rawPtr->GetGuid().Value() + "): " + errorMessage);
+                }
             }
         }
     }

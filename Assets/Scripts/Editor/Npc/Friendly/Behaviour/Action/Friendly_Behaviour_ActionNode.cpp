@@ -26,7 +26,7 @@ namespace Editor::Npc::Friendly::Behaviour
     {
         const Gui::Graph::NodeOption nodeOption
         {
-            NODE_VISUAL_STYLE,
+            Npc::Behaviour::DrawGraphEditorGuiHelper::ApplyRuntimeStatusStyle(*this, NODE_VISUAL_STYLE),
             name_,
             false,
             false,
@@ -63,12 +63,12 @@ namespace Editor::Npc::Friendly::Behaviour
         }
     }
     
-    GameCore::Npc::Enemy::Behaviour::TickStatus ActionNode::Tick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
+    GameCore::Npc::Enemy::Behaviour::TickStatus ActionNode::DoTick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
     {
         return GameCore::Npc::Enemy::Behaviour::TickStatus::Failure;
     }
 
-    GameCore::Npc::Friendly::Behaviour::TickStatus ActionNode::Tick(
+    GameCore::Npc::Friendly::Behaviour::TickStatus ActionNode::DoTick(
         const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context)
     {
         return action_->Tick(context);
