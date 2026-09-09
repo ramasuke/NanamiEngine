@@ -35,7 +35,7 @@ void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoUpdate()
             OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run);
         if (Input().Jump().IsPressed())
             OnChangeState(SwordManAvatarStateType::Jump);
-        if (Input().AvoidRolling().IsPressed())
+        if (Input().AvoidRolling().IsPressed() && Status().CanAvoidRolling())
             OnChangeState(SwordManAvatarStateType::AvoidRolling);
         if (Input().NormalAttack().IsPressed())
             OnChangeState(SwordManAvatarStateType::NormalAttack);

@@ -34,3 +34,4 @@
 #include "../../../../../Core/Game/Npc/Enemy/Content/FirstEventDragon/Behaviour/AppearToTouchDownIsLand/FirstEventDragon_Behaviour_AppearToTouchDownIsLand.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Time/Timer/Friendly_Behaviour_Action_NodeTickTimer.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/Chat/Enemy_Behaviour_Action_Chat.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Camera/ShakeCamera/Enemy_Behaviour_Action_ShakeCamera.h"

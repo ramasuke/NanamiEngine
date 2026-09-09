@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <utility>
 
-#include "../Network/Game_CustomNetworkRunner.h"
+#include "../../Core/Network/Rpc/Custom_RpcType.h"
 #include "../../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../Engine/Module/Component/ModelRenderer/ModelRenderer.h"
@@ -263,7 +263,7 @@ namespace GamePlay::PlayerAvatar
     template <RequireType::Traits TraitsT>
     void PlayerAvatarBase<TraitsT>::RequestWakeUp()
     {
-        GamePlay::Network::CustomNetworkRunner::Instance().CustomDispatcher().WakeUpPlayer().DispatchSendPacket(GetNetworkObjectId());
+        GameCore::Network::WakeUpPlayerRpc::Send(GetNetworkObjectId(), Core::Network::DeliveryMode::Reliable);
     }
 
     template <RequireType::Traits TraitsT>

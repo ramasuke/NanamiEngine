@@ -1,8 +1,9 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 #include <queue>
 #include <string>
 
+#include "../../../../../../../../../Engine/Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
 #include "../../../../../../../../../Engine/Core/Network/Object/Creator/NetworkParamCreator.h"
 #include "../../../../../../../../../Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
 #include "../../../../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
@@ -72,7 +73,9 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             const std::weak_ptr<GameObject::IGameObject>& enemyGameObject,
             SyncParam<EnemyStatus>& enemyStatus,
             const std::unique_ptr<BlackBoard::ParameterGroup>& parameters,
-            const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack);
+            const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack,
+            Core::Network::NetworkObjectId networkObjectId,
+            bool isNetworkAuthority);
         ~TickContext();
         
 
@@ -89,6 +92,12 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[nodiscard]] const PlayerAvatar::IQuestGroup& PlayerQuest() const;
         [[nodiscard]] const PlayerAvatar::Quest::ICompleteQuestGroup& PlayerCompleteQuest() const;
         [[nodiscard]] const GamePlay::Ui::NpcChatting& ChatUi() const;
+
+        // この敵の NetworkObjectId。ネットワーク生成されていない個体は Invalid()
+        [[nodiscard]] Core::Network::NetworkObjectId NetworkObjectId() const { return networkObjectId_; }
+        // このTickが権威側限定(他ピアはTickしていない)なら true。
+        // 一回限りの副作用(SE/エフェクト/攻撃発火等)は、この時だけ RPC で他ピアへ複製する。
+        [[nodiscard]] bool IsNetworkAuthority() const { return isNetworkAuthority_; }
 
 
         template<typename T>
@@ -114,5 +123,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         SyncParam<Enemy::EnemyStatus>&   enemyStatus_;
         const std::unique_ptr<BlackBoard::ParameterGroup>& parameters_;
         const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>> onDamagedStack_;
+        const Core::Network::NetworkObjectId networkObjectId_;
+        const bool isNetworkAuthority_;
     };
 }

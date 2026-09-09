@@ -23,8 +23,8 @@ namespace NanamiEngine::Module
     void LogWarning(const std::string& text, std::source_location location = std::source_location::current());
     void LogError  (const std::string& text, std::source_location location = std::source_location::current());
 
-    /** @brief スレッドセーフなログ履歴のスナップショットを返す（ConsoleWindow等が使用） */
+    /** @brief スレッドセーフなログ履歴のスナップショットを返す */
     std::vector<LogRecord> LogHistory();
-    /** @brief 保持しているログ履歴をクリアする（ファイル出力済みの内容は消えない） */
+    /** @brief 保持しているログ履歴をクリアする */
     void ClearLogHistory();
 }

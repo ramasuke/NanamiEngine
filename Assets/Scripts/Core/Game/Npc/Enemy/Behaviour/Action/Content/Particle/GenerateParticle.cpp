@@ -1,14 +1,17 @@
 ﻿#include "GenerateParticle.h"
 
-#include "../../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
-#include "../../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
-#include "../../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "../../../../../../../../GamePlay/Spawn/GamePlay_PrefabSpawner.h"
+#include "../../../../../../../Network/Rpc/Custom_RpcType.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
 
     TickStatus Action::GenerateParticle::DoTick(const TickContext& context)
     {
+        // プレハブ未設定は「演出無し」として扱う
+        if (!particlePrefab_)
+            return TickStatus::Success;
+
         const auto enemyPos = context.EnemyTransform().GetWorldPos();
         const auto enemyRot = context.EnemyTransform().GetWorldRot();
 
@@ -19,12 +22,15 @@ namespace GameCore::Npc::Enemy::Behaviour
             ? offset_
             : enemyPos + rotatedOffset;
 
-        auto particle = Scene::GameObject::Instantiate(
-            particlePrefab_.get(),
-            spawnPos
-        );
+        GamePlay::Spawn::SpawnPrefab(*particlePrefab_.get(), spawnPos, lifeTime_);
 
-        Coroutine::StartCoroutine(DestroyAfterTimeAsync(particle, lifeTime_));
+        // 権威側限定Tickなら、他ピアにも同じ位置に同じパーティクルを出させる
+        if (context.IsNetworkAuthority())
+        {
+            GameCore::Network::SpawnPrefabRpc::Send(
+                context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable,
+                particlePrefab_->GetGuid(), spawnPos, lifeTime_);
+        }
 
         return TickStatus::Success;
     }
@@ -36,20 +42,4 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("isUseAbsolutePosition_", isUseAbsolutePosition_);
         ImGuiHelper::OnDrawInputField("particlePrefab_", particlePrefab_);
     }
-
-    Coroutine::Task<void> Action::GenerateParticle::DestroyAfterTimeAsync(
-        std::weak_ptr<GameObject::IGameObject> particle,
-        float lifeTime)
-    {
-        co_await Coroutine::WaitForSeconds(lifeTime);
-
-        auto p = particle.lock();
-        if (!p)
-            co_return;
-
-        p->OnDestroy();
-
-        co_return;
-    }
-
 }

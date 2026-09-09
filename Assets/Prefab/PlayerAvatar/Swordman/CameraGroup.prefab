@@ -404,7 +404,7 @@
                         "value_": "73209088-442B-4892-B9C4-3C71C368FD41"
                     },
                     "components_": {
-                        "componentCount": 4,
+                        "componentCount": 5,
                         "component_0": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
@@ -549,6 +549,61 @@
                                                 "data": {
                                                     "value0": {
                                                         "value_": "533D9BBC-8CF7-4243-89DB-F73125DC42DA"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "component_4": {
+                            "polymorphic_id": 7,
+                            "ptr_wrapper": {
+                                "id": 2147483673,
+                                "data": {
+                                    "value0": {
+                                        "cereal_class_version": 0,
+                                        "guid_": {
+                                            "value_": "F90038DC-11DD-4F82-81D5-E8BB674919BA"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value2": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value3": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "posAmplitude_": {
+                                        "value0": 0.0,
+                                        "value1": 0.0,
+                                        "value2": 0.0
+                                    },
+                                    "angleAmplitude_": {
+                                        "value0": 0.0,
+                                        "value1": 0.0,
+                                        "value2": 0.0
+                                    },
+                                    "frequency_": 0.0,
+                                    "defaultIntensity_": 0.0,
+                                    "defaultDuration_": 0.0,
+                                    "seed_": {
+                                        "value0": 0.0,
+                                        "value1": 0.0,
+                                        "value2": 0.0
+                                    },
+                                    "cameraBrain_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483674,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "00000000-0000-0000-0000-000000000000"
                                                     }
                                                 }
                                             }

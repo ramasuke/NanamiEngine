@@ -7,7 +7,7 @@
 
 namespace NanamiEngine::CineMachine::Behaviour
 {
-    ShakeCameraBehaviour* ShakeCameraBehaviour::instance_ = nullptr;
+    std::vector<ShakeCameraBehaviour*> ShakeCameraBehaviour::instances_;
 
     void ShakeCameraBehaviour::Shake(
         const float intensity,
@@ -27,23 +27,24 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     void ShakeCameraBehaviour::ShakeMainCamera(const float intensity, const float duration)
     {
-        instance_->Shake(intensity, duration);
+        for (auto* instance : instances_)
+            instance->Shake(intensity, duration);
     }
 
     void ShakeCameraBehaviour::ShakeMainCamera()
     {
-        instance_->Shake();
+        for (auto* instance : instances_)
+            instance->Shake();
     }
 
     void ShakeCameraBehaviour::OnAwake()
     {
-        instance_ = this;
+        instances_.push_back(this);
     }
 
     void ShakeCameraBehaviour::OnDestroy()
     {
-        if (instance_ == this)
-            instance_ = nullptr;
+        std::erase(instances_, this);
     }
 
     void ShakeCameraBehaviour::OnUpdate()

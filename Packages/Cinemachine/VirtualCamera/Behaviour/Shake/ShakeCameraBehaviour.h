@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <vector>
 #include "../IVirtualCameraBehaviour.h"
 #include "../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
@@ -23,7 +24,10 @@ namespace NanamiEngine::CineMachine::Behaviour
         void OnUpdate() override;
         void MainCameraCallback() override;
 
-        static ShakeCameraBehaviour* instance_;
+        // 「アクティブなVirtualCameraが持つ実体だけ」に揺れが乗る仕様のため、複数のVirtualCamera
+        // (通常追従カメラ/ロックオンカメラ等)に付けても正しく機能するよう、生存中の全インスタンスに
+        // Shake()をブロードキャストする。各インスタンスのtrauma_はそれぞれ独立して減衰する。
+        static std::vector<ShakeCameraBehaviour*> instances_;
 
         float trauma_   = 0.0f;
         float duration_ = 0.4f;

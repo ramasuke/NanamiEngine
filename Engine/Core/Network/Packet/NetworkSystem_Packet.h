@@ -15,6 +15,7 @@ namespace NanamiEngine::Core::Network
         SyncTransform      = 2,
         SyncAnimation      = 3,
         SyncParameter      = 4,
+        Rpc                = 5,
     };
 
     struct Packet final

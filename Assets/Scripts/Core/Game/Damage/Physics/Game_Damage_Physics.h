@@ -15,6 +15,7 @@ namespace GameCore::Damage
     {
         Physics(GameObject::IGameObject& from, GameObject::IGameObject& to, PhysicsPower damageValue);
         int DamageValue() override;
+        [[nodiscard]] glm::vec3 DamageDirection() const override;
 
     private:
         glm::vec3 damageDirection_;

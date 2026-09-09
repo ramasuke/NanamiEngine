@@ -21,6 +21,6 @@ namespace GameCore::PlayerAvatar
         return LocalPrefs::LoadOrDefaultWithPath<std::shared_ptr<RequireType::Status<TraitsT>>>(
             TraitsT::STATUS_SAVE_FILE_PATH,
             PLAYER_AVATAR_STATUS_FILE_KEY,
-            std::make_shared<RequireType::Status<TraitsT>>());
+            std::make_shared<RequireType::Status<TraitsT>>());  
     }
 }

@@ -1,5 +1,6 @@
 ﻿#include "Packet_Dispatch_SpawnPlayer.h"
 
+#include "cereal/types/vector.hpp"
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "winmm.lib")
 #include "enet/enet.h"
@@ -47,14 +48,14 @@ namespace GameCore::Network
         auto gameObject = playerAvatar->PlayerTransform().GetGameObject();
 
         gameObject->Transform().SetWorldRot(rotation);
-        const auto networkObjectId = DefaultDispatch().Spawn().AllocateIdAndRegister(gameObject);
+        const auto networkObjectIds = DefaultDispatch().Spawn().AllocateIdsAndRegister(gameObject);
 
         Packet packet = Packet::Create(static_cast<PacketType>(EPacketType::SpawnPlayerAvatar));
         packet.Data().Write(PlayerId());
         packet.Data().Write(static_cast<int>(type));
         packet.Data().Write(position);
         packet.Data().Write(rotation);
-        packet.Data().Write(networkObjectId);
+        packet.Data().Write(networkObjectIds);
 
         // PlayerStatus()は参照しか返さないため、cerealのポリモーフィックシリアライズに渡すために
         // 所有権を持たないshared_ptrでラップする(deleterは何もしない)。
@@ -78,8 +79,8 @@ namespace GameCore::Network
         const auto avatarTypeInt   = packet.Data().Read<int>(readOffset);
         const auto position        = packet.Data().Read<glm::vec3>(readOffset);
         const auto rotation        = packet.Data().Read<glm::quat>(readOffset);
-        const auto networkObjectId = packet.Data().Read<NetworkObjectId>(readOffset);
-        const auto status          = packet.Data().Read<std::shared_ptr<GameCore::PlayerAvatar::IPlayerAvatarStatus>>(readOffset);
+        const auto networkObjectIds = packet.Data().Read<std::vector<NetworkObjectId>>(readOffset);
+        const auto status           = packet.Data().Read<std::shared_ptr<GameCore::PlayerAvatar::IPlayerAvatarStatus>>(readOffset);
 
         if (playerId == PlayerId())
             return;
@@ -92,6 +93,6 @@ namespace GameCore::Network
         auto gameObject = playerAvatar->PlayerTransform().GetGameObject();
 
         gameObject->Transform().SetWorldRot(rotation);
-        DefaultDispatch().Spawn().RegisterWithNetworkId(networkObjectId, gameObject);
+        DefaultDispatch().Spawn().RegisterWithNetworkIds(networkObjectIds, gameObject);
     }
 }

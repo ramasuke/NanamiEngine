@@ -1,7 +1,7 @@
-#pragma once
+﻿#pragma once
 #include "../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/Component/ModelRenderer/ModelRenderer.h"
+#include "../../../../../Engine/Module/Component/Shader/IShaderConstantBufferHost.h"
 
 namespace GamePlay::Prop
 {
@@ -24,7 +24,9 @@ namespace GamePlay::Prop
         float revealRadius_    = 5.0f;
         float transitionWidth_ = 3.0f;
 
-        std::weak_ptr<Component::ModelRenderer> modelRenderer_;
+        // ModelRenderer/QuadRendererなど、IShaderConstantBufferHostを実装するレンダラーなら
+        // どれでもよい(Catch<>で探すだけなので、無ければOnUpdate()は何もしない)。
+        std::weak_ptr<Component::IShaderConstantBufferHost> shaderHost_;
 
 #pragma region Serialization Function
     public:

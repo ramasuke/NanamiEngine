@@ -6,10 +6,13 @@
 #include "../../../../../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../Engine/Module/Component/Animator/Animator.h"
+#include "../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "../../../../../../../Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
 #include "../../../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
 #include "../../../../../GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
 #include "../../../../../GamePlay/Sound/SoundPlayer.h"
+#include "../../../../../GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h"
 #include "../../Chattable/IPlayerChattable.h"
 #include "../../Input/PlayerAvatarInput_void.h"
 
@@ -17,6 +20,9 @@ namespace
 {
     /** 設定値は適当:  */
     const std::vector DEFAULT_FOOTSTEP_CONTACT_PHASES = { 0.25f, 0.75f };
+
+    // Target側コライダー表面での取りこぼし（浮動小数誤差）を避けるための余白
+    constexpr float LOCK_ON_LOS_RAY_MARGIN = 1.0f;
 
     /**
      * @brief クリップ正規化時間が`phase`をこのフレームで通過したか
@@ -52,6 +58,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     
     void SwordManAvatarStateBase::OnUpdate()
     {
+        TickHitStop();
         DoUpdate();
         stateDuring_secs_ += Time::DeltaTime();
     }
@@ -63,6 +70,12 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStateBase::OnExit()
     {
+        // 状態遷移を跨いでtimeScaleが下がったまま残らないよう、念のため強制復帰する
+        if (hitStopRemaining_secs_ > 0.0f)
+        {
+            hitStopRemaining_secs_ = 0.0f;
+            Animator().SetTimeScale(1.0f);
+        }
         DoExit();
     }
 
@@ -112,6 +125,45 @@ namespace GameCore::PlayerAvatar::SwordMan
         stateDuring_secs_ = 0.0f;
     }
 
+    void SwordManAvatarStateBase::TickHitStop()
+    {
+        if (hitStopRemaining_secs_ <= 0.0f)
+            return;
+
+        hitStopRemaining_secs_ -= Time::DeltaTime();
+        if (hitStopRemaining_secs_ <= 0.0f)
+            Animator().SetTimeScale(1.0f);
+    }
+
+    void SwordManAvatarStateBase::TriggerHitStop(const float duration_secs, const float timeScale)
+    {
+        hitStopRemaining_secs_ = duration_secs;
+        Animator().SetTimeScale(timeScale);
+    }
+
+    void SwordManAvatarStateBase::DealDamageText(PlayerAttackArea& attackArea, const Damage::PhysicsPower power) const
+    {
+        Physics::LayerMask mask = Physics::CreateLayerMask();
+        Physics::AddLayer(mask, Physics::Layer::Default);
+
+        for (const auto& attackTarget : attackArea.Targets())
+        {
+            const auto origin    = Transform().GetWorldPos();
+            const auto targetPos = attackTarget.GameObject().Transform().GetWorldPos();
+            const auto direction = targetPos - origin;
+
+            const auto raycastHit = Physics::Raycast(
+                                            origin,
+                                            direction,
+                                            glm::length(direction),
+                                            mask);
+
+            const auto textPos = raycastHit.Hit() ? raycastHit.Position() : targetPos;
+            const auto damageText = Scene::GameObject::Instantiate(Resources().DealDamageTextBillBoardPrefab(), textPos);
+            damageText.lock()->Components().Catch<GamePlay::Ui::DealDamageTextBillBoard>().lock()->Play(power.Value());
+        }
+    }
+
     void SwordManAvatarStateBase::ChangeCamera(const std::weak_ptr<CineMachine::CineMachineVirtualCamera>& camera) const
     {
         CameraGroup().ChangeCamera(camera);
@@ -135,6 +187,20 @@ namespace GameCore::PlayerAvatar::SwordMan
             CameraGroup().EngageLockOn(target);
     }
 
+    void SwordManAvatarStateBase::RotateTowardsLockOnTarget(const float rotateSpeed) const
+    {
+        if (ExpiredCamera())
+            return;
+
+        // 対象が死亡して weak_ptr が切れた場合も lock() で吸収する
+        const auto target = CameraGroup().LockOnTarget().lock();
+        if (!target)
+            return;
+
+        const glm::vec3 toTarget = target->Transform().GetWorldPos() - Transform().GetWorldPos();
+        Actions().RotateTowards(glm::vec3(toTarget.x, 0.0f, toTarget.z), rotateSpeed);
+    }
+
     bool SwordManAvatarStateBase::IsLockOnTargetInRange() const
     {
         const auto currentTarget = CameraGroup().LockOnTarget().lock();
@@ -143,7 +209,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
         for (const auto& candidate : LockOnDetectionArea().Candidates())
             if (candidate.lock() == currentTarget)
-                return true;
+                return HasLineOfSight(currentTarget); // 索敵範囲内でも遮蔽されたら解除
         return false; // 索敵範囲外に出た
     }
 
@@ -158,6 +224,8 @@ namespace GameCore::PlayerAvatar::SwordMan
             const auto candidate = weakCandidate.lock();
             if (!candidate)
                 continue;
+            if (!HasLineOfSight(candidate))
+                continue;
 
             const glm::vec3 diff = candidate->Transform().GetWorldPos() - playerPos;
             const float distanceSq = glm::dot(diff, diff);
@@ -168,6 +236,27 @@ namespace GameCore::PlayerAvatar::SwordMan
             }
         }
         return nearestTarget;
+    }
+
+    bool SwordManAvatarStateBase::HasLineOfSight(const std::shared_ptr<GameObject::IGameObject>& target) const
+    {
+        const glm::vec3 origin = CineMachine::CinemachineCameraBrain::Instance()->Transform().GetWorldPos();
+        const glm::vec3 targetPos = target->Transform().GetWorldPos();
+        const glm::vec3 diff = targetPos - origin;
+        const float distance = glm::length(diff);
+        if (distance <= 0.0f)
+            return true;
+
+        // Playerのみ除外（Default・Enemyは視線を遮る対象として扱う）
+        Physics::LayerMask mask = Physics::CreateLayerMask();
+        Physics::AddLayer(mask, Physics::Layer::Default);
+        Physics::AddLayer(mask, Physics::Layer::Enemy);
+
+        const auto hit = Physics::Raycast(origin, diff, distance + LOCK_ON_LOS_RAY_MARGIN, mask);
+        if (!hit.Hit())
+            return false; // 何にも当たらなかった＝対象自体にも当たっていない異常系。安全側に倒す
+
+        return &hit.HitObject() == target.get();
     }
 
     void SwordManAvatarStateBase::OnChangeState(SwordManAvatarStateType type) const

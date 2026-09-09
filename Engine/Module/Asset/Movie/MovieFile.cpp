@@ -17,7 +17,7 @@ namespace NanamiEngine::Module::Asset
 
     int MovieFile::LoadDxLibHandle() const
     {
-        return LoadGraph(contentPath_.c_str());
+        return OpenMovieToGraph(contentPath_.c_str());
     }
 
     std::string MovieFile::GetContentPath() const

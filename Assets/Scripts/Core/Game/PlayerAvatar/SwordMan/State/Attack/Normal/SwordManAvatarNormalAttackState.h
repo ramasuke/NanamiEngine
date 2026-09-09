@@ -15,12 +15,13 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoExit() override;
 
         void TryComboAttack();
-        void DealDamageText(Damage::PhysicsPower power);
         void ChangeToMoveOrIdle();
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::ComboAttack; }
 
     private:
         int  currentCombo_ = 0;
         bool isAttacked_   = false;
+        /** @brief NormalAttack入力の先行/後追い猶予(数フレーム分)を持たせるための残り時間 */
+        float bufferedAttackTimer_secs_ = 0.0f;
     };
 }

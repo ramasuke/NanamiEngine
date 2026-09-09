@@ -15,6 +15,7 @@
 #include "../../LifeCycleCallback/InitRenderable/IInitRenderable.h"
 #include "../../LifeCycleCallback/PreFixedUpdate/IPreFixedUpdate.h"
 #include "../../LifeCycleCallback/UpdatedPhysics/IEndPhysics.h"
+#include "../Shader/IShaderConstantBufferHost.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -23,7 +24,8 @@ namespace NanamiEngine::Module::Component
                                 public LifeCycleCallback::IShadowRenderable,
                                 public LifeCycleCallback::IRenderable,
                                 public LifeCycleCallback::IPreFixedUpdate,
-                                public LifeCycleCallback::IEndPhysics
+                                public LifeCycleCallback::IEndPhysics,
+                                public IShaderConstantBufferHost
     {
     public:
         // DxLib(Direct3D 11) は定数バッファスロット b0～b3 を内部で使用しているため、
@@ -36,7 +38,7 @@ namespace NanamiEngine::Module::Component
 
         // カスタムシェーダー用の定数バッファハンドルを返す(未生成なら生成する)。
         // vsFile_ / psFile_ が有効でない場合は -1。
-        [[nodiscard]] int GetOrCreateShaderConstantBufferHandle();
+        [[nodiscard]] int GetOrCreateShaderConstantBufferHandle() override;
 
     private:
         void InitRenderer    () override;
@@ -60,9 +62,7 @@ namespace NanamiEngine::Module::Component
 
         int  cbHandle_           = -1;
         bool customStateApplied_ = false;
-
-        // トライアングルリストごとに「剛体用頂点シェーダーで描画できるか」
-        // (4/8 ボーンのスキンメッシュは DxLib 標準シェーダーにフォールバックする)
+        
         std::vector<bool> rigidTriangleList_;
         bool              allRigid_ = true;
 

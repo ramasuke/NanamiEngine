@@ -8,7 +8,8 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoEnter()
 {
     if (!ExpiredCamera())
     {
-        ChangeCamera(CameraGroup().FollowFromBehind());
+        // ロックオン中はロックオンカメラを維持する（攻撃・移動から Idle に戻っても解除しない）
+        ChangeCamera(CameraGroup().IsLockedOn() ? CameraGroup().LockOnCamera() : CameraGroup().FollowFromBehind());
         
         if (CameraGroup().FollowFromBehind().lock())
         {
@@ -31,7 +32,7 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoFixedUp
         OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk);
     if (Input().Jump().IsPressed())
         OnChangeState(SwordManAvatarStateType::Jump);
-    if (Input().AvoidRolling().IsPressed())
+    if (Input().AvoidRolling().IsPressed() && Status().CanAvoidRolling())
         OnChangeState(SwordManAvatarStateType::AvoidRolling);
     UpdateLockOn();
     if (Input().NormalAttack().IsPressed())

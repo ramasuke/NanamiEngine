@@ -1,12 +1,7 @@
 ﻿#pragma once
-#include <cstddef>
 #include <string>
 
 #include "cereal/cereal.hpp"
-#include "../../Libs/rxcpp/operators/rx-all.hpp"
-#include "../Rx/SerializableSubject/unit/unit.h"
-
-namespace NanamiEngine::Core::Network { class ByteBuffer; }
 
 namespace NanamiEngine::Module::AnimationTree
 {
@@ -26,10 +21,6 @@ namespace NanamiEngine::Module::AnimationTree
         virtual ~IAnimationParameter() = default;
         [[nodiscard]] virtual const std::string& Name() const = 0;
         virtual void OnDrawGui() = 0;
-
-        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit> OnChanged() const = 0;
-        virtual void WriteValueTo(NanamiEngine::Core::Network::ByteBuffer& buffer) const = 0;
-        virtual void ReadValueFrom(const NanamiEngine::Core::Network::ByteBuffer& buffer, size_t& offset) = 0;
     };
 }
 

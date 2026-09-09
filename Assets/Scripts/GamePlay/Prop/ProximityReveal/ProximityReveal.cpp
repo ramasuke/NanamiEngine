@@ -6,16 +6,16 @@ namespace GamePlay::Prop
 {
     void ProximityReveal::OnAwake()
     {
-        modelRenderer_ = RequireComponent<Component::ModelRenderer>();
+        shaderHost_ = Components().Catch<Component::IShaderConstantBufferHost>();
     }
 
     void ProximityReveal::OnUpdate()
     {
-        const auto renderer = modelRenderer_.lock();
+        const auto renderer = shaderHost_.lock();
         if (!renderer)
             return;
 
-        // 定数バッファは ModelRenderer 側で遅延生成される(シェーダー未設定なら -1)
+        // 定数バッファはレンダラー側で遅延生成される(シェーダー未設定なら -1)
         const int cbHandle = renderer->GetOrCreateShaderConstantBufferHandle();
         if (cbHandle == -1)
             return;

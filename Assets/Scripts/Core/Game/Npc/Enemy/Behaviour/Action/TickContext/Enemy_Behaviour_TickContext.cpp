@@ -1,4 +1,4 @@
-#include "Enemy_Behaviour_TickContext.h"
+﻿#include "Enemy_Behaviour_TickContext.h"
 
 #include "../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
@@ -20,13 +20,17 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         const std::weak_ptr<GameObject::IGameObject>& enemyGameObject,
         SyncParam<class EnemyStatus>& enemyStatus,
         const std::unique_ptr<BlackBoard::ParameterGroup>& parameters,
-        const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack)
-            : enemyGameObject_(enemyGameObject)
-            , enemyAnimator_  (enemyGameObject.lock()->Components().Catch<Component::Animator>())
-            , enemyCollider_  (enemyGameObject.lock()->Components().Catch<Component::ColliderBase>())
-            , enemyStatus_    (enemyStatus   )
-            , parameters_     (parameters    )
-            , onDamagedStack_ (onDamagedStack)
+        const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack,
+        const Core::Network::NetworkObjectId networkObjectId,
+        const bool isNetworkAuthority)
+            : enemyGameObject_  (enemyGameObject)
+            , enemyAnimator_    (enemyGameObject.lock()->Components().Catch<Component::Animator>())
+            , enemyCollider_    (enemyGameObject.lock()->Components().Catch<Component::ColliderBase>())
+            , enemyStatus_      (enemyStatus       )
+            , parameters_       (parameters        )
+            , onDamagedStack_   (onDamagedStack    )
+            , networkObjectId_  (networkObjectId   )
+            , isNetworkAuthority_(isNetworkAuthority)
     {
         
     }

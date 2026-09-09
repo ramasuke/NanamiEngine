@@ -117,7 +117,8 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
 - **`Editor/BehaviourTree/`** / **`Editor/Npc/{Enemy,Friendly}/Behaviour`** — インゲームの
   BehaviourTreeグラフエディタ本体（`tools/bt` はこれと同じデータへの、自動化向け代替インターフェース）。
 - **`GamePlay/Npc/Enemy/`** — `FirstEventDragon`、`Hyena`、`NetworkBehaviourTree`
-  （BehaviourTreeのネットワーク共有ラッパー）、`Projectile`、`TrainingDummy`、`Tyrannosaurus`。
+  （付与されている個体だけBehaviourTreeのTickを権威側限定にするマーカーコンポーネント）、
+  `Projectile`、`TrainingDummy`、`Tyrannosaurus`。
 - **`GamePlay/PlayerAvatar/`**（`Bullet`、`ChattableArea`、`SwordMan`）、
   **`GamePlay/Prop/`**（`AirShip`、`Canon`、`DestructibleObject`、`IslandPedestial`、
   `ProximityReveal`）、**`GamePlay/Ui/`**（`ActionInstructTutorial`、`BillBoardNpcChatIcon`、
@@ -125,7 +126,7 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
   `StageSelect` 等）。
 - **`Network/Packet/`** — エンジン共通のパケット基盤に乗る、ゲーム固有のパケット群
   (`Custom_PacketType`、`CustomPacketDispatcherBase/Group`) と、その上の
-  `SpawnPlayer`/`SyncAvatarState`/`SyncBehaviourTree` ディスパッチモジュール。
+  `SpawnPlayer`/`SyncAvatarState` ディスパッチモジュール。
 
 ### Assets/Data・Assets/Prefab（一例）
 
@@ -159,9 +160,16 @@ enet(UDP) 上に構築されたクライアント/サーバー型モデルです
   スポーンする `NetworkPrefabObjectRegistry`、生成済みオブジェクトを管理する
   `NetworkObjectInstanceRegistry`、毎フレーム処理対象を管理する `NetworkTickableRegistry`。
 - **パケット**: `Packet_ByteBuffer`/`Packet_Codec`を基盤に、`Packet_Dispatch_PacketDispatcherBase`/
-  `Packet_PacketDispatcherGroup` 経由でディスパッチ。エンジン組み込みの
-  `AssignPlayerId`/`SpawnNetworkObject`/`SyncAnimation`/`SyncParameter`/`SyncTransform` に加え、
-  ゲーム側で `SpawnPlayer`/`SyncAvatarState`/`SyncBehaviourTree` を追加しています。
+  `Packet_PacketDispatcherGroup` 経由でディスパッチ。spawn履歴・補間バッファ等の固有ロジックを
+  持つものは専用Dispatcherのままで、エンジン組み込みの`AssignPlayerId`/`SpawnNetworkObject`/
+  `SyncParameter`/`SyncTransform`、ゲーム側の`SpawnPlayer`が該当します。
+- **汎用RPC**: 「対象`NetworkObjectId`のコンポーネントに対してメソッドを1つ呼ぶ」形のものは
+  `Engine/Module/Network/Rpc/Engine_Network_Rpc.h`の`Rpc<Args...>`/`RpcDef<RpcType, Args...>`
+  経由で汎用化されています。単一の`DefaultPacketType::Rpc`パケットタイプ+`RpcHandlerRegistry`
+  によるID経路のディスパッチで、新規RPC追加時にenum衝突調整・switch追加・専用Dispatcher
+  クラス新設が不要です。`WakeUpPlayer`/`SyncAvatarState`
+  (`Assets/Scripts/Core/Network/Rpc/`)と`SyncAnimation`
+  (`Engine/Module/Network/Rpc/Engine_Network_RpcType.h`)が対応済みです。
 
 ## ビルド方法
 

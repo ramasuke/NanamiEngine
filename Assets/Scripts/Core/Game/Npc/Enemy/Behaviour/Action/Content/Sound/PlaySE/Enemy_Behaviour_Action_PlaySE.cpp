@@ -1,6 +1,7 @@
 ﻿#include "Enemy_Behaviour_Action_PlaySE.h"
 
 #include "../../../../../../../../../GamePlay/Sound/SoundPlayer.h"
+#include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -8,9 +9,17 @@ namespace GameCore::Npc::Enemy::Behaviour
     {
         if (sound_)
         {
-            GamePlay::Sound::SoundPlayer::PlaySe(*sound_.get(), context.EnemyTransform().GetWorldPos());
+            const glm::vec3 position = context.EnemyTransform().GetWorldPos();
+            GamePlay::Sound::SoundPlayer::PlaySe(*sound_.get(), position);
+
+            // 権威側限定Tickなら、Tickしていない他ピアにも同じSEを鳴らさせる
+            if (context.IsNetworkAuthority())
+            {
+                GameCore::Network::PlaySeRpc::Send(
+                    context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable, sound_->GetGuid(), position);
+            }
         }
-        
+
         return TickStatus::Success;
     }
 

@@ -1,6 +1,5 @@
-﻿
-#pragma once
-#include "fwd.hpp"
+﻿#pragma once
+#include "../glm/fwd.hpp"
 
 namespace NanamiEngine::CineMachine
 {

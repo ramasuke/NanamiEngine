@@ -18,11 +18,16 @@ namespace NanamiEngine::CineMachine
         static CinemachineCameraBrain* Instance() { return cameraBrain_; }
         static void SubscribeVirtualCamera(const std::weak_ptr<CineMachineVirtualCamera>& virtualCamera);
         static void UnSubscribeVirtualCamera(const std::weak_ptr<CineMachineVirtualCamera>& virtualCamera);
+
+        [[nodiscard]] float GetFov()  const { return fov_; }
+        [[nodiscard]] float GetNear() const { return cameraNear_; }
+        [[nodiscard]] float GetFar()  const { return cameraFar_; }
         
     private:
         void OnAwake      () override;
         void OnStart      () override;
         void OnUpdate     () override;
+        void OnDestroy    () override;
         void OnDebugRender() override;
         void OnDebugCameraFovRender() const;
 

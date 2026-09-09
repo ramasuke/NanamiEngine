@@ -2,11 +2,8 @@
 #include <memory>
 
 #include "../ImGui/Helper/ImGuiHelper.h"
-#include "../../Libs/rxcpp/operators/rx-all.hpp"
-#include "../Rx/SerializableSubject/unit/unit.h"
 #include "cereal/types/polymorphic.hpp"
 #include "IAnimationParameter.h"
-#include "../../../Engine/Core/Network/Packet/ByteBuffer/Packet_ByteBuffer.h"
 
 namespace NanamiEngine::Module::AnimationTree
 {
@@ -18,15 +15,10 @@ namespace NanamiEngine::Module::AnimationTree
         [[nodiscard]] T Get() const;
         void            Set(T value);
 
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit> OnChanged() const override;
-        void WriteValueTo(NanamiEngine::Core::Network::ByteBuffer& buffer) const override;
-        void ReadValueFrom(const NanamiEngine::Core::Network::ByteBuffer& buffer, size_t& offset) override;
-
         void OnDrawGui() override;
 
     private:
         std::string name_;
-        rxcpp::subjects::subject<LibCore::Rx::unit> changeSubject_;
         T value_;
 
 #pragma region Serialization Function
@@ -55,25 +47,6 @@ namespace NanamiEngine::Module::AnimationTree
     void               AnimationParameter<T>::Set(T value)
     {
         value_ = value;
-        changeSubject_.get_subscriber().on_next(LibCore::Rx::unit{});
-    }
-
-    template <typename T>
-    rxcpp::observable<LibCore::Rx::unit> AnimationParameter<T>::OnChanged() const
-    {
-        return changeSubject_.get_observable();
-    }
-
-    template <typename T>
-    void AnimationParameter<T>::WriteValueTo(NanamiEngine::Core::Network::ByteBuffer& buffer) const
-    {
-        buffer.Write(value_);
-    }
-
-    template <typename T>
-    void AnimationParameter<T>::ReadValueFrom(const NanamiEngine::Core::Network::ByteBuffer& buffer, size_t& offset)
-    {
-        value_ = buffer.Read<T>(offset);
     }
 
     template <typename T>

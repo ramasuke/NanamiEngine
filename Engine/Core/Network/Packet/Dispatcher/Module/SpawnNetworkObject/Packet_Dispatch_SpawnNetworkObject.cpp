@@ -1,8 +1,13 @@
 ﻿#include "Packet_Dispatch_SpawnNetworkObject.h"
 
+#include <algorithm>
+#include "cereal/types/vector.hpp"
 #include "../../../../../../Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../Engine_Network_INetworkSystem.h"
 #include "../../../../../../Module/Scene/GameObject/Helper/GameObject.h"
+#include "../../../../../../Module/GameObject/Interface/IGameObject.h"
+#include "../../../../../../Module/GameObject/Transform/Transform.h"
+#include "../../../../Object/Awakable/INetworkAwakable.h"
 #include "../../../../Object/Registry/INetworkObjectInstanceRegistry.h"
 #include "../../../../../../Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
 #include "../../../../Object/PrefabRegistry/NetworkPrefabObjectRegistry.h"
@@ -26,40 +31,74 @@ namespace NanamiEngine::Core::Network
         return assignedId;
     }
 
-    void SpawnNetworkObject::ApplyNetworkId(
-        const NetworkObjectId id,
-        const std::shared_ptr<GameObject::IGameObject>& gameObject)
+    bool SpawnNetworkObject::IsNetworkNode(const std::shared_ptr<GameObject::IGameObject>& gameObject)
     {
-        instanceRegistry_.RegisterWithId(id, gameObject);
-        if (const auto networkGameObject = gameObject->Components().Catch<Module::Network::NetworkGameObject>().lock())
-            networkGameObject->SetNetworkObjectId(id);
+        if (gameObject->Components().Catch<Module::Network::NetworkGameObject>().lock())
+            return true;
+
+        return !gameObject->Components().Catches<INetworkAwakable>().empty();
     }
 
-    NetworkObjectId SpawnNetworkObject::AllocateIdAndRegister(
-        const std::shared_ptr<GameObject::IGameObject>& gameObject)
+    std::vector<std::shared_ptr<GameObject::IGameObject>> SpawnNetworkObject::CollectNetworkGameObjects(
+        const std::shared_ptr<GameObject::IGameObject>& root) const
     {
-        const auto id = CreateNetworkObjectId();
-        ApplyNetworkId(id, gameObject);
-        return id;
+        std::vector<std::shared_ptr<GameObject::IGameObject>> nodes;
+
+        if (IsNetworkNode(root))
+            nodes.push_back(root);
+
+        for (const auto& child : root->Transform().GetAllChildren())
+            if (IsNetworkNode(child))
+                nodes.push_back(child);
+
+        return nodes;
     }
 
-    void SpawnNetworkObject::RegisterWithNetworkId(
-        const NetworkObjectId id,
+    void SpawnNetworkObject::ApplyNetworkIds(
+        const std::vector<NetworkObjectId>& ids,
         const std::shared_ptr<GameObject::IGameObject>& gameObject)
     {
-        ApplyNetworkId(id, gameObject);
+        const auto nodes = CollectNetworkGameObjects(gameObject);
+        if (nodes.size() != ids.size())
+            Module::LogError("SpawnNetworkObject: NetworkGameObject の数(" + std::to_string(nodes.size()) +
+                ")と受け取った NetworkObjectId の数(" + std::to_string(ids.size()) + ")が一致していません");
+
+        const auto count = std::min(nodes.size(), ids.size());
+        for (size_t i = 0; i < count; ++i)
+        {
+            instanceRegistry_.RegisterWithId(ids[i], nodes[i]);
+
+            // NetworkGameObject があればそれ経由で同一 GameObject 上の NetworkComponent へ配る。
+            // 無い(NetworkComponent だけを持つ子オブジェクト)場合は直接 NetworkAwake で配る
+            if (const auto networkGameObject = nodes[i]->Components().Catch<Module::Network::NetworkGameObject>().lock())
+            {
+                networkGameObject->SetNetworkObjectId(ids[i]);
+                continue;
+            }
+            for (const auto& awakable : nodes[i]->Components().Catches<INetworkAwakable>())
+                awakable.lock()->NetworkAwake(ids[i]);
+        }
     }
 
-    std::shared_ptr<GameObject::IGameObject> SpawnNetworkObject::SpawnAndRegisterWithId(
-        const NetworkObjectId assignedId,
-        Asset::PrefabGameObjectFile& prefabFile,
-        const glm::vec3 position,
-        const glm::quat rotation)
+    std::vector<NetworkObjectId> SpawnNetworkObject::AllocateIdsAndRegister(
+        const std::shared_ptr<GameObject::IGameObject>& gameObject)
     {
-        const auto gameObject = Scene::GameObject::Instantiate(prefabFile, position, rotation).lock();
-        if (gameObject)
-            ApplyNetworkId(assignedId, gameObject);
-        return gameObject;
+        const auto nodeCount = CollectNetworkGameObjects(gameObject).size();
+
+        std::vector<NetworkObjectId> ids;
+        ids.reserve(nodeCount);
+        for (size_t i = 0; i < nodeCount; ++i)
+            ids.push_back(CreateNetworkObjectId());
+
+        ApplyNetworkIds(ids, gameObject);
+        return ids;
+    }
+
+    void SpawnNetworkObject::RegisterWithNetworkIds(
+        const std::vector<NetworkObjectId>& ids,
+        const std::shared_ptr<GameObject::IGameObject>& gameObject)
+    {
+        ApplyNetworkIds(ids, gameObject);
     }
 
     std::shared_ptr<GameObject::IGameObject> SpawnNetworkObject::SpawnAndRegister(
@@ -67,7 +106,10 @@ namespace NanamiEngine::Core::Network
         const glm::vec3 position,
         const glm::quat rotation)
     {
-        return SpawnAndRegisterWithId(CreateNetworkObjectId(), prefabFile, position, rotation);
+        const auto gameObject = Scene::GameObject::Instantiate(prefabFile, position, rotation).lock();
+        if (gameObject)
+            AllocateIdsAndRegister(gameObject);
+        return gameObject;
     }
 
     std::shared_ptr<GameObject::IGameObject> SpawnNetworkObject::DispatchSendPacket(
@@ -83,15 +125,19 @@ namespace NanamiEngine::Core::Network
             return nullptr;
         }
 
-        const auto assignedId = CreateNetworkObjectId();
+        const auto gameObject = Scene::GameObject::Instantiate(prefabFile, position, rotation).lock();
+        if (!gameObject)
+            return nullptr;
+
+        const auto assignedIds = AllocateIdsAndRegister(gameObject);
+
         Packet packet = Packet::Create(DefaultPacketType::SpawnNetworkObject);
         packet.Data().Write(PlayerId());
         packet.Data().Write(prefabContent->GetGuid());
         packet.Data().Write(position);
         packet.Data().Write(rotation);
-        packet.Data().Write(assignedId);
+        packet.Data().Write(assignedIds);
 
-        const auto gameObject = SpawnAndRegisterWithId(assignedId, prefabFile, position, rotation);
         SendPacket(packet);
         return gameObject;
     }
@@ -99,11 +145,11 @@ namespace NanamiEngine::Core::Network
     void SpawnNetworkObject::OnReceive(const Packet& packet)
     {
         size_t offset = 0;
-        const auto playerId        = packet.Data().Read<struct PlayerId>(offset);
-        const auto spawnObjectGuid = packet.Data().Read<Guid>(offset);
-        const auto position        = packet.Data().Read<glm::vec3>(offset);
-        const auto rotation        = packet.Data().Read<glm::quat>(offset);
-        const auto networkObjectId = packet.Data().Read<NetworkObjectId>(offset);
+        const auto playerId         = packet.Data().Read<struct PlayerId>(offset);
+        const auto spawnObjectGuid  = packet.Data().Read<Guid>(offset);
+        const auto position         = packet.Data().Read<glm::vec3>(offset);
+        const auto rotation         = packet.Data().Read<glm::quat>(offset);
+        const auto networkObjectIds = packet.Data().Read<std::vector<NetworkObjectId>>(offset);
 
         if (playerId == PlayerId())
             return;
@@ -114,10 +160,6 @@ namespace NanamiEngine::Core::Network
 
         const auto gameObject = Scene::GameObject::Instantiate(*spawnObject.lock(), position, rotation).lock();
         if (gameObject)
-        {
-            instanceRegistry_.RegisterWithId(networkObjectId, gameObject);
-            if (const auto networkInstaceObject = gameObject->Components().Catch<Module::Network::NetworkGameObject>().lock())
-                networkInstaceObject->SetNetworkObjectId(networkObjectId);
-        }
+            ApplyNetworkIds(networkObjectIds, gameObject);
     }
 }

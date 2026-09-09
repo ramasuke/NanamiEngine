@@ -15,7 +15,9 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(0)]] glm::vec3 damageEffectOffset_ = glm::vec3(0.0f);
         [[serialize(1)]] int animatorSetParam_ = 0;
         [[serialize(2)]] bool isOnDamagedReturnBehaviour_ = false;
-        
+        /** @brief ダメージ1につき与えるノックバック速度[m/s]。0ならノックバックなし */
+        [[serialize(3)]] float knockbackForcePerDamage_ = 0.0f;
+
 #pragma region Serialization Function
     public:
         void DoDrawGui() override;
@@ -26,6 +28,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(damageEffectOffset_);
             archive(animatorSetParam_);
             archive(isOnDamagedReturnBehaviour_);
+            archive(knockbackForcePerDamage_);
         }
 
         template<class Archive>
@@ -35,6 +38,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(damageEffectOffset_);
             if (version >= 1) archive(animatorSetParam_);
             if (version >= 2) archive(isOnDamagedReturnBehaviour_);
+            if (version >= 3) archive(knockbackForcePerDamage_);
         }
 #pragma endregion
     };
@@ -42,6 +46,6 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     REGISTER_ENEMY_ACTION_WITH_NAME(OnDamage, "EnemyStatus::OnDamage")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::OnDamage, 2)
+CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::OnDamage, 3)
 CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::OnDamage)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::OnDamage)

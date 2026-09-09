@@ -6,7 +6,7 @@
 #include <functional>
 #include "ImGuiHelper.h"
 #include "IPlayerAvatarStateMachine.h"
-#include "../../../../GamePlay/Network/Game_CustomNetworkRunner.h"
+#include "../../../Network/Rpc/Custom_RpcType.h"
 #include "../State/IPlayerAvatarState.h"
 #include "../rxcpp/subjects/rx-behavior.hpp"
 
@@ -53,14 +53,12 @@ namespace GameCore::PlayerAvatar
         {
             if (!hasStateAuthority)
                 return;
-            
+
             if (id == Core::Network::NetworkObjectId::Invalid())
                 return;
 
-            GamePlay::Network::CustomNetworkRunner::Instance()
-                .CustomDispatcher()
-                .SyncAvatarState()
-                .DispatchSendPacket(id, GetCurrentStateValue());
+            Network::SyncAvatarStateRpc::Send(
+                id, Core::Network::DeliveryMode::Unreliable, GetCurrentStateValue());
         }
         
         void OnFixedUpdate() override

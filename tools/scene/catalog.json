@@ -1,5 +1,5 @@
 {
-  "generated_from": "2a96afcf08b8668f5d9991f3089310b158d5d6a3",
+  "generated_from": "692ac00c77987845812049af27d2237230c73199",
   "components": {
     "CineMachine::Behaviour::ShakeCameraBehaviour": {
       "class": "ShakeCameraBehaviour",
@@ -789,6 +789,54 @@
         }
       ]
     },
+    "GamePlay::Prop::LatticeBarrierEffect": {
+      "class": "LatticeBarrierEffect",
+      "fqn": "GamePlay::Prop::LatticeBarrierEffect",
+      "leaf": "LatticeBarrierEffect",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Prop/LatticeBarrier/LatticeBarrierEffect.h",
+      "params": [
+        {
+          "key": "gridScale_",
+          "member": "gridScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "lineThickness_",
+          "member": "lineThickness_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pulseSpeed_",
+          "member": "pulseSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "visibleRadius_",
+          "member": "visibleRadius_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fadeWidth_",
+          "member": "fadeWidth_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
     "GamePlay::Prop::ProximityReveal": {
       "class": "ProximityReveal",
       "fqn": "GamePlay::Prop::ProximityReveal",
@@ -1200,7 +1248,7 @@
       "class": "StageSelectUi",
       "fqn": "GamePlay::Ui::StageSelectUi",
       "leaf": "StageSelectUi",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1265,6 +1313,12 @@
         {
           "key": "worldEnterButtonName_",
           "member": "worldEnterButtonName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "backGroundName_",
+          "member": "backGroundName_",
           "named": true,
           "shape": "string"
         }
@@ -1957,6 +2011,60 @@
         }
       ]
     },
+    "NanamiEngine::Module::Component::QuadRenderer": {
+      "class": "QuadRenderer",
+      "fqn": "NanamiEngine::Module::Component::QuadRenderer",
+      "leaf": "QuadRenderer",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IRenderable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Engine/Module/Component/QuadRenderer/QuadRenderer.h",
+      "params": [
+        {
+          "key": "width_",
+          "member": "width_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "height_",
+          "member": "height_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "doubleSided_",
+          "member": "doubleSided_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "vsFile_",
+          "member": "vsFile_",
+          "named": true,
+          "shape": "field",
+          "type": "HlslVsFile"
+        },
+        {
+          "key": "psFile_",
+          "member": "psFile_",
+          "named": true,
+          "shape": "field",
+          "type": "HlslPsFile"
+        }
+      ]
+    },
     "NanamiEngine::Module::Component::SkyDome3D": {
       "class": "SkyDome3D",
       "fqn": "NanamiEngine::Module::Component::SkyDome3D",
@@ -2224,7 +2332,7 @@
       "class": "MovieRenderer",
       "fqn": "NanamiEngine::Module::NanamiUi::MovieRenderer",
       "leaf": "MovieRenderer",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -2244,12 +2352,6 @@
           "type": "MovieFile"
         },
         {
-          "key": "playingDuration_secs_",
-          "member": "playingDuration_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
           "key": "isRoop_",
           "member": "isRoop_",
           "named": true,
@@ -2258,6 +2360,19 @@
         {
           "key": "renderOrder_",
           "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "blendMode_",
+          "member": "blendMode_",
+          "named": true,
+          "shape": "unknown",
+          "type": "BlendMode"
+        },
+        {
+          "key": "blendRate_",
+          "member": "blendRate_",
           "named": true,
           "shape": "int"
         }
@@ -2700,6 +2815,9 @@
     "IslandPedestial": [
       "GamePlay::Prop::IslandPedestial"
     ],
+    "LatticeBarrierEffect": [
+      "GamePlay::Prop::LatticeBarrierEffect"
+    ],
     "LockOnCameraBehaviour": [
       "NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour"
     ],
@@ -2741,6 +2859,9 @@
     ],
     "ProximityReveal": [
       "GamePlay::Prop::ProximityReveal"
+    ],
+    "QuadRenderer": [
+      "NanamiEngine::Module::Component::QuadRenderer"
     ],
     "SampleTitleLogo": [
       "GamePlay::Ui::SampleTitleLogo"

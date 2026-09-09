@@ -15,6 +15,7 @@ namespace GamePlay::Ui
         stageSelectBackGroundMask_ = GameObject::CatchChild<NanamiUi::BlendImageRenderer>(Entity(), stageSelectBackGroundMaskName_);
         worldMovieRenderer_        = GameObject::CatchChild<NanamiUi::MovieRenderer>(Entity(), worldMovieRendererName_);
         worldEnterButton_          = GameObject::CatchChild<NanamiUi::Button>(Entity(), worldEnterButtonName_);
+        backGround_                = GameObject::CatchChild<NanamiUi::MovieRenderer>(Entity(), backGroundName_);
     }
     
     void StageSelectUi::OnStart()
@@ -55,17 +56,31 @@ namespace GamePlay::Ui
 
     Coroutine::Task<void> StageSelectUi::AppearBackGroundMaskAsync()
     {
+        Coroutine::StartCoroutine(FadeBlendRateAsync(backGround_.get(), 0, 255));
         co_await FadeBlendRateAsync(backGroundMask_.get(), 0, backGroundMaskBlendRate_);
     }
 
     Coroutine::Task<void> StageSelectUi::EnterWorldAsync(const GameCore::Scene::Main::SceneType sceneType)
     {
-        co_await FadeBlendRateAsync(stageSelectBackGroundMask_.get(), 0, stageSelectBackGroundMaskBlendRate_);
+        Coroutine::StartCoroutine(FadeBlendRateAsync(stageSelectBackGroundMask_.get(), 0, stageSelectBackGroundMaskBlendRate_));
+        co_await FadeBlendRateAsync(backGround_.get(), 255, 0);
         GameCore::Game::Instance().Scenes().RequestChangeScene(sceneType);
     }
 
     Coroutine::Task<void> StageSelectUi::FadeBlendRateAsync(
         const std::shared_ptr<NanamiUi::BlendImageRenderer> renderer, const int from, const int to)
+    {
+        const int step = to > from ? 1 : -1;
+        for (int rate = from; rate != to; rate += step)
+        {
+            renderer->SetBlendRate(rate);
+            co_await Coroutine::WaitYield();
+        }
+        renderer->SetBlendRate(to);
+    }
+
+    Coroutine::Task<void> StageSelectUi::FadeBlendRateAsync(
+        const std::shared_ptr<NanamiUi::MovieRenderer> renderer, const int from, const int to)
     {
         const int step = to > from ? 1 : -1;
         for (int rate = from; rate != to; rate += step)
@@ -95,6 +110,8 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("worldMovieRenderer_", worldMovieRenderer_);
         ImGuiHelper::OnDrawInputField("worldEnterButtonName_", worldEnterButtonName_);
         ImGuiHelper::OnDrawInputField("worldEnterButton_", worldEnterButton_);
+        ImGuiHelper::OnDrawInputField("backGroundName_", backGroundName_);
+        ImGuiHelper::OnDrawInputField("backGround_", backGround_);
         ImGui::Text("selectedSceneType_: %s", hasSelectedSceneType_
             ? GameCore::Scene::Main::ToString(selectedSceneType_).data()
             : "None");

@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.hlsl" />
+    <None Include="Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.hlsl" />
     <None Include="Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" />
     <None Include="Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.hlsl" />
     <ClCompile Include="Assets\Data\EnemyBehaviour\Data_EnemyBehaviourFile.cpp" />
@@ -2230,6 +2232,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\Chat\Enemy_Behaviour_Action_Chat.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\ShakeCamera\Enemy_Behaviour_Action_ShakeCamera.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -2390,6 +2393,7 @@
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\FirstEventDragon\Animation\FirstEventDragon_AnimationType.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\FirstEventDragon\Behaviour\AppearToTouchDownIsLand\FirstEventDragon_Behaviour_AppearToTouchDownIsLand.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\Tyrannosaurus\Animation\Tyrannosaurus_AnimationType.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\SampleEnemy\SampleEnemy.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -4068,6 +4072,7 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\State\IPlayerAvatarState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\State\PlayerAvatarStateBase.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\BasicParams\AttackParam\AttackParam.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\BasicParams\HitFeelParam\HitFeelParam.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\EnahancePower\EnhancePower.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Event\PlayerAvatar_IStatusEvent.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\IPlayerAvatarStatus.cpp">
@@ -5993,14 +5998,27 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SyncAvatarState\Packet_Dispatch_SyncAvatarState.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SyncBehaviourTree\Packet_Dispatch_SyncBehaviourTree.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\WakeUpPlayer\Packet_Dispatch_WakeUpPlayer.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\SyncAvatarState\Rpc_SyncAvatarState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\WakeUpPlayer\Rpc_WakeUpPlayer.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\PlaySe\Rpc_PlaySe.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\PlayBgm\Rpc_PlayBgm.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\SpawnPrefab\Rpc_SpawnPrefab.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\SpawnMovingPrefab\Rpc_SpawnMovingPrefab.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\PurposeCamera\Rpc_PurposeCamera.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\ScenePurposeCamera\Rpc_ScenePurposeCamera.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\Chat\Rpc_Chat.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\ChangeMainScene\Rpc_ChangeMainScene.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\ShakeCamera\Rpc_ShakeCamera.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\AttackAreaFire\Rpc_AttackAreaFire.cpp" />
+    <ClCompile Include="Engine\Core\Network\RpcId\Engine_Network_RpcId.cpp" />
+    <ClCompile Include="Engine\Core\Network\Packet\Dispatcher\Module\Rpc\Packet_Dispatch_Rpc.cpp" />
+    <ClCompile Include="Engine\Module\Network\Rpc\Engine_Network_RpcHandlerRegistry.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\GamePlay_Enemy_Hyena.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\NetworkBehaviourTree\GamePlay_NetworkBehaviourTree.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Projectile\GamePlay_Enemy_IAttackProjectile.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Projectile\GamePlay_Enemy_ProjectileAttackArea.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Tyrannosaurus\GamePlay_Enemy_Tyrannosaurus.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\LatticeBarrier\LatticeBarrierEffect.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\ProximityReveal\ProximityReveal.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\DealDamageTextBillBoard\UI_DealDamageTextBillBoard.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\OtherPlayerStatusUIGroup\OtherPlayerStatusUiGroup.cpp" />
@@ -6587,6 +6605,7 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\IslandPedestial\Prop_IslandPedestial.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Spawn\GamePlay_PrefabSpawner.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -9668,6 +9687,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Module\Component\ParticleRenderer\ParticleSystem.cpp" />
+    <ClCompile Include="Engine\Module\Component\QuadRenderer\QuadRenderer.cpp" />
     <ClCompile Include="Engine\Module\Component\Skydome3D\SkyDome3D.cpp" />
     <ClCompile Include="Engine\Module\Component\SphereRenderer\SphereRenderer.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -12488,6 +12508,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Transform\Rotation\OnPlayer\Enemy_Behaviour_Action_RotateOnPlayer.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Wait\Seconds\Enemy_Behaviour_Action_WaitSeconds.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\Chat\Enemy_Behaviour_Action_Chat.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\ShakeCamera\Enemy_Behaviour_Action_ShakeCamera.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\FieldGameObject\Enemy_Behaviour_Action_FieldGameObject.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Position\Enemy_Behaviour_Action_Position.h" />
@@ -12496,6 +12517,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\TickStatus\TickStatus.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\FirstEventDragon\Animation\FirstEventDragon_AnimationType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\FirstEventDragon\Behaviour\AppearToTouchDownIsLand\FirstEventDragon_Behaviour_AppearToTouchDownIsLand.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\Tyrannosaurus\Animation\Tyrannosaurus_AnimationType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\SampleEnemy\SampleEnemy.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\EnemyBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\ITakableEnemyAttack\ITakableEnemyAttack.h" />
@@ -12560,6 +12582,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\IPlayerAvatarState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\PlayerAvatarStateBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\BasicParams\AttackParam\AttackParam.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\BasicParams\HitFeelParam\HitFeelParam.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\EnahancePower\EnhancePower.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Event\PlayerAvatar_IStatusEvent.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\IPlayerAvatarStatus.h" />
@@ -12646,8 +12669,12 @@
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\CustomPacketDispatcherBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\CustomPacketDispatcherGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SpawnPlayer\Packet_Dispatch_SpawnPlayer.h" />
-    <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SyncAvatarState\Packet_Dispatch_SyncAvatarState.h" />
-    <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SyncBehaviourTree\Packet_Dispatch_SyncBehaviourTree.h" />
+    <ClInclude Include="Assets\Scripts\Core\Network\Rpc\Custom_RpcType.h" />
+    <ClInclude Include="Engine\Core\Network\RpcId\Engine_Network_RpcId.h" />
+    <ClInclude Include="Engine\Core\Network\Packet\Dispatcher\Module\Rpc\Packet_Dispatch_Rpc.h" />
+    <ClInclude Include="Engine\Module\Network\Rpc\Engine_Network_RpcHandlerRegistry.h" />
+    <ClInclude Include="Engine\Module\Network\Rpc\Engine_Network_Rpc.h" />
+    <ClInclude Include="Engine\Module\Network\Rpc\Engine_Network_RpcType.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Type\BehaviourTreeType.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\DrawNodeHelper.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Entry\Npc_BehaviourEntryNode.h" />
@@ -12689,9 +12716,11 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\DestructibleObject\DestructibleObject.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\IDestructibleObject.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\IslandPedestial\Prop_IslandPedestial.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\LatticeBarrier\LatticeBarrierEffect.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\ProximityReveal\ProximityReveal.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Spawn\GamePlay_PrefabSpawner.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\DealDamageTextBillBoard\UI_DealDamageTextBillBoard.h" />
@@ -12844,6 +12873,8 @@
     <ClInclude Include="Engine\Module\Component\ImageRenderer\ImageRenderer.h" />
     <ClInclude Include="Engine\Module\Component\ModelRenderer\ModelRenderer.h" />
     <ClInclude Include="Engine\Module\Component\ParticleRenderer\ParticleSystem.h" />
+    <ClInclude Include="Engine\Module\Component\QuadRenderer\QuadRenderer.h" />
+    <ClInclude Include="Engine\Module\Component\Shader\IShaderConstantBufferHost.h" />
     <ClInclude Include="Engine\Module\Component\Skydome3D\SkyDome3D.h" />
     <ClInclude Include="Engine\Module\Component\SphereRenderer\SphereRenderer.h" />
     <ClInclude Include="Engine\Module\GameObject\ComponentGroup\AddComponenet\AddComponent.h" />
@@ -14324,7 +14355,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PreBuildEvent>
       <Command>"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.vso"
-"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.pso"</Command>
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.pso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.vso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.pso"</Command>
     </PreBuildEvent>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -14354,7 +14387,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PreBuildEvent>
       <Command>"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.vso"
-"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.pso"</Command>
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.pso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.vso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.pso"</Command>
     </PreBuildEvent>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>

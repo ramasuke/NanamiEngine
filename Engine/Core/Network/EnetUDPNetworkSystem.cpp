@@ -115,7 +115,7 @@ namespace NanamiEngine::Core::Network
                 }
 
             case ENET_EVENT_TYPE_DISCONNECT:
-                // event.data == 0 ならタイムアウト系（相手が明示的に切ったのではない）
+                // event.data == 0 ならタイムアウト
                 Module::Log("Disconnect peer="+ std::to_string((uint32_t)(uintptr_t)event.peer->data) + " data=" + std::to_string(event.data));
                 break;
 
@@ -157,8 +157,8 @@ namespace NanamiEngine::Core::Network
 
         Module::Network::LogPacket(Module::Network::PacketDirection::Send, packet.Type(), packet.Delivery(), packet.Data().Size());
 
-        const bool isUnreliable = (packet.Delivery() == DeliveryMode::Unreliable);
-        ByteBuffer buffer = PacketCodec::Encode(packet);
+        const bool isUnreliable = packet.Delivery() == DeliveryMode::Unreliable;
+        const ByteBuffer buffer = PacketCodec::Encode(packet);
 
         ENetPacket* p = enet_packet_create(
             buffer.Data(),

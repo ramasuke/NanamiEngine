@@ -1,7 +1,7 @@
 ﻿#include "MovieRenderer.h"
 
 #include "DxLib.h"
-#include "../../../Core/Application/Time/Time.h"
+#include "../../GameObject/Transform/Transform.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -10,28 +10,33 @@ namespace NanamiEngine::Module::NanamiUi
         if (movieFile_)
         {
             movieHandle_ = movieFile_->LoadDxLibHandle();
+            PlayMovieToGraph(movieHandle_, isRoop_ ? DX_PLAYTYPE_LOOP : DX_PLAYTYPE_BACK);
+            SetMovieVolumeToGraph(0, movieHandle_);
         }
     }
 
     void MovieRenderer::OnUserInterfaceRender()
     {
-        if (!IsEnable())
+        if (!IsEnable() || movieHandle_ == -1)
             return;
 
-        if (isRoop_ && playingDuring_secs_ >= playingDuration_secs_ && movieFile_)
-        {
-            TryDeleteResource();
-            movieHandle_ = movieFile_->LoadDxLibHandle();
-            playingDuring_secs_  = 0;
-        }
-    }
+        const auto renderPos    = Transform().GetWorldPos  ();
+        const auto renderRot    = Transform().GetWorldRot  ();
+        const auto renderScale  = Transform().GetWorldScale();
 
-    void MovieRenderer::OnUpdate()
-    {
-        if (!IsEnable())
-            return;
-    
-        playingDuring_secs_ += Time::DeltaTime();
+        const float angle = renderRot  .z;
+        const float scale = renderScale.x;
+
+        SetDrawBlendMode(static_cast<int>(blendMode_), blendRate_);
+        DrawRotaGraphF(
+            renderPos.x,
+            renderPos.y,
+            scale,
+            angle,
+            movieHandle_,
+            TRUE
+        );
+        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
     }
 
     void MovieRenderer::OnDestroy()
@@ -48,13 +53,33 @@ namespace NanamiEngine::Module::NanamiUi
         movieHandle_ = -1;
     }
 
+    void MovieRenderer::UpdateRenderHandle()
+    {
+        TryDeleteResource();
+        InitRenderer();
+    }
+
+    void MovieRenderer::SetBlendRate(const int blendRate)
+    {
+        blendRate_ = blendRate;
+    }
+
     void MovieRenderer::OnDrawGui()
     {
         ImGuiHelper::OnDrawInputField("movieFile_", movieFile_);
-        ImGuiHelper::OnDrawInputField("playingDuration_secs_", playingDuration_secs_);
         ImGuiHelper::OnDrawInputField("isRoop_", isRoop_);
         ImGuiHelper::OnDrawInputField("renderOrder_", renderOrder_);
+        int mode = static_cast<int>(blendMode_);
+        if (ImGui::Combo("BlendMode", &mode, Dxlib::BlendModeLabelNames, IM_ARRAYSIZE(Dxlib::BlendModeLabelNames)))
+        {
+            blendMode_ = static_cast<Dxlib::BlendMode>(mode);
+        }
+        ImGui::InputInt("BlendRate", &blendRate_);
+        blendRate_ = std::clamp(blendRate_, 0, 255);
         ImGuiHelper::OnDrawInputField("movieHandle_", movieHandle_);
-        ImGuiHelper::OnDrawInputField("playingDuring_secs_", playingDuring_secs_);
+        if (ImGui::Button("UpdateRenderHandle"))
+        {
+            UpdateRenderHandle();
+        }
     }
 }

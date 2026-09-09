@@ -807,6 +807,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\BasicParams\AttackParam\AttackParam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\BasicParams\HitFeelParam\HitFeelParam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\EnahancePower\EnhancePower.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1179,6 +1182,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\Chat\Enemy_Behaviour_Action_Chat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\ShakeCamera\Enemy_Behaviour_Action_ShakeCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1192,6 +1198,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\FirstEventDragon\Animation\FirstEventDragon_AnimationType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\Tyrannosaurus\Animation\Tyrannosaurus_AnimationType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\FirstEventDragon\Behaviour\AppearToTouchDownIsLand\FirstEventDragon_Behaviour_AppearToTouchDownIsLand.cpp">
@@ -4971,6 +4980,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\BasicParams\AttackParam\AttackParam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\BasicParams\HitFeelParam\HitFeelParam.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\EnahancePower\EnhancePower.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5373,6 +5385,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\Chat\Enemy_Behaviour_Action_Chat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\ShakeCamera\Enemy_Behaviour_Action_ShakeCamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5386,6 +5401,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\FirstEventDragon\Animation\FirstEventDragon_AnimationType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\Tyrannosaurus\Animation\Tyrannosaurus_AnimationType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\FirstEventDragon\Behaviour\AppearToTouchDownIsLand\FirstEventDragon_Behaviour_AppearToTouchDownIsLand.h">

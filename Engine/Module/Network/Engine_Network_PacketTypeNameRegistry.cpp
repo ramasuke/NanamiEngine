@@ -31,6 +31,7 @@ namespace
             registry.Register(static_cast<PacketType>(DefaultPacketType::SyncTransform),      "SyncTransform");
             registry.Register(static_cast<PacketType>(DefaultPacketType::SyncAnimation),      "SyncAnimation");
             registry.Register(static_cast<PacketType>(DefaultPacketType::SyncParameter),      "SyncParameter");
+            registry.Register(static_cast<PacketType>(DefaultPacketType::Rpc),                "Rpc");
         }
     };
     static DefaultPacketTypeNameRegistration s_defaultPacketTypeNameRegistration;

@@ -4,6 +4,7 @@
 #include "../../../StatusParameter/Stamina/Stamina.h"
 #include "../../Status/IPlayerAvatarStatus.h"
 #include "../../Status/BasicParams/AttackParam/AttackParam.h"
+#include "../../Status/BasicParams/HitFeelParam/HitFeelParam.h"
 #include "../../Status/EnahancePower/EnhancePower.h"
 #include "cereal/types/polymorphic.hpp"
 #include <queue>
@@ -55,25 +56,33 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] const StatusParameter::Stamina&                                MaxStamina() const override { return maxStamina_;           }
         [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Stamina> Stamina   () const override { return stamina_.AsReadOnly(); }
         [[nodiscard]] bool                                                           CanRun    () const override { return !isStaminaExhausted_; }
+        [[nodiscard]] bool                                                           CanAvoidRolling() const { return stamina_.get() >= StatusParameter::Stamina(avoidRollingStaminaCost_); }
                       void                                                           SetIsRunning(bool isRunning) { isRunning_ = isRunning; }
 
         [[nodiscard]] const std::vector<AttackParam<Damage::PhysicsPower>>& ComboNormalAttack() const { return comboNormalAttack_; }
         [[nodiscard]] float                             ComboNormalAttackStateDuration_secs  () const { return comboNormalAttackStateDuration_secs_; }
         [[nodiscard]] float                             AttackedShockedStateDuration_secs    () const { return attackedShockedStateDuration_secs_; }
+        [[nodiscard]] const std::vector<HitFeelParam>&  ComboHitFeel                         () const { return comboHitFeel_; }
+        [[nodiscard]] const HitFeelParam&               DashHitFeel                          () const { return dashHitFeel_; }
+        [[nodiscard]] float                             ComboInputBufferWindow_secs          () const { return comboInputBufferWindow_secs_; }
         [[nodiscard]] StatusParameter::MoveSpeed        GetWalkSpeed                         () const override { return walkSpeed_;                }
         [[nodiscard]] StatusParameter::MoveSpeed        GetRunSpeed                          () const override { return runSpeed_ ;                }
         [[nodiscard]] float                             GetMoveRotateSpeed                   () const override { return moveRotateSpeed_;          }
+        [[nodiscard]] float                             LockOnAttackRotateSpeed              () const          { return lockOnAttackRotateSpeed_;  }
         [[nodiscard]] float                             GetJumpPower                         () const override { return jumpPower_;                }
         [[nodiscard]] float                             GetJumpCooldown_secs                 () const override { return jumpCooldown_secs_;        }
         [[nodiscard]] AttackParam<Damage::PhysicsPower> DashAttack                           () const          { return dashAttack_;  }
+        [[nodiscard]] float                             DashAttackLungeSpeed                 () const          { return dashAttackLungeSpeed_; }
         [[nodiscard]] bool                              IsDamaged                            () const;
         [[nodiscard]] float                             DamageStateDuration_secs             () const   { return damageStateDuration_secs_; }
         [[nodiscard]] float                             AvoidRollingStateDuration_secs       () const   { return avoidRollingStateDuration_secs_; }
+        [[nodiscard]] float                             AvoidRollingStaminaCost              () const   { return avoidRollingStaminaCost_; }
         [[nodiscard]] float                             DeathStateDuration_secs              () const   { return deathStateDuration_secs_; }
         [[nodiscard]] float                             DownStateDuration_secs               () const   { return downStateDuration_secs_; }
                       void                              AddOnDamageStack(std::unique_ptr<IDamage> damageContext) override;
                       void                              ApplyDamage();
                       void                              DiscardDamage();
+                      void                              ConsumeAvoidRollingStamina();
         
         
     private:
@@ -97,14 +106,20 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serialize(0)]] float comboNormalAttackStateDuration_secs_;
         [[serialize(0)]] float attackedShockedStateDuration_secs_;
         [[serialize(0)]] AttackParam<Damage::PhysicsPower> dashAttack_;
+        [[serialize(8)]] float dashAttackLungeSpeed_; ///< ダッシュ攻撃の予備動作中に前進する速度[m/s]
+        [[serialize(9)]] std::vector<HitFeelParam> comboHitFeel_; ///< コンボ段数(0/1/2)ごとのヒット演出パラメータ
+        [[serialize(9)]] HitFeelParam dashHitFeel_; ///< ダッシュ攻撃のヒット演出パラメータ
+        [[serialize(9)]] float comboInputBufferWindow_secs_; ///< NormalAttack入力の先行/後追いを許容する猶予時間[秒]
         
         [[serialize(0)]] StatusParameter::MoveSpeed walkSpeed_;
         [[serialize(0)]] StatusParameter::MoveSpeed runSpeed_ ;
         [[serialize(0)]] float                      moveRotateSpeed_;
+        [[serialize(7)]] float                      lockOnAttackRotateSpeed_; ///< 攻撃の予備動作中にロックオン対象へ向く回転速度 [rad/s]
         [[serialize(0)]] float                      jumpPower_;
         [[serialize(0)]] float                      jumpCooldown_secs_;
         [[serailize(0)]] float                      damageStateDuration_secs_;
         [[serailize(0)]] float                      avoidRollingStateDuration_secs_;
+        [[serialize(0)]] float                      avoidRollingStaminaCost_;
         [[serialize(0)]] float                      deathStateDuration_secs_;
         [[serialize(0)]] float                      downStateDuration_secs_ = 15.0f;
         [[serialize(0)]] float                      reviveHealthRatio_      = 0.3f;
@@ -137,11 +152,17 @@ namespace GameCore::PlayerAvatar::SwordMan
             archive(CEREAL_NVP(staminaDrainPerSecond_));
             archive(CEREAL_NVP(staminaRegenPerSecond_));
             archive(CEREAL_NVP(minStaminaRatioToResumeRun_));
+            archive(CEREAL_NVP(avoidRollingStaminaCost_));
             archive(CEREAL_NVP(attackedShockedStateDuration_secs_));
             archive(CEREAL_NVP(dashAttack_));
+            archive(CEREAL_NVP(dashAttackLungeSpeed_));
+            archive(CEREAL_NVP(comboHitFeel_));
+            archive(CEREAL_NVP(dashHitFeel_));
+            archive(CEREAL_NVP(comboInputBufferWindow_secs_));
             archive(CEREAL_NVP(walkSpeed_));
             archive(CEREAL_NVP(runSpeed_));
             archive(CEREAL_NVP(moveRotateSpeed_));
+            archive(CEREAL_NVP(lockOnAttackRotateSpeed_));
             archive(CEREAL_NVP(jumpPower_));
             archive(CEREAL_NVP(damageStateDuration_secs_));
             archive(CEREAL_NVP(deathStateDuration_secs_));
@@ -165,11 +186,17 @@ namespace GameCore::PlayerAvatar::SwordMan
             if (version >= 5) archive(CEREAL_NVP(staminaDrainPerSecond_));
             if (version >= 5) archive(CEREAL_NVP(staminaRegenPerSecond_));
             if (version >= 5) archive(CEREAL_NVP(minStaminaRatioToResumeRun_));
+            if (version >= 6) archive(CEREAL_NVP(avoidRollingStaminaCost_));
             if (version >= 1) archive(CEREAL_NVP(attackedShockedStateDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(dashAttack_));
+            if (version >= 8) archive(CEREAL_NVP(dashAttackLungeSpeed_));
+            if (version >= 9) archive(CEREAL_NVP(comboHitFeel_));
+            if (version >= 9) archive(CEREAL_NVP(dashHitFeel_));
+            if (version >= 9) archive(CEREAL_NVP(comboInputBufferWindow_secs_));
             if (version >= 0) archive(CEREAL_NVP(walkSpeed_));
             if (version >= 0) archive(CEREAL_NVP(runSpeed_));
             if (version >= 0) archive(CEREAL_NVP(moveRotateSpeed_));
+            if (version >= 7) archive(CEREAL_NVP(lockOnAttackRotateSpeed_));
             if (version >= 0) archive(CEREAL_NVP(jumpPower_));
             if (version >= 0) archive(CEREAL_NVP(damageStateDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(deathStateDuration_secs_));
@@ -183,7 +210,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus, 5);
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus, 9);
 CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::IPlayerAvatarStatus, GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
 #pragma endregion

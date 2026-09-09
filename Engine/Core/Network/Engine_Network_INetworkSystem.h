@@ -8,10 +8,11 @@
 
 namespace NanamiEngine::Core::Network
 {
-    class INetworkSystem : public IPacketSender, public IPlayerIdProvider
+    class INetworkSystem : public IPacketSender,
+                           public IPlayerIdProvider
     {
     public:
-        virtual ~INetworkSystem() = default;
+        virtual ~INetworkSystem() override = default;
         virtual void Update    () = 0;
         [[nodiscard]] virtual std::vector<Packet> PollPackets() = 0;
         virtual void SetPlayerId(PlayerId playerId) = 0;

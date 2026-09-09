@@ -6,6 +6,10 @@
 #include <ranges>
 #include <string_view>
 
+#include <Windows.h>
+#include <shellapi.h>
+#pragma comment(lib, "Shell32.lib")
+
 #include "../../../../../Module/Asset/AnimationTree/AnimationTreeFile.h"
 #include "../../../../FileSystem/Directory/Directory.h"
 #include "../../../../FileSystem/DraggingHand/EditorDraggingHand.h"
@@ -95,6 +99,31 @@ namespace
                 return false;
         }
         return true;
+    }
+
+    /** @brief 指定したディレクトリをWindowsのExplorerで開く */
+    void OpenDirectoryInExplorer(const NanamiEngine::Core::FileSystem::Directory& directory)
+    {
+        try
+        {
+            const std::filesystem::path absolutePath = std::filesystem::absolute(directory.GetPath());
+            const HINSTANCE result = ShellExecuteW(
+                nullptr,
+                L"open",
+                absolutePath.c_str(),
+                nullptr,
+                nullptr,
+                SW_SHOWNORMAL);
+
+            if (reinterpret_cast<INT_PTR>(result) <= 32)
+            {
+                NanamiEngine::Module::LogError("ProjectWindow: Explorerでの表示に失敗しました: " + absolutePath.string());
+            }
+        }
+        catch (const std::exception& exception)
+        {
+            NanamiEngine::Module::LogError("ProjectWindow: Explorerでの表示に失敗しました: " + std::string(exception.what()));
+        }
     }
 
     /** @brief 1ファイル分の行（選択・右クリック・ドラッグ・ダブルクリック・リネーム）を描画する */
@@ -426,6 +455,13 @@ void Core::PopupWindow::ProjectWindow::OnDrawToolbar()
         }
         ImGui::EndPopup();
     }
+
+    ImGui::SameLine();
+    if (ImGui::Button("Explorer"))
+    {
+        OpenDirectoryInExplorer(*currentDirectory_);
+    }
+
     ImGui::EndChild();
 }
 

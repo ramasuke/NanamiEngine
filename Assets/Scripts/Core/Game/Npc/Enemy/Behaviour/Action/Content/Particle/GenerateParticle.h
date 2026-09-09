@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "../../Enemy_Behaviour_ActionBase.h"
-#include "../../../../../../../../../../Engine/Core/Coroutine/Task/Task.h"
 #include "../../../../../../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
@@ -11,10 +10,6 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     {
         TickStatus DoTick(const TickContext& context) override;
         void DoDrawGui() override;
-
-        Coroutine::Task<void> DestroyAfterTimeAsync(
-            std::weak_ptr<GameObject::IGameObject> particle,
-            float lifeTime);
 
     private:
         [[serialize(0)]] glm::vec3 offset_ = {};

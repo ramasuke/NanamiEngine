@@ -1,20 +1,28 @@
-#include "Enemy_Behaviour_Action_Chat.h"
+﻿#include "Enemy_Behaviour_Action_Chat.h"
 
 #include "../../../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../../../../../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
+#include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::Chat::DoTick(const TickContext& context)
     {
-        // ��b�J�n
+        // 会話開始
         if (!isPreviewTickChatting_)
         {
             isChatting_ = true;
             Coroutine::StartCoroutine(ChatAsync(context));
+
+            // 権威側限定Tickなら、他ピアにも同じ会話UIを出させる(閉じるのは各ピア任せ。BTの進行は権威側の会話終了で決まる)
+            if (chatData_ && context.IsNetworkAuthority())
+            {
+                GameCore::Network::ChatRpc::Send(
+                    context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable, displayName_, chatData_->GetGuid());
+            }
         }
 
-        // ��b���I��
+        // 会話が終了
         if (isFinishedChat_)
         {
             isPreviewTickChatting_ = false;
@@ -23,7 +31,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             return TickStatus::Success;
         }
 
-        // ��b��
+        // 会話中
         if (isChatting_)
         {
             isPreviewTickChatting_ = true;

@@ -3,6 +3,9 @@
 #include <memory>
 
 #include "../../../../Engine/Module/Component/ComponentBase.h"
+#include "../../../../Engine/Module/Network/Engine_Network_NetworkRunner.h"
+#include "../../../../Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
+#include "../../../../Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
 #include "../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
 #include "../../../../Engine/Module/Physics/ContactCallback/SensorEnterable/Engine_Physics_ISensorEnterable.h"
 #include "../../../../Engine/Module/Physics/ContactCallback/SensorExitable/Engine_Physics_ISensorExitable.h"
@@ -16,8 +19,14 @@ namespace GameCore
 
 namespace GamePlay
 {
+    /**
+     * センサーコライダーに入っている AttackTargetT へダメージを与える攻撃範囲。
+     * NetworkComponent として自身の NetworkObjectId を持ち(子オブジェクトでも Spawn 時に自動付与される)、
+     * ダメージは「対象をこのピアが所有している場合」にだけ適用する(被弾側判定)。
+     * ネットワーク生成されていない対象(NetworkGameObject 無し / Invalid)には従来通り常に適用する。
+     */
     template<typename AttackTargetT>
-    class AttackArea : public Component::ComponentBase,
+    class AttackArea : public NanamiEngine::Module::Network::NetworkComponent,
                        public Physics::Callback::ISensorEnterable,
                        public Physics::Callback::ISensorExitable
     {
@@ -46,14 +55,18 @@ namespace GamePlay
         void PhysicsAttack(GameObject::IGameObject& fromObject, GameCore::Damage::PhysicsPower damagePower);
         bool TryPhysicsAttack(GameObject::IGameObject& fromObject, GameCore::Damage::PhysicsPower damagePower);
         [[nodiscard]] const std::vector<AttackTarget>& Targets          () const;
-        [[nodiscard]] const int                      & AttackTargetCount() const { return attackTargets_.size(); }
+        [[nodiscard]] int                              AttackTargetCount() const { return static_cast<int>(attackTargets_.size()); }
+        /** この攻撃範囲自身の NetworkObjectId(RPC の宛先に使う)。ネットワーク生成されていなければ Invalid() */
+        [[nodiscard]] Core::Network::NetworkObjectId   NetworkObjectId  () const { return GetNetworkObjectId(); }
 
     protected:
         virtual void DoAttack(AttackTarget attackTarget, std::unique_ptr<GameCore::IDamage> context) = 0;
-        
+
     private:
         void OnTriggerEnter(const Physics::Manifold&, const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
         void OnTriggerExit (const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
+        /** 被弾側判定: 対象がネットワーク上で他ピアの所有物ならダメージを適用しない */
+        [[nodiscard]] static bool IsDamageApplicableTarget(GameObject::IGameObject& targetObject);
 
         std::vector<AttackTarget> attackTargets_;
 
@@ -61,16 +74,19 @@ namespace GamePlay
     public:
         void OnDrawGui() override;
 
+        // NOTE: version は派生クラス(Enemy::AttackArea / PlayerAttackArea)に登録された値が渡される。
+        //       基底を ComponentBase → NetworkComponent に変えた際に両派生クラスとも 2 に揃えた。
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const
         {
-            archive(cereal::base_class<ComponentBase>(this));
+            archive(cereal::base_class<NetworkComponent>(this));
         }
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
         {
-            archive(cereal::base_class<ComponentBase>(this));
+            if (version < 2) archive(cereal::base_class<ComponentBase>(this));
+            else             archive(cereal::base_class<NetworkComponent>(this));
         }
 #pragma endregion
     };
@@ -82,9 +98,31 @@ namespace GamePlay
     {
         for (auto attackTarget : Targets())
         {
+            // 被弾側判定: 自分が所有していない(他ピアの)アバターにはダメージを与えない
+            if (!IsDamageApplicableTarget(attackTarget.GameObject()))
+                continue;
+
             DoAttack(attackTarget, std::make_unique<GameCore::Damage::Physics>(fromObject, attackTarget.GameObject(), damagePower));
         }
         // Components().Catch<Component::ColliderBase>().lock()->OnDebugDraw();
+    }
+
+    template <typename AttackTargetT>
+    bool AttackArea<AttackTargetT>::IsDamageApplicableTarget(GameObject::IGameObject& targetObject)
+    {
+        const auto networkGameObject = targetObject.Components().Catch<NanamiEngine::Module::Network::NetworkGameObject>().lock();
+        if (!networkGameObject)
+            return true;   // ネットワーク生成されていない対象は従来通り
+
+        const auto targetId = networkGameObject->GetNetworkObjectId();
+        if (targetId == Core::Network::NetworkObjectId::Invalid())
+            return true;   // ID 未付与(シーン直置き等)も従来通り
+
+        const auto* runner = NanamiEngine::Module::Network::NetworkRunnerBase::TryGetInstance();
+        if (!runner)
+            return true;   // オフライン
+
+        return targetId.IsOwnerBy(runner->GetPlayerId());
     }
 
     template <typename AttackTargetT>
@@ -151,12 +189,13 @@ namespace GamePlay
             "Targets: %d",
             static_cast<int>(attackTargets_.size())
         );
+        ImGui::Text("NetworkObjectId: %s", GetNetworkObjectId().ToString().c_str());
 
         ImGui::Separator();
     }
 }
 
 #define REGISTER_ATTACK_AREA_TYPE(TYPE)                                                     \
-CEREAL_CLASS_VERSION(GamePlay::AttackArea<TYPE>, 0);                                        \
+CEREAL_CLASS_VERSION(GamePlay::AttackArea<TYPE>, 2);                                        \
 CEREAL_REGISTER_TYPE(GamePlay::AttackArea<TYPE>);                                           \
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GamePlay::AttackArea<TYPE>);

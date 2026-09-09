@@ -13,10 +13,10 @@ namespace GameCore::PlayerAvatar::SwordMan
         : event_ (std::make_shared<StatusEvent>())
         , quests_(std::make_unique<QuestGroup>())
         , maxHealth_(100)
-        , maxStamina_(StatusParameter::Stamina(100.0f))
-        , stamina_(StatusParameter::Stamina(100.0f))
-        , staminaDrainPerSecond_(20.0f)
-        , staminaRegenPerSecond_(10.0f)
+        , maxStamina_(StatusParameter::Stamina(200.0f))
+        , stamina_(StatusParameter::Stamina(200.0f))
+        , staminaDrainPerSecond_(10.0f)
+        , staminaRegenPerSecond_(80.0f)
         , minStaminaRatioToResumeRun_(0.3f)
         , comboNormalAttack_ {
             AttackParam(Damage::PhysicsPower(1), EnhancePower(1), 0.3528985507f, 0.6637681159f),
@@ -24,19 +24,28 @@ namespace GameCore::PlayerAvatar::SwordMan
             AttackParam(Damage::PhysicsPower(3), EnhancePower(3), 1.7f         , 2.0f         )}
         , comboNormalAttackStateDuration_secs_(2.0f)
         , attackedShockedStateDuration_secs_  (1.0f)
-        , dashAttack_                     (Damage::PhysicsPower(10), EnhancePower(10), 0.7f, 0.8f)
-        , walkSpeed_                      (10.0f)
-        , runSpeed_                       (40.0f)
-        , moveRotateSpeed_                (10.0f)
-        , jumpPower_                      (32.5f)
-        , jumpCooldown_secs_              (0.53f)
-        , damageStateDuration_secs_       (1.6f )
-        , avoidRollingStateDuration_secs_ (0.7f )
-        , deathStateDuration_secs_        (2.0f )
-        , downStateDuration_secs_         (15.0f)
-        , reviveHealthRatio_              (0.3f )
-        , injuredHealthRatio_             (0.3f )
-        , wasInjured_                     (false)
+        , dashAttack_                    (Damage::PhysicsPower(10), EnhancePower(10), 0.7f, 0.8f)
+        , dashAttackLungeSpeed_          (55.0f)
+        , comboHitFeel_ {
+            HitFeelParam(0.04f, 0.5f , 0.15f, 0.12f, 1.0f ),
+            HitFeelParam(0.05f, 0.4f , 0.25f, 0.12f, 1.15f),
+            HitFeelParam(0.08f, 0.15f, 0.4f , 0.12f, 1.35f)}
+        , dashHitFeel_                   (0.09f, 0.1f, 0.45f, 0.14f, 1.0f)
+        , comboInputBufferWindow_secs_   (0.13f)
+        , walkSpeed_                     (24.0f)
+        , runSpeed_                      (70.0f)
+        , moveRotateSpeed_               (10.0f)
+        , lockOnAttackRotateSpeed_       (3.0f )
+        , jumpPower_                     (75.5f)
+        , jumpCooldown_secs_             (0.53f)
+        , damageStateDuration_secs_      (1.6f )
+        , avoidRollingStateDuration_secs_(0.7f )
+        , avoidRollingStaminaCost_       (20.0f)
+        , deathStateDuration_secs_       (2.0f )
+        , downStateDuration_secs_        (15.0f)
+        , reviveHealthRatio_             (0.3f )
+        , injuredHealthRatio_            (0.3f )
+        , wasInjured_                    (false)
     {
     }
 
@@ -55,13 +64,19 @@ namespace GameCore::PlayerAvatar::SwordMan
         , comboNormalAttackStateDuration_secs_(initStatus.ComboNormalAttackStateDuration_secs())
         , attackedShockedStateDuration_secs_  (initStatus.AttackedShockedStateDuration_secs_())
         , dashAttack_                         (initStatus.DashAttack())
+        , dashAttackLungeSpeed_               (initStatus.GetDashAttackLungeSpeed())
+        , comboHitFeel_                       (initStatus.ComboHitFeel())
+        , dashHitFeel_                        (initStatus.DashHitFeel())
+        , comboInputBufferWindow_secs_        (initStatus.GetComboInputBufferWindow_secs())
         , walkSpeed_                          (initStatus.GetWalkSpeed())
         , runSpeed_                           (initStatus.GetRunSpeed())
         , moveRotateSpeed_                    (initStatus.GetMoveRotateSpeed())
+        , lockOnAttackRotateSpeed_            (initStatus.GetLockOnAttackRotateSpeed())
         , jumpPower_                          (initStatus.GetJumpPower())
         , jumpCooldown_secs_                  (initStatus.GetJumpCooldown_secs())
         , damageStateDuration_secs_           (initStatus.DamageStateDuration_secs())
         , avoidRollingStateDuration_secs_     (initStatus.AvoidRollingStateDuration_secs())
+        , avoidRollingStaminaCost_            (initStatus.AvoidRollingStaminaCost())
         , deathStateDuration_secs_            (initStatus.DeathStateDuration_secs())
         , downStateDuration_secs_             (15.0f)
         , reviveHealthRatio_                  (0.3f )
@@ -135,7 +150,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         {
             const auto damageContext = std::move(onDamagedStack_.front());
             onDamagedStack_.pop();
-            onChangeHealth_.get_subscriber().on_next(StatusParameter::Health(currentHealth_->Get().Value() - damageContext->DamageValue()));
+            currentHealth_->Set(StatusParameter::Health(currentHealth_->Get().Value() - damageContext->DamageValue()));
+            onChangeHealth_.get_subscriber().on_next(currentHealth_->Get());
         }
     }
 
@@ -145,6 +161,20 @@ namespace GameCore::PlayerAvatar::SwordMan
         std::swap(onDamagedStack_, empty);
     }
 
+    void SwordManAvatarStatus::ConsumeAvoidRollingStamina()
+    {
+        const auto consumed = stamina_.get() - StatusParameter::Stamina(avoidRollingStaminaCost_);
+        if (consumed <= StatusParameter::Stamina(0.0f))
+        {
+            stamina_.OnNext(StatusParameter::Stamina(0.0f));
+            isStaminaExhausted_ = true;
+        }
+        else
+        {
+            stamina_.OnNext(consumed);
+        }
+    }
+
     bool SwordManAvatarStatus::IsDamaged() const
     {
         return !onDamagedStack_.empty();
@@ -152,8 +182,8 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStatus::Revive()
     {
-        onChangeHealth_.get_subscriber().on_next(
-            StatusParameter::Health(static_cast<int>(maxHealth_.Value() * reviveHealthRatio_)));
+        currentHealth_->Set(StatusParameter::Health(static_cast<int>(maxHealth_.Value() * reviveHealthRatio_)));
+        onChangeHealth_.get_subscriber().on_next(currentHealth_->Get());
         isDowned_ = false;
     }
 
@@ -167,13 +197,19 @@ namespace GameCore::PlayerAvatar::SwordMan
         LibCore::ImGuiHelper::OnDrawInputField("staminaDrainPerSecond_", staminaDrainPerSecond_);
         LibCore::ImGuiHelper::OnDrawInputField("staminaRegenPerSecond_", staminaRegenPerSecond_);
         LibCore::ImGuiHelper::OnDrawInputField("minStaminaRatioToResumeRun_", minStaminaRatioToResumeRun_);
+        LibCore::ImGuiHelper::OnDrawInputField("avoidRollingStaminaCost_", avoidRollingStaminaCost_);
         LibCore::ImGuiHelper::OnDrawInputField("comboNormalAttack_", comboNormalAttack_, [] {});
         LibCore::ImGuiHelper::OnDrawInputField("comboNormalAttackStateDuration_secs_", comboNormalAttackStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("attackedShockedStateDuration_secs_", attackedShockedStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("dashAttack_", dashAttack_);
+        LibCore::ImGuiHelper::OnDrawInputField("dashAttackLungeSpeed_", dashAttackLungeSpeed_);
+        LibCore::ImGuiHelper::OnDrawInputField("comboHitFeel_", comboHitFeel_, [] {});
+        LibCore::ImGuiHelper::OnDrawInputField("dashHitFeel_", dashHitFeel_);
+        LibCore::ImGuiHelper::OnDrawInputField("comboInputBufferWindow_secs_", comboInputBufferWindow_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("walkSpeed_", walkSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("runSpeed_", runSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("moveRotateSpeed_", moveRotateSpeed_);
+        LibCore::ImGuiHelper::OnDrawInputField("lockOnAttackRotateSpeed_", lockOnAttackRotateSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpPower_", jumpPower_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpCooldown_secs_", jumpCooldown_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("damageStateDuration_secs_", damageStateDuration_secs_);

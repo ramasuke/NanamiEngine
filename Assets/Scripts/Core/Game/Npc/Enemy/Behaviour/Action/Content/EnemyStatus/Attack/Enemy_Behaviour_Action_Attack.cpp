@@ -3,6 +3,7 @@
 #include "../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../../../GamePlay/Sound/SoundPlayer.h"
+#include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 #include "../../../../../AttackArea/Enemy_AttackArea.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
@@ -18,7 +19,24 @@ namespace GameCore::Npc::Enemy::Behaviour
         {
             auto& attackArea = context.CatchPrefabObject<AttackArea>(attackAreaName_);
             attackArea.PhysicsAttack(context.EnemyGameObject(), attackPower_);
-            GamePlay::Sound::SoundPlayer::PlaySe(*attackSound_.get(), context.EnemyTransform().GetWorldPos());
+
+            const glm::vec3 position = context.EnemyTransform().GetWorldPos();
+            if (attackSound_)
+                GamePlay::Sound::SoundPlayer::PlaySe(*attackSound_.get(), position);
+
+            // 権威側限定Tickなら、他ピアの同じ AttackArea も発火させる(被弾判定は各ピアが自分の所有アバターに対して行う)。
+            // 攻撃音も同様に鳴らさせる
+            if (context.IsNetworkAuthority())
+            {
+                GameCore::Network::AttackAreaFireRpc::Send(
+                    attackArea.NetworkObjectId(), Core::Network::DeliveryMode::Reliable, attackPower_);
+
+                if (attackSound_)
+                {
+                    GameCore::Network::PlaySeRpc::Send(
+                        context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable, attackSound_->GetGuid(), position);
+                }
+            }
             isAttacked_ = true;
         }
 

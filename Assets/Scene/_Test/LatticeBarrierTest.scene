@@ -1,0 +1,145 @@
+{
+    "name": "LatticeBarrierTest",
+    "gameObjectCount": 1,
+    "gameObject_0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    }
+                },
+                "isActive_": true,
+                "name_": "LatticeBarrier",
+                "guid_": {
+                    "cereal_class_version": 0,
+                    "value_": "63BB5CFB-C46F-409A-99A9-7A465C25720F"
+                },
+                "components_": {
+                    "cereal_class_version": 0,
+                    "componentCount": 2,
+                    "component_0": {
+                        "polymorphic_id": 2147483650,
+                        "polymorphic_name": "NanamiEngine::Module::Component::QuadRenderer",
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "guid_": {
+                                        "value_": "A34F6542-E5BB-475A-BDBD-5967AE4BDFD2"
+                                    },
+                                    "isEnable_": true
+                                },
+                                "value1": {
+                                    "cereal_class_version": 0
+                                },
+                                "width_": 3.0,
+                                "height_": 2.0,
+                                "doubleSided_": false,
+                                "vsFile_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483651,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "586E920F-493C-4CE2-9B35-7335C34EE457"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "psFile_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483652,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "C3105FFD-C21D-4BCA-9E39-D91146FBCD5C"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "component_1": {
+                        "polymorphic_id": 2147483651,
+                        "polymorphic_name": "GamePlay::Prop::LatticeBarrierEffect",
+                        "ptr_wrapper": {
+                            "id": 2147483653,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "guid_": {
+                                        "value_": "56F5988B-1115-491C-B689-97D07303E3EE"
+                                    },
+                                    "isEnable_": true
+                                },
+                                "gridScale_": 0.0,
+                                "lineThickness_": 0.0,
+                                "pulseSpeed_": 0.0
+                            }
+                        }
+                    }
+                },
+                "transform_": {
+                    "cereal_class_version": 0,
+                    "localPos_": {
+                        "value0": 0.0,
+                        "value1": 1.0,
+                        "value2": 3.0
+                    },
+                    "localRot_": {
+                        "value0": 0.0,
+                        "value1": 0.0,
+                        "value2": 0.0,
+                        "value3": 1.0
+                    },
+                    "localScale_": {
+                        "value0": 1.0,
+                        "value1": 1.0,
+                        "value2": 1.0
+                    },
+                    "worldMatrix_": {
+                        "value0": {
+                            "value0": 1.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "value1": {
+                            "value0": 0.0,
+                            "value1": 1.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "value2": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 1.0,
+                            "value3": 0.0
+                        },
+                        "value3": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        }
+                    },
+                    "childCount": 0
+                }
+            }
+        }
+    }
+}

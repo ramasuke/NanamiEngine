@@ -152,6 +152,34 @@ void NanamiEngine::Module::Render3D::Shapes::DrawCylinder3D(
     }
 }
 
+void NanamiEngine::Module::Render3D::Shapes::DrawSphere3D(
+    const glm::vec3& center,
+    float radius,
+    const int& color)
+{
+    constexpr int segment = 16;
+
+    // 3つの直交する円(XY, XZ, YZ平面)でワイヤーフレーム球を表現する
+    for (int i = 0; i < segment; i++)
+    {
+        const float t0 = static_cast<float>(i)     / segment * glm::two_pi<float>();
+        const float t1 = static_cast<float>(i + 1) / segment * glm::two_pi<float>();
+
+        const float c0 = std::cos(t0), s0 = std::sin(t0);
+        const float c1 = std::cos(t1), s1 = std::sin(t1);
+
+        // XY平面
+        DrawLine3D(VGet(center.x + radius * c0, center.y + radius * s0, center.z),
+                   VGet(center.x + radius * c1, center.y + radius * s1, center.z), color);
+        // XZ平面
+        DrawLine3D(VGet(center.x + radius * c0, center.y, center.z + radius * s0),
+                   VGet(center.x + radius * c1, center.y, center.z + radius * s1), color);
+        // YZ平面
+        DrawLine3D(VGet(center.x, center.y + radius * c0, center.z + radius * s0),
+                   VGet(center.x, center.y + radius * c1, center.z + radius * s1), color);
+    }
+}
+
 void NanamiEngine::Module::Render3D::Shapes::DrawMeshWireFrame3D(
     const std::vector<glm::vec3>& vertices,
     const std::vector<uint32_t>&  indices,

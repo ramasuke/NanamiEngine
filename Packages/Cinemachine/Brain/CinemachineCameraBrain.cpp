@@ -57,6 +57,16 @@ void CineMachine::CinemachineCameraBrain::OnUpdate()
     );
 }
 
+void CineMachine::CinemachineCameraBrain::OnDestroy()
+{
+    // cameraBrain_はload()で無条件に上書きされるstaticなシングルトンポインタなので、
+    // 破棄されても自動的にはクリアされない。ここでクリアしないと、このBrainを持たない
+    // シーン(TitleScene等)に遷移した際にInstance()がダングリングポインタを返し、
+    // 呼び出し側(ShakeCameraBehaviour等)がそれを解放済みメモリとして参照してクラッシュする。
+    if (cameraBrain_ == this)
+        cameraBrain_ = nullptr;
+}
+
 void CineMachine::CinemachineCameraBrain::OnDebugRender()
 {
     if (currentVirtualCamera_)

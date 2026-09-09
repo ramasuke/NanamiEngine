@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <vector>
 #include "../glm/fwd.hpp"
 #include "../../Packet_Dispatch_PacketDispatcherBase.h"
 #include "../../../../ObjectId/Engine_Network_NetworkObjectId.h"
@@ -35,21 +36,25 @@ namespace NanamiEngine::Core::Network
             glm::vec3 position,
             glm::quat rotation);
 
-        NetworkObjectId AllocateIdAndRegister(const std::shared_ptr<Module::GameObject::IGameObject>& gameObject);
-        void RegisterWithNetworkId(NetworkObjectId id, const std::shared_ptr<Module::GameObject::IGameObject>& gameObject);
+        std::vector<NetworkObjectId> AllocateIdsAndRegister(const std::shared_ptr<Module::GameObject::IGameObject>& gameObject);
+        void RegisterWithNetworkIds(const std::vector<NetworkObjectId>& ids, const std::shared_ptr<Module::GameObject::IGameObject>& gameObject);
 
     protected:
         [[nodiscard]] NetworkObjectId CreateNetworkObjectId();
         void OnReceive(const Packet& packet) override;
 
     private:
-        std::shared_ptr<Module::GameObject::IGameObject> SpawnAndRegisterWithId(
-            NetworkObjectId assignedId,
-            Module::Asset::PrefabGameObjectFile& prefabFile,
-            glm::vec3 position,
-            glm::quat rotation);
+        // ルート自身 → 全ての子孫(Transform().GetAllChildren()のDFS順)のうち、
+        // NetworkGameObject を持つノード、または INetworkAwakable(NetworkComponent 派生)を1つ以上持つノードを順番に集める。
+        // 後者は NetworkGameObject を置かなくても固有の NetworkObjectId を受け取り、RPC の宛先として解決できる
+        // (例: 子オブジェクト上の AttackArea)。送信側と受信側は同じプレハブ・同じ手順で数え上げるため ID 数は一致する。
+        [[nodiscard]] std::vector<std::shared_ptr<Module::GameObject::IGameObject>> CollectNetworkGameObjects(
+            const std::shared_ptr<Module::GameObject::IGameObject>& root) const;
+        [[nodiscard]] static bool IsNetworkNode(const std::shared_ptr<Module::GameObject::IGameObject>& gameObject);
 
-        void ApplyNetworkId(NetworkObjectId id, const std::shared_ptr<Module::GameObject::IGameObject>& gameObject);
+        void ApplyNetworkIds(
+            const std::vector<NetworkObjectId>& ids,
+            const std::shared_ptr<Module::GameObject::IGameObject>& gameObject);
 
         INetworkObjectInstanceRegistry& instanceRegistry_;
         uint32_t nextNetworkObjectId_ = 1;

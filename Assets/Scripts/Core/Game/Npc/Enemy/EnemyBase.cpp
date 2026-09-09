@@ -40,7 +40,8 @@ namespace GameCore::Npc
             currentStatus_->Get().ManualUpdate();
             if (behaviour_)
             {
-                behaviour_->Tick(Entity(), currentStatus_, onDamagedStack_);
+                // ゲート内では isAuthorityGated == true ⇔ 自分が権威(他ピアはTickしていない)
+                behaviour_->Tick(Entity(), currentStatus_, onDamagedStack_, GetNetworkObjectId(), isAuthorityGated);
             }
         }
         DoUpdate();

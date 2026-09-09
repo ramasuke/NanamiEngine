@@ -35,6 +35,7 @@ void GameObject::AddComponent::OnDrawRendererGui(std::shared_ptr<Component::Comp
     {
         OnDrawTryAddComponentGui<Component::SphereRenderer >(addComponent);
         OnDrawTryAddComponentGui<Component::ModelRenderer  >(addComponent);
+        OnDrawTryAddComponentGui<Component::QuadRenderer   >(addComponent);
         OnDrawTryAddComponentGui<Component::Animator       >(addComponent);
         OnDrawTryAddComponentGui<Component::ParticleSystem >(addComponent);
         OnDrawTryAddComponentGui<Component::DirectionLight >(addComponent);
@@ -243,7 +244,13 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             OnDrawTryAddComponentGui<GamePlay::Prop::Canon          >(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::IslandPedestial>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::DestructibleObject>(addComponent);
-            OnDrawTryAddComponentGui<GamePlay::Prop::ProximityReveal   >(addComponent);
+            ImGui::TreePop();
+            ImGui::Spacing();
+        }
+        if (ImGui::TreeNode("Shader"))
+        {
+            OnDrawTryAddComponentGui<GamePlay::Prop::ProximityReveal     >(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Prop::LatticeBarrierEffect>(addComponent);
             ImGui::TreePop();
             ImGui::Spacing();
         }

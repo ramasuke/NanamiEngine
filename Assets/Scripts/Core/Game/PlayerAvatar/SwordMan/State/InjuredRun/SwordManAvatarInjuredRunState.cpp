@@ -31,7 +31,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk);
         if (Input().Jump().IsPressed())
             OnChangeState(SwordManAvatarStateType::Jump);
-        if (Input().AvoidRolling().IsPressed())
+        if (Input().AvoidRolling().IsPressed() && Status().CanAvoidRolling())
             OnChangeState(SwordManAvatarStateType::AvoidRolling);
         UpdateLockOn();
         if (Input().DashAttack().IsPressed())

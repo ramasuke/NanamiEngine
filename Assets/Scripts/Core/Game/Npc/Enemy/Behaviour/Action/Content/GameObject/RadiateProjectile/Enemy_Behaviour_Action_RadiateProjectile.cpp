@@ -1,32 +1,42 @@
 ﻿#include "Enemy_Behaviour_Action_RadiateProjectile.h"
 
-#include "../../../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
-#include "../../../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForTween/Coroutine_WaitForTween.h"
-#include "../../../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-#include "../../../../../../../../../../../Libs/LibCore/Tween/Ease/Ease.h"
+#include "../../../../../../../../../../../Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
+#include "../../../../../../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
 #include "../../../../../../../../../GamePlay/Npc/Enemy/Projectile/GamePlay_Enemy_IAttackProjectile.h"
+#include "../../../../../../../../../GamePlay/Spawn/GamePlay_PrefabSpawner.h"
+#include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::RadiateProjectile::DoTick(const TickContext& context)
     {
-        const auto enemyRot = context.EnemyTransform().GetWorldRot();
+        if (!projectilePrefab_)
+            return TickStatus::Failure;
 
-        const glm::quat finalRot = enemyRot;
+        const glm::quat finalRot  = context.EnemyTransform().GetWorldRot();
+        const glm::vec3 spawnPos  = spawnPosition_ .get(context);
+        const glm::vec3 targetPos = targetPosition_.get(context);
 
-        const auto projectile = Scene::GameObject::Instantiate(
-            *projectilePrefab_.get(),
-            spawnPosition_.get(context),
-            finalRot
-        );
+        const auto projectile = GamePlay::Spawn::SpawnMovingPrefab(
+            *projectilePrefab_.get(), spawnPos, finalRot, targetPos, moveSpeed_, isFinishedProjectileDestroy_);
 
-        auto attackProjectile = projectile.lock()->Components().Catch<GamePlay::Npc::Enemy::IAttackProjectile>();
-        if (!attackProjectile.expired())
+        if (const auto projectileObject = projectile.lock())
         {
-            attackProjectile.lock()->SetDamage(physicsDamage_);
+            const auto attackProjectile = projectileObject->Components().Catch<GamePlay::Npc::Enemy::IAttackProjectile>();
+            if (!attackProjectile.expired())
+            {
+                attackProjectile.lock()->SetDamage(physicsDamage_);
+            }
         }
-        
-        Coroutine::StartCoroutine(MoveProjectileAsync(context, projectile));
+
+        // 権威側限定Tickなら、他ピアにも同じ軌道で投射物(見た目のみ)を出させる。
+        // targetPos は権威側の値で固定する(Position::TargetObject が各ピアのローカルプレイヤーを指すのを避ける)
+        if (context.IsNetworkAuthority())
+        {
+            GameCore::Network::SpawnMovingPrefabRpc::Send(
+                context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable,
+                projectilePrefab_->GetGuid(), spawnPos, finalRot, targetPos, moveSpeed_, isFinishedProjectileDestroy_);
+        }
 
         return TickStatus::Success;
     }
@@ -39,29 +49,5 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("moveSpeed_", moveSpeed_);
         ImGuiHelper::OnDrawInputField("projectilePrefab_", projectilePrefab_);
         ImGuiHelper::OnDrawInputField("moveFinishedProjectileDestroy_", isFinishedProjectileDestroy_);
-    }
-
-    Coroutine::Task<void> Action::RadiateProjectile::MoveProjectileAsync(
-        const TickContext context,
-        const std::weak_ptr<GameObject::IGameObject> projectileObject)
-    {
-        auto& transform = projectileObject.lock()->Transform();
-
-        const glm::vec3 startPos  = transform.GetWorldPos();
-        const glm::vec3 targetPos = targetPosition_.get(context);
-
-        const float distance = glm::distance(startPos, targetPos);
-        const float durationSec = distance / moveSpeed_;
-
-        const auto tween = tweeny::from(startPos)
-            .to(targetPos)
-            .during(static_cast<int>(durationSec * 1000.0f))
-            .via(Tween::Ease(EaseType::Linear));
-
-        co_await Coroutine::WaitForTween(transform, tween);
-        if (!projectileObject.expired() && isFinishedProjectileDestroy_)
-        {
-            projectileObject.lock()->OnDestroy();
-        }
     }
 }

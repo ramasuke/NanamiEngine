@@ -8,6 +8,9 @@ namespace NanamiEngine::Module::Component
 {
     void SphereRenderer::OnRender()
     {
+        if (!IsEnable())
+            return;
+
         DrawSphere3D(
             Transform().GetDxWorldPos(),
             radius_,

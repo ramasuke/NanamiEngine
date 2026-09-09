@@ -12,7 +12,8 @@ namespace GameCore::PlayerAvatar
 
 REGISTER_ATTACK_AREA_TYPE(GameCore::PlayerAvatar::ITakablePlayerAttack)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::PlayerAttackArea, 1);
+// NOTE: 2 = 基底が NetworkComponent になった版(GamePlay::AttackArea の load が参照する)
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::PlayerAttackArea, 2);
 CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::PlayerAttackArea);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GamePlay::AttackArea<GameCore::PlayerAvatar::ITakablePlayerAttack>, GameCore::PlayerAvatar::PlayerAttackArea);
 #pragma endregion

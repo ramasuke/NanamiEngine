@@ -24,6 +24,7 @@ namespace GamePlay::Ui
         Coroutine::Task<void> AppearBackGroundMaskAsync();
         Coroutine::Task<void> EnterWorldAsync(GameCore::Scene::Main::SceneType sceneType);
         Coroutine::Task<void> FadeBlendRateAsync(std::shared_ptr<NanamiUi::BlendImageRenderer> renderer, int from, int to);
+        Coroutine::Task<void> FadeBlendRateAsync(std::shared_ptr<NanamiUi::MovieRenderer> renderer, int from, int to);
 
 
 
@@ -45,6 +46,8 @@ namespace GamePlay::Ui
         GameCore::Scene::Main::SceneType selectedSceneType_ = GameCore::Scene::Main::SceneType::GrassLand;
         [[serialize(1)]] std::string worldEnterButtonName_;
         FIELD(NanamiUi::Button) worldEnterButton_;
+        [[serialize(2)]] std::string backGroundName_;
+        FIELD(NanamiUi::MovieRenderer) backGround_;
         
 #pragma region Serialization Function
     public:
@@ -62,6 +65,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(stageSelectBackGroundMaskBlendRate_));
             archive(CEREAL_NVP(worldMovieRendererName_));
             archive(CEREAL_NVP(worldEnterButtonName_));
+            archive(CEREAL_NVP(backGroundName_));
         }
 
         template<typename Archive>
@@ -76,9 +80,10 @@ namespace GamePlay::Ui
             if (version >= 1) archive(CEREAL_NVP(stageSelectBackGroundMaskBlendRate_));
             if (version >= 1) archive(CEREAL_NVP(worldMovieRendererName_));
             if (version >= 1) archive(CEREAL_NVP(worldEnterButtonName_));
+            if (version >= 2) archive(CEREAL_NVP(backGroundName_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::StageSelectUi, 1)
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::StageSelectUi, 2)

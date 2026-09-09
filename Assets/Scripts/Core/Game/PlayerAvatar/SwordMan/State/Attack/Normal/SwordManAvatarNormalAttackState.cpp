@@ -1,11 +1,12 @@
 ﻿#include "SwordManAvatarNormalAttackState.h"
 
+#include "../../../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "../../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../../GamePlay/Sound/SoundPlayer.h"
-#include "../../../../../../../GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h"
 #include "../../../../Input/PlayerAvatarInput_void.h"
 #include "../../AttackedShocked/SwordManAvatar_AttackedShockedState.h"
 
@@ -16,6 +17,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
         currentCombo_ = 0;
         isAttacked_   = false;
+        bufferedAttackTimer_secs_ = 0.0f;
     }
 
     void SwordManAvatarNormalAttackState::DoFixedUpdate()
@@ -30,6 +32,16 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             OnChangeState(SwordManAvatarStateType::Hurt);
             return;
         }
+
+        // 発生前（予備動作中）だけロックオン対象へ向く
+        if (!isAttacked_)
+            RotateTowardsLockOnTarget(Status().LockOnAttackRotateSpeed());
+
+        // 入力バッファ: 判定ウィンドウの前後数フレームの押下も拾えるよう、短時間だけ「押した」ことを憶えておく
+        if (Input().NormalAttack().IsPressed())
+            bufferedAttackTimer_secs_ = Status().ComboInputBufferWindow_secs();
+        else if (bufferedAttackTimer_secs_ > 0.0f)
+            bufferedAttackTimer_secs_ -= Time::DeltaTime();
 
         TryComboAttack();
 
@@ -61,31 +73,37 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         if (During_secs() <= attackStatus.OccurrenceDuration_secs())
             return;
 
-        if (During_secs() < attackStatus.Duration_secs() && Input().NormalAttack().IsPressed() && isAttacked_)
+        if (During_secs() < attackStatus.Duration_secs() && bufferedAttackTimer_secs_ > 0.0f && isAttacked_)
         {
-            currentCombo_++;
-            isAttacked_ = false;
+            // 最終段では追加入力を無視（同一スイングの再ヒット防止）
+            if (currentCombo_ + 1 >= static_cast<int>(comboNormalAttack.size()))
+                return;
 
-            if (currentCombo_ >= static_cast<int>(comboNormalAttack.size()))
-            {
-                currentCombo_ = static_cast<int>(comboNormalAttack.size()) - 1;
-            }
+            bufferedAttackTimer_secs_ = 0.0f; // 消費済みにする（1回の入力で2段以上進めない）
+            currentCombo_++;
+            isAttacked_ = false; // 次段の予備動作開始。ヒットは次段の OccurrenceDuration 到達時にその段の AttackPower で発生
+            return;
         }
 
-        
         if (isAttacked_)
             return;
-        
+
         isAttacked_ = true;
         GamePlay::Sound::SoundPlayer::PlaySe(Resources().NormalAttackSound(), Transform().GetWorldPos());
         StatusEvent().InvokeComboAttack();
 
         if (NormalAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
         {
+            const auto& hitFeel = Status().ComboHitFeel().at(currentCombo_);
+            TriggerHitStop(hitFeel.HitStopDuration_secs(), hitFeel.HitStopTimeScale());
+            NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::ShakeMainCamera(hitFeel.ShakeIntensity(), hitFeel.ShakeDuration_secs());
+
             const float yaw = glm::eulerAngles(Transform().GetWorldRot()).y;
             const glm::quat yRot = glm::angleAxis(yaw, glm::vec3(0.0f, 1.0f, 0.0f));
-            Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos(), yRot);
-            DealDamageText(attackStatus.AttackPower());
+            const auto particle = Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos(), yRot);
+            if (const auto particleObject = particle.lock())
+                particleObject->Transform().SetLocalScale(glm::vec3(hitFeel.ParticleScale()));
+            DealDamageText(NormalAttackArea(), attackStatus.AttackPower());
         }
         else
         {
@@ -103,29 +121,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             {
                 OnChangeState(SwordManAvatarStateType::AttackedShocked);
             }
-        }
-    }
-
-    void SwordManAvatarNormalAttackState::DealDamageText(const Damage::PhysicsPower power)
-    {
-        Physics::LayerMask mask = Physics::CreateLayerMask();
-        Physics::AddLayer(mask, Physics::Layer::Default);
-
-        for (const auto& attackTarget : NormalAttackArea().Targets())
-        {
-            const auto origin    = Transform().GetWorldPos();
-            const auto targetPos = attackTarget.GameObject().Transform().GetWorldPos();
-            const auto direction = targetPos - origin;
-
-            const auto raycastHit = Physics::Raycast(
-                                            origin,
-                                            direction,
-                                            glm::length(direction),
-                                            mask);
-
-            const auto textPos = raycastHit.Hit() ? raycastHit.Position() : targetPos;
-            const auto damageText = Scene::GameObject::Instantiate(Resources().DealDamageTextBillBoardPrefab(), textPos);
-            damageText.lock()->Components().Catch<GamePlay::Ui::DealDamageTextBillBoard>().lock()->Play(power.Value());
         }
     }
 

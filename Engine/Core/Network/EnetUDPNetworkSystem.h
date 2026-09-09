@@ -25,7 +25,7 @@ namespace NanamiEngine::Core::Network
         ~EnetUDPNetworkSystem() override;
         void Update() override;
         void Send(const Packet& packet) override;
-        void SendTo(ENetPeer* target, const Packet& packet);
+        void SendTo(ENetPeer* target, const Packet& packet) override;
         [[nodiscard]] std::vector<Packet> PollPackets() override;
         [[nodiscard]] INetworkObjectInstanceRegistry& GetInstanceRegistry() override;
 

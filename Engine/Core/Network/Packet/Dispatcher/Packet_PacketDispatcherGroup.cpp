@@ -13,6 +13,7 @@ namespace NanamiEngine::Core::Network
         , syncTransform_(networkSystem, networkSystem, instanceRegistry)
         , syncAnimation_(networkSystem, networkSystem, instanceRegistry)
         , syncParameter_(networkSystem, networkSystem)
+        , rpcDispatcher_(networkSystem, networkSystem)
     {
     }
 
@@ -45,6 +46,9 @@ namespace NanamiEngine::Core::Network
             break;
         case DefaultPacketType::SyncParameter:
             syncParameter_.ReceivePacket(packet);
+            break;
+        case DefaultPacketType::Rpc:
+            rpcDispatcher_.ReceivePacket(packet);
             break;
         }
 

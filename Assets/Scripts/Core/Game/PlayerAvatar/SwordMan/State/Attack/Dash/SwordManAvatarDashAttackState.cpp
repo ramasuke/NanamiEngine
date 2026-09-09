@@ -1,8 +1,10 @@
 ﻿#include "SwordManAvatarDashAttackState.h"
 
+#include "ext/quaternion_geometric.hpp"
 #include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "../../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../../GamePlay/Sound/SoundPlayer.h"
 
@@ -13,7 +15,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         StatusEvent().InvokeDashAttack();
         isAttacked_ = false;
 
-        Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
+        // 予備動作中は自機の向きへ踏み込む(名前通りの「ダッシュ」にする)。ヒット発生後は TryDashAttack 側で止める
+        const glm::vec3 forward = glm::normalize(glm::vec3(Transform().GetWorldRot() * glm::vec3(0.0f, 0.0f, -1.0f)));
+        const float currentY = Physics::GetLinearVelocity(Collider().BodyId()).y;
+        Physics::SetLinearVelocity(Collider().BodyId(), forward * Status().DashAttackLungeSpeed() + glm::vec3(0.0f, currentY, 0.0f));
     }
 
     void SwordManAvatarDashAttackState::DoFixedUpdate()
@@ -28,7 +33,9 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarDashAttackState::DoUpdate()
     {
-
+        // 発生前（予備動作中）だけロックオン対象へ向く。発生判定は DoFixedUpdate 側の TryDashAttack が行う
+        if (!isAttacked_)
+            RotateTowardsLockOnTarget(Status().LockOnAttackRotateSpeed());
     }
 
     void SwordManAvatarDashAttackState::DoExit()
@@ -47,12 +54,22 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
         isAttacked_ = true;
 
+        // 踏み込みはヒット判定の瞬間まで。以降はその場で止める(居合い斬りのように踏み込んで止まる)
+        Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
+
+        GamePlay::Sound::SoundPlayer::PlaySe(Resources().NormalAttackSound(), Transform().GetWorldPos());
+
         if (DashAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
         {
-            Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos());
-        }
+            const auto& hitFeel = Status().DashHitFeel();
+            TriggerHitStop(hitFeel.HitStopDuration_secs(), hitFeel.HitStopTimeScale());
+            NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::ShakeMainCamera(hitFeel.ShakeIntensity(), hitFeel.ShakeDuration_secs());
 
-        //GamePlay::Sound::SoundPlayer::PlaySe(DashAttackSound(), Transform().GetWorldPos());
+            const auto particle = Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), DashAttackArea().Transform().GetWorldPos());
+            if (const auto particleObject = particle.lock())
+                particleObject->Transform().SetLocalScale(glm::vec3(hitFeel.ParticleScale()));
+            DealDamageText(DashAttackArea(), attackStatus.AttackPower());
+        }
     }
 
     void SwordManAvatarDashAttackState::ChangeToMoveOrIdle()
