@@ -15,10 +15,10 @@ namespace NanamiEngine::Module::Asset
         , comboNormalAttackStateDuration_secs_(0)
         , dashAttackLungeSpeed_               (55.0f)
         , comboHitFeel_ {
-            GameCore::PlayerAvatar::HitFeelParam(0.04f, 0.5f , 0.15f, 0.12f, 1.0f ),
-            GameCore::PlayerAvatar::HitFeelParam(0.05f, 0.4f , 0.25f, 0.12f, 1.15f),
-            GameCore::PlayerAvatar::HitFeelParam(0.08f, 0.15f, 0.4f , 0.12f, 1.35f)}
-        , dashHitFeel_                        (0.09f, 0.1f, 0.45f, 0.14f, 1.0f)
+            GameCore::PlayerAvatar::HitFeelParam(0.04f, 0.5f , 0.3f, 0.12f, 5.0f ),
+            GameCore::PlayerAvatar::HitFeelParam(0.05f, 0.4f , 0.5f, 0.12f, 5.75f),
+            GameCore::PlayerAvatar::HitFeelParam(0.08f, 0.15f, 0.8f, 0.12f, 5.7f)}
+        , dashHitFeel_                        (0.09f, 0.1f, 0.9f, 0.14f, 1.0f)
         , comboInputBufferWindow_secs_        (0.13f)
         , moveRotateSpeed_                    (0)
         , lockOnAttackRotateSpeed_            (3.0f)

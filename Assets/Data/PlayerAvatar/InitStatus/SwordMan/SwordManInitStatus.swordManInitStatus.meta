@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 7,
+                "cereal_class_version": 10,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -49,6 +49,39 @@
                     "value2": 0.699999988079071,
                     "value3": 0.800000011920929
                 },
+                "dashAttackLungeSpeed_": 55.0,
+                "comboHitFeel_": [
+                    {
+                        "cereal_class_version": 0,
+                        "value0": 0.03999999910593033,
+                        "value1": 0.5,
+                        "value2": 0.15000000596046449,
+                        "value3": 0.11999999731779099,
+                        "value4": 1.0
+                    },
+                    {
+                        "value0": 0.05000000074505806,
+                        "value1": 0.4000000059604645,
+                        "value2": 0.25,
+                        "value3": 0.11999999731779099,
+                        "value4": 1.149999976158142
+                    },
+                    {
+                        "value0": 0.07999999821186066,
+                        "value1": 0.15000000596046449,
+                        "value2": 0.4000000059604645,
+                        "value3": 0.11999999731779099,
+                        "value4": 1.350000023841858
+                    }
+                ],
+                "dashHitFeel_": {
+                    "value0": 0.09000000357627869,
+                    "value1": 0.10000000149011612,
+                    "value2": 0.44999998807907107,
+                    "value3": 0.14000000059604646,
+                    "value4": 1.0
+                },
+                "comboInputBufferWindow_secs_": 0.12999999523162843,
                 "walkSpeed_": {
                     "cereal_class_version": 0,
                     "value_": 24.0
@@ -57,6 +90,7 @@
                     "value_": 70.0
                 },
                 "moveRotateSpeed_": 12.0,
+                "lockOnAttackRotateSpeed_": 3.0,
                 "jumpPower_": 90.0,
                 "jumpCooldown_secs_": 0.5299999713897705,
                 "damageStateDuration_secs_": 0.699999988079071,

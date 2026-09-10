@@ -1,5 +1,5 @@
 {
-  "generated_from": "692ac00c77987845812049af27d2237230c73199",
+  "generated_from": "f5825ac2ccf7c112a9528773b214a737dfda4b16",
   "components": {
     "CineMachine::Behaviour::ShakeCameraBehaviour": {
       "class": "ShakeCameraBehaviour",
@@ -2285,6 +2285,107 @@
         }
       ]
     },
+    "NanamiEngine::Module::NanamiUi::GridLayoutGroup": {
+      "class": "GridLayoutGroup",
+      "fqn": "NanamiEngine::Module::NanamiUi::GridLayoutGroup",
+      "leaf": "GridLayoutGroup",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "ILateUpdatable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Engine/Module/NanamiUI/LayoutGroup/GridLayoutGroup.h",
+      "params": [
+        {
+          "key": "cellSize_",
+          "member": "cellSize_",
+          "named": true,
+          "shape": "vec2"
+        },
+        {
+          "key": "spacing_",
+          "member": "spacing_",
+          "named": true,
+          "shape": "vec2"
+        },
+        {
+          "key": "constraint_",
+          "member": "constraint_",
+          "named": true,
+          "shape": "unknown",
+          "type": "GridConstraint"
+        },
+        {
+          "key": "constraintCount_",
+          "member": "constraintCount_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "startCorner_",
+          "member": "startCorner_",
+          "named": true,
+          "shape": "unknown",
+          "type": "GridStartCorner"
+        }
+      ]
+    },
+    "NanamiEngine::Module::NanamiUi::HorizontalLayoutGroup": {
+      "class": "HorizontalLayoutGroup",
+      "fqn": "NanamiEngine::Module::NanamiUi::HorizontalLayoutGroup",
+      "leaf": "HorizontalLayoutGroup",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "ILateUpdatable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Engine/Module/NanamiUI/LayoutGroup/HorizontalLayoutGroup.h",
+      "params": [
+        {
+          "key": "cellSize_",
+          "member": "cellSize_",
+          "named": true,
+          "shape": "vec2"
+        },
+        {
+          "key": "spacing_",
+          "member": "spacing_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "childAlignment_",
+          "member": "childAlignment_",
+          "named": true,
+          "shape": "unknown",
+          "type": "LayoutCrossAlign"
+        },
+        {
+          "key": "reverseArrangement_",
+          "member": "reverseArrangement_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
     "NanamiEngine::Module::NanamiUi::ImageAnimationRenderer": {
       "class": "ImageAnimationRenderer",
       "fqn": "NanamiEngine::Module::NanamiUi::ImageAnimationRenderer",
@@ -2436,6 +2537,53 @@
           "named": true,
           "shape": "unknown",
           "type": "TextAlign"
+        }
+      ]
+    },
+    "NanamiEngine::Module::NanamiUi::VerticalLayoutGroup": {
+      "class": "VerticalLayoutGroup",
+      "fqn": "NanamiEngine::Module::NanamiUi::VerticalLayoutGroup",
+      "leaf": "VerticalLayoutGroup",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "ILateUpdatable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Engine/Module/NanamiUI/LayoutGroup/VerticalLayoutGroup.h",
+      "params": [
+        {
+          "key": "cellSize_",
+          "member": "cellSize_",
+          "named": true,
+          "shape": "vec2"
+        },
+        {
+          "key": "spacing_",
+          "member": "spacing_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "childAlignment_",
+          "member": "childAlignment_",
+          "named": true,
+          "shape": "unknown",
+          "type": "LayoutCrossAlign"
+        },
+        {
+          "key": "reverseArrangement_",
+          "member": "reverseArrangement_",
+          "named": true,
+          "shape": "bool"
         }
       ]
     },
@@ -2803,6 +2951,12 @@
     "Game": [
       "GameCore::Game"
     ],
+    "GridLayoutGroup": [
+      "NanamiEngine::Module::NanamiUi::GridLayoutGroup"
+    ],
+    "HorizontalLayoutGroup": [
+      "NanamiEngine::Module::NanamiUi::HorizontalLayoutGroup"
+    ],
     "ImageAnimationRenderer": [
       "NanamiEngine::Module::NanamiUi::ImageAnimationRenderer"
     ],
@@ -2925,6 +3079,9 @@
     "ThirdPersonCameraBehaviour": [
       "CineMachine::Behaviour::ThirdPersonCameraBehaviour"
     ],
+    "VerticalLayoutGroup": [
+      "NanamiEngine::Module::NanamiUi::VerticalLayoutGroup"
+    ],
     "VirtualCameraFollowBehaviour": [
       "NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour"
     ],
@@ -2975,6 +3132,12 @@
     "IInitRenderable": {
       "fqn": null,
       "header": "Engine/Module/LifeCycleCallback/InitRenderable/IInitRenderable.h",
+      "version": 0,
+      "empty": true
+    },
+    "ILateUpdatable": {
+      "fqn": "NanamiEngine::Module::LifeCycleCallback::ILateUpdatable",
+      "header": "Engine/Module/LifeCycleCallback/LateUpdate/LateUpdate.h",
       "version": 0,
       "empty": true
     },

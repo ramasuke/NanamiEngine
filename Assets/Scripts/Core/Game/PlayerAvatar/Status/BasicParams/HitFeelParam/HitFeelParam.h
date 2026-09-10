@@ -9,11 +9,11 @@ namespace GameCore::PlayerAvatar
     struct HitFeelParam final
     {
         explicit HitFeelParam(
-            float hitStopDuration_secs,
-            float hitStopTimeScale,
-            float shakeIntensity,
-            float shakeDuration_secs,
-            float particleScale);
+            float hitStopDuration_secs = 0.0f,
+            float hitStopTimeScale = 0.0f,
+            float shakeIntensity = 0.0f,
+            float shakeDuration_secs = 0.0f,
+            float particleScale = 0.0f);
 
         /** @brief ヒットストップの長さ[秒]。自機Animatorのみに適用するローカル演出 */
         [[nodiscard]] float HitStopDuration_secs() const { return hitStopDuration_secs_; }

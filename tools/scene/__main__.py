@@ -47,6 +47,12 @@ def build_parser() -> argparse.ArgumentParser:
     except Exception:  # noqa: BLE001
         pass
 
+    try:
+        from tools.scene import cli_import
+        cli_import.register(sub)
+    except Exception:  # noqa: BLE001
+        pass
+
     return p
 
 

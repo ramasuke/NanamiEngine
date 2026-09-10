@@ -1557,6 +1557,18 @@
     <ClCompile Include="Engine\Module\NanamiUI\Button\NanamiUi_Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\GridLayoutGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\HorizontalLayoutGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\LayoutCrossAlign.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\VerticalLayoutGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Module\NanamiUI\Slider\NanamiUi_Slider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -5794,6 +5806,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\NanamiUI\Button\NanamiUi_Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\GridLayoutGroup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\HorizontalLayoutGroup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\LayoutCrossAlign.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\VerticalLayoutGroup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\NanamiUI\MouseEvent\MouseState.h">

@@ -95,7 +95,13 @@ void GameObject::PrefabGameObject::InitPrefab(const std::string& filePath)
 
 void GameObject::PrefabGameObject::ImplementDestroy()
 {
-    ownPtr_ = nullptr;   
+    Components().OnDestroy();
+    for (const auto& child : Transform().GetChildren())
+    {
+        child->ImplementDestroy();
+    }
+    Transform().SetParent(std::weak_ptr<IGameObject>{});
+    ownPtr_ = nullptr;
 }
 
 void GameObject::PrefabGameObject::OnDrawGui()

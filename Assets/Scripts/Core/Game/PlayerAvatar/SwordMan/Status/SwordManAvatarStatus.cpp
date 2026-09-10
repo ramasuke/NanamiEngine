@@ -27,10 +27,10 @@ namespace GameCore::PlayerAvatar::SwordMan
         , dashAttack_                    (Damage::PhysicsPower(10), EnhancePower(10), 0.7f, 0.8f)
         , dashAttackLungeSpeed_          (55.0f)
         , comboHitFeel_ {
-            HitFeelParam(0.04f, 0.5f , 0.15f, 0.12f, 1.0f ),
-            HitFeelParam(0.05f, 0.4f , 0.25f, 0.12f, 1.15f),
-            HitFeelParam(0.08f, 0.15f, 0.4f , 0.12f, 1.35f)}
-        , dashHitFeel_                   (0.09f, 0.1f, 0.45f, 0.14f, 1.0f)
+            HitFeelParam(0.04f, 0.5f , 0.3f, 0.12f, 1.0f ),
+            HitFeelParam(0.05f, 0.4f , 0.5f, 0.12f, 1.15f),
+            HitFeelParam(0.08f, 0.15f, 0.8f, 0.12f, 1.35f)}
+        , dashHitFeel_                   (0.09f, 0.1f, 0.9f, 0.14f, 1.0f)
         , comboInputBufferWindow_secs_   (0.13f)
         , walkSpeed_                     (24.0f)
         , runSpeed_                      (70.0f)

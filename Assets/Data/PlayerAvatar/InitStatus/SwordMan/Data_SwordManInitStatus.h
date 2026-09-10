@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../../../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "cereal/types/vector.hpp"
 #include "../../../../../Libs/LibCore/Rx/SerializableSubject/SerializableSubject.h"
 #include "../../../../Scripts/Core/Game/Damage/Physics/Game_Damage_PhysicsPower.h"
 #include "../../../../Scripts/Core/Game/PlayerAvatar/Status/BasicParams/AttackParam/AttackParam.h"

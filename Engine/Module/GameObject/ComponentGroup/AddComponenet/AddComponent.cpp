@@ -68,6 +68,9 @@ void GameObject::AddComponent::OnDrawUiRendererGui(std::shared_ptr<Component::Co
         OnDrawTryAddComponentGui<NanamiUi::Billboard3D           >(addComponent);
         OnDrawTryAddComponentGui<NanamiUi::Button                >(addComponent);
         OnDrawTryAddComponentGui<NanamiUi::MovieRenderer         >(addComponent);
+        OnDrawTryAddComponentGui<NanamiUi::GridLayoutGroup       >(addComponent);
+        OnDrawTryAddComponentGui<NanamiUi::HorizontalLayoutGroup >(addComponent);
+        OnDrawTryAddComponentGui<NanamiUi::VerticalLayoutGroup   >(addComponent);
         ImGui::TreePop();
         ImGui::Spacing();
     }

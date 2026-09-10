@@ -4,7 +4,7 @@
 #include "../../../../../../../Engine/Core/Object/Registry/ObjectRegistry.h"
 #include "../../../../../../../Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "../../../../../../../Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
-#include "../../../../../Data/NpcChatText/Data_NpcChat.h"
+#include "../../../../../../Data/NpcChatText/Data_NpcChat.h"
 #include "../../../../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
 #include "../../../../Game/Game.h"
 #include "../../../../Game/Scene/Sub/Content/ChattingUI/ChattingUIScene.h"

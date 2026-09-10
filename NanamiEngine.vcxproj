@@ -9949,6 +9949,10 @@
     <ClCompile Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\BlendAnimationRenderer\BlendAnmiationRenderer.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\Button\NanamiUi_Button.cpp" />
+    <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\GridLayoutGroup.cpp" />
+    <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\HorizontalLayoutGroup.cpp" />
+    <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\LayoutCrossAlign.cpp" />
+    <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\VerticalLayoutGroup.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\MovieRenderer\MovieRenderer.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -12914,6 +12918,10 @@
     <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.h" />
     <ClInclude Include="Engine\Module\NanamiUI\BlendAnimationRenderer\BlendAnmiationRenderer.h" />
     <ClInclude Include="Engine\Module\NanamiUI\Button\NanamiUi_Button.h" />
+    <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\GridLayoutGroup.h" />
+    <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\HorizontalLayoutGroup.h" />
+    <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\LayoutCrossAlign.h" />
+    <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\VerticalLayoutGroup.h" />
     <ClInclude Include="Engine\Module\NanamiUI\MouseEvent\MouseState.h" />
     <ClInclude Include="Engine\Module\NanamiUI\MovieRenderer\MovieRenderer.h" />
     <ClInclude Include="Engine\Module\NanamiUI\NanamiUi_IInteractivableRenderer.h" />

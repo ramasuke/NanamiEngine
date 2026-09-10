@@ -38,6 +38,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         float     defaultIntensity_ = 0.6f;
         float     defaultDuration_  = 0.4f;
         glm::vec3 seed_ = glm::vec3(13.37f, 71.13f, 42.42f);
+        [[serialize(0)]] FIELD(GameObject::IGameObject) cameraBrain_;
 
 #pragma region Serialization Function
     public:
@@ -56,7 +57,6 @@ namespace NanamiEngine::CineMachine::Behaviour
             archive(CEREAL_NVP(defaultIntensity_));
             archive(CEREAL_NVP(defaultDuration_));
             archive(CEREAL_NVP(seed_));
-            FIELD(GameObject::IGameObject) cameraBrain_;
             if (version <= 0) archive(CEREAL_NVP(cameraBrain_));
         }
 
@@ -73,7 +73,6 @@ namespace NanamiEngine::CineMachine::Behaviour
             if (version >= 0) archive(CEREAL_NVP(defaultIntensity_));
             if (version >= 0) archive(CEREAL_NVP(defaultDuration_));
             if (version >= 0) archive(CEREAL_NVP(seed_));
-            FIELD(GameObject::IGameObject) cameraBrain_;
             if (version <= 0) archive(CEREAL_NVP(cameraBrain_));
         }
 #pragma endregion

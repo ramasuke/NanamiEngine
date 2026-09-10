@@ -612,12 +612,14 @@
                             "ptr_wrapper": {
                                 "id": 2147483667,
                                 "data": {
-                                    "cereal_class_version": 0,
+                                    "cereal_class_version": 2,
                                     "value0": {
-                                        "guid_": {
-                                            "value_": "8545052A-548C-47CD-A1CE-34C8CD2ECC1D"
-                                        },
-                                        "isEnable_": true
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "8545052A-548C-47CD-A1CE-34C8CD2ECC1D"
+                                            },
+                                            "isEnable_": true
+                                        }
                                     }
                                 }
                             }
@@ -733,10 +735,12 @@
                                 "id": 2147483670,
                                 "data": {
                                     "value0": {
-                                        "guid_": {
-                                            "value_": "9476A193-542F-4065-A645-29BD2046EC1C"
-                                        },
-                                        "isEnable_": true
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "9476A193-542F-4065-A645-29BD2046EC1C"
+                                            },
+                                            "isEnable_": true
+                                        }
                                     }
                                 }
                             }
@@ -852,10 +856,12 @@
                                 "id": 2147483673,
                                 "data": {
                                     "value0": {
-                                        "guid_": {
-                                            "value_": "BA7E4B48-9D7C-438E-A450-0B3EC08D5FF4"
-                                        },
-                                        "isEnable_": true
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "BA7E4B48-9D7C-438E-A450-0B3EC08D5FF4"
+                                            },
+                                            "isEnable_": true
+                                        }
                                     }
                                 }
                             }
@@ -971,10 +977,12 @@
                                 "id": 2147483676,
                                 "data": {
                                     "value0": {
-                                        "guid_": {
-                                            "value_": "B9EABF84-1EE0-4132-B8E2-2D0FAA1AA0EB"
-                                        },
-                                        "isEnable_": true
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "B9EABF84-1EE0-4132-B8E2-2D0FAA1AA0EB"
+                                            },
+                                            "isEnable_": true
+                                        }
                                     }
                                 }
                             }
@@ -1090,10 +1098,12 @@
                                 "id": 2147483679,
                                 "data": {
                                     "value0": {
-                                        "guid_": {
-                                            "value_": "957DC8B2-D081-494D-AE44-9E0381C1B3B8"
-                                        },
-                                        "isEnable_": true
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "957DC8B2-D081-494D-AE44-9E0381C1B3B8"
+                                            },
+                                            "isEnable_": true
+                                        }
                                     }
                                 }
                             }
@@ -1231,7 +1241,7 @@
             }
         }
     },
-    "value0": 9,
+    "value0": 10,
     "value1": {
         "value_": "5B987EF4-025B-48E0-B8FD-A5022A841ED8"
     },
@@ -1258,5 +1268,8 @@
     },
     "value9": {
         "value_": "6D09D32E-8E38-4C96-B96D-2758C3D9B3B4"
+    },
+    "value10": {
+        "value_": "9536DB42-06F4-4297-A11B-7A9CD5B532AF"
     }
 }

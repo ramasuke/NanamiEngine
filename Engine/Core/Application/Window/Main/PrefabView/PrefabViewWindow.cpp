@@ -99,6 +99,10 @@ void Core::MainWindow::PrefabViewWindow::OnDrawGui(MainWindowDrawGuiContext cont
     {
         auto it = contents_.begin();
         std::advance(it, *removeIndex);
+        if (it->second)
+        {
+            it->second->ImplementDestroy();
+        }
         contents_.erase(it);
     }
     

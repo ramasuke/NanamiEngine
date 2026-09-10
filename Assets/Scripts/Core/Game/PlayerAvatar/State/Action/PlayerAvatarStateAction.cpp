@@ -56,7 +56,9 @@ namespace GameCore::PlayerAvatar::State
 
     void PlayerAvatarStateAction::Jump(const glm::vec3& direction) const
     {
-        Physics::AddForce(stateContext_->PlayerAvatarCollider().BodyId(), direction);
+        glm::vec3 currentVelocity = Physics::GetLinearVelocity(stateContext_->PlayerAvatarCollider().BodyId());
+        currentVelocity.y = 0.0f;
+        Physics::SetLinearVelocity(stateContext_->PlayerAvatarCollider().BodyId(), currentVelocity + direction);
     }
 }
 

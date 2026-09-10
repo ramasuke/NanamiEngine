@@ -15,7 +15,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         StatusEvent().InvokeDashAttack();
         isAttacked_ = false;
 
-        // 予備動作中は自機の向きへ踏み込む(名前通りの「ダッシュ」にする)。ヒット発生後は TryDashAttack 側で止める
+        // 予備動作中は自機の向きへ踏み込む
         const glm::vec3 forward = glm::normalize(glm::vec3(Transform().GetWorldRot() * glm::vec3(0.0f, 0.0f, -1.0f)));
         const float currentY = Physics::GetLinearVelocity(Collider().BodyId()).y;
         Physics::SetLinearVelocity(Collider().BodyId(), forward * Status().DashAttackLungeSpeed() + glm::vec3(0.0f, currentY, 0.0f));
@@ -65,7 +65,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             TriggerHitStop(hitFeel.HitStopDuration_secs(), hitFeel.HitStopTimeScale());
             NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::ShakeMainCamera(hitFeel.ShakeIntensity(), hitFeel.ShakeDuration_secs());
 
-            const auto particle = Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), DashAttackArea().Transform().GetWorldPos());
+            const auto particle = NanamiEngine::Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), DashAttackArea().Transform().GetWorldPos());
             if (const auto particleObject = particle.lock())
                 particleObject->Transform().SetLocalScale(glm::vec3(hitFeel.ParticleScale()));
             DealDamageText(DashAttackArea(), attackStatus.AttackPower());

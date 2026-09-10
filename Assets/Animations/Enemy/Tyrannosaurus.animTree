@@ -84,17 +84,17 @@
                         }
                     }
                 },
-                "name_": "LookForward",
+                "name_": "ChaseRoar",
                 "position_": {
-                    "value0": 400.0,
-                    "value1": 40.0
+                    "value0": 540.0,
+                    "value1": 130.0
                 },
                 "guid_": {
-                    "value_": "8035E8F3-926B-4F2D-81A9-CC18DE1D7C21"
+                    "value_": "FC732DFD-271F-4B88-B61F-E3112D5D2F69"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 37
+                "modelAnimationIndex_": 14
             }
         }
     },
@@ -117,17 +117,17 @@
                         }
                     }
                 },
-                "name_": "IdleInvestigate",
+                "name_": "LookForward",
                 "position_": {
-                    "value0": 540.0,
+                    "value0": 400.0,
                     "value1": 40.0
                 },
                 "guid_": {
-                    "value_": "7FE502D1-98F6-4EFA-A39C-4AA536BFBB15"
+                    "value_": "8035E8F3-926B-4F2D-81A9-CC18DE1D7C21"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 32
+                "modelAnimationIndex_": 37
             }
         }
     },
@@ -150,17 +150,17 @@
                         }
                     }
                 },
-                "name_": "IdleInvestigateOut",
+                "name_": "SprintHeadRight",
                 "position_": {
-                    "value0": 680.0,
-                    "value1": 40.0
+                    "value0": 820.0,
+                    "value1": 310.0
                 },
                 "guid_": {
-                    "value_": "D17DC200-6261-4D3C-A69E-BCF272C410A1"
+                    "value_": "ADA90111-18F9-4C29-8A9E-2A8244137DA3"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 34
+                "modelAnimationIndex_": 57
             }
         }
     },
@@ -183,17 +183,17 @@
                         }
                     }
                 },
-                "name_": "Roar",
+                "name_": "IdleInvestigate",
                 "position_": {
-                    "value0": 820.0,
+                    "value0": 540.0,
                     "value1": 40.0
                 },
                 "guid_": {
-                    "value_": "E50B01E3-DC44-4860-8DB4-F9CDE595D1A6"
+                    "value_": "7FE502D1-98F6-4EFA-A39C-4AA536BFBB15"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 47
+                "modelAnimationIndex_": 32
             }
         }
     },
@@ -216,17 +216,17 @@
                         }
                     }
                 },
-                "name_": "BigRoarStep",
+                "name_": "IdleInvestigateOut",
                 "position_": {
-                    "value0": 960.0,
+                    "value0": 680.0,
                     "value1": 40.0
                 },
                 "guid_": {
-                    "value_": "29211EFC-9481-4780-9DF1-1B510EF09A78"
+                    "value_": "D17DC200-6261-4D3C-A69E-BCF272C410A1"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 46
+                "modelAnimationIndex_": 34
             }
         }
     },
@@ -249,17 +249,17 @@
                         }
                     }
                 },
-                "name_": "RoarLeft",
+                "name_": "Roar",
                 "position_": {
-                    "value0": 1100.0,
+                    "value0": 820.0,
                     "value1": 40.0
                 },
                 "guid_": {
-                    "value_": "1276FE8B-624E-4993-9006-CE4D00615F73"
+                    "value_": "E50B01E3-DC44-4860-8DB4-F9CDE595D1A6"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 44
+                "modelAnimationIndex_": 47
             }
         }
     },
@@ -282,17 +282,17 @@
                         }
                     }
                 },
-                "name_": "RoarRight",
+                "name_": "RoarLeft",
                 "position_": {
-                    "value0": 400.0,
-                    "value1": 130.0
+                    "value0": 1100.0,
+                    "value1": 40.0
                 },
                 "guid_": {
-                    "value_": "3FC4DBC6-64F6-4EEA-A1AA-3E38DA41C296"
+                    "value_": "1276FE8B-624E-4993-9006-CE4D00615F73"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 45
+                "modelAnimationIndex_": 44
             }
         }
     },
@@ -315,17 +315,17 @@
                         }
                     }
                 },
-                "name_": "ChaseRoar",
+                "name_": "BigRoarStep",
                 "position_": {
-                    "value0": 540.0,
-                    "value1": 130.0
+                    "value0": 960.0,
+                    "value1": 40.0
                 },
                 "guid_": {
-                    "value_": "FC732DFD-271F-4B88-B61F-E3112D5D2F69"
+                    "value_": "29211EFC-9481-4780-9DF1-1B510EF09A78"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 14
+                "modelAnimationIndex_": 46
             }
         }
     },
@@ -348,17 +348,17 @@
                         }
                     }
                 },
-                "name_": "WalkLoop",
+                "name_": "RoarRight",
                 "position_": {
-                    "value0": 680.0,
+                    "value0": 400.0,
                     "value1": 130.0
                 },
                 "guid_": {
-                    "value_": "961986F2-B4CF-431A-A5D4-243C26517A69"
+                    "value_": "3FC4DBC6-64F6-4EEA-A1AA-3E38DA41C296"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 55
+                "modelAnimationIndex_": 45
             }
         }
     },
@@ -381,17 +381,17 @@
                         }
                     }
                 },
-                "name_": "SprintLoop",
+                "name_": "WalkLoop",
                 "position_": {
-                    "value0": 820.0,
+                    "value0": 680.0,
                     "value1": 130.0
                 },
                 "guid_": {
-                    "value_": "8BF35B96-8D34-4696-B6EF-25B175079315"
+                    "value_": "961986F2-B4CF-431A-A5D4-243C26517A69"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 58
+                "modelAnimationIndex_": 55
             }
         }
     },
@@ -414,17 +414,17 @@
                         }
                     }
                 },
-                "name_": "BiteCloseLeft",
+                "name_": "SprintLoop",
                 "position_": {
-                    "value0": 960.0,
+                    "value0": 820.0,
                     "value1": 130.0
                 },
                 "guid_": {
-                    "value_": "828357C7-B694-482B-9354-BAA3F7374A81"
+                    "value_": "8BF35B96-8D34-4696-B6EF-25B175079315"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 5
+                "modelAnimationIndex_": 58
             }
         }
     },
@@ -447,17 +447,17 @@
                         }
                     }
                 },
-                "name_": "BiteCloseRight",
+                "name_": "Bite90Right",
                 "position_": {
-                    "value0": 1100.0,
-                    "value1": 130.0
+                    "value0": 540.0,
+                    "value1": 220.0
                 },
                 "guid_": {
-                    "value_": "793CECD7-8039-4E17-959A-093B8EAF4D40"
+                    "value_": "08A31E5A-B9D9-4D27-A4AF-AC9AD3D249F6"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 6
+                "modelAnimationIndex_": 4
             }
         }
     },
@@ -480,17 +480,17 @@
                         }
                     }
                 },
-                "name_": "Bite90Left",
+                "name_": "BiteCloseLeft",
                 "position_": {
-                    "value0": 400.0,
-                    "value1": 220.0
+                    "value0": 960.0,
+                    "value1": 130.0
                 },
                 "guid_": {
-                    "value_": "ABD0BD00-16A5-436D-8C3A-F0A551FBBFB2"
+                    "value_": "828357C7-B694-482B-9354-BAA3F7374A81"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 3
+                "modelAnimationIndex_": 5
             }
         }
     },
@@ -513,17 +513,17 @@
                         }
                     }
                 },
-                "name_": "Bite90Right",
+                "name_": "BiteCloseRight",
                 "position_": {
-                    "value0": 540.0,
-                    "value1": 220.0
+                    "value0": 1100.0,
+                    "value1": 130.0
                 },
                 "guid_": {
-                    "value_": "08A31E5A-B9D9-4D27-A4AF-AC9AD3D249F6"
+                    "value_": "793CECD7-8039-4E17-959A-093B8EAF4D40"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 4
+                "modelAnimationIndex_": 6
             }
         }
     },
@@ -546,17 +546,17 @@
                         }
                     }
                 },
-                "name_": "HeadButtLeft",
+                "name_": "Bite90Left",
                 "position_": {
-                    "value0": 680.0,
+                    "value0": 400.0,
                     "value1": 220.0
                 },
                 "guid_": {
-                    "value_": "26AC9954-4BD9-4E97-BA36-CA315068468E"
+                    "value_": "ABD0BD00-16A5-436D-8C3A-F0A551FBBFB2"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 50
+                "modelAnimationIndex_": 3
             }
         }
     },
@@ -579,17 +579,17 @@
                         }
                     }
                 },
-                "name_": "ChaseBite",
+                "name_": "HeadButtLeft",
                 "position_": {
-                    "value0": 820.0,
+                    "value0": 680.0,
                     "value1": 220.0
                 },
                 "guid_": {
-                    "value_": "D68AED47-600A-4406-8A09-E68788DFDA3D"
+                    "value_": "26AC9954-4BD9-4E97-BA36-CA315068468E"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 9
+                "modelAnimationIndex_": 50
             }
         }
     },
@@ -612,17 +612,17 @@
                         }
                     }
                 },
-                "name_": "ChaseBiteLeft",
+                "name_": "ChaseBite",
                 "position_": {
-                    "value0": 960.0,
+                    "value0": 820.0,
                     "value1": 220.0
                 },
                 "guid_": {
-                    "value_": "CFA01EF5-130B-4C61-A307-30AF0B67D8F7"
+                    "value_": "D68AED47-600A-4406-8A09-E68788DFDA3D"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 8
+                "modelAnimationIndex_": 9
             }
         }
     },
@@ -645,17 +645,17 @@
                         }
                     }
                 },
-                "name_": "ChaseBiteRight",
+                "name_": "ChaseBiteLeft",
                 "position_": {
-                    "value0": 1100.0,
+                    "value0": 960.0,
                     "value1": 220.0
                 },
                 "guid_": {
-                    "value_": "427B4A2A-F228-4983-9D43-EFC8C6982D1A"
+                    "value_": "CFA01EF5-130B-4C61-A307-30AF0B67D8F7"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 10
+                "modelAnimationIndex_": 8
             }
         }
     },
@@ -678,17 +678,17 @@
                         }
                     }
                 },
-                "name_": "ChaseHeadButtLeft",
+                "name_": "ChaseBiteRight",
                 "position_": {
-                    "value0": 400.0,
-                    "value1": 310.0
+                    "value0": 1100.0,
+                    "value1": 220.0
                 },
                 "guid_": {
-                    "value_": "EDA2C4DA-04F4-4477-9308-929288DED4FE"
+                    "value_": "427B4A2A-F228-4983-9D43-EFC8C6982D1A"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 11
+                "modelAnimationIndex_": 10
             }
         }
     },
@@ -711,17 +711,17 @@
                         }
                     }
                 },
-                "name_": "RunHeadButtRight",
+                "name_": "SprintHeadLeft",
                 "position_": {
-                    "value0": 540.0,
+                    "value0": 680.0,
                     "value1": 310.0
                 },
                 "guid_": {
-                    "value_": "BD017C52-FA1A-4EF9-9B2D-D6D693D6B21D"
+                    "value_": "20CEC704-C533-45B4-A8FB-D2B9C7B33689"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 48
+                "modelAnimationIndex_": 56
             }
         }
     },
@@ -744,17 +744,17 @@
                         }
                     }
                 },
-                "name_": "SprintHeadLeft",
+                "name_": "ChaseHeadButtLeft",
                 "position_": {
-                    "value0": 680.0,
+                    "value0": 400.0,
                     "value1": 310.0
                 },
                 "guid_": {
-                    "value_": "20CEC704-C533-45B4-A8FB-D2B9C7B33689"
+                    "value_": "EDA2C4DA-04F4-4477-9308-929288DED4FE"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 56
+                "modelAnimationIndex_": 11
             }
         }
     },
@@ -777,17 +777,17 @@
                         }
                     }
                 },
-                "name_": "SprintHeadRight",
+                "name_": "RunHeadButtRight",
                 "position_": {
-                    "value0": 820.0,
+                    "value0": 540.0,
                     "value1": 310.0
                 },
                 "guid_": {
-                    "value_": "ADA90111-18F9-4C29-8A9E-2A8244137DA3"
+                    "value_": "BD017C52-FA1A-4EF9-9B2D-D6D693D6B21D"
                 },
                 "speed_": 1.0,
                 "blendAnimationOffset_secs_": 0.0,
-                "modelAnimationIndex_": 57
+                "modelAnimationIndex_": 48
             }
         }
     },
@@ -919,7 +919,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -957,7 +957,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.3,
+                "transitionDuration_secs_": 0.30000001192092898,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -995,7 +995,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1033,7 +1033,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.3,
+                "transitionDuration_secs_": 0.30000001192092898,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1071,7 +1071,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.3,
+                "transitionDuration_secs_": 0.30000001192092898,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1109,7 +1109,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.3,
+                "transitionDuration_secs_": 0.30000001192092898,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1147,7 +1147,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.3,
+                "transitionDuration_secs_": 0.30000001192092898,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1185,7 +1185,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.3,
+                "transitionDuration_secs_": 0.30000001192092898,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1223,7 +1223,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1261,7 +1261,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1299,7 +1299,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1337,7 +1337,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1375,7 +1375,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1413,7 +1413,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1451,7 +1451,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1489,7 +1489,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1527,7 +1527,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1565,7 +1565,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1603,7 +1603,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1641,7 +1641,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1679,7 +1679,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1717,7 +1717,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.2,
+                "transitionDuration_secs_": 0.20000000298023225,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1755,7 +1755,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.1,
+                "transitionDuration_secs_": 0.10000000149011612,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },
@@ -1793,7 +1793,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.3,
+                "transitionDuration_secs_": 0.30000001192092898,
                 "fromNodeGuid_": {
                     "value_": "E940FCFD-50C2-46D8-9ECD-59E755A7A309"
                 },

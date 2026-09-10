@@ -7,6 +7,7 @@
 #include "../../Status/BasicParams/HitFeelParam/HitFeelParam.h"
 #include "../../Status/EnahancePower/EnhancePower.h"
 #include "cereal/types/polymorphic.hpp"
+#include "cereal/types/vector.hpp"
 #include <queue>
 
 #include "../../../../../../../Engine/Core/Network/Object/NetworkObjectBase.h"

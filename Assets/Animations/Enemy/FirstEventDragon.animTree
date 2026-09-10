@@ -111,22 +111,22 @@
                             "id": 2147483656,
                             "data": {
                                 "value0": {
-                                    "value_": "B08425DA-132F-45DE-B040-4E9515AD84FC"
+                                    "value_": "8837CD32-40ED-43DC-99CA-4AC52107D223"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "TurnLeft",
+                "name_": "Walk",
                 "position_": {
-                    "value0": 661.0,
-                    "value1": 420.0
+                    "value0": 659.0,
+                    "value1": 285.0
                 },
                 "guid_": {
-                    "value_": "3E5987EA-F2D4-46BA-B99D-0DC7427F0421"
+                    "value_": "EE525D9D-DD40-43C1-AB20-B682847A74AC"
                 },
                 "speed_": 30.0,
-                "blendAnimationOffset_secs_": 0.0,
+                "blendAnimationOffset_secs_": 99999997952.0,
                 "modelAnimationIndex_": 0
             }
         }
@@ -142,39 +142,6 @@
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
                             "id": 2147483658,
-                            "data": {
-                                "value0": {
-                                    "value_": "ABFFDB0F-1F3E-4723-BE3B-7F7B30E050D4"
-                                }
-                            }
-                        }
-                    }
-                },
-                "name_": "Attack1",
-                "position_": {
-                    "value0": 115.0,
-                    "value1": 8.0
-                },
-                "guid_": {
-                    "value_": "B8FA8795-216D-4C9B-8563-55F70795FADF"
-                },
-                "speed_": 50.0,
-                "blendAnimationOffset_secs_": 1.111111152118731e25,
-                "modelAnimationIndex_": 0
-            }
-        }
-    },
-    "nodes_3": {
-        "polymorphic_id": 2,
-        "ptr_wrapper": {
-            "id": 2147483659,
-            "data": {
-                "value0": {},
-                "animationFile_": {
-                    "value0": {
-                        "polymorphic_id": 1073741824,
-                        "ptr_wrapper": {
-                            "id": 2147483660,
                             "data": {
                                 "value0": {
                                     "value_": "42D29EDB-2649-4BE6-8DA9-CCF5E47195DD"
@@ -197,6 +164,39 @@
             }
         }
     },
+    "nodes_3": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483659,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483660,
+                            "data": {
+                                "value0": {
+                                    "value_": "B08425DA-132F-45DE-B040-4E9515AD84FC"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "TurnLeft",
+                "position_": {
+                    "value0": 661.0,
+                    "value1": 420.0
+                },
+                "guid_": {
+                    "value_": "3E5987EA-F2D4-46BA-B99D-0DC7427F0421"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 0.0,
+                "modelAnimationIndex_": 0
+            }
+        }
+    },
     "nodes_4": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
@@ -210,22 +210,22 @@
                             "id": 2147483662,
                             "data": {
                                 "value0": {
-                                    "value_": "8837CD32-40ED-43DC-99CA-4AC52107D223"
+                                    "value_": "ABFFDB0F-1F3E-4723-BE3B-7F7B30E050D4"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "Walk",
+                "name_": "Attack1",
                 "position_": {
-                    "value0": 659.0,
-                    "value1": 285.0
+                    "value0": 115.0,
+                    "value1": 8.0
                 },
                 "guid_": {
-                    "value_": "EE525D9D-DD40-43C1-AB20-B682847A74AC"
+                    "value_": "B8FA8795-216D-4C9B-8563-55F70795FADF"
                 },
-                "speed_": 30.0,
-                "blendAnimationOffset_secs_": 99999997952.0,
+                "speed_": 50.0,
+                "blendAnimationOffset_secs_": 1.111111152118731e25,
                 "modelAnimationIndex_": 0
             }
         }
@@ -243,22 +243,22 @@
                             "id": 2147483664,
                             "data": {
                                 "value0": {
-                                    "value_": "6E793131-0592-437F-A8E1-9D30B59D5A0C"
+                                    "value_": "2A996D6C-C7A3-467B-9419-2C87FE467EB8"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "Attack2",
+                "name_": "TurnRight",
                 "position_": {
-                    "value0": 248.0,
-                    "value1": 8.0
+                    "value0": 658.0,
+                    "value1": 351.0
                 },
                 "guid_": {
-                    "value_": "40F6EC49-B7AF-4835-9DFF-CC04D36E41DD"
+                    "value_": "5381CB63-33D2-4AAF-AC58-73C628A4F6AF"
                 },
-                "speed_": 50.0,
-                "blendAnimationOffset_secs_": 1.111111152118731e25,
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 0.0,
                 "modelAnimationIndex_": 0
             }
         }
@@ -309,22 +309,22 @@
                             "id": 2147483668,
                             "data": {
                                 "value0": {
-                                    "value_": "2A996D6C-C7A3-467B-9419-2C87FE467EB8"
+                                    "value_": "6E793131-0592-437F-A8E1-9D30B59D5A0C"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "TurnRight",
+                "name_": "Attack2",
                 "position_": {
-                    "value0": 658.0,
-                    "value1": 351.0
+                    "value0": 248.0,
+                    "value1": 8.0
                 },
                 "guid_": {
-                    "value_": "5381CB63-33D2-4AAF-AC58-73C628A4F6AF"
+                    "value_": "40F6EC49-B7AF-4835-9DFF-CC04D36E41DD"
                 },
-                "speed_": 30.0,
-                "blendAnimationOffset_secs_": 0.0,
+                "speed_": 50.0,
+                "blendAnimationOffset_secs_": 1.111111152118731e25,
                 "modelAnimationIndex_": 0
             }
         }
