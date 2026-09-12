@@ -40,6 +40,7 @@ void GameObject::AddComponent::OnDrawRendererGui(std::shared_ptr<Component::Comp
         OnDrawTryAddComponentGui<Component::ParticleSystem >(addComponent);
         OnDrawTryAddComponentGui<Component::DirectionLight >(addComponent);
         OnDrawTryAddComponentGui<Component::SkyDome3D      >(addComponent);
+        OnDrawTryAddComponentGui<Component::Rotator        >(addComponent);
         ImGui::TreePop();
         ImGui::Spacing();
     }
@@ -177,6 +178,8 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             OnDrawTryAddComponentGui<GamePlay::Ui::SwordManActionInstructTutorial>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::StageSelectUi>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::StageSelectStageUi>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::StageSelectPresenter>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::StageMapMarker>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::DealDamageTextBillBoard>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::OtherPlayerStatusUiGroup>(addComponent);
             ImGui::TreePop();
@@ -254,6 +257,7 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
         {
             OnDrawTryAddComponentGui<GamePlay::Prop::ProximityReveal     >(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::LatticeBarrierEffect>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Prop::CloudEffect         >(addComponent);
             ImGui::TreePop();
             ImGui::Spacing();
         }

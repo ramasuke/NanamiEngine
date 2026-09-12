@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <memory>
+#include <vector>
 
 #include "vec3.hpp"
 #include "../../../../Engine/Core/Object/Field/Field.h"
@@ -20,9 +21,26 @@ namespace GameCore
     class IPlayerAvatar;
 }
 
+namespace GamePlay::Ui
+{
+    class PlayerStatus;
+}
+
 namespace NanamiEngine::Module::Asset
 {
     constexpr auto PLAYER_AVATAR_FACTORY_EXTENSION_LABEL = ".playerAvatarFactory";
+
+    struct PlayerAvatarAttachments final
+    {
+        std::vector<std::weak_ptr<GameObject::IGameObject>> objects;
+        std::weak_ptr<GamePlay::Ui::PlayerStatus>           otherPlayerStatusUi;
+    };
+
+    struct LoadedPlayerAvatar final
+    {
+        std::shared_ptr<GameCore::IPlayerAvatar> avatar;
+        PlayerAvatarAttachments                  attachments;
+    };
     
     class PlayerAvatarFactory final : public ScriptableObject
     {
@@ -38,6 +56,15 @@ namespace NanamiEngine::Module::Asset
             const std::shared_ptr<GameObject::IGameObject>& parent,
             bool enableInputAction,
             const std::shared_ptr<GameCore::PlayerAvatar::IPlayerAvatarStatus>& presetStatus);
+
+        [[nodiscard]] LoadedPlayerAvatar LoadInitedPlayerAvatarWithAttachments(
+            const GameCore::PlayerAvatar::PlayerAvatarType& type,
+            const glm::vec3& summonPosition,
+            const std::shared_ptr<GameObject::IGameObject>& parent,
+            bool enableInputAction,
+            const std::shared_ptr<GameCore::PlayerAvatar::IPlayerAvatarStatus>& presetStatus);
+
+        void DestroyAttachments(const PlayerAvatarAttachments& attachments) const;
 
         template <typename AvatarT, typename TraitsT>
         [[nodiscard]] std::shared_ptr<AvatarT> LoadInitedPlayerAvatarImpl(

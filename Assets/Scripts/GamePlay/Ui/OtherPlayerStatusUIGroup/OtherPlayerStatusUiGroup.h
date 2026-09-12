@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
 #include "../PlayerStatus/Ui_PlayerStatus.h"
 
@@ -8,8 +8,12 @@ namespace GamePlay::Ui
     {
     public:
         void AddPlayerStatus(const std::weak_ptr<PlayerStatus>& playerStatus);
+        // 既に破棄済みの弱参照が渡された場合もあわせて取り除く
+        void RemovePlayerStatus(const std::weak_ptr<PlayerStatus>& playerStatus);
 
     private:
+        void Relayout();
+
         std::vector<std::weak_ptr<PlayerStatus>> playerStatuses_;
         [[serialize(0)]] glm::vec3 spacing_ = {};
 

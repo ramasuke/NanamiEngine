@@ -1,18 +1,16 @@
-#pragma once
+﻿#pragma once
 #define WIN32_LEAN_AND_MEAN
+#include <unordered_map>
 #include <vector>
 #include "../glm/vec3.hpp"
 #include "../../CustomPacketDispatcherBase.h"
 #include "../../../Custom_PacketType.h"
 #include "../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../../Game/PlayerAvatar/Type/PlayerAvatarType.h"
+#include "../../../../../../../../Engine/Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
+#include "../../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
 #include "../rxcpp/rx.hpp"
-
-namespace NanamiEngine::Module::Asset
-{
-    class PlayerAvatarFactory;
-}
 
 namespace NanamiEngine::Module::GameObject
 {
@@ -56,7 +54,17 @@ namespace GameCore::Network
         Asset::PlayerAvatarFactory& playerAvatarFactory_;
 
     private:
-        std::vector<Core::Network::Packet> spawnPacketHistory_;
+        // 後入りへ再送するスポーン履歴(ホストのみ保持)。ルートの NetworkObjectId がまだ登録されているものだけ再送する
+        // (離脱してアバターが破棄されたプレイヤーの分は自然に除外される)
+        struct HistoryEntry
+        {
+            Core::Network::NetworkObjectId rootId;
+            Core::Network::Packet          packet;
+        };
+        std::vector<HistoryEntry> spawnPacketHistory_;
         rxcpp::composite_subscription newPlayerSubscription_;
+        rxcpp::composite_subscription playerLeftSubscription_;
+        // キー: PlayerId
+        std::unordered_map<int8_t, Asset::PlayerAvatarAttachments> remoteAttachments_;
     };
 }

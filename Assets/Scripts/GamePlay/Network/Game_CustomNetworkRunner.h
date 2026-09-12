@@ -7,6 +7,16 @@
 #include "../../Core/Game/PlayerAvatar/Type/PlayerAvatarType.h"
 #include "../../Core/Network/Packet/Dispatcher/CustomPacketDispatcherGroup.h"
 
+namespace NanamiEngine::Module::Asset
+{
+    class PrefabGameObjectFile;
+}
+
+namespace NanamiEngine::Module::GameObject
+{
+    class IGameObject;
+}
+
 namespace GamePlay::Network
 {
     class CustomNetworkRunner final : public Module::Network::NetworkRunnerBase
@@ -21,6 +31,11 @@ namespace GamePlay::Network
 
         std::weak_ptr<GameCore::IPlayerAvatar> SpawnPlayerAvatar(
             GameCore::PlayerAvatar::PlayerAvatarType type,
+            glm::vec3 position,
+            glm::quat rotation);
+
+        std::shared_ptr<Module::GameObject::IGameObject> SpawnEnemy(
+            Module::Asset::PrefabGameObjectFile& prefab,
             glm::vec3 position,
             glm::quat rotation);
 

@@ -40,7 +40,18 @@ namespace NanamiEngine::Module::Asset
         const bool enableInputAction,
         const std::shared_ptr<GameCore::PlayerAvatar::IPlayerAvatarStatus>& presetStatus)
     {
+        return LoadInitedPlayerAvatarWithAttachments(type, summonPosition, parent, enableInputAction, presetStatus).avatar;
+    }
+
+    LoadedPlayerAvatar PlayerAvatarFactory::LoadInitedPlayerAvatarWithAttachments(
+        const GameCore::PlayerAvatar::PlayerAvatarType& type,
+        const glm::vec3& summonPosition,
+        const std::shared_ptr<GameObject::IGameObject>& parent,
+        const bool enableInputAction,
+        const std::shared_ptr<GameCore::PlayerAvatar::IPlayerAvatarStatus>& presetStatus)
+    {
         std::shared_ptr<GameCore::IPlayerAvatar> playerAvatar;
+        PlayerAvatarAttachments attachments;
 
         switch (type)
         {
@@ -49,7 +60,9 @@ namespace NanamiEngine::Module::Asset
                 std::weak_ptr<GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup> swordmanCameraGroup;
                 if (enableInputAction)
                 {
-                    swordmanCameraGroup = Scene::GameObject::Instantiate(swordManCameraGroupPrefab_.get(), summonPosition)
+                    const auto cameraGroupObject = Scene::GameObject::Instantiate(swordManCameraGroupPrefab_.get(), summonPosition);
+                    attachments.objects.push_back(cameraGroupObject);
+                    swordmanCameraGroup = cameraGroupObject
                         .lock()
                         ->Components()
                         .Catch<GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup>();
@@ -74,6 +87,8 @@ namespace NanamiEngine::Module::Asset
                     auto swordManStatusUiPrefab = Scene::GameObject::Instantiate(*swordManStatusUiPrefab_.get());
                     auto swordManStatusUi = swordManStatusUiPrefab.lock()->Components().Catch<GamePlay::Ui::PlayerStatus>();
                     auto swordManPresenterObj = Scene::GameObject::Instantiate(*swordManStatusPresenterPrefab_.get());
+                    attachments.objects.push_back(swordManStatusUiPrefab);
+                    attachments.objects.push_back(swordManPresenterObj);
                     /** StatusPresenter */
                     auto swordmanStatusPresenter = swordManPresenterObj.lock()->Components().Catch<GamePlay::PlayerAvatar::SwordMan::StatusPresenter>();
                     swordmanStatusPresenter.lock()->Initialize(*swordManStatusUi.lock(), *status);
@@ -97,6 +112,9 @@ namespace NanamiEngine::Module::Asset
             auto statusUiPrefab = Scene::GameObject::Instantiate(*otherPlayerAvatarStatusUiPrefab_.get());
             auto statusUi = statusUiPrefab.lock()->Components().Catch<GamePlay::Ui::PlayerStatus>();
             auto presenterObj = Scene::GameObject::Instantiate(*otherPlayerAvatarStatusPresenterPrefab_.get());
+            attachments.objects.push_back(statusUiPrefab);
+            attachments.objects.push_back(presenterObj);
+            attachments.otherPlayerStatusUi = statusUi;
             /** StatusPresenter */
             auto statusPresenter = presenterObj.lock()->Components().Catch<GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter>();
             statusPresenter.lock()->Initialize(*statusUi.lock(), playerAvatar->PlayerStatus());
@@ -108,7 +126,26 @@ namespace NanamiEngine::Module::Asset
                 .Ui()
                 .AddPlayerStatus(statusUi);
         }
-        return playerAvatar;
+        return { playerAvatar, attachments };
+    }
+
+    void PlayerAvatarFactory::DestroyAttachments(const PlayerAvatarAttachments& attachments) const
+    {
+        if (const auto statusUi = attachments.otherPlayerStatusUi.lock())
+        {
+            const auto scene = GameCore::Game::Instance()
+                .SubScenes()
+                .Catch<GameCore::Scene::Sub::OtherPlayerStatusUiScene>(
+                    GameCore::Scene::Sub::SceneType::OtherPlayerStatus);
+            if (scene)
+                scene->Context().Ui().RemovePlayerStatus(statusUi);
+        }
+
+        for (const auto& weakObject : attachments.objects)
+        {
+            if (const auto object = weakObject.lock())
+                object->OnDestroy();
+        }
     }
 
     void PlayerAvatarFactory::OnDrawGui()

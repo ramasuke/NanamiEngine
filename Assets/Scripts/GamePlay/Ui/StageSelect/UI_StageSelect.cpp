@@ -1,4 +1,4 @@
-﻿#include "UI_StageSelect.h"
+#include "UI_StageSelect.h"
 
 #include "../../../../../Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../../Engine/Core/Coroutine/Awaitable/Yield/Coroutine_WaitYield.h"
@@ -15,38 +15,64 @@ namespace GamePlay::Ui
         stageSelectBackGroundMask_ = GameObject::CatchChild<NanamiUi::BlendImageRenderer>(Entity(), stageSelectBackGroundMaskName_);
         worldMovieRenderer_        = GameObject::CatchChild<NanamiUi::MovieRenderer>(Entity(), worldMovieRendererName_);
         worldEnterButton_          = GameObject::CatchChild<NanamiUi::Button>(Entity(), worldEnterButtonName_);
+        worldEnterButtonGlow_      = GameObject::CatchChild<NanamiUi::ImageAnimationRenderer>(Entity(), worldEnterButtonName_);
         backGround_                = GameObject::CatchChild<NanamiUi::MovieRenderer>(Entity(), backGroundName_);
-    }
-    
-    void StageSelectUi::OnStart()
-    {
+        mapMarker_                 = GameObject::CatchChild<StageMapMarker>(Entity(), mapMarkerName_);
+
         for (const auto& buttonName : stageSelectButtonNames_)
         {
             auto selectStageUi = GameObject::CatchChild<StageSelectStageUi>(Entity(), buttonName);
-            std::weak_ptr weakSelectStageUi = selectStageUi;
-            selectStageUi->SubscribeOnClickSelectButton([this, weakSelectStageUi]
-            {
-                selectedSceneType_ = weakSelectStageUi.lock()->SceneType();
-                hasSelectedSceneType_ = true;
-            });
             stageSelectButtons_.push_back(CreateField<StageSelectStageUi>(selectStageUi));
         }
+    }
 
-        worldEnterButton_->OnClick().subscribe([this](NanamiUi::MouseState)
-        {
-            if (!hasSelectedSceneType_ || isEnteringWorld_)
-                return;
-
-            isEnteringWorld_ = true;
-            Coroutine::StartCoroutine(EnterWorldAsync(selectedSceneType_));
-        });
-        
+    void StageSelectUi::OnStart()
+    {
         Coroutine::StartCoroutine(StartStageSelectAsync());
     }
 
     void StageSelectUi::OnDestroy()
     {
         ComponentBase::OnDestroy();
+    }
+
+    std::vector<std::weak_ptr<StageSelectStageUi>> StageSelectUi::Stages() const
+    {
+        std::vector<std::weak_ptr<StageSelectStageUi>> result;
+        result.reserve(stageSelectButtons_.size());
+        for (const auto& stage : stageSelectButtons_)
+        {
+            result.push_back(stage.get());
+        }
+        return result;
+    }
+
+    void StageSelectUi::HighlightSelectedStage(const size_t selectedIndex)
+    {
+        for (size_t i = 0; i < stageSelectButtons_.size(); ++i)
+        {
+            stageSelectButtons_[i]->SetHighlighted(i == selectedIndex);
+        }
+    }
+
+    void StageSelectUi::SetWorldEnterButtonEnabled(const bool isEnabled)
+    {
+        const auto& sprite = isEnabled ? worldEnterButtonActiveSprite_ : worldEnterButtonDisabledSprite_;
+        if (const auto renderer = worldEnterButton_->Components().Catch<NanamiUi::IInteractivableRenderer>().lock())
+        {
+            renderer->SetSprite(sprite.get());
+        }
+        worldEnterButtonGlow_->SetEnable(isEnabled);
+    }
+
+    void StageSelectUi::ShowMapMarker(const glm::vec2& position, const bool isCleared)
+    {
+        if (const auto entity = mapMarker_->Entity().lock())
+        {
+            entity->SetEnable(true);
+        }
+        mapMarker_->MoveTo(position);
+        mapMarker_->SetCleared(isCleared);
     }
 
     Coroutine::Task<void> StageSelectUi::StartStageSelectAsync()
@@ -60,8 +86,12 @@ namespace GamePlay::Ui
         co_await FadeBlendRateAsync(backGroundMask_.get(), 0, backGroundMaskBlendRate_);
     }
 
-    Coroutine::Task<void> StageSelectUi::EnterWorldAsync(const GameCore::Scene::Main::SceneType sceneType)
+    Coroutine::Task<void> StageSelectUi::PlayEnterWorldTransitionAsync(const GameCore::Scene::Main::SceneType sceneType)
     {
+        if (isEnteringWorld_)
+            co_return;
+
+        isEnteringWorld_ = true;
         Coroutine::StartCoroutine(FadeBlendRateAsync(stageSelectBackGroundMask_.get(), 0, stageSelectBackGroundMaskBlendRate_));
         co_await FadeBlendRateAsync(backGround_.get(), 255, 0);
         GameCore::Game::Instance().Scenes().RequestChangeScene(sceneType);
@@ -110,10 +140,12 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("worldMovieRenderer_", worldMovieRenderer_);
         ImGuiHelper::OnDrawInputField("worldEnterButtonName_", worldEnterButtonName_);
         ImGuiHelper::OnDrawInputField("worldEnterButton_", worldEnterButton_);
+        ImGuiHelper::OnDrawInputField("worldEnterButtonGlow_", worldEnterButtonGlow_);
         ImGuiHelper::OnDrawInputField("backGroundName_", backGroundName_);
         ImGuiHelper::OnDrawInputField("backGround_", backGround_);
-        ImGui::Text("selectedSceneType_: %s", hasSelectedSceneType_
-            ? GameCore::Scene::Main::ToString(selectedSceneType_).data()
-            : "None");
+        ImGuiHelper::OnDrawInputField("worldEnterButtonActiveSprite_", worldEnterButtonActiveSprite_);
+        ImGuiHelper::OnDrawInputField("worldEnterButtonDisabledSprite_", worldEnterButtonDisabledSprite_);
+        ImGuiHelper::OnDrawInputField("mapMarkerName_", mapMarkerName_);
+        ImGuiHelper::OnDrawInputField("mapMarker_", mapMarker_);
     }
 }

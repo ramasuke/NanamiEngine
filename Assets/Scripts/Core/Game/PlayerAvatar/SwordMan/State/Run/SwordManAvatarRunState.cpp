@@ -27,7 +27,7 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoUpdate()
         OnChangeState(SwordManAvatarStateType::Idle);
     if (!Input().Run().IsUpdatePressed() || !Status().CanRun())
         OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk);
-    if (Input().Jump().IsPressed())
+    if (Input().Jump().IsPressed() && Status().CanJump())
         OnChangeState(SwordManAvatarStateType::Jump);
     if (Input().AvoidRolling().IsPressed() && Status().CanAvoidRolling())
         OnChangeState(SwordManAvatarStateType::AvoidRolling);

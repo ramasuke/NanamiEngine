@@ -32,6 +32,8 @@ namespace
             registry.Register(static_cast<PacketType>(DefaultPacketType::SyncAnimation),      "SyncAnimation");
             registry.Register(static_cast<PacketType>(DefaultPacketType::SyncParameter),      "SyncParameter");
             registry.Register(static_cast<PacketType>(DefaultPacketType::Rpc),                "Rpc");
+            registry.Register(static_cast<PacketType>(DefaultPacketType::PlayerLeft),         "PlayerLeft");
+            registry.Register(static_cast<PacketType>(DefaultPacketType::OwnershipSnapshot),  "OwnershipSnapshot");
         }
     };
     static DefaultPacketTypeNameRegistration s_defaultPacketTypeNameRegistration;

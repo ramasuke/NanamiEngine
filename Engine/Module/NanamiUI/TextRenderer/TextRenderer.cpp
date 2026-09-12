@@ -228,7 +228,10 @@ namespace NanamiEngine::Module::NanamiUi
                 Transform().GetWorldPos().y,
                 Transform().GetWorldPos().z
             );
-    
+
+            SetUseZBuffer3D  (FALSE);
+            SetWriteZBuffer3D(FALSE);
+
             DrawBillboard3D(
                 pos,
                 0.5f, 0.5f,
@@ -237,6 +240,9 @@ namespace NanamiEngine::Module::NanamiUi
                 textScreen_,
                 TRUE
             );
+
+            SetUseZBuffer3D  (TRUE);
+            SetWriteZBuffer3D(TRUE);
         }
     }
 }

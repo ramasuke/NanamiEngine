@@ -11,8 +11,8 @@ namespace NanamiEngine::Module::Network
         if (!HasStateAuthority())
             return;
 
-        const auto networkGameObject = Components().Catch<NetworkGameObject>().lock();
-        const auto id = networkGameObject->GetNetworkObjectId();
+        // NetworkGameObject を持たない子ノード(NetworkComponent のみ)でも落ちないよう自身の ID を使う
+        const auto id = GetNetworkObjectId();
 
         NetworkRunner()
             .DefaultDispatcher()

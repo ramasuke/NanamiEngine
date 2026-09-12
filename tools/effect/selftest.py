@@ -16,10 +16,19 @@ Stages:
   5. best-effort CUI compile: only runs if the pinned/overridden Effekseer
      1.7.3.0 CUI is present on this machine; compiles a fixture and a
      presets-built tree, checks exit 0 + EFKE/INFO header. Skipped elsewhere.
+  6. Effekseer enum domains (enums.py): out-of-range easing speeds are
+     rejected at build time and by `validate`, pva() per-axis blocks come out
+     with the capitalised <Center>/<Max>/<Min> Effekseer actually reads, and
+     `install` keeps an existing asset's GUID.
+  7. best-effort corpus sweep: every real .efkproj under $EFFEKSEER_CORPUS
+     (default: the Effekseer素材 folder next to the repo) must produce zero
+     enum-domain violations - the false-positive guard for enums.py's table.
 """
 
 from __future__ import annotations
 
+import argparse
+import json
 import os
 import sys
 import traceback
@@ -30,7 +39,7 @@ _REPO = _HERE.parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from tools.effect import cli, meta, presets as p, xmlio  # noqa: E402
+from tools.effect import cli, enums, meta, presets as p, xmlio  # noqa: E402
 from tools.effect.model import Elem  # noqa: E402
 from tools.common import cereal_json as cj  # noqa: E402
 
@@ -46,6 +55,9 @@ FIXTURES = [
 ]
 
 REAL_EFFECT_DIR = _REPO / "Assets" / "Art" / "Effect"
+# The 310-file real sample corpus the toolkit was built from (11 asset packs);
+# machine-specific like the CUI, so the sweep skips cleanly when absent.
+DEFAULT_CORPUS_DIR = _REPO.parent / "Effekseer素材"
 REAL_META_FIXTURES = [
     REAL_EFFECT_DIR / "Laser01.efkefc.meta",
     REAL_EFFECT_DIR / "tktk01" / "fireSpark.efkefc.meta",
@@ -176,7 +188,7 @@ def stage_presets_roundtrip(r: Reporter) -> None:
         rotation2 = p.rotation_values(axis_easing=p.axis_easing(
             axis=p.xyz("Axis", z=p.pva("Z", center=1, max=1, min=1)),
             start={"center": 0, "max": 0, "min": 0}, end={"center": 90, "max": 90, "min": 90},
-            start_speed=5, end_speed=-5,
+            start_speed=10, end_speed=-10,
         ))
         scaling = p.scaling_values(easing=p.easing(
             "Easing",
@@ -419,9 +431,207 @@ def stage_cui_compile(r: Reporter) -> None:
                     "Sprite node's ColorTexture did not survive CUI compile - "
                     "DRAWING_TYPE['sprite'] regressed back to node-type 0 (\"none\")?"
                 )
-            r.ok("Sprite node's ColorTexture survives CUI compile")
+            got = cli.efkefc_asset_paths(out)
+            if got != ["Texture/selftestRegressionTex.png"]:
+                raise AssertionError(f"efkefc_asset_paths() = {got!r}, expected the one ColorTexture")
+            r.ok("Sprite node's ColorTexture survives CUI compile (and efkefc_asset_paths() reads it back)")
         except Exception:  # noqa: BLE001
             r.fail("sprite texture reaches compiled INFO chunk", traceback.format_exc())
+
+
+def _assert_raises_value_error(fn, what: str) -> None:
+    try:
+        fn()
+    except ValueError:
+        return
+    raise AssertionError(f"{what} was accepted; expected ValueError")
+
+
+def stage_enum_domains(r: Reporter) -> None:
+    r.section("stage 6: Effekseer enum domains (editor-crash guard) + pva() casing + install GUID reuse")
+    try:
+        # FadeIn/FadeOut StartSpeed/EndSpeed and every Easing block's
+        # StartSpeed/EndSpeed are Enum<EasingStart>/<EasingEnd> in Effekseer
+        # (-30..30 step 10). The shipped DragonDefeatSparkle/FootstepDust/
+        # DragonFireBall sources were built with EndSpeed=-50..-100, which the
+        # CUI compiled happily and Effekseer's editor then crashed on
+        # (NullReferenceException in GUI.Component.Enum.Update) as soon as the
+        # Basic Render Settings dock showed such a node.
+        _assert_raises_value_error(
+            lambda: p.renderer_common(fade_out={"frame": 4, "start_speed": 0, "end_speed": -90}),
+            "renderer_common(fade_out end_speed=-90)")
+        _assert_raises_value_error(
+            lambda: p.renderer_common(fade_in={"frame": 4, "start_speed": 15}),
+            "renderer_common(fade_in start_speed=15)")
+        _assert_raises_value_error(
+            lambda: p.easing("Easing", start_speed=0, end_speed=-100),
+            "easing(end_speed=-100)")
+        _assert_raises_value_error(
+            lambda: p.axis_easing(axis=p.xyz("Axis", z=p.pva("Z", center=1, max=1, min=1)), start_speed=5),
+            "axis_easing(start_speed=5)")
+        ok = p.renderer_common(fade_out={"frame": 4, "start_speed": 0, "end_speed": -30.0})
+        got = (ok.get("FadeOut.StartSpeed").text, ok.get("FadeOut.EndSpeed").text)
+        if got != ("0", "-30"):
+            raise AssertionError(f"legal speeds serialised as {got!r}")
+        for v in enums.EASING_SPEEDS:
+            p.easing("Easing", start_speed=v, end_speed=v)
+        r.ok("presets reject out-of-range easing speeds and accept the 7 legal ones")
+    except Exception:  # noqa: BLE001
+        r.fail("presets easing-speed validation", traceback.format_exc())
+
+    try:
+        try:
+            cli._parse_fade("4:0:-90")
+        except cli.CliError as e:
+            if "-30" not in str(e):
+                raise AssertionError(f"CliError does not list the legal values: {e}")
+        else:
+            raise AssertionError("_parse_fade('4:0:-90') was accepted")
+        if cli._parse_fade("4:10:-30") != {"frame": 4.0, "start_speed": 10, "end_speed": -30}:
+            raise AssertionError("_parse_fade('4:10:-30') parsed wrong")
+        r.ok("--fade-in/--fade-out reject out-of-range speeds")
+    except Exception:  # noqa: BLE001
+        r.fail("cli _parse_fade", traceback.format_exc())
+
+    try:
+        # Regression: pva() per-axis dicts used to write the dict keys verbatim
+        # (<center>/<max>/<min>), which Effekseer's case-sensitive loader
+        # ignores - every shipped effect with a random Scale silently ran at
+        # scale 1.0.
+        scale = p.pva("Scale", x={"center": 0.6, "max": 0.9, "min": 0.4},
+                      y={"center": 0.6, "max": 0.9, "min": 0.4}, drawn_as=0)
+        text = xmlio.serialize(scale)
+        for bad in ("<center>", "<max>", "<min>"):
+            if bad in text:
+                raise AssertionError(f"pva() still writes lowercase {bad}")
+        if scale.get("X.Center").text != "0.6" or scale.get("Y.Min").text != "0.4" or scale.get("DrawnAs").text != "0":
+            raise AssertionError(f"pva() per-axis shape wrong:\n{text}")
+        point = p.generation_location_point(location={"x": {"center": 0, "max": 1, "min": -1}})
+        if point.get("Point.Location.X.Max") is None:
+            raise AssertionError("generation_location_point() per-axis Location lost its Max")
+        r.ok("pva() per-axis dicts serialise as <Center>/<Max>/<Min>")
+    except Exception:  # noqa: BLE001
+        r.fail("pva() per-axis casing", traceback.format_exc())
+
+    try:
+        for name in FIXTURES:
+            problems = enums.check_project(xmlio.read(TESTDATA / f"{name}.efkproj"))
+            if problems:
+                raise AssertionError(f"false positive(s) in real fixture {name}: {problems[:3]}")
+        node = p.sprite_node("Node", sprite_block=p.sprite(),
+                             renderer_common=p.renderer_common(fade_out={"frame": 4}))
+        node.set_path("RendererCommonValues.FadeOut.EndSpeed", "-90")
+        node.set_path("DrawingValues.Sprite.Billboard", "7")
+        node.set_path("CommonValues.MaxGeneration.Value", "-90")  # plain int, not an enum: must not be flagged
+        problems = enums.check_node(node)
+        if len(problems) != 2 or "EndSpeed=-90" not in problems[0] or "Billboard=7" not in problems[1]:
+            raise AssertionError(f"check_node() = {problems!r}, expected exactly the EndSpeed and Billboard hits")
+        proj = p.new_project(root_children=[p.group_node("G", children=[node])])
+        got = enums.check_project(proj)
+        if len(got) != 2 or not got[0].startswith("[0.0] Node:"):
+            raise AssertionError(f"check_project() = {got!r}")
+        r.ok("enums.check_node()/check_project(): 0 hits on 7 real fixtures, 2 on a doctored node")
+    except Exception:  # noqa: BLE001
+        r.fail("enums.check_node()/check_project()", traceback.format_exc())
+
+    try:
+        # CLI paths refuse to *write* a violating node (apply stays atomic).
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            proj_path = Path(tmp) / "t.efkproj"
+            xmlio.write(proj_path, p.new_project())
+            before = proj_path.read_bytes()
+            ns = argparse.Namespace(file=str(proj_path), parent="", kind="sprite", name="N",
+                                    life=None, max_generation=None, infinite=None,
+                                    color_texture=None, fade_in=None, fade_out=None, uv_scroll=None,
+                                    generation_shape=None, radius=None, division=None,
+                                    angle_start=None, angle_end=None, billboard=None, color=None,
+                                    color_random=None, model=None, lighting=None, track_color=None,
+                                    set=["RendererCommonValues.FadeOut.EndSpeed=-90"])
+            try:
+                cli.cmd_add_node(ns)
+            except cli.CliError:
+                pass
+            else:
+                raise AssertionError("add-node --set EndSpeed=-90 was written")
+            if proj_path.read_bytes() != before:
+                raise AssertionError("add-node modified the file despite the violation")
+            ops = Path(tmp) / "ops.json"
+            ops.write_text(json.dumps([
+                {"op": "add-node", "kind": "sprite", "name": "A"},
+                {"op": "set-params", "path": "0", "set": {"DrawingValues.Sprite.Billboard": 9}},
+            ]), encoding="utf-8")
+            try:
+                cli.cmd_apply(argparse.Namespace(file=str(proj_path), ops=str(ops)))
+            except cli.CliError:
+                pass
+            else:
+                raise AssertionError("apply with Billboard=9 was written")
+            if proj_path.read_bytes() != before:
+                raise AssertionError("apply modified the file despite the violation (not atomic)")
+        r.ok("add-node/apply refuse to write enum-domain violations, file untouched")
+    except Exception:  # noqa: BLE001
+        r.fail("cli write-time enum guard", traceback.format_exc())
+
+    try:
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "src.efkefc"
+            src.write_bytes(b"EFKE\x00\x00\x00\x00INFO\x04\x00\x00\x00\xae\x06\x00\x00")
+            dest = Path(tmp) / "out" / "Spark.efkefc"
+            ns = argparse.Namespace(efkefc=str(src), project=None, dest=str(dest))
+            cli.cmd_install(ns)
+            meta_path = dest.with_suffix(dest.suffix + ".meta")
+            first = meta.read_meta(meta_path)
+            meta_bytes = meta_path.read_bytes()
+            cli.cmd_install(ns)
+            second = meta.read_meta(meta_path)
+            if first["guid"] != second["guid"] or meta_path.read_bytes() != meta_bytes:
+                raise AssertionError("re-install re-minted the GUID / rewrote the .meta")
+            if cli.efkefc_asset_paths(dest) != []:
+                raise AssertionError("empty INFO chunk should yield no asset paths")
+        r.ok("install keeps an existing asset's .meta/GUID on re-install")
+    except Exception:  # noqa: BLE001
+        r.fail("install GUID reuse", traceback.format_exc())
+
+    try:
+        shipped = REAL_EFFECT_DIR / "tktk01" / "DragonFireBall.efkefc"
+        if not shipped.exists():
+            r.ok(f"{shipped.name} asset paths (skipped: not present)")
+        else:
+            got = cli.efkefc_asset_paths(shipped)
+            if "Texture/Flame01.png" not in got:
+                raise AssertionError(f"efkefc_asset_paths({shipped.name}) = {got!r}")
+            r.ok(f"efkefc_asset_paths() lists {len(got)} asset(s) of shipped {shipped.name}")
+    except Exception:  # noqa: BLE001
+        r.fail("efkefc_asset_paths() on a shipped asset", traceback.format_exc())
+
+
+def stage_corpus_sweep(r: Reporter) -> None:
+    r.section("stage 7: enum-domain sweep over the real sample corpus (best-effort, machine-specific)")
+    corpus = Path(os.environ.get("EFFEKSEER_CORPUS") or DEFAULT_CORPUS_DIR)
+    files = sorted(corpus.rglob("*.efkproj")) if corpus.is_dir() else []
+    if not files:
+        r.ok(f"skipped: no corpus at {corpus} (set $EFFEKSEER_CORPUS)")
+        return
+    swept = 0
+    unreadable: list[str] = []
+    hits: list[str] = []
+    for path in files:
+        try:
+            proj = xmlio.read(path)
+        except Exception as e:  # noqa: BLE001
+            unreadable.append(f"{path.name}: {type(e).__name__}")
+            continue
+        swept += 1
+        for msg in enums.check_project(proj):
+            hits.append(f"{path.relative_to(corpus).as_posix()}: {msg}")
+    if hits:
+        r.fail("enum-domain false positives in real corpus",
+               "\n".join(hits[:20]) + (f"\n... {len(hits)} total" if len(hits) > 20 else ""))
+    else:
+        r.ok(f"0 enum-domain hits across {swept} real .efkproj file(s)"
+             + (f" ({len(unreadable)} unreadable, skipped)" if unreadable else ""))
 
 
 def main() -> int:
@@ -431,6 +641,8 @@ def main() -> int:
     stage_meta_roundtrip(r)
     stage_content_path_convention(r)
     stage_cui_compile(r)
+    stage_enum_domains(r)
+    stage_corpus_sweep(r)
     return r.finish()
 
 

@@ -6,23 +6,24 @@ namespace NanamiEngine::Module::Asset
         : ScriptableObject(contentPath)
         , quests_(std::make_unique<GameCore::PlayerAvatar::SwordMan::QuestGroup>())
         , comboNormalAttack_{
-            GameCore::PlayerAvatar::AttackParam(GameCore::Damage::PhysicsPower(1), GameCore::PlayerAvatar::EnhancePower(1), 0.3528985507f, 0.6637681159f),
-            GameCore::PlayerAvatar::AttackParam(GameCore::Damage::PhysicsPower(2), GameCore::PlayerAvatar::EnhancePower(2), 0.9246376812f, 1.2855072464f),
-            GameCore::PlayerAvatar::AttackParam(GameCore::Damage::PhysicsPower(3), GameCore::PlayerAvatar::EnhancePower(3), 1.7f         , 2.0f         )}
+            GameCore::PlayerAvatar::AttackParam(GameCore::Damage::PhysicsPower(1), GameCore::PlayerAvatar::EnhancePower(1), 0.3208168643f, 0.6034255599f),
+            GameCore::PlayerAvatar::AttackParam(GameCore::Damage::PhysicsPower(2), GameCore::PlayerAvatar::EnhancePower(2), 0.8405797102f, 1.1686429513f),
+            GameCore::PlayerAvatar::AttackParam(GameCore::Damage::PhysicsPower(3), GameCore::PlayerAvatar::EnhancePower(3), 1.5454545455f, 1.8181818182f)}
         , maxStamina_                         (GameCore::StatusParameter::Stamina(100.0f))
         , staminaDrainPerSecond_              (20.0f)
         , staminaRegenPerSecond_              (10.0f)
         , comboNormalAttackStateDuration_secs_(0)
         , dashAttackLungeSpeed_               (55.0f)
         , comboHitFeel_ {
-            GameCore::PlayerAvatar::HitFeelParam(0.04f, 0.5f , 0.3f, 0.12f, 5.0f ),
-            GameCore::PlayerAvatar::HitFeelParam(0.05f, 0.4f , 0.5f, 0.12f, 5.75f),
-            GameCore::PlayerAvatar::HitFeelParam(0.08f, 0.15f, 0.8f, 0.12f, 5.7f)}
-        , dashHitFeel_                        (0.09f, 0.1f, 0.9f, 0.14f, 1.0f)
-        , comboInputBufferWindow_secs_        (0.13f)
+            GameCore::PlayerAvatar::HitFeelParam(0.0363636364f, 0.5f , 0.3f, 0.1090909091f, 5.0f ),
+            GameCore::PlayerAvatar::HitFeelParam(0.0454545455f, 0.4f , 0.5f, 0.1090909091f, 5.75f),
+            GameCore::PlayerAvatar::HitFeelParam(0.0727272727f, 0.15f, 0.8f, 0.1090909091f, 5.7f)}
+        , dashHitFeel_                        (0.0818181818f, 0.1f, 0.9f, 0.1272727273f, 1.0f)
+        , comboInputBufferWindow_secs_        (0.1181818182f)
         , moveRotateSpeed_                    (0)
         , lockOnAttackRotateSpeed_            (3.0f)
         , jumpPower_                          (0)
+        , jumpStateDuration_secs_             (0)
         , jumpCooldown_secs_                  (0)
         , damageStateDuration_secs_           (0)
         , avoidRollingStateDuration_secs_     (0)
@@ -57,6 +58,7 @@ namespace NanamiEngine::Module::Asset
         LibCore::ImGuiHelper::OnDrawInputField("moveRotateSpeed_", moveRotateSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("lockOnAttackRotateSpeed_", lockOnAttackRotateSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpPower_", jumpPower_);
+        LibCore::ImGuiHelper::OnDrawInputField("jumpStateDuration_secs_", jumpStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpCooldown_secs_", jumpCooldown_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("damageStateDuration_secs_", damageStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("deathStateDuration_secs_", deathStateDuration_secs_);

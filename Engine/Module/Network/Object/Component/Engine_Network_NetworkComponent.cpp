@@ -22,7 +22,7 @@ namespace NanamiEngine::Module::Network
         if (objectId_ == NetworkObjectId::Invalid())
             return false;
 
-        return objectId_.IsOwnerBy(NetworkRunner().GetPlayerId());
+        return NetworkRunner().IsLocallyOwned(objectId_);
     }
 
     NetworkObjectId NetworkComponent::GetNetworkObjectId() const

@@ -91,7 +91,7 @@
                 "value3": 1.0
             }
         },
-        "childCount": 3,
+        "childCount": 4,
         "child": {
             "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
@@ -529,6 +529,123 @@
                             "value0": 1.0,
                             "value1": 1.0,
                             "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    }
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483664,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "DamageFlash",
+                    "guid_": {
+                        "value_": "A0FFA604-789C-4B75-B208-FEBF1B0417A5"
+                    },
+                    "components_": {
+                        "componentCount": 2,
+                        "component_0": {
+                            "polymorphic_id": 2147483653,
+                            "polymorphic_name": "NanamiEngine::Module::NanamiUi::BlendImageRenderer",
+                            "ptr_wrapper": {
+                                "id": 2147483665,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "9AD5563B-705E-4A21-ADC1-47B1F745C634"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "blendMode_": 0,
+                                    "blendRate_": 0,
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483666,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "C8E4A3A2-DF33-43F7-9AE4-E6D569EBFC02"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 1100
+                                }
+                            }
+                        },
+                        "component_1": {
+                            "polymorphic_id": 2147483654,
+                            "polymorphic_name": "GamePlay::Ui::DamageFlashUI",
+                            "ptr_wrapper": {
+                                "id": 2147483667,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "75CC769C-A92A-4129-95EE-ADCFA1CE68EA"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "maxBlendRate_": 0,
+                                    "defaultIntensity_": 0.0,
+                                    "defaultDuration_": 0.0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 660.0,
+                            "value1": 440.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.46875,
+                            "value1": 0.46875,
+                            "value2": 0.46875
                         },
                         "worldMatrix_": {
                             "value0": {

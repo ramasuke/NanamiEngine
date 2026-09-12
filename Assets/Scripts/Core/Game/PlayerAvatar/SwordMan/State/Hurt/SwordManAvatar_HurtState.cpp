@@ -2,12 +2,13 @@
 
 #include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
+#include "../../../../../../GamePlay/Ui/PlayerStatus/Ui_DamageFlash.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
 
 void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoEnter()
 {
-    // 被弾の瞬間にカメラを揺らす(揺れ幅・長さは ShakeCameraBehaviour の設定値)。
     NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::ShakeMainCamera();
+    GamePlay::Ui::DamageFlashUI::FlashMainScreen();
 
     Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
     Status().ApplyDamage();
@@ -33,7 +34,7 @@ void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoUpdate()
             OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk);
         if (Input().Run().IsUpdatePressed() && Status().CanRun())
             OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run);
-        if (Input().Jump().IsPressed())
+        if (Input().Jump().IsPressed() && Status().CanJump())
             OnChangeState(SwordManAvatarStateType::Jump);
         if (Input().AvoidRolling().IsPressed() && Status().CanAvoidRolling())
             OnChangeState(SwordManAvatarStateType::AvoidRolling);

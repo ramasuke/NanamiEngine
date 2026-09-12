@@ -38,6 +38,7 @@ namespace NanamiEngine::Module::GameObject
         void load(Archive& archive, const std::uint32_t version);
         std::shared_ptr<IGameObject> CopyForEditor();
         [[nodiscard]] std::shared_ptr<IGameObject> CopyForInstantiate() override;
+        [[nodiscard]] std::shared_ptr<PrefabGameObject> CreateWorkingCopy() const;
         [[nodiscard]] const std::string& Name() const override { return name_; }
         bool IsEnable() override { return isActive_; }
         void SetEnable(bool enable) override;

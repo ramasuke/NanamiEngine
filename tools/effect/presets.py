@@ -34,6 +34,7 @@ project-root ``Behavior``/``TargetLocation``/``Culling`` metadata, and a
 
 from __future__ import annotations
 
+from .enums import easing_speed
 from .model import Elem
 
 # ---------------------------------------------------------------------------
@@ -57,6 +58,12 @@ def _fmt(value) -> str:
             return str(int(value))
         return repr(value)
     return str(value)
+
+
+def _opt_speed(value, what: str) -> int | None:
+    """``None`` passes through (field omitted); anything else must be a legal
+    Effekseer easing speed (see :func:`enums.easing_speed`)."""
+    return None if value is None else easing_speed(value, what)
 
 
 def elem(tag: str, *, text=None, children: list[Elem] | None = None, **leaf_children) -> Elem:
@@ -103,7 +110,14 @@ def pva(tag: str, *, x=None, y=None, z=None, center=None, max=None, min=None,
         for name, spec in axes.items():
             if spec is None:
                 continue
-            e.children.append(elem(name, **spec))
+            # Recurse through the scalar branch so each axis comes out as
+            # <Center>/<Max>/<Min>(/<DrawnAs>). This used to be
+            # elem(name, **spec), which wrote the dict keys verbatim as
+            # lowercase <center>/<max>/<min> - Effekseer's loader looks the
+            # children up case-sensitively (e["Center"]), so the whole axis
+            # was silently ignored and fell back to the editor default (scale
+            # 1.0, no randomization) in every shipped effect built this way.
+            e.children.append(pva(name, **spec))
         if drawn_as is not None:
             e.children.append(Elem("DrawnAs", text=_fmt(drawn_as)))
         return e
@@ -127,6 +141,10 @@ def easing(tag: str, start: Elem | None = None, end: Elem | None = None,
     caller builds, since real samples use all three depending on which block
     this ``Easing`` sits under (Location/Scaling/Rotation vs. Scaling's
     ``SingleEasing`` vs. Model/Track's per-channel color easing).
+    ``start_speed``/``end_speed`` are Effekseer ``EasingStart``/``EasingEnd``
+    enums, not free floats: only ``-30,-20,-10,0,10,20,30`` are legal (see
+    :data:`enums.EASING_SPEEDS`); anything else raises ``ValueError`` here
+    because the Effekseer editor crashes on it.
     """
     e = Elem(tag)
     if start is not None:
@@ -134,9 +152,9 @@ def easing(tag: str, start: Elem | None = None, end: Elem | None = None,
     if end is not None:
         e.children.append(elem("End", children=end.children) if end.tag != "End" else end)
     if start_speed is not None:
-        e.children.append(Elem("StartSpeed", text=_fmt(start_speed)))
+        e.children.append(Elem("StartSpeed", text=_fmt(easing_speed(start_speed, "start_speed"))))
     if end_speed is not None:
-        e.children.append(Elem("EndSpeed", text=_fmt(end_speed)))
+        e.children.append(Elem("EndSpeed", text=_fmt(easing_speed(end_speed, "end_speed"))))
     return e
 
 
@@ -205,9 +223,9 @@ def axis_easing(*, axis: Elem, start: dict | None = None, end: dict | None = Non
     if end is not None:
         e.children.append(pva("End", **end))
     if start_speed is not None:
-        e.children.append(Elem("StartSpeed", text=_fmt(start_speed)))
+        e.children.append(Elem("StartSpeed", text=_fmt(easing_speed(start_speed, "start_speed"))))
     if end_speed is not None:
-        e.children.append(Elem("EndSpeed", text=_fmt(end_speed)))
+        e.children.append(Elem("EndSpeed", text=_fmt(easing_speed(end_speed, "end_speed"))))
     return e
 
 
@@ -435,7 +453,11 @@ def renderer_common(*, color_texture: str | None = None,
                      uv_scroll: dict | None = None,
                      distortion: bool | None = None, distortion_intensity=None) -> Elem:
     """``RendererCommonValues``. ``fade_in``/``fade_out`` are ``{"frame":..,
-    "start_speed":..,"end_speed":..}`` (only ``frame`` required). ``uv_fixed``
+    "start_speed":..,"end_speed":..}`` (only ``frame`` required; the speeds are
+    Effekseer ``EasingStart``/``EasingEnd`` enums - only ``-30,-20,-10,0,10,20,
+    30`` are legal, see :data:`enums.EASING_SPEEDS` - not free floats, and an
+    out-of-range value is rejected here because it crashes the Effekseer
+    editor while compiling fine). ``uv_fixed``
     is ``{"start":{"x":..,"y":..}, "size":{"x":..,"y":..}}``; ``uv_animation``
     additionally takes ``frame_length``/``frame_count_x``/``frame_count_y``/
     ``loop_type``; ``uv_scroll`` replaces ``size`` with a ``speed`` dict. Pass
@@ -463,13 +485,13 @@ def renderer_common(*, color_texture: str | None = None,
     if fade_in is not None:
         e.children.append(Elem("FadeInType", text="1"))
         e.children.append(elem("FadeIn", Frame=fade_in.get("frame"),
-                                StartSpeed=fade_in.get("start_speed"),
-                                EndSpeed=fade_in.get("end_speed")))
+                                StartSpeed=_opt_speed(fade_in.get("start_speed"), "fade_in.start_speed"),
+                                EndSpeed=_opt_speed(fade_in.get("end_speed"), "fade_in.end_speed")))
     if fade_out is not None:
         e.children.append(Elem("FadeOutType", text="1"))
         e.children.append(elem("FadeOut", Frame=fade_out.get("frame"),
-                                StartSpeed=fade_out.get("start_speed"),
-                                EndSpeed=fade_out.get("end_speed")))
+                                StartSpeed=_opt_speed(fade_out.get("start_speed"), "fade_out.start_speed"),
+                                EndSpeed=_opt_speed(fade_out.get("end_speed"), "fade_out.end_speed")))
     if uv_fixed is not None:
         e.children.append(Elem("UV", text="1"))
         e.children.append(elem("UVFixed",

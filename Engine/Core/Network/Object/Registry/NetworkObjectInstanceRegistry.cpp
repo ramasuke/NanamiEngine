@@ -1,4 +1,4 @@
-#include "NetworkObjectInstanceRegistry.h"
+﻿#include "NetworkObjectInstanceRegistry.h"
 
 #include "../../../../Module/Component/ComponentBase.h"
 #include "../../../../Module/GameObject/Interface/IGameObject.h"
@@ -7,30 +7,80 @@
 
 namespace NanamiEngine::Core::Network
 {
-    NetworkObjectId NetworkObjectInstanceRegistry::Register(
-        const std::weak_ptr<Module::GameObject::IGameObject>& object)
-    {
-        const NetworkObjectId id(nextId_++);
-        instances_[id.Value()] = object;
-        RegisterTickables(object);
-        return id;
-    }
-
     void NetworkObjectInstanceRegistry::RegisterWithId(
         const NetworkObjectId id,
-        const std::weak_ptr<Module::GameObject::IGameObject>& object)
+        const std::weak_ptr<Module::GameObject::IGameObject>& object,
+        const OwnerLeavePolicy policy)
     {
-        instances_[id.Value()] = object;
+        Entry& entry   = entries_[id.Value()];
+        entry.instance = object;
+        entry.policy   = policy;
+        // SetOwner が先に届いている(後入りの OwnershipSnapshot)場合はその所有者を保持する
+        if (entry.owner == PlayerId::Invalid())
+            entry.owner = id.SpawnerId();
+
         RegisterTickables(object);
+    }
+
+    void NetworkObjectInstanceRegistry::Unregister(const NetworkObjectId id)
+    {
+        entries_.erase(id.Value());
+    }
+
+    void NetworkObjectInstanceRegistry::UnregisterObject(const std::shared_ptr<Module::GameObject::IGameObject>& object)
+    {
+        for (auto it = entries_.begin(); it != entries_.end();)
+        {
+            if (it->second.instance.lock() == object)
+                it = entries_.erase(it);
+            else
+                ++it;
+        }
     }
 
     std::weak_ptr<Module::GameObject::IGameObject> NetworkObjectInstanceRegistry::Find(
         const NetworkObjectId id) const
     {
-        const auto it = instances_.find(id.Value());
-        if (it == instances_.end())
+        const auto it = entries_.find(id.Value());
+        if (it == entries_.end())
             return {};
-        return it->second;
+        return it->second.instance;
+    }
+
+    PlayerId NetworkObjectInstanceRegistry::OwnerOf(const NetworkObjectId id) const
+    {
+        const auto it = entries_.find(id.Value());
+        if (it == entries_.end())
+            return PlayerId::Invalid();
+        return it->second.owner;
+    }
+
+    void NetworkObjectInstanceRegistry::SetOwner(const NetworkObjectId id, const PlayerId owner)
+    {
+        entries_[id.Value()].owner = owner;
+    }
+
+    std::vector<OwnedEntry> NetworkObjectInstanceRegistry::CollectOwnedBy(const PlayerId owner) const
+    {
+        std::vector<OwnedEntry> result;
+        for (const auto& [rawId, entry] : entries_)
+        {
+            if (entry.owner == owner && !entry.instance.expired())
+                result.push_back({ NetworkObjectId(rawId), entry.policy });
+        }
+        return result;
+    }
+
+    std::vector<OwnerOverride> NetworkObjectInstanceRegistry::CollectOwnerOverrides() const
+    {
+        std::vector<OwnerOverride> result;
+        for (const auto& [rawId, entry] : entries_)
+        {
+            const NetworkObjectId id(rawId);
+            if (!entry.instance.expired() && entry.owner != id.SpawnerId())
+                result.push_back({ id, entry.owner });
+        }
+        return result;
     }
 
     void NetworkObjectInstanceRegistry::RegisterTickables(

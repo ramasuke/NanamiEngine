@@ -26,6 +26,10 @@ namespace NanamiEngine::Module::Network
         void Initialize();
         /** API: PlayerIDの取得 */
         [[nodiscard]] Core::Network::PlayerId GetPlayerId() const;
+        /** API: NetworkObjectId の現在の所有者(未登録なら Invalid)。ID の上位バイト(Spawn したピア)とは別物 */
+        [[nodiscard]] Core::Network::PlayerId OwnerOf(Core::Network::NetworkObjectId id) const;
+        /** API: 自分がそのオブジェクトの所有者(権威)か */
+        [[nodiscard]] bool IsLocallyOwned(Core::Network::NetworkObjectId id) const;
         /** API: Defaultで設定されているPacket割り当て処理一覧 */
         Core::Network::DefaultPacketDispatcher& DefaultDispatcher();
         /** API: パケット送信（NetworkTransform等のコンポーネントから呼ぶ） */

@@ -4,6 +4,7 @@
 #include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../Scene/Main/Group/Main_GameSceneGroup.h"
 #include "../../../../../../../Scene/Main/Content/Title/TitleScene.h"
+#include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 #include "../../../../../Status/EnemyStatus.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
@@ -12,7 +13,12 @@ namespace GameCore::Npc::Enemy::Behaviour
     {
         if (context.EnemyStatus()->Get().Health() > StatusParameter::Health(0))
             return TickStatus::Failure;
-        
+
+        // 権威側限定Tickなら、他ピアにも同じ NetworkObjectId の個体を破棄させる
+        // (非権威側は権威ゲートによりこのBT自体をTickしないため、OnDestroyも自動では呼ばれない)
+        if (context.IsNetworkAuthority())
+            GameCore::Network::EnemyDeathRpc::Send(context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable);
+
         context.EnemyGameObject().OnDestroy();
         return TickStatus::Success;
     }

@@ -336,6 +336,28 @@ CopyForInstantiate()
     return copied;
 }
 
+std::shared_ptr<GameObject::PrefabGameObject> GameObject::PrefabGameObject::CreateWorkingCopy() const
+{
+    // Prefab ウィンドウで編集するための使い捨てコピー。CopyForInstantiate() と異なり
+    // シーンへの新規インスタンス化ではなく同じファイルへの保存を目的とするため、
+    // guid_ / copiedObjectGuidList_ はリセットせず元のまま引き継ぐ。
+    std::stringstream stringStream;
+    {
+        cereal::PortableBinaryOutputArchive outputArchive(stringStream);
+        outputArchive(*this);
+    }
+
+    const auto copy = std::make_shared<PrefabGameObject>();
+    {
+        cereal::PortableBinaryInputArchive inputArchive(stringStream);
+        inputArchive(*copy);
+    }
+
+    copy->guid_ = guid_;
+    copy->copiedObjectGuidList_ = copiedObjectGuidList_;
+    return copy;
+}
+
 void GameObject::PrefabGameObject::SetEnable(const bool enable)
 {
     Transform ().OnEnable(enable);

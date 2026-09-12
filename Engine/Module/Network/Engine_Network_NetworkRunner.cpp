@@ -44,7 +44,19 @@ namespace NanamiEngine::Module::Network
     Core::Network::PlayerId NetworkRunnerBase::GetPlayerId() const
     {
         return PlayerIdProvider().GetPlayerId();
-    }   
+    }
+
+    Core::Network::PlayerId NetworkRunnerBase::OwnerOf(const Core::Network::NetworkObjectId id) const
+    {
+        return networkSystem_->GetInstanceRegistry().OwnerOf(id);
+    }
+
+    bool NetworkRunnerBase::IsLocallyOwned(const Core::Network::NetworkObjectId id) const
+    {
+        const auto owner = OwnerOf(id);
+        // オフライン時は双方 Invalid になるので、Invalid 同士の一致で権威が立たないよう明示的に弾く
+        return owner != Core::Network::PlayerId::Invalid() && owner == GetPlayerId();
+    }
 
     void NetworkRunnerBase::OnUpdate()
     {
@@ -91,6 +103,12 @@ namespace NanamiEngine::Module::Network
         if (networkSystem_)
         {
             ImGui::Text(("playerId: " + networkSystem_->GetPlayerId().ToString()).c_str());
+
+            // Spawn したピアと現在の所有者が異なるオブジェクト(離脱者から移譲されたもの)
+            const auto overrides = networkSystem_->GetInstanceRegistry().CollectOwnerOverrides();
+            ImGui::Text("owner overrides: %d", static_cast<int>(overrides.size()));
+            for (const auto& [id, owner] : overrides)
+                ImGui::BulletText("id %s -> owner %s", id.ToString().c_str(), owner.ToString().c_str());
         }
         ImGuiHelper::OnDrawInputField("sampleSpawnPrefab_", sampleSpawnPrefab_);
         if (ImGui::Button("Sample Spawn Prefab"))

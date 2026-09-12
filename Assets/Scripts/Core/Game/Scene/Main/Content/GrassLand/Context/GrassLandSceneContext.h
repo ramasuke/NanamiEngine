@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../../../../../../../../../Engine/Module/Asset/Sound/SoundFile.h"
+#include "../../../../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../../../../GamePlay/Network/Game_CustomNetworkRunner.h"
 #include "../../../Context/Main_SceneContextBase.h"
 
@@ -12,11 +13,15 @@ namespace GameCore::Scene
 
         [[nodiscard]] const std::weak_ptr<Asset::SoundFile>& BGM() const { return bgm_.get(); }
         [[nodiscard]] GamePlay::Network::CustomNetworkRunner& NetworkRunner() const { return *networkRunner_.get(); }
-        
+        [[nodiscard]] Asset::PrefabGameObjectFile& EnemyPrefab() const { return *enemyPrefab_.get(); }
+        [[nodiscard]] std::vector<std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject>> EnemySpawnPoints() const;
+
     private:
         [[serialize(1)]] FIELD(Asset::SoundFile) bgm_;
         [[serialize(2)]] FIELD(GamePlay::Network::CustomNetworkRunner) networkRunner_;
-        
+        [[serialize(5)]] FIELD(Asset::PrefabGameObjectFile) enemyPrefab_;
+        [[serialize(6)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) enemySpawnPointsRoot_;
+
 #pragma region Serialization Function
     public:
         void OnDrawGui() override;
@@ -26,8 +31,8 @@ namespace GameCore::Scene
             archive(cereal::base_class<SceneContextBase>(this));
             archive(CEREAL_NVP(bgm_));
             archive(CEREAL_NVP(networkRunner_));
-            [[serialize(3)]] FIELD(Asset::PrefabGameObjectFile) sampleSpawnPrefab;
-            if (version == 3) archive(CEREAL_NVP(sampleSpawnPrefab));
+            archive(CEREAL_NVP(enemyPrefab_));
+            archive(CEREAL_NVP(enemySpawnPointsRoot_));
         }
 
         template<class Archive>
@@ -35,15 +40,15 @@ namespace GameCore::Scene
             archive(cereal::base_class<SceneContextBase>(this));
             if (version >= 1) archive(CEREAL_NVP(bgm_));
             if (version >= 2) archive(CEREAL_NVP(networkRunner_));
-            [[serialize(3)]] FIELD(Asset::PrefabGameObjectFile) sampleSpawnPrefab;
-            if (version == 3) archive(CEREAL_NVP(sampleSpawnPrefab));
+            if (version >= 5) archive(CEREAL_NVP(enemyPrefab_));
+            if (version >= 6) archive(CEREAL_NVP(enemySpawnPointsRoot_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::GrassLandSceneContext, 4);
+CEREAL_CLASS_VERSION(GameCore::Scene::GrassLandSceneContext, 6);
 CEREAL_REGISTER_TYPE(GameCore::Scene::GrassLandSceneContext);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::SceneContextBase, GameCore::Scene::GrassLandSceneContext);
 #pragma endregion

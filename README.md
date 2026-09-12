@@ -163,6 +163,12 @@ enet(UDP) 上に構築されたクライアント/サーバー型モデルです
   `Packet_PacketDispatcherGroup` 経由でディスパッチ。spawn履歴・補間バッファ等の固有ロジックを
   持つものは専用Dispatcherのままで、エンジン組み込みの`AssignPlayerId`/`SpawnNetworkObject`/
   `SyncParameter`/`SyncTransform`、ゲーム側の`SpawnPlayer`が該当します。
+- **所有者テーブルとクライアント離脱**: `NetworkObjectId`の上位バイトは「Spawnしたピア」でしかなく、現在の所有者(権威)は
+  `NetworkObjectInstanceRegistry`の所有者テーブル(`OwnerOf`/`SetOwner`)で管理します。権威判定は`NetworkRunnerBase::IsLocallyOwned`
+  に一本化されています。ホストはクライアントの切断を検知すると`PlayerLeft{left, newOwner}`を全員へ配り(自分の受信キューにも積む)、
+  全ピアが`SessionDispatcher`で同じ手順を実行します: 登録時の`OwnerLeavePolicy`が`Destroy`(プレイヤーアバター)なら破棄、
+  `Transfer`(敵など)ならホストへ所有権を移譲。後入りには`OwnershipSnapshot`で「Spawnしたピア≠所有者」の一覧を送ります。
+  ホスト自身の`PlayerId`は`0`(クライアントは1,2,…)。ホスト自体の離脱(ホストマイグレーション)は未対応です。
 - **汎用RPC**: 「対象`NetworkObjectId`のコンポーネントに対してメソッドを1つ呼ぶ」形のものは
   `Engine/Module/Network/Rpc/Engine_Network_Rpc.h`の`Rpc<Args...>`/`RpcDef<RpcType, Args...>`
   経由で汎用化されています。単一の`DefaultPacketType::Rpc`パケットタイプ+`RpcHandlerRegistry`
@@ -281,7 +287,23 @@ python tools/effect/selftest.py
 `tools/common/meta_base.py` 経由で新規guidの `.efkefc.meta`（`ParticleFile`）を発行し、
 `--project` 指定時は `.efkproj` ソースを `Assets/Art/Effect/_Source/` にコミットします。
 
-### `tools/common`（4ツール共通基盤）
+### `tools/model`（DxLib ModelViewer / MV1変換）
+
+```
+python -m tools.model convert IN.fbx OUT.mv1 --modelviewer-path <DxLibModelViewer_64bit.exeのパス>
+python -m tools.model install OUT.mv1 --dest Assets/Art/.../<Name>.mv1 [--source IN.fbx]
+python tools/model/selftest.py
+```
+
+DxLibModelViewerには公式のCLI/CUIが存在しないため、`convert` は`pywinauto`で実際の
+GUIを操作します（`pip install pywinauto` が必要、本プロジェクト初のPythonサードパーティ
+依存）。`install` は`tools/common/meta_base.py` 経由で新規guidの `.mv1.meta`（`Mv1File`）を
+発行し、`--source` 指定時のみ `.fbx` を `<出力先ディレクトリ>/_Source/` にコピーします
+（`.mv1`は`.efkefc`と違い単一ルートを持たないため）。既知の制約は
+**`tools/model/README.md`** 参照（GUI自動操作の実装は実機未検証、`dxlib_modelviewer.py`の
+ロード/保存処理は未実装スタブ）。
+
+### `tools/common`（各ツール共通基盤）
 
 - `cereal_json.py` — cerealの `JSONOutputArchive` 方言（RapidJSON PrettyWriter、4スペースインデント、
   UTF-8 no-BOM、CRLF、末尾改行なし、Grisu2の数値表現の癖を含む）をバイト単位で再現するリーダー/

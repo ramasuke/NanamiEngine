@@ -1,4 +1,5 @@
 ﻿#include "ApplicationConfiguration.h"
+#include "../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../../../Module/ProjectConfig/Engine_Module_ProjectConfig.h"
 #include "../../../Module/SafeExecute/Engine_Module_SafeExecute.h"
 #include "ImGuiHelper.h"
@@ -49,6 +50,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto APP_CONFIG_ASSETS_DIR_PATH_KEY    = "AssetsDirectoryPath";
     constexpr auto APP_CONFIG_CRASH_RECOVERY_KEY     = "CrashRecoveryEnabled";
     constexpr auto APP_CONFIG_DEBUGGER_FAILFAST_KEY  = "DebuggerFailFastEnabled";
+    constexpr auto APP_CONFIG_BREAK_ON_LOG_ERROR_KEY = "BreakOnLogErrorEnabled";
 
     void AppConfiguration::Load()
     {
@@ -70,6 +72,8 @@ namespace NanamiEngine::Core::Application::Configuration
             Module::ProjectConfig::LoadOrDefaultWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_CRASH_RECOVERY_KEY, false));
         Module::SetDebuggerFailFastEnabled(
             Module::ProjectConfig::LoadOrDefaultWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_DEBUGGER_FAILFAST_KEY, true));
+        Module::SetBreakOnLogErrorEnabled(
+            Module::ProjectConfig::LoadOrDefaultWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_BREAK_ON_LOG_ERROR_KEY, false));
     }
 
     void AppConfiguration::Save()
@@ -90,6 +94,7 @@ namespace NanamiEngine::Core::Application::Configuration
 
         Module::ProjectConfig::SaveWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_CRASH_RECOVERY_KEY, Module::IsCrashRecoveryEnabled());
         Module::ProjectConfig::SaveWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_DEBUGGER_FAILFAST_KEY, Module::IsDebuggerFailFastEnabled());
+        Module::ProjectConfig::SaveWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_BREAK_ON_LOG_ERROR_KEY, Module::IsBreakOnLogErrorEnabled());
     }
 
     int   AppConfiguration::GetWindowWidth()        { return windowWidth_; }
@@ -256,6 +261,22 @@ namespace NanamiEngine::Core::Application::Configuration
                                "(=デバッガがその場で止まります)。\n"
                                "デバッグ中でもCrash Recoveryの継続動作自体を確認したい場合はOFFにしてください。\n"
                                "(Crash RecoveryがOFFの場合、この設定は元々関係ありません)");
+        }
+
+        bool breakOnLogErrorEnabled = Module::IsBreakOnLogErrorEnabled();
+        if (ImGui::Checkbox("Break On LogError (Debugger Attached)", &breakOnLogErrorEnabled))
+        {
+            Module::SetBreakOnLogErrorEnabled(breakOnLogErrorEnabled);
+            Save();
+        }
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("When ON, LogError() will break into the debugger (__debugbreak) right where\n"
+                               "it is called, if a debugger (Rider/Visual Studio, etc.) is attached, so you\n"
+                               "can inspect the live call stack.\n"
+                               "Does not affect Log()/LogWarning().\n"
+                               "When OFF (default), it just logs and continues as before. Always ignored\n"
+                               "when no debugger is attached.");
         }
 
         ImGui::Spacing();

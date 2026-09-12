@@ -1,4 +1,4 @@
-#include "Packet_Dispatch_SyncAnimation.h"
+﻿#include "Packet_Dispatch_SyncAnimation.h"
 
 #include "../../../../Object/Registry/INetworkObjectInstanceRegistry.h"
 #include "../../../../../../Module/AnimationTree/AnimationTree.h"
@@ -24,7 +24,8 @@ namespace NanamiEngine::Core::Network
         size_t offset = 0;
         const auto networkObjectId = packet.Data().Read<NetworkObjectId>(offset);
 
-        if (networkObjectId.IsOwnerBy(PlayerId()))
+        // 自分が所有者(送信側)のオブジェクトは自分の送信のエコーなので無視する
+        if (instanceRegistry_.OwnerOf(networkObjectId) == PlayerId())
             return;
 
         const auto state = packet.Data().Read<Module::AnimationTree::AnimationStateSnapshot>(offset);

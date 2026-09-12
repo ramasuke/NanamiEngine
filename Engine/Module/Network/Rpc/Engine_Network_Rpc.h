@@ -35,7 +35,7 @@ namespace NanamiEngine::Module::Network
             const RpcOwnershipFilter filter)
         {
             const auto targetId = buffer.Read<Core::Network::NetworkObjectId>(offset);
-            const bool isOwner = targetId.IsOwnerBy(NetworkRunnerBase::Instance().GetPlayerId());
+            const bool isOwner = NetworkRunnerBase::Instance().IsLocallyOwned(targetId);
 
             if (filter == RpcOwnershipFilter::SkipIfOwner && isOwner)
                 return nullptr;

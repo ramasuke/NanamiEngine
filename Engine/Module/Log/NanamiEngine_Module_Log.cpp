@@ -1,5 +1,6 @@
 ﻿#include "NanamiEngine_Module_Log.h"
 
+#include <atomic>
 #include <iostream>
 #include <__msvc_ostream.hpp>
 #include <Windows.h>
@@ -8,13 +9,11 @@
 #include <mutex>
 #include <string_view>
 
-// /SUBSYSTEM:WINDOWS ではコンソールが無く std::cout / std::cerr は誰にも見えないため、
-// Visual Studio の出力ウィンドウ（DebugView でも可）にも同じ内容を出す
 namespace NanamiEngine::Module
 {
     namespace
     {
-        // ConsoleWindow等に表示するログ履歴の上限件数（超えた分は古いものから捨てる）
+        // ConsoleWindow等に表示するログ履歴の上限件数
         constexpr size_t kMaxLogHistory = 2000;
 
         std::mutex& LogMutex()
@@ -23,20 +22,24 @@ namespace NanamiEngine::Module
             return mutex;
         }
 
+        std::atomic<bool>& BreakOnLogErrorEnabledFlag()
+        {
+            static std::atomic enabled{false};
+            return enabled;
+        }
+
         std::deque<LogRecord>& LogHistoryBuffer()
         {
             static std::deque<LogRecord> history;
             return history;
         }
-
-        // DxLib自身のLog.txtと名前が衝突しないよう別名でリポジトリルートに書き出す
+        
         std::ofstream& LogFile()
         {
             static std::ofstream file("EngineLog.txt", std::ios::out | std::ios::trunc);
             return file;
         }
-
-        // フルパスは日本語フォルダ(デスクトップ等)を含み得るので、ファイル名部分だけを使う。
+        
         std::string FormatLocation(const std::source_location& location)
         {
             const std::string_view fullPath = location.file_name();
@@ -61,7 +64,7 @@ namespace NanamiEngine::Module
             }
 
             auto& history = LogHistoryBuffer();
-            history.push_back(LogRecord{ level, locatedText });
+            history.push_back(LogRecord{ .level = level, .text = locatedText });
             if (history.size() > kMaxLogHistory)
                 history.pop_front();
         }
@@ -80,6 +83,19 @@ namespace NanamiEngine::Module
     void LogError(const std::string& text, const std::source_location location)
     {
         Record(LogLevel::Error, "[Error] ", text, std::cerr, location);
+
+        if (BreakOnLogErrorEnabledFlag().load(std::memory_order_relaxed) && IsDebuggerPresent())
+            __debugbreak();
+    }
+
+    bool IsBreakOnLogErrorEnabled()
+    {
+        return BreakOnLogErrorEnabledFlag().load(std::memory_order_relaxed);
+    }
+
+    void SetBreakOnLogErrorEnabled(const bool enabled)
+    {
+        BreakOnLogErrorEnabledFlag().store(enabled, std::memory_order_relaxed);
     }
 
     std::vector<LogRecord> LogHistory()
@@ -91,7 +107,7 @@ namespace NanamiEngine::Module
 
     void ClearLogHistory()
     {
-        std::lock_guard lock(LogMutex());
+        std::scoped_lock lock(LogMutex());
         LogHistoryBuffer().clear();
     }
 }

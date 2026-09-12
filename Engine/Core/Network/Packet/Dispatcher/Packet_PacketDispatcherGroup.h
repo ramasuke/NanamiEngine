@@ -6,6 +6,7 @@
 #include "../../Object/Registry/INetworkObjectInstanceRegistry.h"
 #include "Module/SyncParameter/Packet_Dispatch_SyncParameter.h"
 #include "Module/Rpc/Packet_Dispatch_Rpc.h"
+#include "Module/Session/Packet_Dispatch_Session.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -22,6 +23,7 @@ namespace NanamiEngine::Core::Network
         [[nodiscard]] SyncAnimationDispatcher& SyncAnimation() { return syncAnimation_; }
         [[nodiscard]] SyncParameterDispatcher& SyncParameter() { return syncParameter_; }
         [[nodiscard]] RpcDispatcher&           Rpc()           { return rpcDispatcher_; }
+        [[nodiscard]] SessionDispatcher&       Session()       { return sessionDispatcher_; }
 
         [[nodiscard]] std::weak_ptr<Module::GameObject::IGameObject> FindNetworkObject(NetworkObjectId id) const;
 
@@ -36,5 +38,6 @@ namespace NanamiEngine::Core::Network
         SyncAnimationDispatcher syncAnimation_;
         SyncParameterDispatcher syncParameter_;
         RpcDispatcher rpcDispatcher_;
+        SessionDispatcher sessionDispatcher_; // syncTransform_ を参照するので後ろに置く
     };
 }

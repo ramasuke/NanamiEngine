@@ -15,6 +15,7 @@ namespace NanamiEngine::Core::MainWindow
         explicit MainWindowBase(bool useShadowMap);
         virtual void AddContent(const std::shared_ptr<ContentT>& content);
         void RemoveContent(const std::shared_ptr<ContentT>& content);
+        [[nodiscard]] bool Contains(const Guid& guid) const { return contents_.contains(guid); }
         [[nodiscard]] Application::WindowLifeCycle& LifeCycle() override { return lifeCycle_; }
         
     protected:

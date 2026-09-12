@@ -56,7 +56,8 @@ namespace NanamiEngine::Core::Network
 
     void SpawnNetworkObject::ApplyNetworkIds(
         const std::vector<NetworkObjectId>& ids,
-        const std::shared_ptr<GameObject::IGameObject>& gameObject)
+        const std::shared_ptr<GameObject::IGameObject>& gameObject,
+        const OwnerLeavePolicy policy)
     {
         const auto nodes = CollectNetworkGameObjects(gameObject);
         if (nodes.size() != ids.size())
@@ -66,7 +67,7 @@ namespace NanamiEngine::Core::Network
         const auto count = std::min(nodes.size(), ids.size());
         for (size_t i = 0; i < count; ++i)
         {
-            instanceRegistry_.RegisterWithId(ids[i], nodes[i]);
+            instanceRegistry_.RegisterWithId(ids[i], nodes[i], policy);
 
             // NetworkGameObject があればそれ経由で同一 GameObject 上の NetworkComponent へ配る。
             // 無い(NetworkComponent だけを持つ子オブジェクト)場合は直接 NetworkAwake で配る
@@ -81,7 +82,8 @@ namespace NanamiEngine::Core::Network
     }
 
     std::vector<NetworkObjectId> SpawnNetworkObject::AllocateIdsAndRegister(
-        const std::shared_ptr<GameObject::IGameObject>& gameObject)
+        const std::shared_ptr<GameObject::IGameObject>& gameObject,
+        const OwnerLeavePolicy policy)
     {
         const auto nodeCount = CollectNetworkGameObjects(gameObject).size();
 
@@ -90,15 +92,28 @@ namespace NanamiEngine::Core::Network
         for (size_t i = 0; i < nodeCount; ++i)
             ids.push_back(CreateNetworkObjectId());
 
-        ApplyNetworkIds(ids, gameObject);
+        ApplyNetworkIds(ids, gameObject, policy);
         return ids;
     }
 
     void SpawnNetworkObject::RegisterWithNetworkIds(
         const std::vector<NetworkObjectId>& ids,
-        const std::shared_ptr<GameObject::IGameObject>& gameObject)
+        const std::shared_ptr<GameObject::IGameObject>& gameObject,
+        const OwnerLeavePolicy policy)
     {
-        ApplyNetworkIds(ids, gameObject);
+        ApplyNetworkIds(ids, gameObject, policy);
+    }
+
+    void SpawnNetworkObject::DespawnAndUnregister(const std::shared_ptr<GameObject::IGameObject>& root)
+    {
+        if (!root)
+            return;
+
+        for (const auto& node : CollectNetworkGameObjects(root))
+            instanceRegistry_.UnregisterObject(node);
+
+        // 破棄は GameWindow の削除キューに積まれ、子オブジェクトも一緒に破棄される
+        root->OnDestroy();
     }
 
     std::shared_ptr<GameObject::IGameObject> SpawnNetworkObject::SpawnAndRegister(
@@ -108,7 +123,7 @@ namespace NanamiEngine::Core::Network
     {
         const auto gameObject = Scene::GameObject::Instantiate(prefabFile, position, rotation).lock();
         if (gameObject)
-            AllocateIdsAndRegister(gameObject);
+            AllocateIdsAndRegister(gameObject, OwnerLeavePolicy::Transfer);
         return gameObject;
     }
 
@@ -129,7 +144,7 @@ namespace NanamiEngine::Core::Network
         if (!gameObject)
             return nullptr;
 
-        const auto assignedIds = AllocateIdsAndRegister(gameObject);
+        const auto assignedIds = AllocateIdsAndRegister(gameObject, OwnerLeavePolicy::Transfer);
 
         Packet packet = Packet::Create(DefaultPacketType::SpawnNetworkObject);
         packet.Data().Write(PlayerId());
@@ -160,6 +175,6 @@ namespace NanamiEngine::Core::Network
 
         const auto gameObject = Scene::GameObject::Instantiate(*spawnObject.lock(), position, rotation).lock();
         if (gameObject)
-            ApplyNetworkIds(networkObjectIds, gameObject);
+            ApplyNetworkIds(networkObjectIds, gameObject, OwnerLeavePolicy::Transfer);
     }
 }

@@ -41,7 +41,7 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] StatusParameter::MoveSpeed GetRunSpeed           () const override;
         [[nodiscard]] float                      GetMoveRotateSpeed    () const override;
         [[nodiscard]] float                      GetJumpPower          () const override;
-        [[nodiscard]] float                      GetJumpCooldown_secs  () const override;
+        [[nodiscard]] float                      GetJumpStateDuration_secs() const override;
 
         void OnDrawGui() override;
         void AddOnDamageStack(std::unique_ptr<IDamage> damageContext) override;

@@ -86,7 +86,7 @@ namespace GameCore::PlayerAvatar
         return 0.0f;
     }
 
-    float NullPlayerAvatarStatus::GetJumpCooldown_secs() const
+    float NullPlayerAvatarStatus::GetJumpStateDuration_secs() const
     {
         return 0.0f;
     }

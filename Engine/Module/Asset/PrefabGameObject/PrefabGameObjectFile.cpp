@@ -43,10 +43,16 @@ void Asset::PrefabGameObjectFile::OnDoubleClick()
     if (!content_)
         return;
 
-    Core::Application::ApplicationBase::OnChangeWindow(Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::PrefabViewWindow>());
-    Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::PrefabViewWindow>()->AddContent(content_);
-    content_->InitGameObject(std::weak_ptr<GameObject::IGameObject>(), content_);
-    content_->InitPrefab(contentPath_);
+    const auto prefabWindow = Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::PrefabViewWindow>();
+    Core::Application::ApplicationBase::OnChangeWindow(prefabWindow);
+
+    if (prefabWindow->Contains(content_->GetGuid()))
+        return; // 既に開いている場合は編集中の内容を保持し、作り直さない
+
+    const auto workingCopy = content_->CreateWorkingCopy();
+    prefabWindow->AddContent(workingCopy);
+    workingCopy->InitGameObject(std::weak_ptr<GameObject::IGameObject>(), workingCopy);
+    workingCopy->InitPrefab(contentPath_);
 }
 
 void Asset::PrefabGameObjectFile::OnSaveCallback()
@@ -54,6 +60,29 @@ void Asset::PrefabGameObjectFile::OnSaveCallback()
     // 読み込みに失敗した Prefab は空データで上書きしない
     if (!content_)
         return;
+
+    const auto prefabWindow = Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::PrefabViewWindow>();
+    if (prefabWindow && prefabWindow->Contains(content_->GetGuid()))
+    {
+        // Prefab ウィンドウの作業用コピーが直前の MainWindows().OnSave() で
+        // 既にファイルへ正しい内容を書き込み済み。content_ を古いメモリ内容のまま
+        // 再保存して上書きしてしまわないよう、ディスクの最新状態から作り直す。
+        try
+        {
+            content_ = std::make_shared<GameObject::PrefabGameObject>(contentPath_);
+        }
+        catch (const NanamiEngine::Module::Exception::SerializationException& exception)
+        {
+            NanamiEngine::Module::LogError("PrefabGameObjectFile: " + std::string(exception.what()));
+            return;
+        }
+
+        if (content_->Components().Catch<Network::NetworkGameObject>().lock())
+        {
+            Core::Application::ApplicationBase::NetworkPrefabObjectRegistry().Add(content_);
+        }
+        return;
+    }
 
     content_->OnSave();
 }

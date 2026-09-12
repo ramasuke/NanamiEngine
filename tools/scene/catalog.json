@@ -1,5 +1,5 @@
 {
-  "generated_from": "f5825ac2ccf7c112a9528773b214a737dfda4b16",
+  "generated_from": "0083a5893584631c8bce67d4f24f0981218df6a3",
   "components": {
     "CineMachine::Behaviour::ShakeCameraBehaviour": {
       "class": "ShakeCameraBehaviour",
@@ -711,6 +711,60 @@
         }
       ]
     },
+    "GamePlay::Prop::CloudEffect": {
+      "class": "CloudEffect",
+      "fqn": "GamePlay::Prop::CloudEffect",
+      "leaf": "CloudEffect",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Prop/Cloud/CloudEffect.h",
+      "params": [
+        {
+          "key": "windX_",
+          "member": "windX_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "windZ_",
+          "member": "windZ_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "cloudScale_",
+          "member": "cloudScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "coverage_",
+          "member": "coverage_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "softness_",
+          "member": "softness_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "density_",
+          "member": "density_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
     "GamePlay::Prop::DestructibleObject": {
       "class": "DestructibleObject",
       "fqn": "GamePlay::Prop::DestructibleObject",
@@ -945,6 +999,42 @@
           "named": true,
           "shape": "field",
           "type": "IGameObject"
+        }
+      ]
+    },
+    "GamePlay::Ui::DamageFlashUI": {
+      "class": "DamageFlashUI",
+      "fqn": "GamePlay::Ui::DamageFlashUI",
+      "leaf": "DamageFlashUI",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/PlayerStatus/Ui_DamageFlash.h",
+      "params": [
+        {
+          "key": "maxBlendRate_",
+          "member": "maxBlendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "defaultIntensity_",
+          "member": "defaultIntensity_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "defaultDuration_",
+          "member": "defaultDuration_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -1205,11 +1295,72 @@
         }
       ]
     },
+    "GamePlay::Ui::StageMapMarker": {
+      "class": "StageMapMarker",
+      "fqn": "GamePlay::Ui::StageMapMarker",
+      "leaf": "StageMapMarker",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/StageSelect/MapMarker/StageMapMarker.h",
+      "params": [
+        {
+          "key": "challengeSprite_",
+          "member": "challengeSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "clearedSprite_",
+          "member": "clearedSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "bobAmplitude_",
+          "member": "bobAmplitude_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "bobSpeed_",
+          "member": "bobSpeed_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::StageSelectPresenter": {
+      "class": "StageSelectPresenter",
+      "fqn": "GamePlay::Ui::StageSelectPresenter",
+      "leaf": "StageSelectPresenter",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/StageSelect/Presenter/StageSelectPresenter.h",
+      "params": []
+    },
     "GamePlay::Ui::StageSelectStageUi": {
       "class": "StageSelectStageUi",
       "fqn": "GamePlay::Ui::StageSelectStageUi",
       "leaf": "StageSelectStageUi",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1221,6 +1372,12 @@
       "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/StageSelect/Stage/Ui_StageSelect_StageUI.h",
       "params": [
+        {
+          "key": "nameTextChildName_",
+          "member": "nameTextChildName_",
+          "named": true,
+          "shape": "string"
+        },
         {
           "key": "selectButtonHoverSound_",
           "member": "selectButtonHoverSound_",
@@ -1236,11 +1393,25 @@
           "type": "SoundFile"
         },
         {
-          "key": "stageSceneType_",
-          "member": "stageSceneType_",
+          "key": "stageData_",
+          "member": "stageData_",
           "named": true,
-          "shape": "unknown",
-          "type": "SceneType"
+          "shape": "field",
+          "type": "StageData"
+        },
+        {
+          "key": "selectedRowSprite_",
+          "member": "selectedRowSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "unselectedRowSprite_",
+          "member": "unselectedRowSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
         }
       ]
     },
@@ -1248,7 +1419,7 @@
       "class": "StageSelectUi",
       "fqn": "GamePlay::Ui::StageSelectUi",
       "leaf": "StageSelectUi",
-      "version": 2,
+      "version": 4,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1319,6 +1490,26 @@
         {
           "key": "backGroundName_",
           "member": "backGroundName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "worldEnterButtonActiveSprite_",
+          "member": "worldEnterButtonActiveSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "worldEnterButtonDisabledSprite_",
+          "member": "worldEnterButtonDisabledSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "mapMarkerName_",
+          "member": "mapMarkerName_",
           "named": true,
           "shape": "string"
         }
@@ -2062,6 +2253,40 @@
           "named": true,
           "shape": "field",
           "type": "HlslPsFile"
+        }
+      ]
+    },
+    "NanamiEngine::Module::Component::Rotator": {
+      "class": "Rotator",
+      "fqn": "NanamiEngine::Module::Component::Rotator",
+      "leaf": "Rotator",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IUpdatable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Engine/Module/Component/Rotator/Rotator.h",
+      "params": [
+        {
+          "key": "rotateAxis_",
+          "member": "rotateAxis_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "rotateSpeedDegPerSec_",
+          "member": "rotateSpeedDegPerSec_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -2927,11 +3152,17 @@
     "CinemachineCameraBrain": [
       "NanamiEngine::CineMachine::CinemachineCameraBrain"
     ],
+    "CloudEffect": [
+      "GamePlay::Prop::CloudEffect"
+    ],
     "CollisionListener": [
       "Component::CollisionListener"
     ],
     "CylinderCollider": [
       "NanamiEngine::Module::Component::CylinderCollider"
+    ],
+    "DamageFlashUI": [
+      "GamePlay::Ui::DamageFlashUI"
     ],
     "DealDamageTextBillBoard": [
       "GamePlay::Ui::DealDamageTextBillBoard"
@@ -3017,6 +3248,9 @@
     "QuadRenderer": [
       "NanamiEngine::Module::Component::QuadRenderer"
     ],
+    "Rotator": [
+      "NanamiEngine::Module::Component::Rotator"
+    ],
     "SampleTitleLogo": [
       "GamePlay::Ui::SampleTitleLogo"
     ],
@@ -3053,6 +3287,12 @@
     ],
     "SphereRenderer": [
       "NanamiEngine::Module::Component::SphereRenderer"
+    ],
+    "StageMapMarker": [
+      "GamePlay::Ui::StageMapMarker"
+    ],
+    "StageSelectPresenter": [
+      "GamePlay::Ui::StageSelectPresenter"
     ],
     "StageSelectStageUi": [
       "GamePlay::Ui::StageSelectStageUi"

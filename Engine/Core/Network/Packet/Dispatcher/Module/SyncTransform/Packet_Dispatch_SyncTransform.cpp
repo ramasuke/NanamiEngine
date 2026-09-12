@@ -1,4 +1,4 @@
-#include "Packet_Dispatch_SyncTransform.h"
+﻿#include "Packet_Dispatch_SyncTransform.h"
 
 #include "../../../../Object/Registry/INetworkObjectInstanceRegistry.h"
 #include "../../../../../../Module/GameObject/Interface/IGameObject.h"
@@ -26,13 +26,19 @@ namespace NanamiEngine::Core::Network
         const auto position        = packet.Data().Read<glm::vec3>(offset);
         const auto rotation        = packet.Data().Read<glm::quat>(offset);
 
-        if (networkObjectId.IsOwnerBy(PlayerId()))
+        // 自分が所有者(送信側)のオブジェクトは自分の送信のエコーなので無視する
+        if (instanceRegistry_.OwnerOf(networkObjectId) == PlayerId())
             return;
 
         auto& buffer = snapshotBuffer_[networkObjectId.Value()];
         buffer.push_back({.receiveTime = Time::CurrentTime(), .position = position, .rotation = rotation });
         if (buffer.size() > kMaxBufferSize)
             buffer.pop_front();
+    }
+
+    void SyncTransformDispatcher::Forget(const NetworkObjectId id)
+    {
+        snapshotBuffer_.erase(id.Value());
     }
 
     void SyncTransformDispatcher::Update()

@@ -1,5 +1,7 @@
 ﻿#include "SwordManAvatarStatus.h"
 
+#include <algorithm>
+
 #include "../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 #include "../../../../../../Data/PlayerAvatar/InitStatus/SwordMan/Data_SwordManInitStatus.h"
@@ -19,30 +21,31 @@ namespace GameCore::PlayerAvatar::SwordMan
         , staminaRegenPerSecond_(80.0f)
         , minStaminaRatioToResumeRun_(0.3f)
         , comboNormalAttack_ {
-            AttackParam(Damage::PhysicsPower(1), EnhancePower(1), 0.3528985507f, 0.6637681159f),
-            AttackParam(Damage::PhysicsPower(2), EnhancePower(2), 0.9246376812f, 1.2855072464f),
-            AttackParam(Damage::PhysicsPower(3), EnhancePower(3), 1.7f         , 2.0f         )}
-        , comboNormalAttackStateDuration_secs_(2.0f)
-        , attackedShockedStateDuration_secs_  (1.0f)
-        , dashAttack_                    (Damage::PhysicsPower(10), EnhancePower(10), 0.7f, 0.8f)
+            AttackParam(Damage::PhysicsPower(1), EnhancePower(1), 0.3208168643f, 0.6034255599f),
+            AttackParam(Damage::PhysicsPower(2), EnhancePower(2), 0.8405797102f, 1.1686429513f),
+            AttackParam(Damage::PhysicsPower(3), EnhancePower(3), 1.5454545455f, 1.8181818182f)}
+        , comboNormalAttackStateDuration_secs_(1.8181818182f)
+        , attackedShockedStateDuration_secs_  (0.9090909091f)
+        , dashAttack_                    (Damage::PhysicsPower(10), EnhancePower(10), 0.6363636364f, 0.7272727273f)
         , dashAttackLungeSpeed_          (55.0f)
         , comboHitFeel_ {
-            HitFeelParam(0.04f, 0.5f , 0.3f, 0.12f, 1.0f ),
-            HitFeelParam(0.05f, 0.4f , 0.5f, 0.12f, 1.15f),
-            HitFeelParam(0.08f, 0.15f, 0.8f, 0.12f, 1.35f)}
-        , dashHitFeel_                   (0.09f, 0.1f, 0.9f, 0.14f, 1.0f)
-        , comboInputBufferWindow_secs_   (0.13f)
+            HitFeelParam(0.0363636364f, 0.5f , 0.3f, 0.1090909091f, 5.0f ),
+            HitFeelParam(0.0454545455f, 0.4f , 0.5f, 0.1090909091f, 5.75f),
+            HitFeelParam(0.0727272727f, 0.15f, 0.8f, 0.1090909091f, 6.75f)}
+        , dashHitFeel_                   (0.0818181818f, 0.1f, 0.9f, 0.1272727273f, 1.0f)
+        , comboInputBufferWindow_secs_   (0.1181818182f)
         , walkSpeed_                     (24.0f)
         , runSpeed_                      (70.0f)
-        , moveRotateSpeed_               (10.0f)
+        , moveRotateSpeed_               (5.0f)
         , lockOnAttackRotateSpeed_       (3.0f )
         , jumpPower_                     (75.5f)
-        , jumpCooldown_secs_             (0.53f)
-        , damageStateDuration_secs_      (1.6f )
-        , avoidRollingStateDuration_secs_(0.7f )
+        , jumpStateDuration_secs_        (0.4818181818f)
+        , jumpCooldown_secs_             (0.58f )
+        , damageStateDuration_secs_      (1.4545454545f)
+        , avoidRollingStateDuration_secs_(0.6363636364f)
         , avoidRollingStaminaCost_       (20.0f)
-        , deathStateDuration_secs_       (2.0f )
-        , downStateDuration_secs_        (15.0f)
+        , deathStateDuration_secs_       (1.8181818182f)
+        , downStateDuration_secs_        (13.6363636364f)
         , reviveHealthRatio_             (0.3f )
         , injuredHealthRatio_            (0.3f )
         , wasInjured_                    (false)
@@ -73,12 +76,13 @@ namespace GameCore::PlayerAvatar::SwordMan
         , moveRotateSpeed_                    (initStatus.GetMoveRotateSpeed())
         , lockOnAttackRotateSpeed_            (initStatus.GetLockOnAttackRotateSpeed())
         , jumpPower_                          (initStatus.GetJumpPower())
-        , jumpCooldown_secs_                  (initStatus.GetJumpCooldown_secs())
+        , jumpStateDuration_secs_             (initStatus.GetJumpStateDuration_secs())
+        , jumpCooldown_secs_                  (initStatus.JumpCooldown_secs())
         , damageStateDuration_secs_           (initStatus.DamageStateDuration_secs())
         , avoidRollingStateDuration_secs_     (initStatus.AvoidRollingStateDuration_secs())
         , avoidRollingStaminaCost_            (initStatus.AvoidRollingStaminaCost())
         , deathStateDuration_secs_            (initStatus.DeathStateDuration_secs())
-        , downStateDuration_secs_             (15.0f)
+        , downStateDuration_secs_             (13.6363636364f)
         , reviveHealthRatio_                  (0.3f )
         , injuredHealthRatio_                 (initStatus.GetInjuredHealthRatio())
         , wasInjured_                         (false)
@@ -94,6 +98,12 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStatus::OnUpdate()
     {
+        if (jumpCooldownRemaining_secs_ > 0.0f)
+        {
+            jumpCooldownRemaining_secs_ -= Time::DeltaTime();
+            jumpCooldownRemaining_secs_ = (std::max)(jumpCooldownRemaining_secs_, 0.0f);
+        }
+
         if (isRunning_)
         {
             const auto drained = stamina_.get() - StatusParameter::Stamina(staminaDrainPerSecond_ * Time::DeltaTime());
@@ -175,6 +185,11 @@ namespace GameCore::PlayerAvatar::SwordMan
         }
     }
 
+    void SwordManAvatarStatus::StartJumpCooldown()
+    {
+        jumpCooldownRemaining_secs_ = jumpCooldown_secs_;
+    }
+
     bool SwordManAvatarStatus::IsDamaged() const
     {
         return !onDamagedStack_.empty();
@@ -211,7 +226,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         LibCore::ImGuiHelper::OnDrawInputField("moveRotateSpeed_", moveRotateSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("lockOnAttackRotateSpeed_", lockOnAttackRotateSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpPower_", jumpPower_);
+        LibCore::ImGuiHelper::OnDrawInputField("jumpStateDuration_secs_", jumpStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpCooldown_secs_", jumpCooldown_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("jumpCooldownRemaining_secs_", jumpCooldownRemaining_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("damageStateDuration_secs_", damageStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("deathStateDuration_secs_", deathStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("downStateDuration_secs_", downStateDuration_secs_);

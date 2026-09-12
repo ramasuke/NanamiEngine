@@ -3,6 +3,7 @@
 #include "../glm/fwd.hpp"
 #include "../../Packet_Dispatch_PacketDispatcherBase.h"
 #include "../../../../ObjectId/Engine_Network_NetworkObjectId.h"
+#include "../../../../Object/Registry/INetworkObjectInstanceRegistry.h"
 
 namespace NanamiEngine::Module::GameObject
 {
@@ -16,8 +17,6 @@ namespace NanamiEngine::Module::Asset
 
 namespace NanamiEngine::Core::Network
 {
-    class INetworkObjectInstanceRegistry;
-
     class SpawnNetworkObject final : public PacketDispatcherBase
     {
     public:
@@ -36,8 +35,16 @@ namespace NanamiEngine::Core::Network
             glm::vec3 position,
             glm::quat rotation);
 
-        std::vector<NetworkObjectId> AllocateIdsAndRegister(const std::shared_ptr<Module::GameObject::IGameObject>& gameObject);
-        void RegisterWithNetworkIds(const std::vector<NetworkObjectId>& ids, const std::shared_ptr<Module::GameObject::IGameObject>& gameObject);
+        /** policy: 所有者が離脱したときの扱い(プレイヤーアバターは Destroy、敵などそれ以外は Transfer) */
+        std::vector<NetworkObjectId> AllocateIdsAndRegister(
+            const std::shared_ptr<Module::GameObject::IGameObject>& gameObject,
+            OwnerLeavePolicy policy);
+        void RegisterWithNetworkIds(
+            const std::vector<NetworkObjectId>& ids,
+            const std::shared_ptr<Module::GameObject::IGameObject>& gameObject,
+            OwnerLeavePolicy policy);
+        /** ルート以下のネットワークノードをレジストリから外してから GameObject を破棄する */
+        void DespawnAndUnregister(const std::shared_ptr<Module::GameObject::IGameObject>& root);
 
     protected:
         [[nodiscard]] NetworkObjectId CreateNetworkObjectId();
@@ -54,7 +61,8 @@ namespace NanamiEngine::Core::Network
 
         void ApplyNetworkIds(
             const std::vector<NetworkObjectId>& ids,
-            const std::shared_ptr<Module::GameObject::IGameObject>& gameObject);
+            const std::shared_ptr<Module::GameObject::IGameObject>& gameObject,
+            OwnerLeavePolicy policy);
 
         INetworkObjectInstanceRegistry& instanceRegistry_;
         uint32_t nextNetworkObjectId_ = 1;

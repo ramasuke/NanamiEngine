@@ -966,6 +966,9 @@
     <ClCompile Include="Engine\Module\Component\ParticleRenderer\ParticleSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Module\Component\Rotator\Rotator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Module\Component\Skydome3D\SkyDome3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1075,6 +1078,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Data\PlayerAvatar\InitStatus\SwordMan\Data_SwordManInitStatus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\Stage\Data_StageData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.cpp">
@@ -1714,6 +1720,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\Sample\UI_SampleTitleLogo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\MapMarker\StageMapMarker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Model\StageSelectModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Presenter\StageSelectPresenter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Stage\Ui_StageSelect_StageUI.cpp">
@@ -5160,6 +5175,9 @@
     <ClInclude Include="Engine\Module\Component\ParticleRenderer\ParticleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Module\Component\Rotator\Rotator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Module\Component\Skydome3D\SkyDome3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5290,6 +5308,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Data\PlayerAvatar\InitStatus\SwordMan\Data_SwordManInitStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\Stage\Data_StageData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.h">
@@ -5971,6 +5992,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Sample\UI_SampleTitleLogo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\MapMarker\StageMapMarker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Model\StageSelectModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Presenter\StageSelectPresenter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Stage\Ui_StageSelect_StageUI.h">

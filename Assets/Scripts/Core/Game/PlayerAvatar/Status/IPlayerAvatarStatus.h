@@ -53,7 +53,7 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual StatusParameter::MoveSpeed GetRunSpeed () const = 0;
         [[nodiscard]] virtual float GetMoveRotateSpeed  () const = 0;
         [[nodiscard]] virtual float GetJumpPower        () const = 0;
-        [[nodiscard]] virtual float GetJumpCooldown_secs() const = 0;
+        [[nodiscard]] virtual float GetJumpStateDuration_secs() const = 0;
         [[nodiscard]] virtual bool  IsInjured() const { return false; }
         [[nodiscard]] virtual bool  IsDowned () const { return false; }
         [[nodiscard]] virtual bool  IsDeath  () const { return false; }

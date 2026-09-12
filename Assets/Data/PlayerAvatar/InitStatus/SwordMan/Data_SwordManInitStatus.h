@@ -42,8 +42,9 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] GameCore::StatusParameter::MoveSpeed GetRunSpeed         () const { return runSpeed_ ;                }
         [[nodiscard]] float                                GetMoveRotateSpeed  () const { return moveRotateSpeed_;          }
         [[nodiscard]] float                                GetLockOnAttackRotateSpeed() const { return lockOnAttackRotateSpeed_; }
-        [[nodiscard]] float                                GetJumpPower        () const { return jumpPower_;                }
-        [[nodiscard]] float                                GetJumpCooldown_secs() const { return jumpCooldown_secs_;        }
+        [[nodiscard]] float                                GetJumpPower           () const { return jumpPower_;                }
+        [[nodiscard]] float                                GetJumpStateDuration_secs() const { return jumpStateDuration_secs_; }
+        [[nodiscard]] float                                JumpCooldown_secs      () const { return jumpCooldown_secs_;        }
         [[nodiscard]] float                                DamageStateDuration_secs       () const { return damageStateDuration_secs_; }
         [[nodiscard]] float                                AvoidRollingStateDuration_secs () const { return avoidRollingStateDuration_secs_; }
         [[nodiscard]] float                                AvoidRollingStaminaCost        () const { return avoidRollingStaminaCost_; }
@@ -75,8 +76,9 @@ namespace NanamiEngine::Module::Asset
         [[serialize(0)]] GameCore::StatusParameter::MoveSpeed runSpeed_ ;
         [[serialize(0)]] float                                moveRotateSpeed_;
         [[serialize(8)]] float                                lockOnAttackRotateSpeed_; ///< 攻撃の予備動作中にロックオン対象へ向く回転速度 [rad/s]
-        [[serialize(0)]] float                                jumpPower_;
-        [[serialize(0)]] float                                jumpCooldown_secs_;
+        [[serialize(0)]]  float                               jumpPower_;
+        [[serialize(11)]] float                               jumpStateDuration_secs_;
+        [[serialize(11)]] float                               jumpCooldown_secs_;
         [[serialize(0)]] float                                damageStateDuration_secs_;
         [[serialize(0)]] float                                avoidRollingStateDuration_secs_;
         [[serialize(7)]] float                                avoidRollingStaminaCost_;
@@ -111,6 +113,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(moveRotateSpeed_));
             archive(CEREAL_NVP(lockOnAttackRotateSpeed_));
             archive(CEREAL_NVP(jumpPower_));
+            archive(CEREAL_NVP(jumpStateDuration_secs_));
             archive(CEREAL_NVP(jumpCooldown_secs_));
             archive(CEREAL_NVP(damageStateDuration_secs_));
             archive(CEREAL_NVP(avoidRollingStateDuration_secs_));
@@ -142,7 +145,8 @@ namespace NanamiEngine::Module::Asset
             if (version >= 0) archive(CEREAL_NVP(moveRotateSpeed_));
             if (version >= 8) archive(CEREAL_NVP(lockOnAttackRotateSpeed_));
             if (version >= 0) archive(CEREAL_NVP(jumpPower_));
-            if (version >= 1) archive(CEREAL_NVP(jumpCooldown_secs_));
+            if (version >= 11) archive(CEREAL_NVP(jumpStateDuration_secs_));
+            if (version >= 11) archive(CEREAL_NVP(jumpCooldown_secs_));
             if (version >= 0) archive(CEREAL_NVP(damageStateDuration_secs_));
             if (version >= 3) archive(CEREAL_NVP(avoidRollingStateDuration_secs_));
             if (version >= 7) archive(CEREAL_NVP(avoidRollingStaminaCost_));
@@ -156,7 +160,7 @@ namespace NanamiEngine::Module::Asset
 
 REGISTER_SCRIPTABLE_OBJECT(SwordManInitStatus, SWORD_MAN_INIT_STATUS_EXTENSION_LABEL)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 10);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 11);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManInitStatus);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManInitStatus);
 #pragma endregion

@@ -32,6 +32,7 @@ namespace GameCore::Network
 
         /** 敵固有 */
         AttackAreaFire,     // (Damage::PhysicsPower power) 宛先は AttackArea 自身の NetworkObjectId
+        EnemyDeath,         // (引数なし) 権威側が死亡確定した敵を、他ピアでも同じ NetworkObjectId の個体を破棄させる
     };
 
     using WakeUpPlayerRpc    = Module::Network::RpcDef<ERpcType::WakeUpPlayer>;
@@ -48,4 +49,5 @@ namespace GameCore::Network
     using ShakeCameraRpc        = Module::Network::RpcDef<ERpcType::ShakeCamera, float, float>;
 
     using AttackAreaFireRpc     = Module::Network::RpcDef<ERpcType::AttackAreaFire, Damage::PhysicsPower>;
+    using EnemyDeathRpc         = Module::Network::RpcDef<ERpcType::EnemyDeath>;
 }

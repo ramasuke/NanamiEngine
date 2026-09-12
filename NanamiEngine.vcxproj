@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Art\Shaders\Cloud\Cloud_PS.hlsl" />
+    <None Include="Assets\Art\Shaders\Cloud\Cloud_VS.hlsl" />
     <None Include="Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.hlsl" />
     <None Include="Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.hlsl" />
     <None Include="Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" />
@@ -265,6 +267,7 @@
     </ClCompile>
     <ClCompile Include="Assets\Data\PlayerAvatar\InitStatus\SwordMan\Data_SwordManInitStatus.cpp" />
     <ClCompile Include="Assets\Data\PlayerAvatar\Resource\Data_SwordManAvatarResource.cpp" />
+    <ClCompile Include="Assets\Data\Stage\Data_StageData.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_Physics.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_PhysicsPower.cpp" />
@@ -5920,6 +5923,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SpawnEnemy\Packet_Dispatch_SpawnEnemy.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SpawnPlayer\Packet_Dispatch_SpawnPlayer.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -6010,8 +6014,10 @@
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\ChangeMainScene\Rpc_ChangeMainScene.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\ShakeCamera\Rpc_ShakeCamera.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\AttackAreaFire\Rpc_AttackAreaFire.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\EnemyDeath\Rpc_EnemyDeath.cpp" />
     <ClCompile Include="Engine\Core\Network\RpcId\Engine_Network_RpcId.cpp" />
     <ClCompile Include="Engine\Core\Network\Packet\Dispatcher\Module\Rpc\Packet_Dispatch_Rpc.cpp" />
+    <ClCompile Include="Engine\Core\Network\Packet\Dispatcher\Module\Session\Packet_Dispatch_Session.cpp" />
     <ClCompile Include="Engine\Module\Network\Rpc\Engine_Network_RpcHandlerRegistry.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\GamePlay_Enemy_Hyena.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\NetworkBehaviourTree\GamePlay_NetworkBehaviourTree.cpp" />
@@ -6019,9 +6025,11 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Projectile\GamePlay_Enemy_ProjectileAttackArea.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Tyrannosaurus\GamePlay_Enemy_Tyrannosaurus.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\LatticeBarrier\LatticeBarrierEffect.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\Cloud\CloudEffect.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\ProximityReveal\ProximityReveal.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\DealDamageTextBillBoard\UI_DealDamageTextBillBoard.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\OtherPlayerStatusUIGroup\OtherPlayerStatusUiGroup.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_DamageFlash.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_InjuredMask.cpp" />
     <ClCompile Include="Engine\Core\Application\Configuration\Physics\ApplicationConfiguration_Physics.cpp" />
     <ClCompile Include="Engine\Core\Network\Object\Awakable\INetworkAwakable.cpp" />
@@ -6689,6 +6697,9 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\UI_SampleTitleSceneUI.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\Sample\UI_SampleTitleLogo.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\MapMarker\StageMapMarker.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Model\StageSelectModel.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Presenter\StageSelectPresenter.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Stage\Ui_StageSelect_StageUI.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\UI_StageSelect.cpp" />
     <ClCompile Include="Engine\Core\Application\ApplicationBase.cpp">
@@ -9688,6 +9699,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Module\Component\ParticleRenderer\ParticleSystem.cpp" />
     <ClCompile Include="Engine\Module\Component\QuadRenderer\QuadRenderer.cpp" />
+    <ClCompile Include="Engine\Module\Component\Rotator\Rotator.cpp" />
     <ClCompile Include="Engine\Module\Component\Skydome3D\SkyDome3D.cpp" />
     <ClCompile Include="Engine\Module\Component\SphereRenderer\SphereRenderer.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -12470,6 +12482,7 @@
     <ClInclude Include="Assets\Data\PlayerAvatar\Factory\PlayerAvatarFactory.h" />
     <ClInclude Include="Assets\Data\PlayerAvatar\InitStatus\SwordMan\Data_SwordManInitStatus.h" />
     <ClInclude Include="Assets\Data\PlayerAvatar\Resource\Data_SwordManAvatarResource.h" />
+    <ClInclude Include="Assets\Data\Stage\Data_StageData.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_Physics.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_PhysicsPower.h" />
@@ -12673,9 +12686,11 @@
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\CustomPacketDispatcherBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\CustomPacketDispatcherGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SpawnPlayer\Packet_Dispatch_SpawnPlayer.h" />
+    <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SpawnEnemy\Packet_Dispatch_SpawnEnemy.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Rpc\Custom_RpcType.h" />
     <ClInclude Include="Engine\Core\Network\RpcId\Engine_Network_RpcId.h" />
     <ClInclude Include="Engine\Core\Network\Packet\Dispatcher\Module\Rpc\Packet_Dispatch_Rpc.h" />
+    <ClInclude Include="Engine\Core\Network\Packet\Dispatcher\Module\Session\Packet_Dispatch_Session.h" />
     <ClInclude Include="Engine\Module\Network\Rpc\Engine_Network_RpcHandlerRegistry.h" />
     <ClInclude Include="Engine\Module\Network\Rpc\Engine_Network_Rpc.h" />
     <ClInclude Include="Engine\Module\Network\Rpc\Engine_Network_RpcType.h" />
@@ -12721,6 +12736,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\IDestructibleObject.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\IslandPedestial\Prop_IslandPedestial.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\LatticeBarrier\LatticeBarrierEffect.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\Cloud\CloudEffect.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\ProximityReveal\ProximityReveal.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.h" />
@@ -12730,10 +12746,14 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\DealDamageTextBillBoard\UI_DealDamageTextBillBoard.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\NpcChatting\Ui_NpcChatting.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\OtherPlayerStatusUIGroup\OtherPlayerStatusUiGroup.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_DamageFlash.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_InjuredMask.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\UI_SampleTitleSceneUI.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Sample\UI_SampleTitleLogo.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\MapMarker\StageMapMarker.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Model\StageSelectModel.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Presenter\StageSelectPresenter.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Stage\Ui_StageSelect_StageUI.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\UI_StageSelect.h" />
     <ClInclude Include="Engine\Core\Application\ApplicationBase.h" />
@@ -12878,6 +12898,7 @@
     <ClInclude Include="Engine\Module\Component\ModelRenderer\ModelRenderer.h" />
     <ClInclude Include="Engine\Module\Component\ParticleRenderer\ParticleSystem.h" />
     <ClInclude Include="Engine\Module\Component\QuadRenderer\QuadRenderer.h" />
+    <ClInclude Include="Engine\Module\Component\Rotator\Rotator.h" />
     <ClInclude Include="Engine\Module\Component\Shader\IShaderConstantBufferHost.h" />
     <ClInclude Include="Engine\Module\Component\Skydome3D\SkyDome3D.h" />
     <ClInclude Include="Engine\Module\Component\SphereRenderer\SphereRenderer.h" />
@@ -14365,7 +14386,9 @@
       <Command>"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.vso"
 "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.pso"
 "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.vso"
-"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.pso"</Command>
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.pso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_VS.vso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_PS.pso"</Command>
     </PreBuildEvent>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -14397,7 +14420,9 @@
       <Command>"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.vso"
 "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.pso"
 "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.vso"
-"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.pso"</Command>
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.pso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_VS.vso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_PS.pso"</Command>
     </PreBuildEvent>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>

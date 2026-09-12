@@ -5,6 +5,7 @@
 #include <functional>
 #include <span>
 
+#include "../glm/vec2.hpp"
 #include "../glm/vec3.hpp"
 
 
@@ -140,6 +141,19 @@ namespace LibCore::ImGuiHelper
 
             ::ImGui::TreePop();
             ::ImGui::Spacing();
+        }
+    }
+
+    template <typename T>
+    static void
+    OnDrawInputField(const std::string& label, T& value)
+    requires std::is_same_v<T, glm::vec2>
+    {
+        float buffer[2] = { value.x, value.y };
+        if (::ImGui::InputFloat2(label.c_str(), buffer))
+        {
+            value.x = buffer[0];
+            value.y = buffer[1];
         }
     }
 

@@ -8,7 +8,7 @@
 
 namespace GameCore::Npc
 {
-    class EnemyBase : public Network::NetworkComponent,
+    class EnemyBase : public Module::Network::NetworkComponent,
                       public LifeCycleCallback::IAwakable,
                       public LifeCycleCallback::IUpdatable,
                       public PlayerAvatar::ITakablePlayerAttack,

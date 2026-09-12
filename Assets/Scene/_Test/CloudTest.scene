@@ -1,0 +1,148 @@
+{
+    "name": "CloudTest",
+    "gameObjectCount": 1,
+    "gameObject_0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    }
+                },
+                "isActive_": true,
+                "name_": "CloudLayer",
+                "guid_": {
+                    "cereal_class_version": 0,
+                    "value_": "B3B7ADB6-3CAF-4D00-8835-6F22635DA30D"
+                },
+                "components_": {
+                    "cereal_class_version": 0,
+                    "componentCount": 2,
+                    "component_0": {
+                        "polymorphic_id": 2147483650,
+                        "polymorphic_name": "NanamiEngine::Module::Component::QuadRenderer",
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "guid_": {
+                                        "value_": "6D9528FC-F503-468B-980D-16E04227AE4F"
+                                    },
+                                    "isEnable_": true
+                                },
+                                "value1": {
+                                    "cereal_class_version": 0
+                                },
+                                "width_": 60.0,
+                                "height_": 60.0,
+                                "doubleSided_": true,
+                                "vsFile_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483651,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "E4910504-B0AD-4033-8618-DBB816EC6D93"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "psFile_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483652,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "F7FB3368-EBCF-481B-B18B-607D920F542C"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "component_1": {
+                        "polymorphic_id": 2147483651,
+                        "polymorphic_name": "GamePlay::Prop::CloudEffect",
+                        "ptr_wrapper": {
+                            "id": 2147483653,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "guid_": {
+                                        "value_": "0A7E9E36-5252-449A-8C62-4C3EC316CE7A"
+                                    },
+                                    "isEnable_": true
+                                },
+                                "windX_": 0.6,
+                                "windZ_": 0.15,
+                                "cloudScale_": 0.15,
+                                "coverage_": 0.55,
+                                "softness_": 0.15,
+                                "density_": 1.2
+                            }
+                        }
+                    }
+                },
+                "transform_": {
+                    "cereal_class_version": 0,
+                    "localPos_": {
+                        "value0": 0.0,
+                        "value1": 15.0,
+                        "value2": 0.0
+                    },
+                    "localRot_": {
+                        "value0": 0.7071068,
+                        "value1": 0.0,
+                        "value2": 0.0,
+                        "value3": 0.7071068
+                    },
+                    "localScale_": {
+                        "value0": 1.0,
+                        "value1": 1.0,
+                        "value2": 1.0
+                    },
+                    "worldMatrix_": {
+                        "value0": {
+                            "value0": 1.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "value1": {
+                            "value0": 0.0,
+                            "value1": 1.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "value2": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 1.0,
+                            "value3": 0.0
+                        },
+                        "value3": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        }
+                    },
+                    "childCount": 0
+                }
+            }
+        }
+    }
+}

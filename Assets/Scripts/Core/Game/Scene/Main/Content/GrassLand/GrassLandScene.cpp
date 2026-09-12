@@ -4,6 +4,9 @@
 #include <stdexcept>
 
 #include "../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
+#include "../../../../../../../../Engine/Core/Application/Configuration/Network/ApplicationConfiguration_Network.h"
+#include "../../../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
+#include "../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../PlayerAvatar/PlayerAvatar.h"
 #include "../../../Sub/Group/Sub_IGameSceneGroup.h"
 #include "../../../Sub/Type/SubSceneType.h"
@@ -45,6 +48,19 @@ namespace GameCore::Scene::Main
             PlayerAvatar::LoadType(),
             Context()->PlayerSpawnPoint(),
             glm::quat());
+
+        // 敵はホスト(NetworkMode::Server)側だけがスポーンする。クライアント側は
+        // EnemySpawnDispatcher::OnReceive(ライブ受信 or 再接続時の履歴リプレイ)で再現される。
+        if (Core::Application::Configuration::NetworkConfiguration::IsServer())
+        {
+            for (const auto& spawnPoint : Context()->EnemySpawnPoints())
+            {
+                Context()->NetworkRunner().SpawnEnemy(
+                    Context()->EnemyPrefab(),
+                    spawnPoint->Transform().GetWorldPos(),
+                    spawnPoint->Transform().GetWorldRot());
+            }
+        }
     }
 
     void GrassLandScene::Enter()

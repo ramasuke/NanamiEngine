@@ -15,15 +15,15 @@ python -m tools.effect <command>        # or: python tools/effect.py <command>
 
 | command | purpose |
 |---|---|
-| `selftest` | correctness gate — run after touching `model.py` / `xmlio.py` / `presets.py` / `meta.py` |
+| `selftest` | correctness gate — run after touching `model.py` / `xmlio.py` / `presets.py` / `enums.py` / `meta.py` |
 | `new-project NAME` | create `NAME.efkproj` (empty project skeleton) |
 | `show FILE` | print the node tree as an outline, with `[index.path]` addresses |
-| `validate FILE` | structural sanity checks (well-formed XML, required top-level elements, known `DrawingValues` kinds) |
+| `validate FILE` | structural sanity checks (well-formed XML, required top-level elements, known `DrawingValues` kinds, **Effekseer enum-domain check** — see below) |
 | `add-node` | add a `sprite` / `ring` / `ribbon` / `model` / `track` / `group` node under an existing node or the root |
 | `set-params` | set fields on an existing node via dotted tag paths |
 | `apply FILE OPS.json` | apply a batch of `add-node`/`set-params` ops atomically (primary agent interface) |
 | `compile FILE` | compile `.efkproj` → `.efkefc` via the pinned Effekseer CUI |
-| `install EFKEFC --dest ...` | copy a compiled `.efkefc` into `Assets/Art/Effect/`, mint a fresh-GUID `.meta`, and (with `--project`) commit the source under `Assets/Art/Effect/_Source/` |
+| `install EFKEFC --dest ...` | copy a compiled `.efkefc` into `Assets/Art/Effect/`, mint a fresh-GUID `.meta` (an existing `.meta` at `--dest` is kept as-is, GUID included, so re-installing never breaks prefab references), warn about referenced textures/models missing next to it, and (with `--project`) commit the source under `Assets/Art/Effect/_Source/` |
 
 Nodes have no stable id in the `.efkproj` format itself (unlike `tools/bt`'s
 per-node GUIDs), so `--parent`/`--path` address a node by a dot-separated
@@ -55,7 +55,7 @@ for anything not listed here):
 | flag | maps to | applies to |
 |---|---|---|
 | `--life`, `--max-generation`, `--infinite` | `CommonValues` | any kind |
-| `--color-texture`, `--fade-in`, `--fade-out`, `--uv-scroll` | `RendererCommonValues` | any kind |
+| `--color-texture`, `--fade-in`, `--fade-out`, `--uv-scroll` | `RendererCommonValues` (fade speeds: `-30,-20,-10,0,10,20,30` only, see below) | any kind |
 | `--generation-shape circle\|sphere\|point` + `--radius`/`--division`/`--angle-start`/`--angle-end` | `GenerationLocationValues` | any kind |
 | `--billboard` | `Sprite.Billboard` | `sprite` |
 | `--color R:G:B[:A]` | fixed color (`ColorAll_Fixed` for sprite/ribbon, all 3 ring colors, `Color_Fixed` for model) | `sprite`/`ribbon`/`ring`/`model` |
@@ -64,6 +64,20 @@ for anything not listed here):
 | `--track-color R:G:B[:A]` | all 6 `Track` rails, same fixed color | `track` |
 
 PVA-shaped values accept `CENTER` (fixed) or `MIN:CENTER:MAX` (a range).
+
+**Easing speeds are enums, not floats.** `--fade-in`/`--fade-out`'s
+`START_SPEED`/`END_SPEED`, and `start_speed`/`end_speed` on `presets.easing()`
+/ `axis_easing()` / `renderer_common(fade_in=/fade_out=)`, map to Effekseer's
+`EasingStart`/`EasingEnd` enums: only `-30,-20,-10,0,10,20,30` exist
+(negative = *Slowly1-3*, positive = *Rapidly1-3*, `0` = linear). Any other
+value compiles fine via the CUI but **crashes the Effekseer editor**
+(`NullReferenceException` in `GUI.Component.Enum.Update`) the moment the
+Basic Render Settings dock shows that node — which is how the first three
+toolkit-built effects were shipped. The toolkit now rejects such values at
+build time (`ValueError` / `CliError`), and `validate` / every `add-node` /
+`set-params` / `apply` write runs the same enum-domain check (`enums.py`)
+over the other enum-typed leaves it knows about (`Filter`, `AlphaBlend`,
+`Billboard`, `UV`, the `Type` selectors, ...), refusing to write a violation.
 Per-corner Sprite offsets/colors, per-rail Track differentiation, Easing/
 AxisPVA variants, `ColorAll_Easing`/Ring's per-position (`OuterColor`/
 `CenterColor`/`InnerColor`) Random+Easing color modes, `LocationAbsValues`
@@ -110,11 +124,17 @@ ring + sprite node purely through the preset functions, no hand XML).
   real `.efkproj` sample that actively uses the feature — in `presets.py`
   (a new builder + `DRAWING_TYPE` entry for a new `DrawingValues` kind) and
   `cli.py` (`_KIND_BUILDERS` / `_build_drawing()`).
-* **Not a schema validator**: `validate` checks structure, not every field's
+* **Not a schema validator**: `validate` checks structure plus the enum
+  domains in `enums.py` (int values of the enum-typed leaves the toolkit
+  writes, verified against a 310-file real corpus), not every field's
   legality — Effekseer's real schema is hundreds of fields across dozens of
   node kinds, most only present because they differ from the editor's
   default. `add-node`/`set-params` will happily write a field name that
-  isn't real; the only hard check is the CUI compile step.
+  isn't real (Effekseer's loader is also **case-sensitive**: `<center>` is
+  silently ignored where `<Center>` is meant — `presets.pva()` used to do
+  exactly that for per-axis dicts); the only hard check for anything not in
+  `enums.py` is the CUI compile step — and the CUI does *not* catch enum
+  values the editor will crash on.
 * **The CUI compile step is machine-specific.** This toolkit is pinned to
   the local Effekseer **1.7.3.0** CUI (`cli.DEFAULT_CUI_PATH`, overridable
   via `--cui-path` or `$EFFEKSEER_CUI`) — verified this session to produce
@@ -132,5 +152,7 @@ ring + sprite node purely through the preset functions, no hand XML).
 * `.py` files here are plain UTF-8/ASCII — not subject to the Shift-JIS
   conversion hook that applies to `.h`/`.cpp`.
 * Always run `python tools/effect/selftest.py` after editing `model.py`,
-  `xmlio.py`, `presets.py`, or `meta.py`. Its CUI-compile stage is
-  best-effort and skips cleanly on a machine without the pinned CUI.
+  `xmlio.py`, `presets.py`, `enums.py`, or `meta.py`. Its CUI-compile stage
+  and the real-corpus enum sweep (`$EFFEKSEER_CORPUS`, default
+  `../Effekseer素材` next to the repo) are best-effort and skip cleanly on a
+  machine without them.

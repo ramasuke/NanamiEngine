@@ -23,6 +23,12 @@ namespace NanamiEngine::Module
     void LogWarning(const std::string& text, std::source_location location = std::source_location::current());
     void LogError  (const std::string& text, std::source_location location = std::source_location::current());
 
+    // true の場合、LogError() が呼ばれた瞬間にデバッガ(Rider/Visual Studio等)がアタッチされて
+    // いれば、その場で __debugbreak() し、実行中のネイティブなコールスタックを確認できるように
+    // する。Log()/LogWarning() には影響しない。デフォルトはOFF(通常通りログに出すだけ)。
+    bool IsBreakOnLogErrorEnabled();
+    void SetBreakOnLogErrorEnabled(bool enabled);
+
     /** @brief スレッドセーフなログ履歴のスナップショットを返す */
     std::vector<LogRecord> LogHistory();
     /** @brief 保持しているログ履歴をクリアする */

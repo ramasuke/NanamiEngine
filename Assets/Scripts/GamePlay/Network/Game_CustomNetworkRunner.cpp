@@ -40,6 +40,17 @@ namespace GamePlay::Network
             rotation);
     }
 
+    std::shared_ptr<Module::GameObject::IGameObject> CustomNetworkRunner::SpawnEnemy(
+        Module::Asset::PrefabGameObjectFile& prefab,
+        const glm::vec3 position,
+        const glm::quat rotation)
+    {
+        return customDispatcherGroup_->SpawnEnemy().DispatchSendPacket(
+            prefab,
+            position,
+            rotation);
+    }
+
     void CustomNetworkRunner::OnDrawGui()
     {
         ImGuiHelper::OnDrawInputField("playerAvatarFactory_", playerAvatarFactory_);

@@ -71,7 +71,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] float                             GetMoveRotateSpeed                   () const override { return moveRotateSpeed_;          }
         [[nodiscard]] float                             LockOnAttackRotateSpeed              () const          { return lockOnAttackRotateSpeed_;  }
         [[nodiscard]] float                             GetJumpPower                         () const override { return jumpPower_;                }
-        [[nodiscard]] float                             GetJumpCooldown_secs                 () const override { return jumpCooldown_secs_;        }
+        [[nodiscard]] float                             GetJumpStateDuration_secs            () const override { return jumpStateDuration_secs_;   }
+        [[nodiscard]] float                             JumpCooldown_secs                    () const          { return jumpCooldown_secs_;        }
+        [[nodiscard]] bool                              CanJump                              () const          { return jumpCooldownRemaining_secs_ <= 0.0f; }
         [[nodiscard]] AttackParam<Damage::PhysicsPower> DashAttack                           () const          { return dashAttack_;  }
         [[nodiscard]] float                             DashAttackLungeSpeed                 () const          { return dashAttackLungeSpeed_; }
         [[nodiscard]] bool                              IsDamaged                            () const;
@@ -84,6 +86,7 @@ namespace GameCore::PlayerAvatar::SwordMan
                       void                              ApplyDamage();
                       void                              DiscardDamage();
                       void                              ConsumeAvoidRollingStamina();
+                      void                              StartJumpCooldown();
         
         
     private:
@@ -116,13 +119,15 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serialize(0)]] StatusParameter::MoveSpeed runSpeed_ ;
         [[serialize(0)]] float                      moveRotateSpeed_;
         [[serialize(7)]] float                      lockOnAttackRotateSpeed_; ///< 攻撃の予備動作中にロックオン対象へ向く回転速度 [rad/s]
-        [[serialize(0)]] float                      jumpPower_;
-        [[serialize(0)]] float                      jumpCooldown_secs_;
+        [[serialize(0)]]  float                     jumpPower_;
+        [[serialize(10)]] float                     jumpStateDuration_secs_;
+        [[serialize(10)]] float                     jumpCooldown_secs_;
+        float                                        jumpCooldownRemaining_secs_ = 0.0f;
         [[serailize(0)]] float                      damageStateDuration_secs_;
         [[serailize(0)]] float                      avoidRollingStateDuration_secs_;
         [[serialize(0)]] float                      avoidRollingStaminaCost_;
         [[serialize(0)]] float                      deathStateDuration_secs_;
-        [[serialize(0)]] float                      downStateDuration_secs_ = 15.0f;
+        [[serialize(0)]] float                      downStateDuration_secs_ = 13.6363636364f;
         [[serialize(0)]] float                      reviveHealthRatio_      = 0.3f;
         bool                                         isDowned_               = false;
 
@@ -165,6 +170,8 @@ namespace GameCore::PlayerAvatar::SwordMan
             archive(CEREAL_NVP(moveRotateSpeed_));
             archive(CEREAL_NVP(lockOnAttackRotateSpeed_));
             archive(CEREAL_NVP(jumpPower_));
+            archive(CEREAL_NVP(jumpStateDuration_secs_));
+            archive(CEREAL_NVP(jumpCooldown_secs_));
             archive(CEREAL_NVP(damageStateDuration_secs_));
             archive(CEREAL_NVP(deathStateDuration_secs_));
             archive(CEREAL_NVP(injuredHealthRatio_));
@@ -199,6 +206,8 @@ namespace GameCore::PlayerAvatar::SwordMan
             if (version >= 0) archive(CEREAL_NVP(moveRotateSpeed_));
             if (version >= 7) archive(CEREAL_NVP(lockOnAttackRotateSpeed_));
             if (version >= 0) archive(CEREAL_NVP(jumpPower_));
+            if (version >= 10) archive(CEREAL_NVP(jumpStateDuration_secs_));
+            if (version >= 10) archive(CEREAL_NVP(jumpCooldown_secs_));
             if (version >= 0) archive(CEREAL_NVP(damageStateDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(deathStateDuration_secs_));
             if (version >= 3) archive(CEREAL_NVP(injuredHealthRatio_));
@@ -211,7 +220,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus, 9);
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus, 10);
 CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::IPlayerAvatarStatus, GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
 #pragma endregion

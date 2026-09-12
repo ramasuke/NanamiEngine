@@ -56,7 +56,6 @@ namespace GamePlay
         bool TryPhysicsAttack(GameObject::IGameObject& fromObject, GameCore::Damage::PhysicsPower damagePower);
         [[nodiscard]] const std::vector<AttackTarget>& Targets          () const;
         [[nodiscard]] int                              AttackTargetCount() const { return static_cast<int>(attackTargets_.size()); }
-        /** この攻撃範囲自身の NetworkObjectId(RPC の宛先に使う)。ネットワーク生成されていなければ Invalid() */
         [[nodiscard]] Core::Network::NetworkObjectId   NetworkObjectId  () const { return GetNetworkObjectId(); }
 
     protected:
@@ -73,9 +72,7 @@ namespace GamePlay
 #pragma region Serialization Function
     public:
         void OnDrawGui() override;
-
-        // NOTE: version は派生クラス(Enemy::AttackArea / PlayerAttackArea)に登録された値が渡される。
-        //       基底を ComponentBase → NetworkComponent に変えた際に両派生クラスとも 2 に揃えた。
+        
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const
         {
@@ -112,17 +109,17 @@ namespace GamePlay
     {
         const auto networkGameObject = targetObject.Components().Catch<NanamiEngine::Module::Network::NetworkGameObject>().lock();
         if (!networkGameObject)
-            return true;   // ネットワーク生成されていない対象は従来通り
+            return true;
 
         const auto targetId = networkGameObject->GetNetworkObjectId();
         if (targetId == Core::Network::NetworkObjectId::Invalid())
-            return true;   // ID 未付与(シーン直置き等)も従来通り
+            return true;
 
         const auto* runner = NanamiEngine::Module::Network::NetworkRunnerBase::TryGetInstance();
         if (!runner)
-            return true;   // オフライン
+            return true;
 
-        return targetId.IsOwnerBy(runner->GetPlayerId());
+        return runner->IsLocallyOwned(targetId);
     }
 
     template <typename AttackTargetT>
@@ -138,7 +135,6 @@ namespace GamePlay
     const std::vector<typename AttackArea<AttackTargetT>::AttackTarget>&
     AttackArea<AttackTargetT>::Targets() const
     {
-        // const メソッドで消したいなら mutable を使う必要がある
         auto& targets = const_cast<std::vector<AttackTarget>&>(attackTargets_);
 
         targets.erase(

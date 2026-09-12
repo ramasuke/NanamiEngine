@@ -13,11 +13,14 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
+import struct
 import subprocess
 import sys
 from pathlib import Path
 
+from . import enums
 from . import meta as meta_mod
 from . import presets as p
 from . import xmlio
@@ -92,16 +95,30 @@ def _parse_color_random(spec: str) -> dict:
 
 
 def _parse_fade(spec: str) -> dict:
-    """``"FRAME[:START_SPEED[:END_SPEED]]"``."""
+    """``"FRAME[:START_SPEED[:END_SPEED]]"`` - the speeds are Effekseer
+    ``EasingStart``/``EasingEnd`` enums (``-30,-20,-10,0,10,20,30`` only)."""
     parts = spec.split(":")
     if not 1 <= len(parts) <= 3:
         raise CliError(f"bad fade {spec!r}: expected FRAME[:START_SPEED[:END_SPEED]]")
     out: dict = {"frame": float(parts[0])}
-    if len(parts) >= 2:
-        out["start_speed"] = float(parts[1])
-    if len(parts) >= 3:
-        out["end_speed"] = float(parts[2])
+    try:
+        if len(parts) >= 2:
+            out["start_speed"] = enums.easing_speed(parts[1], "START_SPEED")
+        if len(parts) >= 3:
+            out["end_speed"] = enums.easing_speed(parts[2], "END_SPEED")
+    except ValueError as e:
+        raise CliError(f"bad fade {spec!r}: {e}") from e
     return out
+
+
+def _reject_enum_violations(node: Elem, label: str) -> None:
+    """Refuse to write a node carrying an Effekseer enum value the editor
+    would crash on (see ``enums.py``). Catches the ``--set``/``"set"`` escape
+    hatch, which can otherwise put any int into an enum-typed leaf."""
+    problems = enums.check_node(node)
+    if problems:
+        raise CliError(f"{label}: {len(problems)} Effekseer enum-domain violation(s), nothing written:\n  "
+                       + "\n  ".join(problems))
 
 
 # ---------------------------------------------------------------------------
@@ -217,6 +234,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
         problems.append(f"unsupported DrawingValues {k} (this toolkit only models "
                          f"{sorted(p.DRAWING_TYPE)}; this may still compile fine via the "
                          "CUI, it just wasn't built by this toolkit)")
+    problems.extend(enums.check_project(proj))
 
     if problems:
         print(f"{len(problems)} problem(s) in {path.name}:")
@@ -345,6 +363,7 @@ def cmd_add_node(args: argparse.Namespace) -> int:
     for assignment in args.set or []:
         key, _, value = assignment.partition("=")
         new_node.set_path(key, value)
+    _reject_enum_violations(new_node, f"add-node {args.name!r}")
 
     parent_children.children.append(new_node)
     xmlio.write(path, proj)
@@ -361,6 +380,7 @@ def cmd_set_params(args: argparse.Namespace) -> int:
     for assignment in args.set or []:
         key, _, value = assignment.partition("=")
         node.set_path(key, value)
+    _reject_enum_violations(node, f"set-params [{args.path}]")
     xmlio.write(path, proj)
     print(f"updated [{args.path}] ({len(args.set)} field(s))")
     return 0
@@ -390,16 +410,79 @@ def cmd_apply(args: argparse.Namespace) -> int:
                 raise CliError(f"op {i}: unknown kind {node_kind!r}")
             for key, value in (op.get("set") or {}).items():
                 new_node.set_path(key, str(value))
+            _reject_enum_violations(new_node, f"op {i} (add-node)")
             parent_children.children.append(new_node)
         elif kind == "set-params":
             node = resolve_node(proj, op["path"])
             for key, value in (op.get("set") or {}).items():
                 node.set_path(key, str(value))
+            _reject_enum_violations(node, f"op {i} (set-params [{op['path']}])")
         else:
             raise CliError(f"op {i}: unknown op {kind!r}")
     xmlio.write(path, proj)
     print(f"applied {len(ops)} op(s) to {path.name}")
     return 0
+
+
+# ---------------------------------------------------------------------------
+# compiled .efkefc introspection
+_ASSET_EXT_RE = re.compile(r"[^\x00]+?\.(?:png|jpg|jpeg|bmp|tga|dds|efkmodel|efkmat|efkcurve|wav)",
+                           re.IGNORECASE)
+
+
+def efkefc_asset_paths(path: Path) -> list[str]:
+    """Every asset path (textures, models, materials, sounds) a compiled
+    ``.efkefc`` references, read from its ``INFO`` chunk - the list the
+    runtime resolves *relative to the .efkefc's own directory* when the effect
+    is loaded (``Effect::GetColorImagePath()`` etc.). Order is the chunk's.
+
+    The chunk is ``int32 version`` followed by string lists, each ``int32
+    count`` then ``count`` x (``int32 length`` + UTF-16LE chars incl. NUL);
+    parsed that way when it reads cleanly to the end, else falls back to
+    scanning the UTF-16 text for asset-looking paths (so an unfamiliar chunk
+    layout degrades to a best-effort list rather than an error).
+    """
+    raw = Path(path).read_bytes()
+    i = raw.find(b"INFO")
+    if not raw.startswith(b"EFKE") or i < 0:
+        raise CliError(f"{path} does not look like a .efkefc (no EFKE/INFO header)")
+    size = struct.unpack_from("<i", raw, i + 4)[0]
+    chunk = raw[i + 8:i + 8 + size]
+
+    paths: list[str] = []
+    off = 4  # skip version
+    try:
+        while off < len(chunk):
+            count = struct.unpack_from("<i", chunk, off)[0]
+            off += 4
+            if not 0 <= count <= 4096:
+                raise ValueError("implausible list count")
+            for _ in range(count):
+                n = struct.unpack_from("<i", chunk, off)[0]
+                off += 4
+                if not 0 <= n <= 4096 or off + n * 2 > len(chunk):
+                    raise ValueError("implausible string length")
+                paths.append(chunk[off:off + n * 2].decode("utf-16-le").rstrip("\x00"))
+                off += n * 2
+        return paths
+    except (ValueError, struct.error):
+        text = chunk[4:].decode("utf-16-le", errors="ignore")
+        return [m.group(0).strip() for m in _ASSET_EXT_RE.finditer(text)]
+
+
+def _warn_missing_assets(efkefc: Path) -> list[str]:
+    """Print a warning per referenced asset that is not present next to
+    ``efkefc`` (the runtime would then render that node untextured / skip the
+    model); returns the missing relative paths."""
+    missing = [rel for rel in efkefc_asset_paths(efkefc)
+               if rel and not (efkefc.parent / rel).exists()]
+    if missing:
+        print(f"WARNING: {efkefc.name} references {len(missing)} asset(s) that do not exist "
+              f"next to it (copy them under {efkefc.parent} or the effect renders without them):",
+              file=sys.stderr)
+        for rel in missing:
+            print(f"  - {rel}", file=sys.stderr)
+    return missing
 
 
 def _find_cui_path(args: argparse.Namespace) -> Path:
@@ -418,6 +501,15 @@ def cmd_compile(args: argparse.Namespace) -> int:
     in_path = _resolve(args.file)
     out_path = _resolve(args.out) if args.out else in_path.with_suffix(".efkefc")
     cui = _find_cui_path(args)
+    if out_path.resolve().parent != in_path.resolve().parent:
+        # The CUI stores every ColorTexture/Model/Wave path *relative to the
+        # output file*, so compiling straight into Assets/Art/Effect/<Sub>/
+        # from _Source/<Sub>/ turns "Texture/x.png" into
+        # "../_Source/<Sub>/Texture/x.png" - the effect then depends on the
+        # _Source tree at runtime instead of the textures shipped next to it.
+        print(f"WARNING: --out is in a different directory than {in_path.name}; the CUI will "
+              "rewrite the effect's asset paths relative to that directory. Compile next to "
+              "the .efkproj and use `install --dest` to ship it instead.", file=sys.stderr)
 
     result = subprocess.run(
         [str(cui), "-cui", "-in", str(in_path), "-o", str(out_path)],
@@ -436,6 +528,7 @@ def cmd_compile(args: argparse.Namespace) -> int:
         print(f"{out_path} does not look like a valid .efkefc (header {header!r})", file=sys.stderr)
         return 1
     print(f"compiled {out_path}")
+    _warn_missing_assets(out_path)
     return 0
 
 
@@ -444,6 +537,7 @@ def cmd_install(args: argparse.Namespace) -> int:
     dest = _resolve(args.dest)
     dest.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(efkefc_src, dest)
+    _warn_missing_assets(dest)
 
     default_dir = (_REPO / meta_mod.DEFAULT_DIR).resolve()
     try:
@@ -459,9 +553,20 @@ def cmd_install(args: argparse.Namespace) -> int:
         print(f"copied source {source_dest}")
 
     name = dest.stem
+    meta_path = dest.with_suffix(dest.suffix + ".meta")
+    if meta_path.exists():
+        # Re-installing over an asset that is already wired into prefabs /
+        # components: keep its .meta (and so its GUID) untouched so every
+        # existing reference stays valid. Only a brand-new asset gets a
+        # freshly minted GUID.
+        guid = meta_mod.read_meta(meta_path)["guid"]
+        print(f"installed {dest}")
+        print(f"          {meta_path.name} (existing, kept)")
+        print(f"GUID:     {guid}  (reused)")
+        return 0
+
     guid = meta_mod.mint_guid()
     content_path = meta_mod.content_path_for(name, dest.parent, _REPO)
-    meta_path = dest.with_suffix(dest.suffix + ".meta")
     meta_mod.write_meta(meta_path, name, guid, content_path)
 
     print(f"installed {dest}")
@@ -511,8 +616,10 @@ def register(sub: argparse._SubParsersAction) -> None:
     sp.add_argument("--infinite", type=_parse_bool, default=None, metavar="true|false")
     # RendererCommonValues
     sp.add_argument("--color-texture", default=None, metavar="PATH")
-    sp.add_argument("--fade-in", default=None, metavar="FRAME[:START_SPEED[:END_SPEED]]")
-    sp.add_argument("--fade-out", default=None, metavar="FRAME[:START_SPEED[:END_SPEED]]")
+    sp.add_argument("--fade-in", default=None, metavar="FRAME[:START_SPEED[:END_SPEED]]",
+                     help="speeds are Effekseer easing enums: -30,-20,-10,0,10,20,30 only")
+    sp.add_argument("--fade-out", default=None, metavar="FRAME[:START_SPEED[:END_SPEED]]",
+                     help="speeds are Effekseer easing enums: -30,-20,-10,0,10,20,30 only")
     sp.add_argument("--uv-scroll", default=None, metavar="SPEED_X:SPEED_Y")
     # GenerationLocationValues
     sp.add_argument("--generation-shape", choices=["circle", "sphere", "point"], default=None)

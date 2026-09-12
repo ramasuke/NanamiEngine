@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <cstdint>
 #include <compare>
 
@@ -9,7 +9,9 @@ namespace NanamiEngine::Core::Network
 {
     /**
      * ネットワーク上で共有されるオブジェクトの識別子
-     * フォーマット: 上位16bit = PlayerId, 下位16bit = オブジェクトインデックス
+     * フォーマット: bit16-23 = Spawn したピアの PlayerId(8bit), 下位16bit = そのピア内のオブジェクトインデックス
+     * NOTE: 上位バイトは「誰が Spawn したか」であり「今の所有者」ではない。
+     *       所有者(権威)は INetworkObjectInstanceRegistry::OwnerOf() / NetworkRunnerBase::IsLocallyOwned() で判定すること
      */
     struct NetworkObjectId final
     {
@@ -27,8 +29,8 @@ namespace NanamiEngine::Core::Network
         [[nodiscard]] uint32_t Value() const { return networkObjectId_; }
         [[nodiscard]] std::string ToString() const;
         
-        /** このオブジェクトIDが指定したPlayerIdに属するか判別する */
-        [[nodiscard]] bool IsOwnerBy(PlayerId playerId) const;
+        /** このオブジェクトを Spawn したピアの PlayerId(ID の bit16-23)。現在の所有者ではないので権威判定には使わないこと */
+        [[nodiscard]] PlayerId SpawnerId() const;
         
         void OnDrawGui();
 
