@@ -29,9 +29,26 @@ void AnimationTree::AnimationClipNode::InitForGamePlay(const int modelHandle)
     }
 }
 
+float AnimationTree::AnimationClipNode::ClipEndTime() const
+{
+    if (clipEndTime_ <= 0.0f || clipEndTime_ > duration_secs_)
+        return duration_secs_;
+    return clipEndTime_;
+}
+
 void AnimationTree::AnimationClipNode::OnUpdateAnimation(const int modelHandle, const float timeScale)
 {
+    const float clipEndTime = ClipEndTime();
+
+    // ノード進入直後（OnExitNode で 0 に戻っている）は再生区間の開始位置から始める
+    if (during_secs_ < clipStartTime_)
+        during_secs_ = clipStartTime_;
+
     during_secs_ += Time::DeltaTime() * speed_ * timeScale;
+
+    if (!isLoop_ && during_secs_ > clipEndTime)
+        during_secs_ = clipEndTime;
+
     if (attachedAnimationIndex_ != -1)
     {
         MV1DetachAnim(modelHandle, attachedAnimationIndex_);
@@ -41,9 +58,9 @@ void AnimationTree::AnimationClipNode::OnUpdateAnimation(const int modelHandle, 
     MV1SetAttachAnimTime(modelHandle, attachedAnimationIndex_, during_secs_);
     MV1SetAttachAnimBlendRate(modelHandle, attachedAnimationIndex_, blendRate_);
     onUpdate_.get_subscriber().on_next(UpdateCallbackContext(during_secs_, Time::DeltaTime() * speed_ * timeScale, timeScale));
-    if (during_secs_ >= duration_secs_)
+    if (isLoop_ && during_secs_ >= clipEndTime)
     {
-        during_secs_ = 0;
+        during_secs_ = clipStartTime_;
     }
 }
 
@@ -61,11 +78,14 @@ void AnimationTree::AnimationClipNode::OnUpdateBlendRate(const float blendRate)
 
 AnimationTree::ClipProgress AnimationTree::AnimationClipNode::GetClipProgress() const
 {
+    const float clipEndTime = ClipEndTime();
+    const float clipLength  = clipEndTime - clipStartTime_;
+
     ClipProgress progress;
     progress.duringSecs    = during_secs_;
-    progress.durationSecs   = duration_secs_;
-    progress.normalizedTime = (duration_secs_ > 0.0f)
-                                  ? std::clamp(during_secs_ / duration_secs_, 0.0f, 1.0f)
+    progress.durationSecs   = clipEndTime;
+    progress.normalizedTime = (clipLength > 0.0f)
+                                  ? std::clamp((during_secs_ - clipStartTime_) / clipLength, 0.0f, 1.0f)
                                   : 0.0f;
     return progress;
 }
@@ -98,6 +118,10 @@ void AnimationTree::AnimationClipNode::OnDrawGui()
     LibCore::ImGuiHelper::OnDrawInputField("guid_"         , guid_         );
     LibCore::ImGuiHelper::OnDrawInputField("speed_"        , speed_        );
     LibCore::ImGuiHelper::OnDrawInputField("blendAnimationOffset_secs_", blendAnimationOffset_secs_);
+    ImGui::Text("clipTotalTime: %.2f", duration_secs_);
+    LibCore::ImGuiHelper::OnDrawInputField("clipStartTime_", clipStartTime_);
+    LibCore::ImGuiHelper::OnDrawInputField("clipEndTime_"  , clipEndTime_  );
+    LibCore::ImGuiHelper::OnDrawInputField("isLoop_"       , isLoop_       );
     if (ImGui::TreeNode("modelAnimationIndex_"))
     {
         LibCore::ImGuiHelper::OnDrawInputField("modelAnimationIndex_", modelAnimationIndex_);

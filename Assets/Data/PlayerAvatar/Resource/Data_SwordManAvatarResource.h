@@ -34,6 +34,24 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] const std::vector<FIELD(SoundFile)>& WalkFootstepSounds() const { return walkFootstepSounds_; }
         /** 走り系クリップの足音候補。鳴らすときに配列からランダムで1つ選択する */
         [[nodiscard]] const std::vector<FIELD(SoundFile)>& RunFootstepSounds()  const { return runFootstepSounds_; }
+        /** ため攻撃が最大溜めに達した瞬間に1回鳴らす */
+        [[nodiscard]] SoundFile& ChargeCompleteSound() const { return *chargeCompleteSound_.get(); }
+        [[nodiscard]] bool HasChargeCompleteSound() const { return static_cast<bool>(chargeCompleteSound_); }
+        /** ため攻撃が最大溜めに達した瞬間にプレイヤー位置へ1回生成する */
+        [[nodiscard]] PrefabGameObjectFile& ChargeCompleteParticlePrefab() const { return *chargeCompleteParticlePrefab_.get(); }
+        [[nodiscard]] bool HasChargeCompleteParticlePrefab() const { return static_cast<bool>(chargeCompleteParticlePrefab_); }
+        /** 最大溜めのまま保持している間だけ出し続けるオーラ（ステート側で破棄する） */
+        [[nodiscard]] PrefabGameObjectFile& ChargeHoldParticlePrefab() const { return *chargeHoldParticlePrefab_.get(); }
+        [[nodiscard]] bool HasChargeHoldParticlePrefab() const { return static_cast<bool>(chargeHoldParticlePrefab_); }
+        /** ため攻撃の叩きつけ発生時に、衝突点の地面へ1回生成する */
+        [[nodiscard]] PrefabGameObjectFile& ChargeImpactParticlePrefab() const { return *chargeImpactParticlePrefab_.get(); }
+        [[nodiscard]] bool HasChargeImpactParticlePrefab() const { return static_cast<bool>(chargeImpactParticlePrefab_); }
+        /** 接地判定SphereCastの半径。カプセルの半径より小さくし、横の壁に触れているだけで接地扱いにならないようにする */
+        [[nodiscard]] float GroundCheckRadius  () const { return groundCheckRadius_;   }
+        /** 接地判定SphereCastの開始時、球の下端を足元からどれだけ上に置くか */
+        [[nodiscard]] float GroundCheckUpOffset() const { return groundCheckUpOffset_; }
+        /** 接地判定SphereCastの下方向への探索距離 */
+        [[nodiscard]] float GroundCheckDistance() const { return groundCheckDistance_; }
 
     private:
         [[serialize(0)]] FIELD(PrefabGameObjectFile) normalAttackParticlePrefab_;
@@ -47,7 +65,14 @@ namespace NanamiEngine::Module::Asset
         [[serialize(3)]] std::vector<float>          runFootstepContactPhases_;
         [[serialize(4)]] std::vector<FIELD(SoundFile)> walkFootstepSounds_;
         [[serialize(4)]] std::vector<FIELD(SoundFile)> runFootstepSounds_;
-        
+        [[serialize(5)]] FIELD(SoundFile)            chargeCompleteSound_;
+        [[serialize(5)]] FIELD(PrefabGameObjectFile) chargeCompleteParticlePrefab_;
+        [[serialize(6)]] float                       groundCheckRadius_   = 40.0f;
+        [[serialize(6)]] float                       groundCheckUpOffset_ = 3.0f;
+        [[serialize(6)]] float                       groundCheckDistance_ = 8.3f;
+        [[serialize(7)]] FIELD(PrefabGameObjectFile) chargeHoldParticlePrefab_;
+        [[serialize(7)]] FIELD(PrefabGameObjectFile) chargeImpactParticlePrefab_;
+
         
 #pragma region Serialization Function
     public:
@@ -74,6 +99,14 @@ namespace NanamiEngine::Module::Asset
             archive(cereal::make_nvp("runFootstepSoundCount", static_cast<std::uint32_t>(runFootstepSounds_.size())));
             for (size_t i = 0; i < runFootstepSounds_.size(); ++i)
                 archive(cereal::make_nvp("runFootstepSound_" + std::to_string(i), runFootstepSounds_[i]));
+
+            archive(CEREAL_NVP(chargeCompleteSound_));
+            archive(CEREAL_NVP(chargeCompleteParticlePrefab_));
+            archive(CEREAL_NVP(groundCheckRadius_));
+            archive(CEREAL_NVP(groundCheckUpOffset_));
+            archive(CEREAL_NVP(groundCheckDistance_));
+            archive(CEREAL_NVP(chargeHoldParticlePrefab_));
+            archive(CEREAL_NVP(chargeImpactParticlePrefab_));
         }
         
         template<class Archive>
@@ -103,6 +136,13 @@ namespace NanamiEngine::Module::Asset
                 for (size_t i = 0; i < runFootstepSoundCount; ++i)
                     archive(cereal::make_nvp("runFootstepSound_" + std::to_string(i), runFootstepSounds_[i]));
             }
+            if (version >= 5) archive(CEREAL_NVP(chargeCompleteSound_));
+            if (version >= 5) archive(CEREAL_NVP(chargeCompleteParticlePrefab_));
+            if (version >= 6) archive(CEREAL_NVP(groundCheckRadius_));
+            if (version >= 6) archive(CEREAL_NVP(groundCheckUpOffset_));
+            if (version >= 6) archive(CEREAL_NVP(groundCheckDistance_));
+            if (version >= 7) archive(CEREAL_NVP(chargeHoldParticlePrefab_));
+            if (version >= 7) archive(CEREAL_NVP(chargeImpactParticlePrefab_));
         }
 #pragma endregion
     };
@@ -110,7 +150,7 @@ namespace NanamiEngine::Module::Asset
 
 REGISTER_SCRIPTABLE_OBJECT(SwordManAvatarResource, SWORD_MAN_RESOURCE_EXTENSION_LABEL)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 4);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 7);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManAvatarResource);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManAvatarResource);
 #pragma endregion

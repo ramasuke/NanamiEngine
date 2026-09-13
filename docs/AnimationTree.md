@@ -154,6 +154,7 @@ python -m tools.animtree validate Wolf
 # --- node edits (all take --dry-run to preview a diff) ---
 python -m tools.animtree add-clip-node    Wolf --name Idle --clip Assets/Art/Animation/Man/Idle.mv1 --speed 1.0
 python -m tools.animtree add-clip-node    Wolf --name Walk --clip <mv1-asset-guid> --blend-offset 0.2
+python -m tools.animtree add-clip-node    Wolf --name Charge --clip <mv1-asset-guid> --clip-start 40 --clip-end 75 --no-loop
 python -m tools.animtree set-node-params  Wolf --node <clip-guid> speed_=1.5 name_=WalkFast
 python -m tools.animtree move-node        Wolf --node <clip-guid> --pos 480,120
 python -m tools.animtree remove-node      Wolf --node <clip-guid> [--cascade]
@@ -180,6 +181,29 @@ a path to a `.mv1`/`.mv1.meta` file (resolved to that asset's guid via its
 `.meta` sidecar) — a convenience specific to this toolkit; neither
 `tools/bt`/`tools/scene`'s own `field`-shaped CLI arguments resolve a path
 today, they only accept a raw GUID.
+
+**Playback range** (`--clip-start` / `--clip-end` / `--no-loop`, i.e. the clip node's
+`clipStartTime_` / `clipEndTime_` / `isLoop_`, class version 3). Times are in the clip's
+own animation-time units (the same units as `MV1GetAnimTotalTime`, shown as `clipTotalTime`
+in the node inspector); `clipEndTime_ <= 0` means "to the end of the clip". The node starts
+at `clipStartTime_` every time it is entered, loops back to it on reaching the end, or — with
+`--no-loop` — stops at the end and holds that pose. Defaults (`0` / `0` / loop) reproduce the
+pre-version-3 behaviour. Exit-time transitions use the range end.
+
+Transitions out of a node are only evaluated near the end of its clip
+(`AnimationNodePath::TryAddNextCurrentNodePath`: `GetAnimDuration_secs() - transitionDuration < during`).
+A `--no-loop` node held at its range end re-evaluates its transitions every frame, but to let a state
+change interrupt a node *before* it reaches the end, set its `blendAnimationOffset_secs_` to at least
+the range length — the convention the existing player nodes already use (e.g. Idle 309, Walk/Run 1818).
+A node left at `0` only reacts once its clip is about to end.
+
+**Mixed class versions.** cereal stores a type's `cereal_class_version` once per archive
+(first occurrence), so one `.animTree` cannot hold clip nodes of two versions. The catalog
+records each member's `if (version >= N)` gate (`since`) and in-class initializer (`default`);
+the reader/writer/validate only require the members a node's own version carries, and on
+write any older clip node is upgraded to the newest version present in the tree, filling
+missing members from `default` — the same result as re-saving in the editor. So adding one
+version-3 node to an untouched version-2 tree rewrites every clip node with the three range keys.
 
 **Transition addressing.** A transition has no identity guid (see §2), so
 every transition-editing verb takes either `--index N` (from `show`'s

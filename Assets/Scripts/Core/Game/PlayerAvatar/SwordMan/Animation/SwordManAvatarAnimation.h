@@ -13,6 +13,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         AvoidRolling    = 6,
         InjuredWalk     = 7,
         InjuredRun      = 8,
+        ChargeAttackCharging = 9,
+        ChargeAttackRelease  = 10,
         ClimbToTop      = 11,
         AttackedShocked = 12,
         Hurt            = 31,

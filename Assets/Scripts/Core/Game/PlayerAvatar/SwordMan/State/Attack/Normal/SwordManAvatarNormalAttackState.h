@@ -23,5 +23,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         bool isAttacked_   = false;
         /** @brief NormalAttack入力の先行/後追い猶予(数フレーム分)を持たせるための残り時間 */
         float bufferedAttackTimer_secs_ = 0.0f;
+        /** @brief このステートに入ってから攻撃ボタンを一度でも離したか。離していなければため攻撃の溜めへ移行できる */
+        bool releasedSinceEnter_ = false;
     };
 }

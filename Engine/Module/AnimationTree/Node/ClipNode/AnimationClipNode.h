@@ -12,6 +12,9 @@ namespace NanamiEngine::Module::AnimationTree
     {
     public:
         explicit AnimationClipNode(glm::vec2 position = glm::vec2(0, 0));
+        ~AnimationClipNode() override;
+        AnimationClipNode(const AnimationClipNode&)            = delete;
+        AnimationClipNode& operator=(const AnimationClipNode&) = delete;
         void InitForGamePlay  (int   modelHandle) override;
         void OnUpdateAnimation(int   modelHandle, float timeScale) override;
         void OnExitNode       (int   modelHandle) override;
@@ -23,7 +26,7 @@ namespace NanamiEngine::Module::AnimationTree
         
         [[nodiscard]] const Guid& GetGuid             () const override { return guid_;                                       }
         [[nodiscard]] glm::vec2   Position            () const override { return position_;                                   }
-        [[nodiscard]] float       GetAnimDuration_secs() const override { return duration_secs_ - blendAnimationOffset_secs_; }
+        [[nodiscard]] float       GetAnimDuration_secs() const override { return ClipEndTime() - blendAnimationOffset_secs_; }
         rxcpp::observable<UpdateCallbackContext> OnUpdated() override;
 
         [[nodiscard]] float GetDuringSecs() const { return during_secs_; }
@@ -34,13 +37,20 @@ namespace NanamiEngine::Module::AnimationTree
         [[nodiscard]] ClipProgress GetClipProgress() const;
 
     private:
+        void ReleaseAnimationModel();
+        [[nodiscard]] float ClipEndTime() const;
+
         FIELD(Asset::Mv1File) animationFile_;
         std::string           name_ = "ClipNode";
         glm::vec2             position_;
         Guid                  guid_;
         float                 speed_                  = 1.0f;
         float                 blendAnimationOffset_secs_   = 0.0f;
-        
+        float                 clipStartTime_          = 0.0f;
+        /** @brief 0 以下ならクリップ末尾 */
+        float                 clipEndTime_            = 0.0f;
+        bool                  isLoop_                 = true;
+
         float                 blendRate_              = 1.0f;
         int                   attachedAnimationIndex_ = -1;
         int                   dxlibAnimationIndex_    = -1; 
@@ -70,6 +80,9 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(speed_));
     archive(CEREAL_NVP(blendAnimationOffset_secs_));
     archive(CEREAL_NVP(modelAnimationIndex_));
+    archive(CEREAL_NVP(clipStartTime_));
+    archive(CEREAL_NVP(clipEndTime_));
+    archive(CEREAL_NVP(isLoop_));
 }
 
 template<class Archive>
@@ -82,13 +95,16 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 0) archive(CEREAL_NVP(speed_));
     if (version >= 1) archive(CEREAL_NVP(blendAnimationOffset_secs_));
     if (version >= 2) archive(CEREAL_NVP(modelAnimationIndex_));
+    if (version >= 3) archive(CEREAL_NVP(clipStartTime_));
+    if (version >= 3) archive(CEREAL_NVP(clipEndTime_));
+    if (version >= 3) archive(CEREAL_NVP(isLoop_));
 }
 #pragma endregion
 };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationClipNode, 2);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationClipNode, 3);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationClipNode);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::AnimationTree::IAnimationNode, NanamiEngine::Module::AnimationTree::AnimationClipNode);
 #pragma endregion

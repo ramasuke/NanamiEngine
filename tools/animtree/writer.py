@@ -14,6 +14,7 @@ from tools.common.cereal_json import Num, OrderedObj, dumps, to_file_bytes
 
 from . import catalog as catalog_mod
 from . import model
+from . import versions
 
 EXACT_PID = 0x40000000
 FIRST_BIT = 0x80000000
@@ -127,7 +128,7 @@ class _W:
         self.emit_ver(("type", entry["leaf"]), int(node.class_version), data)
         data["value0"] = self.node_base_slot()
         params = node.params if node.params is not None else OrderedObj()
-        for pinfo in self.cat.params_of(entry):
+        for pinfo in self.cat.params_for_version(entry, int(node.class_version)):
             key = pinfo["key"]
             shape = pinfo.get("shape")
             if shape == "self_guid":
@@ -218,6 +219,7 @@ class _W:
 
 def write_tree(tree: model.Tree, cat: catalog_mod.Catalog | None = None) -> str:
     cat = cat or catalog_mod.load()
+    versions.unify_node_versions(tree, cat)
     w = _W(cat)
     root = OrderedObj()
     root["additionParameters_"] = w.params_block(tree.params)

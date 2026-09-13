@@ -79,7 +79,8 @@ def cmd_add_clip_node(a: argparse.Namespace) -> int:
     clip_guid = edits.resolve_clip_arg(a.clip, _REPO)
     node = edits.add_clip_node(tree, name=a.name, clip_guid=clip_guid, speed=a.speed,
                                blend_offset_secs=a.blend_offset, model_anim_index=a.model_anim_index,
-                               pos=_pos(a.pos))
+                               clip_start_time=a.clip_start, clip_end_time=a.clip_end,
+                               is_loop=not a.no_loop, pos=_pos(a.pos))
     print(f"new AnimationClipNode: {node.guid}")
     return _commit(path, text, tree, dry_run=a.dry_run)
 
@@ -221,6 +222,12 @@ def register(sub: argparse._SubParsersAction) -> None:
     p.add_argument("--speed", type=float, default=1.0)
     p.add_argument("--blend-offset", type=float, default=0.0, dest="blend_offset")
     p.add_argument("--model-anim-index", type=int, default=0, dest="model_anim_index")
+    p.add_argument("--clip-start", type=float, default=0.0, dest="clip_start",
+                   help="playback range start, in the clip's animation-time units")
+    p.add_argument("--clip-end", type=float, default=0.0, dest="clip_end",
+                   help="playback range end, in animation-time units (0 = end of clip)")
+    p.add_argument("--no-loop", action="store_true", dest="no_loop",
+                   help="play the range once and hold its last pose instead of looping")
     p.add_argument("--pos", help="editor position X,Y (default: an auto-placed grid slot)")
     _add_dry(p)
     p.set_defaults(func=cmd_add_clip_node)

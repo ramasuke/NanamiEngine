@@ -17,6 +17,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         ClimbToTop         = 9,
         ArmStretch         = 10,
         Chatting           = 11,
+        ChargeAttackCharging = 12,
+        ChargeAttackRelease  = 13,
         Hurt               = 14,
         AvoidRolling       = 15,
         Death              = 16,

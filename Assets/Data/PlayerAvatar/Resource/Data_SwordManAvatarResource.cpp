@@ -16,6 +16,10 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("justAvoidRollingSound_", justAvoidRollingSound_);
         ImGuiHelper::OnDrawInputField("jumpSound_", jumpSound_);
         ImGuiHelper::OnDrawInputField("footstepParticlePrefab_", footstepParticlePrefab_);
+        ImGuiHelper::OnDrawInputField("chargeCompleteSound_", chargeCompleteSound_);
+        ImGuiHelper::OnDrawInputField("chargeCompleteParticlePrefab_", chargeCompleteParticlePrefab_);
+        ImGuiHelper::OnDrawInputField("chargeHoldParticlePrefab_", chargeHoldParticlePrefab_);
+        ImGuiHelper::OnDrawInputField("chargeImpactParticlePrefab_", chargeImpactParticlePrefab_);
         ImGuiHelper::OnDrawInputField("walkFootstepContactPhases_", walkFootstepContactPhases_, [this]
         {
             if (ImGui::Button("Add Walk Phase"))

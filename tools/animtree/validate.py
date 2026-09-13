@@ -66,7 +66,7 @@ def _check_node(node: model.Node, cat: catalog_mod.Catalog, err) -> None:
     if node.params is None:
         err(f"node {node.guid} ({entry.get('leaf')}): no params blob")
         return
-    for pinfo in cat.params_of(entry):
+    for pinfo in cat.params_for_version(entry, int(node.class_version)):
         if pinfo.get("shape") in ("self_guid", "self_pos"):
             continue
         key = pinfo["key"]

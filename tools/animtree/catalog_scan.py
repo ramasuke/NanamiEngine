@@ -40,6 +40,12 @@ RE_CLASS = re.compile(r"\bclass\s+(\w+)\s+final\s*:\s*public\s+IAnimationNode\b"
 RE_REGISTER_TYPE = re.compile(r"CEREAL_REGISTER_TYPE\s*\(\s*([\w:]+)\s*\)")
 RE_CLASS_VERSION = re.compile(r"CEREAL_CLASS_VERSION\s*\(\s*([\w:]+)\s*,\s*(\d+)\s*\)")
 RE_SAVE = re.compile(r"\bvoid\s+save\s*\(\s*Archive\s*&\s*\w+\s*,")
+RE_LOAD = re.compile(r"\bvoid\s+load\s*\(\s*Archive\s*&\s*\w+\s*,")
+# `if (version >= N) archive(CEREAL_NVP(member));` inside load() - the class
+# version a member was introduced at (recorded as the param's ``since``)
+RE_VERSION_GATE = re.compile(
+    r"if\s*\(\s*version\s*>=\s*(\d+)\s*\)\s*archive\s*\(\s*CEREAL_NVP\s*\(\s*(\w+)\s*\)\s*\)"
+)
 RE_ARCHIVE_CALL = re.compile(
     r"archive\s*\(\s*(?:CEREAL_NVP\s*\(\s*(\w+)\s*\)|([a-zA-Z_]\w*))\s*\)"
 )
@@ -179,6 +185,26 @@ def _parse_serializable(body: str) -> list[dict]:
                 best, best_score = t, score
         return best
 
+    def _default_literal(member: str, shape: str) -> Any:
+        m = re.search(rf"\b{re.escape(member)}\s*=\s*([^;{{]+?)\s*;", body)
+        if not m:
+            return None
+        lit = m.group(1).strip()
+        if shape == "bool" and lit in ("true", "false"):
+            return lit == "true"
+        num = re.fullmatch(r"(-?\d+(?:\.\d*)?(?:[eE][-+]?\d+)?)[fF]?", lit)
+        if num and shape == "float":
+            return float(num.group(1))
+        if num and shape == "int" and re.fullmatch(r"-?\d+", num.group(1)):
+            return int(num.group(1))
+        return None
+
+    since_by_member: dict[str, int] = {}
+    lm = RE_LOAD.search(body)
+    if lm:
+        for gate in RE_VERSION_GATE.finditer(_balanced_block(body, lm.end())):
+            since_by_member[gate.group(2)] = int(gate.group(1))
+
     params: list[dict] = []
     positional = 0
     for member, named in order:
@@ -188,7 +214,18 @@ def _parse_serializable(body: str) -> list[dict]:
         else:
             positional += 1
             key = f"value{positional}"
-        params.append({"key": key, "member": member, "named": named, **info})
+        param = {"key": key, "member": member, "named": named, **info}
+        # only recorded when > 0, so version-0 members (the common case) keep the
+        # catalog free of noise; absent == 0 == "present at every class version"
+        since = since_by_member.get(member, 0)
+        if since > 0:
+            param["since"] = since
+        # the in-class initializer, used to fill a member an older node lacks when it
+        # is upgraded to a newer class version (see tools/animtree/versions.py)
+        default = _default_literal(member, info["shape"])
+        if default is not None:
+            param["default"] = default
+        params.append(param)
     return params
 
 

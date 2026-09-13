@@ -78,7 +78,8 @@ void AnimationTree::AnimationNodePath::TryAddNextCurrentNodePath(
         }
     }
 
-    if (fromNode_.lock()->GetAnimDuration_secs() < context.during_secs_)
+    // <= : 非ループのクリップは終端でクランプされ続けるので、終端に居る間は毎フレーム再判定させる
+    if (fromNode_.lock()->GetAnimDuration_secs() <= context.during_secs_)
     {
         isFirstBlendingAnimation_ = true;
     }

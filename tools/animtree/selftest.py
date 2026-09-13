@@ -19,6 +19,8 @@ Stages:
   7. add-param/remove-param round-trip for all 3 kinds (bool/int/float).
   8. validate() sanity: the known blendAnimationOffset_secs_ garbage note,
      and a clean fixture validates with zero hard problems.
+  9. adding a latest-version clip node to a tree of older clip nodes upgrades the
+     older ones on write (cereal stores one class version per type per archive).
 """
 
 from __future__ import annotations
@@ -199,6 +201,7 @@ def stage_edits(r: Reporter) -> None:
             tree = reader.read_tree(base)
 
             node = edits.add_clip_node(tree, name="SelftestProbe", clip_guid=dummy_clip_guid,
+                                       clip_start_time=0.0, clip_end_time=0.0, is_loop=True,
                                        guid="00000000-0000-4000-8000-0000000000f1",
                                        pos=(0.0, 0.0))
             edits.remove_node(tree, node.guid)
@@ -280,6 +283,42 @@ def stage_validate_sanity(r: Reporter) -> None:
         r.fail("AnimationTree.animTree validate clean", traceback.format_exc())
 
 
+def stage_version_unify(r: Reporter) -> None:
+    r.section("stage 9: mixed node class versions are unified on write")
+    from tools.animtree import catalog as catalog_mod
+    from tools.animtree import edits, model, reader, validate, writer
+    cat = catalog_mod.load()
+    latest = int(cat.node_by_fqn(model.FQN_CLIP_NODE)["version"])
+    try:
+        tree = reader.read_tree(cereal_json.read_text(ANIM_DIR / "AnimationTree.animTree"))
+        range_keys = ("clipStartTime_", "clipEndTime_", "isLoop_")
+        before = {
+            n.guid: tuple(model.numval(n.params[k]) if k in n.params else d
+                          for k, d in zip(range_keys, (0.0, 0.0, True)))
+            for n in tree.nodes if n.type_fqn == model.FQN_CLIP_NODE
+        }
+        probe = edits.add_clip_node(tree, name="SelftestRangeProbe",
+                                    clip_guid="11111111-1111-1111-1111-111111111111",
+                                    clip_start_time=12.5, clip_end_time=40.0, is_loop=False,
+                                    guid="00000000-0000-4000-8000-0000000000f3", pos=(0.0, 0.0))
+        reread = reader.read_tree(writer.write_tree(tree))
+        clips = [n for n in reread.nodes if n.type_fqn == model.FQN_CLIP_NODE]
+        versions = {n.class_version for n in clips}
+        if versions != {latest}:
+            raise AssertionError(f"expected every clip node at version {latest}, got {versions}")
+        for n in clips:
+            got = tuple(model.numval(n.params[k]) for k in range_keys)
+            want = (12.5, 40.0, False) if n.guid == probe.guid else before[n.guid]
+            if got != want:
+                raise AssertionError(f"node {n.guid}: range params {got}, expected {want}")
+        hard = [p for p in validate.validate(reread) if not p.startswith("note:")]
+        if hard:
+            raise AssertionError(f"upgraded tree has hard problems: {hard}")
+        r.ok(f"AnimationTree.animTree + a v{latest} node: every clip node written at v{latest}, ranges preserved/defaulted")
+    except Exception:  # noqa: BLE001
+        r.fail("AnimationTree.animTree version unify", traceback.format_exc())
+
+
 def main() -> int:
     r = Reporter()
     stage_ordered_obj_dup_keys(r)
@@ -291,6 +330,7 @@ def main() -> int:
     stage_edits(r)
     stage_params(r)
     stage_validate_sanity(r)
+    stage_version_unify(r)
     return r.finish()
 
 

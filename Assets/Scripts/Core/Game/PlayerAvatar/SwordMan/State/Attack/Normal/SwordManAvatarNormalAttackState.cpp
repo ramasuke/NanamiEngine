@@ -18,6 +18,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         currentCombo_ = 0;
         isAttacked_   = false;
         bufferedAttackTimer_secs_ = 0.0f;
+        releasedSinceEnter_ = false;
     }
 
     void SwordManAvatarNormalAttackState::DoFixedUpdate()
@@ -30,6 +31,16 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         if (Status().IsDamaged())
         {
             OnChangeState(SwordManAvatarStateType::Hurt);
+            return;
+        }
+
+        // 1段目の発生前まで押し続けていたら、ため攻撃の溜めへ移行する（一度でも離したら溜めには入らない）
+        if (!Input().NormalAttack().IsUpdatePressed())
+            releasedSinceEnter_ = true;
+        if (!releasedSinceEnter_ && currentCombo_ == 0 && !isAttacked_ && Status().CanChargeAttack() &&
+            During_secs() >= Status().ChargeAttackHoldThreshold_secs())
+        {
+            OnChangeState(SwordManAvatarStateType::ChargeAttackCharging);
             return;
         }
 

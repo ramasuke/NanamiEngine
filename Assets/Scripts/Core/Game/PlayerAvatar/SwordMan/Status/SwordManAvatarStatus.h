@@ -66,7 +66,15 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] const std::vector<HitFeelParam>&  ComboHitFeel                         () const { return comboHitFeel_; }
         [[nodiscard]] const HitFeelParam&               DashHitFeel                          () const { return dashHitFeel_; }
         [[nodiscard]] float                             ComboInputBufferWindow_secs          () const { return comboInputBufferWindow_secs_; }
-        [[nodiscard]] StatusParameter::MoveSpeed        GetWalkSpeed                         () const override { return walkSpeed_;                }
+        [[nodiscard]] float                             ChargeAttackHoldThreshold_secs       () const { return chargeAttackHoldThreshold_secs_; }
+        [[nodiscard]] float                             ChargeAttackMaxCharge_secs           () const { return chargeAttackMaxCharge_secs_; }
+        [[nodiscard]] float                             ChargeAttackMaxHold_secs             () const { return chargeAttackMaxHold_secs_; }
+        [[nodiscard]] const AttackParam<Damage::PhysicsPower>& ChargeAttack                  () const { return chargeAttack_; }
+        [[nodiscard]] const HitFeelParam&               ChargeHitFeel                        () const { return chargeHitFeel_; }
+        [[nodiscard]] float                             ChargeAttackLungeStart_secs          () const { return chargeAttackLungeStart_secs_; }
+        [[nodiscard]] float                             ChargeAttackLungeSpeed               () const { return chargeAttackLungeSpeed_; }
+        [[nodiscard]] float                             ChargeAttackStaminaCost              () const { return chargeAttackStaminaCost_; }
+        [[nodiscard]] StatusParameter::MoveSpeed        GetWalkSpeed                        () const override { return walkSpeed_;                }
         [[nodiscard]] StatusParameter::MoveSpeed        GetRunSpeed                          () const override { return runSpeed_ ;                }
         [[nodiscard]] float                             GetMoveRotateSpeed                   () const override { return moveRotateSpeed_;          }
         [[nodiscard]] float                             LockOnAttackRotateSpeed              () const          { return lockOnAttackRotateSpeed_;  }
@@ -86,6 +94,7 @@ namespace GameCore::PlayerAvatar::SwordMan
                       void                              ApplyDamage();
                       void                              DiscardDamage();
                       void                              ConsumeAvoidRollingStamina();
+                      void                              ConsumeChargeAttackStamina();
                       void                              StartJumpCooldown();
         
         
@@ -110,11 +119,19 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serialize(0)]] float comboNormalAttackStateDuration_secs_;
         [[serialize(0)]] float attackedShockedStateDuration_secs_;
         [[serialize(0)]] AttackParam<Damage::PhysicsPower> dashAttack_;
-        [[serialize(8)]] float dashAttackLungeSpeed_; ///< ダッシュ攻撃の予備動作中に前進する速度[m/s]
-        [[serialize(9)]] std::vector<HitFeelParam> comboHitFeel_; ///< コンボ段数(0/1/2)ごとのヒット演出パラメータ
-        [[serialize(9)]] HitFeelParam dashHitFeel_; ///< ダッシュ攻撃のヒット演出パラメータ
-        [[serialize(9)]] float comboInputBufferWindow_secs_; ///< NormalAttack入力の先行/後追いを許容する猶予時間[秒]
-        
+        [[serialize(8)]] float dashAttackLungeSpeed_secs_; 
+        [[serialize(9)]] std::vector<HitFeelParam> comboHitFeel_;
+        [[serialize(9)]] HitFeelParam dashHitFeel_; 
+        [[serialize(9)]] float comboInputBufferWindow_secs_;
+        [[serialize(11)]] float chargeAttackHoldThreshold_secs_; ///< NormalAttack開始からこの時間押し続けたら溜めへ移行(1段目の発生より短くする)
+        [[serialize(11)]] float chargeAttackMaxCharge_secs_;     ///< 溜め開始から最大溜めに達するまでの時間。これ未満で離すと通常コンボ
+        [[serialize(11)]] float chargeAttackMaxHold_secs_;       ///< 最大溜めのまま保持できる上限(溜め開始から)。超えると自動解放
+        [[serialize(11)]] AttackParam<Damage::PhysicsPower> chargeAttack_;
+        [[serialize(11)]] HitFeelParam chargeHitFeel_;
+        [[serialize(11)]] float chargeAttackLungeStart_secs_; ///< 解放ステート開始から前方への踏み込みを始める時間(跳躍開始)。発生時に止める
+        [[serialize(11)]] float chargeAttackLungeSpeed_;
+        [[serialize(11)]] float chargeAttackStaminaCost_;
+
         [[serialize(0)]] StatusParameter::MoveSpeed walkSpeed_;
         [[serialize(0)]] StatusParameter::MoveSpeed runSpeed_ ;
         [[serialize(0)]] float                      moveRotateSpeed_;
@@ -137,6 +154,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         rxcpp::subjects::subject<LibCore::Rx::unit>     onRecoverFromInjured_;
 
         std::queue<std::unique_ptr<IDamage>>   onDamagedStack_;
+
+        void ConsumeStamina(float cost);
         
         
 
@@ -165,6 +184,14 @@ namespace GameCore::PlayerAvatar::SwordMan
             archive(CEREAL_NVP(comboHitFeel_));
             archive(CEREAL_NVP(dashHitFeel_));
             archive(CEREAL_NVP(comboInputBufferWindow_secs_));
+            archive(CEREAL_NVP(chargeAttackHoldThreshold_secs_));
+            archive(CEREAL_NVP(chargeAttackMaxCharge_secs_));
+            archive(CEREAL_NVP(chargeAttackMaxHold_secs_));
+            archive(CEREAL_NVP(chargeAttack_));
+            archive(CEREAL_NVP(chargeHitFeel_));
+            archive(CEREAL_NVP(chargeAttackLungeStart_secs_));
+            archive(CEREAL_NVP(chargeAttackLungeSpeed_));
+            archive(CEREAL_NVP(chargeAttackStaminaCost_));
             archive(CEREAL_NVP(walkSpeed_));
             archive(CEREAL_NVP(runSpeed_));
             archive(CEREAL_NVP(moveRotateSpeed_));
@@ -201,6 +228,14 @@ namespace GameCore::PlayerAvatar::SwordMan
             if (version >= 9) archive(CEREAL_NVP(comboHitFeel_));
             if (version >= 9) archive(CEREAL_NVP(dashHitFeel_));
             if (version >= 9) archive(CEREAL_NVP(comboInputBufferWindow_secs_));
+            if (version >= 11) archive(CEREAL_NVP(chargeAttackHoldThreshold_secs_));
+            if (version >= 11) archive(CEREAL_NVP(chargeAttackMaxCharge_secs_));
+            if (version >= 11) archive(CEREAL_NVP(chargeAttackMaxHold_secs_));
+            if (version >= 11) archive(CEREAL_NVP(chargeAttack_));
+            if (version >= 11) archive(CEREAL_NVP(chargeHitFeel_));
+            if (version >= 11) archive(CEREAL_NVP(chargeAttackLungeStart_secs_));
+            if (version >= 11) archive(CEREAL_NVP(chargeAttackLungeSpeed_));
+            if (version >= 11) archive(CEREAL_NVP(chargeAttackStaminaCost_));
             if (version >= 0) archive(CEREAL_NVP(walkSpeed_));
             if (version >= 0) archive(CEREAL_NVP(runSpeed_));
             if (version >= 0) archive(CEREAL_NVP(moveRotateSpeed_));

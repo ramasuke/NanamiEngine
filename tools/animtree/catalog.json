@@ -1,11 +1,11 @@
 {
-  "generated_from": "8d6ad3b0f4c899495bb23841a0e8f6dacf641c87",
+  "generated_from": "e39cf4bdf74ebab5c6b0aa5ee933e81badb9e989",
   "node_types": {
     "NanamiEngine::Module::AnimationTree::AnimationClipNode": {
       "class": "AnimationClipNode",
       "fqn": "NanamiEngine::Module::AnimationTree::AnimationClipNode",
       "leaf": "AnimationClipNode",
-      "version": 2,
+      "version": 3,
       "singleton": false,
       "header": "Engine/Module/AnimationTree/Node/ClipNode/AnimationClipNode.h",
       "params": [
@@ -38,19 +38,48 @@
           "key": "speed_",
           "member": "speed_",
           "named": true,
-          "shape": "float"
+          "shape": "float",
+          "default": 1.0
         },
         {
           "key": "blendAnimationOffset_secs_",
           "member": "blendAnimationOffset_secs_",
           "named": true,
-          "shape": "float"
+          "shape": "float",
+          "since": 1,
+          "default": 0.0
         },
         {
           "key": "modelAnimationIndex_",
           "member": "modelAnimationIndex_",
           "named": true,
-          "shape": "int"
+          "shape": "int",
+          "since": 2,
+          "default": 0
+        },
+        {
+          "key": "clipStartTime_",
+          "member": "clipStartTime_",
+          "named": true,
+          "shape": "float",
+          "since": 3,
+          "default": 0.0
+        },
+        {
+          "key": "clipEndTime_",
+          "member": "clipEndTime_",
+          "named": true,
+          "shape": "float",
+          "since": 3,
+          "default": 0.0
+        },
+        {
+          "key": "isLoop_",
+          "member": "isLoop_",
+          "named": true,
+          "shape": "bool",
+          "since": 3,
+          "default": true
         }
       ]
     },
@@ -100,7 +129,8 @@
           "key": "speed_",
           "member": "speed_",
           "named": true,
-          "shape": "float"
+          "shape": "float",
+          "default": 1.0
         }
       ]
     }

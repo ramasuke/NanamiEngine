@@ -20,6 +20,14 @@ namespace NanamiEngine::Module::Asset
             GameCore::PlayerAvatar::HitFeelParam(0.0727272727f, 0.15f, 0.8f, 0.1090909091f, 5.7f)}
         , dashHitFeel_                        (0.0818181818f, 0.1f, 0.9f, 0.1272727273f, 1.0f)
         , comboInputBufferWindow_secs_        (0.1181818182f)
+        , chargeAttackHoldThreshold_secs_     (0.2f)
+        , chargeAttackMaxCharge_secs_         (1.0f)
+        , chargeAttackMaxHold_secs_           (3.0f)
+        , chargeAttack_                       (GameCore::Damage::PhysicsPower(15), GameCore::PlayerAvatar::EnhancePower(15), 0.52f, 1.09f)
+        , chargeHitFeel_                      (0.1f, 0.05f, 1.2f, 0.18f, 7.0f)
+        , chargeAttackLungeStart_secs_        (0.0f)
+        , chargeAttackLungeSpeed_             (28.0f)
+        , chargeAttackStaminaCost_            (30.0f)
         , moveRotateSpeed_                    (0)
         , lockOnAttackRotateSpeed_            (3.0f)
         , jumpPower_                          (0)
@@ -53,6 +61,14 @@ namespace NanamiEngine::Module::Asset
         LibCore::ImGuiHelper::OnDrawInputField("comboHitFeel_", comboHitFeel_, [] {});
         LibCore::ImGuiHelper::OnDrawInputField("dashHitFeel_", dashHitFeel_);
         LibCore::ImGuiHelper::OnDrawInputField("comboInputBufferWindow_secs_", comboInputBufferWindow_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("chargeAttackHoldThreshold_secs_", chargeAttackHoldThreshold_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("chargeAttackMaxCharge_secs_", chargeAttackMaxCharge_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("chargeAttackMaxHold_secs_", chargeAttackMaxHold_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("chargeAttack_", chargeAttack_);
+        LibCore::ImGuiHelper::OnDrawInputField("chargeHitFeel_", chargeHitFeel_);
+        LibCore::ImGuiHelper::OnDrawInputField("chargeAttackLungeStart_secs_", chargeAttackLungeStart_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("chargeAttackLungeSpeed_", chargeAttackLungeSpeed_);
+        LibCore::ImGuiHelper::OnDrawInputField("chargeAttackStaminaCost_", chargeAttackStaminaCost_);
         LibCore::ImGuiHelper::OnDrawInputField("walkSpeed_", walkSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("runSpeed_", runSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("moveRotateSpeed_", moveRotateSpeed_);

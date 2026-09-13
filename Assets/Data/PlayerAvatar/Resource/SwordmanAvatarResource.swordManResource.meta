@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 4,
+                "cereal_class_version": 7,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -121,7 +121,62 @@
                     0.699999988079071
                 ],
                 "walkFootstepSoundCount": 0,
-                "runFootstepSoundCount": 0
+                "runFootstepSoundCount": 0,
+                "chargeCompleteSound_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483657,
+                            "data": {
+                                "value0": {
+                                    "value_": "07157678-3D00-46AF-89E8-BE783950A5FE"
+                                }
+                            }
+                        }
+                    }
+                },
+                "chargeCompleteParticlePrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483658,
+                            "data": {
+                                "value0": {
+                                    "value_": "C67F5FBD-7154-4A92-BBCD-5747E33AA98F"
+                                }
+                            }
+                        }
+                    }
+                },
+                "groundCheckRadius_": 40.0,
+                "groundCheckUpOffset_": 3.0,
+                "groundCheckDistance_": 8.300000190734863,
+                "chargeHoldParticlePrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483659,
+                            "data": {
+                                "value0": {
+                                    "value_": "F46DA941-A694-4C8A-B8BD-98270B77EAB1"
+                                }
+                            }
+                        }
+                    }
+                },
+                "chargeImpactParticlePrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483660,
+                            "data": {
+                                "value0": {
+                                    "value_": "362D64CD-60F1-49C4-856D-2C57318283B7"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

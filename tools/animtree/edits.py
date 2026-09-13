@@ -129,8 +129,14 @@ def new_singleton_node(fqn: str, guid: str, pos: tuple[float, float],
 
 def add_clip_node(tree: model.Tree, *, name: str, clip_guid: str, speed: float = 1.0,
                   blend_offset_secs: float = 0.0, model_anim_index: int = 0,
+                  clip_start_time: float, clip_end_time: float, is_loop: bool,
                   pos: Optional[tuple[float, float]] = None, guid: Optional[str] = None,
                   cat: catalog_mod.Catalog | None = None) -> model.Node:
+    """``clip_start_time``/``clip_end_time`` are in the clip's own animation-time
+    units (``MV1GetAnimTotalTime``); an end of ``0`` means "to the end of the clip".
+    ``is_loop=False`` plays the range once and holds its last pose. ``is_loop`` is
+    passed explicitly because the catalog's generic bool default is ``False``, which
+    would silently turn every new node into a non-looping one."""
     cat = cat or catalog_mod.load()
     entry = cat.resolve_node_type(model.FQN_CLIP_NODE)
     if entry is None or entry.get("singleton"):
@@ -140,6 +146,9 @@ def add_clip_node(tree: model.Tree, *, name: str, clip_guid: str, speed: float =
         "speed_": speed,
         "blendAnimationOffset_secs_": blend_offset_secs,
         "modelAnimationIndex_": model_anim_index,
+        "clipStartTime_": clip_start_time,
+        "clipEndTime_": clip_end_time,
+        "isLoop_": is_loop,
     }
     node_guid = guid or meta_mod.mint_guid()
     node_pos = tuple(pos) if pos else layout.grid_position(len(tree.nodes))
@@ -246,6 +255,13 @@ def set_node_params(tree: model.Tree, guid: str, assignments: dict[str, str],
                 f"cannot set it directly - edit the .animTree by hand or in the editor"
             )
         jkey = pinfo["key"]
+        since = int(pinfo.get("since", 0))
+        if since > int(node.class_version):
+            raise EditError(
+                f"{node.type_fqn}.{pinfo['member']} exists from class version {since}, but node "
+                f"{node.guid} is stored at version {node.class_version} - re-save the tree in the "
+                f"editor to upgrade it, or recreate the node with add-clip-node"
+            )
         if node.params is None or jkey not in node.params:
             raise EditError(f"param {jkey!r} missing from the stored blob; regen-catalog?")
         if shape == "field":
@@ -402,6 +418,9 @@ def apply(tree: model.Tree, ops: list[dict], cat: catalog_mod.Catalog | None = N
                                   speed=float(op.get("speed", 1.0)),
                                   blend_offset_secs=float(op.get("blend_offset_secs", 0.0)),
                                   model_anim_index=int(op.get("model_anim_index", 0)),
+                                  clip_start_time=float(op.get("clip_start_time", 0.0)),
+                                  clip_end_time=float(op.get("clip_end_time", 0.0)),
+                                  is_loop=bool(op.get("is_loop", True)),
                                   pos=op.get("pos"), guid=op.get("guid"), cat=cat)
                 log.append(f"add-clip-node {op['name']} -> {n.guid}")
             elif op_kind == "remove-node":

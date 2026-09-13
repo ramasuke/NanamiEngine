@@ -54,6 +54,12 @@ class Catalog:
     def params_of(self, entry: Optional[dict]) -> list[dict]:
         return list(entry.get("params", [])) if entry else []
 
+    def params_for_version(self, entry: Optional[dict], class_version: int) -> list[dict]:
+        """The params a node stored at ``class_version`` actually carries: a member the
+        engine's ``load()`` gates behind ``if (version >= N)`` (catalog ``since``) is
+        absent from older blobs, and cereal skips it on load, so it must not be required."""
+        return [p for p in self.params_of(entry) if int(p.get("since", 0)) <= class_version]
+
     def param_by_key(self, entry: Optional[dict], json_key: str) -> Optional[dict]:
         for p in self.params_of(entry):
             if p.get("key") == json_key:

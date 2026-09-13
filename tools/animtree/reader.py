@@ -36,6 +36,9 @@ class _Ctx:
     def __init__(self, cat: catalog_mod.Catalog) -> None:
         self.cat = cat
         self.poly: dict[int, str] = {}
+        # cereal writes a type's cereal_class_version only on its first occurrence
+        # in the archive; later instances of that type are stored at the same version
+        self.node_versions: dict[str, int] = {}
 
     def ptr_slot(self, slot: OrderedObj):
         pid = _num(slot["polymorphic_id"])
@@ -190,7 +193,9 @@ def _read_node(ctx: _Ctx, slot: OrderedObj, *, expected_fqn: Optional[str] = Non
 
     data = s["data"]
     v, data = _strip_ccv(data)
-    class_version = v if v is not None else int(entry.get("version", 0))
+    if v is not None:
+        ctx.node_versions[fqn] = v
+    class_version = ctx.node_versions.get(fqn, int(entry.get("version", 0)))
 
     guid: Optional[str] = None
     pos: tuple[float, float] = (0.0, 0.0)

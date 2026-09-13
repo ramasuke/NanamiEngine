@@ -1,6 +1,8 @@
 ﻿#include "SwordManAvatarStateMachine.h"
 
 #include "ArmStretch/SwordManAvatarArmStretchState.h"
+#include "Attack/Charge/SwordManAvatarChargeAttackChargingState.h"
+#include "Attack/Charge/SwordManAvatarChargeAttackReleaseState.h"
 #include "Attack/Dash/SwordManAvatarDashAttackState.h"
 #include "Attack/Normal/SwordManAvatarNormalAttackState.h"
 #include "AttackedShocked/SwordManAvatar_AttackedShockedState.h"
@@ -86,6 +88,8 @@ namespace GameCore::PlayerAvatar::SwordMan
                     {SwordManAvatarStateType::ClimbToTop,         std::make_shared<SwordManAvatarStateClimbToTop>   (context, callback)},
                     {SwordManAvatarStateType::ArmStretch,         std::make_shared<SwordManAvatarArmStretchState>   (context, callback)},
                     {SwordManAvatarStateType::Chatting,           std::make_shared<SwordManAvatarChattingState>     (context, callback)},
+                    {SwordManAvatarStateType::ChargeAttackCharging, std::make_shared<SwordManAvatarChargeAttackChargingState>(context, callback)},
+                    {SwordManAvatarStateType::ChargeAttackRelease,  std::make_shared<SwordManAvatarChargeAttackReleaseState> (context, callback)},
                     {SwordManAvatarStateType::Hurt,               std::make_shared<HurtState>                      (context, callback)},
                     {SwordManAvatarStateType::AvoidRolling,       std::make_shared<AvoidRollingState>               (context, callback)},
                     {SwordManAvatarStateType::Death,              std::make_shared<DeathState>                          (context, callback)},

@@ -38,6 +38,14 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] const std::vector<GameCore::PlayerAvatar::HitFeelParam>& ComboHitFeel() const { return comboHitFeel_; }
         [[nodiscard]] const GameCore::PlayerAvatar::HitFeelParam&              DashHitFeel () const { return dashHitFeel_; }
         [[nodiscard]] float                                GetComboInputBufferWindow_secs() const { return comboInputBufferWindow_secs_; }
+        [[nodiscard]] float                                ChargeAttackHoldThreshold_secs() const { return chargeAttackHoldThreshold_secs_; }
+        [[nodiscard]] float                                ChargeAttackMaxCharge_secs    () const { return chargeAttackMaxCharge_secs_; }
+        [[nodiscard]] float                                ChargeAttackMaxHold_secs      () const { return chargeAttackMaxHold_secs_; }
+        [[nodiscard]] const GameCore::PlayerAvatar::AttackParam<GameCore::Damage::PhysicsPower>& ChargeAttack() const { return chargeAttack_; }
+        [[nodiscard]] const GameCore::PlayerAvatar::HitFeelParam&              ChargeHitFeel() const { return chargeHitFeel_; }
+        [[nodiscard]] float                                ChargeAttackLungeStart_secs   () const { return chargeAttackLungeStart_secs_; }
+        [[nodiscard]] float                                ChargeAttackLungeSpeed        () const { return chargeAttackLungeSpeed_; }
+        [[nodiscard]] float                                ChargeAttackStaminaCost       () const { return chargeAttackStaminaCost_; }
         [[nodiscard]] GameCore::StatusParameter::MoveSpeed GetWalkSpeed        () const { return walkSpeed_;                }
         [[nodiscard]] GameCore::StatusParameter::MoveSpeed GetRunSpeed         () const { return runSpeed_ ;                }
         [[nodiscard]] float                                GetMoveRotateSpeed  () const { return moveRotateSpeed_;          }
@@ -71,6 +79,14 @@ namespace NanamiEngine::Module::Asset
         [[serialize(10)]] std::vector<GameCore::PlayerAvatar::HitFeelParam> comboHitFeel_;
         [[serialize(10)]] GameCore::PlayerAvatar::HitFeelParam dashHitFeel_;
         [[serialize(10)]] float                                comboInputBufferWindow_secs_;
+        [[serialize(12)]] float                                chargeAttackHoldThreshold_secs_;
+        [[serialize(12)]] float                                chargeAttackMaxCharge_secs_;
+        [[serialize(12)]] float                                chargeAttackMaxHold_secs_;
+        [[serialize(12)]] GameCore::PlayerAvatar::AttackParam<GameCore::Damage::PhysicsPower> chargeAttack_;
+        [[serialize(12)]] GameCore::PlayerAvatar::HitFeelParam chargeHitFeel_;
+        [[serialize(12)]] float                                chargeAttackLungeStart_secs_;
+        [[serialize(12)]] float                                chargeAttackLungeSpeed_;
+        [[serialize(12)]] float                                chargeAttackStaminaCost_;
         
         [[serialize(0)]] GameCore::StatusParameter::MoveSpeed walkSpeed_;
         [[serialize(0)]] GameCore::StatusParameter::MoveSpeed runSpeed_ ;
@@ -108,6 +124,14 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(comboHitFeel_));
             archive(CEREAL_NVP(dashHitFeel_));
             archive(CEREAL_NVP(comboInputBufferWindow_secs_));
+            archive(CEREAL_NVP(chargeAttackHoldThreshold_secs_));
+            archive(CEREAL_NVP(chargeAttackMaxCharge_secs_));
+            archive(CEREAL_NVP(chargeAttackMaxHold_secs_));
+            archive(CEREAL_NVP(chargeAttack_));
+            archive(CEREAL_NVP(chargeHitFeel_));
+            archive(CEREAL_NVP(chargeAttackLungeStart_secs_));
+            archive(CEREAL_NVP(chargeAttackLungeSpeed_));
+            archive(CEREAL_NVP(chargeAttackStaminaCost_));
             archive(CEREAL_NVP(walkSpeed_));
             archive(CEREAL_NVP(runSpeed_));
             archive(CEREAL_NVP(moveRotateSpeed_));
@@ -140,6 +164,14 @@ namespace NanamiEngine::Module::Asset
             if (version >= 10) archive(CEREAL_NVP(comboHitFeel_));
             if (version >= 10) archive(CEREAL_NVP(dashHitFeel_));
             if (version >= 10) archive(CEREAL_NVP(comboInputBufferWindow_secs_));
+            if (version >= 12) archive(CEREAL_NVP(chargeAttackHoldThreshold_secs_));
+            if (version >= 12) archive(CEREAL_NVP(chargeAttackMaxCharge_secs_));
+            if (version >= 12) archive(CEREAL_NVP(chargeAttackMaxHold_secs_));
+            if (version >= 12) archive(CEREAL_NVP(chargeAttack_));
+            if (version >= 12) archive(CEREAL_NVP(chargeHitFeel_));
+            if (version >= 12) archive(CEREAL_NVP(chargeAttackLungeStart_secs_));
+            if (version >= 12) archive(CEREAL_NVP(chargeAttackLungeSpeed_));
+            if (version >= 12) archive(CEREAL_NVP(chargeAttackStaminaCost_));
             if (version >= 0) archive(CEREAL_NVP(walkSpeed_));
             if (version >= 0) archive(CEREAL_NVP(runSpeed_));
             if (version >= 0) archive(CEREAL_NVP(moveRotateSpeed_));
@@ -160,7 +192,7 @@ namespace NanamiEngine::Module::Asset
 
 REGISTER_SCRIPTABLE_OBJECT(SwordManInitStatus, SWORD_MAN_INIT_STATUS_EXTENSION_LABEL)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 11);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 12);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManInitStatus);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManInitStatus);
 #pragma endregion
