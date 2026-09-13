@@ -8,7 +8,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     void SwordManAvatarInjuredRunState::DoEnter()
     {
         StatusEvent().InvokeOnRun();
-        Status().SetIsRunning(true);
         ResetMoveSpeedFromVelocity();
     }
 
@@ -44,6 +43,5 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarInjuredRunState::DoExit()
     {
-        Status().SetIsRunning(false);
     }
 }

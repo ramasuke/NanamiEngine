@@ -70,7 +70,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             playerAvatar->Resources()
         );
 
-        return std::make_unique<SwordManAvatarStateMachine>(
+        auto stateMachine = std::make_unique<SwordManAvatarStateMachine>(
             [context](SwordManAvatarStateMachine::OnChangeStateCallback callback)
                 -> SwordManAvatarStateMachine::StateMap
             {
@@ -104,5 +104,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             SwordManAvatarStateType::Disable,
             isEnable
         );
+        status->SetStateMachine(*stateMachine);
+        return stateMachine;
     }
 }

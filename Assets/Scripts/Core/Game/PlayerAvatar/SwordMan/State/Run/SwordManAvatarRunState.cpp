@@ -6,7 +6,6 @@
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoEnter()
 {
     StatusEvent().InvokeOnRun();
-    Status().SetIsRunning(true);
     ResetMoveSpeedFromVelocity();
 }
 
@@ -42,5 +41,4 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoUpdate()
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoExit()
 {
-    Status().SetIsRunning(false);
 }

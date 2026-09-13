@@ -6,6 +6,7 @@
 #include <functional>
 #include "ImGuiHelper.h"
 #include "IPlayerAvatarStateMachine.h"
+#include "IReadOnlyPlayerAvatarStateMachine.h"
 #include "../../../Network/Rpc/Custom_RpcType.h"
 #include "../State/IPlayerAvatarState.h"
 #include "../rxcpp/subjects/rx-behavior.hpp"
@@ -16,7 +17,8 @@ namespace GameCore::PlayerAvatar
     concept Uint8Enum = std::is_enum_v<T> && std::is_same_v<std::underlying_type_t<T>, uint8_t>;
 
     template<Uint8Enum StateTypeT>
-    class PlayerAvatarStateMachineBase : public IPlayerAvatarStateMachine
+    class PlayerAvatarStateMachineBase : public IPlayerAvatarStateMachine,
+                                         public IReadOnlyPlayerAvatarStateMachine<StateTypeT>
     {
     public:
         using StateMap              = std::unordered_map<StateTypeT, std::shared_ptr<IPlayerAvatarState>>;
@@ -115,6 +117,11 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] uint8_t GetCurrentStateValue() const
         {
             return static_cast<uint8_t>(currentStateType_);
+        }
+
+        [[nodiscard]] StateTypeT GetCurrentStateType() const override
+        {
+            return currentStateType_;
         }
 
         virtual void OnEnable()  { OnChangeState(initialState_); }

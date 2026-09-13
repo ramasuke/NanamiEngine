@@ -16,6 +16,8 @@
 #include "../../../../../../../Engine/Module/Asset/Sound/SoundFile.h"
 #include "../../../../../../../Libs/LibCore/Rx/SerializableSubject/SerializableSubject.h"
 #include "../../../Damage/Physics/Game_Damage_PhysicsPower.h"
+#include "../../StateMachine/IReadOnlyPlayerAvatarStateMachine.h"
+#include "../State/SwordManAvatarStateType.h"
 #include "Event/SwordManAvatarStatusEvent.h"
 #include "Quest/SwordMan_QuestGroup.h"
 
@@ -58,7 +60,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Stamina> Stamina   () const override { return stamina_.AsReadOnly(); }
         [[nodiscard]] bool                                                           CanRun    () const override { return !isStaminaExhausted_; }
         [[nodiscard]] bool                                                           CanAvoidRolling() const { return stamina_.get() >= StatusParameter::Stamina(avoidRollingStaminaCost_); }
-                      void                                                           SetIsRunning(bool isRunning) { isRunning_ = isRunning; }
+        [[nodiscard]] bool                                                           CanChargeAttack() const { return stamina_.get() >= StatusParameter::Stamina(chargeAttackStaminaCost_); }
+                      void                                                           SetStateMachine(const IReadOnlyPlayerAvatarStateMachine<SwordManAvatarStateType>& stateMachine) { stateMachine_ = &stateMachine; }
 
         [[nodiscard]] const std::vector<AttackParam<Damage::PhysicsPower>>& ComboNormalAttack() const { return comboNormalAttack_; }
         [[nodiscard]] float                             ComboNormalAttackStateDuration_secs  () const { return comboNormalAttackStateDuration_secs_; }
@@ -114,8 +117,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serialize(0)]] float staminaDrainPerSecond_;
         [[serialize(0)]] float staminaRegenPerSecond_;
         [[serialize(0)]] float minStaminaRatioToResumeRun_ = 0.3f;
-        bool isRunning_          = false;
         bool isStaminaExhausted_ = false;
+        const IReadOnlyPlayerAvatarStateMachine<SwordManAvatarStateType>* stateMachine_ = nullptr;
 
         [[serialize(0)]] std::vector<AttackParam<Damage::PhysicsPower>> comboNormalAttack_;
         [[serialize(0)]] float comboNormalAttackStateDuration_secs_;

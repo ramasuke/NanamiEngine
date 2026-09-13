@@ -1,6 +1,7 @@
 ﻿#include "SwordManAvatarStatus.h"
 
 #include <algorithm>
+#include <cassert>
 
 #include "../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
@@ -124,7 +125,11 @@ namespace GameCore::PlayerAvatar::SwordMan
             jumpCooldownRemaining_secs_ = (std::max)(jumpCooldownRemaining_secs_, 0.0f);
         }
 
-        if (isRunning_)
+        assert(stateMachine_ && "SwordManAvatarStatus: stateMachine_ is not set");
+        switch (stateMachine_->GetCurrentStateType())
+        {
+        case SwordManAvatarStateType::Run:
+        case SwordManAvatarStateType::InjuredRun:
         {
             const auto drained = stamina_.get() - StatusParameter::Stamina(staminaDrainPerSecond_ * Time::DeltaTime());
             if (drained <= StatusParameter::Stamina(0.0f))
@@ -136,8 +141,11 @@ namespace GameCore::PlayerAvatar::SwordMan
             {
                 stamina_.OnNext(drained);
             }
+            break;
         }
-        else
+        case SwordManAvatarStateType::AvoidRolling:
+            break;
+        default:
         {
             const auto regened = stamina_.get() + StatusParameter::Stamina(staminaRegenPerSecond_ * Time::DeltaTime());
             if (maxStamina_ <= regened)
@@ -152,6 +160,8 @@ namespace GameCore::PlayerAvatar::SwordMan
             {
                 isStaminaExhausted_ = false;
             }
+            break;
+        }
         }
 
         const bool currentlyInjured = IsInjured();
