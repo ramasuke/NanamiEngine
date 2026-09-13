@@ -3830,6 +3830,7 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\IPlayerAvatar.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\ITakablePlayerAttack\ITakablePlayerAttack.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\LockOnTarget\ILockOnTarget.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\LockOnTarget\LockOnPoint.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\PlayerAvatar.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_CompletedQuestGroup.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -6695,6 +6696,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\LockOnReticle\Ui_LockOnReticle.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\NpcChatting\Ui_NpcChatting.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\UI_SampleTitleSceneUI.cpp" />
@@ -12588,6 +12590,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\IPlayerAvatar.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\ITakablePlayerAttack\ITakablePlayerAttack.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\LockOnTarget\ILockOnTarget.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\LockOnTarget\LockOnPoint.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\PlayerAvatar.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_CompletedQuestGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_IComplteQuestGroup.h" />
@@ -12751,6 +12754,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Spawn\GamePlay_PrefabSpawner.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\LockOnReticle\Ui_LockOnReticle.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\DealDamageTextBillBoard\UI_DealDamageTextBillBoard.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\NpcChatting\Ui_NpcChatting.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\OtherPlayerStatusUIGroup\OtherPlayerStatusUiGroup.h" />

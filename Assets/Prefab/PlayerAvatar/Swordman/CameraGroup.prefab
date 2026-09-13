@@ -90,7 +90,7 @@
                 "value3": 1.0
             }
         },
-        "childCount": 2,
+        "childCount": 3,
         "child": {
             "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
@@ -602,6 +602,138 @@
                             "value1": 0.0,
                             "value2": 0.0,
                             "value3": 0.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    }
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483674,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "LockOnReticle",
+                    "guid_": {
+                        "value_": "F55294DE-A898-492F-B457-936BC910CB9D"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 2147483657,
+                            "polymorphic_name": "GamePlay::Ui::LockOnReticle",
+                            "ptr_wrapper": {
+                                "id": 2147483675,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "cereal_class_version": 0,
+                                        "guid_": {
+                                            "value_": "87589E16-A3B3-448F-B41D-7637E60802FF"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "renderOrder_": 0,
+                                    "ringSprite_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483676,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "59758F68-337C-47DB-A728-9A7A4E6837ED"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "bracketSprite_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483677,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "BD25B3F7-A834-4FE0-82EB-E0E47304709F"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "candidateSprite_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483678,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "148354DA-C5F1-436B-83D8-936188B6C9F5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "reticleScale_": 0.38,
+                                    "candidateScale_": 0.44,
+                                    "candidateAlpha_": 0.6,
+                                    "ringRotateSpeed_": 0.25,
+                                    "lockedBreathScale_": 0.005,
+                                    "engageDuration_secs_": 0.12,
+                                    "engageStartScaleRate_": 2.0,
+                                    "releaseDuration_secs_": 0.22,
+                                    "releaseEndScaleRate_": 1.5
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
                         },
                         "localScale_": {
                             "value0": 1.0,

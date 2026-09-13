@@ -286,7 +286,7 @@
                 "value3": 1.0
             }
         },
-        "childCount": 10,
+        "childCount": 11,
         "child": {
             "polymorphic_id": 2147483653,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
@@ -1232,6 +1232,87 @@
                                 "value0": -19.198699951171876,
                                 "value1": 13.5600004196167,
                                 "value2": -28.25,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    }
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 5,
+            "ptr_wrapper": {
+                "id": 2147483682,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "LockOnPoint",
+                    "guid_": {
+                        "value_": "1B60E454-A575-4214-893C-48449E04691A"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 2147483657,
+                            "polymorphic_name": "GameCore::PlayerAvatar::LockOnPoint",
+                            "ptr_wrapper": {
+                                "id": 2147483683,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "cereal_class_version": 0,
+                                        "guid_": {
+                                            "value_": "BFB3CAD6-EC04-489A-A0F9-B9666A33137C"
+                                        },
+                                        "isEnable_": true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 2300.0,
+                            "value2": 700.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
                                 "value3": 1.0
                             }
                         },

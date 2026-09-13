@@ -173,6 +173,9 @@ namespace GameCore::PlayerAvatar::SwordMan
     {
         if (CameraGroup().IsLockedOn() && !IsLockOnTargetInRange())
             CameraGroup().ReleaseLockOn();
+        
+        const auto nearestTarget = CameraGroup().IsLockedOn() ? nullptr : FindNearestLockOnTarget();
+        CameraGroup().SetLockOnCandidate(nearestTarget);
 
         if (!Input().LockOn().IsPressed())
             return;
@@ -183,8 +186,8 @@ namespace GameCore::PlayerAvatar::SwordMan
             return;
         }
 
-        if (const auto target = FindNearestLockOnTarget())
-            CameraGroup().EngageLockOn(target);
+        if (nearestTarget)
+            CameraGroup().EngageLockOn(nearestTarget);
     }
 
     void SwordManAvatarStateBase::RotateTowardsLockOnTarget(const float rotateSpeed) const

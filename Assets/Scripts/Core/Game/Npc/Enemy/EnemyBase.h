@@ -6,6 +6,11 @@
 #include "../../PlayerAvatar/LockOnTarget/ILockOnTarget.h"
 #include "Status/EnemyStatus.h"
 
+namespace GameCore::PlayerAvatar
+{
+    class LockOnPoint;
+}
+
 namespace GameCore::Npc
 {
     class EnemyBase : public Module::Network::NetworkComponent,
@@ -18,6 +23,7 @@ namespace GameCore::Npc
         explicit EnemyBase();
         virtual ~EnemyBase() override;
         [[nodiscard]] virtual std::shared_ptr<Enemy::BehaviourTree> BehaviourTree() const { return behaviour_; }
+        [[nodiscard]] glm::vec3 LockOnPosition() override;
 
     protected:
         virtual void DoAwake() { }
@@ -35,7 +41,8 @@ namespace GameCore::Npc
         std::shared_ptr<Enemy::BehaviourTree> behaviour_;
         std::shared_ptr<std::queue<std::unique_ptr<IDamage>>> onDamagedStack_;
         bool hasNetworkBehaviourTree_ = false;
-        
+        std::weak_ptr<PlayerAvatar::LockOnPoint> lockOnPoint_;
+
 #pragma region Serialization Function
     public:
         void BasedOnDrawgui() override;

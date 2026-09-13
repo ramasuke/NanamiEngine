@@ -2,8 +2,10 @@
 
 #include "../../../../../../Engine/Core/Application/ApplicationBase.h"
 #include "../../../../../../Engine/Module/Component/Animator/Animator.h"
+#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../Editor/Npc/Enemy/Behaviour/Window/RunningEnemyBehaviourTreeWindow.h"
 #include "../../../../GamePlay/Npc/Enemy/NetworkBehaviourTree/GamePlay_NetworkBehaviourTree.h"
+#include "../../PlayerAvatar/LockOnTarget/LockOnPoint.h"
 #include "Behaviour/Enemy_BehaviourTree.h"
 
 namespace GameCore::Npc
@@ -25,7 +27,31 @@ namespace GameCore::Npc
 
         hasNetworkBehaviourTree_ = Components().Catch<GamePlay::Npc::Enemy::NetworkBehaviourTree>().lock() != nullptr;
 
+        for (const auto& child : Transform().GetAllChildren())
+        {
+            if (const auto lockOnPoint = child->Components().Catch<PlayerAvatar::LockOnPoint>().lock())
+            {
+                lockOnPoint_ = lockOnPoint;
+                break;
+            }
+        }
+
         DoAwake();
+    }
+
+    glm::vec3 EnemyBase::LockOnPosition()
+    {
+        const auto lockOnPoint = lockOnPoint_.lock();
+        if (!lockOnPoint)
+            return Transform().GetWorldPos();
+
+        // ツールで追加した子の worldMatrix_ は読み込み直後に古いことがあるため、ローカル行列を自分まで積み上げる
+        const auto self = Entity().lock();
+        glm::vec4 position(lockOnPoint->Transform().GetLocalPos(), 1.0f);
+        for (auto parent = lockOnPoint->Transform().GetParent(); parent && parent != self; parent = parent->Transform().GetParent())
+            position = parent->Transform().GetLocalMatrix() * position;
+
+        return glm::vec3(Transform().GetWorldMatrix() * position);
     }
 
     void EnemyBase::OnUpdate()
