@@ -1,5 +1,6 @@
 ﻿#include "TextRenderer.h"
 #include "../../GameObject/Transform/Transform.h"
+#include <cmath>
 #include <sstream>
 #include <vector>
 
@@ -161,10 +162,61 @@ namespace NanamiEngine::Module::NanamiUi
 
         ImGuiHelper::OnDrawInputField("textColor_", textColor_);
         ImGuiHelper::OnDrawEnumField("textAlign_", textAlign_, TEXT_ALIGNS, ToString);
+        ImGuiHelper::OnDrawInputField("isOutlineEnabled_", isOutlineEnabled_);
+        ImGuiHelper::OnDrawInputField("outlineColor_", outlineColor_);
+        ImGuiHelper::OnDrawInputField("outlineWidth_", outlineWidth_);
+        ImGuiHelper::OnDrawInputField("outlineShadowOffsetY_", outlineShadowOffsetY_);
 
         if (isWorldPos_)
         {
             ImGui::Text("screenW_: %d  screenH_: %d", screenW_, screenH_);
+        }
+    }
+
+    void TextRenderer::DrawScreenText(const float offsetX, const float offsetY, const int dxColor) const
+    {
+        const float x = Transform().GetWorldPos().x + offsetX;
+        const float y = Transform().GetWorldPos().y + offsetY;
+        const float scaleX = Transform().GetWorldScale().x;
+        const float scaleY = Transform().GetWorldScale().y;
+        const int fontHandle = fontFile_->DxLibHandle();
+        const std::string sjis = Utf8ToShiftJis(text_);
+
+        if (textAlign_ == TextAlign::Left)
+        {
+            DrawExtendStringFToHandle(
+                x, y,
+                scaleX, scaleY,
+                sjis.c_str(),
+                dxColor,
+                fontHandle
+            );
+            return;
+        }
+
+        const float alignFactor = ToAlignFactor(textAlign_);
+        const float lineHeight = static_cast<float>(GetFontSizeToHandle(fontHandle)) * scaleY;
+
+        std::istringstream ss(sjis);
+        std::string line;
+        int lineIndex = 0;
+        while (std::getline(ss, line))
+        {
+            if (!line.empty() && line.back() == '\r')
+                line.pop_back();
+
+            const int lineW = GetDrawExtendStringWidthToHandle(scaleX, line.c_str(), static_cast<int>(line.size()), fontHandle);
+            const float lineX = x - static_cast<float>(lineW) * alignFactor;
+            const float lineY = y + static_cast<float>(lineIndex) * lineHeight;
+
+            DrawExtendStringFToHandle(
+                lineX, lineY,
+                scaleX, scaleY,
+                line.c_str(),
+                dxColor,
+                fontHandle
+            );
+            ++lineIndex;
         }
     }
 
@@ -174,50 +226,20 @@ namespace NanamiEngine::Module::NanamiUi
     
         if (!isWorldPos_)
         {
-            const float x = Transform().GetWorldPos().x;
-            const float y = Transform().GetWorldPos().y;
-            const float scaleX = Transform().GetWorldScale().x;
-            const float scaleY = Transform().GetWorldScale().y;
-            const int fontHandle = fontFile_->DxLibHandle();
-            const std::string sjis = Utf8ToShiftJis(text_);
-
-            if (textAlign_ == TextAlign::Left)
+            if (isOutlineEnabled_ && outlineWidth_ > 0.0f)
             {
-                DrawExtendStringFToHandle(
-                    x, y,
-                    scaleX, scaleY,
-                    sjis.c_str(),
-                    textColor_.ToDxColor(),
-                    fontHandle
-                );
-            }
-            else
-            {
-                const float alignFactor = ToAlignFactor(textAlign_);
-                const float lineHeight = static_cast<float>(GetFontSizeToHandle(fontHandle)) * scaleY;
-
-                std::istringstream ss(sjis);
-                std::string line;
-                int lineIndex = 0;
-                while (std::getline(ss, line))
+                const int outlineDxColor = outlineColor_.ToDxColor();
+                constexpr int OUTLINE_DIRECTIONS = 8;
+                for (int i = 0; i < OUTLINE_DIRECTIONS; ++i)
                 {
-                    if (!line.empty() && line.back() == '\r')
-                        line.pop_back();
-
-                    const int lineW = GetDrawExtendStringWidthToHandle(scaleX, line.c_str(), static_cast<int>(line.size()), fontHandle);
-                    const float lineX = x - static_cast<float>(lineW) * alignFactor;
-                    const float lineY = y + static_cast<float>(lineIndex) * lineHeight;
-
-                    DrawExtendStringFToHandle(
-                        lineX, lineY,
-                        scaleX, scaleY,
-                        line.c_str(),
-                        textColor_.ToDxColor(),
-                        fontHandle
-                    );
-                    ++lineIndex;
+                    const float angle = static_cast<float>(i) * DX_PI_F * 2.0f / static_cast<float>(OUTLINE_DIRECTIONS);
+                    DrawScreenText(std::cos(angle) * outlineWidth_, std::sin(angle) * outlineWidth_, outlineDxColor);
                 }
+                // 少し下にずらした影で、明るい背景でも数字が浮いて見えるようにする
+                if (outlineShadowOffsetY_ != 0.0f)
+                    DrawScreenText(0.0f, outlineShadowOffsetY_, outlineDxColor);
             }
+            DrawScreenText(0.0f, 0.0f, textColor_.ToDxColor());
         }
         else
         {

@@ -18,7 +18,9 @@ namespace GamePlay::PlayerAvatar
         const GameCore::PlayerAvatar::IPlayerAvatarStatus& model)
     {
         auto onDestroySubscription = rxcpp::composite_subscription();
-        
+
+        // OnChangeHealth は購読時に現在値を流さないので、HPの数字とゲージを最初に一度そろえておく
+        view.UpdateHealthBar(model.MaxHealth(), model.Health());
         model.OnChangeHealth().subscribe(onDestroySubscription, [&](const GameCore::StatusParameter::Health currentHealth)
             {
                 view.UpdateHealthBar(model.MaxHealth(), currentHealth);

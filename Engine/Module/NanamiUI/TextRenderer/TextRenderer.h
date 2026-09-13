@@ -23,6 +23,7 @@ namespace NanamiEngine::Module::NanamiUi
         [[nodiscard]] int GetRenderOrder() const override { return renderOrder_; }
 
         void UpdateTextTexture();
+        void DrawScreenText(float offsetX, float offsetY, int dxColor) const;
 
     private:
         [[serialize(0)]] FIELD(Asset::TtfFontFile) fontFile_;
@@ -31,6 +32,12 @@ namespace NanamiEngine::Module::NanamiUi
         [[serialize(0)]] Color32 textColor_;
         [[serialize(0)]] bool isWorldPos_ = false;
         [[serialize(0)]] TextAlign textAlign_ = TextAlign::Left;
+        // スクリーン座標モードのみ：本文の周囲8方向＋下方向に outlineColor_ で重ね描きして縁取りにする
+        [[serialize(3)]] bool isOutlineEnabled_ = false;
+        [[serialize(3)]] Color32 outlineColor_ = Color32(6, 20, 26);
+        [[serialize(3)]] float outlineWidth_ = 1.7f;
+        // 縁取りに加えて outlineColor_ で真下にずらして描く影の量
+        [[serialize(3)]] float outlineShadowOffsetY_ = 2.2f;
 
         // キャッシュ
         std::string cachedSjis_;
@@ -55,6 +62,10 @@ namespace NanamiEngine::Module::NanamiUi
             archive(CEREAL_NVP(textColor_));
             if (version >= 1) archive(CEREAL_NVP(isWorldPos_));
             if (version >= 2) archive(CEREAL_NVP(textAlign_));
+            if (version >= 3) archive(CEREAL_NVP(isOutlineEnabled_));
+            if (version >= 3) archive(CEREAL_NVP(outlineColor_));
+            if (version >= 3) archive(CEREAL_NVP(outlineWidth_));
+            if (version >= 3) archive(CEREAL_NVP(outlineShadowOffsetY_));
         }
 
         template<class Archive>
@@ -67,10 +78,14 @@ namespace NanamiEngine::Module::NanamiUi
             if (version >= 0) archive(CEREAL_NVP(textColor_));
             if (version >= 1) archive(CEREAL_NVP(isWorldPos_));
             if (version >= 2) archive(CEREAL_NVP(textAlign_));
+            if (version >= 3) archive(CEREAL_NVP(isOutlineEnabled_));
+            if (version >= 3) archive(CEREAL_NVP(outlineColor_));
+            if (version >= 3) archive(CEREAL_NVP(outlineWidth_));
+            if (version >= 3) archive(CEREAL_NVP(outlineShadowOffsetY_));
             isDirty_ = true;
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::TextRenderer, 2)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::TextRenderer, 3)

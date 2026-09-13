@@ -16,13 +16,49 @@ namespace GamePlay::Ui
         staminaBarFrame_ = GameObject::CatchChild<Component::ImageRenderer>(Entity(), staminaBarFrameName_);
         if (!injuredUiObjectName_.empty())
             injuredUiMask_ = GameObject::CatchChild<InjuredMaskUI>(Entity(), injuredUiObjectName_);
+        if (!hpCurrentTextName_.empty())
+            hpCurrentText_ = GameObject::CatchChild<NanamiUi::TextRenderer>(Entity(), hpCurrentTextName_);
+        if (!hpMaxTextName_.empty())
+            hpMaxText_ = GameObject::CatchChild<NanamiUi::TextRenderer>(Entity(), hpMaxTextName_);
     }
 
     void PlayerStatus::UpdateHealthBar(
         const GameCore::StatusParameter::Health& maxHealth,
         const GameCore::StatusParameter::Health& health   ) const
     {
-        healthBar_->SetValue(health / maxHealth);
+        const float healthRate = health / maxHealth;
+        healthBar_->SetValue(healthRate);
+        if (const auto gaugeSprite = SelectHealthGaugeSprite(healthRate))
+            healthBar_->ChangeGaugeSprite(gaugeSprite);
+        healthBar_->SetPulse(healthGaugeDangerSprite_ && healthRate > 0.0f && healthRate <= dangerHealthRate_);
+
+        if (hpCurrentText_)
+        {
+            hpCurrentText_->SetText(std::to_string(health.Value()));
+            hpCurrentText_->SetTextColor(SelectHealthTextColor(healthRate));
+        }
+        if (hpMaxText_)
+            hpMaxText_->SetText("/" + std::to_string(maxHealth.Value()));
+    }
+
+    Color32 PlayerStatus::SelectHealthTextColor(const float healthRate) const
+    {
+        if (damageFlashCount_ > 0 || healthRate <= dangerHealthRate_)
+            return healthTextDangerColor_;
+        if (healthRate <= cautionHealthRate_)
+            return healthTextCautionColor_;
+        return healthTextNormalColor_;
+    }
+
+    std::shared_ptr<Asset::SpriteFile> PlayerStatus::SelectHealthGaugeSprite(const float healthRate) const
+    {
+        if (healthRate <= dangerHealthRate_ && healthGaugeDangerSprite_)
+            return healthGaugeDangerSprite_.get();
+        if (healthRate <= cautionHealthRate_ && healthGaugeCautionSprite_)
+            return healthGaugeCautionSprite_.get();
+        if (healthGaugeNormalSprite_)
+            return healthGaugeNormalSprite_.get();
+        return nullptr;
     }
 
     void PlayerStatus::OnDamageHealthBar() const
@@ -39,10 +75,22 @@ namespace GamePlay::Ui
 
     Coroutine::Task<void> PlayerStatus::OnDamagedHealth() const
     {
-        const auto previewSprite = healthBarFrame_->GetSprite();
-        healthBarFrame_->SetSprite(onDamageHealthBarFrame_.get());
+        ++damageFlashCount_;
+        if (hpCurrentText_)
+            hpCurrentText_->SetTextColor(healthTextDangerColor_);
+
+        const bool isSwapFrame = static_cast<bool>(onDamageHealthBarFrame_);
+        const auto previewSprite = isSwapFrame ? healthBarFrame_->GetSprite() : std::weak_ptr<Asset::SpriteFile>();
+        if (isSwapFrame)
+            healthBarFrame_->SetSprite(onDamageHealthBarFrame_.get());
+
         co_await Coroutine::WaitForSeconds(displayOnDamageHealthBarDuration_secs_);
-        healthBarFrame_->SetSprite(previewSprite);
+
+        if (isSwapFrame)
+            healthBarFrame_->SetSprite(previewSprite);
+        --damageFlashCount_;
+        if (hpCurrentText_)
+            hpCurrentText_->SetTextColor(SelectHealthTextColor(healthBar_->GetValue()));
     }
 
     void PlayerStatus::OnIsInjured(const bool isInjured) const
@@ -64,5 +112,17 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("staminaBarFrame_", staminaBarFrame_);
         ImGuiHelper::OnDrawInputField("injuredUiObjectName_", injuredUiObjectName_);
         ImGuiHelper::OnDrawInputField("injuredUiMask_", injuredUiMask_);
+        ImGuiHelper::OnDrawInputField("hpCurrentTextName_", hpCurrentTextName_);
+        ImGuiHelper::OnDrawInputField("hpCurrentText_", hpCurrentText_);
+        ImGuiHelper::OnDrawInputField("hpMaxTextName_", hpMaxTextName_);
+        ImGuiHelper::OnDrawInputField("hpMaxText_", hpMaxText_);
+        ImGuiHelper::OnDrawInputField("healthGaugeNormalSprite_", healthGaugeNormalSprite_);
+        ImGuiHelper::OnDrawInputField("healthGaugeCautionSprite_", healthGaugeCautionSprite_);
+        ImGuiHelper::OnDrawInputField("healthGaugeDangerSprite_", healthGaugeDangerSprite_);
+        ImGuiHelper::OnDrawInputField("cautionHealthRate_", cautionHealthRate_);
+        ImGuiHelper::OnDrawInputField("dangerHealthRate_", dangerHealthRate_);
+        ImGuiHelper::OnDrawInputField("healthTextNormalColor_", healthTextNormalColor_);
+        ImGuiHelper::OnDrawInputField("healthTextCautionColor_", healthTextCautionColor_);
+        ImGuiHelper::OnDrawInputField("healthTextDangerColor_", healthTextDangerColor_);
     }
 }

@@ -4,6 +4,7 @@
 #include "../../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
 #include "../../../../../Engine/Module/Component/ImageRenderer/ImageRenderer.h"
 #include "../../../../../Engine/Module/NanamiUI/Slider/NanamiUi_Slider.h"
+#include "../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "Ui_InjuredMask.h"
 
 namespace GameCore::StatusParameter
@@ -30,9 +31,12 @@ namespace GamePlay::Ui
 
     private:
         Coroutine::Task<void> OnDamagedHealth() const;
+        [[nodiscard]] Color32 SelectHealthTextColor(float healthRate) const;
+        [[nodiscard]] std::shared_ptr<Asset::SpriteFile> SelectHealthGaugeSprite(float healthRate) const;
 
         [[serialize(6)]] std::string healthBarName_;
         FIELD(NanamiUi::Slider) healthBar_;
+        // 被ダメ時に現在HPの数字を赤くする時間（onDamageHealthBarFrame_ があればフレーム差し替えにも使う）
         [[serialize(2)]] float displayOnDamageHealthBarDuration_secs_ = 0.0f;
         [[serialize(2)]] FIELD(Asset::SpriteFile) onDamageHealthBarFrame_;
         [[serialize(6)]] std::string healthBarFrameName_;
@@ -45,6 +49,23 @@ namespace GamePlay::Ui
 
         [[serialize(7)]] std::string injuredUiObjectName_;
         FIELD(InjuredMaskUI) injuredUiMask_;
+
+        [[serialize(9)]] std::string hpCurrentTextName_;
+        FIELD(NanamiUi::TextRenderer) hpCurrentText_;
+        [[serialize(9)]] std::string hpMaxTextName_;
+        FIELD(NanamiUi::TextRenderer) hpMaxText_;
+        // HP残量で HealthBar のゲージ画像を切り替える（未設定なら切り替えない）
+        [[serialize(9)]] FIELD(Asset::SpriteFile) healthGaugeNormalSprite_;
+        [[serialize(9)]] FIELD(Asset::SpriteFile) healthGaugeCautionSprite_;
+        [[serialize(9)]] FIELD(Asset::SpriteFile) healthGaugeDangerSprite_;
+        [[serialize(9)]] float cautionHealthRate_ = 0.5f;
+        [[serialize(9)]] float dangerHealthRate_ = 0.25f;
+        // 現在HPの数字の色（被ダメ中は危険色）
+        [[serialize(9)]] Color32 healthTextNormalColor_  = Color32(255, 255, 255);
+        [[serialize(9)]] Color32 healthTextCautionColor_ = Color32(255, 214, 90);
+        [[serialize(9)]] Color32 healthTextDangerColor_  = Color32(255, 96, 80);
+
+        mutable int damageFlashCount_ = 0;
 
 #pragma region Serialization Function
     public:
@@ -60,6 +81,16 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(staminaBarName_));
             archive(CEREAL_NVP(staminaBarFrameName_));
             archive(CEREAL_NVP(injuredUiObjectName_));
+            archive(CEREAL_NVP(hpCurrentTextName_));
+            archive(CEREAL_NVP(hpMaxTextName_));
+            archive(CEREAL_NVP(healthGaugeNormalSprite_));
+            archive(CEREAL_NVP(healthGaugeCautionSprite_));
+            archive(CEREAL_NVP(healthGaugeDangerSprite_));
+            archive(CEREAL_NVP(cautionHealthRate_));
+            archive(CEREAL_NVP(dangerHealthRate_));
+            archive(CEREAL_NVP(healthTextNormalColor_));
+            archive(CEREAL_NVP(healthTextCautionColor_));
+            archive(CEREAL_NVP(healthTextDangerColor_));
         }
 
         template<class Archive>
@@ -72,10 +103,20 @@ namespace GamePlay::Ui
             if (version >= 8) archive(CEREAL_NVP(staminaBarName_));
             if (version >= 8) archive(CEREAL_NVP(staminaBarFrameName_));
             if (version >= 7) archive(CEREAL_NVP(injuredUiObjectName_));
+            if (version >= 9) archive(CEREAL_NVP(hpCurrentTextName_));
+            if (version >= 9) archive(CEREAL_NVP(hpMaxTextName_));
+            if (version >= 9) archive(CEREAL_NVP(healthGaugeNormalSprite_));
+            if (version >= 9) archive(CEREAL_NVP(healthGaugeCautionSprite_));
+            if (version >= 9) archive(CEREAL_NVP(healthGaugeDangerSprite_));
+            if (version >= 9) archive(CEREAL_NVP(cautionHealthRate_));
+            if (version >= 9) archive(CEREAL_NVP(dangerHealthRate_));
+            if (version >= 9) archive(CEREAL_NVP(healthTextNormalColor_));
+            if (version >= 9) archive(CEREAL_NVP(healthTextCautionColor_));
+            if (version >= 9) archive(CEREAL_NVP(healthTextDangerColor_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PlayerStatus, 8)
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PlayerStatus, 9)
 
