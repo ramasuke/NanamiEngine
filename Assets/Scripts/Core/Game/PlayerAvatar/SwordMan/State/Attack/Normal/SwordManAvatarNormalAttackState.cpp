@@ -106,7 +106,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         if (NormalAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
         {
             const auto& hitFeel = Status().ComboHitFeel().at(currentCombo_);
-            TriggerHitStop(hitFeel.HitStopDuration_secs(), hitFeel.HitStopTimeScale());
             NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::ShakeMainCamera(hitFeel.ShakeIntensity(), hitFeel.ShakeDuration_secs());
 
             const float yaw = glm::eulerAngles(Transform().GetWorldRot()).y;

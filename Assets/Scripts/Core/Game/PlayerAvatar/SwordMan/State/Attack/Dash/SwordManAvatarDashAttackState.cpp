@@ -62,7 +62,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         if (DashAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
         {
             const auto& hitFeel = Status().DashHitFeel();
-            TriggerHitStop(hitFeel.HitStopDuration_secs(), hitFeel.HitStopTimeScale());
             NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::ShakeMainCamera(hitFeel.ShakeIntensity(), hitFeel.ShakeDuration_secs());
 
             const auto particle = NanamiEngine::Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), DashAttackArea().Transform().GetWorldPos());

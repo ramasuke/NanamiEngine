@@ -5,22 +5,16 @@
 
 namespace GameCore::PlayerAvatar
 {
-    /** @brief 攻撃がヒットした瞬間の演出パラメータ(ヒットストップ・カメラシェイク・パーティクル拡大率・被弾モデルの揺れ) */
+    /** @brief 攻撃がヒットした瞬間の演出パラメータ(カメラシェイク・パーティクル拡大率・被弾モデルの揺れ) */
     struct HitFeelParam final
     {
         explicit HitFeelParam(
-            float hitStopDuration_secs = 0.0f,
-            float hitStopTimeScale = 0.0f,
             float shakeIntensity = 0.0f,
             float shakeDuration_secs = 0.0f,
             float particleScale = 0.0f,
             float targetShakeAmplitude = 0.0f,
             float targetShakeDuration_secs = 0.0f);
 
-        /** @brief ヒットストップの長さ[秒]。自機Animatorのみに適用するローカル演出 */
-        [[nodiscard]] float HitStopDuration_secs() const { return hitStopDuration_secs_; }
-        /** @brief ヒットストップ中のAnimator timeScale(0に近いほど強く止まる) */
-        [[nodiscard]] float HitStopTimeScale    () const { return hitStopTimeScale_;     }
         /** @brief カメラシェイクの強度 */
         [[nodiscard]] float ShakeIntensity      () const { return shakeIntensity_;       }
         /** @brief カメラシェイクの長さ[秒] */
@@ -33,8 +27,6 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] float TargetShakeDuration_secs() const { return targetShakeDuration_secs_; }
 
     private:
-        [[serialize(0)]] float hitStopDuration_secs_;
-        [[serialize(0)]] float hitStopTimeScale_;
         [[serialize(0)]] float shakeIntensity_;
         [[serialize(0)]] float shakeDuration_secs_;
         [[serialize(0)]] float particleScale_;
@@ -46,8 +38,6 @@ namespace GameCore::PlayerAvatar
         void OnDrawGui();
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const {
-            archive(hitStopDuration_secs_);
-            archive(hitStopTimeScale_);
             archive(shakeIntensity_);
             archive(shakeDuration_secs_);
             archive(particleScale_);
@@ -57,8 +47,14 @@ namespace GameCore::PlayerAvatar
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
-            archive(hitStopDuration_secs_);
-            archive(hitStopTimeScale_);
+            if (version < 2)
+            {
+                // 削除済みのヒットストップ値(長さ・timeScale)を読み捨てる
+                float legacyHitStopDuration_secs = 0.0f;
+                float legacyHitStopTimeScale = 0.0f;
+                archive(legacyHitStopDuration_secs);
+                archive(legacyHitStopTimeScale);
+            }
             archive(shakeIntensity_);
             archive(shakeDuration_secs_);
             archive(particleScale_);
@@ -69,16 +65,12 @@ namespace GameCore::PlayerAvatar
     };
 
     inline HitFeelParam::HitFeelParam(
-        const float hitStopDuration_secs,
-        const float hitStopTimeScale,
         const float shakeIntensity,
         const float shakeDuration_secs,
         const float particleScale,
         const float targetShakeAmplitude,
         const float targetShakeDuration_secs)
-            : hitStopDuration_secs_(hitStopDuration_secs)
-            , hitStopTimeScale_(hitStopTimeScale)
-            , shakeIntensity_(shakeIntensity)
+            : shakeIntensity_(shakeIntensity)
             , shakeDuration_secs_(shakeDuration_secs)
             , particleScale_(particleScale)
             , targetShakeAmplitude_(targetShakeAmplitude)
@@ -87,4 +79,4 @@ namespace GameCore::PlayerAvatar
     }
 }
 
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::HitFeelParam, 1)
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::HitFeelParam, 2)

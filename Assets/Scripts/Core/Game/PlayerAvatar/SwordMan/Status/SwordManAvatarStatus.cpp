@@ -29,16 +29,16 @@ namespace GameCore::PlayerAvatar::SwordMan
         , dashAttack_                    (Damage::PhysicsPower(10), EnhancePower(10), 0.6363636364f, 0.7272727273f)
         , dashAttackLungeSpeed_          (55.0f)
         , comboHitFeel_ {
-            HitFeelParam(0.0363636364f, 0.5f , 0.3f, 0.1090909091f, 5.0f , 0.25f, 0.12f),
-            HitFeelParam(0.0454545455f, 0.4f , 0.5f, 0.1090909091f, 5.75f, 0.35f, 0.14f),
-            HitFeelParam(0.0727272727f, 0.15f, 0.8f, 0.1090909091f, 6.75f, 0.5f , 0.18f)}
-        , dashHitFeel_                   (0.0818181818f, 0.1f, 0.9f, 0.1272727273f, 1.0f, 0.6f, 0.2f)
+            HitFeelParam(0.3f, 0.1090909091f, 5.0f , 0.25f, 0.12f),
+            HitFeelParam(0.5f, 0.1090909091f, 5.75f, 0.35f, 0.14f),
+            HitFeelParam(0.8f, 0.1090909091f, 6.75f, 0.5f , 0.18f)}
+        , dashHitFeel_                   (0.9f, 0.1272727273f, 1.0f, 0.6f, 0.2f)
         , comboInputBufferWindow_secs_   (0.1181818182f)
         , chargeAttackHoldThreshold_secs_(0.2f)
         , chargeAttackMaxCharge_secs_    (1.0f)
         , chargeAttackMaxHold_secs_      (3.0f)
         , chargeAttack_                  (Damage::PhysicsPower(15), EnhancePower(15), 0.52f, 1.09f)
-        , chargeHitFeel_                 (0.1f, 0.05f, 1.2f, 0.18f, 7.0f, 0.8f, 0.25f)
+        , chargeHitFeel_                 (1.2f, 0.18f, 7.0f, 0.8f, 0.25f)
         , chargeAttackLungeStart_secs_   (0.0f)
         , chargeAttackLungeSpeed_        (28.0f)
         , chargeAttackStaminaCost_       (30.0f)

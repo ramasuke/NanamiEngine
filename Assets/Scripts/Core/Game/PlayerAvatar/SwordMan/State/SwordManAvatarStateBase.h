@@ -41,12 +41,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         std::function<void(SwordManAvatarStateType)> onChangeState_;
         static inline const auto CHATTABLE_ICON_OBJECT_NAME = "ChattableIcon";
         float prevFootstepNormalizedTime_ = -1.0f; ///< 前フレームのクリップ正規化時間（enter で -1 リセット）
-        /** @brief ヒットストップ(自機Animatorのローカルtimeスケール演出)の残り時間。0以下なら無効 */
-        float hitStopRemaining_secs_ = 0.0f;
         [[nodiscard]] bool IsLockOnTargetInRange() const;
         [[nodiscard]] std::shared_ptr<GameObject::IGameObject> FindNearestLockOnTarget() const;
         [[nodiscard]] bool HasLineOfSight(const std::shared_ptr<GameObject::IGameObject>& target) const;
-        void TickHitStop();
 
     protected:
         /** ---- 以下templateMethodパターン ---- */
@@ -99,14 +96,6 @@ namespace GameCore::PlayerAvatar::SwordMan
          * @note 未ロック / 対象消失 / カメラ失効時は何もしない。攻撃の予備動作中に呼ぶ想定
          */
         void RotateTowardsLockOnTarget(float rotateSpeed) const;
-        /**
-         * @brief 自機のAnimatorのみを対象にしたローカルなヒットストップ演出
-         * @note グローバルなTime::SetTimeScaleは使わない(敵の物理/BehaviourTree/他プレイヤーの補間まで
-         *       止めてしまいオンライン対戦上危険なため)。自機のAnimator::SetTimeScaleだけを一時的に下げる。
-         * @param duration_secs 何秒後にtimeScaleを1.0へ戻すか
-         * @param timeScale 演出中のtimeScale(0に近いほど強く止まる)
-         */
-        void TriggerHitStop(float duration_secs, float timeScale);
         /** @brief attackAreaが捉えている対象それぞれへダメージ数値テキストを表示する */
         void DealDamageText(PlayerAttackArea& attackArea, Damage::PhysicsPower power) const;
         /**

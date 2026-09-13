@@ -60,7 +60,6 @@ namespace GameCore::PlayerAvatar::SwordMan
     
     void SwordManAvatarStateBase::OnUpdate()
     {
-        TickHitStop();
         DoUpdate();
         stateDuring_secs_ += Time::DeltaTime();
     }
@@ -72,12 +71,6 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStateBase::OnExit()
     {
-        // 状態遷移を跨いでtimeScaleが下がったまま残らないよう、念のため強制復帰する
-        if (hitStopRemaining_secs_ > 0.0f)
-        {
-            hitStopRemaining_secs_ = 0.0f;
-            Animator().SetTimeScale(1.0f);
-        }
         DoExit();
     }
 
@@ -129,12 +122,8 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStateBase::TickHitStop()
     {
-        if (hitStopRemaining_secs_ <= 0.0f)
-            return;
-
-        hitStopRemaining_secs_ -= Time::DeltaTime();
-        if (hitStopRemaining_secs_ <= 0.0f)
-            Animator().SetTimeScale(1.0f);
+        const glm::vec3 velocity = Physics::GetLinearVelocity(Collider().BodyId());
+        currentMoveSpeed_ = glm::length(glm::vec2(velocity.x, velocity.z));
     }
 
     void SwordManAvatarStateBase::TriggerHitStop(const float duration_secs, const float timeScale)
