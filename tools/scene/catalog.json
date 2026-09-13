@@ -1,6 +1,76 @@
 {
-  "generated_from": "0083a5893584631c8bce67d4f24f0981218df6a3",
+  "generated_from": "e39cf4bdf74ebab5c6b0aa5ee933e81badb9e989",
   "components": {
+    "CineMachine::Behaviour::NoiseCameraBehaviour": {
+      "class": "NoiseCameraBehaviour",
+      "fqn": "CineMachine::Behaviour::NoiseCameraBehaviour",
+      "leaf": "NoiseCameraBehaviour",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IVirtualCameraBehaviour",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Packages/Cinemachine/VirtualCamera/Behaviour/Noise/NoiseCameraBehaviour.h",
+      "params": [
+        {
+          "key": "rotationAmplitude_deg_",
+          "member": "rotationAmplitude_deg_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "positionAmplitude_",
+          "member": "positionAmplitude_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "frequency_",
+          "member": "frequency_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "octaves_",
+          "member": "octaves_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "amplitudeGain_",
+          "member": "amplitudeGain_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "frequencyGain_",
+          "member": "frequencyGain_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "blendIn_secs_",
+          "member": "blendIn_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "seed_",
+          "member": "seed_",
+          "named": true,
+          "shape": "vec3"
+        }
+      ]
+    },
     "CineMachine::Behaviour::ShakeCameraBehaviour": {
       "class": "ShakeCameraBehaviour",
       "fqn": "CineMachine::Behaviour::ShakeCameraBehaviour",
@@ -78,7 +148,7 @@
       "class": "ThirdPersonCameraBehaviour",
       "fqn": "CineMachine::Behaviour::ThirdPersonCameraBehaviour",
       "leaf": "ThirdPersonCameraBehaviour",
-      "version": 5,
+      "version": 6,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -175,6 +245,12 @@
         {
           "key": "collisionBuffer_",
           "member": "collisionBuffer_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "collisionRadius_",
+          "member": "collisionRadius_",
           "named": true,
           "shape": "float"
         }
@@ -274,6 +350,23 @@
           "shape": "bool"
         }
       ]
+    },
+    "GameCore::PlayerAvatar::LockOnPoint": {
+      "class": "LockOnPoint",
+      "fqn": "GameCore::PlayerAvatar::LockOnPoint",
+      "leaf": "LockOnPoint",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/Core/Game/PlayerAvatar/LockOnTarget/LockOnPoint.h",
+      "params": []
     },
     "GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase": {
       "class": "PlayerAvatarCameraGroupBase",
@@ -550,6 +643,23 @@
       "header": "Assets/Scripts/Core/Game/PlayerAvatar/Status/Presenter/PlayerAvatar_OtherPlayer_StatusPresenter.h",
       "params": []
     },
+    "GamePlay::PlayerAvatar::PlayerHitShakeReceiver": {
+      "class": "PlayerHitShakeReceiver",
+      "fqn": "GamePlay::PlayerAvatar::PlayerHitShakeReceiver",
+      "leaf": "PlayerHitShakeReceiver",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/PlayerAvatar/HitShakeReceiver/PlayerHitShakeReceiver.h",
+      "params": []
+    },
     "GamePlay::PlayerAvatar::StatusPresenterBase": {
       "class": "StatusPresenterBase",
       "fqn": "GamePlay::PlayerAvatar::StatusPresenterBase",
@@ -571,7 +681,7 @@
       "class": "StatusPresenter",
       "fqn": "GamePlay::PlayerAvatar::SwordMan::StatusPresenter",
       "leaf": "StatusPresenter",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -582,7 +692,14 @@
       ],
       "interleaved_bases": false,
       "header": "Assets/Scripts/Core/Game/PlayerAvatar/SwordMan/Status/Presenter/PlayerAvatar_SwordMan_StatusPresenter.h",
-      "params": []
+      "params": [
+        {
+          "key": "lowHealthScreenEffectName_",
+          "member": "lowHealthScreenEffectName_",
+          "named": true,
+          "shape": "string"
+        }
+      ]
     },
     "GamePlay::PlayerAvatar::WakeUpArea": {
       "class": "WakeUpArea",
@@ -1002,6 +1119,150 @@
         }
       ]
     },
+    "GamePlay::Ui::BossHealthGauge": {
+      "class": "BossHealthGauge",
+      "fqn": "GamePlay::Ui::BossHealthGauge",
+      "leaf": "BossHealthGauge",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/BossHealthGauge/Ui_BossHealthGauge.h",
+      "params": [
+        {
+          "key": "renderOrder_",
+          "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "bossNameTextName_",
+          "member": "bossNameTextName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "crestSprite_",
+          "member": "crestSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "crestGlowSprite_",
+          "member": "crestGlowSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "shardEmptySprite_",
+          "member": "shardEmptySprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "shardFillSprite_",
+          "member": "shardFillSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "shardFillDangerSprite_",
+          "member": "shardFillDangerSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "shardTrailSprite_",
+          "member": "shardTrailSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "shardCount_",
+          "member": "shardCount_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "arcAngle_deg_",
+          "member": "arcAngle_deg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "shardBaseDistance_",
+          "member": "shardBaseDistance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "shardPadding_px_",
+          "member": "shardPadding_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pivotOffset_",
+          "member": "pivotOffset_",
+          "named": true,
+          "shape": "vec2"
+        },
+        {
+          "key": "crestOffset_",
+          "member": "crestOffset_",
+          "named": true,
+          "shape": "vec2"
+        },
+        {
+          "key": "dangerHealthRate_",
+          "member": "dangerHealthRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "trailDelay_secs_",
+          "member": "trailDelay_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "trailSpeed_perSec_",
+          "member": "trailSpeed_perSec_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pulseFrequency_hz_",
+          "member": "pulseFrequency_hz_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pulseMaxAlpha_",
+          "member": "pulseMaxAlpha_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "introFillDuration_secs_",
+          "member": "introFillDuration_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
     "GamePlay::Ui::DamageFlashUI": {
       "class": "DamageFlashUI",
       "fqn": "GamePlay::Ui::DamageFlashUI",
@@ -1116,6 +1377,220 @@
         }
       ]
     },
+    "GamePlay::Ui::LockOnReticle": {
+      "class": "LockOnReticle",
+      "fqn": "GamePlay::Ui::LockOnReticle",
+      "leaf": "LockOnReticle",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/LockOnReticle/Ui_LockOnReticle.h",
+      "params": [
+        {
+          "key": "renderOrder_",
+          "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "ringSprite_",
+          "member": "ringSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "bracketSprite_",
+          "member": "bracketSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "candidateSprite_",
+          "member": "candidateSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "reticleScale_",
+          "member": "reticleScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "candidateScale_",
+          "member": "candidateScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "candidateAlpha_",
+          "member": "candidateAlpha_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "ringRotateSpeed_",
+          "member": "ringRotateSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "lockedBreathScale_",
+          "member": "lockedBreathScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "engageDuration_secs_",
+          "member": "engageDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "engageStartScaleRate_",
+          "member": "engageStartScaleRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "releaseDuration_secs_",
+          "member": "releaseDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "releaseEndScaleRate_",
+          "member": "releaseEndScaleRate_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::LowHealthScreenEffect": {
+      "class": "LowHealthScreenEffect",
+      "fqn": "GamePlay::Ui::LowHealthScreenEffect",
+      "leaf": "LowHealthScreenEffect",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/PlayerStatus/Ui_LowHealthScreenEffect.h",
+      "params": [
+        {
+          "key": "vignetteObjectName_",
+          "member": "vignetteObjectName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "startHealthRate_",
+          "member": "startHealthRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "criticalHealthRate_",
+          "member": "criticalHealthRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "dangerSmooth_secs_",
+          "member": "dangerSmooth_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "vignetteBlendRate_",
+          "member": "vignetteBlendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "pulseAddBlendRate_",
+          "member": "pulseAddBlendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "minBpm_",
+          "member": "minBpm_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxBpm_",
+          "member": "maxBpm_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "dubDelay_secs_",
+          "member": "dubDelay_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxDesaturation_",
+          "member": "maxDesaturation_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "downedDesaturation_",
+          "member": "downedDesaturation_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "downedDarken_",
+          "member": "downedDarken_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "downedFade_secs_",
+          "member": "downedFade_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "heartbeatSound_",
+          "member": "heartbeatSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "heartbeatMinVolume_",
+          "member": "heartbeatMinVolume_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "heartbeatMaxVolume_",
+          "member": "heartbeatMaxVolume_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
     "GamePlay::Ui::NpcChatting": {
       "class": "NpcChatting",
       "fqn": "GamePlay::Ui::NpcChatting",
@@ -1176,7 +1651,7 @@
       "class": "PlayerStatus",
       "fqn": "GamePlay::Ui::PlayerStatus",
       "leaf": "PlayerStatus",
-      "version": 8,
+      "version": 9,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1230,6 +1705,72 @@
           "member": "injuredUiObjectName_",
           "named": true,
           "shape": "string"
+        },
+        {
+          "key": "hpCurrentTextName_",
+          "member": "hpCurrentTextName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "hpMaxTextName_",
+          "member": "hpMaxTextName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "healthGaugeNormalSprite_",
+          "member": "healthGaugeNormalSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "healthGaugeCautionSprite_",
+          "member": "healthGaugeCautionSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "healthGaugeDangerSprite_",
+          "member": "healthGaugeDangerSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "cautionHealthRate_",
+          "member": "cautionHealthRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "dangerHealthRate_",
+          "member": "dangerHealthRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "healthTextNormalColor_",
+          "member": "healthTextNormalColor_",
+          "named": true,
+          "shape": "unknown",
+          "type": "Color32"
+        },
+        {
+          "key": "healthTextCautionColor_",
+          "member": "healthTextCautionColor_",
+          "named": true,
+          "shape": "unknown",
+          "type": "Color32"
+        },
+        {
+          "key": "healthTextDangerColor_",
+          "member": "healthTextDangerColor_",
+          "named": true,
+          "shape": "unknown",
+          "type": "Color32"
         }
       ]
     },
@@ -1574,7 +2115,7 @@
       "class": "LockOnCameraBehaviour",
       "fqn": "NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour",
       "leaf": "LockOnCameraBehaviour",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1654,6 +2195,12 @@
           "named": true,
           "shape": "field",
           "type": "VirtualCameraLookAtBehaviour"
+        },
+        {
+          "key": "collisionRadius_",
+          "member": "collisionRadius_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -1775,7 +2322,7 @@
       "class": "CinemachineCameraBrain",
       "fqn": "NanamiEngine::CineMachine::CinemachineCameraBrain",
       "leaf": "CinemachineCameraBrain",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1829,6 +2376,18 @@
         {
           "key": "cameraFar_",
           "member": "cameraFar_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "minCameraNear_",
+          "member": "minCameraNear_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "nearClipMargin_",
+          "member": "nearClipMargin_",
           "named": true,
           "shape": "float"
         }
@@ -2615,7 +3174,7 @@
       "class": "ImageAnimationRenderer",
       "fqn": "NanamiEngine::Module::NanamiUi::ImageAnimationRenderer",
       "leaf": "ImageAnimationRenderer",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -2651,6 +3210,12 @@
           "member": "isLoop_",
           "named": true,
           "shape": "bool"
+        },
+        {
+          "key": "cooldownSecs_",
+          "member": "cooldownSecs_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -2704,11 +3269,39 @@
         }
       ]
     },
+    "NanamiEngine::Module::NanamiUi::ScreenColorGradeRenderer": {
+      "class": "ScreenColorGradeRenderer",
+      "fqn": "NanamiEngine::Module::NanamiUi::ScreenColorGradeRenderer",
+      "leaf": "ScreenColorGradeRenderer",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IUserInterfaceRenderable",
+          "key": "value1"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Engine/Module/Component/ScreenColorGrade/ScreenColorGradeRenderer.h",
+      "params": [
+        {
+          "key": "renderOrder_",
+          "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
     "NanamiEngine::Module::NanamiUi::TextRenderer": {
       "class": "TextRenderer",
       "fqn": "NanamiEngine::Module::NanamiUi::TextRenderer",
       "leaf": "TextRenderer",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -2762,6 +3355,31 @@
           "named": true,
           "shape": "unknown",
           "type": "TextAlign"
+        },
+        {
+          "key": "isOutlineEnabled_",
+          "member": "isOutlineEnabled_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "outlineColor_",
+          "member": "outlineColor_",
+          "named": true,
+          "shape": "unknown",
+          "type": "Color32"
+        },
+        {
+          "key": "outlineWidth_",
+          "member": "outlineWidth_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "outlineShadowOffsetY_",
+          "member": "outlineShadowOffsetY_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -2908,6 +3526,49 @@
         }
       ]
     },
+    "NanamiUi::BillboardAnimation3D": {
+      "class": "BillboardAnimation3D",
+      "fqn": "NanamiUi::BillboardAnimation3D",
+      "leaf": "BillboardAnimation3D",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Engine/Module/NanamiUI/BillBoard3D/BillboardAnimation3D.h",
+      "params": [
+        {
+          "key": "renderOrder_",
+          "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "animationFile_",
+          "member": "animationFile_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteAnimationFile"
+        },
+        {
+          "key": "isAdditive_",
+          "member": "isAdditive_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "angle_",
+          "member": "angle_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
     "NanamiUi::BlendAnimationRenderer": {
       "class": "BlendAnimationRenderer",
       "fqn": "NanamiUi::BlendAnimationRenderer",
@@ -2974,7 +3635,7 @@
       "class": "Slider",
       "fqn": "NanamiUi::Slider",
       "leaf": "Slider",
-      "version": 0,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -3018,6 +3679,99 @@
         {
           "key": "renderOrder_",
           "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "isStretchToDrawSize_",
+          "member": "isStretchToDrawSize_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "backgroundSprite_",
+          "member": "backgroundSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "trailSprite_",
+          "member": "trailSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "trailDelay_secs_",
+          "member": "trailDelay_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "trailDuration_secs_",
+          "member": "trailDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "tipSprite_",
+          "member": "tipSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "tipWidth_",
+          "member": "tipWidth_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "tickCount_",
+          "member": "tickCount_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "tickInsetY_",
+          "member": "tickInsetY_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "tickShadowAlpha_",
+          "member": "tickShadowAlpha_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "tickHighlightAlpha_",
+          "member": "tickHighlightAlpha_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "bandInsetY_",
+          "member": "bandInsetY_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "gaugeFadeDuration_secs_",
+          "member": "gaugeFadeDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pulseFrequency_hz_",
+          "member": "pulseFrequency_hz_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pulseMaxAlpha_",
+          "member": "pulseMaxAlpha_",
           "named": true,
           "shape": "int"
         }
@@ -3122,11 +3876,17 @@
     "Billboard3D": [
       "NanamiUi::Billboard3D"
     ],
+    "BillboardAnimation3D": [
+      "NanamiUi::BillboardAnimation3D"
+    ],
     "BlendAnimationRenderer": [
       "NanamiUi::BlendAnimationRenderer"
     ],
     "BlendImageRenderer": [
       "NanamiEngine::Module::NanamiUi::BlendImageRenderer"
+    ],
+    "BossHealthGauge": [
+      "GamePlay::Ui::BossHealthGauge"
     ],
     "BoxCollider": [
       "NanamiEngine::Module::Component::BoxCollider"
@@ -3209,6 +3969,15 @@
     "LockOnDetectionArea": [
       "GamePlay::PlayerAvatar::LockOnDetectionArea"
     ],
+    "LockOnPoint": [
+      "GameCore::PlayerAvatar::LockOnPoint"
+    ],
+    "LockOnReticle": [
+      "GamePlay::Ui::LockOnReticle"
+    ],
+    "LowHealthScreenEffect": [
+      "GamePlay::Ui::LowHealthScreenEffect"
+    ],
     "ModelRenderer": [
       "NanamiEngine::Module::Component::ModelRenderer"
     ],
@@ -3227,6 +3996,9 @@
     "NetworkTransform": [
       "Network::NetworkTransform"
     ],
+    "NoiseCameraBehaviour": [
+      "CineMachine::Behaviour::NoiseCameraBehaviour"
+    ],
     "NpcChatting": [
       "GamePlay::Ui::NpcChatting"
     ],
@@ -3238,6 +4010,9 @@
     ],
     "PlayerAvatarCameraGroupBase": [
       "GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase"
+    ],
+    "PlayerHitShakeReceiver": [
+      "GamePlay::PlayerAvatar::PlayerHitShakeReceiver"
     ],
     "PlayerStatus": [
       "GamePlay::Ui::PlayerStatus"
@@ -3260,6 +4035,9 @@
     "SceneContextBase": [
       "GameCore::Scene::SceneContextBase",
       "GameCore::Scene::Sub::SceneContextBase"
+    ],
+    "ScreenColorGradeRenderer": [
+      "NanamiEngine::Module::NanamiUi::ScreenColorGradeRenderer"
     ],
     "SensorEnterableAsObservable": [
       "NanamiEngine::R4::SensorEnterableAsObservable"
