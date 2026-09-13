@@ -38,9 +38,9 @@ python -m tools.model <command>        # or: python tools/model.py <command>
 
 | command | purpose |
 |---|---|
-| `selftest` | correctness gate — run after touching `meta.py`; `dxlib_modelviewer.py` changes can only be verified against a real exe (stage 4, best-effort) |
+| `selftest` | correctness gate — run after touching `meta.py`; `dxlib_modelviewer.py` changes can only be verified against a real exe (stage 5, best-effort) |
 | `convert FILE OUT` | convert `FILE` (e.g. `.fbx`) → `OUT` (`.mv1`) by driving the real `DxLibModelViewer_64bit.exe` GUI |
-| `install MV1 --dest ...` | copy a converted `.mv1` into `Assets/`, mint a fresh-GUID `.meta` (an existing `.meta` at `--dest` is kept as-is, GUID included, so re-installing never breaks prefab references), and (with `--source`) copy the original `.fbx` under `<dest-dir>/_Source/` |
+| `install MV1 --dest ...` | copy a converted `.mv1` into `Assets/`, mint a fresh-GUID `.meta` (an existing `.meta` at `--dest` is kept as-is, GUID included, so re-installing never breaks prefab references), and (with `--source`) copy the original `.fbx` under `<dest-dir>/_Source/`, and (with `--textures`) bulk-copy image files under `<dest-dir>/textures/` |
 
 ### `convert`'s path resolution
 
@@ -53,11 +53,27 @@ or `$DXLIB_MODELVIEWER` if you're on a different machine/install.
 
 ```
 python -m tools.model convert MyProp.fbx MyProp.mv1 --modelviewer-path "C:\...\DxLibModelViewer_64bit.exe"
-python -m tools.model install MyProp.mv1 --source MyProp.fbx --dest Assets/Art/Models/MyProp/MyProp.mv1
+python -m tools.model install MyProp.mv1 --source MyProp.fbx --textures MyProp.fbm --dest Assets/Art/Models/MyProp/MyProp.mv1
 ```
 
 Then bind the printed GUID to a `Mv1File`-typed field the same way any other
 asset GUID is wired into a prefab/component.
+
+### `install --textures`
+
+`--textures SRC_DIR` bulk-copies every recognized image file (`.png`/`.jpg`/
+`.jpeg`/`.bmp`/`.tga`/`.dds`, case-insensitive) found **directly** under
+`SRC_DIR` (no recursion) into `<dest-dir>/textures/` — matching the sibling
+`textures/` folder convention already used by real shipped assets (e.g.
+`Assets/Art/Models/Fantasy/DirtyHouse/textures/`). `SRC_DIR` is typically the
+`.fbm` folder DxLibModelViewer/the FBX SDK auto-creates next to a source
+`.fbx` with embedded textures (see `Known limitations` below), or wherever
+the artist's loose texture files live.
+
+This is a **plain, unfiltered copy** — it does not try to determine which
+textures the `.mv1` actually references (see below for why that would be
+unreliable anyway), and it does not rewrite any paths. `--textures` is
+opt-in and off by default, same as `--source`.
 
 ## Known limitations
 
@@ -69,17 +85,26 @@ asset GUID is wired into a prefab/component.
   against.
 * **Verified 2026-09-12 against DxLibModelViewer ver3.24d** (title bar reads
   `DxLibModelViewer [ DxLib ver3.24d ]`, pinned at
-  `cli.DEFAULT_MODELVIEWER_PATH`) — a real shipped `.mv1`
-  (`Assets/Art/Models/Basic/Cube.mv1`) was round-tripped end to end through
-  `python -m tools.model convert` (Open → Save As mesh only) and the output
-  confirmed to carry a valid `MV11` header at a plausible size. **Not yet
-  verified against an actual `.fbx` input** — no sample `.fbx` was available
-  in this repo — but the automation path is identical regardless of input
-  format (DxLibModelViewer's own Open dialog lists `FBX File(*.fbx)` as one
-  of its load filters). If a future `DxLibModelViewer` build changes menu
-  command ids or dialog control ids, re-run the inspection documented at the
-  top of `dxlib_modelviewer.py` and update its `_MENU_ID_*`/`_FILENAME_EDIT_IDS`
-  constants.
+  `cli.DEFAULT_MODELVIEWER_PATH`), two ways: a real shipped `.mv1`
+  (`Assets/Art/Models/Basic/Cube.mv1`) round-tripped end to end through
+  `python -m tools.model convert` (Open → Save As mesh only), and a real
+  ~36MB textured `.fbx` converted the same way — both produced a
+  plausible-sized `MV11`-header `.mv1`. If a future `DxLibModelViewer` build
+  changes menu command ids or dialog control ids, re-run the inspection
+  documented at the top of `dxlib_modelviewer.py` and update its
+  `_MENU_ID_*`/`_FILENAME_EDIT_IDS` constants.
+* **DxLibModelViewer's "Save As mesh only" keeps only one texture per
+  material.** Inspecting the compiled output of two real conversions
+  (`Assets/Art/Models/Fantasy/DirtyHouse/dirtyHouse.mv1`, and a fresh
+  `Hyenas_A4_AllMotion_DxLib.fbx` conversion with Diffuse/Normal/Opacity
+  source textures) shows exactly **one** embedded texture reference in each,
+  even though multiple texture files exist alongside the source — Normal/
+  Opacity/AO/Roughness maps don't survive as separate references. This is a
+  property of DxLibModelViewer's own conversion, not a gap in this toolkit's
+  automation. `install --textures` still copies every texture file it's
+  given (see above) so they're available on disk, but wiring up anything
+  beyond the one texture DxLib kept is outside this toolkit's scope — that's
+  an engine/material-system question, not a conversion one.
 * **`looks_like_mv1()` is a sanity check, not a structural validator.** It
   checks for the 4-byte `MV11` header (empirically confirmed across 4 real
   shipped `.mv1` files spanning both animation clips and static/skinned

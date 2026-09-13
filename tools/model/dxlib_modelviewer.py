@@ -2,12 +2,11 @@
 the ``.fbx`` -> ``.mv1`` conversion it has no CLI/CUI for.
 
 **Verified 2026-09-12 against DxLibModelViewer ver3.24d** (title bar reads
-``DxLibModelViewer [ DxLib ver3.24d ]``), round-tripping a real shipped
-``.mv1`` (Open -> Save As mesh only -> re-verify ``MV11`` header) end to end.
-Not yet verified against an actual ``.fbx`` input (no sample was available in
-this repo), but the automation path is identical regardless of input format -
-DxLibModelViewer's own Open dialog lists ``FBX File(*.fbx)`` as one of its
-load filters. If a future DxLibModelViewer build changes menu command ids or
+``DxLibModelViewer [ DxLib ver3.24d ]``), two ways: round-tripping a real
+shipped ``.mv1`` (Open -> Save As mesh only -> re-verify ``MV11`` header), and
+converting a real ~36MB ``.fbx`` with embedded PBR textures end to end via
+``python -m tools.model convert`` (output: a plausible-sized ``MV11``-header
+``.mv1``). If a future DxLibModelViewer build changes menu command ids or
 dialog control ids, re-run the inspection this module was built from:
 
     from pywinauto import Application

@@ -21,10 +21,10 @@ _REPO = Path(__file__).resolve().parents[2]
 
 # Pinned: verified 2026-09-12 against DxLibModelViewer ver3.24d (title bar
 # "DxLibModelViewer [ DxLib ver3.24d ]") - round-tripped a real shipped .mv1
-# (Assets/Art/Models/Basic/Cube.mv1) through Open -> Save As mesh only and
-# confirmed the output has a valid MV11 header. Not yet verified against an
-# actual .fbx input (none was available in this repo) - see
-# tools/model/dxlib_modelviewer.py's module docstring.
+# (Assets/Art/Models/Basic/Cube.mv1) through Open -> Save As mesh only, and
+# separately converted a real ~36MB textured .fbx end to end, both producing
+# a valid MV11 header. See tools/model/dxlib_modelviewer.py's module
+# docstring for details.
 DEFAULT_MODELVIEWER_PATH: str | None = r"C:\DxLib_VC3_24d\DxLib_VC\Tool\DxLibModelViewer\DxLibModelViewer_64bit.exe"
 
 # Empirically observed on 4 real shipped .mv1 files (both animation-clip and
@@ -32,6 +32,10 @@ DEFAULT_MODELVIEWER_PATH: str | None = r"C:\DxLib_VC3_24d\DxLib_VC\Tool\DxLibMod
 # a sanity check, not proof of a well-formed file.
 _MV1_MAGIC = b"MV11"
 _MV1_MIN_SIZE = 256
+
+# Matches the "textures/" sibling-folder convention already used by real
+# shipped assets (e.g. Assets/Art/Models/Fantasy/DirtyHouse/textures/).
+_TEXTURE_EXTS = {".png", ".jpg", ".jpeg", ".bmp", ".tga", ".dds"}
 
 
 class CliError(RuntimeError):
@@ -125,6 +129,28 @@ def cmd_convert(args: argparse.Namespace) -> int:
     return 0
 
 
+def _copy_textures(src_dir: Path, dest_textures_dir: Path) -> int:
+    """Copy every recognized image file directly under ``src_dir`` (no
+    recursion) into ``dest_textures_dir``, overwriting existing files there.
+    Returns the count copied. Does **not** try to determine which textures a
+    ``.mv1`` actually references - DxLibModelViewer's own conversion appears
+    to keep only one texture per material (confirmed by inspecting real
+    shipped assets), so this is a deliberate "copy everything available"
+    fallback rather than a filtered/verified set - see
+    tools/model/README.md's "Known limitations"."""
+    if not src_dir.is_dir():
+        raise CliError(f"--textures {src_dir} is not a directory")
+    files = sorted(p for p in src_dir.iterdir() if p.is_file() and p.suffix.lower() in _TEXTURE_EXTS)
+    if not files:
+        print(f"WARNING: no image files ({', '.join(sorted(_TEXTURE_EXTS))}) found directly under "
+              f"{src_dir}", file=sys.stderr)
+        return 0
+    dest_textures_dir.mkdir(parents=True, exist_ok=True)
+    for f in files:
+        shutil.copyfile(f, dest_textures_dir / f.name)
+    return len(files)
+
+
 def cmd_install(args: argparse.Namespace) -> int:
     mv1_src = _resolve(args.mv1)
     dest = _resolve(args.dest)
@@ -145,6 +171,16 @@ def cmd_install(args: argparse.Namespace) -> int:
         source_dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source_src, source_dest)
         print(f"copied source {source_dest}")
+
+    if args.textures:
+        # Plain bulk copy, same "textures/" sibling-folder convention as real
+        # shipped assets - no attempt to figure out which files a .mv1 (or its
+        # source .fbx) actually references, see _copy_textures()'s docstring.
+        textures_src = _resolve(args.textures)
+        textures_dest = dest.parent / "textures"
+        count = _copy_textures(textures_src, textures_dest)
+        if count:
+            print(f"copied {count} texture(s) to {textures_dest}")
 
     name = dest.stem
     meta_path = dest.with_suffix(dest.suffix + ".meta")
@@ -195,5 +231,8 @@ def register(sub: argparse._SubParsersAction) -> None:
     sp.add_argument("mv1", help=".mv1 file to install")
     sp.add_argument("--source", default=None,
                      help="source .fbx to also commit under <dest-dir>/_Source/ (off by default)")
+    sp.add_argument("--textures", default=None,
+                     help="directory of texture images to bulk-copy into <dest-dir>/textures/ "
+                          "(no filtering - copies every recognized image file found; off by default)")
     sp.add_argument("--dest", required=True, help="e.g. Assets/Art/Models/MyProp/MyProp.mv1")
     sp.set_defaults(func=_wrap(cmd_install))

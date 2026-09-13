@@ -16,7 +16,10 @@ Stages:
      binding).
   3. install() GUID-reuse behaviour, using a synthetic "MV11"-header byte
      string (no real DxLibModelViewer output needed).
-  4. best-effort end-to-end convert(): only runs if pywinauto, a
+  4. install --textures bulk-copy: copies recognized image files into
+     <dest-dir>/textures/, ignores non-image files, and errors on a missing
+     source directory. Plain filesystem copying - no third-party deps.
+  5. best-effort end-to-end convert(): only runs if pywinauto, a
      DxLibModelViewer exe ($DXLIB_MODELVIEWER or cli.DEFAULT_MODELVIEWER_PATH),
      and a test .fbx ($TOOLS_MODEL_TEST_FBX) are all present. Skipped
      elsewhere - this toolkit has no committed .fbx fixture (see
@@ -113,7 +116,7 @@ def stage_install_guid_reuse(r: Reporter) -> None:
             src = Path(tmp) / "src.mv1"
             src.write_bytes(_SYNTHETIC_MV1)
             dest = Path(tmp) / "out" / "Test.mv1"
-            ns = argparse.Namespace(mv1=str(src), source=None, dest=str(dest))
+            ns = argparse.Namespace(mv1=str(src), source=None, textures=None, dest=str(dest))
             cli.cmd_install(ns)
             meta_path = dest.with_suffix(dest.suffix + ".meta")
             first = meta.read_meta(meta_path)
@@ -142,6 +145,71 @@ def stage_install_guid_reuse(r: Reporter) -> None:
         r.fail("looks_like_mv1() negative case", traceback.format_exc())
 
 
+def stage_texture_copy(r: Reporter) -> None:
+    r.section("stage 4: install --textures bulk-copy")
+    try:
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            src_dir = Path(tmp) / "textures_src"
+            src_dir.mkdir()
+            (src_dir / "Diffuse.png").write_bytes(b"not a real png, content doesn't matter")
+            (src_dir / "Normal.PNG").write_bytes(b"case-insensitive extension check")
+            (src_dir / "notes.txt").write_bytes(b"should not be copied")
+            sub_dir = src_dir / "nested"
+            sub_dir.mkdir()
+            (sub_dir / "Deep.png").write_bytes(b"should not be copied either - no recursion")
+
+            mv1_src = Path(tmp) / "src.mv1"
+            mv1_src.write_bytes(_SYNTHETIC_MV1)
+            dest = Path(tmp) / "out" / "Test.mv1"
+            ns = argparse.Namespace(mv1=str(mv1_src), source=None, textures=str(src_dir), dest=str(dest))
+            cli.cmd_install(ns)
+
+            textures_dest = dest.parent / "textures"
+            copied = sorted(p.name for p in textures_dest.iterdir()) if textures_dest.is_dir() else []
+            if copied != ["Diffuse.png", "Normal.PNG"]:
+                raise AssertionError(f"copied {copied!r}, expected exactly ['Diffuse.png', 'Normal.PNG'] "
+                                      "(non-image and nested files must be excluded)")
+        r.ok("install --textures copies only top-level recognized image files")
+    except Exception:  # noqa: BLE001
+        r.fail("install --textures bulk-copy", traceback.format_exc())
+
+    try:
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            empty_dir = Path(tmp) / "empty"
+            empty_dir.mkdir()
+            mv1_src = Path(tmp) / "src.mv1"
+            mv1_src.write_bytes(_SYNTHETIC_MV1)
+            dest = Path(tmp) / "out" / "Test.mv1"
+            ns = argparse.Namespace(mv1=str(mv1_src), source=None, textures=str(empty_dir), dest=str(dest))
+            cli.cmd_install(ns)  # must not raise - zero images is a warning, not an error
+            textures_dest = dest.parent / "textures"
+            if textures_dest.exists() and any(textures_dest.iterdir()):
+                raise AssertionError("an empty source directory should not have produced any output files")
+        r.ok("install --textures on an image-less directory warns but does not fail")
+    except Exception:  # noqa: BLE001
+        r.fail("install --textures empty source dir", traceback.format_exc())
+
+    try:
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            mv1_src = Path(tmp) / "src.mv1"
+            mv1_src.write_bytes(_SYNTHETIC_MV1)
+            dest = Path(tmp) / "out" / "Test.mv1"
+            missing_dir = Path(tmp) / "does_not_exist"
+            ns = argparse.Namespace(mv1=str(mv1_src), source=None, textures=str(missing_dir), dest=str(dest))
+            try:
+                cli.cmd_install(ns)
+            except cli.CliError:
+                pass
+            else:
+                raise AssertionError("a missing --textures directory should raise CliError")
+        r.ok("install --textures rejects a missing source directory")
+    except Exception:  # noqa: BLE001
+        r.fail("install --textures missing source dir", traceback.format_exc())
+
+
 def _find_modelviewer() -> Path | None:
     for candidate in (os.environ.get("DXLIB_MODELVIEWER"), cli.DEFAULT_MODELVIEWER_PATH):
         if candidate and Path(candidate).exists():
@@ -150,7 +218,7 @@ def _find_modelviewer() -> Path | None:
 
 
 def stage_e2e_convert(r: Reporter) -> None:
-    r.section("stage 4: end-to-end convert() (best-effort, machine-specific)")
+    r.section("stage 5: end-to-end convert() (best-effort, machine-specific)")
     try:
         import pywinauto  # noqa: F401
     except ImportError:
@@ -188,6 +256,7 @@ def main() -> int:
     stage_meta_roundtrip(r)
     stage_content_path_convention(r)
     stage_install_guid_reuse(r)
+    stage_texture_copy(r)
     stage_e2e_convert(r)
     return r.finish()
 

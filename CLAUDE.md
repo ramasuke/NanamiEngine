@@ -119,15 +119,18 @@ conversion, so the toolkit drives the real GUI tool via `pywinauto`:
 
 ```
 python -m tools.model convert <in.fbx> <out.mv1> --modelviewer-path <path to DxLibModelViewer_64bit.exe>
-python -m tools.model install <out.mv1> --dest Assets/Art/.../<Name>.mv1 [--source <in.fbx>]
+python -m tools.model install <out.mv1> --dest Assets/Art/.../<Name>.mv1 [--source <in.fbx>] [--textures <dir>]
 python tools/model/selftest.py              # .meta-codec gate; GUI-automation stage is best-effort/skips cleanly
 ```
 
 `install` mints a fresh-GUID `.mv1.meta` (`Mv1File`, via `tools/common/meta_base.py`) the same
-way `tools/effect install` does for `ParticleFile`. `convert` requires `pip install pywinauto`
-(the first third-party dependency any `tools/*` toolkit in this repo has needed) and a local
-copy of `DxLibModelViewer_64bit.exe` (not vendored in this repo; pinned path in
-`tools/model/cli.py`'s `DEFAULT_MODELVIEWER_PATH`, verified 2026-09-12 against ver3.24d via an
-`.mv1`→`.mv1` round trip — **not yet verified against an actual `.fbx` input**). See
-**`tools/model/README.md`** for prerequisites and known fragility — this is a
-reverse-engineered UI-automation wrapper, not an officially supported CLI.
+way `tools/effect install` does for `ParticleFile`, and (with `--textures`) bulk-copies image
+files into `<dest-dir>/textures/` — DxLibModelViewer's own conversion keeps only one texture per
+material (confirmed against real assets), so this is a plain "make the files available" copy,
+not an attempt to rewire materials. `convert` requires `pip install pywinauto` (the first
+third-party dependency any `tools/*` toolkit in this repo has needed) and a local copy of
+`DxLibModelViewer_64bit.exe` (not vendored in this repo; pinned path in `tools/model/cli.py`'s
+`DEFAULT_MODELVIEWER_PATH`, verified 2026-09-12 against ver3.24d via both an `.mv1`→`.mv1` round
+trip and a real textured `.fbx` conversion). See **`tools/model/README.md`** for prerequisites
+and known fragility — this is a reverse-engineered UI-automation wrapper, not an officially
+supported CLI.
