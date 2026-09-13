@@ -125,7 +125,7 @@
             "ptr_wrapper": {
                 "id": 2147483655,
                 "data": {
-                    "cereal_class_version": 1,
+                    "cereal_class_version": 2,
                     "value0": {
                         "cereal_class_version": 4,
                         "value0": {
@@ -180,7 +180,7 @@
                         },
                         "isNetworkSyncStatus_": false
                     },
-                    "healthBar_": {
+                    "bossHealthGauge_": {
                         "cereal_class_version": 0,
                         "value0": {
                             "polymorphic_id": 1073741824,
@@ -189,12 +189,13 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "value_": "02169FEC-EC4D-4C03-9A24-C1F59BC86783"
+                                        "value_": "49249A9E-686F-4568-9357-31731D472DA9"
                                     }
                                 }
                             }
                         }
-                    }
+                    },
+                    "bossName_": "ティラノサウルス"
                 }
             }
         },

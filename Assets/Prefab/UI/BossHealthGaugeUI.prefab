@@ -1,0 +1,298 @@
+{
+    "isActive_": false,
+    "name_": "BossHealthGaugeUI",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "86A9DE37-495D-4C57-BD1D-8C033161EE16"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 1,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "GamePlay::Ui::BossHealthGauge",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "49512803-FF44-40D8-A8F7-F7091A874AA7"
+                        },
+                        "isEnable_": false
+                    },
+                    "renderOrder_": 5,
+                    "bossNameTextName_": "BossName",
+                    "crestSprite_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "FE525D72-A126-4DF5-ADA0-620CF3EF8A85"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "crestGlowSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483651,
+                                "data": {
+                                    "value0": {
+                                        "value_": "1E66CF91-FF4D-4869-AD5A-B85AD182B861"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "shardEmptySprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "value0": {
+                                        "value_": "0307A9B6-0559-400F-916C-E680A8CCB7D1"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "shardFillSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "value0": {
+                                        "value_": "9BA518BB-A951-4CFD-8F25-FE4B8141AEAD"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "shardFillDangerSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483654,
+                                "data": {
+                                    "value0": {
+                                        "value_": "F2BD0E59-C100-4288-88FA-48F994C2F9C8"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "shardTrailSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483655,
+                                "data": {
+                                    "value0": {
+                                        "value_": "EFC88215-6814-4A26-881F-5EFA6E3C6C82"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "shardCount_": 8,
+                    "arcAngle_deg_": 140.0,
+                    "shardBaseDistance_": 94.4,
+                    "shardPadding_px_": 10.4,
+                    "pivotOffset_": {
+                        "value0": 0.0,
+                        "value1": 84.8
+                    },
+                    "crestOffset_": {
+                        "value0": 0.0,
+                        "value1": -35.2
+                    },
+                    "dangerHealthRate_": 0.3,
+                    "trailDelay_secs_": 0.5,
+                    "trailSpeed_perSec_": 0.35,
+                    "pulseFrequency_hz_": 1.4,
+                    "pulseMaxAlpha_": 90,
+                    "introFillDuration_secs_": 1.2
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 960.0,
+            "value1": 140.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 1.0,
+            "value1": 1.0,
+            "value2": 1.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 1.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 1.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 1.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 960.0,
+                "value1": 140.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 1,
+        "child": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483656,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": true,
+                    "name_": "BossName",
+                    "guid_": {
+                        "value_": "05162762-3BB2-425D-A139-9FCEADF7A6B4"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 2147483651,
+                            "polymorphic_name": "NanamiEngine::Module::NanamiUi::TextRenderer",
+                            "ptr_wrapper": {
+                                "id": 2147483657,
+                                "data": {
+                                    "cereal_class_version": 3,
+                                    "value0": {
+                                        "cereal_class_version": 0,
+                                        "guid_": {
+                                            "value_": "B7E212AD-DA64-4663-920D-E05C3E121ECC"
+                                        },
+                                        "isEnable_": false
+                                    },
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "fontFile_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483658,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 6,
+                                    "text_": "ボス名",
+                                    "textColor_": {
+                                        "cereal_class_version": 0,
+                                        "r_": 245,
+                                        "g_": 232,
+                                        "b_": 214
+                                    },
+                                    "isWorldPos_": false,
+                                    "textAlign_": 1,
+                                    "isOutlineEnabled_": true,
+                                    "outlineColor_": {
+                                        "r_": 6,
+                                        "g_": 20,
+                                        "b_": 26
+                                    },
+                                    "outlineWidth_": 1.7,
+                                    "outlineShadowOffsetY_": 2.2
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 126.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.6,
+                            "value1": 0.6,
+                            "value2": 0.6
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.6,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.6,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.6,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 960.0,
+                                "value1": 266.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    }
+                }
+            }
+        }
+    },
+    "value0": 0
+}

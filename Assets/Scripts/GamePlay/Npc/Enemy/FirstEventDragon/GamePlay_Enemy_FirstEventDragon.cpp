@@ -6,10 +6,14 @@ namespace GamePlay::Npc::Enemy
 {
     void FirstEventDragon::DoAwake()
     {
-        healthBar_->Entity().lock()->SetEnable(true);
+        if (!bossHealthGauge_)
+            return;
+
+        bossHealthGauge_->Show(bossName_);
+        bossHealthGauge_->SetHealthRate(NetworkStatus()->Get().Health() / NetworkStatus()->Get().MaxHealth());
         NetworkStatus()->Get().HealthObservable().subscribe(rxcpp::composite_subscription(), [&](const GameCore::StatusParameter::Health health)
         {
-            healthBar_->SetValue(health / NetworkStatus()->Get().MaxHealth());
+            bossHealthGauge_->SetHealthRate(health / NetworkStatus()->Get().MaxHealth());
         });
     }
 
@@ -24,6 +28,7 @@ namespace GamePlay::Npc::Enemy
 
     void FirstEventDragon::OnDrawGui()
     {
-        ImGuiHelper::OnDrawInputField("healthBar_", healthBar_);
+        ImGuiHelper::OnDrawInputField("bossHealthGauge_", bossHealthGauge_);
+        ImGuiHelper::OnDrawInputField("bossName_", bossName_);
     }
 }
