@@ -5,7 +5,6 @@
 namespace GamePlay::Ui
 {
     class BillBoardNpcChatIcon final : public Component::ComponentBase,
-                                       public LifeCycleCallback::IAwakable,
                                        public LifeCycleCallback::IUpdatable
     {
     public:
@@ -18,10 +17,11 @@ namespace GamePlay::Ui
         void OnExitChattable();
         
     private:
-        void OnAwake () override;
         void OnUpdate() override;
 
         bool isShow_ = true;
+        bool isBasePosChattableCaptured_ = false;
+        bool isBasePosSurpriseCaptured_  = false;
         glm::vec3 basePosChattable_ = {};
         glm::vec3 basePosSurprise_  = {};
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattableIcon_; 

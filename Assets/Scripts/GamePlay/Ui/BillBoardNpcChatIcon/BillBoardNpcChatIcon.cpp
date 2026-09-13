@@ -12,11 +12,19 @@ namespace GamePlay::Ui
     {
         void ApplyFloating(
             const std::shared_ptr<GameObject::IGameObject>& object,
-            const glm::vec3& basePos,
+            glm::vec3& basePos,
+            bool& isBasePosCaptured,
             const float offset)
         {
             if (!object)
                 return;
+
+            // 浮遊オフセットを書き込む前でないと、揺れた後の座標を基準にしてしまう
+            if (!isBasePosCaptured)
+            {
+                basePos = object->Transform().GetLocalPos();
+                isBasePosCaptured = true;
+            }
 
             auto position = basePos;
             position.y += offset;
@@ -63,26 +71,10 @@ namespace GamePlay::Ui
         if (chattingIcon_)  chattingIcon_ ->SetEnable(false);
     }
 
-    void BillBoardNpcChatIcon::OnAwake()
-    {
-        if (chattableIcon_)
-            basePosChattable_ = chattableIcon_->Transform().GetLocalPos();
-
-        if (surpriseIcon_)
-            basePosSurprise_ = surpriseIcon_->Transform().GetLocalPos();
-    }
-
     void BillBoardNpcChatIcon::OnUpdate()
     {
-        if (!isShow_)
-            return;
-
-        if (chattableIcon_ && basePosChattable_ == glm::vec3{})
-            basePosChattable_ = chattableIcon_->Transform().GetLocalPos();
-
-        if (surpriseIcon_ && basePosSurprise_ == glm::vec3{})
-            basePosSurprise_ = surpriseIcon_->Transform().GetLocalPos();
-
+        // ビックリマークは SetEnableShowChatIcon ではなく GameObjectSetEnable で
+        // 直接表示されるため、isShow_ で揺れを止めてはいけない
         const float time = Time::CurrentTime();
 
         constexpr float amplitude = 0.2f;
@@ -90,8 +82,8 @@ namespace GamePlay::Ui
 
         const float offset = std::sin(time * speed) * amplitude;
 
-        ApplyFloating(chattableIcon_.get(), basePosChattable_, offset);
-        ApplyFloating(surpriseIcon_ .get(), basePosSurprise_,  offset);
+        ApplyFloating(chattableIcon_.get(), basePosChattable_, isBasePosChattableCaptured_, offset);
+        ApplyFloating(surpriseIcon_ .get(), basePosSurprise_ , isBasePosSurpriseCaptured_ , offset);
     }
 
     void BillBoardNpcChatIcon::OnDrawGui()
