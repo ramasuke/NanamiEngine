@@ -273,7 +273,7 @@
                                             "ptr_wrapper": {
                                                 "id": 2147483658,
                                                 "data": {
-                                                    "cereal_class_version": 1,
+                                                    "cereal_class_version": 2,
                                                     "value0": {
                                                         "guid_": {
                                                             "value_": "EC27243C-E171-4067-8576-886580277847"
@@ -331,8 +331,8 @@
                                                             }
                                                         }
                                                     },
-                                                    "trailDelay_secs_": 0.5,
-                                                    "trailSpeed_perSec_": 0.6,
+                                                    "trailDelay_secs_": 0.8,
+                                                    "trailDuration_secs_": 1.0,
                                                     "tipSprite_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -900,7 +900,7 @@
                                                         }
                                                     },
                                                     "trailDelay_secs_": 0.25,
-                                                    "trailSpeed_perSec_": 1.0,
+                                                    "trailDuration_secs_": 0.4,
                                                     "tipSprite_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,

@@ -49,7 +49,7 @@ namespace NanamiEngine::Module::NanamiUi
         [[serialize(1)]] FIELD(Asset::SpriteFile) backgroundSprite_;
         [[serialize(1)]] FIELD(Asset::SpriteFile) trailSprite_;
         [[serialize(1)]] float trailDelay_secs_ = 0.5f;
-        [[serialize(1)]] float trailSpeed_perSec_ = 0.6f;
+        [[serialize(2)]] float trailDuration_secs_ = 0.8f;
         [[serialize(1)]] FIELD(Asset::SpriteFile) tipSprite_;
         [[serialize(1)]] float tipWidth_ = 18.0f;
         [[serialize(1)]] int tickCount_ = 0;
@@ -64,7 +64,9 @@ namespace NanamiEngine::Module::NanamiUi
         [[serialize(1)]] int pulseMaxAlpha_ = 56;
 
         float trailValue_ = 1.0f;
+        float trailFrom_ = 1.0f;
         float trailWaitTimer_secs_ = 0.0f;
+        float trailElapsed_secs_ = 0.0f;
         std::shared_ptr<Asset::SpriteFile> fadingOutGaugeSprite_;
         float gaugeFadeTimer_secs_ = 0.0f;
         bool isPulsing_ = false;
@@ -86,7 +88,7 @@ namespace NanamiEngine::Module::NanamiUi
             archive(CEREAL_NVP(backgroundSprite_));
             archive(CEREAL_NVP(trailSprite_));
             archive(CEREAL_NVP(trailDelay_secs_));
-            archive(CEREAL_NVP(trailSpeed_perSec_));
+            archive(CEREAL_NVP(trailDuration_secs_));
             archive(CEREAL_NVP(tipSprite_));
             archive(CEREAL_NVP(tipWidth_));
             archive(CEREAL_NVP(tickCount_));
@@ -113,7 +115,7 @@ namespace NanamiEngine::Module::NanamiUi
             if (version >= 1) archive(CEREAL_NVP(backgroundSprite_));
             if (version >= 1) archive(CEREAL_NVP(trailSprite_));
             if (version >= 1) archive(CEREAL_NVP(trailDelay_secs_));
-            if (version >= 1) archive(CEREAL_NVP(trailSpeed_perSec_));
+            if (version >= 2) archive(CEREAL_NVP(trailDuration_secs_));
             if (version >= 1) archive(CEREAL_NVP(tipSprite_));
             if (version >= 1) archive(CEREAL_NVP(tipWidth_));
             if (version >= 1) archive(CEREAL_NVP(tickCount_));
@@ -125,9 +127,10 @@ namespace NanamiEngine::Module::NanamiUi
             if (version >= 1) archive(CEREAL_NVP(pulseFrequency_hz_));
             if (version >= 1) archive(CEREAL_NVP(pulseMaxAlpha_));
             trailValue_ = value_;
+            trailFrom_  = value_;
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiUi::Slider, 1)
+ENGINE_REGISTER_COMPONENT(NanamiUi::Slider, 2)

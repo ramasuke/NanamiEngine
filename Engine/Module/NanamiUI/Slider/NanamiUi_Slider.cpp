@@ -32,6 +32,14 @@ namespace
         int blendMode_  = DX_BLENDMODE_NOBLEND;
         int blendParam_ = 0;
     };
+
+    float EaseInOutCubic(const float t)
+    {
+        if (t < 0.5f)
+            return 4.0f * t * t * t;
+        const float u = -2.0f * t + 2.0f;
+        return 1.0f - u * u * u * 0.5f;
+    }
 }
 
 namespace NanamiEngine::Module::NanamiUi
@@ -39,14 +47,12 @@ namespace NanamiEngine::Module::NanamiUi
     void Slider::SetValue(const float value)
     {
         const float next = std::clamp(value, 0.0f, 1.0f);
+        trailValue_ = std::max(trailValue_, next);
         if (next < value_)
         {
-            trailValue_          = std::max(trailValue_, value_);
+            trailFrom_           = trailValue_;
             trailWaitTimer_secs_ = trailDelay_secs_;
-        }
-        else
-        {
-            trailValue_ = next;
+            trailElapsed_secs_   = 0.0f;
         }
         value_ = next;
     }
@@ -73,9 +79,18 @@ namespace NanamiEngine::Module::NanamiUi
         const float deltaTime = Time::DeltaTime();
 
         if (trailWaitTimer_secs_ > 0.0f)
+        {
             trailWaitTimer_secs_ = std::max(0.0f, trailWaitTimer_secs_ - deltaTime);
-        else
-            trailValue_ = std::max(value_, trailValue_ - trailSpeed_perSec_ * deltaTime);
+        }
+        else if (trailValue_ > value_)
+        {
+            trailElapsed_secs_ += deltaTime;
+            const float t = trailDuration_secs_ > 0.0f
+                ? std::clamp(trailElapsed_secs_ / trailDuration_secs_, 0.0f, 1.0f)
+                : 1.0f;
+            // 回復で value_ が上がってもトレイルが逆戻りしないよう、現在位置より上には戻さない
+            trailValue_ = std::clamp(std::lerp(trailFrom_, value_, EaseInOutCubic(t)), value_, trailValue_);
+        }
 
         if (gaugeFadeTimer_secs_ > 0.0f)
         {
@@ -257,7 +272,10 @@ namespace NanamiEngine::Module::NanamiUi
         ImGui::Text("Slider");
 
         if (ImGui::SliderFloat("value_", &value_, 0.0f, 1.0f))
+        {
             trailValue_ = value_;
+            trailFrom_  = value_;
+        }
 
         float position[2] = { drawPosition_.x,  drawPosition_.y };
         float size    [2] = { drawSize_    .x, drawSize_     .y };
@@ -281,7 +299,7 @@ namespace NanamiEngine::Module::NanamiUi
         ImGuiHelper::OnDrawInputField("backgroundSprite_", backgroundSprite_);
         ImGuiHelper::OnDrawInputField("trailSprite_", trailSprite_);
         ImGuiHelper::OnDrawInputField("trailDelay_secs_", trailDelay_secs_);
-        ImGuiHelper::OnDrawInputField("trailSpeed_perSec_", trailSpeed_perSec_);
+        ImGuiHelper::OnDrawInputField("trailDuration_secs_", trailDuration_secs_);
         ImGuiHelper::OnDrawInputField("tipSprite_", tipSprite_);
         ImGuiHelper::OnDrawInputField("tipWidth_", tipWidth_);
         ImGuiHelper::OnDrawInputField("tickCount_", tickCount_);
