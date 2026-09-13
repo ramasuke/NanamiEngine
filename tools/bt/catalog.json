@@ -1,11 +1,11 @@
 {
-  "generated_from": "0083a5893584631c8bce67d4f24f0981218df6a3",
+  "generated_from": "e39cf4bdf74ebab5c6b0aa5ee933e81badb9e989",
   "actions": {
     "Basic::ChasePlayerForPathFinding": {
       "class": "ChasePlayerForPathFinding",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding",
       "leaf": "ChasePlayerForPathFinding",
-      "version": 2,
+      "version": 3,
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Basic/ChasePlayerForPathFinding/Enemy_Behaviour_Action_ChasePlayerForPathFinding.h",
       "params": [
         {
@@ -56,6 +56,13 @@
           "member": "rotateToleranceDeg_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "directions_",
+          "member": "directions_",
+          "named": true,
+          "shape": "vector",
+          "elem": "ivec2"
         }
       ]
     },
@@ -112,7 +119,7 @@
       "class": "WanderMove",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::WanderMove",
       "leaf": "WanderMove",
-      "version": 0,
+      "version": 1,
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Basic/WanderMove/Enemy_Behaviour_Action_WanderMove.h",
       "params": [
         {
@@ -187,6 +194,13 @@
           "member": "animationIdleNumber_",
           "named": true,
           "shape": "int"
+        },
+        {
+          "key": "directions_",
+          "member": "directions_",
+          "named": true,
+          "shape": "vector",
+          "elem": "ivec2"
         }
       ]
     },

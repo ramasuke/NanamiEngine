@@ -22,6 +22,7 @@ namespace GameCore::PathFinding
         const std::shared_ptr<NanamiEngine::Module::Asset::HeightGridMap>& grid,
         const glm::vec3& start,
         const std::vector<glm::vec3>& goals,
+        const std::span<const glm::ivec2> directions,
         const int maxCellRange, const float maxClimbAngleDeg, const float searchIntervalSec)
     {
         if (isReady_.load(std::memory_order_acquire))
@@ -46,15 +47,16 @@ namespace GameCore::PathFinding
                     pathThread_.join();
 
                 const auto  gridShared = grid;
-                const auto  goalsCopy  = goals;
-                const int   range      = maxCellRange;
-                const float angle      = maxClimbAngleDeg;
-                pathThread_ = std::thread([this, gridShared, start, goalsCopy, range, angle]()
+                const auto  goalsCopy      = goals;
+                const auto  directionsCopy = std::vector<glm::ivec2>(directions.begin(), directions.end());
+                const int   range          = maxCellRange;
+                const float angle          = maxClimbAngleDeg;
+                pathThread_ = std::thread([this, gridShared, start, goalsCopy, directionsCopy, range, angle]()
                 {
                     std::vector<glm::vec3> bestPath;
                     for (const auto& goalPos : goalsCopy)
                     {
-                        auto path = FindPath(*gridShared, start, goalPos, range, angle);
+                        auto path = FindPath(*gridShared, start, goalPos, directionsCopy, range, angle);
                         if (!path.empty() && (bestPath.empty() || path.size() < bestPath.size()))
                             bestPath = std::move(path);
                     }
@@ -71,6 +73,7 @@ namespace GameCore::PathFinding
     std::vector<glm::vec3> HeightGridAstar::FindPath(
         const NanamiEngine::Module::Asset::HeightGridMap& grid,
         const glm::vec3& start, const glm::vec3& goal,
+        const std::span<const glm::ivec2> directions,
         const int maxCellRange, const float maxClimbAngleDeg)
     {
         const int W = grid.DivisionsX();
@@ -134,17 +137,17 @@ namespace GameCore::PathFinding
 
             const float curHeight = grid.At(current.x, current.z).height;
 
-            for (int d = 0; d < 8; ++d)
+            for (const auto& dir : directions)
             {
-                const int nx = current.x + kDirX[d];
-                const int nz = current.z + kDirZ[d];
+                const int nx = current.x + dir.x;
+                const int nz = current.z + dir.y;
 
                 if (!inBounds(nx, nz))
                     continue;
                 if (std::abs(nx - sx) > maxCellRange || std::abs(nz - sz) > maxCellRange)
                     continue;
 
-                const bool  diagonal = (kDirX[d] != 0 && kDirZ[d] != 0);
+                const bool  diagonal = (dir.x != 0 && dir.y != 0);
                 const float horiz    = diagonal ? orthoDist * SQRT2 : orthoDist;
                 if (horiz <= 0.0f)
                     continue;

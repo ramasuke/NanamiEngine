@@ -1,12 +1,15 @@
 #pragma once
 #include "../../../../../../../PathFinding/HeightGridAstar/Multithread/PathFinding_HeightGridAstar_Multithread.h"
+#include "../../../../../../../PathFinding/PathFinding_GridDirections.h"
 
 #include "../../../Enemy_Behaviour_ActionBase.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
 #include "../../../../../../../../../../Data/HeightGridMap/Data_HeightGridMap.h"
 #include "../../../../../../../../../../../Engine/Core/Object/Field/Field.h"
+#include "../../../../../../../../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
 #include "cereal/types/base_class.hpp"
 #include "cereal/types/polymorphic.hpp"
+#include "cereal/types/vector.hpp"
 
 #include <random>
 
@@ -39,6 +42,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(0)]] float searchIntervalSec_   = 1.0f;
         [[serialize(0)]] int   animationMoveNumber_ = -1;
         [[serialize(0)]] int   animationIdleNumber_ = -1;
+        [[serialize(1)]] std::vector<glm::ivec2> directions_ = std::vector<glm::ivec2>(PathFinding::EIGHT_DIRECTIONS.begin(), PathFinding::EIGHT_DIRECTIONS.end());
 
         enum class State { Idle, Moving };
         State     state_               = State::Idle;
@@ -69,6 +73,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(CEREAL_NVP(searchIntervalSec_));
             archive(CEREAL_NVP(animationMoveNumber_));
             archive(CEREAL_NVP(animationIdleNumber_));
+            archive(CEREAL_NVP(directions_));
         }
 
         template<class Archive>
@@ -87,6 +92,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             if (version >= 0) archive(CEREAL_NVP(searchIntervalSec_));
             if (version >= 0) archive(CEREAL_NVP(animationMoveNumber_));
             if (version >= 0) archive(CEREAL_NVP(animationIdleNumber_));
+            if (version >= 1) archive(CEREAL_NVP(directions_));
         }
 #pragma endregion
     };
@@ -94,7 +100,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     REGISTER_ENEMY_ACTION_WITH_NAME(WanderMove, "Basic::WanderMove")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::WanderMove, 0)
+CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::WanderMove, 1)
 CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::WanderMove)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(
     GameCore::Npc::Enemy::Behaviour::ActionBase,

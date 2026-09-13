@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <type_traits>
 #include <string>
 #include "../../Libs/ImGui/ImGuiHelper.h"
@@ -151,6 +151,19 @@ namespace LibCore::ImGuiHelper
     {
         float buffer[2] = { value.x, value.y };
         if (::ImGui::InputFloat2(label.c_str(), buffer))
+        {
+            value.x = buffer[0];
+            value.y = buffer[1];
+        }
+    }
+
+    template <typename T>
+    static void
+    OnDrawInputField(const std::string& label, T& value)
+    requires std::is_same_v<T, glm::ivec2>
+    {
+        int buffer[2] = { value.x, value.y };
+        if (::ImGui::InputInt2(label.c_str(), buffer))
         {
             value.x = buffer[0];
             value.y = buffer[1];

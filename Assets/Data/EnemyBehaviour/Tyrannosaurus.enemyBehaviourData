@@ -1121,7 +1121,7 @@
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
                                                                                                     "data": {
-                                                                                                        "cereal_class_version": 2,
+                                                                                                        "cereal_class_version": 3,
                                                                                                         "value0": {},
                                                                                                         "heightGridMap_": {
                                                                                                             "cereal_class_version": 0,
@@ -1144,7 +1144,41 @@
                                                                                                         "maxClimbAngleDeg_": 45.0,
                                                                                                         "searchIntervalSec_": 0.30000001192092898,
                                                                                                         "animationNumber_": 55,
-                                                                                                        "rotateToleranceDeg_": 10.0
+                                                                                                        "rotateToleranceDeg_": 10.0,
+                                                                                                        "directions_": [
+                                                                                                            {
+                                                                                                                "value0": 1,
+                                                                                                                "value1": 0
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": -1,
+                                                                                                                "value1": 0
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": 0,
+                                                                                                                "value1": 1
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": 0,
+                                                                                                                "value1": -1
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": 1,
+                                                                                                                "value1": 1
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": 1,
+                                                                                                                "value1": -1
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": -1,
+                                                                                                                "value1": 1
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": -1,
+                                                                                                                "value1": -1
+                                                                                                            }
+                                                                                                        ]
                                                                                                     }
                                                                                                 }
                                                                                             }
@@ -1941,7 +1975,41 @@
                                                                                                         "maxClimbAngleDeg_": 45.0,
                                                                                                         "searchIntervalSec_": 0.30000001192092898,
                                                                                                         "animationNumber_": 58,
-                                                                                                        "rotateToleranceDeg_": 10.0
+                                                                                                        "rotateToleranceDeg_": 10.0,
+                                                                                                        "directions_": [
+                                                                                                            {
+                                                                                                                "value0": 1,
+                                                                                                                "value1": 0
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": -1,
+                                                                                                                "value1": 0
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": 0,
+                                                                                                                "value1": 1
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": 0,
+                                                                                                                "value1": -1
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": 1,
+                                                                                                                "value1": 1
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": 1,
+                                                                                                                "value1": -1
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": -1,
+                                                                                                                "value1": 1
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "value0": -1,
+                                                                                                                "value1": -1
+                                                                                                            }
+                                                                                                        ]
                                                                                                     }
                                                                                                 }
                                                                                             }

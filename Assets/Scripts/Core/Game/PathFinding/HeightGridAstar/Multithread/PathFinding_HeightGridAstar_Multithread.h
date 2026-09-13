@@ -2,9 +2,11 @@
 #include <atomic>
 #include <memory>
 #include <mutex>
+#include <span>
 #include <thread>
 #include <vector>
 
+#include "vec2.hpp"
 #include "vec3.hpp"
 #include "../../../../../../Data/HeightGridMap/Data_HeightGridMap.h"
 
@@ -26,6 +28,7 @@ namespace GameCore::PathFinding
             const std::shared_ptr<NanamiEngine::Module::Asset::HeightGridMap>& grid,
             const glm::vec3& start,
             const std::vector<glm::vec3>& goals,
+            std::span<const glm::ivec2> directions,
             int maxCellRange, float maxClimbAngleDeg, float searchIntervalSec);
 
         std::vector<glm::vec3>&       Path()       { return cachedPath_; }
@@ -37,10 +40,8 @@ namespace GameCore::PathFinding
         static std::vector<glm::vec3> FindPath(
             const NanamiEngine::Module::Asset::HeightGridMap& grid,
             const glm::vec3& start, const glm::vec3& goal,
+            std::span<const glm::ivec2> directions,
             int maxCellRange, float maxClimbAngleDeg);
-
-        static constexpr int kDirX[8] = {  1, -1,  0,  0,  1,  1, -1, -1 };
-        static constexpr int kDirZ[8] = {  0,  0,  1, -1,  1, -1,  1, -1 };
 
         std::atomic_bool       isSearching_{false};
         std::atomic_bool       isReady_{false};

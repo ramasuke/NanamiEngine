@@ -28,7 +28,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         if (playerPositions.empty())
             return TickStatus::Failure;
 
-        pathFinder_.Tick(grid, selfPos, playerPositions,
+        pathFinder_.Tick(grid, selfPos, playerPositions, directions_,
                          maxPathCellRange_, maxClimbAngleDeg_, searchIntervalSec_);
 
         if (!pathFinder_.HasPath() || pathFinder_.Path().empty())
@@ -105,6 +105,11 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("moveSpeed_", moveSpeed_);                            
         ImGuiHelper::OnDrawInputField("rotateSpeed_", rotateSpeed_);
         ImGuiHelper::OnDrawInputField("rotateToleranceDeg_", rotateToleranceDeg_);
+        ImGuiHelper::OnDrawInputField("directions_", directions_, [this]()
+        {
+            if (ImGui::Button("Add"))
+                directions_.emplace_back();
+        });
         ImGuiHelper::OnDrawInputField("maxPathCellRange_", maxPathCellRange_);
         ImGuiHelper::OnDrawInputField("maxClimbAngleDeg_", maxClimbAngleDeg_);
         ImGuiHelper::OnDrawInputField("searchIntervalSec_", searchIntervalSec_);

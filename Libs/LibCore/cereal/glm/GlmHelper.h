@@ -34,4 +34,10 @@ namespace cereal
     {
         archive(v.x, v.y);
     }
+
+    template <class Archive>
+    void serialize(Archive& archive, glm::ivec2& v)
+    {
+        archive(v.x, v.y);
+    }
 }

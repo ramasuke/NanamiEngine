@@ -1,12 +1,15 @@
 #pragma once
 #include "../../../../../../../PathFinding/HeightGridAstar/Multithread/PathFinding_HeightGridAstar_Multithread.h"
+#include "../../../../../../../PathFinding/PathFinding_GridDirections.h"
 
 #include "../../../Enemy_Behaviour_ActionBase.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
 #include "../../../../../../../../../../Data/HeightGridMap/Data_HeightGridMap.h"
 #include "../../../../../../../../../../../Engine/Core/Object/Field/Field.h"
+#include "../../../../../../../../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
 #include "cereal/types/base_class.hpp"
 #include "cereal/types/polymorphic.hpp"
+#include "cereal/types/vector.hpp"
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
@@ -35,6 +38,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(0)]] float searchIntervalSec_   = 1.0f;
         [[serialize(0)]] int   animationNumber_     = -1; 
         [[serialize(0)]] float rotateToleranceDeg_  = 5.0f;
+        [[serialize(3)]] std::vector<glm::ivec2> directions_ = std::vector<glm::ivec2>(PathFinding::EIGHT_DIRECTIONS.begin(), PathFinding::EIGHT_DIRECTIONS.end());
 
         PathFinding::HeightGridAstar pathFinder_;
 
@@ -52,6 +56,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(CEREAL_NVP(searchIntervalSec_));
             archive(CEREAL_NVP(animationNumber_));
             archive(CEREAL_NVP(rotateToleranceDeg_));
+            archive(CEREAL_NVP(directions_));
         }
 
         template<class Archive>
@@ -66,6 +71,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             if (version >= 2) archive(CEREAL_NVP(searchIntervalSec_));
             if (version >= 0) archive(CEREAL_NVP(animationNumber_));
             if (version >= 1) archive(CEREAL_NVP(rotateToleranceDeg_));
+            if (version >= 3) archive(CEREAL_NVP(directions_));
         }
 #pragma endregion
 
@@ -74,7 +80,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     REGISTER_ENEMY_ACTION_WITH_NAME(ChasePlayerForPathFinding, "Basic::ChasePlayerForPathFinding")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding, 2)
+CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding, 3)
 CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(
     GameCore::Npc::Enemy::Behaviour::ActionBase,

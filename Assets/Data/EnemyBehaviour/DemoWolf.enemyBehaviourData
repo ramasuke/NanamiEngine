@@ -113,7 +113,7 @@
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {
-                                                                        "cereal_class_version": 2,
+                                                                        "cereal_class_version": 3,
                                                                         "value0": {},
                                                                         "heightGridMap_": {
                                                                             "cereal_class_version": 0,
@@ -136,7 +136,41 @@
                                                                         "maxClimbAngleDeg_": 0.0,
                                                                         "searchIntervalSec_": 0.0,
                                                                         "animationNumber_": 2,
-                                                                        "rotateToleranceDeg_": 0.0
+                                                                        "rotateToleranceDeg_": 0.0,
+                                                                        "directions_": [
+                                                                            {
+                                                                                "value0": 1,
+                                                                                "value1": 0
+                                                                            },
+                                                                            {
+                                                                                "value0": -1,
+                                                                                "value1": 0
+                                                                            },
+                                                                            {
+                                                                                "value0": 0,
+                                                                                "value1": 1
+                                                                            },
+                                                                            {
+                                                                                "value0": 0,
+                                                                                "value1": -1
+                                                                            },
+                                                                            {
+                                                                                "value0": 1,
+                                                                                "value1": 1
+                                                                            },
+                                                                            {
+                                                                                "value0": 1,
+                                                                                "value1": -1
+                                                                            },
+                                                                            {
+                                                                                "value0": -1,
+                                                                                "value1": 1
+                                                                            },
+                                                                            {
+                                                                                "value0": -1,
+                                                                                "value1": -1
+                                                                            }
+                                                                        ]
                                                                     }
                                                                 }
                                                             }
@@ -169,7 +203,7 @@
                                                 "ptr_wrapper": {
                                                     "valid": 1,
                                                     "data": {
-                                                        "cereal_class_version": 0,
+                                                        "cereal_class_version": 1,
                                                         "value0": {},
                                                         "heightGridMap_": {
                                                             "value0": {
@@ -194,7 +228,41 @@
                                                         "maxClimbAngleDeg_": 0.0,
                                                         "searchIntervalSec_": 0.0,
                                                         "animationMoveNumber_": 0,
-                                                        "animationIdleNumber_": 0
+                                                        "animationIdleNumber_": 0,
+                                                        "directions_": [
+                                                            {
+                                                                "value0": 1,
+                                                                "value1": 0
+                                                            },
+                                                            {
+                                                                "value0": -1,
+                                                                "value1": 0
+                                                            },
+                                                            {
+                                                                "value0": 0,
+                                                                "value1": 1
+                                                            },
+                                                            {
+                                                                "value0": 0,
+                                                                "value1": -1
+                                                            },
+                                                            {
+                                                                "value0": 1,
+                                                                "value1": 1
+                                                            },
+                                                            {
+                                                                "value0": 1,
+                                                                "value1": -1
+                                                            },
+                                                            {
+                                                                "value0": -1,
+                                                                "value1": 1
+                                                            },
+                                                            {
+                                                                "value0": -1,
+                                                                "value1": -1
+                                                            }
+                                                        ]
                                                     }
                                                 }
                                             }
