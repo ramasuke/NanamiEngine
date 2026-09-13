@@ -40,8 +40,13 @@ namespace NanamiEngine::Module::Component
         // vsFile_ / psFile_ が有効でない場合は -1。
         [[nodiscard]] int GetOrCreateShaderConstantBufferHandle() override;
 
+        // 表示するモデルを差し替える(既にハンドルを持っていれば破棄して取り直す)
+        void SetMv1File(const std::shared_ptr<Asset::Mv1File>& mv1File);
+
     private:
         void InitRenderer    () override;
+        // mv1File_ からハンドルを取り直す。InitRenderer / SetMv1File / GUI のどこから呼ばれても二重ロードしない
+        void ReloadModel     ();
         void OnShadowRender  () override;
         void OnRender        () override;
         void OnDestroy       () override;

@@ -29,10 +29,26 @@ namespace NanamiEngine::Module::Component
 
     void ModelRenderer::InitRenderer()
     {
+        ReloadModel();
+    }
+
+    void ModelRenderer::ReloadModel()
+    {
+        if (modelDxLibHandle_ != -1)
+        {
+            MV1DeleteModel(modelDxLibHandle_);
+            modelDxLibHandle_ = -1;
+        }
         if (mv1File_)
             modelDxLibHandle_ = mv1File_->LoadDxLibHandle();
 
         RefreshTriangleListInfo();
+    }
+
+    void ModelRenderer::SetMv1File(const std::shared_ptr<Asset::Mv1File>& mv1File)
+    {
+        mv1File_ = mv1File;
+        ReloadModel();
     }
 
     void ModelRenderer::RefreshTriangleListInfo()
@@ -257,11 +273,7 @@ namespace NanamiEngine::Module::Component
         ImGuiHelper::OnDrawInputField("useFixedInterpolation_", useFixedInterpolation_);
         if (ImGui::Button("OnUpdateDxLibHandle"))
         {
-            if (mv1File_)
-            {
-                modelDxLibHandle_ = mv1File_->LoadDxLibHandle();
-                RefreshTriangleListInfo();
-            }
+            ReloadModel();
         }
         if (ImGui::Button("OnUpdateShaderConstantBuffer"))
         {

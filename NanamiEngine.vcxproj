@@ -7397,6 +7397,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Core\Application\Window\Main\PrefabView\PrefabViewWindow.cpp" />
+    <ClCompile Include="Engine\Core\Application\Window\Main\ModelView\ModelViewWindow.cpp" />
     <ClCompile Include="Engine\Core\Application\Window\Popup\DrawGuiContext\PopupWindowDrawGuiContext.cpp" />
     <ClCompile Include="Engine\Core\Application\Window\Popup\Group\PopupWindowGroup.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -12780,6 +12781,7 @@
     <ClInclude Include="Engine\Core\Application\Window\Main\Interface\IMainWindow.h" />
     <ClInclude Include="Engine\Core\Application\Window\Main\MainWindowBase.h" />
     <ClInclude Include="Engine\Core\Application\Window\Main\PrefabView\PrefabViewWindow.h" />
+    <ClInclude Include="Engine\Core\Application\Window\Main\ModelView\ModelViewWindow.h" />
     <ClInclude Include="Engine\Core\Application\Window\Popup\DrawGuiContext\PopupWindowDrawGuiContext.h" />
     <ClInclude Include="Engine\Core\Application\Window\Popup\Group\PopupWindowGroup.h" />
     <ClInclude Include="Engine\Core\Application\Window\Popup\Console\ConsoleWindow.h" />

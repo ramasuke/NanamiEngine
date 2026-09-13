@@ -15,9 +15,12 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] const Guid& GetGuid       () const override;
         [[nodiscard]] int         LoadDxLibHandle   () const;
         [[nodiscard]] std::string GetContentPath() const override;
+        /** @brief 非同期ロードが完了して LoadDxLibHandle() が使える状態か */
+        [[nodiscard]] bool        IsLoadCompleted() const;
 
     private:
         void OnEnableAsset() override;
+        void OnDoubleClick() override;
         void OnRenamed(const std::string& newContentPath) override { contentPath_ = newContentPath; }
 
         std::string contentPath_;
