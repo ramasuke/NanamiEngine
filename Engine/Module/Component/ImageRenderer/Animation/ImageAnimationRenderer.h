@@ -22,6 +22,9 @@ namespace NanamiEngine::Module::NanamiUi
         [[serialize(0)]] float animationDuration_secs_ = 0.1f;
         [[serialize(0)]] float timer_ = 0.0f;
         [[serialize(0)]] int renderPriority_ = 0;
+        [[serialize(1)]] float cooldownSecs_ = 0.0f;
+        bool wasEnabled_ = false;
+        float cooldownRemaining_ = 0.0f;
 
 #pragma region Serialization Function
 public:
@@ -34,6 +37,7 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(renderPriority_));
     archive(CEREAL_NVP(animationDuration_secs_));
     archive(CEREAL_NVP(isLoop_));
+    archive(CEREAL_NVP(cooldownSecs_));
 }
 
 template<class Archive>
@@ -43,9 +47,10 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 0) archive(CEREAL_NVP(renderPriority_));
     if (version >= 0) archive(CEREAL_NVP(animationDuration_secs_));
     if (version >= 0) archive(CEREAL_NVP(isLoop_));
+    if (version >= 1) archive(CEREAL_NVP(cooldownSecs_));
 }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::ImageAnimationRenderer, 0)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::ImageAnimationRenderer, 1)

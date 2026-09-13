@@ -95,6 +95,7 @@ namespace GamePlay::Ui
         Coroutine::StartCoroutine(FadeBlendRateAsync(stageSelectBackGroundMask_.get(), 0, stageSelectBackGroundMaskBlendRate_));
         co_await FadeBlendRateAsync(backGround_.get(), 255, 0);
         GameCore::Game::Instance().Scenes().RequestChangeScene(sceneType);
+        isEnteringWorld_ = false;
     }
 
     Coroutine::Task<void> StageSelectUi::FadeBlendRateAsync(

@@ -10,12 +10,29 @@ namespace NanamiEngine::Module::NanamiUi
     {
         currentFrame_ = 0;
         timer_ = 0.0f;
+        wasEnabled_ = false;
+        cooldownRemaining_ = 0.0f;
     }
 
     void ImageAnimationRenderer::OnUserInterfaceRender()
     {
-        if (!IsEnable() || !animationFile_.get())
+        const bool enabled = IsEnable();
+        if (enabled && !wasEnabled_)
+        {
+            currentFrame_ = 0;
+            timer_ = 0.0f;
+            cooldownRemaining_ = cooldownSecs_;
+        }
+        wasEnabled_ = enabled;
+
+        if (!enabled || !animationFile_.get())
             return;
+
+        if (cooldownRemaining_ > 0.0f)
+        {
+            cooldownRemaining_ -= Time::DeltaTime();
+            return;
+        }
 
         // アニメーション更新
         timer_ += Time::DeltaTime();
@@ -29,9 +46,18 @@ namespace NanamiEngine::Module::NanamiUi
             if (currentFrame_ >= handles.size())
             {
                 if (isLoop_)
+                {
                     currentFrame_ = 0;
+                    if (cooldownSecs_ > 0.0f)
+                    {
+                        cooldownRemaining_ = cooldownSecs_;
+                        return;
+                    }
+                }
                 else
+                {
                     currentFrame_ = handles.size() - 1;
+                }
             }
         }
 
@@ -61,5 +87,6 @@ namespace NanamiEngine::Module::NanamiUi
         ImGuiHelper::OnDrawInputField("animationDuration_secs_", animationDuration_secs_);
         ImGuiHelper::OnDrawInputField("timer_"                 , timer_);
         ImGuiHelper::OnDrawInputField("renderPriority_"        , renderPriority_);
+        ImGuiHelper::OnDrawInputField("cooldownSecs_"          , cooldownSecs_);
     }
 }
