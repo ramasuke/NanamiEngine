@@ -7476,6 +7476,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Core\Application\Window\Popup\NetworkLogger\NetworkLoggerWindow.cpp" />
+    <ClCompile Include="Engine\Core\Application\Window\Popup\RunningAnimationTree\RunningAnimationTreeWindow.cpp" />
     <ClCompile Include="Engine\Core\Application\Window\Popup\Inspector\InspectorWindow.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -12787,6 +12788,7 @@
     <ClInclude Include="Engine\Core\Application\Window\Popup\Console\ConsoleWindow.h" />
     <ClInclude Include="Engine\Core\Application\Window\Popup\Inspector\InspectorWindow.h" />
     <ClInclude Include="Engine\Core\Application\Window\Popup\NetworkLogger\NetworkLoggerWindow.h" />
+    <ClInclude Include="Engine\Core\Application\Window\Popup\RunningAnimationTree\RunningAnimationTreeWindow.h" />
     <ClInclude Include="Engine\Core\Application\Window\Popup\Interface\IPopupWindow.h" />
     <ClInclude Include="Engine\Core\Application\Window\Popup\Project\ProjectWindow.h" />
     <ClInclude Include="Engine\Core\Application\Window\Popup\Factory\PopupWindowFactory.h" />

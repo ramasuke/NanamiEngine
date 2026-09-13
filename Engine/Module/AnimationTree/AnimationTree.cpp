@@ -188,7 +188,11 @@ void AnimationTree::AnimationTree::OnDrawGraphEditorGui()
     //全Nodeの描画
     OnDrawAllNodeGui(drawList, offset);
     OnDrawDraggingNodeGui(drawList, offset);
-    
+    OnDrawRuntimeStateGui(drawList, offset);
+
+    // ブレンド中（再生中ノードが2つ）のみ、遷移中の NodePath を強調表示する
+    const AnimationNodePath* blendingNodePath = currentNodes_.size() >= 2 ? currentNodePath_ : nullptr;
+
     //確定済み NodePath描画（直線 + 回転矩形）
     for (const auto& path : AllNodePaths())
     {
@@ -196,7 +200,10 @@ void AnimationTree::AnimationTree::OnDrawGraphEditorGui()
         const auto targetNodePos = path->GetVisualTargetNodePos();
         const ImVec2 startPosition = offset + ImVec2(fromNodePos.x + 120.0f, fromNodePos.y + 30.0f);
         const ImVec2 endPosition   = offset + ImVec2(targetNodePos.x, targetNodePos.y + 30.0f);
-        drawList->AddLine(startPosition, endPosition, IM_COL32(200, 200, 100, 255), 3.0f);
+        if (path.get() == blendingNodePath)
+            drawList->AddLine(startPosition, endPosition, IM_COL32(255, 150, 40, 255), 5.0f);
+        else
+            drawList->AddLine(startPosition, endPosition, IM_COL32(200, 200, 100, 255), 3.0f);
 
         // --- 回転矩形構築 ---
         const ImVec2 center = (startPosition + endPosition) * 0.5f;
@@ -378,6 +385,42 @@ void AnimationTree::AnimationTree::OnDrawDraggingNodeGui(ImDrawList* drawList, c
     const ImVec2 startPos = offset + ImVec2(fromNode->Position().x + 120.0f, fromNode->Position().y + 30.0f);
     const ImVec2 endPos = ImGui::GetMousePos();
     drawList->AddLine(startPos, endPos, IM_COL32(255, 255, 100, 255), 3.0f);
+}
+
+void AnimationTree::AnimationTree::OnDrawRuntimeStateGui(ImDrawList* drawList, const ImVec2 offset) const
+{
+    static constexpr ImU32 K_PLAYING_BORDER_COLOR  = IM_COL32(255, 210, 60 , 255);
+    static constexpr ImU32 K_FADEOUT_BORDER_COLOR  = IM_COL32(160, 140, 220, 255);
+    static constexpr ImU32 K_PROGRESS_BG_COLOR     = IM_COL32(30 , 30 , 30 , 230);
+    static constexpr ImU32 K_PROGRESS_FILL_COLOR   = IM_COL32(80 , 200, 120, 255);
+    static constexpr float K_PROGRESS_BAR_HEIGHT   = 6.0f;
+
+    for (std::size_t i = 0; i < currentNodes_.size(); ++i)
+    {
+        const auto& node = currentNodes_[i];
+        if (!node)
+            continue;
+
+        // 末尾が遷移先（メインで再生中）、それ以外はブレンドでフェードアウト中
+        const bool   isPlaying    = i + 1 == currentNodes_.size();
+        const ImVec2 nodeMin      = offset + ImVec2(node->Position().x, node->Position().y);
+        const ImVec2 nodeMax      = nodeMin + NODE_SIZE;
+        drawList->AddRect(nodeMin, nodeMax, isPlaying ? K_PLAYING_BORDER_COLOR : K_FADEOUT_BORDER_COLOR, 6.0f, 0, 3.0f);
+
+        const auto* clip = dynamic_cast<AnimationClipNode*>(node.get());
+        if (!clip)
+            continue;
+
+        const ClipProgress progress = clip->GetClipProgress();
+        const ImVec2 barMin = ImVec2(nodeMin.x, nodeMax.y + 3.0f);
+        const ImVec2 barMax = ImVec2(nodeMax.x, barMin.y + K_PROGRESS_BAR_HEIGHT);
+        drawList->AddRectFilled(barMin, barMax, K_PROGRESS_BG_COLOR);
+        drawList->AddRectFilled(barMin, ImVec2(barMin.x + (barMax.x - barMin.x) * progress.normalizedTime, barMax.y), K_PROGRESS_FILL_COLOR);
+
+        char label[64];
+        snprintf(label, sizeof(label), "%.2f / %.2fs  blend %.2f", progress.duringSecs, progress.durationSecs, clip->GetBlendRate());
+        drawList->AddText(ImVec2(barMin.x, barMax.y + 2.0f), IM_COL32_WHITE, label);
+    }
 }
 
 void AnimationTree::AnimationTree::OnDrawGui()

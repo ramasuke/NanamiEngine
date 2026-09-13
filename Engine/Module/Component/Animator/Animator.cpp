@@ -1,6 +1,8 @@
 ﻿#include "Animator.h"
 
 #include "../ModelRenderer/ModelRenderer.h"
+#include "../../../Core/Application/ApplicationBase.h"
+#include "../../../Core/Application/Window/Popup/RunningAnimationTree/RunningAnimationTreeWindow.h"
 
 void Component::Animator::OnAwake()
 {
@@ -72,6 +74,13 @@ void Component::Animator::OnDrawGui()
             ImGui::Spacing();
         } 
     });
+
+    if (animationTree_ && ImGui::Button("Show Running AnimationTree"))
+    {
+        for (auto* window : Core::Application::ApplicationBase::PopupWindows().Catch<Core::PopupWindow::RunningAnimationTreeWindow>())
+            window->TryAddTarget(animationTree_);
+    }
+
     if (ImGui::TreeNode("Parameter"))
     {
         animationTree_->OnDrawGui();

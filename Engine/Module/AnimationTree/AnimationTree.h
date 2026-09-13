@@ -40,6 +40,9 @@ namespace NanamiEngine::Module::AnimationTree
         void OnDrawDraggingNodeGui(ImDrawList* drawList, ImVec2 offset) const;
         void OnDrawGui() override;
         [[nodiscard]] BlackBoard::ParameterGroup& Param() const { return *additionConditionParameters_; }
+        [[nodiscard]] const std::string& GetFilePath() const { return filePath_; }
+        /** @brief 現在再生中のノード。ブレンド中は [0]=フェードアウト側, [末尾]=遷移先。エディタ表示時は空 */
+        [[nodiscard]] const std::vector<std::shared_ptr<IAnimationNode>>& CurrentNodes() const { return currentNodes_; }
 
         /** @warning Playモード時は呼び出し必須 */
         void InitForAnimator(int modelHandle);
@@ -53,6 +56,8 @@ namespace NanamiEngine::Module::AnimationTree
         [[nodiscard]] std::optional<ClipProgress> GetCurrentClipProgress() const;
 
     private:
+        /** @brief 実行中インスタンスの再生状態（再生中ノードの枠・進捗バー）をグラフ上に重ねて描画する */
+        void OnDrawRuntimeStateGui(ImDrawList* drawList, ImVec2 offset) const;
         void AddCurrentNode    (const std::shared_ptr<IAnimationNode>& node);
         void AddCurrentNodePath(AnimationNodePath* nodePath, int modelHandle, float timeScale);
         void RemoveCurrentNode (const std::shared_ptr<IAnimationNode>& node, int modelHandle);

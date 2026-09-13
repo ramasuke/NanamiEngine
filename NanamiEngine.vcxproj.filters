@@ -135,6 +135,9 @@
     <ClCompile Include="Engine\Core\Application\Window\Popup\NetworkLogger\NetworkLoggerWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Window\Popup\RunningAnimationTree\RunningAnimationTreeWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Core\Application\Window\Popup\Interface\IPopupWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -3462,6 +3465,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Application\Window\Popup\NetworkLogger\NetworkLoggerWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Window\Popup\RunningAnimationTree\RunningAnimationTreeWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Application\Window\Popup\Interface\IPopupWindow.h">
