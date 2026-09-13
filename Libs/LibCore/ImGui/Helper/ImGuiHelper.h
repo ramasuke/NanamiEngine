@@ -115,35 +115,6 @@ namespace LibCore::ImGuiHelper
         }
     }
 
-    template <typename Container>
-    static void
-    OnDrawInputField(const std::string& label, Container& container, const std::function<void()>& drawAddButton)
-        requires (!std::is_same_v<typename Container::value_type, void>)
-    {
-        if (::ImGui::TreeNode(label.c_str()))
-        {
-            int index = 0;
-            for (auto& element : container)
-            {
-                std::string itemLabel = "Element " + std::to_string(index++);
-                OnDrawInputField(itemLabel, element);
-            }
-
-            drawAddButton();
-
-            static int deleteIndex = 0;
-            ::ImGui::InputInt("Delete Index", &deleteIndex);
-            if (::ImGui::Button("Delete") && deleteIndex >= 0 && deleteIndex < static_cast<int>(container.size()))
-            {
-                container.erase(container.begin() + deleteIndex);
-                deleteIndex = 0;
-            }
-
-            ::ImGui::TreePop();
-            ::ImGui::Spacing();
-        }
-    }
-
     template <typename T>
     static void
     OnDrawInputField(const std::string& label, T& value)
@@ -181,6 +152,36 @@ namespace LibCore::ImGuiHelper
             value.x = buffer[0];
             value.y = buffer[1];
             value.z = buffer[2];
+        }
+    }
+
+    // 要素型の OnDrawInputField は定義時点の名前探索でしか見つからないので、全オーバーロードより後に置く
+    template <typename Container>
+    static void
+    OnDrawInputField(const std::string& label, Container& container, const std::function<void()>& drawAddButton)
+        requires (!std::is_same_v<typename Container::value_type, void>)
+    {
+        if (::ImGui::TreeNode(label.c_str()))
+        {
+            int index = 0;
+            for (auto& element : container)
+            {
+                std::string itemLabel = "Element " + std::to_string(index++);
+                OnDrawInputField(itemLabel, element);
+            }
+
+            drawAddButton();
+
+            static int deleteIndex = 0;
+            ::ImGui::InputInt("Delete Index", &deleteIndex);
+            if (::ImGui::Button("Delete") && deleteIndex >= 0 && deleteIndex < static_cast<int>(container.size()))
+            {
+                container.erase(container.begin() + deleteIndex);
+                deleteIndex = 0;
+            }
+
+            ::ImGui::TreePop();
+            ::ImGui::Spacing();
         }
     }
 

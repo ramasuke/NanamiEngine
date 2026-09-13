@@ -1,5 +1,6 @@
 ﻿#include "GamePlay_Enemy_IAttackProjectile.h"
 
+#include "../../../../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../../../../Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
 #include "../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
 
