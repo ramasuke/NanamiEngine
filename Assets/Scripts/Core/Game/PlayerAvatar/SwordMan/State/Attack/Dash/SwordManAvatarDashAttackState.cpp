@@ -69,6 +69,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             if (const auto particleObject = particle.lock())
                 particleObject->Transform().SetLocalScale(glm::vec3(hitFeel.ParticleScale()));
             DealDamageText(DashAttackArea(), attackStatus.AttackPower());
+            ShakeHitTargets(DashAttackArea(), hitFeel);
         }
     }
 

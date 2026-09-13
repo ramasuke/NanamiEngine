@@ -6531,6 +6531,7 @@
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\Bullet\PlayerAvatar_Bullet_CannonBullet.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\ChattableArea\ChattableArea.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\LockOnDetectionArea\LockOnDetectionArea.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\HitShakeReceiver\PlayerHitShakeReceiver.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\PlayerAvatarBase.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -12740,6 +12741,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\Bullet\PlayerAvatar_Bullet_CannonBullet.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\ChattableArea\ChattableArea.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\LockOnDetectionArea\LockOnDetectionArea.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\HitShakeReceiver\PlayerHitShakeReceiver.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\PlayerAvatarBase.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\SwordMan\SwordManAvatar.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.h" />

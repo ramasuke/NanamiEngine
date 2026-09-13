@@ -42,6 +42,8 @@ namespace NanamiEngine::Module::Component
 
         // 表示するモデルを差し替える(既にハンドルを持っていれば破棄して取り直す)
         void SetMv1File(const std::shared_ptr<Asset::Mv1File>& mv1File);
+        /** @brief 描画位置だけをワールド空間でずらす(Transform・物理・同期には影響しない) */
+        void SetRenderOffset(const glm::vec3& offset) { renderOffset_ = offset; }
 
     private:
         void InitRenderer    () override;
@@ -80,6 +82,8 @@ namespace NanamiEngine::Module::Component
         glm::quat currWorldRot_   {};
         bool      hasPrevCapture_ = false;
         bool      hasCurrCapture_ = false;
+
+        glm::vec3 renderOffset_   {};
 
 #pragma region Serialization Function
 public:

@@ -4,6 +4,7 @@
 #include "../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../Editor/Npc/Enemy/Behaviour/Window/RunningEnemyBehaviourTreeWindow.h"
+#include "../../../../GamePlay/PlayerAvatar/HitShakeReceiver/PlayerHitShakeReceiver.h"
 #include "../../../../GamePlay/Npc/Enemy/NetworkBehaviourTree/GamePlay_NetworkBehaviourTree.h"
 #include "../../PlayerAvatar/LockOnTarget/LockOnPoint.h"
 #include "Behaviour/Enemy_BehaviourTree.h"
@@ -21,6 +22,7 @@ namespace GameCore::Npc
     void EnemyBase::OnAwake()
     {
         RequireComponent<Component::Animator>();
+        RequireComponent<GamePlay::PlayerAvatar::PlayerHitShakeReceiver>();
 
         if (behaviourData_)
             behaviour_ = behaviourData_->OnLoadCopyContent();

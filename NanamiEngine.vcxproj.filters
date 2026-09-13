@@ -942,6 +942,9 @@
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\LockOnDetectionArea\LockOnDetectionArea.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\HitShakeReceiver\PlayerHitShakeReceiver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\WakeUpArea\WakeUpArea.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -5173,6 +5176,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\LockOnDetectionArea\LockOnDetectionArea.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\HitShakeReceiver\PlayerHitShakeReceiver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\WakeUpArea\WakeUpArea.h">

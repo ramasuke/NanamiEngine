@@ -15,16 +15,16 @@ namespace NanamiEngine::Module::Asset
         , comboNormalAttackStateDuration_secs_(0)
         , dashAttackLungeSpeed_               (55.0f)
         , comboHitFeel_ {
-            GameCore::PlayerAvatar::HitFeelParam(0.0363636364f, 0.5f , 0.3f, 0.1090909091f, 5.0f ),
-            GameCore::PlayerAvatar::HitFeelParam(0.0454545455f, 0.4f , 0.5f, 0.1090909091f, 5.75f),
-            GameCore::PlayerAvatar::HitFeelParam(0.0727272727f, 0.15f, 0.8f, 0.1090909091f, 5.7f)}
-        , dashHitFeel_                        (0.0818181818f, 0.1f, 0.9f, 0.1272727273f, 1.0f)
+            GameCore::PlayerAvatar::HitFeelParam(0.0363636364f, 0.5f , 0.3f, 0.1090909091f, 5.0f , 0.25f, 0.12f),
+            GameCore::PlayerAvatar::HitFeelParam(0.0454545455f, 0.4f , 0.5f, 0.1090909091f, 5.75f, 0.35f, 0.14f),
+            GameCore::PlayerAvatar::HitFeelParam(0.0727272727f, 0.15f, 0.8f, 0.1090909091f, 5.7f , 0.5f , 0.18f)}
+        , dashHitFeel_                        (0.0818181818f, 0.1f, 0.9f, 0.1272727273f, 1.0f, 0.6f, 0.2f)
         , comboInputBufferWindow_secs_        (0.1181818182f)
         , chargeAttackHoldThreshold_secs_     (0.2f)
         , chargeAttackMaxCharge_secs_         (1.0f)
         , chargeAttackMaxHold_secs_           (3.0f)
         , chargeAttack_                       (GameCore::Damage::PhysicsPower(15), GameCore::PlayerAvatar::EnhancePower(15), 0.52f, 1.09f)
-        , chargeHitFeel_                      (0.1f, 0.05f, 1.2f, 0.18f, 7.0f)
+        , chargeHitFeel_                      (0.1f, 0.05f, 1.2f, 0.18f, 7.0f, 0.8f, 0.25f)
         , chargeAttackLungeStart_secs_        (0.0f)
         , chargeAttackLungeSpeed_             (28.0f)
         , chargeAttackStaminaCost_            (30.0f)

@@ -12,6 +12,7 @@
 #include "../../../../../../../Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
 #include "../../../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
 #include "../../../../../GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
+#include "../../../../../GamePlay/PlayerAvatar/HitShakeReceiver/PlayerHitShakeReceiver.h"
 #include "../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../../GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h"
 #include "../../Chattable/IPlayerChattable.h"
@@ -162,6 +163,28 @@ namespace GameCore::PlayerAvatar::SwordMan
             const auto textPos = raycastHit.Hit() ? raycastHit.Position() : targetPos;
             const auto damageText = Scene::GameObject::Instantiate(Resources().DealDamageTextBillBoardPrefab(), textPos);
             damageText.lock()->Components().Catch<GamePlay::Ui::DealDamageTextBillBoard>().lock()->Play(power.Value());
+        }
+    }
+
+    void SwordManAvatarStateBase::ShakeHitTargets(PlayerAttackArea& attackArea, const HitFeelParam& hitFeel) const
+    {
+        if (hitFeel.TargetShakeAmplitude() <= 0.0f || hitFeel.TargetShakeDuration_secs() <= 0.0f)
+            return;
+
+        const glm::vec3 origin = Transform().GetWorldPos();
+        for (const auto& attackTarget : attackArea.Targets())
+        {
+            const auto shakeReceiver = attackTarget.GameObject().Components().Catch<GamePlay::PlayerAvatar::PlayerHitShakeReceiver>().lock();
+            if (!shakeReceiver)
+                continue;
+
+            const glm::vec3 toTarget = attackTarget.GameObject().Transform().GetWorldPos() - origin;
+            glm::vec3 direction = glm::vec3(toTarget.x, 0.0f, toTarget.z);
+            direction = glm::length(direction) > 0.0001f
+                ? glm::normalize(direction)
+                : glm::normalize(glm::vec3(Transform().GetWorldRot() * glm::vec3(0.0f, 0.0f, -1.0f)));
+
+            shakeReceiver->Play(direction, hitFeel.TargetShakeAmplitude(), hitFeel.TargetShakeDuration_secs());
         }
     }
 

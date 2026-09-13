@@ -136,6 +136,7 @@ namespace NanamiEngine::Module::Component
 
     MATRIX ModelRenderer::GetRenderMatrix() const
     {
+        MATRIX matrix;
         if (useFixedInterpolation_ && hasPrevCapture_ && hasCurrCapture_)
         {
             const float alpha     = Time::GetFixedAlpha();
@@ -145,9 +146,17 @@ namespace NanamiEngine::Module::Component
             const glm::mat4 mat   = glm::translate(glm::mat4(1.0f), pos)
                                   * glm::mat4_cast(rot)
                                   * glm::scale(glm::mat4(1.0f), scale);
-            return GlmMatToDxMat(mat);
+            matrix = GlmMatToDxMat(mat);
         }
-        return Transform().GetDxWorldMatrix();
+        else
+        {
+            matrix = Transform().GetDxWorldMatrix();
+        }
+
+        matrix.m[3][0] += renderOffset_.x;
+        matrix.m[3][1] += renderOffset_.y;
+        matrix.m[3][2] += renderOffset_.z;
+        return matrix;
     }
 
     void ModelRenderer::OnShadowRender()

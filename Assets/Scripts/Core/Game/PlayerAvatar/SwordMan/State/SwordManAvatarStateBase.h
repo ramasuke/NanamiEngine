@@ -109,6 +109,11 @@ namespace GameCore::PlayerAvatar::SwordMan
         void TriggerHitStop(float duration_secs, float timeScale);
         /** @brief attackAreaが捉えている対象それぞれへダメージ数値テキストを表示する */
         void DealDamageText(PlayerAttackArea& attackArea, Damage::PhysicsPower power) const;
+        /**
+         * @brief attackAreaが捉えている対象のうちPlayerHitShakeReceiverを持つものを、自機から対象への水平方向に揺らす
+         * @note 描画位置だけを揺らすローカル演出(同期しない・Transformや物理は動かさない)
+         */
+        void ShakeHitTargets(PlayerAttackArea& attackArea, const HitFeelParam& hitFeel) const;
         void OnChangeState   (SwordManAvatarStateType type) const;
         void OnTryChangeState(SwordManAvatarStateType type, const std::function<bool()>& check) const;
         void OnTryChangeState(SwordManAvatarStateType type, bool check) const;
