@@ -12,6 +12,7 @@ void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoEnter()
 
     Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
     Status().ApplyDamage();
+    StatusEvent().InvokeOnDamage(Status().Health());
 
     if (Status().IsDeath())
         OnChangeState(SwordManAvatarStateType::Down);

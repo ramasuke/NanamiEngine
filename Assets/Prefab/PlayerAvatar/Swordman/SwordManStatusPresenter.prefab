@@ -14,14 +14,15 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
                             "value_": "5F67FEB9-CE17-4928-B5B8-86CB9458C3C1"
                         },
                         "isEnable_": true
-                    }
+                    },
+                    "lowHealthScreenEffectName_": "LowHealthScreenEffect"
                 }
             }
         }
@@ -70,7 +71,370 @@
                 "value3": 1.0
             }
         },
-        "childCount": 0
+        "childCount": 1,
+        "child": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483650,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": true,
+                    "name_": "LowHealthScreenEffect",
+                    "guid_": {
+                        "value_": "8DE207E9-7071-473E-82B4-519509FCC5C2"
+                    },
+                    "components_": {
+                        "componentCount": 2,
+                        "component_0": {
+                            "polymorphic_id": 2147483651,
+                            "polymorphic_name": "NanamiEngine::Module::NanamiUi::ScreenColorGradeRenderer",
+                            "ptr_wrapper": {
+                                "id": 2147483651,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "cereal_class_version": 0,
+                                        "guid_": {
+                                            "value_": "33E374C2-B03A-4289-912E-8989EE685A0D"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "renderOrder_": -1000
+                                }
+                            }
+                        },
+                        "component_1": {
+                            "polymorphic_id": 2147483652,
+                            "polymorphic_name": "GamePlay::Ui::LowHealthScreenEffect",
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "cereal_class_version": 0,
+                                        "guid_": {
+                                            "value_": "1173A2A0-8946-4D37-A379-B5710B7479C0"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "vignetteObjectName_": "Vignette",
+                                    "startHealthRate_": 0.35,
+                                    "criticalHealthRate_": 0.1,
+                                    "dangerSmooth_secs_": 0.4,
+                                    "vignetteBlendRate_": 170,
+                                    "pulseAddBlendRate_": 60,
+                                    "minBpm_": 60.0,
+                                    "maxBpm_": 130.0,
+                                    "dubDelay_secs_": 0.22,
+                                    "maxDesaturation_": 150,
+                                    "downedDesaturation_": 230,
+                                    "downedDarken_": 90,
+                                    "downedFade_secs_": 1.0,
+                                    "heartbeatSound_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483653,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "63319C1C-1C77-432C-A7D7-020F0A340A33"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "heartbeatMinVolume_": 90,
+                                    "heartbeatMaxVolume_": 200
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 2,
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483654,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "Vignette",
+                                    "guid_": {
+                                        "value_": "9F2CFDA6-BDA4-4255-81F6-561127FC38E4"
+                                    },
+                                    "components_": {
+                                        "componentCount": 1,
+                                        "component_0": {
+                                            "polymorphic_id": 2147483653,
+                                            "polymorphic_name": "NanamiEngine::Module::NanamiUi::BlendImageRenderer",
+                                            "ptr_wrapper": {
+                                                "id": 2147483655,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "cereal_class_version": 0,
+                                                        "guid_": {
+                                                            "value_": "D8A0E473-74C8-40D8-99F6-69C47EF614B4"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "value1": {
+                                                        "cereal_class_version": 0
+                                                    },
+                                                    "value2": {
+                                                        "cereal_class_version": 0
+                                                    },
+                                                    "blendMode_": 1,
+                                                    "blendRate_": 0,
+                                                    "spriteFile_": {
+                                                        "cereal_class_version": 0,
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483656,
+                                                                "data": {
+                                                                    "cereal_class_version": 0,
+                                                                    "value0": {
+                                                                        "value_": "0B1C74AC-EEB9-4DC3-B1AB-AAE937B0D605"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "renderOrder_": -100
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 960.0,
+                                            "value1": 540.0,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 960.0,
+                                                "value1": 540.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    }
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483657,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "DamageFlash",
+                                    "guid_": {
+                                        "value_": "1D0C34C2-B0DA-4A2E-9B07-A88A61E095E5"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 5,
+                                            "ptr_wrapper": {
+                                                "id": 2147483658,
+                                                "data": {
+                                                    "value0": {
+                                                        "cereal_class_version": 0,
+                                                        "guid_": {
+                                                            "value_": "AC2B082A-45FD-484B-863F-B5EBA033A700"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "value1": {
+                                                        "cereal_class_version": 0
+                                                    },
+                                                    "value2": {
+                                                        "cereal_class_version": 0
+                                                    },
+                                                    "blendMode_": 1,
+                                                    "blendRate_": 0,
+                                                    "spriteFile_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483659,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "0B1C74AC-EEB9-4DC3-B1AB-AAE937B0D605"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "renderOrder_": -90
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 2147483654,
+                                            "polymorphic_name": "GamePlay::Ui::DamageFlashUI",
+                                            "ptr_wrapper": {
+                                                "id": 2147483660,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "cereal_class_version": 0,
+                                                        "guid_": {
+                                                            "value_": "1AFF90CC-70F8-426D-83C7-43FDA5F3DDBE"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "maxBlendRate_": 200,
+                                                    "defaultIntensity_": 0.6,
+                                                    "defaultDuration_": 0.35
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 960.0,
+                                            "value1": 540.0,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 960.0,
+                                                "value1": 540.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     },
     "value0": 0
 }

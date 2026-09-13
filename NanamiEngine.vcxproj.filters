@@ -990,6 +990,9 @@
     <ClCompile Include="Engine\Module\Component\BlendImageRenderer\BlendImageRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Module\Component\ScreenColorGrade\ScreenColorGradeRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Module\Component\DirectionLight\DirectionLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1522,6 +1525,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_LowHealthScreenEffect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Core\Coroutine\Awaitable\Engine_Coroutine_IEventWaitable.cpp">
@@ -5235,6 +5241,9 @@
     <ClInclude Include="Engine\Module\Component\BlendImageRenderer\BlendImageRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Module\Component\ScreenColorGrade\ScreenColorGradeRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Module\Component\DirectionLight\DirectionLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5815,6 +5824,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_LowHealthScreenEffect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Coroutine\Awaitable\Engine_Coroutine_IEventWaitable.h">

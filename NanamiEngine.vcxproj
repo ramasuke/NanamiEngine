@@ -6701,6 +6701,7 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\LockOnReticle\Ui_LockOnReticle.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\NpcChatting\Ui_NpcChatting.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_LowHealthScreenEffect.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\UI_SampleTitleSceneUI.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\Sample\UI_SampleTitleLogo.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\MapMarker\StageMapMarker.cpp" />
@@ -9629,6 +9630,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Module\Component\AudioSource\AudioSource.cpp" />
     <ClCompile Include="Engine\Module\Component\BlendImageRenderer\BlendImageRenderer.cpp" />
+    <ClCompile Include="Engine\Module\Component\ScreenColorGrade\ScreenColorGradeRenderer.cpp" />
     <ClCompile Include="Engine\Module\Component\ComponentBase.cpp" />
     <ClCompile Include="Engine\Module\Component\DirectionLight\DirectionLight.cpp" />
     <ClCompile Include="Engine\Module\Component\ImageRenderer\ImageRenderer.cpp" />
@@ -12767,6 +12769,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_DamageFlash.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_InjuredMask.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_LowHealthScreenEffect.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\UI_SampleTitleSceneUI.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Sample\UI_SampleTitleLogo.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\MapMarker\StageMapMarker.h" />
@@ -12916,6 +12919,7 @@
     <ClInclude Include="Engine\Module\Component\Animator\Animator.h" />
     <ClInclude Include="Engine\Module\Component\AudioSource\AudioSource.h" />
     <ClInclude Include="Engine\Module\Component\BlendImageRenderer\BlendImageRenderer.h" />
+    <ClInclude Include="Engine\Module\Component\ScreenColorGrade\ScreenColorGradeRenderer.h" />
     <ClInclude Include="Engine\Module\Component\ComponentBase.h" />
     <ClInclude Include="Engine\Module\Component\DirectionLight\DirectionLight.h" />
     <ClInclude Include="Engine\Module\Component\ImageRenderer\ImageRenderer.h" />
