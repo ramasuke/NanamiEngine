@@ -7,12 +7,12 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoEnter()
 {
     StatusEvent().InvokeOnRun();
     Status().SetIsRunning(true);
+    ResetMoveSpeedFromVelocity();
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoFixedUpdate()
 {
-    const auto inputMove = Input().Move().ReadValue();
-    Actions().ForwardMove(Status().GetRunSpeed() * glm::vec3(inputMove.x, 0.0f, inputMove.y), Status().GetMoveRotateSpeed());
+    AcceleratedForwardMove(Status().GetRunSpeed(), Status().RunAccelerationTime_secs());
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoUpdate()

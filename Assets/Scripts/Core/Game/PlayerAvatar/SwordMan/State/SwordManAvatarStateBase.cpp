@@ -1,9 +1,11 @@
 ﻿#include "SwordManAvatarStateBase.h"
 
+#include <algorithm>
 #include <random>
 #include <vector>
 
 #include "../../../../../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
+#include "../../../../../../../Engine/Core/Application/Configuration/Physics/ApplicationConfiguration_Physics.h"
 #include "../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
@@ -120,16 +122,30 @@ namespace GameCore::PlayerAvatar::SwordMan
         stateDuring_secs_ = 0.0f;
     }
 
-    void SwordManAvatarStateBase::TickHitStop()
+    void SwordManAvatarStateBase::ResetMoveSpeedFromVelocity()
     {
         const glm::vec3 velocity = Physics::GetLinearVelocity(Collider().BodyId());
         currentMoveSpeed_ = glm::length(glm::vec2(velocity.x, velocity.z));
     }
 
-    void SwordManAvatarStateBase::TriggerHitStop(const float duration_secs, const float timeScale)
+    void SwordManAvatarStateBase::AcceleratedForwardMove(const StatusParameter::MoveSpeed maxSpeed, const float accelerationTime_secs)
     {
-        hitStopRemaining_secs_ = duration_secs;
-        Animator().SetTimeScale(timeScale);
+        const float targetSpeed = maxSpeed.Value();
+        if (accelerationTime_secs <= 0.0f)
+        {
+            currentMoveSpeed_ = targetSpeed;
+        }
+        else
+        {
+            const float fixedDeltaTime = 1.0f / static_cast<float>(NanamiEngine::Core::Application::Configuration::PhysicsConfiguration::GetFixedUpdateRate());
+            const float maxDelta = targetSpeed / accelerationTime_secs * fixedDeltaTime;
+            currentMoveSpeed_ = currentMoveSpeed_ < targetSpeed
+                ? (std::min)(currentMoveSpeed_ + maxDelta, targetSpeed)
+                : (std::max)(currentMoveSpeed_ - maxDelta, targetSpeed);
+        }
+
+        const auto inputMove = Input().Move().ReadValue();
+        Actions().ForwardMove(StatusParameter::MoveSpeed(currentMoveSpeed_) * glm::vec3(inputMove.x, 0.0f, inputMove.y), Status().GetMoveRotateSpeed());
     }
 
     void SwordManAvatarStateBase::DealDamageText(PlayerAttackArea& attackArea, const Damage::PhysicsPower power) const

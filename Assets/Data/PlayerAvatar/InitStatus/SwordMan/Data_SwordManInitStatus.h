@@ -48,6 +48,8 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] float                                ChargeAttackStaminaCost       () const { return chargeAttackStaminaCost_; }
         [[nodiscard]] GameCore::StatusParameter::MoveSpeed GetWalkSpeed        () const { return walkSpeed_;                }
         [[nodiscard]] GameCore::StatusParameter::MoveSpeed GetRunSpeed         () const { return runSpeed_ ;                }
+        [[nodiscard]] float                                WalkAccelerationTime_secs() const { return walkAccelerationTime_secs_; }
+        [[nodiscard]] float                                RunAccelerationTime_secs () const { return runAccelerationTime_secs_;  }
         [[nodiscard]] float                                GetMoveRotateSpeed  () const { return moveRotateSpeed_;          }
         [[nodiscard]] float                                GetLockOnAttackRotateSpeed() const { return lockOnAttackRotateSpeed_; }
         [[nodiscard]] float                                GetJumpPower           () const { return jumpPower_;                }
@@ -90,6 +92,8 @@ namespace NanamiEngine::Module::Asset
         
         [[serialize(0)]] GameCore::StatusParameter::MoveSpeed walkSpeed_;
         [[serialize(0)]] GameCore::StatusParameter::MoveSpeed runSpeed_ ;
+        [[serialize(13)]] float                               walkAccelerationTime_secs_; ///< 0から最高速に達するまでの時間
+        [[serialize(13)]] float                               runAccelerationTime_secs_;
         [[serialize(0)]] float                                moveRotateSpeed_;
         [[serialize(8)]] float                                lockOnAttackRotateSpeed_; ///< 攻撃の予備動作中にロックオン対象へ向く回転速度 [rad/s]
         [[serialize(0)]]  float                               jumpPower_;
@@ -134,6 +138,8 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(chargeAttackStaminaCost_));
             archive(CEREAL_NVP(walkSpeed_));
             archive(CEREAL_NVP(runSpeed_));
+            archive(CEREAL_NVP(walkAccelerationTime_secs_));
+            archive(CEREAL_NVP(runAccelerationTime_secs_));
             archive(CEREAL_NVP(moveRotateSpeed_));
             archive(CEREAL_NVP(lockOnAttackRotateSpeed_));
             archive(CEREAL_NVP(jumpPower_));
@@ -174,6 +180,8 @@ namespace NanamiEngine::Module::Asset
             if (version >= 12) archive(CEREAL_NVP(chargeAttackStaminaCost_));
             if (version >= 0) archive(CEREAL_NVP(walkSpeed_));
             if (version >= 0) archive(CEREAL_NVP(runSpeed_));
+            if (version >= 13) archive(CEREAL_NVP(walkAccelerationTime_secs_));
+            if (version >= 13) archive(CEREAL_NVP(runAccelerationTime_secs_));
             if (version >= 0) archive(CEREAL_NVP(moveRotateSpeed_));
             if (version >= 8) archive(CEREAL_NVP(lockOnAttackRotateSpeed_));
             if (version >= 0) archive(CEREAL_NVP(jumpPower_));
@@ -192,7 +200,7 @@ namespace NanamiEngine::Module::Asset
 
 REGISTER_SCRIPTABLE_OBJECT(SwordManInitStatus, SWORD_MAN_INIT_STATUS_EXTENSION_LABEL)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 12);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 13);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManInitStatus);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManInitStatus);
 #pragma endregion

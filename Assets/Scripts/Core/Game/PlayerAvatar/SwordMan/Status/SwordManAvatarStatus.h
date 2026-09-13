@@ -76,6 +76,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] float                             ChargeAttackStaminaCost              () const { return chargeAttackStaminaCost_; }
         [[nodiscard]] StatusParameter::MoveSpeed        GetWalkSpeed                        () const override { return walkSpeed_;                }
         [[nodiscard]] StatusParameter::MoveSpeed        GetRunSpeed                          () const override { return runSpeed_ ;                }
+        [[nodiscard]] float                             WalkAccelerationTime_secs            () const          { return walkAccelerationTime_secs_; }
+        [[nodiscard]] float                             RunAccelerationTime_secs             () const          { return runAccelerationTime_secs_;  }
         [[nodiscard]] float                             GetMoveRotateSpeed                   () const override { return moveRotateSpeed_;          }
         [[nodiscard]] float                             LockOnAttackRotateSpeed              () const          { return lockOnAttackRotateSpeed_;  }
         [[nodiscard]] float                             GetJumpPower                         () const override { return jumpPower_;                }
@@ -134,6 +136,8 @@ namespace GameCore::PlayerAvatar::SwordMan
 
         [[serialize(0)]] StatusParameter::MoveSpeed walkSpeed_;
         [[serialize(0)]] StatusParameter::MoveSpeed runSpeed_ ;
+        [[serialize(12)]] float                     walkAccelerationTime_secs_; ///< 0から最高速に達するまでの時間
+        [[serialize(12)]] float                     runAccelerationTime_secs_;
         [[serialize(0)]] float                      moveRotateSpeed_;
         [[serialize(7)]] float                      lockOnAttackRotateSpeed_; ///< 攻撃の予備動作中にロックオン対象へ向く回転速度 [rad/s]
         [[serialize(0)]]  float                     jumpPower_;
@@ -194,6 +198,8 @@ namespace GameCore::PlayerAvatar::SwordMan
             archive(CEREAL_NVP(chargeAttackStaminaCost_));
             archive(CEREAL_NVP(walkSpeed_));
             archive(CEREAL_NVP(runSpeed_));
+            archive(CEREAL_NVP(walkAccelerationTime_secs_));
+            archive(CEREAL_NVP(runAccelerationTime_secs_));
             archive(CEREAL_NVP(moveRotateSpeed_));
             archive(CEREAL_NVP(lockOnAttackRotateSpeed_));
             archive(CEREAL_NVP(jumpPower_));
@@ -238,6 +244,8 @@ namespace GameCore::PlayerAvatar::SwordMan
             if (version >= 11) archive(CEREAL_NVP(chargeAttackStaminaCost_));
             if (version >= 0) archive(CEREAL_NVP(walkSpeed_));
             if (version >= 0) archive(CEREAL_NVP(runSpeed_));
+            if (version >= 12) archive(CEREAL_NVP(walkAccelerationTime_secs_));
+            if (version >= 12) archive(CEREAL_NVP(runAccelerationTime_secs_));
             if (version >= 0) archive(CEREAL_NVP(moveRotateSpeed_));
             if (version >= 7) archive(CEREAL_NVP(lockOnAttackRotateSpeed_));
             if (version >= 0) archive(CEREAL_NVP(jumpPower_));
@@ -255,7 +263,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus, 10);
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus, 12);
 CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::IPlayerAvatarStatus, GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
 #pragma endregion

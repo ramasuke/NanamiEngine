@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 12,
+                "cereal_class_version": 13,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -112,6 +112,8 @@
                 "runSpeed_": {
                     "value_": 70.0
                 },
+                "walkAccelerationTime_secs_": 0.25,
+                "runAccelerationTime_secs_": 0.5,
                 "moveRotateSpeed_": 12.0,
                 "lockOnAttackRotateSpeed_": 3.0,
                 "jumpPower_": 90.0,

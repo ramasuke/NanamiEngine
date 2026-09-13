@@ -44,6 +44,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         , chargeAttackStaminaCost_       (30.0f)
         , walkSpeed_                    (24.0f)
         , runSpeed_                      (70.0f)
+        , walkAccelerationTime_secs_     (0.25f)
+        , runAccelerationTime_secs_      (0.5f)
         , moveRotateSpeed_               (5.0f)
         , lockOnAttackRotateSpeed_       (3.0f )
         , jumpPower_                     (75.5f)
@@ -89,6 +91,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         , chargeAttackStaminaCost_            (initStatus.ChargeAttackStaminaCost())
         , walkSpeed_                          (initStatus.GetWalkSpeed())
         , runSpeed_                           (initStatus.GetRunSpeed())
+        , walkAccelerationTime_secs_          (initStatus.WalkAccelerationTime_secs())
+        , runAccelerationTime_secs_           (initStatus.RunAccelerationTime_secs())
         , moveRotateSpeed_                    (initStatus.GetMoveRotateSpeed())
         , lockOnAttackRotateSpeed_            (initStatus.GetLockOnAttackRotateSpeed())
         , jumpPower_                          (initStatus.GetJumpPower())
@@ -257,6 +261,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         LibCore::ImGuiHelper::OnDrawInputField("chargeAttackStaminaCost_", chargeAttackStaminaCost_);
         LibCore::ImGuiHelper::OnDrawInputField("walkSpeed_", walkSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("runSpeed_", runSpeed_);
+        LibCore::ImGuiHelper::OnDrawInputField("walkAccelerationTime_secs_", walkAccelerationTime_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("runAccelerationTime_secs_", runAccelerationTime_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("moveRotateSpeed_", moveRotateSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("lockOnAttackRotateSpeed_", lockOnAttackRotateSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpPower_", jumpPower_);

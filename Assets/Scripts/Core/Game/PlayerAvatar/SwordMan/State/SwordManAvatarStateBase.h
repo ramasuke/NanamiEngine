@@ -41,6 +41,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         std::function<void(SwordManAvatarStateType)> onChangeState_;
         static inline const auto CHATTABLE_ICON_OBJECT_NAME = "ChattableIcon";
         float prevFootstepNormalizedTime_ = -1.0f; ///< 前フレームのクリップ正規化時間（enter で -1 リセット）
+        float currentMoveSpeed_ = 0.0f;
         [[nodiscard]] bool IsLockOnTargetInRange() const;
         [[nodiscard]] std::shared_ptr<GameObject::IGameObject> FindNearestLockOnTarget() const;
         [[nodiscard]] bool HasLineOfSight(const std::shared_ptr<GameObject::IGameObject>& target) const;
@@ -85,6 +86,13 @@ namespace GameCore::PlayerAvatar::SwordMan
          */
         void TryEmitFootstep(const std::vector<float>& contactPhases,
                              const std::vector<FIELD(Asset::SoundFile)>& footstepSounds);
+        /** @brief 移動速度の初期値を物理ボディの現在の水平速度にする。移動系ステートの DoEnter で呼ぶ */
+        void ResetMoveSpeedFromVelocity();
+        /**
+         * @brief 移動速度を maxSpeed へ線形に加速/減速させながら入力方向へ移動する
+         * @param accelerationTime_secs 0から maxSpeed に達するまでの時間。0以下なら即 maxSpeed
+         */
+        void AcceleratedForwardMove(StatusParameter::MoveSpeed maxSpeed, float accelerationTime_secs);
         void ChangeCamera(const std::weak_ptr<CineMachine::CineMachineVirtualCamera>& camera) const;
         /**
          * @brief LockOn入力の読み取り・トグル・自動解除をまとめて処理する

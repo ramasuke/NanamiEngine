@@ -9,12 +9,12 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
         StatusEvent().InvokeOnRun();
         Status().SetIsRunning(true);
+        ResetMoveSpeedFromVelocity();
     }
 
     void SwordManAvatarInjuredRunState::DoFixedUpdate()
     {
-        const auto inputMove = Input().Move().ReadValue();
-        Actions().ForwardMove(Status().GetRunSpeed() * glm::vec3(inputMove.x, 0.0f, inputMove.y), Status().GetMoveRotateSpeed());
+        AcceleratedForwardMove(Status().GetRunSpeed(), Status().RunAccelerationTime_secs());
     }
 
     void SwordManAvatarInjuredRunState::DoUpdate()

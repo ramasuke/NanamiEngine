@@ -9,13 +9,12 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 {
     void SwordManAvatarWalkState::DoEnter()
     {
-
+        ResetMoveSpeedFromVelocity();
     }
 
     void SwordManAvatarWalkState::DoFixedUpdate()
     {
-        const auto inputMove = Input().Move().ReadValue();
-        Actions().ForwardMove(Status().GetWalkSpeed() * glm::vec3(inputMove.x, 0.0f, inputMove.y), Status().GetMoveRotateSpeed());
+        AcceleratedForwardMove(Status().GetWalkSpeed(), Status().WalkAccelerationTime_secs());
     }
 
     void SwordManAvatarWalkState::DoUpdate()

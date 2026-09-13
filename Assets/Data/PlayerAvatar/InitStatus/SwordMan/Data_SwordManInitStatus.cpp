@@ -28,6 +28,8 @@ namespace NanamiEngine::Module::Asset
         , chargeAttackLungeStart_secs_        (0.0f)
         , chargeAttackLungeSpeed_             (28.0f)
         , chargeAttackStaminaCost_            (30.0f)
+        , walkAccelerationTime_secs_          (0.25f)
+        , runAccelerationTime_secs_           (0.5f)
         , moveRotateSpeed_                    (0)
         , lockOnAttackRotateSpeed_            (3.0f)
         , jumpPower_                          (0)
@@ -71,6 +73,8 @@ namespace NanamiEngine::Module::Asset
         LibCore::ImGuiHelper::OnDrawInputField("chargeAttackStaminaCost_", chargeAttackStaminaCost_);
         LibCore::ImGuiHelper::OnDrawInputField("walkSpeed_", walkSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("runSpeed_", runSpeed_);
+        LibCore::ImGuiHelper::OnDrawInputField("walkAccelerationTime_secs_", walkAccelerationTime_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("runAccelerationTime_secs_", runAccelerationTime_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("moveRotateSpeed_", moveRotateSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("lockOnAttackRotateSpeed_", lockOnAttackRotateSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpPower_", jumpPower_);
