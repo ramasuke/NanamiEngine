@@ -77,7 +77,13 @@ namespace NanamiEngine::Module::Component
             return -1;
 
         if (cbHandle_ == -1)
+        {
+            // 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、GetBuffer/Set で完了待ちに入って固まるので同期で作る
+            const int useASyncLoad = GetUseASyncLoadFlag();
+            SetUseASyncLoadFlag(FALSE);
             cbHandle_ = CreateShaderConstantBuffer(CUSTOM_SHADER_CB_SIZE);
+            SetUseASyncLoadFlag(useASyncLoad);
+        }
 
         return cbHandle_;
     }
