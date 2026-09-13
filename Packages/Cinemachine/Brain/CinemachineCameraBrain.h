@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../Engine/Core/Object/Field/Field.h"
+#include "../../../Libs/glm/gtc/quaternion.hpp"
 #include "../VirtualCamera/CineMachineVirtualCamera.h"
 
 namespace NanamiEngine::CineMachine
@@ -40,6 +41,13 @@ namespace NanamiEngine::CineMachine
         float cameraNear_              = 0.1f;
         float cameraFar_               = 100.0f;
         static CinemachineCameraBrain* cameraBrain_;
+
+        // Shake/Noiseなどのオフセットを含まない、補完だけの姿勢。
+        // 揺れた後のTransformを次フレームの補完開始点にすると揺れが蓄積・増幅するため分離して保持する。
+        glm::vec3 smoothedPos_ = glm::vec3(0.0f);
+        glm::quat smoothedRot_ = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+        bool hasSmoothedPose_ = false;
+        const CineMachineVirtualCamera* liveCamera_ = nullptr;
 
 #pragma region Serialization Function
     public:

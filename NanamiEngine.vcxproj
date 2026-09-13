@@ -12313,6 +12313,7 @@
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\IVirtualCameraBehaviour.cpp" />
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\LockOn\LockOnCameraBehaviour.cpp" />
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\LookAt\VirtualCameraLookAtBehaviour.cpp" />
+    <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\Noise\NoiseCameraBehaviour.cpp" />
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\Shake\ShakeCameraBehaviour.cpp" />
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\ThirdPerson\ThirdPersonCameraBehaviour.cpp" />
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\CineMachineVirtualCamera.cpp">
@@ -13983,6 +13984,7 @@
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\IVirtualCameraBehaviour.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\LockOn\LockOnCameraBehaviour.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\LookAt\VirtualCameraLookAtBehaviour.h" />
+    <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\Noise\NoiseCameraBehaviour.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\Shake\ShakeCameraBehaviour.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\ThirdPerson\ThirdPersonCameraBehaviour.h" />
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\CineMachineVirtualCamera.h" />

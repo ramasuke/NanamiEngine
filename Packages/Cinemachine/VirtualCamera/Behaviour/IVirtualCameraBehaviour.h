@@ -10,6 +10,8 @@ namespace NanamiEngine::CineMachine
     public:
         virtual ~IVirtualCameraBehaviour() = default;
         virtual void MainCameraCallback() { }
+        // このVirtualCameraがBrainのアクティブカメラに切り替わったフレームに呼ばれる。
+        virtual void OnBecameLive() { }
         virtual bool WantsImmediateApply() const { return false; }
         
         template <class Archive>

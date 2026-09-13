@@ -24,21 +24,34 @@ void CineMachine::CinemachineCameraBrain::OnUpdate()
     const glm::vec3 targetPos = currentVirtualCamera_->Transform().GetWorldPos();
     const glm::quat targetRot = currentVirtualCamera_->Transform().GetWorldRot();
 
+    if (!hasSmoothedPose_)
+    {
+        smoothedPos_ = Transform().GetWorldPos();
+        smoothedRot_ = Transform().GetWorldRot();
+        hasSmoothedPose_ = true;
+    }
+
     if (currentVirtualCamera_->WantsImmediateApply())
     {
         // lerp/slerpを完全にスキップしてVirtualCameraのTransformを即時適用する。
-        Transform().SetWorldPos(targetPos);
-        Transform().SetWorldRot(targetRot);
+        smoothedPos_ = targetPos;
+        smoothedRot_ = targetRot;
     }
     else
     {
-        const glm::vec3 currentPos = Transform().GetWorldPos();
-        const glm::quat currentRot = Transform().GetWorldRot();
+        // 補完の開始点は揺れを含まないsmoothedPos_/smoothedRot_にする。
         const float dt = Time::DeltaTime();
-        const glm::vec3 newPos = glm::mix(currentPos, targetPos, 1.0f - std::exp(-positionLerpSpeed_secs_ * dt));
-        const glm::quat newRot = glm::slerp(currentRot, targetRot, 1.0f - std::exp(-rotationSlerpSpeed_secs_ * dt));
-        Transform().SetWorldPos(newPos);
-        Transform().SetWorldRot(newRot);
+        smoothedPos_ = glm::mix(smoothedPos_, targetPos, 1.0f - std::exp(-positionLerpSpeed_secs_ * dt));
+        smoothedRot_ = glm::slerp(smoothedRot_, targetRot, 1.0f - std::exp(-rotationSlerpSpeed_secs_ * dt));
+    }
+    Transform().SetWorldPos(smoothedPos_);
+    Transform().SetWorldRot(smoothedRot_);
+
+    // アクティブなVirtualCameraが切り替わったことをビヘイビアに通知する(NoiseCameraBehaviourのフェードイン等)。
+    if (currentVirtualCamera_.get().get() != liveCamera_)
+    {
+        liveCamera_ = currentVirtualCamera_.get().get();
+        currentVirtualCamera_->OnBecameLive();
     }
 
     // ShakeCameraBehaviourなど、補完後にオフセットを加えるビヘイビアのコールバック。
@@ -73,8 +86,11 @@ void CineMachine::CinemachineCameraBrain::OnDebugRender()
     {
         if (!Core::Application::ApplicationBase::GameWindow()->IsPlayMode())
         {
-            Transform().SetWorldPos(currentVirtualCamera_->Transform().GetWorldPos());
-            Transform().SetWorldRot(currentVirtualCamera_->Transform().GetWorldRot());
+            smoothedPos_ = currentVirtualCamera_->Transform().GetWorldPos();
+            smoothedRot_ = currentVirtualCamera_->Transform().GetWorldRot();
+            hasSmoothedPose_ = true;
+            Transform().SetWorldPos(smoothedPos_);
+            Transform().SetWorldRot(smoothedRot_);
         }
         else
         {

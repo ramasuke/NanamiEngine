@@ -708,6 +708,9 @@
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\LookAt\VirtualCameraLookAtBehaviour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Packages\Cinemachine\VirtualCamera\Behaviour\Noise\NoiseCameraBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Packages\Cinemachine\VirtualCamera\CineMachineVirtualCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -4906,6 +4909,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\LookAt\VirtualCameraLookAtBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\Cinemachine\VirtualCamera\Behaviour\Noise\NoiseCameraBehaviour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Packages\Cinemachine\VirtualCamera\CineMachineVirtualCamera.h">

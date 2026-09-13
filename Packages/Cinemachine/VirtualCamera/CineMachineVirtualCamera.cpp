@@ -6,6 +6,7 @@
 #include "Behaviour/Follow/VirtualCameraFollowBehaviour.h"
 #include "Behaviour/LockOn/LockOnCameraBehaviour.h"
 #include "Behaviour/LookAt/VirtualCameraLookAtBehaviour.h"
+#include "Behaviour/Noise/NoiseCameraBehaviour.h"
 #include "Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
 
@@ -19,6 +20,14 @@ void CineMachine::CineMachineVirtualCamera::MainCameraCallback() const
     for (const auto& cameraBehaviour : cameraBehaviours_)
     {
         cameraBehaviour.lock()->MainCameraCallback();
+    }
+}
+
+void CineMachine::CineMachineVirtualCamera::OnBecameLive() const
+{
+    for (const auto& cameraBehaviour : cameraBehaviours_)
+    {
+        cameraBehaviour.lock()->OnBecameLive();
     }
 }
 
@@ -62,6 +71,7 @@ void CineMachine::CineMachineVirtualCamera::OnDrawGui()
         if (ImGui::Button("Add ThirdPerson")) Components().Add<Behaviour::ThirdPersonCameraBehaviour  >();
         if (ImGui::Button("Add LockOn"     )) Components().Add<Behaviour::LockOnCameraBehaviour       >();
         if (ImGui::Button("Add Shake"      )) Components().Add<Behaviour::ShakeCameraBehaviour        >();
+        if (ImGui::Button("Add Noise"      )) Components().Add<Behaviour::NoiseCameraBehaviour        >();
         ImGui::EndPopup();
     }
 

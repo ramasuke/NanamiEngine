@@ -46,6 +46,7 @@
 #include "../../../../Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
 #include "../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Follow/VirtualCameraFollowBehaviour.h"
 #include "../../../../Packages/Cinemachine/VirtualCamera/Behaviour/LookAt/VirtualCameraLookAtBehaviour.h"
+#include "../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Noise/NoiseCameraBehaviour.h"
 #include "../../../../Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
 #include "../../Component/Animator/Animator.h"
 #include "../../Component/AudioSource/AudioSource.h"
