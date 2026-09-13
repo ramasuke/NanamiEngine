@@ -4,18 +4,8 @@
 
 #include "../MainWindowBase.h"
 #include "../Factory/MainWindowFactory.h"
-#include "../../../Editor/Camera/Free/Editor3DCamera.h"
+#include "../Preview/ModelPreviewStage.h"
 #include "../../../../../Module/Asset/MV1/MV1File.h"
-
-namespace NanamiEngine::Scene
-{
-    class SceneGameObject;
-}
-
-namespace NanamiEngine::Module::Component
-{
-    class ModelRenderer;
-}
 
 namespace NanamiEngine::Core::MainWindow
 {
@@ -24,7 +14,7 @@ namespace NanamiEngine::Core::MainWindow
      *
      * @details
      *  PrefabViewWindow と同じくバックバッファへ 3D 描画し、ImGui の "ModelView" パネルを上に重ねる。
-     *  プレビュー用 GameObject は 1 つだけ持ち、一覧で選択したモデルを ModelRenderer::SetMv1File で差し替える。
+     *  プレビュー用 GameObject は ModelPreviewStage が 1 つだけ持ち、一覧で選択したモデルを差し替える。
      */
     class ModelViewWindow final : public MainWindowBase<Module::Asset::Mv1File>
     {
@@ -39,24 +29,12 @@ namespace NanamiEngine::Core::MainWindow
         void OnDrawGui(MainWindowDrawGuiContext context) override;
         void OnSave   () override;
 
-        /** @brief プレビュー用 GameObject + ModelRenderer を遅延生成する(カレント MainWindow が自分であることを保証する) */
-        void EnsurePreviewObject();
-        /** @brief selectedGuid_ のモデルを ModelRenderer に設定する */
-        void ApplySelectedModel();
         void CloseContent(const Guid& guid);
-        /** @brief モデルのワールド AABB からカメラを正面に配置する */
-        void FrameCamera();
-        void DrawGrid() const;
+        void OpenInAnimationView(const std::shared_ptr<Module::Asset::Mv1File>& model) const;
 
-        Module::Component::Editor3DCamera               camera_;
-        std::shared_ptr<Scene::SceneGameObject>         previewObject_;
-        std::weak_ptr<Module::Component::ModelRenderer> modelRenderer_;
+        ModelPreviewStage   stage_;
         // Guid は既定コンストラクタで新規発行されるため「未選択」は optional で表す
-        std::optional<Guid>                             selectedGuid_;
-        // ハンドル取得後に一度だけ FrameCamera する(非同期ロード完了待ち)
-        bool  pendingFrame_ = false;
-        bool  showGrid_     = true;
-        float gridStep_     = 10.0f;
+        std::optional<Guid> selectedGuid_;
     };
 
     REGISTER_MAIN_WINDOW(ModelViewWindow)

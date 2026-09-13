@@ -120,6 +120,15 @@
     <ClCompile Include="Engine\Core\Application\Window\Main\ModelView\ModelViewWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Window\Main\Preview\ModelPreviewStage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Window\Main\AnimationView\AnimationPreviewSlot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Window\Main\AnimationView\AnimationViewWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Core\Application\Window\Popup\DrawGuiContext\PopupWindowDrawGuiContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -3462,6 +3471,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Application\Window\Main\ModelView\ModelViewWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Window\Main\Preview\ModelPreviewStage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Window\Main\AnimationView\AnimationPreviewSlot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Window\Main\AnimationView\AnimationViewWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Application\Window\Popup\DrawGuiContext\PopupWindowDrawGuiContext.h">
