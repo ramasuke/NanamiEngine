@@ -65,6 +65,7 @@
 #include "../../Component/SphereRenderer/SphereRenderer.h"
 #include "../../Component/Skydome3D/Skydome3D.h"
 #include "../../NanamiUI/BillBoard3D/DrawBillboard3D.h"
+#include "../../NanamiUI/BillBoard3D/BillboardAnimation3D.h"
 #include "../../NanamiUI/BlendAnimationRenderer/BlendAnmiationRenderer.h"
 #include "../../NanamiUI/LayoutGroup/GridLayoutGroup.h"
 #include "../../NanamiUI/LayoutGroup/HorizontalLayoutGroup.h"

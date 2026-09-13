@@ -1,20 +1,35 @@
 ﻿#include "DrawBillboard3D.h"
 
+#include <algorithm>
 #include "DxLib.h"
 #include "../../GameObject/Transform/Transform.h"
 #include "../../Log/NanamiEngine_Module_Log.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
+    void Billboard3D::SetAlpha(const float alpha)
+    {
+        alpha_ = std::clamp(alpha, 0.0f, 1.0f);
+    }
+
+    void Billboard3D::SetAngle(const float angle)
+    {
+        angle_ = angle;
+    }
+
     void Billboard3D::InitRenderer()
     {
-        
+
     }
 
     void Billboard3D::OnUserInterfaceRender()
     {
-        if (!IsEnable() || !spriteFile_)
+        if (!IsEnable() || !spriteFile_ || alpha_ <= 0.0f)
             return;
+
+        const bool isTranslucent = alpha_ < 1.0f;
+        if (isTranslucent)
+            SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(alpha_ * 255.0f));
 
         DrawBillboard3D(
             Transform().GetDxWorldPos(),
@@ -25,6 +40,9 @@ namespace NanamiEngine::Module::NanamiUi
             spriteFile_->GetDxLibHandle(),
             true
         );
+
+        if (isTranslucent)
+            SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
     }
 
     void Billboard3D::OnDrawGui()

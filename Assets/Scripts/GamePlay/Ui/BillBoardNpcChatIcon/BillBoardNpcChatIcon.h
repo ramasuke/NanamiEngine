@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
+#include "../../../../../Engine/Module/NanamiUI/BillBoard3D/BillboardAnimation3D.h"
+#include "../../../../../Engine/Module/NanamiUI/BillBoard3D/DrawBillboard3D.h"
 
 namespace GamePlay::Ui
 {
@@ -15,15 +17,39 @@ namespace GamePlay::Ui
         void Hide();
         void OnChattable();
         void OnExitChattable();
-        
+
     private:
+        enum class IconMotion
+        {
+            Surprise,   // ゆっくり上下 + 定期的にコトッと傾いた直後に枠を光が走る
+            Chattable,  // 下向きに弾む
+            Chatting,   // 呼吸するように拡大縮小
+        };
+
+        // アイコンごとの演出状態（シリアライズしない）
+        struct IconState
+        {
+            bool      isCaptured     = false;
+            bool      wasEnabled     = false;
+            float     shownTime_secs = 0.0f;
+            glm::vec3 basePos        = {};
+            glm::vec3 baseScale      = {};
+            float     baseAngle      = 0.0f;
+            std::weak_ptr<NanamiUi::Billboard3D> billboard;
+            // アイコンの子にあれば、下地に重ねる光の演出として使う
+            std::weak_ptr<NanamiUi::BillboardAnimation3D> rimGlow;
+        };
+
         void OnUpdate() override;
+        static void UpdateIcon(
+            const std::shared_ptr<GameObject::IGameObject>& object,
+            IconState& state,
+            IconMotion motion);
 
         bool isShow_ = true;
-        bool isBasePosChattableCaptured_ = false;
-        bool isBasePosSurpriseCaptured_  = false;
-        glm::vec3 basePosChattable_ = {};
-        glm::vec3 basePosSurprise_  = {};
+        IconState chattableState_;
+        IconState chattingState_;
+        IconState surpriseState_;
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattableIcon_; 
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattingIcon_;
         [[serialize(1)]] FIELD(GameObject::IGameObject) surpriseIcon_;

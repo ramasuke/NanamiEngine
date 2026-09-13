@@ -10,13 +10,17 @@ namespace NanamiEngine::Module::NanamiUi
                               public LifeCycleCallback::IUserInterfaceRenderable
     {
     public:
-        
-        
+        // 実行時の演出用（シリアライズしない）。0 で描画しない、1 で不透明
+        void SetAlpha(float alpha);
+        void SetAngle(float angle);
+        [[nodiscard]] float GetAngle() const { return angle_; }
+
     private:
         void InitRenderer() override;
         void OnUserInterfaceRender() override;
         [[nodiscard]] int GetRenderOrder() const override { return renderOrder_; }
-        
+
+        float alpha_ = 1.0f;
 
         [[serialize(0)]] int renderOrder_ = 0;
         [[serialize(1)]] FIELD(Asset::SpriteFile) spriteFile_;

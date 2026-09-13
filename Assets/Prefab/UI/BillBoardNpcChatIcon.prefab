@@ -57,7 +57,7 @@
                                 "id": 2147483652,
                                 "data": {
                                     "value0": {
-                                        "value_": "6FB7E760-B7D0-41D8-9C57-3D0FA5C82EE4"
+                                        "value_": "0462F43C-5C4D-4504-8CC9-6678FD3FA4AA"
                                     }
                                 }
                             }
@@ -111,7 +111,7 @@
                 "value3": 1.0
             }
         },
-        "childCount": 2,
+        "childCount": 3,
         "child": {
             "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
@@ -161,7 +161,7 @@
                                             }
                                         }
                                     },
-                                    "angle_": 3.1500000953674318
+                                    "angle_": 0.0
                                 }
                             }
                         }
@@ -179,9 +179,9 @@
                             "value3": 0.9995841383934021
                         },
                         "localScale_": {
-                            "value0": 1.2999999523162842,
-                            "value1": 1.2999999523162842,
-                            "value2": 1.2999999523162842
+                            "value0": 1.2000000476837159,
+                            "value1": 1.2000000476837159,
+                            "value2": 1.2000000476837159
                         },
                         "worldMatrix_": {
                             "value0": {
@@ -272,9 +272,9 @@
                             "value3": 0.7457667589187622
                         },
                         "localScale_": {
-                            "value0": 2.0,
-                            "value1": 2.0,
-                            "value2": 2.0
+                            "value0": 1.2000000476837159,
+                            "value1": 1.2000000476837159,
+                            "value2": 1.2000000476837159
                         },
                         "worldMatrix_": {
                             "value0": {
@@ -303,6 +303,197 @@
                             }
                         },
                         "childCount": 0
+                    }
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483659,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": false,
+                    "name_": "ActionMarkIcon",
+                    "guid_": {
+                        "value_": "0462F43C-5C4D-4504-8CC9-6678FD3FA4AA"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 3,
+                            "ptr_wrapper": {
+                                "id": 2147483660,
+                                "data": {
+                                    "value0": {
+                                        "cereal_class_version": 0,
+                                        "guid_": {
+                                            "value_": "41A43288-6D65-4264-891B-E7273990D550"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "renderOrder_": 0,
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483661,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "CFEC4E27-AB82-436A-AD0E-E7750232E82B"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "angle_": 0.0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.2,
+                            "value1": 1.2,
+                            "value2": 1.2
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 1,
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483662,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": false,
+                                    "name_": "SurpriseRimGlow",
+                                    "guid_": {
+                                        "value_": "5DE4E946-C16C-4CB2-8246-ACF2E3C5A1FA"
+                                    },
+                                    "components_": {
+                                        "componentCount": 1,
+                                        "component_0": {
+                                            "polymorphic_id": 2147483652,
+                                            "polymorphic_name": "NanamiUi::BillboardAnimation3D",
+                                            "ptr_wrapper": {
+                                                "id": 2147483663,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "cereal_class_version": 0,
+                                                        "guid_": {
+                                                            "value_": "D395A240-F404-46E4-9AAE-44717FE488B3"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "renderOrder_": 1,
+                                                    "animationFile_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483664,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "7E2E4007-1238-45B3-858F-C40451299A22"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "isAdditive_": true,
+                                                    "angle_": 0.0
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

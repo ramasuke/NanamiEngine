@@ -1557,6 +1557,9 @@
     <ClCompile Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Module\NanamiUI\BillBoard3D\BillboardAnimation3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Module\NanamiUI\BlendAnimationRenderer\BlendAnmiationRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -5821,6 +5824,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\BillboardAnimation3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\NanamiUI\BlendAnimationRenderer\BlendAnmiationRenderer.h">

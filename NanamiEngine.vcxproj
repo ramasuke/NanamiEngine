@@ -9959,6 +9959,7 @@
     <ClCompile Include="Engine\Module\Log\NanamiEngine_Module_Log.cpp" />
     <ClCompile Include="Engine\Module\Namespace\EngineNamespace.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.cpp" />
+    <ClCompile Include="Engine\Module\NanamiUI\BillBoard3D\BillboardAnimation3D.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\BlendAnimationRenderer\BlendAnmiationRenderer.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\Button\NanamiUi_Button.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\GridLayoutGroup.cpp" />
@@ -12937,6 +12938,7 @@
     <ClInclude Include="Engine\Module\Serialization\Engine_Module_Serialization.h" />
     <ClInclude Include="Engine\Module\Namespace\EngineNamespace.h" />
     <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.h" />
+    <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\BillboardAnimation3D.h" />
     <ClInclude Include="Engine\Module\NanamiUI\BlendAnimationRenderer\BlendAnmiationRenderer.h" />
     <ClInclude Include="Engine\Module\NanamiUI\Button\NanamiUi_Button.h" />
     <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\GridLayoutGroup.h" />
