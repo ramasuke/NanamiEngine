@@ -39,6 +39,8 @@ namespace NanamiEngine::CineMachine::Behaviour
         float lookAtHeightOffset_ = 1.2f;
         // 障害物にめり込まないようカメラを手前に寄せる際の余白
         float collisionBuffer_    = 0.3f;
+        // めり込み判定に使う球の半径。カメラ周囲に確保する最低限の空き
+        float collisionRadius_    = 2.0f;
 
         FIELD(GameObject::IGameObject                ) followTarget_;
         FIELD(Behaviour::VirtualCameraFollowBehaviour) follow_;
@@ -69,6 +71,7 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(followTarget_));
     archive(CEREAL_NVP(follow_));
     archive(CEREAL_NVP(lookAt_));
+    archive(CEREAL_NVP(collisionRadius_));
 }
 
 template<class Archive>
@@ -86,12 +89,13 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 0) archive(CEREAL_NVP(followTarget_));
     if (version >= 0) archive(CEREAL_NVP(follow_));
     if (version >= 0) archive(CEREAL_NVP(lookAt_));
+    if (version >= 1) archive(CEREAL_NVP(collisionRadius_));
 }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour, 0)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour, 1)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IUpdatable, NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);

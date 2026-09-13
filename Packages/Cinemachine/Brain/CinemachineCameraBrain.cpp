@@ -1,8 +1,13 @@
 ﻿#include "CinemachineCameraBrain.h"
 
+#include <algorithm>
+#include <cmath>
+
 #include "../../../Engine/Core/Application/Time/Time.h"
 #include "../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
 
 CineMachine::CinemachineCameraBrain* CineMachine::CinemachineCameraBrain::cameraBrain_ = nullptr;
 
@@ -62,12 +67,40 @@ void CineMachine::CinemachineCameraBrain::OnUpdate()
     const glm::quat finalRot = Transform().GetWorldRot();
     const glm::vec3 forward   = finalRot * glm::vec3(0, 0, 1);
 
+    appliedNear_ = CalculateSafeNear(finalPos);
+
     SetupCamera_Perspective(fov_ * DX_PI_F / 180.0f);
-    SetCameraNearFar(cameraNear_, cameraFar_);
+    SetCameraNearFar(appliedNear_, cameraFar_);
     SetCameraPositionAndTarget_UpVecY(
         {finalPos.x, finalPos.y, finalPos.z},
         {finalPos.x + forward.x, finalPos.y + forward.y, finalPos.z + forward.z}
     );
+}
+
+float CineMachine::CinemachineCameraBrain::CalculateSafeNear(const glm::vec3& cameraPos) const
+{
+    int screenWidth, screenHeight;
+    GetScreenState(&screenWidth, &screenHeight, nullptr);
+    if (screenHeight <= 0)
+        return cameraNear_;
+
+    const float aspectRatio = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
+    const float tanHalfFov  = std::tan(fov_ * DX_PI_F / 180.0f * 0.5f);
+
+    // Near平面の四隅(±tan*aspect*near, ±tan*near, near)はカメラから near * k の距離にある
+    const float cornerDistanceScale = std::sqrt(1.0f + tanHalfFov * tanHalfFov + (tanHalfFov * aspectRatio) * (tanHalfFov * aspectRatio));
+
+    Module::Physics::LayerMask mask = Module::Physics::CreateLayerMask();
+    Module::Physics::AddLayer(mask, Module::Physics::Layer::Default);
+    // プレイヤーや敵がカメラに近づいたときにモデルがNearで欠けないよう、キャラクターも対象にする
+    Module::Physics::AddLayer(mask, Module::Physics::Layer::Player);
+    Module::Physics::AddLayer(mask, Module::Physics::Layer::Enemy);
+
+    // 設定値のNearで四隅が届く範囲だけ調べれば十分
+    const float clearance = Module::Physics::ClosestDistance(cameraPos, cameraNear_ * cornerDistanceScale, mask);
+
+    const float lowerNear = std::min(minCameraNear_, cameraNear_);
+    return std::clamp(clearance * nearClipMargin_ / cornerDistanceScale, lowerNear, cameraNear_);
 }
 
 void CineMachine::CinemachineCameraBrain::OnDestroy()
@@ -159,6 +192,9 @@ void CineMachine::CinemachineCameraBrain::OnDrawGui()
     ImGuiHelper::OnDrawInputField("fov_"                     , fov_                      );
     ImGuiHelper::OnDrawInputField("cameraNear_"              , cameraNear_               );
     ImGuiHelper::OnDrawInputField("cameraFar_"               , cameraFar_                );
+    ImGuiHelper::OnDrawInputField("minCameraNear_"           , minCameraNear_            );
+    ImGuiHelper::OnDrawInputField("nearClipMargin_"          , nearClipMargin_           );
+    ImGui::Text(("appliedNear: " + std::to_string(appliedNear_)).c_str());
 }
 
 void CineMachine::CinemachineCameraBrain::ApplyVirtualCameraMatrix() const

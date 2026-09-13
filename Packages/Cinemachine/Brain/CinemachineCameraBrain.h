@@ -31,6 +31,8 @@ namespace NanamiEngine::CineMachine
         void OnDestroy    () override;
         void OnDebugRender() override;
         void OnDebugCameraFovRender() const;
+        // カメラ周囲の空き距離から、Near平面の四隅が障害物にめり込まないNearクリップ距離を求める
+        [[nodiscard]] float CalculateSafeNear(const glm::vec3& cameraPos) const;
 
         std::vector<FIELD(CineMachineVirtualCamera)> virtualCameras_;
         FIELD(CineMachineVirtualCamera) currentVirtualCamera_;
@@ -40,6 +42,12 @@ namespace NanamiEngine::CineMachine
         float fov_                     = 100.0f;
         float cameraNear_              = 0.1f;
         float cameraFar_               = 100.0f;
+        // 障害物が近いときに動的に縮めるNearクリップの下限。小さすぎると遠景のZ精度が落ちる
+        float minCameraNear_           = 0.5f;
+        // コライダーと描画メッシュのズレを吸収するため、空き距離に掛ける安全係数(0～1)
+        float nearClipMargin_          = 0.9f;
+        // 実際にSetCameraNearFarへ渡したNear(確認用、非シリアライズ)
+        float appliedNear_             = 0.1f;
         static CinemachineCameraBrain* cameraBrain_;
 
         // Shake/Noiseなどのオフセットを含まない、補完だけの姿勢。
@@ -70,6 +78,8 @@ namespace NanamiEngine::CineMachine
             archive(CEREAL_NVP(fov_));
             archive(CEREAL_NVP(cameraNear_));
             archive(CEREAL_NVP(cameraFar_));
+            archive(CEREAL_NVP(minCameraNear_));
+            archive(CEREAL_NVP(nearClipMargin_));
         }
 
         template <class Archive>
@@ -95,11 +105,16 @@ namespace NanamiEngine::CineMachine
             archive(CEREAL_NVP(cameraNear_));
             archive(CEREAL_NVP(cameraFar_));
             }
+            if (version >= 3)
+            {
+            archive(CEREAL_NVP(minCameraNear_));
+            archive(CEREAL_NVP(nearClipMargin_));
+            }
             cameraBrain_ = this;
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::CinemachineCameraBrain, 2)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::CinemachineCameraBrain, 3)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IUpdatable, NanamiEngine::CineMachine::CinemachineCameraBrain);

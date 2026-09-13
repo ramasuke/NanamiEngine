@@ -28,6 +28,11 @@ namespace NanamiEngine::Module::Physics
     }
 
     RaycastHit Raycast          (const glm::vec3  & origin, const glm::vec3& direction, float maxDistance, LayerMask layerMask);
+    // 半径radiusの球をdirectionへmaxDistanceだけ移動させ、最初に当たったコライダーを返す。
+    // Distance()は球の中心が止まる位置までの距離。開始時点で既に重なっている場合はDistance()==0。
+    RaycastHit SphereCast       (const glm::vec3  & origin, float radius, const glm::vec3& direction, float maxDistance, LayerMask layerMask);
+    // centerから最も近いコライダー表面までの距離を返す。maxDistance以内に何もなければmaxDistance。
+    float ClosestDistance       (const glm::vec3  & center, float maxDistance, LayerMask layerMask);
     void DebugDrawRaycast(const glm::vec3& origin, const glm::vec3& direction, float maxDistance);
     glm::vec3  GetLinearVelocity(const JPH::BodyID& bodyId                           );
     void SetLinearVelocity      (const JPH::BodyID& bodyId, const glm::vec3& velocity);

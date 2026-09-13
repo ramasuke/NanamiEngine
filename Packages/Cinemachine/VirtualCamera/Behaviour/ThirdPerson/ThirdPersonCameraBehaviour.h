@@ -48,6 +48,8 @@ namespace NanamiEngine::CineMachine::Behaviour
         float distance_         = 5.0f;
         // 障害物にめり込まないようカメラを手前に寄せる際の余白
         float collisionBuffer_  = 0.3f;
+        // めり込み判定に使う球の半径。カメラ周囲に確保する最低限の空き
+        float collisionRadius_  = 2.0f;
 
         FIELD(GameObject::IGameObject                ) cameraBrain_;
         FIELD(GameObject::IGameObject                ) target_;
@@ -80,6 +82,7 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(cameraBrain_));
     archive(CEREAL_NVP(isImmediateApply_));
     archive(CEREAL_NVP(collisionBuffer_));
+    archive(CEREAL_NVP(collisionRadius_));
 }
 
 template<class Archive>
@@ -100,12 +103,13 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 3) archive(CEREAL_NVP(cameraBrain_));
     if (version >= 4) archive(CEREAL_NVP(isImmediateApply_));
     if (version >= 5) archive(CEREAL_NVP(collisionBuffer_));
+    if (version >= 6) archive(CEREAL_NVP(collisionRadius_));
 }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ThirdPersonCameraBehaviour, 5)
+ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ThirdPersonCameraBehaviour, 6)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IAwakable, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IUpdatable, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::ThirdPersonCameraBehaviour);

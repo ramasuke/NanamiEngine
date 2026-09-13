@@ -32,6 +32,8 @@ namespace NanamiEngine::Core::Application
         ChangeWindowMode       (true          );
         SetGraphMode           (Configuration::AppConfiguration::GetWindowWidth(), Configuration::AppConfiguration::GetWindowHeight(), Configuration::AppConfiguration::GetWindowColorScale());
         SetUseDirect3DVersion  (DX_DIRECT3D_11);
+        // カメラが障害物に寄った際にNearクリップを動的に縮めるため、既定の16bitでは遠景のZ精度が足りない
+        SetZBufferBitDepth     (24            );
         SetUseZBuffer3D        (TRUE          );
         SetWriteZBuffer3D      (TRUE          );
         SetDrawScreen          (DX_SCREEN_BACK);

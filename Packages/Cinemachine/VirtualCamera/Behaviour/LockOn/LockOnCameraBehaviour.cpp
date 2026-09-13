@@ -76,13 +76,19 @@ namespace NanamiEngine::CineMachine::Behaviour
         Module::Physics::LayerMask mask = Module::Physics::CreateLayerMask();
         Module::Physics::AddLayer(mask, Module::Physics::Layer::Default);
 
-        const Module::Physics::RaycastHit hit = Module::Physics::Raycast(originPos, direction, distance, mask);
+        // 太さ0のRayだと横壁や地面すれすれでNear平面がめり込むため、半径を持った球で位置を決める。
+        // これでカメラ周囲に最低collisionRadius_の空きが保証され、Brainの動的Nearが極端に小さくならない
+        Module::Physics::RaycastHit hit = Module::Physics::SphereCast(originPos, collisionRadius_, direction, distance, mask);
+        if (hit.Hit() && hit.Distance() <= 0.0f)
+        {
+            // 始点の時点で球が既に壁に重なっている場合、球では位置が決まらないためRayにフォールバックする
+            hit = Module::Physics::Raycast(originPos, direction, distance, mask);
+        }
         if (!hit.Hit())
             return desiredOffset;
 
         // 障害物の少し手前にカメラを配置する
-        const float hitDistance      = glm::length(hit.Position() - originPos);
-        const float adjustedDistance = std::max(0.0f, hitDistance - collisionBuffer_);
+        const float adjustedDistance = std::max(0.0f, hit.Distance() - collisionBuffer_);
 
         return direction * adjustedDistance;
     }
@@ -94,6 +100,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         ImGuiHelper::OnDrawInputField("sideOffset_", sideOffset_);
         ImGuiHelper::OnDrawInputField("lookAtHeightOffset_", lookAtHeightOffset_);
         ImGuiHelper::OnDrawInputField("collisionBuffer_", collisionBuffer_);
+        ImGuiHelper::OnDrawInputField("collisionRadius_", collisionRadius_);
         ImGuiHelper::OnDrawInputField("followTarget_", followTarget_);
         ImGuiHelper::OnDrawInputField("follow_", follow_);
         ImGuiHelper::OnDrawInputField("lookAt_", lookAt_);
