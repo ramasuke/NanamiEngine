@@ -41,37 +41,30 @@ Core::Application::EditorApplication::EditorApplication()
     ImGuiWrapper::CreateInstance();
 }
 
-void Core::Application::EditorApplication::Run()
+void Core::Application::EditorApplication::OnFrame()
 {
-    while (ProcessMessage() >= 0)
-    {
-        ClearDrawScreen();
-        
-        ApplicationBase::Run();
-        ImGuiWrapper::Instance().Update();
-        ImGuizmo::BeginFrame();          // ImGui::NewFrame() 直後・フレーム1回だけ
+    ImGuiWrapper::Instance().Update();
+    ImGuizmo::BeginFrame();          // ImGui::NewFrame() 直後・フレーム1回だけ
 
-        // 更新フェーズの最後の安全網。コンポーネント単位の例外・SEH(nullptr参照等)は
-        // LifeCycleCallbackGroup 側で個別に捕捉済みなので、ここに来るのはコンポーネント発ではない
-        // コード経路(ApplicationLifeCycle_ 自体やライフサイクル管理コード等)からの想定外エラー。
-        // OnDrawGui は ImGui の Begin/End の対応を崩さないよう囲まない
-        std::string frameErrorMessage;
-        if (!Module::SafeExecute([this]()
-            {
-                ApplicationLifeCycle_().OnUpdate();
-                GetMainWindow()->OnUpdate();
-            }, frameErrorMessage))
+    // 更新フェーズの最後の安全網。コンポーネント単位の例外・SEH(nullptr参照等)は
+    // LifeCycleCallbackGroup 側で個別に捕捉済みなので、ここに来るのはコンポーネント発ではない
+    // コード経路(ApplicationLifeCycle_ 自体やライフサイクル管理コード等)からの想定外エラー。
+    // OnDrawGui は ImGui の Begin/End の対応を崩さないよう囲まない
+    std::string frameErrorMessage;
+    if (!Module::SafeExecute([this]()
         {
-            Module::LogError("[Frame] " + frameErrorMessage);
-        }
-
-        OnDrawGui();
-        ImGui::EndFrame();
-
-        RenderVertex();
-        ImGuiWrapper::Instance().Draw();
-        ScreenFlip();
+            ApplicationLifeCycle_().OnUpdate();
+            GetMainWindow()->OnUpdate();
+        }, frameErrorMessage))
+    {
+        Module::LogError("[Frame] " + frameErrorMessage);
     }
+
+    OnDrawGui();
+    ImGui::EndFrame();
+
+    RenderVertex();
+    ImGuiWrapper::Instance().Draw();
 }
 
 void Core::Application::EditorApplication::OnExit()

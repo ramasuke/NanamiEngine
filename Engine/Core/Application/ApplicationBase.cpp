@@ -81,10 +81,15 @@ namespace NanamiEngine::Core::Application
         Effekseer_SetGraphicsDeviceLostCallbackFunctions();
     }
 
-    ///TODO: 呼び出し時の処理ではない実装をしているため、override出来ない関数として作るのがベストな設計。
     void ApplicationBase::Run()
     {
-        Time::Update();
+        while (ProcessMessage() >= 0)
+        {
+            ClearDrawScreen();
+            Time::Update();
+            OnFrame();
+            ScreenFlip();
+        }
     }
     
     void ApplicationBase::OnChangeWindow(const std::shared_ptr<MainWindow::IMainWindow>& window)

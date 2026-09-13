@@ -45,7 +45,8 @@ namespace NanamiEngine::Core::Application
     public:
         ApplicationBase();
         virtual ~ApplicationBase() = default;
-        virtual void Run();
+        /** メインループ。フレーム共通処理を行い、アプリ固有処理は OnFrame に委ねる */
+        void Run();
         virtual void OnExit() = 0;
         template <MainWindow::MainWindowType T>
         static void OnChangeWindow();
@@ -64,6 +65,9 @@ namespace NanamiEngine::Core::Application
         static Network::PrefabObjectRegistry                 & NetworkPrefabObjectRegistry();
         
     protected:
+        /** 1フレーム分のアプリ固有処理。ClearDrawScreen / Time::Update の後、ScreenFlip の前に呼ばれる */
+        virtual void OnFrame() = 0;
+
         static std::shared_ptr<MainWindow::IMainWindow>& CurrentMainWindow    ();
         static MainWindow::MainWindowGroup             & MainWindows_         ();
         static PopupWindow::PopupWindowGroup           & PopupWindows_        ();

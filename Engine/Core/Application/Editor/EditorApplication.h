@@ -11,7 +11,7 @@ namespace NanamiEngine::Core::Application
         static FileSystem::EditorDraggingHand& FileDraggingHand();
 
     private:
-        void Run      () override;
+        void OnFrame  () override;
         void OnExit   () override;
         void OnDrawGui();
 
