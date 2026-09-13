@@ -9,6 +9,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEFAULT_WINDOW_WIDTH_SIZE  = 1920;
     constexpr auto DEFAULT_WINDOW_HEIGHT_SIZE = 1080;
     constexpr auto DEFAULT_WINDOW_COLOR_SCALE = 16;
+    constexpr auto DEFAULT_Z_BUFFER_BIT_DEPTH = 24;
     constexpr auto DEFAULT_SHADOW_MAP_WIDTH   = 1024;
     constexpr auto DEFAULT_SHADOW_MAP_HEIGHT  = 1024;
     constexpr auto DEFAULT_LIGHT_DIR_X        = -0.5f;
@@ -23,6 +24,7 @@ namespace NanamiEngine::Core::Application::Configuration
     int   AppConfiguration::windowWidth_      = DEFAULT_WINDOW_WIDTH_SIZE;
     int   AppConfiguration::windowHeight_     = DEFAULT_WINDOW_HEIGHT_SIZE;
     int   AppConfiguration::windowColorScale_ = DEFAULT_WINDOW_COLOR_SCALE;
+    int   AppConfiguration::zBufferBitDepth_  = DEFAULT_Z_BUFFER_BIT_DEPTH;
     int   AppConfiguration::shadowMapWidth_   = DEFAULT_SHADOW_MAP_WIDTH;
     int   AppConfiguration::shadowMapHeight_  = DEFAULT_SHADOW_MAP_HEIGHT;
     float AppConfiguration::lightDirX_        = DEFAULT_LIGHT_DIR_X;
@@ -38,6 +40,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto APP_CONFIG_WIDTH_KEY       = "WindowWidth";
     constexpr auto APP_CONFIG_HEIGHT_KEY      = "WindowHeight";
     constexpr auto APP_CONFIG_SCALE_KEY       = "WindowColorScale";
+    constexpr auto APP_CONFIG_Z_BUFFER_KEY    = "ZBufferBitDepth";
     constexpr auto APP_CONFIG_SHADOW_W_KEY    = "ShadowMapWidth";
     constexpr auto APP_CONFIG_SHADOW_H_KEY    = "ShadowMapHeight";
     constexpr auto APP_CONFIG_LIGHT_DX_KEY    = "LightDirX";
@@ -57,6 +60,7 @@ namespace NanamiEngine::Core::Application::Configuration
         windowWidth_      = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_WIDTH_KEY,      DEFAULT_WINDOW_WIDTH_SIZE);
         windowHeight_     = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_HEIGHT_KEY,     DEFAULT_WINDOW_HEIGHT_SIZE);
         windowColorScale_ = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SCALE_KEY,      DEFAULT_WINDOW_COLOR_SCALE);
+        zBufferBitDepth_  = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_Z_BUFFER_KEY,   DEFAULT_Z_BUFFER_BIT_DEPTH);
         shadowMapWidth_   = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_W_KEY,   DEFAULT_SHADOW_MAP_WIDTH);
         shadowMapHeight_  = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_H_KEY,   DEFAULT_SHADOW_MAP_HEIGHT);
         lightDirX_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DX_KEY,   DEFAULT_LIGHT_DIR_X);
@@ -81,6 +85,7 @@ namespace NanamiEngine::Core::Application::Configuration
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_WIDTH_KEY,      windowWidth_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_HEIGHT_KEY,     windowHeight_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SCALE_KEY,      windowColorScale_);
+        Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_Z_BUFFER_KEY,   zBufferBitDepth_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_W_KEY,   shadowMapWidth_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_H_KEY,   shadowMapHeight_);
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DX_KEY,   lightDirX_);
@@ -103,6 +108,9 @@ namespace NanamiEngine::Core::Application::Configuration
     void  AppConfiguration::SetWindowWidth(int w)   { windowWidth_      = w; }
     void  AppConfiguration::SetWindowHeight(int h)  { windowHeight_     = h; }
     void  AppConfiguration::SetWindowColorScale(int s) { windowColorScale_ = s; }
+
+    int   AppConfiguration::GetZBufferBitDepth()          { return zBufferBitDepth_; }
+    void  AppConfiguration::SetZBufferBitDepth(int depth) { zBufferBitDepth_ = depth; }
 
     int   AppConfiguration::GetShadowMapWidth()         { return shadowMapWidth_; }
     int   AppConfiguration::GetShadowMapHeight()        { return shadowMapHeight_; }
@@ -150,6 +158,21 @@ namespace NanamiEngine::Core::Application::Configuration
             SetWindowWidth(w);
             SetWindowHeight(h);
             SetWindowColorScale(s);
+            Save();
+        }
+
+        /** DxLib の SetZBufferBitDepth が受け付けるのは 16 / 24 / 32 のみ */
+        constexpr int zBufferBitDepths[] = { 16, 24, 32 };
+        int zBufferIndex = 1;
+        for (int i = 0; i < IM_ARRAYSIZE(zBufferBitDepths); ++i)
+        {
+            if (zBufferBitDepths[i] == GetZBufferBitDepth())
+                zBufferIndex = i;
+        }
+        ImGui::SetNextItemWidth(100);
+        if (ImGui::Combo("Z Buffer Bit Depth", &zBufferIndex, "16\0" "24\0" "32\0"))
+        {
+            SetZBufferBitDepth(zBufferBitDepths[zBufferIndex]);
             Save();
         }
         ImGui::TextDisabled("* Restart required to apply");

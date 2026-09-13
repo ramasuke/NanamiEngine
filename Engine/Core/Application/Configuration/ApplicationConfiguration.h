@@ -24,6 +24,9 @@ namespace NanamiEngine::Core::Application::Configuration
         static void                SetWindowHeight(int height);
         static void                SetWindowColorScale(int scale);
 
+        [[nodiscard]] static int   GetZBufferBitDepth();
+        static void                SetZBufferBitDepth(int bitDepth);
+
         [[nodiscard]] static int   GetShadowMapWidth();
         [[nodiscard]] static int   GetShadowMapHeight();
         static void                SetShadowMapWidth(int w);
@@ -55,6 +58,8 @@ namespace NanamiEngine::Core::Application::Configuration
         static int windowWidth_;
         static int windowHeight_;
         static int windowColorScale_;
+
+        static int zBufferBitDepth_;
 
         static int shadowMapWidth_;
         static int shadowMapHeight_;
