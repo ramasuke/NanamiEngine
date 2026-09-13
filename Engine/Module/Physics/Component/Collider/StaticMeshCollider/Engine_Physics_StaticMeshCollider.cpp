@@ -202,15 +202,16 @@ namespace NanamiEngine::Module::Component
             return VGet(p.x, p.y, p.z);
         };
 
+        const unsigned int color = DebugDrawColor(GetColor(0,255,0));
         for (const auto& tri : tris)
         {
             const VECTOR p0 = xf({verts[tri.mIdx[0]].x, verts[tri.mIdx[0]].y, verts[tri.mIdx[0]].z});
             const VECTOR p1 = xf({verts[tri.mIdx[1]].x, verts[tri.mIdx[1]].y, verts[tri.mIdx[1]].z});
             const VECTOR p2 = xf({verts[tri.mIdx[2]].x, verts[tri.mIdx[2]].y, verts[tri.mIdx[2]].z});
 
-            DrawLine3D(p0, p1, GetColor(0,255,0));
-            DrawLine3D(p1, p2, GetColor(0,255,0));
-            DrawLine3D(p2, p0, GetColor(0,255,0));
+            DrawLine3D(p0, p1, color);
+            DrawLine3D(p1, p2, color);
+            DrawLine3D(p2, p0, color);
         }
     }
 

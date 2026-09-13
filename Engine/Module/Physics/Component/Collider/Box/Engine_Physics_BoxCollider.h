@@ -12,7 +12,8 @@ namespace NanamiEngine::Module::Component
         void OnDrawGui  () override;
         void OnDebugDraw() const override;
         [[nodiscard]] JPH::RefConst<JPH::Shape> CreateColliderShape() const override;
-        
+        [[nodiscard]] Physics::ColliderShapeKind ShapeKind() const override { return Physics::ColliderShapeKind::Box; }
+
         glm::vec3 size_   = glm::vec3(10, 10, 10);
         
 #pragma region Serialization Function

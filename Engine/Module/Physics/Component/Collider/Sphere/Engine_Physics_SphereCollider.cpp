@@ -49,7 +49,8 @@ namespace NanamiEngine::Module::Component
     void SphereCollider::OnDebugDraw() const
     {
         const auto drawSpherePos = offset_ * Transform().GetWorldScale().z + Transform().GetWorldPos();
-        DrawSphere3D({drawSpherePos.x, drawSpherePos.y, drawSpherePos.z}, radius_ * Transform().GetWorldScale().z, 16, GetColor(200, 200, 0), GetColor(200, 200, 0), false);
+        const unsigned int color = DebugDrawColor(GetColor(200, 200, 0));
+        DrawSphere3D({drawSpherePos.x, drawSpherePos.y, drawSpherePos.z}, radius_ * Transform().GetWorldScale().z, 16, color, color, false);
     }
 
     JPH::RefConst<JPH::Shape> SphereCollider::CreateColliderShape() const

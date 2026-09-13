@@ -12,6 +12,7 @@ namespace NanamiEngine::Module::Component
         void OnDebugDraw() const override;
         [[nodiscard]] const glm::vec3& CalcColliderWorldPos() const;
         [[nodiscard]] JPH::RefConst<JPH::Shape> CreateColliderShape() const override;
+        [[nodiscard]] Physics::ColliderShapeKind ShapeKind() const override { return Physics::ColliderShapeKind::Cylinder; }
 
         float radius_ = 5.0f;
         float height_ = 10.0f;

@@ -18,6 +18,7 @@ namespace NanamiEngine::Module::Component
         void OnStart    () override;
         void OnDebugDraw() const override;
         [[nodiscard]] JPH::RefConst<JPH::Shape> CreateColliderShape() const override;
+        [[nodiscard]] Physics::ColliderShapeKind ShapeKind() const override { return Physics::ColliderShapeKind::StaticMesh; }
 
 #pragma region Serialization Function
     public:

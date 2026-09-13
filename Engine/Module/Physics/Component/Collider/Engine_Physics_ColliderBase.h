@@ -6,6 +6,8 @@
 #include "Jolt/Physics/Body/BodyID.h"
 #include "Jolt/Physics/Body/MotionType.h"
 #include "Engine_Physics_Constraints.h"
+#include "Engine_Physics_ColliderShapeKind.h"
+#include "../../../LifeCycleCallback/GuidRenderer/IDebugRenderable.h"
 #include "fwd.hpp"
 #include "../../Layer/Engine_Physics_PhysicsLayer.h"
 #include "../../UserData/Engine_Physics_UserData.h"
@@ -27,6 +29,7 @@ namespace NanamiEngine::Module::Component
                          public LifeCycleCallback::IAwakable,
                          public LifeCycleCallback::IBeginPhysics,
                          public LifeCycleCallback::IEndPhysics,
+                         public LifeCycleCallback::IDebugRenderable,
                          public Physics::ICollider
     {
     public:
@@ -43,6 +46,8 @@ namespace NanamiEngine::Module::Component
 
     protected:
         [[nodiscard]] virtual JPH::RefConst<JPH::Shape> CreateColliderShape() const = 0;
+        [[nodiscard]] virtual Physics::ColliderShapeKind ShapeKind() const = 0;
+        [[nodiscard]] unsigned int DebugDrawColor(unsigned int normalColor) const;
 
 
         [[serialize(4)]] glm::vec3 offset_         = glm::vec3(0, 0, 0);
@@ -63,6 +68,7 @@ namespace NanamiEngine::Module::Component
         virtual void OnAwake ();
         void OnBeginPhysics  () override;
         void OnUpdatedPhysics() override;
+        void OnDebugRender   () override;
         void BasedOnDrawgui  () override;
         void OnDestroy       () override;
         

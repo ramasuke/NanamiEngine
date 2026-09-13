@@ -5,6 +5,7 @@
 #include "ImGuiHelper.h"
 #include "../../../FileSystem/Directory/Directory.h"
 #include "../../Configuration/ApplicationConfiguration.h"
+#include "../../Configuration/DebugDraw/ApplicationConfiguration_DebugDraw.h"
 #include "../../Configuration/Network/ApplicationConfiguration_Network.h"
 #include "../../Configuration/Physics/ApplicationConfiguration_Physics.h"
 #include "../../ApplicationBase.h"
@@ -63,6 +64,11 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
             if (ImGui::BeginTabItem("Physics"))
             {
                 Application::Configuration::PhysicsConfiguration::DrawConfigGUI();
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Debug Draw"))
+            {
+                Application::Configuration::DebugDrawConfiguration::DrawConfigGUI();
                 ImGui::EndTabItem();
             }
             ImGui::EndTabBar();

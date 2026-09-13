@@ -1,6 +1,8 @@
 ﻿#include "Engine_Physics_ColliderBase.h"
 
+#include <DxLib.h>
 #include "fwd.hpp"
+#include "../../../../Core/Application/Configuration/DebugDraw/ApplicationConfiguration_DebugDraw.h"
 #include "../../../../Core/Application/Time/Time.h"
 #include "../../../../Core/Physics/Physics.h"
 #include "../../../GameObject/Transform/Transform.h"
@@ -193,6 +195,22 @@ namespace NanamiEngine::Module::Component
         }
     }
     
+    void ColliderBase::OnDebugRender()
+    {
+        if (!IsEnable())
+            return;
+
+        if (!Core::Application::Configuration::DebugDrawConfiguration::ShouldDrawCollider(ShapeKind(), layer_, isSensor_))
+            return;
+
+        OnDebugDraw();
+    }
+
+    unsigned int ColliderBase::DebugDrawColor(const unsigned int normalColor) const
+    {
+        return isSensor_ ? GetColor(0, 180, 255) : normalColor;
+    }
+
     void ColliderBase::OnDestroy()
     {
         auto& physics = Core::Application::ApplicationBase::Physics();

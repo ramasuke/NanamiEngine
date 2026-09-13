@@ -693,6 +693,9 @@
     <ClCompile Include="Engine\Module\LifeCycleCallback\GuidRenderer\IDebugRenderable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Configuration\DebugDraw\ApplicationConfiguration_DebugDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Libs\LibCore\Rx\ReadOnlyReactiveContext\ReadOnlyReactiveContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -5968,6 +5971,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\Physics\Layer\Engine_Physics_PhysicsLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Configuration\DebugDraw\ApplicationConfiguration_DebugDraw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Physics\Component\Collider\Engine_Physics_ColliderShapeKind.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\Physics\Engine_Physics_Physics.h">

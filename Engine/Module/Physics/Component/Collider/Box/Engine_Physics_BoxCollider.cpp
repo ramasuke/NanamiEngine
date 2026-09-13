@@ -70,7 +70,7 @@ void Component::BoxCollider::OnDebugDraw() const
         v = worldPos + worldRot * v;
     }
 
-    Render3D::Shapes::DrawCube3DFromVertices(localVertices, GetColor(0,200,0));
+    Render3D::Shapes::DrawCube3DFromVertices(localVertices, DebugDrawColor(GetColor(0,200,0)));
 }
 
 JPH::RefConst<JPH::Shape> Component::BoxCollider::CreateColliderShape() const
