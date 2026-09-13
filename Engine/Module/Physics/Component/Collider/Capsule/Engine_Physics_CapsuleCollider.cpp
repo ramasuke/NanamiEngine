@@ -19,7 +19,7 @@ namespace NanamiEngine::Module::Component
             radius_ * Transform().GetWorldScale().z,
             height_ * 0.5f * Transform().GetWorldScale().y,
             drawRotation,
-            DebugDrawColor(GetColor(200, 200, 0))
+            DebugDrawColor(GetColor(0, 200, 0))
         );
     }
 
