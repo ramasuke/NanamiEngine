@@ -1,4 +1,5 @@
 ﻿#include "TtfFontFile.h"
+#include "../../../../../Libs/LibCore/DxLib/ShiftJis.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -24,6 +25,6 @@ namespace NanamiEngine::Module::Asset
     {
         if (AddFontResourceExA(contentPath_.c_str(), FR_PRIVATE, nullptr) > 0)
             addedFontResourcePath_ = contentPath_;
-        dxLibHandle_ = CreateFontToHandle(fontName_.c_str(), size_, thickness_, fontType_);
+        dxLibHandle_ = CreateFontToHandle(LibCore::Dxlib::Utf8ToShiftJis(fontName_).c_str(), size_, thickness_, fontType_);
     }
 }

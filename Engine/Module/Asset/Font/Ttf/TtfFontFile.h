@@ -58,6 +58,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(thickness_));
             archive(CEREAL_NVP(fontType_));
             archive(CEREAL_NVP(guid_));
+            archive(CEREAL_NVP(contentPath_));
         }
 
         template<class Archive>
@@ -73,13 +74,14 @@ namespace NanamiEngine::Module::Asset
             // version 1 まではハンドル値を保存していた。デストラクタで解放するため、古い値はメンバに入れず読み捨てる
             int legacyDxLibHandle = -1;
             if (version <= 1) archive(cereal::make_nvp("dxLibHandle_", legacyDxLibHandle));
+            if (version >= 3) archive(CEREAL_NVP(contentPath_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::TtfFontFile, 2);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::TtfFontFile, 3);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::TtfFontFile);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::TtfFontFile);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::TtfFontFile);
