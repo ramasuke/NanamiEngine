@@ -10,9 +10,9 @@ namespace GamePlay::Ui
 {
     namespace
     {
-        constexpr float MinVisibleDanger    = 0.01f;
-        constexpr float PulseDecay_secs     = 0.09f;
-        constexpr float DubPulseStrength    = 0.6f;
+        constexpr float MIN_VISIBLE_DANGER = 0.01f;
+        constexpr float PULSE_DECAY_SECS   = 0.09f;
+        constexpr float DUB_PULSE_STRENGTH = 0.6f;
     }
 
     void LowHealthScreenEffect::Initialize(const GameCore::PlayerAvatar::IPlayerAvatarStatus& model)
@@ -59,7 +59,7 @@ namespace GamePlay::Ui
 
         const float bpm = std::lerp(minBpm_, maxBpm_, danger_);
         sinceBeat_secs_ += deltaTime;
-        if (!isDowned && danger_ > MinVisibleDanger && sinceBeat_secs_ >= 60.0f / (std::max)(bpm, 1.0f))
+        if (!isDowned && danger_ > MIN_VISIBLE_DANGER && sinceBeat_secs_ >= 60.0f / (std::max)(bpm, 1.0f))
         {
             sinceBeat_secs_ = 0.0f;
             PlayHeartbeat(danger_);
@@ -87,7 +87,7 @@ namespace GamePlay::Ui
 
         // 被弾と同時に1拍打たせ、鼓動の位相を被弾に揃える
         const float targetDanger = CalcDanger(healthRate_);
-        if (health < lastHealth_ && !isDowned_ && targetDanger > MinVisibleDanger)
+        if (health < lastHealth_ && !isDowned_ && targetDanger > MIN_VISIBLE_DANGER)
         {
             sinceBeat_secs_ = 0.0f;
             PlayHeartbeat((std::max)(danger_, targetDanger));
@@ -120,9 +120,9 @@ namespace GamePlay::Ui
 
     float LowHealthScreenEffect::CalcPulse(const float sinceBeat_secs) const
     {
-        float pulse = std::exp(-sinceBeat_secs / PulseDecay_secs);
+        float pulse = std::exp(-sinceBeat_secs / PULSE_DECAY_SECS);
         if (sinceBeat_secs >= dubDelay_secs_)
-            pulse += DubPulseStrength * std::exp(-(sinceBeat_secs - dubDelay_secs_) / PulseDecay_secs);
+            pulse += DUB_PULSE_STRENGTH * std::exp(-(sinceBeat_secs - dubDelay_secs_) / PULSE_DECAY_SECS);
         return (std::min)(pulse, 1.0f);
     }
 

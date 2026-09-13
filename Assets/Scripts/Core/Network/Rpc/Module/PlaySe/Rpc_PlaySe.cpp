@@ -8,7 +8,6 @@
 
 namespace
 {
-    // 汎用演出RPC: 宛先 NetworkObject がこのピアに存在すれば、指定 SE を指定位置で鳴らす
     struct PlaySeRpcRegistration
     {
         PlaySeRpcRegistration()

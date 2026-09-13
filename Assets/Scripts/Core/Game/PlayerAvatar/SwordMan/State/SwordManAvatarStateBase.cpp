@@ -22,10 +22,10 @@
 
 namespace
 {
-    /** 設定値は適当:  */
+    /** 設定値は適当 */
     const std::vector DEFAULT_FOOTSTEP_CONTACT_PHASES = { 0.25f, 0.75f };
 
-    // Target側コライダー表面での取りこぼし（浮動小数誤差）を避けるための余白
+    // Target側コライダー表面での取りこぼしを避けるための余白
     constexpr float LOCK_ON_LOS_RAY_MARGIN = 1.0f;
 
     /**
@@ -223,8 +223,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     {
         if (ExpiredCamera())
             return;
-
-        // 対象が死亡して weak_ptr が切れた場合も lock() で吸収する
+        
         const auto target = CameraGroup().LockOnTarget().lock();
         if (!target)
             return;
@@ -242,6 +241,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         for (const auto& candidate : LockOnDetectionArea().Candidates())
             if (candidate.lock() == currentTarget)
                 return HasLineOfSight(currentTarget); // 索敵範囲内でも遮蔽されたら解除
+        
         return false; // 索敵範囲外に出た
     }
 
@@ -282,15 +282,14 @@ namespace GameCore::PlayerAvatar::SwordMan
         const float distance = glm::length(diff);
         if (distance <= 0.0f)
             return true;
-
-        // Playerのみ除外（Default・Enemyは視線を遮る対象として扱う）
+        
         Physics::LayerMask mask = Physics::CreateLayerMask();
         Physics::AddLayer(mask, Physics::Layer::Default);
         Physics::AddLayer(mask, Physics::Layer::Enemy);
 
         const auto hit = Physics::Raycast(origin, diff, distance + LOCK_ON_LOS_RAY_MARGIN, mask);
         if (!hit.Hit())
-            return false; // 何にも当たらなかった＝対象自体にも当たっていない異常系。安全側に倒す
+            return false;
 
         return &hit.HitObject() == target.get();
     }

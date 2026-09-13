@@ -155,7 +155,6 @@ namespace LibCore::ImGuiHelper
         }
     }
 
-    // 要素型の OnDrawInputField は定義時点の名前探索でしか見つからないので、全オーバーロードより後に置く
     template <typename Container>
     static void
     OnDrawInputField(const std::string& label, Container& container, const std::function<void()>& drawAddButton)

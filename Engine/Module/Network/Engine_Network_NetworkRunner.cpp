@@ -54,7 +54,7 @@ namespace NanamiEngine::Module::Network
     bool NetworkRunnerBase::IsLocallyOwned(const Core::Network::NetworkObjectId id) const
     {
         const auto owner = OwnerOf(id);
-        // オフライン時は双方 Invalid になるので、Invalid 同士の一致で権威が立たないよう明示的に弾く
+        //NOTE: オフライン時は双方 Invalid になるので、Invalid 同士の一致で権威が立たないよう明示的に弾く
         return owner != Core::Network::PlayerId::Invalid() && owner == GetPlayerId();
     }
 

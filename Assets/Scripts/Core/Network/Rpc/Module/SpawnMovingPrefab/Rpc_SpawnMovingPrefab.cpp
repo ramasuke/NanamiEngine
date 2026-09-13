@@ -9,8 +9,6 @@
 
 namespace
 {
-    // 汎用RPC: プレハブを生成して targetPos まで直線移動させる。
-    // 投射物(IAttackProjectile)ならダメージも設定する(被弾判定は各ピアが自分の所有アバターに対して行う)
     struct SpawnMovingPrefabRpcRegistration
     {
         SpawnMovingPrefabRpcRegistration()

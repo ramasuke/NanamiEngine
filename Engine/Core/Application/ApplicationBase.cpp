@@ -52,7 +52,6 @@ namespace NanamiEngine::Core::Application
         ChangeWindowMode       (true          );
         SetGraphMode           (Configuration::AppConfiguration::GetWindowWidth(), Configuration::AppConfiguration::GetWindowHeight(), Configuration::AppConfiguration::GetWindowColorScale());
         SetUseDirect3DVersion  (DX_DIRECT3D_11);
-        // カメラが障害物に寄った際にNearクリップを動的に縮めるため、既定の16bitでは遠景のZ精度が足りない
         SetZBufferBitDepth     (Configuration::AppConfiguration::GetZBufferBitDepth());
         SetUseZBuffer3D        (TRUE          );
         SetWriteZBuffer3D      (TRUE          );
@@ -131,8 +130,6 @@ namespace NanamiEngine::Core::Application
 
         // emplace で古いアセットが破棄されてから新しいアセットが登録される
         assetsDirectory_.emplace(Configuration::AppConfiguration::GetAssetsDirectoryPath());
-
-        // .meta のあるアセットは同じ Guid で上書きされているので残り、.meta の無いアセット（毎回新しい Guid）の古い登録だけが消える
         for (const auto& guid : oldAssetGuids)
         {
             ObjectRegistry_().RemoveIfExpired(guid);

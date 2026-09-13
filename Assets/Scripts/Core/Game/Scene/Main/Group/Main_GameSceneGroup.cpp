@@ -77,8 +77,6 @@ namespace GameCore::Scene::Main
             }
             catch (const NanamiEngine::Module::Exception::NanamiException& exception)
             {
-                // Scene ファイルの破損などで遷移に失敗した。前の Scene は既に Dispose 済みなので currentScene_ は更新しない
-                // （GameWindow が次フレームで初期 Scene に戻す）
                 NanamiEngine::Module::LogError("GameSceneGroup: シーン遷移に失敗しました: " + std::string(exception.what()));
             }
         }

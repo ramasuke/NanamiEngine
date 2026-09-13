@@ -1,12 +1,9 @@
 ﻿#include "PlayerAvatarStateCondition.h"
 
-#include "DxLib.h"
-#include "../../../../../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../Engine/Module/Physics/Component/Listener/Collision/Engine_Physics_CollisionListener.h"
 #include "../../../../../GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
 #include "../../../../../GamePlay/PlayerAvatar/WakeUpArea/WakeUpArea.h"
-#include "../../../../../GamePlay/Prop/AirShip/Prop_AirShip.h"
 #include "../../../../../GamePlay/Prop/Canon/Prop_Canon.h"
 
 namespace GameCore::PlayerAvatar::State
@@ -22,8 +19,7 @@ namespace GameCore::PlayerAvatar::State
         Physics::LayerMask mask;
         Physics::AddLayer(mask, Physics::Layer::Default);
 
-        // 太さ0のRayだと段差の縁や地形の隙間で抜けて Floating 扱いになるため、球で判定する。
-        // 開始時点で地面に重なるとDistance()==0のHitになるので、球の下端が足元+UpOffsetに来るよう中心を半径分持ち上げる
+        //NOTE: Rayだと段差の縁や地形の隙間で抜けて Floating になるため球判定
         const float radius = stateContext_->GroundCheckRadius();
         return Physics::SphereCast(stateContext_->PlayerAvatarFeatStepPos() + glm::vec3(0.0f, stateContext_->GroundCheckUpOffset() + radius, 0.0f),
                                    radius,

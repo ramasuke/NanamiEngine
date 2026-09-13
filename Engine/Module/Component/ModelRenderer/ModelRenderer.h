@@ -28,26 +28,18 @@ namespace NanamiEngine::Module::Component
                                 public IShaderConstantBufferHost
     {
     public:
-        // DxLib(Direct3D 11) は定数バッファスロット b0～b3 を内部で使用しているため、
-        // カスタムシェーダー用の定数バッファは b4 に割り当てる。
-        // (HLSL 側も register(b4) で受ける必要がある)
         static constexpr int CUSTOM_SHADER_CB_SLOT = 4;
         static constexpr int CUSTOM_SHADER_CB_SIZE = 256;
 
         int modelDxLibHandle_ = -1;
 
-        // カスタムシェーダー用の定数バッファハンドルを返す(未生成なら生成する)。
-        // vsFile_ / psFile_ が有効でない場合は -1。
         [[nodiscard]] int GetOrCreateShaderConstantBufferHandle() override;
-
-        // 表示するモデルを差し替える(既にハンドルを持っていれば破棄して取り直す)
         void SetMv1File(const std::shared_ptr<Asset::Mv1File>& mv1File);
         /** @brief 描画位置だけをワールド空間でずらす(Transform・物理・同期には影響しない) */
         void SetRenderOffset(const glm::vec3& offset) { renderOffset_ = offset; }
 
     private:
         void InitRenderer    () override;
-        // mv1File_ からハンドルを取り直す。InitRenderer / SetMv1File / GUI のどこから呼ばれても二重ロードしない
         void ReloadModel     ();
         void OnShadowRender  () override;
         void OnRender        () override;
@@ -72,8 +64,7 @@ namespace NanamiEngine::Module::Component
         
         std::vector<bool> rigidTriangleList_;
         bool              allRigid_ = true;
-
-        // カスタムシェーダー適用前のマテリアルのブレンド設定 (mode, param) の退避
+        
         std::vector<std::pair<int, int>> originalMaterialBlend_;
 
         glm::vec3 prevWorldPos_   {};

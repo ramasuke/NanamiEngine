@@ -9,9 +9,6 @@ namespace NanamiEngine::Module::Component
 {
     namespace
     {
-        // DxLib(DX11) はトライアングルリストの頂点タイプごとに頂点レイアウトが異なる。
-        // 剛体メッシュ用の頂点シェーダーで描画できるのはボーン情報を持たないタイプのみ。
-        // (FREE_FRAME は DxLib 側で CPU スキニングされ、剛体メッシュとして描画される)
         bool IsRigidVertexType(const int vertexType)
         {
             switch (vertexType)
@@ -56,7 +53,7 @@ namespace NanamiEngine::Module::Component
         rigidTriangleList_.clear();
         originalMaterialBlend_.clear();
         allRigid_           = true;
-        customStateApplied_ = false; // 新しいハンドルはデフォルト状態
+        customStateApplied_ = false;
 
         if (modelDxLibHandle_ == -1)
             return;
@@ -165,7 +162,6 @@ namespace NanamiEngine::Module::Component
             return;
 
         // カスタムシェーダーが設定されている場合はシャドウをスキップ
-        // （透明度制御がシェーダー側にあるため、影だけ落ちる状態を防ぐ）
         if (HasCustomShader())
             return;
 
@@ -238,8 +234,6 @@ namespace NanamiEngine::Module::Component
         }
         else
         {
-            // 4/8 ボーンのスキンメッシュは剛体用頂点シェーダーでは描画できないため、
-            // そのトライアングルリストだけ DxLib 標準シェーダーで描画する(フェードは掛からない)
             const int listNum = (std::min)(MV1GetTriangleListNum(modelDxLibHandle_),
                                            static_cast<int>(rigidTriangleList_.size()));
             for (int i = 0; i < listNum; ++i)

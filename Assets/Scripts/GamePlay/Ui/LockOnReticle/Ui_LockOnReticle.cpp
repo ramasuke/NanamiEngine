@@ -110,7 +110,7 @@ namespace GamePlay::Ui
 
             const float pulse = 0.75f + 0.25f * std::sin(elapsed_secs_ * 2.0f * PI / CANDIDATE_PULSE_PERIOD_SECS);
             DrawSprite(
-                candidateSprite_.get().lock(),
+                candidateSprite_.get(),
                 candidatePointWorld_,
                 candidateScale_,
                 0.0f,
@@ -152,8 +152,8 @@ namespace GamePlay::Ui
         }
 
         const float scale = reticleScale_ * std::max(scaleRate, MIN_SCALE_RATE);
-        DrawSprite(ringSprite_   .get().lock(), lockOnPointWorld_, scale,              ringAngle_,   alpha);
-        DrawSprite(bracketSprite_.get().lock(), lockOnPointWorld_, scale * breathRate, bracketAngle, alpha);
+        DrawSprite(ringSprite_   .get(), lockOnPointWorld_, scale,              ringAngle_,   alpha);
+        DrawSprite(bracketSprite_.get(), lockOnPointWorld_, scale * breathRate, bracketAngle, alpha);
     }
 
     void LockOnReticle::DrawSprite(
@@ -190,6 +190,5 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("engageDuration_secs_",  engageDuration_secs_);
         ImGuiHelper::OnDrawInputField("engageStartScaleRate_", engageStartScaleRate_);
         ImGuiHelper::OnDrawInputField("releaseDuration_secs_", releaseDuration_secs_);
-        ImGuiHelper::OnDrawInputField("releaseEndScaleRate_",  releaseEndScaleRate_);
-    }
+        ImGuiHelper::OnDrawInputField("releaseEndScaleRate_",  releaseEndScaleRate_);    }
 }

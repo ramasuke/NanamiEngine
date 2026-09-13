@@ -20,19 +20,19 @@ namespace GameCore::Network
         SyncAvatarState,
 
         /** 汎用演出RPC */
-        PlaySe,             // (Guid soundGuid, glm::vec3 position)
-        PlayBgm,            // (Guid bgmGuid)
-        SpawnPrefab,        // (Guid prefabGuid, glm::vec3 position, float lifeTime_secs) lifeTime<=0 なら時限破棄しない
-        SpawnMovingPrefab,  // (Guid prefabGuid, glm::vec3 spawnPos, glm::quat rotation, glm::vec3 targetPos, float moveSpeed, bool destroyOnFinish)
-        PurposeCamera,      // (std::string childCameraName, int priority) 宛先の子オブジェクトを名前で引く
-        ScenePurposeCamera, // (Guid cameraGuid, int priority)
-        Chat,               // (std::string displayName, Guid chatDataGuid)
-        ChangeMainScene,    // (Scene::Main::SceneType sceneType)
-        ShakeCamera,        // (float intensity, float duration) 各ピア自身のカメラを揺らす(対象コンポーネント自体は使わない)
+        PlaySe,             
+        PlayBgm,            
+        SpawnPrefab,        
+        SpawnMovingPrefab,  
+        PurposeCamera,      
+        ScenePurposeCamera, 
+        Chat,               
+        ChangeMainScene,    
+        ShakeCamera,        
 
         /** 敵固有 */
-        AttackAreaFire,     // (Damage::PhysicsPower power) 宛先は AttackArea 自身の NetworkObjectId
-        EnemyDeath,         // (引数なし) 権威側が死亡確定した敵を、他ピアでも同じ NetworkObjectId の個体を破棄させる
+        AttackAreaFire,
+        EnemyDeath,    
     };
 
     using WakeUpPlayerRpc    = Module::Network::RpcDef<ERpcType::WakeUpPlayer>;

@@ -22,8 +22,7 @@ namespace NanamiEngine::Core::Network
         , instanceRegistry_(instanceRegistry)
         , syncTransform_(syncTransform)
     {
-        // 新規参加者へ所有者の上書き一覧を送る(ホストのみ)。
-        // スポーン履歴の再送と到着順が前後しても、レジストリ側が SetOwner 先着を保持するので問題ない
+        // 新規参加者へ所有者の上書き一覧を送る
         newPeerSubscription_ = networkSystem_.OnConnectPlayer().subscribe(
             [this](const ENetEvent* event)
             {
@@ -84,7 +83,7 @@ namespace NanamiEngine::Core::Network
 
             if (policy == OwnerLeavePolicy::Destroy)
             {
-                // ルートだけ破棄すれば子は一緒に破棄される(ImplementDestroy が子へ再帰する)
+                //破棄するべきオブジェクト破棄
                 const auto object = instanceRegistry_.Find(id).lock();
                 if (object && !object->Transform().GetParent())
                     object->OnDestroy();

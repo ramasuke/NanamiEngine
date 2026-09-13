@@ -59,7 +59,6 @@ namespace GameCore::Npc
     void EnemyBase::OnUpdate()
     {
         // NetworkBehaviourTree が付与されており、かつ有効な NetworkObjectId を持つ個体だけ権威側限定でTickする。
-        // まだ有効なIDを持たない個体(スポーン経路未対応)は従来通り全ピアでローカルTickし続ける。
         const bool isAuthorityGated = hasNetworkBehaviourTree_
             && GetNetworkObjectId() != NanamiEngine::Core::Network::NetworkObjectId::Invalid();
 

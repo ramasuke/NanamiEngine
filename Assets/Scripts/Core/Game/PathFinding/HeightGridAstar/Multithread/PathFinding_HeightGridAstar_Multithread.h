@@ -13,8 +13,7 @@
 namespace GameCore::PathFinding
 {
     /**
-     * HeightGridMap 上の A* 経路探索をバックグラウンドスレッドで実行するクラス。
-     * Tick() を毎フレーム呼ぶと searchIntervalSec 間隔でバックグラウンド検索を起動し、
+     * Tick() を毎フレーム呼ぶと searchIntervalSec間隔でバックグラウンド検索を起動し、
      * 結果が出たら Path() で取得できる。
      */
     class HeightGridAstar

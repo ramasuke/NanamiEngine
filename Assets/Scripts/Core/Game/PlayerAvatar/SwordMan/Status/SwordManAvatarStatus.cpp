@@ -28,7 +28,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         , comboNormalAttackStateDuration_secs_(1.8181818182f)
         , attackedShockedStateDuration_secs_  (0.9090909091f)
         , dashAttack_                    (Damage::PhysicsPower(10), EnhancePower(10), 0.6363636364f, 0.7272727273f)
-        , dashAttackLungeSpeed_          (55.0f)
+        , dashAttackLungeSpeed_secs_          (55.0f)
         , comboHitFeel_ {
             HitFeelParam(0.3f, 0.1090909091f, 5.0f , 0.25f, 0.12f),
             HitFeelParam(0.5f, 0.1090909091f, 5.75f, 0.35f, 0.14f),
@@ -78,7 +78,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         , comboNormalAttackStateDuration_secs_(initStatus.ComboNormalAttackStateDuration_secs())
         , attackedShockedStateDuration_secs_  (initStatus.AttackedShockedStateDuration_secs_())
         , dashAttack_                         (initStatus.DashAttack())
-        , dashAttackLungeSpeed_               (initStatus.GetDashAttackLungeSpeed())
+        , dashAttackLungeSpeed_secs_               (initStatus.GetDashAttackLungeSpeed())
         , comboHitFeel_                       (initStatus.ComboHitFeel())
         , dashHitFeel_                        (initStatus.DashHitFeel())
         , comboInputBufferWindow_secs_        (initStatus.GetComboInputBufferWindow_secs())
@@ -257,7 +257,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         LibCore::ImGuiHelper::OnDrawInputField("comboNormalAttackStateDuration_secs_", comboNormalAttackStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("attackedShockedStateDuration_secs_", attackedShockedStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("dashAttack_", dashAttack_);
-        LibCore::ImGuiHelper::OnDrawInputField("dashAttackLungeSpeed_", dashAttackLungeSpeed_);
+        LibCore::ImGuiHelper::OnDrawInputField("dashAttackLungeSpeed_", dashAttackLungeSpeed_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("comboHitFeel_", comboHitFeel_, [] {});
         LibCore::ImGuiHelper::OnDrawInputField("dashHitFeel_", dashHitFeel_);
         LibCore::ImGuiHelper::OnDrawInputField("comboInputBufferWindow_secs_", comboInputBufferWindow_secs_);

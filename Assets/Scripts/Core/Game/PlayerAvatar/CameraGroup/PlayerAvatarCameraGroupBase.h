@@ -24,7 +24,6 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] bool IsLockedOn() const { return isLockedOn_; }
         [[nodiscard]] std::weak_ptr<GameObject::IGameObject> LockOnTarget() const { return lockOnTarget_; }
 
-        // 今ロックオン入力をしたら狙う対象（未ロック時のヒント表示用）。いなければ nullptr を渡す
         void SetLockOnCandidate(const std::shared_ptr<GameObject::IGameObject>& candidate) { lockOnCandidate_ = candidate; }
         [[nodiscard]] std::weak_ptr<GameObject::IGameObject> LockOnCandidate() const { return lockOnCandidate_; }
 

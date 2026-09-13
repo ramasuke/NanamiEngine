@@ -28,7 +28,7 @@ namespace GameCore::PathFinding
         if (isReady_.load(std::memory_order_acquire))
         {
             {
-                std::lock_guard lock(mutex_);
+                std::scoped_lock lock(mutex_);
                 cachedPath_ = resultPath_;
             }
             hasPath_     = !cachedPath_.empty();

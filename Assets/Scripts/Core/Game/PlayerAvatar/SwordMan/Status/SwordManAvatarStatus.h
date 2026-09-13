@@ -88,7 +88,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] float                             JumpCooldown_secs                    () const          { return jumpCooldown_secs_;        }
         [[nodiscard]] bool                              CanJump                              () const          { return jumpCooldownRemaining_secs_ <= 0.0f; }
         [[nodiscard]] AttackParam<Damage::PhysicsPower> DashAttack                           () const          { return dashAttack_;  }
-        [[nodiscard]] float                             DashAttackLungeSpeed                 () const          { return dashAttackLungeSpeed_; }
+        [[nodiscard]] float                             DashAttackLungeSpeed                 () const          { return dashAttackLungeSpeed_secs_; }
         [[nodiscard]] bool                              IsDamaged                            () const;
         [[nodiscard]] float                             DamageStateDuration_secs             () const   { return damageStateDuration_secs_; }
         [[nodiscard]] float                             AvoidRollingStateDuration_secs       () const   { return avoidRollingStateDuration_secs_; }
@@ -142,11 +142,11 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serialize(12)]] float                     walkAccelerationTime_secs_; ///< 0から最高速に達するまでの時間
         [[serialize(12)]] float                     runAccelerationTime_secs_;
         [[serialize(0)]] float                      moveRotateSpeed_;
-        [[serialize(7)]] float                      lockOnAttackRotateSpeed_; ///< 攻撃の予備動作中にロックオン対象へ向く回転速度 [rad/s]
+        [[serialize(7)]] float                      lockOnAttackRotateSpeed_; 
         [[serialize(0)]]  float                     jumpPower_;
         [[serialize(10)]] float                     jumpStateDuration_secs_;
         [[serialize(10)]] float                     jumpCooldown_secs_;
-        float                                        jumpCooldownRemaining_secs_ = 0.0f;
+        float                                       jumpCooldownRemaining_secs_ = 0.0f;
         [[serailize(0)]] float                      damageStateDuration_secs_;
         [[serailize(0)]] float                      avoidRollingStateDuration_secs_;
         [[serialize(0)]] float                      avoidRollingStaminaCost_;
@@ -187,7 +187,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             archive(CEREAL_NVP(avoidRollingStaminaCost_));
             archive(CEREAL_NVP(attackedShockedStateDuration_secs_));
             archive(CEREAL_NVP(dashAttack_));
-            archive(CEREAL_NVP(dashAttackLungeSpeed_));
+            archive(CEREAL_NVP(dashAttackLungeSpeed_secs_));
             archive(CEREAL_NVP(comboHitFeel_));
             archive(CEREAL_NVP(dashHitFeel_));
             archive(CEREAL_NVP(comboInputBufferWindow_secs_));
@@ -233,7 +233,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             if (version >= 6) archive(CEREAL_NVP(avoidRollingStaminaCost_));
             if (version >= 1) archive(CEREAL_NVP(attackedShockedStateDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(dashAttack_));
-            if (version >= 8) archive(CEREAL_NVP(dashAttackLungeSpeed_));
+            if (version >= 8) archive(CEREAL_NVP(dashAttackLungeSpeed_secs_));
             if (version >= 9) archive(CEREAL_NVP(comboHitFeel_));
             if (version >= 9) archive(CEREAL_NVP(dashHitFeel_));
             if (version >= 9) archive(CEREAL_NVP(comboInputBufferWindow_secs_));

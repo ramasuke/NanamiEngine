@@ -15,7 +15,6 @@ namespace NanamiEngine::Core::Network
         Entry& entry   = entries_[id.Value()];
         entry.instance = object;
         entry.policy   = policy;
-        // SetOwner が先に届いている(後入りの OwnershipSnapshot)場合はその所有者を保持する
         if (entry.owner == PlayerId::Invalid())
             entry.owner = id.SpawnerId();
 

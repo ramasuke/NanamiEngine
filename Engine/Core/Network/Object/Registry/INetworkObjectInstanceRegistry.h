@@ -11,11 +11,11 @@ namespace NanamiEngine::Module::GameObject
 
 namespace NanamiEngine::Core::Network
 {
-    /** 所有者が離脱したときにそのオブジェクトをどう扱うか(RegisterWithId 時に決める) */
+    /** 所有者が離脱したときにそのオブジェクトをどう扱うか */
     enum class OwnerLeavePolicy : uint8_t
     {
-        Transfer = 0, // 所有権をホストへ移す(敵・ワールドオブジェクト)
-        Destroy  = 1, // 破棄する(プレイヤーアバター)
+        Transfer = 0, // 所有権をホストへ移す
+        Destroy  = 1, // 破棄する
     };
 
     struct OwnedEntry final
@@ -23,8 +23,7 @@ namespace NanamiEngine::Core::Network
         NetworkObjectId  id;
         OwnerLeavePolicy policy;
     };
-
-    /** 「Spawn したピア ≠ 現在の所有者」になっている ID(後入りへ同期する) */
+    
     struct OwnerOverride final
     {
         NetworkObjectId id;
@@ -38,15 +37,14 @@ namespace NanamiEngine::Core::Network
     };
 
     /**
-     * ネットワーク上のオブジェクトインスタンスと、その現在の所有者を管理する。
-     * NetworkObjectId の上位バイトは「Spawn したピア」でしかないので、所有者の判定は必ず OwnerOf() を使うこと。
+     * ネットワーク上のオブジェクトインスタンスの現在の所有者を管理する。
      */
     class INetworkObjectInstanceRegistry
     {
     public:
         virtual ~INetworkObjectInstanceRegistry() = default;
 
-        /** 登録。所有者が未設定なら id.SpawnerId() を初期所有者にする(SetOwner が先に呼ばれていればそれを保持する) */
+        /** 登録。所有者が未設定なら id.SpawnerId()が初期所有者 */
         virtual void RegisterWithId(
             NetworkObjectId id,
             const std::weak_ptr<Module::GameObject::IGameObject>& object,
@@ -61,7 +59,7 @@ namespace NanamiEngine::Core::Network
 
         /** 現在の所有者。未登録なら PlayerId::Invalid() */
         [[nodiscard]] virtual PlayerId OwnerOf(NetworkObjectId id) const = 0;
-        /** 所有者を上書きする。未登録の ID でも所有者だけのエントリを作る(Spawn が後から届いてもよい) */
+        /** 所有者を上書きする。未登録の ID でも所有者だけのエントリを作る */
         virtual void SetOwner(NetworkObjectId id, PlayerId owner) = 0;
 
         [[nodiscard]] virtual std::vector<OwnedEntry> CollectOwnedBy(PlayerId owner) const = 0;
