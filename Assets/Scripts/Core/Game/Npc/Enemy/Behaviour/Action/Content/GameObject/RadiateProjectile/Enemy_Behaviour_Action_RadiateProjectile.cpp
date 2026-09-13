@@ -20,22 +20,15 @@ namespace GameCore::Npc::Enemy::Behaviour
         const auto projectile = GamePlay::Spawn::SpawnMovingPrefab(
             *projectilePrefab_.get(), spawnPos, finalRot, targetPos, moveSpeed_, isFinishedProjectileDestroy_);
 
-        if (const auto projectileObject = projectile.lock())
-        {
-            const auto attackProjectile = projectileObject->Components().Catch<GamePlay::Npc::Enemy::IAttackProjectile>();
-            if (!attackProjectile.expired())
-            {
-                attackProjectile.lock()->SetDamage(physicsDamage_);
-            }
-        }
+        GamePlay::Npc::Enemy::SetProjectileDamage(projectile, physicsDamage_);
 
-        // 権威側限定Tickなら、他ピアにも同じ軌道で投射物(見た目のみ)を出させる。
+        // 権威側限定Tickなら、他ピアにも同じ軌道・ダメージで投射物を出させる(被弾判定は各ピアが自分の所有アバターに対して行う)。
         // targetPos は権威側の値で固定する(Position::TargetObject が各ピアのローカルプレイヤーを指すのを避ける)
         if (context.IsNetworkAuthority())
         {
             GameCore::Network::SpawnMovingPrefabRpc::Send(
                 context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable,
-                projectilePrefab_->GetGuid(), spawnPos, finalRot, targetPos, moveSpeed_, isFinishedProjectileDestroy_);
+                projectilePrefab_->GetGuid(), spawnPos, finalRot, targetPos, moveSpeed_, isFinishedProjectileDestroy_, physicsDamage_);
         }
 
         return TickStatus::Success;

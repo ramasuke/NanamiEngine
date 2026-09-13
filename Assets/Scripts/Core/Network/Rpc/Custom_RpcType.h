@@ -41,7 +41,7 @@ namespace GameCore::Network
     using PlaySeRpc             = Module::Network::RpcDef<ERpcType::PlaySe, Guid, glm::vec3>;
     using PlayBgmRpc            = Module::Network::RpcDef<ERpcType::PlayBgm, Guid>;
     using SpawnPrefabRpc        = Module::Network::RpcDef<ERpcType::SpawnPrefab, Guid, glm::vec3, float>;
-    using SpawnMovingPrefabRpc  = Module::Network::RpcDef<ERpcType::SpawnMovingPrefab, Guid, glm::vec3, glm::quat, glm::vec3, float, bool>;
+    using SpawnMovingPrefabRpc  = Module::Network::RpcDef<ERpcType::SpawnMovingPrefab, Guid, glm::vec3, glm::quat, glm::vec3, float, bool, Damage::PhysicsPower>;
     using PurposeCameraRpc      = Module::Network::RpcDef<ERpcType::PurposeCamera, std::string, int>;
     using ScenePurposeCameraRpc = Module::Network::RpcDef<ERpcType::ScenePurposeCamera, Guid, int>;
     using ChatRpc               = Module::Network::RpcDef<ERpcType::Chat, std::string, Guid>;

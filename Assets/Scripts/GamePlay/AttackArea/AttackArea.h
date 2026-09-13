@@ -57,6 +57,8 @@ namespace GamePlay
         [[nodiscard]] const std::vector<AttackTarget>& Targets          () const;
         [[nodiscard]] int                              AttackTargetCount() const { return static_cast<int>(attackTargets_.size()); }
         [[nodiscard]] Core::Network::NetworkObjectId   NetworkObjectId  () const { return GetNetworkObjectId(); }
+        /** 被弾側判定: 対象がネットワーク上で他ピアの所有物ならダメージを適用しない */
+        [[nodiscard]] static bool IsDamageApplicableTarget(GameObject::IGameObject& targetObject);
 
     protected:
         virtual void DoAttack(AttackTarget attackTarget, std::unique_ptr<GameCore::IDamage> context) = 0;
@@ -64,8 +66,6 @@ namespace GamePlay
     private:
         void OnTriggerEnter(const Physics::Manifold&, const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
         void OnTriggerExit (const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
-        /** 被弾側判定: 対象がネットワーク上で他ピアの所有物ならダメージを適用しない */
-        [[nodiscard]] static bool IsDamageApplicableTarget(GameObject::IGameObject& targetObject);
 
         std::vector<AttackTarget> attackTargets_;
 

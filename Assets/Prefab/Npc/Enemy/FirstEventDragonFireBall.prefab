@@ -7,7 +7,7 @@
     },
     "components_": {
         "cereal_class_version": 0,
-        "componentCount": 2,
+        "componentCount": 3,
         "component_0": {
             "polymorphic_id": 2147483649,
             "polymorphic_name": "NanamiEngine::Module::Component::SphereCollider",
@@ -89,8 +89,25 @@
                             }
                         }
                     },
-                    "playingDuration_secs_": 1.3333332538604737,
+                    "playingDuration_secs_": 1.0,
                     "playMode_": 0
+                }
+            }
+        },
+        "component_2": {
+            "polymorphic_id": 2147483651,
+            "polymorphic_name": "GamePlay::Npc::Enemy::AttackProjectile",
+            "ptr_wrapper": {
+                "id": 2147483652,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "8D76F6FE-4CC6-4E79-B57E-6A5B79496E15"
+                        },
+                        "isEnable_": true
+                    }
                 }
             }
         }
