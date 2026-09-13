@@ -36,6 +36,16 @@ JPH::Vec3 MultiplyVectorCompat(const JPH::RMat44& m, const JPH::Vec3& v)
     return m.Multiply3x3(v);
 }
 
+glm::vec3 NanamiEngine::Module::Physics::GetCenterOfMassPosition(const JPH::BodyID& bodyId)
+{
+    const auto& bodyInterface =
+        Core::Application::ApplicationBase::Physics()
+        .GetPhysicsSystem()
+        .GetBodyInterface();
+
+    return ToVec3(bodyInterface.GetCenterOfMassPosition(bodyId));
+}
+
 glm::vec3 NanamiEngine::Module::Physics::GetLinearVelocity(const JPH::BodyID& bodyId)
 {
     const auto& bodyInterface =

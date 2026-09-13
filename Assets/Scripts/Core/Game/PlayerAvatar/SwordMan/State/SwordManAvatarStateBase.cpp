@@ -7,6 +7,7 @@
 #include "../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 #include "../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
 #include "../../../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
@@ -244,7 +245,11 @@ namespace GameCore::PlayerAvatar::SwordMan
     bool SwordManAvatarStateBase::HasLineOfSight(const std::shared_ptr<GameObject::IGameObject>& target) const
     {
         const glm::vec3 origin = CineMachine::CinemachineCameraBrain::Instance()->Transform().GetWorldPos();
-        const glm::vec3 targetPos = target->Transform().GetWorldPos();
+        
+        const auto targetCollider = target->Components().Catch<Physics::ICollider>().lock();
+        const glm::vec3 targetPos = targetCollider && !targetCollider->BodyId().IsInvalid()
+            ? Physics::GetCenterOfMassPosition(targetCollider->BodyId())
+            : target->Transform().GetWorldPos();
         const glm::vec3 diff = targetPos - origin;
         const float distance = glm::length(diff);
         if (distance <= 0.0f)

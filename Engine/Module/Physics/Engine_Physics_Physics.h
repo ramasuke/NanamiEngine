@@ -34,6 +34,7 @@ namespace NanamiEngine::Module::Physics
     // centerから最も近いコライダー表面までの距離を返す。maxDistance以内に何もなければmaxDistance。
     float ClosestDistance       (const glm::vec3  & center, float maxDistance, LayerMask layerMask);
     void DebugDrawRaycast(const glm::vec3& origin, const glm::vec3& direction, float maxDistance);
+    glm::vec3 GetCenterOfMassPosition(const JPH::BodyID& bodyId);
     glm::vec3  GetLinearVelocity(const JPH::BodyID& bodyId                           );
     void SetLinearVelocity      (const JPH::BodyID& bodyId, const glm::vec3& velocity);
     // deg/s
