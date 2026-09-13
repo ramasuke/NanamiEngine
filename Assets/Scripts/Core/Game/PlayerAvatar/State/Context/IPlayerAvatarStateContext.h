@@ -32,6 +32,9 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual GamePlay::PlayerAvatar::ChattableArea&   ChattableArea            () const = 0;
         [[nodiscard]] virtual GamePlay::PlayerAvatar::WakeUpArea   &   WakeUpArea               () const = 0;
         [[nodiscard]] virtual const glm::vec3&                         PlayerAvatarFeatStepPos  () const = 0;
-        
+        [[nodiscard]] virtual float                                    GroundCheckRadius        () const = 0;
+        [[nodiscard]] virtual float                                    GroundCheckUpOffset      () const = 0;
+        [[nodiscard]] virtual float                                    GroundCheckDistance      () const = 0;
+
     };
 }

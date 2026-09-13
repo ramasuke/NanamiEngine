@@ -1,6 +1,7 @@
 ﻿#include "SwordManAvatarStateContext.h"
 
 #include "../../../../../../../../Engine/Module/Asset/Sound/SoundFile.h"
+#include "../../../../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
@@ -25,5 +26,20 @@ namespace GameCore::PlayerAvatar::SwordMan
         , resources_            (resources          )
     {
 
+    }
+
+    float SwordManAvatarStateContext::GroundCheckRadius() const
+    {
+        return resources_.lock()->GroundCheckRadius();
+    }
+
+    float SwordManAvatarStateContext::GroundCheckUpOffset() const
+    {
+        return resources_.lock()->GroundCheckUpOffset();
+    }
+
+    float SwordManAvatarStateContext::GroundCheckDistance() const
+    {
+        return resources_.lock()->GroundCheckDistance();
     }
 }

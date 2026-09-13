@@ -20,6 +20,9 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("chargeCompleteParticlePrefab_", chargeCompleteParticlePrefab_);
         ImGuiHelper::OnDrawInputField("chargeHoldParticlePrefab_", chargeHoldParticlePrefab_);
         ImGuiHelper::OnDrawInputField("chargeImpactParticlePrefab_", chargeImpactParticlePrefab_);
+        ImGuiHelper::OnDrawInputField("groundCheckRadius_", groundCheckRadius_);
+        ImGuiHelper::OnDrawInputField("groundCheckUpOffset_", groundCheckUpOffset_);
+        ImGuiHelper::OnDrawInputField("groundCheckDistance_", groundCheckDistance_);
         ImGuiHelper::OnDrawInputField("walkFootstepContactPhases_", walkFootstepContactPhases_, [this]
         {
             if (ImGui::Button("Add Walk Phase"))

@@ -21,10 +21,14 @@ namespace GameCore::PlayerAvatar::State
     {
         Physics::LayerMask mask;
         Physics::AddLayer(mask, Physics::Layer::Default);
-       
-        return Physics::Raycast(stateContext_->PlayerAvatarFeatStepPos() + glm::vec3(0.0f, 3.0f, 0.0f),
-                                glm::vec3(0, -1, 0), 8.3f,
-                                mask).Hit();
+
+        // 太さ0のRayだと段差の縁や地形の隙間で抜けて Floating 扱いになるため、球で判定する。
+        // 開始時点で地面に重なるとDistance()==0のHitになるので、球の下端が足元+UpOffsetに来るよう中心を半径分持ち上げる
+        const float radius = stateContext_->GroundCheckRadius();
+        return Physics::SphereCast(stateContext_->PlayerAvatarFeatStepPos() + glm::vec3(0.0f, stateContext_->GroundCheckUpOffset() + radius, 0.0f),
+                                   radius,
+                                   glm::vec3(0, -1, 0), stateContext_->GroundCheckDistance(),
+                                   mask).Hit();
     }
 
     bool PlayerAvatarStateCondition::IsChattable() const
