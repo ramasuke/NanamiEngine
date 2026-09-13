@@ -12,6 +12,9 @@ namespace NanamiEngine::Module::Asset
     {
     public:
         explicit HlslPsFile(const std::string& contentPath = "");
+        ~HlslPsFile() override;
+        HlslPsFile(const HlslPsFile&)            = delete;
+        HlslPsFile& operator=(const HlslPsFile&) = delete;
         [[nodiscard]] const Guid& GetGuid       () const override;
         [[nodiscard]] int         GetPsHandle    () const;
         [[nodiscard]] std::string GetContentPath () const override;

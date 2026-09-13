@@ -9,6 +9,14 @@ namespace NanamiEngine::Module::Asset
     {
     }
 
+    HlslPsFile::~HlslPsFile()
+    {
+        if (psHandle_ == -1)
+            return;
+
+        DeleteShader(psHandle_);
+    }
+
     void HlslPsFile::OnEnableAsset()
     {
         psHandle_ = LoadPixelShader(contentPath_.c_str());

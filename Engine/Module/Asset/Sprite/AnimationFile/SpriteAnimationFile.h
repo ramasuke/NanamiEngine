@@ -17,6 +17,9 @@ namespace NanamiEngine::Module::Asset
         };
 
         explicit SpriteAnimationFile(std::string contentPath = "");
+        ~SpriteAnimationFile() override;
+        SpriteAnimationFile(const SpriteAnimationFile&)            = delete;
+        SpriteAnimationFile& operator=(const SpriteAnimationFile&) = delete;
         [[nodiscard]] const std::vector<int>& GetSpritesHandle() const { return spritesDxlibHandle_; }
         [[nodiscard]] std::string GetContentPath() const override { return contentPath_; }
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
@@ -26,6 +29,7 @@ namespace NanamiEngine::Module::Asset
         void OnSaveCallback() override;
         void OnRenamed(const std::string& newContentPath) override { contentPath_ = newContentPath; }
         void LoadSprite();
+        void ReleaseSprites();
 
         
         [[serialize(0)]] std::vector<int> spritesDxlibHandle_;

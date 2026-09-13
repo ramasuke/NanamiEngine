@@ -25,6 +25,14 @@ namespace NanamiEngine::Module::Asset
         outAsset = nullptr;
         return false;
     }
+
+    bool AssetFactory::IsRegisteredExtension(const std::string& filePath) const
+    {
+        return std::ranges::any_of(registeredExtensions_, [&filePath](const std::string& extension)
+        {
+            return LibCore::FilePath::IsExtension(filePath, extension);
+        });
+    }
     
     std::shared_ptr<AssetBase> AssetFactory::Load(
         const std::string& filePath) const

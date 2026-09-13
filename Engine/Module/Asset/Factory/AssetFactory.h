@@ -27,6 +27,8 @@ namespace NanamiEngine::Module::Asset
         void Register(const std::string& extensionLabel);
         void RegisterCreatableAssetExtension(const std::string& assetNameLabel, const std::string& extensionLabel);
         bool TryCreate(const std::string& filePath, std::shared_ptr<AssetBase>& outAsset) const;
+        /** アセットを生成せずに、filePath の拡張子が Register 済みかだけを判定する */
+        [[nodiscard]] bool IsRegisteredExtension(const std::string& filePath) const;
         [[nodiscard]] std::shared_ptr<AssetBase> Load(const std::string& filePath) const;
         template <typename T>
         void RegisterLoader(const std::string& extensionLabel);
@@ -36,6 +38,8 @@ namespace NanamiEngine::Module::Asset
     private:
         /** filePathからfileを生成する関数群 */
         std::vector<OnCreateAsset> factories_;
+        /** factories_ に登録された拡張子群 */
+        std::vector<std::string> registeredExtensions_;
         std::vector<std::function<std::shared_ptr<AssetBase>(const std::string&)>> loaderers_;
         /** 新規作成可能なアセットの<アセット名, 拡張子>群 */
         std::vector<std::pair<std::string, std::string>> creatableAssetsData_;
@@ -47,6 +51,7 @@ namespace NanamiEngine::Module::Asset
         static_assert(std::is_base_of_v<AssetBase, T>, "T must inherit from AssetBase");
         static_assert(std::is_constructible_v<T, std::string>, "T must be constructible from std::string");
 
+        registeredExtensions_.push_back(extensionLabel);
         factories_.emplace_back(
             [extensionLabel](const std::string& filePath, std::shared_ptr<AssetBase>& out)
             {

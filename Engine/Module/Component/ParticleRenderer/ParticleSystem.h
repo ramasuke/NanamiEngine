@@ -24,7 +24,8 @@ namespace NanamiEngine::Module::Component
         void TryUpdateRenderRot  ();
         void TryUpdateRenderScale();
         void OnDestroy        () override;
-        void TryDeleteResource();
+        void TryStopPlaying();
+        void TryReleaseEffectResource();
 
         FIELD(Asset::ParticleFile) particleFile_;
         int   resourceEffectHandle_ = -1;

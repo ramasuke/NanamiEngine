@@ -9,6 +9,14 @@ namespace NanamiEngine::Module::Asset
     {
     }
 
+    HlslVsFile::~HlslVsFile()
+    {
+        if (vsHandle_ == -1)
+            return;
+
+        DeleteShader(vsHandle_);
+    }
+
     void HlslVsFile::OnEnableAsset()
     {
         vsHandle_ = LoadVertexShader(contentPath_.c_str());

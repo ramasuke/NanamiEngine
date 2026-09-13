@@ -9,6 +9,11 @@ namespace NanamiEngine::Module::Asset
     {
     }
 
+    SpriteAnimationFile::~SpriteAnimationFile()
+    {
+        ReleaseSprites();
+    }
+
     void SpriteAnimationFile::OnEnableAsset()
     {
         LoadSprite();
@@ -21,21 +26,37 @@ namespace NanamiEngine::Module::Asset
 
     void SpriteAnimationFile::LoadSprite()
     {
+        // Save のたびに OnSaveCallback から読み直されるので、前回分を解放してから読み込む
+        ReleaseSprites();
+
         switch (sourceType_)
         {
         case AnimationSourceType::Individual:
             break;
         case AnimationSourceType::SpriteSheet:
-            spritesDxlibHandle_.resize(splitCount_);
-            LoadDivGraph(sprite_->GetContentPath().c_str(),
+            spritesDxlibHandle_.assign(splitCount_, -1);
+            if (LoadDivGraph(sprite_->GetContentPath().c_str(),
                 splitCount_,
                 splitXCount_,
                 splitYCount_,
                 splitSizeX_,
                 splitSizeY_,
-                spritesDxlibHandle_.data());
+                spritesDxlibHandle_.data()) == -1)
+            {
+                spritesDxlibHandle_.clear();
+            }
             break;
         }
+    }
+
+    void SpriteAnimationFile::ReleaseSprites()
+    {
+        for (const int handle : spritesDxlibHandle_)
+        {
+            if (handle != -1)
+                DeleteGraph(handle);
+        }
+        spritesDxlibHandle_.clear();
     }
 
     void SpriteAnimationFile::OnDrawGui()

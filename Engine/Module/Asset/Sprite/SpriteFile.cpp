@@ -8,6 +8,14 @@ namespace NanamiEngine::Module::Asset
     {
     }
 
+    SpriteFile::~SpriteFile()
+    {
+        if (dxLibId_ == -1)
+            return;
+
+        DeleteGraph(dxLibId_);
+    }
+
     void SpriteFile::OnEnableAsset()
     {
         dxLibId_ = LoadGraph();

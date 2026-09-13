@@ -11,6 +11,15 @@ namespace NanamiEngine::Module::Asset
     {
     }
 
+    Mv1File::~Mv1File()
+    {
+        if (dxLibHandle_ == -1)
+            return;
+
+        // LoadDxLibHandle で複製されたモデルは DxLib 側で基底データを参照カウントしているため、元を先に消しても壊れない
+        MV1DeleteModel(dxLibHandle_);
+    }
+
     void Mv1File::OnEnableAsset() { dxLibHandle_ = MV1LoadModel(contentPath_.c_str()); }
 
     void Mv1File::OnDoubleClick()

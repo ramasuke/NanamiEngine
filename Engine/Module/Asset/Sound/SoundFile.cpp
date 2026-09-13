@@ -6,6 +6,14 @@ NanamiEngine::Module::Asset::SoundFile::SoundFile(std::string contentPath)
 {
 }
 
+NanamiEngine::Module::Asset::SoundFile::~SoundFile()
+{
+    if (dxLibHandle_ == -1)
+        return;
+
+    DeleteSoundMem(dxLibHandle_);
+}
+
 void NanamiEngine::Module::Asset::SoundFile::OnEnableAsset()
 {
     dxLibHandle_ = LoadSoundMem(contentPath_.c_str());

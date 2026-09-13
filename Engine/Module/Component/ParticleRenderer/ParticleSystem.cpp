@@ -5,7 +5,7 @@
 
 void Component::ParticleSystem::Play()
 {
-    TryDeleteResource();
+    TryStopPlaying();
     
     if (!IsEnable())
         return;
@@ -30,6 +30,7 @@ void Component::ParticleSystem::InitRenderer()
     if (!particleFile_)
         return;
 
+    TryReleaseEffectResource();
     resourceEffectHandle_ = particleFile_->LoadDxLibHandle();
     if (IsEnable() && playMode_ != Particle::PlayMode::Manual)
     {
@@ -48,7 +49,7 @@ void Component::ParticleSystem::OnRender()
         if (playingDuring_secs_ >= playingDuration_secs_)
         {
             firstUpdate_ = true;
-            TryDeleteResource();
+            TryStopPlaying();
             playingEffectHandle_ = PlayEffekseer3DEffect(resourceEffectHandle_);
             playingDuring_secs_  = 0;
         }
@@ -108,15 +109,27 @@ void Component::ParticleSystem::TryUpdateRenderScale()
 
 void Component::ParticleSystem::OnDestroy()
 {
-    TryDeleteResource();
+    TryStopPlaying();
+    TryReleaseEffectResource();
 }
 
-void Component::ParticleSystem::TryDeleteResource()
+void Component::ParticleSystem::TryStopPlaying()
 {
     if (playingEffectHandle_ != -1)
     {
-        DeleteEffekseerEffect(playingEffectHandle_);
+        // 再生ハンドルは StopEffekseer3DEffect で止める（DeleteEffekseerEffect はリソースハンドル専用）
+        StopEffekseer3DEffect(playingEffectHandle_);
         playingEffectHandle_ = -1;
+    }
+}
+
+void Component::ParticleSystem::TryReleaseEffectResource()
+{
+    if (resourceEffectHandle_ != -1)
+    {
+        // ParticleFile::LoadDxLibHandle はインスタンスごとに新しく読み込むので、読み込んだ Component 側で解放する
+        DeleteEffekseerEffect(resourceEffectHandle_);
+        resourceEffectHandle_ = -1;
     }
 }
 
@@ -136,7 +149,8 @@ void Component::ParticleSystem::OnDrawGui()
 
     if (ImGui::Button("Load EffectResource"))
     {
-        TryDeleteResource();
+        TryStopPlaying();
+        TryReleaseEffectResource();
         resourceEffectHandle_ = particleFile_->LoadDxLibHandle();
     }
     if (ImGui::Button("Play Effect"))

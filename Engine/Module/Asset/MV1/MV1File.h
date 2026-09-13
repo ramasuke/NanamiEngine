@@ -12,6 +12,9 @@ namespace NanamiEngine::Module::Asset
     {
     public:
         explicit Mv1File(const std::string& contentPath = "");
+        ~Mv1File() override;
+        Mv1File(const Mv1File&)            = delete;
+        Mv1File& operator=(const Mv1File&) = delete;
         [[nodiscard]] const Guid& GetGuid       () const override;
         [[nodiscard]] int         LoadDxLibHandle   () const;
         [[nodiscard]] std::string GetContentPath() const override;
@@ -36,16 +39,17 @@ namespace NanamiEngine::Module::Asset
         archive(cereal::base_class<LifeCycleCallback::IEnablableAsset>(this));
         archive(CEREAL_NVP(contentPath_));
         archive(CEREAL_NVP(guid_));
-        if (version == 0) archive(CEREAL_NVP(dxLibHandle_));
     }
-    
+
     template<class Archive>
     void load(Archive& archive, const std::uint32_t version) {
         archive(cereal::base_class<AssetBase>(this));
         archive(cereal::base_class<LifeCycleCallback::IEnablableAsset>(this));
         if (version >= 0) archive(CEREAL_NVP(contentPath_));
         if (version >= 0) archive(CEREAL_NVP(guid_));
-        if (version == 0) archive(CEREAL_NVP(dxLibHandle_));
+        // version 0 はハンドル値を保存していた。デストラクタで解放するため、古い値はメンバに入れず読み捨てる
+        int legacyDxLibHandle = -1;
+        if (version == 0) archive(cereal::make_nvp("dxLibHandle_", legacyDxLibHandle));
     }
 #pragma endregion
 };

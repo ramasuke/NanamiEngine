@@ -11,11 +11,28 @@
 AnimationTree::AnimationClipNode::AnimationClipNode(const glm::vec2 position)
     : position_(position)
 {
-    
+
+}
+
+AnimationTree::AnimationClipNode::~AnimationClipNode()
+{
+    ReleaseAnimationModel();
+}
+
+void AnimationTree::AnimationClipNode::ReleaseAnimationModel()
+{
+    if (dxlibAnimationIndex_ == -1)
+        return;
+
+    // InitForGamePlay で Animator ごと・クリップごとに MV1DuplicateModel した複製なので、ノードが自分で消す
+    MV1DeleteModel(dxlibAnimationIndex_);
+    dxlibAnimationIndex_ = -1;
 }
 
 void AnimationTree::AnimationClipNode::InitForGamePlay(const int modelHandle)
 {
+    ReleaseAnimationModel();
+
     animationFile_.Init();
     if (animationFile_)
     {

@@ -32,9 +32,14 @@ namespace NanamiEngine::Core::FileSystem
         std::string filePath,
         std::string fileName)
     {
-        if (std::shared_ptr<Module::Asset::AssetBase> asset; Module::Asset::AssetFactory::Instance().TryCreate(filePath, asset))
+        auto& factory = Module::Asset::AssetFactory::Instance();
+        if (factory.IsRegisteredExtension(filePath))
         {
-            if (!std::filesystem::exists(filePath + ".meta"))
+            // .meta があるなら最初から Load する。先に TryCreate すると、捨てるだけのアセットが Guid 生成と ObjectRegistry 登録を伴って毎回作られる
+            if (std::filesystem::exists(filePath + ".meta"))
+                return std::move(LoadFileForMeta(filePath, fileName));
+
+            if (std::shared_ptr<Module::Asset::AssetBase> asset; factory.TryCreate(filePath, asset))
             {
                 File file;
                 file.filePath_ = std::move(filePath);
@@ -42,9 +47,8 @@ namespace NanamiEngine::Core::FileSystem
                 file.content_ = asset;
                 return std::move(file);
             }
-            return std::move(LoadFileForMeta(filePath, fileName));
         }
-    
+
         File file;
         file.filePath_ = std::move(filePath);
         file.fileName_ = std::move(fileName);

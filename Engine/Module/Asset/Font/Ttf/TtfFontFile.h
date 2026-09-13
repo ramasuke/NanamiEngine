@@ -13,6 +13,9 @@ namespace NanamiEngine::Module::Asset
     {
     public:
         explicit TtfFontFile(std::string contentPath = "");
+        ~TtfFontFile() override;
+        TtfFontFile(const TtfFontFile&)            = delete;
+        TtfFontFile& operator=(const TtfFontFile&) = delete;
 
         [[nodiscard]] const Guid& GetGuid       () const override { return guid_; }
         [[nodiscard]] std::string GetContentPath() const override { return contentPath_; }
@@ -30,6 +33,8 @@ namespace NanamiEngine::Module::Asset
 
         Guid guid_;
         int dxLibHandle_ = -1;
+        /** AddFontResourceExA に成功したパス（空なら未登録）。Rename 後も登録時と同じパスで RemoveFontResourceExA するため別に持つ */
+        std::string addedFontResourcePath_;
 
 #pragma region Serialization Function
     public:
@@ -53,7 +58,6 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(thickness_));
             archive(CEREAL_NVP(fontType_));
             archive(CEREAL_NVP(guid_));
-            archive(CEREAL_NVP(dxLibHandle_));
         }
 
         template<class Archive>
@@ -66,14 +70,16 @@ namespace NanamiEngine::Module::Asset
             if (version >= 0) archive(CEREAL_NVP(thickness_));
             if (version >= 0) archive(CEREAL_NVP(fontType_));
             if (version >= 0) archive(CEREAL_NVP(guid_));
-            if (version >= 0) archive(CEREAL_NVP(dxLibHandle_));
+            // version 1 まではハンドル値を保存していた。デストラクタで解放するため、古い値はメンバに入れず読み捨てる
+            int legacyDxLibHandle = -1;
+            if (version <= 1) archive(cereal::make_nvp("dxLibHandle_", legacyDxLibHandle));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::TtfFontFile, 1);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::TtfFontFile, 2);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::TtfFontFile);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::TtfFontFile);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::TtfFontFile);

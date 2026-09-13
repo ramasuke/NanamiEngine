@@ -9,6 +9,9 @@ namespace NanamiEngine::Module::Asset
     {
     public:
         explicit SoundFile(std::string contentPath = "");
+        ~SoundFile() override;
+        SoundFile(const SoundFile&)            = delete;
+        SoundFile& operator=(const SoundFile&) = delete;
         void OnEnableAsset() override;
         [[nodiscard]] const Guid& GetGuid       () const override { return guid_;         }
         [[nodiscard]] int         GetDxLibHandle() const          { return dxLibHandle_;  }

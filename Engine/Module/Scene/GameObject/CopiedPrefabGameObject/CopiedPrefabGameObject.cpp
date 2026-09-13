@@ -118,6 +118,8 @@ void Scene::CopiedPrefabGameObject::ImplementDestroy()
         child->ImplementDestroy();
     }
     Transform().SetParent(std::weak_ptr<IGameObject>{});
+    // ownPtr_.reset() で自身が解放され得るので、その前に InitGameObject で行った登録を外す
+    Core::Application::ApplicationBase::ObjectRegistry().Unregister(guid_, *this);
     ownPtr_.reset();
 }
 

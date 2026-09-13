@@ -17,6 +17,24 @@
 #include "LifeCycle/ApplicationLifeCycle.h"
 #include "Window/Popup/Group/PopupWindowGroup.h"
 
+namespace
+{
+    /** directory 以下の全アセットの Guid を集める */
+    void CollectAssetGuids(NanamiEngine::Core::FileSystem::Directory& directory, std::vector<::Guid>& outGuids)
+    {
+        for (auto& file : directory.Files())
+        {
+            if (file.GetContent())
+                outGuids.push_back(file.GetContent()->GetGuid());
+        }
+
+        for (auto& child : directory.GetDirectories())
+        {
+            CollectAssetGuids(child, outGuids);
+        }
+    }
+}
+
 namespace NanamiEngine::Core::Application
 {
     std::optional<Physics>             ApplicationBase::physics_         = std::optional<Core::Physics>();
@@ -100,7 +118,18 @@ namespace NanamiEngine::Core::Application
 
     void ApplicationBase::ResetAssetsDirectory()
     {
+        std::vector<::Guid> oldAssetGuids;
+        if (assetsDirectory_)
+            CollectAssetGuids(assetsDirectory_.value(), oldAssetGuids);
+
+        // emplace で古いアセットが破棄されてから新しいアセットが登録される
         assetsDirectory_.emplace(Configuration::AppConfiguration::GetAssetsDirectoryPath());
+
+        // .meta のあるアセットは同じ Guid で上書きされているので残り、.meta の無いアセット（毎回新しい Guid）の古い登録だけが消える
+        for (const auto& guid : oldAssetGuids)
+        {
+            ObjectRegistry_().RemoveIfExpired(guid);
+        }
     }
     
     ApplicationLifeCycle& ApplicationBase::ApplicationLifeCycle_()

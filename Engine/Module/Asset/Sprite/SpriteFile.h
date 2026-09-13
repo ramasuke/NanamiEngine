@@ -13,6 +13,9 @@ namespace NanamiEngine::Module::Asset
     {
     public:
         explicit SpriteFile(std::string contentPath = "");
+        ~SpriteFile() override;
+        SpriteFile(const SpriteFile&)            = delete;
+        SpriteFile& operator=(const SpriteFile&) = delete;
         void OnEnableAsset() override;
         [[nodiscard]] const Guid& GetGuid        () const override { return guid_;     }
         [[nodiscard]] int         GetDxLibHandle () const          { return dxLibId_;  }

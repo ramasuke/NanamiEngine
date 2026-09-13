@@ -12,6 +12,9 @@ namespace NanamiEngine::Module::Asset
     {
     public:
         explicit HlslVsFile(const std::string& contentPath = "");
+        ~HlslVsFile() override;
+        HlslVsFile(const HlslVsFile&)            = delete;
+        HlslVsFile& operator=(const HlslVsFile&) = delete;
         [[nodiscard]] const Guid& GetGuid       () const override;
         [[nodiscard]] int         GetVsHandle    () const;
         [[nodiscard]] std::string GetContentPath () const override;
