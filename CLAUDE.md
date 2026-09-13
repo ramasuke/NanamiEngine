@@ -118,19 +118,24 @@ manually opening `DxLibModelViewer_64bit.exe` — DxLib has no documented CLI/CU
 conversion, so the toolkit drives the real GUI tool via `pywinauto`:
 
 ```
-python -m tools.model convert <in.fbx> <out.mv1> --modelviewer-path <path to DxLibModelViewer_64bit.exe>
-python -m tools.model install <out.mv1> --dest Assets/Art/.../<Name>.mv1 [--source <in.fbx>] [--textures <dir>]
-python tools/model/selftest.py              # .meta-codec gate; GUI-automation stage is best-effort/skips cleanly
+python -m tools.model convert <in.fbx> <out.mv1> --mode mesh|anim|full [--with-textures] [--modelviewer-path <exe>]
+python -m tools.model install <out.mv1> --dest Assets/Art/.../<Name>.mv1 [--with-textures] [--source <in.fbx>] [--textures <dir>]
+python tools/model/selftest.py              # .meta/.mv1-codec gate; GUI-automation stage is best-effort/skips cleanly
 ```
 
-`install` mints a fresh-GUID `.mv1.meta` (`Mv1File`, via `tools/common/meta_base.py`) the same
-way `tools/effect install` does for `ParticleFile`, and (with `--textures`) bulk-copies image
-files into `<dest-dir>/textures/` — DxLibModelViewer's own conversion keeps only one texture per
-material (confirmed against real assets), so this is a plain "make the files available" copy,
-not an attempt to rewire materials. `convert` requires `pip install pywinauto` (the first
-third-party dependency any `tools/*` toolkit in this repo has needed) and a local copy of
-`DxLibModelViewer_64bit.exe` (not vendored in this repo; pinned path in `tools/model/cli.py`'s
-`DEFAULT_MODELVIEWER_PATH`, verified 2026-09-12 against ver3.24d via both an `.mv1`→`.mv1` round
-trip and a real textured `.fbx` conversion). See **`tools/model/README.md`** for prerequisites
-and known fragility — this is a reverse-engineered UI-automation wrapper, not an officially
-supported CLI.
+`--mode` picks the DxLibModelViewer save command: `mesh` = model only (animations dropped),
+`anim` = animation clips only (no mesh), `full` = model + animations in one file.
+`--with-textures` (not with `anim`) decompresses the output `.mv1` (`tools/model/mv1.py` — DxLib's
+DXArchive LZ, verified against all 132 `.mv1` under `Assets/`), reads the texture paths it stores
+**relative to the `.mv1`** (e.g. `Hyena.fbm\Hyenas_A4_Diffuse.png`; normal/roughness maps survive
+too), and copies each one from next to the input / its `*.fbm` folder to that same relative path
+beside the output, failing with a list if any can't be found. `install --with-textures` does the
+same for an installed asset. `install` mints a fresh-GUID `.mv1.meta` (`Mv1File`, via
+`tools/common/meta_base.py`) the same way `tools/effect install` does for `ParticleFile`;
+`--textures <dir>` is the older unfiltered bulk copy into `<dest-dir>/textures/`. `convert`
+requires `pip install pywinauto` (the first third-party dependency any `tools/*` toolkit in this
+repo has needed) and a local copy of `DxLibModelViewer_64bit.exe` (not vendored in this repo;
+pinned path in `tools/model/cli.py`'s `DEFAULT_MODELVIEWER_PATH`; all three modes verified
+2026-09-13 against ver3.24d with a real textured+animated `.fbx`). See **`tools/model/README.md`**
+for prerequisites and known fragility — this is a reverse-engineered UI-automation wrapper, not an
+officially supported CLI.

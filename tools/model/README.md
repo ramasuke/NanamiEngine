@@ -38,9 +38,21 @@ python -m tools.model <command>        # or: python tools/model.py <command>
 
 | command | purpose |
 |---|---|
-| `selftest` | correctness gate — run after touching `meta.py`; `dxlib_modelviewer.py` changes can only be verified against a real exe (stage 5, best-effort) |
-| `convert FILE OUT` | convert `FILE` (e.g. `.fbx`) → `OUT` (`.mv1`) by driving the real `DxLibModelViewer_64bit.exe` GUI |
-| `install MV1 --dest ...` | copy a converted `.mv1` into `Assets/`, mint a fresh-GUID `.meta` (an existing `.meta` at `--dest` is kept as-is, GUID included, so re-installing never breaks prefab references), and (with `--source`) copy the original `.fbx` under `<dest-dir>/_Source/`, and (with `--textures`) bulk-copy image files under `<dest-dir>/textures/` |
+| `selftest` | correctness gate — run after touching `meta.py`, `mv1.py` or `cli.py`; `dxlib_modelviewer.py` changes can only be verified against a real exe (stage 7, best-effort) |
+| `convert FILE OUT --mode mesh\|anim\|full [--with-textures]` | convert `FILE` (e.g. `.fbx`) → `OUT` (`.mv1`) by driving the real `DxLibModelViewer_64bit.exe` GUI; see "Save modes" / "`--with-textures`" below |
+| `install MV1 --dest ...` | copy a converted `.mv1` into `Assets/`, mint a fresh-GUID `.meta` (an existing `.meta` at `--dest` is kept as-is, GUID included, so re-installing never breaks prefab references), and (with `--with-textures`) place every texture the `.mv1` references next to it, (with `--source`) copy the original `.fbx` under `<dest-dir>/_Source/`, and (with `--textures`) bulk-copy image files under `<dest-dir>/textures/` |
+
+### Save modes (`convert --mode`, required)
+
+| `--mode` | DxLibModelViewer File menu command (id) | output |
+|---|---|---|
+| `mesh` | 名前を付けてメッシュのみ保存 (6) | model only — geometry, materials, texture references; animations dropped |
+| `anim` | 名前を付けてアニメーションのみ保存 (7) | animation clips only, no mesh/materials — for clip files shared by models with the same skeleton |
+| `full` | 名前を付けて保存 (5) | model + animations in one file |
+
+Verified 2026-09-13 with a textured, 27-clip `.fbx` (the Hyena source): `mesh` 833KB (2 texture
+references, no clip names), `anim` 113KB (clip names, no texture references), `full` 942KB (both;
+decoded size = mesh + anim).
 
 ### `convert`'s path resolution
 
@@ -52,12 +64,38 @@ or `$DXLIB_MODELVIEWER` if you're on a different machine/install.
 ### Typical flow
 
 ```
-python -m tools.model convert MyProp.fbx MyProp.mv1 --modelviewer-path "C:\...\DxLibModelViewer_64bit.exe"
-python -m tools.model install MyProp.mv1 --source MyProp.fbx --textures MyProp.fbm --dest Assets/Art/Models/MyProp/MyProp.mv1
+python -m tools.model convert work/MyProp.fbx work/out/MyProp.mv1 --mode full --with-textures
+python -m tools.model install work/out/MyProp.mv1 --with-textures --source work/MyProp.fbx --dest Assets/Art/Models/MyProp/MyProp.mv1
 ```
 
-Then bind the printed GUID to a `Mv1File`-typed field the same way any other
-asset GUID is wired into a prefab/component.
+Convert in a scratch folder outside `Assets/`: loading an `.fbx` with embedded
+textures makes the FBX SDK extract them into `<fbx stem>.fbm/` **next to the
+`.fbx`**. Then bind the printed GUID to a `Mv1File`-typed field the same way
+any other asset GUID is wired into a prefab/component.
+
+### `--with-textures` (`convert` and `install`)
+
+A `.mv1` stores each texture as a path **relative to the `.mv1` itself**
+(DxLibModelViewer keeps the path the FBX SDK saw, e.g.
+`Hyena.fbm\Hyenas_A4_Diffuse.png` or `textures\Wall_base.png` — it does not
+rewrite it for the save location), and DxLib resolves it from wherever the
+model is loaded. `--with-textures` makes that resolve:
+
+1. decompress the `.mv1` (`mv1.py`) and list its texture paths;
+2. look each one up — for `convert` next to the input file, for `install`
+   next to the source `.mv1` — as the exact relative path, then the bare file
+   name, then inside any `*.fbm` folder there;
+3. copy it to the same relative path beside the output `.mv1` (sub-folders
+   created; files already in place are left alone).
+
+If any reference can't be placed (not found, or a `..\` path pointing outside
+the output folder) the found ones are still copied, the rest are listed, and
+the command exits 1. An absolute reference (some FBX exporters store the
+artist's `C:\...` path next to the relative one) is skipped when a relative
+reference to the same file name exists, otherwise the file is placed directly
+beside the `.mv1`. Textures the model doesn't reference (e.g. an unused
+`*_Opacity.png` in the `.fbm`) are not copied. Rejected with `--mode anim`,
+which has no materials.
 
 ### `install --textures`
 
@@ -67,12 +105,12 @@ asset GUID is wired into a prefab/component.
 `textures/` folder convention already used by real shipped assets (e.g.
 `Assets/Art/Models/Fantasy/DirtyHouse/textures/`). `SRC_DIR` is typically the
 `.fbm` folder DxLibModelViewer/the FBX SDK auto-creates next to a source
-`.fbx` with embedded textures (see `Known limitations` below), or wherever
-the artist's loose texture files live.
+`.fbx` with embedded textures, or wherever the artist's loose texture files
+live.
 
-This is a **plain, unfiltered copy** — it does not try to determine which
-textures the `.mv1` actually references (see below for why that would be
-unreliable anyway), and it does not rewrite any paths. `--textures` is
+This is a **plain, unfiltered copy** — it does not look at which textures the
+`.mv1` references or where it expects them (that's `--with-textures`, which
+is usually what you want), and it does not rewrite any paths. `--textures` is
 opt-in and off by default, same as `--source`.
 
 ## Known limitations
@@ -83,33 +121,58 @@ opt-in and off by default, same as `--source`.
   `DxLibModelViewer` build/version, a different Windows display language, or
   a different screen/DPI configuration than whatever it was last verified
   against.
-* **Verified 2026-09-12 against DxLibModelViewer ver3.24d** (title bar reads
+* **Verified 2026-09-13 against DxLibModelViewer ver3.24d** (title bar reads
   `DxLibModelViewer [ DxLib ver3.24d ]`, pinned at
-  `cli.DEFAULT_MODELVIEWER_PATH`), two ways: a real shipped `.mv1`
-  (`Assets/Art/Models/Basic/Cube.mv1`) round-tripped end to end through
-  `python -m tools.model convert` (Open → Save As mesh only), and a real
-  ~36MB textured `.fbx` converted the same way — both produced a
-  plausible-sized `MV11`-header `.mv1`. If a future `DxLibModelViewer` build
-  changes menu command ids or dialog control ids, re-run the inspection
-  documented at the top of `dxlib_modelviewer.py` and update its
-  `_MENU_ID_*`/`_FILENAME_EDIT_IDS` constants.
-* **DxLibModelViewer's "Save As mesh only" keeps only one texture per
-  material.** Inspecting the compiled output of two real conversions
-  (`Assets/Art/Models/Fantasy/DirtyHouse/dirtyHouse.mv1`, and a fresh
-  `Hyenas_A4_AllMotion_DxLib.fbx` conversion with Diffuse/Normal/Opacity
-  source textures) shows exactly **one** embedded texture reference in each,
-  even though multiple texture files exist alongside the source — Normal/
-  Opacity/AO/Roughness maps don't survive as separate references. This is a
-  property of DxLibModelViewer's own conversion, not a gap in this toolkit's
-  automation. `install --textures` still copies every texture file it's
-  given (see above) so they're available on disk, but wiring up anything
-  beyond the one texture DxLib kept is outside this toolkit's scope — that's
-  an engine/material-system question, not a conversion one.
+  `cli.DEFAULT_MODELVIEWER_PATH`): all three `--mode`s plus `--with-textures`
+  end to end on a real ~36MB textured, animated `.fbx` (earlier, 2026-09-12:
+  a `Cube.mv1` round trip through mesh-only save). If a future
+  `DxLibModelViewer` build changes menu command ids or dialog control ids,
+  re-run the inspection documented at the top of `dxlib_modelviewer.py` and
+  update its `_MENU_ID_*`/`_FILENAME_EDIT_IDS` constants.
+* **Save options come from the viewer's own `Setting.ini`**, next to the exe
+  (`SaveNormal8bit`, `SavePosition16bit`, `SaveAnimKey16bit` — the lossy
+  "保存オプション" menu toggles), as do load options like `NormalRemake`.
+  `convert` does not change them; toggle them in the viewer once if you need
+  full-precision output.
+* **Animation output is not byte-for-byte reproducible.** Converting the same
+  `.fbx` repeatedly (27 runs, 2026-09-13) yields one of two animation-data
+  sizes for `anim` and `full` — e.g. Hyena `full` decodes to 1,471,812 or
+  1,303,788 bytes; the header counts show ~8,000 more 20-byte animation keys
+  in the larger one, with identical clip names. `mesh` output is identical
+  every run. This is inside DxLibModelViewer's own save (a 3-second pause
+  before saving didn't change the odds), so it applies to manual GUI
+  conversion too; both variants are valid `.mv1` files. Don't rely on a
+  re-convert producing an unchanged file (e.g. for "did anything change"
+  diffs).
+* **Earlier claim retracted: DxLibModelViewer does *not* keep only one texture
+  per material.** That was concluded (2026-09-12) from grepping the raw
+  `.mv1` bytes, which are LZ-compressed so strings appear fragmented.
+  Decompressed (`mv1.py`), real outputs reference diffuse *and* normal /
+  roughness / specular maps (e.g. the Hyena conversion keeps
+  `Hyenas_A4_Diffuse.png` + `Hyenas_A4_Normal.png`; its `Opacity` map is
+  genuinely unreferenced). Whether the engine's shaders use those extra maps
+  is a separate, engine-side question.
+* **`mv1.py` is reverse-engineered, not from a spec.** The container layout
+  (`MV11` + DXArchive-style LZ header) decodes all 132 `.mv1` files under
+  `Assets/` to exactly their declared size, which is strong evidence, but
+  `texture_paths()` is still a heuristic string scan of the decoded body
+  (NUL-terminated strings ending in an image extension), not a walk of the
+  material table.
 * **`looks_like_mv1()` is a sanity check, not a structural validator.** It
-  checks for the 4-byte `MV11` header (empirically confirmed across 4 real
-  shipped `.mv1` files spanning both animation clips and static/skinned
-  meshes — not a documented DxLib format signature) plus a minimum file
-  size. It cannot detect a corrupt-but-plausible-looking `.mv1`.
+  checks the 4-byte `MV11` header, a minimum file size, and that the
+  compressed body decodes to its declared size. It cannot detect a
+  corrupt-but-decodable `.mv1`.
+* **Automation runs alongside your own desktop use, within limits.** Dialog
+  buttons are pressed with window messages (`BM_CLICK`), not synthesized
+  mouse clicks, so other windows covering the viewer no longer swallow them
+  (a mouse-based click did, 2026-09-13). A `BM_CLICK` that arrives while the
+  shell dialog is still settling can be ignored, so OK is re-sent until the
+  dialog closes. Don't interact with the viewer's own windows while it runs,
+  and don't run two conversions at once. After these fixes, 24 back-to-back
+  conversions (8 × each mode, ~7–13s each for a 36MB `.fbx`) all succeeded.
+* **The output folder is created if missing.** The Save As dialog itself
+  refuses a non-existent folder with a message box, which would otherwise
+  surface only as a `wait-for-output` timeout.
 * **No `_Source/` convention existed for `.mv1` assets before this
   toolkit.** Unlike `tools/effect`'s single `Assets/Art/Effect/_Source/`
   tree (because every `.efkefc` lives under one root), `.mv1` assets are
@@ -131,8 +194,11 @@ opt-in and off by default, same as `--source`.
 
 * `.py` files here are plain UTF-8/ASCII — not subject to the Shift-JIS
   conversion hook that applies to `.h`/`.cpp`.
-* Always run `python tools/model/selftest.py` after editing `meta.py`. Its
-  end-to-end `convert()` stage is best-effort and skips cleanly on a machine
-  without `pywinauto`, a `DxLibModelViewer` exe (`$DXLIB_MODELVIEWER` /
+* Always run `python tools/model/selftest.py` after editing `meta.py`,
+  `mv1.py` or `cli.py`. Its end-to-end `convert()` stage (all three modes) is
+  best-effort and skips cleanly on a machine without `pywinauto`, a
+  `DxLibModelViewer` exe (`$DXLIB_MODELVIEWER` /
   `cli.DEFAULT_MODELVIEWER_PATH`), and a test `.fbx` (`$TOOLS_MODEL_TEST_FBX`
-  — this toolkit has no committed `.fbx` fixture).
+  — this toolkit has no committed `.fbx` fixture; point it at a copy outside
+  `Assets/` because loading creates a `.fbm` folder beside it; per-mode
+  timeout `$TOOLS_MODEL_TEST_TIMEOUT`, default 240s).

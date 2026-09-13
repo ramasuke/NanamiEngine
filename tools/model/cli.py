@@ -13,9 +13,10 @@ import argparse
 import os
 import shutil
 import sys
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 from . import meta as meta_mod
+from . import mv1 as mv1_mod
 
 _REPO = Path(__file__).resolve().parents[2]
 
@@ -30,12 +31,14 @@ DEFAULT_MODELVIEWER_PATH: str | None = r"C:\DxLib_VC3_24d\DxLib_VC\Tool\DxLibMod
 # Empirically observed on 4 real shipped .mv1 files (both animation-clip and
 # static/skinned-mesh) - not a documented DxLib format signature, so this is
 # a sanity check, not proof of a well-formed file.
-_MV1_MAGIC = b"MV11"
+_MV1_MAGIC = mv1_mod.MAGIC
 _MV1_MIN_SIZE = 256
 
-# Matches the "textures/" sibling-folder convention already used by real
-# shipped assets (e.g. Assets/Art/Models/Fantasy/DirtyHouse/textures/).
-_TEXTURE_EXTS = {".png", ".jpg", ".jpeg", ".bmp", ".tga", ".dds"}
+_TEXTURE_EXTS = mv1_mod.TEXTURE_EXTS
+
+# Keys of dxlib_modelviewer.SAVE_MODES, duplicated here so argparse can list
+# them without importing pywinauto (dxlib_modelviewer is imported lazily).
+_SAVE_MODES = ("mesh", "anim", "full")
 
 
 class CliError(RuntimeError):
@@ -54,17 +57,23 @@ def _resolve(arg: str) -> Path:
 def looks_like_mv1(path: Path) -> list[str]:
     """Problems found (empty = looks OK). Not a structural validator - no
     ``.mv1`` format spec is available, only a magic-bytes + size sanity
-    check (same epistemic status as ``tools/effect``'s ``EFKE``/``INFO``
-    header check)."""
+    check plus "the compressed body decodes to its declared size" (see
+    ``mv1.decode``) - same epistemic status as ``tools/effect``'s
+    ``EFKE``/``INFO`` header check."""
     if not path.exists():
         return [f"{path} does not exist"]
     problems: list[str] = []
-    size = path.stat().st_size
-    if size < _MV1_MIN_SIZE:
-        problems.append(f"file is only {size} byte(s), suspiciously small")
-    header = path.read_bytes()[:4]
+    data = path.read_bytes()
+    if len(data) < _MV1_MIN_SIZE:
+        problems.append(f"file is only {len(data)} byte(s), suspiciously small")
+    header = data[:4]
     if header != _MV1_MAGIC:
         problems.append(f"header is {header!r}, expected {_MV1_MAGIC!r}")
+        return problems
+    try:
+        mv1_mod.decode(data)
+    except ValueError as e:
+        problems.append(f"body does not decompress: {e}")
     return problems
 
 
@@ -80,10 +89,88 @@ def _find_modelviewer_path(args: argparse.Namespace) -> Path:
     )
 
 
+def _texture_candidates(ref: str, search_dirs: list[Path]) -> list[Path]:
+    """Where a texture referenced as ``ref`` might live on disk, most specific
+    first: the exact relative path under each search dir, then the bare file
+    name directly in it, then inside any ``*.fbm`` folder there (the FBX SDK
+    extracts embedded textures to ``<fbx stem>.fbm/`` next to the source)."""
+    rel = PureWindowsPath(ref)
+    name = rel.name
+    candidates: list[Path] = []
+    if rel.is_absolute():
+        candidates.append(Path(ref))
+    for d in search_dirs:
+        if not rel.is_absolute():
+            candidates.append(d / Path(*rel.parts))
+        candidates.append(d / name)
+        candidates.extend(sorted(p / name for p in d.glob("*.fbm") if p.is_dir()))
+    return candidates
+
+
+def _collect_textures(mv1_path: Path, search_dirs: list[Path], dest_dir: Path) -> tuple[list[Path], list[str]]:
+    """Copy every texture ``mv1_path`` references into ``dest_dir`` at the
+    relative path the ``.mv1`` stores, so DxLib resolves it when loading the
+    model from ``dest_dir``. Returns ``(copied_or_already_in_place, missing)``
+    - ``missing`` entries are human-readable reasons.
+
+    An absolute reference (the source FBX's original ``C:\\...`` path, stored
+    alongside a relative one in some files) can't be reproduced under
+    ``dest_dir``: it's skipped when a relative reference to the same file name
+    exists, otherwise the file is placed directly in ``dest_dir``. A relative
+    reference that escapes ``dest_dir`` (``..\\``) is reported as missing."""
+    try:
+        refs = mv1_mod.texture_paths(mv1_path)
+    except ValueError as e:
+        raise CliError(f"cannot read texture references from {mv1_path.name}: {e}") from e
+    relative_names = {PureWindowsPath(r).name.lower() for r in refs if not PureWindowsPath(r).is_absolute()}
+    dest_root = dest_dir.resolve()
+    placed: list[Path] = []
+    missing: list[str] = []
+    for ref in refs:
+        rel = PureWindowsPath(ref)
+        if rel.is_absolute():
+            if rel.name.lower() in relative_names:
+                continue
+            target = dest_dir / rel.name
+        else:
+            target = dest_dir / Path(*rel.parts)
+            try:
+                target.resolve().relative_to(dest_root)
+            except ValueError:
+                missing.append(f"{ref} (points outside {dest_dir})")
+                continue
+        if target in placed:
+            continue
+        if target.exists():
+            placed.append(target)
+            continue
+        source = next((c for c in _texture_candidates(ref, search_dirs) if c.is_file()), None)
+        if source is None:
+            missing.append(f"{ref} (not found under {', '.join(str(d) for d in search_dirs)})")
+            continue
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, target)
+        placed.append(target)
+    return placed, missing
+
+
+def _report_textures(mv1_path: Path, placed: list[Path], missing: list[str], dest_dir: Path) -> None:
+    if not placed and not missing:
+        print(f"texture   (none referenced by {mv1_path.name})")
+    for p in placed:
+        print(f"texture   {p.relative_to(dest_dir) if p.is_relative_to(dest_dir) else p}")
+    if missing:
+        raise CliError(f"{len(missing)} texture(s) referenced by {mv1_path.name} could not be placed "
+                       f"next to it ({len(placed)} placed):\n  " + "\n  ".join(missing))
+
+
 def cmd_convert(args: argparse.Namespace) -> int:
     in_path = _resolve(args.file)
     if not in_path.exists():
         raise CliError(f"{in_path} does not exist")
+    if args.with_textures and args.mode == "anim":
+        raise CliError("--with-textures has no effect with --mode anim (an animation-only .mv1 "
+                       "carries no materials); use --mode mesh or --mode full")
     if in_path.suffix.lower() != ".fbx":
         print(f"WARNING: {in_path.name} does not have a .fbx extension; DxLibModelViewer "
               "also loads .x/.mqo/.pmd/.pmx/.mv1, so this may still be intentional.",
@@ -97,6 +184,10 @@ def cmd_convert(args: argparse.Namespace) -> int:
         # fresh success, and so DxLibModelViewer's own overwrite-confirm
         # dialog (if any) is never actually hit.
         out_path.unlink()
+    # The Save As dialog refuses a path in a folder that doesn't exist yet (it
+    # pops a message box instead of saving, which would surface only as a
+    # wait-for-output timeout).
+    out_path.parent.mkdir(parents=True, exist_ok=True)
 
     exe_path = _find_modelviewer_path(args)
 
@@ -114,7 +205,8 @@ def cmd_convert(args: argparse.Namespace) -> int:
 
     debug_dir = Path(args.debug_dir) if args.debug_dir else None
     try:
-        dxlib_modelviewer.convert(in_path, out_path, exe_path, timeout=args.timeout, debug_dir=debug_dir)
+        dxlib_modelviewer.convert(in_path, out_path, exe_path, mode=args.mode,
+                                   timeout=args.timeout, debug_dir=debug_dir)
     except dxlib_modelviewer.AutomationError as e:
         msg = f"conversion failed at step {e.step!r}: {e}"
         if e.debug_path:
@@ -125,19 +217,21 @@ def cmd_convert(args: argparse.Namespace) -> int:
     if problems:
         print(f"WARNING: {out_path.name} does not look like a valid .mv1: "
               + "; ".join(problems), file=sys.stderr)
-    print(f"converted {out_path}")
+    print(f"converted {out_path}  (mode: {args.mode})")
+
+    if args.with_textures:
+        placed, missing = _collect_textures(out_path, [in_path.parent], out_path.parent)
+        _report_textures(out_path, placed, missing, out_path.parent)
     return 0
 
 
 def _copy_textures(src_dir: Path, dest_textures_dir: Path) -> int:
     """Copy every recognized image file directly under ``src_dir`` (no
     recursion) into ``dest_textures_dir``, overwriting existing files there.
-    Returns the count copied. Does **not** try to determine which textures a
-    ``.mv1`` actually references - DxLibModelViewer's own conversion appears
-    to keep only one texture per material (confirmed by inspecting real
-    shipped assets), so this is a deliberate "copy everything available"
-    fallback rather than a filtered/verified set - see
-    tools/model/README.md's "Known limitations"."""
+    Returns the count copied. Does **not** look at which textures the
+    ``.mv1`` actually references or where it expects them - that's
+    ``--with-textures`` (``_collect_textures``); this is the plain "copy
+    everything available into textures/" option."""
     if not src_dir.is_dir():
         raise CliError(f"--textures {src_dir} is not a directory")
     files = sorted(p for p in src_dir.iterdir() if p.is_file() and p.suffix.lower() in _TEXTURE_EXTS)
@@ -174,8 +268,8 @@ def cmd_install(args: argparse.Namespace) -> int:
 
     if args.textures:
         # Plain bulk copy, same "textures/" sibling-folder convention as real
-        # shipped assets - no attempt to figure out which files a .mv1 (or its
-        # source .fbx) actually references, see _copy_textures()'s docstring.
+        # shipped assets - no attempt to figure out which files the .mv1
+        # references, see _copy_textures()'s docstring (and --with-textures).
         textures_src = _resolve(args.textures)
         textures_dest = dest.parent / "textures"
         count = _copy_textures(textures_src, textures_dest)
@@ -192,15 +286,19 @@ def cmd_install(args: argparse.Namespace) -> int:
         print(f"installed {dest}")
         print(f"          {meta_path.name} (existing, kept)")
         print(f"GUID:     {guid}  (reused)")
-        return 0
+    else:
+        guid = meta_mod.mint_guid()
+        content_path = meta_mod.content_path_for(name, dest.parent, _REPO)
+        meta_mod.write_meta(meta_path, name, guid, content_path)
+        print(f"installed {dest}")
+        print(f"          {meta_path.name}")
+        print(f"GUID:     {guid}")
 
-    guid = meta_mod.mint_guid()
-    content_path = meta_mod.content_path_for(name, dest.parent, _REPO)
-    meta_mod.write_meta(meta_path, name, guid, content_path)
-
-    print(f"installed {dest}")
-    print(f"          {meta_path.name}")
-    print(f"GUID:     {guid}")
+    if args.with_textures:
+        # Done last so a missing texture still leaves a complete .mv1 + .meta
+        # behind; the non-zero exit only flags the incomplete texture set.
+        placed, missing = _collect_textures(dest, [mv1_src.parent], dest.parent)
+        _report_textures(dest, placed, missing, dest.parent)
     return 0
 
 
@@ -219,6 +317,13 @@ def register(sub: argparse._SubParsersAction) -> None:
     sp = sub.add_parser("convert", help="convert .fbx -> .mv1 by driving the DxLibModelViewer GUI")
     sp.add_argument("file", help="input model, e.g. a .fbx")
     sp.add_argument("out", help="output .mv1 path")
+    sp.add_argument("--mode", required=True, choices=_SAVE_MODES,
+                     help="what to save: mesh = model only (animations dropped), "
+                          "anim = animations only (no mesh), full = model + animations")
+    sp.add_argument("--with-textures", action="store_true",
+                     help="also copy every texture the output .mv1 references next to it, at the "
+                          "relative path it expects (looked up next to the input file and in its "
+                          "*.fbm folder); not valid with --mode anim")
     sp.add_argument("--modelviewer-path", default=None,
                      help="override the DxLibModelViewer_64bit.exe path")
     sp.add_argument("--timeout", type=float, default=60.0, metavar="SECONDS")
@@ -234,5 +339,8 @@ def register(sub: argparse._SubParsersAction) -> None:
     sp.add_argument("--textures", default=None,
                      help="directory of texture images to bulk-copy into <dest-dir>/textures/ "
                           "(no filtering - copies every recognized image file found; off by default)")
+    sp.add_argument("--with-textures", action="store_true",
+                     help="copy every texture the .mv1 references (resolved next to the source .mv1 "
+                          "and in its *.fbm folders) into <dest-dir> at the relative path it expects")
     sp.add_argument("--dest", required=True, help="e.g. Assets/Art/Models/MyProp/MyProp.mv1")
     sp.set_defaults(func=_wrap(cmd_install))

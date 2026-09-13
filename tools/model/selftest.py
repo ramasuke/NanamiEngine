@@ -19,18 +19,27 @@ Stages:
   4. install --textures bulk-copy: copies recognized image files into
      <dest-dir>/textures/, ignores non-image files, and errors on a missing
      source directory. Plain filesystem copying - no third-party deps.
-  5. best-effort end-to-end convert(): only runs if pywinauto, a
-     DxLibModelViewer exe ($DXLIB_MODELVIEWER or cli.DEFAULT_MODELVIEWER_PATH),
-     and a test .fbx ($TOOLS_MODEL_TEST_FBX) are all present. Skipped
-     elsewhere - this toolkit has no committed .fbx fixture (see
-     tools/model/README.md).
+  5. mv1.decode()/texture_paths() against real shipped .mv1 files: decoded
+     size matches the header, and the texture references match what's known
+     to be in them.
+  6. texture collection (convert/install --with-textures): a synthetic
+     literal-only .mv1 referencing textures under a sub-folder, a *.fbm
+     folder, an absolute path, and outside the destination - checks lookup
+     order, sub-folder preservation, and missing-texture reporting.
+  7. best-effort end-to-end convert() in every save mode (mesh/anim/full):
+     only runs if pywinauto, a DxLibModelViewer exe ($DXLIB_MODELVIEWER or
+     cli.DEFAULT_MODELVIEWER_PATH), and a test .fbx ($TOOLS_MODEL_TEST_FBX)
+     are all present. Skipped elsewhere - this toolkit has no committed .fbx
+     fixture (see tools/model/README.md).
 """
 
 from __future__ import annotations
 
 import argparse
 import os
+import struct
 import sys
+import tempfile
 import traceback
 from pathlib import Path
 
@@ -39,7 +48,7 @@ _REPO = _HERE.parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from tools.model import cli, meta  # noqa: E402
+from tools.model import cli, meta, mv1  # noqa: E402
 from tools.common import cereal_json as cj  # noqa: E402
 
 REAL_META_FIXTURES = [
@@ -49,7 +58,30 @@ REAL_META_FIXTURES = [
     _REPO / "Assets" / "Art" / "Models" / "Monster" / "Hyenas" / "Hyenas_A4_AllMotion.mv1.meta",
 ]
 
-_SYNTHETIC_MV1 = b"MV11" + b"\x00" * 300  # header + padding past cli._MV1_MIN_SIZE
+_KEYCODE = 0xA3
+
+
+def synthetic_mv1(body: bytes) -> bytes:
+    """A valid ``.mv1`` whose compressed stream holds ``body`` as literals
+    only (every keycode byte escaped as keycode,keycode) - enough for
+    ``mv1.decode`` without needing a real LZ encoder."""
+    payload = body.replace(bytes([_KEYCODE]), bytes([_KEYCODE, _KEYCODE]))
+    return b"MV11" + struct.pack("<IIB", len(body), 9 + len(payload), _KEYCODE) + payload
+
+
+# header + padding past cli._MV1_MIN_SIZE, with one keycode byte to exercise the escape
+_SYNTHETIC_MV1 = synthetic_mv1(b"\x00" * 150 + bytes([_KEYCODE]) + b"\x00" * 150)
+
+# Texture references known to be in real shipped assets (mv1.texture_paths output).
+REAL_TEXTURE_FIXTURES = {
+    _REPO / "Assets" / "Art" / "Models" / "Fantasy" / "DirtyHouse" / "dirtyHouse.mv1": [
+        "textures\\Wall_Roughness.png", "textures\\Roof_normal.png", "textures\\Wall_base.png",
+        "textures\\Wood_normal.png", "textures\\Wood_base.png", "textures\\Roof_base.png",
+    ],
+    _REPO / "Assets" / "Art" / "Models" / "Road" / "BrickRoad.mv1": ["道のテクスチャ\\road block.png"],
+    _REPO / "Assets" / "Art" / "Models" / "Basic" / "Cube.mv1": [],
+    _REPO / "Assets" / "Art" / "Animation" / "Man" / "Jump.mv1": [],
+}
 
 
 class Reporter:
@@ -116,7 +148,7 @@ def stage_install_guid_reuse(r: Reporter) -> None:
             src = Path(tmp) / "src.mv1"
             src.write_bytes(_SYNTHETIC_MV1)
             dest = Path(tmp) / "out" / "Test.mv1"
-            ns = argparse.Namespace(mv1=str(src), source=None, textures=None, dest=str(dest))
+            ns = argparse.Namespace(mv1=str(src), source=None, textures=None, dest=str(dest), with_textures=False)
             cli.cmd_install(ns)
             meta_path = dest.with_suffix(dest.suffix + ".meta")
             first = meta.read_meta(meta_path)
@@ -162,7 +194,7 @@ def stage_texture_copy(r: Reporter) -> None:
             mv1_src = Path(tmp) / "src.mv1"
             mv1_src.write_bytes(_SYNTHETIC_MV1)
             dest = Path(tmp) / "out" / "Test.mv1"
-            ns = argparse.Namespace(mv1=str(mv1_src), source=None, textures=str(src_dir), dest=str(dest))
+            ns = argparse.Namespace(mv1=str(mv1_src), source=None, textures=str(src_dir), dest=str(dest), with_textures=False)
             cli.cmd_install(ns)
 
             textures_dest = dest.parent / "textures"
@@ -182,7 +214,7 @@ def stage_texture_copy(r: Reporter) -> None:
             mv1_src = Path(tmp) / "src.mv1"
             mv1_src.write_bytes(_SYNTHETIC_MV1)
             dest = Path(tmp) / "out" / "Test.mv1"
-            ns = argparse.Namespace(mv1=str(mv1_src), source=None, textures=str(empty_dir), dest=str(dest))
+            ns = argparse.Namespace(mv1=str(mv1_src), source=None, textures=str(empty_dir), dest=str(dest), with_textures=False)
             cli.cmd_install(ns)  # must not raise - zero images is a warning, not an error
             textures_dest = dest.parent / "textures"
             if textures_dest.exists() and any(textures_dest.iterdir()):
@@ -198,7 +230,7 @@ def stage_texture_copy(r: Reporter) -> None:
             mv1_src.write_bytes(_SYNTHETIC_MV1)
             dest = Path(tmp) / "out" / "Test.mv1"
             missing_dir = Path(tmp) / "does_not_exist"
-            ns = argparse.Namespace(mv1=str(mv1_src), source=None, textures=str(missing_dir), dest=str(dest))
+            ns = argparse.Namespace(mv1=str(mv1_src), source=None, textures=str(missing_dir), dest=str(dest), with_textures=False)
             try:
                 cli.cmd_install(ns)
             except cli.CliError:
@@ -210,6 +242,131 @@ def stage_texture_copy(r: Reporter) -> None:
         r.fail("install --textures missing source dir", traceback.format_exc())
 
 
+def stage_mv1_decode(r: Reporter) -> None:
+    r.section("stage 5: mv1.decode() / texture_paths() (real shipped .mv1 assets)")
+    for path, want in REAL_TEXTURE_FIXTURES.items():
+        name = path.relative_to(_REPO).as_posix()
+        try:
+            if not path.exists():
+                r.ok(f"{name} (skipped: not present)")
+                continue
+            data = path.read_bytes()
+            declared = struct.unpack_from("<I", data, 4)[0]
+            body = mv1.decode(data)
+            if len(body) != declared:
+                raise AssertionError(f"decoded {len(body)} bytes, header declares {declared}")
+            got = mv1.texture_paths(path)
+            if got != want:
+                raise AssertionError(f"texture_paths() = {got!r}, expected {want!r}")
+            if cli.looks_like_mv1(path):
+                raise AssertionError(f"looks_like_mv1() flagged a real asset: {cli.looks_like_mv1(path)}")
+            r.ok(f"{name}: {declared} bytes decoded, {len(got)} texture reference(s)")
+        except Exception:  # noqa: BLE001
+            r.fail(name, traceback.format_exc())
+
+    try:
+        truncated = synthetic_mv1(b"x" * 400)[:-10]
+        try:
+            mv1.decode(truncated)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("decode() accepted a truncated stream")
+        with tempfile.TemporaryDirectory() as tmp:
+            bad = Path(tmp) / "truncated.mv1"
+            bad.write_bytes(truncated)
+            if not cli.looks_like_mv1(bad):
+                raise AssertionError("looks_like_mv1() accepted a truncated stream")
+        r.ok("decode()/looks_like_mv1() reject a truncated compressed stream")
+    except Exception:  # noqa: BLE001
+        r.fail("truncated stream", traceback.format_exc())
+
+
+def stage_texture_collection(r: Reporter) -> None:
+    r.section("stage 6: --with-textures texture collection (synthetic .mv1)")
+    refs = [
+        "textures\\Base.png",           # relative sub-folder, present as-is in the source dir
+        "Model.fbm\\Normal.png",        # .fbm name differs from what's on disk -> found via *.fbm glob
+        "C:\\Artist\\Machine\\Base.png",  # absolute, covered by the relative ref with the same name
+        "C:\\Artist\\Machine\\Solo.tga",  # absolute only -> placed directly in dest
+        "Loose.jpg",                    # bare name, present only as <src>/Loose.jpg
+        "..\\Outside.png",              # escapes dest -> reported missing
+        "textures\\Missing.png",        # nowhere -> reported missing
+    ]
+    body = b"\x01\x02" + b"".join(r_.encode("utf-8") + b"\x00\x07" for r_ in refs) + b"\x00" * 64
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "src"
+            (src / "textures").mkdir(parents=True)
+            (src / "textures" / "Base.png").write_bytes(b"base")
+            (src / "Other_Name.fbm").mkdir()
+            (src / "Other_Name.fbm" / "Normal.png").write_bytes(b"normal")
+            (src / "Solo.tga").write_bytes(b"solo")
+            (src / "Loose.jpg").write_bytes(b"loose")
+            (Path(tmp) / "Outside.png").write_bytes(b"outside")
+            mv1_src = src / "Model.mv1"
+            mv1_src.write_bytes(synthetic_mv1(body))
+
+            if mv1.texture_paths(mv1_src) != refs:
+                raise AssertionError(f"texture_paths() = {mv1.texture_paths(mv1_src)!r}, expected {refs!r}")
+
+            dest = Path(tmp) / "out" / "Model.mv1"
+            ns = argparse.Namespace(mv1=str(mv1_src), source=None, textures=None, dest=str(dest),
+                                     with_textures=True)
+            try:
+                cli.cmd_install(ns)
+            except cli.CliError as e:
+                msg = str(e)
+                if "..\\Outside.png" not in msg or "textures\\Missing.png" not in msg or "2 texture(s)" not in msg:
+                    raise AssertionError(f"missing-texture error doesn't list exactly the 2 unplaceable refs: {msg}")
+            else:
+                raise AssertionError("install --with-textures should fail when a referenced texture is missing")
+
+            out = dest.parent
+            placed = sorted(p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file())
+            want = ["Loose.jpg", "Model.fbm/Normal.png", "Model.mv1", "Model.mv1.meta", "Solo.tga", "textures/Base.png"]
+            if placed != want:
+                raise AssertionError(f"dest contains {placed!r}, expected {want!r}")
+            if (out / "Model.fbm" / "Normal.png").read_bytes() != b"normal":
+                raise AssertionError("Model.fbm/Normal.png was not copied from the *.fbm fallback")
+        r.ok("install --with-textures: relative/sub-folder, *.fbm fallback, absolute, bare name, missing + escaping refs")
+    except Exception:  # noqa: BLE001
+        r.fail("--with-textures collection", traceback.format_exc())
+
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "src"
+            (src / "textures").mkdir(parents=True)
+            (src / "textures" / "Base.png").write_bytes(b"base")
+            mv1_src = src / "Model.mv1"
+            mv1_src.write_bytes(synthetic_mv1(b"\x01textures\\Base.png\x00" + b"\x00" * 300))
+            dest = Path(tmp) / "out" / "Model.mv1"
+            ns = argparse.Namespace(mv1=str(mv1_src), source=None, textures=None, dest=str(dest),
+                                     with_textures=True)
+            cli.cmd_install(ns)
+            if (dest.parent / "textures" / "Base.png").read_bytes() != b"base":
+                raise AssertionError("textures/Base.png was not placed next to the installed .mv1")
+            cli.cmd_install(ns)  # re-install: texture already in place, must not fail
+        r.ok("install --with-textures succeeds when every reference resolves (and on re-install)")
+    except Exception:  # noqa: BLE001
+        r.fail("--with-textures all-found", traceback.format_exc())
+
+    try:
+        ns = argparse.Namespace(file=str(_REPO / "tools" / "model" / "selftest.py"), out="unused.mv1",
+                                 mode="anim", with_textures=True, force=False, modelviewer_path=None,
+                                 timeout=1.0, debug_dir=None)
+        try:
+            cli.cmd_convert(ns)
+        except cli.CliError as e:
+            if "--mode anim" not in str(e):
+                raise AssertionError(f"unexpected error: {e}")
+        else:
+            raise AssertionError("convert --mode anim --with-textures should be rejected")
+        r.ok("convert rejects --mode anim --with-textures before launching anything")
+    except Exception:  # noqa: BLE001
+        r.fail("convert anim+textures rejection", traceback.format_exc())
+
+
 def _find_modelviewer() -> Path | None:
     for candidate in (os.environ.get("DXLIB_MODELVIEWER"), cli.DEFAULT_MODELVIEWER_PATH):
         if candidate and Path(candidate).exists():
@@ -218,7 +375,7 @@ def _find_modelviewer() -> Path | None:
 
 
 def stage_e2e_convert(r: Reporter) -> None:
-    r.section("stage 5: end-to-end convert() (best-effort, machine-specific)")
+    r.section("stage 7: end-to-end convert() in every save mode (best-effort, machine-specific)")
     try:
         import pywinauto  # noqa: F401
     except ImportError:
@@ -237,18 +394,32 @@ def stage_e2e_convert(r: Reporter) -> None:
         return
 
     from tools.model import dxlib_modelviewer
-    import tempfile
+    timeout = float(os.environ.get("TOOLS_MODEL_TEST_TIMEOUT", "240"))
+    sizes: dict[str, int] = {}
     with tempfile.TemporaryDirectory() as tmp:
-        out = Path(tmp) / "selftest_output.mv1"
-        try:
-            dxlib_modelviewer.convert(Path(fbx_env), out, exe, timeout=60.0,
-                                       debug_dir=Path(tmp) / "debug")
-            problems = cli.looks_like_mv1(out)
-            if problems:
-                raise AssertionError(f"converted output failed looks_like_mv1(): {problems}")
-            r.ok(f"converted {fbx_env} -> {out.name} via {exe}")
-        except Exception:  # noqa: BLE001
-            r.fail("end-to-end convert()", traceback.format_exc())
+        for mode in dxlib_modelviewer.SAVE_MODES:
+            out = Path(tmp) / f"selftest_output_{mode}.mv1"
+            try:
+                # Debug bundles live outside `tmp` so they survive for inspection.
+                dxlib_modelviewer.convert(Path(fbx_env), out, exe, mode=mode, timeout=timeout,
+                                           debug_dir=None)
+                problems = cli.looks_like_mv1(out)
+                if problems:
+                    raise AssertionError(f"converted output failed looks_like_mv1(): {problems}")
+                sizes[mode] = len(mv1.decode(out.read_bytes()))
+                r.ok(f"--mode {mode}: converted {fbx_env} -> {out.name} ({sizes[mode]} bytes decoded)")
+            except dxlib_modelviewer.AutomationError as e:
+                r.fail(f"end-to-end convert() --mode {mode}",
+                       f"step {e.step!r}: {e}\ndebug info saved to: {e.debug_path}")
+            except Exception:  # noqa: BLE001
+                r.fail(f"end-to-end convert() --mode {mode}", traceback.format_exc())
+    if len(sizes) == len(dxlib_modelviewer.SAVE_MODES):
+        # Only meaningful for a test .fbx that has both a mesh and animations.
+        if sizes["full"] > sizes["mesh"] and sizes["full"] > sizes["anim"]:
+            r.ok("full output is larger than both mesh-only and anim-only outputs")
+        else:
+            r.fail("mode output sizes", f"expected full > mesh and full > anim, got {sizes} "
+                   "(fine if $TOOLS_MODEL_TEST_FBX has no animation or no mesh)")
 
 
 def main() -> int:
@@ -257,6 +428,8 @@ def main() -> int:
     stage_content_path_convention(r)
     stage_install_guid_reuse(r)
     stage_texture_copy(r)
+    stage_mv1_decode(r)
+    stage_texture_collection(r)
     stage_e2e_convert(r)
     return r.finish()
 
