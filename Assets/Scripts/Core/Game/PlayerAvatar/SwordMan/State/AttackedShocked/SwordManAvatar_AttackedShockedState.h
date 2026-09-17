@@ -15,5 +15,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoExit  () override;
 
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::AttackedShocked; }
+        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Momentary; }
+        void VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const override;
     };
 }

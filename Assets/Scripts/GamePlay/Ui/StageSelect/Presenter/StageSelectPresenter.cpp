@@ -1,4 +1,4 @@
-#include "StageSelectPresenter.h"
+﻿#include "StageSelectPresenter.h"
 
 #include "DxLib.h"
 #include "../../../../../../Engine/Core/Coroutine/Coroutine.h"
@@ -31,10 +31,12 @@ namespace GamePlay::Ui
             if (const auto stage = model_->Stages()[index].lock())
             {
                 view_->ShowMapMarker(stage->MapMarkerPosition(), stage->IsCleared());
+                view_->ShowStageDetail(*stage->Data());
             }
         });
 
         view_->SetWorldEnterButtonEnabled(false);
+        view_->ShowNoSelectionDetail();
 
         view_->OnWorldEnterButtonClicked().subscribe([this](NanamiUi::MouseState)
         {
@@ -59,6 +61,8 @@ namespace GamePlay::Ui
         if (!model_ || !model_->HasSelection())
             return;
 
-        Coroutine::StartCoroutine(view_->PlayEnterWorldTransitionAsync(model_->SelectedSceneType()));
+        Coroutine::StartCoroutine(view_->PlayEnterWorldTransitionAsync(
+            model_->SelectedSceneType(),
+            model_->SelectedStageData()));
     }
 }

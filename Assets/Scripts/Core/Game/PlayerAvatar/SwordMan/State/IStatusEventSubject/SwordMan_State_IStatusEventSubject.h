@@ -18,5 +18,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         virtual void InvokeDashAttack    () const = 0;
         virtual void InvokeOnRun         () const = 0;
         virtual void InvokeOnAvoidRolling() const = 0;
+        virtual void InvokeOnMove        () const = 0;
+        virtual void InvokeOnJump        () const = 0;
+        virtual void InvokeChargeAttack  () const = 0;
+        virtual void InvokeJumpAttack    () const = 0;
+        virtual void InvokeOnLockOn      () const = 0;
     };
 }

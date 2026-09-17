@@ -21,10 +21,6 @@ void Component::Animator::OnLateUpdate()
 
     modelDxLibHandle_ = Entity().lock()->Components().Catch<ModelRenderer>().lock()->modelDxLibHandle_;
     animationTree_->OnUpdate(modelDxLibHandle_, timeScale_);
-    for (const auto& animationSync : animationSyncs_)
-    {
-        animationSync->UpdateSync(modelDxLibHandle_);
-    }
 }
 
 void Component::Animator::InitAnimationTree()
@@ -37,10 +33,6 @@ void Component::Animator::InitAnimationTree()
     {
         const auto modelDxLibHandle = Components().Catch<ModelRenderer>().lock()->modelDxLibHandle_;
         animationTree_->InitForAnimator(modelDxLibHandle);
-        for (const auto& animationSync : animationSyncs_)
-        {
-            animationSync->Init(modelDxLibHandle);
-        }
     }
 }
 
@@ -64,16 +56,6 @@ void Component::Animator::OnDrawGui()
 {
     ImGuiHelper::OnDrawInputField("animationTreeFile_", animationTreeFile_);
     ImGuiHelper::OnDrawInputField("timeScale_", timeScale_);
-    ImGuiHelper::OnDrawInputField("animationSyncs_", animationSyncs_, [this]
-    {
-        if (ImGui::TreeNode("Add Syncs"))
-        {
-            if (ImGui::Button("Transform")) animationSyncs_.push_back(std::make_unique<AnimationTree::TransformSync>());
-        
-            ImGui::TreePop();
-            ImGui::Spacing();
-        } 
-    });
 
     if (animationTree_ && ImGui::Button("Show Running AnimationTree"))
     {
@@ -81,7 +63,7 @@ void Component::Animator::OnDrawGui()
             window->TryAddTarget(animationTree_);
     }
 
-    if (ImGui::TreeNode("Parameter"))
+    if (animationTree_ && ImGui::TreeNode("Parameter"))
     {
         animationTree_->OnDrawGui();
         

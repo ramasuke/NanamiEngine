@@ -7,7 +7,7 @@
     },
     "components_": {
         "cereal_class_version": 0,
-        "componentCount": 3,
+        "componentCount": 4,
         "component_0": {
             "polymorphic_id": 2147483649,
             "polymorphic_name": "NanamiEngine::Module::Component::SphereCollider",
@@ -16,7 +16,7 @@
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
-                        "cereal_class_version": 5,
+                        "cereal_class_version": 6,
                         "value0": {
                             "cereal_class_version": 0,
                             "guid_": {
@@ -24,8 +24,6 @@
                             },
                             "isEnable_": true
                         },
-                        "mass_": 1.0,
-                        "isGravity_": true,
                         "offset_": {
                             "value0": 0.0,
                             "value1": 0.0,
@@ -36,9 +34,7 @@
                             "value1": 0.0,
                             "value2": 0.0
                         },
-                        "emotionType_": 1,
                         "layer_": 0,
-                        "constraints_": 0,
                         "isSensor_": true,
                         "friction_": 0.20000000298023225
                     },
@@ -102,12 +98,32 @@
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
-                        "cereal_class_version": 0,
                         "guid_": {
                             "value_": "8D76F6FE-4CC6-4E79-B57E-6A5B79496E15"
                         },
                         "isEnable_": true
                     }
+                }
+            }
+        },
+        "component_3": {
+            "polymorphic_id": 2147483652,
+            "polymorphic_name": "NanamiEngine::Module::Component::RigidBody",
+            "ptr_wrapper": {
+                "id": 2147483653,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "guid_": {
+                            "value_": "B3CE41AF-8BB4-4540-954C-CFC016341857"
+                        },
+                        "isEnable_": true
+                    },
+                    "motionType_": 1,
+                    "mass_": 1.0,
+                    "isGravity_": false,
+                    "constraints_": 0,
+                    "isPartOfParent_": false
                 }
             }
         }
@@ -158,6 +174,7 @@
         },
         "childCount": 0
     },
+    "mark_": 0,
     "value0": 1,
     "value1": {
         "value_": "B29347A5-0ED3-4EE4-9FA3-4F16B337D4FF"

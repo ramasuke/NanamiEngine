@@ -16,7 +16,7 @@ namespace NanamiEngine::Module::GameObject
         explicit PrefabGameObject(const std::string& filePath = "");
         
         void InitGameObject(const std::weak_ptr<IGameObject>& parent, const std::shared_ptr<IGameObject>& ownPtr) override;
-        void InitForCopied(const std::shared_ptr<IGameObject>& ownPtr, bool isActive, std::string name, ComponentGroup components, GameObject::Transform transform) override;
+        void InitForCopied(const std::shared_ptr<IGameObject>& ownPtr, bool isActive, std::string name, GameObjectMark mark, ComponentGroup components, GameObject::Transform transform) override;
         void InvokeInitAwakeCallbacks() override;
         void InvokeInitStartCallbacks() override;
         void InitPrefab(const std::string& filePath);
@@ -40,6 +40,9 @@ namespace NanamiEngine::Module::GameObject
         [[nodiscard]] std::shared_ptr<IGameObject> CopyForInstantiate() override;
         [[nodiscard]] std::shared_ptr<PrefabGameObject> CreateWorkingCopy() const;
         [[nodiscard]] const std::string& Name() const override { return name_; }
+        void SetName(std::string name) override { name_ = std::move(name); }
+        [[nodiscard]] GameObjectMark Mark() const override { return mark_; }
+        void SetMark(const GameObjectMark mark) override { mark_ = mark; }
         bool IsEnable() override { return isActive_; }
         void SetEnable(bool enable) override;
 
@@ -47,6 +50,7 @@ namespace NanamiEngine::Module::GameObject
         bool isActive_ = false;
         std::string filePath_;
         std::string name_ = "Empty";
+        GameObjectMark mark_ = GameObjectMark::None;
         Guid guid_;
         ComponentGroup components_;
         GameObject::Transform transform_;
@@ -55,6 +59,6 @@ namespace NanamiEngine::Module::GameObject
     };
 }
 
-CEREAL_CLASS_VERSION(NanamiEngine::Module::GameObject::PrefabGameObject, 1);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::GameObject::PrefabGameObject, 2);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::GameObject::PrefabGameObject);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::GameObject::IGameObject, NanamiEngine::Module::GameObject::PrefabGameObject);

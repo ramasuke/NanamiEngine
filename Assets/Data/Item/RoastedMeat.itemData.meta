@@ -1,0 +1,58 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::ItemData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Item/RoastedMeat.itemData",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "B407D88F-D3CE-439E-8F0F-3D2746A261FE"
+                    }
+                },
+                "displayName_": "こんがり肉",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "7B7E2CDF-330C-40B5-9BA1-FF955A91687F"
+                                }
+                            }
+                        }
+                    }
+                },
+                "effect_": 2,
+                "effectAmount_": 100.0,
+                "effectDuration_secs_": 0.0,
+                "useSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                }
+                            }
+                        }
+                    }
+                },
+                "maxStack_": 10
+            }
+        }
+    }
+}

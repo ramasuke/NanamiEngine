@@ -30,6 +30,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         void OnDisable() override;
 
         rxcpp::observable<std::shared_ptr<SwordManAvatarStateBase>> CurrentState() const;
+        [[nodiscard]] std::shared_ptr<const SwordManAvatarStateBase> CurrentStateValue() const;
 
     private:
         rxcpp::subjects::behavior<std::shared_ptr<SwordManAvatarStateBase>> swordManCurrentState_;

@@ -4,6 +4,7 @@
 #include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../Core/Game/StatusParameter/Health/Health.h"
+#include "../../../Core/Game/StatusParameter/Money/Money.h"
 
 namespace GamePlay::Prop
 {
@@ -22,6 +23,8 @@ namespace GamePlay::Prop
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) onDamageParticle_;
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) destroyParticle_;
         [[serialize(1)]] FIELD(GameObject::IGameObject) particlePos_;
+        /** 壊したときにプレイヤーへ入る額 */
+        [[serialize(2)]] GameCore::StatusParameter::Money dropMoney_;
 
 #pragma region Serialization Function
     public:
@@ -34,6 +37,7 @@ namespace GamePlay::Prop
             archive(CEREAL_NVP(onDamageParticle_));
             archive(CEREAL_NVP(destroyParticle_));
             archive(CEREAL_NVP(particlePos_));
+            archive(CEREAL_NVP(dropMoney_));
         }
 
         template<class Archive>
@@ -43,9 +47,10 @@ namespace GamePlay::Prop
             if (version >= 0) archive(CEREAL_NVP(onDamageParticle_));
             if (version >= 0) archive(CEREAL_NVP(destroyParticle_));
             if (version >= 1) archive(CEREAL_NVP(particlePos_));
+            if (version >= 2) archive(CEREAL_NVP(dropMoney_));
         }
 #pragma endregion        
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Prop::DestructibleObject, 1)
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::DestructibleObject, 2)

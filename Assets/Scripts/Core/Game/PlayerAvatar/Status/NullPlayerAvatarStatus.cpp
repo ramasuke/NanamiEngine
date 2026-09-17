@@ -7,6 +7,7 @@ namespace GameCore::PlayerAvatar
         : quest_        (std::make_unique<NullQuestGroup>())
         , completeQuest_(std::make_unique<NullCompleteQuestGroup>())
         , event_        (std::make_unique<NullStatusEvent>())
+        , wallet_       (std::make_unique<PlayerAvatar::Wallet>())
     {
     }
 
@@ -33,6 +34,11 @@ namespace GameCore::PlayerAvatar
     Quest::ICompleteQuestGroup& NullPlayerAvatarStatus::CompletedQuest() const
     {
         return *completeQuest_;
+    }
+
+    PlayerAvatar::Wallet& NullPlayerAvatarStatus::Wallet() const
+    {
+        return *wallet_;
     }
 
     const StatusParameter::Health& NullPlayerAvatarStatus::MaxHealth() const

@@ -3,6 +3,7 @@
 #include "../../../Module/ProjectConfig/Engine_Module_ProjectConfig.h"
 #include "../../../Module/SafeExecute/Engine_Module_SafeExecute.h"
 #include "ImGuiHelper.h"
+#include "DxLib.h"
 
 namespace NanamiEngine::Core::Application::Configuration
 {
@@ -10,6 +11,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEFAULT_WINDOW_HEIGHT_SIZE = 1080;
     constexpr auto DEFAULT_WINDOW_COLOR_SCALE = 16;
     constexpr auto DEFAULT_Z_BUFFER_BIT_DEPTH = 24;
+    constexpr auto DEFAULT_ALWAYS_RUN         = true;
     constexpr auto DEFAULT_SHADOW_MAP_WIDTH   = 1024;
     constexpr auto DEFAULT_SHADOW_MAP_HEIGHT  = 1024;
     constexpr auto DEFAULT_LIGHT_DIR_X        = -0.5f;
@@ -25,6 +27,7 @@ namespace NanamiEngine::Core::Application::Configuration
     int   AppConfiguration::windowHeight_     = DEFAULT_WINDOW_HEIGHT_SIZE;
     int   AppConfiguration::windowColorScale_ = DEFAULT_WINDOW_COLOR_SCALE;
     int   AppConfiguration::zBufferBitDepth_  = DEFAULT_Z_BUFFER_BIT_DEPTH;
+    bool  AppConfiguration::alwaysRun_        = DEFAULT_ALWAYS_RUN;
     int   AppConfiguration::shadowMapWidth_   = DEFAULT_SHADOW_MAP_WIDTH;
     int   AppConfiguration::shadowMapHeight_  = DEFAULT_SHADOW_MAP_HEIGHT;
     float AppConfiguration::lightDirX_        = DEFAULT_LIGHT_DIR_X;
@@ -41,6 +44,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto APP_CONFIG_HEIGHT_KEY      = "WindowHeight";
     constexpr auto APP_CONFIG_SCALE_KEY       = "WindowColorScale";
     constexpr auto APP_CONFIG_Z_BUFFER_KEY    = "ZBufferBitDepth";
+    constexpr auto APP_CONFIG_ALWAYS_RUN_KEY  = "AlwaysRun";
     constexpr auto APP_CONFIG_SHADOW_W_KEY    = "ShadowMapWidth";
     constexpr auto APP_CONFIG_SHADOW_H_KEY    = "ShadowMapHeight";
     constexpr auto APP_CONFIG_LIGHT_DX_KEY    = "LightDirX";
@@ -61,6 +65,7 @@ namespace NanamiEngine::Core::Application::Configuration
         windowHeight_     = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_HEIGHT_KEY,     DEFAULT_WINDOW_HEIGHT_SIZE);
         windowColorScale_ = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SCALE_KEY,      DEFAULT_WINDOW_COLOR_SCALE);
         zBufferBitDepth_  = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_Z_BUFFER_KEY,   DEFAULT_Z_BUFFER_BIT_DEPTH);
+        alwaysRun_        = Module::ProjectConfig::LoadOrDefaultWithPath<bool> (APP_CONFIG_PATH, APP_CONFIG_ALWAYS_RUN_KEY, DEFAULT_ALWAYS_RUN);
         shadowMapWidth_   = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_W_KEY,   DEFAULT_SHADOW_MAP_WIDTH);
         shadowMapHeight_  = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_H_KEY,   DEFAULT_SHADOW_MAP_HEIGHT);
         lightDirX_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DX_KEY,   DEFAULT_LIGHT_DIR_X);
@@ -86,6 +91,7 @@ namespace NanamiEngine::Core::Application::Configuration
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_HEIGHT_KEY,     windowHeight_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SCALE_KEY,      windowColorScale_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_Z_BUFFER_KEY,   zBufferBitDepth_);
+        Module::ProjectConfig::SaveWithPath<bool> (APP_CONFIG_PATH, APP_CONFIG_ALWAYS_RUN_KEY, alwaysRun_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_W_KEY,   shadowMapWidth_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_H_KEY,   shadowMapHeight_);
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DX_KEY,   lightDirX_);
@@ -111,6 +117,9 @@ namespace NanamiEngine::Core::Application::Configuration
 
     int   AppConfiguration::GetZBufferBitDepth()          { return zBufferBitDepth_; }
     void  AppConfiguration::SetZBufferBitDepth(int depth) { zBufferBitDepth_ = depth; }
+
+    bool  AppConfiguration::GetAlwaysRun()                { return alwaysRun_; }
+    void  AppConfiguration::SetAlwaysRun(bool alwaysRun)  { alwaysRun_ = alwaysRun; }
 
     int   AppConfiguration::GetShadowMapWidth()         { return shadowMapWidth_; }
     int   AppConfiguration::GetShadowMapHeight()        { return shadowMapHeight_; }
@@ -176,6 +185,14 @@ namespace NanamiEngine::Core::Application::Configuration
             Save();
         }
         ImGui::TextDisabled("* Restart required to apply");
+
+        bool alwaysRun = GetAlwaysRun();
+        if (ImGui::Checkbox("Always Run", &alwaysRun))
+        {
+            SetAlwaysRun(alwaysRun);
+            SetAlwaysRunFlag(alwaysRun ? TRUE : FALSE);
+            Save();
+        }
 
         ImGui::Spacing();
         ImGui::Text("Shadow Map");

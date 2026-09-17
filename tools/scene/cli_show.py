@@ -7,6 +7,7 @@ from pathlib import Path
 
 from tools.common.cereal_json import read_text
 
+from . import catalog as catalog_mod
 from . import model, reader, validate
 
 
@@ -38,8 +39,12 @@ def _print_component(comp: model.Component, indent: str) -> None:
 def _print_gameobject(node: model.GameObjectNode, indent: str) -> None:
     active = "" if node.is_active else " (inactive)"
     kind_tag = "" if node.kind == "scene" else f" <{node.kind}>"
+    mark_tag = ""
+    if node.mark:
+        name = model.MARK_NAMES[node.mark] if node.mark < len(model.MARK_NAMES) else str(node.mark)
+        mark_tag = f" mark={name}"
     t = node.transform
-    print(f"{indent}{node.name}  [{_short(node.guid)}]{active}{kind_tag}  "
+    print(f"{indent}{node.name}  [{_short(node.guid)}]{active}{kind_tag}{mark_tag}  "
           f"pos={_fmt_vec3(t.local_pos)}")
     for comp in node.components:
         _print_component(comp, indent + "    ")
@@ -70,14 +75,22 @@ def cmd_show(args: argparse.Namespace) -> int:
 
 def cmd_validate(args: argparse.Namespace) -> int:
     path = Path(args.file)
-    text = read_text(path)
-    if path.suffix == ".scene":
-        problems = validate.validate_scene(reader.read_scene(text))
-    elif path.suffix == ".prefab":
-        problems = validate.validate_prefab(reader.read_prefab(text))
-    else:
+    if path.suffix not in (".scene", ".prefab"):
         print(f"error: unrecognised extension {path.suffix!r} (expected .scene or .prefab)")
         return 1
+    # A BOM'd or malformed file cannot be read back at all, so report that alone
+    # rather than the parse errors it causes further down.
+    byte_problems = validate.validate_source_bytes(path.read_bytes())
+    if byte_problems:
+        for problem in byte_problems:
+            print("FAIL  " + problem)
+        return 1
+    text = read_text(path)
+    problems = validate.validate_class_versions(text, catalog_mod.load())
+    if path.suffix == ".scene":
+        problems += validate.validate_scene(reader.read_scene(text))
+    else:
+        problems += validate.validate_prefab(reader.read_prefab(text))
     if not problems:
         print(f"OK: {path.name} - no problems found")
         return 0

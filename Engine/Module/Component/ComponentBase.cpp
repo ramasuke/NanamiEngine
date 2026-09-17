@@ -1,23 +1,28 @@
 ﻿#include "ComponentBase.h"
 
-#include "../../Core/Object/Field/IInitializablePrefabField.h"
-
 Component::ComponentBase:: ComponentBase() = default;
-Component::ComponentBase::~ComponentBase() = default;
+
+Component::ComponentBase::~ComponentBase()
+{
+    // ComponentGroup::OnDestroy を通らずに捨てられた場合の保険
+    ImplementCancelOnDestroy();
+}
 
 void Component::ComponentBase::InitComponent(
     const std::weak_ptr<GameObject::IGameObject>& ownerGameObject)
 {
     gameObjectRef_ = ownerGameObject;
-    for (const auto& prefabObjectField : prefabObjectFields_)
-    {
-        prefabObjectField->Init(Transform());
-    }
 }
 
 void Component::ComponentBase::OnDrawGui()
 {
     
+}
+
+void Component::ComponentBase::ImplementCancelOnDestroy()
+{
+    if (destroyCancellationToken_.is_subscribed())
+        destroyCancellationToken_.unsubscribe();
 }
 
 void Component::ComponentBase::ResetGuid()

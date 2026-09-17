@@ -7,7 +7,7 @@
     },
     "components_": {
         "cereal_class_version": 0,
-        "componentCount": 4,
+        "componentCount": 6,
         "component_0": {
             "polymorphic_id": 2147483649,
             "polymorphic_name": "NanamiEngine::Module::Component::ModelRenderer",
@@ -89,7 +89,7 @@
             "ptr_wrapper": {
                 "id": 2147483653,
                 "data": {
-                    "cereal_class_version": 4,
+                    "cereal_class_version": 5,
                     "value0": {
                         "guid_": {
                             "value_": "80E24D8C-EDFE-4FFC-A5EC-C8AD89703CDF"
@@ -114,7 +114,6 @@
                             }
                         }
                     },
-                    "animationSyncCount": 0,
                     "timeScale_": 1.0
                 }
             }
@@ -125,77 +124,80 @@
             "ptr_wrapper": {
                 "id": 2147483655,
                 "data": {
-                    "cereal_class_version": 2,
+                    "cereal_class_version": 4,
                     "value0": {
-                        "cereal_class_version": 4,
+                        "cereal_class_version": 0,
                         "value0": {
-                            "cereal_class_version": 0,
+                            "cereal_class_version": 4,
                             "value0": {
-                                "guid_": {
-                                    "value_": "69CF4477-5535-4B27-8BF7-48482EECCC81"
-                                },
-                                "isEnable_": true
-                            }
-                        },
-                        "behaviourData_": {
-                            "cereal_class_version": 0,
-                            "value0": {
-                                "polymorphic_id": 1073741824,
-                                "ptr_wrapper": {
-                                    "id": 2147483656,
-                                    "data": {
-                                        "cereal_class_version": 0,
-                                        "value0": {
-                                            "value_": "75E9E79F-D8A0-4DDD-BC36-DF1EBC1FE914"
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "guid_": {
+                                        "value_": "69CF4477-5535-4B27-8BF7-48482EECCC81"
+                                    },
+                                    "isEnable_": true
+                                }
+                            },
+                            "behaviourData_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483656,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "75E9E79F-D8A0-4DDD-BC36-DF1EBC1FE914"
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        },
-                        "currentStatus_": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483657,
-                                "data": {
-                                    "value0": {
-                                        "cereal_class_version": 3,
-                                        "maxHealth_": {
-                                            "cereal_class_version": 0,
-                                            "value_": 3000
-                                        },
-                                        "currentHealth_": {
-                                            "polymorphic_id": 1073741824,
-                                            "ptr_wrapper": {
-                                                "id": 2147483658,
-                                                "data": {
-                                                    "value0": {
-                                                        "value_": 3000
+                            },
+                            "currentStatus_": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483657,
+                                    "data": {
+                                        "value0": {
+                                            "cereal_class_version": 3,
+                                            "maxHealth_": {
+                                                "cereal_class_version": 0,
+                                                "value_": 3000
+                                            },
+                                            "currentHealth_": {
+                                                "polymorphic_id": 1073741824,
+                                                "ptr_wrapper": {
+                                                    "id": 2147483658,
+                                                    "data": {
+                                                        "value0": {
+                                                            "value_": 3000
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            }
+                            },
+                            "isNetworkSyncStatus_": false
                         },
-                        "isNetworkSyncStatus_": false
-                    },
-                    "bossHealthGauge_": {
-                        "cereal_class_version": 0,
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483659,
-                                "data": {
-                                    "cereal_class_version": 0,
-                                    "value0": {
-                                        "value_": "49249A9E-686F-4568-9357-31731D472DA9"
+                        "bossHealthGaugePrefab_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483659,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "30EEF6CE-2AA7-4234-8306-222E9693EA2D"
+                                        }
                                     }
                                 }
                             }
-                        }
-                    },
-                    "bossName_": "ティラノサウルス"
+                        },
+                        "bossName_": "ティラノサウルス"
+                    }
                 }
             }
         },
@@ -207,15 +209,13 @@
                 "data": {
                     "cereal_class_version": 3,
                     "value0": {
-                        "cereal_class_version": 5,
+                        "cereal_class_version": 6,
                         "value0": {
                             "guid_": {
                                 "value_": "193A1810-7708-4A91-A982-913F1023CDF6"
                             },
                             "isEnable_": true
                         },
-                        "mass_": 999.0,
-                        "isGravity_": true,
                         "offset_": {
                             "value0": 0.0,
                             "value1": 200.0,
@@ -226,9 +226,7 @@
                             "value1": -13.699999809265137,
                             "value2": 0.0
                         },
-                        "emotionType_": 2,
                         "layer_": 0,
-                        "constraints_": 56,
                         "isSensor_": false,
                         "friction_": 0.20000000298023225
                     },
@@ -239,6 +237,257 @@
                     "value3": {},
                     "radius_": 184.00999450683595,
                     "height_": 700.0
+                }
+            }
+        },
+        "component_4": {
+            "polymorphic_id": 2147483653,
+            "polymorphic_name": "NanamiEngine::Module::Component::RigidBody",
+            "ptr_wrapper": {
+                "id": 2147483661,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "guid_": {
+                            "value_": "82DFFD5A-B177-4104-9C5B-77B61C97D6C0"
+                        },
+                        "isEnable_": true
+                    },
+                    "motionType_": 2,
+                    "mass_": 999.0,
+                    "isGravity_": true,
+                    "constraints_": 56,
+                    "isPartOfParent_": false
+                }
+            }
+        },
+        "component_5": {
+            "polymorphic_id": 2147483654,
+            "polymorphic_name": "NanamiEngine::Module::Component::BoneSync",
+            "ptr_wrapper": {
+                "id": 2147483662,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "D0ADB23E-280C-4441-8998-18D23E8D11C8"
+                        },
+                        "isEnable_": true
+                    },
+                    "syncCount": 8,
+                    "sync": {
+                        "polymorphic_id": 2147483655,
+                        "polymorphic_name": "NanamiEngine::Module::Bone::TransformSync",
+                        "ptr_wrapper": {
+                            "valid": 1,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "boneName_": "jt_Thigh_L"
+                                },
+                                "target_": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483663,
+                                            "data": {
+                                                "cereal_class_version": 0,
+                                                "value0": {
+                                                    "value_": "79C3E98A-92E3-4690-B74E-5721C1E25AA6"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "syncPosition_": true,
+                                "syncRotation_": true
+                            }
+                        }
+                    },
+                    "sync": {
+                        "polymorphic_id": 7,
+                        "ptr_wrapper": {
+                            "valid": 1,
+                            "data": {
+                                "value0": {
+                                    "boneName_": "jt_Knee_L"
+                                },
+                                "target_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483664,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "A36BD602-A594-485D-BBF7-027D92C31544"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "syncPosition_": true,
+                                "syncRotation_": true
+                            }
+                        }
+                    },
+                    "sync": {
+                        "polymorphic_id": 7,
+                        "ptr_wrapper": {
+                            "valid": 1,
+                            "data": {
+                                "value0": {
+                                    "boneName_": "jt_Ankle_L"
+                                },
+                                "target_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483665,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "6E9F0F34-0838-45B9-9C53-BBEC6CC08FE5"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "syncPosition_": true,
+                                "syncRotation_": true
+                            }
+                        }
+                    },
+                    "sync": {
+                        "polymorphic_id": 7,
+                        "ptr_wrapper": {
+                            "valid": 1,
+                            "data": {
+                                "value0": {
+                                    "boneName_": "jt_Foot_L"
+                                },
+                                "target_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483666,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "8CDD4291-ADD2-4934-9517-2B506BCB980C"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "syncPosition_": true,
+                                "syncRotation_": true
+                            }
+                        }
+                    },
+                    "sync": {
+                        "polymorphic_id": 7,
+                        "ptr_wrapper": {
+                            "valid": 1,
+                            "data": {
+                                "value0": {
+                                    "boneName_": "jt_Thigh_R"
+                                },
+                                "target_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483667,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "977DE0B4-7B2C-414A-8415-51D2FDB72A33"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "syncPosition_": true,
+                                "syncRotation_": true
+                            }
+                        }
+                    },
+                    "sync": {
+                        "polymorphic_id": 7,
+                        "ptr_wrapper": {
+                            "valid": 1,
+                            "data": {
+                                "value0": {
+                                    "boneName_": "jt_Knee_R"
+                                },
+                                "target_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483668,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "829ED8F2-ACF4-4A63-9414-897789D5B896"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "syncPosition_": true,
+                                "syncRotation_": true
+                            }
+                        }
+                    },
+                    "sync": {
+                        "polymorphic_id": 7,
+                        "ptr_wrapper": {
+                            "valid": 1,
+                            "data": {
+                                "value0": {
+                                    "boneName_": "jt_Ankle_R"
+                                },
+                                "target_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483669,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "895A936D-D30F-4F30-9466-CE1361C349DC"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "syncPosition_": true,
+                                "syncRotation_": true
+                            }
+                        }
+                    },
+                    "sync": {
+                        "polymorphic_id": 7,
+                        "ptr_wrapper": {
+                            "valid": 1,
+                            "data": {
+                                "value0": {
+                                    "boneName_": "jt_Foot_R"
+                                },
+                                "target_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483670,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "75463BFE-BE2B-46E9-BEBC-F9A0BD7C6772"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "syncPosition_": true,
+                                "syncRotation_": true
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -287,14 +536,14 @@
                 "value3": 1.0
             }
         },
-        "childCount": 4,
+        "childCount": 5,
         "child": {
-            "polymorphic_id": 2147483653,
+            "polymorphic_id": 2147483656,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483661,
+                "id": 2147483671,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -309,10 +558,10 @@
                     "components_": {
                         "componentCount": 2,
                         "component_0": {
-                            "polymorphic_id": 2147483654,
+                            "polymorphic_id": 2147483657,
                             "polymorphic_name": "NanamiEngine::Module::Component::BoxCollider",
                             "ptr_wrapper": {
-                                "id": 2147483662,
+                                "id": 2147483672,
                                 "data": {
                                     "cereal_class_version": 6,
                                     "value0": {
@@ -322,8 +571,6 @@
                                             },
                                             "isEnable_": true
                                         },
-                                        "mass_": 1.0,
-                                        "isGravity_": true,
                                         "offset_": {
                                             "value0": 0.0,
                                             "value1": 18.719999313354493,
@@ -334,9 +581,7 @@
                                             "value1": 0.0,
                                             "value2": 0.0
                                         },
-                                        "emotionType_": 1,
                                         "layer_": 0,
-                                        "constraints_": 56,
                                         "isSensor_": true,
                                         "friction_": 0.20000000298023225
                                     },
@@ -352,10 +597,10 @@
                             }
                         },
                         "component_1": {
-                            "polymorphic_id": 2147483655,
+                            "polymorphic_id": 2147483658,
                             "polymorphic_name": "GameCore::Npc::Enemy::AttackArea",
                             "ptr_wrapper": {
-                                "id": 2147483663,
+                                "id": 2147483673,
                                 "data": {
                                     "cereal_class_version": 2,
                                     "value0": {
@@ -414,14 +659,15 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
         "child": {
-            "polymorphic_id": 5,
+            "polymorphic_id": 8,
             "ptr_wrapper": {
-                "id": 2147483664,
+                "id": 2147483674,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -434,9 +680,9 @@
                     "components_": {
                         "componentCount": 2,
                         "component_0": {
-                            "polymorphic_id": 6,
+                            "polymorphic_id": 9,
                             "ptr_wrapper": {
-                                "id": 2147483665,
+                                "id": 2147483675,
                                 "data": {
                                     "value0": {
                                         "value0": {
@@ -445,8 +691,6 @@
                                             },
                                             "isEnable_": true
                                         },
-                                        "mass_": 1.0,
-                                        "isGravity_": true,
                                         "offset_": {
                                             "value0": 0.0,
                                             "value1": 18.719999313354493,
@@ -457,9 +701,7 @@
                                             "value1": 0.0,
                                             "value2": 0.0
                                         },
-                                        "emotionType_": 1,
                                         "layer_": 0,
-                                        "constraints_": 56,
                                         "isSensor_": true,
                                         "friction_": 0.20000000298023225
                                     },
@@ -475,9 +717,9 @@
                             }
                         },
                         "component_1": {
-                            "polymorphic_id": 7,
+                            "polymorphic_id": 10,
                             "ptr_wrapper": {
-                                "id": 2147483666,
+                                "id": 2147483676,
                                 "data": {
                                     "value0": {
                                         "value0": {
@@ -535,14 +777,15 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
         "child": {
-            "polymorphic_id": 5,
+            "polymorphic_id": 8,
             "ptr_wrapper": {
-                "id": 2147483667,
+                "id": 2147483677,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -555,10 +798,10 @@
                     "components_": {
                         "componentCount": 1,
                         "component_0": {
-                            "polymorphic_id": 2147483656,
+                            "polymorphic_id": 2147483659,
                             "polymorphic_name": "NanamiEngine::CineMachine::CineMachineVirtualCamera",
                             "ptr_wrapper": {
-                                "id": 2147483668,
+                                "id": 2147483678,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -618,14 +861,15 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
         "child": {
-            "polymorphic_id": 5,
+            "polymorphic_id": 8,
             "ptr_wrapper": {
-                "id": 2147483669,
+                "id": 2147483679,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -638,14 +882,13 @@
                     "components_": {
                         "componentCount": 1,
                         "component_0": {
-                            "polymorphic_id": 2147483657,
+                            "polymorphic_id": 2147483660,
                             "polymorphic_name": "GameCore::PlayerAvatar::LockOnPoint",
                             "ptr_wrapper": {
-                                "id": 2147483670,
+                                "id": 2147483680,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "cereal_class_version": 0,
                                         "guid_": {
                                             "value_": "78B3E9E4-57AC-4A29-97B0-FA0384AB8995"
                                         },
@@ -699,11 +942,1022 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 8,
+            "ptr_wrapper": {
+                "id": 2147483681,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "BoneColliders",
+                    "guid_": {
+                        "value_": "8E3DBE1D-BD3D-4C42-ACE3-5EE9A0CD4567"
+                    },
+                    "components_": {
+                        "componentCount": 0
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 8,
+                        "child": {
+                            "polymorphic_id": 8,
+                            "ptr_wrapper": {
+                                "id": 2147483682,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "LeftThigh",
+                                    "guid_": {
+                                        "value_": "79C3E98A-92E3-4690-B74E-5721C1E25AA6"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 4,
+                                            "ptr_wrapper": {
+                                                "id": 2147483683,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "13C76E7D-35AB-426E-B63E-F5FAE2C9948C"
+                                                            },
+                                                            "isEnable_": true
+                                                        },
+                                                        "offset_": {
+                                                            "value0": 0.0,
+                                                            "value1": 104.66000366210938,
+                                                            "value2": 0.0
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "layer_": 4,
+                                                        "isSensor_": false,
+                                                        "friction_": 0.20000000298023225
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "radius_": 50.0,
+                                                    "height_": 159.32000732421876
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 5,
+                                            "ptr_wrapper": {
+                                                "id": 2147483684,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "EAE75882-F085-403E-B0AC-57753783EBCE"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "motionType_": 1,
+                                                    "mass_": 1.0,
+                                                    "isGravity_": false,
+                                                    "constraints_": 0,
+                                                    "isPartOfParent_": true
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 82.13099670410156,
+                                            "value1": 392.0429992675781,
+                                            "value2": 29.67300033569336
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.9807180166244507,
+                                            "value1": -0.04030799865722656,
+                                            "value2": 0.1819619983434677,
+                                            "value3": -0.05879199877381325
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 8,
+                            "ptr_wrapper": {
+                                "id": 2147483685,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "LeftShin",
+                                    "guid_": {
+                                        "value_": "A36BD602-A594-485D-BBF7-027D92C31544"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 4,
+                                            "ptr_wrapper": {
+                                                "id": 2147483686,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "407ADB63-F6BE-4875-93EA-262FF91C5B7C"
+                                                            },
+                                                            "isEnable_": true
+                                                        },
+                                                        "offset_": {
+                                                            "value0": -0.20399999618530274,
+                                                            "value1": 68.4219970703125,
+                                                            "value2": -3.132999897003174
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": -2.621999979019165,
+                                                            "value1": 0.004000000189989805,
+                                                            "value2": 0.17000000178813935
+                                                        },
+                                                        "layer_": 4,
+                                                        "isSensor_": false,
+                                                        "friction_": 0.20000000298023225
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "radius_": 25.0,
+                                                    "height_": 111.98899841308594
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 5,
+                                            "ptr_wrapper": {
+                                                "id": 2147483687,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "1DCCFF76-00A5-4C68-9BC0-3674859A47A9"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "motionType_": 1,
+                                                    "mass_": 1.0,
+                                                    "isGravity_": false,
+                                                    "constraints_": 0,
+                                                    "isPartOfParent_": true
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 70.05999755859375,
+                                            "value1": 184.8509979248047,
+                                            "value2": 2.4639999866485597
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.8109109997749329,
+                                            "value1": -0.16185200214385987,
+                                            "value2": 0.113475002348423,
+                                            "value3": 0.550773024559021
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 8,
+                            "ptr_wrapper": {
+                                "id": 2147483688,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "LeftAnkle",
+                                    "guid_": {
+                                        "value_": "6E9F0F34-0838-45B9-9C53-BBEC6CC08FE5"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 4,
+                                            "ptr_wrapper": {
+                                                "id": 2147483689,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "B22413C6-5295-4C61-AA7D-2EE9800CC029"
+                                                            },
+                                                            "isEnable_": true
+                                                        },
+                                                        "offset_": {
+                                                            "value0": -0.019999999552965165,
+                                                            "value1": 44.70000076293945,
+                                                            "value2": -0.1809999942779541
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": -0.23199999332427979,
+                                                            "value1": 0.0,
+                                                            "value2": 0.026000000536441804
+                                                        },
+                                                        "layer_": 4,
+                                                        "isSensor_": false,
+                                                        "friction_": 0.20000000298023225
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "radius_": 20.0,
+                                                    "height_": 69.4010009765625
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 5,
+                                            "ptr_wrapper": {
+                                                "id": 2147483690,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "544926DB-4AA1-4A4C-ACEC-108238BE7B91"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "motionType_": 1,
+                                                    "mass_": 1.0,
+                                                    "isGravity_": false,
+                                                    "constraints_": 0,
+                                                    "isPartOfParent_": true
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 17.15399932861328,
+                                            "value1": 140.99200439453126,
+                                            "value2": 120.01100158691406
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.9781720042228699,
+                                            "value1": -0.053697001188993457,
+                                            "value2": 0.18653200566768647,
+                                            "value3": -0.07417000085115433
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 8,
+                            "ptr_wrapper": {
+                                "id": 2147483691,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "LeftFoot",
+                                    "guid_": {
+                                        "value_": "8CDD4291-ADD2-4934-9517-2B506BCB980C"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 4,
+                                            "ptr_wrapper": {
+                                                "id": 2147483692,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "741CE469-212E-4E5A-B7E3-BF66602361A0"
+                                                            },
+                                                            "isEnable_": true
+                                                        },
+                                                        "offset_": {
+                                                            "value0": 1.5069999694824219,
+                                                            "value1": -7.367000102996826,
+                                                            "value2": -33.3650016784668
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": -102.31199645996094,
+                                                            "value1": -3.140000104904175,
+                                                            "value2": -2.5290000438690187
+                                                        },
+                                                        "layer_": 4,
+                                                        "isSensor_": false,
+                                                        "friction_": 0.20000000298023225
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "radius_": 28.0,
+                                                    "height_": 40.40299987792969
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 5,
+                                            "ptr_wrapper": {
+                                                "id": 2147483693,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "7244C30A-943A-46DD-80DF-BFAF46949709"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "motionType_": 1,
+                                                    "mass_": 1.0,
+                                                    "isGravity_": false,
+                                                    "constraints_": 0,
+                                                    "isPartOfParent_": true
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 10.052000045776368,
+                                            "value1": 50.819000244140628,
+                                            "value2": 105.01300048828125
+                                        },
+                                        "localRot_": {
+                                            "value0": -0.043049998581409457,
+                                            "value1": -0.16121099889278413,
+                                            "value2": -0.020767999812960626,
+                                            "value3": 0.9857620000839233
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 8,
+                            "ptr_wrapper": {
+                                "id": 2147483694,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "RightThigh",
+                                    "guid_": {
+                                        "value_": "977DE0B4-7B2C-414A-8415-51D2FDB72A33"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 4,
+                                            "ptr_wrapper": {
+                                                "id": 2147483695,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "3DE71451-7047-4464-9E0B-7E8E01698A73"
+                                                            },
+                                                            "isEnable_": true
+                                                        },
+                                                        "offset_": {
+                                                            "value0": 0.0,
+                                                            "value1": 104.66000366210938,
+                                                            "value2": 0.0
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "layer_": 4,
+                                                        "isSensor_": false,
+                                                        "friction_": 0.20000000298023225
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "radius_": 50.0,
+                                                    "height_": 159.32000732421876
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 5,
+                                            "ptr_wrapper": {
+                                                "id": 2147483696,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "DDD5A21B-153D-4368-83C8-A9AC386FF353"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "motionType_": 1,
+                                                    "mass_": 1.0,
+                                                    "isGravity_": false,
+                                                    "constraints_": 0,
+                                                    "isPartOfParent_": true
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": -50.3489990234375,
+                                            "value1": 362.75299072265627,
+                                            "value2": 21.631000518798829
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.8777639865875244,
+                                            "value1": -0.13301199674606324,
+                                            "value2": -0.0447859987616539,
+                                            "value3": -0.45807498693466189
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 8,
+                            "ptr_wrapper": {
+                                "id": 2147483697,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "RightShin",
+                                    "guid_": {
+                                        "value_": "829ED8F2-ACF4-4A63-9414-897789D5B896"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 4,
+                                            "ptr_wrapper": {
+                                                "id": 2147483698,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "94B906D8-BC74-46DB-BD3D-7384CB9A3775"
+                                                            },
+                                                            "isEnable_": true
+                                                        },
+                                                        "offset_": {
+                                                            "value0": 0.20399999618530274,
+                                                            "value1": 68.4219970703125,
+                                                            "value2": -3.132999897003174
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": -2.621999979019165,
+                                                            "value1": -0.004000000189989805,
+                                                            "value2": -0.17000000178813935
+                                                        },
+                                                        "layer_": 4,
+                                                        "isSensor_": false,
+                                                        "friction_": 0.20000000298023225
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "radius_": 25.0,
+                                                    "height_": 111.98899841308594
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 5,
+                                            "ptr_wrapper": {
+                                                "id": 2147483699,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "47F02597-A134-4D91-9549-1C1633C3EED4"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "motionType_": 1,
+                                                    "mass_": 1.0,
+                                                    "isGravity_": false,
+                                                    "constraints_": 0,
+                                                    "isPartOfParent_": true
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": -107.81400299072266,
+                                            "value1": 248.6840057373047,
+                                            "value2": -144.20199584960938
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.8209670186042786,
+                                            "value1": 0.014299999922513962,
+                                            "value2": -0.10554800182580948,
+                                            "value3": 0.5609530210494995
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 8,
+                            "ptr_wrapper": {
+                                "id": 2147483700,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "RightAnkle",
+                                    "guid_": {
+                                        "value_": "895A936D-D30F-4F30-9466-CE1361C349DC"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 4,
+                                            "ptr_wrapper": {
+                                                "id": 2147483701,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "9799A585-0333-4A35-8292-8E229503F104"
+                                                            },
+                                                            "isEnable_": true
+                                                        },
+                                                        "offset_": {
+                                                            "value0": 0.019999999552965165,
+                                                            "value1": 44.70000076293945,
+                                                            "value2": -0.1809999942779541
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": -0.23199999332427979,
+                                                            "value1": 0.0,
+                                                            "value2": -0.026000000536441804
+                                                        },
+                                                        "layer_": 4,
+                                                        "isSensor_": false,
+                                                        "friction_": 0.20000000298023225
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "radius_": 20.0,
+                                                    "height_": 69.4010009765625
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 5,
+                                            "ptr_wrapper": {
+                                                "id": 2147483702,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "F919AEED-D4F4-456B-AF84-D437DEBE6A08"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "motionType_": 1,
+                                                    "mass_": 1.0,
+                                                    "isGravity_": false,
+                                                    "constraints_": 0,
+                                                    "isPartOfParent_": true
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": -86.10399627685547,
+                                            "value1": 206.75900268554688,
+                                            "value2": -14.630000114440918
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.9712569713592529,
+                                            "value1": -0.02418600022792816,
+                                            "value2": -0.11068899929523468,
+                                            "value3": 0.2093389928340912
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 8,
+                            "ptr_wrapper": {
+                                "id": 2147483703,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "RightFoot",
+                                    "guid_": {
+                                        "value_": "75463BFE-BE2B-46E9-BEBC-F9A0BD7C6772"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 4,
+                                            "ptr_wrapper": {
+                                                "id": 2147483704,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "13CB4796-8758-41C9-8463-9878A88DE5EC"
+                                                            },
+                                                            "isEnable_": true
+                                                        },
+                                                        "offset_": {
+                                                            "value0": -1.5069999694824219,
+                                                            "value1": -7.367000102996826,
+                                                            "value2": -33.3650016784668
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": -102.31199645996094,
+                                                            "value1": 3.140000104904175,
+                                                            "value2": 2.5290000438690187
+                                                        },
+                                                        "layer_": 4,
+                                                        "isSensor_": false,
+                                                        "friction_": 0.20000000298023225
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "radius_": 28.0,
+                                                    "height_": 40.40299987792969
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 5,
+                                            "ptr_wrapper": {
+                                                "id": 2147483705,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "8D7BD6A8-2706-4815-839E-7C03E0C97369"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "motionType_": 1,
+                                                    "mass_": 1.0,
+                                                    "isGravity_": false,
+                                                    "constraints_": 0,
+                                                    "isPartOfParent_": true
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": -85.90399932861328,
+                                            "value1": 127.6050033569336,
+                                            "value2": 21.756000518798829
+                                        },
+                                        "localRot_": {
+                                            "value0": -0.4567579925060272,
+                                            "value1": -0.025807999074459077,
+                                            "value2": 0.10209300369024277,
+                                            "value3": 0.8833360075950623
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 1,
     "value1": {
         "value_": "A721B13E-6E5C-4D62-9114-3A3C62C4EC4F"

@@ -12,7 +12,6 @@ namespace GameCore::Scene::Main
     class FirstTouchDownMainIsLandScene final : public GameMainSceneBase<FirstTouchDownMainIsLandSceneContext>
     {
     public:
-        using ContextT = FirstTouchDownMainIsLandSceneContext;
         explicit FirstTouchDownMainIsLandScene(const std::weak_ptr<FirstTouchDownMainIsLandSceneContext>& context, GameSceneBaseContext baseContext);
         ~FirstTouchDownMainIsLandScene() override;
         

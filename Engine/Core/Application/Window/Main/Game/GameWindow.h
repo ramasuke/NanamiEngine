@@ -4,11 +4,19 @@
 #include "../../../Editor/Camera/Free/Editor3DCamera.h"
 #include "../Factory/MainWindowFactory.h"
 #include "../../../../../Module/Scene/Scene.h"
+#include "../../../../../Module/Scene/AsyncLoader/Engine_Scene_AsyncSceneLoader.h"
+
+namespace NanamiEngine::Core::Application::AutoMcp
+{
+    class AutoMcpEngineAccess;
+}
 
 namespace NanamiEngine::Core::MainWindow
 {
     class GameWindow final : public MainWindowBase<Scene::Scene>
     {
+        friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
+
     public:
         explicit GameWindow();
 
@@ -29,13 +37,32 @@ namespace NanamiEngine::Core::MainWindow
         [[nodiscard]] bool TryReplaceGameObject(const Guid& replaceGameObjectGuid, const std::shared_ptr<GameObject::IGameObject>& newGameObject) const;
         void RemoveGameObject(const std::weak_ptr<GameObject::IGameObject>& removeGameObject);
 
+        /** @brief シーンをワーカースレッドで読み込み始める。完了したフレームで自動的にメインシーンへ差し替わる */
+        void BeginLoadSceneAsync(const std::string& filePath);
+        [[nodiscard]] bool IsSceneLoading() const;
+        /** @brief 読み込み中のシーンのデシリアライズ進捗。総数が読めるまでは 0 */
+        [[nodiscard]] float SceneLoadProgress01() const;
+        /** @brief 直近の BeginLoadSceneAsync 以降に読み込みが失敗したか */
+        [[nodiscard]] bool HasSceneLoadFailed() const;
+        /** @brief BeginLoadSceneAsync で最後に読み込んだシーン */
+        [[nodiscard]] std::weak_ptr<Scene::Scene> LastAsyncLoadedScene() const { return lastAsyncLoadedScene_; }
+
     private:
         [[nodiscard]] std::vector<std::shared_ptr<Scene::Scene>> Scenes() const;
+        void Play();
+        void Stop();
+        /** @brief プレイを終了し、全シーンを破棄して初期シーンを読み直す */
+        void End();
         void OnUpdate() override;
         void OnSave  () override;
         void OnDrawGui(MainWindowDrawGuiContext context) override;
+        void DrawGameObjectMarks() const;
+        /** @brief 非同期読み込みを 1 フレーム分進め、完了していればメインシーンへ差し替える */
+        void UpdateAsyncSceneLoad();
 
         std::queue<std::weak_ptr<GameObject::IGameObject>> removeGameObjectQueue_;
+        Scene::AsyncSceneLoader sceneLoader_;
+        std::weak_ptr<Scene::Scene> lastAsyncLoadedScene_;
         Component::Editor3DCamera editorCamera_;
         std::weak_ptr<Scene::Scene> mainScene_;
         char hierarchySearchBuffer_[128] = {};

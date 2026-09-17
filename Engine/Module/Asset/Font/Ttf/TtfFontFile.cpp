@@ -9,6 +9,8 @@ namespace NanamiEngine::Module::Asset
         , size_       (20                      )
         , thickness_  (3                       )
         , fontType_   (DX_FONTTYPE_ANTIALIASING)
+        , edgeSize_   (-1                      )
+        , edgeColor_  (0, 0, 0                 )
     {
 
     }
@@ -25,6 +27,6 @@ namespace NanamiEngine::Module::Asset
     {
         if (AddFontResourceExA(contentPath_.c_str(), FR_PRIVATE, nullptr) > 0)
             addedFontResourcePath_ = contentPath_;
-        dxLibHandle_ = CreateFontToHandle(LibCore::Dxlib::Utf8ToShiftJis(fontName_).c_str(), size_, thickness_, fontType_);
+        dxLibHandle_ = CreateFontToHandle(LibCore::Dxlib::Utf8ToShiftJis(fontName_).c_str(), size_, thickness_, fontType_, -1, edgeSize_);
     }
 }

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <vector>
 #include "../ComponentBase.h"
 #include "../../../../Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
 #include "../../../Core/Object/Field/Field.h"
@@ -12,8 +13,14 @@ namespace NanamiEngine::Module::Component
                             public LifeCycleCallback::IDebugRenderable,
                             public LifeCycleCallback::IUpdatable
     {
+    public:
+        /** @brief 読み込み時のマテリアル色に乗算する色。天候で空を曇らせるのに使う */
+        void SetTint(const glm::vec3& tint);
+
     private:
         void InitRenderer () override;
+        void CacheBaseMaterialColors();
+        void ApplyTint();
         void OnUpdate     () override;
         void OnRender     () override;
         void OnDebugRender() override;
@@ -22,6 +29,11 @@ namespace NanamiEngine::Module::Component
         FIELD(Asset::Mv1File) skyDomeModel_;
         int skyDomeModelDxLibHandle_ = -1;
         FIELD(CineMachine::CinemachineCameraBrain) mainCamera_;
+
+        glm::vec3 tint_ = glm::vec3(1.0f);
+        std::vector<glm::vec3> baseDifColors_;
+        std::vector<glm::vec3> baseAmbColors_;
+        std::vector<glm::vec3> baseEmiColors_;
         
     
 #pragma region Serialization Function

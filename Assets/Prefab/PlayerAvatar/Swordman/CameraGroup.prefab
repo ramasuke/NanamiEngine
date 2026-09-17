@@ -16,7 +16,7 @@
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
-                        "cereal_class_version": 2,
+                        "cereal_class_version": 3,
                         "value0": {
                             "cereal_class_version": 0,
                             "guid_": {
@@ -24,7 +24,6 @@
                             },
                             "isEnable_": true
                         },
-                        "followFromBehindCameraName_": "FollowFromBehind",
                         "followFromBehindCamera_": {
                             "cereal_class_version": 0,
                             "value0": {
@@ -40,7 +39,19 @@
                                 }
                             }
                         },
-                        "lockOnCameraName_": "LockOn"
+                        "lockOnCamera_": {
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483651,
+                                    "data": {
+                                        "value0": {
+                                            "value_": "B585FC8A-CE8C-4D15-BC31-73C2B2727189"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -95,9 +106,9 @@
             "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483651,
+                "id": 2147483652,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -115,7 +126,7 @@
                             "polymorphic_id": 2147483651,
                             "polymorphic_name": "NanamiEngine::CineMachine::CineMachineVirtualCamera",
                             "ptr_wrapper": {
-                                "id": 2147483652,
+                                "id": 2147483653,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -134,7 +145,7 @@
                             "polymorphic_id": 2147483652,
                             "polymorphic_name": "NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour",
                             "ptr_wrapper": {
-                                "id": 2147483653,
+                                "id": 2147483654,
                                 "data": {
                                     "cereal_class_version": 2,
                                     "value0": {
@@ -157,7 +168,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483654,
+                                                "id": 2147483655,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -179,7 +190,7 @@
                             "polymorphic_id": 2147483653,
                             "polymorphic_name": "NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour",
                             "ptr_wrapper": {
-                                "id": 2147483655,
+                                "id": 2147483656,
                                 "data": {
                                     "cereal_class_version": 1,
                                     "value0": {
@@ -198,7 +209,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483656,
+                                                "id": 2147483657,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "9BC8E1AB-23C9-4A18-A9DA-7065FB6009EE"
@@ -219,9 +230,9 @@
                             "polymorphic_id": 2147483654,
                             "polymorphic_name": "CineMachine::Behaviour::ThirdPersonCameraBehaviour",
                             "ptr_wrapper": {
-                                "id": 2147483657,
+                                "id": 2147483658,
                                 "data": {
-                                    "cereal_class_version": 5,
+                                    "cereal_class_version": 6,
                                     "value0": {
                                         "guid_": {
                                             "value_": "D547A90B-F987-4D0E-A9E5-CDEA8F446461"
@@ -239,7 +250,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483658,
+                                                "id": 2147483659,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "EA5AE61B-F14C-457C-A448-803AF81E38D6"
@@ -253,7 +264,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483659,
+                                                "id": 2147483660,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -268,7 +279,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483660,
+                                                "id": 2147483661,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -292,7 +303,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483661,
+                                                "id": 2147483662,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "45506FC6-9E4A-47CF-84C4-F04523403B89"
@@ -302,7 +313,8 @@
                                         }
                                     },
                                     "isImmediateApply_": false,
-                                    "collisionBuffer_": 0.30000001192092898
+                                    "collisionBuffer_": 0.30000001192092898,
+                                    "collisionRadius_": 2.0
                                 }
                             }
                         },
@@ -310,9 +322,9 @@
                             "polymorphic_id": 2147483655,
                             "polymorphic_name": "CineMachine::Behaviour::ShakeCameraBehaviour",
                             "ptr_wrapper": {
-                                "id": 2147483662,
+                                "id": 2147483663,
                                 "data": {
-                                    "cereal_class_version": 1,
+                                    "cereal_class_version": 2,
                                     "value0": {
                                         "guid_": {
                                             "value_": "CF97397F-2536-49E4-9C41-DC6B7E4E83F8"
@@ -337,7 +349,9 @@
                                         "value0": 13.369999885559082,
                                         "value1": 71.12999725341797,
                                         "value2": 42.41999816894531
-                                    }
+                                    },
+                                    "sustainFrequency_": 9.0,
+                                    "sustainSmoothTime_secs_": 0.11999999731779099
                                 }
                             }
                         }
@@ -386,14 +400,15 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483663,
+                "id": 2147483664,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -408,7 +423,7 @@
                         "component_0": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483664,
+                                "id": 2147483665,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -425,7 +440,7 @@
                         "component_1": {
                             "polymorphic_id": 4,
                             "ptr_wrapper": {
-                                "id": 2147483665,
+                                "id": 2147483666,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -440,7 +455,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483666,
+                                                "id": 2147483667,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "2AC46D83-FADB-4FA8-A1A6-C4959C7359CD"
@@ -460,7 +475,7 @@
                         "component_2": {
                             "polymorphic_id": 5,
                             "ptr_wrapper": {
-                                "id": 2147483667,
+                                "id": 2147483668,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -476,7 +491,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483668,
+                                                "id": 2147483669,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "34AAB343-7E9C-4AF5-9C07-B2BA02A7C39C"
@@ -497,9 +512,9 @@
                             "polymorphic_id": 2147483656,
                             "polymorphic_name": "NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour",
                             "ptr_wrapper": {
-                                "id": 2147483669,
+                                "id": 2147483670,
                                 "data": {
-                                    "cereal_class_version": 0,
+                                    "cereal_class_version": 2,
                                     "value0": {
                                         "guid_": {
                                             "value_": "4B144714-105C-4960-92AA-0729081DB65E"
@@ -510,16 +525,12 @@
                                     "value2": {},
                                     "value3": {},
                                     "isImmediateApply_": false,
-                                    "distance_": 20.0,
-                                    "height_": 23.0,
-                                    "sideOffset_": 0.0,
-                                    "lookAtHeightOffset_": 15.0,
                                     "collisionBuffer_": 0.30000001192092898,
                                     "followTarget_": {
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483670,
+                                                "id": 2147483671,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "C221DF38-ED90-40D4-9328-BB48728D4B5D"
@@ -532,7 +543,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483671,
+                                                "id": 2147483672,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "C03F67C5-9B3B-4F8C-A7FB-6BA4F088F1A8"
@@ -545,7 +556,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483672,
+                                                "id": 2147483673,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "533D9BBC-8CF7-4243-89DB-F73125DC42DA"
@@ -553,14 +564,20 @@
                                                 }
                                             }
                                         }
-                                    }
+                                    },
+                                    "collisionRadius_": 2.0,
+                                    "pitchAngle_deg_": 15.0,
+                                    "minDistance_": 8.0,
+                                    "maxDistance_": 45.0,
+                                    "framingMargin_": 0.10000000149011612,
+                                    "fallbackBoundsRadius_": 1.0
                                 }
                             }
                         },
                         "component_4": {
                             "polymorphic_id": 7,
                             "ptr_wrapper": {
-                                "id": 2147483673,
+                                "id": 2147483674,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -586,7 +603,9 @@
                                         "value0": 13.369999885559082,
                                         "value1": 71.12999725341797,
                                         "value2": 42.41999816894531
-                                    }
+                                    },
+                                    "sustainFrequency_": 9.0,
+                                    "sustainSmoothTime_secs_": 0.11999999731779099
                                 }
                             }
                         }
@@ -635,14 +654,15 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483674,
+                "id": 2147483675,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -658,11 +678,10 @@
                             "polymorphic_id": 2147483657,
                             "polymorphic_name": "GamePlay::Ui::LockOnReticle",
                             "ptr_wrapper": {
-                                "id": 2147483675,
+                                "id": 2147483676,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "cereal_class_version": 0,
                                         "guid_": {
                                             "value_": "87589E16-A3B3-448F-B41D-7637E60802FF"
                                         },
@@ -674,7 +693,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483676,
+                                                "id": 2147483677,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -688,7 +707,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483677,
+                                                "id": 2147483678,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "BD25B3F7-A834-4FE0-82EB-E0E47304709F"
@@ -701,7 +720,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483678,
+                                                "id": 2147483679,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "148354DA-C5F1-436B-83D8-936188B6C9F5"
@@ -710,14 +729,14 @@
                                             }
                                         }
                                     },
-                                    "reticleScale_": 0.38,
-                                    "candidateScale_": 0.44,
-                                    "candidateAlpha_": 0.6,
+                                    "reticleScale_": 0.3799999952316284,
+                                    "candidateScale_": 0.4399999976158142,
+                                    "candidateAlpha_": 0.6000000238418579,
                                     "ringRotateSpeed_": 0.25,
-                                    "lockedBreathScale_": 0.005,
-                                    "engageDuration_secs_": 0.12,
+                                    "lockedBreathScale_": 0.004999999888241291,
+                                    "engageDuration_secs_": 0.11999999731779099,
                                     "engageStartScaleRate_": 2.0,
-                                    "releaseDuration_secs_": 0.22,
+                                    "releaseDuration_secs_": 0.2199999988079071,
                                     "releaseEndScaleRate_": 1.5
                                 }
                             }
@@ -767,10 +786,12 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 0
 }

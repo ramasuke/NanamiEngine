@@ -8,37 +8,43 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 {
     void SwordManAvatarInjuredWalkState::DoEnter()
     {
+        StatusEvent().InvokeOnMove();
         ResetMoveSpeedFromVelocity();
     }
 
     void SwordManAvatarInjuredWalkState::DoFixedUpdate()
     {
-        AcceleratedForwardMove(Status().GetWalkSpeed(), Status().WalkAccelerationTime_secs());
+        MoveForward(
+            Status().GetWalkSpeed(),
+            Resources().WalkAccelerationTime_secs(),
+            Resources().WalkDecelerationTime_secs());
     }
 
     void SwordManAvatarInjuredWalkState::DoUpdate()
     {
-        TryEmitFootstep(Resources().WalkFootstepContactPhases(), Resources().WalkFootstepSounds());
+        TryEmitFootstep(Resources().WalkFootstepSounds());
 
-        if (Status().IsDamaged())
-            OnChangeState(SwordManAvatarStateType::Hurt);
-        if (!Status().IsInjured())
-            OnChangeState(SwordManAvatarStateType::Walk);
-        if (!Input().Move().IsUpdatePressed())
-            OnChangeState(SwordManAvatarStateType::Idle);
-        if (Input().Run().IsUpdatePressed() && Status().CanRun())
-            OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run);
-        if (Input().Jump().IsPressed() && Status().CanJump())
-            OnChangeState(SwordManAvatarStateType::Jump);
-        if (Input().AvoidRolling().IsPressed() && Status().CanAvoidRolling())
-            OnChangeState(SwordManAvatarStateType::AvoidRolling);
         UpdateLockOn();
-        if (Input().NormalAttack().IsPressed())
-            OnChangeState(SwordManAvatarStateType::NormalAttack);
-        if (Conditions().CanUseCannon())
-            OnChangeState(SwordManAvatarStateType::UseCanon);
-        if (!Conditions().IsGround())
-            OnChangeState(SwordManAvatarStateType::Floating);
+        UpdateItemPouchInput();
+        UpdateTransitions();
+    }
+
+    void SwordManAvatarInjuredWalkState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const
+    {
+        visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged());
+        visitor.Automatic(SwordManAvatarStateType::Walk, !Status().IsInjured());
+        visitor.OnInput(SwordManAvatarStateType::Idle, SwordManAvatarInput::Move, SwordManAvatarInputPhase::NotHolding, true);
+        visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run,
+                        SwordManAvatarInput::Run, SwordManAvatarInputPhase::Holding, Status().CanRun());
+        visitor.OnInput(SwordManAvatarStateType::Jump, SwordManAvatarInput::Jump, SwordManAvatarInputPhase::Pressed, Status().CanJump());
+        visitor.OnInput(SwordManAvatarStateType::AvoidRolling, SwordManAvatarInput::AvoidRolling, SwordManAvatarInputPhase::Pressed, Status().CanAvoidRolling());
+        visitor.Action(SwordManAvatarStateAction::Move, true);
+        VisitLockOnAction(visitor);
+        visitor.Action(SwordManAvatarStateAction::CycleItem, true);
+        visitor.Action(SwordManAvatarStateAction::UseItem, Status().Pouch().CanUseSelected());
+        visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, SwordManAvatarInputPhase::Pressed, true);
+        visitor.Automatic(SwordManAvatarStateType::UseCanon, Conditions().CanUseCannon());
+        visitor.Automatic(SwordManAvatarStateType::Floating, !Conditions().IsGround());
     }
 
     void SwordManAvatarInjuredWalkState::DoExit()

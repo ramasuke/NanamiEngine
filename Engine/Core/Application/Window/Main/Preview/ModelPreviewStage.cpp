@@ -65,7 +65,10 @@ namespace NanamiEngine::Core::MainWindow
     void ModelPreviewStage::DrawViewportGui()
     {
         if (ImGui::Button("Reset Camera"))
-            pendingFrame_ = true;
+        {
+            frameViewDirection_ = DefaultFrameViewDirection();
+            pendingFrame_       = true;
+        }
         ImGui::SameLine();
         ImGui::Checkbox("Grid", &showGrid_);
 
@@ -170,13 +173,19 @@ namespace NanamiEngine::Core::MainWindow
         float distance = radius / std::sin(fovY * 0.5f) * 1.15f;
         distance = (std::max)(distance, radius + nearPlane + 1.0f);
 
-        // 右上前方から見下ろす。Editor3DCamera の前方は rotation * (0,0,1) なので LH 版の lookAt を使う
-        const glm::vec3 viewDir = glm::normalize(glm::vec3(-0.45f, -0.35f, -1.0f));
+        // Editor3DCamera の前方は rotation * (0,0,1) なので LH 版の lookAt を使う
+        const glm::vec3 viewDir = frameViewDirection_;
         camera_.SetPosition(center - viewDir * distance);
         camera_.SetRotation(glm::quatLookAtLH(viewDir, glm::vec3(0.0f, 1.0f, 0.0f)));
 
         // グリッド間隔はモデルの大きさに合わせて 10 のべき乗にする
         gridStep_ = std::pow(10.0f, std::floor(std::log10(radius)));
+    }
+
+    glm::vec3 ModelPreviewStage::DefaultFrameViewDirection()
+    {
+        // 右上前方から見下ろす
+        return glm::normalize(glm::vec3(-0.45f, -0.35f, -1.0f));
     }
 
     void ModelPreviewStage::DrawGrid() const

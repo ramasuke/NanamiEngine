@@ -17,4 +17,30 @@ namespace NanamiEngine::Module::Physics
 
         return changed;
     }
+
+    bool DrawLayerMaskGui(const char* label, LayerMask& mask)
+    {
+        bool changed = false;
+
+        ImGui::TextUnformatted(label);
+        ImGui::PushID(label);
+        for (int i = 0; i < static_cast<int>(Layer::Count); ++i)
+        {
+            const Layer layer = ToLayer(i);
+
+            bool enabled = HasLayer(mask, layer);
+            if (ImGui::Checkbox(ToName(layer), &enabled))
+            {
+                if (enabled)
+                    AddLayer(mask, layer);
+                else
+                    RemoveLayer(mask, layer);
+
+                changed = true;
+            }
+        }
+        ImGui::PopID();
+
+        return changed;
+    }
 }

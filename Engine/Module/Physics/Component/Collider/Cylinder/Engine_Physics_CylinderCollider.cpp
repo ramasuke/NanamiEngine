@@ -1,10 +1,8 @@
 #include "Engine_Physics_CylinderCollider.h"
 
-#include "../../../../../Core/Physics/Physics.h"
 #include "../../../../3DRender/Shapes/Shapes.h"
 #include "../../../../GameObject/Transform/Transform.h"
-#include "../../../Engine_Physics_Physics.h"
-#include "../JoltPhysics/Jolt/Physics/Body/BodyInterface.h"
+#include "../../../JoltUtility/Engine_Physics_JoltUtility.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -50,21 +48,6 @@ namespace NanamiEngine::Module::Component
         glm::vec3 offsetRot = offsetRotation_;
         if (ImGui::DragFloat3("OffsetRotation", &offsetRot.x, 0.1f))
             offsetRotation_ = offsetRot;
-
-        static const char* motionTypeNames[] = {
-            "Static", "Kinematic", "Dynamic"
-        };
-
-        int currentIndex = static_cast<int>(emotionType_);
-        if (ImGui::Combo("Motion Type", &currentIndex,
-            motionTypeNames, IM_ARRAYSIZE(motionTypeNames)))
-        {
-            emotionType_ = static_cast<JPH::EMotionType>(currentIndex);
-        }
-
-        ImGui::Separator();
-        ImGui::Text("Constraints");
-        Physics::DrawConstraintCheckBoxsGui(constraints_);
 
         OnDebugDraw();
     }

@@ -45,6 +45,16 @@ namespace NanamiEngine::Core::Object
             }
         }
 
+        void RemapGuid(const GuidRemap& guidRemap) override
+        {
+            const auto copiedGuid = guidRemap.Find(guid_);
+            if (!copiedGuid)
+                return;
+
+            guid_ = *copiedGuid;
+            content_.reset();
+        }
+
         explicit operator bool() const { return !content_.expired(); }
         std::shared_ptr<T> operator->() const { return content_.lock(); }
         std::shared_ptr<T> get() const { return content_.lock(); }

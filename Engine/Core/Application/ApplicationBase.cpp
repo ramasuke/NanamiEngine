@@ -1,5 +1,8 @@
 ﻿#include "ApplicationBase.h"
 
+#include <algorithm>
+#include <thread>
+
 #include "EffekseerForDXLib.h"
 #include "../../Module/Network/Engine_Network_NetworkRunner.h"
 #include "../../Module/Scene/GameObject/Helper/GameObject.h"
@@ -10,7 +13,10 @@
 #include "Window/Main/Game/GameWindow.h"
 #include "../Object/Registry/ObjectRegistry.h"
 #include "Configuration/ApplicationConfiguration.h"
+#include "Configuration/AutoMcp/ApplicationConfiguration_AutoMcp.h"
+#include "Configuration/CodeEditor/ApplicationConfiguration_CodeEditor.h"
 #include "Configuration/DebugDraw/ApplicationConfiguration_DebugDraw.h"
+#include "Configuration/GameWindow/ApplicationConfiguration_GameWindow.h"
 #include "Configuration/Network/ApplicationConfiguration_Network.h"
 #include "Configuration/Physics/ApplicationConfiguration_Physics.h"
 #include "Time/Time.h"
@@ -20,6 +26,16 @@
 
 namespace
 {
+    /** DxLib の非同期ロードスレッド数。未設定だと 1 本で直列デコードになる */
+    int ApplicationBaseAsyncLoadThreadNum()
+    {
+        constexpr unsigned int minThreadNum = 2;
+        /** SetASyncLoadThreadNum が受け付ける上限 */
+        constexpr unsigned int maxThreadNum = 32;
+        const unsigned int hardwareThreadNum = std::thread::hardware_concurrency();
+        return static_cast<int>(std::clamp(hardwareThreadNum / 2, minThreadNum, maxThreadNum));
+    }
+
     /** directory 以下の全アセットの Guid を集める */
     void CollectAssetGuids(NanamiEngine::Core::FileSystem::Directory& directory, std::vector<::Guid>& outGuids)
     {
@@ -48,6 +64,9 @@ namespace NanamiEngine::Core::Application
         Configuration::NetworkConfiguration::Load();
         Configuration::PhysicsConfiguration::Load();
         Configuration::DebugDrawConfiguration::Load();
+        Configuration::GameWindowConfiguration::Load();
+        Configuration::CodeEditorConfiguration::Load();
+        Configuration::AutoMcpConfiguration::Load();
         SetDoubleStartValidFlag(true          );
         ChangeWindowMode       (true          );
         SetGraphMode           (Configuration::AppConfiguration::GetWindowWidth(), Configuration::AppConfiguration::GetWindowHeight(), Configuration::AppConfiguration::GetWindowColorScale());
@@ -57,6 +76,8 @@ namespace NanamiEngine::Core::Application
         SetWriteZBuffer3D      (TRUE          );
         SetDrawScreen          (DX_SCREEN_BACK);
         SetUseIMEFlag          (TRUE          );
+        SetAlwaysRunFlag       (Configuration::AppConfiguration::GetAlwaysRun() ? TRUE : FALSE);
+        SetASyncLoadThreadNum  (ApplicationBaseAsyncLoadThreadNum());
         DxLib_Init             (              );
 
         /** リソースの初期化 */

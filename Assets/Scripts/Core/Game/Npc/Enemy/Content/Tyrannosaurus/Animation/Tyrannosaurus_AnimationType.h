@@ -2,7 +2,7 @@
 
 namespace GameCore::Npc::Enemy::Tyrannosaurus
 {
-    // Values are the animation indices inside Assets/Art/Animation/T-Rex/T-RexAnimation.mv1
+    // Values are the animation indices inside Assets/Art/Models/Monster/T-Rex.mv1
     // (the FBX AnimStack order); Take001 / Still are empty takes.
     enum class AnimationType : int
     {

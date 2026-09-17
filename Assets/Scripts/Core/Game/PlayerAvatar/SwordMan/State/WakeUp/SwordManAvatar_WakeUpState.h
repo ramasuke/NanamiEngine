@@ -14,5 +14,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoUpdate     () override;
         void DoExit       () override;
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::Chatting; }
+        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Momentary; }
     };
 }

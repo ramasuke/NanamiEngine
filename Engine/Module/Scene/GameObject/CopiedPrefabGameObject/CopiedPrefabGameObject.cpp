@@ -1,11 +1,14 @@
 ﻿#include "CopiedPrefabGameObject.h"
 #include "../../../GameObject/Helper/TreeDropZone/TreeDropZone.h"
+#include "../../../../Core/Object/Field/GuidRemap/GuidRemap.h"
 #include "../../../../Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../../../Libs/ImGui/ImGuiHelper.h"
 #include "../../../../Core/Application/Editor/EditorApplication.h"
 #include "../../../../Core/Application/Window/Main/PrefabView/PrefabViewWindow.h"
 #include "../../../../Core/Application/Window/Popup/Group/PopupWindowGroup.h"
 #include "../../../../Core/Application/Window/Popup/Inspector/InspectorWindow.h"
+#include "../../../../Core/Physics/Physics.h"
+#include "../../../Physics/BodyAssembler/Engine_Physics_BodyAssembler.h"
 #include "cereal/archives/portable_binary.hpp"
 
 void Scene::CopiedPrefabGameObject::InitGameObject(const std::weak_ptr<IGameObject>& parent, const std::shared_ptr<IGameObject>& ownPtr)
@@ -19,12 +22,14 @@ void Scene::CopiedPrefabGameObject::InitGameObject(const std::weak_ptr<IGameObje
 void Scene::CopiedPrefabGameObject::InitForCopied(const std::shared_ptr<IGameObject>& ownPtr,
                                                                       const bool isActive,
                                                                       std::string name,
+                                                                      const GameObject::GameObjectMark mark,
                                                                       GameObject::ComponentGroup components,
                                                                       GameObject::Transform transform)
 {
     ownPtr_     = ownPtr;
     isActive_   = isActive;
     name_       = std::move(name);
+    mark_       = mark;
     components_ = std::move(components);
     components_ .ResetGuid();
     transform_  = std::move(transform);
@@ -75,6 +80,9 @@ void Scene::CopiedPrefabGameObject::SetEnable(const bool enable)
 
 std::shared_ptr<GameObject::IGameObject> Scene::CopiedPrefabGameObject::CopyForInstantiate()
 {
+    // 複製で読み込む Field だけが待ち行列に残るよう、先に解決しておく
+    Core::Application::ApplicationBase::ApplicationLifeCycle().OnUpdateFieldInittables();
+
     //this をバイナリアーカイブに保存
     std::stringstream stringStream;
     {
@@ -93,12 +101,15 @@ std::shared_ptr<GameObject::IGameObject> Scene::CopiedPrefabGameObject::CopyForI
         copied,
         copiedGameObject->isActive_,
         copiedGameObject->name_,
+        copiedGameObject->mark_,
         copiedGameObject->Components(),
         copiedGameObject->Transform()
     );
-    Core::Application::ApplicationBase::ApplicationLifeCycle().OnUpdateFieldInittables();
+    const auto guidRemap = Core::Object::GuidRemap::FromCopiedHierarchy(*this, *copied);
     copied->InitGameObject(std::weak_ptr<IGameObject>(), copied);
+    Core::Application::ApplicationBase::ApplicationLifeCycle().OnUpdateCopiedFieldInittables(guidRemap);
     copied->InvokeInitAwakeCallbacks();
+    Core::Application::ApplicationBase::Physics().Bodies().Flush();
     copied->InvokeInitStartCallbacks();
     
     return copied;
@@ -135,6 +146,7 @@ void Scene::CopiedPrefabGameObject::OnDrawGui()
     {
         name_ = nameBuffer;
     }
+    GameObject::DrawChoiceMarkGui(("mark##" + guid_.Value()).c_str(), mark_);
 
     transform_  .OnDrawGui();
     components_ .OnDrawGui();

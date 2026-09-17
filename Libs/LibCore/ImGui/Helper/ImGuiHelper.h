@@ -162,22 +162,23 @@ namespace LibCore::ImGuiHelper
     {
         if (::ImGui::TreeNode(label.c_str()))
         {
+            int deleteIndex = -1;
             int index = 0;
             for (auto& element : container)
             {
-                std::string itemLabel = "Element " + std::to_string(index++);
-                OnDrawInputField(itemLabel, element);
+                ::ImGui::PushID(index);
+                if (::ImGui::Button("Delete"))
+                    deleteIndex = index;
+                ::ImGui::SameLine();
+                OnDrawInputField("Element " + std::to_string(index), element);
+                ::ImGui::PopID();
+                ++index;
             }
+
+            if (deleteIndex >= 0)
+                container.erase(container.begin() + deleteIndex);
 
             drawAddButton();
-
-            static int deleteIndex = 0;
-            ::ImGui::InputInt("Delete Index", &deleteIndex);
-            if (::ImGui::Button("Delete") && deleteIndex >= 0 && deleteIndex < static_cast<int>(container.size()))
-            {
-                container.erase(container.begin() + deleteIndex);
-                deleteIndex = 0;
-            }
 
             ::ImGui::TreePop();
             ::ImGui::Spacing();

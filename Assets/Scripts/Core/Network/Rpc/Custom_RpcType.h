@@ -29,6 +29,8 @@ namespace GameCore::Network
         Chat,               
         ChangeMainScene,    
         ShakeCamera,        
+        SetStorm,           
+        Lightning,          
 
         /** 敵固有 */
         AttackAreaFire,
@@ -47,6 +49,8 @@ namespace GameCore::Network
     using ChatRpc               = Module::Network::RpcDef<ERpcType::Chat, std::string, Guid>;
     using ChangeMainSceneRpc    = Module::Network::RpcDef<ERpcType::ChangeMainScene, Scene::Main::SceneType>;
     using ShakeCameraRpc        = Module::Network::RpcDef<ERpcType::ShakeCamera, float, float>;
+    using SetStormRpc           = Module::Network::RpcDef<ERpcType::SetStorm, float, float>;
+    using LightningRpc          = Module::Network::RpcDef<ERpcType::Lightning, float, float>;
 
     using AttackAreaFireRpc     = Module::Network::RpcDef<ERpcType::AttackAreaFire, Damage::PhysicsPower>;
     using EnemyDeathRpc         = Module::Network::RpcDef<ERpcType::EnemyDeath>;

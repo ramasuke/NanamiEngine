@@ -1,5 +1,6 @@
 ﻿#include "CineMachineVirtualCamera.h"
 
+#include "../../../Engine/Core/Application/Configuration/DebugDraw/ApplicationConfiguration_DebugDraw.h"
 #include "../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../Brain/CinemachineCameraBrain.h"
@@ -13,6 +14,15 @@
 void CineMachine::CineMachineVirtualCamera::SetPriority(const int priority)
 {
     priority_.OnNext(priority);
+}
+
+float CineMachine::CineMachineVirtualCamera::Fov() const
+{
+    if (overrideFov_)
+        return fov_;
+
+    const auto* brain = CinemachineCameraBrain::Instance();
+    return brain ? brain->DefaultFov() : SAMPLE_CAMERA_FOV;
 }
 
 void CineMachine::CineMachineVirtualCamera::MainCameraCallback() const
@@ -55,6 +65,9 @@ void CineMachine::CineMachineVirtualCamera::OnDestroy()
 void CineMachine::CineMachineVirtualCamera::OnDrawGui()
 {
     ImGuiHelper::OnDrawInputField("priority_", priority_);
+    ImGuiHelper::OnDrawInputField("overrideFov_", overrideFov_);
+    if (overrideFov_)
+        ImGuiHelper::OnDrawInputField("fov_", fov_);
     
     if (ImGui::Button("AddCameraBehaviour"))
     {
@@ -85,6 +98,9 @@ void CineMachine::CineMachineVirtualCamera::OnDrawGui()
 
 void CineMachine::CineMachineVirtualCamera::OnDebugRender()
 {
+    if (!Core::Application::Configuration::DebugDrawConfiguration::ShouldDrawVirtualCameraFrustum())
+        return;
+
     const glm::vec3 eye     = Transform().GetWorldPos();
     const glm::vec3 forward = Transform().GetWorldRot() * glm::vec3(0, 0, 1);
     constexpr auto worldUp = glm::vec3(0, 1, 0);
@@ -96,7 +112,7 @@ void CineMachine::CineMachineVirtualCamera::OnDebugRender()
     GetScreenState(&screenWidth, &screenHeight, nullptr);
     const float aspectRatio = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
 
-    constexpr float fovRad = SAMPLE_CAMERA_FOV * DX_PI_F / 180.0f;
+    const float fovRad = Fov() * DX_PI_F / 180.0f;
     constexpr float debugFar = 80.0f;
     const float halfHeight = tanf(fovRad * 0.5f) * debugFar;
     const float halfWidth = halfHeight * aspectRatio;

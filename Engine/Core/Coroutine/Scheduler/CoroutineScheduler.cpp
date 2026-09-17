@@ -18,6 +18,7 @@ namespace Coroutine
     void CoroutineScheduler::RegisterFuture(
         const std::coroutine_handle<> awaiting)
     {
+        std::lock_guard lock(pendingResumeMutex_);
         pendingResume_.push_back(awaiting);
     }
 
@@ -97,11 +98,16 @@ namespace Coroutine
         }
 
         // Future resume
-        for (auto coroutineHandle : pendingResume_)
+        // resume 中に別スレッドから RegisterFuture され得るので、取り出してからロックを外す
+        std::vector<std::coroutine_handle<>> resumeTargets;
+        {
+            std::lock_guard lock(pendingResumeMutex_);
+            resumeTargets.swap(pendingResume_);
+        }
+        for (auto coroutineHandle : resumeTargets)
         {
             coroutineHandle.resume();
         }
-        pendingResume_.clear();
     }
 
     void CoroutineScheduler::AllClear()
@@ -151,6 +157,9 @@ namespace Coroutine
         pendingEvents_    .clear();
         coroutines_       .clear();
         pendingCoroutines_.clear();
-        pendingResume_    .clear();
+        {
+            std::lock_guard lock(pendingResumeMutex_);
+            pendingResume_.clear();
+        }
     }
 }

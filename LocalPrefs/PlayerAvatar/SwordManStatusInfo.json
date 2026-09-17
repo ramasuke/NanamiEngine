@@ -1,10 +1,10 @@
-﻿{
+{
     "Info": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 5,
+                "cereal_class_version": 19,
                 "value0": {
                     "cereal_class_version": 0
                 },
@@ -28,17 +28,18 @@
                 },
                 "maxStamina_": {
                     "cereal_class_version": 0,
-                    "value_": 200.0
+                    "value_": 100.0
                 },
                 "stamina_": {
                     "value": {
-                        "value_": 200.0
+                        "value_": 100.0
                     }
                 },
                 "staminaDrainPerSecond_": 10.0,
-                "staminaRegenPerSecond_": 80.0,
+                "staminaRegenPerSecond_": 30.0,
                 "minStaminaRatioToResumeRun_": 0.30000001192092898,
-                "attackedShockedStateDuration_secs_": 1.0,
+                "avoidRollingStaminaCost_": 20.0,
+                "attackedShockedStateDuration_secs_": 0.9090909361839294,
                 "dashAttack_": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -49,9 +50,90 @@
                         "cereal_class_version": 0,
                         "value0": 10
                     },
-                    "value2": 0.699999988079071,
-                    "value3": 0.800000011920929
+                    "value2": 0.5303030014038086,
+                    "value3": 0.6060606241226196
                 },
+                "dashAttackLungeSpeed_secs_": 55.0,
+                "comboHitFeel_": [
+                    {
+                        "cereal_class_version": 3,
+                        "value0": 0.30000001192092898,
+                        "value1": 0.1090909093618393,
+                        "value2": 5.0,
+                        "value3": 0.5,
+                        "value4": 0.11999999731779099,
+                        "value5": 30.0
+                    },
+                    {
+                        "value0": 0.5,
+                        "value1": 0.1090909093618393,
+                        "value2": 5.75,
+                        "value3": 0.699999988079071,
+                        "value4": 0.14000000059604646,
+                        "value5": 28.0
+                    },
+                    {
+                        "value0": 0.800000011920929,
+                        "value1": 0.1090909093618393,
+                        "value2": 6.75,
+                        "value3": 1.0,
+                        "value4": 0.18000000715255738,
+                        "value5": 40.0
+                    }
+                ],
+                "dashHitFeel_": {
+                    "value0": 0.8999999761581421,
+                    "value1": 0.12727272510528565,
+                    "value2": 1.0,
+                    "value3": 0.6000000238418579,
+                    "value4": 0.20000000298023225,
+                    "value5": 0.0
+                },
+                "comboInputBufferWindow_secs_": 0.11818181723356247,
+                "chargeAttackHoldThreshold_secs_": 0.20000000298023225,
+                "chargeAttackMaxCharge_secs_": 1.0,
+                "chargeAttackMaxHold_secs_": 3.0,
+                "chargeAttack_": {
+                    "value0": {
+                        "value_": 15
+                    },
+                    "value1": {
+                        "value0": 15
+                    },
+                    "value2": 0.4333333373069763,
+                    "value3": 0.9083333611488342
+                },
+                "chargeHitFeel_": {
+                    "value0": 1.2000000476837159,
+                    "value1": 0.18000000715255738,
+                    "value2": 7.0,
+                    "value3": 0.800000011920929,
+                    "value4": 0.25,
+                    "value5": 0.0
+                },
+                "chargeAttackLungeStart_secs_": 0.0,
+                "chargeAttackLungeSpeed_": 28.0,
+                "chargeAttackStaminaCost_": 30.0,
+                "jumpAttack_": {
+                    "value0": {
+                        "value_": 12
+                    },
+                    "value1": {
+                        "value0": 12
+                    },
+                    "value2": 0.10000000149011612,
+                    "value3": 0.6666666865348816
+                },
+                "jumpAttackHitFeel_": {
+                    "value0": 1.0,
+                    "value1": 0.15000000596046449,
+                    "value2": 6.5,
+                    "value3": 0.800000011920929,
+                    "value4": 0.2199999988079071,
+                    "value5": 0.0
+                },
+                "jumpAttackWindup_secs_": 0.30000001192092898,
+                "jumpAttackPlungeSpeed_": 120.0,
                 "walkSpeed_": {
                     "cereal_class_version": 0,
                     "value_": 24.0
@@ -59,13 +141,20 @@
                 "runSpeed_": {
                     "value_": 70.0
                 },
-                "moveRotateSpeed_": 10.0,
+                "moveRotateSpeed_": 6.199999809265137,
+                "lockOnAttackRotateSpeed_": 10.0,
+                "attackRotateSmoothTime_secs_": 0.07999999821186066,
                 "jumpPower_": 75.5,
-                "damageStateDuration_secs_": 1.600000023841858,
-                "deathStateDuration_secs_": 2.0,
+                "jumpStateDuration_secs_": 0.48181816935539248,
+                "jumpCooldown_secs_": 0.5799999833106995,
+                "jumpStaminaCost_": 15.0,
+                "damageStateDuration_secs_": 1.454545497894287,
+                "deathStateDuration_secs_": 1.8181818723678589,
                 "injuredHealthRatio_": 0.30000001192092898,
-                "downStateDuration_secs_": 15.0,
+                "downStateDuration_secs_": 13.636363983154297,
                 "reviveHealthRatio_": 0.30000001192092898,
+                "fallDownStateDuration_secs_": 1.3333333730697632,
+                "getUpStateDuration_secs_": 1.7666666507720948,
                 "quests_": {
                     "polymorphic_id": 1073741824,
                     "ptr_wrapper": {

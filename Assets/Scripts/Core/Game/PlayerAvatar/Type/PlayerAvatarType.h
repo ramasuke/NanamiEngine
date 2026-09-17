@@ -2,9 +2,10 @@
 
 namespace GameCore::PlayerAvatar
 {
-    enum class PlayerAvatarType final : int 
+    enum class PlayerAvatarType final : int
     {
         SwordMan = 0,
         Gunner = 1,
+        MagicCaster = 2,
     };
 }

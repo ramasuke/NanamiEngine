@@ -16,6 +16,13 @@ namespace
             NanamiEngine::Module::LogError("Instantiate: Prefab の内容が読み込まれていないため生成できません: " + prefab.GetContentPath());
         return content;
     }
+
+    std::shared_ptr<GameObject::IGameObject> CopyAsCloneForInstantiate(GameObject::IGameObject& source)
+    {
+        auto copied = source.CopyForInstantiate();
+        copied->SetName(copied->Name() + "(Clone)");
+        return copied;
+    }
 }
 
 std::weak_ptr<Scene::SceneGameObject> Scene::GameObject::Instantiate()
@@ -34,7 +41,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(Asset::Pre
     if (!content)
         return {};
 
-    auto copiedPrefab = content->CopyForInstantiate();
+    auto copiedPrefab = CopyAsCloneForInstantiate(*content);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
     copiedPrefab->Transform().SetParent(parent);
     return copiedPrefab;
@@ -47,7 +54,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(Asset::Pre
     if (!content)
         return {};
 
-    auto copiedPrefab = content->CopyForInstantiate();
+    auto copiedPrefab = CopyAsCloneForInstantiate(*content);
     copiedPrefab->Transform().SetWorldPos(position);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
     return copiedPrefab;
@@ -59,7 +66,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(std::share
     if (!content)
         return {};
 
-    auto copiedPrefab = content->CopyForInstantiate();
+    auto copiedPrefab = CopyAsCloneForInstantiate(*content);
     copiedPrefab->Transform().SetWorldPos(position);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
     return copiedPrefab;
@@ -68,7 +75,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(std::share
 std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     const std::shared_ptr<Module::GameObject::IGameObject>& gameObject, const glm::vec3 position)
 {
-    auto copiedPrefab = gameObject->CopyForInstantiate();
+    auto copiedPrefab = CopyAsCloneForInstantiate(*gameObject);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
     copiedPrefab->Transform().SetWorldPos(position);
     return copiedPrefab;
@@ -77,7 +84,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
 std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     Module::GameObject::IGameObject& gameObject, const std::shared_ptr<Module::GameObject::IGameObject>& parent)
 {
-    auto copiedPrefab = gameObject.CopyForInstantiate();
+    auto copiedPrefab = CopyAsCloneForInstantiate(gameObject);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
     copiedPrefab->Transform().SetParent(parent);
     return copiedPrefab;
@@ -86,7 +93,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
 std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     Module::GameObject::IGameObject& gameObject, const glm::vec3 position)
 {
-    auto copiedPrefab = gameObject.CopyForInstantiate();
+    auto copiedPrefab = CopyAsCloneForInstantiate(gameObject);
     copiedPrefab->Transform().SetWorldPos(position);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
     return copiedPrefab;
@@ -99,7 +106,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     if (!content)
         return {};
 
-    auto copiedPrefab = content->CopyForInstantiate();
+    auto copiedPrefab = CopyAsCloneForInstantiate(*content);
     copiedPrefab->Transform().SetWorldPos(position);
     copiedPrefab->Transform().SetWorldRot(rotation);
 
@@ -116,7 +123,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     if (!content)
         return {};
 
-    auto copiedPrefab = content->CopyForInstantiate();
+    auto copiedPrefab = CopyAsCloneForInstantiate(*content);
     copiedPrefab->Transform().SetWorldPos(position);
     copiedPrefab->Transform().SetWorldRot(rotation);
 
@@ -127,7 +134,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
 std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     Module::GameObject::IGameObject& gameObject, const glm::vec3 position, const glm::quat rotation)
 {
-    auto copiedPrefab = gameObject.CopyForInstantiate();
+    auto copiedPrefab = CopyAsCloneForInstantiate(gameObject);
     copiedPrefab->Transform().SetWorldPos(position);
     copiedPrefab->Transform().SetWorldRot(rotation);
 
@@ -140,7 +147,7 @@ std::weak_ptr<Module::GameObject::IGameObject> Instantiate(
     const glm::vec3& position,
     const glm::quat& rotation)
 {
-    auto copiedPrefab = gameObject->CopyForInstantiate();
+    auto copiedPrefab = CopyAsCloneForInstantiate(*gameObject);
     copiedPrefab->Transform().SetWorldPos(position);
     copiedPrefab->Transform().SetWorldRot(rotation);
 

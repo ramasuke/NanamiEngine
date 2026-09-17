@@ -1,7 +1,6 @@
 ﻿#include "SwordManAvatarUseCanonState.h"
 
 #include "../../../../Game.h"
-#include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../Scene/Main/Content/FirstTouchDownMainIsLand/Context/FirstTouchDownMainIsLandSceneContext.h"
 #include "../../../../Scene/Main/Group/Main_GameSceneGroup.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
@@ -14,7 +13,7 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoEn
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoFixedUpdate()
 {
-    Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
+    HoldHorizontalVelocity();
     
     const auto& sceneContext = *Game::Instance().Scenes().CatchContext<Scene::FirstTouchDownMainIsLandSceneContext>();
     auto& cannon = sceneContext.PlayerControllabeCanon();
@@ -40,5 +39,11 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoUp
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoExit()
 {
-    
+
+}
+
+void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const
+{
+    visitor.Action(SwordManAvatarStateAction::CannonTurn, true);
+    visitor.Action(SwordManAvatarStateAction::CannonFire, true);
 }

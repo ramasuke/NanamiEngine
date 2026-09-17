@@ -18,6 +18,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void ChangeToMoveOrIdle();
 
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::DashAttack; }
+        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Momentary; }
 
     private:
         bool isAttacked_ = false;

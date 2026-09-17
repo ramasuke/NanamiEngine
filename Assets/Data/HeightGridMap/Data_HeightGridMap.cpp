@@ -66,14 +66,11 @@ namespace NanamiEngine::Module::Asset
 
         map_.assign(static_cast<size_t>(divisionsX_) * divisionsZ_, Data::HeightGridMap::HeightGridCell{});
 
-        Physics::LayerMask mask = Physics::CreateLayerMask();
-        Physics::AddLayer(mask, Physics::Layer::Default);
-
         for (int z = 0; z < divisionsZ_; ++z)
         {
             for (int x = 0; x < divisionsX_; ++x)
             {
-                const auto hit = Physics::Raycast(CellCenterOrigin(x, z), glm::vec3(0, -1, 0), rayDistance_, mask);
+                const auto hit = Physics::Raycast(CellCenterOrigin(x, z), glm::vec3(0, -1, 0), rayDistance_, layerMask_);
 
                 auto& cell = map_[static_cast<size_t>(z) * divisionsX_ + x];
                 if (hit.Hit())
@@ -161,6 +158,8 @@ namespace NanamiEngine::Module::Asset
 
         ImGui::DragFloat("Sampling Height", &samplingHeight_, 0.1f);
         ImGui::DragFloat("Ray Distance", &rayDistance_, 0.1f, 0.01f, 100000.0f);
+
+        Physics::DrawLayerMaskGui("Layer Mask", layerMask_);
 
         ImGui::SliderInt("Display Divisions", &displayDivisions, 1, 1000);
 

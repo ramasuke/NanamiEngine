@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 1,
+                "cereal_class_version": 2,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -23,7 +23,41 @@
                     "value0": 480.0,
                     "value1": 620.0
                 },
-                "isCleared_": false
+                "isCleared_": false,
+                "thumbnailSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "51AE15FB-F9E2-48B8-864D-CCF439A772D2"
+                                }
+                            }
+                        }
+                    }
+                },
+                "elementSprite_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "value0": {
+                                    "value_": "E7DAA827-9455-4B29-BC12-750ABB0731BB"
+                                }
+                            }
+                        }
+                    }
+                },
+                "difficulty_": 1,
+                "tagText_": "初級 ・ 緑属性",
+                "descriptionLines_": [
+                    "緑豊かな草原が広がる、",
+                    "冒険の第一歩となるステージ。"
+                ]
             }
         }
     }

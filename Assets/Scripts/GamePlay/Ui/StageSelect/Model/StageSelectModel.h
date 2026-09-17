@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 #include "../Stage/Ui_StageSelect_StageUI.h"
 
@@ -20,6 +20,7 @@ namespace GamePlay::Ui
         [[nodiscard]] bool   HasSelection () const { return hasSelection_; }
         [[nodiscard]] size_t SelectedIndex() const { return selectedIndex_; }
         [[nodiscard]] GameCore::Scene::Main::SceneType SelectedSceneType() const;
+        [[nodiscard]] std::shared_ptr<Asset::StageData> SelectedStageData() const;
 
         [[nodiscard]] rxcpp::observable<size_t> OnSelectionChanged() const { return onSelectionChanged_.get_observable(); }
 

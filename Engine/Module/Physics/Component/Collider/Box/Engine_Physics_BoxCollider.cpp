@@ -1,11 +1,8 @@
 ﻿#include "Engine_Physics_BoxCollider.h"
 
-#include "../../../../../Core/Application/Time/Time.h"
-#include "../../../../../Core/Physics/Physics.h"
 #include "../../../../3DRender/Shapes/Shapes.h"
 #include "../../../../GameObject/Transform/Transform.h"
-#include "../../../Engine_Physics_Physics.h"
-#include "../JoltPhysics/Jolt/Physics/Body/BodyInterface.h"
+#include "../../../JoltUtility/Engine_Physics_JoltUtility.h"
 
 void Component::BoxCollider::OnDrawGui()
 {
@@ -25,20 +22,7 @@ void Component::BoxCollider::OnDrawGui()
     {
         offsetRotation_ = offsetRot;
     }
-    
-    static const char* motionTypeNames[] = {
-        "Static", "Kinematic", "Dynamic"
-    };
 
-    int currentIndex = static_cast<int>(emotionType_);
-    if (ImGui::Combo("Motion Type", &currentIndex, motionTypeNames, IM_ARRAYSIZE(motionTypeNames)))
-    {
-        emotionType_ = static_cast<JPH::EMotionType>(currentIndex);
-    }
-    ImGui::Separator();
-    ImGui::Text("Constraints");
-    Physics::DrawConstraintCheckBoxsGui(constraints_);
-    
     int layerIndex = Physics::ToIndex(layer_);
     if (ImGui::Combo("Layer", &layerIndex, Physics::LAYER_NAMES, static_cast<int>(Physics::Layer::Count)))
         SetLayer(Physics::ToLayer(layerIndex));

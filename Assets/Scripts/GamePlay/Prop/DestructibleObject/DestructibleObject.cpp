@@ -1,6 +1,9 @@
 ﻿#include "DestructibleObject.h"
 
 #include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
+#include "../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
+#include "../../../Core/Game/PlayerAvatar/Wallet/PlayerAvatar_Wallet.h"
 
 namespace GamePlay::Prop
 {
@@ -21,6 +24,9 @@ namespace GamePlay::Prop
             {
                 Scene::GameObject::Instantiate(destroyParticle_.get(), particlePos_->Transform().GetWorldPos());
             }
+            if (const auto owner = GameCore::PlayerAvatar::Owner())
+                owner->PlayerStatus().Wallet().Earn(dropMoney_);
+
             Entity().lock()->OnDestroy();
         }
     }
@@ -36,5 +42,6 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("onDamageParticle_", onDamageParticle_);
         ImGuiHelper::OnDrawInputField("destroyParticle_", destroyParticle_);
         ImGuiHelper::OnDrawInputField("particlePos_", particlePos_);
+        ImGuiHelper::OnDrawInputField("dropMoney_", dropMoney_);
     }
 }

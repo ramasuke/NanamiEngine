@@ -26,25 +26,25 @@
             <Velocity>
               <X>
                 <Center>0</Center>
-                <Max>0.5</Max>
-                <Min>-0.5</Min>
+                <Max>0.125</Max>
+                <Min>-0.125</Min>
               </X>
               <Y>
-                <Center>0.35</Center>
-                <Max>0.55</Max>
-                <Min>0.15</Min>
+                <Center>0.0875</Center>
+                <Max>0.1375</Max>
+                <Min>0.0375</Min>
               </Y>
               <Z>
                 <Center>0</Center>
-                <Max>0.5</Max>
-                <Min>-0.5</Min>
+                <Max>0.125</Max>
+                <Min>-0.125</Min>
               </Z>
             </Velocity>
             <Acceleration>
               <Y>
-                <Center>-0.15</Center>
-                <Max>-0.15</Max>
-                <Min>-0.15</Min>
+                <Center>-0.0375</Center>
+                <Max>-0.0375</Max>
+                <Min>-0.0375</Min>
               </Y>
             </Acceleration>
           </PVA>
@@ -95,14 +95,14 @@
           <Type>1</Type>
           <Sphere>
             <Radius>
-              <Center>0.1</Center>
-              <Max>0.3</Max>
+              <Center>0.025</Center>
+              <Max>0.075</Max>
               <Min>0</Min>
             </Radius>
           </Sphere>
         </GenerationLocationValues>
         <RendererCommonValues>
-          <ColorTexture>Texture/Fog3001.png</ColorTexture>
+          <ColorTexture>../../FootstepDust/Texture/Fog3001.png</ColorTexture>
           <Filter>1</Filter>
           <AlphaBlend>1</AlphaBlend>
           <FadeInType>1</FadeInType>
@@ -154,25 +154,25 @@
             <Velocity>
               <X>
                 <Center>0</Center>
-                <Max>1.1</Max>
-                <Min>-1.1</Min>
+                <Max>0.275</Max>
+                <Min>-0.275</Min>
               </X>
               <Y>
-                <Center>0.5</Center>
-                <Max>0.9</Max>
-                <Min>0.2</Min>
+                <Center>0.125</Center>
+                <Max>0.225</Max>
+                <Min>0.05</Min>
               </Y>
               <Z>
                 <Center>0</Center>
-                <Max>1.1</Max>
-                <Min>-1.1</Min>
+                <Max>0.275</Max>
+                <Min>-0.275</Min>
               </Z>
             </Velocity>
             <Acceleration>
               <Y>
-                <Center>-1</Center>
-                <Max>-1</Max>
-                <Min>-1</Min>
+                <Center>-0.25</Center>
+                <Max>-0.25</Max>
+                <Min>-0.25</Min>
               </Y>
             </Acceleration>
           </PVA>
@@ -200,14 +200,14 @@
           <Type>1</Type>
           <Sphere>
             <Radius>
-              <Center>0.2</Center>
-              <Max>0.5</Max>
+              <Center>0.05</Center>
+              <Max>0.125</Max>
               <Min>0</Min>
             </Radius>
           </Sphere>
         </GenerationLocationValues>
         <RendererCommonValues>
-          <ColorTexture>Texture/smoke_tex.png</ColorTexture>
+          <ColorTexture>../../FootstepDust/Texture/smoke_tex.png</ColorTexture>
           <Filter>1</Filter>
           <AlphaBlend>1</AlphaBlend>
           <FadeInType>1</FadeInType>
@@ -248,8 +248,8 @@
             <Min>26</Min>
           </Life>
           <GenerationTime>
-            <Center>1</Center>
-            <Max>2</Max>
+            <Center>0</Center>
+            <Max>1</Max>
             <Min>0</Min>
           </GenerationTime>
         </CommonValues>
@@ -259,18 +259,18 @@
             <Velocity>
               <X>
                 <Center>0</Center>
-                <Max>0.25</Max>
-                <Min>-0.25</Min>
+                <Max>0.0625</Max>
+                <Min>-0.0625</Min>
               </X>
               <Y>
-                <Center>0.15</Center>
-                <Max>0.25</Max>
-                <Min>0.05</Min>
+                <Center>0.0375</Center>
+                <Max>0.0625</Max>
+                <Min>0.0125</Min>
               </Y>
               <Z>
                 <Center>0</Center>
-                <Max>0.25</Max>
-                <Min>-0.25</Min>
+                <Max>0.0625</Max>
+                <Min>-0.0625</Min>
               </Z>
             </Velocity>
           </PVA>
@@ -310,18 +310,18 @@
           <Sphere>
             <Radius>
               <Center>0</Center>
-              <Max>0.2</Max>
+              <Max>0.05</Max>
               <Min>0</Min>
             </Radius>
           </Sphere>
         </GenerationLocationValues>
         <RendererCommonValues>
-          <ColorTexture>Texture/Fog3001.png</ColorTexture>
+          <ColorTexture>../../FootstepDust/Texture/Fog3001.png</ColorTexture>
           <Filter>1</Filter>
           <AlphaBlend>1</AlphaBlend>
           <FadeInType>1</FadeInType>
           <FadeIn>
-            <Frame>6</Frame>
+            <Frame>3</Frame>
           </FadeIn>
           <FadeOutType>1</FadeOutType>
           <FadeOut>

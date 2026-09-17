@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../../../Core/Object/IObject.h"
+#include "../Mark/GameObjectMark.h"
 
 namespace NanamiEngine::Module::GameObject
 {
@@ -34,12 +35,16 @@ namespace NanamiEngine::Module::GameObject
             const std::shared_ptr<IGameObject>& ownPtr,
             bool isActive,
             std::string name,
+            GameObjectMark mark,
             ComponentGroup components,
             Transform transform) = 0;
         virtual void InvokeInitAwakeCallbacks() = 0;
         virtual void InvokeInitStartCallbacks() = 0;
         virtual std::shared_ptr<IGameObject> CopyForInstantiate() = 0;
         [[nodiscard]] virtual const std::string& Name     () const = 0;
+        virtual void SetName(std::string name) = 0;
+        [[nodiscard]] virtual GameObjectMark     Mark     () const = 0;
+        virtual void SetMark(GameObjectMark mark) = 0;
         [[nodiscard]] virtual Transform&         Transform() = 0;
         [[nodiscard]] virtual ComponentGroup&    Components() = 0;
         /** @brief GameObjectの全ての機能の有効無効を切り替える */

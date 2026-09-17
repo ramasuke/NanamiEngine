@@ -12,9 +12,10 @@ namespace GameCore::Scene::Main
     class GameSceneGroup final
     {
     public:
-        explicit GameSceneGroup(
+        GameSceneGroup(
             std::vector<std::weak_ptr<SceneContextBase>> sceneContexts,
-            const std::shared_ptr<Sub::IGameSceneStack>& subSceneStack);
+            const std::shared_ptr<Sub::IGameSceneStack>& subSceneStack,
+            const std::shared_ptr<GamePlay::Ui::LoadingScreenUi>& loadingScreen);
 
         void Update();
         void OnDrawGui();

@@ -1,0 +1,90 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::EnemyFactory",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Enemy/StandardEnemyFactory.enemyFactory",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "E214F38B-6320-4DF4-A6A7-D2709079EECD"
+                    }
+                },
+                "normalBossPrefab_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "2D1C4E01-7FA2-4C80-B959-CC80F0F82950"
+                                }
+                            }
+                        }
+                    }
+                },
+                "normalPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "value0": {
+                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                }
+                            }
+                        }
+                    }
+                },
+                "hyenaPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483652,
+                            "data": {
+                                "value0": {
+                                    "value_": "E81909AA-AE30-481C-B756-DF8C76E516D7"
+                                }
+                            }
+                        }
+                    }
+                },
+                "bossHealthGaugeUiPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483653,
+                            "data": {
+                                "value0": {
+                                    "value_": "30EEF6CE-2AA7-4234-8306-222E9693EA2D"
+                                }
+                            }
+                        }
+                    }
+                },
+                "bossHealthGaugePresenterPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "4C52CC32-B305-4D05-92D3-39F5BE5FA55C"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

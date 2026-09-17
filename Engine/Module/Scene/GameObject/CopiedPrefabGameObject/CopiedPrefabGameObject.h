@@ -9,11 +9,14 @@ namespace NanamiEngine::Scene
     {
     public:
         void InitGameObject(const std::weak_ptr<IGameObject>& parent, const std::shared_ptr<IGameObject>& ownPtr) override;
-        void InitForCopied(const std::shared_ptr<IGameObject>& ownPtr, bool isActive, std::string name, Module::GameObject::ComponentGroup components, Module::GameObject::Transform transform) override;
+        void InitForCopied(const std::shared_ptr<IGameObject>& ownPtr, bool isActive, std::string name, Module::GameObject::GameObjectMark mark, Module::GameObject::ComponentGroup components, Module::GameObject::Transform transform) override;
         void InvokeInitAwakeCallbacks() override;
         void InvokeInitStartCallbacks() override;
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
         [[nodiscard]] const std::string& Name() const override { return name_; }
+        void SetName(std::string name) override { name_ = std::move(name); }
+        [[nodiscard]] Module::GameObject::GameObjectMark Mark() const override { return mark_; }
+        void SetMark(const Module::GameObject::GameObjectMark mark) override { mark_ = mark; }
         Module::GameObject::ComponentGroup& Components() override { return components_; }
         [[nodiscard]] Module::GameObject::Transform& Transform() override { return transform_; }
         bool IsEnable() override { return isActive_; }
@@ -29,6 +32,7 @@ namespace NanamiEngine::Scene
     private:
         bool isActive_    = false;
         std::string name_ = "Empty";
+        Module::GameObject::GameObjectMark mark_ = Module::GameObject::GameObjectMark::None;
         Guid guid_;
         Module::GameObject::ComponentGroup components_;
         Module::GameObject::Transform transform_;
@@ -44,6 +48,7 @@ namespace NanamiEngine::Scene
             archive(CEREAL_NVP(guid_));
             archive(CEREAL_NVP(components_));
             archive(CEREAL_NVP(transform_));
+            archive(CEREAL_NVP(mark_));
         }
 
         template <class Archive>
@@ -55,10 +60,12 @@ namespace NanamiEngine::Scene
             archive(CEREAL_NVP(guid_));
             archive(CEREAL_NVP(components_));
             archive(CEREAL_NVP(transform_));
+            if (version >= 1)
+                archive(CEREAL_NVP(mark_));
         }
     };
 }
 
-CEREAL_CLASS_VERSION(NanamiEngine::Scene::CopiedPrefabGameObject, 0);
+CEREAL_CLASS_VERSION(NanamiEngine::Scene::CopiedPrefabGameObject, 1);
 CEREAL_REGISTER_TYPE(NanamiEngine::Scene::CopiedPrefabGameObject);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::GameObject::IGameObject, NanamiEngine::Scene::CopiedPrefabGameObject);

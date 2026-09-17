@@ -1,17 +1,7 @@
 ﻿#pragma once
-#include <cstdint>
-
-class Guid;
-
-namespace JPH
-{
-    enum class EMotionType : uint8_t;
-}
-
-namespace JPH
-{
-    class BodyID;
-}
+#include <optional>
+#include <utility>
+#include "vec3.hpp"
 
 namespace NanamiEngine::Module::Physics
 {
@@ -19,7 +9,8 @@ namespace NanamiEngine::Module::Physics
     {
     public:
         virtual ~ICollider() = default;
-        [[nodiscard]] virtual const JPH::BodyID& BodyId() const = 0;
-        virtual void SetMotionType(const JPH::EMotionType& type) = 0;
+        // この Collider の形状のワールド空間AABB(first=min, second=max)。Body が無ければ nullopt
+        [[nodiscard]] virtual std::optional<std::pair<glm::vec3, glm::vec3>> WorldBounds() const = 0;
+        [[nodiscard]] virtual std::optional<glm::vec3> CenterOfMassPosition() const = 0;
     };
 }

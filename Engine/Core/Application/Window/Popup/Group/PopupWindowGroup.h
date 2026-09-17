@@ -10,10 +10,17 @@
 template <typename T>
 concept PopupWindowType = std::derived_from<T, NanamiEngine::Core::PopupWindow::IPopupWindow>;
 
+namespace NanamiEngine::Core::Application::AutoMcp
+{
+    class AutoMcpEngineAccess;
+}
+
 namespace NanamiEngine::Core::PopupWindow
 {
     class PopupWindowGroup final
     {
+        friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
+
     public:
         template <PopupWindowType WindowT>
         void MakeWindow();

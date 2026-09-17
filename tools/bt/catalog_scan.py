@@ -29,6 +29,16 @@ ENEMY_EXTRA_STRUCT_FILES = {
 }
 EXTRA_STRUCT_FILES = ENEMY_EXTRA_STRUCT_FILES  # backward-compat alias
 
+# Friendly: polymorphic objects reached through an action's raw shared_ptr
+# (TrySwordManQuest.quest_). Without them their FIELD(...) members would be
+# opaque and couldn't share Field<T>'s once-per-type version slot, so a later
+# modeled FIELD of the same T would re-emit cereal_class_version and fail to load.
+FRIENDLY_EXTRA_STRUCT_FILES = {
+    **npc_kind.FRIENDLY.extra_struct_files,
+    "ActionInstructTutorial": _REPO / "Assets/Scripts/Core/Game/PlayerAvatar/SwordMan/Status/Quest/Content/"
+                                      "ActionInstructTutorial/Quest_SwordMan_ActionInstructTutorial.h",
+}
+
 _SKIP_DIRS = {"TickContext", "FieldGameObject", "Position"}
 
 # -- regexes --------------------------------------------------------------------
@@ -205,7 +215,7 @@ _BASE_NODES = {
 def scan(kind: str = "enemy") -> dict[str, Any]:
     cfg = npc_kind.by_name(kind)
     content_root = cfg.content_root
-    extra_struct_files = ENEMY_EXTRA_STRUCT_FILES if kind == "enemy" else cfg.extra_struct_files
+    extra_struct_files = ENEMY_EXTRA_STRUCT_FILES if kind == "enemy" else FRIENDLY_EXTRA_STRUCT_FILES
 
     headers = [p for p in content_root.rglob("*.h")
                if not any(part in _SKIP_DIRS for part in p.relative_to(content_root).parts[:-1])]

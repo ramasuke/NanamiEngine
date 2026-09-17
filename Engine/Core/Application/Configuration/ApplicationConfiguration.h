@@ -27,6 +27,9 @@ namespace NanamiEngine::Core::Application::Configuration
         [[nodiscard]] static int   GetZBufferBitDepth();
         static void                SetZBufferBitDepth(int bitDepth);
 
+        [[nodiscard]] static bool  GetAlwaysRun();
+        static void                SetAlwaysRun(bool alwaysRun);
+
         [[nodiscard]] static int   GetShadowMapWidth();
         [[nodiscard]] static int   GetShadowMapHeight();
         static void                SetShadowMapWidth(int w);
@@ -60,6 +63,8 @@ namespace NanamiEngine::Core::Application::Configuration
         static int windowColorScale_;
 
         static int zBufferBitDepth_;
+
+        static bool alwaysRun_;
 
         static int shadowMapWidth_;
         static int shadowMapHeight_;

@@ -25,6 +25,55 @@ void Component::SkyDome3D::InitRenderer()
     if (skyDomeModel_)
     {
         skyDomeModelDxLibHandle_ = skyDomeModel_->LoadDxLibHandle();
+        CacheBaseMaterialColors();
+        ApplyTint();
+    }
+}
+
+void Component::SkyDome3D::SetTint(const glm::vec3& tint)
+{
+    if (tint == tint_)
+        return;
+
+    tint_ = tint;
+    ApplyTint();
+}
+
+void Component::SkyDome3D::CacheBaseMaterialColors()
+{
+    baseDifColors_.clear();
+    baseAmbColors_.clear();
+    baseEmiColors_.clear();
+    if (skyDomeModelDxLibHandle_ == -1)
+        return;
+
+    const int materialNum = MV1GetMaterialNum(skyDomeModelDxLibHandle_);
+    for (int i = 0; i < materialNum; ++i)
+    {
+        const COLOR_F dif = MV1GetMaterialDifColor(skyDomeModelDxLibHandle_, i);
+        const COLOR_F amb = MV1GetMaterialAmbColor(skyDomeModelDxLibHandle_, i);
+        const COLOR_F emi = MV1GetMaterialEmiColor(skyDomeModelDxLibHandle_, i);
+        baseDifColors_.emplace_back(dif.r, dif.g, dif.b);
+        baseAmbColors_.emplace_back(amb.r, amb.g, amb.b);
+        baseEmiColors_.emplace_back(emi.r, emi.g, emi.b);
+    }
+}
+
+void Component::SkyDome3D::ApplyTint()
+{
+    if (skyDomeModelDxLibHandle_ == -1)
+        return;
+
+    //NOTE: 読み込み時の色に乗算する。素の色を上書きしないので、モデル側の陰影がそのまま残る
+    const int materialNum = static_cast<int>(baseDifColors_.size());
+    for (int i = 0; i < materialNum; ++i)
+    {
+        const glm::vec3 dif = baseDifColors_[i] * tint_;
+        const glm::vec3 amb = baseAmbColors_[i] * tint_;
+        const glm::vec3 emi = baseEmiColors_[i] * tint_;
+        MV1SetMaterialDifColor(skyDomeModelDxLibHandle_, i, GetColorF(dif.r, dif.g, dif.b, 1.0f));
+        MV1SetMaterialAmbColor(skyDomeModelDxLibHandle_, i, GetColorF(amb.r, amb.g, amb.b, 1.0f));
+        MV1SetMaterialEmiColor(skyDomeModelDxLibHandle_, i, GetColorF(emi.r, emi.g, emi.b, 1.0f));
     }
 }
 
@@ -39,7 +88,11 @@ void Component::SkyDome3D::OnUpdate()
 
 void Component::SkyDome3D::OnRender()
 {
+    //NOTE: フォグを掛けたまま描くとドームが遠景色一色に潰れるので、空だけ外して描く
+    const int useFog = GetFogEnable();
+    SetFogEnable(FALSE);
     MV1DrawModel(skyDomeModelDxLibHandle_);
+    SetFogEnable(useFog);
 }
 
 void Component::SkyDome3D::OnDebugRender()

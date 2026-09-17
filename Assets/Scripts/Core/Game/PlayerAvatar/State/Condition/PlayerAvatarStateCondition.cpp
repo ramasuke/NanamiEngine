@@ -5,6 +5,11 @@
 #include "../../../../../GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
 #include "../../../../../GamePlay/PlayerAvatar/WakeUpArea/WakeUpArea.h"
 #include "../../../../../GamePlay/Prop/Canon/Prop_Canon.h"
+#include "../../../../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
+#include "../../../Game.h"
+#include "../../../Scene/Sub/Content/ChattingUI/ChattingUIScene.h"
+#include "../../../Scene/Sub/Group/Sub_GameSceneGroup.h"
+#include "../../../Scene/Sub/Type/SubSceneType.h"
 
 namespace GameCore::PlayerAvatar::State
 {
@@ -29,6 +34,12 @@ namespace GameCore::PlayerAvatar::State
 
     bool PlayerAvatarStateCondition::IsChattable() const
     {
+        // 会話UIは全NPCで共有しているため、表示中に別NPCと会話を始めると文章が重なる
+        const auto& subScenes = GameCore::Game::Instance().SubScenes();
+        if (const auto& chattingUIScene = subScenes.Catch<GameCore::Scene::Sub::ChattingUIScene>(GameCore::Scene::Sub::SceneType::ChattingUI);
+            chattingUIScene && chattingUIScene->Context().Npc().IsDisplaying())
+            return false;
+
         return !stateContext_->ChattableArea().CatchChatTarget().expired();
     }
 

@@ -28,7 +28,7 @@ namespace NanamiEngine::Module::NanamiUi
             if (screenHandle_ != -1)
                 DeleteGraph(screenHandle_);
 
-            // 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、直後の取り込みで完了待ちに入るので同期で作る
+            //NOTE: 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、直後の取り込みで完了待ちに入るので同期で作る
             const int useASyncLoad = GetUseASyncLoadFlag();
             SetUseASyncLoadFlag(FALSE);
             screenHandle_ = MakeScreen(width, height, FALSE);

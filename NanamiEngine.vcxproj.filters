@@ -13,11 +13,41 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Loading\Ui_LoadingScreen.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Loading\Hint\Ui_LoadingHintCard.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Loading\Ui_LoadingScreen.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Loading\Hint\Ui_LoadingHintCard.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Loading\Main_SceneLoadStep.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\Weather\Rpc_Weather.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\Component\CameraFollowTransform\CameraFollowTransform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Weather\WeatherService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClInclude Include="Engine\Module\Component\CameraFollowTransform\CameraFollowTransform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Weather\WeatherService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClCompile Include="Engine\Core\Application\Configuration\ApplicationConfiguration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -168,6 +198,9 @@
     <ClCompile Include="Engine\Core\FileSystem\File\File.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Object\Field\GuidRemap\GuidRemap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Core\Object\Field\Interface\IFieldContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -316,6 +349,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Libs\JoltPhysics\Jolt\Geometry\Indexify.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\meshoptimizer\allocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\meshoptimizer\simplifier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Libs\JoltPhysics\Jolt\Geometry\OrientedBox.cpp">
@@ -705,6 +744,33 @@
     <ClCompile Include="Engine\Core\Application\Configuration\DebugDraw\ApplicationConfiguration_DebugDraw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Configuration\GameWindow\ApplicationConfiguration_GameWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Configuration\CodeEditor\ApplicationConfiguration_CodeEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Application\AutoMcp\AutoMcpEngineAccess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Application\AutoMcp\AutoMcpServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Application\AutoMcp\AutoMcpCommands.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Application\AutoMcp\AutoMcpScreenshot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Application\AutoMcp\AutoMcpJson.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Configuration\AutoMcp\ApplicationConfiguration_AutoMcp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\GameObject\Mark\GameObjectMark.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Libs\LibCore\Rx\ReadOnlyReactiveContext\ReadOnlyReactiveContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -739,6 +805,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\TickStatus\TickStatus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Boss\BossEnemyBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\EnemyBase.cpp">
@@ -864,6 +933,12 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Charge\SwordManAvatarChargeAttackReleaseState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackAirState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackLandState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Chatting\SwordManAvatarChattingState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -891,6 +966,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Walk\SwordManAvatarWalkState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\WarpIn\SwordManAvatar_WarpInState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\SwordManAvatarStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -901,6 +979,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\StatusParameter\MoveSpeed\MoveSpeed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\StatusParameter\Money\Money.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Wallet\PlayerAvatar_Wallet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\StatusParameter\Stamina\Stamina.cpp">
@@ -1005,6 +1089,12 @@
     <ClCompile Include="Engine\Module\Component\Rotator\Rotator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Module\Component\BoneSync\BoneSync.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\Component\BoneSync\BonePose\BonePose.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Module\Component\Skydome3D\SkyDome3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1093,6 +1183,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Data\HeightGridMap\Data_HeightGridMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\GrassField\Data_GrassField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\Grass\Grassable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\Grass\GrassRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Data\FriendlyNpcBehviour\Data_FriendNpcBehaviourFile.cpp">
@@ -1227,6 +1326,18 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\ShakeCamera\Enemy_Behaviour_Action_ShakeCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Ui\ShowBossHealthGauge\Enemy_Behaviour_Action_ShowBossHealthGauge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Weather\SetStorm\Enemy_Behaviour_Action_SetStorm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Weather\Lightning\Enemy_Behaviour_Action_Lightning.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Hyena\CallAllies\Enemy_Behaviour_Action_CallAllies.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1317,10 +1428,10 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Position\Friendly_Behaviour_Action_Position.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Animator\AnimationSync\IAnimationSync.cpp">
+    <ClCompile Include="Engine\Module\Component\BoneSync\Sync\BoneSyncBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Animator\AnimationSync\Transform\Animatoin_SyncTransform.cpp">
+    <ClCompile Include="Engine\Module\Component\BoneSync\Sync\Transform\TransformSync.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\CameraGroup\AllPlayerCameraGroup.cpp">
@@ -1369,6 +1480,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\WakeUp\SwordManAvatar_WakeUpState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\FallDown\SwordManAvatar_FallDownState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\GetUp\SwordManAvatar_GetUpState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\DisableState\SwordManAvatar_DisableState.cpp">
@@ -1500,6 +1617,9 @@
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\Bullet\PlayerAvatar_Bullet_CannonBullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\MagicCaster\MagicCasterAvatar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1522,6 +1642,30 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGauge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\CannonCooldownGauge\Ui_CannonCooldownGauge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthShardRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuideRow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\Item\Data_ItemData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemPouch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemSlot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\LockOnReticle\Ui_LockOnReticle.cpp">
@@ -1561,9 +1705,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Core\Coroutine\FutureTask\Coroutine_FutureTask.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Core\Object\Field\IInitializablePrefabField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Core\Object\IObject.cpp">
@@ -1618,6 +1759,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\LayoutCrossAlign.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\LayoutElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\VerticalLayoutGroup.cpp">
@@ -1707,7 +1851,25 @@
     <ClCompile Include="Engine\Module\Physics\UserData\Engine_Physics_UserData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Module\Physics\BodyAssembler\Engine_Physics_BodyAssembler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\Physics\Component\RigidBody\Engine_Physics_RigidBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\Physics\GroupFilter\Engine_Physics_RigidBodyGroupFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\Physics\JoltUtility\Engine_Physics_JoltUtility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\Physics\MotionType\Engine_Physics_MotionType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Module\Scene\ShadowMap\ShadowMapSetting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\Scene\AsyncLoader\Engine_Scene_AsyncSceneLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Libs\LibCore\BlackBoard\AnimationParameter.cpp">
@@ -1737,10 +1899,61 @@
     <ClCompile Include="Assets\Data\PlayerAvatar\Resource\Data_SwordManAvatarResource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Data\PlayerAvatar\Resource\Data_MagicCasterAvatarResource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\Enemy\Factory\EnemyFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\AttackedShocked\SwordManAvatar_AttackedShockedState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Floating\FloatingState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Context\MagicCasterAvatarStateContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Idle\MagicCasterAvatarIdleState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Walk\MagicCasterAvatarWalkState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Run\MagicCasterAvatarRunState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Jump\MagicCasterAvatarJumpState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Floating\MagicCasterAvatarFloatingState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Cast\MagicCasterAvatarCastState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Hurt\MagicCasterAvatarHurtState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Death\MagicCasterAvatarDeathState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\DisableState\MagicCasterAvatarDisableState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\MagicCasterAvatarStatus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\InputAction\MagicCasterAvatarInputAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Traits\MagicCasterAvatarTraits.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\DrySand\Context\DrySandSceneContext.cpp">
@@ -1753,6 +1966,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\GrassLandScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\ArrivalMovie\GrassLandArrivalMovie.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\DestructibleObject\DestructibleObject.cpp">
@@ -1785,13 +2001,19 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\UI_StageSelect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Difficulty\StageDifficultyPips.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\HyenaRepository.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGaugePresenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Module\Asset\Movie\MovieFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Module\Component\ParticleRenderer\PlayMode\ParticleSystem_PlayMode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Module\GameObject\PrefabGameObject\PrefabCatchChild\PrefabCatchChild.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Module\NanamiUI\MovieRenderer\MovieRenderer.cpp">
@@ -3536,6 +3758,9 @@
     <ClInclude Include="Engine\Core\Object\Field\Field.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Core\Object\Field\GuidRemap\GuidRemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Core\Object\Field\Interface\IFieldContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -4167,6 +4392,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Libs\JoltPhysics\Jolt\Geometry\Indexify.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\meshoptimizer\meshoptimizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Libs\JoltPhysics\Jolt\Geometry\MortonCode.h">
@@ -4977,7 +5205,13 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\TickStatus\TickStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Boss\BossEnemyBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\EnemyBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\ShowHealthGaugeProvider\IShowHealthGaugeProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Status\EnemyStatus.h">
@@ -5112,6 +5346,12 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Charge\SwordManAvatarChargeAttackReleaseState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackAirState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackLandState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Chatting\SwordManAvatarChattingState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5136,10 +5376,16 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\SwordManAvatarStateMachine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Transition\SwordManAvatarStateTransition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\SwordManAvatarStateType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Walk\SwordManAvatarWalkState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\WarpIn\SwordManAvatar_WarpInState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\SwordManAvatarStatus.h">
@@ -5152,6 +5398,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\StatusParameter\MoveSpeed\MoveSpeed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\StatusParameter\Money\Money.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Wallet\PlayerAvatar_Wallet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\StatusParameter\Stamina\Stamina.h">
@@ -5260,6 +5512,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\Component\Rotator\Rotator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Component\BoneSync\BoneSync.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Component\BoneSync\BonePose\BonePose.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\Component\Skydome3D\SkyDome3D.h">
@@ -5374,6 +5632,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Data\HeightGridMap\Data_HeightGridMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\GrassField\Data_GrassField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\Grass\Grassable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\Grass\GrassRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Data\FriendlyNpcBehviour\Data_FriendNpcBehaviourFile.h">
@@ -5508,6 +5775,18 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\ShakeCamera\Enemy_Behaviour_Action_ShakeCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Ui\ShowBossHealthGauge\Enemy_Behaviour_Action_ShowBossHealthGauge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Weather\SetStorm\Enemy_Behaviour_Action_SetStorm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Weather\Lightning\Enemy_Behaviour_Action_Lightning.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Hyena\CallAllies\Enemy_Behaviour_Action_CallAllies.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5598,10 +5877,10 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Position\Friendly_Behaviour_Action_Position.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Animator\AnimationSync\IAnimationSync.h">
+    <ClInclude Include="Engine\Module\Component\BoneSync\Sync\BoneSyncBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Animator\AnimationSync\Transform\Animatoin_SyncTransform.h">
+    <ClInclude Include="Engine\Module\Component\BoneSync\Sync\Transform\TransformSync.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\CameraGroup\AllPlayerCameraGroup.h">
@@ -5650,6 +5929,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\WakeUp\SwordManAvatar_WakeUpState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\FallDown\SwordManAvatar_FallDownState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\GetUp\SwordManAvatar_GetUpState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\DisableState\SwordManAvatar_DisableState.h">
@@ -5805,6 +6090,9 @@
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\Bullet\PlayerAvatar_Bullet_CannonBullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\MagicCaster\MagicCasterAvatar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5827,6 +6115,33 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGauge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\CannonCooldownGauge\Ui_CannonCooldownGauge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthShardRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuide.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuideRow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\Item\Data_ItemData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\Item\Data_ItemStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemPouch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemSlot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\LockOnReticle\Ui_LockOnReticle.h">
@@ -5869,12 +6184,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Coroutine\FutureTask\Coroutine_FutureTask.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Core\Object\Field\IInitializablePrefabField.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Core\Object\Field\PrefabField.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Object\IObject.h">
@@ -5935,6 +6244,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\LayoutCrossAlign.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\LayoutElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\VerticalLayoutGroup.h">
@@ -6024,6 +6336,33 @@
     <ClInclude Include="Engine\Core\Application\Configuration\DebugDraw\ApplicationConfiguration_DebugDraw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Configuration\GameWindow\ApplicationConfiguration_GameWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Configuration\CodeEditor\ApplicationConfiguration_CodeEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\AutoMcp\AutoMcpEngineAccess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\AutoMcp\AutoMcpServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\AutoMcp\AutoMcpCommands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\AutoMcp\AutoMcpScreenshot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\AutoMcp\AutoMcpJson.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Configuration\AutoMcp\ApplicationConfiguration_AutoMcp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\GameObject\Mark\GameObjectMark.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Module\Physics\Component\Collider\Engine_Physics_ColliderShapeKind.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -6036,7 +6375,28 @@
     <ClInclude Include="Engine\Module\Physics\UserData\Engine_Physics_UserData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Module\Physics\BodyAssembler\Engine_Physics_BodyAssembler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Physics\Component\RigidBody\Engine_Physics_RigidBody.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Physics\Component\Collider\Engine_Physics_ColliderBodyAccess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Physics\GroupFilter\Engine_Physics_RigidBodyGroupFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Physics\JoltUtility\Engine_Physics_JoltUtility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Physics\MotionType\Engine_Physics_MotionType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Module\Scene\ShadowMap\ShadowMapSetting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Scene\AsyncLoader\Engine_Scene_AsyncSceneLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Libs\LibCore\BlackBoard\AnimationParameter.h">
@@ -6066,10 +6426,67 @@
     <ClInclude Include="Assets\Data\PlayerAvatar\Resource\Data_SwordManAvatarResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Data\PlayerAvatar\Resource\Data_MagicCasterAvatarResource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\Enemy\Factory\EnemyFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\AttackedShocked\SwordManAvatar_AttackedShockedState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Floating\FloatingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Animation\MagicCasterAvatarAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Context\MagicCasterAvatarStateContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Idle\MagicCasterAvatarIdleState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Walk\MagicCasterAvatarWalkState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Run\MagicCasterAvatarRunState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Jump\MagicCasterAvatarJumpState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Floating\MagicCasterAvatarFloatingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Cast\MagicCasterAvatarCastState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Hurt\MagicCasterAvatarHurtState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Death\MagicCasterAvatarDeathState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\DisableState\MagicCasterAvatarDisableState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateMachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\MagicCasterAvatarStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\InputAction\MagicCasterAvatarInputAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Traits\MagicCasterAvatarTraits.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\DrySand\Context\DrySandSceneContext.h">
@@ -6082,6 +6499,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\GrassLandScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\ArrivalMovie\GrassLandArrivalMovie.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\DestructibleObject\DestructibleObject.h">
@@ -6114,6 +6534,18 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\UI_StageSelect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Difficulty\StageDifficultyPips.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Type\EnemyKind.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\HyenaRepository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGaugePresenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Core\Object\Field\CreateField.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -6121,9 +6553,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\Component\ParticleRenderer\PlayMode\ParticleSystem_PlayMode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Module\GameObject\PrefabGameObject\PrefabCatchChild\PrefabCatchChild.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\NanamiUI\MovieRenderer\MovieRenderer.h">

@@ -8,6 +8,7 @@
 #include "../../../../GamePlay/Npc/Enemy/NetworkBehaviourTree/GamePlay_NetworkBehaviourTree.h"
 #include "../../PlayerAvatar/LockOnTarget/LockOnPoint.h"
 #include "Behaviour/Enemy_BehaviourTree.h"
+#include "ShowHealthGaugeProvider/IShowHealthGaugeProvider.h"
 
 namespace GameCore::Npc
 {
@@ -28,6 +29,7 @@ namespace GameCore::Npc
             behaviour_ = behaviourData_->OnLoadCopyContent();
 
         hasNetworkBehaviourTree_ = Components().Catch<GamePlay::Npc::Enemy::NetworkBehaviourTree>().lock() != nullptr;
+        showHealthGaugeProvider_ = dynamic_cast<Enemy::IShowHealthGaugeProvider*>(this);
 
         for (const auto& child : Transform().GetAllChildren())
         {
@@ -68,7 +70,7 @@ namespace GameCore::Npc
             if (behaviour_)
             {
                 // ゲート内では isAuthorityGated == true ⇔ 自分が権威(他ピアはTickしていない)
-                behaviour_->Tick(Entity(), currentStatus_, onDamagedStack_, GetNetworkObjectId(), isAuthorityGated);
+                behaviour_->Tick(Entity(), currentStatus_, onDamagedStack_, showHealthGaugeProvider_, GetNetworkObjectId(), isAuthorityGated);
             }
         }
         DoUpdate();

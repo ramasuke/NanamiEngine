@@ -4,6 +4,11 @@
 #include "../../Base/Main_GameSceneBase.h"
 #include "Context/GrassLandSceneContext.h"
 
+namespace GameCore::Scene::GrassLand
+{
+    class GrassLandArrivalMovie;
+}
+
 namespace GameCore::Scene::Main
 {
     class GrassLandScene final : public GameMainSceneBase<GrassLandSceneContext>
@@ -16,12 +21,16 @@ namespace GameCore::Scene::Main
         
     private:
         void Init     () override;
-        Coroutine::Task<void> OnEnterAsync();
+        /** @param generation Dispose を跨いだ古いコルーチンを弾くための世代番号 */
+        Coroutine::Task<void> OnEnterAsync(int generation);
+        Coroutine::Task<void> BackToMainIslandAsync(int generation);
         void Enter    () override;
         void DoDispose() override;
         void OnDrawGui() override;
         
         std::weak_ptr<NanamiEngine::Scene::Scene> scene_;
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
+        std::shared_ptr<GrassLand::GrassLandArrivalMovie> arrivalMovie_;
+        int loadGeneration_ = 0;
     };
 }

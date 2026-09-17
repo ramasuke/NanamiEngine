@@ -27,7 +27,7 @@ void StartApplicationAsync()
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-	// 最後の安全網。起動時の Scene 破損など回復できない失敗は、CRT の abort ではなく原因が読めるダイアログを出して終了する
+	//起動時の Scene 破損など回復できないエラーはダイアログを出して終了する
 	try
 	{
 		StartApplicationAsync();

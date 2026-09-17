@@ -19,13 +19,11 @@ namespace GameCore::PlayerAvatar
     public:
         explicit QuestBase();
         virtual ~QuestBase() override;
-        void StartQuest(
-            const SwordMan::IObservableStatusEvent& event,
-            Quest::ICompleteQuestGroup& completedQuestGroup) override;
+        void StartQuest(const Npc::Friendly::Behaviour::Action::SwordManQuestContext& context) override;
 
     protected:
         //templateMethodパターン
-        virtual void DoStartQuest(const SwordMan::IObservableStatusEvent& event) = 0;
+        virtual void DoStartQuest(const Npc::Friendly::Behaviour::Action::SwordManQuestContext& context) = 0;
         virtual void DoDrawGui() = 0;
 
         //サンドボックスパターン

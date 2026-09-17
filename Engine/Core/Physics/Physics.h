@@ -11,6 +11,8 @@
 namespace NanamiEngine::Module::Physics
 {
     struct UserData;
+    class BodyAssembler;
+    class RigidBodyGroupFilter;
 }
 
 namespace NanamiEngine::Module::GameObject
@@ -27,12 +29,14 @@ namespace NanamiEngine::Core
         ~Physics();
 
         [[nodiscard]] JPH::PhysicsSystem& GetPhysicsSystem() { return physicsSystem_; }
+        [[nodiscard]] Module::Physics::BodyAssembler& Bodies() const { return *bodyAssembler_; }
+        [[nodiscard]] const Module::Physics::RigidBodyGroupFilter* RigidBodyGroupFilter() const;
         void Initialize();
         void Update(float deltaTime);
         void Kill();
         void UnSubscribeEngineCollider(const JPH::BodyID& colliderId) const;
-        
-        [[nodiscard]] JPH::BodyID CreateCollider(
+
+        [[nodiscard]] JPH::BodyID CreateBody(
             const JPH::RefConst<JPH::Shape>& shape,
             const JPH::Vec3& position,
             const JPH::Quat& rotation,
@@ -43,12 +47,16 @@ namespace NanamiEngine::Core
             Module::Physics::Layer layer,
             JPH::EAllowedDOFs allowedDOFs,
             Module::Physics::UserData* userData,
-            float friction = 0.2f);
+            float friction,
+            const JPH::CollisionGroup& collisionGroup);
 
     private:
         std::unique_ptr<JPH::TempAllocatorImpl> tempAllocator_;
         std::unique_ptr<JPH::JobSystemThreadPool> jobSystem_;
         std::unique_ptr<Module::Physics::EngineContactListener> contactListener_;
+        JPH::Ref<Module::Physics::RigidBodyGroupFilter> rigidBodyGroupFilter_;
         JPH::PhysicsSystem physicsSystem_;
+        // physicsSystem_ より先に破棄されるよう後ろに置く
+        std::unique_ptr<Module::Physics::BodyAssembler> bodyAssembler_;
     };
 }

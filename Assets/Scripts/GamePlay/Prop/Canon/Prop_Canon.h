@@ -3,14 +3,9 @@
 #include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../../Engine/Module/Asset/Sound/SoundFile.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../../../../../Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
+#include "../../Ui/CannonCooldownGauge/Ui_CannonCooldownGauge.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
-
-namespace NanamiEngine::Module::Component
-{
-    class ColliderBase;
-}
 
 namespace GamePlay::Prop
 {
@@ -42,7 +37,7 @@ namespace GamePlay::Prop
         [[serialize(4)]] float shootCooldown_secs_ = 10.0f;
         float shootCooldownDuring_secs_ = 0.0f;
 
-        [[serialize(5)]] FIELD(NanamiUi::TextRenderer) cannonUi_; 
+        [[serialize(5)]] FIELD(GamePlay::Ui::CannonCooldownGauge) cannonUi_;
         
         
 #pragma region Serialization Function

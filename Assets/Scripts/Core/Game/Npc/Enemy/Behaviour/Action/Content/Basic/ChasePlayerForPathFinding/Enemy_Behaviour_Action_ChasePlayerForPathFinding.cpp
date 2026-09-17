@@ -5,8 +5,7 @@
 
 #include "../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../../../../PlayerAvatar/IPlayerAvatar.h"
 #include "../glm/gtx/quaternion.hpp"
 #include "../glm/gtx/vector_angle.hpp"
@@ -67,8 +66,8 @@ namespace GameCore::Npc::Enemy::Behaviour
 
         toTarget = glm::normalize(toTarget);
         glm::vec3 velocity = toTarget * moveSpeed_;
-        velocity.y = Physics::GetLinearVelocity(context.EnemyCollider().BodyId()).y;
-        Physics::SetLinearVelocity(context.EnemyCollider().BodyId(), velocity);
+        velocity.y = context.EnemyRigidBody().LinearVelocity().y;
+        context.EnemyRigidBody().SetLinearVelocity(velocity);
 
         // 移動方向に回転する
         auto& transform = context.EnemyTransform();

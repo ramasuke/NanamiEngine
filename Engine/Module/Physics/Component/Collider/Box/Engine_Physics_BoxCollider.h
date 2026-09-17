@@ -34,13 +34,16 @@ namespace NanamiEngine::Module::Component
             archive(cereal::base_class<LifeCycleCallback::IBeginPhysics>(this));
             archive(cereal::base_class<LifeCycleCallback::IEndPhysics>(this));
             archive(CEREAL_NVP(size_));
-            // v5 以前はベースクラスのフィールドをここで保存していたため移行
+            // v5 以前はベースクラスのフィールドをここで保存していたため移行。motion 系は RigidBody に移ったので一時変数に読む
             if (version < 6) {
+                Physics::MotionType  legacyMotionType  = Physics::MotionType::Static;
+                Physics::Constraints legacyConstraints = Physics::Constraints::None;
                 if (version >= 0) archive(CEREAL_NVP(offset_     ));
-                if (version >= 0) archive(CEREAL_NVP(emotionType_));
+                if (version >= 0) archive(cereal::make_nvp("emotionType_", legacyMotionType));
                 if (version >= 2) archive(CEREAL_NVP(layer_      ));
-                if (version >= 3) archive(CEREAL_NVP(constraints_));
+                if (version >= 3) archive(cereal::make_nvp("constraints_", legacyConstraints));
                 if (version >= 4) archive(CEREAL_NVP(isSensor_   ));
+                SetLegacyMotion(legacyMotionType, legacyConstraints);
             }
         }
 #pragma endregion

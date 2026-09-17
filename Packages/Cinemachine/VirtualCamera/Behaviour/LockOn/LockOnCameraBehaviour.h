@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
+#include "../../CineMachineVirtualCamera.h"
 #include "../Follow/VirtualCameraFollowBehaviour.h"
 #include "../LookAt/VirtualCameraLookAtBehaviour.h"
 
@@ -24,7 +25,8 @@ namespace NanamiEngine::CineMachine::Behaviour
         void OnUpdate() override;
         int  UpdatePriority() const override { return 1; }
 
-        void UpdateFollowBehaviour(const std::shared_ptr<GameObject::IGameObject>& lockOnTarget) const;
+        // プレイヤーとロックオン対象のバウンディングボックスが両方画角に収まる距離・注視点を求めて配置する
+        void UpdateFraming(const std::shared_ptr<GameObject::IGameObject>& lockOnTarget);
         // Playerからカメラへrayを飛ばし、障害物にめり込まない位置までオフセットを縮める
         [[nodiscard]] glm::vec3 ResolveCameraCollision(const glm::vec3& originPos, const glm::vec3& desiredOffset) const;
 
@@ -32,15 +34,21 @@ namespace NanamiEngine::CineMachine::Behaviour
         // ロックオン開始の瞬間はブレインの補間で滑らかに寄せたいため既定で無効。
         bool isImmediateApply_ = false;
 
-        float distance_           = 9.0f;
-        float height_             = 3.5f;
-        // プレイヤーとロックオン対象を両方フレームに収めるための横オフセット
-        float sideOffset_         = 1.5f;
-        float lookAtHeightOffset_ = 1.2f;
+        // プレイヤー→ロックオン対象の方向から見下ろす角度
+        float pitchAngle_deg_       = 15.0f;
+        float minDistance_          = 8.0f;
+        float maxDistance_          = 45.0f;
+        // 画面端に残す余白の割合(0～1)
+        float framingMargin_        = 0.1f;
+        // コライダーを持たない対象を、位置を中心にこの半径の立方体とみなしてフレームに収める
+        float fallbackBoundsRadius_ = 1.0f;
         // 障害物にめり込まないようカメラを手前に寄せる際の余白
-        float collisionBuffer_    = 0.3f;
+        float collisionBuffer_      = 0.3f;
         // めり込み判定に使う球の半径。カメラ周囲に確保する最低限の空き
-        float collisionRadius_    = 2.0f;
+        float collisionRadius_      = 2.0f;
+
+        // プレイヤーとロックオン対象が重なって方向が決まらないときは直前の方向を使い、カメラが急に回らないようにする
+        glm::vec3 lastFlatDir_ = glm::vec3(0.0f, 0.0f, 1.0f);
 
         FIELD(GameObject::IGameObject                ) followTarget_;
         FIELD(Behaviour::VirtualCameraFollowBehaviour) follow_;
@@ -51,6 +59,9 @@ namespace NanamiEngine::CineMachine::Behaviour
         // そのため素の weak_ptr で保持する(エディタからのドラッグ&ドロップ割り当ては非対応、
         // 実行時に SetLockOnTarget/ClearLockOnTarget で注入する前提)。
         std::weak_ptr<GameObject::IGameObject> lockOnTarget_;
+
+        // フレーミングは自分が乗っているVirtualCameraの画角で解くため保持する(非シリアライズ)
+        std::weak_ptr<CineMachineVirtualCamera> virtualCamera_;
 
 #pragma region Serialization Function
 public:
@@ -63,15 +74,16 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<LifeCycleCallback::IUpdatable>(this));
     archive(cereal::base_class<IVirtualCameraBehaviour>(this));
     archive(CEREAL_NVP(isImmediateApply_));
-    archive(CEREAL_NVP(distance_));
-    archive(CEREAL_NVP(height_));
-    archive(CEREAL_NVP(sideOffset_));
-    archive(CEREAL_NVP(lookAtHeightOffset_));
     archive(CEREAL_NVP(collisionBuffer_));
     archive(CEREAL_NVP(followTarget_));
     archive(CEREAL_NVP(follow_));
     archive(CEREAL_NVP(lookAt_));
     archive(CEREAL_NVP(collisionRadius_));
+    archive(CEREAL_NVP(pitchAngle_deg_));
+    archive(CEREAL_NVP(minDistance_));
+    archive(CEREAL_NVP(maxDistance_));
+    archive(CEREAL_NVP(framingMargin_));
+    archive(CEREAL_NVP(fallbackBoundsRadius_));
 }
 
 template<class Archive>
@@ -81,21 +93,34 @@ void load(Archive& archive, const std::uint32_t version) {
     archive(cereal::base_class<LifeCycleCallback::IUpdatable>(this));
     archive(cereal::base_class<IVirtualCameraBehaviour>(this));
     if (version >= 0) archive(CEREAL_NVP(isImmediateApply_));
-    if (version >= 0) archive(CEREAL_NVP(distance_));
-    if (version >= 0) archive(CEREAL_NVP(height_));
-    if (version >= 0) archive(CEREAL_NVP(sideOffset_));
-    if (version >= 0) archive(CEREAL_NVP(lookAtHeightOffset_));
+    // version 1 までの固定オフセット方式のパラメータ(フレーミング方式に移行)は読み捨てる
+    if (version <= 1)
+    {
+        float legacyDistance = 0.0f;
+        float legacyHeight = 0.0f;
+        float legacySideOffset = 0.0f;
+        float legacyLookAtHeightOffset = 0.0f;
+        archive(cereal::make_nvp("distance_", legacyDistance));
+        archive(cereal::make_nvp("height_", legacyHeight));
+        archive(cereal::make_nvp("sideOffset_", legacySideOffset));
+        archive(cereal::make_nvp("lookAtHeightOffset_", legacyLookAtHeightOffset));
+    }
     if (version >= 0) archive(CEREAL_NVP(collisionBuffer_));
     if (version >= 0) archive(CEREAL_NVP(followTarget_));
     if (version >= 0) archive(CEREAL_NVP(follow_));
     if (version >= 0) archive(CEREAL_NVP(lookAt_));
     if (version >= 1) archive(CEREAL_NVP(collisionRadius_));
+    if (version >= 2) archive(CEREAL_NVP(pitchAngle_deg_));
+    if (version >= 2) archive(CEREAL_NVP(minDistance_));
+    if (version >= 2) archive(CEREAL_NVP(maxDistance_));
+    if (version >= 2) archive(CEREAL_NVP(framingMargin_));
+    if (version >= 2) archive(CEREAL_NVP(fallbackBoundsRadius_));
 }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour, 1)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour, 2)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IUpdatable, NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);

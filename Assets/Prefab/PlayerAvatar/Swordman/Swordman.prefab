@@ -7,7 +7,7 @@
     },
     "components_": {
         "cereal_class_version": 0,
-        "componentCount": 7,
+        "componentCount": 9,
         "component_0": {
             "polymorphic_id": 2147483649,
             "polymorphic_name": "NanamiEngine::Module::Component::ModelRenderer",
@@ -89,7 +89,7 @@
             "ptr_wrapper": {
                 "id": 2147483653,
                 "data": {
-                    "cereal_class_version": 4,
+                    "cereal_class_version": 5,
                     "value0": {
                         "guid_": {
                             "value_": "7036B3FB-483C-454F-A162-E5A7A9CDB44F"
@@ -114,7 +114,6 @@
                             }
                         }
                     },
-                    "animationSyncCount": 0,
                     "timeScale_": 1.0
                 }
             }
@@ -125,9 +124,9 @@
             "ptr_wrapper": {
                 "id": 2147483655,
                 "data": {
-                    "cereal_class_version": 4,
+                    "cereal_class_version": 5,
                     "value0": {
-                        "cereal_class_version": 2,
+                        "cereal_class_version": 3,
                         "value0": {
                             "cereal_class_version": 0,
                             "value0": {
@@ -151,6 +150,21 @@
                                     }
                                 }
                             }
+                        },
+                        "featStep_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483657,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "B7F60DE4-830D-4B08-ABE8-DB46697225B8"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     },
                     "resources_": {
@@ -158,11 +172,69 @@
                         "value0": {
                             "polymorphic_id": 1073741824,
                             "ptr_wrapper": {
-                                "id": 2147483657,
+                                "id": 2147483658,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
                                         "value_": "ABEC6B9F-9559-47C1-81F0-6FE1C594D3C0"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "normalAttackArea_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483659,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "A019978D-2614-48F8-BC04-44AD40A1AD1B"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "dashAttackArea_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483660,
+                                "data": {
+                                    "value0": {
+                                        "value_": "044BD475-674B-4056-862D-D9FCD988E2A5"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "lockOnDetectionArea_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483661,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "6B60169A-000A-416C-B0ED-DC68C5F49B04"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "successAvoidRollingParticle_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483662,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "A9C525B2-3894-4779-806E-8736B53CC7FD"
                                     }
                                 }
                             }
@@ -175,19 +247,17 @@
             "polymorphic_id": 2147483652,
             "polymorphic_name": "NanamiEngine::Module::Component::CapsuleCollider",
             "ptr_wrapper": {
-                "id": 2147483658,
+                "id": 2147483663,
                 "data": {
                     "cereal_class_version": 3,
                     "value0": {
-                        "cereal_class_version": 5,
+                        "cereal_class_version": 6,
                         "value0": {
                             "guid_": {
                                 "value_": "ACE49D85-EFEF-4842-B7A5-B2E7B72D73B6"
                             },
                             "isEnable_": true
                         },
-                        "mass_": 0.10000000149011612,
-                        "isGravity_": true,
                         "offset_": {
                             "value0": 0.0,
                             "value1": 113.9000015258789,
@@ -198,9 +268,7 @@
                             "value1": 0.0,
                             "value2": 0.0
                         },
-                        "emotionType_": 2,
                         "layer_": 1,
-                        "constraints_": 56,
                         "isSensor_": false,
                         "friction_": 0.5
                     },
@@ -218,7 +286,7 @@
             "polymorphic_id": 2147483653,
             "polymorphic_name": "Component::CollisionListener",
             "ptr_wrapper": {
-                "id": 2147483659,
+                "id": 2147483664,
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -234,7 +302,7 @@
             "polymorphic_id": 2147483654,
             "polymorphic_name": "Network::NetworkGameObject",
             "ptr_wrapper": {
-                "id": 2147483660,
+                "id": 2147483665,
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -250,7 +318,7 @@
             "polymorphic_id": 2147483655,
             "polymorphic_name": "Network::NetworkTransform",
             "ptr_wrapper": {
-                "id": 2147483661,
+                "id": 2147483666,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -261,6 +329,44 @@
                             "isEnable_": true
                         }
                     }
+                }
+            }
+        },
+        "component_7": {
+            "polymorphic_id": 2147483656,
+            "polymorphic_name": "NanamiEngine::Module::Component::RigidBody",
+            "ptr_wrapper": {
+                "id": 2147483667,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "guid_": {
+                            "value_": "01A0980E-3922-4BF8-B883-55BCA0007D91"
+                        },
+                        "isEnable_": true
+                    },
+                    "motionType_": 2,
+                    "mass_": 0.10000000149011612,
+                    "isGravity_": true,
+                    "constraints_": 56,
+                    "isPartOfParent_": false
+                }
+            }
+        },
+        "component_8": {
+            "polymorphic_id": 2147483657,
+            "polymorphic_name": "NanamiEngine::Module::Component::BoneSync",
+            "ptr_wrapper": {
+                "id": 2147483668,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "16EC65FC-85B9-40AB-8F22-CEB60DFC82F1"
+                        },
+                        "isEnable_": true
+                    },
+                    "syncCount": 0
                 }
             }
         }
@@ -311,12 +417,12 @@
         },
         "childCount": 6,
         "child": {
-            "polymorphic_id": 2147483656,
+            "polymorphic_id": 2147483658,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483662,
+                "id": 2147483669,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -375,14 +481,15 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
         "child": {
-            "polymorphic_id": 8,
+            "polymorphic_id": 10,
             "ptr_wrapper": {
-                "id": 2147483663,
+                "id": 2147483670,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -395,10 +502,10 @@
                     "components_": {
                         "componentCount": 2,
                         "component_0": {
-                            "polymorphic_id": 2147483657,
+                            "polymorphic_id": 2147483659,
                             "polymorphic_name": "GamePlay::PlayerAvatar::ChattableArea",
                             "ptr_wrapper": {
-                                "id": 2147483664,
+                                "id": 2147483671,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -417,10 +524,10 @@
                             }
                         },
                         "component_1": {
-                            "polymorphic_id": 2147483658,
+                            "polymorphic_id": 2147483660,
                             "polymorphic_name": "NanamiEngine::Module::Component::SphereCollider",
                             "ptr_wrapper": {
-                                "id": 2147483665,
+                                "id": 2147483672,
                                 "data": {
                                     "cereal_class_version": 1,
                                     "value0": {
@@ -430,8 +537,6 @@
                                             },
                                             "isEnable_": true
                                         },
-                                        "mass_": 1.0,
-                                        "isGravity_": true,
                                         "offset_": {
                                             "value0": 0.0,
                                             "value1": 22.229999542236329,
@@ -442,9 +547,7 @@
                                             "value1": 0.0,
                                             "value2": 0.0
                                         },
-                                        "emotionType_": 1,
                                         "layer_": 0,
-                                        "constraints_": 0,
                                         "isSensor_": true,
                                         "friction_": 0.20000000298023225
                                     },
@@ -500,14 +603,15 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
         "child": {
-            "polymorphic_id": 8,
+            "polymorphic_id": 10,
             "ptr_wrapper": {
-                "id": 2147483666,
+                "id": 2147483673,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -520,10 +624,10 @@
                     "components_": {
                         "componentCount": 1,
                         "component_0": {
-                            "polymorphic_id": 2147483659,
+                            "polymorphic_id": 2147483661,
                             "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
                             "ptr_wrapper": {
-                                "id": 2147483667,
+                                "id": 2147483674,
                                 "data": {
                                     "cereal_class_version": 1,
                                     "value0": {
@@ -539,7 +643,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483668,
+                                                "id": 2147483675,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -599,14 +703,15 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
         "child": {
-            "polymorphic_id": 8,
+            "polymorphic_id": 10,
             "ptr_wrapper": {
-                "id": 2147483669,
+                "id": 2147483676,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -664,9 +769,9 @@
                         },
                         "childCount": 2,
                         "child": {
-                            "polymorphic_id": 8,
+                            "polymorphic_id": 10,
                             "ptr_wrapper": {
-                                "id": 2147483670,
+                                "id": 2147483677,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -679,9 +784,9 @@
                                     "components_": {
                                         "componentCount": 2,
                                         "component_0": {
-                                            "polymorphic_id": 10,
+                                            "polymorphic_id": 12,
                                             "ptr_wrapper": {
-                                                "id": 2147483671,
+                                                "id": 2147483678,
                                                 "data": {
                                                     "value0": {
                                                         "value0": {
@@ -690,8 +795,6 @@
                                                             },
                                                             "isEnable_": true
                                                         },
-                                                        "mass_": 1.0,
-                                                        "isGravity_": true,
                                                         "offset_": {
                                                             "value0": 0.0,
                                                             "value1": 0.0,
@@ -702,9 +805,7 @@
                                                             "value1": 0.0,
                                                             "value2": 0.0
                                                         },
-                                                        "emotionType_": 1,
                                                         "layer_": 0,
-                                                        "constraints_": 0,
                                                         "isSensor_": true,
                                                         "friction_": 0.20000000298023225
                                                     },
@@ -716,10 +817,10 @@
                                             }
                                         },
                                         "component_1": {
-                                            "polymorphic_id": 2147483660,
+                                            "polymorphic_id": 2147483662,
                                             "polymorphic_name": "GameCore::PlayerAvatar::PlayerAttackArea",
                                             "ptr_wrapper": {
-                                                "id": 2147483672,
+                                                "id": 2147483679,
                                                 "data": {
                                                     "cereal_class_version": 2,
                                                     "value0": {
@@ -778,14 +879,15 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
                         "child": {
-                            "polymorphic_id": 8,
+                            "polymorphic_id": 10,
                             "ptr_wrapper": {
-                                "id": 2147483673,
+                                "id": 2147483680,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -798,10 +900,10 @@
                                     "components_": {
                                         "componentCount": 2,
                                         "component_0": {
-                                            "polymorphic_id": 2147483661,
+                                            "polymorphic_id": 2147483663,
                                             "polymorphic_name": "NanamiEngine::Module::Component::BoxCollider",
                                             "ptr_wrapper": {
-                                                "id": 2147483674,
+                                                "id": 2147483681,
                                                 "data": {
                                                     "cereal_class_version": 6,
                                                     "value0": {
@@ -811,8 +913,6 @@
                                                             },
                                                             "isEnable_": true
                                                         },
-                                                        "mass_": 1.0,
-                                                        "isGravity_": true,
                                                         "offset_": {
                                                             "value0": 0.0,
                                                             "value1": 0.0,
@@ -823,9 +923,7 @@
                                                             "value1": 0.0,
                                                             "value2": 0.0
                                                         },
-                                                        "emotionType_": 1,
                                                         "layer_": 0,
-                                                        "constraints_": 56,
                                                         "isSensor_": true,
                                                         "friction_": 0.20000000298023225
                                                     },
@@ -841,9 +939,9 @@
                                             }
                                         },
                                         "component_1": {
-                                            "polymorphic_id": 12,
+                                            "polymorphic_id": 14,
                                             "ptr_wrapper": {
-                                                "id": 2147483675,
+                                                "id": 2147483682,
                                                 "data": {
                                                     "value0": {
                                                         "value0": {
@@ -901,18 +999,20 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         }
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
         "child": {
-            "polymorphic_id": 8,
+            "polymorphic_id": 10,
             "ptr_wrapper": {
-                "id": 2147483676,
+                "id": 2147483683,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -925,10 +1025,10 @@
                     "components_": {
                         "componentCount": 2,
                         "component_0": {
-                            "polymorphic_id": 2147483662,
+                            "polymorphic_id": 2147483664,
                             "polymorphic_name": "GamePlay::PlayerAvatar::WakeUpArea",
                             "ptr_wrapper": {
-                                "id": 2147483677,
+                                "id": 2147483684,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -943,9 +1043,9 @@
                             }
                         },
                         "component_1": {
-                            "polymorphic_id": 10,
+                            "polymorphic_id": 12,
                             "ptr_wrapper": {
-                                "id": 2147483678,
+                                "id": 2147483685,
                                 "data": {
                                     "value0": {
                                         "value0": {
@@ -954,8 +1054,6 @@
                                             },
                                             "isEnable_": true
                                         },
-                                        "mass_": 1.0,
-                                        "isGravity_": true,
                                         "offset_": {
                                             "value0": 0.0,
                                             "value1": 22.229999542236329,
@@ -966,9 +1064,7 @@
                                             "value1": 0.0,
                                             "value2": 0.0
                                         },
-                                        "emotionType_": 1,
                                         "layer_": 0,
-                                        "constraints_": 0,
                                         "isSensor_": true,
                                         "friction_": 0.20000000298023225
                                     },
@@ -1024,14 +1120,15 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
         "child": {
-            "polymorphic_id": 8,
+            "polymorphic_id": 10,
             "ptr_wrapper": {
-                "id": 2147483679,
+                "id": 2147483686,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -1044,9 +1141,9 @@
                     "components_": {
                         "componentCount": 2,
                         "component_0": {
-                            "polymorphic_id": 10,
+                            "polymorphic_id": 12,
                             "ptr_wrapper": {
-                                "id": 2147483680,
+                                "id": 2147483687,
                                 "data": {
                                     "value0": {
                                         "value0": {
@@ -1055,8 +1152,6 @@
                                             },
                                             "isEnable_": true
                                         },
-                                        "mass_": 1.0,
-                                        "isGravity_": false,
                                         "offset_": {
                                             "value0": 0.0,
                                             "value1": 0.0,
@@ -1067,24 +1162,22 @@
                                             "value1": 0.0,
                                             "value2": 0.0
                                         },
-                                        "emotionType_": 1,
                                         "layer_": 0,
-                                        "constraints_": 63,
                                         "isSensor_": true,
                                         "friction_": 0.20000000298023225
                                     },
                                     "value1": {},
                                     "value2": {},
                                     "value3": {},
-                                    "radius_": 3000.0
+                                    "radius_": 450.0
                                 }
                             }
                         },
                         "component_1": {
-                            "polymorphic_id": 2147483663,
+                            "polymorphic_id": 2147483665,
                             "polymorphic_name": "GamePlay::PlayerAvatar::LockOnDetectionArea",
                             "ptr_wrapper": {
-                                "id": 2147483681,
+                                "id": 2147483688,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -1143,10 +1236,12 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 0
 }

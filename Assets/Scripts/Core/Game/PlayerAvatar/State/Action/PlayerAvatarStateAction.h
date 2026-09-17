@@ -14,7 +14,7 @@ namespace GameCore::PlayerAvatar::State
          * @note inputVelocityにdeltaTimeは不要
          * @note 移動方向に回転
          */
-        void ForwardMove  (const glm::vec3& inputVelocity, float rotateSpeed) const;
+        void MoveForward  (const glm::vec3& inputVelocity, float rotateSpeed) const;
         void RotateTowards(const glm::vec3& direction    , float rotateSpeed) const;
         void Jump         (const glm::vec3& direction                       ) const;
         

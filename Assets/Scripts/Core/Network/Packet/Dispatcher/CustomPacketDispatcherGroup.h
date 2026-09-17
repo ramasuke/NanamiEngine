@@ -32,7 +32,8 @@ namespace GameCore::Network
             Core::Network::DefaultPacketDispatcher& defaultDispatchers,
             Core::Network::IPacketSender& packetSender,
             const Core::Network::IPlayerIdProvider& playerIdProvider,
-            Asset::PlayerAvatarFactory& playerAvatarFactory);
+            Asset::PlayerAvatarFactory& playerAvatarFactory,
+            Asset::EnemyFactory& enemyFactory);
 
         void DispatchReceivedPacket(const Core::Network::Packet& packet);
 

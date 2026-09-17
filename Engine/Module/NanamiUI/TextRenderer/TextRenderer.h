@@ -17,13 +17,14 @@ namespace NanamiEngine::Module::NanamiUi
         void SetTextColor(const Color32& color);
         void SetWorldMode(bool isWorld);
         void SetTextAlign(TextAlign align);
+        void SetBlendRate(int blendRate);
 
     private:
         void OnUserInterfaceRender() override;
         [[nodiscard]] int GetRenderOrder() const override { return renderOrder_; }
 
         void UpdateTextTexture();
-        void DrawScreenText(float offsetX, float offsetY, int dxColor) const;
+        void DrawScreenText() const;
 
     private:
         [[serialize(0)]] FIELD(Asset::TtfFontFile) fontFile_;
@@ -32,12 +33,8 @@ namespace NanamiEngine::Module::NanamiUi
         [[serialize(0)]] Color32 textColor_;
         [[serialize(0)]] bool isWorldPos_ = false;
         [[serialize(0)]] TextAlign textAlign_ = TextAlign::Left;
-        // スクリーン座標モードのみ：本文の周囲8方向＋下方向に outlineColor_ で重ね描きして縁取りにする
-        [[serialize(3)]] bool isOutlineEnabled_ = false;
-        [[serialize(3)]] Color32 outlineColor_ = Color32(6, 20, 26);
-        [[serialize(3)]] float outlineWidth_ = 1.7f;
-        // 縁取りに加えて outlineColor_ で真下にずらして描く影の量
-        [[serialize(3)]] float outlineShadowOffsetY_ = 2.2f;
+
+        int blendRate_ = 255;
 
         // キャッシュ
         std::string cachedSjis_;
@@ -62,10 +59,6 @@ namespace NanamiEngine::Module::NanamiUi
             archive(CEREAL_NVP(textColor_));
             if (version >= 1) archive(CEREAL_NVP(isWorldPos_));
             if (version >= 2) archive(CEREAL_NVP(textAlign_));
-            if (version >= 3) archive(CEREAL_NVP(isOutlineEnabled_));
-            if (version >= 3) archive(CEREAL_NVP(outlineColor_));
-            if (version >= 3) archive(CEREAL_NVP(outlineWidth_));
-            if (version >= 3) archive(CEREAL_NVP(outlineShadowOffsetY_));
         }
 
         template<class Archive>
@@ -78,14 +71,22 @@ namespace NanamiEngine::Module::NanamiUi
             if (version >= 0) archive(CEREAL_NVP(textColor_));
             if (version >= 1) archive(CEREAL_NVP(isWorldPos_));
             if (version >= 2) archive(CEREAL_NVP(textAlign_));
-            if (version >= 3) archive(CEREAL_NVP(isOutlineEnabled_));
-            if (version >= 3) archive(CEREAL_NVP(outlineColor_));
-            if (version >= 3) archive(CEREAL_NVP(outlineWidth_));
-            if (version >= 3) archive(CEREAL_NVP(outlineShadowOffsetY_));
+            // version 3 だけが持っていた縁取り設定（TtfFontFile の edgeSize_/edgeColor_ に移行）は読み捨てる
+            if (version == 3)
+            {
+                bool legacyIsOutlineEnabled = false;
+                Color32 legacyOutlineColor;
+                float legacyOutlineWidth = 0.0f;
+                float legacyOutlineShadowOffsetY = 0.0f;
+                archive(cereal::make_nvp("isOutlineEnabled_", legacyIsOutlineEnabled));
+                archive(cereal::make_nvp("outlineColor_", legacyOutlineColor));
+                archive(cereal::make_nvp("outlineWidth_", legacyOutlineWidth));
+                archive(cereal::make_nvp("outlineShadowOffsetY_", legacyOutlineShadowOffsetY));
+            }
             isDirty_ = true;
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::TextRenderer, 3)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::TextRenderer, 4)

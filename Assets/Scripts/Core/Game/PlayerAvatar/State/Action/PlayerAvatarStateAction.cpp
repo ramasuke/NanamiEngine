@@ -1,9 +1,8 @@
 ﻿#include "PlayerAvatarStateAction.h"
 
 #include "../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
+#include "../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../CameraGroup/PlayerAvatarCameraGroupBase.h"
 #include "ext/quaternion_geometric.hpp"
 
@@ -16,16 +15,16 @@ namespace GameCore::PlayerAvatar::State
         
     }
     
-    void PlayerAvatarStateAction::ForwardMove(const glm::vec3& inputVelocity, const float rotateSpeed) const
+    void PlayerAvatarStateAction::MoveForward(const glm::vec3& inputVelocity, const float rotateSpeed) const
     {
         const glm::vec3 cameraForward = glm::normalize(glm::vec3(stateContext_->CameraGroup().CurrentCamera().Transform().GetWorldRot() * glm::vec3(0,0,-1)));
         const glm::vec3 cameraRight   = glm::normalize(glm::vec3(stateContext_->CameraGroup().CurrentCamera().Transform().GetWorldRot() * glm::vec3(1,0, 0)));
         const glm::vec3 xzVelocity = cameraForward * inputVelocity.z + cameraRight * inputVelocity.x;
-        glm::vec3 currentVelocity = Physics::GetLinearVelocity(stateContext_->PlayerAvatarCollider().BodyId());
+        glm::vec3 currentVelocity = stateContext_->PlayerAvatarRigidBody().LinearVelocity();
         currentVelocity.x = xzVelocity.x;
         currentVelocity.z = xzVelocity.z;
 
-        Physics::SetLinearVelocity(stateContext_->PlayerAvatarCollider().BodyId(), currentVelocity);
+        stateContext_->PlayerAvatarRigidBody().SetLinearVelocity(currentVelocity);
         RotateTowards(glm::vec3(xzVelocity.x, 0, xzVelocity.z), rotateSpeed);
     }
     
@@ -56,9 +55,9 @@ namespace GameCore::PlayerAvatar::State
 
     void PlayerAvatarStateAction::Jump(const glm::vec3& direction) const
     {
-        glm::vec3 currentVelocity = Physics::GetLinearVelocity(stateContext_->PlayerAvatarCollider().BodyId());
+        glm::vec3 currentVelocity = stateContext_->PlayerAvatarRigidBody().LinearVelocity();
         currentVelocity.y = 0.0f;
-        Physics::SetLinearVelocity(stateContext_->PlayerAvatarCollider().BodyId(), currentVelocity + direction);
+        stateContext_->PlayerAvatarRigidBody().SetLinearVelocity(currentVelocity + direction);
     }
 }
 

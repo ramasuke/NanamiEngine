@@ -14,6 +14,8 @@ namespace NanamiEngine::Core::Application::Configuration
         static void Save();
 
         [[nodiscard]] static bool ShouldDrawCollider(Module::Physics::ColliderShapeKind kind, Module::Physics::Layer layer, bool isSensor);
+        [[nodiscard]] static bool ShouldDrawMainCameraFrustum();
+        [[nodiscard]] static bool ShouldDrawVirtualCameraFrustum();
 
         static void DrawConfigGUI();
 
@@ -25,5 +27,7 @@ namespace NanamiEngine::Core::Application::Configuration
         static ColliderKindFlags  showColliderKinds_;
         static ColliderLayerFlags showColliderLayers_;
         static bool               showTriggerColliders_;
+        static bool               showMainCameraFrustum_;
+        static bool               showVirtualCameraFrustums_;
     };
 }

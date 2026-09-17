@@ -6,15 +6,14 @@ namespace GameCore::PlayerAvatar
     QuestBase:: QuestBase() = default;
     QuestBase::~QuestBase() = default;
 
-    void QuestBase::StartQuest(
-        const SwordMan::IObservableStatusEvent& event,
-        Quest::ICompleteQuestGroup& completedQuestGroup)
+    void QuestBase::StartQuest(const Npc::Friendly::Behaviour::Action::SwordManQuestContext& context)
     {
-        DoStartQuest(event);
+        DoStartQuest(context);
     }
 
     void QuestBase::OnDrawGui()
     {
+        DrawRewardGui();
         DoDrawGui();
     }
 }

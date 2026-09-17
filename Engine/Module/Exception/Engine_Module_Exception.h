@@ -9,7 +9,6 @@
 //   catch (const Exception::NanamiException&)        ... エンジン由来の例外を一括捕捉
 //   catch (const std::exception&)                    ... 標準例外と一緒に捕捉
 // のいずれでも受けられる。
-// cereal / iostream の生例外は Serialization ヘルパー（Engine/Module/Serialization）で必ずこの型に変換する。
 namespace NanamiEngine::Module::Exception
 {
     /** エンジンが投げる全例外の基底 */
@@ -21,8 +20,7 @@ namespace NanamiEngine::Module::Exception
         {
         }
     };
-
-    /** cereal でのシリアライズ／デシリアライズ失敗の基底。対象ファイルパス（in-memory の場合は識別ラベル）を保持する */
+    
     class SerializationException : public NanamiException
     {
     public:
@@ -38,7 +36,7 @@ namespace NanamiEngine::Module::Exception
         std::string filePath_;
     };
 
-    /** ファイルを開けなかった（存在しない・権限なし） */
+    /** ファイルを開けなかった */
     class FileNotFoundException final : public SerializationException
     {
     public:
@@ -48,8 +46,7 @@ namespace NanamiEngine::Module::Exception
         }
     };
 
-    /** ファイルは開けたが cereal が読み込みに失敗した
-     *  （JSON 破損・未登録の polymorphic 型・バージョン不一致・型不一致など）。cereal 側の what() を InnerMessage() で参照できる */
+    /** ファイルは開けたが cereal が読み込みに失敗した */
     class DeserializeException final : public SerializationException
     {
     public:
@@ -81,8 +78,7 @@ namespace NanamiEngine::Module::Exception
         std::string innerMessage_;
     };
 
-    /** ネットワークパケットのデシリアライズ失敗（範囲外読み取り・cereal 失敗）。
-     *  外部からの入力なので、ファイル系とは別に扱えるよう基底から直接派生させる */
+    /** ネットワークパケットのデシリアライズ失敗 */
     class PacketDeserializeException final : public NanamiException
     {
     public:

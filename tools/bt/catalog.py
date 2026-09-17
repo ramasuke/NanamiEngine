@@ -49,6 +49,13 @@ class Catalog:
             return self.structs[leaf]
         return self.action_by_leaf(leaf)
 
+    def struct_by_fqn(self, fqn: str) -> Optional[tuple[str, dict]]:
+        """(leaf, entry) of a helper struct registered under this polymorphic fqn."""
+        for leaf, entry in self.structs.items():
+            if entry.get("fqn") == fqn:
+                return leaf, entry
+        return None
+
     def resolve_action(self, spec: str) -> Optional[dict]:
         """Accept a display name ('Basic::ToPlayerDistance'), an fqn, or a leaf."""
         return (

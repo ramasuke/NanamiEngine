@@ -9,24 +9,24 @@ void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoEnter()
 
 void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoFixedUpdate()
 {
-    //Change State
-    if (Status().AttackedShockedStateDuration_secs() <= During_secs())
-    {
-        if (!Input().Move().IsUpdatePressed())
-            OnChangeState(SwordManAvatarStateType::Idle);
-        if (Input().Move().IsUpdatePressed())
-            OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk);
-        if (Input().Run().IsUpdatePressed() && Status().CanRun())
-            OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run);
-        if (Input().Jump().IsPressed() && Status().CanJump())
-            OnChangeState(SwordManAvatarStateType::Jump);
-        if (Input().AvoidRolling().IsPressed() && Status().CanAvoidRolling())
-            OnChangeState(SwordManAvatarStateType::AvoidRolling);
-        if (Input().NormalAttack().IsPressed())
-            OnChangeState(SwordManAvatarStateType::NormalAttack);
-        if (!Conditions().IsGround())
-            OnChangeState(SwordManAvatarStateType::Floating);
-    }
+    HoldHorizontalVelocity();
+    UpdateTransitions();
+}
+
+void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const
+{
+    if (During_secs() < Status().AttackedShockedStateDuration_secs())
+        return;
+
+    visitor.OnInput(SwordManAvatarStateType::Idle, SwordManAvatarInput::Move, SwordManAvatarInputPhase::NotHolding, true);
+    visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk,
+                    SwordManAvatarInput::Move, SwordManAvatarInputPhase::Holding, true);
+    visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run,
+                    SwordManAvatarInput::Run, SwordManAvatarInputPhase::Holding, Status().CanRun());
+    visitor.OnInput(SwordManAvatarStateType::Jump, SwordManAvatarInput::Jump, SwordManAvatarInputPhase::Pressed, Status().CanJump());
+    visitor.OnInput(SwordManAvatarStateType::AvoidRolling, SwordManAvatarInput::AvoidRolling, SwordManAvatarInputPhase::Pressed, Status().CanAvoidRolling());
+    visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, SwordManAvatarInputPhase::Pressed, true);
+    visitor.Automatic(SwordManAvatarStateType::Floating, !Conditions().IsGround());
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::DoUpdate()

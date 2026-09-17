@@ -1,8 +1,36 @@
 ﻿#include "LockOnCameraBehaviour.h"
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+
+#include "DxLib.h"
+#include "../../../Brain/CinemachineCameraBrain.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 #include "../../../../../Engine/Module/Physics/RaycastHit/Engine_Physics_RaycastHit.h"
 #include "../../../../../Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
+#include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/LockOnTarget/ILockOnTarget.h"
+
+namespace
+{
+    std::pair<glm::vec3, glm::vec3> WorldBoundsOf(NanamiEngine::Module::GameObject::IGameObject& object, const float fallbackRadius)
+    {
+        const auto collider = object.Components().Catch<NanamiEngine::Module::Physics::ICollider>().lock();
+        if (const auto bounds = collider ? collider->WorldBounds() : std::nullopt)
+            return *bounds;
+
+        const glm::vec3 center = object.Transform().GetWorldPos();
+        return { center - glm::vec3(fallbackRadius), center + glm::vec3(fallbackRadius) };
+    }
+
+    glm::vec3 BoundsCorner(const glm::vec3& min, const glm::vec3& max, const int index)
+    {
+        return { index & 1 ? max.x : min.x, index & 2 ? max.y : min.y, index & 4 ? max.z : min.z };
+    }
+}
 
 namespace NanamiEngine::CineMachine::Behaviour
 {
@@ -27,6 +55,7 @@ namespace NanamiEngine::CineMachine::Behaviour
     {
         follow_ = RequireComponent<VirtualCameraFollowBehaviour>();
         lookAt_ = RequireComponent<VirtualCameraLookAtBehaviour>();
+        virtualCamera_ = Components().Catch<CineMachineVirtualCamera>();
     }
 
     void LockOnCameraBehaviour::OnUpdate()
@@ -35,34 +64,83 @@ namespace NanamiEngine::CineMachine::Behaviour
         if (!lockOnTarget)
             return;
 
-        UpdateFollowBehaviour(lockOnTarget);
+        UpdateFraming(lockOnTarget);
     }
 
-    void LockOnCameraBehaviour::UpdateFollowBehaviour(const std::shared_ptr<GameObject::IGameObject>& lockOnTarget) const
+    void LockOnCameraBehaviour::UpdateFraming(const std::shared_ptr<GameObject::IGameObject>& lockOnTarget)
     {
-        if (!followTarget_)
+        const auto followTarget = followTarget_.get();
+        if (!followTarget)
             return;
 
-        const glm::vec3 playerPos = followTarget_->Transform().GetWorldPos();
+        constexpr auto worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+        const glm::vec3 playerPos = followTarget->Transform().GetWorldPos();
         const glm::vec3 targetPos = lockOnTarget->Transform().GetWorldPos();
 
-        glm::vec3 flatToTarget = glm::vec3(targetPos.x - playerPos.x, 0.0f, targetPos.z - playerPos.z);
-        if (glm::dot(flatToTarget, flatToTarget) < 0.0001f)
-            flatToTarget = glm::vec3(0.0f, 0.0f, 1.0f);
-        flatToTarget = glm::normalize(flatToTarget);
+        const glm::vec3 flatToTarget(targetPos.x - playerPos.x, 0.0f, targetPos.z - playerPos.z);
+        if (glm::dot(flatToTarget, flatToTarget) >= 0.0001f)
+            lastFlatDir_ = glm::normalize(flatToTarget);
 
-        // プレイヤーとロックオン対象を結ぶ横方向のベクトル。カメラをここへ寄せて両者をフレームに収める
-        const glm::vec3 sideDir = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), flatToTarget));
+        // right/up は VirtualCameraLookAtBehaviour が作る姿勢と同じ外積の順にそろえる
+        const float pitch = glm::radians(pitchAngle_deg_);
+        const glm::vec3 forward = glm::normalize(lastFlatDir_ * std::cos(pitch) - worldUp * std::sin(pitch));
+        const glm::vec3 right   = glm::normalize(glm::cross(worldUp, forward));
+        const glm::vec3 up      = glm::cross(forward, right);
 
-        const glm::vec3 desiredOffset = -flatToTarget * distance_ + glm::vec3(0.0f, height_, 0.0f) + sideDir * sideOffset_;
+        const auto [playerMin, playerMax] = WorldBoundsOf(*followTarget, fallbackBoundsRadius_);
+        const auto [targetMin, targetMax] = WorldBoundsOf(*lockOnTarget, fallbackBoundsRadius_);
+
+        std::array<glm::vec3, 17> points;
+        for (int i = 0; i < 8; ++i)
+        {
+            points[i]     = BoundsCorner(playerMin, playerMax, i);
+            points[i + 8] = BoundsCorner(targetMin, targetMax, i);
+        }
+        points[16] = GameCore::PlayerAvatar::LockOnPositionOf(*lockOnTarget);
+
+        // 画面の縦横方向に投影した範囲の中心を注視点にする
+        glm::vec2 projectedMin(std::numeric_limits<float>::max());
+        glm::vec2 projectedMax(std::numeric_limits<float>::lowest());
+        for (const glm::vec3& point : points)
+        {
+            const glm::vec2 projected(glm::dot(point - playerPos, right), glm::dot(point - playerPos, up));
+            projectedMin = glm::min(projectedMin, projected);
+            projectedMax = glm::max(projectedMax, projected);
+        }
+        const glm::vec2 projectedCenter = (projectedMin + projectedMax) * 0.5f;
+        const glm::vec3 lookAtPos = playerPos + right * projectedCenter.x + up * projectedCenter.y;
+
+        // 全ての点が画角(余白込み)に入る、注視点からの最小距離を求める
+        float requiredDistance = minDistance_;
+        if (const auto* brain = CinemachineCameraBrain::Instance())
+        {
+            int screenWidth, screenHeight;
+            GetScreenState(&screenWidth, &screenHeight, nullptr);
+            const float aspectRatio = screenHeight > 0 ? static_cast<float>(screenWidth) / static_cast<float>(screenHeight) : 1.0f;
+
+            const auto  virtualCamera = virtualCamera_.lock();
+            const float fov = virtualCamera ? virtualCamera->Fov() : brain->GetFov();
+
+            const float margin = std::clamp(framingMargin_, 0.0f, 0.9f);
+            const float tanHalfFovY = std::tan(glm::radians(fov) * 0.5f) * (1.0f - margin);
+            const float tanHalfFovX = tanHalfFovY * aspectRatio;
+
+            for (const glm::vec3& point : points)
+            {
+                const glm::vec3 fromLookAt = point - lookAtPos;
+                const float depth = glm::dot(fromLookAt, forward);
+                requiredDistance = std::max(requiredDistance, std::abs(glm::dot(fromLookAt, right)) / tanHalfFovX - depth);
+                requiredDistance = std::max(requiredDistance, std::abs(glm::dot(fromLookAt, up)) / tanHalfFovY - depth);
+            }
+        }
+        const float distance = std::min(requiredDistance, maxDistance_);
+
+        const glm::vec3 cameraPos = lookAtPos - forward * distance;
 
         // 壁などにめり込まないよう、Playerからカメラへrayを飛ばして位置を補正する
-        const glm::vec3 adjustedOffset = ResolveCameraCollision(playerPos, desiredOffset);
-
-        follow_->followOffset_ = adjustedOffset;
-
-        // プレイヤーとロックオン対象の中間点を見るよう、LookAt対象(プレイヤー)へのオフセットで調整する
-        lookAt_->SetOffsetPos((targetPos - playerPos) * 0.5f + glm::vec3(0.0f, lookAtHeightOffset_, 0.0f));
+        follow_->followOffset_ = ResolveCameraCollision(playerPos, cameraPos - playerPos);
+        lookAt_->SetOffsetPos(lookAtPos - playerPos);
     }
 
     glm::vec3 LockOnCameraBehaviour::ResolveCameraCollision(const glm::vec3& originPos, const glm::vec3& desiredOffset) const
@@ -95,10 +173,12 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     void LockOnCameraBehaviour::OnDrawGui()
     {
-        ImGuiHelper::OnDrawInputField("distance_", distance_);
-        ImGuiHelper::OnDrawInputField("height_", height_);
-        ImGuiHelper::OnDrawInputField("sideOffset_", sideOffset_);
-        ImGuiHelper::OnDrawInputField("lookAtHeightOffset_", lookAtHeightOffset_);
+        ImGuiHelper::OnDrawInputField("isImmediateApply_", isImmediateApply_);
+        ImGuiHelper::OnDrawInputField("pitchAngle_deg_", pitchAngle_deg_);
+        ImGuiHelper::OnDrawInputField("minDistance_", minDistance_);
+        ImGuiHelper::OnDrawInputField("maxDistance_", maxDistance_);
+        ImGuiHelper::OnDrawInputField("framingMargin_", framingMargin_);
+        ImGuiHelper::OnDrawInputField("fallbackBoundsRadius_", fallbackBoundsRadius_);
         ImGuiHelper::OnDrawInputField("collisionBuffer_", collisionBuffer_);
         ImGuiHelper::OnDrawInputField("collisionRadius_", collisionRadius_);
         ImGuiHelper::OnDrawInputField("followTarget_", followTarget_);

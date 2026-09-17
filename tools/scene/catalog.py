@@ -8,7 +8,7 @@ from typing import Any, Optional
 
 CATALOG_PATH = Path(__file__).with_name("catalog.json")
 
-SETTABLE_SHAPES = {"int", "float", "bool", "string", "vec2", "vec3", "field"}
+SETTABLE_SHAPES = {"int", "float", "bool", "string", "vec2", "vec3", "field", "color32"}
 
 
 class CatalogError(RuntimeError):

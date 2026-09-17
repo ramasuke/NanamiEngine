@@ -39,6 +39,7 @@ namespace GameCore::PlayerAvatar::SwordMan
                                             const std::weak_ptr<PlayerAttackArea>& normalAttackArea,
                                             const std::weak_ptr<PlayerAttackArea>& dashAttackArea,
                                             const std::weak_ptr<GamePlay::PlayerAvatar::LockOnDetectionArea>& lockOnDetectionArea,
+                                            const std::weak_ptr<Component::ParticleSystem>& successAvoidRollingParticle,
                                             const std::weak_ptr<Asset::SwordManAvatarResource>& resources);
         
         [[nodiscard]] SwordManAvatarStatus     & Status () const { return *status_;             }
@@ -50,7 +51,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] GameObject::Transform                &   PlayerAvatarTransform  () const override { return playerAvatarObject_.lock()->Transform();     }
         [[nodiscard]] PlayerAvatarCameraGroupBase          &   CameraGroup            () const override { return *cameraGroup_      .lock();                     }
         [[nodiscard]] GamePlay::Ui::NpcChatting            &   NpcChattingUi          () const override { return playerAvatar_      .lock()->NpcChattingUi();    }
-        [[nodiscard]] Component::ColliderBase              &   PlayerAvatarCollider   () const override { return playerAvatar_      .lock()->Collider();         }
+        [[nodiscard]] Component::RigidBody                 &   PlayerAvatarRigidBody  () const override { return playerAvatar_      .lock()->RigidBody();        }
         [[nodiscard]] GamePlay::PlayerAvatar::ChattableArea&   ChattableArea          () const override { return playerAvatar_      .lock()->ChattableArea();    }
         [[nodiscard]] GamePlay::PlayerAvatar::WakeUpArea   &   WakeUpArea             () const override { return playerAvatar_      .lock()->WakeUpArea();       }
         [[nodiscard]] const glm::vec3&                         PlayerAvatarFeatStepPos() const override { return playerAvatar_      .lock()->FeatStepPosition(); }
@@ -60,6 +61,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] PlayerAttackArea& NormalAttackArea   () const { return *normalAttackArea_   .lock(); }
         [[nodiscard]] PlayerAttackArea& DashAttackArea     () const { return *dashAttackArea_     .lock(); }
         [[nodiscard]] GamePlay::PlayerAvatar::LockOnDetectionArea& LockOnDetectionArea() const { return *lockOnDetectionArea_.lock(); }
+        [[nodiscard]] Component::ParticleSystem& SuccessAvoidRollingParticle() const { return *successAvoidRollingParticle_.lock(); }
         [[nodiscard]] const Asset::SwordManAvatarResource   & Resources          () const { return *resources_  .lock(); }
 
 
@@ -72,6 +74,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         const std::weak_ptr  <PlayerAttackArea> normalAttackArea_;
         const std::weak_ptr  <PlayerAttackArea> dashAttackArea_;
         const std::weak_ptr  <GamePlay::PlayerAvatar::LockOnDetectionArea> lockOnDetectionArea_;
+        const std::weak_ptr  <Component::ParticleSystem> successAvoidRollingParticle_;
         const std::weak_ptr<Asset::SwordManAvatarResource> resources_;
     };
 }

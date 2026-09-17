@@ -4,11 +4,14 @@
 #include "../Application/Configuration/Physics/ApplicationConfiguration_Physics.h"
 
 #include "../../Module/GameObject/ComponentGroup/ComponentGroup.h"
+#include "../../Module/Physics/BodyAssembler/Engine_Physics_BodyAssembler.h"
 #include "../../Module/Physics/ContactListener/Engine_Physics_ContactListener.h"
+#include "../../Module/Physics/GroupFilter/Engine_Physics_RigidBodyGroupFilter.h"
 #include "../../Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
 #include "../../Module/Physics/UserData/Engine_Physics_UserData.h"
 #include "Jolt/Physics/Body/BodyCreationSettings.h"
 #include "Sample/SimpleBroadPhaseLayerInterface.h"
+#include "Sample/SimpleObjectLayerPairFilter.h"
 #include "Jolt/Core/Factory.h"
 
 namespace NanamiEngine::Core
@@ -40,7 +43,7 @@ namespace NanamiEngine::Core
 
         static const SimpleBroadPhaseLayerInterface BROAD_PHASE_LAYER_INTERFACE;
 
-        static const JPH::ObjectLayerPairFilter OBJECT_LAYER_PAIR_FILTER;
+        static const SimpleObjectLayerPairFilter OBJECT_LAYER_PAIR_FILTER;
         static const JPH::ObjectVsBroadPhaseLayerFilter OBJECT_VS_BROAD_PHASE_LAYER_FILTER;
 
         physicsSystem_.Init(
@@ -55,11 +58,19 @@ namespace NanamiEngine::Core
         physicsSystem_.SetGravity(JPH::Vec3(0, Application::Configuration::PhysicsConfiguration::GetGravityScale(), 0));
         contactListener_ = std::make_unique<Module::Physics::EngineContactListener>(physicsSystem_);
         physicsSystem_.SetContactListener(contactListener_.get());
+        rigidBodyGroupFilter_ = new Module::Physics::RigidBodyGroupFilter();
+        bodyAssembler_ = std::make_unique<Module::Physics::BodyAssembler>(*this);
+    }
+
+    const Module::Physics::RigidBodyGroupFilter* Physics::RigidBodyGroupFilter() const
+    {
+        return rigidBodyGroupFilter_.GetPtr();
     }
 
     void Physics::Update(const float deltaTime)
     {
         physicsSystem_.SetGravity(JPH::Vec3(0, Application::Configuration::PhysicsConfiguration::GetGravityScale(), 0));
+        contactListener_->RefreshTuning();
         physicsSystem_.Update(deltaTime, Application::Configuration::PhysicsConfiguration::GetCollisionSteps(), tempAllocator_.get(), jobSystem_.get());
         contactListener_->OnUpdate();
     }
@@ -76,7 +87,7 @@ namespace NanamiEngine::Core
         contactListener_->UnSubscribeEngineCollider(colliderId);
     }
 
-    JPH::BodyID Physics::CreateCollider(
+    JPH::BodyID Physics::CreateBody(
         const JPH::RefConst<JPH::Shape>& shape,
         const JPH::Vec3& position,
         const JPH::Quat& rotation,
@@ -87,7 +98,8 @@ namespace NanamiEngine::Core
         const Module::Physics::Layer layer,
         const JPH::EAllowedDOFs allowedDOFs,
         Module::Physics::UserData* userData,
-        const float friction)
+        const float friction,
+        const JPH::CollisionGroup& collisionGroup)
     {
         const bool hasNoDOFs = allowedDOFs == JPH::EAllowedDOFs::None;
         const JPH::EMotionType effectiveMotionType =
@@ -114,6 +126,7 @@ namespace NanamiEngine::Core
         settings.mUserData = reinterpret_cast<JPH::uint64>(userData);
         settings.mObjectLayer = static_cast<JPH::ObjectLayer>(ToIndex(layer));
         settings.mAllowedDOFs = hasNoDOFs ? JPH::EAllowedDOFs::All : allowedDOFs;
+        settings.mCollisionGroup = collisionGroup;
         if (!isGravity)
         {
             settings.mGravityFactor = 0.0f;

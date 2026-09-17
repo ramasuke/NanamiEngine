@@ -2,6 +2,7 @@
 #include <string>
 
 #include "DxLib.h"
+#include "../../../Color/Color32.h"
 #include "../../../LifeCycleCallback/EnableAsset/IEnablableAsset.h"
 #include "../../AssetBase.h"
 #include "../../Factory/AssetFactory.h"
@@ -20,6 +21,7 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] const Guid& GetGuid       () const override { return guid_; }
         [[nodiscard]] std::string GetContentPath() const override { return contentPath_; }
         [[nodiscard]] int         DxLibHandle   () const          { return dxLibHandle_;    }
+        [[nodiscard]] const Color32& EdgeColor  () const          { return edgeColor_;      }
 
     private:
         void OnEnableAsset() override;
@@ -30,6 +32,9 @@ namespace NanamiEngine::Module::Asset
         int size_;
         int thickness_;
         int fontType_;
+        // fontType_ が EDGE 系のときだけ有効
+        int edgeSize_;
+        Color32 edgeColor_;
 
         Guid guid_;
         int dxLibHandle_ = -1;
@@ -44,6 +49,8 @@ namespace NanamiEngine::Module::Asset
             LibCore::ImGuiHelper::OnDrawInputField("size_", size_);
             LibCore::ImGuiHelper::OnDrawInputField("thickness_", thickness_);
             LibCore::ImGuiHelper::OnDrawInputField("fontType_", fontType_);
+            LibCore::ImGuiHelper::OnDrawInputField("edgeSize_", edgeSize_);
+            LibCore::ImGuiHelper::OnDrawInputField("edgeColor_", edgeColor_);
             LibCore::ImGuiHelper::OnDrawInputField("guid_", guid_);
             LibCore::ImGuiHelper::OnDrawInputField("dxLibHandle_", dxLibHandle_);
         }
@@ -59,6 +66,8 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(fontType_));
             archive(CEREAL_NVP(guid_));
             archive(CEREAL_NVP(contentPath_));
+            archive(CEREAL_NVP(edgeSize_));
+            archive(CEREAL_NVP(edgeColor_));
         }
 
         template<class Archive>
@@ -75,13 +84,15 @@ namespace NanamiEngine::Module::Asset
             int legacyDxLibHandle = -1;
             if (version <= 1) archive(cereal::make_nvp("dxLibHandle_", legacyDxLibHandle));
             if (version >= 3) archive(CEREAL_NVP(contentPath_));
+            if (version >= 4) archive(CEREAL_NVP(edgeSize_));
+            if (version >= 4) archive(CEREAL_NVP(edgeColor_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::TtfFontFile, 3);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::TtfFontFile, 4);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::TtfFontFile);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::TtfFontFile);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::TtfFontFile);

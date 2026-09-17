@@ -27,7 +27,7 @@ def cmd_add_action(a: argparse.Namespace) -> int:
     if not a.dry_run:
         print("\nnext: build with")
         print("  MSBuild.exe NanamiEngine.sln -p:Configuration=Debug -p:Platform=x64 "
-              "-p:PreferredToolArchitecture=x64 -m")
+              "-p:PreferredToolArchitecture=x64 -m:12")
         print(f'then the editor shows the action at  {a.category} > {a.name}')
     return 0
 

@@ -1,14 +1,14 @@
 ﻿#pragma once
+#include <cstdint>
 #include <memory>
 
 #include "../glm/vec3.hpp"
-#include "../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 #include "StateMachine/EventScene/IPlayerAvatarEventSceneStateMachine.h"
 
 
 namespace NanamiEngine::Module::Component
 {
-    class ColliderBase;
+    class RigidBody;
 }
 
 namespace GameCore::PlayerAvatar
@@ -58,7 +58,7 @@ namespace GameCore
 
         /** @brief EventScene用のStateMachine */
         [[nodiscard]] virtual PlayerAvatar::IPlayerAvatarEventSceneStateMachine& GetEventSceneStateMachine() const = 0;
-        [[nodiscard]] virtual NanamiEngine::Module::Component::ColliderBase    & Collider        () const = 0;
+        [[nodiscard]] virtual NanamiEngine::Module::Component::RigidBody       & RigidBody       () const = 0;
         [[nodiscard]] virtual GamePlay::PlayerAvatar::ChattableArea            & ChattableArea   () const = 0;
         [[nodiscard]] virtual GamePlay::PlayerAvatar::WakeUpArea               & WakeUpArea      () const = 0;
         [[nodiscard]] virtual GamePlay::Ui::NpcChatting                        & NpcChattingUi   () const = 0;

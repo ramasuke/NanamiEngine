@@ -12,8 +12,13 @@ if str(_REPO) not in sys.path:
 
 
 def _cmd_selftest(_args: argparse.Namespace) -> int:
-    from tools.effect.selftest import main as selftest_main
-    return selftest_main()
+    from tools.effect.config import ConfigError
+    try:
+        from tools.effect.selftest import main as selftest_main
+        return selftest_main()
+    except ConfigError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
 
 
 def build_parser() -> argparse.ArgumentParser:

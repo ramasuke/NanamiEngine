@@ -1,6 +1,9 @@
 ﻿#include "PrefabGameObject.h"
 
+#include <string_view>
+
 #include "../Helper/TreeDropZone/TreeDropZone.h"
+#include "../../../Core/Object/Field/GuidRemap/GuidRemap.h"
 #include "../../../../Libs/LibCore/cereal/PrefabExtractArchive/PrefabExtractArchive.h"
 #include "../../../Core/Application/Editor/EditorApplication.h"
 #include "../../../Core/Application/Window/Main/Game/GameWindow.h"
@@ -8,6 +11,8 @@
 #include "../../../Core/Application/Window/Popup/Inspector/InspectorWindow.h"
 #include "../../Scene/GameObject/CopiedPrefabGameObject/CopiedPrefabGameObject.h"
 #include "../../Serialization/Engine_Module_Serialization.h"
+#include "../../../Core/Physics/Physics.h"
+#include "../../Physics/BodyAssembler/Engine_Physics_BodyAssembler.h"
 #include "cereal/archives/portable_binary.hpp"
 
 GameObject::PrefabGameObject::PrefabGameObject(const std::string& filePath)
@@ -22,6 +27,11 @@ GameObject::PrefabGameObject::PrefabGameObject(const std::string& filePath)
         archive(CEREAL_NVP(guid_        ));
         archive(CEREAL_NVP(components_  ));
         archive(CEREAL_NVP(transform_   ));
+        // .prefab のルートにはクラスバージョンが無いので、mark_ 追加前のファイルはキーの有無で判別する
+        if (const char* nextName = archive.getNodeName(); nextName != nullptr && std::string_view(nextName) == "mark_")
+        {
+            archive(CEREAL_NVP(mark_));
+        }
 
         size_t copiedObjectGuidListCount = 0;
         archive(copiedObjectGuidListCount);
@@ -41,11 +51,12 @@ void GameObject::PrefabGameObject::InitGameObject(const std::weak_ptr<IGameObjec
 }
 
 void GameObject::PrefabGameObject::InitForCopied(const std::shared_ptr<IGameObject>& ownPtr, bool isActive,
-    std::string name, ComponentGroup components, GameObject::Transform transform)
+    std::string name, const GameObjectMark mark, ComponentGroup components, GameObject::Transform transform)
 {
     ownPtr_     = ownPtr;
     isActive_   = isActive;
     name_       = std::move(name);
+    mark_       = mark;
     components_ = std::move(components);
     components_ .ResetGuid();
     transform_  = std::move(transform);
@@ -116,6 +127,7 @@ void GameObject::PrefabGameObject::OnDrawGui()
     {
         name_ = nameBuffer;
     }
+    DrawChoiceMarkGui(("mark##" + guid_.Value()).c_str(), mark_);
 
     transform_ .OnDrawGui();
     components_.OnDrawGui();
@@ -253,7 +265,8 @@ void GameObject::PrefabGameObject::OnSave()
     archive(CEREAL_NVP(guid_));
     archive(CEREAL_NVP(components_));
     archive(CEREAL_NVP(transform_));
-    
+    archive(CEREAL_NVP(mark_));
+
     size_t copiedObjectGuidListCount = copiedObjectGuidList_.size();
     archive(copiedObjectGuidListCount);
     for (const auto& guid : copiedObjectGuidList_)
@@ -297,6 +310,9 @@ std::shared_ptr<GameObject::IGameObject> GameObject::PrefabGameObject::CopyForEd
 std::shared_ptr<GameObject::IGameObject> GameObject::PrefabGameObject::
 CopyForInstantiate()
 {
+    // 複製で読み込む Field だけが待ち行列に残るよう、先に解決しておく
+    Core::Application::ApplicationBase::ApplicationLifeCycle().OnUpdateFieldInittables();
+
     // 1. this をバイナリアーカイブに保存
     std::stringstream stringStream;
     {
@@ -325,12 +341,15 @@ CopyForInstantiate()
         copied,
         copiedPrefab->isActive_,
         copiedPrefab->name_,
+        copiedPrefab->mark_,
         copiedPrefab->Components(),
         copiedPrefab->Transform()
     );
-    Core::Application::ApplicationBase::ApplicationLifeCycle().OnUpdateFieldInittables();
+    const auto guidRemap = Core::Object::GuidRemap::FromCopiedHierarchy(*this, *copied);
     copied->InitGameObject(std::weak_ptr<IGameObject>(), copied);
+    Core::Application::ApplicationBase::ApplicationLifeCycle().OnUpdateCopiedFieldInittables(guidRemap);
     copied->InvokeInitAwakeCallbacks();
+    Core::Application::ApplicationBase::Physics().Bodies().Flush();
     copied->InvokeInitStartCallbacks();
     
     return copied;
@@ -368,10 +387,13 @@ template <class Archive>
 void GameObject::PrefabGameObject::save(Archive& archive, const std::uint32_t version) const
 {
     archive(isActive_, name_, components_, transform_);
+    archive(mark_);
 }
 
 template <class Archive>
 void GameObject::PrefabGameObject::load(Archive& archive, const std::uint32_t version)
 {
     archive(isActive_, name_, components_, transform_);
+    if (version >= 2)
+        archive(mark_);
 }

@@ -32,7 +32,7 @@ namespace GameCore
 
 namespace NanamiEngine::Module::Component
 {
-    class ColliderBase;
+    class RigidBody;
 }
 
 namespace NanamiEngine::Module::BlackBoard
@@ -43,6 +43,7 @@ namespace NanamiEngine::Module::BlackBoard
 namespace GameCore::Npc::Enemy
 {
     class EnemyStatus;
+    class IShowHealthGaugeProvider;
 }
 
 namespace GameCore
@@ -74,6 +75,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             SyncParam<EnemyStatus>& enemyStatus,
             const std::unique_ptr<BlackBoard::ParameterGroup>& parameters,
             const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack,
+            IShowHealthGaugeProvider* showHealthGaugeProvider,
             Core::Network::NetworkObjectId networkObjectId,
             bool isNetworkAuthority);
         ~TickContext();
@@ -82,11 +84,13 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[nodiscard]] GameObject::IGameObject& EnemyGameObject() const { return *enemyGameObject_.lock(); }
         [[nodiscard]] GameObject::Transform  & EnemyTransform () const;
         [[nodiscard]] Component::Animator    & EnemyAnimator  () const { return *enemyAnimator_  .lock(); }
-        [[nodiscard]] Component::ColliderBase& EnemyCollider  () const { return *enemyCollider_  .lock(); }
+        [[nodiscard]] Component::RigidBody   & EnemyRigidBody () const { return *enemyRigidBody_ .lock(); }
         [[nodiscard]] SyncParam<EnemyStatus> & EnemyStatus    () const { return enemyStatus_; }
         [[nodiscard]] const std::unique_ptr<BlackBoard::ParameterGroup>& Parameter() const { return parameters_; }
         [[nodiscard]] const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& OnDamaged() const { return onDamagedStack_; } 
         [[nodiscard]] bool IsOnDamage() const { return !onDamagedStack_->empty(); }
+        // ボスHPゲージを持たない敵は nullptr
+        [[nodiscard]] IShowHealthGaugeProvider* ShowHealthGaugeProvider() const { return showHealthGaugeProvider_; }
         [[nodiscard]] std::shared_ptr<IPlayerAvatar> Player() const;
         [[nodiscard]] static const std::vector<std::weak_ptr<IPlayerAvatar>>& AllPlayer();
         [[nodiscard]] const PlayerAvatar::IQuestGroup& PlayerQuest() const;
@@ -119,10 +123,11 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     private:
         const std::weak_ptr<GameObject::IGameObject> enemyGameObject_;
         const std::weak_ptr<Component::Animator    > enemyAnimator_;
-        const std::weak_ptr<Component::ColliderBase> enemyCollider_;
+        const std::weak_ptr<Component::RigidBody   > enemyRigidBody_;
         SyncParam<Enemy::EnemyStatus>&   enemyStatus_;
         const std::unique_ptr<BlackBoard::ParameterGroup>& parameters_;
         const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>> onDamagedStack_;
+        IShowHealthGaugeProvider* const showHealthGaugeProvider_;
         const Core::Network::NetworkObjectId networkObjectId_;
         const bool isNetworkAuthority_;
     };

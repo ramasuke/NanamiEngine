@@ -14,7 +14,6 @@
 namespace GamePlay::Ui
 {
     class StageSelectUi final : public Component::ComponentBase,
-                                public LifeCycleCallback::IAwakable,
                                 public LifeCycleCallback::IStartable
     {
     public:
@@ -23,43 +22,52 @@ namespace GamePlay::Ui
 
         void HighlightSelectedStage(size_t selectedIndex);
         void SetWorldEnterButtonEnabled(bool isEnabled);
-        Coroutine::Task<void> PlayEnterWorldTransitionAsync(GameCore::Scene::Main::SceneType sceneType);
+        // コルーチンの参照引数は最初の co_await でぶら下がるので値で受ける
+        Coroutine::Task<void> PlayEnterWorldTransitionAsync(
+            GameCore::Scene::Main::SceneType sceneType,
+            std::shared_ptr<Asset::StageData> stageData);
         void ShowMapMarker(const glm::vec2& position, bool isCleared);
+        void ShowStageDetail(const Asset::StageData& stage);
+        void ShowNoSelectionDetail();
 
     private:
-        void OnAwake() override;
         void OnStart() override;
         void OnDestroy() override;
         Coroutine::Task<void> StartStageSelectAsync();
         Coroutine::Task<void> AppearBackGroundMaskAsync();
-        Coroutine::Task<void> FadeBlendRateAsync(std::shared_ptr<NanamiUi::BlendImageRenderer> renderer, int from, int to);
-        Coroutine::Task<void> FadeBlendRateAsync(std::shared_ptr<NanamiUi::MovieRenderer> renderer, int from, int to);
+        // shared_ptr で受けるとコルーチンのフレームがコンポーネントを生かし続け、
+        // GameObject だけ先に死んだ状態で描画が回って Transform() が落ちる。
+        // this を持たないよう static にしてあるのも同じ理由
+        static Coroutine::Task<void> FadeBlendRateAsync(std::weak_ptr<NanamiUi::BlendImageRenderer> renderer, int from, int to);
+        static Coroutine::Task<void> FadeBlendRateAsync(std::weak_ptr<NanamiUi::MovieRenderer> renderer, int from, int to);
+        void SetDetailDifficultyVisible(bool isVisible);
 
 
 
         [[serialize(0)]] FIELD(Asset::SoundFile) bgm_;
 
-        [[serialize(0)]] std::string backGroundMaskName_;
-        FIELD(NanamiUi::BlendImageRenderer) backGroundMask_;
+        [[serialize(6)]] FIELD(NanamiUi::BlendImageRenderer) backGroundMask_;
         [[serialize(0)]] int backGroundMaskBlendRate_ = 55;
-        [[serialize(0)]] std::vector<std::string> stageSelectButtonNames_;
-        std::vector<FIELD(StageSelectStageUi)> stageSelectButtons_;
+        [[serialize(6)]] std::vector<FIELD(StageSelectStageUi)> stageSelectButtons_;
 
-        [[serialize(1)]] std::string stageSelectBackGroundMaskName_;
         [[serialize(1)]] FIELD(NanamiUi::BlendImageRenderer) stageSelectBackGroundMask_;
         [[serialize(1)]] int stageSelectBackGroundMaskBlendRate_ = 50;
-        [[serialize(1)]] std::string worldMovieRendererName_;
-        FIELD(NanamiUi::MovieRenderer) worldMovieRenderer_;
+        [[serialize(6)]] FIELD(NanamiUi::MovieRenderer) worldMovieRenderer_;
         bool isEnteringWorld_ = false;
-        [[serialize(1)]] std::string worldEnterButtonName_;
-        FIELD(NanamiUi::Button) worldEnterButton_;
-        FIELD(NanamiUi::ImageAnimationRenderer) worldEnterButtonGlow_;
-        [[serialize(2)]] std::string backGroundName_;
-        FIELD(NanamiUi::MovieRenderer) backGround_;
+        [[serialize(6)]] FIELD(NanamiUi::Button) worldEnterButton_;
+        [[serialize(6)]] FIELD(NanamiUi::ImageAnimationRenderer) worldEnterButtonGlow_;
+        [[serialize(6)]] FIELD(NanamiUi::MovieRenderer) backGround_;
         [[serialize(3)]] FIELD(Asset::SpriteFile) worldEnterButtonActiveSprite_;
         [[serialize(3)]] FIELD(Asset::SpriteFile) worldEnterButtonDisabledSprite_;
-        [[serialize(4)]] std::string mapMarkerName_;
-        FIELD(StageMapMarker) mapMarker_;
+        [[serialize(6)]] FIELD(StageMapMarker) mapMarker_;
+        [[serialize(6)]] FIELD(Component::ImageRenderer) detailPreview_;
+        [[serialize(6)]] FIELD(Component::ImageRenderer) detailElement_;
+        [[serialize(6)]] FIELD(NanamiUi::TextRenderer) detailLabel_;
+        [[serialize(6)]] FIELD(NanamiUi::TextRenderer) detailTitle_;
+        [[serialize(6)]] FIELD(NanamiUi::TextRenderer) detailTag_;
+        [[serialize(6)]] FIELD(StageDifficultyPips) detailDifficulty_;
+        [[serialize(6)]] std::vector<FIELD(NanamiUi::TextRenderer)> detailDescriptionLines_;
+        [[serialize(5)]] std::string noSelectionTitle_;
 
 #pragma region Serialization Function
     public:
@@ -69,39 +77,74 @@ namespace GamePlay::Ui
         void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<Component::ComponentBase>(this));
             archive(CEREAL_NVP(bgm_));
-            archive(CEREAL_NVP(backGroundMaskName_));
+            archive(CEREAL_NVP(backGroundMask_));
             archive(CEREAL_NVP(backGroundMaskBlendRate_));
-            archive(CEREAL_NVP(stageSelectButtonNames_));
-            archive(CEREAL_NVP(stageSelectBackGroundMaskName_));
+            archive(CEREAL_NVP(stageSelectButtons_));
             archive(CEREAL_NVP(stageSelectBackGroundMask_));
             archive(CEREAL_NVP(stageSelectBackGroundMaskBlendRate_));
-            archive(CEREAL_NVP(worldMovieRendererName_));
-            archive(CEREAL_NVP(worldEnterButtonName_));
-            archive(CEREAL_NVP(backGroundName_));
+            archive(CEREAL_NVP(worldMovieRenderer_));
+            archive(CEREAL_NVP(worldEnterButton_));
+            archive(CEREAL_NVP(worldEnterButtonGlow_));
+            archive(CEREAL_NVP(backGround_));
             archive(CEREAL_NVP(worldEnterButtonActiveSprite_));
             archive(CEREAL_NVP(worldEnterButtonDisabledSprite_));
-            archive(CEREAL_NVP(mapMarkerName_));
+            archive(CEREAL_NVP(mapMarker_));
+            archive(CEREAL_NVP(detailPreview_));
+            archive(CEREAL_NVP(detailElement_));
+            archive(CEREAL_NVP(detailLabel_));
+            archive(CEREAL_NVP(detailTitle_));
+            archive(CEREAL_NVP(detailTag_));
+            archive(CEREAL_NVP(detailDifficulty_));
+            archive(CEREAL_NVP(detailDescriptionLines_));
+            archive(CEREAL_NVP(noSelectionTitle_));
         }
 
         template<typename Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<Component::ComponentBase>(this));
+            // v6 で子オブジェクトの名前検索を FIELD に置き換えた
+            std::string backGroundMaskName_, stageSelectBackGroundMaskName_, worldMovieRendererName_;
+            std::string worldEnterButtonName_, backGroundName_, mapMarkerName_, detailPreviewName_;
+            std::string detailElementName_, detailLabelName_, detailTitleName_, detailTagName_, detailDifficultyName_;
+            std::vector<std::string> stageSelectButtonNames_, detailDescriptionLineNames_;
             if (version >= 0) archive(CEREAL_NVP(bgm_));
-            if (version >= 0) archive(CEREAL_NVP(backGroundMaskName_));
+            if (version < 6) archive(CEREAL_NVP(backGroundMaskName_));
+            if (version >= 6) archive(CEREAL_NVP(backGroundMask_));
             if (version >= 0) archive(CEREAL_NVP(backGroundMaskBlendRate_));
-            if (version >= 0) archive(CEREAL_NVP(stageSelectButtonNames_));
-            if (version >= 1) archive(CEREAL_NVP(stageSelectBackGroundMaskName_));
+            if (version < 6) archive(CEREAL_NVP(stageSelectButtonNames_));
+            if (version >= 6) archive(CEREAL_NVP(stageSelectButtons_));
+            if (version >= 1 && version < 6) archive(CEREAL_NVP(stageSelectBackGroundMaskName_));
             if (version >= 1) archive(CEREAL_NVP(stageSelectBackGroundMask_));
             if (version >= 1) archive(CEREAL_NVP(stageSelectBackGroundMaskBlendRate_));
-            if (version >= 1) archive(CEREAL_NVP(worldMovieRendererName_));
-            if (version >= 1) archive(CEREAL_NVP(worldEnterButtonName_));
-            if (version >= 2) archive(CEREAL_NVP(backGroundName_));
+            if (version >= 1 && version < 6) archive(CEREAL_NVP(worldMovieRendererName_));
+            if (version >= 6) archive(CEREAL_NVP(worldMovieRenderer_));
+            if (version >= 1 && version < 6) archive(CEREAL_NVP(worldEnterButtonName_));
+            if (version >= 6) archive(CEREAL_NVP(worldEnterButton_));
+            if (version >= 6) archive(CEREAL_NVP(worldEnterButtonGlow_));
+            if (version >= 2 && version < 6) archive(CEREAL_NVP(backGroundName_));
+            if (version >= 6) archive(CEREAL_NVP(backGround_));
             if (version >= 3) archive(CEREAL_NVP(worldEnterButtonActiveSprite_));
             if (version >= 3) archive(CEREAL_NVP(worldEnterButtonDisabledSprite_));
-            if (version >= 4) archive(CEREAL_NVP(mapMarkerName_));
+            if (version >= 4 && version < 6) archive(CEREAL_NVP(mapMarkerName_));
+            if (version >= 6) archive(CEREAL_NVP(mapMarker_));
+            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailPreviewName_));
+            if (version >= 6) archive(CEREAL_NVP(detailPreview_));
+            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailElementName_));
+            if (version >= 6) archive(CEREAL_NVP(detailElement_));
+            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailLabelName_));
+            if (version >= 6) archive(CEREAL_NVP(detailLabel_));
+            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailTitleName_));
+            if (version >= 6) archive(CEREAL_NVP(detailTitle_));
+            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailTagName_));
+            if (version >= 6) archive(CEREAL_NVP(detailTag_));
+            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailDifficultyName_));
+            if (version >= 6) archive(CEREAL_NVP(detailDifficulty_));
+            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailDescriptionLineNames_));
+            if (version >= 6) archive(CEREAL_NVP(detailDescriptionLines_));
+            if (version >= 5) archive(CEREAL_NVP(noSelectionTitle_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::StageSelectUi, 4)
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::StageSelectUi, 6)

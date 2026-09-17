@@ -6,6 +6,7 @@
 #include "../../../Scripts/Core/Game/Game.h"
 #include "../../../Scripts/GamePlay/PlayerAvatar/PlayerAvatarBase.h"
 #include "../../../Scripts/GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
+#include "../../../Scripts/GamePlay/PlayerAvatar/MagicCaster/MagicCasterAvatar.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/Status/Presenter/PlayerAvatar_OtherPlayer_StatusPresenter.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/SwordMan/Status/Presenter/PlayerAvatar_SwordMan_StatusPresenter.h"
@@ -72,7 +73,7 @@ namespace NanamiEngine::Module::Asset
                 auto status = presetSwordManStatus
                     ? presetSwordManStatus
                     : GameCore::PlayerAvatar::LoadStatus<GameCore::PlayerAvatar::SwordMan::SwordManAvatarTraits>();
-                playerAvatar = LoadInitedPlayerAvatarImpl<
+                const auto swordManAvatar = LoadInitedPlayerAvatarImpl<
                     GamePlay::PlayerAvatar::SwordMan::SwordManAvatar,
                     GameCore::PlayerAvatar::SwordMan::SwordManAvatarTraits>(
                     swordManPrefab_.get(),
@@ -81,6 +82,7 @@ namespace NanamiEngine::Module::Asset
                     status,
                     swordmanCameraGroup.lock(),
                     enableInputAction);
+                playerAvatar = swordManAvatar;
 
                 if (enableInputAction)
                 {
@@ -91,7 +93,49 @@ namespace NanamiEngine::Module::Asset
                     attachments.objects.push_back(swordManPresenterObj);
                     /** StatusPresenter */
                     auto swordmanStatusPresenter = swordManPresenterObj.lock()->Components().Catch<GamePlay::PlayerAvatar::SwordMan::StatusPresenter>();
-                    swordmanStatusPresenter.lock()->Initialize(*swordManStatusUi.lock(), *status);
+                    swordmanStatusPresenter.lock()->Initialize(*swordManStatusUi.lock(), *status, swordManAvatar);
+                }
+                break;
+            }
+
+        case GameCore::PlayerAvatar::PlayerAvatarType::MagicCaster:
+            {
+                std::weak_ptr<GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase> magicCasterCameraGroup;
+                if (enableInputAction)
+                {
+                    const auto cameraGroupObject = Scene::GameObject::Instantiate(magicCasterCameraGroupPrefab_.get(), summonPosition);
+                    attachments.objects.push_back(cameraGroupObject);
+                    magicCasterCameraGroup = cameraGroupObject
+                        .lock()
+                        ->Components()
+                        .Catch<GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase>();
+                }
+
+                auto presetMagicCasterStatus = std::dynamic_pointer_cast<GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus>(presetStatus);
+                auto status = presetMagicCasterStatus
+                    ? presetMagicCasterStatus
+                    : GameCore::PlayerAvatar::LoadStatus<GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarTraits>();
+                const auto magicCasterAvatar = LoadInitedPlayerAvatarImpl<
+                    GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar,
+                    GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarTraits>(
+                    magicCasterPrefab_.get(),
+                    summonPosition,
+                    parent,
+                    status,
+                    magicCasterCameraGroup.lock(),
+                    enableInputAction);
+                playerAvatar = magicCasterAvatar;
+
+                if (enableInputAction)
+                {
+                    auto magicCasterStatusUiPrefab = Scene::GameObject::Instantiate(*magicCasterStatusUiPrefab_.get());
+                    auto magicCasterStatusUi = magicCasterStatusUiPrefab.lock()->Components().Catch<GamePlay::Ui::PlayerStatus>();
+                    auto magicCasterPresenterObj = Scene::GameObject::Instantiate(*magicCasterStatusPresenterPrefab_.get());
+                    attachments.objects.push_back(magicCasterStatusUiPrefab);
+                    attachments.objects.push_back(magicCasterPresenterObj);
+                    /** StatusPresenter */
+                    auto magicCasterStatusPresenter = magicCasterPresenterObj.lock()->Components().Catch<GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter>();
+                    magicCasterStatusPresenter.lock()->Initialize(*magicCasterStatusUi.lock(), *status);
                 }
                 break;
             }
@@ -155,6 +199,10 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("swordManCameraGroupPrefab_", swordManCameraGroupPrefab_);
         ImGuiHelper::OnDrawInputField("swordManStatusUiPrefab_", swordManStatusUiPrefab_);
         ImGuiHelper::OnDrawInputField("swordManStatusPresenterPrefab_", swordManStatusPresenterPrefab_);
+        ImGuiHelper::OnDrawInputField("magicCasterPrefab_", magicCasterPrefab_);
+        ImGuiHelper::OnDrawInputField("magicCasterCameraGroupPrefab_", magicCasterCameraGroupPrefab_);
+        ImGuiHelper::OnDrawInputField("magicCasterStatusUiPrefab_", magicCasterStatusUiPrefab_);
+        ImGuiHelper::OnDrawInputField("magicCasterStatusPresenterPrefab_", magicCasterStatusPresenterPrefab_);
         ImGuiHelper::OnDrawInputField("otherPlayerAvatarStatusUiPrefab_", otherPlayerAvatarStatusUiPrefab_);
         ImGuiHelper::OnDrawInputField("otherPlayerAvatarStatusPresenterPrefab_", otherPlayerAvatarStatusPresenterPrefab_);
     }

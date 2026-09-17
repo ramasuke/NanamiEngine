@@ -11,6 +11,7 @@
 #include "../../../../Module/Scene/ShadowMap/ShadowMapSetting.h"
 #include "../../../Coroutine/Scheduler/CoroutineScheduler.h"
 #include "../../../Physics/Physics.h"
+#include "../../../../Module/Physics/BodyAssembler/Engine_Physics_BodyAssembler.h"
 #include "../../Time/Time.h"
 
 namespace NanamiEngine::Core::Application
@@ -41,12 +42,17 @@ namespace NanamiEngine::Core::Application
     
     void WindowLifeCycle::OnUpdateForGame()
     {
-        if (Module::Asset::Asset::IsLoadingResource())
-            return;
-        
-        initRenderableCallbacks_  .Invoke([](auto& obj) { obj.InitRenderer();     });
-        awakableCallbacks_        .Invoke([](auto& obj) { obj.OnAwake();          });
-        startableCallbacks_       .Invoke([](auto& obj) { obj.OnStart();          });
+        // ロード中もフレームは回し続ける。暖機前のオブジェクトに OnUpdate が飛ばないよう、
+        // 暖機と各グループへの追加反映だけを止める
+        const bool isLoadingResource = Module::Asset::Asset::IsLoadingResource();
+
+        if (!isLoadingResource)
+        {
+            initRenderableCallbacks_  .Invoke([](auto& obj) { obj.InitRenderer();     });
+            awakableCallbacks_        .Invoke([](auto& obj) { obj.OnAwake();          });
+            ApplicationBase::Physics().Bodies().Flush();
+            startableCallbacks_       .Invoke([](auto& obj) { obj.OnStart();          });
+        }
 
         const float rawDeltaTime = Time::DeltaTime();
         const float deltaTime = (std::min)(rawDeltaTime, Configuration::PhysicsConfiguration::GetMaxDeltaTime());
@@ -63,6 +69,7 @@ namespace NanamiEngine::Core::Application
         {
             preFixedUpdateCallbacks_.Invoke([](auto& obj) { obj.OnPreFixedUpdate(); });
             fixedUpdatableCallbacks_.Invoke([](auto& obj) { obj.OnFixedUpdate(); });
+            ApplicationBase::Physics().Bodies().Flush();
             beginPhysicsCallbacks_  .Invoke([](auto& obj) { obj.OnBeginPhysics(); });
             ApplicationBase::Physics().Update(fixedDeltaTime);
             endPhysicsCallbacks_    .Invoke([](auto& obj) { obj.OnUpdatedPhysics(); });
@@ -89,19 +96,22 @@ namespace NanamiEngine::Core::Application
         uiRenderableCallbacks_    .Invoke([](auto& obj) { obj.OnUserInterfaceRender(); });
         guiRenderableCallbacks_   .Invoke([](auto& obj) { obj.OnDebugRender        (); });
     
-        initRenderableCallbacks_  .OnUpdatePushedContents();
-        awakableCallbacks_        .OnUpdatePushedContents();
-        startableCallbacks_       .OnUpdatePushedContents();
-        beginPhysicsCallbacks_    .OnUpdatePushedContents();
-        endPhysicsCallbacks_      .OnUpdatePushedContents();
-        updatableCallbacks_       .OnUpdatePushedContents();
-        lateUpdatableCallbacks_   .OnUpdatePushedContents();
-        fixedUpdatableCallbacks_  .OnUpdatePushedContents();
-        preFixedUpdateCallbacks_  .OnUpdatePushedContents();
-        shadowRenderableCallbacks_.OnUpdatePushedContents();
-        renderableCallbacks_      .OnUpdatePushedContents();
-        uiRenderableCallbacks_    .OnUpdatePushedContents();
-        guiRenderableCallbacks_   .OnUpdatePushedContents();
+        if (!isLoadingResource)
+        {
+            initRenderableCallbacks_  .OnUpdatePushedContents();
+            awakableCallbacks_        .OnUpdatePushedContents();
+            startableCallbacks_       .OnUpdatePushedContents();
+            beginPhysicsCallbacks_    .OnUpdatePushedContents();
+            endPhysicsCallbacks_      .OnUpdatePushedContents();
+            updatableCallbacks_       .OnUpdatePushedContents();
+            lateUpdatableCallbacks_   .OnUpdatePushedContents();
+            fixedUpdatableCallbacks_  .OnUpdatePushedContents();
+            preFixedUpdateCallbacks_  .OnUpdatePushedContents();
+            shadowRenderableCallbacks_.OnUpdatePushedContents();
+            renderableCallbacks_      .OnUpdatePushedContents();
+            uiRenderableCallbacks_    .OnUpdatePushedContents();
+            guiRenderableCallbacks_   .OnUpdatePushedContents();
+        }
     }
     
     void WindowLifeCycle::OnUpdateForEditor()

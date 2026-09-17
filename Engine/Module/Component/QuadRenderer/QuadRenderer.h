@@ -6,6 +6,7 @@
 #include "../../Asset/Hlsl/HlslPsFile.h"
 #include "../ComponentBase.h"
 #include "../Shader/IShaderConstantBufferHost.h"
+#include "../Shader/ShaderConstantBufferSlot.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -18,11 +19,6 @@ namespace NanamiEngine::Module::Component
                                public IShaderConstantBufferHost
     {
     public:
-        // DxLib(Direct3D 11) は定数バッファスロット b0～b3 を内部で使用しているため、
-        // カスタムシェーダー用の定数バッファは b4 に割り当てる(ModelRendererと同じ規約)。
-        static constexpr int CUSTOM_SHADER_CB_SLOT = 4;
-        static constexpr int CUSTOM_SHADER_CB_SIZE = 256;
-
         // カスタムシェーダー用の定数バッファハンドルを返す(未生成なら生成する)。
         // vsFile_ / psFile_ が有効でない場合は -1。
         [[nodiscard]] int GetOrCreateShaderConstantBufferHandle() override;

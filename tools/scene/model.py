@@ -12,7 +12,8 @@ Structure (confirmed against the engine source and real fixtures - see
   (``PrefabGameObject::copiedObjectGuidList_``). Round-tripped losslessly;
   no v1 CLI verb edits it.
 * Every :class:`GameObjectNode` (regardless of kind) carries the same fields
-  (``isActive_``/``name_``/``guid_``/``components_``/``transform_``) - a prefab's
+  (``isActive_``/``name_``/``guid_``/``components_``/``transform_``, plus an
+  optional trailing ``mark_`` - see :data:`GAMEOBJECT_CLASS_VERSION_WITHOUT_MARK`) - a prefab's
   *children* are always plain ``"scene"``-kind nodes, exactly like an ordinary
   Scene's; only a prefab file's *root* is ``"prefab_root"``.
 * :class:`Transform`'s children are **not** an indexed array - the engine
@@ -69,10 +70,27 @@ GAMEOBJECT_FQN_BY_KIND = {
 GAMEOBJECT_KIND_BY_FQN = {v: k for k, v in GAMEOBJECT_FQN_BY_KIND.items()}
 
 GAMEOBJECT_CLASS_VERSION = {
+    FQN_SCENE_GAMEOBJECT: 1,
+    FQN_PREFAB_GAMEOBJECT: 2,
+    FQN_COPIED_PREFAB_GO: 1,
+}
+# The version before ``mark_`` was appended after ``transform_``. The writer keeps
+# a GameObject type at this version (no ``mark_`` keys) while no node of that type
+# in the file carries a mark, so untouched pre-mark files round-trip byte-identically.
+GAMEOBJECT_CLASS_VERSION_WITHOUT_MARK = {
     FQN_SCENE_GAMEOBJECT: 0,
     FQN_PREFAB_GAMEOBJECT: 1,
     FQN_COPIED_PREFAB_GO: 0,
 }
+
+# Mirrors ``GAMEOBJECT_MARK_NAMES`` in Engine/Module/GameObject/Mark/GameObjectMark.h
+# (index == the uint8_t value stored in ``mark_``).
+MARK_NAMES = [
+    "None",
+    "LabelGray", "LabelBlue", "LabelTeal", "LabelGreen", "LabelYellow", "LabelOrange", "LabelRed", "LabelPurple",
+    "CircleGray", "CircleBlue", "CircleTeal", "CircleGreen", "CircleYellow", "CircleOrange", "CircleRed", "CirclePurple",
+    "DiamondGray", "DiamondBlue", "DiamondTeal", "DiamondGreen", "DiamondYellow", "DiamondOrange", "DiamondRed", "DiamondPurple",
+]
 
 
 # ---------------------------------------------------------------------------
@@ -119,6 +137,8 @@ class GameObjectNode:
     is_active: bool
     components: list[Component]
     transform: Transform
+    # ``mark_`` (index into MARK_NAMES); None = the file predates the field.
+    mark: Optional[int] = None
 
 
 @dataclass

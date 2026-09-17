@@ -23,10 +23,14 @@ namespace GamePlay::Ui
             const std::string & npcName,
             const Asset::NpcChat& npcChat) const;
 
+        [[nodiscard]] bool IsDisplaying() const { return isDisplaying_; }
+
     private:
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) textRenderer_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) npcNameTextBox_;
-        
+
+        mutable bool isDisplaying_ = false;
+
 #pragma region Serialization Function
     public:
         void OnDrawGui() override;

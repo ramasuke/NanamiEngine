@@ -2,7 +2,7 @@
 #include <../cereal/include/cereal/types/vector.hpp>
 #include "../../../Enemy_Behaviour_ActionBase.h"
 #include "../../../../../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
+#include "../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
 #include "../../../FieldGameObject/Enemy_Behaviour_Action_FieldGameObject.h"
 
@@ -13,8 +13,9 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         TickStatus DoTick(const TickContext& context) override;
         void DoDrawGui() override;
 
-        [[serialize(0)]] JPH::EMotionType emotionType_ = JPH::EMotionType::Dynamic;
-        [[serialize(0)]] std::vector<FieldGameObject<Component::ColliderBase>> colliders_;
+        [[serialize(0)]] Physics::MotionType emotionType_ = Physics::MotionType::Dynamic;
+        // キー名はシリアライズ済みデータとの互換のため colliders_ のまま
+        [[serialize(0)]] std::vector<FieldGameObject<Component::RigidBody>> colliders_;
         
 #pragma region Serialization Function
     public:

@@ -38,6 +38,11 @@ namespace NanamiEngine::Module::NanamiUi
         blendRate_ = blendRate;
     }
 
+    void BlendImageRenderer::SetSprite(const std::weak_ptr<Asset::SpriteFile>& sprite)
+    {
+        spriteFile_ = sprite;
+    }
+
     void BlendImageRenderer::OnDrawGui()
     {
         int mode = static_cast<int>(blendMode_);

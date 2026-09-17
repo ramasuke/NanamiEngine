@@ -60,7 +60,7 @@
             }
         }
     },
-    "nodesCount": 16,
+    "nodesCount": 21,
     "nodes_0": {
         "polymorphic_id": 2147483650,
         "polymorphic_name": "NanamiEngine::Module::AnimationTree::AnimationClipNode",
@@ -77,6 +77,42 @@
                             "id": 2147483654,
                             "data": {
                                 "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "4BAFBE4E-6F53-4394-8CBA-51A57480CF56"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "ChargeAttackCharging",
+                "position_": {
+                    "value0": 504.0,
+                    "value1": 203.0
+                },
+                "guid_": {
+                    "value_": "BF191CB3-4DD3-4F92-8B4D-0734C71123E0"
+                },
+                "speed_": 39.599998474121097,
+                "blendAnimationOffset_secs_": 1000.0,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 27.0,
+                "isLoop_": false
+            }
+        }
+    },
+    "nodes_1": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483655,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483656,
+                            "data": {
                                 "value0": {
                                     "value_": "54903530-2536-40FD-AFAE-ADD9FA83EC13"
                                 }
@@ -101,17 +137,17 @@
             }
         }
     },
-    "nodes_1": {
+    "nodes_2": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483655,
+            "id": 2147483657,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483656,
+                            "id": 2147483658,
                             "data": {
                                 "value0": {
                                     "value_": "AA634F3B-C41E-47A3-8C65-5D6E21AA14C8"
@@ -137,17 +173,17 @@
             }
         }
     },
-    "nodes_2": {
+    "nodes_3": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483657,
+            "id": 2147483659,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483658,
+                            "id": 2147483660,
                             "data": {
                                 "value0": {
                                     "value_": "F3938945-BB80-48F7-9714-850573F51AB7"
@@ -164,7 +200,7 @@
                 "guid_": {
                     "value_": "D77E7B2E-EA2D-4068-A5FE-40CE14AFA277"
                 },
-                "speed_": 37.95000076293945,
+                "speed_": 45.540000915527347,
                 "blendAnimationOffset_secs_": 111111112360531590000.0,
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
@@ -173,17 +209,53 @@
             }
         }
     },
-    "nodes_3": {
+    "nodes_4": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483659,
+            "id": 2147483661,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483660,
+                            "id": 2147483662,
+                            "data": {
+                                "value0": {
+                                    "value_": "108E364C-3B2C-4735-94AF-5FC864721619"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "ChargeAttackRelease",
+                "position_": {
+                    "value0": 504.0,
+                    "value1": 132.0
+                },
+                "guid_": {
+                    "value_": "F2856C90-D403-4336-973C-E5FC88ECDAEF"
+                },
+                "speed_": 39.599998474121097,
+                "blendAnimationOffset_secs_": 1000.0,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 18.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true
+            }
+        }
+    },
+    "nodes_5": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483663,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483664,
                             "data": {
                                 "value0": {
                                     "value_": "9648682A-C1C6-45EE-BD64-7D0FD7D00F95"
@@ -209,17 +281,17 @@
             }
         }
     },
-    "nodes_4": {
+    "nodes_6": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483661,
+            "id": 2147483665,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483662,
+                            "id": 2147483666,
                             "data": {
                                 "value0": {
                                     "value_": "70CCDEF6-F5B7-4179-974E-ABDF6104D754"
@@ -245,17 +317,17 @@
             }
         }
     },
-    "nodes_5": {
+    "nodes_7": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483663,
+            "id": 2147483667,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483664,
+                            "id": 2147483668,
                             "data": {
                                 "value0": {
                                     "value_": "45D8A08E-B48B-4705-BE59-49BCCA3FD54D"
@@ -281,17 +353,53 @@
             }
         }
     },
-    "nodes_6": {
+    "nodes_8": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483665,
+            "id": 2147483669,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483666,
+                            "id": 2147483670,
+                            "data": {
+                                "value0": {
+                                    "value_": "9247047E-02C1-47FD-8951-EEE89838FA60"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Down",
+                "position_": {
+                    "value0": 720.0,
+                    "value1": 84.0
+                },
+                "guid_": {
+                    "value_": "66522AB7-1FB6-4D82-B1FB-76C8C5E02860"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 1000.0,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true
+            }
+        }
+    },
+    "nodes_9": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483671,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483672,
                             "data": {
                                 "value0": {
                                     "value_": "52E0652B-0F6A-49B7-91C4-9F9F488EAEA4"
@@ -308,7 +416,7 @@
                 "guid_": {
                     "value_": "B1950BBD-AAE7-44BB-93DB-7F2784694918"
                 },
-                "speed_": 41.79999923706055,
+                "speed_": 50.15999984741211,
                 "blendAnimationOffset_secs_": 9.090909004211426,
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
@@ -317,17 +425,17 @@
             }
         }
     },
-    "nodes_7": {
+    "nodes_10": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483667,
+            "id": 2147483673,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483668,
+                            "id": 2147483674,
                             "data": {
                                 "value0": {
                                     "value_": "A5D636D6-F437-4E02-8100-5AE36A4F6B91"
@@ -353,17 +461,17 @@
             }
         }
     },
-    "nodes_8": {
+    "nodes_11": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483669,
+            "id": 2147483675,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483670,
+                            "id": 2147483676,
                             "data": {
                                 "value0": {
                                     "value_": "75B78C7A-5ACB-40AB-AB95-DC235995C154"
@@ -389,17 +497,17 @@
             }
         }
     },
-    "nodes_9": {
+    "nodes_12": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483671,
+            "id": 2147483677,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483672,
+                            "id": 2147483678,
                             "data": {
                                 "value0": {
                                     "value_": "C4945163-085F-451E-9C39-2D094F28D175"
@@ -425,17 +533,17 @@
             }
         }
     },
-    "nodes_10": {
+    "nodes_13": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483673,
+            "id": 2147483679,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483674,
+                            "id": 2147483680,
                             "data": {
                                 "value0": {
                                     "value_": "C137C551-1695-4BB6-BFCC-D4B771133C07"
@@ -461,17 +569,17 @@
             }
         }
     },
-    "nodes_11": {
+    "nodes_14": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483675,
+            "id": 2147483681,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483676,
+                            "id": 2147483682,
                             "data": {
                                 "value0": {
                                     "value_": "09F9B0BA-8095-4B60-AF69-8FA08272FDDA"
@@ -497,17 +605,17 @@
             }
         }
     },
-    "nodes_12": {
+    "nodes_15": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483677,
+            "id": 2147483683,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483678,
+                            "id": 2147483684,
                             "data": {
                                 "value0": {
                                     "value_": "D1EE5057-EFF4-418D-87E7-09C47C813A79"
@@ -533,17 +641,17 @@
             }
         }
     },
-    "nodes_13": {
+    "nodes_16": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483679,
+            "id": 2147483685,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483680,
+                            "id": 2147483686,
                             "data": {
                                 "value0": {
                                     "value_": "4DA73311-9A16-410F-A29F-F0A2CC3072FD"
@@ -569,75 +677,147 @@
             }
         }
     },
-    "nodes_14": {
+    "nodes_17": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483681,
+            "id": 2147483687,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483682,
+                            "id": 2147483688,
                             "data": {
                                 "value0": {
-                                    "value_": "4BAFBE4E-6F53-4394-8CBA-51A57480CF56"
+                                    "value_": "454FE7F9-506A-4FBF-A518-773806F29E74"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "ChargeAttackCharging",
+                "name_": "FallDown",
                 "position_": {
-                    "value0": 504.0,
-                    "value1": 203.0
+                    "value0": 720.0,
+                    "value1": 13.0
                 },
                 "guid_": {
-                    "value_": "BF191CB3-4DD3-4F92-8B4D-0734C71123E0"
+                    "value_": "32722249-DD50-4948-98B6-BC8EA01A3922"
                 },
-                "speed_": 33.0,
+                "speed_": 30.0,
                 "blendAnimationOffset_secs_": 1000.0,
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
-                "clipEndTime_": 27.0,
+                "clipEndTime_": 0.0,
                 "isLoop_": false
             }
         }
     },
-    "nodes_15": {
+    "nodes_18": {
         "polymorphic_id": 2,
         "ptr_wrapper": {
-            "id": 2147483683,
+            "id": 2147483689,
             "data": {
                 "value0": {},
                 "animationFile_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483684,
+                            "id": 2147483690,
                             "data": {
                                 "value0": {
-                                    "value_": "108E364C-3B2C-4735-94AF-5FC864721619"
+                                    "value_": "BC2FF694-C30D-4F0F-BA2A-4100AA151FF5"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "ChargeAttackRelease",
+                "name_": "GetUp",
                 "position_": {
-                    "value0": 504.0,
-                    "value1": 132.0
+                    "value0": 720.0,
+                    "value1": 157.0
                 },
                 "guid_": {
-                    "value_": "F2856C90-D403-4336-973C-E5FC88ECDAEF"
+                    "value_": "8B8DE8C2-B129-4578-86B8-DD323BF3407F"
                 },
-                "speed_": 33.0,
+                "speed_": 30.0,
                 "blendAnimationOffset_secs_": 1000.0,
                 "modelAnimationIndex_": 0,
-                "clipStartTime_": 18.0,
+                "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
-                "isLoop_": true
+                "isLoop_": false
+            }
+        }
+    },
+    "nodes_19": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483691,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483692,
+                            "data": {
+                                "value0": {
+                                    "value_": "45C9E20C-21C3-4EB1-A227-B678F9C8F01F"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "JumpAttackAir",
+                "position_": {
+                    "value0": 720.0,
+                    "value1": 232.0
+                },
+                "guid_": {
+                    "value_": "7F9E2828-F08A-4905-A60C-3BD98F4DDE87"
+                },
+                "speed_": 45.0,
+                "blendAnimationOffset_secs_": 1000.0,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": false
+            }
+        }
+    },
+    "nodes_20": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483693,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483694,
+                            "data": {
+                                "value0": {
+                                    "value_": "C6F64F2A-E5B4-4929-8BF8-A2C9A870EACE"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "JumpAttackLand",
+                "position_": {
+                    "value0": 720.0,
+                    "value1": 305.0
+                },
+                "guid_": {
+                    "value_": "281834D9-FE5C-4F04-A46F-E32D6E8D8B81"
+                },
+                "speed_": 36.0,
+                "blendAnimationOffset_secs_": 1000.0,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": false
             }
         }
     },
@@ -645,7 +825,7 @@
     "fromNodeNodePath_0": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483685,
+            "id": 2147483695,
             "data": {
                 "cereal_class_version": 1,
                 "value0": {
@@ -673,11 +853,11 @@
             }
         }
     },
-    "fromAnyStateNodeNodePathCount": 16,
+    "fromAnyStateNodeNodePathCount": 21,
     "fromAnyStateNodeNodePath_0": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483686,
+            "id": 2147483696,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -689,7 +869,7 @@
                                 "polymorphic_id": 2147483651,
                                 "polymorphic_name": "NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<int>",
                                 "ptr_wrapper": {
-                                    "id": 2147483687,
+                                    "id": 2147483697,
                                     "data": {
                                         "cereal_class_version": 0,
                                         "value0": {
@@ -719,7 +899,7 @@
     "fromAnyStateNodeNodePath_1": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483688,
+            "id": 2147483698,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -730,7 +910,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483689,
+                                    "id": 2147483699,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -757,7 +937,7 @@
     "fromAnyStateNodeNodePath_2": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483690,
+            "id": 2147483700,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -768,7 +948,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483691,
+                                    "id": 2147483701,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -795,7 +975,7 @@
     "fromAnyStateNodeNodePath_3": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483692,
+            "id": 2147483702,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -806,7 +986,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483693,
+                                    "id": 2147483703,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -833,7 +1013,7 @@
     "fromAnyStateNodeNodePath_4": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483694,
+            "id": 2147483704,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -844,7 +1024,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483695,
+                                    "id": 2147483705,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -855,7 +1035,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.09090909361839295,
+                "transitionDuration_secs_": 0.07575760036706925,
                 "fromNodeGuid_": {
                     "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
                 },
@@ -871,7 +1051,7 @@
     "fromAnyStateNodeNodePath_5": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483696,
+            "id": 2147483706,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -882,7 +1062,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483697,
+                                    "id": 2147483707,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -893,7 +1073,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.27272728085517886,
+                "transitionDuration_secs_": 0.22727300226688386,
                 "fromNodeGuid_": {
                     "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
                 },
@@ -909,7 +1089,7 @@
     "fromAnyStateNodeNodePath_6": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483698,
+            "id": 2147483708,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -920,7 +1100,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483699,
+                                    "id": 2147483709,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -947,7 +1127,7 @@
     "fromAnyStateNodeNodePath_7": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483700,
+            "id": 2147483710,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -958,7 +1138,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483701,
+                                    "id": 2147483711,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -985,7 +1165,7 @@
     "fromAnyStateNodeNodePath_8": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483702,
+            "id": 2147483712,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -996,7 +1176,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483703,
+                                    "id": 2147483713,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -1023,7 +1203,7 @@
     "fromAnyStateNodeNodePath_9": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483704,
+            "id": 2147483714,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -1034,7 +1214,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483705,
+                                    "id": 2147483715,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -1061,7 +1241,7 @@
     "fromAnyStateNodeNodePath_10": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483706,
+            "id": 2147483716,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -1072,7 +1252,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483707,
+                                    "id": 2147483717,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -1099,7 +1279,7 @@
     "fromAnyStateNodeNodePath_11": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483708,
+            "id": 2147483718,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -1110,7 +1290,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483709,
+                                    "id": 2147483719,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -1137,7 +1317,7 @@
     "fromAnyStateNodeNodePath_12": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483710,
+            "id": 2147483720,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -1148,7 +1328,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483711,
+                                    "id": 2147483721,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -1175,7 +1355,7 @@
     "fromAnyStateNodeNodePath_13": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483712,
+            "id": 2147483722,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -1186,7 +1366,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483713,
+                                    "id": 2147483723,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -1213,7 +1393,7 @@
     "fromAnyStateNodeNodePath_14": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483714,
+            "id": 2147483724,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -1224,7 +1404,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483715,
+                                    "id": 2147483725,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -1235,7 +1415,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.15,
+                "transitionDuration_secs_": 0.125,
                 "fromNodeGuid_": {
                     "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
                 },
@@ -1251,7 +1431,7 @@
     "fromAnyStateNodeNodePath_15": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
-            "id": 2147483716,
+            "id": 2147483726,
             "data": {
                 "value0": {},
                 "additionConditionGroup_": {
@@ -1262,7 +1442,7 @@
                             "value1": {
                                 "polymorphic_id": 3,
                                 "ptr_wrapper": {
-                                    "id": 2147483717,
+                                    "id": 2147483727,
                                     "data": {
                                         "value0": {},
                                         "name_": "State",
@@ -1273,12 +1453,202 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.1,
+                "transitionDuration_secs_": 0.08333329856395722,
                 "fromNodeGuid_": {
                     "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
                 },
                 "nextNodeGuid_": {
                     "value_": "F2856C90-D403-4336-973C-E5FC88ECDAEF"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePath_16": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483728,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483729,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 40
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.10000000149011612,
+                "fromNodeGuid_": {
+                    "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
+                },
+                "nextNodeGuid_": {
+                    "value_": "32722249-DD50-4948-98B6-BC8EA01A3922"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePath_17": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483730,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483731,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 41
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.20000000298023225,
+                "fromNodeGuid_": {
+                    "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
+                },
+                "nextNodeGuid_": {
+                    "value_": "66522AB7-1FB6-4D82-B1FB-76C8C5E02860"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePath_18": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483732,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483733,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 42
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.10000000149011612,
+                "fromNodeGuid_": {
+                    "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
+                },
+                "nextNodeGuid_": {
+                    "value_": "8B8DE8C2-B129-4578-86B8-DD323BF3407F"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePath_19": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483734,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483735,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 13
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.10000000149011612,
+                "fromNodeGuid_": {
+                    "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
+                },
+                "nextNodeGuid_": {
+                    "value_": "7F9E2828-F08A-4905-A60C-3BD98F4DDE87"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePath_20": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483736,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483737,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 14
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.05999999865889549,
+                "fromNodeGuid_": {
+                    "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"
+                },
+                "nextNodeGuid_": {
+                    "value_": "281834D9-FE5C-4F04-A46F-E32D6E8D8B81"
                 },
                 "visualFromNodeGuid_": {
                     "value_": "ADD4B6AD-0E58-4C57-9406-1CB627AF0667"

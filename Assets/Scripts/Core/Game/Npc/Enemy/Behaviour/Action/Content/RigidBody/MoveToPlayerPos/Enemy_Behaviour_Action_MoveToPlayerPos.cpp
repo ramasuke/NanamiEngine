@@ -1,9 +1,8 @@
 ﻿#include "Enemy_Behaviour_Action_MoveToPlayerPos.h"
 
 #include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
+#include "../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../../../../PlayerAvatar/IPlayerAvatar.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -21,8 +20,8 @@ namespace GameCore::Npc::Enemy::Behaviour
 
         moveDirection = glm::normalize(moveDirection);
         glm::vec3 moveVelocity = moveDirection * moveSpeed_;
-        moveVelocity.y = Physics::GetLinearVelocity(context.EnemyCollider().BodyId()).y; 
-        Physics::SetLinearVelocity(context.EnemyCollider().BodyId(), moveVelocity);
+        moveVelocity.y = context.EnemyRigidBody().LinearVelocity().y; 
+        context.EnemyRigidBody().SetLinearVelocity(moveVelocity);
         context.EnemyAnimator().Param<int>(ANIMATOR_PARAM_NAME).Set(animationNumber_);
 
         return TickStatus::Running;

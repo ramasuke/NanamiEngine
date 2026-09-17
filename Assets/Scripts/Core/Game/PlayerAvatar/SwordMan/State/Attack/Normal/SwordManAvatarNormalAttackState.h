@@ -15,8 +15,12 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoExit() override;
 
         void TryComboAttack();
+        /** @brief その段の音を鳴らす。敵に当たったかどうかで打撃音と空振り音を鳴らし分ける */
+        void PlayComboAttackSe(bool isHit) const;
         void ChangeToMoveOrIdle();
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::ComboAttack; }
+        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Accept; }
+        void VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const override;
 
     private:
         int  currentCombo_ = 0;

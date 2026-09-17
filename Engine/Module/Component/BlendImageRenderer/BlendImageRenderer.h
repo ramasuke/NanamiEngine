@@ -13,6 +13,7 @@ namespace NanamiEngine::Module::NanamiUi
     public:
         void SetBlendRate(int blendRate);
         [[nodiscard]] int GetBlendRate() const { return blendRate_; }
+        void SetSprite(const std::weak_ptr<Asset::SpriteFile>& sprite);
 
     private:
         void InitRenderer         () override;

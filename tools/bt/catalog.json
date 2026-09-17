@@ -1,5 +1,5 @@
 {
-  "generated_from": "e39cf4bdf74ebab5c6b0aa5ee933e81badb9e989",
+  "generated_from": "765f7f3fbb8b7a1781ceee1aec274c5046da4bb1",
   "actions": {
     "Basic::ChasePlayerForPathFinding": {
       "class": "ChasePlayerForPathFinding",
@@ -514,6 +514,71 @@
         }
       ]
     },
+    "Hyena::CallAllies": {
+      "class": "CallAllies",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::CallAllies",
+      "leaf": "CallAllies",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Hyena/CallAllies/Enemy_Behaviour_Action_CallAllies.h",
+      "params": [
+        {
+          "key": "successRate_",
+          "member": "successRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "callRadius_",
+          "member": "callRadius_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "animatorSetParamNumber_",
+          "member": "animatorSetParamNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "howlSeconds_",
+          "member": "howlSeconds_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "alertKeyName_",
+          "member": "alertKeyName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "alertValue_",
+          "member": "alertValue_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "reDecideAfterSeconds_",
+          "member": "reDecideAfterSeconds_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "enemyFactory_",
+          "member": "enemyFactory_",
+          "named": true,
+          "shape": "field",
+          "type": "EnemyFactory"
+        },
+        {
+          "key": "howlSound_",
+          "member": "howlSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        }
+      ]
+    },
     "Other::Chat": {
       "class": "Chat",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::Chat",
@@ -705,7 +770,7 @@
           "member": "emotionType_",
           "named": true,
           "shape": "unknown",
-          "type": "EMotionType"
+          "type": "MotionType"
         },
         {
           "key": "colliders_",
@@ -919,6 +984,14 @@
         }
       ]
     },
+    "Ui::ShowBossHealthGauge": {
+      "class": "ShowBossHealthGauge",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ShowBossHealthGauge",
+      "leaf": "ShowBossHealthGauge",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Ui/ShowBossHealthGauge/Enemy_Behaviour_Action_ShowBossHealthGauge.h",
+      "params": []
+    },
     "Wait::Seconds::WaitSeconds": {
       "class": "WaitSeconds",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::WaitSeconds",
@@ -929,6 +1002,48 @@
         {
           "key": "waitSeconds_",
           "member": "waitSeconds_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "Weather::Lightning": {
+      "class": "Lightning",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::Lightning",
+      "leaf": "Lightning",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Weather/Lightning/Enemy_Behaviour_Action_Lightning.h",
+      "params": [
+        {
+          "key": "intensity_",
+          "member": "intensity_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "durationSeconds_",
+          "member": "durationSeconds_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "Weather::SetStorm": {
+      "class": "SetStorm",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::SetStorm",
+      "leaf": "SetStorm",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Weather/SetStorm/Enemy_Behaviour_Action_SetStorm.h",
+      "params": [
+        {
+          "key": "intensity_",
+          "member": "intensity_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "blendSeconds_",
+          "member": "blendSeconds_",
           "named": true,
           "shape": "float"
         }
@@ -983,6 +1098,7 @@
   },
   "by_fqn": {
     "GameCore::Npc::Enemy::Behaviour::Action::AddRotation": "Transform::Rotation::AddRotation",
+    "GameCore::Npc::Enemy::Behaviour::Action::CallAllies": "Hyena::CallAllies",
     "GameCore::Npc::Enemy::Behaviour::Action::ChangeColliderEmotionType": "RigidBody::ChangeEmotionType",
     "GameCore::Npc::Enemy::Behaviour::Action::ChangeIsGravity": "RigidBody::ChangeIsGravity",
     "GameCore::Npc::Enemy::Behaviour::Action::ChangeToMainIslandScene": "Scene::ChangeToMainIslandScene",
@@ -994,6 +1110,7 @@
     "GameCore::Npc::Enemy::Behaviour::Action::IsCurrentHealthRate": "EnemyStatus::Condition::IsCurrentHealthRate",
     "GameCore::Npc::Enemy::Behaviour::Action::IsOnDamage": "EnemyStatus::Condition::IsOnDamage",
     "GameCore::Npc::Enemy::Behaviour::Action::IsTargetInAttackArea": "EnemyStatus::Condition::IsTargetInAttackArea",
+    "GameCore::Npc::Enemy::Behaviour::Action::Lightning": "Weather::Lightning",
     "GameCore::Npc::Enemy::Behaviour::Action::MoveEventRoute": "RigidBody::MoveEventRoute",
     "GameCore::Npc::Enemy::Behaviour::Action::MoveToPlayerPos": "RigidBody::MoveToePlayerPos",
     "GameCore::Npc::Enemy::Behaviour::Action::OnDamage": "EnemyStatus::OnDamage",
@@ -1011,8 +1128,10 @@
     "GameCore::Npc::Enemy::Behaviour::Action::SampleMoveFront": "Other::Sample::MoveFront",
     "GameCore::Npc::Enemy::Behaviour::Action::ScenePurposeCamera": "Camera::ScenePurposeCamera",
     "GameCore::Npc::Enemy::Behaviour::Action::SetLinearVelocity": "RigidBody::SetLinearVelocity",
+    "GameCore::Npc::Enemy::Behaviour::Action::SetStorm": "Weather::SetStorm",
     "GameCore::Npc::Enemy::Behaviour::Action::ShakeCamera": "Camera::ShakeCamera",
     "GameCore::Npc::Enemy::Behaviour::Action::ShootDownAirShip": "RigidBody::Other::ShootDownAirShip",
+    "GameCore::Npc::Enemy::Behaviour::Action::ShowBossHealthGauge": "Ui::ShowBossHealthGauge",
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance": "Basic::ToPlayerDistance",
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerRaycast": "Basic::ToPlayerRaycast",
     "GameCore::Npc::Enemy::Behaviour::Action::WaitSeconds": "Wait::Seconds::WaitSeconds",
@@ -1022,6 +1141,7 @@
   },
   "by_leaf": {
     "AddRotation": "Transform::Rotation::AddRotation",
+    "CallAllies": "Hyena::CallAllies",
     "ChangeColliderEmotionType": "RigidBody::ChangeEmotionType",
     "ChangeIsGravity": "RigidBody::ChangeIsGravity",
     "ChangeToMainIslandScene": "Scene::ChangeToMainIslandScene",
@@ -1033,6 +1153,7 @@
     "IsCurrentHealthRate": "EnemyStatus::Condition::IsCurrentHealthRate",
     "IsOnDamage": "EnemyStatus::Condition::IsOnDamage",
     "IsTargetInAttackArea": "EnemyStatus::Condition::IsTargetInAttackArea",
+    "Lightning": "Weather::Lightning",
     "MoveEventRoute": "RigidBody::MoveEventRoute",
     "MoveToPlayerPos": "RigidBody::MoveToePlayerPos",
     "OnDamage": "EnemyStatus::OnDamage",
@@ -1050,8 +1171,10 @@
     "SampleMoveFront": "Other::Sample::MoveFront",
     "ScenePurposeCamera": "Camera::ScenePurposeCamera",
     "SetLinearVelocity": "RigidBody::SetLinearVelocity",
+    "SetStorm": "Weather::SetStorm",
     "ShakeCamera": "Camera::ShakeCamera",
     "ShootDownAirShip": "RigidBody::Other::ShootDownAirShip",
+    "ShowBossHealthGauge": "Ui::ShowBossHealthGauge",
     "ToPlayerDistance": "Basic::ToPlayerDistance",
     "ToPlayerRaycast": "Basic::ToPlayerRaycast",
     "WaitSeconds": "Wait::Seconds::WaitSeconds",

@@ -8,6 +8,7 @@
 #include "../../../../Scripts/Core/Game/PlayerAvatar/Status/EnahancePower/EnhancePower.h"
 #include "../../../../Scripts/Core/Game/PlayerAvatar/SwordMan/Status/Quest/SwordMan_QuestGroup.h"
 #include "../../../../Scripts/Core/Game/StatusParameter/Health/Health.h"
+#include "../../../../Scripts/Core/Game/StatusParameter/Money/Money.h"
 #include "../../../../Scripts/Core/Game/StatusParameter/MoveSpeed/MoveSpeed.h"
 #include "../../../../Scripts/Core/Game/StatusParameter/Stamina/Stamina.h"
 
@@ -48,18 +49,19 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] float                                ChargeAttackStaminaCost       () const { return chargeAttackStaminaCost_; }
         [[nodiscard]] GameCore::StatusParameter::MoveSpeed GetWalkSpeed        () const { return walkSpeed_;                }
         [[nodiscard]] GameCore::StatusParameter::MoveSpeed GetRunSpeed         () const { return runSpeed_ ;                }
-        [[nodiscard]] float                                WalkAccelerationTime_secs() const { return walkAccelerationTime_secs_; }
-        [[nodiscard]] float                                RunAccelerationTime_secs () const { return runAccelerationTime_secs_;  }
         [[nodiscard]] float                                GetMoveRotateSpeed  () const { return moveRotateSpeed_;          }
         [[nodiscard]] float                                GetLockOnAttackRotateSpeed() const { return lockOnAttackRotateSpeed_; }
+        [[nodiscard]] float                                AttackRotateSmoothTime_secs() const { return attackRotateSmoothTime_secs_; }
         [[nodiscard]] float                                GetJumpPower           () const { return jumpPower_;                }
         [[nodiscard]] float                                GetJumpStateDuration_secs() const { return jumpStateDuration_secs_; }
         [[nodiscard]] float                                JumpCooldown_secs      () const { return jumpCooldown_secs_;        }
+        [[nodiscard]] float                                JumpStaminaCost        () const { return jumpStaminaCost_;          }
         [[nodiscard]] float                                DamageStateDuration_secs       () const { return damageStateDuration_secs_; }
         [[nodiscard]] float                                AvoidRollingStateDuration_secs () const { return avoidRollingStateDuration_secs_; }
         [[nodiscard]] float                                AvoidRollingStaminaCost        () const { return avoidRollingStaminaCost_; }
         [[nodiscard]] float                                DeathStateDuration_secs        () const { return deathStateDuration_secs_; }
         [[nodiscard]] float                                GetInjuredHealthRatio          () const { return injuredHealthRatio_; }
+        [[nodiscard]] const GameCore::StatusParameter::Money& InitialMoney                 () const { return initialMoney_; }
 
     private:
         [[serialize(0)]] std::unique_ptr<GameCore::PlayerAvatar::SwordMan::QuestGroup> quests_;
@@ -92,18 +94,19 @@ namespace NanamiEngine::Module::Asset
         
         [[serialize(0)]] GameCore::StatusParameter::MoveSpeed walkSpeed_;
         [[serialize(0)]] GameCore::StatusParameter::MoveSpeed runSpeed_ ;
-        [[serialize(13)]] float                               walkAccelerationTime_secs_; ///< 0から最高速に達するまでの時間
-        [[serialize(13)]] float                               runAccelerationTime_secs_;
         [[serialize(0)]] float                                moveRotateSpeed_;
-        [[serialize(8)]] float                                lockOnAttackRotateSpeed_; ///< 攻撃の予備動作中にロックオン対象へ向く回転速度 [rad/s]
+        [[serialize(8)]] float                                lockOnAttackRotateSpeed_; 
+        [[serialize(16)]] float                               attackRotateSmoothTime_secs_;
         [[serialize(0)]]  float                               jumpPower_;
         [[serialize(11)]] float                               jumpStateDuration_secs_;
         [[serialize(11)]] float                               jumpCooldown_secs_;
+        [[serialize(15)]] float                               jumpStaminaCost_;
         [[serialize(0)]] float                                damageStateDuration_secs_;
         [[serialize(0)]] float                                avoidRollingStateDuration_secs_;
         [[serialize(7)]] float                                avoidRollingStaminaCost_;
         [[serialize(0)]] float                                deathStateDuration_secs_;
         [[serialize(5)]] float                                injuredHealthRatio_ = 0.3f;
+        [[serialize(19)]] GameCore::StatusParameter::Money     initialMoney_;
 
 
 #pragma region Serialization Function
@@ -138,19 +141,20 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(chargeAttackStaminaCost_));
             archive(CEREAL_NVP(walkSpeed_));
             archive(CEREAL_NVP(runSpeed_));
-            archive(CEREAL_NVP(walkAccelerationTime_secs_));
-            archive(CEREAL_NVP(runAccelerationTime_secs_));
             archive(CEREAL_NVP(moveRotateSpeed_));
             archive(CEREAL_NVP(lockOnAttackRotateSpeed_));
+            archive(CEREAL_NVP(attackRotateSmoothTime_secs_));
             archive(CEREAL_NVP(jumpPower_));
             archive(CEREAL_NVP(jumpStateDuration_secs_));
             archive(CEREAL_NVP(jumpCooldown_secs_));
+            archive(CEREAL_NVP(jumpStaminaCost_));
             archive(CEREAL_NVP(damageStateDuration_secs_));
             archive(CEREAL_NVP(avoidRollingStateDuration_secs_));
             archive(CEREAL_NVP(avoidRollingStaminaCost_));
             archive(CEREAL_NVP(deathStateDuration_secs_));
             archive(CEREAL_NVP(injuredHealthRatio_));
             archive(CEREAL_NVP(quests_));
+            archive(CEREAL_NVP(initialMoney_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
@@ -168,6 +172,9 @@ namespace NanamiEngine::Module::Asset
             if (version >= 0) archive(CEREAL_NVP(dashAttack_));
             if (version >= 9) archive(CEREAL_NVP(dashAttackLungeSpeed_));
             if (version >= 10) archive(CEREAL_NVP(comboHitFeel_));
+            // v17 のみ保持していた旧フィールド(HitFeelParam へ移動)を読み捨てる
+            std::vector<float> comboAttackLungeSpeeds_;
+            if (version == 17) archive(CEREAL_NVP(comboAttackLungeSpeeds_));
             if (version >= 10) archive(CEREAL_NVP(dashHitFeel_));
             if (version >= 10) archive(CEREAL_NVP(comboInputBufferWindow_secs_));
             if (version >= 12) archive(CEREAL_NVP(chargeAttackHoldThreshold_secs_));
@@ -180,19 +187,24 @@ namespace NanamiEngine::Module::Asset
             if (version >= 12) archive(CEREAL_NVP(chargeAttackStaminaCost_));
             if (version >= 0) archive(CEREAL_NVP(walkSpeed_));
             if (version >= 0) archive(CEREAL_NVP(runSpeed_));
-            if (version >= 13) archive(CEREAL_NVP(walkAccelerationTime_secs_));
-            if (version >= 13) archive(CEREAL_NVP(runAccelerationTime_secs_));
+            float walkAccelerationTime_secs_ = 0.0f;
+            float runAccelerationTime_secs_  = 0.0f;
+            if (version == 13) archive(CEREAL_NVP(walkAccelerationTime_secs_));
+            if (version == 13) archive(CEREAL_NVP(runAccelerationTime_secs_));
             if (version >= 0) archive(CEREAL_NVP(moveRotateSpeed_));
             if (version >= 8) archive(CEREAL_NVP(lockOnAttackRotateSpeed_));
+            if (version >= 16) archive(CEREAL_NVP(attackRotateSmoothTime_secs_));
             if (version >= 0) archive(CEREAL_NVP(jumpPower_));
             if (version >= 11) archive(CEREAL_NVP(jumpStateDuration_secs_));
             if (version >= 11) archive(CEREAL_NVP(jumpCooldown_secs_));
+            if (version >= 15) archive(CEREAL_NVP(jumpStaminaCost_));
             if (version >= 0) archive(CEREAL_NVP(damageStateDuration_secs_));
             if (version >= 3) archive(CEREAL_NVP(avoidRollingStateDuration_secs_));
             if (version >= 7) archive(CEREAL_NVP(avoidRollingStaminaCost_));
             if (version >= 0) archive(CEREAL_NVP(deathStateDuration_secs_));
             if (version >= 5) archive(CEREAL_NVP(injuredHealthRatio_));
             if (version >= 0) archive(CEREAL_NVP(quests_));
+            if (version >= 19) archive(CEREAL_NVP(initialMoney_));
         }
 #pragma endregion
     };
@@ -200,7 +212,7 @@ namespace NanamiEngine::Module::Asset
 
 REGISTER_SCRIPTABLE_OBJECT(SwordManInitStatus, SWORD_MAN_INIT_STATUS_EXTENSION_LABEL)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 13);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 19);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManInitStatus);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManInitStatus);
 #pragma endregion

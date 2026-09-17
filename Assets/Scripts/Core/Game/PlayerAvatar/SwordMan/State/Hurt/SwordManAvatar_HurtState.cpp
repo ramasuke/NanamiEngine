@@ -1,6 +1,5 @@
 ﻿#include "SwordManAvatar_HurtState.h"
 
-#include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "../../../../../../GamePlay/Ui/PlayerStatus/Ui_DamageFlash.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
@@ -10,40 +9,40 @@ void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoEnter()
     NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::ShakeMainCamera();
     GamePlay::Ui::DamageFlashUI::FlashMainScreen();
 
-    Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
+    HoldHorizontalVelocity();
     Status().ApplyDamage();
     StatusEvent().InvokeOnDamage(Status().Health());
 
     if (Status().IsDeath())
-        OnChangeState(SwordManAvatarStateType::Down);
+        OnChangeState(SwordManAvatarStateType::FallDown);
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoFixedUpdate()
 {
-    
+    HoldHorizontalVelocity();
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoUpdate()
 {
     Status().DiscardDamage();
-    
-    if (During_secs() >= Status().DamageStateDuration_secs())
-    {
-        if (!Input().Move().IsUpdatePressed())
-            OnChangeState(SwordManAvatarStateType::Idle);
-        if (Input().Move().IsUpdatePressed())
-            OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk);
-        if (Input().Run().IsUpdatePressed() && Status().CanRun())
-            OnChangeState(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run);
-        if (Input().Jump().IsPressed() && Status().CanJump())
-            OnChangeState(SwordManAvatarStateType::Jump);
-        if (Input().AvoidRolling().IsPressed() && Status().CanAvoidRolling())
-            OnChangeState(SwordManAvatarStateType::AvoidRolling);
-        if (Input().NormalAttack().IsPressed())
-            OnChangeState(SwordManAvatarStateType::NormalAttack);
-        if (!Conditions().IsGround())
-            OnChangeState(SwordManAvatarStateType::Floating);
-    }
+
+    UpdateTransitions();
+}
+
+void GameCore::PlayerAvatar::SwordMan::State::HurtState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const
+{
+    if (During_secs() < Status().DamageStateDuration_secs())
+        return;
+
+    visitor.OnInput(SwordManAvatarStateType::Idle, SwordManAvatarInput::Move, SwordManAvatarInputPhase::NotHolding, true);
+    visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk,
+                    SwordManAvatarInput::Move, SwordManAvatarInputPhase::Holding, true);
+    visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run,
+                    SwordManAvatarInput::Run, SwordManAvatarInputPhase::Holding, Status().CanRun());
+    visitor.OnInput(SwordManAvatarStateType::Jump, SwordManAvatarInput::Jump, SwordManAvatarInputPhase::Pressed, Status().CanJump());
+    visitor.OnInput(SwordManAvatarStateType::AvoidRolling, SwordManAvatarInput::AvoidRolling, SwordManAvatarInputPhase::Pressed, Status().CanAvoidRolling());
+    visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, SwordManAvatarInputPhase::Pressed, true);
+    visitor.Automatic(SwordManAvatarStateType::Floating, !Conditions().IsGround());
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::HurtState::DoExit()

@@ -5,19 +5,26 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 3,
+                "cereal_class_version": 4,
                 "value0": {
                     "cereal_class_version": 0
                 },
                 "fontName_": "怨霊",
                 "size_": 60,
                 "thickness_": 2,
-                "fontType_": 2,
+                "fontType_": 3,
                 "guid_": {
                     "cereal_class_version": 0,
                     "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
                 },
-                "contentPath_": "Assets\\Art\\Font\\onryou.ttf"
+                "contentPath_": "Assets\\Art\\Font\\onryou.ttf",
+                "edgeSize_": 3,
+                "edgeColor_": {
+                    "cereal_class_version": 0,
+                    "r_": 6,
+                    "g_": 20,
+                    "b_": 26
+                }
             }
         }
     }

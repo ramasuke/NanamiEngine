@@ -1,10 +1,8 @@
 ﻿#include "Friendly_Behaviour_Action_MoveForRoute.h"
 
-#include "../../../../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 #include "../../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
-#include "../../../../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
+#include "../../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "gtc/quaternion.hpp"
 
 namespace
@@ -65,7 +63,7 @@ namespace GameCore::Npc::Friendly::Behaviour
 {
     TickStatus Action::MoveForRoute::DoTick(const TickContext& context)
     {
-        const JPH::BodyID& bodyId = context.NpcCollider().BodyId();
+        const auto& rigidBody = context.NpcRigidBody();
 
         const auto& route = moveRoute_->Get();
         if (route.empty())
@@ -85,7 +83,7 @@ namespace GameCore::Npc::Friendly::Behaviour
 
             if (currentRouteIndex_ >= static_cast<int>(route.size()))
             {
-                Physics::SetLinearVelocity(bodyId, glm::vec3(0.0f));
+                rigidBody.SetLinearVelocity(glm::vec3(0.0f));
                 currentRouteIndex_ = 0;
                 return TickStatus::Success;
             }
@@ -103,11 +101,11 @@ namespace GameCore::Npc::Friendly::Behaviour
         // 移動
         const glm::vec3 moveDir = glm::normalize(toTarget);
 
-        glm::vec3 velocity = Physics::GetLinearVelocity(bodyId);
+        glm::vec3 velocity = rigidBody.LinearVelocity();
         velocity.x = moveDir.x * moveSpeed_;
         velocity.z = moveDir.z * moveSpeed_;
 
-        Physics::SetLinearVelocity(bodyId, velocity);
+        rigidBody.SetLinearVelocity(velocity);
 
         return TickStatus::Running;
     }

@@ -31,4 +31,29 @@ namespace GameCore::PlayerAvatar::SwordMan
     {
         onAvoidRolling_.get_subscriber().on_next(LibCore::Rx::unit{});
     }
+
+    void StatusEvent::InvokeOnMove() const
+    {
+        onMove_.get_subscriber().on_next(LibCore::Rx::unit{});
+    }
+
+    void StatusEvent::InvokeOnJump() const
+    {
+        onJump_.get_subscriber().on_next(LibCore::Rx::unit{});
+    }
+
+    void StatusEvent::InvokeChargeAttack() const
+    {
+        onChargeAttack_.get_subscriber().on_next(LibCore::Rx::unit{});
+    }
+
+    void StatusEvent::InvokeJumpAttack() const
+    {
+        onJumpAttack_.get_subscriber().on_next(LibCore::Rx::unit{});
+    }
+
+    void StatusEvent::InvokeOnLockOn() const
+    {
+        onLockOn_.get_subscriber().on_next(LibCore::Rx::unit{});
+    }
 }

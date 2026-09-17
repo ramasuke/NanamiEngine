@@ -19,21 +19,25 @@ from pathlib import Path
 from tools.common import meta_base as _base
 from tools.common.meta_base import MetaSpec
 
-ASSET_FQN = "NanamiEngine::Module::Asset::ParticleFile"
+from . import config
+
 DATA_EXT = ".efkefc"
 META_EXT = ".efkefc.meta"
-DEFAULT_DIR = "Assets/Art/Effect"
 
-_SPEC = MetaSpec(
-    asset_fqn=ASSET_FQN,
-    data_ext=DATA_EXT,
-    meta_ext=META_EXT,
-    default_dir=DEFAULT_DIR,
-    outer_class_version=1,
-    # ParticleFile::save/load base_class<>()s both AssetBase and
-    # LifeCycleCallback::IEnablableAsset -> two empty valueN wrappers, not one.
-    base_class_count=2,
-)
+
+def _spec() -> MetaSpec:
+    cfg = config.get()
+    return MetaSpec(
+        asset_fqn=cfg.meta_asset_type,
+        data_ext=DATA_EXT,
+        meta_ext=META_EXT,
+        default_dir=cfg.effect_dir_rel,
+        outer_class_version=1,
+        # ParticleFile::save/load base_class<>()s both AssetBase and
+        # LifeCycleCallback::IEnablableAsset -> two empty valueN wrappers, not one.
+        base_class_count=2,
+    )
+
 
 mint_guid = _base.mint_guid
 
@@ -48,9 +52,10 @@ def content_path_for(name: str, target_dir: Path, repo_root: Path) -> str:
     ``tktk2/Gun6``) uses an **all-backslash** path with no exception - so this
     binding doesn't delegate to the generic fallback.
     """
+    spec = _spec()
     for sib in sorted(target_dir.glob("*" + META_EXT)):
         try:
-            cp = _base.read_meta(_SPEC, sib)["content_path"]
+            cp = _base.read_meta(spec, sib)["content_path"]
         except Exception:  # noqa: BLE001
             continue
         prefix = cp.rsplit("\\", 1)[0] if "\\" in cp else cp.rsplit("/", 1)[0]
@@ -59,17 +64,17 @@ def content_path_for(name: str, target_dir: Path, repo_root: Path) -> str:
         rel = target_dir.resolve().relative_to(repo_root.resolve())
         dir_bs = str(rel).replace("/", "\\")
     except ValueError:
-        dir_bs = DEFAULT_DIR.replace("/", "\\")
+        dir_bs = spec.default_dir.replace("/", "\\")
     return f"{dir_bs}\\{name}{DATA_EXT}"
 
 
 def render_meta(name: str, guid: str, content_path: str) -> str:
-    return _base.render_meta(_SPEC, name, guid, content_path)
+    return _base.render_meta(_spec(), name, guid, content_path)
 
 
 def write_meta(path: Path, name: str, guid: str, content_path: str) -> None:
-    _base.write_meta(_SPEC, path, name, guid, content_path)
+    _base.write_meta(_spec(), path, name, guid, content_path)
 
 
 def read_meta(path: Path) -> dict:
-    return _base.read_meta(_SPEC, path)
+    return _base.read_meta(_spec(), path)

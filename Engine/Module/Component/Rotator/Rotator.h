@@ -7,6 +7,10 @@ namespace NanamiEngine::Module::Component
 	class Rotator final : public ComponentBase,
 						  public LifeCycleCallback::IUpdatable
 	{
+	public:
+		void SetRotateSpeedDegPerSec(const float speed) { rotateSpeedDegPerSec_ = speed; }
+		[[nodiscard]] float GetRotateSpeedDegPerSec() const { return rotateSpeedDegPerSec_; }
+
 	private:
 		void OnUpdate() override;
 

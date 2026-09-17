@@ -5,6 +5,11 @@
 #include "../../../../Object/Field/Field.h"
 #include "../../../../../Module/Asset/MV1/MV1File.h"
 
+namespace NanamiEngine::Core::Application::AutoMcp
+{
+    class AutoMcpEngineAccess;
+}
+
 namespace NanamiEngine::Core::MainWindow
 {
     /**
@@ -16,6 +21,8 @@ namespace NanamiEngine::Core::MainWindow
      */
     class AnimationPreviewSlot final
     {
+        friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
+
     public:
         AnimationPreviewSlot() = default;
         ~AnimationPreviewSlot();

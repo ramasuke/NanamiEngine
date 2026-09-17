@@ -37,10 +37,12 @@ void GameObject::AddComponent::OnDrawRendererGui(std::shared_ptr<Component::Comp
         OnDrawTryAddComponentGui<Component::ModelRenderer  >(addComponent);
         OnDrawTryAddComponentGui<Component::QuadRenderer   >(addComponent);
         OnDrawTryAddComponentGui<Component::Animator       >(addComponent);
+        OnDrawTryAddComponentGui<Component::BoneSync       >(addComponent);
         OnDrawTryAddComponentGui<Component::ParticleSystem >(addComponent);
         OnDrawTryAddComponentGui<Component::DirectionLight >(addComponent);
         OnDrawTryAddComponentGui<Component::SkyDome3D      >(addComponent);
         OnDrawTryAddComponentGui<Component::Rotator        >(addComponent);
+        OnDrawTryAddComponentGui<Component::CameraFollowTransform>(addComponent);
         ImGui::TreePop();
         ImGui::Spacing();
     }
@@ -82,6 +84,7 @@ void GameObject::AddComponent::OnDrawColliderGui(std::shared_ptr<Component::Comp
 {
     if (ImGui::TreeNode("Collider"))
     {
+        OnDrawTryAddComponentGui<Component::RigidBody         >(addComponent);
         OnDrawTryAddComponentGui<Component::BoxCollider       >(addComponent);
         OnDrawTryAddComponentGui<Component::SphereCollider    >(addComponent);
         OnDrawTryAddComponentGui<Component::CapsuleCollider   >(addComponent);
@@ -181,6 +184,9 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             OnDrawTryAddComponentGui<GamePlay::Ui::StageSelectStageUi>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::StageSelectPresenter>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::StageMapMarker>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::StageDifficultyPips>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::LoadingScreenUi>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::LoadingHintCard>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::DealDamageTextBillBoard>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::OtherPlayerStatusUiGroup>(addComponent);
             ImGui::TreePop();
@@ -252,6 +258,13 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             OnDrawTryAddComponentGui<GamePlay::Prop::Canon          >(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::IslandPedestial>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::DestructibleObject>(addComponent);
+            if (ImGui::TreeNode("Grass"))
+            {
+                OnDrawTryAddComponentGui<GamePlay::Prop::Grassable    >(addComponent);
+                OnDrawTryAddComponentGui<GamePlay::Prop::GrassRenderer>(addComponent);
+                ImGui::TreePop();
+                ImGui::Spacing();
+            }
             ImGui::TreePop();
             ImGui::Spacing();
         }
@@ -260,6 +273,13 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             OnDrawTryAddComponentGui<GamePlay::Prop::ProximityReveal     >(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::LatticeBarrierEffect>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::CloudEffect         >(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Prop::TreeLeafSway        >(addComponent);
+            ImGui::TreePop();
+            ImGui::Spacing();
+        }
+        if (ImGui::TreeNode("Environment"))
+        {
+            OnDrawTryAddComponentGui<GamePlay::Weather::WindZone>(addComponent);
             ImGui::TreePop();
             ImGui::Spacing();
         }

@@ -7,6 +7,11 @@
 #include "../Preview/ModelPreviewStage.h"
 #include "../../../../../Module/Asset/MV1/MV1File.h"
 
+namespace NanamiEngine::Core::Application::AutoMcp
+{
+    class AutoMcpEngineAccess;
+}
+
 namespace NanamiEngine::Core::MainWindow
 {
     /**
@@ -18,6 +23,8 @@ namespace NanamiEngine::Core::MainWindow
      */
     class ModelViewWindow final : public MainWindowBase<Module::Asset::Mv1File>
     {
+        friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
+
     public:
         ModelViewWindow();
         void AddContent(const std::shared_ptr<Module::Asset::Mv1File>& content) override;

@@ -13,6 +13,7 @@ from typing import Any
 
 from tools.common.cereal_json import read_text, to_file_bytes
 
+from . import catalog as catalog_mod
 from . import edits, model, reader, validate, writer
 
 
@@ -34,14 +35,20 @@ def _validate(target: Any, kind: str) -> list[str]:
 
 
 def _commit(path: Path, target: Any, kind: str, orig_text: str, *, dry_run: bool) -> int:
-    problems = _validate(target, kind)
+    # The class-version audit replays cereal's once-per-type bookkeeping over the
+    # *rendered* file, so it only works on the text - and a new Field<T> blob
+    # deliberately carries no version key (see edits.field_blob), which is fatal
+    # when the edit happens to land on that T's first occurrence. Render first so
+    # the audit runs here rather than waiting for a separate `validate` run.
+    new_text = _dump(target, kind)
+    problems = (_validate(target, kind)
+                + validate.validate_class_versions(new_text, catalog_mod.load()))
     hard = [p for p in problems if not p.startswith("note:")]
     for p in problems:
-        print(("note: " if p.startswith("note:") else "FAIL: ") + p)
+        print(p if p.startswith("note:") else "FAIL: " + p)
     if hard:
         print("validation failed - nothing written")
         return 1
-    new_text = _dump(target, kind)
     if dry_run:
         diff = difflib.unified_diff(
             orig_text.splitlines(keepends=True), new_text.splitlines(keepends=True),

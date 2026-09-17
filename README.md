@@ -78,8 +78,8 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
 - **FileSystem** — `Directory`/`File` と、Projectウィンドウからのドラッグ&ドロップを扱う
   `EditorDraggingHand`。
 - **Object** — 全オブジェクトの基底 `IObject`、guid→オブジェクトの弱参照テーブル `ObjectRegistry`、
-  アセットやGameObjectをguidで参照するシリアライズ可能な参照型 `Field<T>`（`FIELD(T)` マクロ）と、
-  Prefab内の子オブジェクトを名前で解決する `PrefabObjectField<T>`（`PREFAB_FIELD(T)` マクロ）。
+  アセット・GameObject・Componentをguidで参照するシリアライズ可能な参照型 `Field<T>`（`FIELD(T)` マクロ）。
+  Prefab内の子オブジェクトもこれで参照する（Instantiate 時は `GuidRemap` が複製先の guid に貼り替える）。
 - **Network** — enet ラッパーとネットワークオブジェクト基盤（詳細は「ネットワークアーキテクチャ」）。
 
 `Engine/Module` 配下の主なサブシステム:
@@ -157,7 +157,7 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
   リファクタ済み）、`Status`、`Wakeable`（ダウン状態からの蘇生 `IPlayerWakeable`）、`SwordMan` などの
   サブフォルダ。`SwordMan/State/` には `Idle`/`Walk`/`Run`/`Jump`/`Attack`/`AvoidRolling`/`Hurt`/
   `Down`/`WakeUp`/`Death`/`UseCanon`/`ClimbToTop` などのステートがあります。
-- **`Core/Game/Npc/Enemy/`** — 敵の基底 `EnemyBase`、ステータス、`Behaviour/`（BehaviourTree実行時）。
+- **`Core/Game/Npc/Enemy/`** — 敵の基底 `EnemyBase`、ボス共通の基底 `Boss/BossEnemyBase`（ボスHPゲージ）、ステータス、`Behaviour/`（BehaviourTree実行時）。
   `Behaviour/Action/Content/` はActionリーフをカテゴリ別に整理しています:
   `Basic`（`ChasePlayerForPathFinding`、`ToPlayerDistance`、`ToPlayerRaycast`、`WanderMove`）、
   `Camera`（`PurposeCamera`、`ScenePurposeCamera`、`ShakeCamera`）、`EnemyStatus`（`Attack`、
@@ -285,7 +285,7 @@ enet(UDP) 上に構築されたクライアント/サーバー型モデルです
 **（AIエージェント向け）ユーザーから明示的に指示されない限り、自発的にビルドを実行しないこと。**
 
 ```
-MSBuild.exe NanamiEngine.sln -p:Configuration=Debug -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m
+MSBuild.exe NanamiEngine.sln -p:Configuration=Debug -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12
 ```
 
 `-p:PreferredToolArchitecture=x64` は必須です。32bitコンパイラだと cereal の深いテンプレート
@@ -392,8 +392,14 @@ python -m tools.effect set-params FILE ...
 python -m tools.effect apply FILE OPS.json
 python -m tools.effect compile FILE           # .efkproj -> .efkefc（Effekseer 1.7.3.0 CUI、環境固有）
 python -m tools.effect install EFKEFC --dest Assets/Art/Effect/<Sub>/<Name>.efkefc [--project]
+python -m tools.effect check-env              # effect_config.json の設定内容とCUIの有無を表示
+python -m tools.effect export --out DIR       # 公開リポジトリ用に配布ファイルだけをコピー
 python tools/effect/selftest.py
 ```
+
+Effekseer CUI のパスやインストール先など環境・プロジェクトごとに変わる値は `tools/effect/effect_config.json`
+で設定します。このツールは単体でも [EffekseerEfkprojTool](https://github.com/ramasuke/EffekseerEfkprojTool)
+として公開しており（`export` で同期）、導入手順は **`tools/effect/SETUP.md`** にあります。
 
 モデル化されているのは `Sprite`/`Ring`/`Ribbon`/`Model`/`Track` の各ノード種別と、`SoundValues`/
 `LocationAbsValues`（重力・引力）ブロック。FCurve（キーフレーム）系やプロジェクトルートのカメラ/ビューア
@@ -430,7 +436,7 @@ python tools/art/boss_health_gauge.py [--out-dir Assets/Art/UI/BossHealth] [--pr
 python tools/art/npc_chat_icons.py [--out-dir Assets/Art/UI] [--rim-sweep]
 ```
 
-ボス体力ゲージ（`BossHealthGauge` が描くクリスタルクラウン型のクレスト/シャード）と、NPC頭上アイコン
+ボス体力ゲージ（`BossHealthGaugeUI` プレハブのクリスタルクラウン型のクレスト/シャード）と、NPC頭上アイコン
 （`SurpriseMark`/`ChattableIcon`/`ChatIcon`、`--rim-sweep` で光が縁を走るスプライトシート）の `.png` を
 SDFベースで生成し、`SpriteFile` の `.png.meta` も出力します（既存の `.meta` はguidを維持するので
 再生成しても参照は壊れません）。`Pillow` と `numpy` が必要です。
@@ -491,7 +497,7 @@ Jolt (`Jolt/Jolt.h`)、glm (`vec2.hpp`/`vec3.hpp`/`fwd.hpp`)、および C++20 �
 **Python ツール**: `tools/scene`・`tools/bt`・`tools/animtree`・`tools/effect` は標準ライブラリのみで
 動作します。`tools/model convert` は `pywinauto`、`tools/art` は `Pillow`/`numpy` が必要です。
 `tools/effect compile` と `tools/model convert` はローカルにインストールされた Effekseer 1.7.3.0 /
-DxLibModelViewer（リポジトリ非同梱）を使います。
+DxLibModelViewer（リポジトリ非同梱）を使います（Effekseer のパスは `tools/effect/effect_config.json` で設定）。
 
 ## 開発状況
 

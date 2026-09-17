@@ -67,7 +67,7 @@
         "ptr_wrapper": {
             "id": 2147483653,
             "data": {
-                "cereal_class_version": 2,
+                "cereal_class_version": 3,
                 "value0": {},
                 "animationFile_": {
                     "cereal_class_version": 0,
@@ -94,7 +94,10 @@
                 },
                 "speed_": 30.0,
                 "blendAnimationOffset_secs_": 100000000376832.0,
-                "modelAnimationIndex_": 0
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true
             }
         }
     },
@@ -127,7 +130,10 @@
                 },
                 "speed_": 30.0,
                 "blendAnimationOffset_secs_": 100000000376832.0,
-                "modelAnimationIndex_": 0
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true
             }
         }
     },

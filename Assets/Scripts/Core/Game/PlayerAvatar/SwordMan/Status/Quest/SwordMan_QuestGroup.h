@@ -4,8 +4,10 @@
 #include <cstdint>
 
 #include "SwordMan_ITakeableSwordManQuest.h"
+#include "../ControlGuideFocus/SwordMan_IControlGuideFocusRequest.h"
 #include "../../../Quest/PlayerAvatar_IQuestGroup.h"
 #include "../../../Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
+#include "../../../Wallet/PlayerAvatar_Wallet.h"
 #include "cereal/cereal.hpp"
 
 namespace GameCore::PlayerAvatar::SwordMan
@@ -18,7 +20,9 @@ namespace GameCore::PlayerAvatar::SwordMan
             const std::vector<std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>>& quests = {});
         ~QuestGroup() override;
 
-        void Init(const std::shared_ptr<IObservableStatusEvent>& event);
+        void Init(const std::shared_ptr<IObservableStatusEvent>& event,
+                  const std::shared_ptr<IControlGuideFocusRequest>& guideFocus,
+                  const std::shared_ptr<Wallet>& wallet);
         void Subscribe(const std::shared_ptr<QuestBase>& addQuest) override;
         void Subscribe(const std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>& addQuest);
         void OnDrawGui();
@@ -31,6 +35,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serialize(0)]] std::vector<std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>> quests_;
         const std::unique_ptr<Quest::CompletedQuestGroup> completedQuests_;
         std::shared_ptr<IObservableStatusEvent> event_;
+        std::shared_ptr<IControlGuideFocusRequest> guideFocus_;
+        std::shared_ptr<Wallet> wallet_;
         
 #pragma region Serialization Function
     public:

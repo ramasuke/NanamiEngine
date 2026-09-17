@@ -27,6 +27,7 @@ namespace GameCore::Npc::Enemy
         void Tick(const std::weak_ptr<GameObject::IGameObject>& enemyGameObject,
                   SyncParam<EnemyStatus>& enemyStatus,
                   const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack,
+                  IShowHealthGaugeProvider* showHealthGaugeProvider,
                   Core::Network::NetworkObjectId networkObjectId,
                   bool isNetworkAuthority) const;
         void OnSave();

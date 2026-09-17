@@ -207,16 +207,17 @@ JSON so the field's `...value0.ptr_wrapper.data.value0.value_` equals that GUID.
 * A `FIELD(Asset::X)` reference embedded inside a polymorphic object outside
   either catalog's scan root (e.g. a Quest reached through a FriendlyNpc action's
   raw, un-modeled `shared_ptr<ITakeable...>`, as `TrySwordManQuest.quest_` does)
-  can, if some *other*, catalog-modeled `FIELD(Asset::X)` for the same `X` also
-  appears anywhere else in the same file, come back with one extra, harmless
-  `"cereal_class_version": 0` on read-then-write (two different `Field<T>`
-  instantiations serialise identically when opaque, so the un-modeled occurrence
-  can't be bucketed into the properly-modeled one's version slot). This never
-  changes a value or drops a key cereal actually needs — its JSON archives look
-  members up by name, so the extra key just sits there unread — only a strict
-  byte-for-byte re-save differs; `Assets/Data/FriendlyNpcBehviour/ActionInstructure.friendBehaviourData`
-  is the one committed fixture that hits this (see `tools/bt/selftest.py`'s
-  `KNOWN_LIMITATION_EXTRA_LINES`).
+  is opaque to the reader, so it can't share `Field<X>`'s once-per-archive
+  version slot. If a catalog-modeled `FIELD(Asset::X)` for the same `X` comes
+  later in the file, read-then-write re-emits `"cereal_class_version": 0` there,
+  and **the engine then fails to load the tree** (`Field<T>::load` reads its
+  `shared_ptr` positionally, so the stray key is consumed as the pointer →
+  rapidjson `IsObject()` → `SerializationException`). Fix: register the pointee
+  type in `FRIENDLY_EXTRA_STRUCT_FILES` / `ENEMY_EXTRA_STRUCT_FILES`
+  (`tools/bt/catalog_scan.py`) and `regen-catalog`; the reader then tags it by
+  its polymorphic fqn. `SwordMan::Quest::ActionInstructTutorial` is registered.
+  A new Quest type with `FIELD` members needs the same entry; `selftest.py`'s
+  byte-identical round-trip of the committed trees catches a miss.
 
 ---
 
@@ -242,7 +243,7 @@ equivalents, when `--npc-kind friendly`). `--param` supports `int|float|bool|str
 add `glm::vec3` / `FIELD(T)` members by hand afterwards. Then build:
 
 ```
-MSBuild.exe NanamiEngine.sln -p:Configuration=Debug -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m
+MSBuild.exe NanamiEngine.sln -p:Configuration=Debug -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12
 ```
 
 `remove-action --name FleeFromPlayer --category "Basic"` reverses everything (files

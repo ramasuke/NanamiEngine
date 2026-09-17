@@ -37,22 +37,17 @@ namespace GameCore::Scene::Main
         auto& context = *Context();
         
         GamePlay::Sound::SoundPlayer::PlayBgm(context.BGM());
-        //PlayerAvatarの初期化
-        using namespace GameCore::PlayerAvatar;
         
-        auto inputAction        = std::make_shared<RequireType::InputAction<SwordMan::SwordManAvatarTraits>>();
-        auto summonAvatarStatus = std::make_shared<ContextT::SummonAvatarStatus>(Context()->PlayerAvatarInitStatus());
-
         /** Player生成処理 */
         playerAvatar_ = context.PlayerAvatarFactory().LoadInitedPlayerAvatar(
-            PlayerAvatarType::SwordMan,
+            PlayerAvatar::PlayerAvatarType::SwordMan,
             context.PlayerSpawnPoint(),
             context.AirShip()->Entity().lock(),
             true,
-            std::make_shared<NullPlayerAvatarStatus>());
+            std::make_shared<PlayerAvatar::NullPlayerAvatarStatus>());
         playerAvatar_.lock()->PlayerTransform().SetLocalRot({glm::vec3{0.0f, 90.0f, 0.0f}});
         
-        // 船を降りるまでのMovieを開始
+        // 船を降りるまでのMovie開始
         aboardAirShipMovie_ = std::make_unique<FirstTouchDownMainIsLand::AboardAirShipMovie>(playerAvatar_, Context());
         Coroutine::StartCoroutine(aboardAirShipMovie_->ToTask());
     }

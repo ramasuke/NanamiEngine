@@ -280,7 +280,7 @@ def _vec(n: int) -> OrderedObj:
     return OrderedObj([(f"value{i}", Num.of_float(0.0)) for i in range(n)])
 
 
-def _field_blob(field_type_leaf: str, guid: str = EMPTY_GUID) -> Ver:
+def field_blob(field_type_leaf: str, guid: str = EMPTY_GUID) -> Ver:
     """A brand-new ``Field<T>`` param blob (mirrors ``tools.bt.edits._field_blob``
     - same shape, since this is the generic cereal FieldContext<T> layout, not
     anything Scene/BT-specific).
@@ -315,6 +315,21 @@ def _field_blob(field_type_leaf: str, guid: str = EMPTY_GUID) -> Ver:
                literal_presence=False)
 
 
+def color32_blob(r: int, g: int, b: int) -> Ver:
+    """A ``Color32`` param blob.
+
+    Unlike :func:`field_blob` this one always writes ``cereal_class_version``
+    (``literal_presence=True``). Color32::load starts with a *named* read
+    (``r_``), so cereal's name search skips a version key it does not need and a
+    stray one is harmless - whereas a missing key on the file's first Color32
+    is fatal. Field<T> has to make the opposite trade because its first read is
+    positional.
+    """
+    return Ver(("type", "Color32"), 0,
+               OrderedObj([("r_", Num.of_int(r)), ("g_", Num.of_int(g)), ("b_", Num.of_int(b))]),
+               literal_presence=True)
+
+
 def _param_blob(pinfo: dict) -> Any:
     shape = pinfo.get("shape")
     if shape in ("int", "float", "bool", "string"):
@@ -324,7 +339,9 @@ def _param_blob(pinfo: dict) -> Any:
     if shape == "vec3":
         return _vec(3)
     if shape == "field":
-        return _field_blob(_leaf_of(pinfo.get("type", "?")))
+        return field_blob(_leaf_of(pinfo.get("type", "?")))
+    if shape == "color32":
+        return color32_blob(255, 255, 255)
     if shape == "vector":
         return []
     # nested/unknown -> a harmless placeholder; validate() flags it, and a
@@ -368,7 +385,7 @@ def _empty_base_blob(leaf: str, version: int) -> Ver:
     and a bare ``{}`` afterwards, but this writer cannot tell whether an
     earlier occurrence exists (the reader keeps existing slots keyed by
     structural fingerprint, not by real type - the same blind spot
-    ``_field_blob`` describes), so it must pick one form that loads correctly
+    ``field_blob`` describes), so it must pick one form that loads correctly
     either way. Unlike ``Field<T>``, always emitting it is safe here: at the
     type's first occurrence cereal searches for and reads the key; at any later
     one ``loadClassVersion`` is skipped, the base's ``load()`` body is empty so
@@ -460,6 +477,11 @@ def _coerce(shape: str, raw: str) -> Any:
         return OrderedObj([(f"value{i}", Num.of_float(float(x))) for i, x in enumerate(parts)])
     if shape == "field":
         return raw.strip().upper()
+    if shape == "color32":
+        parts = [p.strip() for p in raw.replace(" ", ",").split(",") if p.strip()]
+        if len(parts) != 3:
+            raise EditError(f"color32 takes three components (r,g,b), got {raw!r}")
+        return [int(x, 0) for x in parts]
     raise EditError(f"cannot set a param of shape {shape!r}")
 
 
@@ -492,6 +514,16 @@ def _set_field_guid(node: Any, guid: str) -> None:
         raise EditError("field param does not have the expected FieldHolder<T> shape")
 
 
+def _set_color32(node: Any, rgb: list[int]) -> None:
+    # Mutate in place: the file's existing cereal_class_version placement is
+    # correct for where this blob sits, and replacing the node would rewrite it.
+    body = node.body if isinstance(node, Ver) else node
+    if not isinstance(body, OrderedObj) or not all(k in body for k in ("r_", "g_", "b_")):
+        raise EditError("color32 param does not have the expected r_/g_/b_ shape")
+    for key, value in zip(("r_", "g_", "b_"), rgb):
+        body[key] = Num.of_int(value)
+
+
 def _set_one_param(comp: model.Component, entry: dict, key: str, raw: str) -> str:
     pinfo = _find_param(entry, key)
     if pinfo is None:
@@ -510,6 +542,8 @@ def _set_one_param(comp: model.Component, entry: dict, key: str, raw: str) -> st
         if not isinstance(node, (Ver, OrderedObj)):
             raise EditError(f"{jkey}: expected a Field<T> blob")
         _set_field_guid(node, _coerce(shape, raw))
+    elif shape == "color32":
+        _set_color32(comp.data[jkey], _coerce(shape, raw))
     else:
         comp.data[jkey] = _coerce(shape, raw)
     return pinfo["member"]
@@ -559,22 +593,59 @@ def set_component_params(target: Any, guid: str, index: int, assignments: dict[s
 # ---------------------------------------------------------------------------
 # instantiate-prefab
 # ---------------------------------------------------------------------------
-def _remint_guids(node: model.GameObjectNode) -> None:
-    node.guid = mint_guid()
+def _remint_guids(node: model.GameObjectNode, guid_remap: dict[str, str]) -> None:
+    """Mint a fresh GUID for ``node`` and everything under it, recording
+    ``old -> new`` in ``guid_remap``."""
+    new_guid = mint_guid()
+    guid_remap[node.guid] = new_guid
+    node.guid = new_guid
     for comp in node.components:
+        old_comp_guid = model.find_component_guid(comp)
         try:
-            model.set_component_guid(comp, mint_guid())
+            new_comp_guid = mint_guid()
+            model.set_component_guid(comp, new_comp_guid)
         except ValueError:
-            pass  # component has no locatable ComponentBase body - leave it be
+            continue  # component has no locatable ComponentBase body - leave it be
+        if old_comp_guid is not None:
+            guid_remap[old_comp_guid] = new_comp_guid
     for child in node.transform.children:
-        _remint_guids(child)
+        _remint_guids(child, guid_remap)
+
+
+def _remap_guid_blob(blob: Any, guid_remap: dict[str, str]) -> None:
+    if isinstance(blob, Ptr):
+        _remap_guid_blob(blob.data, guid_remap)
+    elif isinstance(blob, Ver):
+        _remap_guid_blob(blob.body, guid_remap)
+    elif isinstance(blob, OrderedObj):
+        for key, value in blob.items():
+            if key == "value_" and isinstance(value, str) and value in guid_remap:
+                blob[key] = guid_remap[value]
+            else:
+                _remap_guid_blob(value, guid_remap)
+    elif isinstance(blob, list):
+        for item in blob:
+            _remap_guid_blob(item, guid_remap)
+
+
+def _remap_guid_references(node: model.GameObjectNode, guid_remap: dict[str, str]) -> None:
+    """Point Guid references (e.g. a ``FIELD(IGameObject)``) that target an
+    object inside the copied tree at the copy's object instead - mirroring the
+    engine's ``GuidRemap::FromCopiedHierarchy`` + ``OnUpdateCopiedFieldInittables`` on
+    Instantiate. Asset references and references outside the tree are not in
+    ``guid_remap`` and stay as they are."""
+    for comp in node.components:
+        _remap_guid_blob(comp.data, guid_remap)
+    for child in node.transform.children:
+        _remap_guid_references(child, guid_remap)
 
 
 def instantiate_prefab(target: Any, prefab: model.Prefab, *,
                        parent: Optional[str] = None) -> model.GameObjectNode:
     """Deep-copy ``prefab``'s tree into ``target`` (a Scene, or another
     Prefab's tree), minting a fresh GUID for every GameObject/Component in the
-    copy and re-tagging the root as ``CopiedPrefabGameObject`` - mirroring the
+    copy (and re-pointing references between them at the copy) and re-tagging
+    the root as ``CopiedPrefabGameObject`` - mirroring the
     engine's own ``Scene::OnDrawFileDropGui`` ->
     ``PrefabGameObject::CopyForInstantiate()`` behaviour (a scene's copy of a
     prefab is always a fully independent baked snapshot, never a live link
@@ -583,7 +654,9 @@ def instantiate_prefab(target: Any, prefab: model.Prefab, *,
 
     new_root = _copy.deepcopy(prefab.root)
     new_root.kind = model.KIND_COPIED_PREFAB
-    _remint_guids(new_root)
+    guid_remap: dict[str, str] = {}
+    _remint_guids(new_root, guid_remap)
+    _remap_guid_references(new_root, guid_remap)
     if parent is None:
         if isinstance(target, model.Prefab):
             raise EditError("a Prefab has a single implicit root - pass "
@@ -610,7 +683,9 @@ def copy_prefab(prefab: model.Prefab) -> model.Prefab:
     import copy as _copy
 
     new_root = _copy.deepcopy(prefab.root)
-    _remint_guids(new_root)
+    guid_remap: dict[str, str] = {}
+    _remint_guids(new_root, guid_remap)
+    _remap_guid_references(new_root, guid_remap)
     return model.Prefab(root=new_root, copied_object_guids=[])
 
 

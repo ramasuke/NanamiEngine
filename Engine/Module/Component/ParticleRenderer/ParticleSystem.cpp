@@ -17,6 +17,11 @@ void Component::ParticleSystem::Play()
     TryUpdateRenderScale();
 }
 
+void Component::ParticleSystem::Stop()
+{
+    TryStopPlaying();
+}
+
 void Component::ParticleSystem::OnUpdate()
 {
     if (!IsEnable())

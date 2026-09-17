@@ -2,6 +2,7 @@
 #include "../../../../../../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../SwordMan_ITakeableSwordManQuest.h"
+#include "../../SwordMan_QuestContext.h"
 #include "../../SwordMan_QuestFactory.h"
 #include "../../../../../../../../../../Engine/Core/Coroutine/Task/Task.h"
 #include "../../../../../Quest/PlayerAvatar_QuestType.h"
@@ -26,9 +27,7 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
         ~ActionInstructTutorial() override;
 
     private:
-        void StartQuest(
-            const IObservableStatusEvent& event,
-            PlayerAvatar::Quest::ICompleteQuestGroup& completedQuestGroup) override;
+        void StartQuest(const Npc::Friendly::Behaviour::Action::SwordManQuestContext& context) override;
         [[nodiscard]] const PlayerAvatar::QuestType& QuestType() const override { return QuestType::SwordManActionInstructTutorial; }
 
         Coroutine::Task<void> StartQuestAsync(PlayerAvatar::Quest::ICompleteQuestGroup& completedQuestGroup);

@@ -15,11 +15,9 @@ namespace GameCore::StatusParameter
 
 namespace GamePlay::Ui
 {
-    class PlayerStatus final : public Component::ComponentBase,
-                               public LifeCycleCallback::IAwakable
+    class PlayerStatus final : public Component::ComponentBase
     {
     public:
-        void OnAwake() override;
         void UpdateHealthBar(
             const GameCore::StatusParameter::Health& maxHealth,
             const GameCore::StatusParameter::Health& health   ) const;
@@ -34,26 +32,19 @@ namespace GamePlay::Ui
         [[nodiscard]] Color32 SelectHealthTextColor(float healthRate) const;
         [[nodiscard]] std::shared_ptr<Asset::SpriteFile> SelectHealthGaugeSprite(float healthRate) const;
 
-        [[serialize(6)]] std::string healthBarName_;
-        FIELD(NanamiUi::Slider) healthBar_;
+        [[serialize(10)]] FIELD(NanamiUi::Slider) healthBar_;
         // 被ダメ時に現在HPの数字を赤くする時間（onDamageHealthBarFrame_ があればフレーム差し替えにも使う）
         [[serialize(2)]] float displayOnDamageHealthBarDuration_secs_ = 0.0f;
         [[serialize(2)]] FIELD(Asset::SpriteFile) onDamageHealthBarFrame_;
-        [[serialize(6)]] std::string healthBarFrameName_;
-        FIELD(Component::ImageRenderer) healthBarFrame_;
+        [[serialize(10)]] FIELD(Component::ImageRenderer) healthBarFrame_;
 
-        [[serialize(8)]] std::string staminaBarName_;
-        FIELD(NanamiUi::Slider) staminaBar_;
-        [[serialize(8)]] std::string staminaBarFrameName_;
-        FIELD(Component::ImageRenderer) staminaBarFrame_;
+        [[serialize(10)]] FIELD(NanamiUi::Slider) staminaBar_;
+        [[serialize(10)]] FIELD(Component::ImageRenderer) staminaBarFrame_;
 
-        [[serialize(7)]] std::string injuredUiObjectName_;
-        FIELD(InjuredMaskUI) injuredUiMask_;
+        [[serialize(10)]] FIELD(InjuredMaskUI) injuredUiMask_;
 
-        [[serialize(9)]] std::string hpCurrentTextName_;
-        FIELD(NanamiUi::TextRenderer) hpCurrentText_;
-        [[serialize(9)]] std::string hpMaxTextName_;
-        FIELD(NanamiUi::TextRenderer) hpMaxText_;
+        [[serialize(10)]] FIELD(NanamiUi::TextRenderer) hpCurrentText_;
+        [[serialize(10)]] FIELD(NanamiUi::TextRenderer) hpMaxText_;
         // HP残量で HealthBar のゲージ画像を切り替える（未設定なら切り替えない）
         [[serialize(9)]] FIELD(Asset::SpriteFile) healthGaugeNormalSprite_;
         [[serialize(9)]] FIELD(Asset::SpriteFile) healthGaugeCautionSprite_;
@@ -74,15 +65,15 @@ namespace GamePlay::Ui
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<ComponentBase>(this));
-            archive(CEREAL_NVP(healthBarName_));
+            archive(CEREAL_NVP(healthBar_));
             archive(CEREAL_NVP(displayOnDamageHealthBarDuration_secs_));
             archive(CEREAL_NVP(onDamageHealthBarFrame_));
-            archive(CEREAL_NVP(healthBarFrameName_));
-            archive(CEREAL_NVP(staminaBarName_));
-            archive(CEREAL_NVP(staminaBarFrameName_));
-            archive(CEREAL_NVP(injuredUiObjectName_));
-            archive(CEREAL_NVP(hpCurrentTextName_));
-            archive(CEREAL_NVP(hpMaxTextName_));
+            archive(CEREAL_NVP(healthBarFrame_));
+            archive(CEREAL_NVP(staminaBar_));
+            archive(CEREAL_NVP(staminaBarFrame_));
+            archive(CEREAL_NVP(injuredUiMask_));
+            archive(CEREAL_NVP(hpCurrentText_));
+            archive(CEREAL_NVP(hpMaxText_));
             archive(CEREAL_NVP(healthGaugeNormalSprite_));
             archive(CEREAL_NVP(healthGaugeCautionSprite_));
             archive(CEREAL_NVP(healthGaugeDangerSprite_));
@@ -96,15 +87,25 @@ namespace GamePlay::Ui
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
-            if (version >= 6) archive(CEREAL_NVP(healthBarName_));
+            // v10 で子オブジェクトの名前検索を FIELD に置き換えた。旧ファイルの名前は読み捨てる
+            std::string healthBarName_, healthBarFrameName_, staminaBarName_, staminaBarFrameName_;
+            std::string injuredUiObjectName_, hpCurrentTextName_, hpMaxTextName_;
+            if (version >= 6 && version < 10) archive(CEREAL_NVP(healthBarName_));
+            if (version >= 10) archive(CEREAL_NVP(healthBar_));
             if (version >= 6) archive(CEREAL_NVP(displayOnDamageHealthBarDuration_secs_));
             if (version >= 6) archive(CEREAL_NVP(onDamageHealthBarFrame_));
-            if (version >= 6) archive(CEREAL_NVP(healthBarFrameName_));
-            if (version >= 8) archive(CEREAL_NVP(staminaBarName_));
-            if (version >= 8) archive(CEREAL_NVP(staminaBarFrameName_));
-            if (version >= 7) archive(CEREAL_NVP(injuredUiObjectName_));
-            if (version >= 9) archive(CEREAL_NVP(hpCurrentTextName_));
-            if (version >= 9) archive(CEREAL_NVP(hpMaxTextName_));
+            if (version >= 6 && version < 10) archive(CEREAL_NVP(healthBarFrameName_));
+            if (version >= 10) archive(CEREAL_NVP(healthBarFrame_));
+            if (version >= 8 && version < 10) archive(CEREAL_NVP(staminaBarName_));
+            if (version >= 10) archive(CEREAL_NVP(staminaBar_));
+            if (version >= 8 && version < 10) archive(CEREAL_NVP(staminaBarFrameName_));
+            if (version >= 10) archive(CEREAL_NVP(staminaBarFrame_));
+            if (version >= 7 && version < 10) archive(CEREAL_NVP(injuredUiObjectName_));
+            if (version >= 10) archive(CEREAL_NVP(injuredUiMask_));
+            if (version >= 9 && version < 10) archive(CEREAL_NVP(hpCurrentTextName_));
+            if (version >= 10) archive(CEREAL_NVP(hpCurrentText_));
+            if (version >= 9 && version < 10) archive(CEREAL_NVP(hpMaxTextName_));
+            if (version >= 10) archive(CEREAL_NVP(hpMaxText_));
             if (version >= 9) archive(CEREAL_NVP(healthGaugeNormalSprite_));
             if (version >= 9) archive(CEREAL_NVP(healthGaugeCautionSprite_));
             if (version >= 9) archive(CEREAL_NVP(healthGaugeDangerSprite_));
@@ -118,5 +119,5 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PlayerStatus, 9)
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PlayerStatus, 10)
 

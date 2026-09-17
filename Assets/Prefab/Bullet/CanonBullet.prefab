@@ -7,7 +7,7 @@
     },
     "components_": {
         "cereal_class_version": 0,
-        "componentCount": 3,
+        "componentCount": 4,
         "component_0": {
             "polymorphic_id": 2147483649,
             "polymorphic_name": "NanamiEngine::Module::Component::ModelRenderer",
@@ -91,15 +91,13 @@
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
-                        "cereal_class_version": 5,
+                        "cereal_class_version": 6,
                         "value0": {
                             "guid_": {
                                 "value_": "C7DDE9D0-8E8E-43D9-B3BC-B05471BA4D89"
                             },
                             "isEnable_": true
                         },
-                        "mass_": 1.0,
-                        "isGravity_": true,
                         "offset_": {
                             "value0": 0.0,
                             "value1": 0.0,
@@ -110,9 +108,7 @@
                             "value1": 0.0,
                             "value2": 0.0
                         },
-                        "emotionType_": 2,
                         "layer_": 0,
-                        "constraints_": 0,
                         "isSensor_": false,
                         "friction_": 0.20000000298023225
                     },
@@ -160,6 +156,27 @@
                             }
                         }
                     }
+                }
+            }
+        },
+        "component_3": {
+            "polymorphic_id": 2147483652,
+            "polymorphic_name": "NanamiEngine::Module::Component::RigidBody",
+            "ptr_wrapper": {
+                "id": 2147483656,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "guid_": {
+                            "value_": "4C1C26E4-D480-42FA-B87D-137B154A3D0D"
+                        },
+                        "isEnable_": true
+                    },
+                    "motionType_": 2,
+                    "mass_": 1.0,
+                    "isGravity_": true,
+                    "constraints_": 0,
+                    "isPartOfParent_": false
                 }
             }
         }
@@ -210,5 +227,6 @@
         },
         "childCount": 0
     },
+    "mark_": 0,
     "value0": 0
 }

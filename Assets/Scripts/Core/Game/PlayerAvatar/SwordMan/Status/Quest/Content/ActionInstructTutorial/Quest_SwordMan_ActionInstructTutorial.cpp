@@ -2,6 +2,7 @@
 
 #include "Quest_SwordMan_ActionInstructTutorialModel.h"
 #include "Quest_SwordMan_ActionInstructTutorialPresenter.h"
+#include "../../SwordMan_QuestContext.h"
 #include "../../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../../GamePlay/Ui/ActionInstructTutorial/SwordMan/Ui_SwordMan_ActionInstructTutorial.h"
@@ -17,17 +18,18 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
     }
     ActionInstructTutorial::~ActionInstructTutorial() = default;
     
-    void ActionInstructTutorial::StartQuest(
-        const IObservableStatusEvent& event,
-        PlayerAvatar::Quest::ICompleteQuestGroup& completedQuestGroup)
+    void ActionInstructTutorial::StartQuest(const Npc::Friendly::Behaviour::Action::SwordManQuestContext& context)
     {
         const auto questUi = Scene::GameObject::Instantiate(questUiPrefab_.get(), glm::vec3{0.0f, 0.0f, 0.0f});
         const auto actionInstructTutorialUi = questUi.lock()->Components().Catch<GamePlay::Ui::SwordManActionInstructTutorial>();
+        if (const auto view = actionInstructTutorialUi.lock())
+            view->Initialize(context.guideFocus);
 
-        auto actionInstructTutorialModel = std::make_unique<ActionInstructTutorialModel>(event);
-        presenter_ = std::make_unique<ActionInstructTutorialPresenter>(std::move(actionInstructTutorialModel), actionInstructTutorialUi);
+        auto actionInstructTutorialModel = std::make_unique<ActionInstructTutorialModel>(context.statusEvent);
+        presenter_ = std::make_unique<ActionInstructTutorialPresenter>(
+            std::move(actionInstructTutorialModel), context.guideFocus, actionInstructTutorialUi);
         
-        Coroutine::StartCoroutine(StartQuestAsync(completedQuestGroup));
+        Coroutine::StartCoroutine(StartQuestAsync(context.completedQuests));
     }
 
     Coroutine::Task<void> ActionInstructTutorial::StartQuestAsync(PlayerAvatar::Quest::ICompleteQuestGroup& completedQuestGroup)
@@ -39,6 +41,7 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
 
     void ActionInstructTutorial::OnDrawGui()
     {
+        DrawRewardGui();
         ImGuiHelper::OnDrawInputField("questUiPrefab_", questUiPrefab_);
     }
 }

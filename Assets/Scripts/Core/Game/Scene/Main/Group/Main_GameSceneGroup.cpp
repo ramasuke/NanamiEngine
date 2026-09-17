@@ -14,24 +14,25 @@ namespace GameCore::Scene::Main
 {
     GameSceneGroup::GameSceneGroup(
         std::vector<std::weak_ptr<SceneContextBase>> sceneContexts,
-        const std::shared_ptr<Sub::IGameSceneStack>& subSceneStack)
+        const std::shared_ptr<Sub::IGameSceneStack>& subSceneStack,
+        const std::shared_ptr<GamePlay::Ui::LoadingScreenUi>& loadingScreen)
         : sceneContexts_(std::move(sceneContexts))
     {
         AddScene(SceneType::Title, std::make_shared<TitleScene>(
             CatchContext<TitleSceneContext>(),
-            GameSceneBaseContext(subSceneStack)));
+            GameSceneBaseContext(subSceneStack, loadingScreen)));
 
         AddScene(SceneType::FirstTouchDownMainIsLand, std::make_shared<FirstTouchDownMainIsLandScene>(
             CatchContext<FirstTouchDownMainIsLandSceneContext>(),
-            GameSceneBaseContext(subSceneStack)));
+            GameSceneBaseContext(subSceneStack, loadingScreen)));
 
         AddScene(SceneType::MainIsland, std::make_shared<MainIslandScene>(
             CatchContext<MainIslandSceneContext>(),
-            GameSceneBaseContext(subSceneStack)));
+            GameSceneBaseContext(subSceneStack, loadingScreen)));
 
         AddScene(SceneType::GrassLand, std::make_shared<GrassLandScene>(
             CatchContext<GrassLandSceneContext>(),
-            GameSceneBaseContext(subSceneStack)));
+            GameSceneBaseContext(subSceneStack, loadingScreen)));
     }
 
     void GameSceneGroup::Update()

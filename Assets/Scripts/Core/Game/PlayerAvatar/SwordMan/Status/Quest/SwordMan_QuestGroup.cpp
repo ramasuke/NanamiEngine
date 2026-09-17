@@ -1,5 +1,6 @@
 ﻿#include "SwordMan_QuestGroup.h"
 
+#include "SwordMan_QuestContext.h"
 #include "../../../Quest/PlayerAvatar_QuestBase.h"
 #include "../../../Quest/Completed/PlayerAvatar_CompletedQuestGroup.h"
 #include "cereal/archives/binary.hpp"
@@ -15,13 +16,17 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     QuestGroup::~QuestGroup() = default;
 
-    void QuestGroup::Init(const std::shared_ptr<IObservableStatusEvent>& event)
+    void QuestGroup::Init(const std::shared_ptr<IObservableStatusEvent>& event,
+                          const std::shared_ptr<IControlGuideFocusRequest>& guideFocus,
+                          const std::shared_ptr<Wallet>& wallet)
     {
-        event_ = event;
-        
+        event_      = event;
+        guideFocus_ = guideFocus;
+        wallet_     = wallet;
+
         for (const auto& quest : quests_)
         {
-            quest->StartQuest(*event_, *this);
+            quest->StartQuest(Npc::Friendly::Behaviour::Action::SwordManQuestContext{ *event_, *guideFocus_, *this });
         }
     }
 
@@ -33,7 +38,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     void QuestGroup::Subscribe(const std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>& addQuest)
     {
         quests_.push_back(addQuest);
-        addQuest->StartQuest(*event_, *this);
+        addQuest->StartQuest(Npc::Friendly::Behaviour::Action::SwordManQuestContext{ *event_, *guideFocus_, *this });
     }
 
     void QuestGroup::OnDrawGui()
@@ -65,6 +70,19 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void QuestGroup::CompleteQuest(const QuestType& completeQuest)
     {
+        // 完了フラグはセーブをまたいで残るので、受け直しても報酬が出るのは初回だけ
+        if (wallet_ && !completedQuests_->CheckCompleted(completeQuest))
+        {
+            for (const auto& quest : quests_)
+            {
+                if (quest->QuestType() != completeQuest)
+                    continue;
+
+                wallet_->Earn(quest->RewardMoney());
+                break;
+            }
+        }
+
         completedQuests_->Subscribe(completeQuest);
         std::erase_if(quests_, [completeQuest](const auto& quest)
         {

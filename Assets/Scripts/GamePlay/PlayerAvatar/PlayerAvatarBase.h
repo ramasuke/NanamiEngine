@@ -7,6 +7,8 @@
 #include "../../../../Engine/Module/Component/ModelRenderer/ModelRenderer.h"
 #include "../../../../Engine/Module/LifeCycleCallback/FixedUpdate/IFixedUpdatable.h"
 #include "../../../../Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
+#include "../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
+#include "../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../Engine/Module/Scene/ShadowMap/ShadowMapSetting.h"
 #include "../../Core/Game/Npc/Enemy/ITakableEnemyAttack/ITakableEnemyAttack.h"
 #include "../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
@@ -46,8 +48,10 @@ namespace GamePlay::PlayerAvatar
                   const std::weak_ptr<CameraGroup>& cameraGroup);
         
         [[nodiscard]] IPlayerAvatarEventSceneStateMachine& GetEventSceneStateMachine() const override { return *stateMachine_; }
+        [[nodiscard]] const StateMachine& GetStateMachine() const { return *stateMachine_; }
+        [[nodiscard]] const InputAction& GetInputAction() const { return *inputAction_; }
         /** @brief PlayerAvatar<T>のCameraを取得 */
-        [[nodiscard]] Component::ColliderBase& Collider() const override { return *collider_.lock(); }
+        [[nodiscard]] Component::RigidBody& RigidBody() const override { return *rigidBody_.lock(); }
         [[nodiscard]] GameObject::Transform& PlayerTransform() const override { return Transform(); }
         [[nodiscard]] Status& PlayerStatus() const override { return *status_; }
         void SaveStatus() override;
@@ -86,12 +90,9 @@ namespace GamePlay::PlayerAvatar
         std::shared_ptr<Status            > status_       = nullptr;
         std::shared_ptr<InputAction       > inputAction_  = nullptr;
         std::weak_ptr  <CameraGroup       > cameraGroup_;
-        std::weak_ptr  <Component::ColliderBase> collider_   ;
+        std::weak_ptr  <Component::RigidBody> rigidBody_  ;
         [[serialize(0)]] FIELD(Ui::NpcChatting) chattingUi_;
-        
-    protected:
-        /** 以下サンドボックスパターン */
-        [[nodiscard]] std::shared_ptr<Physics::ICollider> CatchAttackArea(const std::string& childName) const;
+        [[serialize(3)]] FIELD(GameObject::IGameObject) featStep_;
 
 #pragma region Serialization Function
     public:
@@ -103,6 +104,7 @@ namespace GamePlay::PlayerAvatar
             else if (version >= 2)
                 archive(cereal::base_class<NetworkComponent>(this));
             archive(CEREAL_NVP(chattingUi_));
+            archive(CEREAL_NVP(featStep_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
@@ -112,6 +114,8 @@ namespace GamePlay::PlayerAvatar
             else if (version >= 2)
                 archive(cereal::base_class<NetworkComponent>(this));
             if (version >= 1) archive(CEREAL_NVP(chattingUi_));
+            // v3 で "FeatStep" の名前検索を FIELD に置き換えた
+            if (version >= 3) archive(CEREAL_NVP(featStep_));
         }
 #pragma endregion
     };
@@ -133,7 +137,7 @@ namespace GamePlay::PlayerAvatar
         PlayerAvatars_().push_back(Components().Catch<IPlayerAvatar>());
         
         animatorComponent_ = RequireComponent<Component::Animator>();
-        collider_          = Components().Catch<Component::ColliderBase>();
+        rigidBody_         = Components().Catch<Component::RigidBody>();
         
         status_       = std::move(status      );
         RegisterSyncObject(status_);
@@ -234,8 +238,12 @@ namespace GamePlay::PlayerAvatar
             animator_->OnDrawGui();
         if (stateMachine_)
             stateMachine_->OnDrawGui();
-        if (status_)
+        if (status_ && ImGui::TreeNode("Status"))
+        {
             status_->OnDrawGui();
+            ImGui::TreePop();
+            ImGui::Spacing();
+        }
     }
     
     template <RequireType::Traits TraitsT>
@@ -269,32 +277,16 @@ namespace GamePlay::PlayerAvatar
     template <RequireType::Traits TraitsT>
     const glm::vec3& PlayerAvatarBase<TraitsT>::FeatStepPosition() const
     {
-        for (const auto& child : Transform().GetChildren())
-        {
-            if (child->Name() == "FeatStep")
-                return child->Transform().GetWorldPos(); 
-        }
-        throw std::exception("not found featStepPosition");
-    }
-    
-    template <RequireType::Traits TraitsT>
-    std::shared_ptr<Physics::ICollider> PlayerAvatarBase<TraitsT>::CatchAttackArea(const std::string& childName) const
-    {
-        for (const auto& child : Transform().GetParent()->Transform().GetAllChildren())
-        {
-            if (child->Name() == childName)
-            {
-                return child->Components().Catch<Physics::ICollider>().lock();
-            }
-        }
-        assert(false && "attackArea not found!");
-        return nullptr;
+        if (!featStep_)
+            throw std::exception("not found featStepPosition");
+
+        return featStep_->Transform().GetWorldPos();
     }
 
     // PlayerAvatarBase<Traits>をcerealに登録するマクロ
 #define REGISTER_PLAYER_AVATAR_BASE(TraitsType)                                  \
 CEREAL_CLASS_VERSION(                                                            \
-GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>, 2) \
+GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>, 3) \
 CEREAL_REGISTER_TYPE(                                                            \
 GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>)    \
 CEREAL_REGISTER_POLYMORPHIC_RELATION(                                            \

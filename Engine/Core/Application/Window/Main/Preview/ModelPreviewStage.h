@@ -16,6 +16,11 @@ namespace NanamiEngine::Module::Component
     class ModelRenderer;
 }
 
+namespace NanamiEngine::Core::Application::AutoMcp
+{
+    class AutoMcpEngineAccess;
+}
+
 namespace NanamiEngine::Core::MainWindow
 {
     /**
@@ -27,6 +32,8 @@ namespace NanamiEngine::Core::MainWindow
      */
     class ModelPreviewStage final
     {
+        friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
+
     public:
         /** @brief owner をカレント MainWindow にしてから model をプレビュー GameObject の ModelRenderer に設定する */
         void SetModel(const std::shared_ptr<IMainWindow>& owner, const std::shared_ptr<Module::Asset::Mv1File>& model);
@@ -48,11 +55,13 @@ namespace NanamiEngine::Core::MainWindow
 
     private:
         void EnsurePreviewObject(const std::shared_ptr<IMainWindow>& owner);
-        /** @brief モデルのワールド AABB からカメラを正面に配置する */
+        /** @brief モデルのワールド AABB から、frameViewDirection_ の向きで全体が入る位置にカメラを置く */
         void FrameCamera();
         void DrawGrid() const;
+        [[nodiscard]] static glm::vec3 DefaultFrameViewDirection();
 
         Module::Component::Editor3DCamera               camera_;
+        glm::vec3                                       frameViewDirection_ = DefaultFrameViewDirection();
         std::shared_ptr<Scene::SceneGameObject>         previewObject_;
         std::weak_ptr<Module::Component::ModelRenderer> modelRenderer_;
         std::shared_ptr<Module::Asset::Mv1File>         model_;

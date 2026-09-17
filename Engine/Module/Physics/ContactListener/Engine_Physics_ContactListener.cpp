@@ -1,5 +1,8 @@
 ﻿#include "Engine_Physics_ContactListener.h"
 
+#include <cmath>
+
+#include "../../../Core/Application/Configuration/Physics/ApplicationConfiguration_Physics.h"
 #include "../../GameObject/ComponentGroup/ComponentGroup.h"
 #include "../../Component/ComponentBase.h"
 #include "../UserData/Engine_Physics_UserData.h"
@@ -8,6 +11,11 @@
 
 namespace NanamiEngine::Module::Physics
 {
+    namespace
+    {
+        constexpr float CONTACT_LISTENER_DEG_TO_RAD = 3.14159265358979323846f / 180.0f;
+    }
+
     EngineContactListener::EngineContactListener(
         const JPH::PhysicsSystem& physicsSystem)
     : collisionExitGroup_(physicsSystem)
@@ -30,12 +38,23 @@ namespace NanamiEngine::Module::Physics
         collisionExitGroup_ .Dispatch();
     }
 
+    void EngineContactListener::RefreshTuning()
+    {
+        using Core::Application::Configuration::PhysicsConfiguration;
+
+        staticFriction_      = PhysicsConfiguration::GetStaticFriction();
+        staticFrictionSpeed_ = PhysicsConfiguration::GetStaticFrictionSpeed();
+        cosMaxSlope_         = std::cos(PhysicsConfiguration::GetStaticFrictionMaxSlopeDeg() * CONTACT_LISTENER_DEG_TO_RAD);
+    }
+
     void EngineContactListener::OnContactAdded(
     const JPH::Body& body1,
     const JPH::Body& body2,
     const JPH::ContactManifold& manifold,
-    JPH::ContactSettings&)
+    JPH::ContactSettings& settings)
     {
+        ApplyStaticFriction(body1, body2, manifold, settings);
+
         const bool isSensor1 = body1.IsSensor();
         const bool isSensor2 = body2.IsSensor();
 
@@ -90,6 +109,42 @@ namespace NanamiEngine::Module::Physics
             body1Ptr,
             body2Ptr
         });
+    }
+
+    void EngineContactListener::OnContactPersisted(
+        const JPH::Body& body1,
+        const JPH::Body& body2,
+        const JPH::ContactManifold& manifold,
+        JPH::ContactSettings& settings)
+    {
+        ApplyStaticFriction(body1, body2, manifold, settings);
+    }
+
+    void EngineContactListener::ApplyStaticFriction(
+        const JPH::Body& body1,
+        const JPH::Body& body2,
+        const JPH::ContactManifold& manifold,
+        JPH::ContactSettings& settings) const
+    {
+        if (staticFriction_ <= settings.mCombinedFriction)
+            return;
+
+        if (body1.IsSensor() || body2.IsSensor())
+            return;
+
+        // 壁に押し付けた時に張り付かないよう、床と斜面の接触だけを対象にする
+        //NOTE: mWorldSpaceNormal は body2 を押し出す向きで、どちらが地面側かは決まっていないので絶対値で見る
+        const JPH::Vec3 normal = manifold.mWorldSpaceNormal;
+        if (std::abs(normal.GetY()) < cosMaxSlope_)
+            return;
+
+        // 面に沿って動いている間は動摩擦のまま。止まりかけた時だけ静止摩擦へ切り替える
+        const JPH::Vec3 relative = body2.GetLinearVelocity() - body1.GetLinearVelocity();
+        const JPH::Vec3 tangent  = relative - normal * relative.Dot(normal);
+        if (tangent.Length() >= staticFrictionSpeed_)
+            return;
+
+        settings.mCombinedFriction = staticFriction_;
     }
 
     void EngineContactListener::OnContactRemoved(

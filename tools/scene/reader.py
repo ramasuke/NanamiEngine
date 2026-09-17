@@ -193,8 +193,9 @@ def _read_gameobject_body(ctx: _Ctx, kind: str, obj: OrderedObj) -> model.GameOb
     guid = obj["guid_"]["value_"]
     components = _read_components(ctx, obj["components_"])
     transform = _read_transform(ctx, obj["transform_"])
+    mark = int(_num(obj["mark_"])) if "mark_" in obj else None
     return model.GameObjectNode(kind=kind, guid=guid, name=name, is_active=is_active,
-                                components=components, transform=transform)
+                                components=components, transform=transform, mark=mark)
 
 
 def _read_gameobject_slot(ctx: _Ctx, slot: OrderedObj) -> Optional[model.GameObjectNode]:

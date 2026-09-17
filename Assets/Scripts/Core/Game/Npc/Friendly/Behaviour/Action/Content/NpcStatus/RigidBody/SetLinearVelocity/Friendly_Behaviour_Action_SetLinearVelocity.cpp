@@ -1,15 +1,13 @@
 ﻿#include "Friendly_Behaviour_Action_SetLinearVelocity.h"
 
-#include "../../../../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
-#include "../../../../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
-#include "../../../../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
+#include "../../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {
     TickStatus Action::SetLinearVelocity::DoTick(
         const TickContext& context)
     {
-        Physics::SetLinearVelocity(context.NpcCollider().BodyId(), setVelocity_);
+        context.NpcRigidBody().SetLinearVelocity(setVelocity_);
         return TickStatus::Success;
     }
 

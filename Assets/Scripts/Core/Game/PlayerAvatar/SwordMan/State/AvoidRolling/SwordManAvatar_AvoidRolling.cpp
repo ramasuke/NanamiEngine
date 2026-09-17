@@ -21,8 +21,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         {
             if (!isAvoided_)
             {
-                auto& successAvoidRollingParticle = CatchPlayerInChild<Component::ParticleSystem>(GamePlay::PlayerAvatar::SwordMan::SUCCESS_AVOID_ROLLING_PARTICLE_NAME);
-                successAvoidRollingParticle.Play();
+                SuccessAvoidRollingParticle().Play();
                 GamePlay::Sound::SoundPlayer::PlaySe(Resources().JustAvoidRollingSound(), Transform().GetWorldPos());
             }
             Status().DiscardDamage();

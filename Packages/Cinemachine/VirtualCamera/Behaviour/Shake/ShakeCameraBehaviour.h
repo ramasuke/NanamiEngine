@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <vector>
 #include "../IVirtualCameraBehaviour.h"
+#include "../../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
 #include "../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
 
@@ -18,6 +19,10 @@ namespace NanamiEngine::CineMachine::Behaviour
         static void ShakeMainCamera(float intensity, float duration);
         static void ShakeMainCamera();
 
+        /** @brief 呼び続けている間だけ揺らす。呼ばれなくなると sustainSmoothTime_secs_ で自然に収まる */
+        void SustainShake(float intensity);
+        static void SustainShakeMainCamera(float intensity);
+
     private:
         void OnAwake () override;
         void OnDestroy() override;
@@ -31,6 +36,8 @@ namespace NanamiEngine::CineMachine::Behaviour
 
         float trauma_   = 0.0f;
         float duration_ = 0.4f;
+        float sustain_        = 0.0f;
+        float sustainRequest_ = 0.0f;
 
         glm::vec3 posAmplitude_   = glm::vec3(0.4f, 0.4f, 0.25f);
         glm::vec3 angleAmplitude_ = glm::vec3(2.0f, 2.0f, 3.0f); 
@@ -38,6 +45,8 @@ namespace NanamiEngine::CineMachine::Behaviour
         float     defaultIntensity_ = 0.6f;
         float     defaultDuration_  = 0.4f;
         glm::vec3 seed_ = glm::vec3(13.37f, 71.13f, 42.42f);
+        [[serialize(2)]] float sustainFrequency_       = 9.0f;
+        [[serialize(2)]] float sustainSmoothTime_secs_ = 0.12f;
         [[serialize(0)]] FIELD(GameObject::IGameObject) cameraBrain_;
 
 #pragma region Serialization Function
@@ -57,6 +66,8 @@ namespace NanamiEngine::CineMachine::Behaviour
             archive(CEREAL_NVP(defaultIntensity_));
             archive(CEREAL_NVP(defaultDuration_));
             archive(CEREAL_NVP(seed_));
+            archive(CEREAL_NVP(sustainFrequency_));
+            archive(CEREAL_NVP(sustainSmoothTime_secs_));
             if (version <= 0) archive(CEREAL_NVP(cameraBrain_));
         }
 
@@ -73,11 +84,13 @@ namespace NanamiEngine::CineMachine::Behaviour
             if (version >= 0) archive(CEREAL_NVP(defaultIntensity_));
             if (version >= 0) archive(CEREAL_NVP(defaultDuration_));
             if (version >= 0) archive(CEREAL_NVP(seed_));
+            if (version >= 2) archive(CEREAL_NVP(sustainFrequency_));
+            if (version >= 2) archive(CEREAL_NVP(sustainSmoothTime_secs_));
             if (version <= 0) archive(CEREAL_NVP(cameraBrain_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ShakeCameraBehaviour, 1)
+ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ShakeCameraBehaviour, 2)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::ShakeCameraBehaviour);

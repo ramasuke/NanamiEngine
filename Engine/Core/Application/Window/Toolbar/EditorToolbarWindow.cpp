@@ -5,7 +5,10 @@
 #include "ImGuiHelper.h"
 #include "../../../FileSystem/Directory/Directory.h"
 #include "../../Configuration/ApplicationConfiguration.h"
+#include "../../Configuration/AutoMcp/ApplicationConfiguration_AutoMcp.h"
+#include "../../Configuration/CodeEditor/ApplicationConfiguration_CodeEditor.h"
 #include "../../Configuration/DebugDraw/ApplicationConfiguration_DebugDraw.h"
+#include "../../Configuration/GameWindow/ApplicationConfiguration_GameWindow.h"
 #include "../../Configuration/Network/ApplicationConfiguration_Network.h"
 #include "../../Configuration/Physics/ApplicationConfiguration_Physics.h"
 #include "../../ApplicationBase.h"
@@ -69,6 +72,21 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
             if (ImGui::BeginTabItem("Debug Draw"))
             {
                 Application::Configuration::DebugDrawConfiguration::DrawConfigGUI();
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Game Window"))
+            {
+                Application::Configuration::GameWindowConfiguration::DrawConfigGUI();
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Code Editor"))
+            {
+                Application::Configuration::CodeEditorConfiguration::DrawConfigGUI();
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("AutoMCP"))
+            {
+                Application::Configuration::AutoMcpConfiguration::DrawConfigGUI();
                 ImGui::EndTabItem();
             }
             ImGui::EndTabBar();

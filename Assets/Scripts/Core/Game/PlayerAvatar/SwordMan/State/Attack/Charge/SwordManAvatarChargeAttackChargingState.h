@@ -21,8 +21,12 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
         /** @brief 最大溜めに達したことを知らせる SE とエフェクトを出す */
         void EmitChargeCompleteCue() const;
+        /** @brief 溜め具合に応じた持続カメラ揺れを毎フレーム要求する */
+        void SustainChargeShake() const;
 
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::ChargeAttackCharging; }
+        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Accept; }
+        void VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const override;
 
     private:
         /** @brief 最大溜めに達したか。達した最初のフレームで合図を1回だけ出すために使う */

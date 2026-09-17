@@ -1,14 +1,23 @@
 ﻿#pragma once
 #include "../../../../../Engine/Core/Object/Field/Field.h"
+#include "../../../../../Engine/Module/Asset/Hlsl/HlslVsFile.h"
+#include "../../../../../Engine/Module/Asset/Hlsl/HlslPsFile.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../../../Engine/Module/Component/Shader/IShaderConstantBufferHost.h"
+#include "../../../../../Engine/Module/Component/Shader/IModelMaterialShaderPolicy.h"
+#include "../../../../../Engine/Module/Component/Shader/ShaderConstantBufferSlot.h"
 
 namespace GamePlay::Prop
 {
     class ProximityReveal final : public Component::ComponentBase,
-                                  public LifeCycleCallback::IAwakable,
-                                  public LifeCycleCallback::IUpdatable
+                                  public Component::IShaderConstantBufferHost,
+                                  public Component::IModelMaterialShaderPolicy
     {
+    public:
+        [[nodiscard]] int  GetOrCreateShaderConstantBufferHandle() override;
+        [[nodiscard]] bool TryGetMaterialShaderPass(const std::string& materialName, Component::MaterialShaderPass& outPass) override;
+        [[nodiscard]] bool ShouldDrawShadow        (const std::string& materialName) override;
+
     private:
         struct ProximityCB
         {
@@ -18,15 +27,16 @@ namespace GamePlay::Prop
             float pad[3];
         };
 
-        void OnAwake () override;
-        void OnUpdate() override;
+        void OnDestroy() override;
+        void WriteConstantBuffer(int cbHandle) const;
 
         float revealRadius_    = 5.0f;
         float transitionWidth_ = 3.0f;
 
-        // ModelRenderer/QuadRendererなど、IShaderConstantBufferHostを実装するレンダラーなら
-        // どれでもよい(Catch<>で探すだけなので、無ければOnUpdate()は何もしない)。
-        std::weak_ptr<Component::IShaderConstantBufferHost> shaderHost_;
+        FIELD(Asset::HlslVsFile) vsFile_;
+        FIELD(Asset::HlslPsFile) psFile_;
+
+        int cbHandle_ = -1;
 
 #pragma region Serialization Function
     public:
@@ -37,6 +47,8 @@ namespace GamePlay::Prop
             archive(cereal::base_class<ComponentBase>(this));
             archive(CEREAL_NVP(revealRadius_));
             archive(CEREAL_NVP(transitionWidth_));
+            archive(CEREAL_NVP(vsFile_));
+            archive(CEREAL_NVP(psFile_));
         }
 
         template<class Archive>
@@ -44,9 +56,11 @@ namespace GamePlay::Prop
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 0) archive(CEREAL_NVP(revealRadius_));
             if (version >= 0) archive(CEREAL_NVP(transitionWidth_));
+            if (version >= 1) archive(CEREAL_NVP(vsFile_));
+            if (version >= 1) archive(CEREAL_NVP(psFile_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Prop::ProximityReveal, 0)
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::ProximityReveal, 1)

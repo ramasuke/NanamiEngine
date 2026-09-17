@@ -161,6 +161,8 @@ def _classify_member(decl_type: str, known_types: set[str]) -> dict:
         return {"shape": "quat"}
     if "std::string" in t:
         return {"shape": "string"}
+    if _leaf(t) == "Color32":
+        return {"shape": "color32"}
     mv = RE_VECTOR.search(t)
     if mv:
         return {"shape": "vector", "elem": _leaf(mv.group(1))}
@@ -293,11 +295,18 @@ def _scan_bases(leaves: set[str], headers: list[tuple[str, str]]) -> dict[str, d
                 if sigs[leaf] != signature:
                     out[leaf]["ambiguous"] = True
                 continue
+            # A non-empty base can archive base classes of its own
+            # (ColliderBase and NetworkComponent both start with
+            # base_class<ComponentBase>). Record that chain: whoever replays
+            # cereal's once-per-type version bookkeeping has to walk into it,
+            # or it mis-identifies which ComponentBase is the file's first.
+            _own_params, own_bases, _own_interleaved = _parse_serializable(body, leaves)
             out[leaf] = {
                 "fqn": fqn,
                 "header": rel,
                 "version": version,
                 "empty": re.search(r"\barchive\s*\(", save_block) is None,
+                "bases": own_bases,
             }
             sigs[leaf] = signature
     return out
@@ -360,11 +369,25 @@ def scan() -> dict[str, Any]:
         by_leaf.setdefault(leaf, []).append(fqn)
     bases_table = _scan_bases(base_leaves, all_headers)
 
-    gameobject_shapes = {
-        "NanamiEngine::Scene::SceneGameObject": {"leaf": "SceneGameObject", "version": 0},
-        "NanamiEngine::Module::GameObject::PrefabGameObject": {"leaf": "PrefabGameObject", "version": 1},
-        "NanamiEngine::Scene::CopiedPrefabGameObject": {"leaf": "CopiedPrefabGameObject", "version": 0},
-    }
+    # GameObject types are not ENGINE_REGISTER_COMPONENT'd, so read their
+    # CEREAL_CLASS_VERSION out of the headers rather than pinning it here -
+    # a stale version silently mis-describes every file's root object.
+    declared_versions: dict[str, int] = {}
+    for _rel, text in all_headers:
+        for vm in RE_CLASS_VERSION.finditer(text):
+            declared_versions[vm.group(1)] = int(vm.group(2))
+    gameobject_shapes = {}
+    for fqn in (
+        "NanamiEngine::Scene::SceneGameObject",
+        "NanamiEngine::Module::GameObject::PrefabGameObject",
+        "NanamiEngine::Scene::CopiedPrefabGameObject",
+    ):
+        if fqn not in declared_versions:
+            raise RuntimeError(
+                f"no CEREAL_CLASS_VERSION found for {fqn}; the header scan roots are "
+                f"probably wrong"
+            )
+        gameobject_shapes[fqn] = {"leaf": _leaf(fqn), "version": declared_versions[fqn]}
 
     return {
         "generated_from": _git_head(),

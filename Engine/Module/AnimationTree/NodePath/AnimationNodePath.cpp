@@ -100,7 +100,10 @@ void AnimationTree::AnimationNodePath::OnUpdateNodeAnimationBlend(const float ti
     if (isBlending_)
     {
         transitionDuring_secs_ += Time::DeltaTime() * timeScale;
-        const float blendRate = std::clamp(transitionDuring_secs_ / transitionDuration_secs_, 0.0f, 1.0f);
+        // 遷移時間 0 は即時切り替え。DeltaTime が 0 のフレーム（シーン遷移直後）に 0/0 の NaN を作らないよう割らずに済ませる
+        const float blendRate = transitionDuration_secs_ > 0.0f
+            ? std::clamp(transitionDuring_secs_ / transitionDuration_secs_, 0.0f, 1.0f)
+            : 1.0f;
 
         fromNode_.lock()->OnUpdateBlendRate(1 - blendRate);
         nextNode_.lock()->OnUpdateBlendRate(blendRate);

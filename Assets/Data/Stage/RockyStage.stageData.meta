@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 1,
+                "cereal_class_version": 2,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -20,10 +20,44 @@
                 "displayName_": "岩石地帯",
                 "sceneType_": 0,
                 "mapMarkerPosition_": {
-                    "value0": 1440.0,
-                    "value1": 460.0
+                    "value0": 936.0,
+                    "value1": 477.0
                 },
-                "isCleared_": false
+                "isCleared_": false,
+                "thumbnailSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "DCF4C921-3D43-4F1F-97B0-086E609BEB42"
+                                }
+                            }
+                        }
+                    }
+                },
+                "elementSprite_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "value0": {
+                                    "value_": "33E41BAD-D398-4A32-9044-982128EF8179"
+                                }
+                            }
+                        }
+                    }
+                },
+                "difficulty_": 3,
+                "tagText_": "上級 ・ 火属性",
+                "descriptionLines_": [
+                    "切り立った岩山が連なる、",
+                    "竜の棲む険しいステージ。"
+                ]
             }
         }
     }

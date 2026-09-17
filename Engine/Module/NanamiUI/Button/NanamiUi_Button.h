@@ -22,7 +22,8 @@ namespace NanamiEngine::Module::NanamiUi
     public:
         [[nodiscard]] rxcpp::observable<MouseState> OnClick  () const { return onClick  .get_observable(); } 
         [[nodiscard]] rxcpp::observable<Rx::unit  > OnHover  () const { return onHover  .get_observable(); }
-        [[nodiscard]] rxcpp::observable<Rx::unit  > OnRelease() const { return onRelease.get_observable(); } 
+        [[nodiscard]] rxcpp::observable<Rx::unit  > OnHoverExit() const { return onHoverExit.get_observable(); }
+        [[nodiscard]] rxcpp::observable<Rx::unit  > OnRelease() const { return onRelease.get_observable(); }
 
     private:
         void OnAwake() override;
@@ -44,6 +45,7 @@ namespace NanamiEngine::Module::NanamiUi
 
         rxcpp::subjects::subject<MouseState> onClick;
         rxcpp::subjects::subject<Rx::unit  > onHover;
+        rxcpp::subjects::subject<Rx::unit  > onHoverExit;
         rxcpp::subjects::subject<Rx::unit  > onRelease;
         
 #pragma region Serialization Function

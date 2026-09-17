@@ -4,43 +4,79 @@
 
 namespace GamePlay::Prop
 {
-    void ProximityReveal::OnAwake()
+    int ProximityReveal::GetOrCreateShaderConstantBufferHandle()
     {
-        shaderHost_ = Components().Catch<Component::IShaderConstantBufferHost>();
+        if (!vsFile_ || !psFile_)
+            return -1;
+        if (vsFile_->GetVsHandle() == -1 || psFile_->GetPsHandle() == -1)
+            return -1;
+
+        if (cbHandle_ == -1)
+        {
+            // 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、GetBuffer/Set で完了待ちに入って固まるので同期で作る
+            const int useASyncLoad = GetUseASyncLoadFlag();
+            SetUseASyncLoadFlag(FALSE);
+            cbHandle_ = CreateShaderConstantBuffer(Component::CUSTOM_SHADER_CB_SIZE);
+            SetUseASyncLoadFlag(useASyncLoad);
+        }
+
+        return cbHandle_;
     }
 
-    void ProximityReveal::OnUpdate()
+    void ProximityReveal::WriteConstantBuffer(const int cbHandle) const
     {
-        const auto renderer = shaderHost_.lock();
-        if (!renderer)
-            return;
-
-        // 定数バッファはレンダラー側で遅延生成される(シェーダー未設定なら -1)
-        const int cbHandle = renderer->GetOrCreateShaderConstantBufferHandle();
-        if (cbHandle == -1)
-            return;
-
         const auto player = GameCore::PlayerAvatar::Owner();
         if (!player)
             return;
-
-        const glm::vec3 pp = player->PlayerTransform().GetWorldPos();
 
         auto* cb = static_cast<ProximityCB*>(GetBufferShaderConstantBuffer(cbHandle));
         if (!cb)
             return;
 
-        cb->playerPos[0]      = pp.x;
-        cb->playerPos[1]      = pp.y;
-        cb->playerPos[2]      = pp.z;
-        cb->revealRadius      = revealRadius_;
-        cb->transitionWidth   = transitionWidth_;
+        const glm::vec3 pp = player->PlayerTransform().GetWorldPos();
+
+        cb->playerPos[0]    = pp.x;
+        cb->playerPos[1]    = pp.y;
+        cb->playerPos[2]    = pp.z;
+        cb->revealRadius    = revealRadius_;
+        cb->transitionWidth = transitionWidth_;
         UpdateShaderConstantBuffer(cbHandle);
+    }
+
+    // 材質は問わずモデル全体に掛ける演出なので、materialName は見ない
+    bool ProximityReveal::TryGetMaterialShaderPass(const std::string&, Component::MaterialShaderPass& outPass)
+    {
+        const int cbHandle = GetOrCreateShaderConstantBufferHandle();
+        if (cbHandle == -1)
+            return false;
+
+        WriteConstantBuffer(cbHandle);
+
+        outPass.vsHandle      = vsFile_->GetVsHandle();
+        outPass.psHandle      = psFile_->GetPsHandle();
+        outPass.cbHandle      = cbHandle;
+        outPass.blendMode     = DX_BLENDMODE_ALPHA;
+        outPass.blendParam    = 255;
+        outPass.disableZWrite = true;
+        return true;
+    }
+
+    bool ProximityReveal::ShouldDrawShadow(const std::string&)
+    {
+        return false;
+    }
+
+    void ProximityReveal::OnDestroy()
+    {
+        if (cbHandle_ != -1)
+            DeleteShaderConstantBuffer(cbHandle_);
     }
 
     void ProximityReveal::OnDrawGui()
     {
         ImGuiHelper::OnDrawInputField("revealRadius_",    revealRadius_);
         ImGuiHelper::OnDrawInputField("transitionWidth_", transitionWidth_);
+        ImGuiHelper::OnDrawInputField("vsFile_",          vsFile_);
+        ImGuiHelper::OnDrawInputField("psFile_",          psFile_);
     }
 }

@@ -9,4 +9,5 @@ void GameCore::PlayerAvatar::HitFeelParam::OnDrawGui()
     LibCore::ImGuiHelper::OnDrawInputField("particleScale_", particleScale_);
     LibCore::ImGuiHelper::OnDrawInputField("targetShakeAmplitude_", targetShakeAmplitude_);
     LibCore::ImGuiHelper::OnDrawInputField("targetShakeDuration_secs_", targetShakeDuration_secs_);
+    LibCore::ImGuiHelper::OnDrawInputField("lungeSpeed_", lungeSpeed_);
 }

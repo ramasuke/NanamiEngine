@@ -1,0 +1,44 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::MagicCasterAvatarResource",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\PlayerAvatar\\Resource/MagicCasterResource.magicCasterResource",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "FE556831-A6C6-4B5F-ADC2-2FF8C6653E13"
+                    }
+                },
+                "magicBoltPrefab_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "135E6FE8-97B8-4501-A2E2-B628C3B8B73E"
+                                }
+                            }
+                        }
+                    }
+                },
+                "magicBoltSpeed_": 220.0,
+                "castFireTime_secs_": 0.35,
+                "castTotalDuration_secs_": 0.75,
+                "groundCheckRadius_": 40.0,
+                "groundCheckUpOffset_": 3.0,
+                "groundCheckDistance_": 8.3
+            }
+        }
+    }
+}

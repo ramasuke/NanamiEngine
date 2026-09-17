@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <functional>
 #include <memory>
+#include <mutex>
 #include <stack>
 #include <string>
 #include <string_view>
@@ -21,19 +22,24 @@ namespace NanamiEngine::Core::Application
         void OnUpdatePushedContents();
 
     private:
+        // addContentStack_ はデシリアライズ中のワーカースレッドからも積まれる。
+        // contents_ 側はメインスレッド専用なので保護しない
         std::stack<std::weak_ptr<T>> addContentStack_;
+        std::mutex addContentMutex_;
         std::stack<std::weak_ptr<T>> contents_;
     };
 
     template <typename T>
     void LifeCycleOnceCallbackGroup<T>::Add(std::weak_ptr<T> add)
     {
+        std::lock_guard lock(addContentMutex_);
         addContentStack_.push(add);
     }
 
     template <typename T>
     void LifeCycleOnceCallbackGroup<T>::AddedContentPop()
     {
+        std::lock_guard lock(addContentMutex_);
         if (!addContentStack_.empty())
         {
             addContentStack_.pop();
@@ -43,6 +49,7 @@ namespace NanamiEngine::Core::Application
     template <typename T>
     void LifeCycleOnceCallbackGroup<T>::OnUpdatePushedContents()
     {
+        std::lock_guard lock(addContentMutex_);
         while (!addContentStack_.empty())
         {
             auto wp = addContentStack_.top();

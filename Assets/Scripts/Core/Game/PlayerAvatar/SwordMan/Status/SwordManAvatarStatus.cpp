@@ -15,48 +15,55 @@ namespace GameCore::PlayerAvatar::SwordMan
     SwordManAvatarStatus::SwordManAvatarStatus()
         : event_ (std::make_shared<StatusEvent>())
         , quests_(std::make_unique<QuestGroup>())
+        , wallet_(std::make_shared<PlayerAvatar::Wallet>())
         , maxHealth_(100)
-        , maxStamina_(StatusParameter::Stamina(200.0f))
-        , stamina_(StatusParameter::Stamina(200.0f))
+        , maxStamina_(StatusParameter::Stamina(100.0f))
+        , stamina_(StatusParameter::Stamina(100.0f))
         , staminaDrainPerSecond_(10.0f)
-        , staminaRegenPerSecond_(80.0f)
+        , staminaRegenPerSecond_(30.0f)
         , minStaminaRatioToResumeRun_(0.3f)
         , comboNormalAttack_ {
-            AttackParam(Damage::PhysicsPower(1), EnhancePower(1), 0.3208168643f, 0.6034255599f),
-            AttackParam(Damage::PhysicsPower(2), EnhancePower(2), 0.8405797102f, 1.1686429513f),
-            AttackParam(Damage::PhysicsPower(3), EnhancePower(3), 1.5454545455f, 1.8181818182f)}
-        , comboNormalAttackStateDuration_secs_(1.8181818182f)
+            AttackParam(Damage::PhysicsPower(1), EnhancePower(1), 0.2673473869f, 0.5028546333f),
+            AttackParam(Damage::PhysicsPower(2), EnhancePower(2), 0.7004830918f, 0.9738691261f),
+            AttackParam(Damage::PhysicsPower(3), EnhancePower(3), 1.2878787879f, 1.5151515152f)}
+        , comboNormalAttackStateDuration_secs_(1.5151515152f)
         , attackedShockedStateDuration_secs_  (0.9090909091f)
-        , dashAttack_                    (Damage::PhysicsPower(10), EnhancePower(10), 0.6363636364f, 0.7272727273f)
+        , dashAttack_                    (Damage::PhysicsPower(10), EnhancePower(10), 0.5303030303f, 0.6060606061f)
         , dashAttackLungeSpeed_secs_          (55.0f)
         , comboHitFeel_ {
-            HitFeelParam(0.3f, 0.1090909091f, 5.0f , 0.25f, 0.12f),
-            HitFeelParam(0.5f, 0.1090909091f, 5.75f, 0.35f, 0.14f),
-            HitFeelParam(0.8f, 0.1090909091f, 6.75f, 0.5f , 0.18f)}
+            HitFeelParam(0.3f, 0.1090909091f, 5.0f , 0.5f, 0.12f, 30.0f),
+            HitFeelParam(0.5f, 0.1090909091f, 5.75f, 0.7f, 0.14f, 28.0f),
+            HitFeelParam(0.8f, 0.1090909091f, 6.75f, 1.0f , 0.18f, 40.0f)}
         , dashHitFeel_                   (0.9f, 0.1272727273f, 1.0f, 0.6f, 0.2f)
         , comboInputBufferWindow_secs_   (0.1181818182f)
         , chargeAttackHoldThreshold_secs_(0.2f)
         , chargeAttackMaxCharge_secs_    (1.0f)
         , chargeAttackMaxHold_secs_      (3.0f)
-        , chargeAttack_                  (Damage::PhysicsPower(15), EnhancePower(15), 0.52f, 1.09f)
+        , chargeAttack_                  (Damage::PhysicsPower(15), EnhancePower(15), 0.4333333333f, 0.9083333333f)
         , chargeHitFeel_                 (1.2f, 0.18f, 7.0f, 0.8f, 0.25f)
         , chargeAttackLungeStart_secs_   (0.0f)
         , chargeAttackLungeSpeed_        (28.0f)
         , chargeAttackStaminaCost_       (30.0f)
+        , jumpAttack_                    (Damage::PhysicsPower(12), EnhancePower(12), 0.1f, 0.6666666667f)
+        , jumpAttackHitFeel_             (1.0f, 0.15f, 6.5f, 0.8f, 0.22f)
+        , jumpAttackWindup_secs_         (0.3f)
+        , jumpAttackPlungeSpeed_         (120.0f)
         , walkSpeed_                    (24.0f)
         , runSpeed_                      (70.0f)
-        , walkAccelerationTime_secs_     (0.25f)
-        , runAccelerationTime_secs_      (0.5f)
-        , moveRotateSpeed_               (5.0f)
-        , lockOnAttackRotateSpeed_       (3.0f )
+        , moveRotateSpeed_               (6.2f)
+        , lockOnAttackRotateSpeed_       (10.0f)
+        , attackRotateSmoothTime_secs_   (0.08f)
         , jumpPower_                     (75.5f)
         , jumpStateDuration_secs_        (0.4818181818f)
         , jumpCooldown_secs_             (0.58f )
+        , jumpStaminaCost_               (15.0f)
         , damageStateDuration_secs_      (1.4545454545f)
         , avoidRollingStateDuration_secs_(0.6363636364f)
         , avoidRollingStaminaCost_       (20.0f)
         , deathStateDuration_secs_       (1.8181818182f)
         , downStateDuration_secs_        (13.6363636364f)
+        , fallDownStateDuration_secs_    (1.3333333333f)
+        , getUpStateDuration_secs_       (1.7666666667f)
         , reviveHealthRatio_             (0.3f )
         , injuredHealthRatio_            (0.3f )
         , wasInjured_                    (false)
@@ -66,6 +73,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     SwordManAvatarStatus::SwordManAvatarStatus(const Asset::SwordManInitStatus& initStatus)
         : event_                              (std::make_shared<StatusEvent>())
         , quests_                             (initStatus.Quest().DeepCoy())
+        , wallet_                             (std::make_shared<PlayerAvatar::Wallet>(initStatus.InitialMoney()))
         , maxHealth_                          (initStatus.MaxHealth())
         , minHealth_                          (initStatus.MinHealth())
         , currentHealth_                      (SyncParamFactory::Create<StatusParameter::Health>(this, initStatus.Health()))
@@ -90,20 +98,26 @@ namespace GameCore::PlayerAvatar::SwordMan
         , chargeAttackLungeStart_secs_        (initStatus.ChargeAttackLungeStart_secs())
         , chargeAttackLungeSpeed_             (initStatus.ChargeAttackLungeSpeed())
         , chargeAttackStaminaCost_            (initStatus.ChargeAttackStaminaCost())
+        , jumpAttack_                         (Damage::PhysicsPower(12), EnhancePower(12), 0.1f, 0.6666666667f)
+        , jumpAttackHitFeel_                  (1.0f, 0.15f, 6.5f, 0.8f, 0.22f)
+        , jumpAttackWindup_secs_              (0.3f)
+        , jumpAttackPlungeSpeed_              (120.0f)
         , walkSpeed_                          (initStatus.GetWalkSpeed())
         , runSpeed_                           (initStatus.GetRunSpeed())
-        , walkAccelerationTime_secs_          (initStatus.WalkAccelerationTime_secs())
-        , runAccelerationTime_secs_           (initStatus.RunAccelerationTime_secs())
         , moveRotateSpeed_                    (initStatus.GetMoveRotateSpeed())
         , lockOnAttackRotateSpeed_            (initStatus.GetLockOnAttackRotateSpeed())
+        , attackRotateSmoothTime_secs_        (initStatus.AttackRotateSmoothTime_secs())
         , jumpPower_                          (initStatus.GetJumpPower())
         , jumpStateDuration_secs_             (initStatus.GetJumpStateDuration_secs())
         , jumpCooldown_secs_                  (initStatus.JumpCooldown_secs())
+        , jumpStaminaCost_                    (initStatus.JumpStaminaCost())
         , damageStateDuration_secs_           (initStatus.DamageStateDuration_secs())
         , avoidRollingStateDuration_secs_     (initStatus.AvoidRollingStateDuration_secs())
         , avoidRollingStaminaCost_            (initStatus.AvoidRollingStaminaCost())
         , deathStateDuration_secs_            (initStatus.DeathStateDuration_secs())
         , downStateDuration_secs_             (13.6363636364f)
+        , fallDownStateDuration_secs_         (1.3333333333f)
+        , getUpStateDuration_secs_            (1.7666666667f)
         , reviveHealthRatio_                  (0.3f )
         , injuredHealthRatio_                 (initStatus.GetInjuredHealthRatio())
         , wasInjured_                         (false)
@@ -114,7 +128,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStatus::Init()
     {
-        quests_->Init(event_);
+        quests_->Init(event_, controlGuideFocus_, wallet_);
     }
 
     void SwordManAvatarStatus::OnUpdate()
@@ -123,6 +137,12 @@ namespace GameCore::PlayerAvatar::SwordMan
         {
             jumpCooldownRemaining_secs_ -= Time::DeltaTime();
             jumpCooldownRemaining_secs_ = (std::max)(jumpCooldownRemaining_secs_, 0.0f);
+        }
+
+        if (attackBuffRemaining_secs_ > 0.0f)
+        {
+            attackBuffRemaining_secs_ -= Time::DeltaTime();
+            attackBuffRemaining_secs_ = (std::max)(attackBuffRemaining_secs_, 0.0f);
         }
 
         assert(stateMachine_ && "SwordManAvatarStatus: stateMachine_ is not set");
@@ -144,6 +164,9 @@ namespace GameCore::PlayerAvatar::SwordMan
             break;
         }
         case SwordManAvatarStateType::AvoidRolling:
+        case SwordManAvatarStateType::Jump:
+        case SwordManAvatarStateType::Floating:
+        case SwordManAvatarStateType::JumpAttackAir:
             break;
         default:
         {
@@ -211,6 +234,11 @@ namespace GameCore::PlayerAvatar::SwordMan
         ConsumeStamina(chargeAttackStaminaCost_);
     }
 
+    void SwordManAvatarStatus::ConsumeJumpStamina()
+    {
+        ConsumeStamina(jumpStaminaCost_);
+    }
+
     void SwordManAvatarStatus::ConsumeStamina(const float cost)
     {
         const auto consumed = stamina_.get() - StatusParameter::Stamina(cost);
@@ -242,9 +270,40 @@ namespace GameCore::PlayerAvatar::SwordMan
         isDowned_ = false;
     }
 
+    void SwordManAvatarStatus::Heal(const StatusParameter::Health amount)
+    {
+        if (amount.Value() <= 0 || IsDeath())
+            return;
+
+        const int healed = (std::min)(currentHealth_->Get().Value() + amount.Value(), maxHealth_.Value());
+        currentHealth_->Set(StatusParameter::Health(healed));
+        onChangeHealth_.get_subscriber().on_next(currentHealth_->Get());
+    }
+
+    void SwordManAvatarStatus::RestoreStamina(const float amount)
+    {
+        if (amount <= 0.0f)
+            return;
+
+        const auto restored = stamina_.get() + StatusParameter::Stamina(amount);
+        stamina_.OnNext(maxStamina_ <= restored ? maxStamina_ : restored);
+        if (isStaminaExhausted_ && stamina_.get() >= StatusParameter::Stamina(maxStamina_.Value() * minStaminaRatioToResumeRun_))
+            isStaminaExhausted_ = false;
+    }
+
+    void SwordManAvatarStatus::ApplyAttackBuff(const float rate, const float duration_secs)
+    {
+        if (rate <= 0.0f || duration_secs <= 0.0f)
+            return;
+
+        attackBuffRate_ = rate;
+        attackBuffRemaining_secs_ = duration_secs;
+    }
+
     void SwordManAvatarStatus::OnDrawGui()
     {
         LibCore::ImGuiHelper::OnDrawInputField("quests_", quests_);
+        LibCore::ImGuiHelper::OnDrawInputField("wallet_", wallet_);
         LibCore::ImGuiHelper::OnDrawInputField("maxHealth_", maxHealth_);
         LibCore::ImGuiHelper::OnDrawInputField("health_", currentHealth_);
         LibCore::ImGuiHelper::OnDrawInputField("maxStamina_", maxStamina_);
@@ -269,19 +328,25 @@ namespace GameCore::PlayerAvatar::SwordMan
         LibCore::ImGuiHelper::OnDrawInputField("chargeAttackLungeStart_secs_", chargeAttackLungeStart_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("chargeAttackLungeSpeed_", chargeAttackLungeSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("chargeAttackStaminaCost_", chargeAttackStaminaCost_);
+        LibCore::ImGuiHelper::OnDrawInputField("jumpAttack_", jumpAttack_);
+        LibCore::ImGuiHelper::OnDrawInputField("jumpAttackHitFeel_", jumpAttackHitFeel_);
+        LibCore::ImGuiHelper::OnDrawInputField("jumpAttackWindup_secs_", jumpAttackWindup_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("jumpAttackPlungeSpeed_", jumpAttackPlungeSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("walkSpeed_", walkSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("runSpeed_", runSpeed_);
-        LibCore::ImGuiHelper::OnDrawInputField("walkAccelerationTime_secs_", walkAccelerationTime_secs_);
-        LibCore::ImGuiHelper::OnDrawInputField("runAccelerationTime_secs_", runAccelerationTime_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("moveRotateSpeed_", moveRotateSpeed_);
         LibCore::ImGuiHelper::OnDrawInputField("lockOnAttackRotateSpeed_", lockOnAttackRotateSpeed_);
+        LibCore::ImGuiHelper::OnDrawInputField("attackRotateSmoothTime_secs_", attackRotateSmoothTime_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpPower_", jumpPower_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpStateDuration_secs_", jumpStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpCooldown_secs_", jumpCooldown_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpCooldownRemaining_secs_", jumpCooldownRemaining_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("jumpStaminaCost_", jumpStaminaCost_);
         LibCore::ImGuiHelper::OnDrawInputField("damageStateDuration_secs_", damageStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("deathStateDuration_secs_", deathStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("downStateDuration_secs_", downStateDuration_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("fallDownStateDuration_secs_", fallDownStateDuration_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("getUpStateDuration_secs_", getUpStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("reviveHealthRatio_", reviveHealthRatio_);
     }
 }

@@ -28,12 +28,11 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] std::weak_ptr<GameObject::IGameObject> LockOnCandidate() const { return lockOnCandidate_; }
 
     private:
-        [[serialize(1)]] std::string                                  followFromBehindCameraName_;
         [[serialize(0)]] FIELD(CineMachine::CineMachineVirtualCamera) followFromBehindCamera_;
-        [[serialize(2)]] std::string                                  lockOnCameraName_;
+        [[serialize(3)]] FIELD(CineMachine::CineMachineVirtualCamera) lockOnCamera_;
 
         std::weak_ptr<CineMachine::CineMachineVirtualCamera> currentCamera_;
-        std::weak_ptr<CineMachine::CineMachineVirtualCamera> lockOnCamera_;
+
         std::weak_ptr<GameObject::IGameObject> lockOnTarget_;
         std::weak_ptr<GameObject::IGameObject> lockOnCandidate_;
         bool isLockedOn_ = false;
@@ -45,20 +44,22 @@ void BasedOnDrawgui() override;
 template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<ComponentBase>(this));
-    archive(CEREAL_NVP(followFromBehindCameraName_));
     archive(CEREAL_NVP(followFromBehindCamera_));
-    archive(CEREAL_NVP(lockOnCameraName_));
+    archive(CEREAL_NVP(lockOnCamera_));
 }
 
 template<class Archive>
 void load(Archive& archive, const std::uint32_t version) {
     archive(cereal::base_class<ComponentBase>(this));
-    if (version >= 1) archive(CEREAL_NVP(followFromBehindCameraName_));
+    // v3 でカメラの名前検索を FIELD に置き換えた
+    std::string followFromBehindCameraName_, lockOnCameraName_;
+    if (version >= 1 && version < 3) archive(CEREAL_NVP(followFromBehindCameraName_));
     if (version >= 0) archive(CEREAL_NVP(followFromBehindCamera_));
-    if (version >= 2) archive(CEREAL_NVP(lockOnCameraName_));
+    if (version >= 2 && version < 3) archive(CEREAL_NVP(lockOnCameraName_));
+    if (version >= 3) archive(CEREAL_NVP(lockOnCamera_));
 }
 #pragma endregion
 };
 }
 
-ENGINE_REGISTER_COMPONENT(GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase, 2)
+ENGINE_REGISTER_COMPONENT(GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase, 3)

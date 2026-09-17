@@ -1,0 +1,58 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::ItemData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Item/PitfallTrap.itemData",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "C164E547-132D-4104-86B5-570565BC0C9E"
+                    }
+                },
+                "displayName_": "落とし穴",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "90C46C4C-8466-499E-97D8-2687C8FB4AC7"
+                                }
+                            }
+                        }
+                    }
+                },
+                "effect_": 0,
+                "effectAmount_": 0.0,
+                "effectDuration_secs_": 0.0,
+                "useSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                }
+                            }
+                        }
+                    }
+                },
+                "maxStack_": 2
+            }
+        }
+    }
+}

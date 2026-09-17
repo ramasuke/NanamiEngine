@@ -2,19 +2,17 @@
 
 #include "../../../../../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
-#include "../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../Input/PlayerAvatarInput_void.h"
-#include "../../AttackedShocked/SwordManAvatar_AttackedShockedState.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::State
 {
     void SwordManAvatarNormalAttackState::DoEnter()
     {
-        Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
+        HoldHorizontalVelocity();
         currentCombo_ = 0;
         isAttacked_   = false;
         bufferedAttackTimer_secs_ = 0.0f;
@@ -23,32 +21,28 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarNormalAttackState::DoFixedUpdate()
     {
-        
+        // 各段の発生までは自機の向きへ踏み込む。以降はその場に留める
+        if (isAttacked_)
+        {
+            HoldHorizontalVelocity();
+            return;
+        }
+
+        LungeForward(Status().ComboAttackLungeSpeed(currentCombo_));
     }
 
     void SwordManAvatarNormalAttackState::DoUpdate()
     {
-        if (Status().IsDamaged())
-        {
-            OnChangeState(SwordManAvatarStateType::Hurt);
-            return;
-        }
-
-        // 1段目の発生前まで押し続けていたら、ため攻撃の溜めへ移行する（一度でも離したら溜めには入らない）
         if (!Input().NormalAttack().IsUpdatePressed())
             releasedSinceEnter_ = true;
-        if (!releasedSinceEnter_ && currentCombo_ == 0 && !isAttacked_ && Status().CanChargeAttack() &&
-            During_secs() >= Status().ChargeAttackHoldThreshold_secs())
-        {
-            OnChangeState(SwordManAvatarStateType::ChargeAttackCharging);
+        if (UpdateTransitions())
             return;
-        }
 
-        // 発生前（予備動作中）だけロックオン対象へ向く
+        // 発生前に攻撃対象へ向く
         if (!isAttacked_)
-            RotateTowardsLockOnTarget(Status().LockOnAttackRotateSpeed());
+            RotateTowardsAttackTarget(Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
 
-        // 入力バッファ: 判定ウィンドウの前後数フレームの押下も拾えるよう、短時間だけ「押した」ことを憶えておく
+        // 入力バッファ
         if (Input().NormalAttack().IsPressed())
             bufferedAttackTimer_secs_ = Status().ComboInputBufferWindow_secs();
         else if (bufferedAttackTimer_secs_ > 0.0f)
@@ -68,7 +62,25 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarNormalAttackState::DoExit()
     {
-        
+
+    }
+
+    void SwordManAvatarNormalAttackState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const
+    {
+        // アイテム欄は出したままにするが、この State では使えない。宣言しないと大砲と同じ扱いでアイテム欄ごと消えてしまう
+        visitor.Action(SwordManAvatarStateAction::CycleItem, false);
+        visitor.Action(SwordManAvatarStateAction::UseItem, false);
+        if (visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged()))
+            return;
+
+        visitor.Action(SwordManAvatarStateAction::ComboAttack, currentCombo_ + 1 < static_cast<int>(Status().ComboNormalAttack().size()));
+        // 1段目の発生前まで押し続けていたら、ため攻撃の溜めへ移行する
+        visitor.OnInputWhenReady(
+            SwordManAvatarStateType::ChargeAttackCharging,
+            SwordManAvatarInput::NormalAttack,
+            SwordManAvatarInputPhase::Holding,
+            !releasedSinceEnter_ && currentCombo_ == 0 && !isAttacked_ && Status().CanChargeAttack(),
+            During_secs() >= Status().ChargeAttackHoldThreshold_secs());
     }
 
     void SwordManAvatarNormalAttackState::TryComboAttack()
@@ -90,9 +102,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             if (currentCombo_ + 1 >= static_cast<int>(comboNormalAttack.size()))
                 return;
 
-            bufferedAttackTimer_secs_ = 0.0f; // 消費済みにする（1回の入力で2段以上進めない）
+            bufferedAttackTimer_secs_ = 0.0f;
             currentCombo_++;
-            isAttacked_ = false; // 次段の予備動作開始。ヒットは次段の OccurrenceDuration 到達時にその段の AttackPower で発生
+            ResetAttackRotation();
+            isAttacked_ = false;
             return;
         }
 
@@ -100,10 +113,15 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             return;
 
         isAttacked_ = true;
-        GamePlay::Sound::SoundPlayer::PlaySe(Resources().NormalAttackSound(), Transform().GetWorldPos());
+        
+        HoldHorizontalVelocity();
+
         StatusEvent().InvokeComboAttack();
 
-        if (NormalAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
+        const bool isHit = NormalAttackArea().TryPhysicsAttack(Player(), BuffedAttackPower(attackStatus.AttackPower()));
+        PlayComboAttackSe(isHit);
+
+        if (isHit)
         {
             const auto& hitFeel = Status().ComboHitFeel().at(currentCombo_);
             NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::ShakeMainCamera(hitFeel.ShakeIntensity(), hitFeel.ShakeDuration_secs());
@@ -113,26 +131,29 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             const auto particle = NanamiEngine::Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos(), yRot);
             if (const auto particleObject = particle.lock())
                 particleObject->Transform().SetLocalScale(glm::vec3(hitFeel.ParticleScale()));
-            DealDamageText(NormalAttackArea(), attackStatus.AttackPower());
+            DealDamageText(NormalAttackArea(), BuffedAttackPower(attackStatus.AttackPower()));
             ShakeHitTargets(NormalAttackArea(), hitFeel);
         }
         else
         {
-            const auto direction = NormalAttackArea().Transform().GetWorldPos() - Transform().GetWorldPos();
+            TryBlockAttackByWall(NormalAttackArea());
+        }
+    }
 
-            Physics::LayerMask mask = Physics::CreateLayerMask();
-            Physics::AddLayer(mask, Physics::Layer::Default);
-            
-            const auto raycastHit = Physics::Raycast(
-                                            Transform().GetWorldPos() + glm::vec3(0.0f, 10.0f, 0.0f),
-                                            direction,
-                                            glm::length(direction),
-                                            mask);
-            if (raycastHit.Hit())
+    void SwordManAvatarNormalAttackState::PlayComboAttackSe(const bool isHit) const
+    {
+        const auto& comboSounds = isHit
+            ? Resources().ComboNormalAttackHitSounds()
+            : Resources().ComboNormalAttackWhiffSounds();
+        if (currentCombo_ < static_cast<int>(comboSounds.size()))
+        {
+            if (const auto sound = comboSounds[currentCombo_].get())
             {
-                OnChangeState(SwordManAvatarStateType::AttackedShocked);
+                GamePlay::Sound::SoundPlayer::PlaySe(*sound, Transform().GetWorldPos());
+                return;
             }
         }
+        PlayAttackSe(isHit);
     }
 
     void SwordManAvatarNormalAttackState::ChangeToMoveOrIdle()

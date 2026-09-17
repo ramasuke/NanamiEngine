@@ -11,11 +11,15 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEFAULT_SHOW_ALL_COLLIDERS     = false;
     constexpr auto DEFAULT_SHOW_COLLIDER_LAYER    = true;
     constexpr auto DEFAULT_SHOW_TRIGGER_COLLIDERS = true;
+    constexpr auto DEFAULT_SHOW_MAIN_CAMERA_FRUSTUM     = true;
+    constexpr auto DEFAULT_SHOW_VIRTUAL_CAMERA_FRUSTUMS = true;
     // Box, Sphere, Capsule, Cylinder, StaticMesh の順。StaticMesh は描画が重いのでデフォルト OFF
     constexpr std::array<bool, static_cast<size_t>(Module::Physics::ColliderShapeKind::Count)> DEFAULT_SHOW_COLLIDER_KINDS = { true, true, true, true, false };
 
     bool DebugDrawConfiguration::showAllColliders_     = DEFAULT_SHOW_ALL_COLLIDERS;
     bool DebugDrawConfiguration::showTriggerColliders_ = DEFAULT_SHOW_TRIGGER_COLLIDERS;
+    bool DebugDrawConfiguration::showMainCameraFrustum_     = DEFAULT_SHOW_MAIN_CAMERA_FRUSTUM;
+    bool DebugDrawConfiguration::showVirtualCameraFrustums_ = DEFAULT_SHOW_VIRTUAL_CAMERA_FRUSTUMS;
     DebugDrawConfiguration::ColliderKindFlags  DebugDrawConfiguration::showColliderKinds_  = DEFAULT_SHOW_COLLIDER_KINDS;
     DebugDrawConfiguration::ColliderLayerFlags DebugDrawConfiguration::showColliderLayers_ = []
     {
@@ -29,6 +33,8 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEBUG_DRAW_SHOW_COLLIDER_KEY_PREFIX   = "ShowCollider_";
     constexpr auto DEBUG_DRAW_SHOW_LAYER_KEY_PREFIX      = "ShowColliderLayer_";
     constexpr auto DEBUG_DRAW_SHOW_TRIGGER_COLLIDERS_KEY = "ShowTriggerColliders";
+    constexpr auto DEBUG_DRAW_SHOW_MAIN_CAMERA_FRUSTUM_KEY     = "ShowMainCameraFrustum";
+    constexpr auto DEBUG_DRAW_SHOW_VIRTUAL_CAMERA_FRUSTUMS_KEY = "ShowVirtualCameraFrustums";
 
     void DebugDrawConfiguration::Load()
     {
@@ -47,6 +53,9 @@ namespace NanamiEngine::Core::Application::Configuration
         }
 
         showTriggerColliders_ = Module::ProjectConfig::LoadOrDefaultWithPath<bool>(DEBUG_DRAW_CONFIG_PATH, DEBUG_DRAW_SHOW_TRIGGER_COLLIDERS_KEY, DEFAULT_SHOW_TRIGGER_COLLIDERS);
+
+        showMainCameraFrustum_     = Module::ProjectConfig::LoadOrDefaultWithPath<bool>(DEBUG_DRAW_CONFIG_PATH, DEBUG_DRAW_SHOW_MAIN_CAMERA_FRUSTUM_KEY, DEFAULT_SHOW_MAIN_CAMERA_FRUSTUM);
+        showVirtualCameraFrustums_ = Module::ProjectConfig::LoadOrDefaultWithPath<bool>(DEBUG_DRAW_CONFIG_PATH, DEBUG_DRAW_SHOW_VIRTUAL_CAMERA_FRUSTUMS_KEY, DEFAULT_SHOW_VIRTUAL_CAMERA_FRUSTUMS);
     }
 
     void DebugDrawConfiguration::Save()
@@ -66,6 +75,9 @@ namespace NanamiEngine::Core::Application::Configuration
         }
 
         Module::ProjectConfig::SaveWithPath<bool>(DEBUG_DRAW_CONFIG_PATH, DEBUG_DRAW_SHOW_TRIGGER_COLLIDERS_KEY, showTriggerColliders_);
+
+        Module::ProjectConfig::SaveWithPath<bool>(DEBUG_DRAW_CONFIG_PATH, DEBUG_DRAW_SHOW_MAIN_CAMERA_FRUSTUM_KEY, showMainCameraFrustum_);
+        Module::ProjectConfig::SaveWithPath<bool>(DEBUG_DRAW_CONFIG_PATH, DEBUG_DRAW_SHOW_VIRTUAL_CAMERA_FRUSTUMS_KEY, showVirtualCameraFrustums_);
     }
 
     bool DebugDrawConfiguration::ShouldDrawCollider(
@@ -89,6 +101,16 @@ namespace NanamiEngine::Core::Application::Configuration
             return false;
 
         return !isSensor || showTriggerColliders_;
+    }
+
+    bool DebugDrawConfiguration::ShouldDrawMainCameraFrustum()
+    {
+        return APPLICATION_MODE == ApplicationMode::Editor && showMainCameraFrustum_;
+    }
+
+    bool DebugDrawConfiguration::ShouldDrawVirtualCameraFrustum()
+    {
+        return APPLICATION_MODE == ApplicationMode::Editor && showVirtualCameraFrustums_;
     }
 
     void DebugDrawConfiguration::DrawConfigGUI()
@@ -138,6 +160,16 @@ namespace NanamiEngine::Core::Application::Configuration
         ImGui::Spacing();
         ImGui::TextDisabled("* Trigger colliders are drawn in light blue");
         ImGui::TextDisabled("* The object selected in Inspector always draws its collider");
+
+        ImGui::Spacing();
+        ImGui::Text("Camera");
+        ImGui::Separator();
+
+        if (ImGui::Checkbox("Show Main Camera Frustum", &showMainCameraFrustum_))
+            changed = true;
+
+        if (ImGui::Checkbox("Show Virtual Camera Frustums", &showVirtualCameraFrustums_))
+            changed = true;
 
         if (changed)
             Save();

@@ -9,6 +9,7 @@
 #include "../../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../../../../Core/Game/Scene/Main/Type/MainSceneType.h"
 #include "../../../../../../Assets/Data/Stage/Data_StageData.h"
+#include "../Difficulty/StageDifficultyPips.h"
 
 namespace GamePlay::Ui
 {
@@ -21,23 +22,28 @@ namespace GamePlay::Ui
         [[nodiscard]] const std::string&               DisplayName       () const { return stageData_->DisplayName();        }
         [[nodiscard]] const glm::vec2&                 MapMarkerPosition () const { return stageData_->MapMarkerPosition();  }
         [[nodiscard]] bool                              IsCleared        () const { return stageData_->IsCleared();          }
+        [[nodiscard]] std::shared_ptr<Asset::StageData> Data             () const { return stageData_.get();                 }
 
         void SetHighlighted(bool isHighlighted);
 
     private:
         void OnAwake() override;
+        void RefreshAppearance();
 
     private:
         FIELD(NanamiUi::Button) selectButton_;
         FIELD(Component::ImageRenderer) imageRenderer_;
         FIELD(NanamiUi::ImageAnimationRenderer) glowAnimation_;
-        FIELD(NanamiUi::TextRenderer) nameText_;
-        [[serialize(0)]] std::string nameTextChildName_ = "Text";
+        [[serialize(3)]] FIELD(NanamiUi::TextRenderer) nameText_;
+        [[serialize(3)]] FIELD(Component::ImageRenderer) elementIcon_;
+        [[serialize(3)]] FIELD(StageDifficultyPips) difficultyPips_;
         [[serialize(0)]] FIELD(Asset::SoundFile) selectButtonHoverSound_;
         [[serialize(0)]] FIELD(Asset::SoundFile) selectButtonClickSound_;
         [[serialize(1)]] FIELD(Asset::StageData) stageData_;
         [[serialize(1)]] FIELD(Asset::SpriteFile) selectedRowSprite_;
         [[serialize(1)]] FIELD(Asset::SpriteFile) unselectedRowSprite_;
+        bool isHighlighted_ = false;
+        bool isHovering_ = false;
 
 #pragma region Serialization Function
     public:
@@ -46,26 +52,35 @@ namespace GamePlay::Ui
         template<typename Archive>
         void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<Component::ComponentBase>(this));
-            archive(CEREAL_NVP(nameTextChildName_));
+            archive(CEREAL_NVP(nameText_));
             archive(CEREAL_NVP(selectButtonHoverSound_));
             archive(CEREAL_NVP(selectButtonClickSound_));
             archive(CEREAL_NVP(stageData_));
             archive(CEREAL_NVP(selectedRowSprite_));
             archive(CEREAL_NVP(unselectedRowSprite_));
+            archive(CEREAL_NVP(elementIcon_));
+            archive(CEREAL_NVP(difficultyPips_));
         }
 
         template<typename Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<Component::ComponentBase>(this));
-            if (version >= 1) archive(CEREAL_NVP(nameTextChildName_));
+            // v3 で子オブジェクトの名前検索を FIELD に置き換えた
+            std::string nameTextChildName_, elementIconChildName_, difficultyPipsChildName_;
+            if (version >= 1 && version < 3) archive(CEREAL_NVP(nameTextChildName_));
+            if (version >= 3) archive(CEREAL_NVP(nameText_));
             if (version >= 0) archive(CEREAL_NVP(selectButtonHoverSound_));
             if (version >= 0) archive(CEREAL_NVP(selectButtonClickSound_));
             if (version >= 1) archive(CEREAL_NVP(stageData_));
             if (version >= 1) archive(CEREAL_NVP(selectedRowSprite_));
             if (version >= 1) archive(CEREAL_NVP(unselectedRowSprite_));
+            if (version >= 2 && version < 3) archive(CEREAL_NVP(elementIconChildName_));
+            if (version >= 3) archive(CEREAL_NVP(elementIcon_));
+            if (version >= 2 && version < 3) archive(CEREAL_NVP(difficultyPipsChildName_));
+            if (version >= 3) archive(CEREAL_NVP(difficultyPips_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::StageSelectStageUi, 1)
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::StageSelectStageUi, 3)

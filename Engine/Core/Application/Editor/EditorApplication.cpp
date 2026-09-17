@@ -16,22 +16,8 @@
 #include "../Window/Popup/Group/PopupWindowGroup.h"
 #include "../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../../../Module/SafeExecute/Engine_Module_SafeExecute.h"
-
-namespace
-{
-    // DxLib の MATRIX（行優先・行ベクトル規約、平行移動は 4 行目）を
-    // glm::mat4（列優先・列ベクトル規約、平行移動は 4 列目）へ変換する。
-    // 格納形式の読み替えは論理的な転置になり、ちょうど glm 規約の行列が得られる。
-    // （LibCore::Glm::FromDxLibMatrix は論理行列を保持する変換なので、この用途では使えない）
-    glm::mat4 DxMatrixToGlm(const MATRIX& m)
-    {
-        glm::mat4 result(1.0f);
-        for (int i = 0; i < 4; ++i)
-            for (int j = 0; j < 4; ++j)
-                result[i][j] = m.m[i][j];
-        return result;
-    }
-}
+#include "../AutoMcp/AutoMcpServer.h"
+#include "../../../../Libs/LibCore/glm/GlmHelper.h"
 
 Core::Application::EditorApplication::EditorApplication()
 {
@@ -39,12 +25,15 @@ Core::Application::EditorApplication::EditorApplication()
     SetMouseDispFlag(true          );
 
     ImGuiWrapper::CreateInstance();
+
+    AutoMcp::AutoMcpServer::Instance().ApplyConfiguration();
 }
 
 void Core::Application::EditorApplication::OnFrame()
 {
     ImGuiWrapper::Instance().Update();
     ImGuizmo::BeginFrame();          // ImGui::NewFrame() 直後・フレーム1回だけ
+    AutoMcp::AutoMcpServer::Instance().OnFrameBegin();
 
     // 更新フェーズの最後の安全網。コンポーネント単位の例外・SEH(nullptr参照等)は
     // LifeCycleCallbackGroup 側で個別に捕捉済みなので、ここに来るのはコンポーネント発ではない
@@ -64,11 +53,15 @@ void Core::Application::EditorApplication::OnFrame()
     ImGui::EndFrame();
 
     RenderVertex();
+    // ImGui はバックバッファに直接重ねて描くので、3D だけの絵はこの間でしか取れない
+    AutoMcp::AutoMcpServer::Instance().OnSceneRendered();
     ImGuiWrapper::Instance().Draw();
+    AutoMcp::AutoMcpServer::Instance().OnFrameEnd();
 }
 
 void Core::Application::EditorApplication::OnExit()
 {
+    AutoMcp::AutoMcpServer::Instance().Stop();
 }
 
 void Core::Application::EditorApplication::OnDrawGui()
@@ -119,8 +112,8 @@ void Core::Application::EditorApplication::OnDrawGizmo()
 
     // その時 DxLib が実際に使ったカメラ行列（編集=Editor3DCamera / プレイ=Cinemachine）を使う。
     // GameObject の world 行列は glm 規約なので、カメラ行列も glm 規約へ揃える。
-    glm::mat4 view  = DxMatrixToGlm(GetCameraViewMatrix());
-    glm::mat4 proj  = DxMatrixToGlm(GetCameraProjectionMatrix());
+    glm::mat4 view  = LibCore::Glm::FromDxLibMatrix(GetCameraViewMatrix());
+    glm::mat4 proj  = LibCore::Glm::FromDxLibMatrix(GetCameraProjectionMatrix());
     glm::mat4 world = target->Transform().GetWorldMatrix();
 
     // Ctrl 押下中はスナップ

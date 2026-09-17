@@ -50,10 +50,16 @@ namespace NanamiEngine::Module::Component
 
     void ModelRenderer::RefreshTriangleListInfo()
     {
-        rigidTriangleList_.clear();
-        originalMaterialBlend_.clear();
-        allRigid_           = true;
-        customStateApplied_ = false;
+        rigidTriangleList_       .clear();
+        materialNames_           .clear();
+        originalMaterialBlend_   .clear();
+        triangleListMaterialIndex_.clear();
+        meshMaterialIndex_       .clear();
+        meshOriginalCulling_     .clear();
+        materialPasses_          .clear();
+        materialPassActive_      .clear();
+        allRigid_             = true;
+        materialStateApplied_ = false;
 
         if (modelDxLibHandle_ == -1)
             return;
@@ -66,23 +72,37 @@ namespace NanamiEngine::Module::Component
             rigidTriangleList_.push_back(rigid);
             allRigid_ = allRigid_ && rigid;
         }
-    }
 
-    int ModelRenderer::GetOrCreateShaderConstantBufferHandle()
-    {
-        if (!HasCustomShader())
-            return -1;
-
-        if (cbHandle_ == -1)
+        const int materialNum = MV1GetMaterialNum(modelDxLibHandle_);
+        materialNames_        .reserve(materialNum);
+        originalMaterialBlend_.reserve(materialNum);
+        for (int i = 0; i < materialNum; ++i)
         {
-            // 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、GetBuffer/Set で完了待ちに入って固まるので同期で作る
-            const int useASyncLoad = GetUseASyncLoadFlag();
-            SetUseASyncLoadFlag(FALSE);
-            cbHandle_ = CreateShaderConstantBuffer(CUSTOM_SHADER_CB_SIZE);
-            SetUseASyncLoadFlag(useASyncLoad);
+            materialNames_.emplace_back(MV1GetMaterialName(modelDxLibHandle_, i));
+            originalMaterialBlend_.emplace_back(
+                MV1GetMaterialDrawBlendMode (modelDxLibHandle_, i),
+                MV1GetMaterialDrawBlendParam(modelDxLibHandle_, i));
         }
 
-        return cbHandle_;
+        // トライアングルリストから材質を直接引く API が無いので、メッシュ経由で対応表を作る
+        triangleListMaterialIndex_.assign(listNum, -1);
+        const int meshNum = MV1GetMeshNum(modelDxLibHandle_);
+        meshMaterialIndex_  .reserve(meshNum);
+        meshOriginalCulling_.reserve(meshNum);
+        for (int mesh = 0; mesh < meshNum; ++mesh)
+        {
+            const int materialIndex = MV1GetMeshMaterial(modelDxLibHandle_, mesh);
+            meshMaterialIndex_  .push_back(materialIndex);
+            meshOriginalCulling_.push_back(MV1GetMeshBackCulling(modelDxLibHandle_, mesh));
+
+            const int meshListNum = MV1GetMeshTListNum(modelDxLibHandle_, mesh);
+            for (int i = 0; i < meshListNum; ++i)
+            {
+                const int listIndex = MV1GetMeshTList(modelDxLibHandle_, mesh, i);
+                if (listIndex >= 0 && listIndex < listNum)
+                    triangleListMaterialIndex_[listIndex] = materialIndex;
+            }
+        }
     }
 
     void ModelRenderer::OnPreFixedUpdate()
@@ -156,53 +176,69 @@ namespace NanamiEngine::Module::Component
         return matrix;
     }
 
-    void ModelRenderer::OnShadowRender()
+    void ModelRenderer::ResolveMaterialPasses(const PolicyList& policies)
     {
-        if (!IsEnable() || modelDxLibHandle_ == -1)
-            return;
+        const int materialNum = static_cast<int>(materialNames_.size());
+        materialPasses_    .assign(materialNum, MaterialShaderPass{});
+        materialPassActive_.assign(materialNum, false);
 
-        // カスタムシェーダーが設定されている場合はシャドウをスキップ
-        if (HasCustomShader())
-            return;
-
-        MV1SetMatrix(modelDxLibHandle_, GetRenderMatrix());
-        MV1DrawModel(modelDxLibHandle_);
-    }
-
-    bool ModelRenderer::HasCustomShader() const
-    {
-        return vsFile_ && psFile_
-            && vsFile_->GetVsHandle() != -1
-            && psFile_->GetPsHandle() != -1;
-    }
-
-    void ModelRenderer::ApplyCustomModelState()
-    {
-        if (customStateApplied_)
-            return;
-
-        // 復元用に元のマテリアルのブレンド設定を退避
-        const int materialNum = MV1GetMaterialNum(modelDxLibHandle_);
-        originalMaterialBlend_.clear();
-        originalMaterialBlend_.reserve(materialNum);
+        bool anyDisableZWrite = false;
         for (int i = 0; i < materialNum; ++i)
         {
-            originalMaterialBlend_.emplace_back(
-                MV1GetMaterialDrawBlendMode (modelDxLibHandle_, i),
-                MV1GetMaterialDrawBlendParam(modelDxLibHandle_, i));
+            MaterialShaderPass resolved{};
+            bool matched = false;
+            for (const auto& weakPolicy : policies)
+            {
+                const auto policy = weakPolicy.lock();
+                if (!policy)
+                    continue;
+
+                MaterialShaderPass pass{};
+                if (policy->TryGetMaterialShaderPass(materialNames_[i], pass))
+                {
+                    resolved = pass;
+                    matched  = true;
+                    break;
+                }
+            }
+
+            materialPasses_[i]     = resolved;
+            materialPassActive_[i] = matched;
+
+            // SetDrawBlendMode / SetWriteZBuffer3D はモデル描画には反映されないため、MV1 専用の API を使う
+            if (matched)
+            {
+                anyDisableZWrite = anyDisableZWrite || resolved.disableZWrite;
+                MV1SetMaterialDrawBlendMode (modelDxLibHandle_, i, resolved.blendMode);
+                MV1SetMaterialDrawBlendParam(modelDxLibHandle_, i, resolved.blendParam);
+            }
+            else
+            {
+                MV1SetMaterialDrawBlendMode (modelDxLibHandle_, i, originalMaterialBlend_[i].first);
+                MV1SetMaterialDrawBlendParam(modelDxLibHandle_, i, originalMaterialBlend_[i].second);
+            }
         }
 
-        // SetDrawBlendMode / SetWriteZBuffer3D はモデル描画には反映されないため、
-        // MV1 専用の API でアルファブレンド + Z 書き込み無しにする
-        MV1SetMaterialDrawBlendModeAll (modelDxLibHandle_, DX_BLENDMODE_ALPHA);
-        MV1SetMaterialDrawBlendParamAll(modelDxLibHandle_, 255);
-        MV1SetWriteZBuffer             (modelDxLibHandle_, FALSE);
-        customStateApplied_ = true;
+        MV1SetWriteZBuffer(modelDxLibHandle_, anyDisableZWrite ? FALSE : TRUE);
+
+        // 両面描画はメッシュ単位の API しか無いので、対象材質を使うメッシュへ適用する
+        const int meshNum = static_cast<int>(meshMaterialIndex_.size());
+        for (int mesh = 0; mesh < meshNum; ++mesh)
+        {
+            const int  materialIndex  = meshMaterialIndex_[mesh];
+            const bool disableCulling = materialIndex >= 0
+                                     && materialPassActive_[materialIndex]
+                                     && materialPasses_[materialIndex].disableCulling;
+            MV1SetMeshBackCulling(modelDxLibHandle_, mesh,
+                                  disableCulling ? DX_CULLING_NONE : meshOriginalCulling_[mesh]);
+        }
+
+        materialStateApplied_ = true;
     }
 
-    void ModelRenderer::RestoreDefaultModelState()
+    void ModelRenderer::RestoreDefaultMaterialState()
     {
-        if (!customStateApplied_)
+        if (!materialStateApplied_)
             return;
 
         const int materialNum = static_cast<int>(originalMaterialBlend_.size());
@@ -211,41 +247,92 @@ namespace NanamiEngine::Module::Component
             MV1SetMaterialDrawBlendMode (modelDxLibHandle_, i, originalMaterialBlend_[i].first);
             MV1SetMaterialDrawBlendParam(modelDxLibHandle_, i, originalMaterialBlend_[i].second);
         }
+
+        const int meshNum = static_cast<int>(meshOriginalCulling_.size());
+        for (int mesh = 0; mesh < meshNum; ++mesh)
+            MV1SetMeshBackCulling(modelDxLibHandle_, mesh, meshOriginalCulling_[mesh]);
+
         MV1SetWriteZBuffer(modelDxLibHandle_, TRUE);
-        customStateApplied_ = false;
+        materialStateApplied_ = false;
     }
 
-    void ModelRenderer::DrawWithCustomShader()
+    void ModelRenderer::DrawWithMaterialPolicies()
     {
-        ApplyCustomModelState();
+        int currentVs = -1;
+        int currentPs = -1;
+        int currentCb = -1;
 
-        SetUseVertexShader(vsFile_->GetVsHandle());
-        SetUsePixelShader (psFile_->GetPsHandle());
-        if (cbHandle_ != -1)
+        const int listNum = static_cast<int>(triangleListMaterialIndex_.size());
+        for (int i = 0; i < listNum; ++i)
         {
-            SetShaderConstantBuffer(cbHandle_, DX_SHADERTYPE_VERTEX, CUSTOM_SHADER_CB_SLOT);
-            SetShaderConstantBuffer(cbHandle_, DX_SHADERTYPE_PIXEL,  CUSTOM_SHADER_CB_SLOT);
-        }
-        MV1SetUseOrigShader(TRUE);
-
-        if (allRigid_)
-        {
-            MV1DrawModel(modelDxLibHandle_);
-        }
-        else
-        {
-            const int listNum = (std::min)(MV1GetTriangleListNum(modelDxLibHandle_),
-                                           static_cast<int>(rigidTriangleList_.size()));
-            for (int i = 0; i < listNum; ++i)
+            const int  materialIndex = triangleListMaterialIndex_[i];
+            const bool useCustom     = rigidTriangleList_[i]
+                                    && materialIndex >= 0
+                                    && materialPassActive_[materialIndex];
+            if (useCustom)
             {
-                MV1SetUseOrigShader(rigidTriangleList_[i] ? TRUE : FALSE);
-                MV1DrawTriangleList(modelDxLibHandle_, i);
+                const MaterialShaderPass& pass = materialPasses_[materialIndex];
+                if (pass.vsHandle != currentVs)
+                {
+                    SetUseVertexShader(pass.vsHandle);
+                    currentVs = pass.vsHandle;
+                }
+                if (pass.psHandle != currentPs)
+                {
+                    SetUsePixelShader(pass.psHandle);
+                    currentPs = pass.psHandle;
+                }
+                if (pass.cbHandle != currentCb)
+                {
+                    SetShaderConstantBuffer(pass.cbHandle, DX_SHADERTYPE_VERTEX, CUSTOM_SHADER_CB_SLOT);
+                    SetShaderConstantBuffer(pass.cbHandle, DX_SHADERTYPE_PIXEL,  CUSTOM_SHADER_CB_SLOT);
+                    currentCb = pass.cbHandle;
+                }
             }
+            MV1SetUseOrigShader(useCustom ? TRUE : FALSE);
+            MV1DrawTriangleList(modelDxLibHandle_, i);
         }
 
         MV1SetUseOrigShader(FALSE);
         SetUseVertexShader(-1);
         SetUsePixelShader (-1);
+    }
+
+    bool ModelRenderer::ShouldDrawShadowForMaterial(const PolicyList& policies, const std::string& materialName) const
+    {
+        for (const auto& weakPolicy : policies)
+        {
+            const auto policy = weakPolicy.lock();
+            if (policy && !policy->ShouldDrawShadow(materialName))
+                return false;
+        }
+        return true;
+    }
+
+    void ModelRenderer::OnShadowRender()
+    {
+        if (!IsEnable() || modelDxLibHandle_ == -1)
+            return;
+
+        MV1SetMatrix(modelDxLibHandle_, GetRenderMatrix());
+
+        // 影は常に標準シェーダーで描く(カスタム VS を持ち込むとシャドウマップの深度が壊れるため)
+        const PolicyList policies = Components().Catches<IModelMaterialShaderPolicy>();
+        if (policies.empty())
+        {
+            MV1DrawModel(modelDxLibHandle_);
+            return;
+        }
+
+        MV1SetUseOrigShader(FALSE);
+        const int listNum = static_cast<int>(triangleListMaterialIndex_.size());
+        for (int i = 0; i < listNum; ++i)
+        {
+            const int materialIndex = triangleListMaterialIndex_[i];
+            if (materialIndex >= 0 && !ShouldDrawShadowForMaterial(policies, materialNames_[materialIndex]))
+                continue;
+            MV1DrawTriangleList(modelDxLibHandle_, i);
+        }
     }
 
     void ModelRenderer::OnRender()
@@ -255,46 +342,39 @@ namespace NanamiEngine::Module::Component
 
         MV1SetMatrix(modelDxLibHandle_, GetRenderMatrix());
 
-        if (!HasCustomShader())
+        const PolicyList policies = Components().Catches<IModelMaterialShaderPolicy>();
+        if (policies.empty())
         {
-            RestoreDefaultModelState();
+            RestoreDefaultMaterialState();
             MV1DrawModel(modelDxLibHandle_);
             return;
         }
 
-        GetOrCreateShaderConstantBufferHandle();
-        DrawWithCustomShader();
+        ResolveMaterialPasses(policies);
+        DrawWithMaterialPolicies();
     }
 
     void ModelRenderer::OnDestroy()
     {
         if (modelDxLibHandle_ != -1)
             MV1DeleteModel(modelDxLibHandle_);
-        if (cbHandle_ != -1)
-            DeleteShaderConstantBuffer(cbHandle_);
     }
 
     void ModelRenderer::OnDrawGui()
     {
-        ImGuiHelper::OnDrawInputField("mv1File_",              mv1File_);
-        ImGuiHelper::OnDrawInputField("vsFile_",               vsFile_);
-        ImGuiHelper::OnDrawInputField("psFile_",               psFile_);
+        ImGuiHelper::OnDrawInputField("mv1File_",               mv1File_);
         ImGuiHelper::OnDrawInputField("useFixedInterpolation_", useFixedInterpolation_);
         if (ImGui::Button("OnUpdateDxLibHandle"))
         {
             ReloadModel();
         }
-        if (ImGui::Button("OnUpdateShaderConstantBuffer"))
-        {
-            if (cbHandle_ != -1)
-            {
-                DeleteShaderConstantBuffer(cbHandle_);
-                cbHandle_ = -1;
-            }
-            GetOrCreateShaderConstantBufferHandle();
-        }
-        ImGui::Text("cbHandle_: %d  (slot b%d)", cbHandle_, CUSTOM_SHADER_CB_SLOT);
         ImGui::Text("triangleLists: %d  allRigid: %s",
                     static_cast<int>(rigidTriangleList_.size()), allRigid_ ? "true" : "false");
+        // 材質名は IModelMaterialShaderPolicy 側の指定に使うので見えるようにしておく
+        for (int i = 0; i < static_cast<int>(materialNames_.size()); ++i)
+        {
+            const bool active = i < static_cast<int>(materialPassActive_.size()) && materialPassActive_[i];
+            ImGui::Text("material[%d]: %s%s", i, materialNames_[i].c_str(), active ? "  (policy)" : "");
+        }
     }
 }

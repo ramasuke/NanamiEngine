@@ -12,7 +12,7 @@ namespace Coroutine
 
         [[nodiscard]] bool await_ready() const noexcept override
         {
-            return false;
+            return completed_;
         }
 
         void await_suspend(std::coroutine_handle<> parentHandle);
@@ -33,6 +33,5 @@ namespace Coroutine
     private:
         std::coroutine_handle<> parentHandle_{};
         bool completed_ = false;
-        bool firstTick_ = true;
     };
 }

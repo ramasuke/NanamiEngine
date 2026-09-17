@@ -1,7 +1,5 @@
 ﻿#include "SwordManAvatar.h"
 
-#include "../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
-#include "../../../../../Engine/Module/GameObject/PrefabGameObject/PrefabCatchChild/PrefabCatchChild.h"
 #include "../../../Core/Game/PlayerAvatar/AttackArea/PlayerAvatarAttackArea.h"
 #include "../../../Core/Game/PlayerAvatar/Type/PlayerAvatarType.h"
 
@@ -9,17 +7,22 @@ namespace GamePlay::PlayerAvatar::SwordMan
 {
     std::weak_ptr<PlayerAttackArea> SwordManAvatar::CatchNormalAttackArea() const
     {
-        return GameObject::CatchChild<PlayerAttackArea>(Entity(), NORMAL_ATTACK_AREA_NAME);
+        return normalAttackArea_.get();
     }
-    
+
     std::weak_ptr<PlayerAttackArea> SwordManAvatar::CatchDashAttackArea() const
     {
-        return GameObject::CatchChild<PlayerAttackArea>(Entity(), DASH_ATTACK_AREA_NAME);
+        return dashAttackArea_.get();
     }
 
     std::weak_ptr<LockOnDetectionArea> SwordManAvatar::CatchLockOnDetectionArea() const
     {
-        return GameObject::CatchChild<LockOnDetectionArea>(Entity(), LOCK_ON_DETECTION_AREA_NAME);
+        return lockOnDetectionArea_.get();
+    }
+
+    std::weak_ptr<Component::ParticleSystem> SwordManAvatar::CatchSuccessAvoidRollingParticle() const
+    {
+        return successAvoidRollingParticle_.get();
     }
 
     PlayerAvatarType SwordManAvatar::Type() const
@@ -30,5 +33,9 @@ namespace GamePlay::PlayerAvatar::SwordMan
     void SwordManAvatar::OnDrawGui()
     {
         ImGuiHelper::OnDrawInputField("resources_", resources_);
+        ImGuiHelper::OnDrawInputField("normalAttackArea_", normalAttackArea_);
+        ImGuiHelper::OnDrawInputField("dashAttackArea_", dashAttackArea_);
+        ImGuiHelper::OnDrawInputField("lockOnDetectionArea_", lockOnDetectionArea_);
+        ImGuiHelper::OnDrawInputField("successAvoidRollingParticle_", successAvoidRollingParticle_);
     }
 }

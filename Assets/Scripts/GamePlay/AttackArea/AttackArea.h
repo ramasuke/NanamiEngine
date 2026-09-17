@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <algorithm>
 #include <vector>
 #include <memory>
 
@@ -6,6 +7,7 @@
 #include "../../../../Engine/Module/Network/Engine_Network_NetworkRunner.h"
 #include "../../../../Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
 #include "../../../../Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
+#include "../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
 #include "../../../../Engine/Module/Physics/ContactCallback/SensorEnterable/Engine_Physics_ISensorEnterable.h"
 #include "../../../../Engine/Module/Physics/ContactCallback/SensorExitable/Engine_Physics_ISensorExitable.h"
@@ -35,20 +37,40 @@ namespace GamePlay
         {
             explicit AttackTarget(
                 const std::weak_ptr<GameObject::IGameObject>& gameObject,
-                const std::weak_ptr<AttackTargetT>&           target)
+                const std::weak_ptr<AttackTargetT>&           target,
+                const std::weak_ptr<GameObject::IGameObject>& part)
                 : gameObject_(gameObject)
                 , target_(target)
+                , parts_{ part }
             {
             }
 
             [[nodiscard]] bool IsExpired() const { return gameObject_.expired() || target_.expired(); }
             [[nodiscard]] bool IsGameObject(const std::shared_ptr<GameObject::IGameObject>& gameObject) const { return gameObject_.lock() == gameObject; }
+            [[nodiscard]] bool HasPart() const { return !parts_.empty(); }
             [[nodiscard]] GameObject::IGameObject& GameObject() const { return *gameObject_.lock(); }
             [[nodiscard]] AttackTargetT& Target() { return *target_.lock(); }
+
+            void AddPart(const std::shared_ptr<GameObject::IGameObject>& part)
+            {
+                if (std::ranges::none_of(parts_, [&](const std::weak_ptr<GameObject::IGameObject>& p) { return p.lock() == part; }))
+                    parts_.emplace_back(part);
+            }
+
+            void RemovePart(const std::shared_ptr<GameObject::IGameObject>& part)
+            {
+                std::erase_if(parts_, [&](const std::weak_ptr<GameObject::IGameObject>& p)
+                {
+                    const auto locked = p.lock();
+                    return !locked || locked == part;
+                });
+            }
 
         private:
             std::weak_ptr<GameObject::IGameObject> gameObject_;
             std::weak_ptr<AttackTargetT>           target_;
+            // 範囲に入っている Body の GameObject。手足(isPartOfParent_)ごとに出入りするので、全部出た時に対象から外す
+            std::vector<std::weak_ptr<GameObject::IGameObject>> parts_;
         };
 
         virtual ~AttackArea() = default;
@@ -156,22 +178,33 @@ namespace GamePlay
         const Physics::Manifold& maniFold,
         const std::shared_ptr<GameObject::IGameObject>& gameObject)
     {
-        const auto target = gameObject->Components().Catch<AttackTargetT>();
+        const auto owner  = Physics::FindBodyOwner(gameObject);
+        const auto target = owner->Components().Catch<AttackTargetT>();
         if (target.expired())
             return;
 
-        attackTargets_.emplace_back(gameObject, target);
+        const auto existing = std::ranges::find_if(attackTargets_, [&](const AttackTarget& entry) { return entry.IsGameObject(owner); });
+        if (existing != attackTargets_.end())
+        {
+            existing->AddPart(gameObject);
+            return;
+        }
+
+        attackTargets_.emplace_back(owner, target, gameObject);
     }
 
     template <typename AttackTargetT>
     void AttackArea<AttackTargetT>::OnTriggerExit(
         const std::shared_ptr<GameObject::IGameObject>& gameObject)
     {
+        for (auto& entry : attackTargets_)
+            entry.RemovePart(gameObject);
+
         std::erase_if(
             attackTargets_,
-            [&](const AttackTarget& entry)
+            [](const AttackTarget& entry)
             {
-                return entry.IsGameObject(gameObject);
+                return !entry.HasPart();
             }
         );
     }

@@ -1,5 +1,5 @@
 {
-  "generated_from": "d1ff644689c21ebf82951293541d2b586a377bd4",
+  "generated_from": "765f7f3fbb8b7a1781ceee1aec274c5046da4bb1",
   "actions": {
     "Camera::EnablePurposeCamera": {
       "class": "PurposeCamera",
@@ -266,21 +266,28 @@
       "class": "SampleFirstEventDragonChat",
       "fqn": "GameCore::Npc::Friendly::Behaviour::Action::SampleFirstEventDragonChat",
       "leaf": "SampleFirstEventDragonChat",
-      "version": 0,
+      "version": 1,
       "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/Other/Sample/Friendly_Behaviour_Action_SampleFirstEventDragonChat.h",
       "params": [
-        {
-          "key": "firstEventDragonPrefab_",
-          "member": "firstEventDragonPrefab_",
-          "named": true,
-          "shape": "field",
-          "type": "PrefabGameObjectFile"
-        },
         {
           "key": "appearFirstEventDragonPosition_",
           "member": "appearFirstEventDragonPosition_",
           "named": true,
           "shape": "vec3"
+        },
+        {
+          "key": "enemyFactory_",
+          "member": "enemyFactory_",
+          "named": true,
+          "shape": "field",
+          "type": "EnemyFactory"
+        },
+        {
+          "key": "enemyKind_",
+          "member": "enemyKind_",
+          "named": true,
+          "shape": "unknown",
+          "type": "EnemyKind"
         }
       ]
     },
@@ -362,6 +369,19 @@
     }
   },
   "structs": {
+    "ActionInstructTutorial": {
+      "fqn": "GameCore::PlayerAvatar::SwordMan::Quest::ActionInstructTutorial",
+      "version": 0,
+      "params": [
+        {
+          "key": "questUiPrefab_",
+          "member": "questUiPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        }
+      ]
+    },
     "Position": {
       "fqn": "Position",
       "version": 0,

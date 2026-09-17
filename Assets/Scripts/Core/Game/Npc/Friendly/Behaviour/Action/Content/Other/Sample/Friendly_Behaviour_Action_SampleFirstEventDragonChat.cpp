@@ -1,7 +1,5 @@
 ﻿#include "Friendly_Behaviour_Action_SampleFirstEventDragonChat.h"
 
-#include "../../../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {
     TickStatus SampleFirstEventDragonChat::DoTick(const TickContext& context)
@@ -12,12 +10,16 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 
     void SampleFirstEventDragonChat::AppearFirstEventDragon(const TickContext& context)
     {
-        Scene::GameObject::Instantiate(firstEventDragonPrefab_.get(), appearFirstEventDragonPosition_);
+        if (!enemyFactory_)
+            return;
+
+        enemyFactory_->Summon(enemyKind_, appearFirstEventDragonPosition_, glm::quat());
     }
 
     void SampleFirstEventDragonChat::DoDrawGui()
     {
-        ImGuiHelper::OnDrawInputField("firstEventDragonPrefab_", firstEventDragonPrefab_);
+        ImGuiHelper::OnDrawInputField("enemyFactory_", enemyFactory_);
+        ImGuiHelper::OnDrawEnumField("enemyKind_", enemyKind_, Enemy::ENEMY_KINDS, Enemy::ToString);
         ImGuiHelper::OnDrawInputField("AppearFirstEventDragonPosition_", appearFirstEventDragonPosition_);
     }
 }

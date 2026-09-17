@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include <DxLib.h>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 #include <../../Libs/glm/glm.hpp>
@@ -8,14 +10,13 @@
 
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/MV1/MV1File.h"
-#include "../../Asset/Hlsl/HlslVsFile.h"
-#include "../../Asset/Hlsl/HlslPsFile.h"
 #include "../ComponentBase.h"
 #include "../../../Core/Coroutine/Task/Task.h"
 #include "../../LifeCycleCallback/InitRenderable/IInitRenderable.h"
 #include "../../LifeCycleCallback/PreFixedUpdate/IPreFixedUpdate.h"
 #include "../../LifeCycleCallback/UpdatedPhysics/IEndPhysics.h"
-#include "../Shader/IShaderConstantBufferHost.h"
+#include "../Shader/IModelMaterialShaderPolicy.h"
+#include "../Shader/ShaderConstantBufferSlot.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -24,21 +25,18 @@ namespace NanamiEngine::Module::Component
                                 public LifeCycleCallback::IShadowRenderable,
                                 public LifeCycleCallback::IRenderable,
                                 public LifeCycleCallback::IPreFixedUpdate,
-                                public LifeCycleCallback::IEndPhysics,
-                                public IShaderConstantBufferHost
+                                public LifeCycleCallback::IEndPhysics
     {
     public:
-        static constexpr int CUSTOM_SHADER_CB_SLOT = 4;
-        static constexpr int CUSTOM_SHADER_CB_SIZE = 256;
-
         int modelDxLibHandle_ = -1;
 
-        [[nodiscard]] int GetOrCreateShaderConstantBufferHandle() override;
         void SetMv1File(const std::shared_ptr<Asset::Mv1File>& mv1File);
         /** @brief 描画位置だけをワールド空間でずらす(Transform・物理・同期には影響しない) */
         void SetRenderOffset(const glm::vec3& offset) { renderOffset_ = offset; }
 
     private:
+        using PolicyList = std::vector<std::weak_ptr<IModelMaterialShaderPolicy>>;
+
         void InitRenderer    () override;
         void ReloadModel     ();
         void OnShadowRender  () override;
@@ -48,24 +46,29 @@ namespace NanamiEngine::Module::Component
         void OnUpdatedPhysics() override;
 
         [[nodiscard]] MATRIX GetRenderMatrix() const;
-        [[nodiscard]] bool   HasCustomShader () const;
         void RefreshTriangleListInfo();
-        void ApplyCustomModelState  ();
-        void RestoreDefaultModelState();
-        void DrawWithCustomShader   ();
+        void ResolveMaterialPasses      (const PolicyList& policies);
+        void RestoreDefaultMaterialState();
+        void DrawWithMaterialPolicies   ();
+        [[nodiscard]] bool ShouldDrawShadowForMaterial(const PolicyList& policies, const std::string& materialName) const;
 
-        FIELD(Asset::Mv1File)    mv1File_;
-        FIELD(Asset::HlslVsFile) vsFile_;
-        FIELD(Asset::HlslPsFile) psFile_;
+        FIELD(Asset::Mv1File) mv1File_;
         bool useFixedInterpolation_ = false;
 
-        int  cbHandle_           = -1;
-        bool customStateApplied_ = false;
-        
         std::vector<bool> rigidTriangleList_;
         bool              allRigid_ = true;
-        
+
+        // モデル差し替え時にだけ組み直す静的な対応表
+        std::vector<std::string>         materialNames_;
         std::vector<std::pair<int, int>> originalMaterialBlend_;
+        std::vector<int>                 triangleListMaterialIndex_;
+        std::vector<int>                 meshMaterialIndex_;
+        std::vector<int>                 meshOriginalCulling_;
+
+        // 毎フレーム解決するポリシーの結果
+        std::vector<MaterialShaderPass> materialPasses_;
+        std::vector<bool>               materialPassActive_;
+        bool                            materialStateApplied_ = false;
 
         glm::vec3 prevWorldPos_   {};
         glm::quat prevWorldRot_   {};
@@ -89,8 +92,6 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<LifeCycleCallback::IEndPhysics>(this));
     archive(CEREAL_NVP(mv1File_));
     archive(CEREAL_NVP(useFixedInterpolation_));
-    archive(CEREAL_NVP(vsFile_));
-    archive(CEREAL_NVP(psFile_));
 }
 
 template<class Archive>
@@ -102,10 +103,8 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 3) archive(cereal::base_class<LifeCycleCallback::IEndPhysics>(this));
     if (version >= 0) archive(CEREAL_NVP(mv1File_));
     if (version >= 2) archive(CEREAL_NVP(useFixedInterpolation_));
-    if (version >= 4) archive(CEREAL_NVP(vsFile_));
-    if (version >= 4) archive(CEREAL_NVP(psFile_));
 }
 #pragma endregion
 };
 }
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::ModelRenderer, 4)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::ModelRenderer, 5)

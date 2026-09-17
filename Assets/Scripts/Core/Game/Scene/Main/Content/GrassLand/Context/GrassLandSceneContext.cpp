@@ -8,8 +8,10 @@ void GameCore::Scene::GrassLandSceneContext::Init()
 
     bgm_.Init();
     networkRunner_.Init();
-    enemyPrefab_.Init();
     enemySpawnPointsRoot_.Init();
+    arrivalCamera_.Init();
+    cameraBrain_.Init();
+    arrivalPortalPrefab_.Init();
 }
 
 std::vector<std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject>>
@@ -22,6 +24,14 @@ void GameCore::Scene::GrassLandSceneContext::OnDrawGui()
 {
     ImGuiHelper::OnDrawInputField("bgm_", bgm_);
     ImGuiHelper::OnDrawInputField("networkRunner_", networkRunner_);
-    ImGuiHelper::OnDrawInputField("enemyPrefab_", enemyPrefab_);
     ImGuiHelper::OnDrawInputField("enemySpawnPointsRoot_", enemySpawnPointsRoot_);
+    ImGuiHelper::OnDrawEnumField("enemyKind_", enemyKind_, Npc::Enemy::ENEMY_KINDS, Npc::Enemy::ToString);
+    ImGuiHelper::OnDrawInputField("arrivalCamera_", arrivalCamera_);
+    ImGuiHelper::OnDrawInputField("cameraBrain_", cameraBrain_);
+    ImGuiHelper::OnDrawInputField("arrivalPortalPrefab_", arrivalPortalPrefab_);
+    ImGuiHelper::OnDrawInputField("arrivalShotDuring_msecs_", arrivalShotDuring_msecs_);
+    ImGuiHelper::OnDrawInputField("arrivalShotStart_", arrivalShotStart_);
+    ImGuiHelper::OnDrawInputField("arrivalShotEnd_", arrivalShotEnd_);
+    ImGuiHelper::OnDrawInputField("arrivalLookAtOffsetStart_", arrivalLookAtOffsetStart_);
+    ImGuiHelper::OnDrawInputField("arrivalLookAtOffsetEnd_", arrivalLookAtOffsetEnd_);
 }

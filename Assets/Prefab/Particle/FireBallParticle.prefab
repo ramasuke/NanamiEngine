@@ -7,7 +7,7 @@
     },
     "components_": {
         "cereal_class_version": 0,
-        "componentCount": 2,
+        "componentCount": 3,
         "component_0": {
             "polymorphic_id": 2147483649,
             "polymorphic_name": "NanamiEngine::Module::Component::SphereCollider",
@@ -16,7 +16,7 @@
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
-                        "cereal_class_version": 5,
+                        "cereal_class_version": 6,
                         "value0": {
                             "cereal_class_version": 0,
                             "guid_": {
@@ -24,8 +24,6 @@
                             },
                             "isEnable_": true
                         },
-                        "mass_": 1.0,
-                        "isGravity_": true,
                         "offset_": {
                             "value0": 0.0,
                             "value1": 0.0,
@@ -36,9 +34,7 @@
                             "value1": 0.0,
                             "value2": 0.0
                         },
-                        "emotionType_": 1,
                         "layer_": 0,
-                        "constraints_": 56,
                         "isSensor_": true,
                         "friction_": 0.20000000298023225
                     },
@@ -93,6 +89,27 @@
                     "playMode_": 0
                 }
             }
+        },
+        "component_2": {
+            "polymorphic_id": 2147483651,
+            "polymorphic_name": "NanamiEngine::Module::Component::RigidBody",
+            "ptr_wrapper": {
+                "id": 2147483652,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "guid_": {
+                            "value_": "C8A4974B-0296-4B38-90F3-76FE7AA56486"
+                        },
+                        "isEnable_": true
+                    },
+                    "motionType_": 1,
+                    "mass_": 1.0,
+                    "isGravity_": false,
+                    "constraints_": 0,
+                    "isPartOfParent_": false
+                }
+            }
         }
     },
     "transform_": {
@@ -141,5 +158,6 @@
         },
         "childCount": 0
     },
+    "mark_": 0,
     "value0": 0
 }

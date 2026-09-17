@@ -25,7 +25,7 @@ namespace GamePlay::Ui
         [[nodiscard]] float CalcDanger(float healthRate) const;
         [[nodiscard]] float CalcPulse (float sinceBeat_secs) const;
 
-        [[serialize(0)]] std::string vignetteObjectName_ = "Vignette";
+        [[serialize(1)]] FIELD(NanamiUi::BlendImageRenderer) vignette_;
         [[serialize(0)]] float startHealthRate_      = 0.35f;
         [[serialize(0)]] float criticalHealthRate_   = 0.10f;
         [[serialize(0)]] float dangerSmooth_secs_    = 0.4f;
@@ -42,7 +42,6 @@ namespace GamePlay::Ui
         [[serialize(0)]] int   heartbeatMinVolume_   = 90;
         [[serialize(0)]] int   heartbeatMaxVolume_   = 200;
 
-        FIELD(NanamiUi::BlendImageRenderer)       vignette_;
         FIELD(NanamiUi::ScreenColorGradeRenderer) colorGrade_;
         rxcpp::composite_subscription             subscription_;
 
@@ -64,7 +63,7 @@ namespace GamePlay::Ui
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<ComponentBase>(this));
-            archive(CEREAL_NVP(vignetteObjectName_));
+            archive(CEREAL_NVP(vignette_));
             archive(CEREAL_NVP(startHealthRate_));
             archive(CEREAL_NVP(criticalHealthRate_));
             archive(CEREAL_NVP(dangerSmooth_secs_));
@@ -85,7 +84,10 @@ namespace GamePlay::Ui
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
-            if (version >= 0) archive(CEREAL_NVP(vignetteObjectName_));
+            // v1 で Vignette の名前検索を FIELD に置き換えた
+            std::string vignetteObjectName_;
+            if (version < 1) archive(CEREAL_NVP(vignetteObjectName_));
+            if (version >= 1) archive(CEREAL_NVP(vignette_));
             if (version >= 0) archive(CEREAL_NVP(startHealthRate_));
             if (version >= 0) archive(CEREAL_NVP(criticalHealthRate_));
             if (version >= 0) archive(CEREAL_NVP(dangerSmooth_secs_));
@@ -106,4 +108,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::LowHealthScreenEffect, 0)
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::LowHealthScreenEffect, 1)

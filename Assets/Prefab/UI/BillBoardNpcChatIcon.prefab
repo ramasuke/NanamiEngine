@@ -118,7 +118,7 @@
             "ptr_wrapper": {
                 "id": 2147483653,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -210,7 +210,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -303,7 +304,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -365,9 +367,9 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 1.2,
-                            "value1": 1.2,
-                            "value2": 1.2
+                            "value0": 1.2000000476837159,
+                            "value1": 1.2000000476837159,
+                            "value2": 1.2000000476837159
                         },
                         "worldMatrix_": {
                             "value0": {
@@ -490,15 +492,18 @@
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         }
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 6,
     "value1": {
         "value_": "D6D9BE9D-1C48-474A-B7DB-4D94DBB3F36D"

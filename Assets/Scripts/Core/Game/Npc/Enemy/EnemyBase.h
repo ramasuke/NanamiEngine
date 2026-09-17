@@ -11,6 +11,11 @@ namespace GameCore::PlayerAvatar
     class LockOnPoint;
 }
 
+namespace GameCore::Npc::Enemy
+{
+    class IShowHealthGaugeProvider;
+}
+
 namespace GameCore::Npc
 {
     class EnemyBase : public Module::Network::NetworkComponent,
@@ -41,6 +46,7 @@ namespace GameCore::Npc
         std::shared_ptr<Enemy::BehaviourTree> behaviour_;
         std::shared_ptr<std::queue<std::unique_ptr<IDamage>>> onDamagedStack_;
         bool hasNetworkBehaviourTree_ = false;
+        Enemy::IShowHealthGaugeProvider* showHealthGaugeProvider_ = nullptr;
         std::weak_ptr<PlayerAvatar::LockOnPoint> lockOnPoint_;
 
 #pragma region Serialization Function

@@ -1,8 +1,7 @@
 ﻿#include "Enemy_Behaviour_Action_OnDamage.h"
 
 #include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../../../../../../GamePlay/Spawn/GamePlay_PrefabSpawner.h"
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 #include "../../../../../../../Damage/Game_Damage_IDamage.h"
@@ -26,8 +25,8 @@ namespace GameCore::Npc::Enemy::Behaviour
                 const glm::vec3 knockbackDirection = onDamaged->DamageDirection();
                 const float knockbackSpeed = static_cast<float>(onDamaged->DamageValue()) * knockbackForcePerDamage_;
                 glm::vec3 knockbackVelocity = knockbackDirection * knockbackSpeed;
-                knockbackVelocity.y = Physics::GetLinearVelocity(context.EnemyCollider().BodyId()).y;
-                Physics::SetLinearVelocity(context.EnemyCollider().BodyId(), knockbackVelocity);
+                knockbackVelocity.y = context.EnemyRigidBody().LinearVelocity().y;
+                context.EnemyRigidBody().SetLinearVelocity(knockbackVelocity);
             }
 
             damageStacks.pop();

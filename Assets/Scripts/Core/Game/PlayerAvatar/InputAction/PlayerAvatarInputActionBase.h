@@ -3,6 +3,7 @@
 #include "DxDataTypeWin.h"
 #include "DxLib.h"
 #include "../Input/PlayerAvatarInput.h"
+#include "PlayerAvatarInputDevice.h"
 
 namespace GameCore::PlayerAvatar
 {
@@ -11,6 +12,8 @@ namespace GameCore::PlayerAvatar
     public:
         virtual ~PlayerAvatarInputActionBase() = default;
         void OnUpdate();
+        /** @brief 最後に触られた入力機器。操作ガイドのグリフ切り替えに使う */
+        [[nodiscard]] PlayerAvatarInputDevice CurrentDevice() const { return currentDevice_; }
         void Enable();
         void Disable();
         virtual void OnDrawGui() = 0;
@@ -33,7 +36,12 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] const XINPUT_STATE& XInput() const { return xInput_; }
 
     private:
+        void UpdateCurrentDevice();
+
         std::vector<std::shared_ptr<IPlayerAvatarInput>> inputs_;
         XINPUT_STATE xInput_ = {};
+        PlayerAvatarInputDevice currentDevice_ = PlayerAvatarInputDevice::KeyboardMouse;
+        int previousMouseX_ = 0;
+        int previousMouseY_ = 0;
     };
 }

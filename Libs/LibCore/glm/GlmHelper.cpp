@@ -6,13 +6,14 @@ namespace LibCore
 {
     glm::mat4 Glm::FromDxLibMatrix(const MATRIX& dxMatrix)
     {
-        glm::mat4 glmMat;
-        // DXLib(row-major) → GLM(column-major)
-        for (int row = 0; row < 4; ++row)
+        // DxLib は行ベクトル規約(平行移動は 4 行目)、glm は列ベクトル規約(平行移動は 4 列目)なので、
+        // 格納位置をそのまま写すと転置が打ち消し合って同じ変換になる
+        glm::mat4 glmMat(1.0f);
+        for (int i = 0; i < 4; ++i)
         {
-            for (int col = 0; col < 4; ++col)
+            for (int j = 0; j < 4; ++j)
             {
-                glmMat[col][row] = dxMatrix.m[row][col];
+                glmMat[i][j] = dxMatrix.m[i][j];
             }
         }
 

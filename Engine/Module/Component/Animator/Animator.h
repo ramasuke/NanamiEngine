@@ -2,7 +2,7 @@
 #include <optional>
 
 #include "../ComponentBase.h"
-#include "../../../../Assets/Scripts/Core/Game/PlayerAvatar/Animator/AnimationSync/Transform/Animatoin_SyncTransform.h"
+#include "../../../Core/Object/Field/Field.h"
 #include "../../AnimationTree/Node/IAnimationNode.h"
 #include "../../Asset/AnimationTree/AnimationTreeFile.h"
 
@@ -36,7 +36,6 @@ namespace NanamiEngine::Module::Component
         void InitAnimationTree();
 
         [[serialize(0)]] FIELD(Asset::AnimationTreeFile) animationTreeFile_;
-        [[serialize(2)]] std::vector<std::unique_ptr<AnimationTree::AnimationSyncBase>> animationSyncs_;
         [[serialize(3)]] float timeScale_ = 1.0f;
         std::shared_ptr<AnimationTree::AnimationTree> animationTree_ = nullptr;
         int modelDxLibHandle_ = -1;
@@ -51,15 +50,6 @@ namespace NanamiEngine::Module::Component
             archive(cereal::base_class<LifeCycleCallback::IAwakable>(this));
             //archive(cereal::base_class<LifeCycleCallback::IUpdatable>(this));
             archive(CEREAL_NVP(animationTreeFile_));
-
-            // 個別保存
-            const std::size_t count = animationSyncs_.size();
-            archive(cereal::make_nvp("animationSyncCount", count));
-
-            for (const auto& sync : animationSyncs_)
-            {
-                archive(cereal::make_nvp("animationSync", sync));
-            }
             archive(CEREAL_NVP(timeScale_));
         }
     
@@ -68,20 +58,11 @@ namespace NanamiEngine::Module::Component
             archive(cereal::base_class<ComponentBase>(this));
             archive(cereal::base_class<LifeCycleCallback::IAwakable>(this));
             if (version >= 0) archive(CEREAL_NVP(animationTreeFile_));
-            if (version >= 2)
+            if (version >= 2 && version < 5)
             {
-                std::size_t count = 0;
-                archive(cereal::make_nvp("animationSyncCount", count));
-        
-                animationSyncs_.clear();
-                animationSyncs_.reserve(count);
-        
-                for (std::size_t i = 0; i < count; ++i)
-                {
-                    std::unique_ptr<AnimationTree::AnimationSyncBase> sync;
-                    archive(cereal::make_nvp("animationSync", sync));
-                    animationSyncs_.push_back(std::move(sync));
-                }
+                // ボーン追従は BoneSync に移動した。旧 animationSyncs_ は保存済みデータが全て 0 件なので件数だけ読み捨てる
+                std::size_t animationSyncCount = 0;
+                archive(cereal::make_nvp("animationSyncCount", animationSyncCount));
             }
             if (version >= 4) archive(CEREAL_NVP(timeScale_));
         }
@@ -97,4 +78,4 @@ namespace NanamiEngine::Module::Component
         return *animationTree_->Param().Catch<T>(paramName);
     }
 }
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::Animator, 4)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::Animator, 5)

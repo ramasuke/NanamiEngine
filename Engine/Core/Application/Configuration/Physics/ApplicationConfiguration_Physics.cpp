@@ -1,4 +1,4 @@
-#include "ApplicationConfiguration_Physics.h"
+﻿#include "ApplicationConfiguration_Physics.h"
 #include "../../../../Module/ProjectConfig/Engine_Module_ProjectConfig.h"
 #include "ImGuiHelper.h"
 
@@ -9,6 +9,10 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEFAULT_MAX_PHYSICS_STEP        = 1;
     constexpr auto DEFAULT_GRAVITY_SCALE           = -360.8f;
     constexpr auto DEFAULT_COLLISION_STEPS         = 1;
+    // atan(2.0) ≒ 63度までの斜面で滑り出さない
+    constexpr auto DEFAULT_STATIC_FRICTION             = 2.0f;
+    constexpr auto DEFAULT_STATIC_FRICTION_SPEED       = 30.0f;
+    constexpr auto DEFAULT_STATIC_FRICTION_MAX_SLOPE   = 60.0f;
     constexpr auto DEFAULT_TEMP_ALLOCATOR_SIZE_MB  = 10;
     constexpr auto DEFAULT_MAX_BODIES              = 1024;
     constexpr auto DEFAULT_MAX_BODY_PAIRS          = 1024;
@@ -19,6 +23,9 @@ namespace NanamiEngine::Core::Application::Configuration
     int   PhysicsConfiguration::maxPhysicsStep_        = DEFAULT_MAX_PHYSICS_STEP;
     float PhysicsConfiguration::gravityScale_          = DEFAULT_GRAVITY_SCALE;
     int   PhysicsConfiguration::collisionSteps_        = DEFAULT_COLLISION_STEPS;
+    float PhysicsConfiguration::staticFriction_            = DEFAULT_STATIC_FRICTION;
+    float PhysicsConfiguration::staticFrictionSpeed_       = DEFAULT_STATIC_FRICTION_SPEED;
+    float PhysicsConfiguration::staticFrictionMaxSlopeDeg_ = DEFAULT_STATIC_FRICTION_MAX_SLOPE;
     int   PhysicsConfiguration::tempAllocatorSizeMB_   = DEFAULT_TEMP_ALLOCATOR_SIZE_MB;
     int   PhysicsConfiguration::maxBodies_             = DEFAULT_MAX_BODIES;
     int   PhysicsConfiguration::maxBodyPairs_          = DEFAULT_MAX_BODY_PAIRS;
@@ -30,6 +37,9 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto PHYSICS_MAX_PHYSICS_STEP_KEY        = "MaxPhysicsStep";
     constexpr auto PHYSICS_GRAVITY_SCALE_KEY           = "GravityScale";
     constexpr auto PHYSICS_COLLISION_STEPS_KEY         = "CollisionSteps";
+    constexpr auto PHYSICS_STATIC_FRICTION_KEY             = "StaticFriction";
+    constexpr auto PHYSICS_STATIC_FRICTION_SPEED_KEY       = "StaticFrictionSpeed";
+    constexpr auto PHYSICS_STATIC_FRICTION_MAX_SLOPE_KEY   = "StaticFrictionMaxSlopeDeg";
     constexpr auto PHYSICS_TEMP_ALLOCATOR_SIZE_MB_KEY  = "TempAllocatorSizeMB";
     constexpr auto PHYSICS_MAX_BODIES_KEY              = "MaxBodies";
     constexpr auto PHYSICS_MAX_BODY_PAIRS_KEY          = "MaxBodyPairs";
@@ -42,6 +52,9 @@ namespace NanamiEngine::Core::Application::Configuration
         maxPhysicsStep_        = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_MAX_PHYSICS_STEP_KEY,        DEFAULT_MAX_PHYSICS_STEP);
         gravityScale_          = Module::ProjectConfig::LoadOrDefaultWithPath<float>(PHYSICS_CONFIG_PATH, PHYSICS_GRAVITY_SCALE_KEY,           DEFAULT_GRAVITY_SCALE);
         collisionSteps_        = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_COLLISION_STEPS_KEY,         DEFAULT_COLLISION_STEPS);
+        staticFriction_            = Module::ProjectConfig::LoadOrDefaultWithPath<float>(PHYSICS_CONFIG_PATH, PHYSICS_STATIC_FRICTION_KEY,           DEFAULT_STATIC_FRICTION);
+        staticFrictionSpeed_       = Module::ProjectConfig::LoadOrDefaultWithPath<float>(PHYSICS_CONFIG_PATH, PHYSICS_STATIC_FRICTION_SPEED_KEY,     DEFAULT_STATIC_FRICTION_SPEED);
+        staticFrictionMaxSlopeDeg_ = Module::ProjectConfig::LoadOrDefaultWithPath<float>(PHYSICS_CONFIG_PATH, PHYSICS_STATIC_FRICTION_MAX_SLOPE_KEY, DEFAULT_STATIC_FRICTION_MAX_SLOPE);
         tempAllocatorSizeMB_   = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_TEMP_ALLOCATOR_SIZE_MB_KEY,  DEFAULT_TEMP_ALLOCATOR_SIZE_MB);
         maxBodies_             = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_MAX_BODIES_KEY,              DEFAULT_MAX_BODIES);
         maxBodyPairs_          = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_MAX_BODY_PAIRS_KEY,          DEFAULT_MAX_BODY_PAIRS);
@@ -55,6 +68,9 @@ namespace NanamiEngine::Core::Application::Configuration
         Module::ProjectConfig::SaveWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_MAX_PHYSICS_STEP_KEY,        maxPhysicsStep_);
         Module::ProjectConfig::SaveWithPath<float>(PHYSICS_CONFIG_PATH, PHYSICS_GRAVITY_SCALE_KEY,           gravityScale_);
         Module::ProjectConfig::SaveWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_COLLISION_STEPS_KEY,         collisionSteps_);
+        Module::ProjectConfig::SaveWithPath<float>(PHYSICS_CONFIG_PATH, PHYSICS_STATIC_FRICTION_KEY,           staticFriction_);
+        Module::ProjectConfig::SaveWithPath<float>(PHYSICS_CONFIG_PATH, PHYSICS_STATIC_FRICTION_SPEED_KEY,     staticFrictionSpeed_);
+        Module::ProjectConfig::SaveWithPath<float>(PHYSICS_CONFIG_PATH, PHYSICS_STATIC_FRICTION_MAX_SLOPE_KEY, staticFrictionMaxSlopeDeg_);
         Module::ProjectConfig::SaveWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_TEMP_ALLOCATOR_SIZE_MB_KEY,  tempAllocatorSizeMB_);
         Module::ProjectConfig::SaveWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_MAX_BODIES_KEY,              maxBodies_);
         Module::ProjectConfig::SaveWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_MAX_BODY_PAIRS_KEY,          maxBodyPairs_);
@@ -75,6 +91,15 @@ namespace NanamiEngine::Core::Application::Configuration
 
     int  PhysicsConfiguration::GetCollisionSteps()            { return collisionSteps_; }
     void PhysicsConfiguration::SetCollisionSteps(int steps)   { collisionSteps_ = steps; }
+
+    float PhysicsConfiguration::GetStaticFriction()                 { return staticFriction_; }
+    void  PhysicsConfiguration::SetStaticFriction(float friction)   { staticFriction_ = friction; }
+
+    float PhysicsConfiguration::GetStaticFrictionSpeed()            { return staticFrictionSpeed_; }
+    void  PhysicsConfiguration::SetStaticFrictionSpeed(float speed) { staticFrictionSpeed_ = speed; }
+
+    float PhysicsConfiguration::GetStaticFrictionMaxSlopeDeg()               { return staticFrictionMaxSlopeDeg_; }
+    void  PhysicsConfiguration::SetStaticFrictionMaxSlopeDeg(float degree)   { staticFrictionMaxSlopeDeg_ = degree; }
 
     int  PhysicsConfiguration::GetTempAllocatorSizeMB()          { return tempAllocatorSizeMB_; }
     void PhysicsConfiguration::SetTempAllocatorSizeMB(int sizeMB) { tempAllocatorSizeMB_ = sizeMB; }
@@ -128,6 +153,39 @@ namespace NanamiEngine::Core::Application::Configuration
         {
             if (collisionSteps < 1) collisionSteps = 1;
             collisionSteps_ = collisionSteps;
+            Save();
+        }
+
+        ImGui::Spacing();
+        ImGui::Text("Static Friction");
+        ImGui::Separator();
+        ImGui::TextDisabled("* 止まりかけた接触だけ摩擦を上げて、斜面で滑り落ちないようにする");
+
+        float staticFriction = staticFriction_;
+        ImGui::SetNextItemWidth(100);
+        if (ImGui::InputFloat("Static Friction", &staticFriction, 0.0f, 0.0f, "%.2f"))
+        {
+            if (staticFriction < 0.0f) staticFriction = 0.0f;
+            staticFriction_ = staticFriction;
+            Save();
+        }
+
+        float staticFrictionSpeed = staticFrictionSpeed_;
+        ImGui::SetNextItemWidth(100);
+        if (ImGui::InputFloat("Static Friction Speed", &staticFrictionSpeed, 0.0f, 0.0f, "%.1f"))
+        {
+            if (staticFrictionSpeed < 0.0f) staticFrictionSpeed = 0.0f;
+            staticFrictionSpeed_ = staticFrictionSpeed;
+            Save();
+        }
+
+        float staticFrictionMaxSlopeDeg = staticFrictionMaxSlopeDeg_;
+        ImGui::SetNextItemWidth(100);
+        if (ImGui::InputFloat("Static Friction Max Slope (deg)", &staticFrictionMaxSlopeDeg, 0.0f, 0.0f, "%.1f"))
+        {
+            if (staticFrictionMaxSlopeDeg <  0.0f) staticFrictionMaxSlopeDeg =  0.0f;
+            if (staticFrictionMaxSlopeDeg > 90.0f) staticFrictionMaxSlopeDeg = 90.0f;
+            staticFrictionMaxSlopeDeg_ = staticFrictionMaxSlopeDeg;
             Save();
         }
 

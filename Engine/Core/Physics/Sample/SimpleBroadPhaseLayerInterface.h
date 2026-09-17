@@ -6,11 +6,6 @@
 class SimpleBroadPhaseLayerInterface final : public JPH::BroadPhaseLayerInterface
 {
 public:
-    SimpleBroadPhaseLayerInterface()
-    {
-        mObjectToBroadPhase[0] = JPH::BroadPhaseLayer(0);
-    }
-
     [[nodiscard]] JPH::uint GetNumBroadPhaseLayers() const override
     {
         return 1;
@@ -18,9 +13,6 @@ public:
 
     [[nodiscard]] JPH::BroadPhaseLayer GetBroadPhaseLayer(JPH::ObjectLayer inLayer) const override
     {
-        return mObjectToBroadPhase[inLayer];
+        return JPH::BroadPhaseLayer(0);
     }
-
-private:
-    JPH::BroadPhaseLayer mObjectToBroadPhase[1];
 };

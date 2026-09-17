@@ -1,0 +1,58 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::ItemData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Item/HealPotion.itemData",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "F98E0047-7959-458A-85EB-B14CE6F7382F"
+                    }
+                },
+                "displayName_": "回復薬グレート",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "17C2C849-731B-409C-B238-E7AA6397AA1A"
+                                }
+                            }
+                        }
+                    }
+                },
+                "effect_": 1,
+                "effectAmount_": 40.0,
+                "effectDuration_secs_": 0.0,
+                "useSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                }
+                            }
+                        }
+                    }
+                },
+                "maxStack_": 10
+            }
+        }
+    }
+}

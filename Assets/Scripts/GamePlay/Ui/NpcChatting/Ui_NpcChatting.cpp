@@ -14,8 +14,9 @@ namespace GamePlay::Ui
         if (!npcNameTextBox_)
             co_return;
         
+        isDisplaying_ = true;
         Entity().lock()->SetEnable(true);
-        
+
         npcNameTextBox_->SetText(npcName);
         
         const float chatCharInterval_secs         = GameCore::GameSettings::GetInstance().GetChatTextCharInterval_secs();
@@ -48,7 +49,8 @@ namespace GamePlay::Ui
             
             co_await Coroutine::WaitForSeconds(chatTextSentenceInterval_secs);
         }
-        
+
+        isDisplaying_ = false;
         Entity().lock()->SetEnable(false);
     }
 

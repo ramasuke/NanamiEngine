@@ -4,7 +4,6 @@
 #include <cmath>
 #include "DxLib.h"
 #include "../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../Engine/Module/GameObject/PrefabGameObject/PrefabCatchChild/PrefabCatchChild.h"
 
 namespace GamePlay::Ui
 {
@@ -35,8 +34,6 @@ namespace GamePlay::Ui
     void LowHealthScreenEffect::OnAwake()
     {
         colorGrade_ = Components().Catch<NanamiUi::ScreenColorGradeRenderer>().lock();
-        if (!vignetteObjectName_.empty())
-            vignette_ = GameObject::CatchChild<NanamiUi::BlendImageRenderer>(Entity(), vignetteObjectName_);
     }
 
     void LowHealthScreenEffect::OnDestroy()
@@ -128,7 +125,7 @@ namespace GamePlay::Ui
 
     void LowHealthScreenEffect::OnDrawGui()
     {
-        ImGuiHelper::OnDrawInputField("vignetteObjectName_", vignetteObjectName_);
+        ImGuiHelper::OnDrawInputField("vignette_", vignette_);
         ImGuiHelper::OnDrawInputField("startHealthRate_",    startHealthRate_);
         ImGuiHelper::OnDrawInputField("criticalHealthRate_", criticalHealthRate_);
         ImGuiHelper::OnDrawInputField("dangerSmooth_secs_",  dangerSmooth_secs_);

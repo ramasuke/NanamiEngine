@@ -6,6 +6,9 @@
 #include "Scene/Main/Content/Title/TitleScene.h"
 #include "Scene/Sub/Context/Sub_SceneContextBase.h"
 #include "Scene/Sub/Group/Sub_GameSceneGroup.h"
+#include "../../../../Engine/Core/Application/ApplicationBase.h"
+#include "../../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
+#include "../../../../Engine/Module/Log/NanamiEngine_Module_Log.h"
 
 namespace GameCore
 {
@@ -27,7 +30,8 @@ namespace GameCore
     {
         sceneGroup_ = std::make_unique<Scene::Main::GameSceneGroup>(
             sceneContexts_->Components().Catches<Scene::SceneContextBase>(),
-            subSceneGroup_);
+            subSceneGroup_,
+            loadingScreen_);
         
         sceneGroup_->RequestChangeScene(Scene::Main::SceneType::Title);
     }
@@ -38,8 +42,32 @@ namespace GameCore
         subSceneGroup_ = std::make_shared<Scene::Sub::GameSceneGroup>(sceneContexts);
     }
 
+    void Game::InitStageLoadingScene()
+    {
+        // メインシーンの入れ替えを跨いで出し続けるので、GameManage.scene と同じく
+        // 起動時に読んでそのまま contents_ に残す
+        const auto scene = stageLoadingSceneFile_->LoadScene();
+        Core::Application::ApplicationBase::GameWindow()->AddContent(scene);
+        stageLoadingScene_ = scene;
+
+        scene->ForEachGameObject([this](const std::shared_ptr<GameObject::IGameObject>& gameObject)
+        {
+            if (loadingScreen_)
+                return;
+
+            loadingScreen_ = gameObject->Components().Catch<GamePlay::Ui::LoadingScreenUi>().lock();
+        });
+
+        if (!loadingScreen_)
+        {
+            NanamiEngine::Module::LogError(
+                "Game: StageLoadingScene に LoadingScreenUi が見つかりませんでした: " + scene->Name());
+        }
+    }
+
     void Game::OnAwake()
     {
+        InitStageLoadingScene();
         InitSubSceneGroup();
         InitMainSceneGroup();
     }
@@ -74,5 +102,6 @@ namespace GameCore
 
         ImGuiHelper::OnDrawInputField("subSceneGroup_"      , subSceneGroup_   );
         ImGuiHelper::OnDrawInputField("subSceneContexts_"   , subSceneContexts_);
+        ImGuiHelper::OnDrawInputField("stageLoadingSceneFile_", stageLoadingSceneFile_);
     }
 }

@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 13,
+                "cereal_class_version": 16,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -34,7 +34,7 @@
                 "staminaDrainPerSecond_": 20.0,
                 "staminaRegenPerSecond_": 10.0,
                 "minStaminaRatioToResumeRun_": 0.30000001192092898,
-                "comboNormalAttackStateDuration_secs_": 1.8181818723678589,
+                "comboNormalAttackStateDuration_secs_": 1.5151515007019044,
                 "attackedShockedStateDuration_secs_": 0.27272728085517886,
                 "dashAttack_": {
                     "cereal_class_version": 0,
@@ -46,40 +46,44 @@
                         "cereal_class_version": 0,
                         "value0": 10
                     },
-                    "value2": 0.6363636255264282,
-                    "value3": 0.7272727489471436
+                    "value2": 0.5303030014038086,
+                    "value3": 0.6060606241226196
                 },
                 "dashAttackLungeSpeed_": 55.0,
                 "comboHitFeel_": [
                     {
-                        "cereal_class_version": 2,
+                        "cereal_class_version": 3,
                         "value0": 0.15000000596046449,
                         "value1": 0.1090909093618393,
                         "value2": 1.0,
                         "value3": 0.25,
-                        "value4": 0.12
+                        "value4": 0.11999999731779099,
+                        "value5": 30.0
                     },
                     {
                         "value0": 0.25,
                         "value1": 0.1090909093618393,
                         "value2": 1.149999976158142,
-                        "value3": 0.35,
-                        "value4": 0.14
+                        "value3": 0.3499999940395355,
+                        "value4": 0.14000000059604646,
+                        "value5": 28.0
                     },
                     {
                         "value0": 0.4000000059604645,
                         "value1": 0.1090909093618393,
                         "value2": 1.350000023841858,
                         "value3": 0.5,
-                        "value4": 0.18
+                        "value4": 0.18000000715255738,
+                        "value5": 40.0
                     }
                 ],
                 "dashHitFeel_": {
                     "value0": 0.44999998807907107,
                     "value1": 0.12727272510528565,
                     "value2": 1.0,
-                    "value3": 0.6,
-                    "value4": 0.2
+                    "value3": 0.6000000238418579,
+                    "value4": 0.20000000298023225,
+                    "value5": 0.0
                 },
                 "comboInputBufferWindow_secs_": 0.11818181723356247,
                 "chargeAttackHoldThreshold_secs_": 0.20000000298023225,
@@ -92,17 +96,18 @@
                     "value1": {
                         "value0": 15
                     },
-                    "value2": 0.800000011920929,
-                    "value3": 1.600000023841858
+                    "value2": 0.6666666865348816,
+                    "value3": 1.3333333730697632
                 },
                 "chargeHitFeel_": {
                     "value0": 1.2000000476837159,
                     "value1": 0.18000000715255738,
                     "value2": 7.0,
-                    "value3": 0.8,
-                    "value4": 0.25
+                    "value3": 0.800000011920929,
+                    "value4": 0.25,
+                    "value5": 0.0
                 },
-                "chargeAttackLungeStart_secs_": 0.5,
+                "chargeAttackLungeStart_secs_": 0.4166666567325592,
                 "chargeAttackLungeSpeed_": 30.0,
                 "chargeAttackStaminaCost_": 30.0,
                 "walkSpeed_": {
@@ -112,13 +117,13 @@
                 "runSpeed_": {
                     "value_": 70.0
                 },
-                "walkAccelerationTime_secs_": 0.25,
-                "runAccelerationTime_secs_": 0.5,
                 "moveRotateSpeed_": 12.0,
-                "lockOnAttackRotateSpeed_": 3.0,
+                "lockOnAttackRotateSpeed_": 10.0,
+                "attackRotateSmoothTime_secs_": 0.07999999821186066,
                 "jumpPower_": 90.0,
                 "jumpStateDuration_secs_": 0.48181816935539248,
                 "jumpCooldown_secs_": 0.0,
+                "jumpStaminaCost_": 15.0,
                 "damageStateDuration_secs_": 0.6363636255264282,
                 "avoidRollingStateDuration_secs_": 0.40909090638160708,
                 "avoidRollingStaminaCost_": 20.0,

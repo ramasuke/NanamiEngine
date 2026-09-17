@@ -16,6 +16,11 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnDashAttack          () const override { return onDashAttack_          .get_observable(); }
         [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnRun                 () const override { return onRun_                 .get_observable(); }
         [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnAvoidRolling        () const override { return onAvoidRolling_        .get_observable(); }
+        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnMove                () const override { return onMove_                .get_observable(); }
+        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnJump                () const override { return onJump_                .get_observable(); }
+        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnChargeAttack        () const override { return onChargeAttack_        .get_observable(); }
+        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnJumpAttack          () const override { return onJumpAttack_          .get_observable(); }
+        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnLockOn              () const override { return onLockOn_              .get_observable(); }
 
         void InvokeOnDamage   (const StatusParameter::Health& currentHealth) const override;
         void InvokeOnDeath       () const override;
@@ -23,6 +28,11 @@ namespace GameCore::PlayerAvatar::SwordMan
         void InvokeOnRun         () const override;
         void InvokeDashAttack    () const override;
         void InvokeOnAvoidRolling() const override;
+        void InvokeOnMove        () const override;
+        void InvokeOnJump        () const override;
+        void InvokeChargeAttack  () const override;
+        void InvokeJumpAttack    () const override;
+        void InvokeOnLockOn      () const override;
 
     private:
         rxcpp::subjects::subject<StatusParameter::Health> onDamage_;
@@ -31,5 +41,10 @@ namespace GameCore::PlayerAvatar::SwordMan
         rxcpp::subjects::subject<LibCore::Rx::unit>       onRun_;
         rxcpp::subjects::subject<LibCore::Rx::unit>       onDashAttack_;
         rxcpp::subjects::subject<LibCore::Rx::unit>       onAvoidRolling_;
+        rxcpp::subjects::subject<LibCore::Rx::unit>       onMove_;
+        rxcpp::subjects::subject<LibCore::Rx::unit>       onJump_;
+        rxcpp::subjects::subject<LibCore::Rx::unit>       onChargeAttack_;
+        rxcpp::subjects::subject<LibCore::Rx::unit>       onJumpAttack_;
+        rxcpp::subjects::subject<LibCore::Rx::unit>       onLockOn_;
     };
 }

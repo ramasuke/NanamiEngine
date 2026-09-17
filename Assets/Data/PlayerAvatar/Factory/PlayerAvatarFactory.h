@@ -83,11 +83,17 @@ namespace NanamiEngine::Module::Asset
         [[serialize(2)]] FIELD(PrefabGameObjectFile) swordManStatusUiPrefab_;
         [[serialize(2)]] FIELD(PrefabGameObjectFile) swordManStatusPresenterPrefab_;
 
+        /** MagicCaster */
+        [[serialize(4)]] FIELD(PrefabGameObjectFile) magicCasterPrefab_;
+        [[serialize(4)]] FIELD(PrefabGameObjectFile) magicCasterCameraGroupPrefab_;
+        [[serialize(4)]] FIELD(PrefabGameObjectFile) magicCasterStatusUiPrefab_;
+        [[serialize(4)]] FIELD(PrefabGameObjectFile) magicCasterStatusPresenterPrefab_;
+
         /** Other PlayerAvatar */
         [[serialize(4)]] FIELD(PrefabGameObjectFile) otherPlayerStatusUiGroupPrefab_;
         [[serialize(2)]] FIELD(PrefabGameObjectFile) otherPlayerAvatarStatusUiPrefab_;
         [[serialize(2)]] FIELD(PrefabGameObjectFile) otherPlayerAvatarStatusPresenterPrefab_;
-        
+
 #pragma region Serialization Function
     public:
         void OnDrawGui() override;
@@ -102,6 +108,10 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(otherPlayerAvatarStatusUiPrefab_));
             archive(CEREAL_NVP(otherPlayerAvatarStatusPresenterPrefab_));
             archive(CEREAL_NVP(otherPlayerStatusUiGroupPrefab_));
+            archive(CEREAL_NVP(magicCasterPrefab_));
+            archive(CEREAL_NVP(magicCasterCameraGroupPrefab_));
+            archive(CEREAL_NVP(magicCasterStatusUiPrefab_));
+            archive(CEREAL_NVP(magicCasterStatusPresenterPrefab_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
@@ -114,6 +124,10 @@ namespace NanamiEngine::Module::Asset
             if (version >= 3) archive(CEREAL_NVP(otherPlayerAvatarStatusUiPrefab_));
             if (version >= 3) archive(CEREAL_NVP(otherPlayerAvatarStatusPresenterPrefab_));
             if (version >= 4) archive(CEREAL_NVP(otherPlayerStatusUiGroupPrefab_));
+            if (version >= 4) archive(CEREAL_NVP(magicCasterPrefab_));
+            if (version >= 4) archive(CEREAL_NVP(magicCasterCameraGroupPrefab_));
+            if (version >= 4) archive(CEREAL_NVP(magicCasterStatusUiPrefab_));
+            if (version >= 4) archive(CEREAL_NVP(magicCasterStatusPresenterPrefab_));
         }
 #pragma endregion
     };
@@ -155,7 +169,7 @@ namespace NanamiEngine::Module::Asset
 
 REGISTER_SCRIPTABLE_OBJECT(PlayerAvatarFactory, PLAYER_AVATAR_FACTORY_EXTENSION_LABEL)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::PlayerAvatarFactory, 3);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::PlayerAvatarFactory, 4);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::PlayerAvatarFactory);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::PlayerAvatarFactory);
 #pragma endregion

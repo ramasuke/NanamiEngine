@@ -2,11 +2,9 @@
 
 #include "ext/quaternion_geometric.hpp"
 #include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
-#include "../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
-#include "../../../../../../../GamePlay/Sound/SoundPlayer.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::State
 {
@@ -16,14 +14,16 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         isAttacked_ = false;
 
         // 予備動作中は自機の向きへ踏み込む
-        const glm::vec3 forward = glm::normalize(glm::vec3(Transform().GetWorldRot() * glm::vec3(0.0f, 0.0f, -1.0f)));
-        const float currentY = Physics::GetLinearVelocity(Collider().BodyId()).y;
-        Physics::SetLinearVelocity(Collider().BodyId(), forward * Status().DashAttackLungeSpeed() + glm::vec3(0.0f, currentY, 0.0f));
+        LungeForward(Status().DashAttackLungeSpeed());
     }
 
     void SwordManAvatarDashAttackState::DoFixedUpdate()
     {
         TryDashAttack();
+
+        // 踏み込みが終わった後はその場に留める
+        if (isAttacked_)
+            HoldHorizontalVelocity();
 
         if (During_secs() > Status().DashAttack().Duration_secs())
         {
@@ -33,9 +33,9 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarDashAttackState::DoUpdate()
     {
-        // 発生前（予備動作中）だけロックオン対象へ向く。発生判定は DoFixedUpdate 側の TryDashAttack が行う
+        // 発生前（予備動作中）だけ攻撃対象へ向く。発生判定は DoFixedUpdate 側の TryDashAttack が行う
         if (!isAttacked_)
-            RotateTowardsLockOnTarget(Status().LockOnAttackRotateSpeed());
+            RotateTowardsAttackTarget(Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
     }
 
     void SwordManAvatarDashAttackState::DoExit()
@@ -55,11 +55,12 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         isAttacked_ = true;
 
         // 踏み込みはヒット判定の瞬間まで。以降はその場で止める(居合い斬りのように踏み込んで止まる)
-        Physics::SetLinearVelocity(Collider().BodyId(), glm::vec3(0.0f, Physics::GetLinearVelocity(Collider().BodyId()).y, 0.0f));
+        HoldHorizontalVelocity();
 
-        GamePlay::Sound::SoundPlayer::PlaySe(Resources().NormalAttackSound(), Transform().GetWorldPos());
+        const bool isHit = DashAttackArea().TryPhysicsAttack(Player(), BuffedAttackPower(attackStatus.AttackPower()));
+        PlayAttackSe(isHit);
 
-        if (DashAttackArea().TryPhysicsAttack(Player(), attackStatus.AttackPower()))
+        if (isHit)
         {
             const auto& hitFeel = Status().DashHitFeel();
             NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::ShakeMainCamera(hitFeel.ShakeIntensity(), hitFeel.ShakeDuration_secs());
@@ -67,8 +68,12 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             const auto particle = NanamiEngine::Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), DashAttackArea().Transform().GetWorldPos());
             if (const auto particleObject = particle.lock())
                 particleObject->Transform().SetLocalScale(glm::vec3(hitFeel.ParticleScale()));
-            DealDamageText(DashAttackArea(), attackStatus.AttackPower());
+            DealDamageText(DashAttackArea(), BuffedAttackPower(attackStatus.AttackPower()));
             ShakeHitTargets(DashAttackArea(), hitFeel);
+        }
+        else
+        {
+            TryBlockAttackByWall(DashAttackArea());
         }
     }
 

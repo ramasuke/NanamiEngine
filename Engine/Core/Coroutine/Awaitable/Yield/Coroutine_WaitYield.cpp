@@ -17,12 +17,6 @@ namespace Coroutine
 
     void WaitYield::Tick(float)
     {
-        if (firstTick_)
-        {
-            firstTick_ = false;
-            return;
-        }
-
         completed_ = true;
     }
 }

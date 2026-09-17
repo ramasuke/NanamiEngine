@@ -13,6 +13,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoFixedUpdate() override;
         void DoUpdate     () override;
         void DoExit       () override;
-        [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::Hurt; }
+        [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::Down; }
+        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::None; }
     };
 }

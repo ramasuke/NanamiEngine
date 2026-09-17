@@ -19,6 +19,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] InputRef<void     >& Chat        () const { return *chat_        ; }
         [[nodiscard]] InputRef<void     >& AvoidRolling() const { return *avoidRolling_; }
         [[nodiscard]] InputRef<void     >& LockOn      () const { return *lockOn_      ; }
+        [[nodiscard]] InputRef<void     >& CycleItemNext() const { return *cycleItemNext_; }
+        [[nodiscard]] InputRef<void     >& CycleItemPrev() const { return *cycleItemPrev_; }
+        [[nodiscard]] InputRef<void     >& UseItem      () const { return *useItem_      ; }
 
         void OnDrawGui() override;
 
@@ -32,5 +35,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         Input<void     > chat_         = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_E           ) || XInput().Buttons[XINPUT_BUTTON_Y]; });
         Input<void     > avoidRolling_ = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_LCONTROL    ) || XInput().Buttons[XINPUT_BUTTON_X]; });
         Input<void     > lockOn_       = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_Q           ) || XInput().Buttons[XINPUT_BUTTON_RIGHT_THUMB]; });
+        Input<void     > cycleItemNext_= MakeInputAction([this] { return CheckHitKey(KEY_INPUT_X           ) || XInput().Buttons[XINPUT_BUTTON_DPAD_RIGHT]; });
+        Input<void     > cycleItemPrev_= MakeInputAction([this] { return CheckHitKey(KEY_INPUT_Z           ) || XInput().Buttons[XINPUT_BUTTON_DPAD_LEFT ]; });
+        Input<void     > useItem_      = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_R           ) || XInput().Buttons[XINPUT_BUTTON_LEFT_SHOULDER]; });
     };
 }

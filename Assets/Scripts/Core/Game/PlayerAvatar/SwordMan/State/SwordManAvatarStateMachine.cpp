@@ -4,6 +4,8 @@
 #include "Attack/Charge/SwordManAvatarChargeAttackChargingState.h"
 #include "Attack/Charge/SwordManAvatarChargeAttackReleaseState.h"
 #include "Attack/Dash/SwordManAvatarDashAttackState.h"
+#include "Attack/Jump/SwordManAvatarJumpAttackAirState.h"
+#include "Attack/Jump/SwordManAvatarJumpAttackLandState.h"
 #include "Attack/Normal/SwordManAvatarNormalAttackState.h"
 #include "AttackedShocked/SwordManAvatar_AttackedShockedState.h"
 #include "AvoidRolling/SwordManAvatar_AvoidRolling.h"
@@ -12,7 +14,9 @@
 #include "Death/SwordManAvatar_DeathState.h"
 #include "DisableState/SwordManAvatar_DisableState.h"
 #include "Down/SwordManAvatar_DownState.h"
+#include "FallDown/SwordManAvatar_FallDownState.h"
 #include "Floating/FloatingState.h"
+#include "GetUp/SwordManAvatar_GetUpState.h"
 #include "Hurt/SwordManAvatar_HurtState.h"
 #include "Idle/SwordManAvatarIdleState.h"
 #include "Jump/SwordManAvatarJumpState.h"
@@ -22,6 +26,7 @@
 #include "UseCanon/SwordManAvatarUseCanonState.h"
 #include "WakeUp/SwordManAvatar_WakeUpState.h"
 #include "Walk/SwordManAvatarWalkState.h"
+#include "WarpIn/SwordManAvatar_WarpInState.h"
 
 #include "../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 
@@ -52,6 +57,11 @@ namespace GameCore::PlayerAvatar::SwordMan
         return swordManCurrentState_.get_observable();
     }
 
+    std::shared_ptr<const SwordManAvatarStateBase> SwordManAvatarStateMachine::CurrentStateValue() const
+    {
+        return swordManCurrentState_.get_value();
+    }
+
     std::unique_ptr<SwordManAvatarStateMachine> CreateStateMachine(
           const std::shared_ptr<SwordManAvatarStatus     >& status
         , const std::shared_ptr<SwordManAvatarInputAction>& input
@@ -67,6 +77,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             playerAvatar->CatchNormalAttackArea(),
             playerAvatar->CatchDashAttackArea(),
             playerAvatar->CatchLockOnDetectionArea(),
+            playerAvatar->CatchSuccessAvoidRollingParticle(),
             playerAvatar->Resources()
         );
 
@@ -98,6 +109,11 @@ namespace GameCore::PlayerAvatar::SwordMan
                     {SwordManAvatarStateType::InjuredRun,         std::make_shared<SwordManAvatarInjuredRunState>        (context, callback)},
                     {SwordManAvatarStateType::Down,               std::make_shared<DownState>                            (context, callback)},
                     {SwordManAvatarStateType::WakeUp,             std::make_shared<WakeUpState>                          (context, callback)},
+                    {SwordManAvatarStateType::FallDown,           std::make_shared<FallDownState>                        (context, callback)},
+                    {SwordManAvatarStateType::GetUp,              std::make_shared<GetUpState>                           (context, callback)},
+                    {SwordManAvatarStateType::JumpAttackAir,      std::make_shared<SwordManAvatarJumpAttackAirState>     (context, callback)},
+                    {SwordManAvatarStateType::JumpAttackLand,     std::make_shared<SwordManAvatarJumpAttackLandState>    (context, callback)},
+                    {SwordManAvatarStateType::WarpIn,             std::make_shared<WarpInState>                          (context, callback)},
                 };
             },
             SwordManAvatarStateType::Idle,

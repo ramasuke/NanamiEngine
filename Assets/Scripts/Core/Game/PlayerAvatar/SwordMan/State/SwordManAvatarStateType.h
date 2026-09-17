@@ -27,5 +27,10 @@ namespace GameCore::PlayerAvatar::SwordMan
         InjuredRun         = 19,
         Down               = 20,
         WakeUp             = 21,
+        FallDown           = 22,
+        GetUp              = 23,
+        JumpAttackAir      = 24,
+        JumpAttackLand     = 25,
+        WarpIn             = 26,
     };
 }

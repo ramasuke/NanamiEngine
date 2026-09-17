@@ -135,7 +135,7 @@ def _tag_value(ctx: _Ctx, val: Any, pinfo: Optional[dict]) -> Any:
             return Ptr(exact=False, null=True, fqn=None, wrapper="", data=None)
         return Ptr(
             exact=s["exact"], null=False, fqn=s["fqn"], wrapper=s["wrapper"],
-            data=_tag_value(ctx, s["data"], None),
+            data=_tag_pointee(ctx, s["data"], s["fqn"]),
         )
 
     if keys and keys[0] == "cereal_class_version":
@@ -167,6 +167,28 @@ def _tag_value(ctx: _Ctx, val: Any, pinfo: Optional[dict]) -> Any:
         return OrderedObj([("value_", val["value_"])])
 
     return _tag_plain(ctx, val)
+
+
+def _tag_pointee(ctx: _Ctx, data: Any, fqn: Optional[str]) -> Any:
+    """Tag a pointer's data, using the catalog when its dynamic type is a known struct."""
+    found = ctx.cat.struct_by_fqn(fqn) if fqn else None
+    if not (found and isinstance(data, OrderedObj) and data.keys()
+            and data.keys()[0] == "cereal_class_version"):
+        return _tag_value(ctx, data, None)
+    leaf, entry = found
+    v, body = _strip_ccv(data)
+    out = OrderedObj()
+    for k, val in body.items():
+        pinfo = ctx.cat.param_by_key(entry, k)
+        if pinfo is None and isinstance(val, OrderedObj) and \
+                all(kk == "cereal_class_version" for kk in val.keys()):
+            # base_class<...> slot: its type isn't ActionBase, so keep this occurrence as-is
+            bv, _ = _strip_ccv(val)
+            out.append(k, Ver(("fp", fingerprint(val)), bv or 0, OrderedObj(),
+                              literal_presence=(bv is not None)))
+            continue
+        out.append(k, _tag_value(ctx, val, pinfo))
+    return Ver(("type", leaf), v or 0, out)
 
 
 def _tag_plain(ctx: _Ctx, obj: OrderedObj) -> OrderedObj:

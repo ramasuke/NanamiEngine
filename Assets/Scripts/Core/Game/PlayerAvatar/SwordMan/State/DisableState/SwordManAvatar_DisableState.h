@@ -17,5 +17,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         bool MouseLock() override { return false; }
 
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override;
+        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::None; }
     };
 }

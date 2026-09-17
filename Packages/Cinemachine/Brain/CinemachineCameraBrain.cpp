@@ -1,8 +1,10 @@
 ﻿#include "CinemachineCameraBrain.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 
+#include "../../../Engine/Core/Application/Configuration/DebugDraw/ApplicationConfiguration_DebugDraw.h"
 #include "../../../Engine/Core/Application/Time/Time.h"
 #include "../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../Engine/Module/GameObject/Transform/Transform.h"
@@ -28,11 +30,13 @@ void CineMachine::CinemachineCameraBrain::OnUpdate()
 
     const glm::vec3 targetPos = currentVirtualCamera_->Transform().GetWorldPos();
     const glm::quat targetRot = currentVirtualCamera_->Transform().GetWorldRot();
+    const float     targetFov = currentVirtualCamera_->Fov();
 
     if (!hasSmoothedPose_)
     {
         smoothedPos_ = Transform().GetWorldPos();
         smoothedRot_ = Transform().GetWorldRot();
+        smoothedFov_ = targetFov;
         hasSmoothedPose_ = true;
     }
 
@@ -41,6 +45,7 @@ void CineMachine::CinemachineCameraBrain::OnUpdate()
         // lerp/slerpを完全にスキップしてVirtualCameraのTransformを即時適用する。
         smoothedPos_ = targetPos;
         smoothedRot_ = targetRot;
+        smoothedFov_ = targetFov;
     }
     else
     {
@@ -48,6 +53,7 @@ void CineMachine::CinemachineCameraBrain::OnUpdate()
         const float dt = Time::DeltaTime();
         smoothedPos_ = glm::mix(smoothedPos_, targetPos, 1.0f - std::exp(-positionLerpSpeed_secs_ * dt));
         smoothedRot_ = glm::slerp(smoothedRot_, targetRot, 1.0f - std::exp(-rotationSlerpSpeed_secs_ * dt));
+        smoothedFov_ = glm::mix(smoothedFov_, targetFov, 1.0f - std::exp(-fovLerpSpeed_secs_ * dt));
     }
     Transform().SetWorldPos(smoothedPos_);
     Transform().SetWorldRot(smoothedRot_);
@@ -67,9 +73,10 @@ void CineMachine::CinemachineCameraBrain::OnUpdate()
     const glm::quat finalRot = Transform().GetWorldRot();
     const glm::vec3 forward   = finalRot * glm::vec3(0, 0, 1);
 
-    appliedNear_ = CalculateSafeNear(finalPos);
+    appliedFov_  = smoothedFov_;
+    appliedNear_ = CalculateSafeNear(finalPos, finalRot);
 
-    SetupCamera_Perspective(fov_ * DX_PI_F / 180.0f);
+    SetupCamera_Perspective(appliedFov_ * DX_PI_F / 180.0f);
     SetCameraNearFar(appliedNear_, cameraFar_);
     SetCameraPositionAndTarget_UpVecY(
         {finalPos.x, finalPos.y, finalPos.z},
@@ -77,7 +84,7 @@ void CineMachine::CinemachineCameraBrain::OnUpdate()
     );
 }
 
-float CineMachine::CinemachineCameraBrain::CalculateSafeNear(const glm::vec3& cameraPos) const
+float CineMachine::CinemachineCameraBrain::CalculateSafeNear(const glm::vec3& cameraPos, const glm::quat& cameraRot) const
 {
     int screenWidth, screenHeight;
     GetScreenState(&screenWidth, &screenHeight, nullptr);
@@ -85,10 +92,20 @@ float CineMachine::CinemachineCameraBrain::CalculateSafeNear(const glm::vec3& ca
         return cameraNear_;
 
     const float aspectRatio = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
-    const float tanHalfFov  = std::tan(fov_ * DX_PI_F / 180.0f * 0.5f);
+    const float tanHalfFov  = std::tan(appliedFov_ * DX_PI_F / 180.0f * 0.5f);
 
-    // Near平面の四隅(±tan*aspect*near, ±tan*near, near)はカメラから near * k の距離にある
-    const float cornerDistanceScale = std::sqrt(1.0f + tanHalfFov * tanHalfFov + (tanHalfFov * aspectRatio) * (tanHalfFov * aspectRatio));
+    const glm::vec3 forward = cameraRot * glm::vec3(0, 0, 1);
+    const glm::vec3 right   = cameraRot * glm::vec3(1, 0, 0) * (tanHalfFov * aspectRatio);
+    const glm::vec3 up      = cameraRot * glm::vec3(0, 1, 0) * tanHalfFov;
+
+    // near=1 のときのNear平面の中心と四隅
+    const std::array<glm::vec3, 5> nearPlanePoints = {
+        forward,
+        forward + right + up,
+        forward + right - up,
+        forward - right + up,
+        forward - right - up,
+    };
 
     Module::Physics::LayerMask mask = Module::Physics::CreateLayerMask();
     Module::Physics::AddLayer(mask, Module::Physics::Layer::Default);
@@ -96,11 +113,18 @@ float CineMachine::CinemachineCameraBrain::CalculateSafeNear(const glm::vec3& ca
     Module::Physics::AddLayer(mask, Module::Physics::Layer::Player);
     Module::Physics::AddLayer(mask, Module::Physics::Layer::Enemy);
 
-    // 設定値のNearで四隅が届く範囲だけ調べれば十分
-    const float clearance = Module::Physics::ClosestDistance(cameraPos, cameraNear_ * cornerDistanceScale, mask);
+    // 球の重なり判定はメッシュの三角形を枝刈りできず重いため、最近傍で打ち切れるレイで調べる
+    float safeNear = cameraNear_;
+    for (const glm::vec3& point : nearPlanePoints)
+    {
+        const float pointDistanceScale = glm::length(point);
+        const Module::Physics::RaycastHit hit = Module::Physics::Raycast(cameraPos, point, cameraNear_ * pointDistanceScale, mask);
+        if (hit.Hit())
+            safeNear = std::min(safeNear, hit.Distance() / pointDistanceScale * nearClipMargin_);
+    }
 
     const float lowerNear = std::min(minCameraNear_, cameraNear_);
-    return std::clamp(clearance * nearClipMargin_ / cornerDistanceScale, lowerNear, cameraNear_);
+    return std::clamp(safeNear, lowerNear, cameraNear_);
 }
 
 void CineMachine::CinemachineCameraBrain::OnDestroy()
@@ -121,6 +145,9 @@ void CineMachine::CinemachineCameraBrain::OnDebugRender()
         {
             smoothedPos_ = currentVirtualCamera_->Transform().GetWorldPos();
             smoothedRot_ = currentVirtualCamera_->Transform().GetWorldRot();
+            // OnUpdateが回らない編集モードでも、錐台表示が現在のFOVを映すようにする
+            smoothedFov_ = currentVirtualCamera_->Fov();
+            appliedFov_  = smoothedFov_;
             hasSmoothedPose_ = true;
             Transform().SetWorldPos(smoothedPos_);
             Transform().SetWorldRot(smoothedRot_);
@@ -131,7 +158,9 @@ void CineMachine::CinemachineCameraBrain::OnDebugRender()
             Transform().SetWorldRot(Transform().GetWorldRot());
         }
     }
-    OnDebugCameraFovRender();
+
+    if (Core::Application::Configuration::DebugDrawConfiguration::ShouldDrawMainCameraFrustum())
+        OnDebugCameraFovRender();
 }
 
 void CineMachine::CinemachineCameraBrain::OnDebugCameraFovRender() const
@@ -146,7 +175,7 @@ void CineMachine::CinemachineCameraBrain::OnDebugCameraFovRender() const
     int screenWidth, screenHeight;
     GetScreenState(&screenWidth, &screenHeight, nullptr);
 
-    constexpr float fovRad      = SAMPLE_CAMERA_FOV * DX_PI_F / 180.0f;
+    const float     fovRad      = appliedFov_ * DX_PI_F / 180.0f;
     constexpr float debugFar    = 80.0f;
 
     const float aspectRatio = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
@@ -189,12 +218,14 @@ void CineMachine::CinemachineCameraBrain::OnDrawGui()
     
     ImGuiHelper::OnDrawInputField("positionLerpSpeed_secs_"  , positionLerpSpeed_secs_   );
     ImGuiHelper::OnDrawInputField("rotationSlerpSpeed_secs_" , rotationSlerpSpeed_secs_  );
-    ImGuiHelper::OnDrawInputField("fov_"                     , fov_                      );
+    ImGuiHelper::OnDrawInputField("fovLerpSpeed_secs_"       , fovLerpSpeed_secs_        );
+    ImGuiHelper::OnDrawInputField("fov_ (default)"           , fov_                      );
     ImGuiHelper::OnDrawInputField("cameraNear_"              , cameraNear_               );
     ImGuiHelper::OnDrawInputField("cameraFar_"               , cameraFar_                );
     ImGuiHelper::OnDrawInputField("minCameraNear_"           , minCameraNear_            );
     ImGuiHelper::OnDrawInputField("nearClipMargin_"          , nearClipMargin_           );
     ImGui::Text(("appliedNear: " + std::to_string(appliedNear_)).c_str());
+    ImGui::Text(("appliedFov: "  + std::to_string(appliedFov_)).c_str());
 }
 
 void CineMachine::CinemachineCameraBrain::ApplyVirtualCameraMatrix() const

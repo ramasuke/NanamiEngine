@@ -22,6 +22,8 @@ namespace NanamiEngine::Module::Physics
         ~EngineContactListener() override;
         //NOTE: メインスレッド呼び出しを推奨
         void OnUpdate();
+        //NOTE: 接触コールバックは物理ジョブから並列に呼ばれるので、設定値はステップ前にここへ取り込んでおく
+        void RefreshTuning();
         
         void UnSubscribeEngineCollider(const JPH::BodyID& colliderId);
 
@@ -30,13 +32,31 @@ namespace NanamiEngine::Module::Physics
             const JPH::Body& body1,
             const JPH::Body& body2,
             const JPH::ContactManifold& manifold,
-            JPH::ContactSettings&) override;
+            JPH::ContactSettings& settings) override;
+        void OnContactPersisted(
+            const JPH::Body& body1,
+            const JPH::Body& body2,
+            const JPH::ContactManifold& manifold,
+            JPH::ContactSettings& settings) override;
         void OnContactRemoved(const JPH::SubShapeIDPair& pair) override;
+
+        /**
+         * @brief 面に沿ってほぼ止まっている接触だけ、摩擦を静止摩擦に差し替える
+         * @note Jolt の摩擦は係数1つだけで静止/動の区別がないため、ここで切り替えないと斜面で滑り落ちる
+         */
+        void ApplyStaticFriction(
+            const JPH::Body& body1,
+            const JPH::Body& body2,
+            const JPH::ContactManifold& manifold,
+            JPH::ContactSettings& settings) const;
 
         CollisionEnterGroup collisionEnterGroup_;
         CollisionExitGroup  collisionExitGroup_;
         SensorEnterGroup    sensorEnterGroup_;
         SensorExitGroup     sensorExitGroup_;
         const JPH::PhysicsSystem& physicsSystem_;
+        float staticFriction_      = 0.0f;
+        float staticFrictionSpeed_ = 0.0f;
+        float cosMaxSlope_         = 1.0f;
     };
 }

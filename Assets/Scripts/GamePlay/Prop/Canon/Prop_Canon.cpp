@@ -1,8 +1,7 @@
 ﻿#include "Prop_Canon.h"
 
 #include "../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
-#include "../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../Sound/SoundPlayer.h"
 
@@ -11,7 +10,8 @@ namespace GamePlay::Prop
     void Canon::Use() const
     {
         shootCamera_->SetPriority(100);
-        cannonUi_->Entity().lock()->SetEnable(true);
+        if (cannonUi_)
+            cannonUi_->Show();
     }
 
     void Canon::Shoot()
@@ -25,9 +25,11 @@ namespace GamePlay::Prop
         const glm::vec3 cannonForward = Transform().GetWorldRot() * shootBulletDirection_;
         
         const auto bullet = Scene::GameObject::Instantiate(bulletPrefab_.get(), shootBulletPos_->Transform().GetWorldPos());
-        const auto bulletCollider = bullet.lock()->Components().Catch<Component::ColliderBase>().lock();
-        Physics::AddForce(bulletCollider->BodyId(), cannonForward * bulletForceSpeed_);
+        const auto bulletRigidBody = bullet.lock()->Components().Catch<Component::RigidBody>().lock();
+        bulletRigidBody->AddLinearVelocity(cannonForward * bulletForceSpeed_);
         Sound::SoundPlayer::PlaySe(*shootSound_.get(), Transform().GetWorldPos());
+        if (cannonUi_)
+            cannonUi_->PlayShoot();
     }
     
     void Canon::RightRotate()
@@ -47,12 +49,10 @@ namespace GamePlay::Prop
 
     void Canon::OnUpdate()
     {
-        if (!cannonUi_)
-            return;
-        
         shootCooldownDuring_secs_ -= Time::DeltaTime();
         shootCooldownDuring_secs_ = std::max(shootCooldownDuring_secs_, 0.0f);
-        cannonUi_->SetText("Cooldown: " + std::to_string(shootCooldownDuring_secs_));
+        if (cannonUi_)
+            cannonUi_->SetCooldown(shootCooldownDuring_secs_, shootCooldown_secs_);
         Transform().SetWorldPos(position_);
     }
 

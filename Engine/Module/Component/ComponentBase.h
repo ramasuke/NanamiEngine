@@ -9,11 +9,6 @@
 #include "../GameObject/Interface/IGameObject.h"
 #include "../Namespace/EngineNamespace.h"
 
-namespace NanamiEngine::Core::Object
-{
-    class IInitializablePrefabObjectField;
-}
-
 namespace NanamiEngine::Module::GameObject
 {
     class IGameObject;
@@ -42,19 +37,22 @@ namespace NanamiEngine::Module::Component
         void ResetGuid();
         void SetEnable(bool enable);
         [[nodiscard]] bool IsEnable() const;
+        //NOTE: このComponentが破棄される時にunsubscribeされる購読トークン。
+        //      rxのsubscribeに渡すか、add()に破棄時の後始末を積む
+        [[nodiscard]] rxcpp::composite_subscription& DestroyCancellationToken() { return destroyCancellationToken_; }
+        //WARNING: エンジン開発者以外使用しないでください。
+        void ImplementCancelOnDestroy();
 
     private:
         Guid guid_;
         bool isEnable_ = true;
         std::weak_ptr<GameObject::IGameObject> gameObjectRef_;
-        std::vector<std::shared_ptr<Core::Object::IInitializablePrefabObjectField>> prefabObjectFields_;
-        
+        rxcpp::composite_subscription destroyCancellationToken_;
+
     protected:
         template <typename T>
         requires std::is_base_of_v<ComponentBase, T>
         std::shared_ptr<T> RequireComponent();
-        // template<typename T>
-        // const std::shared_ptr<Core::Object::PrefabObjectField<T>>& CreatePrefabField();
         
 #pragma region Serialization Function
     public:
@@ -79,14 +77,6 @@ namespace NanamiEngine::Module::Component
     {
         return Components().RequireComponent<T>();
     }
-
-    // template <typename T>
-    // const std::shared_ptr<Core::Object::PrefabObjectField<T>>& ComponentBase::CreatePrefabField()
-    // {
-    //     const auto field = std::make_shared<Core::Object::PrefabObjectField<T>>();
-    //     prefabObjectFields_.push_back(field);
-    //     return field;
-    // }
 }
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::ComponentBase, 0);
 #define ENGINE_REGISTER_COMPONENT(TYPE, VERSION)                                                \

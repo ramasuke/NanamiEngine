@@ -1,23 +1,13 @@
 ﻿#pragma once
 #include "../PlayerAvatarBase.h"
+#include "../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
 #include "../../../Core/Game/PlayerAvatar/AttackArea/PlayerAvatarAttackArea.h"
 #include "../../../Core/Game/PlayerAvatar/SwordMan/Traits/SwordManAvatarTraits.h"
 #include "../LockOnDetectionArea/LockOnDetectionArea.h"
 
-namespace NanamiEngine::Module::Component
-{
-    class ParticleSystem;
-}
-
 namespace GamePlay::PlayerAvatar::SwordMan
 {
-    constexpr auto NORMAL_ATTACK_AREA_NAME             = "NormalAttackArea";
-    constexpr auto DASH_ATTACK_AREA_NAME               = "DashAttackArea";
-    constexpr auto LOCK_ON_DETECTION_AREA_NAME         = "LockOnDetectionArea";
-    constexpr auto SUCCESS_AVOID_ROLLING_PARTICLE_NAME = "SuccessAvoidRollingParticle";
-    constexpr auto HIT_NORMAL_ATTACK_PARTICLE_NAME     = "HitNormalAttackParticle";
-    
     class SwordManAvatar final : public PlayerAvatarBase<GameCore::PlayerAvatar::SwordMan::SwordManAvatarTraits>
     {
     public:
@@ -25,11 +15,16 @@ namespace GamePlay::PlayerAvatar::SwordMan
         [[nodiscard]] std::weak_ptr<PlayerAttackArea> CatchNormalAttackArea      () const;
         [[nodiscard]] std::weak_ptr<PlayerAttackArea> CatchDashAttackArea        () const;
         [[nodiscard]] std::weak_ptr<LockOnDetectionArea> CatchLockOnDetectionArea   () const;
+        [[nodiscard]] std::weak_ptr<Component::ParticleSystem> CatchSuccessAvoidRollingParticle() const;
         [[nodiscard]] PlayerAvatarType Type() const override;
 
     private:
         [[serialize(3)]] FIELD(Asset::SwordManAvatarResource) resources_;
-        
+        [[serialize(5)]] FIELD(PlayerAttackArea) normalAttackArea_;
+        [[serialize(5)]] FIELD(PlayerAttackArea) dashAttackArea_;
+        [[serialize(5)]] FIELD(LockOnDetectionArea) lockOnDetectionArea_;
+        [[serialize(5)]] FIELD(Component::ParticleSystem) successAvoidRollingParticle_;
+
 #pragma region Serialization Function
     public:
         void OnDrawGui() override;
@@ -42,6 +37,10 @@ namespace GamePlay::PlayerAvatar::SwordMan
             if(version <= 3) archive(CEREAL_NVP(normalAttackSound_));
             if(version <= 3) archive(CEREAL_NVP(avoidRollingSound_));
             archive(CEREAL_NVP(resources_));
+            archive(CEREAL_NVP(normalAttackArea_));
+            archive(CEREAL_NVP(dashAttackArea_));
+            archive(CEREAL_NVP(lockOnDetectionArea_));
+            archive(CEREAL_NVP(successAvoidRollingParticle_));
         }
 
         template <class Archive>
@@ -53,6 +52,11 @@ namespace GamePlay::PlayerAvatar::SwordMan
             if (version <= 3) archive(CEREAL_NVP(normalAttackSound_));
             if (version <= 3) archive(CEREAL_NVP(avoidRollingSound_));
             if (version >= 3) archive(CEREAL_NVP(resources_));
+            // v5 でコード直書きだった子オブジェクト名を FIELD に置き換えた
+            if (version >= 5) archive(CEREAL_NVP(normalAttackArea_));
+            if (version >= 5) archive(CEREAL_NVP(dashAttackArea_));
+            if (version >= 5) archive(CEREAL_NVP(lockOnDetectionArea_));
+            if (version >= 5) archive(CEREAL_NVP(successAvoidRollingParticle_));
         }
 #pragma endregion
     };
@@ -60,7 +64,7 @@ namespace GamePlay::PlayerAvatar::SwordMan
 
 REGISTER_PLAYER_AVATAR_BASE(SwordMan::SwordManAvatarTraits)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::SwordMan::SwordManAvatar, 4);
+CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::SwordMan::SwordManAvatar, 5);
 CEREAL_REGISTER_TYPE(GamePlay::PlayerAvatar::SwordMan::SwordManAvatar);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::SwordMan::SwordManAvatarTraits>, GamePlay::PlayerAvatar::SwordMan::SwordManAvatar);
 #pragma endregion

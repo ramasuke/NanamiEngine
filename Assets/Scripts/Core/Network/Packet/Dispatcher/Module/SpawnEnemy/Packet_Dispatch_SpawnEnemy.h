@@ -5,13 +5,10 @@
 #include "../../CustomPacketDispatcherBase.h"
 #include "../../../Custom_PacketType.h"
 #include "../../../../../../../../Engine/Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
+#include "../../../../../../../Data/Enemy/Factory/EnemyFactory.h"
+#include "../../../../../Game/Npc/Enemy/Type/EnemyKind.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
 #include "../rxcpp/rx.hpp"
-
-namespace NanamiEngine::Module::Asset
-{
-    class PrefabGameObjectFile;
-}
 
 namespace NanamiEngine::Module::GameObject
 {
@@ -26,11 +23,12 @@ namespace GameCore::Network
         explicit EnemySpawnDispatcher(
             Core::Network::DefaultPacketDispatcher& defaultDispatchers,
             const Core::Network::IPlayerIdProvider& playerIdProvider,
-            Core::Network::IPacketSender& packetSender);
+            Core::Network::IPacketSender& packetSender,
+            Asset::EnemyFactory& enemyFactory);
         ~EnemySpawnDispatcher() override;
 
         std::shared_ptr<Module::GameObject::IGameObject> DispatchSendPacket(
-            Module::Asset::PrefabGameObjectFile& prefab,
+            Npc::Enemy::EnemyKind kind,
             glm::vec3 position,
             glm::quat rotation);
 
@@ -45,5 +43,6 @@ namespace GameCore::Network
         };
         std::vector<HistoryEntry> spawnPacketHistory_;
         rxcpp::composite_subscription newPlayerSubscription_;
+        Asset::EnemyFactory& enemyFactory_;
     };
 }

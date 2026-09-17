@@ -1,7 +1,7 @@
 ﻿#include "Enemy_Behaviour_TickContext.h"
 
 #include "../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
+#include "../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../../Game.h"
 #include "../../../../../../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
 #include "../../../../../PlayerAvatar/IPlayerAvatar.h"
@@ -21,14 +21,16 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         SyncParam<class EnemyStatus>& enemyStatus,
         const std::unique_ptr<BlackBoard::ParameterGroup>& parameters,
         const std::shared_ptr<std::queue<std::unique_ptr<IDamage>>>& onDamagedStack,
+        IShowHealthGaugeProvider* const showHealthGaugeProvider,
         const Core::Network::NetworkObjectId networkObjectId,
         const bool isNetworkAuthority)
             : enemyGameObject_  (enemyGameObject)
             , enemyAnimator_    (enemyGameObject.lock()->Components().Catch<Component::Animator>())
-            , enemyCollider_    (enemyGameObject.lock()->Components().Catch<Component::ColliderBase>())
+            , enemyRigidBody_   (enemyGameObject.lock()->Components().Catch<Component::RigidBody>())
             , enemyStatus_      (enemyStatus       )
             , parameters_       (parameters        )
             , onDamagedStack_   (onDamagedStack    )
+            , showHealthGaugeProvider_(showHealthGaugeProvider)
             , networkObjectId_  (networkObjectId   )
             , isNetworkAuthority_(isNetworkAuthority)
     {

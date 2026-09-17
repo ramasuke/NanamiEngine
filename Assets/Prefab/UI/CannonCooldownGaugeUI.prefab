@@ -1,0 +1,349 @@
+{
+    "isActive_": true,
+    "name_": "CannonCooldownGaugeUI",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "88970CEB-7CFF-4FF3-B0D2-6FC8E1E2A739"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 1,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "GamePlay::Ui::CannonCooldownGauge",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "D2C2B343-E27E-4F61-81EC-8E55269E61F2"
+                        },
+                        "isEnable_": false
+                    },
+                    "renderOrder_": 0,
+                    "frameSprite_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "E6287CF5-AA3F-41C7-8608-2AA67B0B12CB"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "fillTealSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483651,
+                                "data": {
+                                    "value0": {
+                                        "value_": "97D8F1E8-DDC3-4710-B1FD-57D965802B0D"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "fillGoldSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "value0": {
+                                        "value_": "4266B7A3-0D02-4259-AF71-3E666EC877C8"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "fillFlashSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "value0": {
+                                        "value_": "01ECF9CE-C139-4051-A515-4AB9DD425C38"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "tipSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483654,
+                                "data": {
+                                    "value0": {
+                                        "value_": "FA2A7FF6-7202-460A-8379-E64AC560BDBE"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "haloSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483655,
+                                "data": {
+                                    "value0": {
+                                        "value_": "E0196071-4BCA-4511-BF91-A8DD8BD4AA8B"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "shockwaveSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483656,
+                                "data": {
+                                    "value0": {
+                                        "value_": "B6D6FA32-6898-4E81-873A-0FD5086EC3B5"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "bombSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483657,
+                                "data": {
+                                    "value0": {
+                                        "value_": "19F47AFA-86D3-4040-A217-AD958CEF4A7C"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "sparkSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483658,
+                                "data": {
+                                    "value0": {
+                                        "value_": "29473020-CA72-4FC4-9AA7-7D821C23C3D7"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "emberSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483659,
+                                "data": {
+                                    "value0": {
+                                        "value_": "0709C6C2-59F5-4C8C-A032-FE06D7424B8B"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "promptPillSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483660,
+                                "data": {
+                                    "value0": {
+                                        "value_": "8484EEE7-B45F-432A-98B2-51E3ACD45EAF"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "promptPillGlowSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483661,
+                                "data": {
+                                    "value0": {
+                                        "value_": "A0CA0968-F189-4BA5-B106-AB0742385BC7"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "promptMouseSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483662,
+                                "data": {
+                                    "value0": {
+                                        "value_": "F3FF6D96-FED2-42EF-9030-C6D3C043A6B6"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "promptMouseLitSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483663,
+                                "data": {
+                                    "value0": {
+                                        "value_": "5230A027-8F5B-4B6E-81E6-B72AB83E8D8C"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "font_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483664,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "gaugeRadius_": 67.0,
+                    "shockwaveSpriteRadius_": 100.0,
+                    "emberSpriteRadius_": 3.5999999046325685,
+                    "bombPivotOffset_": {
+                        "value0": -2.0,
+                        "value1": 30.0
+                    },
+                    "bombPivotInSprite_": {
+                        "value0": 32.0,
+                        "value1": 65.0
+                    },
+                    "sparkOffsetFromBombPivot_": {
+                        "value0": 25.0,
+                        "value1": -63.0
+                    },
+                    "pillOffset_": {
+                        "value0": -150.0,
+                        "value1": 0.0
+                    },
+                    "mouseOffset_": {
+                        "value0": -210.0,
+                        "value1": 0.0
+                    },
+                    "promptTextOffset_": {
+                        "value0": -138.0,
+                        "value1": -1.0
+                    },
+                    "countTextOffset_": {
+                        "value0": 0.0,
+                        "value1": 2.0
+                    },
+                    "coolingPromptText_": "装填中",
+                    "readyPromptText_": "発射",
+                    "promptTextScale_": 0.41999998688697817,
+                    "countTextScale_": 0.9700000286102295,
+                    "promptTextColor_": {
+                        "cereal_class_version": 0,
+                        "r_": 170,
+                        "g_": 180,
+                        "b_": 186
+                    },
+                    "promptReadyTextColor_": {
+                        "r_": 255,
+                        "g_": 214,
+                        "b_": 130
+                    },
+                    "countTextColor_": {
+                        "r_": 255,
+                        "g_": 255,
+                        "b_": 255
+                    },
+                    "bombDimRate_": 0.800000011920929,
+                    "readyFlashDuration_secs_": 0.30000001192092898,
+                    "readyPunchAmplitude_": 0.20000000298023225,
+                    "readyPunchFrequency_": 22.0,
+                    "readyPunchDamping_": 7.0,
+                    "shockwaveDuration_secs_": 0.5,
+                    "shockwaveStartRadius_": 80.0,
+                    "shockwaveEndRadius_": 142.0,
+                    "emberCount_": 8,
+                    "emberDistance_": 46.0,
+                    "sparkPopDuration_secs_": 0.2800000011920929,
+                    "wobbleAngle_deg_": 5.0,
+                    "wobbleFrequency_hz_": 2.0,
+                    "haloPulseFrequency_hz_": 1.399999976158142,
+                    "drainDuration_secs_": 0.15000000596046449,
+                    "launchDuration_secs_": 0.2800000011920929,
+                    "launchOffset_": {
+                        "value0": 26.0,
+                        "value1": -58.0
+                    },
+                    "recoilAmplitude_": 0.10000000149011612
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 1760.0,
+            "value1": 935.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 1.0,
+            "value1": 1.0,
+            "value2": 1.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 1.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 1.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 1.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 1760.0,
+                "value1": 935.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 0
+    },
+    "mark_": 0,
+    "value0": 0
+}

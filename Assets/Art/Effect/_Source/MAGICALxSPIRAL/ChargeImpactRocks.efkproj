@@ -41,7 +41,7 @@
           </SingleEasing>
         </ScalingValues>
         <RendererCommonValues>
-          <ColorTexture>Texture/ShockWave1.png</ColorTexture>
+          <ColorTexture>../../MAGICALxSPIRAL/Texture/ShockWave1.png</ColorTexture>
           <AlphaBlend>2</AlphaBlend>
           <ZTest>True</ZTest>
           <FadeOutType>1</FadeOutType>
@@ -167,7 +167,8 @@
           </Circle>
         </GenerationLocationValues>
         <RendererCommonValues>
-          <ColorTexture>Texture/smoke_01.png</ColorTexture>
+          <ColorTexture>../../MAGICALxSPIRAL/Texture/Fog3001.png</ColorTexture>
+          <Filter>1</Filter>
           <AlphaBlend>1</AlphaBlend>
           <FadeInType>1</FadeInType>
           <FadeIn>
@@ -177,17 +178,6 @@
           <FadeOut>
             <Frame>22</Frame>
           </FadeOut>
-          <UV>1</UV>
-          <UVFixed>
-            <Start>
-              <X>32</X>
-              <Y>32</Y>
-            </Start>
-            <Size>
-              <X>32</X>
-              <Y>32</Y>
-            </Size>
-          </UVFixed>
         </RendererCommonValues>
         <DrawingValues>
           <Type>2</Type>
@@ -285,7 +275,7 @@
           </Fixed>
         </ScalingValues>
         <RendererCommonValues>
-          <ColorTexture>Texture/Hammer1.png</ColorTexture>
+          <ColorTexture>../../MAGICALxSPIRAL/Texture/Hammer1.png</ColorTexture>
           <ZWrite>True</ZWrite>
           <FadeOutType>1</FadeOutType>
           <FadeOut>
@@ -295,7 +285,7 @@
         <DrawingValues>
           <Type>5</Type>
           <Model>
-            <Model>Model/rock1.efkmodel</Model>
+            <Model>../../MAGICALxSPIRAL/Model/rock1.efkmodel</Model>
             <Lighting>False</Lighting>
             <Color_Fixed>
               <R>176</R>
@@ -402,7 +392,7 @@
           </Circle>
         </GenerationLocationValues>
         <RendererCommonValues>
-          <ColorTexture>Texture/Hammer1.png</ColorTexture>
+          <ColorTexture>../../MAGICALxSPIRAL/Texture/Hammer1.png</ColorTexture>
           <ZWrite>True</ZWrite>
           <FadeOutType>1</FadeOutType>
           <FadeOut>
@@ -412,7 +402,7 @@
         <DrawingValues>
           <Type>5</Type>
           <Model>
-            <Model>Model/rock1.efkmodel</Model>
+            <Model>../../MAGICALxSPIRAL/Model/rock1.efkmodel</Model>
             <Lighting>False</Lighting>
             <Color_Fixed>
               <R>176</R>
@@ -534,7 +524,7 @@
           </Circle>
         </GenerationLocationValues>
         <RendererCommonValues>
-          <ColorTexture>Texture/Hammer1.png</ColorTexture>
+          <ColorTexture>../../MAGICALxSPIRAL/Texture/Hammer1.png</ColorTexture>
           <ZWrite>True</ZWrite>
           <FadeOutType>1</FadeOutType>
           <FadeOut>
@@ -544,7 +534,7 @@
         <DrawingValues>
           <Type>5</Type>
           <Model>
-            <Model>Model/rock2.efkmodel</Model>
+            <Model>../../MAGICALxSPIRAL/Model/rock2.efkmodel</Model>
             <Lighting>False</Lighting>
             <Color_Fixed>
               <R>176</R>
@@ -666,7 +656,7 @@
           </Sphere>
         </GenerationLocationValues>
         <RendererCommonValues>
-          <ColorTexture>Texture/Hammer1.png</ColorTexture>
+          <ColorTexture>../../MAGICALxSPIRAL/Texture/Hammer1.png</ColorTexture>
           <ZWrite>True</ZWrite>
           <FadeOutType>1</FadeOutType>
           <FadeOut>
@@ -676,7 +666,7 @@
         <DrawingValues>
           <Type>5</Type>
           <Model>
-            <Model>Model/block2.efkmodel</Model>
+            <Model>../../MAGICALxSPIRAL/Model/block2.efkmodel</Model>
             <Lighting>False</Lighting>
             <Color_Fixed>
               <R>176</R>
@@ -798,7 +788,7 @@
           </Sphere>
         </GenerationLocationValues>
         <RendererCommonValues>
-          <ColorTexture>Texture/Hammer1.png</ColorTexture>
+          <ColorTexture>../../MAGICALxSPIRAL/Texture/Hammer1.png</ColorTexture>
           <ZWrite>True</ZWrite>
           <FadeOutType>1</FadeOutType>
           <FadeOut>
@@ -808,7 +798,7 @@
         <DrawingValues>
           <Type>5</Type>
           <Model>
-            <Model>Model/block3.efkmodel</Model>
+            <Model>../../MAGICALxSPIRAL/Model/block3.efkmodel</Model>
             <Lighting>False</Lighting>
             <Color_Fixed>
               <R>176</R>

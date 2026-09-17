@@ -15,6 +15,7 @@ namespace NanamiEngine::Module::Component
     {
     public:
         void Play();
+        void Stop();
         
     private:
         void OnUpdate    () override;

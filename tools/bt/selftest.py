@@ -39,20 +39,10 @@ FRIENDLY_DIR = _REPO / "Assets" / "Data" / "FriendlyNpcBehviour"
 FRIENDLY_TREE_FIXTURES = ["ActionInstructure", "Adventure", "IdleActionInstructure", "SampleAppearDragon"]
 FRIENDLY_META_FIXTURES = list(FRIENDLY_TREE_FIXTURES)
 
-# Documented v1 limitation (see docs/BehaviourTree.md): TrySwordManQuest's
-# quest_ is a raw, un-modeled shared_ptr<ITakeableSwordManQuest> - a
-# polymorphic object outside any scanned catalog - and its embedded
-# questUiPrefab_ FIELD(Asset::PrefabGameObjectFile) happens to share its
-# referenced type with another, catalog-modeled FIELD(...) elsewhere in the
-# same file. Two genuinely different C++ Field<T> instantiations serialise
-# identically when opaque, so the un-modeled occurrence cannot be bucketed
-# into the same once-per-type version slot as the modeled one; the result is
-# exactly one harmless extra `"cereal_class_version": 0` at each of the two
-# nesting levels of that one modeled sibling occurrence (confirmed inert:
-# cereal's JSON archives look members up by name, so an unread extra key is
-# just ignored) - never a wrong value, never a missing key. Everything else
-# in the file must still round-trip byte-for-byte.
-KNOWN_LIMITATION_EXTRA_LINES = {"ActionInstructure": 2}
+# Trees whose read-then-write may add exactly N cereal_class_version lines.
+# Keep this empty: a stray version key is NOT inert - Field<T>::load reads its
+# shared_ptr positionally, so the extra key makes the engine's load throw.
+KNOWN_LIMITATION_EXTRA_LINES: dict[str, int] = {}
 
 
 class Reporter:
@@ -173,8 +163,7 @@ def _check_tree_roundtrip(r: Reporter, dir_: Path, names: list[str], ext: str, k
                     f"exp {orig_text[max(0, i-40):i+40]!r} got {rt_text[max(0, i-40):i+40]!r}"
                 )
 
-            # known, documented limitation - confirm the divergence is
-            # *exactly* that (harmless extra version keys) and nothing else.
+            # listed divergence - confirm it is *exactly* extra version keys and nothing else.
             assert_semantically_equal(_strip_versions(orig), _strip_versions(rt))
             extra_lines = len(rt_text.splitlines()) - len(orig_text.splitlines())
             if extra_lines != expected_extra:
@@ -182,7 +171,7 @@ def _check_tree_roundtrip(r: Reporter, dir_: Path, names: list[str], ext: str, k
                     f"expected exactly {expected_extra} extra line(s) (known limitation - "
                     f"see docs/BehaviourTree.md), got {extra_lines}"
                 )
-            r.ok(f"{p.name} (known limitation: {expected_extra} harmless extra "
+            r.ok(f"{p.name} (known limitation: {expected_extra} extra "
                 f"cereal_class_version key(s) - see docs/BehaviourTree.md)")
         except Exception:  # noqa: BLE001
             r.fail(p.name, traceback.format_exc())

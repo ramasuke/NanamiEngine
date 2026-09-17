@@ -15,8 +15,9 @@ namespace NanamiEngine::CineMachine
     public:
         [[nodiscard]] Rx::ReadOnlyReactiveContext<int> Priority() const { return priority_.AsReadOnly(); }
         void SetPriority(int priority);
+        // このカメラで使うFOV(度)。上書きしていなければBrainの既定FOVを返す
+        [[nodiscard]] float Fov() const;
         
-        // VirtualCameraの完全無効化
         void OnDisable() { priority_.OnNext(DISABLE_PRIORITY); }
         void MainCameraCallback() const;
         void OnBecameLive() const;
@@ -29,6 +30,9 @@ namespace NanamiEngine::CineMachine
         void OnDebugRender() override;
         
         Rx::SerializableSubject<int> priority_ = Rx::SerializableSubject(0);
+        // Brainの既定FOVではなく、このカメラ独自のFOVを使うか
+        bool  overrideFov_ = false;
+        float fov_         = 60.0f;
         std::vector<std::weak_ptr<IVirtualCameraBehaviour>> cameraBehaviours_;
     
 #pragma region Serialization Function
@@ -37,15 +41,22 @@ template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<ComponentBase>(this));
     archive(CEREAL_NVP(priority_));
+    archive(CEREAL_NVP(overrideFov_));
+    archive(CEREAL_NVP(fov_));
 }
 
 template<class Archive>
 void load(Archive& archive, const std::uint32_t version) {
     archive(cereal::base_class<ComponentBase>(this));
     if (version >= 0) archive(CEREAL_NVP(priority_));
+    if (version >= 1)
+    {
+        archive(CEREAL_NVP(overrideFov_));
+        archive(CEREAL_NVP(fov_));
+    }
 }
 #pragma endregion
 };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::CineMachineVirtualCamera, 0)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::CineMachineVirtualCamera, 1)

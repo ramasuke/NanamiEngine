@@ -1,5 +1,6 @@
 ﻿#pragma once
 #define WIN32_LEAN_AND_MEAN
+#include "../../../Data/Enemy/Factory/EnemyFactory.h"
 #include "../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
 #include "../../../Engine/Module/Network/Engine_Network_NetworkRunner.h"
 #include "../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
@@ -35,7 +36,7 @@ namespace GamePlay::Network
             glm::quat rotation);
 
         std::shared_ptr<Module::GameObject::IGameObject> SpawnEnemy(
-            Module::Asset::PrefabGameObjectFile& prefab,
+            GameCore::Npc::Enemy::EnemyKind kind,
             glm::vec3 position,
             glm::quat rotation);
 
@@ -46,6 +47,7 @@ namespace GamePlay::Network
         
         std::optional<GameCore::Network::CustomDispatcherGroup> customDispatcherGroup_;
         [[serialize(1)]] FIELD(Asset::PlayerAvatarFactory) playerAvatarFactory_;
+        [[serialize(4)]] FIELD(Asset::EnemyFactory) enemyFactory_;
         
 #pragma region Serialization Function
     public:
@@ -57,6 +59,7 @@ namespace GamePlay::Network
             archive(CEREAL_NVP(playerAvatarFactory_));
             [[serialize(2)]] FIELD(GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup) swordmanCameraGroup_;
             if (version == 2) archive(CEREAL_NVP(swordmanCameraGroup_));
+            archive(CEREAL_NVP(enemyFactory_));
         }
 
         template<class Archive>
@@ -65,13 +68,14 @@ namespace GamePlay::Network
             if (version >= 1) archive(CEREAL_NVP(playerAvatarFactory_));
             [[serialize(2)]] FIELD(GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup) swordmanCameraGroup_;
             if (version == 2) archive(CEREAL_NVP(swordmanCameraGroup_));
+            if (version >= 4) archive(CEREAL_NVP(enemyFactory_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Network::CustomNetworkRunner, 3);
+CEREAL_CLASS_VERSION(GamePlay::Network::CustomNetworkRunner, 4);
 CEREAL_REGISTER_TYPE(GamePlay::Network::CustomNetworkRunner);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(Network::NetworkRunnerBase, GamePlay::Network::CustomNetworkRunner);
 #pragma endregion

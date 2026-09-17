@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 1,
+                "cereal_class_version": 2,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -18,12 +18,46 @@
                     }
                 },
                 "displayName_": "砂漠地帯",
-                "sceneType_": 4,
+                "sceneType_": 0,
                 "mapMarkerPosition_": {
                     "value0": 960.0,
                     "value1": 540.0
                 },
-                "isCleared_": false
+                "isCleared_": false,
+                "thumbnailSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "51AE15FB-F9E2-48B8-864D-CCF439A772D2"
+                                }
+                            }
+                        }
+                    }
+                },
+                "elementSprite_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "value0": {
+                                    "value_": "3DFC91C5-753C-4C26-8770-557604C09958"
+                                }
+                            }
+                        }
+                    }
+                },
+                "difficulty_": 2,
+                "tagText_": "中級 ・ 光属性",
+                "descriptionLines_": [
+                    "灼熱の砂丘がどこまでも続く、",
+                    "渇きとの戦いになるステージ。"
+                ]
             }
         }
     }

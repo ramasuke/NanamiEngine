@@ -10,6 +10,7 @@
 #include "../../../../../Module/Exception/Engine_Module_Exception.h"
 #include "../../../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../../../Time/Time.h"
+#include "../../../Configuration/GameWindow/ApplicationConfiguration_GameWindow.h"
 
 namespace NanamiEngine::Core::MainWindow
 {
@@ -44,6 +45,76 @@ namespace NanamiEngine::Core::MainWindow
         }
     }
     
+    void GameWindow::BeginLoadSceneAsync(const std::string& filePath)
+    {
+        if (!sceneLoader_.Begin(filePath))
+            Module::LogWarning("GameWindow: 既に別のシーンを読み込み中です: " + filePath);
+    }
+
+    bool GameWindow::IsSceneLoading() const
+    {
+        return sceneLoader_.IsBusy();
+    }
+
+    float GameWindow::SceneLoadProgress01() const
+    {
+        return sceneLoader_.DeserializeProgress01();
+    }
+
+    bool GameWindow::HasSceneLoadFailed() const
+    {
+        return sceneLoader_.HasFailedSinceLastBegin();
+    }
+
+    void GameWindow::UpdateAsyncSceneLoad()
+    {
+        sceneLoader_.Step();
+
+        const auto scene = sceneLoader_.TryTakeLoadedScene();
+        if (!scene)
+            return;
+
+        // AddContent を通さないと FIELD が解決されないので、ChangeMainScene より先に呼ぶ
+        AddContent     (scene);
+        ChangeMainScene(scene);
+        lastAsyncLoadedScene_ = scene;
+    }
+
+    void GameWindow::Play()
+    {
+        isPlayMode_ = true;
+        isPlaying_  = true;
+    }
+
+    void GameWindow::Stop()
+    {
+        isPlayMode_ = false;
+    }
+
+    void GameWindow::End()
+    {
+        isPlayMode_ = false;
+        isPlaying_  = false;
+        sceneLoader_.Cancel();
+        LifeCycle().Coroutine()->AllClear();
+        for (const auto& content : contents_ | std::views::values)
+        {
+            content->RemoveImplementAllGameObject();
+        }
+        contents_.clear();
+        try
+        {
+            const auto initScene = std::make_shared<Scene::Scene>("Assets/Scene/GameManage.scene");
+            AddContent(initScene);
+            ChangeMainScene(initScene);
+        }
+        catch (const Module::Exception::NanamiException& exception)
+        {
+            Module::LogError("GameWindow: 初期シーンの再読み込みに失敗しました: " + std::string(exception.what()));
+        }
+        Application::ApplicationBase::ResetPhysics();
+    }
+
     std::shared_ptr<Scene::Scene> GameWindow::CatchScene(
         const Guid& guid) const
     {
@@ -84,7 +155,11 @@ namespace NanamiEngine::Core::MainWindow
     
     void GameWindow::OnUpdate()
     {
-        if (!mainScene_.lock())
+        UpdateAsyncSceneLoad();
+
+        // 非同期ロード中はメインシーンが居ないのが正常。ここで別シーンに差し替えると
+        // ResetPhysics と SkipNextFrame(60) がロード 1 回につき二重に走る
+        if (!mainScene_.lock() && !IsSceneLoading())
         {
             if (!Scenes().empty())
             {
@@ -119,6 +194,8 @@ namespace NanamiEngine::Core::MainWindow
     
     void GameWindow::OnDrawGui(const MainWindowDrawGuiContext context)
     {
+        DrawGameObjectMarks();
+
         ImGui::Begin("GameWindow");
         if (!isPlayMode_)
         {
@@ -131,8 +208,7 @@ namespace NanamiEngine::Core::MainWindow
             }
             if (ImGui::Button("Play"))
             {
-                isPlayMode_ = true;
-                isPlaying_  = true;
+                Play();
             }
             float timeScale = Time::GetTimeScale();
     
@@ -145,34 +221,16 @@ namespace NanamiEngine::Core::MainWindow
         {
             if (ImGui::Button("Stop"))
             {
-                isPlayMode_ = !isPlayMode_;
+                Stop();
             }
             if (ImGui::IsKeyPressed(ImGuiKey_Escape))
             {
-                isPlayMode_ = !isPlayMode_;
+                Stop();
             }
         }
         if (ImGui::Button("End"))
         {
-            isPlayMode_ = false;
-            isPlaying_  = false;
-            LifeCycle().Coroutine()->AllClear();
-            for (const auto& content : contents_ | std::views::values)
-            {
-                content->RemoveImplementAllGameObject();
-            }
-            contents_.clear();
-            try
-            {
-                const auto initScene = std::make_shared<Scene::Scene>("Assets/Scene/GameManage.scene");
-                AddContent(initScene);
-                ChangeMainScene(initScene);
-            }
-            catch (const Module::Exception::NanamiException& exception)
-            {
-                Module::LogError("GameWindow: 初期シーンの再読み込みに失敗しました: " + std::string(exception.what()));
-            }
-            Application::ApplicationBase::ResetPhysics();
+            End();
         }
         ImGui::End();
     
@@ -224,6 +282,33 @@ namespace NanamiEngine::Core::MainWindow
         ImGui::End();
     }
     
+    void GameWindow::DrawGameObjectMarks() const
+    {
+        using Application::Configuration::GameWindowConfiguration;
+
+        // ImGui ウィンドウの下、DxLib の 3D 描画の上に重ねる
+        ImDrawList& drawList = *ImGui::GetBackgroundDrawList();
+        for (const auto& scene : Scenes())
+        {
+            scene->ForEachGameObject([this, &drawList](const std::shared_ptr<GameObject::IGameObject>& gameObject)
+            {
+                if (!gameObject || !gameObject->IsEnable())
+                    return;
+
+                if (!GameWindowConfiguration::ShouldDrawMark(gameObject->Mark(), isPlayMode_))
+                    return;
+
+                const glm::vec3 worldPos  = gameObject->Transform().GetWorldPos();
+                const VECTOR    screenPos = ConvWorldPosToScreenPos(VGet(worldPos.x, worldPos.y, worldPos.z));
+                // z が 0..1 の外ならカメラの視界外（背後など）
+                if (screenPos.z < 0.0f || screenPos.z > 1.0f)
+                    return;
+
+                Module::GameObject::DrawMark(drawList, ImVec2(screenPos.x, screenPos.y), gameObject->Mark(), gameObject->Name().c_str());
+            });
+        }
+    }
+
     void GameWindow::OnSave()
     {
         for (const auto& scene : contents_ | std::views::values)

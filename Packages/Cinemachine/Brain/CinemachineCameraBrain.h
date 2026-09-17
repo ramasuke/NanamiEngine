@@ -20,7 +20,10 @@ namespace NanamiEngine::CineMachine
         static void SubscribeVirtualCamera(const std::weak_ptr<CineMachineVirtualCamera>& virtualCamera);
         static void UnSubscribeVirtualCamera(const std::weak_ptr<CineMachineVirtualCamera>& virtualCamera);
 
-        [[nodiscard]] float GetFov()  const { return fov_; }
+        // 実際にカメラへ適用中のFOV(VirtualCameraによる上書きと補間を反映した値)
+        [[nodiscard]] float GetFov()  const { return appliedFov_; }
+        // VirtualCameraがFOVを上書きしないときに使う既定FOV
+        [[nodiscard]] float DefaultFov() const { return fov_; }
         [[nodiscard]] float GetNear() const { return cameraNear_; }
         [[nodiscard]] float GetFar()  const { return cameraFar_; }
         
@@ -31,14 +34,16 @@ namespace NanamiEngine::CineMachine
         void OnDestroy    () override;
         void OnDebugRender() override;
         void OnDebugCameraFovRender() const;
-        // カメラ周囲の空き距離から、Near平面の四隅が障害物にめり込まないNearクリップ距離を求める
-        [[nodiscard]] float CalculateSafeNear(const glm::vec3& cameraPos) const;
+        // Near平面の中心と四隅へ飛ばしたレイから、Near平面が障害物にめり込まないNearクリップ距離を求める
+        [[nodiscard]] float CalculateSafeNear(const glm::vec3& cameraPos, const glm::quat& cameraRot) const;
 
         std::vector<FIELD(CineMachineVirtualCamera)> virtualCameras_;
         FIELD(CineMachineVirtualCamera) currentVirtualCamera_;
         
         float positionLerpSpeed_secs_  = 5.0f;
         float rotationSlerpSpeed_secs_ = 5.0f;
+        float fovLerpSpeed_secs_       = 5.0f;
+        // VirtualCameraがFOVを上書きしないときに使う既定FOV
         float fov_                     = 100.0f;
         float cameraNear_              = 0.1f;
         float cameraFar_               = 100.0f;
@@ -48,12 +53,15 @@ namespace NanamiEngine::CineMachine
         float nearClipMargin_          = 0.9f;
         // 実際にSetCameraNearFarへ渡したNear(確認用、非シリアライズ)
         float appliedNear_             = 0.1f;
+        // 実際にSetupCamera_Perspectiveへ渡したFOV(確認用、非シリアライズ)
+        float appliedFov_              = 100.0f;
         static CinemachineCameraBrain* cameraBrain_;
 
         // Shake/Noiseなどのオフセットを含まない、補完だけの姿勢。
         // 揺れた後のTransformを次フレームの補完開始点にすると揺れが蓄積・増幅するため分離して保持する。
         glm::vec3 smoothedPos_ = glm::vec3(0.0f);
         glm::quat smoothedRot_ = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+        float smoothedFov_ = 100.0f;
         bool hasSmoothedPose_ = false;
         const CineMachineVirtualCamera* liveCamera_ = nullptr;
 
@@ -80,6 +88,7 @@ namespace NanamiEngine::CineMachine
             archive(CEREAL_NVP(cameraFar_));
             archive(CEREAL_NVP(minCameraNear_));
             archive(CEREAL_NVP(nearClipMargin_));
+            archive(CEREAL_NVP(fovLerpSpeed_secs_));
         }
 
         template <class Archive>
@@ -110,11 +119,15 @@ namespace NanamiEngine::CineMachine
             archive(CEREAL_NVP(minCameraNear_));
             archive(CEREAL_NVP(nearClipMargin_));
             }
+            if (version >= 4)
+            {
+            archive(CEREAL_NVP(fovLerpSpeed_secs_));
+            }
             cameraBrain_ = this;
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::CinemachineCameraBrain, 3)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::CinemachineCameraBrain, 4)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IUpdatable, NanamiEngine::CineMachine::CinemachineCameraBrain);

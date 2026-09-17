@@ -18,10 +18,6 @@ namespace GameCore::Scene
     class FirstTouchDownMainIsLandSceneContext final : public SceneContextBase
     {
     public:
-        using SummonAvatarTraits = PlayerAvatar::SwordMan::SwordManAvatarTraits;
-        using SummonAvatarStatus = PlayerAvatar::RequireType::Status<SummonAvatarTraits>;
-
-    public:
         void Init() override;
         std::shared_ptr<GamePlay::Prop::AirShip>                             AirShip()                                           { return airShip_.get(); }
         [[nodiscard]] GameObject::Transform&                                 AirShipFirstMoveFromTarget()                const   { return airShipFirstMoveFromTargetPos_->Transform(); }
@@ -38,12 +34,10 @@ namespace GameCore::Scene
         [[nodiscard]] int                                                    PlayerFirstMoveDuring_msecs()               const   { return playerFirstMoveDuring_msecs_; }
         [[nodiscard]] int                                                    PlayerArmStretchDuring_msecs()              const   { return playerArmStretchDuring_msecs_; }
         [[nodiscard]] std::weak_ptr<GamePlay::Ui::SampleTitleLogo>                     TitleLogo()                       const   { return titleLogo_.get(); }
-        [[nodiscard]] const std::weak_ptr<GameObject::IGameObject>&                    ActionControlWayUI()              const   { return actionControlWayUi_.get(); }
         [[nodiscard]] const std::weak_ptr<Asset::SoundFile>&                           BGM() const { return bgm_.get(); }
         [[nodiscard]] const GameObject::IGameObject&                                   BoundryAirShipCollider() const { return *boundryAirshipCollider_.get(); }
         [[nodiscard]] const std::weak_ptr<Asset::PrefabGameObjectFile>&                FirstEventDragonPrefab() const { return firstEventDragonPrefab_.get(); }
         [[nodiscard]] const glm::vec3&                                                 FirstEventDragonSpawnPos () const { return firstEventDragonSpawnPos_->Transform().GetWorldPos(); }
-        [[nodiscard]] const Asset::SwordManInitStatus&                                 PlayerAvatarInitStatus   () const { return *playerAvatarInitStatus_.get(); }
         [[nodiscard]] GamePlay::Prop::Canon&                                           PlayerControllabeCanon   () const { return *playerControllabeCanon_.get(); }
         [[nodiscard]] Asset::PrefabGameObjectFile&                                     SwordManCameraGroupPrefab() const { return *swordManCameraGroupPrefab_.get(); }
 
@@ -63,12 +57,10 @@ namespace GameCore::Scene
         [[serialize(7)]] int                                          playerFirstMoveDuring_msecs_ = 0;
         [[serialize(8)]] int                                          playerArmStretchDuring_msecs_ = 0;
         [[serialize(10)]] FIELD(GamePlay::Ui::SampleTitleLogo)        titleLogo_;
-        [[serialize(11)]] FIELD(GameObject::IGameObject)              actionControlWayUi_;
         [[serialize(13)]] FIELD(Asset::SoundFile)                     bgm_;
         [[serialize(13)]] FIELD(GameObject::IGameObject)              boundryAirshipCollider_;
         [[serialize(14)]] FIELD(Asset::PrefabGameObjectFile)          firstEventDragonPrefab_;
         [[serialize(14)]] FIELD(GameObject::IGameObject)              firstEventDragonSpawnPos_;
-        [[serialize(15)]] FIELD(Asset::SwordManInitStatus)            playerAvatarInitStatus_;
         [[serialize(16)]] FIELD(GamePlay::Prop::Canon)                playerControllabeCanon_;
         [[serialize(19)]] FIELD(Asset::PrefabGameObjectFile)          swordManCameraGroupPrefab_;
         
@@ -94,14 +86,14 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(playerFirstMoveDuring_msecs_));
     archive(CEREAL_NVP(playerArmStretchDuring_msecs_));
     archive(CEREAL_NVP(titleLogo_));
-    archive(CEREAL_NVP(actionControlWayUi_));
+    [[serialize(11)]] FIELD(GameObject::IGameObject) actionControlWayUi_;
+    if (version <= 20) archive(CEREAL_NVP(actionControlWayUi_));
     [[serialize(12)]] FIELD(GamePlay::Ui::PlayerStatus) playerStatusUi_;
     if (version <= 19) archive(CEREAL_NVP(playerStatusUi_));
     archive(CEREAL_NVP(bgm_));
     archive(CEREAL_NVP(boundryAirshipCollider_));
     archive(CEREAL_NVP(firstEventDragonPrefab_));
     archive(CEREAL_NVP(firstEventDragonSpawnPos_));
-    archive(CEREAL_NVP(playerAvatarInitStatus_));
     archive(CEREAL_NVP(playerControllabeCanon_));
     archive(CEREAL_NVP(swordManCameraGroupPrefab_));
 }
@@ -124,14 +116,16 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 7) archive(CEREAL_NVP(playerFirstMoveDuring_msecs_));
     if (version >= 8) archive(CEREAL_NVP(playerArmStretchDuring_msecs_));
     if (version >= 10) archive(CEREAL_NVP(titleLogo_));
-    if (version >= 11) archive(CEREAL_NVP(actionControlWayUi_));
+    [[serialize(11)]] FIELD(GameObject::IGameObject) actionControlWayUi_;
+    if (version >= 11 && version <= 20) archive(CEREAL_NVP(actionControlWayUi_));
     [[serialize(12)]] FIELD(GamePlay::Ui::PlayerStatus) playerStatusUi_;
     if (version <= 19) archive(CEREAL_NVP(playerStatusUi_));
     if (version >= 13) archive(CEREAL_NVP(bgm_));
     if (version >= 13) archive(CEREAL_NVP(boundryAirshipCollider_));
     if (version >= 14) archive(CEREAL_NVP(firstEventDragonPrefab_));
     if (version >= 14) archive(CEREAL_NVP(firstEventDragonSpawnPos_));
-    if (version >= 15) archive(CEREAL_NVP(playerAvatarInitStatus_));
+    FIELD(Asset::SwordManInitStatus) playerAvatarInitStatus_;
+    if (version <= 21) archive(CEREAL_NVP(playerAvatarInitStatus_));
     if (version >= 16) archive(CEREAL_NVP(playerControllabeCanon_));
     if (version >= 19) archive(CEREAL_NVP(swordManCameraGroupPrefab_));
 }
@@ -140,7 +134,7 @@ void load(Archive& archive, const std::uint32_t version) {
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::FirstTouchDownMainIsLandSceneContext, 20);
+CEREAL_CLASS_VERSION(GameCore::Scene::FirstTouchDownMainIsLandSceneContext, 22);
 CEREAL_REGISTER_TYPE(GameCore::Scene::FirstTouchDownMainIsLandSceneContext);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::SceneContextBase, GameCore::Scene::FirstTouchDownMainIsLandSceneContext);
 #pragma endregion

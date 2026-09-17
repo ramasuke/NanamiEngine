@@ -8,6 +8,8 @@
 #include "../Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../GameObject/PrefabGameObject/PrefabGameObject.h"
 #include "../Log/NanamiEngine_Module_Log.h"
+#include "../../Core/Application/ApplicationBase.h"
+#include "../../Core/Application/LifeCycle/ApplicationLifeCycle.h"
 #include "../Serialization/Engine_Module_Serialization.h"
 #include "cereal/archives/json.hpp"
 #include "GameObject/CopiedPrefabGameObject/CopiedPrefabGameObject.h"
@@ -32,29 +34,71 @@ namespace
     }
 }
 
-Scene::Scene::Scene(const std::string& filePath)
+void Scene::Scene::Deserialize(
+    const std::string& filePath,
+    DeserializedContent& outContent,
+    DeserializeProgress* progress)
 {
-    filePath_ = filePath;
+    // FIELD の初期化待ちは共有キューに積まず outContent に貯める。
+    // 共有キューに積むと、まだ ObjectRegistry に登録されていない GameObject を
+    // メインスレッドが解決してしまい、参照が null のまま確定する
+    const Core::Application::FieldInitStagingScope stagingScope(outContent.pendingFieldContexts);
+
     // 未作成のファイルは空の Scene として扱う（新規作成 → Save のフローで使う）。
-    // 破損している場合は DeserializeException が投げられ、Scene は生成されない
-    NanamiEngine::Module::Serialization::LoadJsonFileIfExists(filePath_, [this](cereal::JSONInputArchive& archive)
+    // 破損している場合は DeserializeException が投げられる
+    NanamiEngine::Module::Serialization::LoadJsonFileIfExists(filePath, [&outContent, progress](cereal::JSONInputArchive& archive)
     {
-        archive(cereal::make_nvp("name", name_));
+        archive(cereal::make_nvp("name", outContent.name));
 
         std::size_t count = 0;
         archive(cereal::make_nvp("gameObjectCount", count));
+        if (progress)
+            progress->total.store(static_cast<int>(count), std::memory_order_release);
 
+        outContent.gameObjects.reserve(count);
         for (std::size_t i = 0; i < count; ++i)
         {
             std::shared_ptr<Module::GameObject::IGameObject> gameObject;
             archive(cereal::make_nvp("gameObject_" + std::to_string(i), gameObject));
             if (gameObject)
-            {
-                gameObjects_[gameObject->GetGuid()] = gameObject;
-                gameObject->InitGameObject(std::weak_ptr<Module::GameObject::IGameObject>(), gameObject);
-            }
+                outContent.gameObjects.push_back(std::move(gameObject));
+
+            if (progress)
+                progress->done.store(static_cast<int>(i) + 1, std::memory_order_release);
         }
     });
+}
+
+Scene::Scene::Scene(const std::string& filePath)
+{
+    filePath_ = filePath;
+
+    DeserializedContent content;
+    Deserialize(filePath_, content, nullptr);
+    AdoptDeserializedContent(std::move(content));
+}
+
+Scene::Scene::Scene(const std::string& filePath, DeserializedContent&& content)
+{
+    filePath_ = filePath;
+    AdoptDeserializedContent(std::move(content));
+}
+
+void Scene::Scene::AdoptDeserializedContent(
+    DeserializedContent&& content)
+{
+    name_ = std::move(content.name);
+
+    // デシリアライズ中に貯めた FIELD を共有キューへ戻す。
+    // InitGameObject より先に積んでおくと、同期読み込みのときと順序が揃う
+    Core::Application::ApplicationBase::ApplicationLifeCycle().AddStagedFieldInittables(content.pendingFieldContexts);
+
+    for (const auto& gameObject : content.gameObjects)
+    {
+        gameObjects_[gameObject->GetGuid()] = gameObject;
+        gameObject->InitGameObject(std::weak_ptr<Module::GameObject::IGameObject>(), gameObject);
+    }
+    content.gameObjects.clear();
 }
 
 Scene::Scene::~Scene()
@@ -79,6 +123,7 @@ void Scene::Scene::CopiedInit(
             gameObject,
             gameObject->IsEnable(),
             gameObject->Name(),
+            gameObject->Mark(),
             gameObject->Components(),
             gameObject->Transform());
     }
@@ -177,24 +222,11 @@ void Scene::Scene::OnDrawGui(const std::function<void(Scene*)>& onRemoveScene, C
     // 検索中は階層を無視して、子孫まで含めた全GameObjectから名前がマッチするものをフラットに一覧表示する
     if (!searchFilter.empty())
     {
-        const auto drawIfMatches = [&searchFilter](const std::shared_ptr<Module::GameObject::IGameObject>& gameObject)
+        ForEachGameObject([&searchFilter](const std::shared_ptr<Module::GameObject::IGameObject>& gameObject)
         {
             if (gameObject && ContainsCaseInsensitive(gameObject->Name(), searchFilter))
                 gameObject->OnDrawTreeGui(false);
-        };
-
-        for (const std::weak_ptr<Module::GameObject::IGameObject>& weakGameObject : gameObjects_ | std::views::values)
-        {
-            const std::shared_ptr<Module::GameObject::IGameObject> rootGameObject = weakGameObject.lock();
-            if (!rootGameObject || rootGameObject->Transform().GetParent() != nullptr)
-                continue;
-
-            drawIfMatches(rootGameObject);
-            for (const auto& child : rootGameObject->Transform().GetAllChildren())
-            {
-                drawIfMatches(child);
-            }
-        }
+        });
         return;
     }
 
@@ -273,4 +305,22 @@ std::shared_ptr<GameObject::IGameObject> Scene::Scene::CatchGameObject(
         return it->second.lock();
     }
     return nullptr;
+}
+
+void Scene::Scene::ForEachGameObject(
+    const std::function<void(const std::shared_ptr<Module::GameObject::IGameObject>&)>& action) const
+{
+    // 親を持つ GameObject も gameObjects_ に残っていることがあるので、ルートから辿って重複を避ける
+    for (const std::weak_ptr<Module::GameObject::IGameObject>& weakGameObject : gameObjects_ | std::views::values)
+    {
+        const std::shared_ptr<Module::GameObject::IGameObject> rootGameObject = weakGameObject.lock();
+        if (!rootGameObject || rootGameObject->Transform().GetParent() != nullptr)
+            continue;
+
+        action(rootGameObject);
+        for (const auto& child : rootGameObject->Transform().GetAllChildren())
+        {
+            action(child);
+        }
+    }
 }

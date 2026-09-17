@@ -6,6 +6,7 @@
 #include "vec2.hpp"
 #include "vec3.hpp"
 #include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "../../../Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
 
 namespace Data::HeightGridMap
@@ -58,6 +59,7 @@ namespace NanamiEngine::Module::Asset
         int   divisionsZ_     = 10;
         float samplingHeight_ = 50.0f;
         float rayDistance_    = 100.0f;
+        Physics::LayerMask layerMask_ = Physics::ToMask(Physics::Layer::Default);
 
         std::vector<Data::HeightGridMap::HeightGridCell> map_;
 
@@ -76,6 +78,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(divisionsZ_));
             archive(CEREAL_NVP(samplingHeight_));
             archive(CEREAL_NVP(rayDistance_));
+            archive(CEREAL_NVP(layerMask_));
 
             // map_ はデータ量が多く、同一高さ（床なしセンチネルや平坦地）が連続するため
             const std::uint32_t cellCount = static_cast<std::uint32_t>(map_.size());
@@ -117,6 +120,10 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(samplingHeight_));
             archive(CEREAL_NVP(rayDistance_));
 
+            layerMask_ = Physics::ToMask(Physics::Layer::Default);
+            if (version >= 2)
+                archive(CEREAL_NVP(layerMask_));
+
             map_.clear();
 
             if (version == 0)
@@ -157,7 +164,7 @@ namespace NanamiEngine::Module::Asset
 
 REGISTER_SCRIPTABLE_OBJECT(HeightGridMap, HEIGHT_GRID_MAP_EXTENSION_LABEL)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::HeightGridMap, 1);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::HeightGridMap, 2);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::HeightGridMap);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::HeightGridMap);
 #pragma endregion

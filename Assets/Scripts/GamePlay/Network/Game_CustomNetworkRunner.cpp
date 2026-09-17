@@ -16,7 +16,8 @@ namespace GamePlay::Network
             DefaultDispatcher(),
             PacketSender(),
             PlayerIdProvider(),
-            *playerAvatarFactory_.get());
+            *playerAvatarFactory_.get(),
+            *enemyFactory_.get());
     }
 
     void CustomNetworkRunner::DoDispatchReceivedPacket(const Core::Network::Packet& packet)
@@ -41,12 +42,12 @@ namespace GamePlay::Network
     }
 
     std::shared_ptr<Module::GameObject::IGameObject> CustomNetworkRunner::SpawnEnemy(
-        Module::Asset::PrefabGameObjectFile& prefab,
+        const GameCore::Npc::Enemy::EnemyKind kind,
         const glm::vec3 position,
         const glm::quat rotation)
     {
         return customDispatcherGroup_->SpawnEnemy().DispatchSendPacket(
-            prefab,
+            kind,
             position,
             rotation);
     }
@@ -54,5 +55,6 @@ namespace GamePlay::Network
     void CustomNetworkRunner::OnDrawGui()
     {
         ImGuiHelper::OnDrawInputField("playerAvatarFactory_", playerAvatarFactory_);
+        ImGuiHelper::OnDrawInputField("enemyFactory_", enemyFactory_);
     }
 }

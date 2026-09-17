@@ -14,6 +14,7 @@
 #include "../../../../FileSystem/Directory/Directory.h"
 #include "../../../../FileSystem/DraggingHand/EditorDraggingHand.h"
 #include "../../../ApplicationBase.h"
+#include "../../../Configuration/CodeEditor/ApplicationConfiguration_CodeEditor.h"
 #include "../../../../../Module/Exception/Engine_Module_Exception.h"
 #include "../../../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../Inspector/InspectorWindow.h"
@@ -126,6 +127,50 @@ namespace
         }
     }
 
+    /** @brief IDEで開く対象のソースファイルか拡張子で判定する */
+    bool IsCodeFile(const NanamiEngine::Core::FileSystem::File& file)
+    {
+        constexpr std::string_view codeExtensions[] = { ".cpp", ".h", ".hpp", ".c", ".cc", ".cxx", ".inl" };
+
+        const std::string extension = std::filesystem::path(file.GetName()).extension().string();
+        return std::ranges::any_of(codeExtensions, [&extension](const std::string_view codeExtension)
+        {
+            return EqualsCaseInsensitive(extension, codeExtension);
+        });
+    }
+
+    /** @brief 指定したファイルをConfigで選択中のコードエディタで開く */
+    void OpenFileInCodeEditor(const NanamiEngine::Core::FileSystem::File& file)
+    {
+        using NanamiEngine::Core::Application::Configuration::CodeEditorConfiguration;
+
+        try
+        {
+            const std::filesystem::path absolutePath   = std::filesystem::absolute(file.GetPath());
+            const std::filesystem::path executablePath = CodeEditorConfiguration::ExecutablePath();
+            const std::wstring          arguments      = CodeEditorConfiguration::BuildArguments(absolutePath);
+
+            const HINSTANCE result = ShellExecuteW(
+                nullptr,
+                L"open",
+                executablePath.c_str(),
+                arguments.c_str(),
+                nullptr,
+                SW_SHOWNORMAL);
+
+            if (reinterpret_cast<INT_PTR>(result) <= 32)
+            {
+                NanamiEngine::Module::LogError(
+                    "ProjectWindow: " + std::string(CodeEditorConfiguration::DisplayName()) +
+                    "で開けませんでした（Config > Code Editor の実行ファイルを確認してください）: " + absolutePath.string());
+            }
+        }
+        catch (const std::exception& exception)
+        {
+            NanamiEngine::Module::LogError("ProjectWindow: コードエディタで開けませんでした: " + std::string(exception.what()));
+        }
+    }
+
     /** @brief 1ファイル分の行（選択・右クリック・ドラッグ・ダブルクリック・リネーム）を描画する */
     void DrawFileEntry(
         NanamiEngine::Core::FileSystem::Directory& owningDirectory,
@@ -196,6 +241,16 @@ namespace
         // 右クリックメニュー
         if (ImGui::BeginPopupContextItem())
         {
+            if (IsCodeFile(file))
+            {
+                const std::string openLabel =
+                    "Open in " + std::string(NanamiEngine::Core::Application::Configuration::CodeEditorConfiguration::DisplayName());
+                if (ImGui::MenuItem(openLabel.c_str()))
+                {
+                    OpenFileInCodeEditor(file);
+                }
+            }
+
             if (ImGui::MenuItem("Copy"))
             {
                 try
@@ -232,7 +287,10 @@ namespace
 
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
         {
-            file.OnDoubleClick();
+            if (IsCodeFile(file))
+                OpenFileInCodeEditor(file);
+            else
+                file.OnDoubleClick();
         }
 
         ImGui::PopID();

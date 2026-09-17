@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <coroutine>
+#include <mutex>
 #include <vector>
 #include <utility>
 
@@ -29,6 +30,8 @@ namespace Coroutine
         std::vector<std::pair<std::coroutine_handle<>, std::coroutine_handle<>>> coroutines_;
         std::vector<std::pair<std::coroutine_handle<>, std::coroutine_handle<>>> pendingCoroutines_;
 
+        // RegisterFuture はワーカースレッドから呼ばれるので、ここだけ保護する
         std::vector<std::coroutine_handle<>> pendingResume_;
+        std::mutex pendingResumeMutex_;
     };
 }

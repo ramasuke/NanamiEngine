@@ -103,6 +103,8 @@ void GameObject::ComponentGroup::OnDestroy()
     for (const auto& component : components_)
     {
         component->OnDestroy();
+        // OnDestroy の中ではまだトークンを使えるよう、切るのはその後
+        component->ImplementCancelOnDestroy();
         // InitComponentGroup で行った登録を外す
         Core::Application::ApplicationBase::ObjectRegistry().Unregister(component->GetGuid(), *component);
     }

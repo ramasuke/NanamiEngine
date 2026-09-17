@@ -426,6 +426,7 @@ namespace NanamiEngine::Module::GameObject
                 child,
                 child->IsEnable(),
                 child->Name(),
+                child->Mark(),
                 child->Components(),
                 child->Transform());
         }

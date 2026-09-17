@@ -1,4 +1,4 @@
-#include "StageSelectModel.h"
+﻿#include "StageSelectModel.h"
 
 namespace GamePlay::Ui
 {
@@ -20,5 +20,10 @@ namespace GamePlay::Ui
     GameCore::Scene::Main::SceneType StageSelectModel::SelectedSceneType() const
     {
         return stages_[selectedIndex_].lock()->SceneType();
+    }
+
+    std::shared_ptr<Asset::StageData> StageSelectModel::SelectedStageData() const
+    {
+        return stages_[selectedIndex_].lock()->Data();
     }
 }

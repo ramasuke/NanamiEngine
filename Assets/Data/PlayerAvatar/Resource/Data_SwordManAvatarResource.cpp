@@ -11,31 +11,42 @@ namespace NanamiEngine::Module::Asset
     {
         ImGuiHelper::OnDrawInputField("normalAttackParticlePrefab_",normalAttackParticlePrefab_);
         ImGuiHelper::OnDrawInputField("dealDamageTextBillBoardPrefab_",dealDamageTextBillBoardPrefab_);
-        ImGuiHelper::OnDrawInputField("normalAttackSound_", normalAttackSound_);
+        ImGuiHelper::OnDrawInputField("attackWhiffSound_", attackWhiffSound_);
+        ImGuiHelper::OnDrawInputField("attackHitSound_", attackHitSound_);
         ImGuiHelper::OnDrawInputField("avoidRollingSound_", avoidRollingSound_);
         ImGuiHelper::OnDrawInputField("justAvoidRollingSound_", justAvoidRollingSound_);
         ImGuiHelper::OnDrawInputField("jumpSound_", jumpSound_);
         ImGuiHelper::OnDrawInputField("footstepParticlePrefab_", footstepParticlePrefab_);
+        ImGuiHelper::OnDrawInputField("jumpParticlePrefab_", jumpParticlePrefab_);
+        ImGuiHelper::OnDrawInputField("landingParticlePrefab_", landingParticlePrefab_);
+        ImGuiHelper::OnDrawInputField("landingParticleMinFallSpeed_", landingParticleMinFallSpeed_);
+        ImGuiHelper::OnDrawInputField("landingParticleMaxFallSpeed_", landingParticleMaxFallSpeed_);
+        ImGuiHelper::OnDrawInputField("landingParticleMinScale_", landingParticleMinScale_);
+        ImGuiHelper::OnDrawInputField("landingParticleMaxScale_", landingParticleMaxScale_);
+        ImGuiHelper::OnDrawInputField("warpInRise_secs_", warpInRise_secs_);
+        ImGuiHelper::OnDrawInputField("warpInSinkDepth_", warpInSinkDepth_);
         ImGuiHelper::OnDrawInputField("chargeCompleteSound_", chargeCompleteSound_);
         ImGuiHelper::OnDrawInputField("chargeCompleteParticlePrefab_", chargeCompleteParticlePrefab_);
         ImGuiHelper::OnDrawInputField("chargeHoldParticlePrefab_", chargeHoldParticlePrefab_);
         ImGuiHelper::OnDrawInputField("chargeImpactParticlePrefab_", chargeImpactParticlePrefab_);
+        ImGuiHelper::OnDrawInputField("attackBlockedParticlePrefab_", attackBlockedParticlePrefab_);
+        ImGuiHelper::OnDrawInputField("chargingShakeIntensityMin_", chargingShakeIntensityMin_);
+        ImGuiHelper::OnDrawInputField("chargingShakeIntensityMax_", chargingShakeIntensityMax_);
+        ImGuiHelper::OnDrawInputField("chargedHoldShakeIntensity_", chargedHoldShakeIntensity_);
+        ImGuiHelper::OnDrawInputField("chargeCompleteShakeIntensity_", chargeCompleteShakeIntensity_);
+        ImGuiHelper::OnDrawInputField("chargeCompleteShakeDuration_secs_", chargeCompleteShakeDuration_secs_);
         ImGuiHelper::OnDrawInputField("groundCheckRadius_", groundCheckRadius_);
         ImGuiHelper::OnDrawInputField("groundCheckUpOffset_", groundCheckUpOffset_);
         ImGuiHelper::OnDrawInputField("groundCheckDistance_", groundCheckDistance_);
-        ImGuiHelper::OnDrawInputField("walkFootstepContactPhases_", walkFootstepContactPhases_, [this]
+        ImGuiHelper::OnDrawInputField("walkAccelerationTime_secs_", walkAccelerationTime_secs_);
+        ImGuiHelper::OnDrawInputField("runAccelerationTime_secs_", runAccelerationTime_secs_);
+        ImGuiHelper::OnDrawInputField("walkDecelerationTime_secs_", walkDecelerationTime_secs_);
+        ImGuiHelper::OnDrawInputField("runDecelerationTime_secs_", runDecelerationTime_secs_);
+        ImGuiHelper::OnDrawInputField("footstepContactHeight_", footstepContactHeight_);
+        ImGuiHelper::OnDrawInputField("footstepBoneNames_", footstepBoneNames_, [this]
         {
-            if (ImGui::Button("Add Walk Phase"))
-            {
-                walkFootstepContactPhases_.push_back(0.5f);
-            }
-        });
-        ImGuiHelper::OnDrawInputField("runFootstepContactPhases_", runFootstepContactPhases_, [this]
-        {
-            if (ImGui::Button("Add Run Phase"))
-            {
-                runFootstepContactPhases_.push_back(0.5f);
-            }
+            if (ImGui::Button("Add Footstep Bone"))
+                footstepBoneNames_.emplace_back();
         });
         ImGuiHelper::OnDrawInputField("walkFootstepSounds_", walkFootstepSounds_, [this]
         {
@@ -46,6 +57,26 @@ namespace NanamiEngine::Module::Asset
         {
             if (ImGui::Button("Add Run Footstep Sound"))
                 runFootstepSounds_.emplace_back();
+        });
+        ImGuiHelper::OnDrawInputField("attackBlockedSounds_", attackBlockedSounds_, [this]
+        {
+            if (ImGui::Button("Add Attack Blocked Sound"))
+                attackBlockedSounds_.emplace_back();
+        });
+        ImGuiHelper::OnDrawInputField("comboNormalAttackWhiffSounds_", comboNormalAttackWhiffSounds_, [this]
+        {
+            if (ImGui::Button("Add Combo Normal Attack Whiff Sound"))
+                comboNormalAttackWhiffSounds_.emplace_back();
+        });
+        ImGuiHelper::OnDrawInputField("comboNormalAttackHitSounds_", comboNormalAttackHitSounds_, [this]
+        {
+            if (ImGui::Button("Add Combo Normal Attack Hit Sound"))
+                comboNormalAttackHitSounds_.emplace_back();
+        });
+        ImGuiHelper::OnDrawInputField("initialItems_", initialItems_, [this]
+        {
+            if (ImGui::Button("Add Initial Item"))
+                initialItems_.emplace_back();
         });
     }
 }

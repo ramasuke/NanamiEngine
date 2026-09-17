@@ -60,14 +60,15 @@ namespace NanamiEngine::Module
         {
             isHovering_ = true;
             onHover.get_subscriber().on_next(Rx::unit{});
-            if (const auto renderer = renderer_.lock())
+            if (const auto renderer = renderer_.lock(); renderer && onHoverSprite_)
                 renderer->SetSprite(onHoverSprite_.get());
         }
         // 出た瞬間
         else if (!isInside && isHovering_)
         {
             isHovering_ = false;
-            if (const auto renderer = renderer_.lock())
+            onHoverExit.get_subscriber().on_next(Rx::unit{});
+            if (const auto renderer = renderer_.lock(); renderer && onIdleSprite_)
                 renderer->SetSprite(onIdleSprite_.get());
         }
     }

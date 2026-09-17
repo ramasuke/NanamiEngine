@@ -1,7 +1,7 @@
 ﻿#include "TextRenderer.h"
 #include "../../GameObject/Transform/Transform.h"
 #include "../../../../Libs/LibCore/DxLib/ShiftJis.h"
-#include <cmath>
+#include <algorithm>
 #include <sstream>
 #include <vector>
 
@@ -50,6 +50,11 @@ namespace NanamiEngine::Module::NanamiUi
         isDirty_ = true;
     }
 
+    void TextRenderer::SetBlendRate(const int blendRate)
+    {
+        blendRate_ = std::clamp(blendRate, 0, 255);
+    }
+
     void TextRenderer::UpdateTextTexture()
     {
         if (!isDirty_ || !fontFile_)
@@ -60,7 +65,7 @@ namespace NanamiEngine::Module::NanamiUi
         const int fontHandle = fontFile_->DxLibHandle();
         const int lineHeight = GetFontSizeToHandle(fontHandle);
 
-        // テキストの実サイズを計算（複数行対応）
+        // テキストの実サイズを計算
         std::vector<std::string> lines;
         std::vector<int> lineWidths;
         int newW = 1;
@@ -80,8 +85,10 @@ namespace NanamiEngine::Module::NanamiUi
             lines.emplace_back();
             lineWidths.push_back(0);
         }
-        const int newH = std::max(lineHeight * static_cast<int>(lines.size()), 1);
-        newW = std::max(newW, 1);
+        // 縁取りがはみ出して切れないよう上下左右に余白を取る
+        const int edge = std::max(GetFontEdgeSizeToHandle(fontHandle), 0);
+        const int newH = std::max(lineHeight * static_cast<int>(lines.size()), 1) + edge * 2;
+        newW = std::max(newW, 1) + edge * 2;
 
         // サイズが変わった場合は古いスクリーンを解放して再生成
         if (textScreen_ != -1 && (screenW_ != newW || screenH_ != newH))
@@ -100,10 +107,12 @@ namespace NanamiEngine::Module::NanamiUi
         SetDrawScreen(textScreen_);
         ClearDrawScreen();
         const float alignFactor = ToAlignFactor(textAlign_);
+        const int contentW = newW - edge * 2;
         for (size_t i = 0; i < lines.size(); ++i)
         {
-            const int lineX = static_cast<int>((newW - lineWidths[i]) * alignFactor);
-            DrawStringToHandle(lineX, static_cast<int>(i) * lineHeight, lines[i].c_str(), textColor_.ToDxColor(), fontHandle);
+            const int lineX = edge + static_cast<int>((contentW - lineWidths[i]) * alignFactor);
+            const int lineY = edge + static_cast<int>(i) * lineHeight;
+            DrawStringToHandle(lineX, lineY, lines[i].c_str(), textColor_.ToDxColor(), fontHandle, fontFile_->EdgeColor().ToDxColor());
         }
         SetDrawScreen(DX_SCREEN_BACK);
 
@@ -132,10 +141,6 @@ namespace NanamiEngine::Module::NanamiUi
 
         ImGuiHelper::OnDrawInputField("textColor_", textColor_);
         ImGuiHelper::OnDrawEnumField("textAlign_", textAlign_, TEXT_ALIGNS, ToString);
-        ImGuiHelper::OnDrawInputField("isOutlineEnabled_", isOutlineEnabled_);
-        ImGuiHelper::OnDrawInputField("outlineColor_", outlineColor_);
-        ImGuiHelper::OnDrawInputField("outlineWidth_", outlineWidth_);
-        ImGuiHelper::OnDrawInputField("outlineShadowOffsetY_", outlineShadowOffsetY_);
 
         if (isWorldPos_)
         {
@@ -143,13 +148,15 @@ namespace NanamiEngine::Module::NanamiUi
         }
     }
 
-    void TextRenderer::DrawScreenText(const float offsetX, const float offsetY, const int dxColor) const
+    void TextRenderer::DrawScreenText() const
     {
-        const float x = Transform().GetWorldPos().x + offsetX;
-        const float y = Transform().GetWorldPos().y + offsetY;
+        const float x = Transform().GetWorldPos().x;
+        const float y = Transform().GetWorldPos().y;
         const float scaleX = Transform().GetWorldScale().x;
         const float scaleY = Transform().GetWorldScale().y;
         const int fontHandle = fontFile_->DxLibHandle();
+        const int dxColor = textColor_.ToDxColor();
+        const int edgeDxColor = fontFile_->EdgeColor().ToDxColor();
         const std::string sjis = Utf8ToShiftJis(text_);
 
         if (textAlign_ == TextAlign::Left)
@@ -159,7 +166,8 @@ namespace NanamiEngine::Module::NanamiUi
                 scaleX, scaleY,
                 sjis.c_str(),
                 dxColor,
-                fontHandle
+                fontHandle,
+                edgeDxColor
             );
             return;
         }
@@ -184,7 +192,8 @@ namespace NanamiEngine::Module::NanamiUi
                 scaleX, scaleY,
                 line.c_str(),
                 dxColor,
-                fontHandle
+                fontHandle,
+                edgeDxColor
             );
             ++lineIndex;
         }
@@ -192,24 +201,15 @@ namespace NanamiEngine::Module::NanamiUi
 
     void TextRenderer::OnUserInterfaceRender()
     {
-        if (!IsEnable() || !fontFile_) return;
-    
+        if (!IsEnable() || !fontFile_ || blendRate_ <= 0) return;
+
+        const bool isTranslucent = blendRate_ < 255;
+        if (isTranslucent)
+            SetDrawBlendMode(DX_BLENDMODE_ALPHA, blendRate_);
+
         if (!isWorldPos_)
         {
-            if (isOutlineEnabled_ && outlineWidth_ > 0.0f)
-            {
-                const int outlineDxColor = outlineColor_.ToDxColor();
-                constexpr int OUTLINE_DIRECTIONS = 8;
-                for (int i = 0; i < OUTLINE_DIRECTIONS; ++i)
-                {
-                    const float angle = static_cast<float>(i) * DX_PI_F * 2.0f / static_cast<float>(OUTLINE_DIRECTIONS);
-                    DrawScreenText(std::cos(angle) * outlineWidth_, std::sin(angle) * outlineWidth_, outlineDxColor);
-                }
-                // 少し下にずらした影で、明るい背景でも数字が浮いて見えるようにする
-                if (outlineShadowOffsetY_ != 0.0f)
-                    DrawScreenText(0.0f, outlineShadowOffsetY_, outlineDxColor);
-            }
-            DrawScreenText(0.0f, 0.0f, textColor_.ToDxColor());
+            DrawScreenText();
         }
         else
         {
@@ -236,5 +236,8 @@ namespace NanamiEngine::Module::NanamiUi
             SetUseZBuffer3D  (TRUE);
             SetWriteZBuffer3D(TRUE);
         }
+
+        if (isTranslucent)
+            SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
     }
 }

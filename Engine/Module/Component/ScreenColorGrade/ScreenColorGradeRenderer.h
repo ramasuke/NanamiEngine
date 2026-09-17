@@ -3,7 +3,6 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    // UI描画フェーズでバックバッファを取り込み、HSBフィルタをかけて描き戻す。renderOrder_ より後に描かれるUIには影響しない
     class ScreenColorGradeRenderer final : public Component::ComponentBase,
                                            public LifeCycleCallback::IUserInterfaceRenderable
     {

@@ -28,9 +28,9 @@ A GameObject/Prefab binds a tree through the `Animator` component's
 python -m tools.scene add-component --guid <gameobject-guid> --type Animator --param animationTreeFile_=<tree-guid>
 ```
 
-(`tools/scene/catalog.json`'s `Animator` entry only models `animationTreeFile_`
-today, not the version-2+ `animationSyncs_` field — an existing gap in
-`tools/scene`, not in scope here.)
+(Bone-driven transforms — e.g. a hitbox following a hand bone — are not part of
+`Animator`. Add a `BoneSync` component next to the `ModelRenderer` and give it a
+`TransformSync`; `Animator` v5 dropped the old, never-populated `animationSyncs_` field.)
 
 ---
 

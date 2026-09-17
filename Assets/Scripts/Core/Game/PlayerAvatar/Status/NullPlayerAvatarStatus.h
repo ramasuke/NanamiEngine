@@ -5,6 +5,7 @@
 #include "Event/PlayerAvatar_IStatusEvent.h"
 #include "../Quest/PlayerAvatar_IQuestGroup.h"
 #include "../Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
+#include "../Wallet/PlayerAvatar_Wallet.h"
 #include "../../StatusParameter/Health/Health.h"
 #include "../../StatusParameter/MoveSpeed/MoveSpeed.h"
 #include "../../../../../../Libs/LibCore/Rx/SerializableSubject/SerializableSubject.h"
@@ -12,9 +13,7 @@
 namespace GameCore::PlayerAvatar
 {
     /**
-     * @brief Statusの「上書きなし」を表すNull Object。
-     * PlayerAvatarFactory::LoadInitedPlayerAvatarに、LocalPrefsからの通常ロードにフォールバック
-     * させたいことを伝えるセンチネル値として渡される想定で、実際のAvatarには紐付かない。
+     * @brief StatusのNull Object。
      */
     class NullPlayerAvatarStatus final : public IPlayerAvatarStatus
     {
@@ -28,6 +27,7 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] IStatusEvent              & Event         () const override;
         [[nodiscard]] IQuestGroup                & Quest         () const override;
         [[nodiscard]] Quest::ICompleteQuestGroup & CompletedQuest() const override;
+        [[nodiscard]] PlayerAvatar::Wallet         & Wallet        () const override;
 
         [[nodiscard]] const StatusParameter::Health&                     MaxHealth() const override;
         [[nodiscard]] rxcpp::observable<StatusParameter::Health> OnChangeHealth() const override;
@@ -71,6 +71,7 @@ namespace GameCore::PlayerAvatar
         std::unique_ptr<NullQuestGroup        > quest_        ;
         std::unique_ptr<NullCompleteQuestGroup> completeQuest_;
         std::unique_ptr<NullStatusEvent       > event_        ;
+        std::unique_ptr<PlayerAvatar::Wallet  > wallet_       ;
 
         StatusParameter::Health  maxHealth_;
         StatusParameter::Stamina maxStamina_;

@@ -1,13 +1,14 @@
-"""Generate the boss HP gauge sprites (Dauntless-inspired "crystal crown") drawn by GamePlay::Ui::BossHealthGauge.
+"""Generate the boss HP gauge sprites (Dauntless-inspired "crystal crown") shown by GamePlay::Ui::BossHealthGauge.
 
     python tools/art/boss_health_gauge.py [--out-dir Assets/Art/UI/BossHealth] [--preview PATH]
 
 Writes BossHealthCrest / BossHealthCrestGlow / BossHealthShard_{Fill,FillDanger,Trail,Empty}.png and a
 SpriteFile .png.meta for each (an existing .meta keeps its GUID, so regenerating never breaks references).
-One shard sprite serves all eight shards: it is drawn pointing up (tip at the top, base at the bottom) and
-BossHealthGauge rotates it around the crown pivot with DrawRectRotaGraph2F, clipping the fill from the base.
-The layout values the component has to agree with are printed at the end (GEOMETRY).
---preview also composites the crown at 100% / 60% / 22% HP the same way the component draws it.
+One shard sprite serves all eight shards: it is drawn pointing up (tip at the top, base at the bottom) and each
+Shard object's BossHealthShardRenderer rotates it around the crown pivot (its Transform) with DrawRectRotaGraph2F,
+clipping the fill from the base. The crest is an ImageRenderer, its glow a BlendImageRenderer (Add).
+The layout values BossHealthGaugeUI.prefab has to agree with are printed at the end (GEOMETRY).
+--preview also composites the crown at 100% / 60% / 22% HP the same way the renderers draw it.
 
 Shapes are authored in "design units" and rasterised at PX_PER_UNIT, SDF-based at 4x supersampling.
 Requires Pillow + numpy.
@@ -40,8 +41,8 @@ SHARD_PAD_PX = (SHARD_H_PX - SHARD_LEN_U * PX_PER_UNIT) / 2
 CREST_W_PX, CREST_H_PX = 128, 152
 CREST_OFFSET_U = -44.0    # pivot -> crest centre
 SKULL_OFFSET_U = 2.0      # crest centre -> skull centre
-ROOT_TO_PIVOT_PX = 84.8   # BossHealthGauge transform -> pivot
-NAME_TOP_PX = 126.0       # BossHealthGauge transform -> BossName text top
+ROOT_TO_PIVOT_PX = 84.8   # BossHealthGaugeUI root -> pivot (Shards object)
+NAME_TOP_PX = 126.0       # BossHealthGaugeUI root -> BossName text top
 
 rng = np.random.default_rng(7)
 
@@ -255,12 +256,11 @@ SPRITES = {
 }
 
 GEOMETRY = {
-    'shardCount_': SHARD_COUNT,
-    'arcAngle_deg_': ARC_DEG,
-    'shardBaseDistance_': SHARD_BASE_U * PX_PER_UNIT,
-    'shardPadding_px_': SHARD_PAD_PX,
-    'pivotOffset_': (0.0, ROOT_TO_PIVOT_PX),
-    'crestOffset_': (0.0, CREST_OFFSET_U * PX_PER_UNIT),
+    'Shards localPos': (0.0, ROOT_TO_PIVOT_PX),
+    'Shard0..N rot.z (deg)': [round(-ARC_DEG / 2 + ARC_DEG * i / (SHARD_COUNT - 1), 3) for i in range(SHARD_COUNT)],
+    'BossHealthShardRenderer.baseDistance_': SHARD_BASE_U * PX_PER_UNIT,
+    'BossHealthShardRenderer.padding_px_': SHARD_PAD_PX,
+    'Crest localPos': (0.0, ROOT_TO_PIVOT_PX + CREST_OFFSET_U * PX_PER_UNIT),
     'BossName localPos': (0.0, NAME_TOP_PX),
 }
 
@@ -277,7 +277,7 @@ def write_sprite(out_dir, name, image):
     return guid
 
 
-# ---------------------------------------------------------------- preview (mirrors BossHealthGauge::OnUserInterfaceRender)
+# ---------------------------------------------------------------- preview (mirrors BossHealthShardRenderer + crest renderers)
 def premul(im):
     a = np.asarray(im, np.float32) / 255
     a[..., :3] *= a[..., 3:]
@@ -357,7 +357,7 @@ def main():
         guid = write_sprite(out_dir, name, sprites[name])
         print(f"{name:28s} {sprites[name].size[0]}x{sprites[name].size[1]}  {guid}")
 
-    print("GEOMETRY (BossHealthGauge / prefab):")
+    print("GEOMETRY (BossHealthGaugeUI.prefab):")
     for key, value in GEOMETRY.items():
         print(f"  {key} = {value}")
 

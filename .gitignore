@@ -20,3 +20,9 @@ __pycache__/
 
 # Runtime-generated logs
 EngineLog.txt
+
+# AutoMCP screenshots (tools/automcp; engine working directory = repo root)
+/AutoMcp/
+
+# Model sources (only the converted .mv1 is tracked)
+*.fbx

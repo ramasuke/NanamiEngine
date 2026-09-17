@@ -21,13 +21,18 @@
   <ItemGroup>
     <None Include="Assets\Art\Shaders\Cloud\Cloud_PS.hlsl" />
     <None Include="Assets\Art\Shaders\Cloud\Cloud_VS.hlsl" />
+    <None Include="Assets\Art\Shaders\Grass\Grass_PS.hlsl" />
+    <None Include="Assets\Art\Shaders\Grass\Grass_VS.hlsl" />
     <None Include="Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.hlsl" />
     <None Include="Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.hlsl" />
     <None Include="Assets\Art\Shaders\ProximityReveal\ProximityReveal_PS.hlsl" />
     <None Include="Assets\Art\Shaders\ProximityReveal\ProximityReveal_VS.hlsl" />
+    <None Include="Assets\Art\Shaders\Tree\Tree_PS.hlsl" />
+    <None Include="Assets\Art\Shaders\Tree\Tree_VS.hlsl" />
     <ClCompile Include="Assets\Data\EnemyBehaviour\Data_EnemyBehaviourFile.cpp" />
     <ClCompile Include="Assets\Data\EventNpcWalkingRoute\Data_EventNpcWalkingRoute.cpp" />
     <ClCompile Include="Assets\Data\EventNpcWalkingRoute\RoutePoint\Data_Event_Npc_WalkingRoute_RoutePoint.cpp" />
+    <ClCompile Include="Assets\Data\GrassField\Data_GrassField.cpp" />
     <ClCompile Include="Assets\Data\HeightGridMap\Data_HeightGridMap.cpp" />
     <ClCompile Include="Assets\Data\FriendlyNpcBehviour\Data_FriendNpcBehaviourFile.cpp" />
     <ClCompile Include="Assets\Data\FriendlyNpcStatus\Base\Data_FriendlyNpcBaseStatus.cpp">
@@ -104,7 +109,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -184,7 +189,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Data\PlayerAvatar\Factory\PlayerAvatarFactory.cpp">
@@ -261,13 +266,16 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj /FS %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /FS /execution-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Data\PlayerAvatar\InitStatus\SwordMan\Data_SwordManInitStatus.cpp" />
     <ClCompile Include="Assets\Data\PlayerAvatar\Resource\Data_SwordManAvatarResource.cpp" />
+    <ClCompile Include="Assets\Data\PlayerAvatar\Resource\Data_MagicCasterAvatarResource.cpp" />
     <ClCompile Include="Assets\Data\Stage\Data_StageData.cpp" />
+    <ClCompile Include="Assets\Data\Item\Data_ItemData.cpp" />
+    <ClCompile Include="Assets\Data\Enemy\Factory\EnemyFactory.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_Physics.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_PhysicsPower.cpp" />
@@ -352,7 +360,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -431,7 +439,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -509,7 +517,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -587,7 +595,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -665,7 +673,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -744,7 +752,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -822,7 +830,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -900,7 +908,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -978,7 +986,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -1056,7 +1064,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -1134,7 +1142,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -1213,7 +1221,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -1292,7 +1300,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -1371,7 +1379,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -1449,7 +1457,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -1527,7 +1535,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -1605,7 +1613,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -1683,7 +1691,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -1761,7 +1769,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -1839,7 +1847,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -1918,7 +1926,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -1996,7 +2004,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -2074,7 +2082,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -2152,7 +2160,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -2230,12 +2238,16 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\Chat\Enemy_Behaviour_Action_Chat.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\ShakeCamera\Enemy_Behaviour_Action_ShakeCamera.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Ui\ShowBossHealthGauge\Enemy_Behaviour_Action_ShowBossHealthGauge.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Weather\SetStorm\Enemy_Behaviour_Action_SetStorm.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Weather\Lightning\Enemy_Behaviour_Action_Lightning.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Hyena\CallAllies\Enemy_Behaviour_Action_CallAllies.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -2310,7 +2322,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\FieldGameObject\Enemy_Behaviour_Action_FieldGameObject.cpp" />
@@ -2391,7 +2403,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\FirstEventDragon\Animation\FirstEventDragon_AnimationType.cpp" />
@@ -2471,10 +2483,11 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Boss\BossEnemyBase.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\EnemyBase.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\ITakableEnemyAttack\ITakableEnemyAttack.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Status\EnemyStatus.cpp" />
@@ -2552,7 +2565,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -2632,7 +2645,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -2712,7 +2725,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -2790,7 +2803,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -2869,7 +2882,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -2948,7 +2961,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -3026,7 +3039,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -3104,7 +3117,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -3182,7 +3195,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -3260,7 +3273,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -3338,7 +3351,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -3416,7 +3429,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -3494,7 +3507,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -3575,7 +3588,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -3657,14 +3670,14 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;WIN32_LEAN_AND_MEAN;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnableUnitySupport>true</EnableUnitySupport>
       <UnityFilesPerBatch>32</UnityFilesPerBatch>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Animator\AnimationSync\IAnimationSync.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Animator\AnimationSync\Transform\Animatoin_SyncTransform.cpp">
+    <ClCompile Include="Engine\Module\Component\BoneSync\Sync\BoneSyncBase.cpp" />
+    <ClCompile Include="Engine\Module\Component\BoneSync\Sync\Transform\TransformSync.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -3738,7 +3751,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -3817,10 +3830,11 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\AttackArea\PlayerAvatarAttackArea.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemPouch.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\CameraGroup\PlayerAvatarCameraGroupBase.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Chattable\IPlayerChattable.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\InputAction\PlayerAvatarInputActionBase.cpp" />
@@ -3906,7 +3920,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -3985,7 +3999,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -4068,7 +4082,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\State\Condition\PlayerAvatarStateCondition.cpp" />
@@ -4153,7 +4167,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\NullPlayerAvatarStatus.cpp" />
@@ -4234,7 +4248,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\CameraGroup\SwordManAvatarCameraGroup.cpp" />
@@ -4245,6 +4259,8 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Normal\SwordManAvatarNormalAttackState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Charge\SwordManAvatarChargeAttackChargingState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Charge\SwordManAvatarChargeAttackReleaseState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackAirState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackLandState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\AvoidRolling\SwordManAvatar_AvoidRolling.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Chatting\SwordManAvatarChattingState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\ClimbToTop\SwordManAvatarStateClimbToTop.cpp" />
@@ -4333,14 +4349,18 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\SwordManAvatarStateMachine.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\UseCanon\SwordManAvatarUseCanonState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\WakeUp\SwordManAvatar_WakeUpState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\FallDown\SwordManAvatar_FallDownState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\GetUp\SwordManAvatar_GetUpState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Walk\SwordManAvatarWalkState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\WarpIn\SwordManAvatar_WarpInState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Event\SwordManAvatarStatusEvent.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\ControlGuideFocus\SwordMan_ControlGuideFocus.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Presenter\PlayerAvatar_SwordMan_StatusPresenter.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Quest\Content\ActionInstructTutorial\Quest_SwordMan_ActionInstructTutorial.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -4416,7 +4436,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -4494,7 +4514,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -4572,7 +4592,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -4650,7 +4670,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -4730,7 +4750,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -4808,7 +4828,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Traits\SwordManAvatarTraits.cpp">
@@ -4885,7 +4905,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -4965,7 +4985,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -5043,7 +5063,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -5123,7 +5143,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -5201,7 +5221,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -5279,10 +5299,11 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\ArrivalMovie\GrassLandArrivalMovie.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\Context\GrassLandSceneContext.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\GrassLandScene.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Main\Content\MainIslandScene\Context\MainIsLandSceneContext.cpp" />
@@ -5361,7 +5382,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -5439,7 +5460,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -5517,7 +5538,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -5595,7 +5616,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -5673,7 +5694,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -5758,7 +5779,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -5766,9 +5787,26 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Sub_IGameScene.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Scene\Sub\Type\SubSceneType.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Settings\GameSettings.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Wallet\PlayerAvatar_Wallet.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateBase.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Context\MagicCasterAvatarStateContext.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Idle\MagicCasterAvatarIdleState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Walk\MagicCasterAvatarWalkState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Run\MagicCasterAvatarRunState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Jump\MagicCasterAvatarJumpState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Floating\MagicCasterAvatarFloatingState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Cast\MagicCasterAvatarCastState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Hurt\MagicCasterAvatarHurtState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Death\MagicCasterAvatarDeathState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\DisableState\MagicCasterAvatarDisableState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateMachine.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\MagicCasterAvatarStatus.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\InputAction\MagicCasterAvatarInputAction.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Traits\MagicCasterAvatarTraits.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\StatusParameter\Health\Health.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\StatusParameter\MoveSpeed\MoveSpeed.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\StatusParameter\Stamina\Stamina.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\StatusParameter\Money\Money.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Packet\Custom_PacketType.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Packet\Dispatcher\CustomPacketDispatcherBase.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -5844,7 +5882,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -5922,7 +5960,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -6001,7 +6039,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -6016,6 +6054,7 @@
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\Chat\Rpc_Chat.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\ChangeMainScene\Rpc_ChangeMainScene.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\ShakeCamera\Rpc_ShakeCamera.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\Weather\Rpc_Weather.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\AttackAreaFire\Rpc_AttackAreaFire.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\EnemyDeath\Rpc_EnemyDeath.cpp" />
     <ClCompile Include="Engine\Core\Network\RpcId\Engine_Network_RpcId.cpp" />
@@ -6030,12 +6069,23 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\LatticeBarrier\LatticeBarrierEffect.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\Cloud\CloudEffect.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\ProximityReveal\ProximityReveal.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\Grass\Grassable.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\Grass\GrassRenderer.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\Tree\TreeLeafSway.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\DealDamageTextBillBoard\UI_DealDamageTextBillBoard.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\OtherPlayerStatusUIGroup\OtherPlayerStatusUiGroup.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_DamageFlash.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_InjuredMask.cpp" />
     <ClCompile Include="Engine\Core\Application\Configuration\Physics\ApplicationConfiguration_Physics.cpp" />
     <ClCompile Include="Engine\Core\Application\Configuration\DebugDraw\ApplicationConfiguration_DebugDraw.cpp" />
+    <ClCompile Include="Engine\Core\Application\Configuration\GameWindow\ApplicationConfiguration_GameWindow.cpp" />
+    <ClCompile Include="Engine\Core\Application\Configuration\CodeEditor\ApplicationConfiguration_CodeEditor.cpp" />
+    <ClCompile Include="Engine\Core\Application\AutoMcp\AutoMcpEngineAccess.cpp" />
+    <ClCompile Include="Engine\Core\Application\AutoMcp\AutoMcpServer.cpp" />
+    <ClCompile Include="Engine\Core\Application\AutoMcp\AutoMcpCommands.cpp" />
+    <ClCompile Include="Engine\Core\Application\AutoMcp\AutoMcpScreenshot.cpp" />
+    <ClCompile Include="Engine\Core\Application\AutoMcp\AutoMcpJson.cpp" />
+    <ClCompile Include="Engine\Core\Application\Configuration\AutoMcp\ApplicationConfiguration_AutoMcp.cpp" />
     <ClCompile Include="Engine\Core\Network\Object\Awakable\INetworkAwakable.cpp" />
     <ClCompile Include="Engine\Core\Network\Object\Creator\NetworkParamCreator.cpp" />
     <ClCompile Include="Engine\Core\Network\Object\NetworkObjectBase.cpp" />
@@ -6116,7 +6166,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -6204,7 +6254,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -6282,7 +6332,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -6362,7 +6412,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -6440,7 +6490,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -6521,7 +6571,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -6606,11 +6656,12 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\SwordMan\SwordManAvatar.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\WakeUpArea\WakeUpArea.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\MagicCaster\MagicCasterAvatar.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\Canon\Prop_Canon.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\DestructibleObject\DestructibleObject.cpp" />
@@ -6618,6 +6669,8 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\IslandPedestial\Prop_IslandPedestial.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Weather\WeatherService.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Weather\WindZone.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Spawn\GamePlay_PrefabSpawner.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -6693,12 +6746,18 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGauge.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\CannonCooldownGauge\Ui_CannonCooldownGauge.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthShardRenderer.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuide.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuideRow.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemBar.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemSlot.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\LockOnReticle\Ui_LockOnReticle.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\NpcChatting\Ui_NpcChatting.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.cpp" />
@@ -6710,6 +6769,11 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Presenter\StageSelectPresenter.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Stage\Ui_StageSelect_StageUI.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\UI_StageSelect.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Loading\Ui_LoadingScreen.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Loading\Hint\Ui_LoadingHintCard.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Difficulty\StageDifficultyPips.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\HyenaRepository.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGaugePresenter.cpp" />
     <ClCompile Include="Engine\Core\Application\ApplicationBase.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -6784,7 +6848,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Users\e29sw\OneDrive\デスクトップ\NanamiEngine\Libs\プロジェクトに追加すべきファイル_VC用;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Core\Application\Configuration\ApplicationConfiguration.cpp" />
@@ -7092,7 +7156,7 @@
       <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\e29sw\OneDrive\デスクトップ\NanamiEngine\Libs\プロジェクトに追加すべきファイル_VC用;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Core\Application\Window\Main\Animator\AnimatorWindow.cpp" />
@@ -8257,7 +8321,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -8339,7 +8403,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -8422,7 +8486,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -8500,7 +8564,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -8580,7 +8644,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -8662,7 +8726,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -8741,11 +8805,11 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Engine\Core\Object\Field\IInitializablePrefabField.cpp" />
+    <ClCompile Include="Engine\Core\Object\Field\GuidRemap\GuidRemap.cpp" />
     <ClCompile Include="Engine\Core\Object\Field\Interface\IFieldContext.cpp" />
     <ClCompile Include="Engine\Core\Object\IObject.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -8821,7 +8885,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -9060,7 +9124,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Module\AnimationTree\Node\VisualAnyStateNode\AnimationVisualAnyStateNode.cpp" />
@@ -9292,7 +9356,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Module\Asset\Font\Ttf\TtfFontFile.cpp">
@@ -9369,7 +9433,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Module\Asset\Hlsl\HlslFile.cpp" />
@@ -9461,7 +9525,6 @@
     <ClCompile Include="Engine\Module\Asset\Factory\AssetFactory.cpp" />
     <ClCompile Include="Engine\Module\Component\ImageRenderer\Animation\ImageAnimationRenderer.cpp" />
     <ClCompile Include="Engine\Module\Component\ParticleRenderer\PlayMode\ParticleSystem_PlayMode.cpp" />
-    <ClCompile Include="Engine\Module\GameObject\PrefabGameObject\PrefabCatchChild\PrefabCatchChild.cpp" />
     <ClCompile Include="Engine\Module\LifeCycleCallback\FixedUpdate\IFixedUpdatable.cpp" />
     <ClCompile Include="Engine\Module\LifeCycleCallback\Update\IUpdatable_PriorityOrder.cpp" />
     <ClCompile Include="Engine\Module\LifeCycleCallback\UserInterfaceRenderable\IUserInterfaceRenderable_PriorityOrder.cpp" />
@@ -9549,7 +9612,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Module\Color\Color32.cpp" />
@@ -9714,6 +9777,9 @@
     <ClCompile Include="Engine\Module\Component\ParticleRenderer\ParticleSystem.cpp" />
     <ClCompile Include="Engine\Module\Component\QuadRenderer\QuadRenderer.cpp" />
     <ClCompile Include="Engine\Module\Component\Rotator\Rotator.cpp" />
+    <ClCompile Include="Engine\Module\Component\CameraFollowTransform\CameraFollowTransform.cpp" />
+    <ClCompile Include="Engine\Module\Component\BoneSync\BoneSync.cpp" />
+    <ClCompile Include="Engine\Module\Component\BoneSync\BonePose\BonePose.cpp" />
     <ClCompile Include="Engine\Module\Component\Skydome3D\SkyDome3D.cpp" />
     <ClCompile Include="Engine\Module\Component\SphereRenderer\SphereRenderer.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -9871,6 +9937,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Module\GameObject\Helper\TreeDropZone\TreeDropZone.cpp" />
     <ClCompile Include="Engine\Module\GameObject\PrefabGameObject\PrefabGameObject.cpp" />
+    <ClCompile Include="Engine\Module\GameObject\Mark\GameObjectMark.cpp" />
     <ClCompile Include="Engine\Module\GameObject\Transform\Transform.cpp" />
     <ClCompile Include="Engine\Module\Guid\Guid.cpp" />
     <ClCompile Include="Engine\Module\Guid\Hash\GuidHash.cpp" />
@@ -9979,6 +10046,7 @@
     <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\GridLayoutGroup.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\HorizontalLayoutGroup.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\LayoutCrossAlign.cpp" />
+    <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\LayoutElement.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\LayoutGroup\VerticalLayoutGroup.cpp" />
     <ClCompile Include="Engine\Module\NanamiUI\MovieRenderer\MovieRenderer.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -10054,7 +10122,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -10132,7 +10200,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -10214,7 +10282,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -10292,7 +10360,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -10370,7 +10438,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -10448,7 +10516,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -10526,7 +10594,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -10604,7 +10672,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -10682,7 +10750,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
@@ -10705,6 +10773,11 @@
     <ClCompile Include="Engine\Module\Physics\Engine_Physics_Physics.cpp" />
     <ClCompile Include="Engine\Module\Physics\RaycastHit\Engine_Physics_RaycastHit.cpp" />
     <ClCompile Include="Engine\Module\Physics\UserData\Engine_Physics_UserData.cpp" />
+    <ClCompile Include="Engine\Module\Physics\BodyAssembler\Engine_Physics_BodyAssembler.cpp" />
+    <ClCompile Include="Engine\Module\Physics\Component\RigidBody\Engine_Physics_RigidBody.cpp" />
+    <ClCompile Include="Engine\Module\Physics\GroupFilter\Engine_Physics_RigidBodyGroupFilter.cpp" />
+    <ClCompile Include="Engine\Module\Physics\JoltUtility\Engine_Physics_JoltUtility.cpp" />
+    <ClCompile Include="Engine\Module\Physics\MotionType\Engine_Physics_MotionType.cpp" />
     <ClCompile Include="Engine\Module\Scene\GameObject\CopiedPrefabGameObject\CopiedPrefabGameObject.cpp">
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -10778,7 +10851,7 @@
       <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Module\Scene\GameObject\Helper\GameObject.cpp">
@@ -10930,7 +11003,7 @@
       <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Module\Scene\Scene.cpp">
@@ -11010,6 +11083,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Module\Scene\ShadowMap\ShadowMapSetting.cpp" />
+    <ClCompile Include="Engine\Module\Scene\AsyncLoader\Engine_Scene_AsyncSceneLoader.cpp" />
     <ClCompile Include="Engine\Module\ScriptableObject\NullContextFile\NullContextFile.cpp" />
     <ClCompile Include="Engine\Module\ScriptableObject\ScriptableObject.cpp" />
     <ClCompile Include="Libs\enet\callbacks.c">
@@ -11198,6 +11272,16 @@
       <IncludeInUnityFile>false</IncludeInUnityFile>
     </ClCompile>
     <ClCompile Include="Libs\JoltPhysics\Jolt\Geometry\Indexify.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles></ForcedIncludeFiles>
+      <IncludeInUnityFile>false</IncludeInUnityFile>
+    </ClCompile>
+    <ClCompile Include="Libs\meshoptimizer\allocator.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles></ForcedIncludeFiles>
+      <IncludeInUnityFile>false</IncludeInUnityFile>
+    </ClCompile>
+    <ClCompile Include="Libs\meshoptimizer\simplifier.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ForcedIncludeFiles></ForcedIncludeFiles>
       <IncludeInUnityFile>false</IncludeInUnityFile>
@@ -11856,7 +11940,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
       <ForcedIncludeFiles></ForcedIncludeFiles>
@@ -11936,7 +12020,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
       <ForcedIncludeFiles></ForcedIncludeFiles>
@@ -12016,13 +12100,14 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
       <ForcedIncludeFiles></ForcedIncludeFiles>
       <IncludeInUnityFile>false</IncludeInUnityFile>
     </ClCompile>
     <ClCompile Include="Libs\LibCore\cereal\glm\GlmHelper.cpp">
+      <ObjectFileName>$(IntDir)CerealGlmHelper.obj</ObjectFileName>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ForcedIncludeFiles></ForcedIncludeFiles>
       <IncludeInUnityFile>false</IncludeInUnityFile>
@@ -12116,7 +12201,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
       <ForcedIncludeFiles></ForcedIncludeFiles>
       <IncludeInUnityFile>false</IncludeInUnityFile>
@@ -12195,7 +12280,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
       <ForcedIncludeFiles></ForcedIncludeFiles>
       <IncludeInUnityFile>false</IncludeInUnityFile>
@@ -12478,7 +12563,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 </AdditionalOptions>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Packages\R4\SensorExitable\SensorExitableAsObservable.cpp" />
@@ -12489,6 +12574,7 @@
     <ClInclude Include="Assets\Data\EnemyBehaviour\Data_EnemyBehaviourFile.h" />
     <ClInclude Include="Assets\Data\EventNpcWalkingRoute\Data_EventNpcWalkingRoute.h" />
     <ClInclude Include="Assets\Data\EventNpcWalkingRoute\RoutePoint\Data_Event_Npc_WalkingRoute_RoutePoint.h" />
+    <ClInclude Include="Assets\Data\GrassField\Data_GrassField.h" />
     <ClInclude Include="Assets\Data\HeightGridMap\Data_HeightGridMap.h" />
     <ClInclude Include="Assets\Data\FriendlyNpcBehviour\Data_FriendNpcBehaviourFile.h" />
     <ClInclude Include="Assets\Data\FriendlyNpcStatus\Base\Data_FriendlyNpcBaseStatus.h" />
@@ -12498,7 +12584,11 @@
     <ClInclude Include="Assets\Data\PlayerAvatar\Factory\PlayerAvatarFactory.h" />
     <ClInclude Include="Assets\Data\PlayerAvatar\InitStatus\SwordMan\Data_SwordManInitStatus.h" />
     <ClInclude Include="Assets\Data\PlayerAvatar\Resource\Data_SwordManAvatarResource.h" />
+    <ClInclude Include="Assets\Data\PlayerAvatar\Resource\Data_MagicCasterAvatarResource.h" />
     <ClInclude Include="Assets\Data\Stage\Data_StageData.h" />
+    <ClInclude Include="Assets\Data\Item\Data_ItemData.h" />
+    <ClInclude Include="Assets\Data\Item\Data_ItemStack.h" />
+    <ClInclude Include="Assets\Data\Enemy\Factory\EnemyFactory.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_Physics.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_PhysicsPower.h" />
@@ -12542,16 +12632,22 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Wait\Seconds\Enemy_Behaviour_Action_WaitSeconds.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\Chat\Enemy_Behaviour_Action_Chat.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Camera\ShakeCamera\Enemy_Behaviour_Action_ShakeCamera.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Ui\ShowBossHealthGauge\Enemy_Behaviour_Action_ShowBossHealthGauge.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Weather\SetStorm\Enemy_Behaviour_Action_SetStorm.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Weather\Lightning\Enemy_Behaviour_Action_Lightning.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Hyena\CallAllies\Enemy_Behaviour_Action_CallAllies.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\FieldGameObject\Enemy_Behaviour_Action_FieldGameObject.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Position\Enemy_Behaviour_Action_Position.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\TickContext\Enemy_Behaviour_TickContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Enemy_BehaviourTree.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\ShowHealthGaugeProvider\IShowHealthGaugeProvider.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\TickStatus\TickStatus.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\FirstEventDragon\Animation\FirstEventDragon_AnimationType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\FirstEventDragon\Behaviour\AppearToTouchDownIsLand\FirstEventDragon_Behaviour_AppearToTouchDownIsLand.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\Tyrannosaurus\Animation\Tyrannosaurus_AnimationType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Content\SampleEnemy\SampleEnemy.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Boss\BossEnemyBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\EnemyBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\ITakableEnemyAttack\ITakableEnemyAttack.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Status\EnemyStatus.h" />
@@ -12584,8 +12680,8 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\IFriendlyNpc.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PathFinding\HeightGridAstar\Multithread\PathFinding_HeightGridAstar_Multithread.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PathFinding\PathFinding_GridDirections.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Animator\AnimationSync\IAnimationSync.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Animator\AnimationSync\Transform\Animatoin_SyncTransform.h" />
+    <ClInclude Include="Engine\Module\Component\BoneSync\Sync\BoneSyncBase.h" />
+    <ClInclude Include="Engine\Module\Component\BoneSync\Sync\Transform\TransformSync.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Animator\IPlayerAvatarAnimator.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Animator\PlayerAvatarAnimator.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\AttackArea\PlayerAvatarAttackArea.h" />
@@ -12635,6 +12731,8 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Normal\SwordManAvatarNormalAttackState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Charge\SwordManAvatarChargeAttackChargingState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Charge\SwordManAvatarChargeAttackReleaseState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackAirState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Attack\Jump\SwordManAvatarJumpAttackLandState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\AvoidRolling\SwordManAvatar_AvoidRolling.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Chatting\SwordManAvatarChattingState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\ClimbToTop\SwordManAvatarStateClimbToTop.h" />
@@ -12651,11 +12749,20 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Run\SwordManAvatarRunState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\SwordManAvatarStateBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\SwordManAvatarStateMachine.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Transition\SwordManAvatarStateTransition.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\SwordManAvatarStateType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\UseCanon\SwordManAvatarUseCanonState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Walk\SwordManAvatarWalkState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\WarpIn\SwordManAvatar_WarpInState.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Event\IObservableStatusEvent.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Event\SwordManAvatarStatusEvent.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\InputAction\PlayerAvatarInputDevice.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\Transition\SwordManControlGuideFocus.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\ControlGuideFocus\SwordMan_ControlGuideFocus.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\ControlGuideFocus\SwordMan_IControlGuideFocusPresentation.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\ControlGuideFocus\SwordMan_IControlGuideFocusRequest.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Quest\SwordMan_QuestContext.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorialStep.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Presenter\PlayerAvatar_SwordMan_StatusPresenter.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Quest\Content\ActionInstructTutorial\Quest_SwordMan_ActionInstructTutorial.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\Status\Quest\Content\ActionInstructTutorial\Quest_SwordMan_ActionInstructTutorialModel.h" />
@@ -12677,6 +12784,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\AboardAirShipMovie\AboardAirShipMovie.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\Context\FirstTouchDownMainIsLandSceneContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\FirstTouchDownMainIsLand\FirstTouchDownMainIsLandScene.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\ArrivalMovie\GrassLandArrivalMovie.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\Context\GrassLandSceneContext.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\GrassLand\GrassLandScene.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Content\MainIslandScene\Context\MainIsLandSceneContext.h" />
@@ -12700,9 +12808,11 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Sub_IGameScene.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Sub\Type\SubSceneType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Settings\GameSettings.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Wallet\PlayerAvatar_Wallet.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\StatusParameter\Health\Health.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\StatusParameter\MoveSpeed\MoveSpeed.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\StatusParameter\Stamina\Stamina.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\StatusParameter\Money\Money.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Custom_PacketType.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\CustomPacketDispatcherBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\CustomPacketDispatcherGroup.h" />
@@ -12752,6 +12862,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\HitShakeReceiver\PlayerHitShakeReceiver.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\PlayerAvatarBase.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\SwordMan\SwordManAvatar.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\MagicCaster\MagicCasterAvatar.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\AirShip\Prop_AirShip.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\Canon\Prop_Canon.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\DestructibleObject\DestructibleObject.h" />
@@ -12760,12 +12871,39 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\LatticeBarrier\LatticeBarrierEffect.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\Cloud\CloudEffect.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\ProximityReveal\ProximityReveal.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\Grass\Grassable.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\Grass\GrassRenderer.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\Tree\TreeLeafSway.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Spawn\GamePlay_PrefabSpawner.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGauge.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\CannonCooldownGauge\Ui_CannonCooldownGauge.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthShardRenderer.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuide.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuideRow.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemPouch.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Animation\MagicCasterAvatarAnimation.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateType.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateBase.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Context\MagicCasterAvatarStateContext.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Idle\MagicCasterAvatarIdleState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Walk\MagicCasterAvatarWalkState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Run\MagicCasterAvatarRunState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Jump\MagicCasterAvatarJumpState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Floating\MagicCasterAvatarFloatingState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Cast\MagicCasterAvatarCastState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Hurt\MagicCasterAvatarHurtState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Death\MagicCasterAvatarDeathState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\DisableState\MagicCasterAvatarDisableState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateMachine.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\MagicCasterAvatarStatus.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\InputAction\MagicCasterAvatarInputAction.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Traits\MagicCasterAvatarTraits.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemBar.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemSlot.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\LockOnReticle\Ui_LockOnReticle.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\DealDamageTextBillBoard\UI_DealDamageTextBillBoard.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\NpcChatting\Ui_NpcChatting.h" />
@@ -12774,18 +12912,35 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_InjuredMask.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_PlayerStatus.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\PlayerStatus\Ui_LowHealthScreenEffect.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Weather\WeatherService.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Weather\WindZone.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\SampleTitleSceneUI\UI_SampleTitleSceneUI.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Sample\UI_SampleTitleLogo.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\MapMarker\StageMapMarker.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Loading\Ui_LoadingScreen.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Loading\Hint\Ui_LoadingHintCard.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Loading\Main_SceneLoadStep.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Model\StageSelectModel.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Presenter\StageSelectPresenter.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Stage\Ui_StageSelect_StageUI.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\UI_StageSelect.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Difficulty\StageDifficultyPips.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Type\EnemyKind.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\HyenaRepository.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGaugePresenter.h" />
     <ClInclude Include="Engine\Core\Application\ApplicationBase.h" />
     <ClInclude Include="Engine\Core\Application\Configuration\ApplicationConfiguration.h" />
     <ClInclude Include="Engine\Core\Application\Configuration\Network\ApplicationConfiguration_Network.h" />
     <ClInclude Include="Engine\Core\Application\Configuration\Physics\ApplicationConfiguration_Physics.h" />
     <ClInclude Include="Engine\Core\Application\Configuration\DebugDraw\ApplicationConfiguration_DebugDraw.h" />
+    <ClInclude Include="Engine\Core\Application\Configuration\GameWindow\ApplicationConfiguration_GameWindow.h" />
+    <ClInclude Include="Engine\Core\Application\Configuration\CodeEditor\ApplicationConfiguration_CodeEditor.h" />
+    <ClInclude Include="Engine\Core\Application\AutoMcp\AutoMcpEngineAccess.h" />
+    <ClInclude Include="Engine\Core\Application\AutoMcp\AutoMcpServer.h" />
+    <ClInclude Include="Engine\Core\Application\AutoMcp\AutoMcpCommands.h" />
+    <ClInclude Include="Engine\Core\Application\AutoMcp\AutoMcpScreenshot.h" />
+    <ClInclude Include="Engine\Core\Application\AutoMcp\AutoMcpJson.h" />
+    <ClInclude Include="Engine\Core\Application\Configuration\AutoMcp\ApplicationConfiguration_AutoMcp.h" />
     <ClInclude Include="Engine\Core\Application\Editor\Camera\Free\Editor3DCamera.h" />
     <ClInclude Include="Engine\Core\Application\Editor\EditorApplication.h" />
     <ClInclude Include="Engine\Core\Application\Game\GameApplication.h" />
@@ -12867,9 +13022,8 @@
     <ClInclude Include="Engine\Core\Object\Field\Context\FieldContext.h" />
     <ClInclude Include="Engine\Core\Object\Field\CreateField.h" />
     <ClInclude Include="Engine\Core\Object\Field\Field.h" />
-    <ClInclude Include="Engine\Core\Object\Field\IInitializablePrefabField.h" />
+    <ClInclude Include="Engine\Core\Object\Field\GuidRemap\GuidRemap.h" />
     <ClInclude Include="Engine\Core\Object\Field\Interface\IFieldContext.h" />
-    <ClInclude Include="Engine\Core\Object\Field\PrefabField.h" />
     <ClInclude Include="Engine\Core\Object\IObject.h" />
     <ClInclude Include="Engine\Core\Object\Registry\ObjectRegistry.h" />
     <ClInclude Include="Engine\Core\Physics\Physics.h" />
@@ -12904,7 +13058,6 @@
     <ClInclude Include="Engine\Module\Asset\Factory\AssetFactory.h" />
     <ClInclude Include="Engine\Module\Component\ImageRenderer\Animation\ImageAnimationRenderer.h" />
     <ClInclude Include="Engine\Module\Component\ParticleRenderer\PlayMode\ParticleSystem_PlayMode.h" />
-    <ClInclude Include="Engine\Module\GameObject\PrefabGameObject\PrefabCatchChild\PrefabCatchChild.h" />
     <ClInclude Include="Engine\Module\LifeCycleCallback\FixedUpdate\IFixedUpdatable.h" />
     <ClInclude Include="Engine\Module\LifeCycleCallback\Update\IUpdatable_PriorityOrder.h" />
     <ClInclude Include="Engine\Module\LifeCycleCallback\UserInterfaceRenderable\IUserInterfaceRenderable_PriorityOrder.h" />
@@ -12931,7 +13084,12 @@
     <ClInclude Include="Engine\Module\Component\ParticleRenderer\ParticleSystem.h" />
     <ClInclude Include="Engine\Module\Component\QuadRenderer\QuadRenderer.h" />
     <ClInclude Include="Engine\Module\Component\Rotator\Rotator.h" />
+    <ClInclude Include="Engine\Module\Component\CameraFollowTransform\CameraFollowTransform.h" />
+    <ClInclude Include="Engine\Module\Component\BoneSync\BoneSync.h" />
+    <ClInclude Include="Engine\Module\Component\BoneSync\BonePose\BonePose.h" />
     <ClInclude Include="Engine\Module\Component\Shader\IShaderConstantBufferHost.h" />
+    <ClInclude Include="Engine\Module\Component\Shader\IModelMaterialShaderPolicy.h" />
+    <ClInclude Include="Engine\Module\Component\Shader\ShaderConstantBufferSlot.h" />
     <ClInclude Include="Engine\Module\Component\Skydome3D\SkyDome3D.h" />
     <ClInclude Include="Engine\Module\Component\SphereRenderer\SphereRenderer.h" />
     <ClInclude Include="Engine\Module\GameObject\ComponentGroup\AddComponenet\AddComponent.h" />
@@ -12940,6 +13098,7 @@
     <ClInclude Include="Engine\Module\GameObject\Helper\TreeDropZone\TreeDropZone.h" />
     <ClInclude Include="Engine\Module\GameObject\Interface\IGameObject.h" />
     <ClInclude Include="Engine\Module\GameObject\PrefabGameObject\PrefabGameObject.h" />
+    <ClInclude Include="Engine\Module\GameObject\Mark\GameObjectMark.h" />
     <ClInclude Include="Engine\Module\GameObject\Transform\Transform.h" />
     <ClInclude Include="Engine\Module\Guid\Guid.h" />
     <ClInclude Include="Engine\Module\Guid\Hash\GuidHash.h" />
@@ -12975,6 +13134,7 @@
     <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\GridLayoutGroup.h" />
     <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\HorizontalLayoutGroup.h" />
     <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\LayoutCrossAlign.h" />
+    <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\LayoutElement.h" />
     <ClInclude Include="Engine\Module\NanamiUI\LayoutGroup\VerticalLayoutGroup.h" />
     <ClInclude Include="Engine\Module\NanamiUI\MouseEvent\MouseState.h" />
     <ClInclude Include="Engine\Module\NanamiUI\MovieRenderer\MovieRenderer.h" />
@@ -13011,11 +13171,18 @@
     <ClInclude Include="Engine\Module\Physics\Engine_Physics_Physics.h" />
     <ClInclude Include="Engine\Module\Physics\RaycastHit\Engine_Physics_RaycastHit.h" />
     <ClInclude Include="Engine\Module\Physics\UserData\Engine_Physics_UserData.h" />
+    <ClInclude Include="Engine\Module\Physics\BodyAssembler\Engine_Physics_BodyAssembler.h" />
+    <ClInclude Include="Engine\Module\Physics\Component\RigidBody\Engine_Physics_RigidBody.h" />
+    <ClInclude Include="Engine\Module\Physics\Component\Collider\Engine_Physics_ColliderBodyAccess.h" />
+    <ClInclude Include="Engine\Module\Physics\GroupFilter\Engine_Physics_RigidBodyGroupFilter.h" />
+    <ClInclude Include="Engine\Module\Physics\JoltUtility\Engine_Physics_JoltUtility.h" />
+    <ClInclude Include="Engine\Module\Physics\MotionType\Engine_Physics_MotionType.h" />
     <ClInclude Include="Engine\Module\Scene\GameObject\CopiedPrefabGameObject\CopiedPrefabGameObject.h" />
     <ClInclude Include="Engine\Module\Scene\GameObject\Helper\GameObject.h" />
     <ClInclude Include="Engine\Module\Scene\GameObject\SceneGameObject\SceneGameObject.h" />
     <ClInclude Include="Engine\Module\Scene\Scene.h" />
     <ClInclude Include="Engine\Module\Scene\ShadowMap\ShadowMapSetting.h" />
+    <ClInclude Include="Engine\Module\Scene\AsyncLoader\Engine_Scene_AsyncSceneLoader.h" />
     <ClInclude Include="Engine\Module\ScriptableObject\NullContextFile\NullContextFile.h" />
     <ClInclude Include="Engine\Module\ScriptableObject\ScriptableObject.h" />
     <ClInclude Include="Libs\cereal\include\cereal\access.hpp" />
@@ -13624,6 +13791,7 @@
     <ClInclude Include="Libs\JoltPhysics\Jolt\Geometry\GJKClosestPoint.h" />
     <ClInclude Include="Libs\JoltPhysics\Jolt\Geometry\IndexedTriangle.h" />
     <ClInclude Include="Libs\JoltPhysics\Jolt\Geometry\Indexify.h" />
+    <ClInclude Include="Libs\meshoptimizer\meshoptimizer.h" />
     <ClInclude Include="Libs\JoltPhysics\Jolt\Geometry\MortonCode.h" />
     <ClInclude Include="Libs\JoltPhysics\Jolt\Geometry\OrientedBox.h" />
     <ClInclude Include="Libs\JoltPhysics\Jolt\Geometry\Plane.h" />
@@ -14323,12 +14491,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -14336,12 +14506,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -14372,8 +14544,9 @@
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/bigobj /Z7 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Z7 /execution-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ProcessorNumber>12</ProcessorNumber>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
@@ -14399,8 +14572,9 @@
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/bigobj /Z7 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Z7 /execution-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ProcessorNumber>12</ProcessorNumber>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
@@ -14424,7 +14598,11 @@
 "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.vso"
 "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.pso"
 "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_VS.vso"
-"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_PS.pso"</Command>
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_PS.pso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Grass\Grass_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Grass\Grass_VS.vso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Grass\Grass_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Grass\Grass_PS.pso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Tree\Tree_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Tree\Tree_VS.vso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Tree\Tree_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Tree\Tree_PS.pso"</Command>
     </PreBuildEvent>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -14434,8 +14612,9 @@
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ProcessorNumber>12</ProcessorNumber>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
@@ -14458,7 +14637,11 @@
 "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_VS.vso"
 "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\LatticeBarrier\LatticeBarrier_PS.pso"
 "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_VS.vso"
-"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_PS.pso"</Command>
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Cloud\Cloud_PS.pso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Grass\Grass_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Grass\Grass_VS.vso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Grass\Grass_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Grass\Grass_PS.pso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T vs_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Tree\Tree_VS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Tree\Tree_VS.vso"
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe" /T ps_5_0 /E main "$(ProjectDir)Assets\Art\Shaders\Tree\Tree_PS.hlsl" /Fo "$(ProjectDir)Assets\Art\Shaders\Tree\Tree_PS.pso"</Command>
     </PreBuildEvent>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -14470,8 +14653,9 @@
       <AdditionalIncludeDirectories>Libs\glm;Libs\プロジェクトに追加すべきファイル_VC用;Libs\cereal\include;Libs\ImGui;Libs\ImGuizmo;Libs\rxcpp;Libs\JoltPhysics;Libs\tweeny;Libs\enet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/bigobj /Z7 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Z7 /execution-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ProcessorNumber>12</ProcessorNumber>
       <ObjectFileName>$(IntDir)
 </ObjectFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>

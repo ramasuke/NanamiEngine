@@ -1,7 +1,6 @@
 ﻿#include "Enemy_Behaviour_Action_SetLinearVelocity.h"
 
-#include "../../../../../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -9,9 +8,9 @@ namespace GameCore::Npc::Enemy::Behaviour
     {
         if (isGravity_)
         {
-            velocity_.y = Physics::GetLinearVelocity(context.EnemyCollider().BodyId()).y;
+            velocity_.y = context.EnemyRigidBody().LinearVelocity().y;
         }
-        Physics::SetLinearVelocity(context.EnemyCollider().BodyId(), velocity_);
+        context.EnemyRigidBody().SetLinearVelocity(velocity_);
         return TickStatus::Success;
     }
 

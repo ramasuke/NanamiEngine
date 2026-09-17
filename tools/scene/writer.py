@@ -22,12 +22,27 @@ EXACT_PID = 0x40000000
 FIRST_BIT = 0x80000000
 
 
+def _marked_gameobject_fqns(roots: list[Optional[model.GameObjectNode]]) -> set[str]:
+    """GameObject types (fqn) with at least one node carrying ``mark_`` anywhere in
+    the file. cereal only prints a type's class version on its first occurrence and
+    the engine applies it to every later one, so ``mark_`` is all-or-nothing per type."""
+    marked: set[str] = set()
+    stack = [n for n in roots if n is not None]
+    while stack:
+        node = stack.pop()
+        if node.mark is not None:
+            marked.add(model.GAMEOBJECT_FQN_BY_KIND[node.kind])
+        stack.extend(c for c in node.transform.children if c is not None)
+    return marked
+
+
 class _W:
-    def __init__(self) -> None:
+    def __init__(self, marked_fqns: set[str]) -> None:
         self.k = 0
         self.poly_ctr = 0
         self.poly: dict[str, int] = {}
         self.emitted: set[tuple] = set()
+        self.marked_fqns = marked_fqns
 
     # -- bookkeeping counters ------------------------------------------------
     def new_k(self) -> int:
@@ -79,7 +94,10 @@ class _W:
                 o.insert(0, "cereal_class_version", Num.of_int(int(n.version)))
             # literal_presence is False: never emit for this occurrence.
             for k, v in n.body.items():
-                o[k] = self.blob(v)
+                # append, not o[k]=: a versioned struct can repeat a key
+                # (BoneSync writes one "sync" member per entry, like Transform
+                # does with "child"), and __setitem__ would collapse them.
+                o.append(k, self.blob(v))
             return o
         if isinstance(n, OrderedObj):
             return OrderedObj((k, self.blob(v)) for k, v in n.items())
@@ -132,7 +150,10 @@ class _W:
         self.emit_ver(("comp", c.fqn), int(c.class_version), data)
         src = c.data if isinstance(c.data, OrderedObj) else OrderedObj()
         for k, v in src.items():
-            data[k] = self.blob(v)
+            # append, not data[k]=: a component can repeat a key (BoneSync
+            # writes one "sync" member per entry, like Transform does with
+            # "child"), and __setitem__ would collapse them.
+            data.append(k, self.blob(v))
         slot["ptr_wrapper"] = OrderedObj([("id", Num.of_int(kid)), ("data", data)])
         return slot
 
@@ -145,10 +166,11 @@ class _W:
         return obj
 
     # -- GameObject -----------------------------------------------------
-    def gameobject_body(self, node: model.GameObjectNode) -> OrderedObj:
-        """``isActive_``/``name_``/``guid_``/``components_``/``transform_``,
-        unwrapped - used directly for a ``.prefab`` root, and nested under a
-        base-chain wrapper for a ``gameObject_N``/``"child"`` polymorphic slot.
+    def gameobject_body(self, node: model.GameObjectNode, write_mark: bool) -> OrderedObj:
+        """``isActive_``/``name_``/``guid_``/``components_``/``transform_``
+        (+ ``mark_`` when ``write_mark``), unwrapped - used directly for a
+        ``.prefab`` root, and nested under a base-chain wrapper for a
+        ``gameObject_N``/``"child"`` polymorphic slot.
         """
         body = OrderedObj()
         body["isActive_"] = bool(node.is_active)
@@ -156,6 +178,8 @@ class _W:
         body["guid_"] = self.guid_obj(node.guid)
         body["components_"] = self.components_obj(node.components)
         body["transform_"] = self.transform_obj(node.transform)
+        if write_mark:
+            body["mark_"] = Num.of_int(int(node.mark or 0))
         return body
 
     def gameobject_slot(self, node: Optional[model.GameObjectNode]) -> OrderedObj:
@@ -165,16 +189,19 @@ class _W:
         slot = self.poly_slot(fqn, exact=False)
         kid = self.new_k()
         data = OrderedObj()
-        self.emit_ver(("go", fqn), model.GAMEOBJECT_CLASS_VERSION[fqn], data)
+        write_mark = fqn in self.marked_fqns
+        version_table = (model.GAMEOBJECT_CLASS_VERSION if write_mark
+                         else model.GAMEOBJECT_CLASS_VERSION_WITHOUT_MARK)
+        self.emit_ver(("go", fqn), version_table[fqn], data)
         data["value0"] = self.base_chain_obj()
-        for k, v in self.gameobject_body(node).items():
+        for k, v in self.gameobject_body(node, write_mark).items():
             data[k] = v
         slot["ptr_wrapper"] = OrderedObj([("id", Num.of_int(kid)), ("data", data)])
         return slot
 
 
 def write_scene(scene: model.Scene) -> str:
-    w = _W()
+    w = _W(_marked_gameobject_fqns(scene.roots))
     root = OrderedObj()
     root["name"] = scene.name
     root["gameObjectCount"] = Num.of_int(len(scene.roots))
@@ -190,11 +217,12 @@ def write_scene_file(path, scene: model.Scene) -> None:
 def write_prefab(prefab: model.Prefab) -> str:
     """A ``.prefab`` root is a bare object (see ``PrefabGameObject::OnSave()``):
     no polymorphic wrapper, no outer class version, no IGameObject/IObject base
-    chain - just the five body fields, then the ``copiedObjectGuidList_`` tail
-    as a bare count (``value0``) followed by that many bare Guids
+    chain - just the five body fields (+ ``mark_`` if the root has one; with no
+    class version the engine detects it by key), then the ``copiedObjectGuidList_``
+    tail as a bare count (``value0``) followed by that many bare Guids
     (``value1..N``)."""
-    w = _W()
-    root = w.gameobject_body(prefab.root)
+    w = _W(_marked_gameobject_fqns(prefab.root.transform.children))
+    root = w.gameobject_body(prefab.root, prefab.root.mark is not None)
     root["value0"] = Num.of_int(len(prefab.copied_object_guids))
     for i, guid in enumerate(prefab.copied_object_guids, 1):
         root[f"value{i}"] = w.guid_obj(guid)

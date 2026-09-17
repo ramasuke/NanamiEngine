@@ -12,12 +12,12 @@
 #include "../JoltPhysics/Jolt/Physics/Collision/CollisionCollectorImpl.h"
 #include "../JoltPhysics/Jolt/Physics/Collision/RayCast.h"
 #include "../JoltPhysics/Jolt/Physics/Collision/ShapeCast.h"
-#include "../JoltPhysics/Jolt/Physics/Collision/Shape/BoxShape.h"
-#include "../JoltPhysics/Jolt/Physics/Collision/Shape/CapsuleShape.h"
-#include "../JoltPhysics/Jolt/Physics/Collision/Shape/CylinderShape.h"
 #include "../JoltPhysics/Jolt/Physics/Collision/Shape/SphereShape.h"
+#include "../GameObject/Interface/IGameObject.h"
+#include "../GameObject/Transform/Transform.h"
 #include "BroadPhaseLayer/Engine_Physics_NonRaycastLayerFilter.h"
-#include "detail/func_trigonometric.inl"
+#include "Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "JoltUtility/Engine_Physics_JoltUtility.h"
 #include "LayerFilter/Engine_Physics_CustomObjectLayerFilter.h"
 #include "UserData/Engine_Physics_UserData.h"
 
@@ -36,108 +36,25 @@ JPH::Vec3 MultiplyVectorCompat(const JPH::RMat44& m, const JPH::Vec3& v)
     return m.Multiply3x3(v);
 }
 
-glm::vec3 NanamiEngine::Module::Physics::GetCenterOfMassPosition(const JPH::BodyID& bodyId)
+std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> NanamiEngine::Module::Physics::FindBodyOwner(
+    const std::shared_ptr<GameObject::IGameObject>& gameObject)
 {
-    const auto& bodyInterface =
-        Core::Application::ApplicationBase::Physics()
-        .GetPhysicsSystem()
-        .GetBodyInterface();
+    auto owner = gameObject;
+    while (owner)
+    {
+        const auto rigidBody = owner->Components().Catch<Component::RigidBody>().lock();
+        if (!rigidBody || !rigidBody->IsPartOfParent())
+            return owner;
 
-    return ToVec3(bodyInterface.GetCenterOfMassPosition(bodyId));
-}
+        auto parent = owner->Transform().GetParent();
+        while (parent && parent->Components().Catch<Component::RigidBody>().expired())
+            parent = parent->Transform().GetParent();
 
-glm::vec3 NanamiEngine::Module::Physics::GetLinearVelocity(const JPH::BodyID& bodyId)
-{
-    const auto& bodyInterface =
-        Core::Application::ApplicationBase::Physics()
-        .GetPhysicsSystem()
-        .GetBodyInterface();
-
-    return ToVec3(bodyInterface.GetLinearVelocity(bodyId));
-}
-
-void NanamiEngine::Module::Physics::SetLinearVelocity(const JPH::BodyID& bodyId, const glm::vec3& velocity)
-{
-    auto& bodyInterface =
-        Core::Application::ApplicationBase::Physics()
-        .GetPhysicsSystem()
-        .GetBodyInterface();
-
-    bodyInterface.SetLinearVelocity(bodyId, ToJPHVec3(velocity));
-}
-
-void NanamiEngine::Module::Physics::AddForce(const JPH::BodyID& bodyId, const glm::vec3& velocity)
-{
-    auto& bodyInterface =
-        Core::Application::ApplicationBase::Physics()
-        .GetPhysicsSystem()
-        .GetBodyInterface();
-    const JPH::Vec3 current = bodyInterface.GetLinearVelocity(bodyId);
-
-    bodyInterface.SetLinearVelocity(
-        bodyId,
-        current + ToJPHVec3(velocity)
-    );
-}
-
-glm::vec3 NanamiEngine::Module::Physics::GetAngularVelocity(const JPH::BodyID& bodyId)
-{
-    const auto& bodyInterface =
-        Core::Application::ApplicationBase::Physics()
-        .GetPhysicsSystem()
-        .GetBodyInterface();
-
-    // Jolt → rad/s
-    const JPH::Vec3 angVelRad = bodyInterface.GetAngularVelocity(bodyId);
-
-    // rad → deg
-    return glm::degrees(ToVec3(angVelRad));
-}
-
-void NanamiEngine::Module::Physics::SetAngularVelocity(
-    const JPH::BodyID& bodyId,
-    const glm::vec3& angularVelocity)
-{
-    auto& bodyInterface =
-        Core::Application::ApplicationBase::Physics()
-        .GetPhysicsSystem()
-        .GetBodyInterface();
-
-    // deg → rad
-    const glm::vec3 rad = glm::radians(angularVelocity);
-
-    bodyInterface.SetAngularVelocity(bodyId, ToJPHVec3(rad));
-}
-
-void NanamiEngine::Module::Physics::AddTorque(const JPH::BodyID& bodyId, const glm::vec3& torque)
-{
-    auto& bodyInterface =
-        Core::Application::ApplicationBase::Physics()
-        .GetPhysicsSystem()
-        .GetBodyInterface();
-
-    bodyInterface.AddTorque(bodyId, ToJPHVec3(torque));
-}
-
-
-JPH::RefConst<JPH::Shape> NanamiEngine::Module::Physics::CreateBoxShape(const JPH::Vec3& halfSize)
-{
-    return new JPH::BoxShape(halfSize);
-}
-
-JPH::RefConst<JPH::Shape> NanamiEngine::Module::Physics::CreateCapsuleShape(float halfHeight, float radius)
-{
-    return new JPH::CapsuleShape(halfHeight, radius);
-}
-
-JPH::RefConst<JPH::Shape> NanamiEngine::Module::Physics::CreateSphereShape(const float radius)
-{
-    return new JPH::SphereShape(radius);
-}
-
-JPH::RefConst<JPH::Shape> NanamiEngine::Module::Physics::CreateCylinderShape(float halfHeight, float radius)
-{
-    return new JPH::CylinderShape(halfHeight, radius);
+        if (!parent)
+            return owner;
+        owner = parent;
+    }
+    return owner;
 }
 
 NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::Raycast(
@@ -281,44 +198,6 @@ NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::SphereC
 
     const auto userData = ToUserData(lock.GetBody().GetUserData());
     return RaycastHit(true, hitPos, hitNormal, hitDistance, userData->Entity());
-}
-
-float NanamiEngine::Module::Physics::ClosestDistance(
-    const glm::vec3& center,
-    const float maxDistance,
-    const LayerMask layerMask)
-{
-    // 点クエリはJoltに無いため、極小の球を置いて「分離距離」付きの重なり判定で最短距離を求める
-    constexpr float PROBE_RADIUS = 0.01f;
-
-    const JPH::SphereShape probe(PROBE_RADIUS);
-    // スタック上のShapeを参照カウントで破棄させないためのガード
-    probe.SetEmbedded();
-
-    JPH::CollideShapeSettings settings;
-    settings.mMaxSeparationDistance = maxDistance;
-    settings.mBackFaceMode          = JPH::EBackFaceMode::CollideWithBackFaces;
-
-    JPH::ClosestHitCollisionCollector<JPH::CollideShapeCollector> collector;
-    const auto& physics = Core::Application::ApplicationBase::Physics().GetPhysicsSystem();
-
-    const CustomObjectLayerFilter layerFilter(layerMask);
-    physics.GetNarrowPhaseQuery().CollideShape(
-        &probe,
-        JPH::Vec3::sReplicate(1.0f),
-        JPH::RMat44::sTranslation(ToJPHVec3(center)),
-        settings,
-        JPH::RVec3::sZero(),
-        collector,
-        JPH::BroadPhaseLayerFilter(),
-        layerFilter,
-        NonRaycastLayerFilter());
-
-    if (!collector.HadHit())
-        return maxDistance;
-
-    // mPenetrationDepthは分離している場合に負値(= -分離距離)になる
-    return std::clamp(PROBE_RADIUS - collector.mHit.mPenetrationDepth, 0.0f, maxDistance);
 }
 
 void NanamiEngine::Module::Physics::DebugDrawRaycast(

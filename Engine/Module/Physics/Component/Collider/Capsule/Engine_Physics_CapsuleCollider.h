@@ -43,11 +43,15 @@ namespace NanamiEngine::Module::Component
             archive(CEREAL_NVP(radius_));
             archive(CEREAL_NVP(height_));
             if (version < 3) {
+                // motion 系は RigidBody に移ったので一時変数に読む
+                Physics::MotionType  legacyMotionType  = Physics::MotionType::Static;
+                Physics::Constraints legacyConstraints = Physics::Constraints::None;
                 archive(CEREAL_NVP(offset_));
-                archive(CEREAL_NVP(emotionType_));
+                archive(cereal::make_nvp("emotionType_", legacyMotionType));
                 archive(CEREAL_NVP(layer_));
-                if (version >= 2) archive(CEREAL_NVP(constraints_));
+                if (version >= 2) archive(cereal::make_nvp("constraints_", legacyConstraints));
                 if (version >= 2) archive(CEREAL_NVP(isSensor_));
+                SetLegacyMotion(legacyMotionType, legacyConstraints);
             }
         }
     };

@@ -8,6 +8,8 @@ namespace NanamiEngine::Module::Physics
         Default = 0,
         Player,
         Enemy,
+        Boundary,
+        BodyPart,
         Count
     };
 
@@ -25,7 +27,9 @@ namespace NanamiEngine::Module::Physics
     static constexpr const char* LAYER_NAMES[] = {
         "Default",
         "Player",
-        "Enemy"
+        "Enemy",
+        "Boundary",
+        "BodyPart"
     };
 
     static_assert(
@@ -69,5 +73,17 @@ namespace NanamiEngine::Module::Physics
     constexpr void RemoveLayer(LayerMask& mask, const Layer layer)
     {
         mask &= ~ToMask(layer);
+    }
+
+    // LayerMask をチェックボックスで編集
+    // 戻り値：変更されたかどうか
+    bool DrawLayerMaskGui(const char* label, LayerMask& mask);
+
+    // Boundary は Player / Enemy だけを止める
+    [[nodiscard]] constexpr bool LayersCollide(const Layer a, const Layer b)
+    {
+        if (a == Layer::Boundary) return b == Layer::Player || b == Layer::Enemy;
+        if (b == Layer::Boundary) return a == Layer::Player || a == Layer::Enemy;
+        return true;
     }
 }

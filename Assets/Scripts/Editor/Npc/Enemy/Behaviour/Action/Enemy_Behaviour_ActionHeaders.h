@@ -35,3 +35,7 @@
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Time/Timer/Friendly_Behaviour_Action_NodeTickTimer.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/Chat/Enemy_Behaviour_Action_Chat.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Camera/ShakeCamera/Enemy_Behaviour_Action_ShakeCamera.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Ui/ShowBossHealthGauge/Enemy_Behaviour_Action_ShowBossHealthGauge.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Weather/SetStorm/Enemy_Behaviour_Action_SetStorm.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Weather/Lightning/Enemy_Behaviour_Action_Lightning.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Hyena/CallAllies/Enemy_Behaviour_Action_CallAllies.h"

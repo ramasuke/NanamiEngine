@@ -1,16 +1,16 @@
 ﻿#pragma once
-#include "../../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
+#include <vector>
 #include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/Sprite/SpriteFile.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
+#include "../../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
 #include "../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Ui_BossHealthShardRenderer.h"
 
 namespace GamePlay::Ui
 {
-    // 全ボス共通のHP表示。紋章の上に扇状に並べた結晶1本がHPの 1/shardCount_ にあたり、右端の結晶から先端側へ欠けていく。
-    // 画像は tools/art/boss_health_gauge.py で生成し、配置の数値（shardBaseDistance_ など）もそのスクリプトの出力に合わせる
+    // 全ボス共通のHP表示。shardsObject_ の子に並べた結晶1本がHPの 1/結晶数 にあたり、右端（最後の子）の結晶から欠けていく。
+    // 描画は子オブジェクトの BossHealthShardRenderer / ImageRenderer / BlendImageRenderer / TextRenderer が行う
     class BossHealthGauge final : public Component::ComponentBase,
-                                  public LifeCycleCallback::IUserInterfaceRenderable,
                                   public LifeCycleCallback::IUpdatable
     {
     public:
@@ -19,29 +19,16 @@ namespace GamePlay::Ui
 
     private:
         void OnUpdate() override;
-        void OnUserInterfaceRender() override;
-        [[nodiscard]] int GetRenderOrder() const override { return renderOrder_; }
 
+        void CatchParts();
         void ApplyValue(float healthRate);
+        void ApplyToRenderers();
         [[nodiscard]] bool IsIntroPlaying() const;
         [[nodiscard]] bool IsDanger() const;
-        void DrawShard(int graphHandle, float fillRate, const glm::vec2& pivot, float angle) const;
 
-        [[serialize(0)]] int renderOrder_ = 0;
-        [[serialize(0)]] std::string bossNameTextName_ = "BossName";
-        [[serialize(0)]] FIELD(Asset::SpriteFile) crestSprite_;
-        [[serialize(0)]] FIELD(Asset::SpriteFile) crestGlowSprite_;
-        [[serialize(0)]] FIELD(Asset::SpriteFile) shardEmptySprite_;
-        [[serialize(0)]] FIELD(Asset::SpriteFile) shardFillSprite_;
-        [[serialize(0)]] FIELD(Asset::SpriteFile) shardFillDangerSprite_;
-        [[serialize(0)]] FIELD(Asset::SpriteFile) shardTrailSprite_;
-        [[serialize(0)]] int shardCount_ = 8;
-        [[serialize(0)]] float arcAngle_deg_ = 140.0f;
-        // 回転中心から結晶の根元までの距離と、結晶画像の上下の余白
-        [[serialize(0)]] float shardBaseDistance_ = 94.4f;
-        [[serialize(0)]] float shardPadding_px_ = 10.4f;
-        [[serialize(0)]] glm::vec2 pivotOffset_ = glm::vec2(0.0f, 84.8f);
-        [[serialize(0)]] glm::vec2 crestOffset_ = glm::vec2(0.0f, -35.2f);
+        [[serialize(2)]] FIELD(NanamiUi::TextRenderer) bossNameText_;
+        [[serialize(2)]] FIELD(GameObject::IGameObject) shardsObject_;
+        [[serialize(2)]] FIELD(NanamiUi::BlendImageRenderer) crestGlow_;
         [[serialize(0)]] float dangerHealthRate_ = 0.3f;
         [[serialize(0)]] float trailDelay_secs_ = 0.5f;
         [[serialize(0)]] float trailSpeed_perSec_ = 0.35f;
@@ -49,7 +36,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] int pulseMaxAlpha_ = 90;
         [[serialize(0)]] float introFillDuration_secs_ = 1.2f;
 
-        FIELD(NanamiUi::TextRenderer) bossNameText_;
+        std::vector<std::weak_ptr<BossHealthShardRenderer>> shards_;
         float targetRate_ = 1.0f;
         float value_ = 0.0f;
         float trailValue_ = 0.0f;
@@ -64,20 +51,9 @@ namespace GamePlay::Ui
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<ComponentBase>(this));
-            archive(CEREAL_NVP(renderOrder_));
-            archive(CEREAL_NVP(bossNameTextName_));
-            archive(CEREAL_NVP(crestSprite_));
-            archive(CEREAL_NVP(crestGlowSprite_));
-            archive(CEREAL_NVP(shardEmptySprite_));
-            archive(CEREAL_NVP(shardFillSprite_));
-            archive(CEREAL_NVP(shardFillDangerSprite_));
-            archive(CEREAL_NVP(shardTrailSprite_));
-            archive(CEREAL_NVP(shardCount_));
-            archive(CEREAL_NVP(arcAngle_deg_));
-            archive(CEREAL_NVP(shardBaseDistance_));
-            archive(CEREAL_NVP(shardPadding_px_));
-            archive(CEREAL_NVP(pivotOffset_));
-            archive(CEREAL_NVP(crestOffset_));
+            archive(CEREAL_NVP(bossNameText_));
+            archive(CEREAL_NVP(shardsObject_));
+            archive(CEREAL_NVP(crestGlow_));
             archive(CEREAL_NVP(dangerHealthRate_));
             archive(CEREAL_NVP(trailDelay_secs_));
             archive(CEREAL_NVP(trailSpeed_perSec_));
@@ -89,20 +65,14 @@ namespace GamePlay::Ui
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
-            if (version >= 0) archive(CEREAL_NVP(renderOrder_));
-            if (version >= 0) archive(CEREAL_NVP(bossNameTextName_));
-            if (version >= 0) archive(CEREAL_NVP(crestSprite_));
-            if (version >= 0) archive(CEREAL_NVP(crestGlowSprite_));
-            if (version >= 0) archive(CEREAL_NVP(shardEmptySprite_));
-            if (version >= 0) archive(CEREAL_NVP(shardFillSprite_));
-            if (version >= 0) archive(CEREAL_NVP(shardFillDangerSprite_));
-            if (version >= 0) archive(CEREAL_NVP(shardTrailSprite_));
-            if (version >= 0) archive(CEREAL_NVP(shardCount_));
-            if (version >= 0) archive(CEREAL_NVP(arcAngle_deg_));
-            if (version >= 0) archive(CEREAL_NVP(shardBaseDistance_));
-            if (version >= 0) archive(CEREAL_NVP(shardPadding_px_));
-            if (version >= 0) archive(CEREAL_NVP(pivotOffset_));
-            if (version >= 0) archive(CEREAL_NVP(crestOffset_));
+            // v2 で子オブジェクトの名前検索を FIELD に置き換えた
+            std::string bossNameTextName_, shardsName_, crestGlowName_;
+            if (version < 2) archive(CEREAL_NVP(bossNameTextName_));
+            if (version >= 2) archive(CEREAL_NVP(bossNameText_));
+            if (version >= 1 && version < 2) archive(CEREAL_NVP(shardsName_));
+            if (version >= 2) archive(CEREAL_NVP(shardsObject_));
+            if (version >= 1 && version < 2) archive(CEREAL_NVP(crestGlowName_));
+            if (version >= 2) archive(CEREAL_NVP(crestGlow_));
             if (version >= 0) archive(CEREAL_NVP(dangerHealthRate_));
             if (version >= 0) archive(CEREAL_NVP(trailDelay_secs_));
             if (version >= 0) archive(CEREAL_NVP(trailSpeed_perSec_));
@@ -114,4 +84,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::BossHealthGauge, 0)
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::BossHealthGauge, 2)
