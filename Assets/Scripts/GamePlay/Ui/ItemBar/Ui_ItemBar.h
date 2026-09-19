@@ -38,6 +38,7 @@ namespace GamePlay::Ui
 
         void OnUpdate() override;
 
+        /// 見せる枠数(ポーチの枠数と maxVisibleSlots_ の小さい方)に足りない分だけ枠を生成し、帯の位置を合わせ直す
         void SpawnSlots(const GameCore::PlayerAvatar::ItemPouch& pouch);
         /// 枠の中身(アイコン・個数・名前)を作り直す。ポーチが変わったときだけ呼ぶ
         void RefreshContent(const GameCore::PlayerAvatar::ItemPouch& pouch);

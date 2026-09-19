@@ -34,8 +34,11 @@ namespace GameCore::PlayerAvatar
         }
         Input<void> MakeInputAction(const std::function<bool()>& checkInput);
         [[nodiscard]] const XINPUT_STATE& XInput() const { return xInput_; }
+        /** @brief このフレームのホイール回転量。奥へ回すと正 */
+        [[nodiscard]] int MouseWheelDelta() const { return mouseWheelDelta_; }
 
     private:
+        void UpdateMouseWheel();
         void UpdateCurrentDevice();
 
         std::vector<std::shared_ptr<IPlayerAvatarInput>> inputs_;
@@ -43,5 +46,8 @@ namespace GameCore::PlayerAvatar
         PlayerAvatarInputDevice currentDevice_ = PlayerAvatarInputDevice::KeyboardMouse;
         int previousMouseX_ = 0;
         int previousMouseY_ = 0;
+        // 累積値をリセットせずに読み、前回との差を取る。リセットすると複数のアバターで1回分を取り合う
+        int previousMouseWheel_ = GetMouseWheelRotVol(FALSE);
+        int mouseWheelDelta_ = 0;
     };
 }

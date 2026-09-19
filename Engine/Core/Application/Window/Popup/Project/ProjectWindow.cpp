@@ -16,6 +16,7 @@
 #include "../../../ApplicationBase.h"
 #include "../../../Configuration/CodeEditor/ApplicationConfiguration_CodeEditor.h"
 #include "../../../../../Module/Exception/Engine_Module_Exception.h"
+#include "../../../../../Module/Gui/StaticReflection/Engine_Module_StaticReflection.h"
 #include "../../../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../Inspector/InspectorWindow.h"
 
@@ -83,6 +84,23 @@ namespace
         for (auto& child : directory.GetDirectories())
         {
             if (auto* found = FindDirectoryContainingAsset(child, guid))
+                return found;
+        }
+
+        return nullptr;
+    }
+
+    /** @brief 指定したパスのディレクトリを再帰的に探す */
+    NanamiEngine::Core::FileSystem::Directory* FindDirectoryByPath(
+        NanamiEngine::Core::FileSystem::Directory& directory,
+        const std::string& path)
+    {
+        if (directory.GetPath() == path)
+            return &directory;
+
+        for (auto& child : directory.GetDirectories())
+        {
+            if (auto* found = FindDirectoryByPath(child, path))
                 return found;
         }
 
@@ -186,7 +204,7 @@ namespace
 
         ImGui::PushID(&file);
 
-        const bool isRenaming = renameState.target == &file;
+        const bool isRenaming = renameState.targetPath == file.GetPath();
 
         if (isRenaming)
         {
@@ -211,12 +229,12 @@ namespace
                 {
                     file.Rename(std::string(renameState.buffer) + extension);
                 }
-                renameState.target = nullptr;
+                renameState.targetPath.clear();
             }
             else if (ImGui::IsItemDeactivated())
             {
                 // Escapeまたはフォーカスロストでキャンセル
-                renameState.target = nullptr;
+                renameState.targetPath.clear();
             }
 
             ImGui::PopID();
@@ -266,7 +284,7 @@ namespace
 
             if (ImGui::MenuItem("Rename"))
             {
-                renameState.target = &file;
+                renameState.targetPath = file.GetPath();
                 renameState.justStarted = true;
                 const std::string stem = std::filesystem::path(name).stem().string();
                 strncpy_s(renameState.buffer, sizeof(renameState.buffer), stem.c_str(), _TRUNCATE);
@@ -300,9 +318,19 @@ namespace
 int Core::PopupWindow::ProjectWindow::counter_ = 0;
 
 Core::PopupWindow::ProjectWindow::ProjectWindow()
-    : currentDirectory_(&Application::ApplicationBase::AssetsDirectory())
+    : currentDirectoryPath_(Application::ApplicationBase::AssetsDirectory().GetPath())
 {
     id_ = counter_++;
+}
+
+Core::FileSystem::Directory& Core::PopupWindow::ProjectWindow::CurrentDirectory()
+{
+    auto& assetsDirectory = Application::ApplicationBase::AssetsDirectory();
+    if (auto* directory = FindDirectoryByPath(assetsDirectory, currentDirectoryPath_))
+        return *directory;
+
+    currentDirectoryPath_ = assetsDirectory.GetPath();
+    return assetsDirectory;
 }
 
 Core::PopupWindow::PopupWindowState Core::PopupWindow::ProjectWindow::OnDraw(const PopupWindowDrawGuiContext context)
@@ -335,7 +363,7 @@ Core::PopupWindow::PopupWindowState Core::PopupWindow::ProjectWindow::OnDraw(con
     {
         OnDrawDirectoryTree(assetsDirectory);
         ImGui::NextColumn();
-        DrawDirectoryContents(*currentDirectory_, context.FileDraggingHand(), highlightedAssetGuid_, scrollToHighlightPending);
+        DrawDirectoryContents(CurrentDirectory(), context.FileDraggingHand(), highlightedAssetGuid_, scrollToHighlightPending);
     }
     else
     {
@@ -390,9 +418,9 @@ void Core::PopupWindow::ProjectWindow::OnDrawDirectoryTree(FileSystem::Directory
     ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleColor(ImGuiCol_HeaderActive , ImVec4(0, 0, 0, 0));
 
-    if (ImGui::Selectable(directory.GetName().c_str(), currentDirectory_ == &directory, ImGuiSelectableFlags_AllowDoubleClick, buttonSize))
+    if (ImGui::Selectable(directory.GetName().c_str(), currentDirectoryPath_ == directory.GetPath(), ImGuiSelectableFlags_AllowDoubleClick, buttonSize))
     {
-        currentDirectory_ = &directory;
+        currentDirectoryPath_ = directory.GetPath();
     }
     const bool hovered = ImGui::IsItemHovered();
 
@@ -439,9 +467,9 @@ void Core::PopupWindow::ProjectWindow::OnDrawSearchedDirectoryTree(
     if (ContainsCaseInsensitive(directory.GetName(), filter))
     {
         ImGui::PushID(&directory);
-        if (ImGui::Selectable(directory.GetName().c_str(), currentDirectory_ == &directory))
+        if (ImGui::Selectable(directory.GetName().c_str(), currentDirectoryPath_ == directory.GetPath()))
         {
-            currentDirectory_ = &directory;
+            currentDirectoryPath_ = directory.GetPath();
         }
         if (ImGui::IsItemHovered())
         {
@@ -489,35 +517,39 @@ void Core::PopupWindow::ProjectWindow::OnDrawToolbar()
     if (ImGui::BeginPopup("CreatePopup"))
     {
         ImGui::InputText("Filename", fileName, IM_ARRAYSIZE(fileName));
-
-        for (const auto& [assetName, extension] :
-             Asset::AssetFactory::Instance().CreatableAssets())
+        const bool hasFileName = fileName[0] != '\0';
+        if (!hasFileName)
         {
-            if (ImGui::Button(("new " + assetName).c_str()))
-            {
-                if (fileName[0] == '\0')
-                    break;
+            ImGui::TextDisabled("Enter a file name first");
+        }
+        ImGui::Separator();
 
+        std::vector<NanamiEngine::Module::StaticReflection::CategoryMenuItem> menuItems;
+        for (const auto& creatable : Asset::AssetFactory::Instance().CreatableAssets())
+        {
+            menuItems.push_back({ creatable.category, creatable.name, hasFileName, [this, extension = creatable.extension]
+            {
                 const std::string filename = std::string(fileName) + extension;
 
-                currentDirectory_->AddFile(
+                auto& currentDirectory = CurrentDirectory();
+                currentDirectory.AddFile(
                     FileSystem::File::CreateOrLoadFile(
-                        currentDirectory_->GetPath() + "/" + filename,
+                        currentDirectory.GetPath() + "/" + filename,
                         filename
                     )
                 );
 
                 fileName[0] = '\0';
-                ImGui::CloseCurrentPopup();
-            }
+            } });
         }
+        NanamiEngine::Module::StaticReflection::DrawCategoryMenu(menuItems);
         ImGui::EndPopup();
     }
 
     ImGui::SameLine();
     if (ImGui::Button("Explorer"))
     {
-        OpenDirectoryInExplorer(*currentDirectory_);
+        OpenDirectoryInExplorer(CurrentDirectory());
     }
 
     ImGui::EndChild();
@@ -532,7 +564,7 @@ void Core::PopupWindow::ProjectWindow::RevealAsset(const ::Guid& assetGuid)
         return;
 
     searchBuffer_[0] = '\0'; // 検索中だとDrawSearchedFilesが名前フィルタで対象を隠してしまうため解除
-    currentDirectory_ = owningDirectory;
+    currentDirectoryPath_ = owningDirectory->GetPath();
     highlightedAssetGuid_ = assetGuid;
     pendingRevealDirectoryPath_ = owningDirectory->GetPath();
 

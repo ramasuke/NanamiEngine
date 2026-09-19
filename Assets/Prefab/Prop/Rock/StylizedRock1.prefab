@@ -1,0 +1,215 @@
+{
+    "isActive_": true,
+    "name_": "StylizedRock1",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "C64F8468-8A84-420B-9D26-A64B21E4C80E"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 0
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 1.0,
+            "value1": 1.0,
+            "value2": 1.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 1.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 1.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 1.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 1,
+        "child": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": true,
+                    "name_": "Model",
+                    "guid_": {
+                        "value_": "DD6CD4F8-3019-4F05-A882-D8203896A7A7"
+                    },
+                    "components_": {
+                        "componentCount": 2,
+                        "component_0": {
+                            "polymorphic_id": 2147483650,
+                            "polymorphic_name": "NanamiEngine::Module::Component::ModelRenderer",
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 5,
+                                    "value0": {
+                                        "cereal_class_version": 0,
+                                        "guid_": {
+                                            "value_": "09C0AFEE-9837-4247-A8E7-062B1EB057F5"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value2": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value3": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value4": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "mv1File_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483651,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "4C98E1CE-243E-4C5E-A8A0-9696E21B0494"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "useFixedInterpolation_": false
+                                }
+                            }
+                        },
+                        "component_1": {
+                            "polymorphic_id": 2147483651,
+                            "polymorphic_name": "NanamiEngine::Module::Component::StaticMeshCollider",
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "cereal_class_version": 4,
+                                    "value0": {
+                                        "cereal_class_version": 6,
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "AB4D3F8E-0B7C-433A-BB08-D74A6E670D66"
+                                            },
+                                            "isEnable_": true
+                                        },
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 90.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "layer_": 0,
+                                        "isSensor_": false,
+                                        "friction_": 0.20000000298023225
+                                    },
+                                    "scale_": {
+                                        "value0": 100.0,
+                                        "value1": 100.0,
+                                        "value2": 100.0
+                                    },
+                                    "simplifyEnabled_": true,
+                                    "maxSimplifyError_": 0.5,
+                                    "minTriangleRatio_": 0.05000000074505806
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.07999999821186066,
+                            "value1": 0.07999999821186066,
+                            "value2": 0.07999999821186066
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.07999999821186066,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.07999999821186066,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.07999999821186066,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        }
+    },
+    "mark_": 0,
+    "value0": 0
+}

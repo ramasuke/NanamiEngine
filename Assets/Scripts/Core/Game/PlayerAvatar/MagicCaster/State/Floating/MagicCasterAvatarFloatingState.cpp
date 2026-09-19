@@ -1,6 +1,6 @@
-#include "MagicCasterAvatarFloatingState.h"
+﻿#include "MagicCasterAvatarFloatingState.h"
 
-#include "../../Input/PlayerAvatarInput_void.h"
+#include "../../../Input/PlayerAvatarInput_void.h"
 
 void GameCore::PlayerAvatar::MagicCaster::State::FloatingState::DoEnter()
 {
@@ -12,22 +12,20 @@ void GameCore::PlayerAvatar::MagicCaster::State::FloatingState::DoFixedUpdate()
 
 void GameCore::PlayerAvatar::MagicCaster::State::FloatingState::DoUpdate()
 {
+    UpdateTransitions();
+}
+
+void GameCore::PlayerAvatar::MagicCaster::State::FloatingState::VisitTransitions(
+    IMagicCasterAvatarTransitionVisitor& visitor) const
+{
     if (!Conditions().IsGround())
         return;
 
-    if (Status().IsDamaged())
-    {
-        OnChangeState(MagicCasterAvatarStateType::Hurt);
-        return;
-    }
-    if (Input().Move().IsUpdatePressed())
-    {
-        OnChangeState((Input().Run().IsUpdatePressed() && Status().CanRun())
-            ? MagicCasterAvatarStateType::Run
-            : MagicCasterAvatarStateType::Walk);
-        return;
-    }
-    OnChangeState(MagicCasterAvatarStateType::Idle);
+    visitor.Automatic(MagicCasterAvatarStateType::Hurt, Status().IsDamaged());
+    const bool isMoving = Input().Move().IsUpdatePressed();
+    visitor.OnInput(MagicCasterAvatarStateType::Run, MagicCasterAvatarInput::Run, PlayerAvatarInputPhase::Holding, isMoving && Status().CanRun());
+    visitor.OnInput(MagicCasterAvatarStateType::Walk, MagicCasterAvatarInput::Move, PlayerAvatarInputPhase::Holding, true);
+    visitor.Automatic(MagicCasterAvatarStateType::Idle, true);
 }
 
 void GameCore::PlayerAvatar::MagicCaster::State::FloatingState::DoExit()

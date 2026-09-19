@@ -1,0 +1,107 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::MagicSpellData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Magic/FrostBreath.magicSpell",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "908D34B5-6B54-4339-851F-3CDDC48FD51C"
+                    }
+                },
+                "displayName_": "氷の息吹",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "32E4E5BF-3CEB-4C32-95C5-AA8C88C581B5"
+                                }
+                            }
+                        }
+                    }
+                },
+                "castSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "CBEEAB36-E217-47B7-A580-96531F997685"
+                                }
+                            }
+                        }
+                    }
+                },
+                "manaCost_": 24.0,
+                "cooldown_secs_": 9.0,
+                "castFireTime_secs_": 0.8100000023841858,
+                "castTotalDuration_secs_": 2.3499999046325685,
+                "effect_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GamePlay::Magic::ChannelSpellEffect",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "channelPrefab_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "3A392A91-7221-4E2A-9BB3-0D96AC2C4EEF"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "power_": {
+                                "cereal_class_version": 0,
+                                "value_": 5
+                            },
+                            "duration_secs_": 1.399999976158142,
+                            "tickInterval_secs_": 0.20000000298023225,
+                            "range_": 60.0
+                        }
+                    }
+                },
+                "castMotion_": 10,
+                "castEffectPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "0A12027A-D8BC-4645-8E01-A650A5EE7FD3"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

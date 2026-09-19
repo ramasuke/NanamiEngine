@@ -28,8 +28,8 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
   オブジェクト単位で C++例外・SEH例外（nullptr参照など）から保護し、1つのコンポーネントの不具合で
   エディタ全体が落ちないようにしています（`ProjectConfig/Application/CrashRecoveryEnabled.json` /
   `DebuggerFailFastEnabled.json` / `BreakOnLogErrorEnabled.json` で挙動を切り替え可能）。
-- **クライアント/サーバー型ネットワーク同期**: enet(UDP) を用い、Relay / Authoritative の2方式、
-  LAN / Localhost の接続先切り替えに対応。任意の `SyncParameter<T>` 型やオブジェクトの Spawn、
+- **クライアント/サーバー型ネットワーク同期**: enet(UDP) を用い、Relay / Authoritative の2方式に対応。
+  ホスト/クライアントの役割は実行時に決まり、LAN のセッション探索（ブロードキャスト）でホストを見つけられます。任意の `SyncParameter<T>` 型やオブジェクトの Spawn、
   Transform・Animation の同期、所有者(権威)管理とクライアント離脱時の所有権移譲、汎用RPCを扱えます。
 - **NPC AI**: 敵（Enemy）と味方NPC（FriendlyNpc）の2系統の BehaviourTree による行動制御
   （Selector / Sequence / RandomSelector(重み付き) / Once系 / Action ノード）と、高さサンプリング付き
@@ -71,7 +71,10 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
   `GameWindow`（Hierarchy を含むシーン編集）、`PrefabViewWindow`、`AnimatorWindow`、
   `ModelViewWindow`、`AnimationViewWindow`）と「ポップアップウィンドウ」（`IPopupWindow` 派生:
   `InspectorWindow`、`ProjectWindow`、`ConsoleWindow`、`NetworkLoggerWindow`、
-  `RunningAnimationTreeWindow`）、`EditorToolbarWindow` に分かれます。
+  `RunningAnimationTreeWindow`、`BuildSettingsWindow`）、`EditorToolbarWindow` に分かれます。
+  メイン/ポップアップウィンドウと ProjectWindow の「+」新規アセットは、登録マクロに渡す `"A::B"` 形式の
+  カテゴリで入れ子メニューになります（`REGISTER_POPUP_WINDOW(T, "General")` など）。
+  Game 版のビルドは `BuildSettingsWindow`（製品名・起動シーン・Release/Debug・出力先、Build / Build And Run）から行います。
 - **Coroutine** — C++20 コルーチンの `Task<T>`、`CoroutineScheduler`、非同期実行用 `FutureTask`、
   Awaitable群（`WaitForSeconds`、`WaitUntil`、`WaitForTween`/`WaitForTweenV`、`WaitForObservable`、
   `WaitForSubscription`、`Yield`）。
@@ -229,12 +232,18 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
 
 enet(UDP) 上に構築されたクライアント/サーバー型モデルです（純粋なP2Pではありません）。
 
-- **接続方式**（`ProjectConfig/Network/*.json` で設定）:
-  - `NetworkMode`: `Server` / `Client`
+- **役割と開始**: ホスト/クライアントは設定ではなく実行時に決まります。`NetworkRunnerBase::StartHost(sessionKey)` /
+  `StartClient(HostEndpoint)` で開始し、結果は `GetConnectionState()`（`Connecting`/`Connected`/`Failed`/`Disconnected`）、
+  役割は `IsServer()` で見ます。`Shutdown()` で止めてやり直せます。ディスパッチャーの `IsServer()` もこの実行時の役割に従います。
+- **LAN セッション探索**（`Engine/Core/Network/Discovery/`）: ホストは `LanSessionAdvertiser` が UDP 1235 で問い合わせを待ち、
+  セッションキー（任意の文字列）が一致すれば待ち受けポートを返します。探す側は `LanSessionFinder` が 127.0.0.1・255.255.255.255・
+  各 IPv4 アダプタのサブネットブロードキャストへ問い合わせます。ゲーム側は `GamePlay::Network::JoinOrHostStageAsync` で、
+  ステージ名をキーに「同じステージのホストが居れば参加、居なければ自分がホスト」を決めています（`GrassLandScene`）。
+  ゲームポート 1234 と探索ポート 1235 は固定なので、ホストは 1 台の PC に 1 つです。
+- **設定**（`ProjectConfig/Network/*.json`、ホスト時に使う）:
   - `ServerType`: `Relay`（受信をそのままブロードキャスト。Dispatcherの `OnServerRelayReceive`） /
     `Authoritative`（サーバーで処理し、Dispatcherが `OnServerAuthoritativeReceive` をオーバーライドして
     検証・選択的な再送信を行う）
-  - `ConnectionTarget`: `Localhost` / `LAN`（`LanAddress` で接続先指定）
   - `MaxClients`、`UnreliableSendRate`（信頼性なし送信の間引きレート）
 - **中核クラス**: `Engine/Core/Network/EnetUDPNetworkSystem` が `INetworkSystem` を実装し、
   `enet::ENetHost`/`ENetPeer` をラップ。信頼性なし送信用のアキュムレータと送信間隔制御、
@@ -258,11 +267,15 @@ enet(UDP) 上に構築されたクライアント/サーバー型モデルです
   `SyncParameter`/`Rpc`、`PlayerLeft`/`OwnershipSnapshot` は `Session`）が持ち、ゲーム側は
   `Custom_PacketType`（101以降）で `SpawnPlayerAvatar`/`SpawnEnemy` を追加しています。
   送受信されたパケットは `PacketLog` に記録され、エディタの `NetworkLoggerWindow` で確認できます。
-- **所有者テーブルとクライアント離脱**: `NetworkObjectId`の上位バイトは「Spawnしたピア」でしかなく、現在の所有者(権威)は
-  `NetworkObjectInstanceRegistry`の所有者テーブル(`OwnerOf`/`SetOwner`)で管理します。権威判定は`NetworkRunnerBase::IsLocallyOwned`
-  に一本化されています。ホストはクライアントの切断を検知すると`PlayerLeft{left, newOwner}`を全員へ配り(自分の受信キューにも積む)、
-  全ピアが`SessionDispatcher`で同じ手順を実行します: 登録時の`OwnerLeavePolicy`が`Destroy`(プレイヤーアバター)なら破棄、
-  `Transfer`(敵など)ならホストへ所有権を移譲。後入りには`OwnershipSnapshot`で「Spawnしたピア≠所有者」の一覧を送ります。
+- **所有者テーブルとクライアント離脱**: ネットワークオブジェクトが持つPlayer情報は「所有者」1つだけです。`NetworkObjectId`の
+  上位バイトは各ピアが独立に採番しても衝突しないための名前空間で、それ以上の意味は持ちません。所有者(権威)は
+  `NetworkObjectInstanceRegistry`の所有者テーブル(`OwnerOf`/`SetOwner`)だけが持ち、初期所有者はSpawn時に
+  `RegisterWithId(..., owner)`へ明示的に渡します(送信側は自分、受信側はspawnパケット先頭の送信者)。権威判定は
+  `NetworkRunnerBase::IsLocallyOwned`に一本化されています。ホストはクライアントの切断を検知すると
+  `PlayerLeft{left, newOwner}`を全員へ配り(自分の受信キューにも積む)、全ピアが`SessionDispatcher`で同じ手順を実行します:
+  登録時の`OwnerLeavePolicy`が`Destroy`(プレイヤーアバター)なら破棄、`Transfer`(敵など)ならホストへ所有権を移譲。
+  後入りには`OwnershipSnapshot`で所有者テーブルの全件を送ります。これはspawn履歴の再送より先に届くため、
+  `RegisterWithId`は所有者が設定済みのエントリを上書きしません(履歴パケットが運ぶ所有者は移譲前の値のため)。
   ホスト自身の`PlayerId`は`0`(クライアントは1,2,…)。ホスト自体の離脱(ホストマイグレーション)は未対応です。
 - **汎用RPC**: 「対象`NetworkObjectId`のコンポーネントに対してメソッドを1つ呼ぶ」形のものは
   `Engine/Module/Network/Rpc/Engine_Network_Rpc.h`の`Rpc<Args...>`/`RpcDef<RpcType, Args...>`
@@ -488,6 +501,10 @@ SDFベースで生成し、`SpriteFile` の `.png.meta` も出力します（既
   バーチャルカメラシステム。
 - `R4/` — `SensorEnterableAsObservable`/`SensorExitableAsObservable`/`SensorStayableAsObservable`。
   物理センサー/トリガーのenter/stay/exitイベントをrxcppのobservableでラップ。
+- `AssetUpdater/` — 配信アセットの更新確認。サーバーの `manifest.json`（全アセットの一覧）を取得して
+  手元の `installed.json` と突き合わせ、差分を返す。`IAssetUpdater` を `HttpAssetUpdater`（WinHTTP）と
+  `NullAssetUpdater`（常に更新なし）で差し替えられる。エンジンからは呼ばれず、使いたいゲームだけが
+  ゲーム側コードから呼ぶ。現状は差分の算出までで、ダウンロードと検証は未実装。
 
 `stdafx.h` から実際に使われているのは DxLib、EffekseerForDXLib、ImGuiHelper、rxcpp (`rx.hpp`)、
 Jolt (`Jolt/Jolt.h`)、glm (`vec2.hpp`/`vec3.hpp`/`fwd.hpp`)、および C++20 標準ライブラリ

@@ -1,0 +1,270 @@
+{
+    "isActive_": true,
+    "name_": "ArcaneRay",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "46EA16EB-14A1-405E-8B06-90E8A72FFE73"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 3,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::Module::Component::BoxCollider",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 6,
+                    "value0": {
+                        "cereal_class_version": 6,
+                        "value0": {
+                            "cereal_class_version": 0,
+                            "guid_": {
+                                "value_": "27292765-47C6-4A50-B20D-EC4269AD78E9"
+                            },
+                            "isEnable_": true
+                        },
+                        "offset_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": -80.0
+                        },
+                        "offsetRotation_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "layer_": 0,
+                        "isSensor_": true,
+                        "friction_": 0.20000000298023225
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "value3": {
+                        "cereal_class_version": 0
+                    },
+                    "size_": {
+                        "value0": 13.0,
+                        "value1": 13.0,
+                        "value2": 160.0
+                    }
+                }
+            }
+        },
+        "component_1": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiEngine::Module::Component::RigidBody",
+            "ptr_wrapper": {
+                "id": 2147483650,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "guid_": {
+                            "value_": "81E339DC-C9B9-46E8-910A-0E1CC5FFD924"
+                        },
+                        "isEnable_": true
+                    },
+                    "motionType_": 1,
+                    "mass_": 1.0,
+                    "isGravity_": false,
+                    "constraints_": 0,
+                    "isPartOfParent_": false
+                }
+            }
+        },
+        "component_2": {
+            "polymorphic_id": 2147483651,
+            "polymorphic_name": "GamePlay::Magic::MagicChannel",
+            "ptr_wrapper": {
+                "id": 2147483651,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "192EC9CC-8A20-448A-A330-5A9F37307E14"
+                        },
+                        "isEnable_": true
+                    },
+                    "hitPrefab_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "E47E9CFB-9A83-4B9F-B4BB-8C7E39F7F2F4"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "hitEffectLifeTime_secs_": 0.6000000238418579,
+                    "linger_secs_": 0.5
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 0.0
+        },
+        "localScale_": {
+            "value0": 1.0,
+            "value1": 1.0,
+            "value2": 1.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 1.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 1.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 1.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 1,
+        "child": {
+            "polymorphic_id": 2147483652,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483653,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": true,
+                    "name_": "Visual",
+                    "guid_": {
+                        "value_": "DAE94C1E-84E9-4748-9B42-228F43741940"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 2147483653,
+                            "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
+                            "ptr_wrapper": {
+                                "id": 2147483654,
+                                "data": {
+                                    "cereal_class_version": 1,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "E9EFA4D3-B16C-4492-925E-708577A21961"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value2": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "particleFile_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483655,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "33BC5A1D-9456-49F2-9A5C-485484DF03B1"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "playingDuration_secs_": 60.0,
+                                    "playMode_": 0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 1.2999999523162842,
+                            "value2": -6.400000095367432
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 8.0,
+                            "value1": 8.0,
+                            "value2": 8.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 8.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 8.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 8.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 1.2999999523162842,
+                                "value2": -6.400000095367432,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        }
+    },
+    "mark_": 0,
+    "value0": 0
+}

@@ -41,7 +41,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         bool isImmediateApply_ = true;
 
         float yaw_              = 0.0f;
-        float pitch_            = 0.2f;
+        float pitch_            = -0.3f;
         float minPitch_         = -1.2f;
         float maxPitch_         =  1.2f;
         float mouseSensitivity_ = 0.005f;

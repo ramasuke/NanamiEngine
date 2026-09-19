@@ -1,0 +1,265 @@
+{
+    "isActive_": true,
+    "name_": "WindCutter",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "4C486EB6-D98D-4CBE-8AC0-7EA258611DB0"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 3,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::Module::Component::SphereCollider",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 6,
+                        "value0": {
+                            "cereal_class_version": 0,
+                            "guid_": {
+                                "value_": "8A5866E2-863E-4C9D-A4E5-19856A2E42DD"
+                            },
+                            "isEnable_": true
+                        },
+                        "offset_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "offsetRotation_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "layer_": 0,
+                        "isSensor_": false,
+                        "friction_": 0.20000000298023225
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "value3": {
+                        "cereal_class_version": 0
+                    },
+                    "radius_": 50.0
+                }
+            }
+        },
+        "component_1": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiEngine::Module::Component::RigidBody",
+            "ptr_wrapper": {
+                "id": 2147483650,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "guid_": {
+                            "value_": "D9CE18D9-4D20-40AB-80FD-F9AA7B6EAEF9"
+                        },
+                        "isEnable_": true
+                    },
+                    "motionType_": 2,
+                    "mass_": 1.0,
+                    "isGravity_": false,
+                    "constraints_": 0,
+                    "isPartOfParent_": false
+                }
+            }
+        },
+        "component_2": {
+            "polymorphic_id": 2147483651,
+            "polymorphic_name": "GamePlay::Magic::MagicProjectile",
+            "ptr_wrapper": {
+                "id": 2147483651,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "956502D4-0AB7-4E52-9F37-A0590243A109"
+                        },
+                        "isEnable_": true
+                    },
+                    "impactPrefab_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "5617E19C-4F20-4EB7-905D-09E3C839975D"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "impactLifeTime_secs_": 0.9300000071525574
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 0.0
+        },
+        "localScale_": {
+            "value0": 0.11999999731779099,
+            "value1": 0.11999999731779099,
+            "value2": 0.11999999731779099
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 0.11999999731779099,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 0.11999999731779099,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.11999999731779099,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 1,
+        "child": {
+            "polymorphic_id": 2147483652,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483653,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": true,
+                    "name_": "TravelEffect",
+                    "guid_": {
+                        "value_": "37030145-E9E9-47B4-B68A-9A86EA7BDD4A"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 2147483653,
+                            "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
+                            "ptr_wrapper": {
+                                "id": 2147483654,
+                                "data": {
+                                    "cereal_class_version": 1,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "99CF7497-5473-4BC3-98D4-7475F4FCC95F"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value2": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "particleFile_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483655,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "AD80A4C6-9201-4EBF-9219-64155DE47CCF"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "playingDuration_secs_": 60.0,
+                                    "playMode_": 0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 66.66667175292969,
+                            "value1": 66.66667175292969,
+                            "value2": 66.66667175292969
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 8.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 8.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 8.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        }
+    },
+    "mark_": 0,
+    "value0": 0
+}

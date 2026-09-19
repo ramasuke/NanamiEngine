@@ -1,0 +1,132 @@
+{
+    "isActive_": true,
+    "name_": "WindCutterImpact",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "6F483715-9446-4F69-9F18-20F82C44E885"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 2,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "CFAE0353-1D19-4175-9305-01FCA92DFBF1"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "particleFile_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "A92AAD4F-CDEF-48B4-9102-E6730B99B767"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "playingDuration_secs_": 0.9300000071525574,
+                    "playMode_": 1
+                }
+            }
+        },
+        "component_1": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "GamePlay::Sound::SpawnSound",
+            "ptr_wrapper": {
+                "id": 2147483651,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "72E20C86-E4BB-4E2C-A31F-848EB517D91B"
+                        },
+                        "isEnable_": true
+                    },
+                    "sound_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "DD3E6B62-7A0A-471D-9680-363DB1A0961F"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "delay_secs_": 0.0
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 8.0,
+            "value1": 8.0,
+            "value2": 8.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 8.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 8.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 8.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 0
+    },
+    "mark_": 0,
+    "value0": 0
+}

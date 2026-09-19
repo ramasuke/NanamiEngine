@@ -16,8 +16,8 @@ namespace NanamiEngine::Core::Network
         SyncAnimation      = 3,
         SyncParameter      = 4,
         Rpc                = 5,
-        PlayerLeft         = 6, // {PlayerId left, PlayerId newOwner} ホスト→全員(+自己キュー)
-        OwnershipSnapshot  = 7, // {vector<OwnerOverride>} ホスト→新規参加者
+        PlayerLeft         = 6,
+        OwnershipSnapshot  = 7,
     };
 
     struct Packet final

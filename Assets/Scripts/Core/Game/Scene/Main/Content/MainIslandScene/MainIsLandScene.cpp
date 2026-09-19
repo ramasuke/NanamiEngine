@@ -1,5 +1,7 @@
 ﻿#include "MainIsLandScene.h"
 
+#include "../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+
 #include "../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
@@ -27,12 +29,40 @@ namespace GameCore::Scene::Main
         scene_ = LoadMainScene();
         Context()->Init();
         
-         playerAvatar_ = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatar(
+        auto loaded = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatarWithAttachments(
             PlayerAvatar::LoadType(),
             Context()->PlayerSpawnPoint(),
             nullptr,
             true,
             std::make_shared<GameCore::PlayerAvatar::NullPlayerAvatarStatus>());
+        playerAvatar_ = loaded.avatar;
+        attachments_  = loaded.attachments;
+    }
+
+    void MainIslandScene::SwitchPlayerAvatar(const PlayerAvatar::PlayerAvatarType type)
+    {
+        const auto current = playerAvatar_.lock();
+        if (!current || current->Type() == type)
+            return;
+
+        const auto position = current->PlayerTransform().GetWorldPos();
+        current->SaveStatus();
+
+        Context()->PlayerAvatarFactory().DestroyAttachments(attachments_);
+        current->PlayerTransform().GetGameObject()->OnDestroy();
+        playerAvatar_.reset();
+        attachments_ = {};
+
+        PlayerAvatar::SaveType(type);
+
+        auto loaded = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatarWithAttachments(
+            type,
+            position,
+            nullptr,
+            true,
+            std::make_shared<GameCore::PlayerAvatar::NullPlayerAvatarStatus>());
+        playerAvatar_ = loaded.avatar;
+        attachments_  = loaded.attachments;
     }
 
     void MainIslandScene::Enter()

@@ -31,9 +31,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         , dashAttack_                    (Damage::PhysicsPower(10), EnhancePower(10), 0.5303030303f, 0.6060606061f)
         , dashAttackLungeSpeed_secs_          (55.0f)
         , comboHitFeel_ {
-            HitFeelParam(0.3f, 0.1090909091f, 5.0f , 0.5f, 0.12f, 30.0f),
-            HitFeelParam(0.5f, 0.1090909091f, 5.75f, 0.7f, 0.14f, 28.0f),
-            HitFeelParam(0.8f, 0.1090909091f, 6.75f, 1.0f , 0.18f, 40.0f)}
+            HitFeelParam(0.3f, 0.1090909091f, 5.0f , 0.5f, 0.12f, 5.0f),
+            HitFeelParam(0.5f, 0.1090909091f, 5.75f, 0.7f, 0.14f, 3.5f),
+            HitFeelParam(0.8f, 0.1090909091f, 6.75f, 1.0f , 0.18f, 6.5f)}
         , dashHitFeel_                   (0.9f, 0.1272727273f, 1.0f, 0.6f, 0.2f)
         , comboInputBufferWindow_secs_   (0.1181818182f)
         , chargeAttackHoldThreshold_secs_(0.2f)
@@ -128,7 +128,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStatus::Init()
     {
-        quests_->Init(event_, controlGuideFocus_, wallet_);
+        quests_->Init(event_, event_, controlGuideFocus_, wallet_);
     }
 
     void SwordManAvatarStatus::OnUpdate()

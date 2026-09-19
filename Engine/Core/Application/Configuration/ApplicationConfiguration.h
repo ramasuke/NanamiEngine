@@ -34,6 +34,8 @@ namespace NanamiEngine::Core::Application::Configuration
         [[nodiscard]] static int   GetShadowMapHeight();
         static void                SetShadowMapWidth(int w);
         static void                SetShadowMapHeight(int h);
+        [[nodiscard]] static float GetShadowAreaHalfSize();
+        static void                SetShadowAreaHalfSize(float halfSize);
 
         [[nodiscard]] static float GetLightDirX();
         [[nodiscard]] static float GetLightDirY();
@@ -68,6 +70,7 @@ namespace NanamiEngine::Core::Application::Configuration
 
         static int shadowMapWidth_;
         static int shadowMapHeight_;
+        static float shadowAreaHalfSize_;
 
         static float lightDirX_;
         static float lightDirY_;

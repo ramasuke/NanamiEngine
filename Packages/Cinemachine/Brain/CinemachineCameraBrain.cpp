@@ -239,6 +239,17 @@ void CineMachine::CinemachineCameraBrain::ApplyVirtualCameraMatrix(
     Transform().SetWorldMatrix(virtualCamera.Transform().GetWorldMatrix());
 }
 
+void CineMachine::CinemachineCameraBrain::SnapToVirtualCamera(const CineMachineVirtualCamera& virtualCamera)
+{
+    // Transformだけ書き換えても、次のOnUpdateが残っているsmoothedPos_から補間し直して元へ戻すので、補間の起点ごと合わせる
+    smoothedPos_ = virtualCamera.Transform().GetWorldPos();
+    smoothedRot_ = virtualCamera.Transform().GetWorldRot();
+    smoothedFov_ = virtualCamera.Fov();
+    hasSmoothedPose_ = true;
+    Transform().SetWorldPos(smoothedPos_);
+    Transform().SetWorldRot(smoothedRot_);
+}
+
 void CineMachine::CinemachineCameraBrain::SubscribeVirtualCamera(const std::weak_ptr<CineMachineVirtualCamera>& virtualCamera)
 {
     cameraBrain_->virtualCameras_.emplace_back(virtualCamera);

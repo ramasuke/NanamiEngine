@@ -1,0 +1,268 @@
+{
+    "isActive_": true,
+    "name_": "Pine_A",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "001E7AA0-AB97-468C-B2F9-912C9ED11B25"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 1,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::Module::Component::BoxCollider",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 6,
+                    "value0": {
+                        "cereal_class_version": 6,
+                        "value0": {
+                            "cereal_class_version": 0,
+                            "guid_": {
+                                "value_": "9870FEF1-B216-45C2-BC7E-2D0A62E3B94D"
+                            },
+                            "isEnable_": true
+                        },
+                        "offset_": {
+                            "value0": 0.0,
+                            "value1": 18.399999618530275,
+                            "value2": 0.0
+                        },
+                        "offsetRotation_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "layer_": 0,
+                        "isSensor_": false,
+                        "friction_": 0.20000000298023225
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "value3": {
+                        "cereal_class_version": 0
+                    },
+                    "size_": {
+                        "value0": 1.600000023841858,
+                        "value1": 36.79999923706055,
+                        "value2": 1.600000023841858
+                    }
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 1.0,
+            "value1": 1.0,
+            "value2": 1.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 1.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 1.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 1.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 1,
+        "child": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483650,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": true,
+                    "name_": "Model",
+                    "guid_": {
+                        "value_": "C3EAAA1A-A8B7-45D3-BFF6-EC1B04C2FBD1"
+                    },
+                    "components_": {
+                        "componentCount": 2,
+                        "component_0": {
+                            "polymorphic_id": 2147483651,
+                            "polymorphic_name": "NanamiEngine::Module::Component::ModelRenderer",
+                            "ptr_wrapper": {
+                                "id": 2147483651,
+                                "data": {
+                                    "cereal_class_version": 5,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "1A47398D-6EAC-42DF-9B99-D7245BE92769"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value2": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value3": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value4": {},
+                                    "mv1File_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483652,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "79D83E25-9531-4C5D-B056-288717FA0DD8"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "useFixedInterpolation_": false
+                                }
+                            }
+                        },
+                        "component_1": {
+                            "polymorphic_id": 2147483652,
+                            "polymorphic_name": "GamePlay::Prop::TreeLeafSway",
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "FE038B09-1DAC-466D-BE9B-21A7317190BA"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "vsFile_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483654,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "AF8FA563-8475-4EDA-9D8F-EFAA3E8F00ED"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "psFile_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483655,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "B13F7E12-AD58-4120-A65A-B660F266E66D"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "leafMaterialSuffix_": "_Leaf",
+                                    "swayAmplitude_": 8.0,
+                                    "ambient_": 0.6
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.07999999821186066,
+                            "value1": 0.07999999821186066,
+                            "value2": 0.07999999821186066
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.07999999821186066,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.07999999821186066,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.07999999821186066,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        }
+    },
+    "mark_": 0,
+    "value0": 0
+}

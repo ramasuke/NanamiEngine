@@ -19,13 +19,19 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] InputRef<void     >& Chat        () const { return *chat_        ; }
         [[nodiscard]] InputRef<void     >& AvoidRolling() const { return *avoidRolling_; }
         [[nodiscard]] InputRef<void     >& LockOn      () const { return *lockOn_      ; }
+        [[nodiscard]] InputRef<void     >& LockOnSwitchLeft () const { return *lockOnSwitchLeft_ ; }
+        [[nodiscard]] InputRef<void     >& LockOnSwitchRight() const { return *lockOnSwitchRight_; }
         [[nodiscard]] InputRef<void     >& CycleItemNext() const { return *cycleItemNext_; }
         [[nodiscard]] InputRef<void     >& CycleItemPrev() const { return *cycleItemPrev_; }
         [[nodiscard]] InputRef<void     >& UseItem      () const { return *useItem_      ; }
+        [[nodiscard]] InputRef<void     >& OpenMenu     () const { return *openMenu_     ; }
 
         void OnDrawGui() override;
 
     private:
+        // 右スティックは弾いたと分かるくらい倒した時だけ切り替える
+        static constexpr short LOCK_ON_SWITCH_STICK_THRESHOLD = 24000;
+
         Input<glm::vec2> move_         = MakeInputAction<PlayerAvatar::Input::InputMove>();
         Input<void     > run_          = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_LSHIFT      ) || XInput().Buttons[XINPUT_BUTTON_A]; });
         Input<void     > jump_         = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_SPACE       ) || XInput().Buttons[XINPUT_BUTTON_B]; });
@@ -35,8 +41,11 @@ namespace GameCore::PlayerAvatar::SwordMan
         Input<void     > chat_         = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_E           ) || XInput().Buttons[XINPUT_BUTTON_Y]; });
         Input<void     > avoidRolling_ = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_LCONTROL    ) || XInput().Buttons[XINPUT_BUTTON_X]; });
         Input<void     > lockOn_       = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_Q           ) || XInput().Buttons[XINPUT_BUTTON_RIGHT_THUMB]; });
+        Input<void     > lockOnSwitchLeft_  = MakeInputAction([this] { return MouseWheelDelta() > 0 || XInput().ThumbRX < -LOCK_ON_SWITCH_STICK_THRESHOLD; });
+        Input<void     > lockOnSwitchRight_ = MakeInputAction([this] { return MouseWheelDelta() < 0 || XInput().ThumbRX >  LOCK_ON_SWITCH_STICK_THRESHOLD; });
         Input<void     > cycleItemNext_= MakeInputAction([this] { return CheckHitKey(KEY_INPUT_X           ) || XInput().Buttons[XINPUT_BUTTON_DPAD_RIGHT]; });
         Input<void     > cycleItemPrev_= MakeInputAction([this] { return CheckHitKey(KEY_INPUT_Z           ) || XInput().Buttons[XINPUT_BUTTON_DPAD_LEFT ]; });
         Input<void     > useItem_      = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_R           ) || XInput().Buttons[XINPUT_BUTTON_LEFT_SHOULDER]; });
+        Input<void     > openMenu_     = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_AT          ) || XInput().Buttons[XINPUT_BUTTON_START]; });
     };
 }

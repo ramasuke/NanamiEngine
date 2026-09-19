@@ -14,7 +14,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 4,
+                    "cereal_class_version": 5,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
@@ -49,37 +49,7 @@
                             }
                         }
                     },
-                    "useFixedInterpolation_": false,
-                    "vsFile_": {
-                        "cereal_class_version": 0,
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483651,
-                                "data": {
-                                    "cereal_class_version": 0,
-                                    "value0": {
-                                        "value_": "0A3AE4E3-9360-4EC4-AA93-0EDA7DEEBB41"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "psFile_": {
-                        "cereal_class_version": 0,
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483652,
-                                "data": {
-                                    "cereal_class_version": 0,
-                                    "value0": {
-                                        "value_": "5358A2DF-85D4-453F-83C8-FBA029542191"
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    "useFixedInterpolation_": false
                 }
             }
         },
@@ -87,7 +57,7 @@
             "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Module::Component::SphereCollider",
             "ptr_wrapper": {
-                "id": 2147483653,
+                "id": 2147483651,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -127,7 +97,7 @@
             "polymorphic_id": 2147483651,
             "polymorphic_name": "GamePlay::PlayerAvatar::Bullet::CannonBullet",
             "ptr_wrapper": {
-                "id": 2147483654,
+                "id": 2147483652,
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -146,7 +116,7 @@
                         "value0": {
                             "polymorphic_id": 1073741824,
                             "ptr_wrapper": {
-                                "id": 2147483655,
+                                "id": 2147483653,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -163,7 +133,7 @@
             "polymorphic_id": 2147483652,
             "polymorphic_name": "NanamiEngine::Module::Component::RigidBody",
             "ptr_wrapper": {
-                "id": 2147483656,
+                "id": 2147483654,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {

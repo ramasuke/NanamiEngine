@@ -3,8 +3,10 @@
 #include <memory>
 #include <string>
 #include <thread>
+#include <vector>
 
 #include "../Scene.h"
+#include "../../Asset/Preload/Engine_Asset_AssetPreloader.h"
 
 namespace NanamiEngine::Scene
 {
@@ -32,7 +34,7 @@ namespace NanamiEngine::Scene
         [[nodiscard]] float DeserializeProgress01() const;
         /** @brief 直近の Begin 以降に読み込みが失敗したか。Step が Failed を捌いた後も残る */
         [[nodiscard]] bool HasFailedSinceLastBegin() const;
-        /** @brief 完了していれば Scene を組み立てて返す。まだなら nullptr */
+        /** @brief シーンが参照するアセットまで読み終えていれば Scene を組み立てて返す。まだなら nullptr */
         [[nodiscard]] std::shared_ptr<Scene> TryTakeLoadedScene();
 
     private:
@@ -41,6 +43,8 @@ namespace NanamiEngine::Scene
             Idle,
             Deserializing,
             Ready,
+            /** シーンが参照する画像・モデルの読み込み待ち */
+            Preloading,
             Failed,
         };
 
@@ -53,6 +57,10 @@ namespace NanamiEngine::Scene
         std::string                 filePath_;
         Scene::DeserializedContent  content_;
         Scene::DeserializeProgress  progress_;
+        /** Begin でメインスレッドが作り、ワーカーが読む */
+        Module::Asset::AssetPreloader::Index assetIndex_;
+        /** ワーカーが集め、Ready になってからメインスレッドが読む */
+        std::vector<std::string>    dependencyGuids_;
         std::atomic<bool>           hasFailedSinceLastBegin_ = false;
         std::string                 errorMessage_;
     };

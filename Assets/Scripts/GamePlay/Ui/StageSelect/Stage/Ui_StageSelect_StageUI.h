@@ -65,18 +65,13 @@ namespace GamePlay::Ui
         template<typename Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<Component::ComponentBase>(this));
-            // v3 で子オブジェクトの名前検索を FIELD に置き換えた
-            std::string nameTextChildName_, elementIconChildName_, difficultyPipsChildName_;
-            if (version >= 1 && version < 3) archive(CEREAL_NVP(nameTextChildName_));
             if (version >= 3) archive(CEREAL_NVP(nameText_));
             if (version >= 0) archive(CEREAL_NVP(selectButtonHoverSound_));
             if (version >= 0) archive(CEREAL_NVP(selectButtonClickSound_));
             if (version >= 1) archive(CEREAL_NVP(stageData_));
             if (version >= 1) archive(CEREAL_NVP(selectedRowSprite_));
             if (version >= 1) archive(CEREAL_NVP(unselectedRowSprite_));
-            if (version >= 2 && version < 3) archive(CEREAL_NVP(elementIconChildName_));
             if (version >= 3) archive(CEREAL_NVP(elementIcon_));
-            if (version >= 2 && version < 3) archive(CEREAL_NVP(difficultyPipsChildName_));
             if (version >= 3) archive(CEREAL_NVP(difficultyPips_));
         }
 #pragma endregion

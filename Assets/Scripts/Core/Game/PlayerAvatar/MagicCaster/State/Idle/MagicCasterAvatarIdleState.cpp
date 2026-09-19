@@ -1,44 +1,34 @@
-#include "MagicCasterAvatarIdleState.h"
+﻿#include "MagicCasterAvatarIdleState.h"
 
-#include "../../Input/PlayerAvatarInput_void.h"
+#include "../../../Input/PlayerAvatarInput_void.h"
 
 void GameCore::PlayerAvatar::MagicCaster::State::IdleState::DoEnter()
 {
-    if (!ExpiredCamera())
-        ChangeCamera(CameraGroup().FollowFromBehind());
+    ChangeCameraByLockOn();
 }
 
 void GameCore::PlayerAvatar::MagicCaster::State::IdleState::DoFixedUpdate()
 {
     HoldHorizontalVelocity();
+    FaceAimTarget();
 }
 
 void GameCore::PlayerAvatar::MagicCaster::State::IdleState::DoUpdate()
 {
-    if (Status().IsDamaged())
-    {
-        OnChangeState(MagicCasterAvatarStateType::Hurt);
-        return;
-    }
-    if (!Conditions().IsGround())
-    {
-        OnChangeState(MagicCasterAvatarStateType::Floating);
-        return;
-    }
-    if (Input().Jump().IsPressed() && Status().CanJump())
-    {
-        OnChangeState(MagicCasterAvatarStateType::Jump);
-        return;
-    }
-    if (Input().Cast().IsPressed() && Status().CanCast())
-    {
-        OnChangeState(MagicCasterAvatarStateType::Cast);
-        return;
-    }
-    if (Input().Move().IsUpdatePressed())
-    {
-        OnChangeState(MagicCasterAvatarStateType::Walk);
-    }
+    UpdateLockOn();
+    UpdateTransitions();
+}
+
+void GameCore::PlayerAvatar::MagicCaster::State::IdleState::VisitTransitions(
+    IMagicCasterAvatarTransitionVisitor& visitor) const
+{
+    visitor.Automatic(MagicCasterAvatarStateType::Hurt, Status().IsDamaged());
+    visitor.Automatic(MagicCasterAvatarStateType::Floating, !Conditions().IsGround());
+    visitor.OnInput(MagicCasterAvatarStateType::Jump, MagicCasterAvatarInput::Jump, PlayerAvatarInputPhase::Pressed, Status().CanJump());
+    visitor.Cast(CanCastBasicSpell());
+    visitor.OnInput(MagicCasterAvatarStateType::Chatting, MagicCasterAvatarInput::Chat, PlayerAvatarInputPhase::Pressed, Conditions().IsChattable());
+    visitor.OnInput(MagicCasterAvatarStateType::Walk, MagicCasterAvatarInput::Move, PlayerAvatarInputPhase::Holding, true);
+    VisitLockOnAction(visitor);
 }
 
 void GameCore::PlayerAvatar::MagicCaster::State::IdleState::DoExit()

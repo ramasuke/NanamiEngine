@@ -316,7 +316,7 @@ namespace NanamiEngine::Module::Component
 
         MV1SetMatrix(modelDxLibHandle_, GetRenderMatrix());
 
-        // 影は常に標準シェーダーで描く(カスタム VS を持ち込むとシャドウマップの深度が壊れるため)
+        // 影は常に標準シェーダー
         const PolicyList policies = Components().Catches<IModelMaterialShaderPolicy>();
         if (policies.empty())
         {

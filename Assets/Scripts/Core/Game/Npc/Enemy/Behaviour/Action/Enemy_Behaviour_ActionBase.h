@@ -12,12 +12,15 @@ namespace GameCore::Npc::Enemy::Behaviour
     public:
         virtual ~ActionBase() = default;
         TickStatus Tick(const Action::TickContext& context);
+        void Reset();
         void OnDrawGui();
 
     private:
         /** templateMethodパターン */
         //LifeCycleCallback::Update()で呼ばれる。
         virtual TickStatus DoTick(const Action::TickContext& context) = 0;
+        // RandomSelector がこのアクションを含む枝を選び直したときに呼ばれる。
+        virtual void DoReset();
         virtual void DoDrawGui();
         
 #pragma region Serialization Function

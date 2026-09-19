@@ -14,5 +14,6 @@ namespace GameCore::PlayerAvatar::MagicCaster
         Cast = 6,
         Hurt = 7,
         Death = 8,
+        Chatting = 9,
     };
 }

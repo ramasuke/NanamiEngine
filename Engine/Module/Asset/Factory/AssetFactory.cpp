@@ -4,13 +4,14 @@ namespace NanamiEngine::Module::Asset
 {
     void AssetFactory::RegisterCreatableAssetExtension(
         const std::string& assetNameLabel,
-        const std::string& extensionLabel)
+        const std::string& extensionLabel,
+        const std::string& categoryLabel)
     {
-        if (std::ranges::any_of(creatableAssetsData_, [&](const auto& p) { return p.first == assetNameLabel && p.second == extensionLabel; }))
+        if (std::ranges::any_of(creatableAssetsData_, [&](const CreatableAsset& asset) { return asset.name == assetNameLabel && asset.extension == extensionLabel; }))
             return;
-    
-        
-        creatableAssetsData_.emplace_back(assetNameLabel, extensionLabel);
+
+
+        creatableAssetsData_.push_back(CreatableAsset{ assetNameLabel, extensionLabel, categoryLabel });
     }
     
     bool AssetFactory::TryCreate(const std::string& filePath,

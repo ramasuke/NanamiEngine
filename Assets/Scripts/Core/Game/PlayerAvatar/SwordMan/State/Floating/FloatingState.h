@@ -6,7 +6,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     class FloatingState final : public SwordManAvatarStateBase
     {
     public:
-        DEFINE_STATE_CONSTRUCTOR(FloatingState)
+        explicit FloatingState(const SwordManAvatarStateArgs& args) : SwordManAvatarStateBase(args) {}
 
     private:
         void DoEnter () override;
@@ -20,7 +20,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         float fallSpeed_ = 0.0f; ///< 空中にいる間の最大落下速度。接地時には床に潰されて0になっているので覚えておく
 
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::Jump; }
-        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Accept; }
+        [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Accept; }
         void VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const override;
     };
 }

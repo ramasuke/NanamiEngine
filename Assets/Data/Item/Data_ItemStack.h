@@ -10,9 +10,14 @@ namespace NanamiEngine::Module::Asset
     /** @brief アイテム1種類とその所持数。ポーチの1枠にあたる */
     struct ItemStack final
     {
+        ItemStack() = default;
+        ItemStack(const std::shared_ptr<ItemData>& item, const int count) : count_(count) { item_ = item; }
+
         [[nodiscard]] std::shared_ptr<ItemData> Item () const { return item_.get(); }
         [[nodiscard]] int                       Count() const { return count_; }
         void SetCount(const int count) { count_ = count; }
+        /** @brief 読み込んだ直後の FIELD は空で、引き当てはライフサイクルの後回しになる。すぐ使うときに呼ぶ */
+        void ResolveItem() { item_.Init(); }
 
     private:
         [[serialize(0)]] FIELD(ItemData) item_;

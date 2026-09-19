@@ -1,5 +1,6 @@
 """Generate the control-guide sprites ("slim teal strip" design) used by
-Assets/Prefab/UI/ControlGuide/SwordManControlGuideRow.prefab (GamePlay::Ui::SwordManControlGuide / SwordManControlGuideRow).
+Assets/Prefab/UI/ControlGuide/ControlGuideRow.prefab (GamePlay::Ui::ControlGuide / ControlGuideRow), shared by
+SwordManControlGuide.prefab and MagicCasterControlGuide.prefab.
 
     python tools/art/control_guide.py [--out-dir Assets/Art/UI/ControlGuide] [--preview PATH]
 
@@ -53,8 +54,8 @@ LABEL_X = 92
 LABEL_SIZE = 23
 LABEL_FONT_SIZE = 60  # ipam.ttf .meta size_
 LABEL_SHADOW_OFFSET = 1.5
-DIM_ALPHA = 110  # SwordManControlGuide::dimAlpha_
-SLIDE_DISTANCE = 8  # SwordManControlGuide::slideDistance_px_
+DIM_ALPHA = 110  # ControlGuide::dimAlpha_
+SLIDE_DISTANCE = 8  # ControlGuide::slideDistance_px_
 FOCUS_MARK_X = 268  # フォーカス矢印／チェックの中心（帯の左端から）
 
 
@@ -344,7 +345,7 @@ def write_sprite(out_dir, name, image):
     return guid
 
 
-# ---------------------------------------------------------------- preview (mirrors the prefab rows + SwordManControlGuide::PresentRow)
+# ---------------------------------------------------------------- preview (mirrors the prefab rows + ControlGuide::PresentRow)
 GLYPH_OF = {'WASD': 'ControlGuide_Key_WASD', 'AD': 'ControlGuide_Key_AD', 'Q': 'ControlGuide_Key_Q',
             'E': 'ControlGuide_Key_E', 'Shift': 'ControlGuide_Key_Shift', 'Ctrl': 'ControlGuide_Key_Ctrl',
             'Space': 'ControlGuide_Key_Space', 'LMB': 'ControlGuide_Mouse_Left'}
@@ -455,7 +456,7 @@ def main():
         guid = write_sprite(out_dir, name, sprites[name])
         print(f"{name:26s} {sprites[name].size[0]}x{sprites[name].size[1]}  {guid}")
 
-    print("GEOMETRY (SwordManControlGuide.prefab Rows / SwordManControlGuideRow.prefab):")
+    print("GEOMETRY (SwordManControlGuide.prefab / MagicCasterControlGuide.prefab Rows / ControlGuideRow.prefab):")
     for k, v in GEOMETRY.items():
         print(f"  {k} = {v}")
 

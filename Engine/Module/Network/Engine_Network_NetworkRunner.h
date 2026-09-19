@@ -9,6 +9,11 @@
 #include "../Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../Component/ComponentBase.h"
 
+namespace NanamiEngine::Core::Network
+{
+    class LanSessionAdvertiser;
+}
+
 namespace NanamiEngine::Module::Network
 {
     /** Game実装側から呼ばれるAPIが実装されています。 */
@@ -22,9 +27,16 @@ namespace NanamiEngine::Module::Network
         [[nodiscard]] static NetworkRunnerBase& Instance();
         [[nodiscard]] static NetworkRunnerBase* TryGetInstance() { return s_instance_; }
 
-        /** API: 手動呼び出しの初期化 */
-        void Initialize();
-        /** API: PlayerIDの取得 */
+        /** API: ホストとして開始し、sessionKey で LAN に告知する。結果は GetConnectionState() で見る */
+        void StartHost(const std::string& sessionKey);
+        /** API: host へクライアントとして接続を始める。結果は GetConnectionState() で見る */
+        void StartClient(const Core::Network::HostEndpoint& host);
+        /** API: 通信を止め、StartHost / StartClient をやり直せる状態に戻す */
+        void Shutdown();
+        [[nodiscard]] bool IsStarted() const;
+        [[nodiscard]] bool IsServer() const;
+        [[nodiscard]] Core::Network::ConnectionState GetConnectionState() const;
+        /** API: PlayerIDの取得(未開始なら Invalid) */
         [[nodiscard]] Core::Network::PlayerId GetPlayerId() const;
         /** API: NetworkObjectId の現在の所有者(未登録なら Invalid)。ID の上位バイト(Spawn したピア)とは別物 */
         [[nodiscard]] Core::Network::PlayerId OwnerOf(Core::Network::NetworkObjectId id) const;
@@ -36,12 +48,11 @@ namespace NanamiEngine::Module::Network
         void SendNetworkPacket(const Core::Network::Packet& packet);
         
         /** --- Defaultの通信処理API一覧 --- */
-        //API: Network上のサーバーと接続してネットワーク上でクライアント登録されるまで待つAsync
-        Coroutine::Task<void> OnConnectedAsync();
         //API: Network上で共有するオブジェクトの生成処理
         void Spawn(Asset::PrefabGameObjectFile& prefabFile, glm::vec3 position, glm::quat rotation);
 
     private:
+        void Start(const Core::Network::NetworkStartSettings& settings);
         void OnUpdate() override;
         /** 受け取ったパケットを処理 */
         void DispatchPollPackets();
@@ -49,16 +60,19 @@ namespace NanamiEngine::Module::Network
     protected:
         /** template method pattern*/
         virtual void DoInitialize() = 0;
+        virtual void DoShutdown() = 0;
         virtual void DoDispatchReceivedPacket(const Core::Network::Packet& packet) = 0;
-        [[nodiscard]] virtual std::unique_ptr<Core::Network::INetworkSystem> DoCreateUseNetworkSystem() const = 0;
-        
+        [[nodiscard]] virtual std::unique_ptr<Core::Network::INetworkSystem> DoCreateUseNetworkSystem(
+            const Core::Network::NetworkStartSettings& settings) const = 0;
+
         /** SandBox pattern */
         [[nodiscard]] Core::Network::IPacketSender    & PacketSender() const;
         [[nodiscard]] Core::Network::IPlayerIdProvider& PlayerIdProvider() const;
-        
+
     private:
         std::unique_ptr<Core::Network::INetworkSystem> networkSystem_;
         std::optional<Core::Network::DefaultPacketDispatcher> defaultPacketDispatcher_;
+        std::unique_ptr<Core::Network::LanSessionAdvertiser> lanAdvertiser_;
         [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) sampleSpawnPrefab_;
 
         static NetworkRunnerBase* s_instance_;

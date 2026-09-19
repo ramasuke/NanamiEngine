@@ -22,5 +22,5 @@ namespace NanamiEngine::Core::MainWindow
         char prefabSearchBuffer_[128] = {};
     };
 
-    REGISTER_MAIN_WINDOW(PrefabViewWindow)
+    REGISTER_MAIN_WINDOW(PrefabViewWindow, "Scene")
 }

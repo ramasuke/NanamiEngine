@@ -6,7 +6,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     class SwordManAvatarDashAttackState final : public SwordManAvatarStateBase
     {
     public:
-        DEFINE_STATE_CONSTRUCTOR(SwordManAvatarDashAttackState)
+        explicit SwordManAvatarDashAttackState(const SwordManAvatarStateArgs& args) : SwordManAvatarStateBase(args) {}
 
     private:
         void DoEnter() override;
@@ -18,9 +18,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void ChangeToMoveOrIdle();
 
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::DashAttack; }
-        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Momentary; }
+        [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Momentary; }
 
     private:
         bool isAttacked_ = false;
+        AttackTurn attackTurn_;
     };
 }

@@ -51,6 +51,7 @@ namespace NanamiEngine::Scene
         ~Scene() override;
         [[nodiscard]] std::string Name()    const           { return name_; }
         [[nodiscard]] const Guid& GetGuid() const override  { return guid_;    }
+        [[nodiscard]] const std::string& FilePath() const   { return filePath_; }
 
         void CopiedInit(const std::string& contentPath);
         void AddGameObject(const std::weak_ptr<Module::GameObject::IGameObject>& add);

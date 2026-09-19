@@ -1,0 +1,768 @@
+{
+    "isActive_": true,
+    "name_": "EventBoardRow",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "AE5B2E07-132B-49BC-8C31-A927F54C1345"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 3,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::Module::Component::ImageRenderer",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 2,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "F8EC3F06-D0BF-4C47-9480-BCB6B02EF49B"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "spriteFile_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "E3B73D86-CB6C-4C59-8E5E-BA6A8E97E1DF"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "renderPriority_": 7020
+                }
+            }
+        },
+        "component_1": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiUi::Button",
+            "ptr_wrapper": {
+                "id": 2147483651,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "guid_": {
+                            "value_": "119AB605-C8E9-4EEF-8241-069C3D45D7FC"
+                        },
+                        "isEnable_": true
+                    },
+                    "eventAreaSize_": {
+                        "value0": 500.0,
+                        "value1": 120.0
+                    },
+                    "onIdleSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "value0": {
+                                        "value_": "00000000-0000-0000-0000-000000000000"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "onHoverSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "value0": {
+                                        "value_": "00000000-0000-0000-0000-000000000000"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "component_2": {
+            "polymorphic_id": 2147483651,
+            "polymorphic_name": "GamePlay::Ui::EventBoardRow",
+            "ptr_wrapper": {
+                "id": 2147483654,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "52561D7F-E0DD-4678-9CC2-2C07409F5548"
+                        },
+                        "isEnable_": true
+                    },
+                    "titleText_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483655,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "0BE95912-4B57-4BA8-B27B-E713C30E1666"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "statusText_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483656,
+                                "data": {
+                                    "value0": {
+                                        "value_": "C2A8699F-A372-45DB-AAB2-E9FE3BCD336B"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "ongoingStamp_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483657,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "FC24FC74-F1EE-444F-B892-4004C2718F78"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "waxSeal_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483658,
+                                "data": {
+                                    "value0": {
+                                        "value_": "65926C9C-2D01-4CA1-9920-9364291474DE"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "selectedNoticeSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483659,
+                                "data": {
+                                    "value0": {
+                                        "value_": "4C0C8AB6-08C1-47AD-90C0-82A2CCBC878F"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "unselectedNoticeSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483660,
+                                "data": {
+                                    "value0": {
+                                        "value_": "E3B73D86-CB6C-4C59-8E5E-BA6A8E97E1DF"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "hoverSound_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483661,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "00000000-0000-0000-0000-000000000000"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "selectedScale_": 1.0499999523162842,
+                    "ongoingStatusColor_": {
+                        "cereal_class_version": 0,
+                        "r_": 146,
+                        "g_": 38,
+                        "b_": 30
+                    },
+                    "upcomingStatusColor_": {
+                        "r_": 104,
+                        "g_": 78,
+                        "b_": 54
+                    }
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 1.0,
+            "value1": 1.0,
+            "value2": 1.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 1.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 1.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 1.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 5,
+        "child": {
+            "polymorphic_id": 2147483652,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483662,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": true,
+                    "name_": "Nail",
+                    "guid_": {
+                        "value_": "6789AEC5-2612-47FF-9970-400DDA249B2A"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "id": 2147483663,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "57786DE7-1455-4CBC-BA76-C6CB638215A1"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483664,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "27CE2585-AE6B-43F2-8C0A-89B4E33211C1"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": 7021
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": -49.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": -49.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483665,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "WaxSeal",
+                    "guid_": {
+                        "value_": "9FEC87B9-6447-4D7A-8AAB-D4F0D70EE17A"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "id": 2147483666,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "65926C9C-2D01-4CA1-9920-9364291474DE"
+                                        },
+                                        "isEnable_": false
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483667,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "2F6C3AFB-FD1D-4B65-A8E3-B4568EB7C83B"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": 7024
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -262.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": -262.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483668,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "TitleText",
+                    "guid_": {
+                        "value_": "F5EB107B-13C8-4D7B-ABEB-B547270512EC"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 2147483653,
+                            "polymorphic_name": "NanamiEngine::Module::NanamiUi::TextRenderer",
+                            "ptr_wrapper": {
+                                "id": 2147483669,
+                                "data": {
+                                    "cereal_class_version": 4,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "0BE95912-4B57-4BA8-B27B-E713C30E1666"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "fontFile_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483670,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 7022,
+                                    "text_": "",
+                                    "textColor_": {
+                                        "r_": 48,
+                                        "g_": 30,
+                                        "b_": 20
+                                    },
+                                    "isWorldPos_": false,
+                                    "textAlign_": 0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -220.0,
+                            "value1": -40.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.5333333611488342,
+                            "value1": 0.5333333611488342,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.5333333611488342,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.5333333611488342,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": -220.0,
+                                "value1": -40.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483671,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "StatusText",
+                    "guid_": {
+                        "value_": "1DB45FA7-0F03-478E-953C-18D024AB275A"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 5,
+                            "ptr_wrapper": {
+                                "id": 2147483672,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "C2A8699F-A372-45DB-AAB2-E9FE3BCD336B"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "fontFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483673,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "02951627-F120-4EDC-B4F7-C27985C7F643"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 7022,
+                                    "text_": "",
+                                    "textColor_": {
+                                        "r_": 104,
+                                        "g_": 78,
+                                        "b_": 54
+                                    },
+                                    "isWorldPos_": false,
+                                    "textAlign_": 0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -218.0,
+                            "value1": 19.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.3166666626930237,
+                            "value1": 0.3166666626930237,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.3166666626930237,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.3166666626930237,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": -218.0,
+                                "value1": 19.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483674,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "OngoingStamp",
+                    "guid_": {
+                        "value_": "16B15ACD-3BC4-4751-8CE2-B3A603646F15"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "id": 2147483675,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "FC24FC74-F1EE-444F-B892-4004C2718F78"
+                                        },
+                                        "isEnable_": false
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483676,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "812A6083-A7EF-499F-BE75-8FD44EA6EF01"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": 7023
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 166.0,
+                            "value1": 24.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 166.0,
+                                "value1": 24.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        }
+    },
+    "mark_": 0,
+    "value0": 0
+}

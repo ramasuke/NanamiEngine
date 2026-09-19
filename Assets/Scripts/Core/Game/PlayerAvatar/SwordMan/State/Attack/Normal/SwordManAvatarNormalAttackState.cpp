@@ -17,6 +17,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         isAttacked_   = false;
         bufferedAttackTimer_secs_ = 0.0f;
         releasedSinceEnter_ = false;
+        attackTurn_ = {};
     }
 
     void SwordManAvatarNormalAttackState::DoFixedUpdate()
@@ -40,7 +41,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
         // 発生前に攻撃対象へ向く
         if (!isAttacked_)
-            RotateTowardsAttackTarget(Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
+            RotateTowardsAttackTarget(attackTurn_, Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
 
         // 入力バッファ
         if (Input().NormalAttack().IsPressed())
@@ -78,7 +79,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         visitor.OnInputWhenReady(
             SwordManAvatarStateType::ChargeAttackCharging,
             SwordManAvatarInput::NormalAttack,
-            SwordManAvatarInputPhase::Holding,
+            PlayerAvatarInputPhase::Holding,
             !releasedSinceEnter_ && currentCombo_ == 0 && !isAttacked_ && Status().CanChargeAttack(),
             During_secs() >= Status().ChargeAttackHoldThreshold_secs());
     }
@@ -104,7 +105,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
             bufferedAttackTimer_secs_ = 0.0f;
             currentCombo_++;
-            ResetAttackRotation();
+            attackTurn_ = {};
             isAttacked_ = false;
             return;
         }
@@ -131,7 +132,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             const auto particle = NanamiEngine::Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos(), yRot);
             if (const auto particleObject = particle.lock())
                 particleObject->Transform().SetLocalScale(glm::vec3(hitFeel.ParticleScale()));
-            DealDamageText(NormalAttackArea(), BuffedAttackPower(attackStatus.AttackPower()));
+            DealDamageText(NormalAttackArea(), BuffedAttackPower(attackStatus.AttackPower()), false);
             ShakeHitTargets(NormalAttackArea(), hitFeel);
         }
         else

@@ -1,4 +1,4 @@
-#include "MagicCasterAvatarHurtState.h"
+﻿#include "MagicCasterAvatarHurtState.h"
 
 void GameCore::PlayerAvatar::MagicCaster::State::HurtState::DoEnter()
 {
@@ -17,11 +17,13 @@ void GameCore::PlayerAvatar::MagicCaster::State::HurtState::DoFixedUpdate()
 void GameCore::PlayerAvatar::MagicCaster::State::HurtState::DoUpdate()
 {
     Status().DiscardDamage();
+    UpdateTransitions();
+}
 
-    if (During_secs() < Status().DamageStateDuration_secs())
-        return;
-
-    OnChangeState(MagicCasterAvatarStateType::Idle);
+void GameCore::PlayerAvatar::MagicCaster::State::HurtState::VisitTransitions(
+    IMagicCasterAvatarTransitionVisitor& visitor) const
+{
+    visitor.Automatic(MagicCasterAvatarStateType::Idle, During_secs() >= Status().DamageStateDuration_secs());
 }
 
 void GameCore::PlayerAvatar::MagicCaster::State::HurtState::DoExit()

@@ -1,0 +1,106 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::MagicSpellData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Magic/QuakeBlast.magicSpell",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "D6AAAA0B-A6D9-45D3-B83F-6AC3B05E61FB"
+                    }
+                },
+                "displayName_": "地裂",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "B48DA026-F819-4337-9980-FB73381A02AB"
+                                }
+                            }
+                        }
+                    }
+                },
+                "castSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "6AE446AC-9F0A-4D25-BA5E-FE83BC87ADF0"
+                                }
+                            }
+                        }
+                    }
+                },
+                "manaCost_": 40.0,
+                "cooldown_secs_": 14.0,
+                "castFireTime_secs_": 1.0499999523162842,
+                "castTotalDuration_secs_": 1.4500000476837159,
+                "effect_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GamePlay::Magic::AreaSpellEffect",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "blastPrefab_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "137E6A45-B340-4935-9D34-C6F7C7F62000"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "power_": {
+                                "cereal_class_version": 0,
+                                "value_": 45
+                            },
+                            "delay_secs_": 0.6000000238418579,
+                            "range_": 120.0
+                        }
+                    }
+                },
+                "castMotion_": 5,
+                "castEffectPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "926052B0-E68F-4401-B2F2-D0D3C1AA2AFD"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -36,13 +36,12 @@ namespace GamePlay::Ui
             glm::vec3 baseScale      = {};
             float     baseAngle      = 0.0f;
             std::weak_ptr<NanamiUi::Billboard3D> billboard;
-            // アイコンの子にあれば、下地に重ねる光の演出として使う
-            std::weak_ptr<NanamiUi::BillboardAnimation3D> rimGlow;
         };
 
         void OnUpdate() override;
         static void UpdateIcon(
             const std::shared_ptr<GameObject::IGameObject>& object,
+            const std::shared_ptr<NanamiUi::BillboardAnimation3D>& rimGlow,
             IconState& state,
             IconMotion motion);
 
@@ -53,7 +52,8 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattableIcon_; 
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattingIcon_;
         [[serialize(1)]] FIELD(GameObject::IGameObject) surpriseIcon_;
-        
+        [[serialize(2)]] FIELD(NanamiUi::BillboardAnimation3D) surpriseRimGlow_;
+
 #pragma region Serialization Function
     public:
         void OnDrawGui() override;
@@ -64,6 +64,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(chattableIcon_));
             archive(CEREAL_NVP(chattingIcon_));
             archive(CEREAL_NVP(surpriseIcon_));
+            archive(CEREAL_NVP(surpriseRimGlow_));
         }
 
         template<class Archive>
@@ -72,9 +73,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(chattableIcon_));
             if (version >= 0) archive(CEREAL_NVP(chattingIcon_));
             if (version >= 1) archive(CEREAL_NVP(surpriseIcon_));
+            if (version >= 2) archive(CEREAL_NVP(surpriseRimGlow_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::BillBoardNpcChatIcon, 1)
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::BillBoardNpcChatIcon, 2)

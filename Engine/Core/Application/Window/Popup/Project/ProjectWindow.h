@@ -8,16 +8,15 @@
 namespace NanamiEngine::Core::FileSystem
 {
     class Directory;
-    class File;
     class EditorDraggingHand;
 }
 
 namespace NanamiEngine::Core::PopupWindow
 {
-    /** @brief Project内でリネーム編集中のファイルの状態（同時に1件のみ） */
+    /** @brief Project内でリネーム編集中のファイルの状態（同時に1件のみ）。Reload Assets でツリーが作り直されるのでパスで覚える */
     struct FileRenameState
     {
-        FileSystem::File* target = nullptr;
+        std::string targetPath;
         char buffer[128] = {};
         bool justStarted = false;
     };
@@ -45,17 +44,20 @@ namespace NanamiEngine::Core::PopupWindow
         ::Guid& Guid()      override { return guid_; }
 
     private:
+        /** @brief Reload Assets でツリーが作り直されるので、開いているフォルダはパスで覚えて毎回引き直す */
+        FileSystem::Directory& CurrentDirectory();
+
         //NOTE: ImGUIのラベル情報のために現在開いているProjectWindowの数をカウントする
         static int counter_;
         int id_;
         ::Guid guid_;
         bool isLockedContent_ = false;
-        FileSystem::Directory* currentDirectory_;
+        std::string currentDirectoryPath_;
         std::optional<::Guid> highlightedAssetGuid_;
         std::string pendingRevealDirectoryPath_;
         char searchBuffer_[128] = {};
         FileRenameState renameState_;
     };
     
-    REGISTER_POPUP_WINDOW(ProjectWindow);
+    REGISTER_POPUP_WINDOW(ProjectWindow, "General");
 }

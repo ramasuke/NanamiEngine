@@ -28,7 +28,7 @@ namespace NanamiEngine::Core::Network
 
         virtual ~PacketDispatcherBase() = default;
 
-        // デフォルト実装は IsServer() + ServerType で OnServerRelayReceive / OnServerAuthoritativeReceive / OnReceive へ振り分ける。
+        // デフォルト実装は IsServer()(実行時の役割) + ServerType で OnServerRelayReceive / OnServerAuthoritativeReceive / OnReceive へ振り分ける。
         // engine 固有のディスパッチャー (AssignPlayerId 等) は引き続きここをオーバーライドして直接処理できる。
         virtual void ReceivePacket(const Packet& packet);
 

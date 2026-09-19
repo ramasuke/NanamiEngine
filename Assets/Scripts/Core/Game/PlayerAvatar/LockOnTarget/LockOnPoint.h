@@ -3,7 +3,7 @@
 
 namespace GameCore::PlayerAvatar
 {
-    // ロックオン対象の子孫に付けると、その位置がロックオン位置になる
+    // ロックオン対象の子孫に付けて EnemyBase::lockOnPoint_ から指すと、その位置がロックオン位置になる
     class LockOnPoint final : public Component::ComponentBase
     {
 #pragma region Serialization Function

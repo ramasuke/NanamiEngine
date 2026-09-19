@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../SwordMan/State/SwordManAvatarStateType.h"
+#include "PlayerAvatarEventSceneStateType.h"
 
 namespace GameCore::PlayerAvatar
 {
@@ -8,7 +8,7 @@ namespace GameCore::PlayerAvatar
     public:
         virtual ~IPlayerAvatarEventSceneStateMachine() = default;
         ///@brief Stateの変更
-        virtual void OnChangeState(SwordMan::SwordManAvatarStateType type) = 0;
+        virtual void OnChangeState(EventSceneStateType type) = 0;
         ///@brief Stateが行う動作を有効化
         virtual void OnEnable()  = 0;
         ///@brief Stateが行う動作を無効化

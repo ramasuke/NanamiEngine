@@ -17,6 +17,11 @@ namespace GameCore::Npc::Enemy::Behaviour
         return TickStatus::Success;
     }
 
+    void Action::PlayAnimation::DoReset()
+    {
+        waitAnimationSound_secs_.Reset();
+    }
+
     void Action::PlayAnimation::DoDrawGui()
     {
         ImGuiHelper::OnDrawInputField("animatorSetParamNumber", animatorSetParamNumber_);

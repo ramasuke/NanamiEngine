@@ -65,9 +65,22 @@ namespace GameCore
         }
     }
 
+    void Game::InitGameOverScene()
+    {
+        if (!gameOverSceneFile_)
+        {
+            NanamiEngine::Module::LogError("Game: gameOverSceneFile_ が設定されていないため、ゲームオーバー画面を出せません");
+            return;
+        }
+
+        // ロード画面と同じく、メインシーンの入れ替えを跨いで残す
+        Core::Application::ApplicationBase::GameWindow()->AddContent(gameOverSceneFile_->LoadScene());
+    }
+
     void Game::OnAwake()
     {
         InitStageLoadingScene();
+        InitGameOverScene();
         InitSubSceneGroup();
         InitMainSceneGroup();
     }
@@ -103,5 +116,6 @@ namespace GameCore
         ImGuiHelper::OnDrawInputField("subSceneGroup_"      , subSceneGroup_   );
         ImGuiHelper::OnDrawInputField("subSceneContexts_"   , subSceneContexts_);
         ImGuiHelper::OnDrawInputField("stageLoadingSceneFile_", stageLoadingSceneFile_);
+        ImGuiHelper::OnDrawInputField("gameOverSceneFile_", gameOverSceneFile_);
     }
 }

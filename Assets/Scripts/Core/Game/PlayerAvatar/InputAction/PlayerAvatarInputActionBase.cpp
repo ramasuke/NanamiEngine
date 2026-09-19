@@ -13,12 +13,20 @@ void GameCore::PlayerAvatar::PlayerAvatarInputActionBase::OnUpdate()
 {
     GetJoypadXInputState(DX_INPUT_PAD1, &xInput_ ) ;
 
+    UpdateMouseWheel();
     UpdateCurrentDevice();
 
     for (const auto& input : inputs_)
     {
         input->OnUpdate();
     }
+}
+
+void GameCore::PlayerAvatar::PlayerAvatarInputActionBase::UpdateMouseWheel()
+{
+    const int mouseWheel = GetMouseWheelRotVol(FALSE);
+    mouseWheelDelta_    = mouseWheel - previousMouseWheel_;
+    previousMouseWheel_ = mouseWheel;
 }
 
 void GameCore::PlayerAvatar::PlayerAvatarInputActionBase::UpdateCurrentDevice()
@@ -36,7 +44,7 @@ void GameCore::PlayerAvatar::PlayerAvatarInputActionBase::UpdateCurrentDevice()
     previousMouseX_ = mouseX;
     previousMouseY_ = mouseY;
 
-    const bool isKeyboardTouched = CheckHitKeyAll() != 0 || GetMouseInput() != 0 || isMouseMoved;
+    const bool isKeyboardTouched = CheckHitKeyAll() != 0 || GetMouseInput() != 0 || isMouseMoved || mouseWheelDelta_ != 0;
 
     // 両方同時なら直前の機器のまま、どちらも無ければ維持
     if (isGamepadTouched && !isKeyboardTouched)

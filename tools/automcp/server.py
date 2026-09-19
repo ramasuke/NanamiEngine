@@ -34,6 +34,7 @@ The editor must be running with Config > AutoMCP enabled; engine_status tells yo
 - gameobject_set_transform / *_set_enable / camera_set / time_set_scale apply immediately, also while playing.
 - component_set_params and gameobject_set_json rebuild the whole GameObject (its components re-initialise), so prefer edit mode for them.
 - None of these save to disk. Persist scene edits with tools.scene (python -m tools.scene ...) and then scene_reload.
+- The editor reads Assets/ only at startup: after adding or rewriting assets or .meta files on disk, call assets_reload, then scene_reload.
 - Paths (scene_load) are relative to workingDirectory reported by engine_status."""
 
 log = logging.getLogger("tools.automcp")
@@ -285,6 +286,27 @@ def build_server(client: EngineClient | None = None, poll_interval: float = 0.1)
                                          "eulerDegrees": euler_degrees, "rotation": rotation}))
 
     @tool
+    def debug_draw_get() -> str:
+        """Current debug-draw settings (Config > DebugDraw): colliders (master switch for drawing every collider),
+        shapes and layers filters, triggers (sensor colliders, drawn light blue), main/virtual camera frustums."""
+        return _dump(call("debugdraw.get"))
+
+    @tool
+    def debug_draw_set(colliders: bool | None = None, shapes: bool | dict[str, bool] | None = None,
+                       layers: bool | dict[str, bool] | None = None, triggers: bool | None = None,
+                       main_camera_frustum: bool | None = None, virtual_camera_frustums: bool | None = None,
+                       save: bool = False) -> str:
+        """Change the editor's debug drawing, e.g. colliders=True to see every collider in screenshots.
+        shapes/layers take true/false for all, or {"StaticMesh": true, "Enemy": false} per name (case-insensitive;
+        shapes Box/Sphere/Capsule/Cylinder/StaticMesh - StaticMesh is heavy; layers as listed by debug_draw_get).
+        shapes/layers/triggers only filter while colliders is on; the Inspector's selected object always draws its collider.
+        Editor only, applies immediately (also while playing). save=True also writes ProjectConfig/DebugDraw (git-tracked)."""
+        return _dump(call("debugdraw.set", {
+            "colliders": colliders, "shapes": shapes, "layers": layers, "triggers": triggers,
+            "mainCameraFrustum": main_camera_frustum, "virtualCameraFrustums": virtual_camera_frustums,
+            "save": save or None}))
+
+    @tool
     def log_tail(count: int = 50, min_level: Literal["info", "warning", "error"] = "info",
                  contains: str | None = None) -> str:
         """The newest engine log records (the Console window's history, at most 2000 kept), oldest first."""
@@ -296,6 +318,19 @@ def build_server(client: EngineClient | None = None, poll_interval: float = 0.1)
         """Find assets by a case-insensitive path substring. extension filters by suffix (".mv1", ".prefab", ".scene", ...; "" for all).
         Returns path ("/"-separated), guid and asset type."""
         return _dump(call("assets.find", {"query": query, "extension": extension, "limit": limit}))
+
+    @tool
+    def assets_reload(wait: bool = True, timeout_seconds: float = 180.0) -> str:
+        """Re-scan Assets/ like Config > Application > Reload Assets, so assets and .meta files added or rewritten on disk
+        are registered (scene_load/scene_reload alone only see what was read at startup). Loaded scenes keep the old
+        asset instances, so call scene_reload afterwards. With wait, returns once the async loads have finished."""
+        result = call("assets.reload", timeout=timeout_seconds)
+        if wait:
+            # the engine starts loading the new assets on the frame after it answers, before it handles the next command
+            state = wait_for("status", {}, lambda s: s.get("loadingResourceCount") == 0, timeout_seconds,
+                             "the reloaded assets to finish loading")
+            result["loadingResourceCount"] = state.get("loadingResourceCount")
+        return _dump(result)
 
     @tool
     def model_view_open(path: str | None = None, guid: str | None = None, wait: bool = True,

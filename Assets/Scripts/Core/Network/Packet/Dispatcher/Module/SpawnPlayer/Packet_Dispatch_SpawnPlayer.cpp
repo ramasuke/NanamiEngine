@@ -73,10 +73,10 @@ namespace GameCore::Network
         auto gameObject = playerAvatar->PlayerTransform().GetGameObject();
 
         gameObject->Transform().SetWorldRot(rotation);
-        const auto networkObjectIds = DefaultDispatch().Spawn().AllocateIdsAndRegister(gameObject, Core::Network::OwnerLeavePolicy::Destroy);
+        const auto networkObjectIds = DefaultDispatch().Spawn().AllocateIdsAndRegister(gameObject, Core::Network::OwnerLeavePolicy::Destroy, PlayerId());
 
         Packet packet = Packet::Create(static_cast<PacketType>(EPacketType::SpawnPlayerAvatar));
-        packet.Data().Write(PlayerId());
+        packet.Data().Write(PlayerId()); // 送信者 兼 初期所有者
         packet.Data().Write(static_cast<int>(type));
         packet.Data().Write(position);
         packet.Data().Write(rotation);
@@ -120,6 +120,6 @@ namespace GameCore::Network
         auto gameObject = playerAvatar->PlayerTransform().GetGameObject();
 
         gameObject->Transform().SetWorldRot(rotation);
-        DefaultDispatch().Spawn().RegisterWithNetworkIds(networkObjectIds, gameObject, Core::Network::OwnerLeavePolicy::Destroy);
+        DefaultDispatch().Spawn().RegisterWithNetworkIds(networkObjectIds, gameObject, Core::Network::OwnerLeavePolicy::Destroy, playerId);
     }
 }

@@ -36,9 +36,6 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] SoundFile& JustAvoidRollingSound() const { return *justAvoidRollingSound_.get(); }
         [[nodiscard]] SoundFile& JumpSound() const { return *jumpSound_.get(); }
 
-        /** ジャンプで踏み切った瞬間に足元へ1回生成する土煙 */
-        [[nodiscard]] PrefabGameObjectFile& JumpParticlePrefab() const { return *jumpParticlePrefab_.get(); }
-        [[nodiscard]] bool HasJumpParticlePrefab() const { return static_cast<bool>(jumpParticlePrefab_); }
         /** 着地した瞬間に足元へ1回生成する土煙。落ちてきた速さで大きさを変える */
         [[nodiscard]] PrefabGameObjectFile& LandingParticlePrefab() const { return *landingParticlePrefab_.get(); }
         [[nodiscard]] bool HasLandingParticlePrefab() const { return static_cast<bool>(landingParticlePrefab_); }
@@ -50,11 +47,6 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] float LandingParticleMinScale() const { return landingParticleMinScale_; }
         /** 最大落下速度で着地したときの、プレハブのスケールに掛ける倍率 */
         [[nodiscard]] float LandingParticleMaxScale() const { return landingParticleMaxScale_; }
-
-        /** ポータルから登場するとき、地中から立ち位置まで上がりきるのに掛ける時間 */
-        [[nodiscard]] float WarpInRise_secs  () const { return warpInRise_secs_;  }
-        /** ポータルから登場するとき、開始時に足元からどれだけ地中へ沈めるか */
-        [[nodiscard]] float WarpInSinkDepth  () const { return warpInSinkDepth_;  }
 
         [[nodiscard]] PrefabGameObjectFile& FootstepParticlePrefab() const { return *footstepParticlePrefab_.get(); }
         [[nodiscard]] bool HasFootstepParticlePrefab() const { return static_cast<bool>(footstepParticlePrefab_); }
@@ -97,6 +89,14 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] float GroundCheckUpOffset() const { return groundCheckUpOffset_; }
         /** 接地判定SphereCastの下方向への探索距離 */
         [[nodiscard]] float GroundCheckDistance() const { return groundCheckDistance_; }
+        /** 歩き・走り・踏み込みで登れる斜面の最大角度。これより急な面へ向かう速度は消す */
+        [[nodiscard]] float MaxWalkableSlope_deg() const { return maxWalkableSlope_deg_; }
+        /** 斜面判定SphereCastの半径。カプセルの半径より少し小さくする */
+        [[nodiscard]] float SlopeCheckRadius    () const { return slopeCheckRadius_;     }
+        /** 斜面判定SphereCastの球の下端を足元からどれだけ上に置くか。これより低い段差は判定に掛からない */
+        [[nodiscard]] float SlopeCheckUpOffset  () const { return slopeCheckUpOffset_;   }
+        /** 斜面判定SphereCastの進行方向への探索距離 */
+        [[nodiscard]] float SlopeCheckDistance  () const { return slopeCheckDistance_;   }
         [[nodiscard]] float WalkAccelerationTime_secs() const { return walkAccelerationTime_secs_; }
         [[nodiscard]] float RunAccelerationTime_secs () const { return runAccelerationTime_secs_;  }
         [[nodiscard]] float WalkDecelerationTime_secs() const { return walkDecelerationTime_secs_; }
@@ -136,14 +136,15 @@ namespace NanamiEngine::Module::Asset
         [[serialize(15)]] FIELD(SoundFile)              attackHitSound_;
         [[serialize(15)]] std::vector<FIELD(SoundFile)> comboNormalAttackWhiffSounds_;
         [[serialize(16)]] std::vector<ItemStack>        initialItems_;
-        [[serialize(17)]] FIELD(PrefabGameObjectFile)   jumpParticlePrefab_;
         [[serialize(17)]] FIELD(PrefabGameObjectFile)   landingParticlePrefab_;
         [[serialize(17)]] float                         landingParticleMinFallSpeed_ = 45.0f;
         [[serialize(17)]] float                         landingParticleMaxFallSpeed_ = 260.0f;
         [[serialize(17)]] float                         landingParticleMinScale_     = 0.7f;
         [[serialize(17)]] float                         landingParticleMaxScale_     = 1.6f;
-        [[serialize(18)]] float                         warpInRise_secs_             = 1.4f;
-        [[serialize(18)]] float                         warpInSinkDepth_             = 40.0f;
+        [[serialize(21)]] float                         maxWalkableSlope_deg_        = 45.0f;
+        [[serialize(21)]] float                         slopeCheckRadius_            = 3.5f;
+        [[serialize(21)]] float                         slopeCheckUpOffset_          = 0.0f;
+        [[serialize(21)]] float                         slopeCheckDistance_          = 2.5f;
 
         
 #pragma region Serialization Function
@@ -209,15 +210,15 @@ namespace NanamiEngine::Module::Asset
             for (size_t i = 0; i < initialItems_.size(); ++i)
                 archive(cereal::make_nvp("initialItem_" + std::to_string(i), initialItems_[i]));
 
-            archive(CEREAL_NVP(jumpParticlePrefab_));
             archive(CEREAL_NVP(landingParticlePrefab_));
             archive(CEREAL_NVP(landingParticleMinFallSpeed_));
             archive(CEREAL_NVP(landingParticleMaxFallSpeed_));
             archive(CEREAL_NVP(landingParticleMinScale_));
             archive(CEREAL_NVP(landingParticleMaxScale_));
-
-            archive(CEREAL_NVP(warpInRise_secs_));
-            archive(CEREAL_NVP(warpInSinkDepth_));
+            archive(CEREAL_NVP(maxWalkableSlope_deg_));
+            archive(CEREAL_NVP(slopeCheckRadius_));
+            archive(CEREAL_NVP(slopeCheckUpOffset_));
+            archive(CEREAL_NVP(slopeCheckDistance_));
         }
 
         template<class Archive>
@@ -324,7 +325,12 @@ namespace NanamiEngine::Module::Asset
 
             if (version >= 17)
             {
-                archive(CEREAL_NVP(jumpParticlePrefab_));
+                if (version < 20)
+                {
+                    // v20 でジャンプの踏み切りの土煙をやめたので読み捨てる
+                    FIELD(PrefabGameObjectFile) jumpParticlePrefab_;
+                    archive(CEREAL_NVP(jumpParticlePrefab_));
+                }
                 archive(CEREAL_NVP(landingParticlePrefab_));
                 archive(CEREAL_NVP(landingParticleMinFallSpeed_));
                 archive(CEREAL_NVP(landingParticleMaxFallSpeed_));
@@ -332,19 +338,30 @@ namespace NanamiEngine::Module::Asset
                 archive(CEREAL_NVP(landingParticleMaxScale_));
             }
 
-            if (version >= 18)
+            if (version == 18)
             {
+                // v18 はポータルから地中を通ってせり上がる登場の尺と深さを持っていた。今は歩いて出てくるので読み捨てる
+                float warpInRise_secs_ = 0.0f;
+                float warpInSinkDepth_ = 0.0f;
                 archive(CEREAL_NVP(warpInRise_secs_));
                 archive(CEREAL_NVP(warpInSinkDepth_));
+            }
+
+            if (version >= 21)
+            {
+                archive(CEREAL_NVP(maxWalkableSlope_deg_));
+                archive(CEREAL_NVP(slopeCheckRadius_));
+                archive(CEREAL_NVP(slopeCheckUpOffset_));
+                archive(CEREAL_NVP(slopeCheckDistance_));
             }
         }
 #pragma endregion
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(SwordManAvatarResource, SWORD_MAN_RESOURCE_EXTENSION_LABEL)
+REGISTER_SCRIPTABLE_OBJECT(SwordManAvatarResource, SWORD_MAN_RESOURCE_EXTENSION_LABEL, "Player::SwordMan")
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 18);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 21);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManAvatarResource);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManAvatarResource);
 #pragma endregion

@@ -26,8 +26,9 @@ namespace NanamiEngine::Core::Network
 
     NetworkObjectId SpawnNetworkObject::CreateNetworkObjectId()
     {
-        const uint32_t pidBits = static_cast<uint8_t>(PlayerId().Value());
-        const NetworkObjectId assignedId(pidBits << 16 | nextNetworkObjectId_++ & 0xFFFF);
+        // 上位バイトは採番の名前空間。各ピアが独立に採番しても衝突しないようにするためのもの
+        const uint32_t namespaceBits = static_cast<uint8_t>(PlayerId().Value());
+        const NetworkObjectId assignedId(namespaceBits << 16 | nextNetworkObjectId_++ & 0xFFFF);
         return assignedId;
     }
 
@@ -57,7 +58,8 @@ namespace NanamiEngine::Core::Network
     void SpawnNetworkObject::ApplyNetworkIds(
         const std::vector<NetworkObjectId>& ids,
         const std::shared_ptr<GameObject::IGameObject>& gameObject,
-        const OwnerLeavePolicy policy)
+        const OwnerLeavePolicy policy,
+        const struct PlayerId owner)
     {
         const auto nodes = CollectNetworkGameObjects(gameObject);
         if (nodes.size() != ids.size())
@@ -67,7 +69,7 @@ namespace NanamiEngine::Core::Network
         const auto count = std::min(nodes.size(), ids.size());
         for (size_t i = 0; i < count; ++i)
         {
-            instanceRegistry_.RegisterWithId(ids[i], nodes[i], policy);
+            instanceRegistry_.RegisterWithId(ids[i], nodes[i], policy, owner);
 
             // NetworkGameObject があればそれ経由で同一 GameObject 上の NetworkComponent へ配る。
             // 無い(NetworkComponent だけを持つ子オブジェクト)場合は直接 NetworkAwake で配る
@@ -83,7 +85,8 @@ namespace NanamiEngine::Core::Network
 
     std::vector<NetworkObjectId> SpawnNetworkObject::AllocateIdsAndRegister(
         const std::shared_ptr<GameObject::IGameObject>& gameObject,
-        const OwnerLeavePolicy policy)
+        const OwnerLeavePolicy policy,
+        const struct PlayerId owner)
     {
         const auto nodeCount = CollectNetworkGameObjects(gameObject).size();
 
@@ -92,16 +95,17 @@ namespace NanamiEngine::Core::Network
         for (size_t i = 0; i < nodeCount; ++i)
             ids.push_back(CreateNetworkObjectId());
 
-        ApplyNetworkIds(ids, gameObject, policy);
+        ApplyNetworkIds(ids, gameObject, policy, owner);
         return ids;
     }
 
     void SpawnNetworkObject::RegisterWithNetworkIds(
         const std::vector<NetworkObjectId>& ids,
         const std::shared_ptr<GameObject::IGameObject>& gameObject,
-        const OwnerLeavePolicy policy)
+        const OwnerLeavePolicy policy,
+        const struct PlayerId owner)
     {
-        ApplyNetworkIds(ids, gameObject, policy);
+        ApplyNetworkIds(ids, gameObject, policy, owner);
     }
 
     void SpawnNetworkObject::DespawnAndUnregister(const std::shared_ptr<GameObject::IGameObject>& root)
@@ -123,7 +127,7 @@ namespace NanamiEngine::Core::Network
     {
         const auto gameObject = Scene::GameObject::Instantiate(prefabFile, position, rotation).lock();
         if (gameObject)
-            AllocateIdsAndRegister(gameObject, OwnerLeavePolicy::Transfer);
+            AllocateIdsAndRegister(gameObject, OwnerLeavePolicy::Transfer, PlayerId());
         return gameObject;
     }
 
@@ -144,10 +148,10 @@ namespace NanamiEngine::Core::Network
         if (!gameObject)
             return nullptr;
 
-        const auto assignedIds = AllocateIdsAndRegister(gameObject, OwnerLeavePolicy::Transfer);
+        const auto assignedIds = AllocateIdsAndRegister(gameObject, OwnerLeavePolicy::Transfer, PlayerId());
 
         Packet packet = Packet::Create(DefaultPacketType::SpawnNetworkObject);
-        packet.Data().Write(PlayerId());
+        packet.Data().Write(PlayerId()); // 送信者 兼 初期所有者
         packet.Data().Write(prefabContent->GetGuid());
         packet.Data().Write(position);
         packet.Data().Write(rotation);
@@ -175,6 +179,6 @@ namespace NanamiEngine::Core::Network
 
         const auto gameObject = Scene::GameObject::Instantiate(*spawnObject.lock(), position, rotation).lock();
         if (gameObject)
-            ApplyNetworkIds(networkObjectIds, gameObject, OwnerLeavePolicy::Transfer);
+            ApplyNetworkIds(networkObjectIds, gameObject, OwnerLeavePolicy::Transfer, playerId);
     }
 }

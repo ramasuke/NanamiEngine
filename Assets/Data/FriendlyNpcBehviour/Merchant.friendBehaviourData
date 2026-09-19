@@ -1,0 +1,198 @@
+{
+    "entryNode_": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "97F21A29-434A-4A1C-9149-B711E5CC3892"
+                    },
+                    "position_": {
+                        "value0": 120.0,
+                        "value1": 40.0
+                    }
+                },
+                "nextNode_": {
+                    "polymorphic_id": 2147483649,
+                    "polymorphic_name": "Editor::Npc::Behaviour::SequenceNode",
+                    "ptr_wrapper": {
+                        "id": 2147483650,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "value0": {},
+                                "guid_": {
+                                    "value_": "5912F662-4E63-4EB4-A49B-79C881897D3D"
+                                },
+                                "position_": {
+                                    "value0": 120.0,
+                                    "value1": 100.0
+                                }
+                            },
+                            "children_": [
+                                {
+                                    "polymorphic_id": 2147483650,
+                                    "polymorphic_name": "Editor::Npc::Friendly::Behaviour::ActionNode",
+                                    "ptr_wrapper": {
+                                        "id": 2147483651,
+                                        "data": {
+                                            "cereal_class_version": 1,
+                                            "value0": {
+                                                "value0": {},
+                                                "guid_": {
+                                                    "value_": "78336F3F-40CF-4E8B-A056-3E72E7635DE1"
+                                                },
+                                                "position_": {
+                                                    "value0": 120.0,
+                                                    "value1": 160.0
+                                                }
+                                            },
+                                            "name_": "Show Chat Icon",
+                                            "action_": {
+                                                "polymorphic_id": 2147483651,
+                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::SetEnableShowChatIcon",
+                                                "ptr_wrapper": {
+                                                    "valid": 1,
+                                                    "data": {
+                                                        "cereal_class_version": 1,
+                                                        "value0": {
+                                                            "cereal_class_version": 0
+                                                        },
+                                                        "value1": true,
+                                                        "value2": true,
+                                                        "value3": false,
+                                                        "value4": false
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "polymorphic_id": 2,
+                                    "ptr_wrapper": {
+                                        "id": 2147483652,
+                                        "data": {
+                                            "value0": {
+                                                "value0": {},
+                                                "guid_": {
+                                                    "value_": "7AC3E0B0-9449-4F03-AD38-61679C60CD32"
+                                                },
+                                                "position_": {
+                                                    "value0": 120.0,
+                                                    "value1": 220.0
+                                                }
+                                            },
+                                            "name_": "Greet",
+                                            "action_": {
+                                                "polymorphic_id": 2147483652,
+                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::Chat",
+                                                "ptr_wrapper": {
+                                                    "valid": 1,
+                                                    "data": {
+                                                        "cereal_class_version": 0,
+                                                        "value0": {},
+                                                        "value1": {
+                                                            "cereal_class_version": 0,
+                                                            "value0": {
+                                                                "polymorphic_id": 1073741824,
+                                                                "ptr_wrapper": {
+                                                                    "id": 2147483653,
+                                                                    "data": {
+                                                                        "cereal_class_version": 0,
+                                                                        "value0": {
+                                                                            "value_": "B875CCF7-C4A9-474D-BE3A-B48575AE75EA"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "polymorphic_id": 2,
+                                    "ptr_wrapper": {
+                                        "id": 2147483654,
+                                        "data": {
+                                            "value0": {
+                                                "value0": {},
+                                                "guid_": {
+                                                    "value_": "10797CF9-1201-46BA-96F9-A71ADF1F2B13"
+                                                },
+                                                "position_": {
+                                                    "value0": 120.0,
+                                                    "value1": 280.0
+                                                }
+                                            },
+                                            "name_": "Open Shop",
+                                            "action_": {
+                                                "polymorphic_id": 2147483653,
+                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::OpenShop",
+                                                "ptr_wrapper": {
+                                                    "valid": 1,
+                                                    "data": {
+                                                        "cereal_class_version": 0,
+                                                        "value0": {},
+                                                        "prefab_": {
+                                                            "cereal_class_version": 0,
+                                                            "value0": {
+                                                                "polymorphic_id": 1073741824,
+                                                                "ptr_wrapper": {
+                                                                    "id": 2147483655,
+                                                                    "data": {
+                                                                        "cereal_class_version": 0,
+                                                                        "value0": {
+                                                                            "value_": "62CA17B2-5DBE-49E0-905F-D05CDE35F792"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "stall_": {
+                                                            "cereal_class_version": 0,
+                                                            "value0": {
+                                                                "polymorphic_id": 1073741824,
+                                                                "ptr_wrapper": {
+                                                                    "id": 2147483656,
+                                                                    "data": {
+                                                                        "cereal_class_version": 0,
+                                                                        "value0": {
+                                                                            "value_": "031EA88C-D29B-4CEC-8E23-1150A76FC4E2"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "parameters_": {
+        "ptr_wrapper": {
+            "valid": 1,
+            "data": {
+                "value0": 0
+            }
+        }
+    }
+}

@@ -24,17 +24,10 @@ namespace NanamiEngine::Module::Asset
     const Guid& ParticleFile::GetGuid        () const { return guid_; }
     int         ParticleFile::LoadDxLibHandle() const
     {
-        bool isAsyncLoad = false;
-        if (GetUseASyncLoadFlag())
-        {
-            isAsyncLoad = SetUseASyncLoadFlag(false);
-        }
-
+        const int useASyncLoad = GetUseASyncLoadFlag();
+        SetUseASyncLoadFlag(FALSE);
         const int handle = LoadEffekseerEffect(contentPath_.c_str());
-        if (isAsyncLoad)
-        {
-            SetUseASyncLoadFlag(true);
-        }
+        SetUseASyncLoadFlag(useASyncLoad);
         return handle;
     }
     std::string ParticleFile::GetContentPath () const { return contentPath_; }

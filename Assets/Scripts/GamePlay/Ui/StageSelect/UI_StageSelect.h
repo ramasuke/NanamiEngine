@@ -102,44 +102,25 @@ namespace GamePlay::Ui
         template<typename Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<Component::ComponentBase>(this));
-            // v6 で子オブジェクトの名前検索を FIELD に置き換えた
-            std::string backGroundMaskName_, stageSelectBackGroundMaskName_, worldMovieRendererName_;
-            std::string worldEnterButtonName_, backGroundName_, mapMarkerName_, detailPreviewName_;
-            std::string detailElementName_, detailLabelName_, detailTitleName_, detailTagName_, detailDifficultyName_;
-            std::vector<std::string> stageSelectButtonNames_, detailDescriptionLineNames_;
             if (version >= 0) archive(CEREAL_NVP(bgm_));
-            if (version < 6) archive(CEREAL_NVP(backGroundMaskName_));
             if (version >= 6) archive(CEREAL_NVP(backGroundMask_));
             if (version >= 0) archive(CEREAL_NVP(backGroundMaskBlendRate_));
-            if (version < 6) archive(CEREAL_NVP(stageSelectButtonNames_));
             if (version >= 6) archive(CEREAL_NVP(stageSelectButtons_));
-            if (version >= 1 && version < 6) archive(CEREAL_NVP(stageSelectBackGroundMaskName_));
             if (version >= 1) archive(CEREAL_NVP(stageSelectBackGroundMask_));
             if (version >= 1) archive(CEREAL_NVP(stageSelectBackGroundMaskBlendRate_));
-            if (version >= 1 && version < 6) archive(CEREAL_NVP(worldMovieRendererName_));
             if (version >= 6) archive(CEREAL_NVP(worldMovieRenderer_));
-            if (version >= 1 && version < 6) archive(CEREAL_NVP(worldEnterButtonName_));
             if (version >= 6) archive(CEREAL_NVP(worldEnterButton_));
             if (version >= 6) archive(CEREAL_NVP(worldEnterButtonGlow_));
-            if (version >= 2 && version < 6) archive(CEREAL_NVP(backGroundName_));
             if (version >= 6) archive(CEREAL_NVP(backGround_));
             if (version >= 3) archive(CEREAL_NVP(worldEnterButtonActiveSprite_));
             if (version >= 3) archive(CEREAL_NVP(worldEnterButtonDisabledSprite_));
-            if (version >= 4 && version < 6) archive(CEREAL_NVP(mapMarkerName_));
             if (version >= 6) archive(CEREAL_NVP(mapMarker_));
-            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailPreviewName_));
             if (version >= 6) archive(CEREAL_NVP(detailPreview_));
-            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailElementName_));
             if (version >= 6) archive(CEREAL_NVP(detailElement_));
-            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailLabelName_));
             if (version >= 6) archive(CEREAL_NVP(detailLabel_));
-            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailTitleName_));
             if (version >= 6) archive(CEREAL_NVP(detailTitle_));
-            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailTagName_));
             if (version >= 6) archive(CEREAL_NVP(detailTag_));
-            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailDifficultyName_));
             if (version >= 6) archive(CEREAL_NVP(detailDifficulty_));
-            if (version >= 5 && version < 6) archive(CEREAL_NVP(detailDescriptionLineNames_));
             if (version >= 6) archive(CEREAL_NVP(detailDescriptionLines_));
             if (version >= 5) archive(CEREAL_NVP(noSelectionTitle_));
         }

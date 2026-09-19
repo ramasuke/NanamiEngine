@@ -65,6 +65,8 @@ namespace NanamiEngine::Core::Application
         void StartableAddedContentPop();
         
     private:
+        void UpdateShadowMapDrawArea() const;
+
         LifeCycleOnceCallbackGroup<Module::LifeCycleCallback::IInitRenderable> initRenderableCallbacks_;
         LifeCycleOnceCallbackGroup<Module::LifeCycleCallback::IAwakable>       awakableCallbacks_;
         LifeCycleOnceCallbackGroup<Module::LifeCycleCallback::IStartable>      startableCallbacks_;
@@ -83,6 +85,7 @@ namespace NanamiEngine::Core::Application
         
         int shadowMapDxLibHandle_ = -1;
         float accumulator_    = 0.0f;
+        bool  hasDeferredPushedContents_ = false;
     };
 
     template <typename T>

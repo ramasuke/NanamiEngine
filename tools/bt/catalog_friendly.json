@@ -1,5 +1,5 @@
 {
-  "generated_from": "765f7f3fbb8b7a1781ceee1aec274c5046da4bb1",
+  "generated_from": "b377183098a5b8e7fe572d32b184af968bac1cdc",
   "actions": {
     "Camera::EnablePurposeCamera": {
       "class": "PurposeCamera",
@@ -366,6 +366,52 @@
           "shape": "float"
         }
       ]
+    },
+    "Ui::OpenCharacterSelect": {
+      "class": "OpenCharacterSelect",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::OpenCharacterSelect",
+      "leaf": "OpenCharacterSelect",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/Ui/OpenCharacterSelect/Friendly_Behaviour_Action_OpenCharacterSelect.h",
+      "params": [
+        {
+          "key": "prefab_",
+          "member": "prefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "podium_",
+          "member": "podium_",
+          "named": true,
+          "shape": "field",
+          "type": "CharacterPodium"
+        }
+      ]
+    },
+    "Ui::OpenShop": {
+      "class": "OpenShop",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::OpenShop",
+      "leaf": "OpenShop",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/Ui/OpenShop/Friendly_Behaviour_Action_OpenShop.h",
+      "params": [
+        {
+          "key": "prefab_",
+          "member": "prefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "stall_",
+          "member": "stall_",
+          "named": true,
+          "shape": "field",
+          "type": "MerchantStall"
+        }
+      ]
     }
   },
   "structs": {
@@ -397,6 +443,8 @@
     "GameCore::Npc::Friendly::Behaviour::Action::IsChat": "NpcStatus::Chat::IsChatting",
     "GameCore::Npc::Friendly::Behaviour::Action::MoveForRoute": "NpcStatus::RigidBody::MoveForRoute",
     "GameCore::Npc::Friendly::Behaviour::Action::NodeTickTimer": "Time::NodeTickTimer",
+    "GameCore::Npc::Friendly::Behaviour::Action::OpenCharacterSelect": "Ui::OpenCharacterSelect",
+    "GameCore::Npc::Friendly::Behaviour::Action::OpenShop": "Ui::OpenShop",
     "GameCore::Npc::Friendly::Behaviour::Action::PlayAnimation": "NpcStatus::Animation::PlayAnimation",
     "GameCore::Npc::Friendly::Behaviour::Action::PurposeCamera": "Camera::EnablePurposeCamera",
     "GameCore::Npc::Friendly::Behaviour::Action::ReadBlackBoard": "Other::ReadBlackBoard",
@@ -418,6 +466,8 @@
     "IsChat": "NpcStatus::Chat::IsChatting",
     "MoveForRoute": "NpcStatus::RigidBody::MoveForRoute",
     "NodeTickTimer": "Time::NodeTickTimer",
+    "OpenCharacterSelect": "Ui::OpenCharacterSelect",
+    "OpenShop": "Ui::OpenShop",
     "PlayAnimation": "NpcStatus::Animation::PlayAnimation",
     "PurposeCamera": "Camera::EnablePurposeCamera",
     "ReadBlackBoard": "Other::ReadBlackBoard",

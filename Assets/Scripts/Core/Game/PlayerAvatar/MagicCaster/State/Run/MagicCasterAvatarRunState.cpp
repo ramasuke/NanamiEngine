@@ -1,6 +1,6 @@
-#include "MagicCasterAvatarRunState.h"
+﻿#include "MagicCasterAvatarRunState.h"
 
-#include "../../Input/PlayerAvatarInput_void.h"
+#include "../../../Input/PlayerAvatarInput_void.h"
 
 void GameCore::PlayerAvatar::MagicCaster::State::RunState::DoEnter()
 {
@@ -14,30 +14,21 @@ void GameCore::PlayerAvatar::MagicCaster::State::RunState::DoFixedUpdate()
 
 void GameCore::PlayerAvatar::MagicCaster::State::RunState::DoUpdate()
 {
-    if (Status().IsDamaged())
-    {
-        OnChangeState(MagicCasterAvatarStateType::Hurt);
-        return;
-    }
-    if (!Conditions().IsGround())
-    {
-        OnChangeState(MagicCasterAvatarStateType::Floating);
-        return;
-    }
-    if (!Input().Move().IsUpdatePressed())
-    {
-        OnChangeState(MagicCasterAvatarStateType::Idle);
-        return;
-    }
-    if (!Input().Run().IsUpdatePressed() || !Status().CanRun())
-    {
-        OnChangeState(MagicCasterAvatarStateType::Walk);
-        return;
-    }
-    if (Input().Jump().IsPressed() && Status().CanJump())
-    {
-        OnChangeState(MagicCasterAvatarStateType::Jump);
-    }
+    UpdateLockOn();
+    UpdateTransitions();
+}
+
+void GameCore::PlayerAvatar::MagicCaster::State::RunState::VisitTransitions(
+    IMagicCasterAvatarTransitionVisitor& visitor) const
+{
+    visitor.Automatic(MagicCasterAvatarStateType::Hurt, Status().IsDamaged());
+    visitor.Automatic(MagicCasterAvatarStateType::Floating, !Conditions().IsGround());
+    visitor.OnInput(MagicCasterAvatarStateType::Idle, MagicCasterAvatarInput::Move, PlayerAvatarInputPhase::NotHolding, true);
+    visitor.Automatic(MagicCasterAvatarStateType::Walk, !Input().Run().IsUpdatePressed() || !Status().CanRun());
+    visitor.OnInput(MagicCasterAvatarStateType::Jump, MagicCasterAvatarInput::Jump, PlayerAvatarInputPhase::Pressed, Status().CanJump());
+    visitor.Cast(CanCastBasicSpell());
+    visitor.Action(MagicCasterAvatarStateAction::Move, true);
+    VisitLockOnAction(visitor);
 }
 
 void GameCore::PlayerAvatar::MagicCaster::State::RunState::DoExit()

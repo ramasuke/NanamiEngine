@@ -6,7 +6,6 @@
 #include "../../../../Editor/Npc/Enemy/Behaviour/Window/RunningEnemyBehaviourTreeWindow.h"
 #include "../../../../GamePlay/PlayerAvatar/HitShakeReceiver/PlayerHitShakeReceiver.h"
 #include "../../../../GamePlay/Npc/Enemy/NetworkBehaviourTree/GamePlay_NetworkBehaviourTree.h"
-#include "../../PlayerAvatar/LockOnTarget/LockOnPoint.h"
 #include "Behaviour/Enemy_BehaviourTree.h"
 #include "ShowHealthGaugeProvider/IShowHealthGaugeProvider.h"
 
@@ -31,21 +30,12 @@ namespace GameCore::Npc
         hasNetworkBehaviourTree_ = Components().Catch<GamePlay::Npc::Enemy::NetworkBehaviourTree>().lock() != nullptr;
         showHealthGaugeProvider_ = dynamic_cast<Enemy::IShowHealthGaugeProvider*>(this);
 
-        for (const auto& child : Transform().GetAllChildren())
-        {
-            if (const auto lockOnPoint = child->Components().Catch<PlayerAvatar::LockOnPoint>().lock())
-            {
-                lockOnPoint_ = lockOnPoint;
-                break;
-            }
-        }
-
         DoAwake();
     }
 
     glm::vec3 EnemyBase::LockOnPosition()
     {
-        const auto lockOnPoint = lockOnPoint_.lock();
+        const auto lockOnPoint = lockOnPoint_.get();
         if (!lockOnPoint)
             return Transform().GetWorldPos();
 
@@ -90,6 +80,7 @@ namespace GameCore::Npc
             currentStatus_ = CreateSyncParameter(Enemy::EnemyStatus());
         }
         ImGuiHelper::OnDrawInputField("isNetworkSyncStatus_", isNetworkSyncStatus_);
+        ImGuiHelper::OnDrawInputField("lockOnPoint_", lockOnPoint_);
 
         if (behaviour_ && ImGui::Button("Show Running BehaviourTree"))
         {

@@ -9,6 +9,8 @@ Debug/
 Release/
 x64/
 x86/
+# Toolbar "Build" output (Config > Build > Output Directory)
+/Build/
 
 # Visual Studio
 .vs/
@@ -26,3 +28,9 @@ EngineLog.txt
 
 # Model sources (only the converted .mv1 is tracked)
 *.fbx
+
+# Asset distribution (tools/dist) - release artifacts, not sources
+/manifest.json
+/manifest-*.json
+/installed.json
+/.manifest_hash_cache.json

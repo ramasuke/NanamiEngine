@@ -9,6 +9,8 @@ namespace GameCore::PlayerAvatar
     {
         if (const auto lockOnTarget = target.Components().Catch<ILockOnTarget>().lock())
             return lockOnTarget->LockOnPosition();
+        if (const auto lockOnPart = target.Components().Catch<ILockOnPart>().lock())
+            return lockOnPart->LockOnPosition();
 
         return target.Transform().GetWorldPos();
     }

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../../Base/Main_GameSceneBase.h"
+#include "../../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
 #include "Context/MainIsLandSceneContext.h"
 
 namespace GameCore::Scene::Main
@@ -9,6 +10,12 @@ namespace GameCore::Scene::Main
     public:
         explicit MainIslandScene(const std::weak_ptr<MainIslandSceneContext>& context, GameSceneBaseContext baseContext);
         ~MainIslandScene() override;
+
+        /**
+         * @brief 操作中のアバターを、同じ場所に別キャラで作り直す。
+         * ネットワーク中の切り替えは想定していないので、ローカルの再生成だけで済ませている。
+         */
+        void SwitchPlayerAvatar(PlayerAvatar::PlayerAvatarType type);
         
     private:
         void Init     () override;
@@ -18,5 +25,6 @@ namespace GameCore::Scene::Main
         
         std::weak_ptr<NanamiEngine::Scene::Scene> scene_;
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
+        Asset::PlayerAvatarAttachments attachments_;
     };
 }

@@ -38,8 +38,10 @@ python -m tools.model <command>        # or: python tools/model.py <command>
 
 | command | purpose |
 |---|---|
-| `selftest` | correctness gate — run after touching `meta.py`, `mv1.py` or `cli.py`; `dxlib_modelviewer.py` changes can only be verified against a real exe (stage 7, best-effort) |
-| `convert FILE OUT --mode mesh\|anim\|full [--with-textures]` | convert `FILE` (e.g. `.fbx`) → `OUT` (`.mv1`) by driving the real `DxLibModelViewer_64bit.exe` GUI; see "Save modes" / "`--with-textures`" below |
+| `selftest` | correctness gate — run after touching `meta.py`, `mv1.py` or `cli.py`; `dxlib_modelviewer.py` changes can only be verified against a real exe (stage 9, best-effort) |
+| `convert FILE OUT --mode mesh\|anim\|full [--with-textures] [--emissive ...]` | convert `FILE` (e.g. `.fbx`) → `OUT` (`.mv1`) by driving the real `DxLibModelViewer_64bit.exe` GUI; see "Save modes" / "`--with-textures`" / "Emissive" below |
+| `materials MV1` | list the `.mv1`'s materials (index, name, diffuse, emissive) — the names `--emissive` takes |
+| `set-emissive MV1 --emissive ... [--out PATH]` | set the emissive color of an already-converted `.mv1` (in place unless `--out`; the `.meta`/GUID is untouched) |
 | `install MV1 --dest ...` | copy a converted `.mv1` into `Assets/`, mint a fresh-GUID `.meta` (an existing `.meta` at `--dest` is kept as-is, GUID included, so re-installing never breaks prefab references), and (with `--with-textures`) place every texture the `.mv1` references next to it, (with `--source`) copy the original `.fbx` under `<dest-dir>/_Source/`, and (with `--textures`) bulk-copy image files under `<dest-dir>/textures/` |
 
 ### Save modes (`convert --mode`, required)
@@ -96,6 +98,33 @@ reference to the same file name exists, otherwise the file is placed directly
 beside the `.mv1`. Textures the model doesn't reference (e.g. an unused
 `*_Opacity.png` in the `.fbm`) are not copied. Rejected with `--mode anim`,
 which has no materials.
+
+### Emissive (`convert --emissive`, `set-emissive`)
+
+DxLibModelViewer's 自己発光 (emissive color) setting, without clicking through its material
+panel. `--emissive` is repeatable and applied in order, later values overriding earlier ones:
+
+```
+--emissive 1,0.8,0.3                          # every material
+--emissive Lamp=1,0.8,0.3                     # materials named exactly "Lamp" (see `materials`)
+--emissive 2=1,0.8,0.3                        # material index 2 (when no material is named "2")
+--emissive 0,0,0 --emissive Lamp=1,0.8,0.3    # everything off except Lamp
+```
+
+R,G,B are floats ≥ 0 (1 = full); alpha is left as stored. `convert` saves through the viewer
+first, then patches the output, so an unknown material name fails *after* the `.mv1` was
+written (unpatched) — fix the name and run `set-emissive` on it instead of re-converting.
+Rejected with `--mode anim`, which has no materials. FBX exporters often bring a grey emissive
+along (e.g. 0.07 or 0.35 on many shipped models, which washes them out); `--emissive 0,0,0`
+clears it.
+
+How it works: `mv1.py` decodes the file, rewrites the 12 RGB bytes of each targeted material
+record (layout in `mv1.py`'s docstring), and re-compresses with its own LZ encoder. The result
+decodes to exactly DxLib's body with only those bytes changed, but the compressed bytes are not
+DxLib's (about 1–2% larger), so the file's hash changes even for `--emissive` values equal to
+the current ones. The engine's `ModelRenderer` draws with DxLib's standard shader, which uses
+the material emissive; materials switched to a custom shader by an `IModelMaterialShaderPolicy`
+only show it if that shader reads it, and `SkyDome3D` overwrites it at runtime (base × tint).
 
 ### `install --textures`
 
@@ -157,7 +186,13 @@ opt-in and off by default, same as `--source`.
   `Assets/` to exactly their declared size, which is strong evidence, but
   `texture_paths()` is still a heuristic string scan of the decoded body
   (NUL-terminated strings ending in an image extension), not a walk of the
-  material table.
+  material table. `encode()` only emits the LZ forms found in DxLib's own
+  output (matches ≤ 8195 bytes, overlapping matches, 1–3 byte distances).
+* **The material table layout is reverse-engineered too.** Its offsets (`mv1.py` docstring)
+  were read off real files and hold for every `.mv1` under `Assets/` (2026-09-19: 197 files,
+  642 materials; the selftest re-checks the whole folder). `materials()` checks every record's
+  index and name and refuses the file if anything is off, so a future DxLib layout change makes
+  `set-emissive` fail instead of writing into the wrong bytes.
 * **`looks_like_mv1()` is a sanity check, not a structural validator.** It
   checks the 4-byte `MV11` header, a minimum file size, and that the
   compressed body decodes to its declared size. It cannot detect a

@@ -15,7 +15,7 @@ namespace
                         return;
                     avatar.PlayerStatus().Revive();
                     avatar.GetEventSceneStateMachine().OnChangeState(
-                        GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateType::GetUp);
+                        GameCore::PlayerAvatar::EventSceneStateType::GetUp);
                 },
                 NanamiEngine::Module::Network::RpcOwnershipFilter::OnlyIfOwner);
         }

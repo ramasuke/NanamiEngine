@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 0,
+                "cereal_class_version": 3,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -17,7 +17,7 @@
                         "value_": "FE556831-A6C6-4B5F-ADC2-2FF8C6653E13"
                     }
                 },
-                "magicBoltPrefab_": {
+                "basicSpell_": {
                     "cereal_class_version": 0,
                     "value0": {
                         "polymorphic_id": 1073741824,
@@ -26,18 +26,138 @@
                             "data": {
                                 "cereal_class_version": 0,
                                 "value0": {
-                                    "value_": "135E6FE8-97B8-4501-A2E2-B628C3B8B73E"
+                                    "value_": "F788E510-3C60-4FBD-8AA9-1C90BE361589"
                                 }
                             }
                         }
                     }
                 },
-                "magicBoltSpeed_": 220.0,
-                "castFireTime_secs_": 0.35,
-                "castTotalDuration_secs_": 0.75,
+                "loadout_0": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "value0": {
+                                    "value_": "D6AAAA0B-A6D9-45D3-B83F-6AC3B05E61FB"
+                                }
+                            }
+                        }
+                    }
+                },
+                "loadout_1": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483652,
+                            "data": {
+                                "value0": {
+                                    "value_": "EADDF417-A260-4ABA-B90E-44053951020C"
+                                }
+                            }
+                        }
+                    }
+                },
+                "loadout_2": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483653,
+                            "data": {
+                                "value0": {
+                                    "value_": "9A4208A2-41CD-4422-A611-FB6B4A5E06CD"
+                                }
+                            }
+                        }
+                    }
+                },
+                "loadout_3": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "D995F289-E2EE-46A6-AA63-D78890773E8D"
+                                }
+                            }
+                        }
+                    }
+                },
+                "loadout_4": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483655,
+                            "data": {
+                                "value0": {
+                                    "value_": "5C549367-11A6-4CEC-AF50-27FA2D635B4D"
+                                }
+                            }
+                        }
+                    }
+                },
+                "loadout_5": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483656,
+                            "data": {
+                                "value0": {
+                                    "value_": "133416AA-61F8-4032-AE41-18BAD3D568B1"
+                                }
+                            }
+                        }
+                    }
+                },
+                "loadout_6": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483657,
+                            "data": {
+                                "value0": {
+                                    "value_": "D678E955-0E50-4EFF-978D-317C439611B4"
+                                }
+                            }
+                        }
+                    }
+                },
+                "loadout_7": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483658,
+                            "data": {
+                                "value0": {
+                                    "value_": "3E690974-F028-4E97-B504-26ACE06669BC"
+                                }
+                            }
+                        }
+                    }
+                },
                 "groundCheckRadius_": 40.0,
                 "groundCheckUpOffset_": 3.0,
-                "groundCheckDistance_": 8.3
+                "groundCheckDistance_": 8.300000190734864,
+                "maxWalkableSlope_deg_": 45.0,
+                "slopeCheckRadius_": 3.5,
+                "slopeCheckUpOffset_": 0.0,
+                "slopeCheckDistance_": 2.5,
+                "dealDamageTextBillBoardPrefab_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483659,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "C9DF1FAB-B64A-4007-8937-89E235ACC158"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

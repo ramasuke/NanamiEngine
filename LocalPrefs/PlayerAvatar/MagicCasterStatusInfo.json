@@ -1,0 +1,120 @@
+{
+    "Info": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 4,
+                "value0": {
+                    "cereal_class_version": 0
+                },
+                "maxHealth_": {
+                    "cereal_class_version": 0,
+                    "value_": 80
+                },
+                "minHealth_": {
+                    "value_": 0
+                },
+                "currentHealth_": {
+                    "polymorphic_id": 1073741824,
+                    "ptr_wrapper": {
+                        "id": 2147483650,
+                        "data": {
+                            "value0": {
+                                "value_": 80
+                            }
+                        }
+                    }
+                },
+                "maxStamina_": {
+                    "cereal_class_version": 0,
+                    "value_": 100.0
+                },
+                "stamina_": {
+                    "value": {
+                        "value_": 100.0
+                    }
+                },
+                "staminaDrainPerSecond_": 10.0,
+                "staminaRegenPerSecond_": 30.0,
+                "minStaminaRatioToResumeRun_": 0.30000001192092898,
+                "walkSpeed_": {
+                    "cereal_class_version": 0,
+                    "value_": 20.0
+                },
+                "runSpeed_": {
+                    "value_": 55.0
+                },
+                "moveRotateSpeed_": 6.199999809265137,
+                "jumpPower_": 65.0,
+                "jumpStateDuration_secs_": 0.44999998807907107,
+                "jumpCooldown_secs_": 0.5,
+                "jumpStaminaCost_": 15.0,
+                "damageStateDuration_secs_": 1.0,
+                "deathStateDuration_secs_": 1.7999999523162842,
+                "wallet_": {
+                    "ptr_wrapper": {
+                        "id": 2147483651,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "balance_": {
+                                "value": {
+                                    "cereal_class_version": 0,
+                                    "value_": 33
+                                }
+                            }
+                        }
+                    }
+                },
+                "maxMana_": {
+                    "cereal_class_version": 0,
+                    "value_": 100.0
+                },
+                "mana_": {
+                    "value": {
+                        "value_": 100.0
+                    }
+                },
+                "manaRegenPerSecond_": 4.0,
+                "quests_": {
+                    "polymorphic_id": 1073741824,
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "storyQuests_": {
+                                "cereal_class_version": 0,
+                                "count": 0
+                            }
+                        }
+                    }
+                },
+                "pouch_": {
+                    "cereal_class_version": 0,
+                    "stacks_": [
+                        {
+                            "cereal_class_version": 0,
+                            "item_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483652,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "cereal_class_version": 0,
+                                                "value_": "F98E0047-7959-458A-85EB-B14CE6F7382F"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "count_": 1
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

@@ -52,7 +52,6 @@ namespace GamePlay::PlayerAvatar::SwordMan
             if (version <= 3) archive(CEREAL_NVP(normalAttackSound_));
             if (version <= 3) archive(CEREAL_NVP(avoidRollingSound_));
             if (version >= 3) archive(CEREAL_NVP(resources_));
-            // v5 でコード直書きだった子オブジェクト名を FIELD に置き換えた
             if (version >= 5) archive(CEREAL_NVP(normalAttackArea_));
             if (version >= 5) archive(CEREAL_NVP(dashAttackArea_));
             if (version >= 5) archive(CEREAL_NVP(lockOnDetectionArea_));

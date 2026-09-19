@@ -14,12 +14,13 @@ namespace NanamiEngine::CineMachine::Behaviour
     public:
         void SetTarget(const std::shared_ptr<GameObject::IGameObject>& target);
         void SetOffsetPos(glm::vec3 lookAtTargetOffset);
-        
+        /** @brief 次のOnUpdateを待たずに、今の位置からtargetへ向ける */
+        void LookAtTarget() const;
+
     private:
         void OnAwake      () override;
         void OnUpdate     () override;
         void OnDebugRender() override;
-        void LookAtTarget () const;
 
         FIELD(Module::GameObject::IGameObject) target_;
         glm::vec3 lookAtTargetOffset_ = glm::vec3(0.0f);

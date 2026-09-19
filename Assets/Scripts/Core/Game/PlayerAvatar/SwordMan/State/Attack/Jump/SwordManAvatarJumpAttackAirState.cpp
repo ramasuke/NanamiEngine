@@ -6,6 +6,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
         StatusEvent().InvokeJumpAttack();
         RigidBody().SetLinearVelocity(glm::vec3(0.0f));
+        attackTurn_ = {};
     }
 
     void SwordManAvatarJumpAttackAirState::DoFixedUpdate()
@@ -20,7 +21,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             return;
 
         if (During_secs() < Status().JumpAttackWindup_secs())
-            RotateTowardsAttackTarget(Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
+            RotateTowardsAttackTarget(attackTurn_, Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
     }
 
     void SwordManAvatarJumpAttackAirState::DoExit()

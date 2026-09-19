@@ -365,7 +365,7 @@
                                             "ptr_wrapper": {
                                                 "id": 2147483665,
                                                 "data": {
-                                                    "cereal_class_version": 2,
+                                                    "cereal_class_version": 3,
                                                     "value0": {
                                                         "guid_": {
                                                             "value_": "D7BF421A-9F36-4285-89E2-CCD438403527"
@@ -446,7 +446,10 @@
                                                     "bandInsetY_": 0.0,
                                                     "gaugeFadeDuration_secs_": 0.30000001192092898,
                                                     "pulseFrequency_hz_": 1.399999976158142,
-                                                    "pulseMaxAlpha_": 56
+                                                    "pulseMaxAlpha_": 56,
+                                                    "fillDirection_": 0,
+                                                    "fillStartInset_": 0.0,
+                                                    "fillEndInset_": 0.0
                                                 }
                                             }
                                         }
@@ -695,7 +698,10 @@
                                                     "bandInsetY_": 0.0,
                                                     "gaugeFadeDuration_secs_": 0.30000001192092898,
                                                     "pulseFrequency_hz_": 1.399999976158142,
-                                                    "pulseMaxAlpha_": 56
+                                                    "pulseMaxAlpha_": 56,
+                                                    "fillDirection_": 0,
+                                                    "fillStartInset_": 0.0,
+                                                    "fillEndInset_": 0.0
                                                 }
                                             }
                                         }
@@ -827,7 +833,7 @@
                     "value0": {
                         "value0": {}
                     },
-                    "isActive_": true,
+                    "isActive_": false,
                     "name_": "DamageFlash",
                     "guid_": {
                         "value_": "A0FFA604-789C-4B75-B208-FEBF1B0417A5"
@@ -845,7 +851,7 @@
                                         "guid_": {
                                             "value_": "9AD5563B-705E-4A21-ADC1-47B1F745C634"
                                         },
-                                        "isEnable_": true
+                                        "isEnable_": false
                                     },
                                     "value1": {},
                                     "value2": {},
@@ -879,7 +885,7 @@
                                         "guid_": {
                                             "value_": "75CC769C-A92A-4129-95EE-ADCFA1CE68EA"
                                         },
-                                        "isEnable_": true
+                                        "isEnable_": false
                                     },
                                     "maxBlendRate_": 0,
                                     "defaultIntensity_": 0.0,

@@ -40,6 +40,10 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual float                                    GroundCheckRadius        () const = 0;
         [[nodiscard]] virtual float                                    GroundCheckUpOffset      () const = 0;
         [[nodiscard]] virtual float                                    GroundCheckDistance      () const = 0;
+        [[nodiscard]] virtual float                                    MaxWalkableSlope_deg     () const = 0;
+        [[nodiscard]] virtual float                                    SlopeCheckRadius         () const = 0;
+        [[nodiscard]] virtual float                                    SlopeCheckUpOffset       () const = 0;
+        [[nodiscard]] virtual float                                    SlopeCheckDistance       () const = 0;
 
     };
 }

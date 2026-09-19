@@ -6,7 +6,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     class SwordManAvatarNormalAttackState final : public SwordManAvatarStateBase
     {
     public:
-        DEFINE_STATE_CONSTRUCTOR(SwordManAvatarNormalAttackState)
+        explicit SwordManAvatarNormalAttackState(const SwordManAvatarStateArgs& args) : SwordManAvatarStateBase(args) {}
 
     private:
         void DoEnter() override;
@@ -19,7 +19,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void PlayComboAttackSe(bool isHit) const;
         void ChangeToMoveOrIdle();
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::ComboAttack; }
-        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Accept; }
+        [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Accept; }
         void VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const override;
 
     private:
@@ -29,5 +29,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         float bufferedAttackTimer_secs_ = 0.0f;
         /** @brief このステートに入ってから攻撃ボタンを一度でも離したか。離していなければため攻撃の溜めへ移行できる */
         bool releasedSinceEnter_ = false;
+        AttackTurn attackTurn_;
     };
 }

@@ -95,7 +95,7 @@
                                                                                 "ptr_wrapper": {
                                                                                     "valid": 1,
                                                                                     "data": {
-                                                                                        "cereal_class_version": 3,
+                                                                                        "cereal_class_version": 4,
                                                                                         "value0": {
                                                                                             "cereal_class_version": 0
                                                                                         },
@@ -121,7 +121,9 @@
                                                                                         },
                                                                                         "value3": 0,
                                                                                         "value4": false,
-                                                                                        "value5": 0.4000000059604645
+                                                                                        "value5": 0.4000000059604645,
+                                                                                        "value6": "",
+                                                                                        "value7": 1.0
                                                                                     }
                                                                                 }
                                                                             }
@@ -3201,24 +3203,24 @@
                                                                                             "value0": {
                                                                                                 "value0": {},
                                                                                                 "guid_": {
-                                                                                                    "value_": "1B294EA7-28D5-460B-A63C-39B13A36D934"
+                                                                                                    "value_": "45430657-F022-45A8-86EC-1B5F0B848281"
                                                                                                 },
                                                                                                 "position_": {
                                                                                                     "value0": 1517.0,
                                                                                                     "value1": 460.0
                                                                                                 }
                                                                                             },
-                                                                                            "name_": "ToPlayerDistance",
+                                                                                            "name_": "Player Out Of AttackRange",
                                                                                             "action_": {
                                                                                                 "polymorphic_id": 2147483675,
-                                                                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance",
+                                                                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::IsTargetInAttackArea",
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
                                                                                                     "data": {
                                                                                                         "cereal_class_version": 1,
                                                                                                         "value0": {},
-                                                                                                        "distance_": 35.0,
-                                                                                                        "isInnerDistance_": false
+                                                                                                        "attackAreaName_": "AttackRange",
+                                                                                                        "isInner_": false
                                                                                                     }
                                                                                                 }
                                                                                             }

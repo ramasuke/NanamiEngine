@@ -28,8 +28,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         , successAvoidRollingParticle_(successAvoidRollingParticle)
         , resources_            (resources          )
     {
-        // ポーチはセーブに乗せないので、アバターを組むたびにリソースの初期所持から作り直す
-        if (const auto resource = resources.lock())
+        // 初期所持はセーブにポーチが無いとき(初回・v21 より前のセーブ)だけ入れる
+        if (const auto resource = resources.lock(); resource && !status->Pouch().IsSetUp())
             status->SetupPouch(resource->InitialItems());
     }
 
@@ -46,5 +46,25 @@ namespace GameCore::PlayerAvatar::SwordMan
     float SwordManAvatarStateContext::GroundCheckDistance() const
     {
         return resources_.lock()->GroundCheckDistance();
+    }
+
+    float SwordManAvatarStateContext::MaxWalkableSlope_deg() const
+    {
+        return resources_.lock()->MaxWalkableSlope_deg();
+    }
+
+    float SwordManAvatarStateContext::SlopeCheckRadius() const
+    {
+        return resources_.lock()->SlopeCheckRadius();
+    }
+
+    float SwordManAvatarStateContext::SlopeCheckUpOffset() const
+    {
+        return resources_.lock()->SlopeCheckUpOffset();
+    }
+
+    float SwordManAvatarStateContext::SlopeCheckDistance() const
+    {
+        return resources_.lock()->SlopeCheckDistance();
     }
 }

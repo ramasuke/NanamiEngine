@@ -10,7 +10,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     {
     public:
         TickStatus DoTick(const TickContext& context) override;
-        void Reset();
+        void DoReset() override;
 
     private:
         [[serialize(0)]] float waitSeconds_ = 0.0f;

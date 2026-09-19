@@ -1,63 +1,109 @@
-#include "MagicCasterAvatarStateBase.h"
+﻿#include "MagicCasterAvatarStateBase.h"
 
-#include "../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../Engine/Module/Component/Animator/Animator.h"
+#include "../../../../../../Data/PlayerAvatar/Resource/Data_MagicCasterAvatarResource.h"
+#include "../../Input/PlayerAvatarInput_void.h"
+#include "../../LockOnTarget/ILockOnTarget.h"
+#include "../Spell/MagicCasterSpellSlot.h"
 
 namespace GameCore::PlayerAvatar::MagicCaster
 {
-    MagicCasterAvatarStateBase::MagicCasterAvatarStateBase(
-        const std::shared_ptr<MagicCasterAvatarStateContext>& context
-        , const std::function<void(MagicCasterAvatarStateType)>& onChangeState)
-        : stateDuring_secs_(0.0f)
-        , context_         (context)
-        , onChangeState_   (onChangeState)
+    MagicCasterAvatarStateBase::MagicCasterAvatarStateBase(const MagicCasterAvatarStateArgs& args)
+        : PlayerAvatarStateBase(args)
     {
     }
 
-    void MagicCasterAvatarStateBase::OnEnter()
+    std::shared_ptr<const Magic::IMagicSpell> MagicCasterAvatarStateBase::SpellAt(const int slot) const
     {
-        ResetDuringTime();
-        DoEnter();
+        if (slot == SPELL_BASIC_SLOT)
+            return Resources().BasicSpell();
+        return Resources().LoadoutSpell(slot);
     }
 
-    void MagicCasterAvatarStateBase::OnUpdate()
+    bool MagicCasterAvatarStateBase::TryBeginCast() const
     {
-        DoUpdate();
-        stateDuring_secs_ += Time::DeltaTime();
+        std::optional<int> slot;
+        if (Input().Cast().IsPressed())
+            slot = SPELL_BASIC_SLOT;
+        else
+            slot = Input().PressedLoadoutSlot();
+
+        if (!slot)
+            return false;
+
+        const auto spell = SpellAt(*slot);
+        if (!spell || !Status().CanCast(*slot, *spell))
+            return false;
+
+        Context().SetPendingCast(*slot, spell);
+        OnChangeState(MagicCasterAvatarStateType::Cast);
+        return true;
     }
 
-    void MagicCasterAvatarStateBase::OnFixedUpdate()
+    bool MagicCasterAvatarStateBase::CanCastBasicSpell() const
     {
-        DoFixedUpdate();
+        const auto spell = SpellAt(SPELL_BASIC_SLOT);
+        return spell && Status().CanCast(SPELL_BASIC_SLOT, *spell);
     }
 
-    void MagicCasterAvatarStateBase::OnExit()
+    namespace
     {
-        DoExit();
+        class MagicCasterTransitionExecutor final : public PlayerAvatarTransitionExecutorBase<IMagicCasterAvatarTransitionVisitor>
+        {
+        public:
+            MagicCasterTransitionExecutor(
+                const MagicCasterAvatarInputAction& input,
+                const std::function<void(MagicCasterAvatarStateType)>& onChangeState,
+                const std::function<bool()>& tryBeginCast)
+                : PlayerAvatarTransitionExecutorBase(onChangeState)
+                , input_(input)
+                , tryBeginCast_(tryBeginCast)
+            {
+            }
+
+            bool Cast(bool) override
+            {
+                if (HasChanged() || !tryBeginCast_())
+                    return false;
+
+                MarkChanged();
+                return true;
+            }
+
+        private:
+            [[nodiscard]] bool IsTriggered(const MagicCasterAvatarInput input, const PlayerAvatarInputPhase phase) const override
+            {
+                switch (input)
+                {
+                case MagicCasterAvatarInput::Move: return IsInputInPhase(input_.Move(), phase);
+                case MagicCasterAvatarInput::Run:  return IsInputInPhase(input_.Run(),  phase);
+                case MagicCasterAvatarInput::Jump: return IsInputInPhase(input_.Jump(), phase);
+                case MagicCasterAvatarInput::Chat: return IsInputInPhase(input_.Chat(), phase);
+                }
+                return false;
+            }
+
+            const MagicCasterAvatarInputAction& input_;
+            const std::function<bool()>& tryBeginCast_;
+        };
     }
 
-    Component::Animator& MagicCasterAvatarStateBase::Animator() const
+    bool MagicCasterAvatarStateBase::UpdateTransitions() const
     {
-        return *Player().Components().Catch<Component::Animator>().lock();
+        const std::function<bool()> tryBeginCast = [this] { return TryBeginCast(); };
+        MagicCasterTransitionExecutor executor(Input(), OnChangeStateCallback(), tryBeginCast);
+        VisitTransitions(executor);
+        return executor.HasChanged();
     }
 
-    void MagicCasterAvatarStateBase::ResetDuringTime()
+    void MagicCasterAvatarStateBase::FaceAimTarget() const
     {
-        stateDuring_secs_ = 0.0f;
-    }
+        const auto target = Caster().AimTarget().lock();
+        if (!target)
+            return;
 
-    void MagicCasterAvatarStateBase::HoldHorizontalVelocity() const
-    {
-        RigidBody().SetLinearVelocity(glm::vec3(0.0f, RigidBody().LinearVelocity().y, 0.0f));
-    }
-
-    void MagicCasterAvatarStateBase::ChangeCamera(const std::weak_ptr<CineMachine::CineMachineVirtualCamera>& camera) const
-    {
-        CameraGroup().ChangeCamera(camera);
-    }
-
-    void MagicCasterAvatarStateBase::OnChangeState(MagicCasterAvatarStateType type) const
-    {
-        onChangeState_(type);
+        // 部位は真上にあることもあるので、高さを消してから渡す(RotateTowards の長さ判定をすり抜けて水平成分 0 を正規化しないように)
+        glm::vec3 toAim = LockOnPositionOf(*target) - Transform().GetWorldPos();
+        toAim.y = 0.0f;
+        Actions().RotateTowards(toAim, Status().GetMoveRotateSpeed());
     }
 }

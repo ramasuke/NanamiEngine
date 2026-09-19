@@ -14,7 +14,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 4,
+                    "cereal_class_version": 5,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
@@ -49,37 +49,7 @@
                             }
                         }
                     },
-                    "useFixedInterpolation_": false,
-                    "vsFile_": {
-                        "cereal_class_version": 0,
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483651,
-                                "data": {
-                                    "cereal_class_version": 0,
-                                    "value0": {
-                                        "value_": "23788367-EF88-413D-9389-54531F0A93F5"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "psFile_": {
-                        "cereal_class_version": 0,
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483652,
-                                "data": {
-                                    "cereal_class_version": 0,
-                                    "value0": {
-                                        "value_": "02D3BCF4-10F6-4E21-81B1-7689A2F3FAB5"
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    "useFixedInterpolation_": false
                 }
             }
         },
@@ -87,7 +57,7 @@
             "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Module::Component::CapsuleCollider",
             "ptr_wrapper": {
-                "id": 2147483653,
+                "id": 2147483651,
                 "data": {
                     "cereal_class_version": 3,
                     "value0": {
@@ -128,7 +98,7 @@
             "polymorphic_id": 2147483651,
             "polymorphic_name": "NanamiEngine::Module::Component::Animator",
             "ptr_wrapper": {
-                "id": 2147483654,
+                "id": 2147483652,
                 "data": {
                     "cereal_class_version": 5,
                     "value0": {
@@ -143,7 +113,7 @@
                         "value0": {
                             "polymorphic_id": 1073741824,
                             "ptr_wrapper": {
-                                "id": 2147483655,
+                                "id": 2147483653,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -161,11 +131,11 @@
             "polymorphic_id": 2147483652,
             "polymorphic_name": "GamePlay::Npc::Enemy::Hyena",
             "ptr_wrapper": {
-                "id": 2147483656,
+                "id": 2147483654,
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
-                        "cereal_class_version": 4,
+                        "cereal_class_version": 5,
                         "value0": {
                             "cereal_class_version": 0,
                             "value0": {
@@ -180,7 +150,7 @@
                             "value0": {
                                 "polymorphic_id": 1073741824,
                                 "ptr_wrapper": {
-                                    "id": 2147483657,
+                                    "id": 2147483655,
                                     "data": {
                                         "cereal_class_version": 0,
                                         "value0": {
@@ -193,7 +163,7 @@
                         "currentStatus_": {
                             "polymorphic_id": 1073741824,
                             "ptr_wrapper": {
-                                "id": 2147483658,
+                                "id": 2147483656,
                                 "data": {
                                     "value0": {
                                         "cereal_class_version": 3,
@@ -204,7 +174,7 @@
                                         "currentHealth_": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483659,
+                                                "id": 2147483657,
                                                 "data": {
                                                     "value0": {
                                                         "value_": 10
@@ -216,7 +186,22 @@
                                 }
                             }
                         },
-                        "isNetworkSyncStatus_": true
+                        "isNetworkSyncStatus_": true,
+                        "lockOnPoint_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483658,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "4A266905-349F-419C-A177-A16E4414B0A7"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -225,7 +210,7 @@
             "polymorphic_id": 2147483653,
             "polymorphic_name": "Network::NetworkTransform",
             "ptr_wrapper": {
-                "id": 2147483660,
+                "id": 2147483659,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -243,7 +228,7 @@
             "polymorphic_id": 2147483654,
             "polymorphic_name": "GamePlay::Npc::Enemy::NetworkBehaviourTree",
             "ptr_wrapper": {
-                "id": 2147483661,
+                "id": 2147483660,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -261,7 +246,7 @@
             "polymorphic_id": 2147483655,
             "polymorphic_name": "Network::NetworkGameObject",
             "ptr_wrapper": {
-                "id": 2147483662,
+                "id": 2147483661,
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -277,7 +262,7 @@
             "polymorphic_id": 2147483656,
             "polymorphic_name": "NanamiEngine::Module::Component::RigidBody",
             "ptr_wrapper": {
-                "id": 2147483663,
+                "id": 2147483662,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -344,7 +329,7 @@
             "polymorphic_id": 2147483657,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483664,
+                "id": 2147483663,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -404,11 +389,11 @@
                                 "value3": 1.0
                             }
                         },
-                        "childCount": 3,
+                        "childCount": 4,
                         "child": {
                             "polymorphic_id": 9,
                             "ptr_wrapper": {
-                                "id": 2147483665,
+                                "id": 2147483664,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -424,7 +409,7 @@
                                             "polymorphic_id": 2147483658,
                                             "polymorphic_name": "NanamiEngine::Module::Component::BoxCollider",
                                             "ptr_wrapper": {
-                                                "id": 2147483666,
+                                                "id": 2147483665,
                                                 "data": {
                                                     "cereal_class_version": 6,
                                                     "value0": {
@@ -463,7 +448,7 @@
                                             "polymorphic_id": 2147483659,
                                             "polymorphic_name": "GameCore::Npc::Enemy::AttackArea",
                                             "ptr_wrapper": {
-                                                "id": 2147483667,
+                                                "id": 2147483666,
                                                 "data": {
                                                     "cereal_class_version": 2,
                                                     "value0": {
@@ -530,7 +515,7 @@
                         "child": {
                             "polymorphic_id": 9,
                             "ptr_wrapper": {
-                                "id": 2147483668,
+                                "id": 2147483667,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -545,7 +530,7 @@
                                         "component_0": {
                                             "polymorphic_id": 10,
                                             "ptr_wrapper": {
-                                                "id": 2147483669,
+                                                "id": 2147483668,
                                                 "data": {
                                                     "value0": {
                                                         "value0": {
@@ -582,7 +567,7 @@
                                         "component_1": {
                                             "polymorphic_id": 11,
                                             "ptr_wrapper": {
-                                                "id": 2147483670,
+                                                "id": 2147483669,
                                                 "data": {
                                                     "value0": {
                                                         "value0": {
@@ -648,7 +633,7 @@
                         "child": {
                             "polymorphic_id": 9,
                             "ptr_wrapper": {
-                                "id": 2147483671,
+                                "id": 2147483670,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -663,7 +648,7 @@
                                         "component_0": {
                                             "polymorphic_id": 10,
                                             "ptr_wrapper": {
-                                                "id": 2147483672,
+                                                "id": 2147483671,
                                                 "data": {
                                                     "value0": {
                                                         "value0": {
@@ -700,7 +685,7 @@
                                         "component_1": {
                                             "polymorphic_id": 11,
                                             "ptr_wrapper": {
-                                                "id": 2147483673,
+                                                "id": 2147483672,
                                                 "data": {
                                                     "value0": {
                                                         "value0": {
@@ -762,6 +747,124 @@
                                     "mark_": 0
                                 }
                             }
+                        },
+                        "child": {
+                            "polymorphic_id": 9,
+                            "ptr_wrapper": {
+                                "id": 2147483673,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": false,
+                                    "name_": "AttackRange",
+                                    "guid_": {
+                                        "value_": "586BADE6-EBCD-4D54-BFCA-1CE95F27A9AD"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 10,
+                                            "ptr_wrapper": {
+                                                "id": 2147483674,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "20445410-D50F-4087-8415-45985D0CE318"
+                                                            },
+                                                            "isEnable_": true
+                                                        },
+                                                        "offset_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "layer_": 0,
+                                                        "isSensor_": true,
+                                                        "friction_": 0.20000000298023225
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "size_": {
+                                                        "value0": 125.0,
+                                                        "value1": 150.0,
+                                                        "value2": 325.0
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 11,
+                                            "ptr_wrapper": {
+                                                "id": 2147483675,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "5CD427D0-D63A-4785-94F6-36E49984E0F3"
+                                                            },
+                                                            "isEnable_": true
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 0.0,
+                                            "value1": -20.0,
+                                            "value2": -62.5
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 0.07999999821186066,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 0.07999999821186066,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.07999999821186066,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 6.400000095367432,
+                                                "value2": -5.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
                         }
                     },
                     "mark_": 0
@@ -771,7 +874,7 @@
         "child": {
             "polymorphic_id": 9,
             "ptr_wrapper": {
-                "id": 2147483674,
+                "id": 2147483676,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -787,7 +890,7 @@
                             "polymorphic_id": 2147483660,
                             "polymorphic_name": "GameCore::PlayerAvatar::LockOnPoint",
                             "ptr_wrapper": {
-                                "id": 2147483675,
+                                "id": 2147483677,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {

@@ -11,6 +11,16 @@ namespace Editor::Npc::Behaviour
         guid_ = Guid();
     }
 
+    void NodeBase::ResetRuntimeState()
+    {
+        DoResetRuntimeState();
+        for (const auto& child : Children())
+        {
+            if (child)
+                child->ResetRuntimeState();
+        }
+    }
+
     void NodeBase::OnDrawGui()
     {
         ImGui::Text(("guid_: " + guid_.Value()).c_str());

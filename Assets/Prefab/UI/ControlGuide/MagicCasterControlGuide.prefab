@@ -1,0 +1,415 @@
+{
+    "isActive_": true,
+    "name_": "MagicCasterControlGuide",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "1C9E24F8-A547-44C5-B46C-C85562AD79B4"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 2,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "GamePlay::Ui::MagicCasterControlGuide",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "F7C0CA83-416D-4067-8D76-735ED40B049C"
+                        },
+                        "isEnable_": true
+                    },
+                    "controlGuide_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "BC3DF8E2-1BBD-4997-9DB4-CE8ACB142CCD"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "keyMoveSprite_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483651,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "0CE6E4E0-386A-4470-A4CC-75CC7A94BC68"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "keyCastSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "value0": {
+                                        "value_": "CE4C1659-A8FB-41BA-821B-36ECA0960E1D"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "keyRunSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "value0": {
+                                        "value_": "3F519EE7-121E-4EDF-8F06-1578DDCB2CBE"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "keyJumpSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483654,
+                                "data": {
+                                    "value0": {
+                                        "value_": "4D509972-A659-469F-8369-CF39104C778C"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "keyLockOnSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483655,
+                                "data": {
+                                    "value0": {
+                                        "value_": "6ECC3449-60B7-44C6-9908-6924F6330E63"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "keyInteractSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483656,
+                                "data": {
+                                    "value0": {
+                                        "value_": "1D16BE7D-2606-449F-9B5B-7064485B036A"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "padMoveSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483657,
+                                "data": {
+                                    "value0": {
+                                        "value_": "FC182061-3BA6-4489-A943-F641450B8ABA"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "padCastSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483658,
+                                "data": {
+                                    "value0": {
+                                        "value_": "549CF849-E572-42DF-B175-FD62131DE659"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "padRunSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483659,
+                                "data": {
+                                    "value0": {
+                                        "value_": "19C275AE-1194-464A-A461-8773A1025BA2"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "padJumpSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483660,
+                                "data": {
+                                    "value0": {
+                                        "value_": "F8C5EA7F-70EE-491B-BFAB-0AC3B2CD00F0"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "padLockOnSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483661,
+                                "data": {
+                                    "value0": {
+                                        "value_": "4DA50C82-5082-4B4A-841A-2C787F8F58DD"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "padInteractSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483662,
+                                "data": {
+                                    "value0": {
+                                        "value_": "224EF41E-52B3-4062-B131-E51CEB67FF6A"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "moveLabel_": "移動",
+                    "castLabel_": "魔法",
+                    "runLabel_": "ダッシュ",
+                    "jumpLabel_": "ジャンプ",
+                    "lockOnLabel_": "ロックオン",
+                    "lockOnReleaseLabel_": "ロックオン解除",
+                    "chatLabel_": "会話"
+                }
+            }
+        },
+        "component_1": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "GamePlay::Ui::ControlGuide",
+            "ptr_wrapper": {
+                "id": 2147483663,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "BC3DF8E2-1BBD-4997-9DB4-CE8ACB142CCD"
+                        },
+                        "isEnable_": true
+                    },
+                    "rows_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483664,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "7064126D-6E01-4DFF-9CDD-ECDD62C399E6"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "rowPrefab_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483665,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "4455196C-7716-4C3E-961A-BE634606F92D"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "slideDistance_px_": 8.0,
+                    "guideFadeDuration_secs_": 0.30000001192092898,
+                    "rowFadeDuration_secs_": 0.20000000298023225,
+                    "pulseDuration_secs_": 0.44999998807907107,
+                    "accentGlowMaxAlpha_": 230,
+                    "glyphFlashMaxAlpha_": 115,
+                    "dimAlpha_": 110,
+                    "labelShadowAlphaRate_": 0.699999988079071,
+                    "focusFadeDuration_secs_": 0.18000000715255738,
+                    "focusPulsePeriod_secs_": 0.8999999761581421,
+                    "focusArrowSwing_px_": 5.0,
+                    "focusGlyphFlashMaxAlpha_": 90,
+                    "unfocusedDimRate_": 0.30000001192092898
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 16.0,
+            "value1": 540.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 1.0,
+            "value1": 1.0,
+            "value2": 1.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 1.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 1.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 1.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 16.0,
+                "value1": 540.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 1,
+        "child": {
+            "polymorphic_id": 2147483651,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483666,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": true,
+                    "name_": "Rows",
+                    "guid_": {
+                        "value_": "7064126D-6E01-4DFF-9CDD-ECDD62C399E6"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 2147483652,
+                            "polymorphic_name": "NanamiEngine::Module::NanamiUi::VerticalLayoutGroup",
+                            "ptr_wrapper": {
+                                "id": 2147483667,
+                                "data": {
+                                    "cereal_class_version": 2,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "5BB9347B-F0CF-4773-8FE9-FC4107166C84"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "cellSize_": {
+                                        "value0": 300.0,
+                                        "value1": 36.0
+                                    },
+                                    "spacing_": 4.0,
+                                    "childAlignment_": 0,
+                                    "reverseArrangement_": false,
+                                    "ignoreDisabledChildren_": true,
+                                    "stackUpward_": true,
+                                    "centerOnOrigin_": true
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 16.0,
+                                "value1": 540.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        }
+    },
+    "mark_": 0,
+    "value0": 0
+}

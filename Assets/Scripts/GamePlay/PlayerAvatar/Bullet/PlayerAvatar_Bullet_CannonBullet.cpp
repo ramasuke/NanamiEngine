@@ -2,6 +2,7 @@
 
 #include "../../../../../Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../../Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
+#include "../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../Core/Game/Damage/Physics/Game_Damage_Physics.h"
 #include "../../../Core/Game/PlayerAvatar/ITakablePlayerAttack/ITakablePlayerAttack.h"
@@ -17,9 +18,12 @@ namespace GamePlay::PlayerAvatar::Bullet
         const Physics::Manifold& maniFold,
         const std::shared_ptr<GameObject::IGameObject>& other)
     {
-        for (auto& playerAttackable : other->Components().Catches<GameCore::PlayerAvatar::ITakablePlayerAttack>())
+        // 手足のコライダーに当たっても本体にダメージが入るようにする
+        const auto owner = Physics::FindBodyOwner(other);
+        for (auto& playerAttackable : owner->Components().Catches<GameCore::PlayerAvatar::ITakablePlayerAttack>())
         {
-            auto damage = std::make_unique<GameCore::Damage::Physics>(*Entity().lock(), *other, physicsDamage_);
+            auto damage = std::make_unique<GameCore::Damage::Physics>(
+                *Entity().lock(), *owner, physicsDamage_, other, false);
             playerAttackable.lock()->OnTakeDamage(std::move(damage));
         }
         Explosion();

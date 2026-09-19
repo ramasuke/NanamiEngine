@@ -5,11 +5,13 @@
 
 #include "ImGuiHelper.h"
 #include "../../../../../Module/Asset/Asset.h"
+#include "../../../../../Module/Asset/Preload/Engine_Asset_AssetPreloader.h"
 #include "../../../../../Module/GameObject/Transform/Transform.h"
 #include "../../../../Coroutine/Scheduler/CoroutineScheduler.h"
 #include "../../../../../Module/Exception/Engine_Module_Exception.h"
 #include "../../../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../../../Time/Time.h"
+#include "../../../Configuration/Build/ApplicationConfiguration_Build.h"
 #include "../../../Configuration/GameWindow/ApplicationConfiguration_GameWindow.h"
 
 namespace NanamiEngine::Core::MainWindow
@@ -32,9 +34,16 @@ namespace NanamiEngine::Core::MainWindow
         Application::ApplicationBase::ApplicationLifeCycle().OnUpdateFieldInittables();
     }
     
+    void GameWindow::RemoveContent(const std::shared_ptr<Scene::Scene>& content)
+    {
+        MainWindowBase::RemoveContent(content);
+        isAssetReleasePending_ = true;
+    }
+
     void GameWindow::ChangeMainScene(const std::shared_ptr<Scene::Scene>& scene)
     {
         mainScene_ = scene;
+        isAssetReleasePending_ = true;
         Application::ApplicationBase::ResetPhysics();
 
         //NOTE:
@@ -80,6 +89,21 @@ namespace NanamiEngine::Core::MainWindow
         lastAsyncLoadedScene_ = scene;
     }
 
+    void GameWindow::ReleaseUnusedAssetsIfPending()
+    {
+        // 読み込み中に解放すると、読み込み中のシーンだけが使うアセットまで捨ててしまう
+        if (!isAssetReleasePending_ || IsSceneLoading())
+            return;
+
+        isAssetReleasePending_ = false;
+        std::vector<std::string> sceneFilePaths;
+        for (const auto& scene : contents_ | std::views::values)
+        {
+            sceneFilePaths.push_back(scene->FilePath());
+        }
+        Module::Asset::AssetPreloader::ReleaseUnused(sceneFilePaths);
+    }
+
     void GameWindow::Play()
     {
         isPlayMode_ = true;
@@ -104,7 +128,7 @@ namespace NanamiEngine::Core::MainWindow
         contents_.clear();
         try
         {
-            const auto initScene = std::make_shared<Scene::Scene>("Assets/Scene/GameManage.scene");
+            const auto initScene = std::make_shared<Scene::Scene>(Application::Configuration::BuildConfiguration::StartScenePath());
             AddContent(initScene);
             ChangeMainScene(initScene);
         }
@@ -166,7 +190,8 @@ namespace NanamiEngine::Core::MainWindow
                 ChangeMainScene(Scenes().at(0));
             }
         }
-        
+        ReleaseUnusedAssetsIfPending();
+
         if (isPlayMode_)
         {
             LifeCycle().OnUpdateForGame();
@@ -277,6 +302,7 @@ namespace NanamiEngine::Core::MainWindow
             if (it != contents_.end())
             {
                 contents_.erase(it);
+                isAssetReleasePending_ = true;
             }
         }
         ImGui::End();

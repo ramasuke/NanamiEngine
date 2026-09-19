@@ -27,5 +27,5 @@ namespace Editor::Npc::Enemy
         bool isLockedContent_ = false;
     };
 
-    REGISTER_POPUP_WINDOW(RunningEnemyBehaviourTreeWindow);
+    REGISTER_POPUP_WINDOW(RunningEnemyBehaviourTreeWindow, "Debug::Behaviour Tree");
 }

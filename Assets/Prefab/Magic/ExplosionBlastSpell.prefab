@@ -1,0 +1,298 @@
+{
+    "isActive_": true,
+    "name_": "ExplosionBlast",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "ACC5623C-8DD3-4479-9EC3-24CC668ECDE9"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 3,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::Module::Component::SphereCollider",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 6,
+                        "value0": {
+                            "cereal_class_version": 0,
+                            "guid_": {
+                                "value_": "A93B6232-FD12-449F-953D-2F1C4158B53E"
+                            },
+                            "isEnable_": true
+                        },
+                        "offset_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "offsetRotation_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "layer_": 0,
+                        "isSensor_": true,
+                        "friction_": 0.20000000298023225
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "value3": {
+                        "cereal_class_version": 0
+                    },
+                    "radius_": 28.0
+                }
+            }
+        },
+        "component_1": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiEngine::Module::Component::RigidBody",
+            "ptr_wrapper": {
+                "id": 2147483650,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "guid_": {
+                            "value_": "7E2D7C7E-95F6-4A49-9172-A31B67A2F829"
+                        },
+                        "isEnable_": true
+                    },
+                    "motionType_": 1,
+                    "mass_": 1.0,
+                    "isGravity_": false,
+                    "constraints_": 0,
+                    "isPartOfParent_": false
+                }
+            }
+        },
+        "component_2": {
+            "polymorphic_id": 2147483651,
+            "polymorphic_name": "GamePlay::Magic::MagicBlast",
+            "ptr_wrapper": {
+                "id": 2147483651,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "4380F7FF-FB9D-47C9-9812-6A5DE5245E02"
+                        },
+                        "isEnable_": true
+                    },
+                    "detonatePrefab_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "16C58450-4A47-488F-94F6-665E35CBCBB1"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "detonateEffectLifeTime_secs_": 2.2699999809265138,
+                    "detonateOnEnter_": false
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 0.0
+        },
+        "localScale_": {
+            "value0": 1.0,
+            "value1": 1.0,
+            "value2": 1.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 1.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 1.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 1.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 1,
+        "child": {
+            "polymorphic_id": 2147483652,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483653,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": true,
+                    "name_": "Sigil",
+                    "guid_": {
+                        "value_": "EA9D7BEC-84F3-4B7E-B94F-5FA557FAF023"
+                    },
+                    "components_": {
+                        "componentCount": 2,
+                        "component_0": {
+                            "polymorphic_id": 2147483653,
+                            "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
+                            "ptr_wrapper": {
+                                "id": 2147483654,
+                                "data": {
+                                    "cereal_class_version": 1,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "0BA763CC-55A9-4B77-B35B-64ED8C6B4E45"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value2": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "particleFile_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483655,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "CA6D814F-497F-4B3B-9E6B-4755D92DAF00"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "playingDuration_secs_": 60.0,
+                                    "playMode_": 0
+                                }
+                            }
+                        },
+                        "component_1": {
+                            "polymorphic_id": 2147483654,
+                            "polymorphic_name": "GamePlay::Sound::SpawnSound",
+                            "ptr_wrapper": {
+                                "id": 2147483656,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "07A658E6-8744-4980-BB9E-595A6DC20538"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "sound_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483657,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "A948D853-140D-4228-9115-FF12F98C7611"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "delay_secs_": 0.0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 8.0,
+                            "value1": 8.0,
+                            "value2": 8.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 8.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 8.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 8.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        }
+    },
+    "mark_": 0,
+    "value0": 0
+}

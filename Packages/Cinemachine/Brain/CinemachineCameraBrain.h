@@ -16,6 +16,8 @@ namespace NanamiEngine::CineMachine
         void OnDrawGui() override;
         void ApplyVirtualCameraMatrix() const;
         void ApplyVirtualCameraMatrix(const CineMachineVirtualCamera& virtualCamera) const;
+        /** @brief 補間を挟まずvirtualCameraの位置・回転・FOVへ即座に合わせる。以降の補間もここから始まる */
+        void SnapToVirtualCamera(const CineMachineVirtualCamera& virtualCamera);
         static CinemachineCameraBrain* Instance() { return cameraBrain_; }
         static void SubscribeVirtualCamera(const std::weak_ptr<CineMachineVirtualCamera>& virtualCamera);
         static void UnSubscribeVirtualCamera(const std::weak_ptr<CineMachineVirtualCamera>& virtualCamera);

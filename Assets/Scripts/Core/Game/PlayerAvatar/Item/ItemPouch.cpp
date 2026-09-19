@@ -1,5 +1,7 @@
 ﻿#include "ItemPouch.h"
 
+#include <algorithm>
+
 namespace GameCore::PlayerAvatar
 {
     void ItemPouch::Setup(const std::vector<Asset::ItemStack>& initialItems)
@@ -13,6 +15,7 @@ namespace GameCore::PlayerAvatar
             slots_.push_back(Slot{ item, stack.Count() });
         }
         selectedIndex_ = 0;
+        isSetUp_ = true;
         ++revision_;
     }
 
@@ -40,13 +43,55 @@ namespace GameCore::PlayerAvatar
         ++revision_;
     }
 
-    bool ItemPouch::ConsumeSelected()
+    std::shared_ptr<Asset::ItemData> ItemPouch::UseSelected(Item::IItemEffectTarget& target)
     {
         if (!CanUseSelected())
-            return false;
+            return nullptr;
 
-        --slots_[selectedIndex_].count;
+        auto& slot = slots_[selectedIndex_];
+        // 効果がまだ無いアイテム(罠や爆弾)は減らさない
+        if (!slot.item || !slot.item->HasEffect())
+            return nullptr;
+
+        slot.item->ApplyEffects(target);
+        --slot.count;
         ++revision_;
-        return true;
+        return slot.item;
+    }
+
+    std::size_t ItemPouch::FindSlotIndex(const Asset::ItemData& item) const
+    {
+        const auto it = std::ranges::find_if(slots_, [&](const Slot& slot) { return slot.item.get() == &item; });
+        return static_cast<std::size_t>(it - slots_.begin());
+    }
+
+    int ItemPouch::CountOf(const Asset::ItemData& item) const
+    {
+        const std::size_t index = FindSlotIndex(item);
+        return index < slots_.size() ? slots_[index].count : 0;
+    }
+
+    int ItemPouch::ReceivableCount(const Asset::ItemData& item) const
+    {
+        return std::max(0, item.MaxStack() - CountOf(item));
+    }
+
+    int ItemPouch::Add(const std::shared_ptr<Asset::ItemData>& item, const int count)
+    {
+        if (!item || count <= 0)
+            return 0;
+
+        const int added = std::min(count, ReceivableCount(*item));
+        if (added <= 0)
+            return 0;
+
+        const std::size_t index = FindSlotIndex(*item);
+        if (index < slots_.size())
+            slots_[index].count += added;
+        else
+            slots_.push_back(Slot{ item, added });
+
+        ++revision_;
+        return added;
     }
 }

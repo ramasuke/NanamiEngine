@@ -35,14 +35,19 @@ namespace NanamiEngine::Core::Network
             glm::vec3 position,
             glm::quat rotation);
 
-        /** policy: 所有者が離脱したときの扱い(プレイヤーアバターは Destroy、敵などそれ以外は Transfer) */
+        /**
+         * policy: 所有者が離脱したときの扱い(プレイヤーアバターは Destroy、敵などそれ以外は Transfer)
+         * owner: 初期所有者。送信側は自分、受信側は spawn パケットの送信者
+         */
         std::vector<NetworkObjectId> AllocateIdsAndRegister(
             const std::shared_ptr<Module::GameObject::IGameObject>& gameObject,
-            OwnerLeavePolicy policy);
+            OwnerLeavePolicy policy,
+            struct PlayerId owner);
         void RegisterWithNetworkIds(
             const std::vector<NetworkObjectId>& ids,
             const std::shared_ptr<Module::GameObject::IGameObject>& gameObject,
-            OwnerLeavePolicy policy);
+            OwnerLeavePolicy policy,
+            struct PlayerId owner);
         /** ルート以下のネットワークノードをレジストリから外してから GameObject を破棄する */
         void DespawnAndUnregister(const std::shared_ptr<Module::GameObject::IGameObject>& root);
 
@@ -62,7 +67,8 @@ namespace NanamiEngine::Core::Network
         void ApplyNetworkIds(
             const std::vector<NetworkObjectId>& ids,
             const std::shared_ptr<Module::GameObject::IGameObject>& gameObject,
-            OwnerLeavePolicy policy);
+            OwnerLeavePolicy policy,
+            struct PlayerId owner);
 
         INetworkObjectInstanceRegistry& instanceRegistry_;
         uint32_t nextNetworkObjectId_ = 1;

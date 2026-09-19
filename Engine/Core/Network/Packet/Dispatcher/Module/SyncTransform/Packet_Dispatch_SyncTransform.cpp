@@ -44,13 +44,11 @@ namespace NanamiEngine::Core::Network
     void SyncTransformDispatcher::Update()
     {
         using Configuration = Application::Configuration::NetworkConfiguration;
-        using Network::ConnectionTarget;
 
-        const float sendInterval    = 1.0f / static_cast<float>(Configuration::GetUnreliableSendRate());
-        const float latencyEstimate = Configuration::GetConnectionTarget() == ConnectionTarget::LAN
-                                      ? 0.01f
-                                      : 0.0f;
-        const float interpolationDelay = sendInterval * 2.0f + latencyEstimate;
+        // 遅延見込み
+        constexpr float LATENCY_ESTIMATE_SECS = 0.01f;
+        const float sendInterval       = 1.0f / static_cast<float>(Configuration::GetUnreliableSendRate());
+        const float interpolationDelay = sendInterval * 2.0f + LATENCY_ESTIMATE_SECS;
         const float renderTime         = Time::CurrentTime() - interpolationDelay;
 
         for (auto& [id, buffer] : snapshotBuffer_)

@@ -17,6 +17,7 @@
 #include "../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../../../Module/SafeExecute/Engine_Module_SafeExecute.h"
 #include "../AutoMcp/AutoMcpServer.h"
+#include "../Build/GameBuilder.h"
 #include "../../../../Libs/LibCore/glm/GlmHelper.h"
 
 Core::Application::EditorApplication::EditorApplication()
@@ -32,13 +33,9 @@ Core::Application::EditorApplication::EditorApplication()
 void Core::Application::EditorApplication::OnFrame()
 {
     ImGuiWrapper::Instance().Update();
-    ImGuizmo::BeginFrame();          // ImGui::NewFrame() 直後・フレーム1回だけ
+    ImGuizmo::BeginFrame();
     AutoMcp::AutoMcpServer::Instance().OnFrameBegin();
-
-    // 更新フェーズの最後の安全網。コンポーネント単位の例外・SEH(nullptr参照等)は
-    // LifeCycleCallbackGroup 側で個別に捕捉済みなので、ここに来るのはコンポーネント発ではない
-    // コード経路(ApplicationLifeCycle_ 自体やライフサイクル管理コード等)からの想定外エラー。
-    // OnDrawGui は ImGui の Begin/End の対応を崩さないよう囲まない
+    
     std::string frameErrorMessage;
     if (!Module::SafeExecute([this]()
         {
@@ -62,6 +59,7 @@ void Core::Application::EditorApplication::OnFrame()
 void Core::Application::EditorApplication::OnExit()
 {
     AutoMcp::AutoMcpServer::Instance().Stop();
+    Build::GameBuilder::Instance().Stop();
 }
 
 void Core::Application::EditorApplication::OnDrawGui()
@@ -94,7 +92,7 @@ void Core::Application::EditorApplication::OnDrawGizmo()
 
     const ImGuiIO& io = ImGui::GetIO();
 
-    // 右ドラッグ（フリーカメラ操作）中・テキスト入力中はツール切替を受け付けない
+    // 右ドラッグ中・テキスト入力中はツール切替を受け付けない
     const bool cameraControlling = ImGui::IsMouseDown(ImGuiMouseButton_Right);
     if (!cameraControlling && !io.WantTextInput)
     {
@@ -110,13 +108,10 @@ void Core::Application::EditorApplication::OnDrawGizmo()
     ImGuizmo::SetDrawlist(ImGui::GetBackgroundDrawList());
     ImGuizmo::SetRect(0.0f, 0.0f, io.DisplaySize.x, io.DisplaySize.y);
 
-    // その時 DxLib が実際に使ったカメラ行列（編集=Editor3DCamera / プレイ=Cinemachine）を使う。
-    // GameObject の world 行列は glm 規約なので、カメラ行列も glm 規約へ揃える。
     glm::mat4 view  = LibCore::Glm::FromDxLibMatrix(GetCameraViewMatrix());
     glm::mat4 proj  = LibCore::Glm::FromDxLibMatrix(GetCameraProjectionMatrix());
     glm::mat4 world = target->Transform().GetWorldMatrix();
 
-    // Ctrl 押下中はスナップ
     const bool  useSnap = ImGui::IsKeyDown(ImGuiKey_LeftCtrl) || ImGui::IsKeyDown(ImGuiKey_RightCtrl);
     float       snapValues[3] = {};
     const float* snap = nullptr;

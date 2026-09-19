@@ -2,6 +2,7 @@
 #include <memory>
 
 #include "../../../../../../../../../Engine/Core/Coroutine/Task/Task.h"
+#include "../../../../../../../../../Libs/glm/vec3.hpp"
 
 namespace GameCore
 {
@@ -18,39 +19,53 @@ namespace NanamiEngine::Module::GameObject
     class IGameObject;
 }
 
+namespace NanamiEngine::CineMachine::Behaviour
+{
+    class VirtualCameraFollowBehaviour;
+    class VirtualCameraLookAtBehaviour;
+}
+
 namespace GameCore::Scene::GrassLand
 {
-    /**
-     * @brief GrassLandに着いたときの、ポータルからせり上がってくる登場演出
-     * @note ローカルクライアントでしか走らず、RPCも送らないので他プレイヤーには見えない
-     */
     class GrassLandArrivalMovie final
     {
     public:
         explicit GrassLandArrivalMovie(
               const std::weak_ptr<IPlayerAvatar>& playerAvatar
             , const std::shared_ptr<GrassLandSceneContext>& context);
-
-        /** @brief ロード画面が明ける前に呼ぶ。ポータルを出し、カメラを寄せ、プレイヤーをWarpInにする */
+        
         void Begin();
-        /** @brief シーンを畳むときに呼ぶ。走っているコルーチンを次のawaitで抜けさせる */
         void Cancel() { isCanceled_ = true; }
 
         /**
-         * @brief カメラを動かし、終わったら三人称へ返す
+         * @brief ポータルを開き、プレイヤーを歩かせてカメラで見上げ、終わったら三人称へ返す
          * @param self コルーチンが走っている間の生存を保証するための自分自身
          */
         static Coroutine::Task<void> PlayAsync(std::shared_ptr<GrassLandArrivalMovie> self);
 
     private:
-        /** @param rate 0でショットの始点、1で終点 */
-        void ApplyShot(float rate) const;
-        void Finish(bool isSkipped);
+        /** @param rate 0で膜の奥の歩き出す位置、1で立ち止まる位置 */
+        [[nodiscard]] glm::vec3 WalkPos(float rate) const;
+        [[nodiscard]] glm::vec3 PortalCenter() const;
+        void DestroyPortal();
+        void SetAvatarVisible(bool isVisible) const;
+        /** @brief ポータルを片付けてカメラを返す。歩き終える前にスキップされたときは、立ち止まる位置へ送ってから操作を返す */
+        void Finish();
 
         std::weak_ptr<IPlayerAvatar>         playerAvatar_;
         std::weak_ptr<GrassLandSceneContext> context_;
         std::weak_ptr<NanamiEngine::Module::GameObject::IGameObject> portal_;
-        bool isCanceled_ = false;
-        bool isFinished_ = false;
+        std::weak_ptr<NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour> cameraFollow_;
+        std::weak_ptr<NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour> cameraLookAt_;
+        glm::vec3 portalScale_    = glm::vec3(1.0f);              ///< プレハブのルートのスケール。開ききったときの大きさ
+        glm::vec3 groundPos_      = glm::vec3(0.0f);              ///< ポータルの足元の地面。演出の位置はすべてここから取る
+        glm::vec3 forward_        = glm::vec3(0.0f, 0.0f, -1.0f); ///< ポータルから歩いて出ていく水平方向
+        glm::vec3 side_           = glm::vec3(1.0f, 0.0f,  0.0f); ///< forward_ に直交する水平方向。カメラの横位置の軸
+        glm::vec3 cameraStartPos_ = glm::vec3(0.0f);
+        glm::vec3 cameraEndPos_   = glm::vec3(0.0f);
+        bool isBegun_        = false; ///< Beginで演出の準備が済んだか。プレイヤーが居なければ何もしない
+        bool isWalkFinished_ = false;
+        bool isCanceled_     = false;
+        bool isFinished_     = false;
     };
 }

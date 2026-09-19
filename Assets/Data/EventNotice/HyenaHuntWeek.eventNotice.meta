@@ -1,0 +1,46 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::EventNotice",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\EventNotice/HyenaHuntWeek.eventNotice",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "83CE99E8-8DFB-4663-A84C-0FBB49AD1311"
+                    }
+                },
+                "title_": "草原の群狼 討伐週間",
+                "tagText_": "討伐イベント",
+                "startAt_": "2026-09-18 12:00",
+                "endAt_": "2026-09-25 04:59",
+                "descriptionLines_": [
+                    "草原地帯のハイエナが群れで現れる。",
+                    "討伐数に応じて酒場から報酬が出る。"
+                ],
+                "bannerSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "4D63A25E-64D6-4C8D-B942-1407A55D848F"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

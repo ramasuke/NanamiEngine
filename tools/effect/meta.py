@@ -48,7 +48,7 @@ def content_path_for(name: str, target_dir: Path, repo_root: Path) -> str:
     Unlike the other thin-proxy asset types (see ``meta_base.content_path_for``'s
     "forward slash before the file" convention, itself not fully consistent
     across real ``.prefab`` files either), every real nested ``.efkefc.meta``
-    checked in this repo (``tktk01/fireSpark``, ``MAGICALxSPIRAL/Salamander11``,
+    checked in this repo (``tktk01/fireBall``, ``MAGICALxSPIRAL/Salamander11``,
     ``tktk2/Gun6``) uses an **all-backslash** path with no exception - so this
     binding doesn't delegate to the generic fallback.
     """

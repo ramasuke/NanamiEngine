@@ -1,0 +1,140 @@
+{
+    "isActive_": true,
+    "name_": "SwordManDisplayModel",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "98FB00CE-6AA5-40DF-8A33-8AA56F692728"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 2,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::Module::Component::ModelRenderer",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 5,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "BC9A3CA8-EEE0-474A-8E2C-728A08D9FEA9"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "value3": {
+                        "cereal_class_version": 0
+                    },
+                    "value4": {
+                        "cereal_class_version": 0
+                    },
+                    "mv1File_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "6231DCB3-3256-41FC-9276-3998037AA2A1"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "useFixedInterpolation_": true
+                }
+            }
+        },
+        "component_1": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiEngine::Module::Component::Animator",
+            "ptr_wrapper": {
+                "id": 2147483651,
+                "data": {
+                    "cereal_class_version": 5,
+                    "value0": {
+                        "guid_": {
+                            "value_": "66653CC0-5A8E-4775-9552-005A3E381968"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "animationTreeFile_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "1B4A1D8A-FDF6-45C3-B8BB-8345DDF2310D"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "timeScale_": 1.0
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 0.07999999821186066,
+            "value1": 0.07999999821186066,
+            "value2": 0.07999999821186066
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 0.07999999821186066,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 0.07999999821186066,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.07999999821186066,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 0
+    },
+    "mark_": 0,
+    "value0": 0
+}

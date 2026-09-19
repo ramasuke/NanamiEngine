@@ -6,7 +6,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     class DownState final : public SwordManAvatarStateBase
     {
     public:
-        DEFINE_STATE_CONSTRUCTOR(DownState)
+        explicit DownState(const SwordManAvatarStateArgs& args) : SwordManAvatarStateBase(args) {}
 
     private:
         void DoEnter      () override;
@@ -14,6 +14,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoUpdate     () override;
         void DoExit       () override;
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::Down; }
-        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::None; }
+        [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::None; }
     };
 }

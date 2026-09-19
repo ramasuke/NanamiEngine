@@ -4,6 +4,7 @@
 #include <exception>
 #include <utility>
 
+#include "../../Asset/Asset.h"
 #include "../../Log/NanamiEngine_Module_Log.h"
 
 namespace NanamiEngine::Scene
@@ -25,6 +26,8 @@ namespace NanamiEngine::Scene
         progress_.total.store(0, std::memory_order_release);
         progress_.done .store(0, std::memory_order_release);
         hasFailedSinceLastBegin_.store(false, std::memory_order_release);
+        assetIndex_ = Module::Asset::AssetPreloader::BuildIndex();
+        dependencyGuids_.clear();
 
         phase_.store(Phase::Deserializing, std::memory_order_release);
         worker_ = std::thread([this]
@@ -32,6 +35,7 @@ namespace NanamiEngine::Scene
             try
             {
                 Scene::Deserialize(filePath_, content_, &progress_);
+                dependencyGuids_ = Module::Asset::AssetPreloader::CollectDependencies(assetIndex_, filePath_);
             }
             catch (const std::exception& exception)
             {
@@ -86,17 +90,26 @@ namespace NanamiEngine::Scene
     bool AsyncSceneLoader::IsBusy() const
     {
         const Phase phase = phase_.load(std::memory_order_acquire);
-        return phase == Phase::Deserializing || phase == Phase::Ready;
+        return phase == Phase::Deserializing || phase == Phase::Ready || phase == Phase::Preloading;
     }
 
     std::shared_ptr<Scene> AsyncSceneLoader::TryTakeLoadedScene()
     {
-        if (phase_.load(std::memory_order_acquire) != Phase::Ready)
+        const Phase phase = phase_.load(std::memory_order_acquire);
+        if (phase == Phase::Ready)
+        {
+            JoinWorker();
+            // 差し替え後に初めて描画するときに同期ロードで止まらないよう、読み終えてから差し替える
+            Module::Asset::AssetPreloader::RequestLoads(dependencyGuids_);
+            phase_.store(Phase::Preloading, std::memory_order_release);
+            return nullptr;
+        }
+        if (phase != Phase::Preloading || Module::Asset::Asset::IsLoadingResource())
             return nullptr;
 
-        JoinWorker();
         auto scene = std::make_shared<Scene>(filePath_, std::move(content_));
         content_ = Scene::DeserializedContent();
+        dependencyGuids_.clear();
         errorMessage_.clear();
         phase_.store(Phase::Idle, std::memory_order_release);
         return scene;
@@ -111,6 +124,7 @@ namespace NanamiEngine::Scene
     void AsyncSceneLoader::DiscardContent()
     {
         content_ = Scene::DeserializedContent();
+        dependencyGuids_.clear();
         errorMessage_.clear();
         filePath_.clear();
         phase_.store(Phase::Idle, std::memory_order_release);

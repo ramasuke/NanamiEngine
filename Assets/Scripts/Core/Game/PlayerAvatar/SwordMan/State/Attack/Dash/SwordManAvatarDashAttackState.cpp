@@ -12,6 +12,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
         StatusEvent().InvokeDashAttack();
         isAttacked_ = false;
+        attackTurn_ = {};
 
         // 予備動作中は自機の向きへ踏み込む
         LungeForward(Status().DashAttackLungeSpeed());
@@ -35,7 +36,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
         // 発生前（予備動作中）だけ攻撃対象へ向く。発生判定は DoFixedUpdate 側の TryDashAttack が行う
         if (!isAttacked_)
-            RotateTowardsAttackTarget(Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
+            RotateTowardsAttackTarget(attackTurn_, Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
     }
 
     void SwordManAvatarDashAttackState::DoExit()
@@ -68,7 +69,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             const auto particle = NanamiEngine::Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), DashAttackArea().Transform().GetWorldPos());
             if (const auto particleObject = particle.lock())
                 particleObject->Transform().SetLocalScale(glm::vec3(hitFeel.ParticleScale()));
-            DealDamageText(DashAttackArea(), BuffedAttackPower(attackStatus.AttackPower()));
+            DealDamageText(DashAttackArea(), BuffedAttackPower(attackStatus.AttackPower()), false);
             ShakeHitTargets(DashAttackArea(), hitFeel);
         }
         else

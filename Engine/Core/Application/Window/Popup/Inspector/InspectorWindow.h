@@ -26,5 +26,5 @@ namespace NanamiEngine::Core::PopupWindow
         bool isLockedContent_ = false;
     };
     
-    REGISTER_POPUP_WINDOW(InspectorWindow);
+    REGISTER_POPUP_WINDOW(InspectorWindow, "General");
 }

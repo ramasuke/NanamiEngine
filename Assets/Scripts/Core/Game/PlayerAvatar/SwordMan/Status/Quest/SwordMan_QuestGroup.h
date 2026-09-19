@@ -6,6 +6,7 @@
 #include "SwordMan_ITakeableSwordManQuest.h"
 #include "../ControlGuideFocus/SwordMan_IControlGuideFocusRequest.h"
 #include "../../../Quest/PlayerAvatar_IQuestGroup.h"
+#include "../../../Quest/PlayerAvatar_StoryQuestList.h"
 #include "../../../Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../../../Wallet/PlayerAvatar_Wallet.h"
 #include "cereal/cereal.hpp"
@@ -21,20 +22,25 @@ namespace GameCore::PlayerAvatar::SwordMan
         ~QuestGroup() override;
 
         void Init(const std::shared_ptr<IObservableStatusEvent>& event,
+                  const std::shared_ptr<IStatusEvent>& statusEvent,
                   const std::shared_ptr<IControlGuideFocusRequest>& guideFocus,
                   const std::shared_ptr<Wallet>& wallet);
-        void Subscribe(const std::shared_ptr<QuestBase>& addQuest) override;
+        void Subscribe(const std::shared_ptr<StoryQuestBase>& addQuest) override;
         void Subscribe(const std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>& addQuest);
         void OnDrawGui();
         [[nodiscard]] std::unique_ptr<QuestGroup> DeepCoy() const;
+        [[nodiscard]] bool IsTaking(const QuestType& quest) const override;
         
     private:
         void CompleteQuest(const QuestType& completeQuest) override;
         [[nodiscard]] bool CheckCompleted(const QuestType& quest) const override;
         
         [[serialize(0)]] std::vector<std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>> quests_;
+        // 職業を問わないクエストは剣士専用の quests_ と型が違うので別の列に持つ
+        [[serialize(1)]] Quest::StoryQuestList storyQuests_;
         const std::unique_ptr<Quest::CompletedQuestGroup> completedQuests_;
         std::shared_ptr<IObservableStatusEvent> event_;
+        std::shared_ptr<IStatusEvent> statusEvent_;
         std::shared_ptr<IControlGuideFocusRequest> guideFocus_;
         std::shared_ptr<Wallet> wallet_;
         
@@ -50,6 +56,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             {
                 archive(quest);  
             }
+            archive(CEREAL_NVP(storyQuests_));
         }
 
         template<class Archive>
@@ -67,9 +74,10 @@ namespace GameCore::PlayerAvatar::SwordMan
                 archive(quest);
                 quests_.emplace_back(std::move(quest));
             }
+            if (version >= 1) archive(CEREAL_NVP(storyQuests_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::QuestGroup, 0)
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::QuestGroup, 1)

@@ -19,10 +19,40 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\Loading\Hint\Ui_LoadingHintCard.cpp">
       <Filter>Assets</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\GameOver\Ui_GameOverButton.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\GameOver\Ui_GameOverScreen.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\GameOver\DeathCamera\GameOverDeathCamera.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\GameOver\Presenter\GameOverPresenter.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\BodyPart\GamePlay_Enemy_BodyPartWeakPoint.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\BodyPart\GamePlay_Enemy_BodyPartWeakPoint.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Loading\Ui_LoadingScreen.h">
       <Filter>Assets</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Loading\Hint\Ui_LoadingHintCard.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\GameOver\Ui_GameOverButton.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\GameOver\Ui_GameOverScreen.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\GameOver\DeathCamera\GameOverDeathCamera.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\GameOver\Presenter\GameOverPresenter.h">
       <Filter>Assets</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Scene\Main\Loading\Main_SceneLoadStep.h">
@@ -750,6 +780,15 @@
     <ClCompile Include="Engine\Core\Application\Configuration\CodeEditor\ApplicationConfiguration_CodeEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Configuration\Build\ApplicationConfiguration_Build.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Build\GameBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Window\Popup\BuildSettings\BuildSettingsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Core\Application\AutoMcp\AutoMcpEngineAccess.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1218,6 +1257,21 @@
     <ClCompile Include="Assets\Data\Stage\Data_StageData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Data\Character\Data_CharacterData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\EventNotice\Data_EventBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\EventNotice\Data_EventNotice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\EventNotice\Data_BoardQuest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\EventNotice\Data_Announcement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1338,6 +1392,12 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Hyena\CallAllies\Enemy_Behaviour_Action_CallAllies.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Stun\Enemy_Behaviour_Action_Stun.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\OpenWeakPointWindow\Enemy_Behaviour_Action_OpenWeakPointWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1363,6 +1423,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\ITakableEnemyAttack\ITakableEnemyAttack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\SpawnPoint\EnemySpawnPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Camera\EnablePurposeCamera\Friendly_Behaviour_Action_PurposeCamera.cpp">
@@ -1422,6 +1485,12 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Time\Timer\Friendly_Behaviour_Action_NodeTickTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Ui\OpenCharacterSelect\Friendly_Behaviour_Action_OpenCharacterSelect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Ui\OpenShop\Friendly_Behaviour_Action_OpenShop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\FieldGameObject\Friendly_Behaviour_Action_FieldGameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1449,16 +1518,19 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_IComplteQuestGroup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestFactory.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_StoryQuestFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestBase.cpp">
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_StoryQuestBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_IQuestGroup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_StoryQuestList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Event\PlayerAvatar_IStatusEvent.cpp">
@@ -1635,6 +1707,9 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Sound\SpawnSound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1647,19 +1722,34 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\CannonCooldownGauge\Ui_CannonCooldownGauge.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthShardRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuide.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuideRow.cpp">
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_ControlGuide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_ControlGuideRow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_MagicCasterControlGuide.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Data\Item\Data_ItemData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Data\Shop\Data_ShopData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\Drop\Data_DropTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemPouch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\Effect\Content\HealHealthEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\Effect\Content\RestoreStaminaEffect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemBar.cpp">
@@ -1866,10 +1956,10 @@
     <ClCompile Include="Engine\Module\Physics\MotionType\Engine_Physics_MotionType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Module\Scene\ShadowMap\ShadowMapSetting.cpp">
+    <ClCompile Include="Engine\Module\Scene\AsyncLoader\Engine_Scene_AsyncSceneLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Module\Scene\AsyncLoader\Engine_Scene_AsyncSceneLoader.cpp">
+    <ClCompile Include="Engine\Module\Asset\Preload\Engine_Asset_AssetPreloader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Libs\LibCore\BlackBoard\AnimationParameter.cpp">
@@ -1896,6 +1986,39 @@
     <ClCompile Include="Packages\R4\SensorStayable\SensorStayableAsObservable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Http\HttpAssetUpdater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Http\WinHttpClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Interface\IAssetUpdater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Manifest\AssetManifest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Null\NullAssetUpdater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Hash\Sha256.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Install\Installer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Install\PathGuard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\System\Relaunch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Task\AssetUpdateTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\AssetUpdater\Text\Utf8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Data\PlayerAvatar\Resource\Data_SwordManAvatarResource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1903,6 +2026,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Data\Enemy\Factory\EnemyFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Data\Magic\Data_MagicSpellData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\AttackedShocked\SwordManAvatar_AttackedShockedState.cpp">
@@ -1947,6 +2073,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Chatting\MagicCasterAvatarChattingState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\MagicCasterAvatarStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1974,7 +2103,34 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\DestructibleObject\DestructibleObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\PlayerAvatar\PickupArea\PickupArea.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Pickup\GamePlay_MoneyDrop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Pickup\GamePlay_MoneyPickup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Pickup\GamePlay_ItemPickup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Pickup\GamePlay_LootDrop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Pickup\GamePlay_PickupMotion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\IDestructibleObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\CharacterPodium\Prop_CharacterPodium.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\MerchantStall\Prop_MerchantStall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\EventNoticeBoard\Prop_EventNoticeBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\NpcChatting\Ui_NpcChatting.cpp">
@@ -2004,16 +2160,181 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Difficulty\StageDifficultyPips.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\CharacterSelect\Presenter\CharacterSelectPresenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\CharacterSelect\Model\CharacterSelectModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\CharacterSelect\Row\Ui_CharacterSelect_Row.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\CharacterSelect\UI_CharacterSelect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\UI_EventBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_Row.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\EventBoardModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Presenter\EventBoardPresenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\BoardListCursor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\EventBoardFormat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\QuestBoardModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\NoticeBoardModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\AnnouncementReadLog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_QuestRow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_NoticeRow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Page\Ui_EventBoard_EventPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Page\Ui_EventBoard_QuestPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Page\Ui_EventBoard_NoticePage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Tab\Ui_EventBoard_Tab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Shop\Presenter\ShopPresenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Shop\UI_Shop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Shop\Receipt\Ui_ShopReceipt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Shop\Row\Ui_ShopRow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Shop\Model\ShopModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\Format\Ui_MoneyFormat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Model\PauseMenuModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Presenter\PauseMenuPresenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Row\Ui_PauseMenuRow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\PauseMenu\ItemCell\Ui_PauseMenuItemCell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Ui_PauseMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\HyenaRepository.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGaugePresenter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Magic\GamePlay_MagicAim.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Magic\GamePlay_MagicCasting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Magic\GamePlay_MagicSupport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Magic\Component\GamePlay_MagicProjectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Magic\Component\GamePlay_MagicBlast.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Magic\Component\GamePlay_MagicPlacement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Magic\Component\GamePlay_MagicChannel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Magic\Effect\GamePlay_ProjectileSpellEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Magic\Effect\GamePlay_AreaSpellEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Magic\Effect\GamePlay_PlacementSpellEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Magic\Effect\GamePlay_HealSpellEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Magic\Effect\GamePlay_AttackBuffSpellEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Magic\Effect\GamePlay_ChannelSpellEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\CastSpell\Rpc_CastSpell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Network\Discovery\LanSessionMessage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Network\Discovery\LanSessionAdvertiser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Network\Discovery\LanSessionFinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Network\Session\GamePlay_StageSessionMatchmaking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\StatusParameter\Mana\Mana.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\LockOnTarget\PlayerAvatarLockOn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\SpellPalette\Ui_SpellSlot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\SpellPalette\Ui_SpellPalette.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\Presenter\PlayerAvatar_MagicCaster_StatusPresenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\Quest\MagicCaster_QuestGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Module\Asset\Movie\MovieFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Module\Component\ParticleRenderer\PlayMode\ParticleSystem_PlayMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\Component\CircleGaugeRenderer\CircleGaugeRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Module\NanamiUI\MovieRenderer\MovieRenderer.cpp">
@@ -3728,6 +4049,18 @@
     <ClInclude Include="Engine\Core\Application\Window\Popup\NetworkLogger\NetworkLoggerWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Core\Network\Discovery\LanSessionMessage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Network\Discovery\LanSessionAdvertiser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Network\Discovery\LanSessionFinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Network\Session\GamePlay_StageSessionMatchmaking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Core\Application\Window\Popup\RunningAnimationTree\RunningAnimationTreeWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5295,6 +5628,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\StateMachine\PlayerAvatarStateMachine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\StateMachine\EventScene\PlayerAvatarEventSceneStateType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\Action\PlayerAvatarStateAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5308,6 +5644,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\PlayerAvatarStateBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\State\Transition\PlayerAvatarStateTransition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\BasicParams\AttackParam\AttackParam.h">
@@ -5667,6 +6006,21 @@
     <ClInclude Include="Assets\Data\Stage\Data_StageData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Data\Character\Data_CharacterData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\EventNotice\Data_EventBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\EventNotice\Data_EventNotice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\EventNotice\Data_BoardQuest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\EventNotice\Data_Announcement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Game_Damage_IDamage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5787,6 +6141,12 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Hyena\CallAllies\Enemy_Behaviour_Action_CallAllies.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Stun\Enemy_Behaviour_Action_Stun.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\OpenWeakPointWindow\Enemy_Behaviour_Action_OpenWeakPointWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5871,6 +6231,12 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Time\Timer\Friendly_Behaviour_Action_NodeTickTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Ui\OpenCharacterSelect\Friendly_Behaviour_Action_OpenCharacterSelect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Ui\OpenShop\Friendly_Behaviour_Action_OpenShop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\FieldGameObject\Friendly_Behaviour_Action_FieldGameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -5898,16 +6264,25 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_IComplteQuestGroup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestFactory.h">
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_StoryQuestFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestBase.h">
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_StoryQuestBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_IQuestGroup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_StoryQuestList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_ITakeableQuest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Status\Event\PlayerAvatar_IStatusEvent.h">
@@ -6108,6 +6483,9 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Sound\SpawnSound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -6120,13 +6498,16 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\CannonCooldownGauge\Ui_CannonCooldownGauge.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthShardRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuide.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuideRow.h">
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_ControlGuide.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_ControlGuideRow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_MagicCasterControlGuide.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Data\Item\Data_ItemData.h">
@@ -6135,7 +6516,34 @@
     <ClInclude Include="Assets\Data\Item\Data_ItemStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Data\Shop\Data_ShopEntry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\Shop\Data_ShopData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\Drop\Data_DropTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\Drop\Data_ItemDrop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemPouch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\Effect\IItemEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\Effect\IItemEffectTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\Effect\ItemEffectFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\Effect\Content\HealHealthEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\Effect\Content\RestoreStaminaEffect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ItemBar\Ui_ItemBar.h">
@@ -6342,6 +6750,15 @@
     <ClInclude Include="Engine\Core\Application\Configuration\CodeEditor\ApplicationConfiguration_CodeEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Configuration\Build\ApplicationConfiguration_Build.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Build\GameBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Window\Popup\BuildSettings\BuildSettingsWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Core\Application\AutoMcp\AutoMcpEngineAccess.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -6393,10 +6810,13 @@
     <ClInclude Include="Engine\Module\Physics\MotionType\Engine_Physics_MotionType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Module\Scene\ShadowMap\ShadowMapSetting.h">
+    <ClInclude Include="Engine\Module\Scene\AsyncLoader\Engine_Scene_AsyncSceneLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Module\Scene\AsyncLoader\Engine_Scene_AsyncSceneLoader.h">
+    <ClInclude Include="Engine\Module\Asset\Preload\Engine_Asset_AssetPreloader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Asset\Preload\Engine_Asset_IPreloadableAsset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Libs\LibCore\BlackBoard\AnimationParameter.h">
@@ -6423,6 +6843,42 @@
     <ClInclude Include="Packages\R4\SensorStayable\SensorStayableAsObservable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Http\HttpAssetUpdater.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Http\WinHttpClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Interface\IAssetUpdater.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Manifest\AssetManifest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Null\NullAssetUpdater.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Hash\Sha256.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Install\AssetUpdaterPaths.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Install\Installer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Install\PathGuard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\System\Relaunch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Task\AssetUpdateTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Packages\AssetUpdater\Text\Utf8.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Data\PlayerAvatar\Resource\Data_SwordManAvatarResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -6430,6 +6886,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Data\Enemy\Factory\EnemyFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\Magic\Data_MagicSpellData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\AttackedShocked\SwordManAvatar_AttackedShockedState.h">
@@ -6445,6 +6904,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Transition\MagicCasterAvatarStateTransition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Context\MagicCasterAvatarStateContext.h">
@@ -6480,6 +6942,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\MagicCasterAvatarStateMachine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\Chatting\MagicCasterAvatarChattingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\MagicCasterAvatarStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -6507,7 +6972,40 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\DestructibleObject\DestructibleObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Pickable\IPlayerPickable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\PickupArea\PickupArea.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_MoneyDrop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_MoneyPickup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_ItemPickup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_LootDrop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_PickupMotion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\IItemReceiver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\IDestructibleObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\CharacterPodium\Prop_CharacterPodium.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\MerchantStall\Prop_MerchantStall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\EventNoticeBoard\Prop_EventNoticeBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\NpcChatting\Ui_NpcChatting.h">
@@ -6537,13 +7035,187 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Difficulty\StageDifficultyPips.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\CharacterSelect\Presenter\CharacterSelectPresenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\CharacterSelect\Model\CharacterSelectModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\CharacterSelect\Row\Ui_CharacterSelect_Row.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\CharacterSelect\UI_CharacterSelect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\UI_EventBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_Row.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\EventBoardModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Presenter\EventBoardPresenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\BoardListCursor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\EventBoardFormat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\QuestBoardModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\NoticeBoardModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\AnnouncementReadLog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_QuestRow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_NoticeRow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Page\Ui_EventBoard_EventPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Page\Ui_EventBoard_QuestPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Page\Ui_EventBoard_NoticePage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Tab\Ui_EventBoard_Tab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\EventBoardRowPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Shop\Presenter\ShopPresenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Shop\UI_Shop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Shop\Receipt\Ui_ShopReceipt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Shop\Row\Ui_ShopRow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Shop\Model\ShopModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\Format\Ui_MoneyFormat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Model\PauseMenuModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Presenter\PauseMenuPresenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Row\Ui_PauseMenuRow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\PauseMenu\ItemCell\Ui_PauseMenuItemCell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\PauseMenu\Ui_PauseMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Type\EnemyKind.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\SpawnPoint\EnemySpawnPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\HyenaRepository.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGaugePresenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Magic\IMagicCaster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Magic\IMagicSpell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Magic\IMagicSpellEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Magic\MagicCastTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Magic\MagicSpellEffectFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Magic\MagicCastMotion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Magic\GamePlay_MagicAim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Magic\GamePlay_MagicCasting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Magic\GamePlay_MagicSupport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Magic\Component\GamePlay_MagicProjectile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Magic\Component\GamePlay_MagicBlast.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Magic\Component\GamePlay_MagicPlacement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Magic\Component\GamePlay_MagicChannel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Magic\Effect\GamePlay_ProjectileSpellEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Magic\Effect\GamePlay_AreaSpellEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Magic\Effect\GamePlay_PlacementSpellEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Magic\Effect\GamePlay_HealSpellEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Magic\Effect\GamePlay_AttackBuffSpellEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Magic\Effect\GamePlay_ChannelSpellEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\StatusParameter\Mana\Mana.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Spell\MagicCasterSpellSlot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\LockOnTarget\PlayerAvatarLockOn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\SpellPalette\Ui_SpellSlot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\SpellPalette\Ui_SpellPalette.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\Presenter\PlayerAvatar_MagicCaster_StatusPresenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\Quest\MagicCaster_QuestGroup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Object\Field\CreateField.h">
@@ -6553,6 +7225,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\Component\ParticleRenderer\PlayMode\ParticleSystem_PlayMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Component\CircleGaugeRenderer\CircleGaugeRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\NanamiUI\MovieRenderer\MovieRenderer.h">

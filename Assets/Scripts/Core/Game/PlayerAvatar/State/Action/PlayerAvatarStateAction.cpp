@@ -1,6 +1,9 @@
 ﻿#include "PlayerAvatarStateAction.h"
 
+#include <cmath>
+
 #include "../../../../../../../Engine/Core/Application/Time/Time.h"
+#include "../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../CameraGroup/PlayerAvatarCameraGroupBase.h"
@@ -20,9 +23,10 @@ namespace GameCore::PlayerAvatar::State
         const glm::vec3 cameraForward = glm::normalize(glm::vec3(stateContext_->CameraGroup().CurrentCamera().Transform().GetWorldRot() * glm::vec3(0,0,-1)));
         const glm::vec3 cameraRight   = glm::normalize(glm::vec3(stateContext_->CameraGroup().CurrentCamera().Transform().GetWorldRot() * glm::vec3(1,0, 0)));
         const glm::vec3 xzVelocity = cameraForward * inputVelocity.z + cameraRight * inputVelocity.x;
+        const glm::vec3 walkableVelocity = LimitToWalkableSlope(glm::vec3(xzVelocity.x, 0.0f, xzVelocity.z));
         glm::vec3 currentVelocity = stateContext_->PlayerAvatarRigidBody().LinearVelocity();
-        currentVelocity.x = xzVelocity.x;
-        currentVelocity.z = xzVelocity.z;
+        currentVelocity.x = walkableVelocity.x;
+        currentVelocity.z = walkableVelocity.z;
 
         stateContext_->PlayerAvatarRigidBody().SetLinearVelocity(currentVelocity);
         RotateTowards(glm::vec3(xzVelocity.x, 0, xzVelocity.z), rotateSpeed);
@@ -58,6 +62,36 @@ namespace GameCore::PlayerAvatar::State
         glm::vec3 currentVelocity = stateContext_->PlayerAvatarRigidBody().LinearVelocity();
         currentVelocity.y = 0.0f;
         stateContext_->PlayerAvatarRigidBody().SetLinearVelocity(currentVelocity + direction);
+    }
+
+    glm::vec3 PlayerAvatarStateAction::LimitToWalkableSlope(const glm::vec3& horizontalVelocity) const
+    {
+        if (glm::length2(horizontalVelocity) < 0.0001f)
+            return horizontalVelocity;
+
+        Physics::LayerMask mask = Physics::CreateLayerMask();
+        Physics::AddLayer(mask, Physics::Layer::Default);
+
+        const float radius = stateContext_->SlopeCheckRadius();
+        const auto hit = Physics::SphereCast(stateContext_->PlayerAvatarFeatStepPos() + glm::vec3(0.0f, stateContext_->SlopeCheckUpOffset() + radius, 0.0f),
+                                             radius,
+                                             horizontalVelocity, stateContext_->SlopeCheckDistance(),
+                                             mask);
+        if (!hit.Hit())
+            return horizontalVelocity;
+
+        const glm::vec3& normal = hit.Normal();
+        if (normal.y >= std::cos(glm::radians(stateContext_->MaxWalkableSlope_deg())))
+            return horizontalVelocity;
+
+        // 急な面は壁とみなし、面に沿って横へ滑る成分だけ残す
+        const glm::vec3 wallNormal(normal.x, 0.0f, normal.z);
+        if (glm::length2(wallNormal) < 0.0001f)
+            return horizontalVelocity;
+
+        const glm::vec3 wallDirection = glm::normalize(wallNormal);
+        const float intoWall = glm::dot(horizontalVelocity, wallDirection);
+        return intoWall < 0.0f ? horizontalVelocity - intoWall * wallDirection : horizontalVelocity;
     }
 }
 

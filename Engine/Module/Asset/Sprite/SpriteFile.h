@@ -5,11 +5,13 @@
 #include "../../LifeCycleCallback/EnableAsset/IEnablableAsset.h"
 #include "../AssetBase.h"
 #include "../Factory/AssetFactory.h"
+#include "../Preload/Engine_Asset_IPreloadableAsset.h"
 
 namespace NanamiEngine::Module::Asset
 {
     class SpriteFile final : public AssetBase,
-                             public LifeCycleCallback::IEnablableAsset
+                             public LifeCycleCallback::IEnablableAsset,
+                             public IPreloadableAsset
     {
     public:
         explicit SpriteFile(std::string contentPath = "");
@@ -18,8 +20,11 @@ namespace NanamiEngine::Module::Asset
         SpriteFile& operator=(const SpriteFile&) = delete;
         void OnEnableAsset() override;
         [[nodiscard]] const Guid& GetGuid        () const override { return guid_;     }
-        [[nodiscard]] int         GetDxLibHandle () const          { return dxLibId_;  }
+        /** @brief 未読込ならここで読み終えてから返す */
+        [[nodiscard]] int         GetDxLibHandle () const;
         [[nodiscard]] std::string GetContentPath () const override;
+        void RequestLoad() const override;
+        void Unload() override;
 
     private:
         [[nodiscard]] int         LoadGraph() const;
@@ -27,7 +32,8 @@ namespace NanamiEngine::Module::Asset
 
         std::string contentPath_;
         Guid guid_;
-        int dxLibId_ = -1;
+        mutable int  dxLibId_         = -1;
+        mutable bool isLoadAttempted_ = false;
 #pragma region Serialization Function
 public:
 void OnDrawGui() override;

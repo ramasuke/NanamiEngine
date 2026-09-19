@@ -1,0 +1,107 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::MagicSpellData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Magic/ArcaneRay.magicSpell",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "BED7219D-AB88-4349-8FA4-52F1AE1126C8"
+                    }
+                },
+                "displayName_": "光線",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "3514DF31-384D-4100-861C-A15686D454F0"
+                                }
+                            }
+                        }
+                    }
+                },
+                "castSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "98DAFC28-D828-4F56-99C4-47FAACA31176"
+                                }
+                            }
+                        }
+                    }
+                },
+                "manaCost_": 32.0,
+                "cooldown_secs_": 12.0,
+                "castFireTime_secs_": 0.8899999856948853,
+                "castTotalDuration_secs_": 2.9000000953674318,
+                "effect_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GamePlay::Magic::ChannelSpellEffect",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "channelPrefab_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "18A70812-8BDB-4A4B-93FC-5D245F4F902F"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "power_": {
+                                "cereal_class_version": 0,
+                                "value_": 7
+                            },
+                            "duration_secs_": 1.850000023841858,
+                            "tickInterval_secs_": 0.25,
+                            "range_": 150.0
+                        }
+                    }
+                },
+                "castMotion_": 9,
+                "castEffectPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "CD8B7670-34CF-47D8-A3D1-A47D7EAE5CDE"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

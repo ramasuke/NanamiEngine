@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <cstdint>
 #include <functional>
 #include <memory>
 #include <optional>
@@ -18,6 +19,12 @@ namespace NanamiEngine::Scene
 namespace NanamiEngine::Module::Asset
 {
     class Mv1File;
+}
+
+namespace NanamiEngine::Module::Physics
+{
+    enum class ColliderShapeKind : uint32_t;
+    enum class Layer : uint32_t;
 }
 
 namespace NanamiEngine::Core::MainWindow
@@ -101,5 +108,12 @@ namespace NanamiEngine::Core::Application::AutoMcp
         [[nodiscard]] static glm::vec3 PreviewCameraPosition(const MainWindow::ModelPreviewStage& stage);
         [[nodiscard]] static glm::quat PreviewCameraRotation(const MainWindow::ModelPreviewStage& stage);
         static void SetPreviewCamera(MainWindow::ModelPreviewStage& stage, const glm::vec3& position, const glm::quat& rotation);
+
+        [[nodiscard]] static bool& DebugDrawAllColliders();
+        [[nodiscard]] static bool& DebugDrawColliderKind(Module::Physics::ColliderShapeKind kind);
+        [[nodiscard]] static bool& DebugDrawColliderLayer(Module::Physics::Layer layer);
+        [[nodiscard]] static bool& DebugDrawTriggerColliders();
+        [[nodiscard]] static bool& DebugDrawMainCameraFrustum();
+        [[nodiscard]] static bool& DebugDrawVirtualCameraFrustums();
     };
 }

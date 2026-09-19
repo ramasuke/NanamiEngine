@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 18,
+                "cereal_class_version": 20,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -623,7 +623,7 @@
                 },
                 "groundCheckRadius_": 40.0,
                 "groundCheckUpOffset_": 3.0,
-                "groundCheckDistance_": 8.300000190734863,
+                "groundCheckDistance_": 8.300000190734864,
                 "chargeHoldParticlePrefab_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
@@ -651,9 +651,9 @@
                     }
                 },
                 "walkAccelerationTime_secs_": 0.25,
-                "runAccelerationTime_secs_": 0.15000000596046448,
-                "walkDecelerationTime_secs_": 0.15000000596046448,
-                "runDecelerationTime_secs_": 0.15000000596046448,
+                "runAccelerationTime_secs_": 0.15000000596046449,
+                "walkDecelerationTime_secs_": 0.15000000596046449,
+                "runDecelerationTime_secs_": 0.15000000596046449,
                 "chargingShakeIntensityMin_": 0.25,
                 "chargingShakeIntensityMax_": 0.5,
                 "chargedHoldShakeIntensity_": 0.6000000238418579,
@@ -810,7 +810,7 @@
                         }
                     }
                 },
-                "initialItemCount": 5,
+                "initialItemCount": 3,
                 "initialItem_0": {
                     "cereal_class_version": 0,
                     "item_": {
@@ -838,22 +838,6 @@
                                 "id": 2147483710,
                                 "data": {
                                     "value0": {
-                                        "value_": "3B0018B8-2C7D-498B-9493-DFE38CEB0416"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "count_": 9
-                },
-                "initialItem_2": {
-                    "item_": {
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483711,
-                                "data": {
-                                    "value0": {
                                         "value_": "B407D88F-D3CE-439E-8F0F-3D2746A261FE"
                                     }
                                 }
@@ -862,28 +846,12 @@
                     },
                     "count_": 3
                 },
-                "initialItem_3": {
+                "initialItem_2": {
                     "item_": {
                         "value0": {
                             "polymorphic_id": 1073741824,
                             "ptr_wrapper": {
-                                "id": 2147483712,
-                                "data": {
-                                    "value0": {
-                                        "value_": "C164E547-132D-4104-86B5-570565BC0C9E"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "count_": 2
-                },
-                "initialItem_4": {
-                    "item_": {
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483713,
+                                "id": 2147483711,
                                 "data": {
                                     "value0": {
                                         "value_": "72C0F0C4-F59E-4675-8B10-62416B7B6C0C"
@@ -894,24 +862,11 @@
                     },
                     "count_": 4
                 },
-                "jumpParticlePrefab_": {
-                    "value0": {
-                        "polymorphic_id": 1073741824,
-                        "ptr_wrapper": {
-                            "id": 2147483714,
-                            "data": {
-                                "value0": {
-                                    "value_": "02320272-704B-43F7-B310-8EFAFB63E48E"
-                                }
-                            }
-                        }
-                    }
-                },
                 "landingParticlePrefab_": {
                     "value0": {
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {
-                            "id": 2147483715,
+                            "id": 2147483712,
                             "data": {
                                 "value0": {
                                     "value_": "A7701106-09FA-443E-84AF-84FDC09E286D"
@@ -922,10 +877,8 @@
                 },
                 "landingParticleMinFallSpeed_": 45.0,
                 "landingParticleMaxFallSpeed_": 260.0,
-                "landingParticleMinScale_": 0.7,
-                "landingParticleMaxScale_": 1.6,
-                "warpInRise_secs_": 1.4,
-                "warpInSinkDepth_": 40.0
+                "landingParticleMinScale_": 0.699999988079071,
+                "landingParticleMaxScale_": 1.600000023841858
             }
         }
     }

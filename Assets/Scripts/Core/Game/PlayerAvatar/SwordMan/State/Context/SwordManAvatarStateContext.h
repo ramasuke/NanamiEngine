@@ -58,8 +58,13 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] float                                    GroundCheckRadius      () const override;
         [[nodiscard]] float                                    GroundCheckUpOffset    () const override;
         [[nodiscard]] float                                    GroundCheckDistance    () const override;
+        [[nodiscard]] float                                    MaxWalkableSlope_deg   () const override;
+        [[nodiscard]] float                                    SlopeCheckRadius       () const override;
+        [[nodiscard]] float                                    SlopeCheckUpOffset     () const override;
+        [[nodiscard]] float                                    SlopeCheckDistance     () const override;
         [[nodiscard]] PlayerAttackArea& NormalAttackArea   () const { return *normalAttackArea_   .lock(); }
         [[nodiscard]] PlayerAttackArea& DashAttackArea     () const { return *dashAttackArea_     .lock(); }
+        [[nodiscard]] bool ExpiredLockOnDetectionArea() const { return lockOnDetectionArea_.expired(); }
         [[nodiscard]] GamePlay::PlayerAvatar::LockOnDetectionArea& LockOnDetectionArea() const { return *lockOnDetectionArea_.lock(); }
         [[nodiscard]] Component::ParticleSystem& SuccessAvoidRollingParticle() const { return *successAvoidRollingParticle_.lock(); }
         [[nodiscard]] const Asset::SwordManAvatarResource   & Resources          () const { return *resources_  .lock(); }

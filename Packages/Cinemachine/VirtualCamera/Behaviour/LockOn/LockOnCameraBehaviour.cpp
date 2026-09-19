@@ -41,14 +41,17 @@ namespace NanamiEngine::CineMachine::Behaviour
         RequireComponent<VirtualCameraLookAtBehaviour>()->SetTarget(followTarget);
     }
 
-    void LockOnCameraBehaviour::SetLockOnTarget(const std::shared_ptr<GameObject::IGameObject>& lockOnTarget)
+    void LockOnCameraBehaviour::SetLockOnTarget(const std::shared_ptr<GameObject::IGameObject>& lockOnTarget,
+                                                const std::shared_ptr<GameObject::IGameObject>& aim)
     {
         lockOnTarget_ = lockOnTarget;
+        lockOnAim_ = aim;
     }
 
     void LockOnCameraBehaviour::ClearLockOnTarget()
     {
         lockOnTarget_.reset();
+        lockOnAim_.reset();
     }
 
     void LockOnCameraBehaviour::OnAwake()
@@ -97,7 +100,8 @@ namespace NanamiEngine::CineMachine::Behaviour
             points[i]     = BoundsCorner(playerMin, playerMax, i);
             points[i + 8] = BoundsCorner(targetMin, targetMax, i);
         }
-        points[16] = GameCore::PlayerAvatar::LockOnPositionOf(*lockOnTarget);
+        const auto aim = lockOnAim_.lock();
+        points[16] = GameCore::PlayerAvatar::LockOnPositionOf(aim ? *aim : *lockOnTarget);
 
         // 画面の縦横方向に投影した範囲の中心を注視点にする
         glm::vec2 projectedMin(std::numeric_limits<float>::max());
@@ -154,12 +158,11 @@ namespace NanamiEngine::CineMachine::Behaviour
         Module::Physics::LayerMask mask = Module::Physics::CreateLayerMask();
         Module::Physics::AddLayer(mask, Module::Physics::Layer::Default);
 
-        // 太さ0のRayだと横壁や地面すれすれでNear平面がめり込むため、半径を持った球で位置を決める。
-        // これでカメラ周囲に最低collisionRadius_の空きが保証され、Brainの動的Nearが極端に小さくならない
+        // 位置を決める。
         Module::Physics::RaycastHit hit = Module::Physics::SphereCast(originPos, collisionRadius_, direction, distance, mask);
         if (hit.Hit() && hit.Distance() <= 0.0f)
         {
-            // 始点の時点で球が既に壁に重なっている場合、球では位置が決まらないためRayにフォールバックする
+            // 始点の時点で球が既に壁に重なっている場合、Rayにフォールバック
             hit = Module::Physics::Raycast(originPos, direction, distance, mask);
         }
         if (!hit.Hit())

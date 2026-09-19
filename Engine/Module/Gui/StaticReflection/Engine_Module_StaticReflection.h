@@ -1,5 +1,7 @@
 ﻿#pragma once
+#include <algorithm>
 #include <functional>
+#include <map>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -96,5 +98,66 @@ namespace NanamiEngine::Module::StaticReflection
                 }
             }
         }
+    }
+
+    /** DrawCategoryMenu の 1 項目。category は "A::B" で入れ子になり、空ならトップレベルに並ぶ */
+    struct CategoryMenuItem
+    {
+        std::string           category;
+        std::string           label;
+        bool                  enabled;
+        std::function<void()> onSelect;
+    };
+
+    struct CategoryMenuNode
+    {
+        std::map<std::string, std::unique_ptr<CategoryMenuNode>> children;
+        std::vector<const CategoryMenuItem*>                     items;
+    };
+
+    inline void DrawCategoryMenuNode(const CategoryMenuNode& node)
+    {
+        for (const auto& [name, child] : node.children)
+        {
+            if (ImGui::BeginMenu(name.c_str()))
+            {
+                DrawCategoryMenuNode(*child);
+                ImGui::EndMenu();
+            }
+        }
+        for (const auto* item : node.items)
+        {
+            if (ImGui::MenuItem(item->label.c_str(), nullptr, false, item->enabled) && item->onSelect)
+                item->onSelect();
+        }
+    }
+
+    /** DrawTreeGui と同じ入れ子メニューを、呼び出し元のコールバックで描く。カテゴリも項目も名前順に並べる */
+    inline void DrawCategoryMenu(const std::vector<CategoryMenuItem>& items)
+    {
+        std::vector<const CategoryMenuItem*> sortedItems;
+        sortedItems.reserve(items.size());
+        for (const auto& item : items)
+            sortedItems.push_back(&item);
+        std::ranges::sort(sortedItems, [](const CategoryMenuItem* lhs, const CategoryMenuItem* rhs) { return lhs->label < rhs->label; });
+
+        CategoryMenuNode root;
+        for (const auto* item : sortedItems)
+        {
+            CategoryMenuNode* current = &root;
+            if (!item->category.empty())
+            {
+                for (const auto& token : Split(item->category, "::"))
+                {
+                    auto& child = current->children[token];
+                    if (!child)
+                        child = std::make_unique<CategoryMenuNode>();
+                    current = child.get();
+                }
+            }
+            current->items.push_back(item);
+        }
+
+        DrawCategoryMenuNode(root);
     }
 }

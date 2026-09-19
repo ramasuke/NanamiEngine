@@ -1,0 +1,106 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::MagicSpellData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Magic/MagicBolt.magicSpell",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "F788E510-3C60-4FBD-8AA9-1C90BE361589"
+                    }
+                },
+                "displayName_": "魔法弾",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "FE1E3268-B64A-4FF0-9044-E5467974BAC6"
+                                }
+                            }
+                        }
+                    }
+                },
+                "castSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "A6B4EA06-831E-4F08-AFF0-39494E76A858"
+                                }
+                            }
+                        }
+                    }
+                },
+                "manaCost_": 0.0,
+                "cooldown_secs_": 0.30000001192092898,
+                "castFireTime_secs_": 0.41999998688697817,
+                "castTotalDuration_secs_": 0.75,
+                "effect_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GamePlay::Magic::ProjectileSpellEffect",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "projectilePrefab_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "135E6FE8-97B8-4501-A2E2-B628C3B8B73E"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "power_": {
+                                "cereal_class_version": 0,
+                                "value_": 8
+                            },
+                            "speed_": 220.0,
+                            "range_": 140.0
+                        }
+                    }
+                },
+                "castMotion_": 0,
+                "castEffectPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "183D389C-B9C1-42D0-82F3-D7AAB263B9B8"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

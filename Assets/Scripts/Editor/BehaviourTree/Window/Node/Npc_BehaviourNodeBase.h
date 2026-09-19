@@ -39,6 +39,9 @@ namespace Editor::Npc::Behaviour
         // 親ノードをドラッグ移動したときに子孫を追従させるために使用する。
         [[nodiscard]] virtual std::vector<std::shared_ptr<NodeBase>> Children() const { return {}; }
 
+        // 自身と子孫の実行時状態（WaitSeconds の経過時間など）を初期化する。
+        void ResetRuntimeState();
+
         // 実行時状態（シリアライズ対象外）。BehaviourTreeビューアがノードの色分け表示に使う。
         [[nodiscard]] bool HasBeenTickedAsEnemy() const { return hasBeenTickedAsEnemy_; }
         [[nodiscard]] bool HasBeenTickedAsFriendly() const { return hasBeenTickedAsFriendly_; }
@@ -49,6 +52,7 @@ namespace Editor::Npc::Behaviour
         virtual void DoOnDrawGui() = 0;
         [[nodiscard]] virtual GameCore::Npc::Enemy::Behaviour::TickStatus DoTick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context) = 0;
         [[nodiscard]] virtual GameCore::Npc::Friendly::Behaviour::TickStatus DoTick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context) = 0;
+        virtual void DoResetRuntimeState() {}
 
         Guid guid_;
         glm::vec2 position_;

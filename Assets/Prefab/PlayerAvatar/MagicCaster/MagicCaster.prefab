@@ -14,7 +14,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 4,
+                    "cereal_class_version": 5,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
@@ -49,37 +49,7 @@
                             }
                         }
                     },
-                    "useFixedInterpolation_": true,
-                    "vsFile_": {
-                        "cereal_class_version": 0,
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483651,
-                                "data": {
-                                    "cereal_class_version": 0,
-                                    "value0": {
-                                        "value_": "26813FF5-DC0A-4AA9-863F-2F73A3B90837"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "psFile_": {
-                        "cereal_class_version": 0,
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483652,
-                                "data": {
-                                    "cereal_class_version": 0,
-                                    "value0": {
-                                        "value_": "F688CAA3-2531-4DE2-B524-53FE4967D520"
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    "useFixedInterpolation_": true
                 }
             }
         },
@@ -87,7 +57,7 @@
             "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Module::Component::Animator",
             "ptr_wrapper": {
-                "id": 2147483653,
+                "id": 2147483651,
                 "data": {
                     "cereal_class_version": 5,
                     "value0": {
@@ -104,7 +74,7 @@
                         "value0": {
                             "polymorphic_id": 1073741824,
                             "ptr_wrapper": {
-                                "id": 2147483654,
+                                "id": 2147483652,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -122,11 +92,11 @@
             "polymorphic_id": 2147483651,
             "polymorphic_name": "GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar",
             "ptr_wrapper": {
-                "id": 2147483655,
+                "id": 2147483653,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
-                        "cereal_class_version": 3,
+                        "cereal_class_version": 4,
                         "value0": {
                             "cereal_class_version": 0,
                             "value0": {
@@ -141,7 +111,7 @@
                             "value0": {
                                 "polymorphic_id": 1073741824,
                                 "ptr_wrapper": {
-                                    "id": 2147483656,
+                                    "id": 2147483654,
                                     "data": {
                                         "cereal_class_version": 0,
                                         "value0": {
@@ -156,11 +126,41 @@
                             "value0": {
                                 "polymorphic_id": 1073741824,
                                 "ptr_wrapper": {
-                                    "id": 2147483657,
+                                    "id": 2147483655,
                                     "data": {
                                         "cereal_class_version": 0,
                                         "value0": {
                                             "value_": "37F28078-1083-47DF-8B8B-6C27B9979D74"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "chattableArea_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483656,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "FC69A736-DB32-4497-9EB9-38F6F72295F8"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "wakeUpArea_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483657,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "8E8EAA02-4518-4215-A0D7-7E8E4901C9CB"
                                         }
                                     }
                                 }
@@ -194,6 +194,21 @@
                                 }
                             }
                         }
+                    },
+                    "lockOnDetectionArea_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483660,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "6368462B-BEAD-4855-8F72-EC122BBE4A08"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -202,7 +217,7 @@
             "polymorphic_id": 2147483652,
             "polymorphic_name": "NanamiEngine::Module::Component::CapsuleCollider",
             "ptr_wrapper": {
-                "id": 2147483660,
+                "id": 2147483661,
                 "data": {
                     "cereal_class_version": 3,
                     "value0": {
@@ -241,7 +256,7 @@
             "polymorphic_id": 2147483653,
             "polymorphic_name": "Component::CollisionListener",
             "ptr_wrapper": {
-                "id": 2147483661,
+                "id": 2147483662,
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -257,7 +272,7 @@
             "polymorphic_id": 2147483654,
             "polymorphic_name": "Network::NetworkGameObject",
             "ptr_wrapper": {
-                "id": 2147483662,
+                "id": 2147483663,
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -273,7 +288,7 @@
             "polymorphic_id": 2147483655,
             "polymorphic_name": "Network::NetworkTransform",
             "ptr_wrapper": {
-                "id": 2147483663,
+                "id": 2147483664,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -291,7 +306,7 @@
             "polymorphic_id": 2147483656,
             "polymorphic_name": "NanamiEngine::Module::Component::RigidBody",
             "ptr_wrapper": {
-                "id": 2147483664,
+                "id": 2147483665,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -353,12 +368,12 @@
                 "value3": 1.0
             }
         },
-        "childCount": 4,
+        "childCount": 6,
         "child": {
             "polymorphic_id": 2147483657,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483665,
+                "id": 2147483666,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -427,7 +442,7 @@
         "child": {
             "polymorphic_id": 9,
             "ptr_wrapper": {
-                "id": 2147483666,
+                "id": 2147483667,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -443,7 +458,7 @@
                             "polymorphic_id": 2147483658,
                             "polymorphic_name": "GamePlay::PlayerAvatar::ChattableArea",
                             "ptr_wrapper": {
-                                "id": 2147483667,
+                                "id": 2147483668,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -465,7 +480,7 @@
                             "polymorphic_id": 2147483659,
                             "polymorphic_name": "NanamiEngine::Module::Component::SphereCollider",
                             "ptr_wrapper": {
-                                "id": 2147483668,
+                                "id": 2147483669,
                                 "data": {
                                     "cereal_class_version": 1,
                                     "value0": {
@@ -549,7 +564,7 @@
         "child": {
             "polymorphic_id": 9,
             "ptr_wrapper": {
-                "id": 2147483669,
+                "id": 2147483670,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -565,7 +580,7 @@
                             "polymorphic_id": 2147483660,
                             "polymorphic_name": "GamePlay::PlayerAvatar::WakeUpArea",
                             "ptr_wrapper": {
-                                "id": 2147483670,
+                                "id": 2147483671,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -582,7 +597,7 @@
                         "component_1": {
                             "polymorphic_id": 11,
                             "ptr_wrapper": {
-                                "id": 2147483671,
+                                "id": 2147483672,
                                 "data": {
                                     "value0": {
                                         "value0": {
@@ -665,7 +680,7 @@
         "child": {
             "polymorphic_id": 9,
             "ptr_wrapper": {
-                "id": 2147483672,
+                "id": 2147483673,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -682,7 +697,7 @@
                         "localPos_": {
                             "value0": 0.0,
                             "value1": 120.0,
-                            "value2": -30.0
+                            "value2": -135.0
                         },
                         "localRot_": {
                             "value0": 0.0,
@@ -712,6 +727,238 @@
                                 "value0": 0.0,
                                 "value1": 0.0,
                                 "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 9,
+            "ptr_wrapper": {
+                "id": 2147483674,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": false,
+                    "name_": "LockOnDetectionArea",
+                    "guid_": {
+                        "value_": "A781E77A-BA2C-4C99-88A8-636C0938FAD5"
+                    },
+                    "components_": {
+                        "componentCount": 2,
+                        "component_0": {
+                            "polymorphic_id": 11,
+                            "ptr_wrapper": {
+                                "id": 2147483675,
+                                "data": {
+                                    "value0": {
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "100C9CF6-A70C-4F50-953D-FF10AAEE6ED5"
+                                            },
+                                            "isEnable_": true
+                                        },
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "layer_": 0,
+                                        "isSensor_": true,
+                                        "friction_": 0.20000000298023225
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "value3": {},
+                                    "radius_": 450.0
+                                }
+                            }
+                        },
+                        "component_1": {
+                            "polymorphic_id": 2147483661,
+                            "polymorphic_name": "GamePlay::PlayerAvatar::LockOnDetectionArea",
+                            "ptr_wrapper": {
+                                "id": 2147483676,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "6368462B-BEAD-4855-8F72-EC122BBE4A08"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {}
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 3.0,
+                            "value1": 3.0,
+                            "value2": 3.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.23999999463558198,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.23999999463558198,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.23999999463558198,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 9,
+            "ptr_wrapper": {
+                "id": 2147483677,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": false,
+                    "name_": "PickupArea",
+                    "guid_": {
+                        "value_": "1DB1B782-AE21-4F2E-97F0-853562351687"
+                    },
+                    "components_": {
+                        "componentCount": 2,
+                        "component_0": {
+                            "polymorphic_id": 2147483662,
+                            "polymorphic_name": "GamePlay::PlayerAvatar::PickupArea",
+                            "ptr_wrapper": {
+                                "id": 2147483678,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "731E3887-6D47-488A-859F-3B27047ECE40"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {}
+                                }
+                            }
+                        },
+                        "component_1": {
+                            "polymorphic_id": 11,
+                            "ptr_wrapper": {
+                                "id": 2147483679,
+                                "data": {
+                                    "value0": {
+                                        "value0": {
+                                            "guid_": {
+                                                "value_": "5BA5308B-3CF1-4714-84F3-3CD1745D7B3F"
+                                            },
+                                            "isEnable_": true
+                                        },
+                                        "offset_": {
+                                            "value0": 0.0,
+                                            "value1": 22.229999542236329,
+                                            "value2": 0.0
+                                        },
+                                        "offsetRotation_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "layer_": 0,
+                                        "isSensor_": true,
+                                        "friction_": 0.20000000298023225
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "value3": {},
+                                    "radius_": 150.0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.07999999821186066,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.07999999821186066,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.07999999821186066,
                                 "value3": 0.0
                             },
                             "value3": {

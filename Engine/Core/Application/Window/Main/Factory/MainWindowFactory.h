@@ -15,8 +15,9 @@ namespace NanamiEngine::Core::MainWindow
     class MainWindowFactory final : public SingletonBase<MainWindowFactory>
     {
     public:
+        /** @param category ツールバーのメニューでの入れ子 ("A::B") */
         template <typename T>
-        void Register(const std::string& name)
+        void Register(const std::string& name, const std::string& category)
         {
             static_assert(std::is_base_of_v<IMainWindow, T>, "T must inherit from IMainWindow");
             static_assert(std::is_default_constructible_v<T>, "T must be default constructible");
@@ -28,6 +29,8 @@ namespace NanamiEngine::Core::MainWindow
             loaders_[name] = [] {
                 return Application::ApplicationBase::MainWindows().Catch<T>();
             };
+
+            categories_[name] = category;
         }
 
         std::shared_ptr<IMainWindow> Load(const std::string& name)
@@ -52,17 +55,23 @@ namespace NanamiEngine::Core::MainWindow
             return loaders_;
         }
 
+        const std::unordered_map<std::string, std::string>& GetCategories() const
+        {
+            return categories_;
+        }
+
     private:
         std::unordered_map<std::string, std::function<std::shared_ptr<IMainWindow>()>> factories_;
         std::unordered_map<std::string, std::function<std::shared_ptr<IMainWindow>()>> loaders_;
+        std::unordered_map<std::string, std::string>                                    categories_;
     };
 }
 
-#define REGISTER_MAIN_WINDOW(TYPE) \
+#define REGISTER_MAIN_WINDOW(TYPE, CATEGORY) \
 namespace { \
 struct TYPE##AutoRegister { \
 TYPE##AutoRegister() { \
-NanamiEngine::Core::MainWindow::MainWindowFactory::Instance().Register<TYPE>(#TYPE); \
+NanamiEngine::Core::MainWindow::MainWindowFactory::Instance().Register<TYPE>(#TYPE, CATEGORY); \
 } \
 }; \
 static TYPE##AutoRegister global_##TYPE##AutoRegister; \

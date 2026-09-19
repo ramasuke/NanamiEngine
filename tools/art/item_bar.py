@@ -15,6 +15,7 @@ the switch pulse, and the dimmed "cannot use" state).
 Requires Pillow + numpy.
 """
 import argparse
+import math
 import sys
 from pathlib import Path
 
@@ -47,13 +48,15 @@ SLOT_PITCH = 76.0
 UNSELECTED_SCALE = 0.74
 NAME_OFFSET_Y = -72.0
 HINT_OFFSET_Y = 62.0
-# ルート（= 一番右の枠の中心）から見た操作ヒントの中心
+# ルート（= 一番右の枠の中心）から見た操作ヒントの中心。
+# 切替のキー画像はキーボードの「Z X」が幅 64px (パッドは 32px) あるので、それでも「切替」に触れない位置
 HINT_LAYOUT = {
     'UseLabel': (-24.0, HINT_OFFSET_Y),
     'UseGlyph': (-76.0, HINT_OFFSET_Y),
-    'CycleLabel': (-130.0, HINT_OFFSET_Y),
-    'CycleGlyph': (-182.0, HINT_OFFSET_Y),
+    'CycleLabel': (-142.0, HINT_OFFSET_Y),
+    'CycleGlyph': (-208.0, HINT_OFFSET_Y),
 }
+NAME_TEXT_PX, HINT_TEXT_PX, COUNT_TEXT_PX = 25, 21, 17
 
 STEEL = hexc('#7c8896')
 STEEL_LT = hexc('#c0cad4')
@@ -181,16 +184,6 @@ def _icon_canvas():
     return c, c.X, c.Y, ICON_PX / 2.0, ICON_PX / 2.0
 
 
-def _tri(c, pts, color, alpha=1.0):
-    X, Y = c.X, c.Y
-    inside = np.ones_like(X, np.float32)
-    for i in range(3):
-        (sx, sy), (tx, ty), (ox, oy) = pts[i], pts[(i + 1) % 3], pts[(i + 2) % 3]
-        side = (tx - sx) * (Y - sy) - (ty - sy) * (X - sx)
-        inside *= (side * np.sign((tx - sx) * (oy - sy) - (ty - sy) * (ox - sx)) >= 0)
-    c.over(color, inside * alpha)
-
-
 def icon_flask(liquid):
     c, X, Y, cx, cy = _icon_canvas()
     body = sd_circle(X, Y, cx, cy + 6, 15)
@@ -206,19 +199,6 @@ def icon_flask(liquid):
     return c.resolve()
 
 
-def icon_whetstone():
-    c, X, Y, cx, cy = _icon_canvas()
-    pts = [(cx - 17, cy + 7), (cx - 7, cy - 16), (cx + 17, cy - 6), (cx + 7, cy + 16)]
-    for tri in ((pts[0], pts[1], pts[2]), (pts[0], pts[2], pts[3])):
-        _tri(c, list(tri), hexc('#848c96'))
-    # 稜線
-    seg = np.clip(((X - pts[1][0]) * (pts[3][0] - pts[1][0]) + (Y - pts[1][1]) * (pts[3][1] - pts[1][1]))
-                  / ((pts[3][0] - pts[1][0]) ** 2 + (pts[3][1] - pts[1][1]) ** 2), 0, 1)
-    ridge = np.hypot(X - (pts[1][0] + seg * (pts[3][0] - pts[1][0])), Y - (pts[1][1] + seg * (pts[3][1] - pts[1][1])))
-    c.over(STEEL_LT, cov(ridge - 1.1) * 0.8)
-    return c.resolve()
-
-
 def icon_meat():
     c, X, Y, cx, cy = _icon_canvas()
     meat = sd_circle(X, Y, cx - 3, cy + 6, 15)
@@ -228,23 +208,6 @@ def icon_meat():
     bone = sd_rbox(X, Y, cx + 1, cy - 17, cx + 5, cy - 2, 2)
     c.over(hexc('#efeade'), cov(bone))
     c.over(hexc('#efeade'), cov(sd_circle(X, Y, cx + 3, cy - 18, 5)))
-    return c.resolve()
-
-
-def icon_trap():
-    c, X, Y, cx, cy = _icon_canvas()
-    pit = sd_circle(X, Y, cx, cy, 17) * np.ones_like(X)
-    ring = cov(np.abs(np.hypot(X - cx, (Y - cy) * 1.7) - 16) - 1.4)
-    c.over(INK, cov(np.hypot(X - cx, (Y - cy) * 1.7) - 16) * 0.9)
-    inside = cov(np.hypot(X - cx, (Y - cy) * 1.7) - 15)
-    for i in range(5):
-        x = cx - 12 + i * 6
-        c.over(hexc('#9aa4ae'), cov(np.abs(X - x) - 0.9) * inside * 0.8)
-    for i in range(3):
-        y = cy - 6 + i * 6
-        c.over(hexc('#9aa4ae'), cov(np.abs(Y - y) - 0.9) * inside * 0.8)
-    c.over(STEEL_LT, ring)
-    del pit
     return c.resolve()
 
 
@@ -277,27 +240,33 @@ SPRITES = {
 
 ICONS = {
     'Icon_Potion': lambda: icon_flask(hexc('#4ac262')),
-    'Icon_Whetstone': icon_whetstone,
     'Icon_Meat': icon_meat,
-    'Icon_Trap': icon_trap,
     'Icon_Bomb': icon_bomb,
 }
+
+def text_top(centre_y, px):
+    """TextRenderer は文字の上端が y になる（プレビューは縦中央で描いている）ので、中心から px/2 上げる"""
+    return math.floor(centre_y - px / 2 + 0.5)
+
 
 GEOMETRY = {
     'ItemBarUI root localPos (= 一番右の枠の中心)': (1860, 972),
     'Slots HorizontalLayoutGroup cellSize_': (SLOT_PITCH, 0),
     'Slots HorizontalLayoutGroup spacing_': 0,
     'Slots localPos (ItemBar が実行時に x を上書きする)': (0, 0),
-    'NamePlate / NameText localPos (x も実行時に上書き)': (0, NAME_OFFSET_Y),
+    'NamePlate localPos (x も実行時に上書き)': (0, NAME_OFFSET_Y),
+    'NameText localPos (x も実行時に上書き)': (0, text_top(NAME_OFFSET_Y - NAME_TAIL / 2, NAME_TEXT_PX)),
     'ItemBar slotPitch_px_': SLOT_PITCH,
     'ItemBar unselectedScale_': UNSELECTED_SCALE,
     'ItemSlot Content localPos / localScale': ((0, 0), 1.0),
     'ItemSlot Backing localPos': (0, 0),
     'ItemSlot Icon localPos': (0, -2),
     'ItemSlot Frame / FrameSelected / SelectGlow localPos': (0, 0),
-    'ItemSlot CountPill / CountText localPos': PILL_OFFSET,
+    'ItemSlot CountPill localPos': PILL_OFFSET,
+    'ItemSlot CountText localPos': (PILL_OFFSET[0], text_top(PILL_OFFSET[1] - 1, COUNT_TEXT_PX)),
 }
-GEOMETRY.update({f'Hints {k} localPos': v for k, v in HINT_LAYOUT.items()})
+GEOMETRY.update({f'Hints {k} localPos': v if k.endswith('Glyph') else (v[0], text_top(v[1], HINT_TEXT_PX))
+                 for k, v in HINT_LAYOUT.items()})
 
 
 def write_sprite(out_dir, name, image):
@@ -337,9 +306,9 @@ def paste_centred(canvas, im, centre, alpha, scale=1.0):
 def draw_strip(canvas, sprites, icons, entries, selected, origin, usable_rate, pulse, dim_alpha=140 / 255.0,
                empty_rate=0.4):
     count = len(entries)
-    font_count = ImageFont.truetype(str(LABEL_FONT), 17)
-    font_name = ImageFont.truetype(str(LABEL_FONT), 25)
-    font_hint = ImageFont.truetype(str(LABEL_FONT), 21)
+    font_count = ImageFont.truetype(str(LABEL_FONT), COUNT_TEXT_PX)
+    font_name = ImageFont.truetype(str(LABEL_FONT), NAME_TEXT_PX)
+    font_hint = ImageFont.truetype(str(LABEL_FONT), HINT_TEXT_PX)
     centre_slot = count // 2
 
     for i in range(count):
@@ -391,12 +360,11 @@ def draw_strip(canvas, sprites, icons, entries, selected, origin, usable_rate, p
 
 
 def render_preview(sprites, icons, path):
-    entries = [('Icon_Potion', '回復薬グレート', 5), ('Icon_Whetstone', '砥石', 9),
-               ('Icon_Meat', 'こんがり肉', 3), ('Icon_Trap', '落とし穴', 0),
-               ('Icon_Bomb', '大タル爆弾G', 4)]
+    entries = [('Icon_Potion', '回復薬グレート', 5), ('Icon_Meat', 'こんがり肉', 3),
+               ('Icon_Bomb', '大タル爆弾G', 0)]
     panels = [('待機（回復薬を選択）', 0, 1.0, 0.0),
-              ('こんがり肉へ切替した瞬間', 2, 1.0, 1.0),
-              ('使い切った落とし穴', 3, 1.0, 0.0),
+              ('こんがり肉へ切替した瞬間', 1, 1.0, 1.0),
+              ('使い切った大タル爆弾G', 2, 1.0, 0.0),
               ('攻撃中（使えない）', 0, 0.6, 0.0)]
 
     W, H = 520, 260

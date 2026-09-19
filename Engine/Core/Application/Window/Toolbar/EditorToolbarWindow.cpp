@@ -1,9 +1,11 @@
 ﻿#include "EditorToolbarWindow.h"
 
 #include <map>
+#include <vector>
 
 #include "ImGuiHelper.h"
 #include "../../../FileSystem/Directory/Directory.h"
+#include "../../Build/GameBuilder.h"
 #include "../../Configuration/ApplicationConfiguration.h"
 #include "../../Configuration/AutoMcp/ApplicationConfiguration_AutoMcp.h"
 #include "../../Configuration/CodeEditor/ApplicationConfiguration_CodeEditor.h"
@@ -14,9 +16,11 @@
 #include "../../ApplicationBase.h"
 #include "../../../../Module/LocalPrefs/Editor/Engine_Module_LocalPrefs_Editor_ToolBar.h"
 #include "../../../../Module/Exception/Engine_Module_Exception.h"
+#include "../../../../Module/Gui/StaticReflection/Engine_Module_StaticReflection.h"
 #include "../../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../Main/Factory/MainWindowFactory.h"
 #include "../Main/Game/GameWindow.h"
+#include "../Popup/BuildSettings/BuildSettingsWindow.h"
 #include "../Popup/Group/PopupWindowGroup.h"
 #include "../Popup/Factory/PopupWindowFactory.h"
 
@@ -111,21 +115,41 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
         ImGui::SameLine();
     }
 
+    if (ImGui::Button("Build Settings"))
+    {
+        popupWindows.Catch<PopupWindow::BuildSettingsWindow>().front()->RequestFocus();
+    }
     ImGui::SameLine();
+
+    // Build Settings を閉じていても進み具合が分かるよう、ビルド中はツールバーにも出す
+    if (auto& gameBuilder = Application::Build::GameBuilder::Instance(); gameBuilder.IsBusy())
+    {
+        ImGui::Text("Building: %s %s", gameBuilder.PhaseLabel(), gameBuilder.ElapsedLabel().c_str());
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel Build"))
+        {
+            gameBuilder.Cancel();
+        }
+        ImGui::SameLine();
+    }
+
     if (ImGui::Button("PopupWindow")) {
         ImGui::OpenPopup("WindowPopup");
     }
     ImGui::SameLine();
 
     if (ImGui::BeginPopup("WindowPopup"))
-    {   
-        for (const auto& registry = PopupWindow::PopupWindowFactory::Instance(); const auto& [name, popupWindow] : registry.GetAll())
+    {
+        const auto& registry = PopupWindow::PopupWindowFactory::Instance();
+        std::vector<NanamiEngine::Module::StaticReflection::CategoryMenuItem> menuItems;
+        for (const auto& [name, factory] : registry.GetAll())
         {
-            if (ImGui::Button(name.c_str()))
+            menuItems.push_back({ registry.GetCategories().at(name), name, true, [&popupWindows, &createWindow = factory]
             {
-                popupWindows.InjectWindow(std::move(popupWindow()));
-            }
+                popupWindows.InjectWindow(createWindow());
+            } });
         }
+        NanamiEngine::Module::StaticReflection::DrawCategoryMenu(menuItems);
         ImGui::EndPopup();
     }
     
@@ -137,13 +161,16 @@ void Core::EditorToolbarWindow::OnDraw(PopupWindow::PopupWindowGroup& popupWindo
 
     if (ImGui::BeginPopup("MainWindowPopup"))
     {
-        for (const auto& registry = MainWindow::MainWindowFactory::Instance(); const auto& [name, loadWindow] : registry.GetLoaders())
+        const auto& registry = MainWindow::MainWindowFactory::Instance();
+        std::vector<NanamiEngine::Module::StaticReflection::CategoryMenuItem> menuItems;
+        for (const auto& [name, loader] : registry.GetLoaders())
         {
-            if (ImGui::Button(name.c_str()))
+            menuItems.push_back({ registry.GetCategories().at(name), name, true, [&loadWindow = loader]
             {
                 Application::ApplicationBase::OnChangeWindow(loadWindow());
-            }
+            } });
         }
+        NanamiEngine::Module::StaticReflection::DrawCategoryMenu(menuItems);
         ImGui::EndPopup();
     }
 

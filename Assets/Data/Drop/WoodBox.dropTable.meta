@@ -1,0 +1,65 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::DropTable",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Drop/WoodBox.dropTable",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "B8EE250C-2F57-451A-B3D5-D3785541A55D"
+                    }
+                },
+                "money_": {
+                    "cereal_class_version": 0,
+                    "value_": 5
+                },
+                "moneyPickupCount_": 3,
+                "moneyPickupPrefab_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "E23E9AEC-BFE3-4A15-801A-8408ECADAC01"
+                                }
+                            }
+                        }
+                    }
+                },
+                "items_": [
+                    {
+                        "cereal_class_version": 0,
+                        "item_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483651,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "F98E0047-7959-458A-85EB-B14CE6F7382F"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "chance_": 0.1,
+                        "count_": 1
+                    }
+                ]
+            }
+        }
+    }
+}

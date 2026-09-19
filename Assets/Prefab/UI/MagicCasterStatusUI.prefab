@@ -1,9 +1,9 @@
 {
     "isActive_": true,
-    "name_": "SwordManStatusUI",
+    "name_": "MagicCasterStatusUI",
     "guid_": {
         "cereal_class_version": 0,
-        "value_": "036D8C68-80EA-4F64-B7A6-61F66E95A609"
+        "value_": "E226365E-C11D-4178-9C24-9C72EAA5E967"
     },
     "components_": {
         "cereal_class_version": 0,
@@ -18,7 +18,7 @@
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
-                            "value_": "50E61923-8762-4A29-B51F-F2CEC6C1856A"
+                            "value_": "B05062D9-9A62-4D67-9D5C-B281D98A4654"
                         },
                         "isEnable_": true
                     },
@@ -31,7 +31,7 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "value_": "A3E95A7D-4B1F-4FE3-B83A-9C2D595EE30C"
+                                        "value_": "8EFD3E07-5CD8-4B69-A58F-6F8BEFB02142"
                                     }
                                 }
                             }
@@ -47,7 +47,7 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "value_": "BF16641D-FD4B-4FC6-9867-2EAB4AB0F2EA"
+                                        "value_": "00000000-0000-0000-0000-000000000000"
                                     }
                                 }
                             }
@@ -62,7 +62,7 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "value_": "AD620466-0C3E-4EB7-845F-3254638FD605"
+                                        "value_": "23D0FCC4-F097-4B51-8569-E384638A9785"
                                     }
                                 }
                             }
@@ -75,7 +75,7 @@
                                 "id": 2147483653,
                                 "data": {
                                     "value0": {
-                                        "value_": "9E81FDB3-A4F9-4B7A-98D0-495BAF44ACB0"
+                                        "value_": "3329A661-8E71-4F3D-AF54-84056F3C8DA7"
                                     }
                                 }
                             }
@@ -88,7 +88,7 @@
                                 "id": 2147483654,
                                 "data": {
                                     "value0": {
-                                        "value_": "DB0D4648-E9A3-4E71-B7AF-714CD526A45C"
+                                        "value_": "1B2EC191-09CF-4431-B011-8446B2617957"
                                     }
                                 }
                             }
@@ -118,7 +118,7 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "value_": "00000000-0000-0000-0000-000000000000"
+                                        "value_": "34D83706-DD9C-493E-BA63-C48DDE0D4BA8"
                                     }
                                 }
                             }
@@ -131,7 +131,7 @@
                                 "id": 2147483657,
                                 "data": {
                                     "value0": {
-                                        "value_": "00000000-0000-0000-0000-000000000000"
+                                        "value_": "67D18B08-7F3F-4A25-971A-56907338A5BB"
                                     }
                                 }
                             }
@@ -144,7 +144,7 @@
                                 "id": 2147483658,
                                 "data": {
                                     "value0": {
-                                        "value_": "957DBB32-3328-4DFC-A140-AD3BCC525174"
+                                        "value_": "1310D333-4350-426E-8094-D71B384B0B98"
                                     }
                                 }
                             }
@@ -157,7 +157,7 @@
                                 "id": 2147483659,
                                 "data": {
                                     "value0": {
-                                        "value_": "F9941945-BDE1-4048-9060-F18CBDBA3ED6"
+                                        "value_": "271AD6D3-C083-4FC0-B72D-4028459EC9D8"
                                     }
                                 }
                             }
@@ -170,7 +170,7 @@
                                 "id": 2147483660,
                                 "data": {
                                     "value0": {
-                                        "value_": "529BB615-F1C7-406E-9109-1F07788F18ED"
+                                        "value_": "1BCAADE7-BCEA-456F-8CE5-E1348D11C9D9"
                                     }
                                 }
                             }
@@ -201,8 +201,8 @@
     "transform_": {
         "cereal_class_version": 0,
         "localPos_": {
-            "value0": 300.0,
-            "value1": 100.0,
+            "value0": 142.61000061035157,
+            "value1": 117.69999694824219,
             "value2": 0.0
         },
         "localRot_": {
@@ -212,32 +212,32 @@
             "value3": 0.0
         },
         "localScale_": {
-            "value0": 1.0,
-            "value1": 1.0,
-            "value2": 1.0
+            "value0": 0.699999988079071,
+            "value1": 0.699999988079071,
+            "value2": 0.699999988079071
         },
         "worldMatrix_": {
             "value0": {
-                "value0": 1.0,
+                "value0": 0.699999988079071,
                 "value1": 0.0,
                 "value2": 0.0,
                 "value3": 0.0
             },
             "value1": {
                 "value0": 0.0,
-                "value1": 1.0,
+                "value1": 0.699999988079071,
                 "value2": 0.0,
                 "value3": 0.0
             },
             "value2": {
                 "value0": 0.0,
                 "value1": 0.0,
-                "value2": 1.0,
+                "value2": 0.699999988079071,
                 "value3": 0.0
             },
             "value3": {
-                "value0": 300.0,
-                "value1": 100.0,
+                "value0": 142.61000061035157,
+                "value1": 117.69999694824219,
                 "value2": 0.0,
                 "value3": 1.0
             }
@@ -259,7 +259,7 @@
                     "isActive_": true,
                     "name_": "Health",
                     "guid_": {
-                        "value_": "8F068B54-F095-4364-8746-90024BDD1A27"
+                        "value_": "6A0725C7-61ED-4A12-A809-C468F78144D5"
                     },
                     "components_": {
                         "componentCount": 1,
@@ -272,7 +272,7 @@
                                     "cereal_class_version": 2,
                                     "value0": {
                                         "guid_": {
-                                            "value_": "AD620466-0C3E-4EB7-845F-3254638FD605"
+                                            "value_": "23D0FCC4-F097-4B51-8569-E384638A9785"
                                         },
                                         "isEnable_": true
                                     },
@@ -289,7 +289,7 @@
                                                 "id": 2147483663,
                                                 "data": {
                                                     "value0": {
-                                                        "value_": "70644A2E-3831-4CCC-BC21-217635A3739C"
+                                                        "value_": "05848019-DB79-44DB-82D6-BC44C8B51A69"
                                                     }
                                                 }
                                             }
@@ -302,8 +302,8 @@
                     },
                     "transform_": {
                         "localPos_": {
-                            "value0": 100.0,
-                            "value1": 50.0,
+                            "value0": 428.70599365234377,
+                            "value1": 0.0,
                             "value2": 0.0
                         },
                         "localRot_": {
@@ -313,9 +313,9 @@
                             "value3": 0.0
                         },
                         "localScale_": {
-                            "value0": 0.699999988079071,
-                            "value1": 0.699999988079071,
-                            "value2": 0.699999988079071
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
                         },
                         "worldMatrix_": {
                             "value0": {
@@ -337,13 +337,13 @@
                                 "value3": 0.0
                             },
                             "value3": {
-                                "value0": 400.0,
-                                "value1": 150.0,
+                                "value0": 442.70416259765627,
+                                "value1": 117.69999694824219,
                                 "value2": 0.0,
                                 "value3": 1.0
                             }
                         },
-                        "childCount": 1,
+                        "childCount": 4,
                         "child": {
                             "polymorphic_id": 2,
                             "ptr_wrapper": {
@@ -355,7 +355,7 @@
                                     "isActive_": true,
                                     "name_": "HealthBar",
                                     "guid_": {
-                                        "value_": "AD11A7C3-FC03-466B-A8DD-DB4B71AB4F48"
+                                        "value_": "C32B2A86-D9D1-491C-B292-C308BF2A93DE"
                                     },
                                     "components_": {
                                         "componentCount": 1,
@@ -365,10 +365,10 @@
                                             "ptr_wrapper": {
                                                 "id": 2147483665,
                                                 "data": {
-                                                    "cereal_class_version": 2,
+                                                    "cereal_class_version": 3,
                                                     "value0": {
                                                         "guid_": {
-                                                            "value_": "A3E95A7D-4B1F-4FE3-B83A-9C2D595EE30C"
+                                                            "value_": "8EFD3E07-5CD8-4B69-A58F-6F8BEFB02142"
                                                         },
                                                         "isEnable_": true
                                                     },
@@ -380,23 +380,23 @@
                                                                 "id": 2147483666,
                                                                 "data": {
                                                                     "value0": {
-                                                                        "value_": "2C1F9C81-0183-473B-A3FB-968E8756FDB7"
+                                                                        "value_": "1310D333-4350-426E-8094-D71B384B0B98"
                                                                     }
                                                                 }
                                                             }
                                                         }
                                                     },
                                                     "drawPosition_": {
-                                                        "value0": 305.0,
-                                                        "value1": 91.0
+                                                        "value0": 220.0,
+                                                        "value1": 26.0
                                                     },
                                                     "drawSize_": {
-                                                        "value0": 408.0,
-                                                        "value1": 60.0
+                                                        "value0": 375.0,
+                                                        "value1": 50.0
                                                     },
                                                     "value_": 1.0,
-                                                    "renderOrder_": 6,
-                                                    "isStretchToDrawSize_": false,
+                                                    "renderOrder_": -1,
+                                                    "isStretchToDrawSize_": true,
                                                     "backgroundSprite_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -404,7 +404,7 @@
                                                                 "id": 2147483667,
                                                                 "data": {
                                                                     "value0": {
-                                                                        "value_": "F159BC0A-E685-4391-9CFD-8D80B317E5E8"
+                                                                        "value_": "3BA4E704-68C0-4960-ABEF-AAFDFBD31383"
                                                                     }
                                                                 }
                                                             }
@@ -417,14 +417,14 @@
                                                                 "id": 2147483668,
                                                                 "data": {
                                                                     "value0": {
-                                                                        "value_": "35E3DA81-8676-44E8-A545-F15BE1BA8573"
+                                                                        "value_": "4256B2DD-D0D2-41BD-914E-EF2675E4F4FD"
                                                                     }
                                                                 }
                                                             }
                                                         }
                                                     },
-                                                    "trailDelay_secs_": 0.5,
-                                                    "trailDuration_secs_": 0.800000011920929,
+                                                    "trailDelay_secs_": 0.800000011920929,
+                                                    "trailDuration_secs_": 1.0,
                                                     "tipSprite_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -432,29 +432,32 @@
                                                                 "id": 2147483669,
                                                                 "data": {
                                                                     "value0": {
-                                                                        "value_": "23F2578A-4D05-49A8-BACA-E4617837E1A8"
+                                                                        "value_": "AAEAF9CB-FD32-4B96-A311-7451EB140A7D"
                                                                     }
                                                                 }
                                                             }
                                                         }
                                                     },
                                                     "tipWidth_": 18.0,
-                                                    "tickCount_": 0,
+                                                    "tickCount_": 10,
                                                     "tickInsetY_": 1.5,
                                                     "tickShadowAlpha_": 97,
                                                     "tickHighlightAlpha_": 26,
-                                                    "bandInsetY_": 0.0,
+                                                    "bandInsetY_": 3.5,
                                                     "gaugeFadeDuration_secs_": 0.30000001192092898,
                                                     "pulseFrequency_hz_": 1.399999976158142,
-                                                    "pulseMaxAlpha_": 56
+                                                    "pulseMaxAlpha_": 56,
+                                                    "fillDirection_": 0,
+                                                    "fillStartInset_": 0.0,
+                                                    "fillEndInset_": 0.0
                                                 }
                                             }
                                         }
                                     },
                                     "transform_": {
                                         "localPos_": {
-                                            "value0": -376.0,
-                                            "value1": -110.0,
+                                            "value0": -300.45001220703127,
+                                            "value1": -27.610000610351564,
                                             "value2": 0.0
                                         },
                                         "localRot_": {
@@ -464,32 +467,32 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 1.2400000095367432,
-                                            "value1": 5.0,
-                                            "value2": 5.0
+                                            "value0": 2.450000047683716,
+                                            "value1": 1.0,
+                                            "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.8679999709129334,
+                                                "value0": 1.715000033378601,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 3.5,
+                                                "value1": 0.699999988079071,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value2": {
                                                 "value0": 0.0,
                                                 "value1": 0.0,
-                                                "value2": 3.5,
+                                                "value2": 0.699999988079071,
                                                 "value3": 0.0
                                             },
                                             "value3": {
-                                                "value0": 136.80001831054688,
-                                                "value1": 73.0,
+                                                "value0": 232.38916015625,
+                                                "value1": 98.37300109863281,
                                                 "value2": 0.0,
                                                 "value3": 1.0
                                             }
@@ -499,211 +502,68 @@
                                     "mark_": 0
                                 }
                             }
-                        }
-                    },
-                    "mark_": 0
-                }
-            }
-        },
-        "child": {
-            "polymorphic_id": 2,
-            "ptr_wrapper": {
-                "id": 2147483670,
-                "data": {
-                    "value0": {
-                        "value0": {}
-                    },
-                    "isActive_": true,
-                    "name_": "Stamina",
-                    "guid_": {
-                        "value_": "6C0E5B5E-CC50-468B-8111-3062465B96CC"
-                    },
-                    "components_": {
-                        "componentCount": 1,
-                        "component_0": {
-                            "polymorphic_id": 3,
-                            "ptr_wrapper": {
-                                "id": 2147483671,
-                                "data": {
-                                    "value0": {
-                                        "guid_": {
-                                            "value_": "DB0D4648-E9A3-4E71-B7AF-714CD526A45C"
-                                        },
-                                        "isEnable_": true
-                                    },
-                                    "value1": {},
-                                    "value2": {},
-                                    "spriteFile_": {
-                                        "value0": {
-                                            "polymorphic_id": 1073741824,
-                                            "ptr_wrapper": {
-                                                "id": 2147483672,
-                                                "data": {
-                                                    "value0": {
-                                                        "value_": "5BE2109E-F570-4A9F-BFDB-F3AF816DE482"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "renderPriority_": 0
-                                }
-                            }
-                        }
-                    },
-                    "transform_": {
-                        "localPos_": {
-                            "value0": -20.0,
-                            "value1": 100.0,
-                            "value2": 0.0
                         },
-                        "localRot_": {
-                            "value0": 0.0,
-                            "value1": 0.0,
-                            "value2": 0.0,
-                            "value3": 0.0
-                        },
-                        "localScale_": {
-                            "value0": 0.23000000417232514,
-                            "value1": 0.23000000417232514,
-                            "value2": 0.23000000417232514
-                        },
-                        "worldMatrix_": {
-                            "value0": {
-                                "value0": 0.23000000417232514,
-                                "value1": 0.0,
-                                "value2": 0.0,
-                                "value3": 0.0
-                            },
-                            "value1": {
-                                "value0": 0.0,
-                                "value1": 0.23000000417232514,
-                                "value2": 0.0,
-                                "value3": 0.0
-                            },
-                            "value2": {
-                                "value0": 0.0,
-                                "value1": 0.0,
-                                "value2": 0.23000000417232514,
-                                "value3": 0.0
-                            },
-                            "value3": {
-                                "value0": 280.0,
-                                "value1": 200.0,
-                                "value2": 0.0,
-                                "value3": 1.0
-                            }
-                        },
-                        "childCount": 1,
                         "child": {
                             "polymorphic_id": 2,
                             "ptr_wrapper": {
-                                "id": 2147483673,
+                                "id": 2147483670,
                                 "data": {
                                     "value0": {
                                         "value0": {}
                                     },
                                     "isActive_": true,
-                                    "name_": "StaminaBar",
+                                    "name_": "HpCurrentText",
                                     "guid_": {
-                                        "value_": "887CACA4-586A-4B3B-80F1-5C1D548FECE5"
+                                        "value_": "5EED133F-BFB7-4173-B73C-031CA31CCCF6"
                                     },
                                     "components_": {
                                         "componentCount": 1,
                                         "component_0": {
-                                            "polymorphic_id": 4,
+                                            "polymorphic_id": 2147483653,
+                                            "polymorphic_name": "NanamiEngine::Module::NanamiUi::TextRenderer",
                                             "ptr_wrapper": {
-                                                "id": 2147483674,
+                                                "id": 2147483671,
                                                 "data": {
+                                                    "cereal_class_version": 4,
                                                     "value0": {
                                                         "guid_": {
-                                                            "value_": "9E81FDB3-A4F9-4B7A-98D0-495BAF44ACB0"
+                                                            "value_": "34D83706-DD9C-493E-BA63-C48DDE0D4BA8"
                                                         },
                                                         "isEnable_": true
                                                     },
                                                     "value1": {},
-                                                    "gaugeSprite_": {
+                                                    "fontFile_": {
+                                                        "cereal_class_version": 0,
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483675,
+                                                                "id": 2147483672,
                                                                 "data": {
+                                                                    "cereal_class_version": 0,
                                                                     "value0": {
-                                                                        "value_": "7EE91ED6-7368-4452-92C2-EA63132400B9"
+                                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
                                                                     }
                                                                 }
                                                             }
                                                         }
                                                     },
-                                                    "drawPosition_": {
-                                                        "value0": 66.0,
-                                                        "value1": 10.0
+                                                    "renderOrder_": 10,
+                                                    "text_": "1500",
+                                                    "textColor_": {
+                                                        "r_": 255,
+                                                        "g_": 255,
+                                                        "b_": 255
                                                     },
-                                                    "drawSize_": {
-                                                        "value0": 310.0,
-                                                        "value1": 60.0
-                                                    },
-                                                    "value_": 1.0,
-                                                    "renderOrder_": 1,
-                                                    "isStretchToDrawSize_": false,
-                                                    "backgroundSprite_": {
-                                                        "value0": {
-                                                            "polymorphic_id": 1073741824,
-                                                            "ptr_wrapper": {
-                                                                "id": 2147483676,
-                                                                "data": {
-                                                                    "value0": {
-                                                                        "value_": "D2A29B09-F98A-413D-B426-D17D1F2F7F1F"
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    },
-                                                    "trailSprite_": {
-                                                        "value0": {
-                                                            "polymorphic_id": 1073741824,
-                                                            "ptr_wrapper": {
-                                                                "id": 2147483677,
-                                                                "data": {
-                                                                    "value0": {
-                                                                        "value_": "B08E5717-950D-439A-B07B-545633E6B0ED"
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    },
-                                                    "trailDelay_secs_": 0.5,
-                                                    "trailDuration_secs_": 0.800000011920929,
-                                                    "tipSprite_": {
-                                                        "value0": {
-                                                            "polymorphic_id": 1073741824,
-                                                            "ptr_wrapper": {
-                                                                "id": 2147483678,
-                                                                "data": {
-                                                                    "value0": {
-                                                                        "value_": "8AC59010-6FE7-4628-9EF1-C30F9A8F081C"
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    },
-                                                    "tipWidth_": 18.0,
-                                                    "tickCount_": 0,
-                                                    "tickInsetY_": 1.5,
-                                                    "tickShadowAlpha_": 97,
-                                                    "tickHighlightAlpha_": 26,
-                                                    "bandInsetY_": 0.0,
-                                                    "gaugeFadeDuration_secs_": 0.30000001192092898,
-                                                    "pulseFrequency_hz_": 1.399999976158142,
-                                                    "pulseMaxAlpha_": 56
+                                                    "isWorldPos_": false,
+                                                    "textAlign_": 2
                                                 }
                                             }
                                         }
                                     },
                                     "transform_": {
                                         "localPos_": {
-                                            "value0": -406.0,
-                                            "value1": -57.63999938964844,
+                                            "value0": 125.42262268066406,
+                                            "value1": -11.969996452331543,
                                             "value2": 0.0
                                         },
                                         "localRot_": {
@@ -713,32 +573,229 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 1.1699999570846558,
-                                            "value1": 10.0,
-                                            "value2": 10.0
+                                            "value0": 0.699999988079071,
+                                            "value1": 0.699999988079071,
+                                            "value2": 0.699999988079071
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.26909998059272768,
+                                                "value0": 0.49000000953674319,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 2.299999952316284,
+                                                "value1": 0.49000000953674319,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value2": {
                                                 "value0": 0.0,
                                                 "value1": 0.0,
-                                                "value2": 2.299999952316284,
+                                                "value2": 0.49000000953674319,
                                                 "value3": 0.0
                                             },
                                             "value3": {
-                                                "value0": 186.6199951171875,
-                                                "value1": 186.7427978515625,
+                                                "value0": 530.5,
+                                                "value1": 109.32099914550781,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483673,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "HpMaxText",
+                                    "guid_": {
+                                        "value_": "544C548B-B683-4DAE-92B7-87BEA9159C3A"
+                                    },
+                                    "components_": {
+                                        "componentCount": 1,
+                                        "component_0": {
+                                            "polymorphic_id": 5,
+                                            "ptr_wrapper": {
+                                                "id": 2147483674,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "67D18B08-7F3F-4A25-971A-56907338A5BB"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "value1": {},
+                                                    "fontFile_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483675,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "renderOrder_": 10,
+                                                    "text_": "/1500",
+                                                    "textColor_": {
+                                                        "r_": 210,
+                                                        "g_": 228,
+                                                        "b_": 223
+                                                    },
+                                                    "isWorldPos_": false,
+                                                    "textAlign_": 2
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 201.8511962890625,
+                                            "value1": -0.08428257703781128,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 0.4714285731315613,
+                                            "value1": 0.4714285731315613,
+                                            "value2": 0.4714285731315613
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 0.33000001311302187,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 0.33000001311302187,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.33000001311302187,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 584.0,
+                                                "value1": 117.64099884033203,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483676,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "StatusBarBacking",
+                                    "guid_": {
+                                        "value_": "916D2A2F-F790-4ED2-9922-D79728D892F1"
+                                    },
+                                    "components_": {
+                                        "componentCount": 1,
+                                        "component_0": {
+                                            "polymorphic_id": 3,
+                                            "ptr_wrapper": {
+                                                "id": 2147483677,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "76DB08CE-FECD-4FFF-A8FC-D963B30F52D7"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "spriteFile_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483678,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "D361FB33-234E-447A-A2A6-E1F163141EEF"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "renderPriority_": -2
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 0.699999988079071,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 0.699999988079071,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.699999988079071,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 442.70416259765627,
+                                                "value1": 117.69999694824219,
                                                 "value2": 0.0,
                                                 "value3": 1.0
                                             }
@@ -762,10 +819,262 @@
                     "value0": {
                         "value0": {}
                     },
+                    "isActive_": true,
+                    "name_": "Stamina",
+                    "guid_": {
+                        "value_": "3B9CEA37-03C7-4949-AE08-4BD96C6CA6A9"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 3,
+                            "ptr_wrapper": {
+                                "id": 2147483680,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "1B2EC191-09CF-4431-B011-8446B2617957"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483681,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "00000000-0000-0000-0000-000000000000"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": -1
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 440.0,
+                            "value1": -0.0000152587890625,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.699999988079071,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.699999988079071,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.699999988079071,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 450.6099853515625,
+                                "value1": 117.69998931884766,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 1,
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483682,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "StaminaBar",
+                                    "guid_": {
+                                        "value_": "9CBB3AFE-6923-44DC-8D79-62311A3D7A8B"
+                                    },
+                                    "components_": {
+                                        "componentCount": 1,
+                                        "component_0": {
+                                            "polymorphic_id": 4,
+                                            "ptr_wrapper": {
+                                                "id": 2147483683,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "3329A661-8E71-4F3D-AF54-84056F3C8DA7"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "value1": {},
+                                                    "gaugeSprite_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483684,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "59E14797-480A-4BEF-B699-AF9C3E162A5E"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "drawPosition_": {
+                                                        "value0": 170.0,
+                                                        "value1": 8.0
+                                                    },
+                                                    "drawSize_": {
+                                                        "value0": 350.0,
+                                                        "value1": 17.0
+                                                    },
+                                                    "value_": 1.0,
+                                                    "renderOrder_": -1,
+                                                    "isStretchToDrawSize_": true,
+                                                    "backgroundSprite_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483685,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "3283290F-972C-49D6-AAD2-EF98D2209702"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "trailSprite_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483686,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "2967DA13-859E-4865-83FB-169BB4F90F6B"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "trailDelay_secs_": 0.25,
+                                                    "trailDuration_secs_": 0.4000000059604645,
+                                                    "tipSprite_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483687,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "AAEAF9CB-FD32-4B96-A311-7451EB140A7D"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "tipWidth_": 18.0,
+                                                    "tickCount_": 4,
+                                                    "tickInsetY_": 1.5,
+                                                    "tickShadowAlpha_": 97,
+                                                    "tickHighlightAlpha_": 26,
+                                                    "bandInsetY_": 2.799999952316284,
+                                                    "gaugeFadeDuration_secs_": 0.30000001192092898,
+                                                    "pulseFrequency_hz_": 1.399999976158142,
+                                                    "pulseMaxAlpha_": 56,
+                                                    "fillDirection_": 0,
+                                                    "fillStartInset_": 0.0,
+                                                    "fillEndInset_": 0.0
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": -323.010009765625,
+                                            "value1": -48.810001373291019,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.3600000143051148,
+                                            "value1": 4.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 0.9520000219345093,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 2.799999952316284,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.699999988079071,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 224.5029754638672,
+                                                "value1": 83.53298950195313,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        }
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483688,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
                     "isActive_": false,
                     "name_": "InjuredMask",
                     "guid_": {
-                        "value_": "0596FB84-6B7D-4D34-918B-58D48AA602ED"
+                        "value_": "3F57D413-B0F1-4213-954D-452885C6755B"
                     },
                     "components_": {
                         "componentCount": 0
@@ -789,26 +1098,26 @@
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 1.0,
+                                "value0": 0.699999988079071,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 1.0,
+                                "value1": 0.699999988079071,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value2": {
                                 "value0": 0.0,
                                 "value1": 0.0,
-                                "value2": 1.0,
+                                "value2": 0.699999988079071,
                                 "value3": 0.0
                             },
                             "value3": {
-                                "value0": 0.0,
-                                "value1": 0.0,
+                                "value0": 142.61000061035157,
+                                "value1": 117.69999694824219,
                                 "value2": 0.0,
                                 "value3": 1.0
                             }
@@ -822,76 +1131,53 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483680,
+                "id": 2147483689,
                 "data": {
                     "value0": {
                         "value0": {}
                     },
                     "isActive_": true,
-                    "name_": "DamageFlash",
+                    "name_": "PortraitRing",
                     "guid_": {
-                        "value_": "686FD3DD-8801-47DA-BF0C-8E36DA880ADE"
+                        "value_": "C28D5FB2-90EF-473F-BC3F-B3E94031E7E8"
                     },
                     "components_": {
-                        "componentCount": 2,
+                        "componentCount": 1,
                         "component_0": {
-                            "polymorphic_id": 2147483653,
-                            "polymorphic_name": "NanamiEngine::Module::NanamiUi::BlendImageRenderer",
+                            "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483681,
+                                "id": 2147483690,
                                 "data": {
-                                    "cereal_class_version": 0,
                                     "value0": {
                                         "guid_": {
-                                            "value_": "A4C1A036-160B-4CE9-B70E-67F644FBFA22"
+                                            "value_": "D59A28AE-3119-48E3-9730-603AA8E13A94"
                                         },
                                         "isEnable_": true
                                     },
                                     "value1": {},
                                     "value2": {},
-                                    "blendMode_": 0,
-                                    "blendRate_": 0,
                                     "spriteFile_": {
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483682,
+                                                "id": 2147483691,
                                                 "data": {
                                                     "value0": {
-                                                        "value_": "C8E4A3A2-DF33-43F7-9AE4-E6D569EBFC02"
+                                                        "value_": "0310F130-D65B-4D28-94E4-79E60E3B19E3"
                                                     }
                                                 }
                                             }
                                         }
                                     },
-                                    "renderOrder_": 1100
-                                }
-                            }
-                        },
-                        "component_1": {
-                            "polymorphic_id": 2147483654,
-                            "polymorphic_name": "GamePlay::Ui::DamageFlashUI",
-                            "ptr_wrapper": {
-                                "id": 2147483683,
-                                "data": {
-                                    "cereal_class_version": 0,
-                                    "value0": {
-                                        "guid_": {
-                                            "value_": "C2FBD84E-DE6B-4B66-881B-32EB52BF6B2A"
-                                        },
-                                        "isEnable_": true
-                                    },
-                                    "maxBlendRate_": 0,
-                                    "defaultIntensity_": 0.0,
-                                    "defaultDuration_": 0.0
+                                    "renderPriority_": 0
                                 }
                             }
                         }
                     },
                     "transform_": {
                         "localPos_": {
-                            "value0": 660.0,
-                            "value1": 440.0,
+                            "value0": 0.0,
+                            "value1": 0.0,
                             "value2": 0.0
                         },
                         "localRot_": {
@@ -901,37 +1187,322 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.46875,
-                            "value1": 0.46875,
-                            "value2": 0.46875
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 1.0,
+                                "value0": 0.699999988079071,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 1.0,
+                                "value1": 0.699999988079071,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value2": {
                                 "value0": 0.0,
                                 "value1": 0.0,
-                                "value2": 1.0,
+                                "value2": 0.699999988079071,
                                 "value3": 0.0
                             },
                             "value3": {
-                                "value0": 0.0,
-                                "value1": 0.0,
+                                "value0": 142.61000061035157,
+                                "value1": 117.69999694824219,
                                 "value2": 0.0,
                                 "value3": 1.0
                             }
                         },
-                        "childCount": 0
+                        "childCount": 3,
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483692,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "Portrait",
+                                    "guid_": {
+                                        "value_": "504982F1-3EBB-4786-A325-834883AEDDA5"
+                                    },
+                                    "components_": {
+                                        "componentCount": 1,
+                                        "component_0": {
+                                            "polymorphic_id": 3,
+                                            "ptr_wrapper": {
+                                                "id": 2147483693,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "93EF7E7B-7C99-418A-ADDB-D246C71853CF"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "spriteFile_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483694,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "2E9086AF-E7C9-452E-92C6-DA77C2F42062"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "renderPriority_": -5
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": -18.5,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 0.699999988079071,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 0.699999988079071,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.699999988079071,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 129.66000366210938,
+                                                "value1": 117.69999694824219,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483695,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "IconStaff",
+                                    "guid_": {
+                                        "value_": "E9FFCD64-773D-468E-805F-E4DC1283FA40"
+                                    },
+                                    "components_": {
+                                        "componentCount": 1,
+                                        "component_0": {
+                                            "polymorphic_id": 3,
+                                            "ptr_wrapper": {
+                                                "id": 2147483696,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "01443711-F3E3-4EA3-BB82-B47BB1E33A00"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "spriteFile_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483697,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "C9FEE9F0-84DF-4411-8521-1DF2D82536B2"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "renderPriority_": 1
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": -95.0,
+                                            "value1": 130.0,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 0.699999988079071,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 0.699999988079071,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.699999988079071,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 76.11000061035156,
+                                                "value1": 208.6999969482422,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483698,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "IconTome",
+                                    "guid_": {
+                                        "value_": "3B9BA7D9-3E51-4687-8546-36DDB99E066E"
+                                    },
+                                    "components_": {
+                                        "componentCount": 1,
+                                        "component_0": {
+                                            "polymorphic_id": 3,
+                                            "ptr_wrapper": {
+                                                "id": 2147483699,
+                                                "data": {
+                                                    "value0": {
+                                                        "guid_": {
+                                                            "value_": "B09FF4E1-35A9-457A-AD76-A09F1B658E62"
+                                                        },
+                                                        "isEnable_": true
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "spriteFile_": {
+                                                        "value0": {
+                                                            "polymorphic_id": 1073741824,
+                                                            "ptr_wrapper": {
+                                                                "id": 2147483700,
+                                                                "data": {
+                                                                    "value0": {
+                                                                        "value_": "2E41557E-853D-4274-B9E8-65285F87C76D"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "renderPriority_": 1
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": -5.0,
+                                            "value1": 135.0,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 0.699999988079071,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 0.699999988079071,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.699999988079071,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 139.11000061035157,
+                                                "value1": 212.1999969482422,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        }
                     },
                     "mark_": 0
                 }

@@ -16,5 +16,5 @@ namespace NanamiEngine::Core::MainWindow
         void OnUpdate() override;
     };
     
-    REGISTER_MAIN_WINDOW(AnimatorWindow)
+    REGISTER_MAIN_WINDOW(AnimatorWindow, "Animation")
 }

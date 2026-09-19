@@ -10,6 +10,7 @@
 #include "../../../Scripts/Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/Status/Presenter/PlayerAvatar_OtherPlayer_StatusPresenter.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/SwordMan/Status/Presenter/PlayerAvatar_SwordMan_StatusPresenter.h"
+#include "../../../Scripts/Core/Game/PlayerAvatar/MagicCaster/Status/Presenter/PlayerAvatar_MagicCaster_StatusPresenter.h"
 #include "../../../Scripts/Core/Game/Scene/Sub/Content/OtherPlayerStatusUI/OtherPlayerStatusUIScene.h"
 #include "../../../Scripts/Core/Game/Scene/Sub/Group/Sub_GameSceneGroup.h"
 #include "../../../Scripts/GamePlay/Ui/OtherPlayerStatusUIGroup/OtherPlayerStatusUiGroup.h"
@@ -134,8 +135,8 @@ namespace NanamiEngine::Module::Asset
                     attachments.objects.push_back(magicCasterStatusUiPrefab);
                     attachments.objects.push_back(magicCasterPresenterObj);
                     /** StatusPresenter */
-                    auto magicCasterStatusPresenter = magicCasterPresenterObj.lock()->Components().Catch<GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter>();
-                    magicCasterStatusPresenter.lock()->Initialize(*magicCasterStatusUi.lock(), *status);
+                    auto magicCasterStatusPresenter = magicCasterPresenterObj.lock()->Components().Catch<GamePlay::PlayerAvatar::MagicCaster::StatusPresenter>();
+                    magicCasterStatusPresenter.lock()->Initialize(*magicCasterStatusUi.lock(), *status, magicCasterAvatar);
                 }
                 break;
             }

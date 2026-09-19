@@ -1,0 +1,64 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::BoardQuest",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\EventNotice/RockyTyrant.boardQuest",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "3AE62C3C-EE9A-4B7C-BD88-FEAC09C6F413"
+                    }
+                },
+                "title_": "岩場の暴君",
+                "clientName_": "岩石地帯の見張り",
+                "rank_": 4,
+                "goalText_": "ティラノサウルスを 1 頭 討伐する",
+                "descriptionLines_": [
+                    "見張り小屋が二度も踏み潰された。",
+                    "腕に覚えのある者だけ受けること。"
+                ],
+                "stage_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "3461B1A3-3668-4982-B728-5B7B7F34ECF1"
+                                }
+                            }
+                        }
+                    }
+                },
+                "event_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                }
+                            }
+                        }
+                    }
+                },
+                "quest_": {
+                    "polymorphic_id": 0
+                }
+            }
+        }
+    }
+}

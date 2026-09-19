@@ -167,7 +167,7 @@ namespace NanamiEngine::Module::Asset
     }
 }
 
-REGISTER_SCRIPTABLE_OBJECT(PlayerAvatarFactory, PLAYER_AVATAR_FACTORY_EXTENSION_LABEL)
+REGISTER_SCRIPTABLE_OBJECT(PlayerAvatarFactory, PLAYER_AVATAR_FACTORY_EXTENSION_LABEL, "Player")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::PlayerAvatarFactory, 4);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::PlayerAvatarFactory);

@@ -10,6 +10,8 @@
 #include "Engine/Module/Exception/Engine_Module_Exception.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 
+extern "C" __declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+
 void StartApplicationAsync()
 {
 	std::unique_ptr<NanamiEngine::Core::Application::ApplicationBase> application = nullptr;

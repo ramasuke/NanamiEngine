@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
+#include <map>
 #include <ranges>
 #include <sstream>
 #include <string_view>
@@ -102,6 +103,47 @@ namespace
             NanamiEngine::Module::LogError("ConsoleWindow: ログの保存に失敗しました: " + std::string(exception.what()));
         }
     }
+
+    struct ConsoleRow
+    {
+        const NanamiEngine::Module::LogRecord* record;
+        int count;
+    };
+
+    /** @brief レベルと本文が同じログを、隣接していなくても最初に出た位置の1行へまとめる */
+    std::vector<ConsoleRow> CollapseRecords(const std::vector<const NanamiEngine::Module::LogRecord*>& records)
+    {
+        std::vector<ConsoleRow> rows;
+        std::map<std::pair<NanamiEngine::Module::LogLevel, std::string_view>, size_t> rowIndices;
+        for (const auto* record : records)
+        {
+            const auto [iterator, inserted] = rowIndices.try_emplace({ record->level, record->text }, rows.size());
+            if (inserted)
+                rows.push_back(ConsoleRow{ .record = record, .count = 1 });
+            else
+                ++rows[iterator->second].count;
+        }
+        return rows;
+    }
+
+    /** @brief 直前の行の、横スクロールしても見えている右端に件数バッジを重ねて描く */
+    void DrawCountBadge(const int count)
+    {
+        const std::string label = std::to_string(count);
+        const ImVec2 labelSize = ImGui::CalcTextSize(label.c_str());
+        constexpr float paddingX = 6.0f;
+
+        // ContentRegionRect はスクロール分ずれているので、ScrollX を足し戻して見えている右端にする
+        const float right = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x + ImGui::GetScrollX();
+        const ImVec2 badgeMin(right - labelSize.x - paddingX * 2.0f, ImGui::GetItemRectMin().y);
+        const ImVec2 badgeMax(right, ImGui::GetItemRectMax().y);
+
+        ImVec4 background = ImGui::GetStyleColorVec4(ImGuiCol_Button);
+        background.w = 1.0f;
+        auto* drawList = ImGui::GetWindowDrawList();
+        drawList->AddRectFilled(badgeMin, badgeMax, ImGui::GetColorU32(background), (badgeMax.y - badgeMin.y) * 0.5f);
+        drawList->AddText(ImVec2(badgeMin.x + paddingX, badgeMin.y), ImGui::GetColorU32(ImGuiCol_Text), label.c_str());
+    }
 }
 
 int NanamiEngine::Core::PopupWindow::ConsoleWindow::counter_ = 0;
@@ -145,6 +187,8 @@ NanamiEngine::Core::PopupWindow::PopupWindowState NanamiEngine::Core::PopupWindo
         SaveLogToFile(visibleRecords);
     }
     ImGui::SameLine();
+    ImGui::Checkbox("Collapse", &collapse_);
+    ImGui::SameLine();
     ImGui::Checkbox("Info", &showInfo_);
     ImGui::SameLine();
     ImGui::Checkbox("Warning", &showWarning_);
@@ -169,9 +213,20 @@ NanamiEngine::Core::PopupWindow::PopupWindowState NanamiEngine::Core::PopupWindo
     ImGui::Separator();
     ImGui::BeginChild("ConsoleScrollRegion", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
 
-    for (const auto* record : visibleRecords)
+    if (collapse_)
     {
-        ImGui::TextColored(ColorForLevel(record->level), "%s", record->text.c_str());
+        for (const auto& row : CollapseRecords(visibleRecords))
+        {
+            ImGui::TextColored(ColorForLevel(row.record->level), "%s", row.record->text.c_str());
+            DrawCountBadge(row.count);
+        }
+    }
+    else
+    {
+        for (const auto* record : visibleRecords)
+        {
+            ImGui::TextColored(ColorForLevel(record->level), "%s", record->text.c_str());
+        }
     }
 
     if (autoScroll_ && ImGui::GetScrollY() >= ImGui::GetScrollMaxY())

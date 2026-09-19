@@ -6,6 +6,7 @@
 #include "../Quest/PlayerAvatar_IQuestGroup.h"
 #include "../Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../Wallet/PlayerAvatar_Wallet.h"
+#include "../Item/ItemPouch.h"
 #include "../../StatusParameter/Health/Health.h"
 #include "../../StatusParameter/MoveSpeed/MoveSpeed.h"
 #include "../../../../../../Libs/LibCore/Rx/SerializableSubject/SerializableSubject.h"
@@ -28,6 +29,8 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] IQuestGroup                & Quest         () const override;
         [[nodiscard]] Quest::ICompleteQuestGroup & CompletedQuest() const override;
         [[nodiscard]] PlayerAvatar::Wallet         & Wallet        () const override;
+        [[nodiscard]] ItemPouch                    & Pouch         ()       override { return pouch_; }
+        [[nodiscard]] const ItemPouch              & Pouch         () const override { return pouch_; }
 
         [[nodiscard]] const StatusParameter::Health&                     MaxHealth() const override;
         [[nodiscard]] rxcpp::observable<StatusParameter::Health> OnChangeHealth() const override;
@@ -52,7 +55,8 @@ namespace GameCore::PlayerAvatar
         class NullQuestGroup final : public IQuestGroup
         {
         public:
-            void Subscribe(const std::shared_ptr<QuestBase>& addQuest) override;
+            void Subscribe(const std::shared_ptr<StoryQuestBase>& addQuest) override;
+            [[nodiscard]] bool IsTaking(const QuestType& quest) const override;
         };
 
         class NullCompleteQuestGroup final : public Quest::ICompleteQuestGroup
@@ -72,6 +76,7 @@ namespace GameCore::PlayerAvatar
         std::unique_ptr<NullCompleteQuestGroup> completeQuest_;
         std::unique_ptr<NullStatusEvent       > event_        ;
         std::unique_ptr<PlayerAvatar::Wallet  > wallet_       ;
+        ItemPouch                               pouch_        ;
 
         StatusParameter::Health  maxHealth_;
         StatusParameter::Stamina maxStamina_;

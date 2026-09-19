@@ -53,7 +53,6 @@ namespace GamePlay::Weather
         [[serialize(0)]] FIELD(Component::Rotator)           upperRotator_;
         [[serialize(0)]] FIELD(Component::Rotator)           lowerRotator_;
         [[serialize(0)]] FIELD(NanamiUi::BlendImageRenderer) flashRenderer_;
-        [[serialize(0)]] FIELD(Component::ParticleSystem)    wispParticle_;
         [[serialize(0)]] FIELD(Component::ParticleSystem)    gustParticle_;
         [[serialize(0)]] FIELD(Asset::SoundFile)             thunderNearSound_;
         [[serialize(0)]] FIELD(Asset::SoundFile)             thunderFarSound1_;
@@ -114,7 +113,6 @@ namespace GamePlay::Weather
             archive(CEREAL_NVP(upperRotator_));
             archive(CEREAL_NVP(lowerRotator_));
             archive(CEREAL_NVP(flashRenderer_));
-            archive(CEREAL_NVP(wispParticle_));
             archive(CEREAL_NVP(gustParticle_));
             archive(CEREAL_NVP(thunderNearSound_));
             archive(CEREAL_NVP(thunderFarSound1_));
@@ -156,7 +154,8 @@ namespace GamePlay::Weather
             if (version >= 0) archive(CEREAL_NVP(upperRotator_));
             if (version >= 0) archive(CEREAL_NVP(lowerRotator_));
             if (version >= 0) archive(CEREAL_NVP(flashRenderer_));
-            if (version >= 0) archive(CEREAL_NVP(wispParticle_));
+            [[serialize(0)]] FIELD(Component::ParticleSystem) wispParticle_;
+            if (version <= 0) archive(CEREAL_NVP(wispParticle_));
             if (version >= 0) archive(CEREAL_NVP(gustParticle_));
             if (version >= 0) archive(CEREAL_NVP(thunderNearSound_));
             if (version >= 0) archive(CEREAL_NVP(thunderFarSound1_));
@@ -193,4 +192,4 @@ namespace GamePlay::Weather
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Weather::WeatherService, 0)
+ENGINE_REGISTER_COMPONENT(GamePlay::Weather::WeatherService, 1)

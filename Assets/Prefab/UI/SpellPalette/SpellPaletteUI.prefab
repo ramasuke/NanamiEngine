@@ -1,0 +1,2635 @@
+{
+    "isActive_": true,
+    "name_": "SpellPaletteUI",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "B89F07B8-DB61-4363-B05C-48478F92601D"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 1,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "GamePlay::Ui::SpellPalette",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "4EFC1D7B-C0CF-4DEE-936C-E26EB94C9D3F"
+                        },
+                        "isEnable_": true
+                    },
+                    "slotsRoot_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "D617AE74-F22C-4CB6-A428-70454318D4C2"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "slotPrefab_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483651,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "963EA2F5-618E-4A30-973D-F6A79353C28C"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "anchorTop_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "value0": {
+                                        "value_": "5C706690-D0DE-400F-8228-B9843F6351C8"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "anchorRight_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "value0": {
+                                        "value_": "B255E1B0-46D5-4508-9DAD-303A855FE2E9"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "anchorBottom_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483654,
+                                "data": {
+                                    "value0": {
+                                        "value_": "F4FF7A2E-EC44-401E-8A00-7DA6B20B23DA"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "anchorLeft_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483655,
+                                "data": {
+                                    "value0": {
+                                        "value_": "52D68837-01A2-4E74-9FC1-FD1244C9B708"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "anchorTopRight_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483656,
+                                "data": {
+                                    "value0": {
+                                        "value_": "E12839FC-67C4-46C3-80EB-4667A1297661"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "anchorBottomRight_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483657,
+                                "data": {
+                                    "value0": {
+                                        "value_": "FB59374D-3548-4928-9851-7CCE6359A715"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "anchorBottomLeft_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483658,
+                                "data": {
+                                    "value0": {
+                                        "value_": "754BB3C4-FAC7-474B-AFB2-F76DBC997B96"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "anchorTopLeft_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483659,
+                                "data": {
+                                    "value0": {
+                                        "value_": "5050B0DB-A370-4EAB-9268-1290E5917F64"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "nameTop_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483660,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "E9CBDB15-CA70-4D5E-B91D-58A4E6E07143"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "nameRight_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483661,
+                                "data": {
+                                    "value0": {
+                                        "value_": "1E437EE2-6E0E-44CC-9E9B-04474AC6983A"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "nameBottom_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483662,
+                                "data": {
+                                    "value0": {
+                                        "value_": "D1189AF5-3CFA-4EED-818F-E9B3625C8884"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "nameLeft_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483663,
+                                "data": {
+                                    "value0": {
+                                        "value_": "893CE764-B950-4C89-848A-C026923EB90F"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "halo_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483664,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "2E08A703-79BE-41BE-9758-F2BE387F6ED6"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "circle_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483665,
+                                "data": {
+                                    "value0": {
+                                        "value_": "9FDEA10E-A627-44CD-9ED1-78BDFE0FAD47"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "manaTrack_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483666,
+                                "data": {
+                                    "value0": {
+                                        "value_": "473CCD6C-3640-40B9-AA39-93D436435385"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "manaFill_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483667,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "4CDA945D-799F-41D8-ABAD-E50DB423FA36"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "manaTip_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483668,
+                                "data": {
+                                    "value0": {
+                                        "value_": "5BFC13B5-9B63-4A34-9F2B-1D07712EEE9E"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "manaLabel_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483669,
+                                "data": {
+                                    "value0": {
+                                        "value_": "5B0A7751-F084-4BC8-9535-619E175B5059"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "manaValue_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483670,
+                                "data": {
+                                    "value0": {
+                                        "value_": "C9B7E6AE-85FD-40A1-82AC-8EBDF4FCF816"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "paletteGlyph_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483671,
+                                "data": {
+                                    "value0": {
+                                        "value_": "60C842A5-CF68-49AD-97CC-0158EBDAC479"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "pageGlyph_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483672,
+                                "data": {
+                                    "value0": {
+                                        "value_": "5629C11C-E3AA-4637-BBA8-588F4A4A0156"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "pageText_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483673,
+                                "data": {
+                                    "value0": {
+                                        "value_": "5D25581C-5CE1-4CE1-8D01-69833221B6A4"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "padGlyphTop_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483674,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "224EF41E-52B3-4062-B131-E51CEB67FF6A"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "padGlyphRight_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483675,
+                                "data": {
+                                    "value0": {
+                                        "value_": "F8C5EA7F-70EE-491B-BFAB-0AC3B2CD00F0"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "padGlyphBottom_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483676,
+                                "data": {
+                                    "value0": {
+                                        "value_": "19C275AE-1194-464A-A461-8773A1025BA2"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "padGlyphLeft_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483677,
+                                "data": {
+                                    "value0": {
+                                        "value_": "041BAD72-BC8E-4B1F-9408-C795611756F7"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "keyGlyphTop_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483678,
+                                "data": {
+                                    "value0": {
+                                        "value_": "1B18A454-0F1C-4A3A-9EDF-2980185448C2"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "keyGlyphRight_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483679,
+                                "data": {
+                                    "value0": {
+                                        "value_": "33944A13-81C2-4AB3-9AEC-B2B82AED85DD"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "keyGlyphBottom_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483680,
+                                "data": {
+                                    "value0": {
+                                        "value_": "F32D8200-9744-4C55-BA61-7ED9FA6C210F"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "keyGlyphLeft_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483681,
+                                "data": {
+                                    "value0": {
+                                        "value_": "323E7AD4-1111-4293-B030-05D053729FF6"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "padPaletteSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483682,
+                                "data": {
+                                    "value0": {
+                                        "value_": "0EA3DBD0-E022-417B-8897-033F92075623"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "keyPaletteSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483683,
+                                "data": {
+                                    "value0": {
+                                        "value_": "3A330AC7-E006-4266-BBC5-FA7B252099E0"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "padPageSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483684,
+                                "data": {
+                                    "value0": {
+                                        "value_": "9B1E0011-2DA6-49C2-9B7C-BC69A6CE25D8"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "keyPageSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483685,
+                                "data": {
+                                    "value0": {
+                                        "value_": "0846C58D-1151-4A96-AA3C-328DCB5DCB84"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "manaArcRadius_": 138.0,
+                    "manaArcStartDeg_": 210.0,
+                    "manaArcSpanDeg_": 300.0,
+                    "idleAlphaRate_": 0.75,
+                    "backScale_": 0.5588235259056091,
+                    "backAlphaRate_": 0.6000000238418579,
+                    "manaLackIconRate_": 0.44999998807907107,
+                    "fadeDuration_secs_": 0.20000000298023225,
+                    "pageSwapDuration_secs_": 0.15000000596046449,
+                    "manaValueColor_": {
+                        "cereal_class_version": 0,
+                        "r_": 248,
+                        "g_": 246,
+                        "b_": 255
+                    }
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 262.0,
+            "value1": 866.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 1.0,
+            "value1": 1.0,
+            "value2": 1.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 1.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 1.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 1.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 262.0,
+                "value1": 866.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 16,
+        "child": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483686,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": true,
+                    "name_": "Halo",
+                    "guid_": {
+                        "value_": "AEC62A49-F2DA-446D-AE4D-67BED38E6475"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 2147483651,
+                            "polymorphic_name": "NanamiEngine::Module::NanamiUi::BlendImageRenderer",
+                            "ptr_wrapper": {
+                                "id": 2147483687,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "2E08A703-79BE-41BE-9758-F2BE387F6ED6"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value2": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "blendMode_": 1,
+                                    "blendRate_": 255,
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483688,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "4B102ABC-5168-4AB9-B204-6B19A99B1774"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 30
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 262.0,
+                                "value1": 866.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483689,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "Circle",
+                    "guid_": {
+                        "value_": "BA502A06-3053-42CD-9171-669C57164617"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 3,
+                            "ptr_wrapper": {
+                                "id": 2147483690,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "9FDEA10E-A627-44CD-9ED1-78BDFE0FAD47"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "blendMode_": 1,
+                                    "blendRate_": 255,
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483691,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "C0BB8FD1-0FF3-407F-B1B3-7E6733D7449D"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 31
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 262.0,
+                                "value1": 866.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483692,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "ManaTrack",
+                    "guid_": {
+                        "value_": "D9D66F1E-3A35-45BA-A837-D802A74332A0"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 3,
+                            "ptr_wrapper": {
+                                "id": 2147483693,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "473CCD6C-3640-40B9-AA39-93D436435385"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "blendMode_": 1,
+                                    "blendRate_": 255,
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483694,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "F9B16EE6-753C-437F-AA5E-85F1992D9FFA"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 32
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 262.0,
+                                "value1": 866.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483695,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "ManaFill",
+                    "guid_": {
+                        "value_": "37241D7B-99D7-4172-9867-CB04C701D8C2"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 2147483652,
+                            "polymorphic_name": "NanamiEngine::Module::NanamiUi::CircleGaugeRenderer",
+                            "ptr_wrapper": {
+                                "id": 2147483696,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "4CDA945D-799F-41D8-ABAD-E50DB423FA36"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "blendMode_": 1,
+                                    "blendRate_": 255,
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483697,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "3E02EE78-9B4E-4FE8-8FB7-B74692823871"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 33,
+                                    "startPercent_": 58.33333206176758,
+                                    "spanPercent_": 83.33333587646485,
+                                    "fillRate_": 1.0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 262.0,
+                                "value1": 866.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483698,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "ManaTip",
+                    "guid_": {
+                        "value_": "05755715-1B59-453E-B062-580BA186C839"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 3,
+                            "ptr_wrapper": {
+                                "id": 2147483699,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "5BFC13B5-9B63-4A34-9F2B-1D07712EEE9E"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "blendMode_": 2,
+                                    "blendRate_": 255,
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483700,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "9ABE9967-65CF-48D2-B9E8-B5D7CAD02EF0"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 34
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": -138.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 262.0,
+                                "value1": 728.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483701,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "Slots",
+                    "guid_": {
+                        "value_": "D617AE74-F22C-4CB6-A428-70454318D4C2"
+                    },
+                    "components_": {
+                        "componentCount": 0
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 262.0,
+                                "value1": 866.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483702,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "Anchors",
+                    "guid_": {
+                        "value_": "9123C70B-7BE2-4E3C-AB8A-B5F77295EA95"
+                    },
+                    "components_": {
+                        "componentCount": 0
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 262.0,
+                                "value1": 866.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 8,
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483703,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "AnchorTop",
+                                    "guid_": {
+                                        "value_": "5C706690-D0DE-400F-8228-B9843F6351C8"
+                                    },
+                                    "components_": {
+                                        "componentCount": 0
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 0.0,
+                                            "value1": -92.0,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 262.0,
+                                                "value1": 774.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483704,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "AnchorRight",
+                                    "guid_": {
+                                        "value_": "B255E1B0-46D5-4508-9DAD-303A855FE2E9"
+                                    },
+                                    "components_": {
+                                        "componentCount": 0
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 92.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 354.0,
+                                                "value1": 866.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483705,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "AnchorBottom",
+                                    "guid_": {
+                                        "value_": "F4FF7A2E-EC44-401E-8A00-7DA6B20B23DA"
+                                    },
+                                    "components_": {
+                                        "componentCount": 0
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 0.0,
+                                            "value1": 92.0,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 262.0,
+                                                "value1": 958.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483706,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "AnchorLeft",
+                                    "guid_": {
+                                        "value_": "52D68837-01A2-4E74-9FC1-FD1244C9B708"
+                                    },
+                                    "components_": {
+                                        "componentCount": 0
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": -92.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 170.0,
+                                                "value1": 866.0,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483707,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "AnchorTopRight",
+                                    "guid_": {
+                                        "value_": "E12839FC-67C4-46C3-80EB-4667A1297661"
+                                    },
+                                    "components_": {
+                                        "componentCount": 0
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 65.05382537841797,
+                                            "value1": -65.05382537841797,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 327.0538330078125,
+                                                "value1": 800.9461669921875,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483708,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "AnchorBottomRight",
+                                    "guid_": {
+                                        "value_": "FB59374D-3548-4928-9851-7CCE6359A715"
+                                    },
+                                    "components_": {
+                                        "componentCount": 0
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 65.05382537841797,
+                                            "value1": 65.05382537841797,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 327.0538330078125,
+                                                "value1": 931.0538330078125,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483709,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "AnchorBottomLeft",
+                                    "guid_": {
+                                        "value_": "754BB3C4-FAC7-474B-AFB2-F76DBC997B96"
+                                    },
+                                    "components_": {
+                                        "componentCount": 0
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": -65.05382537841797,
+                                            "value1": 65.05382537841797,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 196.94618225097657,
+                                                "value1": 931.0538330078125,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 2,
+                            "ptr_wrapper": {
+                                "id": 2147483710,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": true,
+                                    "name_": "AnchorTopLeft",
+                                    "guid_": {
+                                        "value_": "5050B0DB-A370-4EAB-9268-1290E5917F64"
+                                    },
+                                    "components_": {
+                                        "componentCount": 0
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": -65.05382537841797,
+                                            "value1": -65.05382537841797,
+                                            "value2": 0.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 1.0,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.0,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 196.94618225097657,
+                                                "value1": 800.9461669921875,
+                                                "value2": 0.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        }
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483711,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "PaletteGlyph",
+                    "guid_": {
+                        "value_": "066DCC96-6183-40B2-AD35-57C01634E332"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 3,
+                            "ptr_wrapper": {
+                                "id": 2147483712,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "60C842A5-CF68-49AD-97CC-0158EBDAC479"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "blendMode_": 1,
+                                    "blendRate_": 255,
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483713,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "0EA3DBD0-E022-417B-8897-033F92075623"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 44
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": -30.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 262.0,
+                                "value1": 836.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483714,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "ManaLabel",
+                    "guid_": {
+                        "value_": "FB3208A7-2DA3-4F13-932E-C2532FDFCA46"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 2147483653,
+                            "polymorphic_name": "NanamiEngine::Module::NanamiUi::TextRenderer",
+                            "ptr_wrapper": {
+                                "id": 2147483715,
+                                "data": {
+                                    "cereal_class_version": 4,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "5B0A7751-F084-4BC8-9535-619E175B5059"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "fontFile_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483716,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 44,
+                                    "text_": "MP",
+                                    "textColor_": {
+                                        "r_": 206,
+                                        "g_": 186,
+                                        "b_": 255
+                                    },
+                                    "isWorldPos_": false,
+                                    "textAlign_": 1
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": -11.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.23333333432674409,
+                            "value1": 0.23333333432674409,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.23333333432674409,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.23333333432674409,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 262.0,
+                                "value1": 855.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483717,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "ManaValue",
+                    "guid_": {
+                        "value_": "541AC2C2-8A10-45CF-9057-0705194588F7"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 5,
+                            "ptr_wrapper": {
+                                "id": 2147483718,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "C9B7E6AE-85FD-40A1-82AC-8EBDF4FCF816"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "fontFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483719,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 44,
+                                    "text_": "100",
+                                    "textColor_": {
+                                        "r_": 248,
+                                        "g_": 246,
+                                        "b_": 255
+                                    },
+                                    "isWorldPos_": false,
+                                    "textAlign_": 1
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 5.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.5666666626930237,
+                            "value1": 0.5666666626930237,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.5666666626930237,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.5666666626930237,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 262.0,
+                                "value1": 871.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483720,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "PageGlyph",
+                    "guid_": {
+                        "value_": "0057959E-F82B-4443-860F-CDA10CF67294"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 3,
+                            "ptr_wrapper": {
+                                "id": 2147483721,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "5629C11C-E3AA-4637-BBA8-588F4A4A0156"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "blendMode_": 1,
+                                    "blendRate_": 255,
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483722,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "9B1E0011-2DA6-49C2-9B7C-BC69A6CE25D8"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 44
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -144.0,
+                            "value1": 132.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 118.0,
+                                "value1": 998.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483723,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "PageText",
+                    "guid_": {
+                        "value_": "F94E78C8-8208-40F3-9B30-434FD25A6109"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 5,
+                            "ptr_wrapper": {
+                                "id": 2147483724,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "5D25581C-5CE1-4CE1-8D01-69833221B6A4"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "fontFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483725,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 44,
+                                    "text_": "Ⅱ",
+                                    "textColor_": {
+                                        "r_": 220,
+                                        "g_": 210,
+                                        "b_": 250
+                                    },
+                                    "isWorldPos_": false,
+                                    "textAlign_": 0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -124.0,
+                            "value1": 122.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.3333333432674408,
+                            "value1": 0.3333333432674408,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.3333333432674408,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.3333333432674408,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 138.0,
+                                "value1": 988.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483726,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "NameTop",
+                    "guid_": {
+                        "value_": "4D4160C7-ABB2-4131-98E5-9B0AA44A3C9C"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 5,
+                            "ptr_wrapper": {
+                                "id": 2147483727,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "E9CBDB15-CA70-4D5E-B91D-58A4E6E07143"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "fontFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483728,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 44,
+                                    "text_": "",
+                                    "textColor_": {
+                                        "r_": 238,
+                                        "g_": 242,
+                                        "b_": 240
+                                    },
+                                    "isWorldPos_": false,
+                                    "textAlign_": 1
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": -185.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.3333333432674408,
+                            "value1": 0.3333333432674408,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.3333333432674408,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.3333333432674408,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 262.0,
+                                "value1": 681.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483729,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "NameRight",
+                    "guid_": {
+                        "value_": "453E2EF5-E997-41A4-AA67-143E61A9CF65"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 5,
+                            "ptr_wrapper": {
+                                "id": 2147483730,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "1E437EE2-6E0E-44CC-9E9B-04474AC6983A"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "fontFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483731,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 44,
+                                    "text_": "",
+                                    "textColor_": {
+                                        "r_": 238,
+                                        "g_": 242,
+                                        "b_": 240
+                                    },
+                                    "isWorldPos_": false,
+                                    "textAlign_": 0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 162.0,
+                            "value1": -10.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.3333333432674408,
+                            "value1": 0.3333333432674408,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.3333333432674408,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.3333333432674408,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 424.0,
+                                "value1": 856.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483732,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "NameBottom",
+                    "guid_": {
+                        "value_": "3934675C-B593-41BA-995F-66382C886C48"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 5,
+                            "ptr_wrapper": {
+                                "id": 2147483733,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "D1189AF5-3CFA-4EED-818F-E9B3625C8884"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "fontFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483734,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 44,
+                                    "text_": "",
+                                    "textColor_": {
+                                        "r_": 238,
+                                        "g_": 242,
+                                        "b_": 240
+                                    },
+                                    "isWorldPos_": false,
+                                    "textAlign_": 1
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 165.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.3333333432674408,
+                            "value1": 0.3333333432674408,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.3333333432674408,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.3333333432674408,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 262.0,
+                                "value1": 1031.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 2,
+            "ptr_wrapper": {
+                "id": 2147483735,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "NameLeft",
+                    "guid_": {
+                        "value_": "7A3FE353-685C-48D6-A3C3-546B2EBF2EB2"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 5,
+                            "ptr_wrapper": {
+                                "id": 2147483736,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "893CE764-B950-4C89-848A-C026923EB90F"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "fontFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483737,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 44,
+                                    "text_": "",
+                                    "textColor_": {
+                                        "r_": 238,
+                                        "g_": 242,
+                                        "b_": 240
+                                    },
+                                    "isWorldPos_": false,
+                                    "textAlign_": 2
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -162.0,
+                            "value1": -10.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.3333333432674408,
+                            "value1": 0.3333333432674408,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.3333333432674408,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.3333333432674408,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 100.0,
+                                "value1": 856.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        }
+    },
+    "mark_": 0,
+    "value0": 0
+}

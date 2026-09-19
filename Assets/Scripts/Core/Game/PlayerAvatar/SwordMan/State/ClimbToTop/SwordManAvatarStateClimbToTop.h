@@ -7,7 +7,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     class SwordManAvatarStateClimbToTop final : public SwordManAvatarStateBase
     {
     public:
-        DEFINE_STATE_CONSTRUCTOR(SwordManAvatarStateClimbToTop)
+        explicit SwordManAvatarStateClimbToTop(const SwordManAvatarStateArgs& args) : SwordManAvatarStateBase(args) {}
 
     private:
         void DoEnter () override;
@@ -15,7 +15,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoUpdate() override;
         void DoExit  () override;
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::ClimbToTop; }
-        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::None; }
+        [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::None; }
 
         // Coroutine::Task<void> ClimbingAsync();
     };

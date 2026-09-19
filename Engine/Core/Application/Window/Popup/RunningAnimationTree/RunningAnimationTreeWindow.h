@@ -27,5 +27,5 @@ namespace NanamiEngine::Core::PopupWindow
         bool isLockedContent_ = false;
     };
 
-    REGISTER_POPUP_WINDOW(RunningAnimationTreeWindow);
+    REGISTER_POPUP_WINDOW(RunningAnimationTreeWindow, "Debug::Animation");
 }

@@ -6,7 +6,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     class AttackedShockedState final : public SwordManAvatarStateBase
     {
     public:
-        DEFINE_STATE_CONSTRUCTOR(AttackedShockedState)
+        explicit AttackedShockedState(const SwordManAvatarStateArgs& args) : SwordManAvatarStateBase(args) {}
 
     private:
         void DoEnter () override;
@@ -15,7 +15,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoExit  () override;
 
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::AttackedShocked; }
-        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Momentary; }
+        [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Momentary; }
         void VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const override;
     };
 }

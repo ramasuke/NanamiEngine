@@ -35,6 +35,7 @@ namespace NanamiEngine::Module::Asset
         switch (kind)
         {
         case GameCore::Npc::Enemy::EnemyKind::NormalBoss:
+        case GameCore::Npc::Enemy::EnemyKind::Tyrannosaurus:
             {
                 if (const auto boss = enemyObject->Components().Catch<GameCore::Npc::BossEnemyBase>().lock())
                     AttachBossHealthGauge(*boss);
@@ -63,6 +64,7 @@ namespace NanamiEngine::Module::Asset
         case GameCore::Npc::Enemy::EnemyKind::NormalBoss: return normalBossPrefab_.get();
         case GameCore::Npc::Enemy::EnemyKind::Normal:     return normalPrefab_    .get();
         case GameCore::Npc::Enemy::EnemyKind::Hyena:      return hyenaPrefab_     .get();
+        case GameCore::Npc::Enemy::EnemyKind::Tyrannosaurus: return tyrannosaurusPrefab_.get();
         }
 
         return nullptr;
@@ -101,6 +103,7 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("normalBossPrefab_", normalBossPrefab_);
         ImGuiHelper::OnDrawInputField("normalPrefab_", normalPrefab_);
         ImGuiHelper::OnDrawInputField("hyenaPrefab_", hyenaPrefab_);
+        ImGuiHelper::OnDrawInputField("tyrannosaurusPrefab_", tyrannosaurusPrefab_);
         ImGuiHelper::OnDrawInputField("bossHealthGaugeUiPrefab_", bossHealthGaugeUiPrefab_);
         ImGuiHelper::OnDrawInputField("bossHealthGaugePresenterPrefab_", bossHealthGaugePresenterPrefab_);
     }

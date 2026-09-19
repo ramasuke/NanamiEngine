@@ -9,7 +9,7 @@
 #include "../../../../Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
 #include "../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 #include "../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
-#include "../../../../Engine/Module/Scene/ShadowMap/ShadowMapSetting.h"
+#include "../../Core/Game/Damage/Game_Damage_IDamage.h"
 #include "../../Core/Game/Npc/Enemy/ITakableEnemyAttack/ITakableEnemyAttack.h"
 #include "../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../Core/Game/PlayerAvatar/StateMachine/PlayerAvatarStateMachineBase.h"
@@ -58,6 +58,9 @@ namespace GamePlay::PlayerAvatar
         void EnableStateMachiine() override;
         void DisableStateMachine() override;
 
+    protected:
+        [[nodiscard]] std::weak_ptr<CameraGroup> AvatarCameraGroup() const { return cameraGroup_; }
+
     private:
         void OnAwake                 () override;
         void OnUpdate                () override;
@@ -93,6 +96,8 @@ namespace GamePlay::PlayerAvatar
         std::weak_ptr  <Component::RigidBody> rigidBody_  ;
         [[serialize(0)]] FIELD(Ui::NpcChatting) chattingUi_;
         [[serialize(3)]] FIELD(GameObject::IGameObject) featStep_;
+        [[serialize(4)]] FIELD(PlayerAvatar::ChattableArea) chattableArea_;
+        [[serialize(4)]] FIELD(PlayerAvatar::WakeUpArea) wakeUpArea_;
 
 #pragma region Serialization Function
     public:
@@ -105,6 +110,8 @@ namespace GamePlay::PlayerAvatar
                 archive(cereal::base_class<NetworkComponent>(this));
             archive(CEREAL_NVP(chattingUi_));
             archive(CEREAL_NVP(featStep_));
+            archive(CEREAL_NVP(chattableArea_));
+            archive(CEREAL_NVP(wakeUpArea_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
@@ -114,8 +121,9 @@ namespace GamePlay::PlayerAvatar
             else if (version >= 2)
                 archive(cereal::base_class<NetworkComponent>(this));
             if (version >= 1) archive(CEREAL_NVP(chattingUi_));
-            // v3 で "FeatStep" の名前検索を FIELD に置き換えた
             if (version >= 3) archive(CEREAL_NVP(featStep_));
+            if (version >= 4) archive(CEREAL_NVP(chattableArea_));
+            if (version >= 4) archive(CEREAL_NVP(wakeUpArea_));
         }
 #pragma endregion
     };
@@ -163,8 +171,6 @@ namespace GamePlay::PlayerAvatar
         inputAction_ ->OnUpdate();
         stateMachine_->OnUpdate();
         status_      ->OnUpdate();
-        
-        Scene::ShadowMapSetting::SetRenderAreaPos(Transform().GetWorldPos());
     }
 
     template <RequireType::Traits TraitsT>
@@ -216,6 +222,10 @@ namespace GamePlay::PlayerAvatar
     template <RequireType::Traits TraitsT>
     void PlayerAvatarBase<TraitsT>::SaveStatus()
     {
+        // 力尽きたまま保存すると、次に生成した瞬間から倒れている。ゲームオーバー後は出発前の保存から始め直す
+        if (status_->IsDeath())
+            return;
+
         GameCore::PlayerAvatar::SaveStatus<Status, TraitsT>(status_);
     }
 
@@ -249,23 +259,19 @@ namespace GamePlay::PlayerAvatar
     template <RequireType::Traits TraitsT>
     ChattableArea& PlayerAvatarBase<TraitsT>::ChattableArea() const
     {
-        for (const auto& child : Transform().GetChildren())
-        {
-            if (const auto chattableArea = child->Components().Catch<PlayerAvatar::ChattableArea>().lock())
-                return *chattableArea;
-        }
-        throw std::exception("not found ChattableArea");
+        if (!chattableArea_)
+            throw std::exception("not found ChattableArea");
+
+        return *chattableArea_.get();
     }
 
     template <RequireType::Traits TraitsT>
     WakeUpArea& PlayerAvatarBase<TraitsT>::WakeUpArea() const
     {
-        for (const auto& child : Transform().GetChildren())
-        {
-            if (const auto wakeUpArea = child->Components().Catch<PlayerAvatar::WakeUpArea>().lock())
-                return *wakeUpArea;
-        }
-        throw std::exception("not found WakeUpArea");
+        if (!wakeUpArea_)
+            throw std::exception("not found WakeUpArea");
+
+        return *wakeUpArea_.get();
     }
 
     template <RequireType::Traits TraitsT>
@@ -286,7 +292,7 @@ namespace GamePlay::PlayerAvatar
     // PlayerAvatarBase<Traits>をcerealに登録するマクロ
 #define REGISTER_PLAYER_AVATAR_BASE(TraitsType)                                  \
 CEREAL_CLASS_VERSION(                                                            \
-GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>, 3) \
+GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>, 4) \
 CEREAL_REGISTER_TYPE(                                                            \
 GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>)    \
 CEREAL_REGISTER_POLYMORPHIC_RELATION(                                            \

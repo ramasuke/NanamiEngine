@@ -53,45 +53,9 @@
         },
         "component_1": {
             "polymorphic_id": 2147483650,
-            "polymorphic_name": "GamePlay::PlayerAvatar::Bullet::CannonBullet",
-            "ptr_wrapper": {
-                "id": 2147483650,
-                "data": {
-                    "cereal_class_version": 0,
-                    "value0": {
-                        "guid_": {
-                            "value_": "B54B63AD-3211-4E03-B0B6-731ED4B998F9"
-                        },
-                        "isEnable_": true
-                    },
-                    "explositionDuration_secs_": 0.6,
-                    "physicsDamage_": {
-                        "cereal_class_version": 0,
-                        "value_": 8
-                    },
-                    "explosionParticle_": {
-                        "cereal_class_version": 0,
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483651,
-                                "data": {
-                                    "cereal_class_version": 0,
-                                    "value0": {
-                                        "value_": "38448318-B6C3-4734-946C-B6FF179AE318"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "component_2": {
-            "polymorphic_id": 2147483651,
             "polymorphic_name": "NanamiEngine::Module::Component::RigidBody",
             "ptr_wrapper": {
-                "id": 2147483652,
+                "id": 2147483650,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -105,6 +69,38 @@
                     "isGravity_": false,
                     "constraints_": 0,
                     "isPartOfParent_": false
+                }
+            }
+        },
+        "component_2": {
+            "polymorphic_id": 2147483651,
+            "polymorphic_name": "GamePlay::Magic::MagicProjectile",
+            "ptr_wrapper": {
+                "id": 2147483651,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "F27B8AB1-CD6D-4082-8DB4-1241B0C12EBB"
+                        },
+                        "isEnable_": true
+                    },
+                    "impactPrefab_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "0CC64E44-562B-4805-B456-B9CB2C1393AD"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "impactLifeTime_secs_": 0.9300000071525574
                 }
             }
         }
@@ -123,27 +119,27 @@
             "value3": 0.0
         },
         "localScale_": {
-            "value0": 0.12,
-            "value1": 0.12,
-            "value2": 0.12
+            "value0": 0.11999999731779099,
+            "value1": 0.11999999731779099,
+            "value2": 0.11999999731779099
         },
         "worldMatrix_": {
             "value0": {
-                "value0": 0.20000000298023225,
+                "value0": 0.11999999731779099,
                 "value1": 0.0,
                 "value2": 0.0,
                 "value3": 0.0
             },
             "value1": {
                 "value0": 0.0,
-                "value1": 0.20000000298023225,
+                "value1": 0.11999999731779099,
                 "value2": 0.0,
                 "value3": 0.0
             },
             "value2": {
                 "value0": 0.0,
                 "value1": 0.0,
-                "value2": 0.20000000298023225,
+                "value2": 0.11999999731779099,
                 "value3": 0.0
             },
             "value3": {
@@ -160,7 +156,7 @@
             "ptr_wrapper": {
                 "id": 2147483653,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -182,7 +178,6 @@
                                 "data": {
                                     "cereal_class_version": 1,
                                     "value0": {
-                                        "cereal_class_version": 0,
                                         "guid_": {
                                             "value_": "B2476CD9-1C95-498A-B515-AFC6D004B452"
                                         },
@@ -203,14 +198,13 @@
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
-                                                        "value_": "ED366D76-5A2F-4822-A47C-DCBB71D95103"
+                                                        "value_": "4D29B750-7149-4F8C-A543-29605A0CC375"
                                                     }
                                                 }
                                             }
                                         }
                                     },
-                                    "playingDuration_secs_": 0.0,
-                                    "isRoop_": true,
+                                    "playingDuration_secs_": 60.0,
                                     "playMode_": 0
                                 }
                             }
@@ -229,27 +223,27 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 1.0,
-                            "value1": 1.0,
-                            "value2": 1.0
+                            "value0": 66.66667175292969,
+                            "value1": 66.66667175292969,
+                            "value2": 66.66667175292969
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 1.0,
+                                "value0": 8.0,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 1.0,
+                                "value1": 8.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value2": {
                                 "value0": 0.0,
                                 "value1": 0.0,
-                                "value2": 1.0,
+                                "value2": 8.0,
                                 "value3": 0.0
                             },
                             "value3": {
@@ -260,7 +254,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }

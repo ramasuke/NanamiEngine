@@ -35,5 +35,6 @@ namespace GameCore::PlayerAvatar
     }
 
     void SaveType(const IPlayerAvatar& playerAvatar);
+    void SaveType(PlayerAvatarType type);
     PlayerAvatarType LoadType();
 }

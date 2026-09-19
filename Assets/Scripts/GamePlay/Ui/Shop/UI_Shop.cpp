@@ -1,0 +1,126 @@
+﻿#include "UI_Shop.h"
+
+#include "../EventBoard/Row/EventBoardRowPool.h"
+#include "../Format/Ui_MoneyFormat.h"
+#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+
+namespace GamePlay::Ui
+{
+    void ShopUi::BuildRows(const size_t count)
+    {
+        if (!rows_.empty())
+            return;
+
+        rows_ = InstantiateEventBoardRows<ShopRow>(rowPrefab_, rowsRoot_, count, rowSpacing_px_);
+        if (const auto restock = restockText_.get())
+            restockOffsetY_ = restock->Transform().GetLocalPos().y;
+    }
+
+    void ShopUi::SubscribeOnClickRow(const std::function<void(size_t)>& onClick) const
+    {
+        for (size_t i = 0; i < rows_.size(); ++i)
+        {
+            if (const auto row = rows_[i].lock())
+            {
+                row->SubscribeOnClick([onClick, i]
+                {
+                    onClick(i);
+                });
+            }
+        }
+    }
+
+    void ShopUi::SetTitle(const std::string& title) const
+    {
+        if (const auto text = titleText_.get())
+            text->SetText(title);
+    }
+
+    void ShopUi::SetMoney(const int balance) const
+    {
+        if (const auto text = moneyText_.get())
+            text->SetText(FormatMoney(balance));
+    }
+
+    void ShopUi::Bind(const ShopModel& model) const
+    {
+        const auto& entries = model.Entries();
+        const auto& cursor  = model.Cursor();
+        const size_t first  = cursor.FirstVisibleIndex();
+
+        size_t shownRows = 0;
+        for (size_t i = 0; i < rows_.size(); ++i)
+        {
+            const auto row = rows_[i].lock();
+            if (!row)
+                continue;
+
+            const size_t index = first + i;
+            if (index >= entries.size())
+                continue;
+
+            const auto& entry = entries[index];
+            row->Bind(ShopRowContent{
+                .item         = entry.item,
+                .price        = entry.price,
+                .owned        = model.Owned(entry),
+                .isAffordable = model.Refusal(entry) != ShopRefusal::NotEnoughMoney,
+            });
+            row->SetHighlighted(index == cursor.SelectedIndex());
+            ++shownRows;
+        }
+
+        if (const auto mark = moreAboveMark_.get())
+            mark->SetEnable(first > 0);
+        if (const auto mark = moreBelowMark_.get())
+            mark->SetEnable(first + rows_.size() < entries.size());
+
+        // 品が窓より少ないときだけ、最後の品の下に「入荷待ち」を書き足す
+        if (const auto restock = restockText_.get())
+        {
+            const bool hasRoom = shownRows < static_cast<size_t>(maxVisibleRows_);
+            restock->SetEnable(hasRoom);
+            if (hasRoom)
+            {
+                const glm::vec3 pos = restock->Transform().GetLocalPos();
+                restock->Transform().SetLocalPos(glm::vec3(pos.x, restockOffsetY_ + static_cast<float>(shownRows) * rowSpacing_px_, pos.z));
+            }
+        }
+
+        if (const auto receipt = receipt_.get())
+        {
+            const auto selected = model.Selected();
+            receipt->Show(selected
+                ? ShopReceiptContent{
+                    .item        = selected->item,
+                    .price       = selected->price,
+                    .quantity    = model.Quantity(),
+                    .maxQuantity = model.MaxQuantity(*selected),
+                    .owned       = model.Owned(*selected),
+                    .balance     = model.Balance(),
+                    .refusal     = model.Refusal(*selected),
+                }
+                : ShopReceiptContent{});
+        }
+    }
+
+    void ShopUi::PlayPaidStamp() const
+    {
+        if (const auto receipt = receipt_.get())
+            receipt->PlayPaidStamp();
+    }
+
+    void ShopUi::OnDrawGui()
+    {
+        ImGuiHelper::OnDrawInputField("rowPrefab_", rowPrefab_);
+        ImGuiHelper::OnDrawInputField("rowsRoot_", rowsRoot_);
+        ImGuiHelper::OnDrawInputField("rowSpacing_px_", rowSpacing_px_);
+        ImGuiHelper::OnDrawInputField("maxVisibleRows_", maxVisibleRows_);
+        ImGuiHelper::OnDrawInputField("moreAboveMark_", moreAboveMark_);
+        ImGuiHelper::OnDrawInputField("moreBelowMark_", moreBelowMark_);
+        ImGuiHelper::OnDrawInputField("titleText_", titleText_);
+        ImGuiHelper::OnDrawInputField("restockText_", restockText_);
+        ImGuiHelper::OnDrawInputField("moneyText_", moneyText_);
+        ImGuiHelper::OnDrawInputField("receipt_", receipt_);
+    }
+}

@@ -27,7 +27,7 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(EnemyBehaviourFile, ENEMY_BEHAVIOUR_DATA_LABEL)
+REGISTER_SCRIPTABLE_OBJECT(EnemyBehaviourFile, ENEMY_BEHAVIOUR_DATA_LABEL, "Npc::Enemy")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::EnemyBehaviourFile, 0);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::EnemyBehaviourFile);

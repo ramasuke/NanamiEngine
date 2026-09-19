@@ -9,6 +9,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     class PlayAnimation final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;
+        void DoReset() override;
         void DoDrawGui() override;
         
         [[serialize(0)]] int animatorSetParamNumber_ = 0;

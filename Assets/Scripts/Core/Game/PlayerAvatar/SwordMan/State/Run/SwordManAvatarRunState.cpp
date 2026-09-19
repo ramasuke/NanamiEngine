@@ -6,17 +6,18 @@
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoEnter()
 {
     StatusEvent().InvokeOnRun();
-    ResetMoveSpeedFromVelocity();
+    ResetMoveSpeedFromVelocity(moveSpeed_);
+    footstep_ = {};
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoFixedUpdate()
 {
-    MoveForward(Status().GetRunSpeed(), Resources().RunAccelerationTime_secs(), Resources().RunDecelerationTime_secs());
+    MoveForward(moveSpeed_, Status().GetRunSpeed(), Resources().RunAccelerationTime_secs(), Resources().RunDecelerationTime_secs());
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoUpdate()
 {
-    TryEmitFootstep(Resources().RunFootstepSounds());
+    TryEmitFootstep(footstep_, Resources().RunFootstepSounds());
 
     UpdateLockOn();
     UpdateItemPouchInput();
@@ -27,16 +28,17 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::VisitTrans
 {
     visitor.Automatic(SwordManAvatarStateType::InjuredRun, Status().IsInjured());
     visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged());
-    visitor.OnInput(SwordManAvatarStateType::Idle, SwordManAvatarInput::Move, SwordManAvatarInputPhase::NotHolding, true);
+    visitor.OnInput(SwordManAvatarStateType::Idle, SwordManAvatarInput::Move, PlayerAvatarInputPhase::NotHolding, true);
     visitor.Automatic(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk,
                       !Input().Run().IsUpdatePressed() || !Status().CanRun());
-    visitor.OnInput(SwordManAvatarStateType::Jump, SwordManAvatarInput::Jump, SwordManAvatarInputPhase::Pressed, Status().CanJump());
-    visitor.OnInput(SwordManAvatarStateType::AvoidRolling, SwordManAvatarInput::AvoidRolling, SwordManAvatarInputPhase::Pressed, Status().CanAvoidRolling());
+    visitor.OnInput(SwordManAvatarStateType::Jump, SwordManAvatarInput::Jump, PlayerAvatarInputPhase::Pressed, Status().CanJump());
+    visitor.OnInput(SwordManAvatarStateType::AvoidRolling, SwordManAvatarInput::AvoidRolling, PlayerAvatarInputPhase::Pressed, Status().CanAvoidRolling());
     visitor.Action(SwordManAvatarStateAction::Move, true);
     VisitLockOnAction(visitor);
     visitor.Action(SwordManAvatarStateAction::CycleItem, true);
     visitor.Action(SwordManAvatarStateAction::UseItem, Status().Pouch().CanUseSelected());
-    visitor.OnInput(SwordManAvatarStateType::DashAttack, SwordManAvatarInput::DashAttack, SwordManAvatarInputPhase::Pressed, true);
+    visitor.Action(SwordManAvatarStateAction::OpenMenu, true);
+    visitor.OnInput(SwordManAvatarStateType::DashAttack, SwordManAvatarInput::DashAttack, PlayerAvatarInputPhase::Pressed, true);
     visitor.Automatic(SwordManAvatarStateType::UseCanon, Conditions().CanUseCannon());
     visitor.Automatic(SwordManAvatarStateType::Floating, !Conditions().IsGround());
 }

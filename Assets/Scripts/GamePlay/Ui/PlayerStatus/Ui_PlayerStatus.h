@@ -87,24 +87,14 @@ namespace GamePlay::Ui
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
-            // v10 で子オブジェクトの名前検索を FIELD に置き換えた。旧ファイルの名前は読み捨てる
-            std::string healthBarName_, healthBarFrameName_, staminaBarName_, staminaBarFrameName_;
-            std::string injuredUiObjectName_, hpCurrentTextName_, hpMaxTextName_;
-            if (version >= 6 && version < 10) archive(CEREAL_NVP(healthBarName_));
             if (version >= 10) archive(CEREAL_NVP(healthBar_));
             if (version >= 6) archive(CEREAL_NVP(displayOnDamageHealthBarDuration_secs_));
             if (version >= 6) archive(CEREAL_NVP(onDamageHealthBarFrame_));
-            if (version >= 6 && version < 10) archive(CEREAL_NVP(healthBarFrameName_));
             if (version >= 10) archive(CEREAL_NVP(healthBarFrame_));
-            if (version >= 8 && version < 10) archive(CEREAL_NVP(staminaBarName_));
             if (version >= 10) archive(CEREAL_NVP(staminaBar_));
-            if (version >= 8 && version < 10) archive(CEREAL_NVP(staminaBarFrameName_));
             if (version >= 10) archive(CEREAL_NVP(staminaBarFrame_));
-            if (version >= 7 && version < 10) archive(CEREAL_NVP(injuredUiObjectName_));
             if (version >= 10) archive(CEREAL_NVP(injuredUiMask_));
-            if (version >= 9 && version < 10) archive(CEREAL_NVP(hpCurrentTextName_));
             if (version >= 10) archive(CEREAL_NVP(hpCurrentText_));
-            if (version >= 9 && version < 10) archive(CEREAL_NVP(hpMaxTextName_));
             if (version >= 10) archive(CEREAL_NVP(hpMaxText_));
             if (version >= 9) archive(CEREAL_NVP(healthGaugeNormalSprite_));
             if (version >= 9) archive(CEREAL_NVP(healthGaugeCautionSprite_));

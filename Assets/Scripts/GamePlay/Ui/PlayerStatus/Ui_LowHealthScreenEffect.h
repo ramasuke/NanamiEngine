@@ -84,9 +84,6 @@ namespace GamePlay::Ui
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
-            // v1 で Vignette の名前検索を FIELD に置き換えた
-            std::string vignetteObjectName_;
-            if (version < 1) archive(CEREAL_NVP(vignetteObjectName_));
             if (version >= 1) archive(CEREAL_NVP(vignette_));
             if (version >= 0) archive(CEREAL_NVP(startHealthRate_));
             if (version >= 0) archive(CEREAL_NVP(criticalHealthRate_));

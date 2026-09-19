@@ -1,0 +1,103 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::MagicSpellData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Magic/Heal.magicSpell",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "D678E955-0E50-4EFF-978D-317C439611B4"
+                    }
+                },
+                "displayName_": "治癒",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "3D0BD9EE-12B7-48E5-BB22-5FD5B028E055"
+                                }
+                            }
+                        }
+                    }
+                },
+                "castSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "5ED05579-336C-45B5-AFFE-52DCDE0FC862"
+                                }
+                            }
+                        }
+                    }
+                },
+                "manaCost_": 30.0,
+                "cooldown_secs_": 12.0,
+                "castFireTime_secs_": 1.4199999570846558,
+                "castTotalDuration_secs_": 1.7999999523162842,
+                "effect_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GamePlay::Magic::HealSpellEffect",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "amount_": 30,
+                            "radius_": 60.0,
+                            "effectPrefab_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "FB7FCECC-C970-48CA-AFAA-70F616F70C64"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "effectLifeTime_secs_": 2.5999999046325685
+                        }
+                    }
+                },
+                "castMotion_": 11,
+                "castEffectPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "910C125D-6C2D-423B-B217-E3BB3704E1C8"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

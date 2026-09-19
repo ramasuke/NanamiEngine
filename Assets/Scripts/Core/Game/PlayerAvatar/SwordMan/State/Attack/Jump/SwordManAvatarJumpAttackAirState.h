@@ -7,7 +7,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     class SwordManAvatarJumpAttackAirState final : public SwordManAvatarStateBase
     {
     public:
-        DEFINE_STATE_CONSTRUCTOR(SwordManAvatarJumpAttackAirState)
+        explicit SwordManAvatarJumpAttackAirState(const SwordManAvatarStateArgs& args) : SwordManAvatarStateBase(args) {}
 
     private:
         void DoEnter() override;
@@ -16,7 +16,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoExit() override;
 
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::JumpAttackAir; }
-        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Momentary; }
+        [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Momentary; }
         void VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const override;
+
+    private:
+        AttackTurn attackTurn_;
     };
 }

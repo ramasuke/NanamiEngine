@@ -6,6 +6,7 @@
 #include <string_view>
 
 #include "../Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "../Asset/Preload/Engine_Asset_AssetPreloader.h"
 #include "../GameObject/PrefabGameObject/PrefabGameObject.h"
 #include "../Log/NanamiEngine_Module_Log.h"
 #include "../../Core/Application/ApplicationBase.h"
@@ -72,6 +73,8 @@ void Scene::Scene::Deserialize(
 Scene::Scene::Scene(const std::string& filePath)
 {
     filePath_ = filePath;
+    // 中のオブジェクトが初めて描画するときに同期ロードで止まらないよう、参照先の読み込みを先に要求しておく
+    Module::Asset::AssetPreloader::RequestForScene(filePath_);
 
     DeserializedContent content;
     Deserialize(filePath_, content, nullptr);

@@ -6,7 +6,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     class DisableState final : public SwordManAvatarStateBase
     {
     public:
-        DEFINE_STATE_CONSTRUCTOR(DisableState)
+        explicit DisableState(const SwordManAvatarStateArgs& args) : SwordManAvatarStateBase(args) {}
 
     private:
         void DoEnter      () override;
@@ -17,6 +17,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         bool MouseLock() override { return false; }
 
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override;
-        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::None; }
+        [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::None; }
     };
 }

@@ -1,10 +1,16 @@
-#pragma once
+﻿#pragma once
+#include <array>
 #include <queue>
 
 #include "../../../StatusParameter/Health/Health.h"
+#include "../../../StatusParameter/Mana/Mana.h"
 #include "../../../StatusParameter/MoveSpeed/MoveSpeed.h"
 #include "../../../StatusParameter/Stamina/Stamina.h"
+#include "../../Item/Effect/IItemEffectTarget.h"
+#include "../../Item/IItemReceiver.h"
+#include "../../Item/ItemPouch.h"
 #include "../../Status/IPlayerAvatarStatus.h"
+#include "../Spell/MagicCasterSpellSlot.h"
 #include "cereal/types/polymorphic.hpp"
 
 #include "../../../../../../../Engine/Core/Network/Object/NetworkObjectBase.h"
@@ -17,21 +23,37 @@
 #include "../../Quest/PlayerAvatar_IQuestGroup.h"
 #include "../../Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../../Status/Event/PlayerAvatar_IStatusEvent.h"
+#include "Quest/MagicCaster_QuestGroup.h"
+#include "../../Wallet/PlayerAvatar_Wallet.h"
+
+namespace GameCore::Magic
+{
+    class IMagicSpell;
+}
 
 namespace GameCore::PlayerAvatar::MagicCaster
 {
     class MagicCasterAvatarStatus final : public NetworkObjectBase,
-                                          public IPlayerAvatarStatus
+                                          public IPlayerAvatarStatus,
+                                          public Item::IItemEffectTarget,
+                                          public Item::IItemReceiver
     {
     public:
         MagicCasterAvatarStatus();
         ~MagicCasterAvatarStatus() override;
+        MagicCasterAvatarStatus(MagicCasterAvatarStatus&&) noexcept = default;
+        MagicCasterAvatarStatus& operator=(MagicCasterAvatarStatus&&) noexcept = default;
         void Init    () override;
         void OnUpdate() override;
 
         [[nodiscard]] IStatusEvent              & Event         () const override { return *event_        ; }
-        [[nodiscard]] IQuestGroup                & Quest         () const override { return *quest_        ; }
-        [[nodiscard]] Quest::ICompleteQuestGroup & CompletedQuest() const override { return *completeQuest_; }
+        [[nodiscard]] IQuestGroup                & Quest         () const override { return *quests_       ; }
+        [[nodiscard]] Quest::ICompleteQuestGroup & CompletedQuest() const override { return *quests_       ; }
+        [[nodiscard]] PlayerAvatar::Wallet       & Wallet        () const override { return *wallet_;        }
+        [[nodiscard]] ItemPouch                  & Pouch         ()       override { return pouch_;          }
+        [[nodiscard]] const ItemPouch            & Pouch         () const override { return pouch_;          }
+        [[nodiscard]] int ReceivableCount(const Asset::ItemData& item) const override { return pouch_.ReceivableCount(item); }
+        int ReceiveItem(const std::shared_ptr<Asset::ItemData>& item, const int count) override { return pouch_.Add(item, count); }
 
         [[nodiscard]] const StatusParameter::Health&                     MaxHealth() const override { return maxHealth_; }
         [[nodiscard]] rxcpp::observable<StatusParameter::Health> OnChangeHealth() const override { return onChangeHealth_.get_observable(); }
@@ -54,10 +76,22 @@ namespace GameCore::PlayerAvatar::MagicCaster
         void StartJumpCooldown() { jumpCooldownRemaining_secs_ = jumpCooldown_secs_; }
         void ConsumeJumpStamina() { ConsumeStamina(jumpStaminaCost_); }
 
-        [[nodiscard]] bool CanCast() const { return castCooldownRemaining_secs_ <= 0.0f && stamina_.get() >= StatusParameter::Stamina(castStaminaCost_); }
-        void StartCastCooldown() { castCooldownRemaining_secs_ = castCooldown_secs_; }
-        void ConsumeCastStamina() { ConsumeStamina(castStaminaCost_); }
-        [[nodiscard]] const Damage::PhysicsPower& CastDamage() const { return castDamage_; }
+        [[nodiscard]] const StatusParameter::Mana&                                MaxMana() const { return maxMana_; }
+        [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Mana> Mana   () const { return mana_.AsReadOnly(); }
+        /** @brief slot は MagicCasterSpellSlot.h の枠番号。クールタイム中か MP が足りなければ false */
+        [[nodiscard]] bool CanCast(int slot, const GameCore::Magic::IMagicSpell& spell) const;
+        /** @brief MP を払い、その枠のクールタイムを始める */
+        void BeginCast(int slot, const GameCore::Magic::IMagicSpell& spell);
+        [[nodiscard]] float CooldownRemaining_secs(int slot) const;
+        /** @brief 残りクールタイムの割合。1 で始まったばかり、0 で使える */
+        [[nodiscard]] float CooldownRemainingRate(int slot) const;
+
+        /** @brief 体力を amount だけ戻す。最大値で頭打ち、死亡中は何もしない */
+        void Heal(StatusParameter::Health amount) override;
+        void RestoreStamina(float amount) override;
+        /** @brief 魔法の威力の倍率を duration_secs のあいだ差し替える。重ねがけは上書き */
+        void ApplyAttackBuff(float rate, float duration_secs) override;
+        [[nodiscard]] float AttackPowerRate() const { return attackBuffRemaining_secs_ > 0.0f ? attackBuffRate_ : 1.0f; }
 
         [[nodiscard]] float DamageStateDuration_secs() const { return damageStateDuration_secs_; }
         [[nodiscard]] float DeathStateDuration_secs () const { return deathStateDuration_secs_;  }
@@ -68,19 +102,6 @@ namespace GameCore::PlayerAvatar::MagicCaster
         void DiscardDamage();
 
     private:
-        class NoOpQuestGroup final : public IQuestGroup
-        {
-        public:
-            void Subscribe(const std::shared_ptr<QuestBase>&) override {}
-        };
-
-        class NoOpCompleteQuestGroup final : public Quest::ICompleteQuestGroup
-        {
-        public:
-            void CompleteQuest(const QuestType&) override {}
-            [[nodiscard]] bool CheckCompleted(const QuestType&) const override { return false; }
-        };
-
         class StatusEvent final : public IStatusEvent
         {
         public:
@@ -89,8 +110,10 @@ namespace GameCore::PlayerAvatar::MagicCaster
         };
 
         std::shared_ptr<StatusEvent> event_ = std::make_shared<StatusEvent>();
-        std::unique_ptr<NoOpQuestGroup> quest_ = std::make_unique<NoOpQuestGroup>();
-        std::unique_ptr<NoOpCompleteQuestGroup> completeQuest_ = std::make_unique<NoOpCompleteQuestGroup>();
+        [[serialize(3)]] std::unique_ptr<QuestGroup> quests_ = std::make_unique<QuestGroup>();
+        [[serialize(1)]] std::shared_ptr<PlayerAvatar::Wallet> wallet_;
+        // 初期所持は無い。店で買うか拾うかで増える
+        [[serialize(4)]] ItemPouch pouch_;
 
         [[serialize(0)]] StatusParameter::Health maxHealth_;
         [[serialize(0)]] StatusParameter::Health minHealth_;
@@ -114,17 +137,22 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[serialize(0)]] float jumpStaminaCost_;
         float jumpCooldownRemaining_secs_ = 0.0f;
 
-        [[serialize(0)]] Damage::PhysicsPower castDamage_;
-        [[serialize(0)]] float castStaminaCost_;
-        [[serialize(0)]] float castCooldown_secs_;
-        float castCooldownRemaining_secs_ = 0.0f;
-
         [[serialize(0)]] float damageStateDuration_secs_;
         [[serialize(0)]] float deathStateDuration_secs_;
+
+        [[serialize(2)]] StatusParameter::Mana maxMana_;
+        [[serialize(2)]] LibCore::Rx::SerializableSubject<StatusParameter::Mana> mana_;
+        [[serialize(2)]] float manaRegenPerSecond_;
+        std::array<float, SPELL_SLOT_COUNT> cooldownRemaining_secs_ {};
+        std::array<float, SPELL_SLOT_COUNT> cooldownDuration_secs_ {};
+
+        float attackBuffRate_ = 1.0f;
+        float attackBuffRemaining_secs_ = 0.0f;
 
         std::queue<std::unique_ptr<IDamage>> onDamagedStack_;
 
         void ConsumeStamina(float cost);
+        [[nodiscard]] static bool IsValidSpellSlot(int slot) { return slot >= 0 && slot < SPELL_SLOT_COUNT; }
 
 #pragma region Serialization Function
     public:
@@ -149,11 +177,14 @@ namespace GameCore::PlayerAvatar::MagicCaster
             archive(CEREAL_NVP(jumpStateDuration_secs_));
             archive(CEREAL_NVP(jumpCooldown_secs_));
             archive(CEREAL_NVP(jumpStaminaCost_));
-            archive(CEREAL_NVP(castDamage_));
-            archive(CEREAL_NVP(castStaminaCost_));
-            archive(CEREAL_NVP(castCooldown_secs_));
             archive(CEREAL_NVP(damageStateDuration_secs_));
             archive(CEREAL_NVP(deathStateDuration_secs_));
+            archive(CEREAL_NVP(wallet_));
+            archive(CEREAL_NVP(maxMana_));
+            archive(CEREAL_NVP(mana_));
+            archive(CEREAL_NVP(manaRegenPerSecond_));
+            archive(CEREAL_NVP(quests_));
+            archive(CEREAL_NVP(pouch_));
         }
 
         template <class Archive>
@@ -175,18 +206,31 @@ namespace GameCore::PlayerAvatar::MagicCaster
             archive(CEREAL_NVP(jumpStateDuration_secs_));
             archive(CEREAL_NVP(jumpCooldown_secs_));
             archive(CEREAL_NVP(jumpStaminaCost_));
-            archive(CEREAL_NVP(castDamage_));
-            archive(CEREAL_NVP(castStaminaCost_));
-            archive(CEREAL_NVP(castCooldown_secs_));
+            if (version <= 1)
+            {
+                // v1 までは魔法弾1種をスタミナで撃っていた。魔法ごとの MP とクールタイムに移ったので読み捨てる
+                Damage::PhysicsPower castDamage_;
+                float castStaminaCost_   = 0.0f;
+                float castCooldown_secs_ = 0.0f;
+                archive(CEREAL_NVP(castDamage_));
+                archive(CEREAL_NVP(castStaminaCost_));
+                archive(CEREAL_NVP(castCooldown_secs_));
+            }
             archive(CEREAL_NVP(damageStateDuration_secs_));
             archive(CEREAL_NVP(deathStateDuration_secs_));
+            if (version >= 1) archive(CEREAL_NVP(wallet_));
+            if (version >= 2) archive(CEREAL_NVP(maxMana_));
+            if (version >= 2) archive(CEREAL_NVP(mana_));
+            if (version >= 2) archive(CEREAL_NVP(manaRegenPerSecond_));
+            if (version >= 3) archive(CEREAL_NVP(quests_));
+            if (version >= 4) archive(CEREAL_NVP(pouch_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus, 0);
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus, 4);
 CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::IPlayerAvatarStatus, GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus);
 #pragma endregion

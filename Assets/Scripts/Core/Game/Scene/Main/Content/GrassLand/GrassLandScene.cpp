@@ -1,5 +1,6 @@
 ﻿#include "GrassLandScene.h"
 
+#include "../../../../../../GamePlay/Network/Session/GamePlay_StageSessionMatchmaking.h"
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include <stdexcept>
 
@@ -8,7 +9,6 @@
 
 #include "../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
-#include "../../../../../../../../Engine/Core/Application/Configuration/Network/ApplicationConfiguration_Network.h"
 #include "../../../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
 #include "../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../PlayerAvatar/PlayerAvatar.h"
@@ -67,26 +67,33 @@ namespace GameCore::Scene::Main
         SubScene().Push(Sub::SceneType::OtherPlayerStatus);
 
         LoadingScreen().SetStep(SceneLoadStep::Connecting);
-        Context()->NetworkRunner().Initialize();
-        co_await Context()->NetworkRunner().OnConnectedAsync();
+        co_await GamePlay::Network::JoinOrHostStageAsync(Context()->WeakNetworkRunner(), std::string(ToString(SceneType::GrassLand)));
         if (generation != loadGeneration_)
             co_return;
 
+        auto& networkRunner = Context()->NetworkRunner();
+        if (!networkRunner.IsStarted() || networkRunner.GetConnectionState() != Core::Network::ConnectionState::Connected)
+        {
+            LoadingScreen().Fail("マルチプレイの接続に失敗しました");
+            Coroutine::StartCoroutine(BackToMainIslandAsync(generation));
+            co_return;
+        }
+
         LoadingScreen().SetStep(SceneLoadStep::Spawning);
         GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
-        playerAvatar_ = Context()->NetworkRunner().SpawnPlayerAvatar(
+        playerAvatar_ = networkRunner.SpawnPlayerAvatar(
             PlayerAvatar::LoadType(),
             Context()->PlayerSpawnPoint(),
             glm::quat());
 
-        // 敵はホスト(NetworkMode::Server)側だけがスポーンする。クライアント側は
+        // 敵はホスト側だけがスポーンする。クライアント側は
         // EnemySpawnDispatcher::OnReceive(ライブ受信 or 再接続時の履歴リプレイ)で再現される。
-        if (Core::Application::Configuration::NetworkConfiguration::IsServer())
+        if (networkRunner.IsServer())
         {
             for (const auto& spawnPoint : Context()->EnemySpawnPoints())
             {
-                Context()->NetworkRunner().SpawnEnemy(
-                    Context()->EnemyKind(),
+                networkRunner.SpawnEnemy(
+                    spawnPoint->Kind(),
                     spawnPoint->Transform().GetWorldPos(),
                     spawnPoint->Transform().GetWorldRot());
             }

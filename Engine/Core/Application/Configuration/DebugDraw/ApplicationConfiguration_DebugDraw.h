@@ -4,11 +4,18 @@
 #include "../../../../Module/Physics/Component/Collider/Engine_Physics_ColliderShapeKind.h"
 #include "../../../../Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
 
+namespace NanamiEngine::Core::Application::AutoMcp
+{
+    class AutoMcpEngineAccess;
+}
+
 namespace NanamiEngine::Core::Application::Configuration
 {
     /** @brief エディタでシーン全体のコライダーを描画するかの設定。StaticMesh 等は重いので種類・レイヤー・Trigger で絞り込める */
     class DebugDrawConfiguration final
     {
+        friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
+
     public:
         static void Load();
         static void Save();

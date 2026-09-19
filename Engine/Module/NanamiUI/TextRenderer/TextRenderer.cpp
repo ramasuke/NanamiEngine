@@ -2,6 +2,7 @@
 #include "../../GameObject/Transform/Transform.h"
 #include "../../../../Libs/LibCore/DxLib/ShiftJis.h"
 #include <algorithm>
+#include <cmath>
 #include <sstream>
 #include <vector>
 
@@ -101,7 +102,11 @@ namespace NanamiEngine::Module::NanamiUi
 
         if (textScreen_ == -1)
         {
+            // 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、直後の SetDrawScreen で完了待ちに入る
+            const int useASyncLoad = GetUseASyncLoadFlag();
+            SetUseASyncLoadFlag(FALSE);
             textScreen_ = MakeScreen(screenW_, screenH_, TRUE);
+            SetUseASyncLoadFlag(useASyncLoad);
         }
 
         SetDrawScreen(textScreen_);
@@ -152,11 +157,22 @@ namespace NanamiEngine::Module::NanamiUi
     {
         const float x = Transform().GetWorldPos().x;
         const float y = Transform().GetWorldPos().y;
-        const float scaleX = Transform().GetWorldScale().x;
-        const float scaleY = Transform().GetWorldScale().y;
-        const int fontHandle = fontFile_->DxLibHandle();
+        const auto font = fontFile_.get();
+
+        // 基準サイズのフォントを縮めて描くと最近傍補間で細い線が欠けるので、画面上の大きさのハンドルで描き、
+        // 残りの端数(スケールのアニメ中など)だけを拡大率として渡す
+        const float fontSize = static_cast<float>(font->Size());
+        const float pixelSizeY = fontSize * Transform().GetWorldScale().y;
+        if (pixelSizeY <= 0.0f)
+            return;
+        const int fontHandle = font->HandleForPixelSize(std::max(1, static_cast<int>(std::lround(pixelSizeY))));
+        if (fontHandle == -1)
+            return;
+        const float handleSize = static_cast<float>(GetFontSizeToHandle(fontHandle));
+        const float scaleX = fontSize * Transform().GetWorldScale().x / handleSize;
+        const float scaleY = pixelSizeY / handleSize;
         const int dxColor = textColor_.ToDxColor();
-        const int edgeDxColor = fontFile_->EdgeColor().ToDxColor();
+        const int edgeDxColor = font->EdgeColor().ToDxColor();
         const std::string sjis = Utf8ToShiftJis(text_);
 
         if (textAlign_ == TextAlign::Left)
@@ -173,7 +189,7 @@ namespace NanamiEngine::Module::NanamiUi
         }
 
         const float alignFactor = ToAlignFactor(textAlign_);
-        const float lineHeight = static_cast<float>(GetFontSizeToHandle(fontHandle)) * scaleY;
+        const float lineHeight = handleSize * scaleY;
 
         std::istringstream ss(sjis);
         std::string line;

@@ -1,6 +1,7 @@
-#include "MagicCasterAvatarStateMachine.h"
+﻿#include "MagicCasterAvatarStateMachine.h"
 
 #include "Cast/MagicCasterAvatarCastState.h"
+#include "Chatting/MagicCasterAvatarChattingState.h"
 #include "Death/MagicCasterAvatarDeathState.h"
 #include "DisableState/MagicCasterAvatarDisableState.h"
 #include "Floating/MagicCasterAvatarFloatingState.h"
@@ -14,6 +15,23 @@
 
 namespace GameCore::PlayerAvatar::MagicCaster
 {
+    namespace
+    {
+        // ArmStretch/WarpIn/GetUp に相当するStateが無いので、演出は棒立ちで通す
+        MagicCasterAvatarStateType ToMagicCasterEventSceneState(const EventSceneStateType type)
+        {
+            switch (type)
+            {
+            case EventSceneStateType::Walk: return MagicCasterAvatarStateType::Walk;
+            case EventSceneStateType::Idle:
+            case EventSceneStateType::ArmStretch:
+            case EventSceneStateType::WarpIn:
+            case EventSceneStateType::GetUp: return MagicCasterAvatarStateType::Idle;
+            }
+            return MagicCasterAvatarStateType::Idle;
+        }
+    }
+
     MagicCasterAvatarStateMachine::MagicCasterAvatarStateMachine(
         StatesFactory factory,
         const MagicCasterAvatarStateType initialState,
@@ -31,6 +49,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
     }
 
     void MagicCasterAvatarStateMachine::OnChangeState(MagicCasterAvatarStateType type) { Base::OnChangeState(type); }
+    void MagicCasterAvatarStateMachine::OnChangeState(const EventSceneStateType type) { Base::OnChangeState(ToMagicCasterEventSceneState(type)); }
     void MagicCasterAvatarStateMachine::OnEnable()  { Base::OnEnable();  }
     void MagicCasterAvatarStateMachine::OnDisable() { Base::OnDisable(); }
 
@@ -57,7 +76,9 @@ namespace GameCore::PlayerAvatar::MagicCaster
             playerAvatar->Entity(),
             cameraGroup,
             playerAvatar->CastPoint(),
-            playerAvatar->Resources()
+            playerAvatar->Resources(),
+            std::static_pointer_cast<Magic::IMagicCaster>(playerAvatar),
+            playerAvatar->CatchLockOnDetectionArea()
         );
 
         auto stateMachine = std::make_unique<MagicCasterAvatarStateMachine>(
@@ -65,16 +86,18 @@ namespace GameCore::PlayerAvatar::MagicCaster
                 -> MagicCasterAvatarStateMachine::StateMap
             {
                 using namespace State;
+                const MagicCasterAvatarStateArgs args(context, callback);
                 return {
-                    {MagicCasterAvatarStateType::Disable,  std::make_shared<DisableState>(context, callback)},
-                    {MagicCasterAvatarStateType::Idle,     std::make_shared<IdleState>   (context, callback)},
-                    {MagicCasterAvatarStateType::Walk,     std::make_shared<WalkState>   (context, callback)},
-                    {MagicCasterAvatarStateType::Run,      std::make_shared<RunState>    (context, callback)},
-                    {MagicCasterAvatarStateType::Jump,     std::make_shared<JumpState>   (context, callback)},
-                    {MagicCasterAvatarStateType::Floating, std::make_shared<FloatingState>(context, callback)},
-                    {MagicCasterAvatarStateType::Cast,     std::make_shared<CastState>   (context, callback)},
-                    {MagicCasterAvatarStateType::Hurt,     std::make_shared<HurtState>   (context, callback)},
-                    {MagicCasterAvatarStateType::Death,    std::make_shared<DeathState>  (context, callback)},
+                    {MagicCasterAvatarStateType::Disable,  std::make_shared<DisableState>(args)},
+                    {MagicCasterAvatarStateType::Idle,     std::make_shared<IdleState>   (args)},
+                    {MagicCasterAvatarStateType::Walk,     std::make_shared<WalkState>   (args)},
+                    {MagicCasterAvatarStateType::Run,      std::make_shared<RunState>    (args)},
+                    {MagicCasterAvatarStateType::Jump,     std::make_shared<JumpState>   (args)},
+                    {MagicCasterAvatarStateType::Floating, std::make_shared<FloatingState>(args)},
+                    {MagicCasterAvatarStateType::Cast,     std::make_shared<CastState>   (args)},
+                    {MagicCasterAvatarStateType::Hurt,     std::make_shared<HurtState>   (args)},
+                    {MagicCasterAvatarStateType::Death,    std::make_shared<DeathState>  (args)},
+                    {MagicCasterAvatarStateType::Chatting, std::make_shared<ChattingState>(args)},
                 };
             },
             MagicCasterAvatarStateType::Idle,

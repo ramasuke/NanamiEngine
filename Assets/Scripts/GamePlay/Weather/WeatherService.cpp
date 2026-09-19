@@ -211,14 +211,11 @@ namespace GamePlay::Weather
             return;
 
         particlesPlaying_ = shouldPlay;
-        for (const auto* particle : {&wispParticle_, &gustParticle_})
-        {
-            if (!*particle)
-                continue;
+        if (!gustParticle_)
+            return;
 
-            if (shouldPlay) (*particle)->Play();
-            else            (*particle)->Stop();
-        }
+        if (shouldPlay) gustParticle_->Play();
+        else            gustParticle_->Stop();
     }
 
     void WeatherService::RestoreClearWeather() const
@@ -237,7 +234,6 @@ namespace GamePlay::Weather
         ImGuiHelper::OnDrawInputField("upperRotator_",     upperRotator_    );
         ImGuiHelper::OnDrawInputField("lowerRotator_",     lowerRotator_    );
         ImGuiHelper::OnDrawInputField("flashRenderer_",    flashRenderer_   );
-        ImGuiHelper::OnDrawInputField("wispParticle_",     wispParticle_    );
         ImGuiHelper::OnDrawInputField("gustParticle_",     gustParticle_    );
         ImGuiHelper::OnDrawInputField("thunderNearSound_", thunderNearSound_);
         ImGuiHelper::OnDrawInputField("thunderFarSound1_", thunderFarSound1_);

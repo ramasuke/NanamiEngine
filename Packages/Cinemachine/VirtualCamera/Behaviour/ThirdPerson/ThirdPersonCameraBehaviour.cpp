@@ -159,11 +159,10 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     void ThirdPersonCameraBehaviour::UpdateLookAtTargetBehaviour() const
     {
-        const glm::mat4 rotY = glm::rotate(glm::mat4(1.0f), yaw_,   glm::vec3(0,1,0));
-        const glm::mat4 rotX = glm::rotate(glm::mat4(1.0f), pitch_, glm::vec3(1,0,0));
-        const glm::mat4 rot  = rotY * rotX;
+        // pitchでも回すと見上げた時に注視点がカメラ側へ回り込み、プレイヤーが画面外へ出るためyawのみ
+        const glm::mat4 rotY = glm::rotate(glm::mat4(1.0f), yaw_, glm::vec3(0,1,0));
 
-        const auto rotatedOffset = glm::vec3(rot * glm::vec4(lookAtOffsetPos_, 1.0f));
+        const auto rotatedOffset = glm::vec3(rotY * glm::vec4(lookAtOffsetPos_, 1.0f));
 
         lookAt_->SetOffsetPos(rotatedOffset);
     }

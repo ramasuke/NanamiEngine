@@ -90,7 +90,7 @@ REAL_EFFECT_DIR = CONFIG.effect_dir
 DEFAULT_CORPUS_DIR = CONFIG.corpus_dir
 REAL_META_FIXTURES = [
     REAL_EFFECT_DIR / "Laser01.efkefc.meta",
-    REAL_EFFECT_DIR / "tktk01" / "fireSpark.efkefc.meta",
+    REAL_EFFECT_DIR / "tktk01" / "fireBall.efkefc.meta",
     REAL_EFFECT_DIR / "MAGICALxSPIRAL" / "Salamander11.efkefc.meta",
 ]
 
@@ -356,14 +356,14 @@ def stage_content_path_convention(r: Reporter) -> None:
     r.section("stage 4: content_path_for() convention check")
     try:
         target_dir = REAL_EFFECT_DIR / "tktk01"
-        if not (target_dir / "fireSpark.efkefc.meta").exists():
-            r.ok("content_path_for() convention (skipped: tktk01/fireSpark.efkefc.meta not present)")
+        if not (target_dir / "fireBall.efkefc.meta").exists():
+            r.ok("content_path_for() convention (skipped: tktk01/fireBall.efkefc.meta not present)")
             return
-        got = meta.content_path_for("fireSpark", target_dir, CONFIG.project_root)
-        want = meta.read_meta(target_dir / "fireSpark.efkefc.meta")["content_path"]
+        got = meta.content_path_for("fireBall", target_dir, CONFIG.project_root)
+        want = meta.read_meta(target_dir / "fireBall.efkefc.meta")["content_path"]
         if got != want:
             raise AssertionError(f"content_path_for() = {got!r}, real asset has {want!r}")
-        r.ok("content_path_for() matches real fireSpark.efkefc.meta (all-backslash)")
+        r.ok("content_path_for() matches real fireBall.efkefc.meta (all-backslash)")
     except Exception:  # noqa: BLE001
         r.fail("content_path_for() convention", traceback.format_exc())
 
@@ -1294,7 +1294,7 @@ def stage_versions(r: Reporter) -> None:
             raise AssertionError("parse_asset_paths() accepted a broken dependency list")
         if efkefc.asset_paths(garbled) != paths:
             raise AssertionError(f"asset_paths() fallback = {efkefc.asset_paths(garbled)!r}")
-        real = [(REAL_EFFECT_DIR / "tktk01" / "fireSpark.efkefc", 1710),
+        real = [(REAL_EFFECT_DIR / "tktk01" / "fireBall.efkefc", 1710),
                 (REAL_EFFECT_DIR / "NitoriBox" / "Explosion.efkefc", 1810),
                 (REAL_EFFECT_DIR / "Laser01.efkefc", 1500)]
         present = [(f, v) for f, v in real if f.exists()]

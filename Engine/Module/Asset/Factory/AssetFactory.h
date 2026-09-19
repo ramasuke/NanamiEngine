@@ -20,20 +20,29 @@
 namespace NanamiEngine::Module::Asset
 {
     using OnCreateAsset = std::function<bool(const std::string&, std::shared_ptr<AssetBase>&)>;
+
+    /** ProjectWindow の「+」から新規作成できるアセット */
+    struct CreatableAsset
+    {
+        std::string name;
+        std::string extension;
+        /** 「+」メニューでの入れ子 ("A::B") */
+        std::string category;
+    };
+
     class AssetFactory final : public SingletonBase<AssetFactory>
     {
     public:
         template <typename T>
         void Register(const std::string& extensionLabel);
-        void RegisterCreatableAssetExtension(const std::string& assetNameLabel, const std::string& extensionLabel);
+        void RegisterCreatableAssetExtension(const std::string& assetNameLabel, const std::string& extensionLabel, const std::string& categoryLabel);
         bool TryCreate(const std::string& filePath, std::shared_ptr<AssetBase>& outAsset) const;
         /** アセットを生成せずに、filePath の拡張子が Register 済みかだけを判定する */
         [[nodiscard]] bool IsRegisteredExtension(const std::string& filePath) const;
         [[nodiscard]] std::shared_ptr<AssetBase> Load(const std::string& filePath) const;
         template <typename T>
         void RegisterLoader(const std::string& extensionLabel);
-        /** 新規作成可能なアセットの<アセット名, 拡張子>群 */
-        [[nodiscard]] const std::vector<std::pair<std::string, std::string>>& CreatableAssets() const { return creatableAssetsData_; }
+        [[nodiscard]] const std::vector<CreatableAsset>& CreatableAssets() const { return creatableAssetsData_; }
 
     private:
         /** filePathからfileを生成する関数群 */
@@ -41,8 +50,7 @@ namespace NanamiEngine::Module::Asset
         /** factories_ に登録された拡張子群 */
         std::vector<std::string> registeredExtensions_;
         std::vector<std::function<std::shared_ptr<AssetBase>(const std::string&)>> loaderers_;
-        /** 新規作成可能なアセットの<アセット名, 拡張子>群 */
-        std::vector<std::pair<std::string, std::string>> creatableAssetsData_;
+        std::vector<CreatableAsset> creatableAssetsData_;
     };
 
     template <typename T>
@@ -125,12 +133,12 @@ factory.RegisterLoader<TYPE>(LABEL);                                   \
 static TYPE##AutoRegister global_##TYPE##AutoRegister;                 \
 }
 
-#define REGISTER_CREATABLE_ASSET_EXTENSION(ASSET_LABEL, EXTENSION_LABEL)                        \
+#define REGISTER_CREATABLE_ASSET_EXTENSION(ASSET_LABEL, EXTENSION_LABEL, CATEGORY_LABEL)        \
 namespace NanamiEngine::Module::Asset {                                                         \
 struct AutoRegisterCreatable_##EXTENSION_LABEL {                                                \
 AutoRegisterCreatable_##EXTENSION_LABEL() {                                                     \
 auto& factory = NanamiEngine::Module::Asset::AssetFactory::Instance();                          \
-factory.RegisterCreatableAssetExtension(ASSET_LABEL, EXTENSION_LABEL);                          \
+factory.RegisterCreatableAssetExtension(ASSET_LABEL, EXTENSION_LABEL, CATEGORY_LABEL);          \
 }                                                                                               \
 };                                                                                              \
 static AutoRegisterCreatable_##EXTENSION_LABEL global_autoregister_creatable_##EXTENSION_LABEL; \

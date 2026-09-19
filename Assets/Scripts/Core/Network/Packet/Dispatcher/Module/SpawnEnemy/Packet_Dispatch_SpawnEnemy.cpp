@@ -58,10 +58,10 @@ namespace GameCore::Network
             return nullptr;
 
         // 敵は Spawn したプレイヤーが離脱しても残し、所有権をホストへ移す
-        const auto networkObjectIds = DefaultDispatch().Spawn().AllocateIdsAndRegister(gameObject, Core::Network::OwnerLeavePolicy::Transfer);
+        const auto networkObjectIds = DefaultDispatch().Spawn().AllocateIdsAndRegister(gameObject, Core::Network::OwnerLeavePolicy::Transfer, PlayerId());
 
         Core::Network::Packet packet = Core::Network::Packet::Create(static_cast<Core::Network::PacketType>(EPacketType::SpawnEnemy));
-        packet.Data().Write(PlayerId());
+        packet.Data().Write(PlayerId()); // 送信者 兼 初期所有者
         packet.Data().Write(kind);
         packet.Data().Write(position);
         packet.Data().Write(rotation);
@@ -94,6 +94,6 @@ namespace GameCore::Network
         if (!gameObject)
             return;
 
-        DefaultDispatch().Spawn().RegisterWithNetworkIds(networkObjectIds, gameObject, Core::Network::OwnerLeavePolicy::Transfer);
+        DefaultDispatch().Spawn().RegisterWithNetworkIds(networkObjectIds, gameObject, Core::Network::OwnerLeavePolicy::Transfer, playerId);
     }
 }

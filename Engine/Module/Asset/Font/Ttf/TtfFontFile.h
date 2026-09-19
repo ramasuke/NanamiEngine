@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <string>
+#include <unordered_map>
 
 #include "DxLib.h"
 #include "../../../Color/Color32.h"
@@ -21,7 +22,10 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] const Guid& GetGuid       () const override { return guid_; }
         [[nodiscard]] std::string GetContentPath() const override { return contentPath_; }
         [[nodiscard]] int         DxLibHandle   () const          { return dxLibHandle_;    }
+        [[nodiscard]] int         Size          () const          { return size_;           }
         [[nodiscard]] const Color32& EdgeColor  () const          { return edgeColor_;      }
+        /** @brief 同じ書体を pixelSize で作ったハンドル。縮小描画だと細い線が欠けるので、画面上の大きさで作って原寸で描く */
+        [[nodiscard]] int HandleForPixelSize(int pixelSize);
 
     private:
         void OnEnableAsset() override;
@@ -38,6 +42,7 @@ namespace NanamiEngine::Module::Asset
 
         Guid guid_;
         int dxLibHandle_ = -1;
+        std::unordered_map<int, int> sizedHandles_;
         /** AddFontResourceExA に成功したパス（空なら未登録）。Rename 後も登録時と同じパスで RemoveFontResourceExA するため別に持つ */
         std::string addedFontResourcePath_;
 

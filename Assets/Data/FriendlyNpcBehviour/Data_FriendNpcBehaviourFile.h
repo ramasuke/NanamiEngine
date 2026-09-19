@@ -24,7 +24,7 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(FriendNpcBehaviourFile, FRIENDLY_NPC_BEHAVIOUR_DATA_EXTENSION_LABEL)
+REGISTER_SCRIPTABLE_OBJECT(FriendNpcBehaviourFile, FRIENDLY_NPC_BEHAVIOUR_DATA_EXTENSION_LABEL, "Npc::Friendly")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::FriendNpcBehaviourFile, 0);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::FriendNpcBehaviourFile);

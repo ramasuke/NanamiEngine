@@ -6,7 +6,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     class HurtState final : public SwordManAvatarStateBase
     {
     public:
-        DEFINE_STATE_CONSTRUCTOR(HurtState)
+        explicit HurtState(const SwordManAvatarStateArgs& args) : SwordManAvatarStateBase(args) {}
 
     private:
         void DoEnter () override;
@@ -14,7 +14,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoUpdate() override;
         void DoExit  () override;
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::Hurt; }
-        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Momentary; }
+        [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Momentary; }
         void VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const override;
     };
 }

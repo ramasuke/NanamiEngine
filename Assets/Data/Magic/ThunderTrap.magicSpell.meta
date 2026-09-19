@@ -1,0 +1,106 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::MagicSpellData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Magic/ThunderTrap.magicSpell",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "5C549367-11A6-4CEC-AF50-27FA2D635B4D"
+                    }
+                },
+                "displayName_": "雷罠",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "3358C2D3-B746-4C9F-AFAF-975C6D71AAA1"
+                                }
+                            }
+                        }
+                    }
+                },
+                "castSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "36DC3302-0FA9-418C-B8DF-31193A41E044"
+                                }
+                            }
+                        }
+                    }
+                },
+                "manaCost_": 22.0,
+                "cooldown_secs_": 10.0,
+                "castFireTime_secs_": 0.6100000143051148,
+                "castTotalDuration_secs_": 1.100000023841858,
+                "effect_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GamePlay::Magic::PlacementSpellEffect",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "placementPrefab_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "CF3133CE-B286-4220-87B9-C38D57E5B7BE"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "power_": {
+                                "cereal_class_version": 0,
+                                "value_": 30
+                            },
+                            "lifeTime_secs_": 15.0,
+                            "distance_": 40.0
+                        }
+                    }
+                },
+                "castMotion_": 3,
+                "castEffectPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "A409BFD2-4ED9-495C-A1FC-7553AA227AE2"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

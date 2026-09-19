@@ -7,9 +7,19 @@ namespace GameCore::Npc::Enemy::Behaviour
         return DoTick(context);
     }
 
+    void ActionBase::Reset()
+    {
+        DoReset();
+    }
+
     void ActionBase::OnDrawGui()
     {
         DoDrawGui();
+    }
+
+    void ActionBase::DoReset()
+    {
+
     }
 
     void ActionBase::DoDrawGui()

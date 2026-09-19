@@ -17,14 +17,11 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("justAvoidRollingSound_", justAvoidRollingSound_);
         ImGuiHelper::OnDrawInputField("jumpSound_", jumpSound_);
         ImGuiHelper::OnDrawInputField("footstepParticlePrefab_", footstepParticlePrefab_);
-        ImGuiHelper::OnDrawInputField("jumpParticlePrefab_", jumpParticlePrefab_);
         ImGuiHelper::OnDrawInputField("landingParticlePrefab_", landingParticlePrefab_);
         ImGuiHelper::OnDrawInputField("landingParticleMinFallSpeed_", landingParticleMinFallSpeed_);
         ImGuiHelper::OnDrawInputField("landingParticleMaxFallSpeed_", landingParticleMaxFallSpeed_);
         ImGuiHelper::OnDrawInputField("landingParticleMinScale_", landingParticleMinScale_);
         ImGuiHelper::OnDrawInputField("landingParticleMaxScale_", landingParticleMaxScale_);
-        ImGuiHelper::OnDrawInputField("warpInRise_secs_", warpInRise_secs_);
-        ImGuiHelper::OnDrawInputField("warpInSinkDepth_", warpInSinkDepth_);
         ImGuiHelper::OnDrawInputField("chargeCompleteSound_", chargeCompleteSound_);
         ImGuiHelper::OnDrawInputField("chargeCompleteParticlePrefab_", chargeCompleteParticlePrefab_);
         ImGuiHelper::OnDrawInputField("chargeHoldParticlePrefab_", chargeHoldParticlePrefab_);
@@ -38,6 +35,10 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("groundCheckRadius_", groundCheckRadius_);
         ImGuiHelper::OnDrawInputField("groundCheckUpOffset_", groundCheckUpOffset_);
         ImGuiHelper::OnDrawInputField("groundCheckDistance_", groundCheckDistance_);
+        ImGuiHelper::OnDrawInputField("maxWalkableSlope_deg_", maxWalkableSlope_deg_);
+        ImGuiHelper::OnDrawInputField("slopeCheckRadius_", slopeCheckRadius_);
+        ImGuiHelper::OnDrawInputField("slopeCheckUpOffset_", slopeCheckUpOffset_);
+        ImGuiHelper::OnDrawInputField("slopeCheckDistance_", slopeCheckDistance_);
         ImGuiHelper::OnDrawInputField("walkAccelerationTime_secs_", walkAccelerationTime_secs_);
         ImGuiHelper::OnDrawInputField("runAccelerationTime_secs_", runAccelerationTime_secs_);
         ImGuiHelper::OnDrawInputField("walkDecelerationTime_secs_", walkDecelerationTime_secs_);

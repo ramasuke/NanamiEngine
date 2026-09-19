@@ -114,20 +114,6 @@ namespace GamePlay::Ui
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
-            // v5 で「下敷き＋1行テキスト」から操作ガイドに吸い付く課題カードに作り替えた
-            if (version < 5)
-            {
-                FIELD(NanamiUi::TextRenderer) legacyTextBox_;
-                std::string legacyTextBoxName_, legacyAttack_, legacyRun_, legacyDashAttack_, legacyAvoid_;
-                archive(legacyTextBox_);
-                if (version >= 1 && version < 4) archive(legacyTextBoxName_);
-                if (version >= 2) archive(legacyAttack_);
-                if (version >= 2) archive(legacyRun_);
-                if (version >= 2) archive(legacyDashAttack_);
-                if (version >= 3) archive(legacyAvoid_);
-                return;
-            }
-
             archive(CEREAL_NVP(card_));
             archive(CEREAL_NVP(panel_));
             archive(CEREAL_NVP(tail_));

@@ -64,8 +64,7 @@ namespace NanamiEngine::Module::Component
         std::vector<int>                 triangleListMaterialIndex_;
         std::vector<int>                 meshMaterialIndex_;
         std::vector<int>                 meshOriginalCulling_;
-
-        // 毎フレーム解決するポリシーの結果
+        
         std::vector<MaterialShaderPass> materialPasses_;
         std::vector<bool>               materialPassActive_;
         bool                            materialStateApplied_ = false;

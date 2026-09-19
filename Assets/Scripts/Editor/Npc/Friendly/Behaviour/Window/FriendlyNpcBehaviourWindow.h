@@ -17,5 +17,5 @@ namespace Editor::Npc::Friendly
         void OnUpdate() override;
     };
     
-    REGISTER_MAIN_WINDOW(FriendlyNpcBehaviourWindow);
+    REGISTER_MAIN_WINDOW(FriendlyNpcBehaviourWindow, "Behaviour Tree");
 }

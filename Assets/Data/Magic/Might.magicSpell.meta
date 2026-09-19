@@ -1,0 +1,104 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::MagicSpellData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Magic/Might.magicSpell",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "133416AA-61F8-4032-AE41-18BAD3D568B1"
+                    }
+                },
+                "displayName_": "鼓舞",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "04972695-F8C0-4C7E-BD46-11E9080A3FDB"
+                                }
+                            }
+                        }
+                    }
+                },
+                "castSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "CCF9A9CA-D3A0-4811-87C7-F0DEBD836519"
+                                }
+                            }
+                        }
+                    }
+                },
+                "manaCost_": 35.0,
+                "cooldown_secs_": 30.0,
+                "castFireTime_secs_": 1.1699999570846558,
+                "castTotalDuration_secs_": 1.5499999523162842,
+                "effect_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GamePlay::Magic::AttackBuffSpellEffect",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "rate_": 1.2999999523162842,
+                            "duration_secs_": 20.0,
+                            "radius_": 60.0,
+                            "effectPrefab_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "FBB841DC-A4D1-4EEA-8D5E-358E705194AC"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "effectLifeTime_secs_": 2.0999999046325685
+                        }
+                    }
+                },
+                "castMotion_": 4,
+                "castEffectPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "2434D4CC-823B-40AE-B8D1-8A27D02DCA89"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

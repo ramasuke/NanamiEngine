@@ -1,9 +1,10 @@
-#pragma once
+﻿#pragma once
 #include "../../../../Enemy_Behaviour_ActionBase.h"
 #include "../../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
+    /** 子オブジェクト attackAreaName_ の AttackArea にプレイヤーが入っていれば Success。isInner_ = false で反転。 */
     class IsTargetInAttackArea final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;

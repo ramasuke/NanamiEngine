@@ -29,22 +29,30 @@ namespace NanamiEngine::Core::Network
     class EnetUDPNetworkSystem final : public INetworkSystem
     {
     public:
-        explicit EnetUDPNetworkSystem();
+        explicit EnetUDPNetworkSystem(const NetworkStartSettings& settings);
         ~EnetUDPNetworkSystem() override;
         void Update() override;
         void Send(const Packet& packet) override;
         void SendTo(ENetPeer* target, const Packet& packet) override;
         [[nodiscard]] std::vector<Packet> PollPackets() override;
         [[nodiscard]] INetworkObjectInstanceRegistry& GetInstanceRegistry() override;
+        [[nodiscard]] ConnectionState GetConnectionState() const override;
+        [[nodiscard]] std::uint16_t ListenPort() const override;
 
     private:
+        void StartServer();
+        void StartClient(const HostEndpoint& host);
         [[nodiscard]] PlayerId GetPlayerId() const override;
+        [[nodiscard]] bool IsServer() const override;
         /** ホストのみ: 離脱者の所有物を自分が引き継ぐ PlayerLeft を全員へ配り、自分の受信キューにも積む */
         void NotifyPlayerLeft(PlayerId leftId);
         void SetPlayerId(PlayerId playerId) override;
         rxcpp::observable<ENetEvent*> OnConnectPlayer() override;
 
     private:
+        const Mode mode_;
+        ConnectionState state_ = ConnectionState::Connecting;
+
         _ENetHost* host_ = nullptr;
         _ENetPeer* peer_ = nullptr;
 

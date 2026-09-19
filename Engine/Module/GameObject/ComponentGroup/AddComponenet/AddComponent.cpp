@@ -3,6 +3,25 @@
 #include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/AttackArea/PlayerAvatarAttackArea.h"
 #include "../../../../../Assets/Scripts/GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h"
 #include "../../../../../Assets/Scripts/GamePlay/Ui/StageSelect/UI_StageSelect.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/CharacterSelect/UI_CharacterSelect.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/CharacterSelect/Row/Ui_CharacterSelect_Row.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/CharacterSelect/Presenter/CharacterSelectPresenter.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/GameOver/Ui_GameOverButton.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/GameOver/Ui_GameOverScreen.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/GameOver/DeathCamera/GameOverDeathCamera.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/GameOver/Presenter/GameOverPresenter.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/PauseMenu/Ui_PauseMenu.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/PauseMenu/Presenter/PauseMenuPresenter.h"
+#include "../../../../../Assets/Scripts/GamePlay/Prop/CharacterPodium/Prop_CharacterPodium.h"
+#include "../../../../../Assets/Scripts/GamePlay/Prop/EventNoticeBoard/Prop_EventNoticeBoard.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/EventBoard/UI_EventBoard.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/EventBoard/Row/Ui_EventBoard_Row.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/EventBoard/Presenter/EventBoardPresenter.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/Shop/UI_Shop.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/Shop/Row/Ui_ShopRow.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/Shop/Receipt/Ui_ShopReceipt.h"
+#include "../../../../../Assets/Scripts/GamePlay/Ui/Shop/Presenter/ShopPresenter.h"
+#include "../../../../../Assets/Scripts/GamePlay/Prop/MerchantStall/Prop_MerchantStall.h"
 
 std::shared_ptr<Component::ComponentBase> GameObject::AddComponent::OnDrawGui()
 {
@@ -64,6 +83,7 @@ void GameObject::AddComponent::OnDrawUiRendererGui(std::shared_ptr<Component::Co
     {
         OnDrawTryAddComponentGui<Component::ImageRenderer        >(addComponent);
         OnDrawTryAddComponentGui<NanamiUi::BlendImageRenderer    >(addComponent);
+        OnDrawTryAddComponentGui<NanamiUi::CircleGaugeRenderer   >(addComponent);
         OnDrawTryAddComponentGui<NanamiUi::BlendAnimationRenderer>(addComponent);
         OnDrawTryAddComponentGui<NanamiUi::ImageAnimationRenderer>(addComponent);
         OnDrawTryAddComponentGui<NanamiUi::Slider                >(addComponent);
@@ -185,10 +205,30 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             OnDrawTryAddComponentGui<GamePlay::Ui::StageSelectPresenter>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::StageMapMarker>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::StageDifficultyPips>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::CharacterSelectUi>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::CharacterSelectRow>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::CharacterSelectPresenter>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::EventBoardUi>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::EventBoardRow>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::EventBoardPresenter>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::ShopUi>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::ShopRow>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::ShopReceipt>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::ShopPresenter>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::PauseMenuUi>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::PauseMenuRow>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::PauseMenuItemCell>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::PauseMenuPresenter>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::LoadingScreenUi>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::LoadingHintCard>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::GameOverScreenUi>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::GameOverButton>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::GameOverPresenter>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::GameOverDeathCamera>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::DealDamageTextBillBoard>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Ui::OtherPlayerStatusUiGroup>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::SpellPalette>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Ui::SpellSlot>(addComponent);
             ImGui::TreePop();
             ImGui::Spacing();
         }
@@ -212,7 +252,22 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
                 ImGui::TreePop();
                 ImGui::Spacing();
             }
+            if (ImGui::TreeNode("Magic"))
+            {
+                OnDrawTryAddComponentGui<GamePlay::Magic::MagicProjectile>(addComponent);
+                OnDrawTryAddComponentGui<GamePlay::Magic::MagicBlast     >(addComponent);
+                OnDrawTryAddComponentGui<GamePlay::Magic::MagicPlacement >(addComponent);
+                OnDrawTryAddComponentGui<GamePlay::Magic::MagicChannel   >(addComponent);
+                ImGui::TreePop();
+                ImGui::Spacing();
+            }
 
+            if (ImGui::TreeNode("MagicCaster"))
+            {
+                OnDrawTryAddComponentGui<GamePlay::PlayerAvatar::MagicCaster::StatusPresenter>(addComponent);
+                ImGui::TreePop();
+                ImGui::Spacing();
+            }
             if (ImGui::TreeNode("OtherPlayer"))
             {
                 OnDrawTryAddComponentGui<GamePlay::PlayerAvatar::SwordMan::StatusPresenter>(addComponent);
@@ -238,6 +293,7 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
                 OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::Hyena>(addComponent);
                 OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::Tyrannosaurus>(addComponent);
                 OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::NetworkBehaviourTree>(addComponent);
+                OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::BodyPartWeakPoint>(addComponent);
                 if (ImGui::TreeNode("Attack"))
                 {
                     OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::AttackProjectile>(addComponent);
@@ -257,6 +313,9 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
             OnDrawTryAddComponentGui<GamePlay::Prop::AirShip        >(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::Canon          >(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::IslandPedestial>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Prop::CharacterPodium>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Prop::MerchantStall>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Prop::EventNoticeBoard>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Prop::DestructibleObject>(addComponent);
             if (ImGui::TreeNode("Grass"))
             {
@@ -287,6 +346,7 @@ void GameObject::AddComponent::OnDrawGamePlayGui(std::shared_ptr<Component::Comp
         {
             OnDrawTryAddComponentGui<GamePlay::Sound::SoundPlayer>(addComponent);
             OnDrawTryAddComponentGui<GamePlay::Sound::BgmPlayObject>(addComponent);
+            OnDrawTryAddComponentGui<GamePlay::Sound::SpawnSound>(addComponent);
             ImGui::TreePop();
             ImGui::Spacing();
         }

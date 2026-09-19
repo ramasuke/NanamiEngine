@@ -51,8 +51,10 @@ editor and check *Config > AutoMCP > Enable AutoMCP*. If you change the port the
 | `gameobject_select`, `gameobject_destroy` | `gameobject.select` / `destroy` | |
 | `play`, `stop`, `end_play`, `time_set_scale` | `play`, `stop`, `end`, `time.set_scale` | |
 | `camera_get`, `camera_set` | `camera.get` / `set` | `camera_set` is edit-mode only |
+| `debug_draw_get`, `debug_draw_set` | `debugdraw.get` / `set` | *Config > DebugDraw*: `colliders` master switch, `shapes`/`layers` (true/false for all or `{"Name": bool}`), `triggers`, main/virtual camera frustums. Memory only unless `save` (writes the git-tracked `ProjectConfig/DebugDraw/`) |
 | `log_tail` | `log.tail` | Console history (2000 records kept) |
 | `assets_find` | `assets.find` | asset paths (`/`-separated), guids and types; filter by substring and extension |
+| `assets_reload` | `assets.reload` | same as *Config > Application > Reload Assets*: re-scans `Assets/` so assets / `.meta` added or rewritten on disk are registered; waits until `loadingResourceCount` is 0 (polls `status`). Loaded scenes keep the old asset instances, so `scene_reload` afterwards |
 | `model_view_open`, `model_view_state`, `model_view_select`, `model_view_close` | `modelview.*` | show a `.mv1` in ModelView by path (full or unique tail like `SwordMan.mv1`) or guid; `open` waits until loaded |
 | `animation_view_open`, `animation_view_state`, `animation_view_set`, `animation_view_set_clip` | `animationview.*` | model + clip slots A/B (source `.mv1`, clip by name/index, time, speed, loop, range), play/pause, blend, root-motion lock; `set_clip` waits for the source to load and the clip to attach |
 | `preview_camera` | `preview.camera` | ModelView/AnimationView camera: re-fit from yaw/pitch, or exact position + look-at |

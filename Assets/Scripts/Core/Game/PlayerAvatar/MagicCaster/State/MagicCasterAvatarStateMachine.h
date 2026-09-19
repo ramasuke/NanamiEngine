@@ -26,6 +26,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
             bool isEnable);
 
         void OnChangeState(MagicCasterAvatarStateType type) override;
+        void OnChangeState(EventSceneStateType type) override;
         void OnEnable()  override;
         void OnDisable() override;
 

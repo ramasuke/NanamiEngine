@@ -21,8 +21,9 @@ namespace NanamiEngine::Core::PopupWindow
         bool showInfo_    = true;
         bool showWarning_ = true;
         bool showError_   = true;
+        bool collapse_    = false;
         bool autoScroll_  = true;
     };
 
-    REGISTER_POPUP_WINDOW(ConsoleWindow);
+    REGISTER_POPUP_WINDOW(ConsoleWindow, "General");
 }

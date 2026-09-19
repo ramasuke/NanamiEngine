@@ -22,6 +22,8 @@
 #include "Event/SwordManAvatarStatusEvent.h"
 #include "Quest/SwordMan_QuestGroup.h"
 #include "../../Item/ItemPouch.h"
+#include "../../Item/Effect/IItemEffectTarget.h"
+#include "../../Item/IItemReceiver.h"
 #include "../../Wallet/PlayerAvatar_Wallet.h"
 
 namespace NanamiEngine::Module::Asset
@@ -32,7 +34,9 @@ namespace NanamiEngine::Module::Asset
 namespace GameCore::PlayerAvatar::SwordMan
 {
     class SwordManAvatarStatus final : public NetworkObjectBase,
-                                       public IPlayerAvatarStatus
+                                       public IPlayerAvatarStatus,
+                                       public Item::IItemEffectTarget,
+                                       public Item::IItemReceiver
     {
     public:
         SwordManAvatarStatus();
@@ -119,15 +123,17 @@ namespace GameCore::PlayerAvatar::SwordMan
                       void                              ConsumeJumpStamina();
                       void                              StartJumpCooldown();
         /** @brief 体力を amount だけ戻す。最大値で頭打ち、死亡中は何もしない */
-                      void                              Heal(StatusParameter::Health amount);
-                      void                              RestoreStamina(float amount);
+                      void                              Heal(StatusParameter::Health amount) override;
+                      void                              RestoreStamina(float amount) override;
         /** @brief 攻撃力の倍率を duration_secs のあいだ差し替える。重ねがけは上書き */
-                      void                              ApplyAttackBuff(float rate, float duration_secs);
+                      void                              ApplyAttackBuff(float rate, float duration_secs) override;
         [[nodiscard]] float                             AttackPowerRate() const { return attackBuffRemaining_secs_ > 0.0f ? attackBuffRate_ : 1.0f; }
         [[nodiscard]] float                             AttackBuffRemaining_secs() const { return attackBuffRemaining_secs_; }
-        [[nodiscard]] ItemPouch&                        Pouch()       { return pouch_; }
-        [[nodiscard]] const ItemPouch&                  Pouch() const { return pouch_; }
+        [[nodiscard]] ItemPouch&                        Pouch()       override { return pouch_; }
+        [[nodiscard]] const ItemPouch&                  Pouch() const override { return pouch_; }
                       void                              SetupPouch(const std::vector<Asset::ItemStack>& initialItems) { pouch_.Setup(initialItems); }
+        [[nodiscard]] int                               ReceivableCount(const Asset::ItemData& item) const override { return pouch_.ReceivableCount(item); }
+                      int                               ReceiveItem(const std::shared_ptr<Asset::ItemData>& item, const int count) override { return pouch_.Add(item, count); }
         
         
     private:
@@ -197,8 +203,8 @@ namespace GameCore::PlayerAvatar::SwordMan
 
         std::queue<std::unique_ptr<IDamage>>   onDamagedStack_;
 
-        // アイテム関係はセーブに乗せない。ポーチは SwordManAvatarResource の初期所持から毎回作り直す
-        ItemPouch pouch_;
+        // 初期所持(SwordManAvatarResource)はセーブにポーチが無いときだけ入れる
+        [[serialize(21)]] ItemPouch pouch_;
         float     attackBuffRemaining_secs_ = 0.0f;
         float     attackBuffRate_ = 1.0f;
 
@@ -261,6 +267,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             archive(CEREAL_NVP(getUpStateDuration_secs_));
             archive(CEREAL_NVP(quests_));
             archive(CEREAL_NVP(wallet_));
+            archive(CEREAL_NVP(pouch_));
         }
 
         template <class Archive>
@@ -322,13 +329,14 @@ namespace GameCore::PlayerAvatar::SwordMan
             if (version >= 16) archive(CEREAL_NVP(getUpStateDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(quests_));
             if (version >= 20) archive(CEREAL_NVP(wallet_));
+            if (version >= 21) archive(CEREAL_NVP(pouch_));
         }
     };
 #pragma endregion 
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus, 20);
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus, 21);
 CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::IPlayerAvatarStatus, GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
 #pragma endregion

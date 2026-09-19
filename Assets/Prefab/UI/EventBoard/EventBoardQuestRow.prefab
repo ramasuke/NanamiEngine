@@ -1,0 +1,1683 @@
+{
+    "isActive_": true,
+    "name_": "EventBoardQuestRow",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "C7D1AD16-12FC-4C57-AA55-C24D3783D1A5"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 3,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::Module::Component::ImageRenderer",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 2,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "33D03155-FEBA-4B62-A131-37229E41E0E8"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "spriteFile_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "E3B73D86-CB6C-4C59-8E5E-BA6A8E97E1DF"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "renderPriority_": 7020
+                }
+            }
+        },
+        "component_1": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiUi::Button",
+            "ptr_wrapper": {
+                "id": 2147483651,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "guid_": {
+                            "value_": "9B24DCA3-DC89-4B1F-A121-A6D0447A5FE4"
+                        },
+                        "isEnable_": true
+                    },
+                    "eventAreaSize_": {
+                        "value0": 500.0,
+                        "value1": 120.0
+                    },
+                    "onIdleSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "value0": {
+                                        "value_": "00000000-0000-0000-0000-000000000000"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "onHoverSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "value0": {
+                                        "value_": "00000000-0000-0000-0000-000000000000"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "component_2": {
+            "polymorphic_id": 2147483651,
+            "polymorphic_name": "GamePlay::Ui::EventBoardQuestRow",
+            "ptr_wrapper": {
+                "id": 2147483654,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "D785EEB8-04D6-4576-8826-C987D708ABFE"
+                        },
+                        "isEnable_": true
+                    },
+                    "titleText_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483655,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "67261EAE-D86D-4FED-B962-17EB258A1699"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "placeText_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483656,
+                                "data": {
+                                    "value0": {
+                                        "value_": "CE1E9CD9-682E-4EF9-85BC-D56D33C63D24"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "rewardText_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483657,
+                                "data": {
+                                    "value0": {
+                                        "value_": "AED5E57E-9527-4054-86B4-77CE978DC30C"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "eventChip_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483658,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "AF13C1DF-F7AB-4A47-A33C-88930D60F0A0"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "stateStamp_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483659,
+                                "data": {
+                                    "value0": {
+                                        "value_": "9469863E-D9EF-42E7-9928-A29E88634AD7"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "waxSeal_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483660,
+                                "data": {
+                                    "value0": {
+                                        "value_": "7E1171CD-C07E-4BA4-AA57-7D74F9A93B83"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "rankPips_": [
+                        {
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483661,
+                                    "data": {
+                                        "value0": {
+                                            "value_": "F28D2DF9-F943-4EE9-8D52-AEDE5DC0D55D"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483662,
+                                    "data": {
+                                        "value0": {
+                                            "value_": "2C7B7303-1E1E-4BED-BB9B-F26205822EF0"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483663,
+                                    "data": {
+                                        "value0": {
+                                            "value_": "F3B9E733-0033-4C56-9A2C-1AC579580888"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483664,
+                                    "data": {
+                                        "value0": {
+                                            "value_": "CBC5B10E-5EE0-4B39-B31C-8D638AA72C2A"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483665,
+                                    "data": {
+                                        "value0": {
+                                            "value_": "924FD6F6-E766-4AF5-8BC8-4C878D7270EB"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "filledPipSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483666,
+                                "data": {
+                                    "value0": {
+                                        "value_": "72AC3AA5-68A9-4C1A-9668-938EEB94F8E2"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "emptyPipSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483667,
+                                "data": {
+                                    "value0": {
+                                        "value_": "69F93847-C6ED-4A7B-AF3C-A99260D228FE"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "takingStampSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483668,
+                                "data": {
+                                    "value0": {
+                                        "value_": "E6F7C954-999E-4FFA-8859-F73051A5CF22"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "clearedStampSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483669,
+                                "data": {
+                                    "value0": {
+                                        "value_": "7CBFA108-5E13-4BBD-A532-6BEFDE683EE2"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "preparingStampSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483670,
+                                "data": {
+                                    "value0": {
+                                        "value_": "3D0274EE-B667-4BE6-9504-EFBFEFB89B54"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "selectedTicketSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483671,
+                                "data": {
+                                    "value0": {
+                                        "value_": "4C0C8AB6-08C1-47AD-90C0-82A2CCBC878F"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "unselectedTicketSprite_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483672,
+                                "data": {
+                                    "value0": {
+                                        "value_": "E3B73D86-CB6C-4C59-8E5E-BA6A8E97E1DF"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "hoverSound_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483673,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "00000000-0000-0000-0000-000000000000"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "selectedScale_": 1.0499999523162842
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 1.0,
+            "value1": 1.0,
+            "value2": 1.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 1.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 1.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 1.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 13,
+        "child": {
+            "polymorphic_id": 2147483652,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483674,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": true,
+                    "name_": "Nail",
+                    "guid_": {
+                        "value_": "14617D13-B4A2-438D-A70A-D5F4E5FB8930"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "id": 2147483675,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "C7D5D203-A5CB-4701-AEC7-8306D83B24AA"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483676,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "27CE2585-AE6B-43F2-8C0A-89B4E33211C1"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": 7021
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": -49.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": -49.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483677,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "WaxSeal",
+                    "guid_": {
+                        "value_": "3E9147AC-1C20-4CCC-ADE6-312710189325"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "id": 2147483678,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "7E1171CD-C07E-4BA4-AA57-7D74F9A93B83"
+                                        },
+                                        "isEnable_": false
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483679,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "2F6C3AFB-FD1D-4B65-A8E3-B4568EB7C83B"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": 7024
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -262.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": -262.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483680,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "TitleText",
+                    "guid_": {
+                        "value_": "61E9D2E5-6269-499F-9517-C7C5B4506050"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 2147483653,
+                            "polymorphic_name": "NanamiEngine::Module::NanamiUi::TextRenderer",
+                            "ptr_wrapper": {
+                                "id": 2147483681,
+                                "data": {
+                                    "cereal_class_version": 4,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "67261EAE-D86D-4FED-B962-17EB258A1699"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "fontFile_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483682,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 7022,
+                                    "text_": "",
+                                    "textColor_": {
+                                        "cereal_class_version": 0,
+                                        "r_": 48,
+                                        "g_": 30,
+                                        "b_": 20
+                                    },
+                                    "isWorldPos_": false,
+                                    "textAlign_": 0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -220.0,
+                            "value1": -40.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.5,
+                            "value1": 0.5,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.5,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.5,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": -220.0,
+                                "value1": -40.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483683,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "Coin",
+                    "guid_": {
+                        "value_": "D1D81FB2-5A3E-44CE-8D24-238591BAE42B"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "id": 2147483684,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "38FE1EB1-0218-4531-929A-1F13ACB2462C"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483685,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "2A2BCFDA-56C3-4E82-95D3-998F4D33DD35"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": 7022
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 112.0,
+                            "value1": -22.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 112.0,
+                                "value1": -22.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483686,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "RewardText",
+                    "guid_": {
+                        "value_": "5EF1AFA0-D9C6-4474-8870-60C238495A6B"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 5,
+                            "ptr_wrapper": {
+                                "id": 2147483687,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "AED5E57E-9527-4054-86B4-77CE978DC30C"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "fontFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483688,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 7022,
+                                    "text_": "",
+                                    "textColor_": {
+                                        "r_": 48,
+                                        "g_": 30,
+                                        "b_": 20
+                                    },
+                                    "isWorldPos_": false,
+                                    "textAlign_": 0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 128.0,
+                            "value1": -38.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.4333333373069763,
+                            "value1": 0.4333333373069763,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.4333333373069763,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.4333333373069763,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 128.0,
+                                "value1": -38.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483689,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "PlaceText",
+                    "guid_": {
+                        "value_": "5B58C294-FFBC-43A2-9419-095737A01F58"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 5,
+                            "ptr_wrapper": {
+                                "id": 2147483690,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "CE1E9CD9-682E-4EF9-85BC-D56D33C63D24"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "fontFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483691,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "02951627-F120-4EDC-B4F7-C27985C7F643"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderOrder_": 7022,
+                                    "text_": "",
+                                    "textColor_": {
+                                        "r_": 104,
+                                        "g_": 78,
+                                        "b_": 54
+                                    },
+                                    "isWorldPos_": false,
+                                    "textAlign_": 0
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -218.0,
+                            "value1": 16.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.3166666626930237,
+                            "value1": 0.3166666626930237,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.3166666626930237,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.3166666626930237,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": -218.0,
+                                "value1": 16.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483692,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "Pip0",
+                    "guid_": {
+                        "value_": "1B2A840B-671C-4EDC-B540-8141909562BD"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "id": 2147483693,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "F28D2DF9-F943-4EE9-8D52-AEDE5DC0D55D"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483694,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "69F93847-C6ED-4A7B-AF3C-A99260D228FE"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": 7022
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -120.0,
+                            "value1": 26.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.5,
+                            "value1": 0.5,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.5,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.5,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": -120.0,
+                                "value1": 26.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483695,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "Pip1",
+                    "guid_": {
+                        "value_": "7642E131-033B-4DF8-9BB9-3141F89C5EDE"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "id": 2147483696,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "2C7B7303-1E1E-4BED-BB9B-F26205822EF0"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483697,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "69F93847-C6ED-4A7B-AF3C-A99260D228FE"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": 7022
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -103.0,
+                            "value1": 26.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.5,
+                            "value1": 0.5,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.5,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.5,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": -103.0,
+                                "value1": 26.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483698,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "Pip2",
+                    "guid_": {
+                        "value_": "5873975C-4776-41B2-887D-55343D8F35AB"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "id": 2147483699,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "F3B9E733-0033-4C56-9A2C-1AC579580888"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483700,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "69F93847-C6ED-4A7B-AF3C-A99260D228FE"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": 7022
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -86.0,
+                            "value1": 26.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.5,
+                            "value1": 0.5,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.5,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.5,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": -86.0,
+                                "value1": 26.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483701,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "Pip3",
+                    "guid_": {
+                        "value_": "53C21F86-3588-483C-B04B-C59F87E4ABDC"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "id": 2147483702,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "CBC5B10E-5EE0-4B39-B31C-8D638AA72C2A"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483703,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "69F93847-C6ED-4A7B-AF3C-A99260D228FE"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": 7022
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -69.0,
+                            "value1": 26.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.5,
+                            "value1": 0.5,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.5,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.5,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": -69.0,
+                                "value1": 26.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483704,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "Pip4",
+                    "guid_": {
+                        "value_": "52B2D9C4-2CDA-4741-B45A-9FF28F68F34A"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "id": 2147483705,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "924FD6F6-E766-4AF5-8BC8-4C878D7270EB"
+                                        },
+                                        "isEnable_": true
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483706,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "69F93847-C6ED-4A7B-AF3C-A99260D228FE"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": 7022
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -52.0,
+                            "value1": 26.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 0.5,
+                            "value1": 0.5,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.5,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.5,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": -52.0,
+                                "value1": 26.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483707,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "EventChip",
+                    "guid_": {
+                        "value_": "7B8D5F46-B95A-4A3E-8237-9723E7103E80"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "id": 2147483708,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "AF13C1DF-F7AB-4A47-A33C-88930D60F0A0"
+                                        },
+                                        "isEnable_": false
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483709,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "D1D52192-ABB5-4DFD-8B89-EC812DBEA336"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": 7023
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": -16.0,
+                            "value1": 26.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": -16.0,
+                                "value1": 26.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 4,
+            "ptr_wrapper": {
+                "id": 2147483710,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "StateStamp",
+                    "guid_": {
+                        "value_": "85F53E62-DC2E-4EF3-A44C-16A1CCE941BD"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "id": 2147483711,
+                                "data": {
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "9469863E-D9EF-42E7-9928-A29E88634AD7"
+                                        },
+                                        "isEnable_": false
+                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "spriteFile_": {
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483712,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": "E6F7C954-999E-4FFA-8859-F73051A5CF22"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "renderPriority_": 7023
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 166.0,
+                            "value1": 26.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 1.0,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 1.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 1.0,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 166.0,
+                                "value1": 26.0,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        }
+    },
+    "mark_": 0,
+    "value0": 0
+}

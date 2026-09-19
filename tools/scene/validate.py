@@ -196,6 +196,12 @@ class _ClassVersionAudit:
             if isinstance(block, OrderedObj):
                 self._check_field(param.get("type") or "?", block,
                                   f"{where}.{param['key']}")
+            elif isinstance(block, list):
+                # std::vector<FIELD(T)>: cereal reads each element as its own Field<T>, in order
+                for i, element in enumerate(block):
+                    if isinstance(element, OrderedObj):
+                        self._check_field(param.get("type") or "?", element,
+                                          f"{where}.{param['key']}[{i}]")
 
     def _check_bases(self, entry: dict, data: OrderedObj, where: str) -> None:
         bases = entry.get("bases", [])

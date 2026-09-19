@@ -10,13 +10,15 @@ namespace NanamiEngine::Core::Network
     void NetworkObjectInstanceRegistry::RegisterWithId(
         const NetworkObjectId id,
         const std::weak_ptr<Module::GameObject::IGameObject>& object,
-        const OwnerLeavePolicy policy)
+        const OwnerLeavePolicy policy,
+        const PlayerId owner)
     {
         Entry& entry   = entries_[id.Value()];
         entry.instance = object;
         entry.policy   = policy;
+        // 所有者が既に入っているのは OwnershipSnapshot が先に届いた移譲済みオブジェクト。巻き戻さない
         if (entry.owner == PlayerId::Invalid())
-            entry.owner = id.SpawnerId();
+            entry.owner = owner;
 
         RegisterTickables(object);
     }
@@ -70,14 +72,13 @@ namespace NanamiEngine::Core::Network
         return result;
     }
 
-    std::vector<OwnerOverride> NetworkObjectInstanceRegistry::CollectOwnerOverrides() const
+    std::vector<ObjectOwner> NetworkObjectInstanceRegistry::CollectOwners() const
     {
-        std::vector<OwnerOverride> result;
+        std::vector<ObjectOwner> result;
         for (const auto& [rawId, entry] : entries_)
         {
-            const NetworkObjectId id(rawId);
-            if (!entry.instance.expired() && entry.owner != id.SpawnerId())
-                result.push_back({ id, entry.owner });
+            if (!entry.instance.expired())
+                result.push_back({ NetworkObjectId(rawId), entry.owner });
         }
         return result;
     }

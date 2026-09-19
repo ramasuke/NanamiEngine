@@ -1,4 +1,4 @@
-"""CLI subcommands for tools.model: convert, install.
+"""CLI subcommands for tools.model: convert, install, materials, set-emissive.
 
 Unlike ``tools/effect`` (which shells out to Effekseer's real, documented
 CUI), DxLib's ``DxLibModelViewer_64bit.exe`` has no CLI/CUI mode at all - it's
@@ -10,6 +10,7 @@ fragile than a real subprocess call, see ``tools/model/README.md``.
 from __future__ import annotations
 
 import argparse
+import math
 import os
 import shutil
 import sys
@@ -164,6 +165,81 @@ def _report_textures(mv1_path: Path, placed: list[Path], missing: list[str], des
                        f"next to it ({len(placed)} placed):\n  " + "\n  ".join(missing))
 
 
+Rgb = tuple[float, float, float]
+
+
+def _parse_emissive_specs(specs: list[str]) -> list[tuple[str | None, Rgb]]:
+    """``--emissive`` values as ``(material or None for all, rgb)``, in the
+    order given - later entries override earlier ones."""
+    parsed: list[tuple[str | None, Rgb]] = []
+    for spec in specs:
+        target, sep, color = spec.rpartition("=")
+        parts = color.split(",")
+        try:
+            rgb = tuple(float(p) for p in parts)
+        except ValueError:
+            rgb = ()
+        if len(rgb) != 3:
+            raise CliError(f"--emissive {spec!r}: expected [MATERIAL=]R,G,B, e.g. 1,0.8,0.3 or Lamp=1,0.8,0.3")
+        if not all(math.isfinite(v) and v >= 0 for v in rgb):
+            raise CliError(f"--emissive {spec!r}: R,G,B must be finite and >= 0")
+        parsed.append((target if sep else None, rgb))
+    return parsed
+
+
+def _fmt_color(values) -> str:
+    return "(" + ", ".join(f"{v:.4g}" for v in values) + ")"
+
+
+def _resolve_emissive(materials: list[mv1_mod.Material], specs: list[tuple[str | None, Rgb]],
+                      model_name: str) -> dict[int, Rgb]:
+    colors: dict[int, Rgb] = {}
+    for target, rgb in specs:
+        if target is None:
+            indices = [m.index for m in materials]
+        else:
+            indices = [m.index for m in materials if m.name == target]
+            if not indices and target.isascii() and target.isdigit() and int(target) < len(materials):
+                indices = [int(target)]
+            if not indices:
+                listing = ", ".join(f"[{m.index}] {m.name}" for m in materials)
+                raise CliError(f"--emissive {target}=...: {model_name} has no material named {target!r} "
+                               f"(materials: {listing})")
+        for i in indices:
+            colors[i] = rgb
+    return colors
+
+
+def _read_materials(path: Path) -> tuple[bytes, list[mv1_mod.Material]]:
+    try:
+        body = mv1_mod.decode(path.read_bytes())
+        return body, mv1_mod.materials(body)
+    except ValueError as e:
+        raise CliError(f"cannot read the material table of {path.name}: {e}") from e
+
+
+def _apply_emissive(src: Path, dest: Path, specs: list[tuple[str | None, Rgb]]) -> None:
+    """Write ``src`` to ``dest`` (may be the same file) with its materials'
+    emissive color set per ``specs``."""
+    body, materials = _read_materials(src)
+    if not materials:
+        raise CliError(f"{src.name} has no materials (an animation-only .mv1?), so there is no "
+                       "emissive color to set")
+    colors = _resolve_emissive(materials, specs, src.name)
+    patched = mv1_mod.with_emissive(body, colors)
+    encoded = mv1_mod.encode(patched)
+    if mv1_mod.decode(encoded) != patched:
+        raise CliError(f"internal error: re-encoded {src.name} does not decode back to the patched "
+                       "model; nothing was written")
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    tmp = dest.with_name(dest.name + ".tmp")
+    tmp.write_bytes(encoded)
+    os.replace(tmp, dest)
+    for i in sorted(colors):
+        m = materials[i]
+        print(f"emissive  [{i}] {m.name}  {_fmt_color(m.emissive[:3])} -> {_fmt_color(colors[i])}")
+
+
 def cmd_convert(args: argparse.Namespace) -> int:
     in_path = _resolve(args.file)
     if not in_path.exists():
@@ -171,6 +247,10 @@ def cmd_convert(args: argparse.Namespace) -> int:
     if args.with_textures and args.mode == "anim":
         raise CliError("--with-textures has no effect with --mode anim (an animation-only .mv1 "
                        "carries no materials); use --mode mesh or --mode full")
+    if args.emissive and args.mode == "anim":
+        raise CliError("--emissive has no effect with --mode anim (an animation-only .mv1 "
+                       "carries no materials); use --mode mesh or --mode full")
+    emissive = _parse_emissive_specs(args.emissive)
     if in_path.suffix.lower() != ".fbx":
         print(f"WARNING: {in_path.name} does not have a .fbx extension; DxLibModelViewer "
               "also loads .x/.mqo/.pmd/.pmx/.mv1, so this may still be intentional.",
@@ -218,6 +298,9 @@ def cmd_convert(args: argparse.Namespace) -> int:
         print(f"WARNING: {out_path.name} does not look like a valid .mv1: "
               + "; ".join(problems), file=sys.stderr)
     print(f"converted {out_path}  (mode: {args.mode})")
+
+    if emissive:
+        _apply_emissive(out_path, out_path, emissive)
 
     if args.with_textures:
         placed, missing = _collect_textures(out_path, [in_path.parent], out_path.parent)
@@ -302,6 +385,28 @@ def cmd_install(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_materials(args: argparse.Namespace) -> int:
+    path = _resolve(args.mv1)
+    if not path.exists():
+        raise CliError(f"{path} does not exist")
+    _, materials = _read_materials(path)
+    if not materials:
+        print(f"{path.name}: no materials (an animation-only .mv1?)")
+    for m in materials:
+        print(f"[{m.index}] {m.name}  diffuse={_fmt_color(m.diffuse)}  emissive={_fmt_color(m.emissive[:3])}")
+    return 0
+
+
+def cmd_set_emissive(args: argparse.Namespace) -> int:
+    src = _resolve(args.mv1)
+    if not src.exists():
+        raise CliError(f"{src} does not exist")
+    dest = _resolve(args.out) if args.out else src
+    _apply_emissive(src, dest, _parse_emissive_specs(args.emissive))
+    print(f"wrote {dest}")
+    return 0
+
+
 # ---------------------------------------------------------------------------
 def _wrap(fn):
     def run(args: argparse.Namespace) -> int:
@@ -311,6 +416,10 @@ def _wrap(fn):
             print(f"error: {e}", file=sys.stderr)
             return 1
     return run
+
+
+_EMISSIVE_HELP = ("emissive color (floats >= 0, 1 = full; repeatable): R,G,B for every material, MATERIAL=R,G,B for the "
+                  "material(s) with that name (or index); later values override earlier ones")
 
 
 def register(sub: argparse._SubParsersAction) -> None:
@@ -324,6 +433,8 @@ def register(sub: argparse._SubParsersAction) -> None:
                      help="also copy every texture the output .mv1 references next to it, at the "
                           "relative path it expects (looked up next to the input file and in its "
                           "*.fbm folder); not valid with --mode anim")
+    sp.add_argument("--emissive", action="append", default=[], metavar="[MATERIAL=]R,G,B",
+                     help=_EMISSIVE_HELP + "; applied to the output after saving; not valid with --mode anim")
     sp.add_argument("--modelviewer-path", default=None,
                      help="override the DxLibModelViewer_64bit.exe path")
     sp.add_argument("--timeout", type=float, default=60.0, metavar="SECONDS")
@@ -344,3 +455,14 @@ def register(sub: argparse._SubParsersAction) -> None:
                           "and in its *.fbm folders) into <dest-dir> at the relative path it expects")
     sp.add_argument("--dest", required=True, help="e.g. Assets/Art/Models/MyProp/MyProp.mv1")
     sp.set_defaults(func=_wrap(cmd_install))
+
+    sp = sub.add_parser("materials", help="list a .mv1's materials with their diffuse/emissive colors")
+    sp.add_argument("mv1", help=".mv1 file to inspect")
+    sp.set_defaults(func=_wrap(cmd_materials))
+
+    sp = sub.add_parser("set-emissive", help="set the emissive (self-illumination) color of a .mv1's materials")
+    sp.add_argument("mv1", help=".mv1 file to modify")
+    sp.add_argument("--emissive", action="append", required=True, metavar="[MATERIAL=]R,G,B",
+                     help=_EMISSIVE_HELP)
+    sp.add_argument("--out", default=None, help="write here instead of overwriting the input (its .meta is never touched)")
+    sp.set_defaults(func=_wrap(cmd_set_emissive))

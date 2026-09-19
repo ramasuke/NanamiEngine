@@ -61,5 +61,5 @@ namespace NanamiEngine::Core::MainWindow
         std::optional<Guid> rootFrameModelGuid_;
     };
 
-    REGISTER_MAIN_WINDOW(AnimationViewWindow)
+    REGISTER_MAIN_WINDOW(AnimationViewWindow, "Viewer")
 }

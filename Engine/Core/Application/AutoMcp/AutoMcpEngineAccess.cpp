@@ -10,6 +10,7 @@
 #include "../Window/Main/Preview/ModelPreviewStage.h"
 #include "../Window/Popup/Group/PopupWindowGroup.h"
 #include "../Window/Popup/Inspector/InspectorWindow.h"
+#include "../Configuration/DebugDraw/ApplicationConfiguration_DebugDraw.h"
 #include "../../../Module/Scene/Scene.h"
 
 namespace NanamiEngine::Core::Application::AutoMcp
@@ -261,5 +262,35 @@ namespace NanamiEngine::Core::Application::AutoMcp
         stage.camera_.SetRotation(rotation);
         // ロード完了待ちの自動フレーミングで上書きされないようにする
         stage.pendingFrame_ = false;
+    }
+
+    bool& AutoMcpEngineAccess::DebugDrawAllColliders()
+    {
+        return Configuration::DebugDrawConfiguration::showAllColliders_;
+    }
+
+    bool& AutoMcpEngineAccess::DebugDrawColliderKind(const Module::Physics::ColliderShapeKind kind)
+    {
+        return Configuration::DebugDrawConfiguration::showColliderKinds_.at(static_cast<std::size_t>(kind));
+    }
+
+    bool& AutoMcpEngineAccess::DebugDrawColliderLayer(const Module::Physics::Layer layer)
+    {
+        return Configuration::DebugDrawConfiguration::showColliderLayers_.at(static_cast<std::size_t>(layer));
+    }
+
+    bool& AutoMcpEngineAccess::DebugDrawTriggerColliders()
+    {
+        return Configuration::DebugDrawConfiguration::showTriggerColliders_;
+    }
+
+    bool& AutoMcpEngineAccess::DebugDrawMainCameraFrustum()
+    {
+        return Configuration::DebugDrawConfiguration::showMainCameraFrustum_;
+    }
+
+    bool& AutoMcpEngineAccess::DebugDrawVirtualCameraFrustums()
+    {
+        return Configuration::DebugDrawConfiguration::showVirtualCameraFrustums_;
     }
 }

@@ -74,6 +74,7 @@ namespace GameCore::Scene::Main
             {
                 next->Init();
                 currentScene_ = next;
+                currentSceneType_ = changeRequest;
                 currentScene_.lock()->Enter();
             }
             catch (const NanamiEngine::Module::Exception::NanamiException& exception)

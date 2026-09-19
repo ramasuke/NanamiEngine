@@ -2,9 +2,7 @@
 
 void GameCore::PlayerAvatar::MagicCaster::State::JumpState::DoEnter()
 {
-    Actions().Jump(glm::vec3{0, 1, 0} * Status().GetJumpPower());
-    Status().StartJumpCooldown();
-    Status().ConsumeJumpStamina();
+    ApplyJump();
 }
 
 void GameCore::PlayerAvatar::MagicCaster::State::JumpState::DoFixedUpdate()

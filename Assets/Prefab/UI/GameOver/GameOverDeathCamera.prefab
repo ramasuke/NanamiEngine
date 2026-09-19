@@ -1,0 +1,230 @@
+{
+    "isActive_": true,
+    "name_": "GameOverDeathCamera",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "DF488683-03B2-484E-A7E6-6D96FCD572CC"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 5,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::CineMachine::CineMachineVirtualCamera",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "4B8D439C-6A6A-47CE-8B81-AF0A74E644E9"
+                        },
+                        "isEnable_": true
+                    },
+                    "priority_": {
+                        "value": -1
+                    },
+                    "overrideFov_": false,
+                    "fov_": 60.0
+                }
+            }
+        },
+        "component_1": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour",
+            "ptr_wrapper": {
+                "id": 2147483650,
+                "data": {
+                    "cereal_class_version": 2,
+                    "value0": {
+                        "guid_": {
+                            "value_": "DEEEEDAD-7621-45AE-9EEF-9B6BE88282BD"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "value3": {
+                        "cereal_class_version": 0
+                    },
+                    "followTarget_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483651,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "00000000-0000-0000-0000-000000000000"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "followOffset_": {
+                        "value0": 0.0,
+                        "value1": 6.0,
+                        "value2": -30.0
+                    }
+                }
+            }
+        },
+        "component_2": {
+            "polymorphic_id": 2147483651,
+            "polymorphic_name": "NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour",
+            "ptr_wrapper": {
+                "id": 2147483652,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "guid_": {
+                            "value_": "6E4DA466-F581-4142-B8A2-1CC6B7A3A3CC"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {},
+                    "value3": {},
+                    "value4": {},
+                    "target_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "value0": {
+                                        "value_": "00000000-0000-0000-0000-000000000000"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "lookAtTargetOffset_": {
+                        "value0": 0.0,
+                        "value1": 1.5,
+                        "value2": 0.0
+                    }
+                }
+            }
+        },
+        "component_3": {
+            "polymorphic_id": 2147483652,
+            "polymorphic_name": "CineMachine::Behaviour::NoiseCameraBehaviour",
+            "ptr_wrapper": {
+                "id": 2147483654,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "6AB30C22-C6EE-4CB7-9617-B4B7974F2DFC"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {},
+                    "rotationAmplitude_deg_": {
+                        "value0": 0.5,
+                        "value1": 0.699999988079071,
+                        "value2": 0.25
+                    },
+                    "positionAmplitude_": {
+                        "value0": 0.0,
+                        "value1": 0.0,
+                        "value2": 0.0
+                    },
+                    "frequency_": 0.30000001192092898,
+                    "octaves_": 3,
+                    "amplitudeGain_": 1.0,
+                    "frequencyGain_": 1.0,
+                    "blendIn_secs_": 1.2000000476837159,
+                    "seed_": {
+                        "value0": 31.700000762939454,
+                        "value1": 12.899999618530274,
+                        "value2": 77.30000305175781
+                    }
+                }
+            }
+        },
+        "component_4": {
+            "polymorphic_id": 2147483653,
+            "polymorphic_name": "GamePlay::Ui::GameOverDeathCamera",
+            "ptr_wrapper": {
+                "id": 2147483655,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "7D7EBFFF-5B80-445F-B707-4FAF7D500962"
+                        },
+                        "isEnable_": true
+                    },
+                    "priority_": 500,
+                    "shotSecs_": 7.0,
+                    "orbitDeg_": 40.0,
+                    "endPitchDeg_": 55.0,
+                    "endDistance_": 46.0,
+                    "endLookAtOffset_": {
+                        "value0": 0.0,
+                        "value1": 1.5,
+                        "value2": 0.0
+                    }
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 1.0,
+            "value1": 1.0,
+            "value2": 1.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 1.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 1.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 1.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 0
+    },
+    "mark_": 0,
+    "value0": 0
+}

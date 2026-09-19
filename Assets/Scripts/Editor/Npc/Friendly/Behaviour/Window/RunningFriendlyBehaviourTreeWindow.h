@@ -27,5 +27,5 @@ namespace Editor::Npc::Friendly
         bool isLockedContent_ = false;
     };
 
-    REGISTER_POPUP_WINDOW(RunningFriendlyBehaviourTreeWindow);
+    REGISTER_POPUP_WINDOW(RunningFriendlyBehaviourTreeWindow, "Debug::Behaviour Tree");
 }

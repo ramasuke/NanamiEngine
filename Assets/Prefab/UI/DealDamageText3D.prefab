@@ -59,7 +59,7 @@
             "ptr_wrapper": {
                 "id": 2147483651,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "guid_": {
                             "value_": "AEBD5F0A-53E7-4783-8D7D-A91548D712F7"
@@ -69,7 +69,18 @@
                     "riseTime_": 0.6000000238418579,
                     "fallTime_": 0.15399999916553498,
                     "riseAmount_": 20.0,
-                    "fallAmount_": 10.0
+                    "fallAmount_": 10.0,
+                    "breakablePartColor_": {
+                        "r_": 255,
+                        "g_": 215,
+                        "b_": 0
+                    },
+                    "weakPointStunColor_": {
+                        "r_": 255,
+                        "g_": 40,
+                        "b_": 40
+                    },
+                    "emphasisScaleRate_": 1.5
                 }
             }
         }

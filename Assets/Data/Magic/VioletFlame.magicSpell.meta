@@ -1,0 +1,106 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::MagicSpellData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Magic/VioletFlame.magicSpell",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "EADDF417-A260-4ABA-B90E-44053951020C"
+                    }
+                },
+                "displayName_": "紫炎弾",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "004D2EE0-AE0C-42EE-9DD2-490E6E7A5B10"
+                                }
+                            }
+                        }
+                    }
+                },
+                "castSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "E9CF6E99-7CC7-490C-8BE1-B2C981155509"
+                                }
+                            }
+                        }
+                    }
+                },
+                "manaCost_": 18.0,
+                "cooldown_secs_": 4.0,
+                "castFireTime_secs_": 0.9800000190734863,
+                "castTotalDuration_secs_": 1.399999976158142,
+                "effect_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GamePlay::Magic::ProjectileSpellEffect",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "projectilePrefab_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "7E7EDF5F-EACE-42A6-BCC1-E42F219FDCFE"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "power_": {
+                                "cereal_class_version": 0,
+                                "value_": 26
+                            },
+                            "speed_": 150.0,
+                            "range_": 220.0
+                        }
+                    }
+                },
+                "castMotion_": 8,
+                "castEffectPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "7ECE1BB3-73B0-4756-BE3D-B0B7DCB91DB8"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -42,8 +42,10 @@ namespace GamePlay::Network
 
     private:
         void DoInitialize() override;
+        void DoShutdown() override;
         void DoDispatchReceivedPacket(const Core::Network::Packet& packet) override;
-        [[nodiscard]] std::unique_ptr<Core::Network::INetworkSystem> DoCreateUseNetworkSystem() const override;
+        [[nodiscard]] std::unique_ptr<Core::Network::INetworkSystem> DoCreateUseNetworkSystem(
+            const Core::Network::NetworkStartSettings& settings) const override;
         
         std::optional<GameCore::Network::CustomDispatcherGroup> customDispatcherGroup_;
         [[serialize(1)]] FIELD(Asset::PlayerAvatarFactory) playerAvatarFactory_;

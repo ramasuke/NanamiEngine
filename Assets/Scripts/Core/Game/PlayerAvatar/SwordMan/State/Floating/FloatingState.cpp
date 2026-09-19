@@ -51,18 +51,18 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         visitor.Action(SwordManAvatarStateAction::UseItem, false);
         if (!Conditions().IsGround())
         {
-            visitor.OnInput(SwordManAvatarStateType::JumpAttackAir, SwordManAvatarInput::NormalAttack, SwordManAvatarInputPhase::Pressed, true);
+            visitor.OnInput(SwordManAvatarStateType::JumpAttackAir, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, true);
             return;
         }
 
-        if (visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, SwordManAvatarInputPhase::Pressed, true))
+        if (visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, true))
             return;
         const bool isMoving = Input().Move().IsUpdatePressed();
         if (visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run,
-                            SwordManAvatarInput::Run, SwordManAvatarInputPhase::Holding, isMoving))
+                            SwordManAvatarInput::Run, PlayerAvatarInputPhase::Holding, isMoving))
             return;
         if (visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk,
-                            SwordManAvatarInput::Move, SwordManAvatarInputPhase::Holding, true))
+                            SwordManAvatarInput::Move, PlayerAvatarInputPhase::Holding, true))
             return;
         visitor.Automatic(SwordManAvatarStateType::Idle, true);
     }

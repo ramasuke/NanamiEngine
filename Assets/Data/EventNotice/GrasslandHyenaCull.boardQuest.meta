@@ -1,0 +1,64 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::BoardQuest",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\EventNotice/GrasslandHyenaCull.boardQuest",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "520D6D31-BEFA-4E2E-8083-546A51381656"
+                    }
+                },
+                "title_": "草原のハイエナ退治",
+                "clientName_": "酒場の仲介人",
+                "rank_": 2,
+                "goalText_": "ハイエナを 8 頭 討伐する",
+                "descriptionLines_": [
+                    "群れからはぐれたハイエナが街道まで下りてくる。",
+                    "荷馬車が襲われる前に数を減らしてほしい。"
+                ],
+                "stage_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "A369FA3C-6941-4FE4-834C-0CDD861837F9"
+                                }
+                            }
+                        }
+                    }
+                },
+                "event_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                }
+                            }
+                        }
+                    }
+                },
+                "quest_": {
+                    "polymorphic_id": 0
+                }
+            }
+        }
+    }
+}

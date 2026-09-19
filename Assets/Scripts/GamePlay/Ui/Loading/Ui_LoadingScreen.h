@@ -39,8 +39,11 @@ namespace GamePlay::Ui
         /** @brief 最低表示時間と進捗の詰めが終わり次第、消えていく */
         void BeginHide();
         [[nodiscard]] bool IsShown() const { return phase_ != Phase::Hidden; }
+        [[nodiscard]] bool IsCoverOpaque() const { return coverBlendRate_ >= 255.0f; }
         /** @brief カバーが画面を覆い切るまで待つ */
         [[nodiscard]] Coroutine::Task<void> WaitCoverOpaqueAsync() const;
+        /** @brief 最後に Show したステージ。同じステージへ入り直すときに使う */
+        [[nodiscard]] std::shared_ptr<Asset::StageData> ShownStageData() const { return shownStageData_; }
 
     private:
         enum class Phase : std::uint8_t
@@ -82,6 +85,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] int backdropBlendRate_ = 110;
 
         Phase phase_ = Phase::Hidden;
+        std::shared_ptr<Asset::StageData> shownStageData_;
         GameCore::Scene::Main::SceneLoadStep step_ = GameCore::Scene::Main::SceneLoadStep::Idle;
         std::string statusMessage_;
         float stepElapsedSecs_ = 0.0f;

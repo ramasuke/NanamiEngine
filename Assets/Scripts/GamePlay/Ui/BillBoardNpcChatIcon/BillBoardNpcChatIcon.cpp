@@ -86,13 +86,14 @@ namespace GamePlay::Ui
     {
         // ビックリマークは SetEnableShowChatIcon ではなく GameObjectSetEnable で
         // 直接表示されるため、isShow_ で演出を止めてはいけない
-        UpdateIcon(surpriseIcon_ .get(), surpriseState_ , IconMotion::Surprise);
-        UpdateIcon(chattableIcon_.get(), chattableState_, IconMotion::Chattable);
-        UpdateIcon(chattingIcon_ .get(), chattingState_ , IconMotion::Chatting);
+        UpdateIcon(surpriseIcon_ .get(), surpriseRimGlow_.get(), surpriseState_ , IconMotion::Surprise);
+        UpdateIcon(chattableIcon_.get(), nullptr               , chattableState_, IconMotion::Chattable);
+        UpdateIcon(chattingIcon_ .get(), nullptr               , chattingState_ , IconMotion::Chatting);
     }
 
     void BillBoardNpcChatIcon::UpdateIcon(
         const std::shared_ptr<GameObject::IGameObject>& object,
+        const std::shared_ptr<NanamiUi::BillboardAnimation3D>& rimGlow,
         IconState& state,
         const IconMotion motion)
     {
@@ -107,17 +108,6 @@ namespace GamePlay::Ui
                 return;
 
             state.billboard      = billboard;
-            for (const auto& child : object->Transform().GetChildren())
-            {
-                if (!child)
-                    continue;
-
-                if (const auto rimGlow = child->Components().Catch<NanamiUi::BillboardAnimation3D>().lock())
-                {
-                    state.rimGlow = rimGlow;
-                    break;
-                }
-            }
             state.basePos        = object->Transform().GetLocalPos();
             state.baseScale      = object->Transform().GetLocalScale();
             state.baseAngle      = billboard->GetAngle();
@@ -130,8 +120,6 @@ namespace GamePlay::Ui
         const auto billboard = state.billboard.lock();
         if (!billboard)
             return;
-
-        const auto rimGlow = state.rimGlow.lock();
 
         // Show()/Hide() だけでなく GameObjectSetEnable で直接切り替えられることもあるので、
         // 有効/無効は呼び出し元を問わず毎フレームの変化で検知する
@@ -214,5 +202,6 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("chattableIcon_", chattableIcon_);
         ImGuiHelper::OnDrawInputField("chattingIcon_", chattingIcon_);
         ImGuiHelper::OnDrawInputField("surpriseIcon_", surpriseIcon_);
+        ImGuiHelper::OnDrawInputField("surpriseRimGlow_", surpriseRimGlow_);
     }
 }

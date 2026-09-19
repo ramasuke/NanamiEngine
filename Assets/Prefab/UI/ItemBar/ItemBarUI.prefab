@@ -191,12 +191,12 @@
                     "maxVisibleSlots_": 5,
                     "slotPitch_px_": 76.0,
                     "selectedScale_": 1.0,
-                    "unselectedScale_": 0.74,
+                    "unselectedScale_": 0.7400000095367432,
                     "dimAlpha_": 140,
-                    "emptyAlphaRate_": 0.4,
-                    "unusableAlphaRate_": 0.6,
+                    "emptyAlphaRate_": 0.4000000059604645,
+                    "unusableAlphaRate_": 0.6000000238418579,
                     "fadeDuration_secs_": 0.25,
-                    "selectPulseDuration_secs_": 0.3,
+                    "selectPulseDuration_secs_": 0.30000001192092898,
                     "selectGlowMaxAlpha_": 210
                 }
             }
@@ -240,8 +240,8 @@
                 "value3": 0.0
             },
             "value3": {
-                "value0": 0.0,
-                "value1": 0.0,
+                "value0": 1860.0,
+                "value1": 972.0,
                 "value2": 0.0,
                 "value3": 1.0
             }
@@ -253,7 +253,7 @@
             "ptr_wrapper": {
                 "id": 2147483662,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -275,7 +275,6 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "cereal_class_version": 0,
                                         "guid_": {
                                             "value_": "0CF51FCB-5F65-4D31-AE5F-B8E9027EE2A7"
                                         },
@@ -332,14 +331,15 @@
                                 "value3": 0.0
                             },
                             "value3": {
-                                "value0": 0.0,
-                                "value1": 0.0,
+                                "value0": 1860.0,
+                                "value1": 972.0,
                                 "value2": 0.0,
                                 "value3": 1.0
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -366,7 +366,6 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "cereal_class_version": 0,
                                         "guid_": {
                                             "value_": "50B42A2E-E776-4C4D-B4B5-39034BB7145B"
                                         },
@@ -435,14 +434,15 @@
                                 "value3": 0.0
                             },
                             "value3": {
-                                "value0": 0.0,
-                                "value1": 0.0,
+                                "value0": 1860.0,
+                                "value1": 900.0,
                                 "value2": 0.0,
                                 "value3": 1.0
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -469,15 +469,12 @@
                                 "data": {
                                     "cereal_class_version": 4,
                                     "value0": {
-                                        "cereal_class_version": 0,
                                         "guid_": {
                                             "value_": "12D7B46B-EA84-470F-A4B7-F86DBC85F1AF"
                                         },
                                         "isEnable_": true
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value1": {},
                                     "fontFile_": {
                                         "cereal_class_version": 0,
                                         "value0": {
@@ -510,7 +507,7 @@
                     "transform_": {
                         "localPos_": {
                             "value0": 0.0,
-                            "value1": -78.0,
+                            "value1": -90.0,
                             "value2": 0.0
                         },
                         "localRot_": {
@@ -520,20 +517,20 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.4166666666666667,
-                            "value1": 0.4166666666666667,
+                            "value0": 0.4166666567325592,
+                            "value1": 0.4166666567325592,
                             "value2": 1.0
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 1.0,
+                                "value0": 0.4166666567325592,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 1.0,
+                                "value1": 0.4166666567325592,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
@@ -544,14 +541,15 @@
                                 "value3": 0.0
                             },
                             "value3": {
-                                "value0": 0.0,
-                                "value1": 0.0,
+                                "value0": 1860.0,
+                                "value1": 882.0,
                                 "value2": 0.0,
                                 "value3": 1.0
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -608,8 +606,8 @@
                                 "value3": 0.0
                             },
                             "value3": {
-                                "value0": 0.0,
-                                "value1": 0.0,
+                                "value0": 1860.0,
+                                "value1": 972.0,
                                 "value2": 0.0,
                                 "value3": 1.0
                             }
@@ -636,18 +634,13 @@
                                                 "id": 2147483672,
                                                 "data": {
                                                     "value0": {
-                                                        "cereal_class_version": 0,
                                                         "guid_": {
                                                             "value_": "D56BE24E-65AA-458A-BE30-4CF088B714AB"
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "blendMode_": 1,
                                                     "blendRate_": 0,
                                                     "spriteFile_": {
@@ -670,7 +663,7 @@
                                     },
                                     "transform_": {
                                         "localPos_": {
-                                            "value0": -182.0,
+                                            "value0": -208.0,
                                             "value1": 62.0,
                                             "value2": 0.0
                                         },
@@ -705,14 +698,15 @@
                                                 "value3": 0.0
                                             },
                                             "value3": {
-                                                "value0": 0.0,
-                                                "value1": 0.0,
+                                                "value0": 1652.0,
+                                                "value1": 1034.0,
                                                 "value2": 0.0,
                                                 "value3": 1.0
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -737,15 +731,12 @@
                                                 "id": 2147483675,
                                                 "data": {
                                                     "value0": {
-                                                        "cereal_class_version": 0,
                                                         "guid_": {
                                                             "value_": "C689F636-5C70-49E3-81A6-70C5EECC0B0B"
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -762,7 +753,6 @@
                                                     "renderOrder_": 19,
                                                     "text_": "切替",
                                                     "textColor_": {
-                                                        "cereal_class_version": 0,
                                                         "r_": 255,
                                                         "g_": 255,
                                                         "b_": 255
@@ -775,8 +765,8 @@
                                     },
                                     "transform_": {
                                         "localPos_": {
-                                            "value0": -130.0,
-                                            "value1": 62.0,
+                                            "value0": -142.0,
+                                            "value1": 52.0,
                                             "value2": 0.0
                                         },
                                         "localRot_": {
@@ -786,20 +776,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.35,
-                                            "value1": 0.35,
+                                            "value0": 0.3499999940395355,
+                                            "value1": 0.3499999940395355,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 1.0,
+                                                "value0": 0.3499999940395355,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 1.0,
+                                                "value1": 0.3499999940395355,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -810,14 +800,15 @@
                                                 "value3": 0.0
                                             },
                                             "value3": {
-                                                "value0": 0.0,
-                                                "value1": 0.0,
+                                                "value0": 1718.0,
+                                                "value1": 1024.0,
                                                 "value2": 0.0,
                                                 "value3": 1.0
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -842,18 +833,13 @@
                                                 "id": 2147483678,
                                                 "data": {
                                                     "value0": {
-                                                        "cereal_class_version": 0,
                                                         "guid_": {
                                                             "value_": "9D93995E-CC36-4291-B22D-D9DC423D79EF"
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
                                                     "blendMode_": 1,
                                                     "blendRate_": 0,
                                                     "spriteFile_": {
@@ -911,14 +897,15 @@
                                                 "value3": 0.0
                                             },
                                             "value3": {
-                                                "value0": 0.0,
-                                                "value1": 0.0,
+                                                "value0": 1784.0,
+                                                "value1": 1034.0,
                                                 "value2": 0.0,
                                                 "value3": 1.0
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -943,15 +930,12 @@
                                                 "id": 2147483681,
                                                 "data": {
                                                     "value0": {
-                                                        "cereal_class_version": 0,
                                                         "guid_": {
                                                             "value_": "A67FAA8D-E4CE-4ADA-BFF6-A684D4250930"
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -968,7 +952,6 @@
                                                     "renderOrder_": 19,
                                                     "text_": "使用",
                                                     "textColor_": {
-                                                        "cereal_class_version": 0,
                                                         "r_": 255,
                                                         "g_": 255,
                                                         "b_": 255
@@ -982,7 +965,7 @@
                                     "transform_": {
                                         "localPos_": {
                                             "value0": -24.0,
-                                            "value1": 62.0,
+                                            "value1": 52.0,
                                             "value2": 0.0
                                         },
                                         "localRot_": {
@@ -992,20 +975,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.35,
-                                            "value1": 0.35,
+                                            "value0": 0.3499999940395355,
+                                            "value1": 0.3499999940395355,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 1.0,
+                                                "value0": 0.3499999940395355,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 1.0,
+                                                "value1": 0.3499999940395355,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -1016,21 +999,24 @@
                                                 "value3": 0.0
                                             },
                                             "value3": {
-                                                "value0": 0.0,
-                                                "value1": 0.0,
+                                                "value0": 1836.0,
+                                                "value1": 1024.0,
                                                 "value2": 0.0,
                                                 "value3": 1.0
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         }
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 0
 }

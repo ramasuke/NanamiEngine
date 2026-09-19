@@ -2,9 +2,8 @@
 #include <array>
 #include <memory>
 #include <string>
-#include <vector>
+#include "Ui_ControlGuide.h"
 #include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../../Engine/Module/Asset/Sprite/SpriteFile.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../Core/Game/PlayerAvatar/InputAction/PlayerAvatarInputDevice.h"
@@ -18,10 +17,7 @@ namespace GamePlay::PlayerAvatar::SwordMan
 
 namespace GamePlay::Ui
 {
-    class SwordManControlGuideRow;
-
-    // State が宣言する遷移と操作から、どの行に何を出すかを決める。
-    // 描画は rowPrefab_ から rows_ の子へ Row の順に生成した SwordManControlGuideRow が行い、行の積み上げは VerticalLayoutGroup が行う
+    // State が宣言する遷移と操作から、どの行に何を出すかを決める。見せ方は controlGuide_ が行う
     class SwordManControlGuide final : public Component::ComponentBase,
                                        public LifeCycleCallback::IUpdatable
     {
@@ -86,37 +82,19 @@ namespace GamePlay::Ui
             Label label    = Label::Move;
         };
 
-        struct RowState
-        {
-            Glyph glyph             = Glyph::Move;
-            Label label             = Label::Move;
-            float visibility        = 0.0f;
-            float usableRate        = 0.0f;
-            float focusRate         = 0.0f;
-            float pulseElapsed_secs = 0.0f;
-            bool  isActive          = false;
-            bool  isContentDirty    = true;
-            bool  isFocused         = false;
-            bool  isFocusDirty      = true;
-        };
-
         using RowRequests = std::array<RowRequest, static_cast<std::size_t>(Row::Count)>;
 
         void OnUpdate() override;
 
-        void SpawnRows();
         /// チュートリアルが指した行は、State が出していなくても薄く出す
         void ApplyFocusRequest(GameCore::PlayerAvatar::SwordMan::SwordManControlGuideFocus target);
-        void AnimateRow(RowState& row, const RowRequest& request, bool isFocused, float deltaTime) const;
-        void PresentRow(SwordManControlGuideRow& view, RowState& row, const RowRequest& request, bool isCleared) const;
         [[nodiscard]] std::shared_ptr<Asset::SpriteFile> GlyphSprite(Glyph glyph) const;
         [[nodiscard]] const std::string& LabelText(Label label) const;
         [[nodiscard]] static Row FocusRow(GameCore::PlayerAvatar::SwordMan::SwordManControlGuideFocus target);
         /// 吹き出しを出す側が行の位置を知れるように、指している行の画面座標を返す
         void ReportFocusAnchor(const std::shared_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& swordManAvatar, Row focusedRow) const;
 
-        [[serialize(1)]] FIELD(GameObject::IGameObject) rows_;
-        [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) rowPrefab_;
+        [[serialize(3)]] FIELD(Ui::ControlGuide) controlGuide_;
 
         [[serialize(2)]] FIELD(Asset::SpriteFile) keyMoveSprite_;
         [[serialize(2)]] FIELD(Asset::SpriteFile) keyMoveHorizontalSprite_;
@@ -152,29 +130,8 @@ namespace GamePlay::Ui
         [[serialize(0)]] std::string cannonTurnLabel_;
         [[serialize(0)]] std::string cannonFireLabel_;
 
-        [[serialize(0)]] float slideDistance_px_ = 14.0f;
-        [[serialize(0)]] float guideFadeDuration_secs_ = 0.3f;
-        [[serialize(0)]] float rowFadeDuration_secs_ = 0.15f;
-        [[serialize(0)]] float pulseDuration_secs_ = 0.45f;
-        [[serialize(0)]] int accentGlowMaxAlpha_ = 230;
-        [[serialize(0)]] int glyphFlashMaxAlpha_ = 115;
-        [[serialize(0)]] int dimAlpha_ = 110;
-        [[serialize(0)]] float labelShadowAlphaRate_ = 0.7f;
-
-        [[serialize(2)]] float focusFadeDuration_secs_ = 0.18f;
-        [[serialize(2)]] float focusPulsePeriod_secs_ = 0.9f;
-        [[serialize(2)]] float focusArrowSwing_px_ = 5.0f;
-        [[serialize(2)]] int focusGlyphFlashMaxAlpha_ = 90;
-        /// フォーカス中、指していない行をさらに沈める割合
-        [[serialize(2)]] float unfocusedDimRate_ = 0.3f;
-
         std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar> swordManAvatar_;
-        std::vector<std::weak_ptr<SwordManControlGuideRow>> rowViews_;
         RowRequests requests_{};
-        std::array<RowState, static_cast<std::size_t>(Row::Count)> rowStates_{};
-        float guideAlpha_ = 0.0f;
-        float focusElapsed_secs_ = 0.0f;
-        float anyFocusRate_ = 0.0f;
         GameCore::PlayerAvatar::PlayerAvatarInputDevice device_ = GameCore::PlayerAvatar::PlayerAvatarInputDevice::KeyboardMouse;
 
 #pragma region Serialization Function
@@ -184,8 +141,7 @@ namespace GamePlay::Ui
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<ComponentBase>(this));
-            archive(CEREAL_NVP(rows_));
-            archive(CEREAL_NVP(rowPrefab_));
+            archive(CEREAL_NVP(controlGuide_));
             archive(CEREAL_NVP(keyMoveSprite_));
             archive(CEREAL_NVP(keyMoveHorizontalSprite_));
             archive(CEREAL_NVP(keyAttackSprite_));
@@ -217,29 +173,13 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(wakeUpLabel_));
             archive(CEREAL_NVP(cannonTurnLabel_));
             archive(CEREAL_NVP(cannonFireLabel_));
-            archive(CEREAL_NVP(slideDistance_px_));
-            archive(CEREAL_NVP(guideFadeDuration_secs_));
-            archive(CEREAL_NVP(rowFadeDuration_secs_));
-            archive(CEREAL_NVP(pulseDuration_secs_));
-            archive(CEREAL_NVP(accentGlowMaxAlpha_));
-            archive(CEREAL_NVP(glyphFlashMaxAlpha_));
-            archive(CEREAL_NVP(dimAlpha_));
-            archive(CEREAL_NVP(labelShadowAlphaRate_));
-            archive(CEREAL_NVP(focusFadeDuration_secs_));
-            archive(CEREAL_NVP(focusPulsePeriod_secs_));
-            archive(CEREAL_NVP(focusArrowSwing_px_));
-            archive(CEREAL_NVP(focusGlyphFlashMaxAlpha_));
-            archive(CEREAL_NVP(unfocusedDimRate_));
         }
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
-            // v1 で Rows の名前検索を FIELD に置き換えた
-            std::string rowsName_;
-            if (version < 1) archive(CEREAL_NVP(rowsName_));
-            if (version >= 1) archive(CEREAL_NVP(rows_));
-            if (version >= 0) archive(CEREAL_NVP(rowPrefab_));
+            // v3 で行の生成と見せ方を ControlGuide へ移した
+            if (version >= 3) archive(CEREAL_NVP(controlGuide_));
             // v2 でグリフをキー名から操作名に付け替え、ゲームパッド用の絵を足した
             if (version < 2)
             {
@@ -286,22 +226,9 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(wakeUpLabel_));
             if (version >= 0) archive(CEREAL_NVP(cannonTurnLabel_));
             if (version >= 0) archive(CEREAL_NVP(cannonFireLabel_));
-            if (version >= 0) archive(CEREAL_NVP(slideDistance_px_));
-            if (version >= 0) archive(CEREAL_NVP(guideFadeDuration_secs_));
-            if (version >= 0) archive(CEREAL_NVP(rowFadeDuration_secs_));
-            if (version >= 0) archive(CEREAL_NVP(pulseDuration_secs_));
-            if (version >= 0) archive(CEREAL_NVP(accentGlowMaxAlpha_));
-            if (version >= 0) archive(CEREAL_NVP(glyphFlashMaxAlpha_));
-            if (version >= 0) archive(CEREAL_NVP(dimAlpha_));
-            if (version >= 0) archive(CEREAL_NVP(labelShadowAlphaRate_));
-            if (version >= 2) archive(CEREAL_NVP(focusFadeDuration_secs_));
-            if (version >= 2) archive(CEREAL_NVP(focusPulsePeriod_secs_));
-            if (version >= 2) archive(CEREAL_NVP(focusArrowSwing_px_));
-            if (version >= 2) archive(CEREAL_NVP(focusGlyphFlashMaxAlpha_));
-            if (version >= 2) archive(CEREAL_NVP(unfocusedDimRate_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::SwordManControlGuide, 2)
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::SwordManControlGuide, 3)

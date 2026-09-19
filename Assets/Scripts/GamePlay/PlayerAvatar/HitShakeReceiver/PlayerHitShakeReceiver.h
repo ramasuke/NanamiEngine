@@ -10,7 +10,6 @@ namespace GamePlay::PlayerAvatar
 {
     /**
      * @brief プレイヤーの攻撃を受けたときに、同じGameObjectのModelRendererの描画位置だけを減衰振動させる
-     * @note 攻撃した本人の画面だけで再生するローカル演出(同期しない)
      */
     class PlayerHitShakeReceiver final : public Component::ComponentBase,
                                          public LifeCycleCallback::IUpdatable

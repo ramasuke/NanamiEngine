@@ -17,3 +17,5 @@
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/Transform/SetRotation/Friendly_Behaviour_Action_SetRotation.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Other/WriteBlackBoard/Friendly_Behaviour_Action_WriteBlackBoard.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/PlayerStatus/Quest/CheckComplete/Friendly_Behaviour_Action_CheckCompleteQuest.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Ui/OpenCharacterSelect/Friendly_Behaviour_Action_OpenCharacterSelect.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Ui/OpenShop/Friendly_Behaviour_Action_OpenShop.h"

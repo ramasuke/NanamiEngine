@@ -4,6 +4,7 @@
 #include <thread>
 
 #include "EffekseerForDXLib.h"
+#include "../../../Libs/LibCore/DxLib/ShiftJis.h"
 #include "../../Module/Network/Engine_Network_NetworkRunner.h"
 #include "../../Module/Scene/GameObject/Helper/GameObject.h"
 #include "../FileSystem/Directory/Directory.h"
@@ -14,6 +15,7 @@
 #include "../Object/Registry/ObjectRegistry.h"
 #include "Configuration/ApplicationConfiguration.h"
 #include "Configuration/AutoMcp/ApplicationConfiguration_AutoMcp.h"
+#include "Configuration/Build/ApplicationConfiguration_Build.h"
 #include "Configuration/CodeEditor/ApplicationConfiguration_CodeEditor.h"
 #include "Configuration/DebugDraw/ApplicationConfiguration_DebugDraw.h"
 #include "Configuration/GameWindow/ApplicationConfiguration_GameWindow.h"
@@ -67,6 +69,11 @@ namespace NanamiEngine::Core::Application
         Configuration::GameWindowConfiguration::Load();
         Configuration::CodeEditorConfiguration::Load();
         Configuration::AutoMcpConfiguration::Load();
+        Configuration::BuildConfiguration::Load();
+        if constexpr (Configuration::APPLICATION_MODE == Configuration::ApplicationMode::Game)
+        {
+            SetMainWindowText(LibCore::Dxlib::Utf8ToShiftJis(Configuration::BuildConfiguration::ProductName()).c_str());
+        }
         SetDoubleStartValidFlag(true          );
         ChangeWindowMode       (true          );
         SetGraphMode           (Configuration::AppConfiguration::GetWindowWidth(), Configuration::AppConfiguration::GetWindowHeight(), Configuration::AppConfiguration::GetWindowColorScale());
@@ -90,7 +97,7 @@ namespace NanamiEngine::Core::Application
         OnChangeWindow<MainWindow::GameWindow>();
 
         /** Sceneの初期化 */
-        const auto initScene = std::make_shared<Scene::Scene>("Assets/Scene/GameManage.scene");
+        const auto initScene = std::make_shared<Scene::Scene>(Configuration::BuildConfiguration::StartScenePath());
         MainWindows().Catch<MainWindow::GameWindow>()->AddContent     (initScene);
         MainWindows().Catch<MainWindow::GameWindow>()->ChangeMainScene(initScene);
 

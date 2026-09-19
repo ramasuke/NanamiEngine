@@ -6,7 +6,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     class SwordManAvatarUseCannonState final : public SwordManAvatarStateBase
     {
     public:
-        DEFINE_STATE_CONSTRUCTOR(SwordManAvatarUseCannonState)
+        explicit SwordManAvatarUseCannonState(const SwordManAvatarStateArgs& args) : SwordManAvatarStateBase(args) {}
 
     private:
         void DoEnter () override;
@@ -14,7 +14,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoUpdate() override;
         void DoExit  () override;
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::Idle; }
-        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Accept; }
+        [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Accept; }
         void VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const override;
     };
 }

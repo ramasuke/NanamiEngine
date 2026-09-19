@@ -6,11 +6,6 @@ namespace GameCore::PlayerAvatar
     enum class QuestType;
 }
 
-namespace GameCore::PlayerAvatar
-{
-    class QuestBase;
-}
-
 namespace GameCore::PlayerAvatar::Quest
 {
     class ICompleteQuestGroup

@@ -17,7 +17,7 @@ namespace GamePlay::Ui
     namespace
     {
         using GameCore::PlayerAvatar::PlayerAvatarInputDevice;
-        using GameCore::PlayerAvatar::SwordMan::SwordManAvatarControlAcceptance;
+        using GameCore::PlayerAvatar::PlayerAvatarControlAcceptance;
         using GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateAction;
 
         float ItemBarMoveTowards(const float current, const float target, const float maxDelta)
@@ -47,10 +47,10 @@ namespace GamePlay::Ui
         bool Automatic(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateType, bool) override { return false; }
         bool OnInput(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateType,
                      GameCore::PlayerAvatar::SwordMan::SwordManAvatarInput,
-                     GameCore::PlayerAvatar::SwordMan::SwordManAvatarInputPhase, bool) override { return false; }
+                     GameCore::PlayerAvatar::PlayerAvatarInputPhase, bool) override { return false; }
         bool OnInputWhenReady(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateType,
                               GameCore::PlayerAvatar::SwordMan::SwordManAvatarInput,
-                              GameCore::PlayerAvatar::SwordMan::SwordManAvatarInputPhase, bool, bool) override { return false; }
+                              GameCore::PlayerAvatar::PlayerAvatarInputPhase, bool, bool) override { return false; }
 
         void Action(const SwordManAvatarStateAction action, const bool isUsable) override
         {
@@ -78,20 +78,21 @@ namespace GamePlay::Ui
 
     void ItemBar::SpawnSlots(const GameCore::PlayerAvatar::ItemPouch& pouch)
     {
-        if (!slotViews_.empty() || !slotPrefab_ || !slots_)
+        if (!slotPrefab_ || !slots_)
             return;
 
         const std::size_t limit = static_cast<std::size_t>(std::max(maxVisibleSlots_, 0));
-        visibleCount_ = std::min(limit, pouch.Slots().size());
-        if (visibleCount_ == 0)
+        const std::size_t wantedCount = std::min(limit, pouch.Slots().size());
+        if (wantedCount <= visibleCount_)
             return;
 
         const auto slotsObject = slots_.get();
-        for (std::size_t i = 0; i < visibleCount_; ++i)
+        while (slotViews_.size() < wantedCount)
         {
             const auto slotObject = Scene::GameObject::Instantiate(*slotPrefab_.get(), slotsObject).lock();
             slotViews_.push_back(slotObject ? slotObject->Components().Catch<ItemSlot>() : std::weak_ptr<ItemSlot>{});
         }
+        visibleCount_ = wantedCount;
 
         // HorizontalLayoutGroup は原点から右へ並べるので、枠の数だけ帯を左へずらして右端を固定する。
         // ルートの位置が「一番右の枠の中心」になる
@@ -228,9 +229,9 @@ namespace GamePlay::Ui
         }
 
         const auto state = avatar->GetStateMachine().CurrentStateValue();
-        const auto acceptance = state ? state->ControlAcceptance() : SwordManAvatarControlAcceptance::None;
+        const auto acceptance = state ? state->ControlAcceptance() : PlayerAvatarControlAcceptance::None;
         // Momentary は一瞬で終わるので、直前に宣言された内容をそのまま引き継ぐ(帯が瞬かない)
-        if (acceptance == SwordManAvatarControlAcceptance::Accept)
+        if (acceptance == PlayerAvatarControlAcceptance::Accept)
         {
             ActionCollector collector;
             state->VisitTransitions(collector);
@@ -247,10 +248,12 @@ namespace GamePlay::Ui
             lastRevision_ = pouch.Revision();
             lastSelectedIndex_ = pouch.SelectedIndex();
             isContentDirty_ = false;
+            // 拾ったアイテムでポーチの枠が増えることがある
+            SpawnSlots(pouch);
             RefreshContent(pouch);
         }
 
-        const bool isShown = acceptance != SwordManAvatarControlAcceptance::None && isShownDeclared_ && visibleCount_ > 0;
+        const bool isShown = acceptance != PlayerAvatarControlAcceptance::None && isShownDeclared_ && visibleCount_ > 0;
         barAlpha_ = ItemBarMoveTowards(barAlpha_, isShown ? 1.0f : 0.0f, ItemBarStepRate(deltaTime, fadeDuration_secs_));
         selectPulse_secs_ += deltaTime;
 

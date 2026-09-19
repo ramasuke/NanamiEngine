@@ -20,14 +20,20 @@ namespace GamePlay::Network
             *enemyFactory_.get());
     }
 
+    void CustomNetworkRunner::DoShutdown()
+    {
+        customDispatcherGroup_.reset();
+    }
+
     void CustomNetworkRunner::DoDispatchReceivedPacket(const Core::Network::Packet& packet)
     {
         customDispatcherGroup_->DispatchReceivedPacket(packet);
     }
 
-    std::unique_ptr<Core::Network::INetworkSystem> CustomNetworkRunner::DoCreateUseNetworkSystem() const
+    std::unique_ptr<Core::Network::INetworkSystem> CustomNetworkRunner::DoCreateUseNetworkSystem(
+        const Core::Network::NetworkStartSettings& settings) const
     {
-        return std::make_unique<Core::Network::EnetUDPNetworkSystem>();
+        return std::make_unique<Core::Network::EnetUDPNetworkSystem>(settings);
     }
 
     std::weak_ptr<GameCore::IPlayerAvatar> CustomNetworkRunner::SpawnPlayerAvatar(

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../MagicCasterAvatarStateBase.h"
 
 namespace GameCore::PlayerAvatar::MagicCaster::State
@@ -6,7 +6,7 @@ namespace GameCore::PlayerAvatar::MagicCaster::State
     class RunState final : public MagicCasterAvatarStateBase
     {
     public:
-        DEFINE_MAGICCASTER_STATE_CONSTRUCTOR(RunState)
+        explicit RunState(const MagicCasterAvatarStateArgs& args) : MagicCasterAvatarStateBase(args) {}
 
     private:
         void DoEnter      () override;
@@ -14,5 +14,7 @@ namespace GameCore::PlayerAvatar::MagicCaster::State
         void DoFixedUpdate() override;
         void DoExit       () override;
         [[nodiscard]] MagicCaster::AnimationType AnimationType() const override { return AnimationType::Run; }
+        [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Accept; }
+        void VisitTransitions(IMagicCasterAvatarTransitionVisitor& visitor) const override;
     };
 }

@@ -1,0 +1,64 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::BoardQuest",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\EventNotice/HyenaHuntWeekQuest1.boardQuest",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "26AAFC7B-930F-451B-9D10-2D628C87BF43"
+                    }
+                },
+                "title_": "群狼討伐週間 其の一",
+                "clientName_": "酒場の仲介人",
+                "rank_": 3,
+                "goalText_": "ハイエナを 20 頭 討伐する",
+                "descriptionLines_": [
+                    "討伐週間のあいだだけ貼り出される依頼。",
+                    "期間中に数を揃えれば礼をはずむ。"
+                ],
+                "stage_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "A369FA3C-6941-4FE4-834C-0CDD861837F9"
+                                }
+                            }
+                        }
+                    }
+                },
+                "event_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "83CE99E8-8DFB-4663-A84C-0FBB49AD1311"
+                                }
+                            }
+                        }
+                    }
+                },
+                "quest_": {
+                    "polymorphic_id": 0
+                }
+            }
+        }
+    }
+}

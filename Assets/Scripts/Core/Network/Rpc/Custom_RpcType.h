@@ -34,7 +34,10 @@ namespace GameCore::Network
 
         /** 敵固有 */
         AttackAreaFire,
-        EnemyDeath,    
+        EnemyDeath,
+
+        /** プレイヤー固有 */
+        CastSpell,
     };
 
     using WakeUpPlayerRpc    = Module::Network::RpcDef<ERpcType::WakeUpPlayer>;
@@ -54,4 +57,7 @@ namespace GameCore::Network
 
     using AttackAreaFireRpc     = Module::Network::RpcDef<ERpcType::AttackAreaFire, Damage::PhysicsPower>;
     using EnemyDeathRpc         = Module::Network::RpcDef<ERpcType::EnemyDeath>;
+
+    /** 魔法の guid と、撃った画面で決めた MagicCastTarget（起点・向き・着弾点・威力の倍率） */
+    using CastSpellRpc          = Module::Network::RpcDef<ERpcType::CastSpell, Guid, glm::vec3, glm::quat, glm::vec3, float>;
 }

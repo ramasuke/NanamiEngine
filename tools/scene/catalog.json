@@ -1,5 +1,5 @@
 {
-  "generated_from": "765f7f3fbb8b7a1781ceee1aec274c5046da4bb1",
+  "generated_from": "b377183098a5b8e7fe572d32b184af968bac1cdc",
   "components": {
     "CineMachine::Behaviour::NoiseCameraBehaviour": {
       "class": "NoiseCameraBehaviour",
@@ -289,7 +289,7 @@
       "class": "Game",
       "fqn": "GameCore::Game",
       "leaf": "Game",
-      "version": 3,
+      "version": 4,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -325,6 +325,38 @@
           "named": true,
           "shape": "field",
           "type": "SceneFile"
+        },
+        {
+          "key": "gameOverSceneFile_",
+          "member": "gameOverSceneFile_",
+          "named": true,
+          "shape": "field",
+          "type": "SceneFile"
+        }
+      ]
+    },
+    "GameCore::Npc::Enemy::EnemySpawnPoint": {
+      "class": "EnemySpawnPoint",
+      "fqn": "GameCore::Npc::Enemy::EnemySpawnPoint",
+      "leaf": "EnemySpawnPoint",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/SpawnPoint/EnemySpawnPoint.h",
+      "params": [
+        {
+          "key": "kind_",
+          "member": "kind_",
+          "named": true,
+          "shape": "unknown",
+          "type": "EnemyKind"
         }
       ]
     },
@@ -332,7 +364,7 @@
       "class": "EnemyBase",
       "fqn": "GameCore::Npc::EnemyBase",
       "leaf": "EnemyBase",
-      "version": 4,
+      "version": 5,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -367,6 +399,13 @@
           "member": "isNetworkSyncStatus_",
           "named": true,
           "shape": "bool"
+        },
+        {
+          "key": "lockOnPoint_",
+          "member": "lockOnPoint_",
+          "named": true,
+          "shape": "field",
+          "type": "LockOnPoint"
         }
       ]
     },
@@ -490,6 +529,142 @@
         }
       ]
     },
+    "GamePlay::Magic::MagicBlast": {
+      "class": "MagicBlast",
+      "fqn": "GamePlay::Magic::MagicBlast",
+      "leaf": "MagicBlast",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Magic/Component/GamePlay_MagicBlast.h",
+      "params": [
+        {
+          "key": "detonatePrefab_",
+          "member": "detonatePrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "detonateEffectLifeTime_secs_",
+          "member": "detonateEffectLifeTime_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "detonateOnEnter_",
+          "member": "detonateOnEnter_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "GamePlay::Magic::MagicChannel": {
+      "class": "MagicChannel",
+      "fqn": "GamePlay::Magic::MagicChannel",
+      "leaf": "MagicChannel",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Magic/Component/GamePlay_MagicChannel.h",
+      "params": [
+        {
+          "key": "hitPrefab_",
+          "member": "hitPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "hitEffectLifeTime_secs_",
+          "member": "hitEffectLifeTime_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "linger_secs_",
+          "member": "linger_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Magic::MagicPlacement": {
+      "class": "MagicPlacement",
+      "fqn": "GamePlay::Magic::MagicPlacement",
+      "leaf": "MagicPlacement",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Magic/Component/GamePlay_MagicPlacement.h",
+      "params": [
+        {
+          "key": "vanishPrefab_",
+          "member": "vanishPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "vanishEffectLifeTime_secs_",
+          "member": "vanishEffectLifeTime_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Magic::MagicProjectile": {
+      "class": "MagicProjectile",
+      "fqn": "GamePlay::Magic::MagicProjectile",
+      "leaf": "MagicProjectile",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Magic/Component/GamePlay_MagicProjectile.h",
+      "params": [
+        {
+          "key": "impactPrefab_",
+          "member": "impactPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "impactLifeTime_secs_",
+          "member": "impactLifeTime_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
     "GamePlay::Npc::Enemy::AttackProjectile": {
       "class": "AttackProjectile",
       "fqn": "GamePlay::Npc::Enemy::AttackProjectile",
@@ -506,6 +681,43 @@
       "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Npc/Enemy/Projectile/GamePlay_Enemy_ProjectileAttackArea.h",
       "params": []
+    },
+    "GamePlay::Npc::Enemy::BodyPartWeakPoint": {
+      "class": "BodyPartWeakPoint",
+      "fqn": "GamePlay::Npc::Enemy::BodyPartWeakPoint",
+      "leaf": "BodyPartWeakPoint",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Npc/Enemy/BodyPart/GamePlay_Enemy_BodyPartWeakPoint.h",
+      "params": [
+        {
+          "key": "durability_",
+          "member": "durability_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "weakWindowHint_",
+          "member": "weakWindowHint_",
+          "named": true,
+          "shape": "field",
+          "type": "ParticleSystem"
+        },
+        {
+          "key": "hintRetrigger_secs_",
+          "member": "hintRetrigger_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
     },
     "GamePlay::Npc::Friendly::FriendlyNpc": {
       "class": "FriendlyNpc",
@@ -549,6 +761,149 @@
           "named": true,
           "shape": "field",
           "type": "BillBoardNpcChatIcon"
+        }
+      ]
+    },
+    "GamePlay::Pickup::ItemPickup": {
+      "class": "ItemPickup",
+      "fqn": "GamePlay::Pickup::ItemPickup",
+      "leaf": "ItemPickup",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Pickup/GamePlay_ItemPickup.h",
+      "params": [
+        {
+          "key": "item_",
+          "member": "item_",
+          "named": true,
+          "shape": "field",
+          "type": "ItemData"
+        },
+        {
+          "key": "count_",
+          "member": "count_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "launchUpSpeed_",
+          "member": "launchUpSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "launchSideSpeedMin_",
+          "member": "launchSideSpeedMin_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "launchSideSpeedMax_",
+          "member": "launchSideSpeedMax_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pickupDelay_secs_",
+          "member": "pickupDelay_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pickupSound_",
+          "member": "pickupSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "model_",
+          "member": "model_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "spinSpeed_degPerSec_",
+          "member": "spinSpeed_degPerSec_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "bobHeight_",
+          "member": "bobHeight_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "bobPeriod_secs_",
+          "member": "bobPeriod_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Pickup::MoneyPickup": {
+      "class": "MoneyPickup",
+      "fqn": "GamePlay::Pickup::MoneyPickup",
+      "leaf": "MoneyPickup",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Pickup/GamePlay_MoneyPickup.h",
+      "params": [
+        {
+          "key": "amount_",
+          "member": "amount_",
+          "named": true,
+          "shape": "unknown",
+          "type": "Money"
+        },
+        {
+          "key": "launchUpSpeed_",
+          "member": "launchUpSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "launchSideSpeedMin_",
+          "member": "launchSideSpeedMin_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "launchSideSpeedMax_",
+          "member": "launchSideSpeedMax_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pickupDelay_secs_",
+          "member": "pickupDelay_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pickupSound_",
+          "member": "pickupSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
         }
       ]
     },
@@ -640,6 +995,38 @@
       "header": "Assets/Scripts/GamePlay/PlayerAvatar/LockOnDetectionArea/LockOnDetectionArea.h",
       "params": []
     },
+    "GamePlay::PlayerAvatar::MagicCaster::StatusPresenter": {
+      "class": "StatusPresenter",
+      "fqn": "GamePlay::PlayerAvatar::MagicCaster::StatusPresenter",
+      "leaf": "StatusPresenter",
+      "version": 1,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/Core/Game/PlayerAvatar/MagicCaster/Status/Presenter/PlayerAvatar_MagicCaster_StatusPresenter.h",
+      "params": [
+        {
+          "key": "spellPalettePrefab_",
+          "member": "spellPalettePrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "controlGuidePrefab_",
+          "member": "controlGuidePrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        }
+      ]
+    },
     "GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter": {
       "class": "StatusPresenter",
       "fqn": "GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter",
@@ -655,6 +1042,31 @@
       ],
       "interleaved_bases": false,
       "header": "Assets/Scripts/Core/Game/PlayerAvatar/Status/Presenter/PlayerAvatar_OtherPlayer_StatusPresenter.h",
+      "params": []
+    },
+    "GamePlay::PlayerAvatar::PickupArea": {
+      "class": "PickupArea",
+      "fqn": "GamePlay::PlayerAvatar::PickupArea",
+      "leaf": "PickupArea",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "ISensorEnterable",
+          "key": "value1"
+        },
+        {
+          "leaf": "ISensorExitable",
+          "key": "value2"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/PlayerAvatar/PickupArea/PickupArea.h",
       "params": []
     },
     "GamePlay::PlayerAvatar::PlayerHitShakeReceiver": {
@@ -695,7 +1107,7 @@
       "class": "StatusPresenter",
       "fqn": "GamePlay::PlayerAvatar::SwordMan::StatusPresenter",
       "leaf": "StatusPresenter",
-      "version": 4,
+      "version": 5,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -724,6 +1136,13 @@
         {
           "key": "itemBarPrefab_",
           "member": "itemBarPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "pauseMenuPrefab_",
+          "member": "pauseMenuPrefab_",
           "named": true,
           "shape": "field",
           "type": "PrefabGameObjectFile"
@@ -857,6 +1276,51 @@
         }
       ]
     },
+    "GamePlay::Prop::CharacterPodium": {
+      "class": "CharacterPodium",
+      "fqn": "GamePlay::Prop::CharacterPodium",
+      "leaf": "CharacterPodium",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Prop/CharacterPodium/Prop_CharacterPodium.h",
+      "params": [
+        {
+          "key": "characterAssets_",
+          "member": "characterAssets_",
+          "named": true,
+          "shape": "field",
+          "type": "CharacterData"
+        },
+        {
+          "key": "podiumCamera_",
+          "member": "podiumCamera_",
+          "named": true,
+          "shape": "field",
+          "type": "CineMachineVirtualCamera"
+        },
+        {
+          "key": "displayRoot_",
+          "member": "displayRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "focusPriority_",
+          "member": "focusPriority_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
     "GamePlay::Prop::CloudEffect": {
       "class": "CloudEffect",
       "fqn": "GamePlay::Prop::CloudEffect",
@@ -915,7 +1379,7 @@
       "class": "DestructibleObject",
       "fqn": "GamePlay::Prop::DestructibleObject",
       "leaf": "DestructibleObject",
-      "version": 2,
+      "version": 4,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -956,11 +1420,43 @@
           "type": "IGameObject"
         },
         {
-          "key": "dropMoney_",
-          "member": "dropMoney_",
+          "key": "dropTable_",
+          "member": "dropTable_",
           "named": true,
-          "shape": "unknown",
-          "type": "Money"
+          "shape": "field",
+          "type": "DropTable"
+        }
+      ]
+    },
+    "GamePlay::Prop::EventNoticeBoard": {
+      "class": "EventNoticeBoard",
+      "fqn": "GamePlay::Prop::EventNoticeBoard",
+      "leaf": "EventNoticeBoard",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Prop/EventNoticeBoard/Prop_EventNoticeBoard.h",
+      "params": [
+        {
+          "key": "eventBoardUiPrefab_",
+          "member": "eventBoardUiPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "chatIcon_",
+          "member": "chatIcon_",
+          "named": true,
+          "shape": "field",
+          "type": "BillBoardNpcChatIcon"
         }
       ]
     },
@@ -1104,6 +1600,37 @@
         }
       ]
     },
+    "GamePlay::Prop::MerchantStall": {
+      "class": "MerchantStall",
+      "fqn": "GamePlay::Prop::MerchantStall",
+      "leaf": "MerchantStall",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Prop/MerchantStall/Prop_MerchantStall.h",
+      "params": [
+        {
+          "key": "shopCamera_",
+          "member": "shopCamera_",
+          "named": true,
+          "shape": "field",
+          "type": "CineMachineVirtualCamera"
+        },
+        {
+          "key": "focusPriority_",
+          "member": "focusPriority_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
     "GamePlay::Prop::ProximityReveal": {
       "class": "ProximityReveal",
       "fqn": "GamePlay::Prop::ProximityReveal",
@@ -1240,11 +1767,42 @@
       "header": "Assets/Scripts/GamePlay/Sound/SoundPlayer.h",
       "params": []
     },
+    "GamePlay::Sound::SpawnSound": {
+      "class": "SpawnSound",
+      "fqn": "GamePlay::Sound::SpawnSound",
+      "leaf": "SpawnSound",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Sound/SpawnSound.h",
+      "params": [
+        {
+          "key": "sound_",
+          "member": "sound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "delay_secs_",
+          "member": "delay_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
     "GamePlay::Ui::BillBoardNpcChatIcon": {
       "class": "BillBoardNpcChatIcon",
       "fqn": "GamePlay::Ui::BillBoardNpcChatIcon",
       "leaf": "BillBoardNpcChatIcon",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1276,6 +1834,13 @@
           "named": true,
           "shape": "field",
           "type": "IGameObject"
+        },
+        {
+          "key": "surpriseRimGlow_",
+          "member": "surpriseRimGlow_",
+          "named": true,
+          "shape": "field",
+          "type": "BillboardAnimation3D"
         }
       ]
     },
@@ -1283,7 +1848,7 @@
       "class": "BossHealthGauge",
       "fqn": "GamePlay::Ui::BossHealthGauge",
       "leaf": "BossHealthGauge",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1303,11 +1868,11 @@
           "type": "TextRenderer"
         },
         {
-          "key": "shardsObject_",
-          "member": "shardsObject_",
+          "key": "shards_",
+          "member": "shards_",
           "named": true,
           "shape": "field",
-          "type": "IGameObject"
+          "type": "Slider"
         },
         {
           "key": "crestGlow_",
@@ -1317,20 +1882,22 @@
           "type": "BlendImageRenderer"
         },
         {
+          "key": "fillSprite_",
+          "member": "fillSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "fillDangerSprite_",
+          "member": "fillDangerSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
           "key": "dangerHealthRate_",
           "member": "dangerHealthRate_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "trailDelay_secs_",
-          "member": "trailDelay_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "trailSpeed_perSec_",
-          "member": "trailSpeed_perSec_",
           "named": true,
           "shape": "float"
         },
@@ -1370,70 +1937,6 @@
       "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/BossHealthGauge/Ui_BossHealthGaugePresenter.h",
       "params": []
-    },
-    "GamePlay::Ui::BossHealthShardRenderer": {
-      "class": "BossHealthShardRenderer",
-      "fqn": "GamePlay::Ui::BossHealthShardRenderer",
-      "leaf": "BossHealthShardRenderer",
-      "version": 0,
-      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
-      "immediate_base": "ComponentBase",
-      "bases": [
-        {
-          "leaf": "ComponentBase",
-          "key": "value0"
-        }
-      ],
-      "interleaved_bases": false,
-      "header": "Assets/Scripts/GamePlay/Ui/BossHealthGauge/Ui_BossHealthShardRenderer.h",
-      "params": [
-        {
-          "key": "renderOrder_",
-          "member": "renderOrder_",
-          "named": true,
-          "shape": "int"
-        },
-        {
-          "key": "emptySprite_",
-          "member": "emptySprite_",
-          "named": true,
-          "shape": "field",
-          "type": "SpriteFile"
-        },
-        {
-          "key": "fillSprite_",
-          "member": "fillSprite_",
-          "named": true,
-          "shape": "field",
-          "type": "SpriteFile"
-        },
-        {
-          "key": "fillDangerSprite_",
-          "member": "fillDangerSprite_",
-          "named": true,
-          "shape": "field",
-          "type": "SpriteFile"
-        },
-        {
-          "key": "trailSprite_",
-          "member": "trailSprite_",
-          "named": true,
-          "shape": "field",
-          "type": "SpriteFile"
-        },
-        {
-          "key": "baseDistance_",
-          "member": "baseDistance_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "padding_px_",
-          "member": "padding_px_",
-          "named": true,
-          "shape": "float"
-        }
-      ]
     },
     "GamePlay::Ui::CannonCooldownGauge": {
       "class": "CannonCooldownGauge",
@@ -1774,6 +2277,386 @@
         }
       ]
     },
+    "GamePlay::Ui::CharacterSelectPresenter": {
+      "class": "CharacterSelectPresenter",
+      "fqn": "GamePlay::Ui::CharacterSelectPresenter",
+      "leaf": "CharacterSelectPresenter",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/CharacterSelect/Presenter/CharacterSelectPresenter.h",
+      "params": []
+    },
+    "GamePlay::Ui::CharacterSelectRow": {
+      "class": "CharacterSelectRow",
+      "fqn": "GamePlay::Ui::CharacterSelectRow",
+      "leaf": "CharacterSelectRow",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/CharacterSelect/Row/Ui_CharacterSelect_Row.h",
+      "params": [
+        {
+          "key": "nameText_",
+          "member": "nameText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "readingText_",
+          "member": "readingText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "taglineText_",
+          "member": "taglineText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "waxSeal_",
+          "member": "waxSeal_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "lockedStamp_",
+          "member": "lockedStamp_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "selectedBillSprite_",
+          "member": "selectedBillSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "unselectedBillSprite_",
+          "member": "unselectedBillSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "lockedBillSprite_",
+          "member": "lockedBillSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "hoverSound_",
+          "member": "hoverSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "selectedScale_",
+          "member": "selectedScale_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::CharacterSelectUi": {
+      "class": "CharacterSelectUi",
+      "fqn": "GamePlay::Ui::CharacterSelectUi",
+      "leaf": "CharacterSelectUi",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/CharacterSelect/UI_CharacterSelect.h",
+      "params": [
+        {
+          "key": "rowPrefab_",
+          "member": "rowPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "rowsRoot_",
+          "member": "rowsRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "rowSpacing_px_",
+          "member": "rowSpacing_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "detailNameText_",
+          "member": "detailNameText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailReadingText_",
+          "member": "detailReadingText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailStatPips_",
+          "member": "detailStatPips_",
+          "named": true,
+          "shape": "field",
+          "type": "StageDifficultyPips"
+        },
+        {
+          "key": "detailDescriptionLines_",
+          "member": "detailDescriptionLines_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        }
+      ]
+    },
+    "GamePlay::Ui::ControlGuide": {
+      "class": "ControlGuide",
+      "fqn": "GamePlay::Ui::ControlGuide",
+      "leaf": "ControlGuide",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/ControlGuide/Ui_ControlGuide.h",
+      "params": [
+        {
+          "key": "rows_",
+          "member": "rows_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "rowPrefab_",
+          "member": "rowPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "slideDistance_px_",
+          "member": "slideDistance_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "guideFadeDuration_secs_",
+          "member": "guideFadeDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "rowFadeDuration_secs_",
+          "member": "rowFadeDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pulseDuration_secs_",
+          "member": "pulseDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "accentGlowMaxAlpha_",
+          "member": "accentGlowMaxAlpha_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "glyphFlashMaxAlpha_",
+          "member": "glyphFlashMaxAlpha_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "dimAlpha_",
+          "member": "dimAlpha_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "labelShadowAlphaRate_",
+          "member": "labelShadowAlphaRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "focusFadeDuration_secs_",
+          "member": "focusFadeDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "focusPulsePeriod_secs_",
+          "member": "focusPulsePeriod_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "focusArrowSwing_px_",
+          "member": "focusArrowSwing_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "focusGlyphFlashMaxAlpha_",
+          "member": "focusGlyphFlashMaxAlpha_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "unfocusedDimRate_",
+          "member": "unfocusedDimRate_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::ControlGuideRow": {
+      "class": "ControlGuideRow",
+      "fqn": "GamePlay::Ui::ControlGuideRow",
+      "leaf": "ControlGuideRow",
+      "version": 2,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/ControlGuide/Ui_ControlGuideRow.h",
+      "params": [
+        {
+          "key": "content_",
+          "member": "content_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "strip_",
+          "member": "strip_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "accentGlow_",
+          "member": "accentGlow_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "glyph_",
+          "member": "glyph_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "glyphFlash_",
+          "member": "glyphFlash_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "labelShadow_",
+          "member": "labelShadow_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "label_",
+          "member": "label_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "focusStrip_",
+          "member": "focusStrip_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "focusArrow_",
+          "member": "focusArrow_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "focusCheck_",
+          "member": "focusCheck_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "labelColor_",
+          "member": "labelColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "focusLabelColor_",
+          "member": "focusLabelColor_",
+          "named": true,
+          "shape": "color32"
+        }
+      ]
+    },
     "GamePlay::Ui::DamageFlashUI": {
       "class": "DamageFlashUI",
       "fqn": "GamePlay::Ui::DamageFlashUI",
@@ -1814,7 +2697,7 @@
       "class": "DealDamageTextBillBoard",
       "fqn": "GamePlay::Ui::DealDamageTextBillBoard",
       "leaf": "DealDamageTextBillBoard",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1847,6 +2730,1350 @@
         {
           "key": "fallAmount_",
           "member": "fallAmount_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "breakablePartColor_",
+          "member": "breakablePartColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "weakPointStunColor_",
+          "member": "weakPointStunColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "emphasisScaleRate_",
+          "member": "emphasisScaleRate_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::EventBoardEventPage": {
+      "class": "EventBoardEventPage",
+      "fqn": "GamePlay::Ui::EventBoardEventPage",
+      "leaf": "EventBoardEventPage",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/EventBoard/Page/Ui_EventBoard_EventPage.h",
+      "params": [
+        {
+          "key": "rowPrefab_",
+          "member": "rowPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "rowsRoot_",
+          "member": "rowsRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "rowSpacing_px_",
+          "member": "rowSpacing_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxVisibleRows_",
+          "member": "maxVisibleRows_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "moreAboveMark_",
+          "member": "moreAboveMark_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "moreBelowMark_",
+          "member": "moreBelowMark_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "detailRoot_",
+          "member": "detailRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "detailBanner_",
+          "member": "detailBanner_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "detailTitleText_",
+          "member": "detailTitleText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailTagText_",
+          "member": "detailTagText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailPeriodText_",
+          "member": "detailPeriodText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailStatusText_",
+          "member": "detailStatusText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailOngoingStamp_",
+          "member": "detailOngoingStamp_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "detailDescriptionLines_",
+          "member": "detailDescriptionLines_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "emptyText_",
+          "member": "emptyText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "ongoingStatusColor_",
+          "member": "ongoingStatusColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "upcomingStatusColor_",
+          "member": "upcomingStatusColor_",
+          "named": true,
+          "shape": "color32"
+        }
+      ]
+    },
+    "GamePlay::Ui::EventBoardNoticePage": {
+      "class": "EventBoardNoticePage",
+      "fqn": "GamePlay::Ui::EventBoardNoticePage",
+      "leaf": "EventBoardNoticePage",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/EventBoard/Page/Ui_EventBoard_NoticePage.h",
+      "params": [
+        {
+          "key": "rowPrefab_",
+          "member": "rowPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "rowsRoot_",
+          "member": "rowsRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "rowSpacing_px_",
+          "member": "rowSpacing_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxVisibleRows_",
+          "member": "maxVisibleRows_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "moreAboveMark_",
+          "member": "moreAboveMark_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "moreBelowMark_",
+          "member": "moreBelowMark_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "detailRoot_",
+          "member": "detailRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "detailKindHanko_",
+          "member": "detailKindHanko_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "detailDateText_",
+          "member": "detailDateText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailTitleText_",
+          "member": "detailTitleText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailBodyLines_",
+          "member": "detailBodyLines_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "emptyText_",
+          "member": "emptyText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "kindHankoSprites_",
+          "member": "kindHankoSprites_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        }
+      ]
+    },
+    "GamePlay::Ui::EventBoardNoticeRow": {
+      "class": "EventBoardNoticeRow",
+      "fqn": "GamePlay::Ui::EventBoardNoticeRow",
+      "leaf": "EventBoardNoticeRow",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/EventBoard/Row/Ui_EventBoard_NoticeRow.h",
+      "params": [
+        {
+          "key": "kindChip_",
+          "member": "kindChip_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "dateText_",
+          "member": "dateText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "titleText_",
+          "member": "titleText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "unreadSeal_",
+          "member": "unreadSeal_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "waxSeal_",
+          "member": "waxSeal_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "selectedTicketSprite_",
+          "member": "selectedTicketSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "unselectedTicketSprite_",
+          "member": "unselectedTicketSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "kindChipSprites_",
+          "member": "kindChipSprites_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "hoverSound_",
+          "member": "hoverSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "selectedScale_",
+          "member": "selectedScale_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::EventBoardPresenter": {
+      "class": "EventBoardPresenter",
+      "fqn": "GamePlay::Ui::EventBoardPresenter",
+      "leaf": "EventBoardPresenter",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/EventBoard/Presenter/EventBoardPresenter.h",
+      "params": [
+        {
+          "key": "board_",
+          "member": "board_",
+          "named": true,
+          "shape": "field",
+          "type": "EventBoardData"
+        },
+        {
+          "key": "acceptSound_",
+          "member": "acceptSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        }
+      ]
+    },
+    "GamePlay::Ui::EventBoardQuestPage": {
+      "class": "EventBoardQuestPage",
+      "fqn": "GamePlay::Ui::EventBoardQuestPage",
+      "leaf": "EventBoardQuestPage",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/EventBoard/Page/Ui_EventBoard_QuestPage.h",
+      "params": [
+        {
+          "key": "rowPrefab_",
+          "member": "rowPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "rowsRoot_",
+          "member": "rowsRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "rowSpacing_px_",
+          "member": "rowSpacing_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxVisibleRows_",
+          "member": "maxVisibleRows_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "moreAboveMark_",
+          "member": "moreAboveMark_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "moreBelowMark_",
+          "member": "moreBelowMark_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "detailRoot_",
+          "member": "detailRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "detailPhotoRoot_",
+          "member": "detailPhotoRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "detailPhoto_",
+          "member": "detailPhoto_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "detailEventChip_",
+          "member": "detailEventChip_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "detailEventText_",
+          "member": "detailEventText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailTitleText_",
+          "member": "detailTitleText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailClientText_",
+          "member": "detailClientText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailPlaceText_",
+          "member": "detailPlaceText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailRankPips_",
+          "member": "detailRankPips_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "detailStateText_",
+          "member": "detailStateText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailGoalText_",
+          "member": "detailGoalText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailRewardText_",
+          "member": "detailRewardText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailLimitText_",
+          "member": "detailLimitText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailDescriptionLines_",
+          "member": "detailDescriptionLines_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "detailSeal_",
+          "member": "detailSeal_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "emptyText_",
+          "member": "emptyText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "filledPipSprite_",
+          "member": "filledPipSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "emptyPipSprite_",
+          "member": "emptyPipSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "openSealSprite_",
+          "member": "openSealSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "takingSealSprite_",
+          "member": "takingSealSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "clearedSealSprite_",
+          "member": "clearedSealSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "preparingSealSprite_",
+          "member": "preparingSealSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "takingStateColor_",
+          "member": "takingStateColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "defaultStateColor_",
+          "member": "defaultStateColor_",
+          "named": true,
+          "shape": "color32"
+        }
+      ]
+    },
+    "GamePlay::Ui::EventBoardQuestRow": {
+      "class": "EventBoardQuestRow",
+      "fqn": "GamePlay::Ui::EventBoardQuestRow",
+      "leaf": "EventBoardQuestRow",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/EventBoard/Row/Ui_EventBoard_QuestRow.h",
+      "params": [
+        {
+          "key": "titleText_",
+          "member": "titleText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "placeText_",
+          "member": "placeText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "rewardText_",
+          "member": "rewardText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "eventChip_",
+          "member": "eventChip_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "stateStamp_",
+          "member": "stateStamp_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "waxSeal_",
+          "member": "waxSeal_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "rankPips_",
+          "member": "rankPips_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "filledPipSprite_",
+          "member": "filledPipSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "emptyPipSprite_",
+          "member": "emptyPipSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "takingStampSprite_",
+          "member": "takingStampSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "clearedStampSprite_",
+          "member": "clearedStampSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "preparingStampSprite_",
+          "member": "preparingStampSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "selectedTicketSprite_",
+          "member": "selectedTicketSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "unselectedTicketSprite_",
+          "member": "unselectedTicketSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "hoverSound_",
+          "member": "hoverSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "selectedScale_",
+          "member": "selectedScale_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::EventBoardRow": {
+      "class": "EventBoardRow",
+      "fqn": "GamePlay::Ui::EventBoardRow",
+      "leaf": "EventBoardRow",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/EventBoard/Row/Ui_EventBoard_Row.h",
+      "params": [
+        {
+          "key": "titleText_",
+          "member": "titleText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "statusText_",
+          "member": "statusText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "ongoingStamp_",
+          "member": "ongoingStamp_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "waxSeal_",
+          "member": "waxSeal_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "selectedNoticeSprite_",
+          "member": "selectedNoticeSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "unselectedNoticeSprite_",
+          "member": "unselectedNoticeSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "hoverSound_",
+          "member": "hoverSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "selectedScale_",
+          "member": "selectedScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "ongoingStatusColor_",
+          "member": "ongoingStatusColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "upcomingStatusColor_",
+          "member": "upcomingStatusColor_",
+          "named": true,
+          "shape": "color32"
+        }
+      ]
+    },
+    "GamePlay::Ui::EventBoardTab": {
+      "class": "EventBoardTab",
+      "fqn": "GamePlay::Ui::EventBoardTab",
+      "leaf": "EventBoardTab",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/EventBoard/Tab/Ui_EventBoard_Tab.h",
+      "params": [
+        {
+          "key": "labelText_",
+          "member": "labelText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "badgeRoot_",
+          "member": "badgeRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "badgeCountText_",
+          "member": "badgeCountText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "selectedSprite_",
+          "member": "selectedSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "unselectedSprite_",
+          "member": "unselectedSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "selectedLabelColor_",
+          "member": "selectedLabelColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "unselectedLabelColor_",
+          "member": "unselectedLabelColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "selectedScale_",
+          "member": "selectedScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "selectedDrop_px_",
+          "member": "selectedDrop_px_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::EventBoardUi": {
+      "class": "EventBoardUi",
+      "fqn": "GamePlay::Ui::EventBoardUi",
+      "leaf": "EventBoardUi",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/EventBoard/UI_EventBoard.h",
+      "params": [
+        {
+          "key": "tabPrefab_",
+          "member": "tabPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "tabsRoot_",
+          "member": "tabsRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "tabSpacing_px_",
+          "member": "tabSpacing_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "questPagePrefab_",
+          "member": "questPagePrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "eventPagePrefab_",
+          "member": "eventPagePrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "noticePagePrefab_",
+          "member": "noticePagePrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "pagesRoot_",
+          "member": "pagesRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "hintsWithAccept_",
+          "member": "hintsWithAccept_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "hintsWithoutAccept_",
+          "member": "hintsWithoutAccept_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        }
+      ]
+    },
+    "GamePlay::Ui::GameOverButton": {
+      "class": "GameOverButton",
+      "fqn": "GamePlay::Ui::GameOverButton",
+      "leaf": "GameOverButton",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/GameOver/Ui_GameOverButton.h",
+      "params": [
+        {
+          "key": "plate_",
+          "member": "plate_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "plateLit_",
+          "member": "plateLit_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "ember_",
+          "member": "ember_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "label_",
+          "member": "label_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "labelShadow_",
+          "member": "labelShadow_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "labelColor_",
+          "member": "labelColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "labelLitColor_",
+          "member": "labelLitColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "highlightFadeSecs_",
+          "member": "highlightFadeSecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "emberPulseHz_",
+          "member": "emberPulseHz_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "emberMinBlendRate_",
+          "member": "emberMinBlendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "emberMaxBlendRate_",
+          "member": "emberMaxBlendRate_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
+    },
+    "GamePlay::Ui::GameOverDeathCamera": {
+      "class": "GameOverDeathCamera",
+      "fqn": "GamePlay::Ui::GameOverDeathCamera",
+      "leaf": "GameOverDeathCamera",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/GameOver/DeathCamera/GameOverDeathCamera.h",
+      "params": [
+        {
+          "key": "priority_",
+          "member": "priority_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "shotSecs_",
+          "member": "shotSecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "orbitDeg_",
+          "member": "orbitDeg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "endPitchDeg_",
+          "member": "endPitchDeg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "endDistance_",
+          "member": "endDistance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "endLookAtOffset_",
+          "member": "endLookAtOffset_",
+          "named": true,
+          "shape": "vec3"
+        }
+      ]
+    },
+    "GamePlay::Ui::GameOverPresenter": {
+      "class": "GameOverPresenter",
+      "fqn": "GamePlay::Ui::GameOverPresenter",
+      "leaf": "GameOverPresenter",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/GameOver/Presenter/GameOverPresenter.h",
+      "params": [
+        {
+          "key": "deathCameraPrefab_",
+          "member": "deathCameraPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "fallenConfirmSecs_",
+          "member": "fallenConfirmSecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "curtainHoldSecs_",
+          "member": "curtainHoldSecs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::GameOverScreenUi": {
+      "class": "GameOverScreenUi",
+      "fqn": "GamePlay::Ui::GameOverScreenUi",
+      "leaf": "GameOverScreenUi",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/GameOver/Ui_GameOverScreen.h",
+      "params": [
+        {
+          "key": "visualRoot_",
+          "member": "visualRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "veil_",
+          "member": "veil_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "slab_",
+          "member": "slab_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "slabDirt_",
+          "member": "slabDirt_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "retryButton_",
+          "member": "retryButton_",
+          "named": true,
+          "shape": "field",
+          "type": "GameOverButton"
+        },
+        {
+          "key": "titleButton_",
+          "member": "titleButton_",
+          "named": true,
+          "shape": "field",
+          "type": "GameOverButton"
+        },
+        {
+          "key": "moveHintTag_",
+          "member": "moveHintTag_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "moveHintText_",
+          "member": "moveHintText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "confirmHintTag_",
+          "member": "confirmHintTag_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "confirmHintText_",
+          "member": "confirmHintText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "stingSound_",
+          "member": "stingSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "slabLandSound_",
+          "member": "slabLandSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "veilBlendRate_",
+          "member": "veilBlendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "veilFadeSecs_",
+          "member": "veilFadeSecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stingDelaySecs_",
+          "member": "stingDelaySecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "slabDelaySecs_",
+          "member": "slabDelaySecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "slabRiseSecs_",
+          "member": "slabRiseSecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "slabRiseDistance_px_",
+          "member": "slabRiseDistance_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "slabOvershoot_px_",
+          "member": "slabOvershoot_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "dirtFadeSecs_",
+          "member": "dirtFadeSecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "buttonsDelaySecs_",
+          "member": "buttonsDelaySecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "buttonsRiseSecs_",
+          "member": "buttonsRiseSecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "buttonStaggerSecs_",
+          "member": "buttonStaggerSecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "buttonRiseDistance_px_",
+          "member": "buttonRiseDistance_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "inputGuardSecs_",
+          "member": "inputGuardSecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "curtainCloseSecs_",
+          "member": "curtainCloseSecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "curtainOpenSecs_",
+          "member": "curtainOpenSecs_",
           "named": true,
           "shape": "float"
         }
@@ -2534,6 +4761,157 @@
         }
       ]
     },
+    "GamePlay::Ui::MagicCasterControlGuide": {
+      "class": "MagicCasterControlGuide",
+      "fqn": "GamePlay::Ui::MagicCasterControlGuide",
+      "leaf": "MagicCasterControlGuide",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/ControlGuide/Ui_MagicCasterControlGuide.h",
+      "params": [
+        {
+          "key": "controlGuide_",
+          "member": "controlGuide_",
+          "named": true,
+          "shape": "field",
+          "type": "ControlGuide"
+        },
+        {
+          "key": "keyMoveSprite_",
+          "member": "keyMoveSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "keyCastSprite_",
+          "member": "keyCastSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "keyRunSprite_",
+          "member": "keyRunSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "keyJumpSprite_",
+          "member": "keyJumpSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "keyLockOnSprite_",
+          "member": "keyLockOnSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "keyInteractSprite_",
+          "member": "keyInteractSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "padMoveSprite_",
+          "member": "padMoveSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "padCastSprite_",
+          "member": "padCastSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "padRunSprite_",
+          "member": "padRunSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "padJumpSprite_",
+          "member": "padJumpSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "padLockOnSprite_",
+          "member": "padLockOnSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "padInteractSprite_",
+          "member": "padInteractSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "moveLabel_",
+          "member": "moveLabel_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "castLabel_",
+          "member": "castLabel_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "runLabel_",
+          "member": "runLabel_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "jumpLabel_",
+          "member": "jumpLabel_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "lockOnLabel_",
+          "member": "lockOnLabel_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "lockOnReleaseLabel_",
+          "member": "lockOnReleaseLabel_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "chatLabel_",
+          "member": "chatLabel_",
+          "named": true,
+          "shape": "string"
+        }
+      ]
+    },
     "GamePlay::Ui::NpcChatting": {
       "class": "NpcChatting",
       "fqn": "GamePlay::Ui::NpcChatting",
@@ -2587,6 +4965,237 @@
           "member": "spacing_",
           "named": true,
           "shape": "vec3"
+        }
+      ]
+    },
+    "GamePlay::Ui::PauseMenuItemCell": {
+      "class": "PauseMenuItemCell",
+      "fqn": "GamePlay::Ui::PauseMenuItemCell",
+      "leaf": "PauseMenuItemCell",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/PauseMenu/ItemCell/Ui_PauseMenuItemCell.h",
+      "params": [
+        {
+          "key": "icon_",
+          "member": "icon_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "countText_",
+          "member": "countText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        }
+      ]
+    },
+    "GamePlay::Ui::PauseMenuPresenter": {
+      "class": "PauseMenuPresenter",
+      "fqn": "GamePlay::Ui::PauseMenuPresenter",
+      "leaf": "PauseMenuPresenter",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/PauseMenu/Presenter/PauseMenuPresenter.h",
+      "params": []
+    },
+    "GamePlay::Ui::PauseMenuRow": {
+      "class": "PauseMenuRow",
+      "fqn": "GamePlay::Ui::PauseMenuRow",
+      "leaf": "PauseMenuRow",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/PauseMenu/Row/Ui_PauseMenuRow.h",
+      "params": [
+        {
+          "key": "nameText_",
+          "member": "nameText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "descriptionText_",
+          "member": "descriptionText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "numberText_",
+          "member": "numberText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "marker_",
+          "member": "marker_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "underline_",
+          "member": "underline_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        }
+      ]
+    },
+    "GamePlay::Ui::PauseMenuUi": {
+      "class": "PauseMenuUi",
+      "fqn": "GamePlay::Ui::PauseMenuUi",
+      "leaf": "PauseMenuUi",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/PauseMenu/Ui_PauseMenu.h",
+      "params": [
+        {
+          "key": "book_",
+          "member": "book_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "rowPrefab_",
+          "member": "rowPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "rowsRoot_",
+          "member": "rowsRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "character_",
+          "member": "character_",
+          "named": true,
+          "shape": "field",
+          "type": "CharacterData"
+        },
+        {
+          "key": "nameText_",
+          "member": "nameText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "readingText_",
+          "member": "readingText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "taglineText_",
+          "member": "taglineText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "statPips_",
+          "member": "statPips_",
+          "named": true,
+          "shape": "field",
+          "type": "StageDifficultyPips"
+        },
+        {
+          "key": "healthBar_",
+          "member": "healthBar_",
+          "named": true,
+          "shape": "field",
+          "type": "Slider"
+        },
+        {
+          "key": "healthText_",
+          "member": "healthText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "staminaBar_",
+          "member": "staminaBar_",
+          "named": true,
+          "shape": "field",
+          "type": "Slider"
+        },
+        {
+          "key": "staminaText_",
+          "member": "staminaText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "moneyText_",
+          "member": "moneyText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "itemCellPrefab_",
+          "member": "itemCellPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "itemsRoot_",
+          "member": "itemsRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "maxItemCells_",
+          "member": "maxItemCells_",
+          "named": true,
+          "shape": "int"
         }
       ]
     },
@@ -2780,6 +5389,791 @@
           "named": true,
           "shape": "field",
           "type": "Button"
+        }
+      ]
+    },
+    "GamePlay::Ui::ShopPresenter": {
+      "class": "ShopPresenter",
+      "fqn": "GamePlay::Ui::ShopPresenter",
+      "leaf": "ShopPresenter",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Shop/Presenter/ShopPresenter.h",
+      "params": [
+        {
+          "key": "shop_",
+          "member": "shop_",
+          "named": true,
+          "shape": "field",
+          "type": "ShopData"
+        },
+        {
+          "key": "purchaseSound_",
+          "member": "purchaseSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "refuseSound_",
+          "member": "refuseSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "cursorSound_",
+          "member": "cursorSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "quantityRepeatDelay_secs_",
+          "member": "quantityRepeatDelay_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "quantityRepeatInterval_secs_",
+          "member": "quantityRepeatInterval_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::ShopReceipt": {
+      "class": "ShopReceipt",
+      "fqn": "GamePlay::Ui::ShopReceipt",
+      "leaf": "ShopReceipt",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Shop/Receipt/Ui_ShopReceipt.h",
+      "params": [
+        {
+          "key": "contentRoot_",
+          "member": "contentRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "iconRenderer_",
+          "member": "iconRenderer_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "nameText_",
+          "member": "nameText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "ownedText_",
+          "member": "ownedText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "descriptionLines_",
+          "member": "descriptionLines_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "unitPriceText_",
+          "member": "unitPriceText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "quantityText_",
+          "member": "quantityText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "decreaseMark_",
+          "member": "decreaseMark_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "increaseMark_",
+          "member": "increaseMark_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "totalText_",
+          "member": "totalText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "afterPaymentText_",
+          "member": "afterPaymentText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "refusalText_",
+          "member": "refusalText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "paidStamp_",
+          "member": "paidStamp_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "markActiveBlendRate_",
+          "member": "markActiveBlendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "markInactiveBlendRate_",
+          "member": "markInactiveBlendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "stampDuration_secs_",
+          "member": "stampDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stampStartScale_",
+          "member": "stampStartScale_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GamePlay::Ui::ShopRow": {
+      "class": "ShopRow",
+      "fqn": "GamePlay::Ui::ShopRow",
+      "leaf": "ShopRow",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Shop/Row/Ui_ShopRow.h",
+      "params": [
+        {
+          "key": "iconRenderer_",
+          "member": "iconRenderer_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "nameText_",
+          "member": "nameText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "ownedText_",
+          "member": "ownedText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "priceText_",
+          "member": "priceText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "selectMark_",
+          "member": "selectMark_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "selectButton_",
+          "member": "selectButton_",
+          "named": true,
+          "shape": "field",
+          "type": "Button"
+        },
+        {
+          "key": "priceColor_",
+          "member": "priceColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "unaffordablePriceColor_",
+          "member": "unaffordablePriceColor_",
+          "named": true,
+          "shape": "color32"
+        }
+      ]
+    },
+    "GamePlay::Ui::ShopUi": {
+      "class": "ShopUi",
+      "fqn": "GamePlay::Ui::ShopUi",
+      "leaf": "ShopUi",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/Shop/UI_Shop.h",
+      "params": [
+        {
+          "key": "rowPrefab_",
+          "member": "rowPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "rowsRoot_",
+          "member": "rowsRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "rowSpacing_px_",
+          "member": "rowSpacing_px_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxVisibleRows_",
+          "member": "maxVisibleRows_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "moreAboveMark_",
+          "member": "moreAboveMark_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "moreBelowMark_",
+          "member": "moreBelowMark_",
+          "named": true,
+          "shape": "field",
+          "type": "ImageRenderer"
+        },
+        {
+          "key": "titleText_",
+          "member": "titleText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "restockText_",
+          "member": "restockText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "moneyText_",
+          "member": "moneyText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "receipt_",
+          "member": "receipt_",
+          "named": true,
+          "shape": "field",
+          "type": "ShopReceipt"
+        }
+      ]
+    },
+    "GamePlay::Ui::SpellPalette": {
+      "class": "SpellPalette",
+      "fqn": "GamePlay::Ui::SpellPalette",
+      "leaf": "SpellPalette",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/SpellPalette/Ui_SpellPalette.h",
+      "params": [
+        {
+          "key": "slotsRoot_",
+          "member": "slotsRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "slotPrefab_",
+          "member": "slotPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "anchorTop_",
+          "member": "anchorTop_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "anchorRight_",
+          "member": "anchorRight_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "anchorBottom_",
+          "member": "anchorBottom_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "anchorLeft_",
+          "member": "anchorLeft_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "anchorTopRight_",
+          "member": "anchorTopRight_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "anchorBottomRight_",
+          "member": "anchorBottomRight_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "anchorBottomLeft_",
+          "member": "anchorBottomLeft_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "anchorTopLeft_",
+          "member": "anchorTopLeft_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "nameTop_",
+          "member": "nameTop_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "nameRight_",
+          "member": "nameRight_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "nameBottom_",
+          "member": "nameBottom_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "nameLeft_",
+          "member": "nameLeft_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "halo_",
+          "member": "halo_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "circle_",
+          "member": "circle_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "manaTrack_",
+          "member": "manaTrack_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "manaFill_",
+          "member": "manaFill_",
+          "named": true,
+          "shape": "field",
+          "type": "CircleGaugeRenderer"
+        },
+        {
+          "key": "manaTip_",
+          "member": "manaTip_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "manaLabel_",
+          "member": "manaLabel_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "manaValue_",
+          "member": "manaValue_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "paletteGlyph_",
+          "member": "paletteGlyph_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "pageGlyph_",
+          "member": "pageGlyph_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "pageText_",
+          "member": "pageText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "padGlyphTop_",
+          "member": "padGlyphTop_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "padGlyphRight_",
+          "member": "padGlyphRight_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "padGlyphBottom_",
+          "member": "padGlyphBottom_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "padGlyphLeft_",
+          "member": "padGlyphLeft_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "keyGlyphTop_",
+          "member": "keyGlyphTop_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "keyGlyphRight_",
+          "member": "keyGlyphRight_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "keyGlyphBottom_",
+          "member": "keyGlyphBottom_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "keyGlyphLeft_",
+          "member": "keyGlyphLeft_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "padPaletteSprite_",
+          "member": "padPaletteSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "keyPaletteSprite_",
+          "member": "keyPaletteSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "padPageSprite_",
+          "member": "padPageSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "keyPageSprite_",
+          "member": "keyPageSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "manaArcRadius_",
+          "member": "manaArcRadius_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "manaArcStartDeg_",
+          "member": "manaArcStartDeg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "manaArcSpanDeg_",
+          "member": "manaArcSpanDeg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "idleAlphaRate_",
+          "member": "idleAlphaRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "backScale_",
+          "member": "backScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "backAlphaRate_",
+          "member": "backAlphaRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "manaLackIconRate_",
+          "member": "manaLackIconRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fadeDuration_secs_",
+          "member": "fadeDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "pageSwapDuration_secs_",
+          "member": "pageSwapDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "manaValueColor_",
+          "member": "manaValueColor_",
+          "named": true,
+          "shape": "color32"
+        }
+      ]
+    },
+    "GamePlay::Ui::SpellSlot": {
+      "class": "SpellSlot",
+      "fqn": "GamePlay::Ui::SpellSlot",
+      "leaf": "SpellSlot",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Ui/SpellPalette/Ui_SpellSlot.h",
+      "params": [
+        {
+          "key": "content_",
+          "member": "content_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "socket_",
+          "member": "socket_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "active_",
+          "member": "active_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "icon_",
+          "member": "icon_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "manaLackShade_",
+          "member": "manaLackShade_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "cooldown_",
+          "member": "cooldown_",
+          "named": true,
+          "shape": "field",
+          "type": "CircleGaugeRenderer"
+        },
+        {
+          "key": "cooldownText_",
+          "member": "cooldownText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "costPill_",
+          "member": "costPill_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "costText_",
+          "member": "costText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
+        },
+        {
+          "key": "glyph_",
+          "member": "glyph_",
+          "named": true,
+          "shape": "field",
+          "type": "BlendImageRenderer"
+        },
+        {
+          "key": "costColor_",
+          "member": "costColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "costLackColor_",
+          "member": "costLackColor_",
+          "named": true,
+          "shape": "color32"
+        },
+        {
+          "key": "glyphDistance_",
+          "member": "glyphDistance_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -3276,7 +6670,7 @@
       "class": "SwordManControlGuide",
       "fqn": "GamePlay::Ui::SwordManControlGuide",
       "leaf": "SwordManControlGuide",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -3289,18 +6683,11 @@
       "header": "Assets/Scripts/GamePlay/Ui/ControlGuide/Ui_SwordManControlGuide.h",
       "params": [
         {
-          "key": "rows_",
-          "member": "rows_",
+          "key": "controlGuide_",
+          "member": "controlGuide_",
           "named": true,
           "shape": "field",
-          "type": "IGameObject"
-        },
-        {
-          "key": "rowPrefab_",
-          "member": "rowPrefab_",
-          "named": true,
-          "shape": "field",
-          "type": "PrefabGameObjectFile"
+          "type": "ControlGuide"
         },
         {
           "key": "keyMoveSprite_",
@@ -3503,184 +6890,6 @@
           "member": "cannonFireLabel_",
           "named": true,
           "shape": "string"
-        },
-        {
-          "key": "slideDistance_px_",
-          "member": "slideDistance_px_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "guideFadeDuration_secs_",
-          "member": "guideFadeDuration_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "rowFadeDuration_secs_",
-          "member": "rowFadeDuration_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "pulseDuration_secs_",
-          "member": "pulseDuration_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "accentGlowMaxAlpha_",
-          "member": "accentGlowMaxAlpha_",
-          "named": true,
-          "shape": "int"
-        },
-        {
-          "key": "glyphFlashMaxAlpha_",
-          "member": "glyphFlashMaxAlpha_",
-          "named": true,
-          "shape": "int"
-        },
-        {
-          "key": "dimAlpha_",
-          "member": "dimAlpha_",
-          "named": true,
-          "shape": "int"
-        },
-        {
-          "key": "labelShadowAlphaRate_",
-          "member": "labelShadowAlphaRate_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "focusFadeDuration_secs_",
-          "member": "focusFadeDuration_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "focusPulsePeriod_secs_",
-          "member": "focusPulsePeriod_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "focusArrowSwing_px_",
-          "member": "focusArrowSwing_px_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "focusGlyphFlashMaxAlpha_",
-          "member": "focusGlyphFlashMaxAlpha_",
-          "named": true,
-          "shape": "int"
-        },
-        {
-          "key": "unfocusedDimRate_",
-          "member": "unfocusedDimRate_",
-          "named": true,
-          "shape": "float"
-        }
-      ]
-    },
-    "GamePlay::Ui::SwordManControlGuideRow": {
-      "class": "SwordManControlGuideRow",
-      "fqn": "GamePlay::Ui::SwordManControlGuideRow",
-      "leaf": "SwordManControlGuideRow",
-      "version": 2,
-      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
-      "immediate_base": "ComponentBase",
-      "bases": [
-        {
-          "leaf": "ComponentBase",
-          "key": "value0"
-        }
-      ],
-      "interleaved_bases": false,
-      "header": "Assets/Scripts/GamePlay/Ui/ControlGuide/Ui_SwordManControlGuideRow.h",
-      "params": [
-        {
-          "key": "content_",
-          "member": "content_",
-          "named": true,
-          "shape": "field",
-          "type": "IGameObject"
-        },
-        {
-          "key": "strip_",
-          "member": "strip_",
-          "named": true,
-          "shape": "field",
-          "type": "BlendImageRenderer"
-        },
-        {
-          "key": "accentGlow_",
-          "member": "accentGlow_",
-          "named": true,
-          "shape": "field",
-          "type": "BlendImageRenderer"
-        },
-        {
-          "key": "glyph_",
-          "member": "glyph_",
-          "named": true,
-          "shape": "field",
-          "type": "BlendImageRenderer"
-        },
-        {
-          "key": "glyphFlash_",
-          "member": "glyphFlash_",
-          "named": true,
-          "shape": "field",
-          "type": "BlendImageRenderer"
-        },
-        {
-          "key": "labelShadow_",
-          "member": "labelShadow_",
-          "named": true,
-          "shape": "field",
-          "type": "TextRenderer"
-        },
-        {
-          "key": "label_",
-          "member": "label_",
-          "named": true,
-          "shape": "field",
-          "type": "TextRenderer"
-        },
-        {
-          "key": "focusStrip_",
-          "member": "focusStrip_",
-          "named": true,
-          "shape": "field",
-          "type": "BlendImageRenderer"
-        },
-        {
-          "key": "focusArrow_",
-          "member": "focusArrow_",
-          "named": true,
-          "shape": "field",
-          "type": "BlendImageRenderer"
-        },
-        {
-          "key": "focusCheck_",
-          "member": "focusCheck_",
-          "named": true,
-          "shape": "field",
-          "type": "BlendImageRenderer"
-        },
-        {
-          "key": "labelColor_",
-          "member": "labelColor_",
-          "named": true,
-          "shape": "color32"
-        },
-        {
-          "key": "focusLabelColor_",
-          "member": "focusLabelColor_",
-          "named": true,
-          "shape": "color32"
         }
       ]
     },
@@ -3688,7 +6897,7 @@
       "class": "WeatherService",
       "fqn": "GamePlay::Weather::WeatherService",
       "leaf": "WeatherService",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -3734,13 +6943,6 @@
           "named": true,
           "shape": "field",
           "type": "BlendImageRenderer"
-        },
-        {
-          "key": "wispParticle_",
-          "member": "wispParticle_",
-          "named": true,
-          "shape": "field",
-          "type": "ParticleSystem"
         },
         {
           "key": "gustParticle_",
@@ -5069,6 +8271,76 @@
         }
       ]
     },
+    "NanamiEngine::Module::NanamiUi::CircleGaugeRenderer": {
+      "class": "CircleGaugeRenderer",
+      "fqn": "NanamiEngine::Module::NanamiUi::CircleGaugeRenderer",
+      "leaf": "CircleGaugeRenderer",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        },
+        {
+          "leaf": "IInitRenderable",
+          "key": "value1"
+        },
+        {
+          "leaf": "IUserInterfaceRenderable",
+          "key": "value2"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Engine/Module/Component/CircleGaugeRenderer/CircleGaugeRenderer.h",
+      "params": [
+        {
+          "key": "blendMode_",
+          "member": "blendMode_",
+          "named": true,
+          "shape": "unknown",
+          "type": "BlendMode"
+        },
+        {
+          "key": "blendRate_",
+          "member": "blendRate_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "spriteFile_",
+          "member": "spriteFile_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "renderOrder_",
+          "member": "renderOrder_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "startPercent_",
+          "member": "startPercent_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "spanPercent_",
+          "member": "spanPercent_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fillRate_",
+          "member": "fillRate_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
     "NanamiEngine::Module::NanamiUi::GridLayoutGroup": {
       "class": "GridLayoutGroup",
       "fqn": "NanamiEngine::Module::NanamiUi::GridLayoutGroup",
@@ -5651,7 +8923,7 @@
       "class": "Slider",
       "fqn": "NanamiUi::Slider",
       "leaf": "Slider",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -5790,6 +9062,25 @@
           "member": "pulseMaxAlpha_",
           "named": true,
           "shape": "int"
+        },
+        {
+          "key": "fillDirection_",
+          "member": "fillDirection_",
+          "named": true,
+          "shape": "unknown",
+          "type": "SliderFillDirection"
+        },
+        {
+          "key": "fillStartInset_",
+          "member": "fillStartInset_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fillEndInset_",
+          "member": "fillEndInset_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -5901,6 +9192,9 @@
     "BlendImageRenderer": [
       "NanamiEngine::Module::NanamiUi::BlendImageRenderer"
     ],
+    "BodyPartWeakPoint": [
+      "GamePlay::Npc::Enemy::BodyPartWeakPoint"
+    ],
     "BoneSync": [
       "NanamiEngine::Module::Component::BoneSync"
     ],
@@ -5909,9 +9203,6 @@
     ],
     "BossHealthGaugePresenter": [
       "GamePlay::Ui::BossHealthGaugePresenter"
-    ],
-    "BossHealthShardRenderer": [
-      "GamePlay::Ui::BossHealthShardRenderer"
     ],
     "BoxCollider": [
       "NanamiEngine::Module::Component::BoxCollider"
@@ -5934,6 +9225,18 @@
     "CapsuleCollider": [
       "NanamiEngine::Module::Component::CapsuleCollider"
     ],
+    "CharacterPodium": [
+      "GamePlay::Prop::CharacterPodium"
+    ],
+    "CharacterSelectPresenter": [
+      "GamePlay::Ui::CharacterSelectPresenter"
+    ],
+    "CharacterSelectRow": [
+      "GamePlay::Ui::CharacterSelectRow"
+    ],
+    "CharacterSelectUi": [
+      "GamePlay::Ui::CharacterSelectUi"
+    ],
     "ChattableArea": [
       "GamePlay::PlayerAvatar::ChattableArea"
     ],
@@ -5943,11 +9246,20 @@
     "CinemachineCameraBrain": [
       "NanamiEngine::CineMachine::CinemachineCameraBrain"
     ],
+    "CircleGaugeRenderer": [
+      "NanamiEngine::Module::NanamiUi::CircleGaugeRenderer"
+    ],
     "CloudEffect": [
       "GamePlay::Prop::CloudEffect"
     ],
     "CollisionListener": [
       "Component::CollisionListener"
+    ],
+    "ControlGuide": [
+      "GamePlay::Ui::ControlGuide"
+    ],
+    "ControlGuideRow": [
+      "GamePlay::Ui::ControlGuideRow"
     ],
     "CylinderCollider": [
       "NanamiEngine::Module::Component::CylinderCollider"
@@ -5967,11 +9279,56 @@
     "EnemyBase": [
       "GameCore::Npc::EnemyBase"
     ],
+    "EnemySpawnPoint": [
+      "GameCore::Npc::Enemy::EnemySpawnPoint"
+    ],
+    "EventBoardEventPage": [
+      "GamePlay::Ui::EventBoardEventPage"
+    ],
+    "EventBoardNoticePage": [
+      "GamePlay::Ui::EventBoardNoticePage"
+    ],
+    "EventBoardNoticeRow": [
+      "GamePlay::Ui::EventBoardNoticeRow"
+    ],
+    "EventBoardPresenter": [
+      "GamePlay::Ui::EventBoardPresenter"
+    ],
+    "EventBoardQuestPage": [
+      "GamePlay::Ui::EventBoardQuestPage"
+    ],
+    "EventBoardQuestRow": [
+      "GamePlay::Ui::EventBoardQuestRow"
+    ],
+    "EventBoardRow": [
+      "GamePlay::Ui::EventBoardRow"
+    ],
+    "EventBoardTab": [
+      "GamePlay::Ui::EventBoardTab"
+    ],
+    "EventBoardUi": [
+      "GamePlay::Ui::EventBoardUi"
+    ],
+    "EventNoticeBoard": [
+      "GamePlay::Prop::EventNoticeBoard"
+    ],
     "FriendlyNpc": [
       "GamePlay::Npc::Friendly::FriendlyNpc"
     ],
     "Game": [
       "GameCore::Game"
+    ],
+    "GameOverButton": [
+      "GamePlay::Ui::GameOverButton"
+    ],
+    "GameOverDeathCamera": [
+      "GamePlay::Ui::GameOverDeathCamera"
+    ],
+    "GameOverPresenter": [
+      "GamePlay::Ui::GameOverPresenter"
+    ],
+    "GameOverScreenUi": [
+      "GamePlay::Ui::GameOverScreenUi"
     ],
     "GrassRenderer": [
       "GamePlay::Prop::GrassRenderer"
@@ -5999,6 +9356,9 @@
     ],
     "ItemBar": [
       "GamePlay::Ui::ItemBar"
+    ],
+    "ItemPickup": [
+      "GamePlay::Pickup::ItemPickup"
     ],
     "ItemSlot": [
       "GamePlay::Ui::ItemSlot"
@@ -6030,8 +9390,29 @@
     "LowHealthScreenEffect": [
       "GamePlay::Ui::LowHealthScreenEffect"
     ],
+    "MagicBlast": [
+      "GamePlay::Magic::MagicBlast"
+    ],
+    "MagicCasterControlGuide": [
+      "GamePlay::Ui::MagicCasterControlGuide"
+    ],
+    "MagicChannel": [
+      "GamePlay::Magic::MagicChannel"
+    ],
+    "MagicPlacement": [
+      "GamePlay::Magic::MagicPlacement"
+    ],
+    "MagicProjectile": [
+      "GamePlay::Magic::MagicProjectile"
+    ],
+    "MerchantStall": [
+      "GamePlay::Prop::MerchantStall"
+    ],
     "ModelRenderer": [
       "NanamiEngine::Module::Component::ModelRenderer"
+    ],
+    "MoneyPickup": [
+      "GamePlay::Pickup::MoneyPickup"
     ],
     "MovieRenderer": [
       "NanamiEngine::Module::NanamiUi::MovieRenderer"
@@ -6059,6 +9440,21 @@
     ],
     "ParticleSystem": [
       "NanamiEngine::Module::Component::ParticleSystem"
+    ],
+    "PauseMenuItemCell": [
+      "GamePlay::Ui::PauseMenuItemCell"
+    ],
+    "PauseMenuPresenter": [
+      "GamePlay::Ui::PauseMenuPresenter"
+    ],
+    "PauseMenuRow": [
+      "GamePlay::Ui::PauseMenuRow"
+    ],
+    "PauseMenuUi": [
+      "GamePlay::Ui::PauseMenuUi"
+    ],
+    "PickupArea": [
+      "GamePlay::PlayerAvatar::PickupArea"
     ],
     "PlayerAvatarCameraGroupBase": [
       "GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase"
@@ -6106,6 +9502,18 @@
     "ShakeCameraBehaviour": [
       "CineMachine::Behaviour::ShakeCameraBehaviour"
     ],
+    "ShopPresenter": [
+      "GamePlay::Ui::ShopPresenter"
+    ],
+    "ShopReceipt": [
+      "GamePlay::Ui::ShopReceipt"
+    ],
+    "ShopRow": [
+      "GamePlay::Ui::ShopRow"
+    ],
+    "ShopUi": [
+      "GamePlay::Ui::ShopUi"
+    ],
     "SkyDome3D": [
       "NanamiEngine::Module::Component::SkyDome3D"
     ],
@@ -6114,6 +9522,15 @@
     ],
     "SoundPlayer": [
       "GamePlay::Sound::SoundPlayer"
+    ],
+    "SpawnSound": [
+      "GamePlay::Sound::SpawnSound"
+    ],
+    "SpellPalette": [
+      "GamePlay::Ui::SpellPalette"
+    ],
+    "SpellSlot": [
+      "GamePlay::Ui::SpellSlot"
     ],
     "SphereCollider": [
       "NanamiEngine::Module::Component::SphereCollider"
@@ -6140,6 +9557,7 @@
       "NanamiEngine::Module::Component::StaticMeshCollider"
     ],
     "StatusPresenter": [
+      "GamePlay::PlayerAvatar::MagicCaster::StatusPresenter",
       "GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter",
       "GamePlay::PlayerAvatar::SwordMan::StatusPresenter"
     ],
@@ -6151,9 +9569,6 @@
     ],
     "SwordManControlGuide": [
       "GamePlay::Ui::SwordManControlGuide"
-    ],
-    "SwordManControlGuideRow": [
-      "GamePlay::Ui::SwordManControlGuideRow"
     ],
     "TextRenderer": [
       "NanamiEngine::Module::NanamiUi::TextRenderer"

@@ -58,6 +58,18 @@ namespace Editor::Npc::Behaviour
         return dist(rng_);
     }
 
+    void RandomSelectorNode::PickNextChild()
+    {
+        currentRunningNodeIndex_ = PickWeightedIndex();
+        // 前回この枝を選んだときの WaitSeconds 等の経過を持ち越さない
+        children_[currentRunningNodeIndex_]->ResetRuntimeState();
+    }
+
+    void RandomSelectorNode::DoResetRuntimeState()
+    {
+        currentRunningNodeIndex_ = -1;
+    }
+
     GameCore::Npc::Enemy::Behaviour::TickStatus
     RandomSelectorNode::DoTick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context)
     {
@@ -65,7 +77,7 @@ namespace Editor::Npc::Behaviour
             return GameCore::Npc::Enemy::Behaviour::TickStatus::Failure;
 
         if (currentRunningNodeIndex_ < 0)
-            currentRunningNodeIndex_ = PickWeightedIndex();
+            PickNextChild();
 
         const auto& child = children_[currentRunningNodeIndex_];
         switch (const auto result = child->Tick(context))
@@ -91,7 +103,7 @@ namespace Editor::Npc::Behaviour
             return GameCore::Npc::Friendly::Behaviour::TickStatus::Failure;
 
         if (currentRunningNodeIndex_ < 0)
-            currentRunningNodeIndex_ = PickWeightedIndex();
+            PickNextChild();
 
         const auto& child = children_[currentRunningNodeIndex_];
         switch (const auto result = child->Tick(context))

@@ -16,5 +16,5 @@ namespace Editor::Npc::Enemy
         void OnUpdate() override;
     };
     
-    REGISTER_MAIN_WINDOW(EnemyNpcBehaviourWindow);
+    REGISTER_MAIN_WINDOW(EnemyNpcBehaviourWindow, "Behaviour Tree");
 }

@@ -45,7 +45,7 @@ namespace NanamiEngine::Core::Network
 
     bool PacketDispatcherBase::IsServer() const
     {
-        return Application::Configuration::NetworkConfiguration::IsServer();
+        return playerIdProvider_.IsServer();
     }
 
     void PacketDispatcherBase::SendPacket(const Packet& packet) const

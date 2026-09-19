@@ -80,10 +80,13 @@ namespace NanamiEngine::Module::Physics
     bool DrawLayerMaskGui(const char* label, LayerMask& mask);
 
     // Boundary は Player / Enemy だけを止める
+    // BodyPart は何も押さない。センサーや弾丸(いずれも Default)に検知されるためだけの当たり判定
     [[nodiscard]] constexpr bool LayersCollide(const Layer a, const Layer b)
     {
         if (a == Layer::Boundary) return b == Layer::Player || b == Layer::Enemy;
         if (b == Layer::Boundary) return a == Layer::Player || a == Layer::Enemy;
+        if (a == Layer::BodyPart) return b == Layer::Default;
+        if (b == Layer::BodyPart) return a == Layer::Default;
         return true;
     }
 }

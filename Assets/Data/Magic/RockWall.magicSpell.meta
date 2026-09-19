@@ -1,0 +1,106 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::MagicSpellData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Magic/RockWall.magicSpell",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "3E690974-F028-4E97-B504-26ACE06669BC"
+                    }
+                },
+                "displayName_": "岩壁",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "CA764D36-47FE-441A-AF1D-1F22BE1E4831"
+                                }
+                            }
+                        }
+                    }
+                },
+                "castSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "1B9A516A-A338-470B-BC8A-BCF32BC6E1EB"
+                                }
+                            }
+                        }
+                    }
+                },
+                "manaCost_": 20.0,
+                "cooldown_secs_": 10.0,
+                "castFireTime_secs_": 0.6800000071525574,
+                "castTotalDuration_secs_": 1.2000000476837159,
+                "effect_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GamePlay::Magic::PlacementSpellEffect",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "placementPrefab_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "81553B61-60D3-4E5A-9116-DA5FFE43AFD3"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "power_": {
+                                "cereal_class_version": 0,
+                                "value_": 0
+                            },
+                            "lifeTime_secs_": 10.0,
+                            "distance_": 40.0
+                        }
+                    }
+                },
+                "castMotion_": 2,
+                "castEffectPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "BB696087-FEBC-4AF1-9329-EED69F16DCFE"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

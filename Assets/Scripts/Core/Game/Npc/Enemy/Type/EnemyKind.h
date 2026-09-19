@@ -9,7 +9,8 @@ namespace GameCore::Npc::Enemy
     {
         NormalBoss = 0,
         Normal = 1,
-        Hyena = 2
+        Hyena = 2,
+        Tyrannosaurus = 3
     };
 
     constexpr std::array ENEMY_KINDS
@@ -17,6 +18,7 @@ namespace GameCore::Npc::Enemy
         EnemyKind::NormalBoss,
         EnemyKind::Normal,
         EnemyKind::Hyena,
+        EnemyKind::Tyrannosaurus,
     };
 
     constexpr std::string_view ToString(const EnemyKind kind)
@@ -26,6 +28,7 @@ namespace GameCore::Npc::Enemy
         case EnemyKind::NormalBoss: return "NormalBoss";
         case EnemyKind::Normal: return "Normal";
         case EnemyKind::Hyena: return "Hyena";
+        case EnemyKind::Tyrannosaurus: return "Tyrannosaurus";
         }
 
         return "Unknown";

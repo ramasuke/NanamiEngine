@@ -4,11 +4,13 @@
 #include "../../LifeCycleCallback/EnableAsset/IEnablableAsset.h"
 #include "../AssetBase.h"
 #include "../Factory/AssetFactory.h"
+#include "../Preload/Engine_Asset_IPreloadableAsset.h"
 
 namespace NanamiEngine::Module::Asset
 {
     class Mv1File final : public AssetBase,
-                          public LifeCycleCallback::IEnablableAsset
+                          public LifeCycleCallback::IEnablableAsset,
+                          public IPreloadableAsset
     {
     public:
         explicit Mv1File(const std::string& contentPath = "");
@@ -16,10 +18,13 @@ namespace NanamiEngine::Module::Asset
         Mv1File(const Mv1File&)            = delete;
         Mv1File& operator=(const Mv1File&) = delete;
         [[nodiscard]] const Guid& GetGuid       () const override;
+        /** @brief 元モデルが未読込ならここで読み終えてから複製を返す */
         [[nodiscard]] int         LoadDxLibHandle   () const;
         [[nodiscard]] std::string GetContentPath() const override;
-        /** @brief 非同期ロードが完了して LoadDxLibHandle() が使える状態か */
+        /** @brief 非同期ロードが完了して LoadDxLibHandle() が使える状態か。未読込なら読み込みを要求する */
         [[nodiscard]] bool        IsLoadCompleted() const;
+        void RequestLoad() const override;
+        void Unload() override;
 
     private:
         void OnEnableAsset() override;
@@ -28,7 +33,8 @@ namespace NanamiEngine::Module::Asset
 
         std::string contentPath_;
         Guid guid_;
-        int dxLibHandle_ = -1;
+        mutable int  dxLibHandle_     = -1;
+        mutable bool isLoadAttempted_ = false;
 #pragma region Serialization Function
     public:
     void OnDrawGui() override;

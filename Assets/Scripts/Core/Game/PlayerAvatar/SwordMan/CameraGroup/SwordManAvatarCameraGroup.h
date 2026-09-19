@@ -25,10 +25,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<PlayerAvatarCameraGroupBase>(this));
-            [[serialize(1)]] std::string idleCameraName_;
-            [[serialize(1)]] FIELD(CineMachine::CineMachineVirtualCamera) idleCamera_;
-            if (version == 1) archive(CEREAL_NVP(idleCameraName_));
-            if (version == 1) archive(CEREAL_NVP(idleCamera_));
         }
 #pragma endregion
 };

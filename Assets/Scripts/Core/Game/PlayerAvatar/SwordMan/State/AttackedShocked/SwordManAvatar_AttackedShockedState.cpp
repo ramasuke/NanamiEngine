@@ -18,14 +18,14 @@ void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::VisitTransit
     if (During_secs() < Status().AttackedShockedStateDuration_secs())
         return;
 
-    visitor.OnInput(SwordManAvatarStateType::Idle, SwordManAvatarInput::Move, SwordManAvatarInputPhase::NotHolding, true);
+    visitor.OnInput(SwordManAvatarStateType::Idle, SwordManAvatarInput::Move, PlayerAvatarInputPhase::NotHolding, true);
     visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk,
-                    SwordManAvatarInput::Move, SwordManAvatarInputPhase::Holding, true);
+                    SwordManAvatarInput::Move, PlayerAvatarInputPhase::Holding, true);
     visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run,
-                    SwordManAvatarInput::Run, SwordManAvatarInputPhase::Holding, Status().CanRun());
-    visitor.OnInput(SwordManAvatarStateType::Jump, SwordManAvatarInput::Jump, SwordManAvatarInputPhase::Pressed, Status().CanJump());
-    visitor.OnInput(SwordManAvatarStateType::AvoidRolling, SwordManAvatarInput::AvoidRolling, SwordManAvatarInputPhase::Pressed, Status().CanAvoidRolling());
-    visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, SwordManAvatarInputPhase::Pressed, true);
+                    SwordManAvatarInput::Run, PlayerAvatarInputPhase::Holding, Status().CanRun());
+    visitor.OnInput(SwordManAvatarStateType::Jump, SwordManAvatarInput::Jump, PlayerAvatarInputPhase::Pressed, Status().CanJump());
+    visitor.OnInput(SwordManAvatarStateType::AvoidRolling, SwordManAvatarInput::AvoidRolling, PlayerAvatarInputPhase::Pressed, Status().CanAvoidRolling());
+    visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, true);
     visitor.Automatic(SwordManAvatarStateType::Floating, !Conditions().IsGround());
 }
 

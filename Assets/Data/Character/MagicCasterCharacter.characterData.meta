@@ -1,0 +1,50 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::CharacterData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Character/MagicCasterCharacter.characterData",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "43A8D14D-D24A-40FB-ACD0-92D64B2A43B1"
+                    }
+                },
+                "displayName_": "魔術師",
+                "reading_": "MAGIC CASTER",
+                "tagline_": "離れて撃つ",
+                "avatarType_": 2,
+                "isUnlocked_": true,
+                "powerPips_": 3,
+                "toughnessPips_": 2,
+                "agilityPips_": 4,
+                "descriptionLines_": [
+                    "遠くから魔弾を放つ。",
+                    "打たれ弱いが手数で押す。"
+                ],
+                "displayModelPrefab_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "25E65F84-C773-45CE-8C91-74B63F74ADBC"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

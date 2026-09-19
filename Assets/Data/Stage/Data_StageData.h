@@ -77,7 +77,7 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(StageData, STAGE_DATA_EXTENSION_LABEL)
+REGISTER_SCRIPTABLE_OBJECT(StageData, STAGE_DATA_EXTENSION_LABEL, "Stage")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::StageData, 2);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::StageData);

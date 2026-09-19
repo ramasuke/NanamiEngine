@@ -3,7 +3,7 @@
 #include "ImGuiHelper.h"
 #include "../../../../../../../../PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../../../../../PlayerAvatar/Quest/PlayerAvatar_IQuestGroup.h"
-#include "../../../../../../../../PlayerAvatar/Quest/PlayerAvatar_QuestFactory.h"
+#include "../../../../../../../../PlayerAvatar/Quest/PlayerAvatar_StoryQuestFactory.h"
 #include "../../../../../../../../PlayerAvatar/Quest/PlayerAvatar_QuestType.h"
 #include "../../../../../../../../PlayerAvatar/Status/IPlayerAvatarStatus.h"
 
@@ -21,7 +21,7 @@ namespace GameCore::Npc::Friendly::Behaviour
         if (!ImGui::CollapsingHeader("Quest", ImGuiTreeNodeFlags_DefaultOpen))
             return;
 
-        const auto& quests = PlayerAvatar::QuestFactory::Instance().CreatableQuests();
+        const auto& quests = PlayerAvatar::StoryQuestFactory::Instance().CreatableQuests();
 
         ImGui::Text("Select Quest");
 

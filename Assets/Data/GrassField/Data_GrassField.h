@@ -187,7 +187,7 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(GrassField, GRASS_FIELD_EXTENSION_LABEL)
+REGISTER_SCRIPTABLE_OBJECT(GrassField, GRASS_FIELD_EXTENSION_LABEL, "Stage")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::GrassField, 1);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::GrassField);

@@ -43,8 +43,8 @@ EXPECTED_TOOLS = {
     "gameobject_find", "gameobject_get", "gameobject_get_json", "gameobject_set_json", "component_get",
     "component_set_params", "gameobject_set_transform", "gameobject_set_enable", "component_set_enable",
     "gameobject_select", "gameobject_destroy", "play", "stop", "end_play", "time_set_scale",
-    "camera_get", "camera_set", "log_tail",
-    "assets_find", "model_view_open", "model_view_state", "model_view_select", "model_view_close",
+    "camera_get", "camera_set", "debug_draw_get", "debug_draw_set", "log_tail",
+    "assets_find", "assets_reload", "model_view_open", "model_view_state", "model_view_select", "model_view_close",
     "animation_view_open", "animation_view_state", "animation_view_set", "animation_view_set_clip", "preview_camera",
 }
 
@@ -103,6 +103,9 @@ class FakeEngine:
         self.view_polls = 0
         self.source_polls = 0
         self.attach_polls = 0
+        # assets.reload: status reports this many loading resources, one fewer per poll
+        self.loading_after_reload = 2
+        self.loading_left = 0
         self._listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._listener.bind(("127.0.0.1", 0))
         self._listener.listen(4)
@@ -151,7 +154,14 @@ class FakeEngine:
         if cmd == "ping":
             response["result"] = {"engine": "NanamiEngine", "protocol": 1}
         elif cmd == "status":
-            response["result"] = {"playMode": False, "mainScene": {"name": "Fake"}, "workingDirectory": "C:/fake"}
+            response["result"] = {"playMode": False, "mainScene": {"name": "Fake"}, "workingDirectory": "C:/fake",
+                                  "loadingResourceCount": self.loading_left}
+            self.loading_left = max(0, self.loading_left - 1)
+        elif cmd == "assets.reload":
+            self.loading_left = self.loading_after_reload
+            response["result"] = {"previousAssetCount": 3, "assetCount": 4}
+        elif cmd in ("debugdraw.get", "debugdraw.set"):
+            response["result"] = {"colliders": args.get("colliders", False), "saved": args.get("save", False)}
         elif cmd == "boom":
             return {"id": request["id"], "ok": False, "error": "boom failed"}
         elif cmd == "screenshot":
@@ -478,6 +488,33 @@ def stage_server(r: Reporter, engine: FakeEngine) -> None:
         cmds = [q["cmd"] for q in commands_since(start)]
         assert cmds == ["animationview.set_clip"], cmds
     r.check("animation_view_set_clip wait=False sends one command", set_clip_no_wait)
+
+    def debug_draw_set_args():
+        call("debug_draw_set", {"colliders": True, "shapes": {"StaticMesh": True}, "layers": False})
+        sent = engine.received[-1]
+        assert sent["cmd"] == "debugdraw.set", sent
+        assert sent["args"] == {"colliders": True, "shapes": {"StaticMesh": True}, "layers": False}, sent["args"]
+        call("debug_draw_set", {"main_camera_frustum": False, "save": True})
+        assert engine.received[-1]["args"] == {"mainCameraFrustum": False, "save": True}, engine.received[-1]["args"]
+    r.check("debug_draw_set sends only the given settings", debug_draw_set_args)
+
+    def assets_reload_waits():
+        start = len(engine.received)
+        result = call("assets_reload", {})
+        state = json.loads(result.content[0].text)
+        assert state == {"previousAssetCount": 3, "assetCount": 4, "loadingResourceCount": 0}, state
+        cmds = [q["cmd"] for q in commands_since(start)]
+        assert cmds == ["assets.reload"] + ["status"] * (engine.loading_after_reload + 1), cmds
+    r.check("assets_reload waits until nothing is loading", assets_reload_waits)
+
+    def assets_reload_no_wait():
+        start = len(engine.received)
+        state = json.loads(call("assets_reload", {"wait": False}).content[0].text)
+        assert "loadingResourceCount" not in state, state
+        cmds = [q["cmd"] for q in commands_since(start)]
+        assert cmds == ["assets.reload"], cmds
+        engine.loading_left = 0
+    r.check("assets_reload wait=False sends one command", assets_reload_no_wait)
     client.close()
 
 

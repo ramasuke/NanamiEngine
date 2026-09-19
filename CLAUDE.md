@@ -14,7 +14,15 @@ itself a request to build — ask first if it's unclear.
 
 ```
 MSBuild.exe NanamiEngine.sln -p:Configuration=Debug -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12
+MSBuild.exe NanamiEngine.sln -p:Configuration=Release -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12
 ```
+
+`Release|x64` is a real /MT release build (the default for the game build that the editor's *Build Settings* window runs
+through `GameBuilder`; Debug is selectable there); `Release|Win32` / `Debug|Win32` are unmaintained. Build Settings
+stores product name + start scene in `ProjectConfig/Build/Runtime/` (shipped with the game, read at startup) and the
+editor-only MSBuild path / output dir / configuration in `ProjectConfig/Build/`. Per-file `<ClCompile>` blocks must not hardcode configuration-specific settings
+(`RuntimeLibrary`, `Optimization`, `PreprocessorDefinitions`, `ObjectFileName` under `x64\Debug\`, …) — Visual
+Studio writes them when you edit a single file's properties, and they then leak into every configuration.
 
 `-p:PreferredToolArchitecture=x64` is **required** — the 32-bit compiler runs out
 of heap on the deep cereal template instantiations (`error C1060`). MSBuild lives at
@@ -145,10 +153,15 @@ manually opening `DxLibModelViewer_64bit.exe` — DxLib has no documented CLI/CU
 conversion, so the toolkit drives the real GUI tool via `pywinauto`:
 
 ```
-python -m tools.model convert <in.fbx> <out.mv1> --mode mesh|anim|full [--with-textures] [--modelviewer-path <exe>]
+python -m tools.model convert <in.fbx> <out.mv1> --mode mesh|anim|full [--with-textures] [--emissive [MATERIAL=]R,G,B ...] [--modelviewer-path <exe>]
 python -m tools.model install <out.mv1> --dest Assets/Art/.../<Name>.mv1 [--with-textures] [--source <in.fbx>] [--textures <dir>]
+python -m tools.model materials <mv1>                                   # material names + diffuse/emissive
+python -m tools.model set-emissive <mv1> --emissive [MATERIAL=]R,G,B ... [--out <path>]
 python tools/model/selftest.py              # .meta/.mv1-codec gate; GUI-automation stage is best-effort/skips cleanly
 ```
+
+`--emissive` is DxLibModelViewer's 自己発光 (emissive color): the toolkit patches the saved `.mv1`'s
+material table and re-compresses it (`mv1.py`), rather than driving the viewer's material panel.
 
 `--mode` picks the DxLibModelViewer save command: `mesh` = model only (animations dropped),
 `anim` = animation clips only (no mesh), `full` = model + animations in one file.
@@ -167,6 +180,64 @@ pinned path in `tools/model/cli.py`'s `DEFAULT_MODELVIEWER_PATH`; all three mode
 for prerequisites and known fragility — this is a reverse-engineered UI-automation wrapper, not an
 officially supported CLI.
 
+## Asset distribution (manifest + Cloudflare R2)
+
+To cut a release of the runtime assets, use the toolkit instead of listing or uploading files by hand:
+
+```
+python -m tools.dist build --version <v> [--base-url <url>] [--out <file>]
+python -m tools.dist upload [manifest.json] [--dry-run] [--no-release]   # blobs -> manifest-<v>.json -> manifest.json
+python -m tools.dist show <manifest.json>              # summary + largest entries
+python -m tools.dist diff <installed.json> <manifest.json>   # what clients would download
+python tools/dist/selftest.py             # run after touching tools/dist/{manifest,upload,config,refs}.py
+```
+
+`manifest.json` lists every deliverable file under `Assets/` (2026-09-18: **1,812 entries / 1.76 GB**, 3,146
+unique blobs) and is what `Packages/AssetUpdater/` fetches at runtime. It is hosted on **Cloudflare R2**
+(bucket `nanami-assets`, uploaded through the rclone remote `r2`; the target and public URL live in
+`tools/dist/dist_config.json`, the keys in `%APPDATA%\rclone\rclone.conf` outside the repo). Server layout:
+`files/<sha256>` (immutable blobs, bodies and `.meta` alike) + `manifest-<v>.json` (immutable) +
+`manifest.json` (the only mutable object - swapping it *is* the release; rollback = copy an older
+`manifest-<v>.json` over it). Clients fetch `baseUrl + <hash>`, so download URLs are always ASCII; an entry's
+`path` is only where the file goes locally (the `Assets/` tree, because `contentPath_` and the `.mv1`/`.efkefc`
+relative references depend on it). `upload` sends only hashes missing on the remote, re-hashes the actual
+bytes before sending, and refuses to reuse a version number with different content. The public URL is still
+the development-only `r2.dev` one: before shipping to players, replace it with a custom domain in
+`dist_config.json` **and** in the client's `MANIFEST_URL` (compiled into the exe, so that needs a new build).
+
+An entry covers a body file **and its `.meta`** (`guid`/`metaHash`/`metaSize`), because `.meta` is where the
+guid and `contentPath_` live and the two must never drift apart.
+
+**"No `.meta` means not shipped" is wrong** - 82 files are *companions* referenced by relative path
+from inside another file (`.efkmodel` and textures under `.efkefc`, `<name>.fbm/*.png` under `.mv1`,
+`Tree_VS.vso`/`Tree_PS.pso`, `.mat`/`.mtl`). They ship with an empty `guid`/`metaHash`, identified by
+path. Exclusion is a denylist of dev-only things (`Assets/Scripts/`, **any `_Source/` directory at any
+depth**, `*.fbx`, `*.blend`, `*.blend1`, `*.efkproj`, `*.h`, `*.cpp`, `*.bak`, `desktop.ini`) - see
+`tools/dist/manifest.py`. `.blend` files embed the author's Windows user name and full paths (one used to
+slip through); after loosening any rule, re-scan the shipped set for them (UTF-8/UTF-16LE/CP932, `.mv1`
+decoded). `ProjectConfig/` and `LocalPrefs/` are intentionally **not** distributed.
+
+`build` **refuses** (exit 1, no manifest written) when a shipped `.efkefc`/`.mv1` references a file that exists
+on this PC but won't ship (outside `Assets/`, or excluded) - it would render here and be missing on players' PCs
+(`tools/dist/refs.py`; 2026-09-18: 8 effects pointed at `Desktop\Effekseer素材`, recompiled to use the identical
+copies next to them). Fix the reference; don't loosen the check. References that exist nowhere are not reported.
+
+`upload` **refuses** a release that changes or removes an existing font (`.ttf`/`.otf`/`.ttc`) relative to the live
+`manifest.json` unless `requiredClientVersion` is raised above the live one: the client applies updates on the title
+screen while the game runs, and `TtfFontFile` keeps fonts registered via `AddFontResourceEx` until exit, so every
+player's apply would fail. Ship font changes in a new zip. The client side (`Packages/AssetUpdater`: check ->
+confirm -> download to `.update/` -> transactional apply into `Assets/` -> relaunch) only ever runs when
+`APPLICATION_MODE == Game` **and** `installed.json` exists; never let it run from the editor, where it would
+overwrite the working `Assets/` with the published set and delete files that were never uploaded.
+
+Hashing is cached by mtime+size, and the `.efkefc`/`.mv1` reference lists by content hash, in
+`<repo>/.manifest_hash_cache.json` (gitignored, ~22s cold / ~4s warm).
+`manifest.json` itself is a release artifact and is gitignored. Standing caveats: **74 asset paths are
+non-ASCII** (harmless for download URLs, but the client must convert the UTF-8 `path` to UTF-16 before
+touching the filesystem), **71 `.meta` are still CP932** (pre-`/execution-charset:utf-8`; `read_guid` falls
+back to CP932), Python's default `urllib` User-Agent gets **403 from r2.dev**, and rclone's `--immutable` is
+**ignored by `copyto`** (so `upload.py` checks versioned manifests itself). See **`tools/dist/README.md`**.
+
 ## AutoMCP (Claude Code <-> running editor)
 
 **Do not use the `nanami` MCP tools on your own initiative.** Only drive the editor (screenshot,
@@ -178,7 +249,7 @@ The project MCP server `nanami` (`.mcp.json` -> `python -m tools.automcp serve`,
 `pip install "mcp>=2.2"`) lets you drive the **running editor**: `screenshot` (mode `full` with ImGui,
 `game` = 3D only) to check real rendering, `windows_list`/`window_open`/`window_set`, `hierarchy`/
 `gameobject_find`/`gameobject_get`, `component_get`/`component_set_params`, `gameobject_set_transform`,
-`play`/`stop`/`end_play`, `camera_set`, `log_tail`, and the asset viewers (`assets_find` -> `model_view_open` / `animation_view_open` + `animation_view_set_clip`, `preview_camera` for the angle), etc. It only answers while the editor runs with
+`play`/`stop`/`end_play`, `camera_set`, `debug_draw_set` (collider/frustum drawing), `log_tail`, and the asset viewers (`assets_find` -> `model_view_open` / `animation_view_open` + `animation_view_set_clip`, `preview_camera` for the angle), etc. It only answers while the editor runs with
 *Config > AutoMCP > Enable AutoMCP* checked (engine side: `Engine/Core/Application/AutoMcp/`, polled
 from `EditorApplication::OnFrame`, 127.0.0.1:47321 by default, `NANAMI_AUTOMCP_PORT` to change).
 
@@ -191,5 +262,7 @@ python tools/automcp/selftest.py                          # run after touching t
 `engine_launch` starts the already-built exe but never builds it (building still needs the user's
 go-ahead). `component_set_params`/`gameobject_set_json` rebuild the whole GameObject from cereal JSON
 (components re-initialise), so prefer edit mode; nothing is saved to disk - persist with `tools.scene`
-and `scene_reload`. See **`tools/automcp/README.md`** for the tool/command table and limits; keep it,
+and `scene_reload`. The editor scans `Assets/` only at startup, so after adding or rewriting assets / `.meta`
+files on disk call `assets_reload` (= *Config > Application > Reload Assets*) before `scene_reload`.
+See **`tools/automcp/README.md`** for the tool/command table and limits; keep it,
 `server.py` and `AutoMcpCommands.cpp` in sync when adding a command.

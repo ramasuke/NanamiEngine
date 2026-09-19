@@ -128,7 +128,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483653,
                                 "data": {
-                                    "cereal_class_version": 0,
+                                    "cereal_class_version": 1,
                                     "value0": {
                                         "guid_": {
                                             "value_": "D53C7F62-9F36-4413-800F-924CA43DBB0D"
@@ -137,7 +137,9 @@
                                     },
                                     "priority_": {
                                         "value": 0
-                                    }
+                                    },
+                                    "overrideFov_": false,
+                                    "fov_": 60.0
                                 }
                             }
                         },
@@ -242,8 +244,8 @@
                                     "value1": {},
                                     "value2": {},
                                     "value3": {},
-                                    "minPitch_": -0.5,
-                                    "maxPitch_": -0.10000000149011612,
+                                    "minPitch_": -1.2,
+                                    "maxPitch_": 0.6,
                                     "mouseSensitivity_": 0.004999999888241291,
                                     "distance_": 23.0,
                                     "target_": {
@@ -433,7 +435,9 @@
                                     },
                                     "priority_": {
                                         "value": 0
-                                    }
+                                    },
+                                    "overrideFov_": false,
+                                    "fov_": 60.0
                                 }
                             }
                         },

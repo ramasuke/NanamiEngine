@@ -18,7 +18,37 @@ namespace NanamiEngine::Module::Asset
 
     void SpriteFile::OnEnableAsset()
     {
+    }
+
+    int SpriteFile::GetDxLibHandle() const
+    {
+        if (!isLoadAttempted_)
+        {
+            const int useASyncLoad = GetUseASyncLoadFlag();
+            SetUseASyncLoadFlag(FALSE);
+            RequestLoad();
+            SetUseASyncLoadFlag(useASyncLoad);
+        }
+        return dxLibId_;
+    }
+
+    void SpriteFile::RequestLoad() const
+    {
+        // 読み込みに失敗したファイルを毎フレーム読み直さないよう、Unload されるまでは 1 回だけ試す
+        if (isLoadAttempted_)
+            return;
+
+        isLoadAttempted_ = true;
         dxLibId_ = LoadGraph();
+    }
+
+    void SpriteFile::Unload()
+    {
+        if (dxLibId_ != -1)
+            DeleteGraph(dxLibId_);
+
+        dxLibId_         = -1;
+        isLoadAttempted_ = false;
     }
 
     int SpriteFile::LoadGraph() const

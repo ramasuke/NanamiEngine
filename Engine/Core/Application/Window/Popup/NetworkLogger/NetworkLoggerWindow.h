@@ -23,5 +23,5 @@ namespace NanamiEngine::Core::PopupWindow
         bool autoScroll_  = true;
     };
 
-    REGISTER_POPUP_WINDOW(NetworkLoggerWindow);
+    REGISTER_POPUP_WINDOW(NetworkLoggerWindow, "Debug::Network");
 }

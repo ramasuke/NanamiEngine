@@ -20,7 +20,27 @@ namespace NanamiEngine::Module::Asset
         MV1DeleteModel(dxLibHandle_);
     }
 
-    void Mv1File::OnEnableAsset() { dxLibHandle_ = MV1LoadModel(contentPath_.c_str()); }
+    void Mv1File::OnEnableAsset() { }
+
+    void Mv1File::RequestLoad() const
+    {
+        // 読み込みに失敗したファイルを毎回読み直さないよう、Unload されるまでは 1 回だけ試す
+        if (isLoadAttempted_)
+            return;
+
+        isLoadAttempted_ = true;
+        dxLibHandle_ = MV1LoadModel(contentPath_.c_str());
+    }
+
+    void Mv1File::Unload()
+    {
+        // 複製済みのモデルは DxLib 側の参照カウントで生き残る
+        if (dxLibHandle_ != -1)
+            MV1DeleteModel(dxLibHandle_);
+
+        dxLibHandle_     = -1;
+        isLoadAttempted_ = false;
+    }
 
     void Mv1File::OnDoubleClick()
     {
@@ -46,6 +66,7 @@ namespace NanamiEngine::Module::Asset
 
     bool Mv1File::IsLoadCompleted() const
     {
+        RequestLoad();
         // 非同期ロード中は dxLibHandle_ が -1 ではないので CheckHandleASyncLoad で完了を判定する(TRUE: まだロード中)
         return dxLibHandle_ != -1 && CheckHandleASyncLoad(dxLibHandle_) == FALSE;
     }
@@ -57,7 +78,18 @@ namespace NanamiEngine::Module::Asset
         LibCore::ImGuiHelper::OnDrawInputField("dxLibHandle_", dxLibHandle_);
     }
 
+    int Mv1File::LoadDxLibHandle() const
+    {
+        if (!isLoadAttempted_)
+        {
+            const int useASyncLoad = GetUseASyncLoadFlag();
+            SetUseASyncLoadFlag(FALSE);
+            RequestLoad();
+            SetUseASyncLoadFlag(useASyncLoad);
+        }
+        return MV1DuplicateModel(dxLibHandle_);
+    }
+
     const Guid& Mv1File::GetGuid        () const { return guid_; }
-    int         Mv1File::LoadDxLibHandle() const { return MV1DuplicateModel(dxLibHandle_); }
     std::string Mv1File::GetContentPath () const { return contentPath_; }
 }

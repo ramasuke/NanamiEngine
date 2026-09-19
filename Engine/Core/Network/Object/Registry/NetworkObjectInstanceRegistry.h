@@ -12,7 +12,8 @@ namespace NanamiEngine::Core::Network
         void RegisterWithId(
             NetworkObjectId id,
             const std::weak_ptr<Module::GameObject::IGameObject>& object,
-            OwnerLeavePolicy policy) override;
+            OwnerLeavePolicy policy,
+            PlayerId owner) override;
         void Unregister(NetworkObjectId id) override;
         void UnregisterObject(const std::shared_ptr<Module::GameObject::IGameObject>& object) override;
 
@@ -22,7 +23,7 @@ namespace NanamiEngine::Core::Network
         [[nodiscard]] PlayerId OwnerOf(NetworkObjectId id) const override;
         void SetOwner(NetworkObjectId id, PlayerId owner) override;
         [[nodiscard]] std::vector<OwnedEntry> CollectOwnedBy(PlayerId owner) const override;
-        [[nodiscard]] std::vector<OwnerOverride> CollectOwnerOverrides() const override;
+        [[nodiscard]] std::vector<ObjectOwner> CollectOwners() const override;
 
         [[nodiscard]] INetworkTickableRegistry& GetTickableRegistry() { return tickableRegistry_; }
 

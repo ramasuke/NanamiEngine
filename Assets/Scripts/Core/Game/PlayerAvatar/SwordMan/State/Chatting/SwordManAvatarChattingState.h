@@ -6,7 +6,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     class SwordManAvatarChattingState final : public SwordManAvatarStateBase
     {
     public:
-        DEFINE_STATE_CONSTRUCTOR(SwordManAvatarChattingState)
+        explicit SwordManAvatarChattingState(const SwordManAvatarStateArgs& args) : SwordManAvatarStateBase(args) {}
 
     private:
         void DoEnter      () override;
@@ -15,6 +15,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void DoExit       () override;
         
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::Idle; }
-        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Momentary; }
+        [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Momentary; }
     };
 }

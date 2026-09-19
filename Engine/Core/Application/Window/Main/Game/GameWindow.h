@@ -11,16 +11,24 @@ namespace NanamiEngine::Core::Application::AutoMcp
     class AutoMcpEngineAccess;
 }
 
+namespace NanamiEngine::Core::Application::Game
+{
+    class GameApplication;
+}
+
 namespace NanamiEngine::Core::MainWindow
 {
     class GameWindow final : public MainWindowBase<Scene::Scene>
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
+        friend class ::NanamiEngine::Core::Application::Game::GameApplication;
 
     public:
         explicit GameWindow();
 
         void AddContent(const std::shared_ptr<Scene::Scene>& content) override;
+        /** @brief 外したシーンだけが使っていた画像・モデルは、読み込み中でないフレームで解放する */
+        void RemoveContent(const std::shared_ptr<Scene::Scene>& content);
         void ChangeMainScene(const std::shared_ptr<Scene::Scene>& scene);
         [[nodiscard]] Scene::Scene& MainScene() const { return *mainScene_.lock(); }
         [[nodiscard]] std::shared_ptr<Scene::Scene> CatchScene(const Guid& guid) const;
@@ -59,6 +67,8 @@ namespace NanamiEngine::Core::MainWindow
         void DrawGameObjectMarks() const;
         /** @brief 非同期読み込みを 1 フレーム分進め、完了していればメインシーンへ差し替える */
         void UpdateAsyncSceneLoad();
+        /** @brief シーンの差し替え・削除のあと、開いているどのシーンからも参照されない画像・モデルを解放する */
+        void ReleaseUnusedAssetsIfPending();
 
         std::queue<std::weak_ptr<GameObject::IGameObject>> removeGameObjectQueue_;
         Scene::AsyncSceneLoader sceneLoader_;
@@ -68,7 +78,8 @@ namespace NanamiEngine::Core::MainWindow
         char hierarchySearchBuffer_[128] = {};
         bool isPlayMode_ = false;
         bool isPlaying_  = false;
+        bool isAssetReleasePending_ = false;
     };
 
-    REGISTER_MAIN_WINDOW(GameWindow)
+    REGISTER_MAIN_WINDOW(GameWindow, "Scene")
 }

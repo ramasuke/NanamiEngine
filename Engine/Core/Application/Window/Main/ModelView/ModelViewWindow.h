@@ -44,5 +44,5 @@ namespace NanamiEngine::Core::MainWindow
         std::optional<Guid> selectedGuid_;
     };
 
-    REGISTER_MAIN_WINDOW(ModelViewWindow)
+    REGISTER_MAIN_WINDOW(ModelViewWindow, "Viewer")
 }

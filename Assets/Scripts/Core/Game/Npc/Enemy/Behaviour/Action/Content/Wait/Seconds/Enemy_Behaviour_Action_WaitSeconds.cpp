@@ -16,7 +16,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         return TickStatus::Running;
     }
 
-    void Action::WaitSeconds::Reset()
+    void Action::WaitSeconds::DoReset()
     {
         during_secs_ = 0.0f;
     }

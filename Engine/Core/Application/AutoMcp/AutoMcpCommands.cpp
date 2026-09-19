@@ -14,6 +14,7 @@
 #include "imgui_internal.h"
 #include "AutoMcpEngineAccess.h"
 #include "../ApplicationBase.h"
+#include "../Configuration/DebugDraw/ApplicationConfiguration_DebugDraw.h"
 #include "../LifeCycle/ApplicationLifeCycle.h"
 #include "../Time/Time.h"
 #include "../Window/Main/AnimationView/AnimationPreviewSlot.h"
@@ -921,6 +922,96 @@ namespace NanamiEngine::Core::Application::AutoMcp
             CommandCameraGet(args, result, allocator);
         }
 
+        using DebugDrawChanges = std::vector<std::pair<bool*, bool>>;
+
+        template <typename EnumT, std::size_t N>
+        static JsonValue DescribeDebugDrawFlags(const char* const (&names)[N], bool& (*flag)(EnumT), JsonAllocator& allocator)
+        {
+            JsonValue value(rapidjson::kObjectType);
+            for (std::size_t i = 0; i < N; ++i)
+                value.AddMember(rapidjson::StringRef(names[i]), flag(static_cast<EnumT>(i)), allocator);
+            return value;
+        }
+
+        static void DescribeDebugDraw(JsonValue& result, JsonAllocator& allocator)
+        {
+            result.AddMember("colliders",             AutoMcpEngineAccess::DebugDrawAllColliders(), allocator);
+            result.AddMember("shapes",                DescribeDebugDrawFlags(NanamiEngine::Module::Physics::COLLIDER_SHAPE_KIND_NAMES, &AutoMcpEngineAccess::DebugDrawColliderKind, allocator), allocator);
+            result.AddMember("layers",                DescribeDebugDrawFlags(NanamiEngine::Module::Physics::LAYER_NAMES, &AutoMcpEngineAccess::DebugDrawColliderLayer, allocator), allocator);
+            result.AddMember("triggers",              AutoMcpEngineAccess::DebugDrawTriggerColliders(), allocator);
+            result.AddMember("mainCameraFrustum",     AutoMcpEngineAccess::DebugDrawMainCameraFrustum(), allocator);
+            result.AddMember("virtualCameraFrustums", AutoMcpEngineAccess::DebugDrawVirtualCameraFrustums(), allocator);
+        }
+
+        static void CollectDebugDrawFlag(const JsonValue& args, const char* key, bool& flag, DebugDrawChanges& changes)
+        {
+            if (FindMember(args, key) != nullptr)
+                changes.emplace_back(&flag, RequireBool(args, key));
+        }
+
+        /** @brief true/false なら全部、{"名前": bool} なら名前ごと (大文字小文字は区別しない) に切り替える */
+        template <typename EnumT, std::size_t N>
+        static void CollectDebugDrawFlags(const JsonValue& args, const char* key, const char* const (&names)[N], bool& (*flag)(EnumT), DebugDrawChanges& changes)
+        {
+            const JsonValue* member = FindMember(args, key);
+            if (member == nullptr)
+                return;
+
+            if (member->IsBool())
+            {
+                for (std::size_t i = 0; i < N; ++i)
+                    changes.emplace_back(&flag(static_cast<EnumT>(i)), member->GetBool());
+                return;
+            }
+
+            std::string validNames;
+            for (const char* name : names)
+                validNames += validNames.empty() ? name : std::string(", ") + name;
+
+            if (!member->IsObject())
+                throw AutoMcpError(std::string(key) + " must be true/false (all) or {\"<name>\": bool} with names from: " + validNames);
+
+            for (auto it = member->MemberBegin(); it != member->MemberEnd(); ++it)
+            {
+                const std::string requested = it->name.GetString();
+                const auto match = std::ranges::find_if(names, [&requested](const char* name) { return ToLowerAscii(name) == ToLowerAscii(requested); });
+                if (match == std::ranges::end(names))
+                    throw AutoMcpError(std::string("unknown ") + key + " name: " + requested + " (valid: " + validNames + ")");
+                if (!it->value.IsBool())
+                    throw AutoMcpError(std::string(key) + "." + requested + " must be true or false");
+
+                changes.emplace_back(&flag(static_cast<EnumT>(match - std::ranges::begin(names))), it->value.GetBool());
+            }
+        }
+
+        static void CommandDebugDrawGet(const JsonValue&, JsonValue& result, JsonAllocator& allocator)
+        {
+            DescribeDebugDraw(result, allocator);
+        }
+
+        /** @brief 既定では ProjectConfig/DebugDraw に保存しない (git 管理下なので)。save で Config 画面の変更と同じく保存する */
+        static void CommandDebugDrawSet(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        {
+            // 途中の引数が不正でも一部だけ反映されないよう、全部読んでから書き込む
+            DebugDrawChanges changes;
+            CollectDebugDrawFlag (args, "colliders", AutoMcpEngineAccess::DebugDrawAllColliders(), changes);
+            CollectDebugDrawFlags(args, "shapes",    NanamiEngine::Module::Physics::COLLIDER_SHAPE_KIND_NAMES, &AutoMcpEngineAccess::DebugDrawColliderKind, changes);
+            CollectDebugDrawFlags(args, "layers",    NanamiEngine::Module::Physics::LAYER_NAMES, &AutoMcpEngineAccess::DebugDrawColliderLayer, changes);
+            CollectDebugDrawFlag (args, "triggers",  AutoMcpEngineAccess::DebugDrawTriggerColliders(), changes);
+            CollectDebugDrawFlag (args, "mainCameraFrustum",     AutoMcpEngineAccess::DebugDrawMainCameraFrustum(), changes);
+            CollectDebugDrawFlag (args, "virtualCameraFrustums", AutoMcpEngineAccess::DebugDrawVirtualCameraFrustums(), changes);
+            const bool save = OptionalBool(args, "save", false);
+
+            for (const auto& [flag, value] : changes)
+                *flag = value;
+
+            if (save)
+                Configuration::DebugDrawConfiguration::Save();
+
+            DescribeDebugDraw(result, allocator);
+            result.AddMember("saved", save, allocator);
+        }
+
         static const char* ToLevelName(const NanamiEngine::Module::LogLevel level)
         {
             switch (level)
@@ -1103,6 +1194,16 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
             result.AddMember("assets",    assets, allocator);
             result.AddMember("truncated", isTruncated, allocator);
+        }
+
+        /** @brief 再読み込みしたアセットの非同期ロードは次フレームの OnEnableAsset から始まるので、ここでは loadingResourceCount を返さない */
+        static void CommandAssetsReload(const JsonValue&, JsonValue& result, JsonAllocator& allocator)
+        {
+            const int previousAssetCount = static_cast<int>(AllAssets().size());
+            ApplicationBase::ResetAssetsDirectory();
+
+            result.AddMember("previousAssetCount", previousAssetCount, allocator);
+            result.AddMember("assetCount",         static_cast<int>(AllAssets().size()), allocator);
         }
 
         static void CommandModelViewOpen(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
@@ -1319,8 +1420,11 @@ namespace NanamiEngine::Core::Application::AutoMcp
             {"time.set_scale",          {AutoMcpPhase::FrameEnd,   CommandTimeSetScale}},
             {"camera.get",              {AutoMcpPhase::FrameEnd,   CommandCameraGet}},
             {"camera.set",              {AutoMcpPhase::FrameEnd,   CommandCameraSet}},
+            {"debugdraw.get",           {AutoMcpPhase::FrameEnd,   CommandDebugDrawGet}},
+            {"debugdraw.set",           {AutoMcpPhase::FrameEnd,   CommandDebugDrawSet}},
             {"log.tail",                {AutoMcpPhase::FrameEnd,   CommandLogTail}},
             {"assets.find",             {AutoMcpPhase::FrameEnd,   CommandAssetsFind}},
+            {"assets.reload",           {AutoMcpPhase::FrameEnd,   CommandAssetsReload}},
             {"modelview.open",          {AutoMcpPhase::FrameEnd,   CommandModelViewOpen}},
             {"modelview.state",         {AutoMcpPhase::FrameEnd,   CommandModelViewState}},
             {"modelview.select",        {AutoMcpPhase::FrameEnd,   CommandModelViewSelect}},

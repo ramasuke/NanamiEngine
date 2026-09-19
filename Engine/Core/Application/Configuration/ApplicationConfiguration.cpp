@@ -1,4 +1,7 @@
 ﻿#include "ApplicationConfiguration.h"
+
+#include <algorithm>
+
 #include "../../../Module/Log/NanamiEngine_Module_Log.h"
 #include "../../../Module/ProjectConfig/Engine_Module_ProjectConfig.h"
 #include "../../../Module/SafeExecute/Engine_Module_SafeExecute.h"
@@ -14,6 +17,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEFAULT_ALWAYS_RUN         = true;
     constexpr auto DEFAULT_SHADOW_MAP_WIDTH   = 1024;
     constexpr auto DEFAULT_SHADOW_MAP_HEIGHT  = 1024;
+    constexpr auto DEFAULT_SHADOW_AREA_HALF   = 100.0f;
     constexpr auto DEFAULT_LIGHT_DIR_X        = -0.5f;
     constexpr auto DEFAULT_LIGHT_DIR_Y        = -1.0f;
     constexpr auto DEFAULT_LIGHT_DIR_Z        = -0.5f;
@@ -30,6 +34,7 @@ namespace NanamiEngine::Core::Application::Configuration
     bool  AppConfiguration::alwaysRun_        = DEFAULT_ALWAYS_RUN;
     int   AppConfiguration::shadowMapWidth_   = DEFAULT_SHADOW_MAP_WIDTH;
     int   AppConfiguration::shadowMapHeight_  = DEFAULT_SHADOW_MAP_HEIGHT;
+    float AppConfiguration::shadowAreaHalfSize_ = DEFAULT_SHADOW_AREA_HALF;
     float AppConfiguration::lightDirX_        = DEFAULT_LIGHT_DIR_X;
     float AppConfiguration::lightDirY_        = DEFAULT_LIGHT_DIR_Y;
     float AppConfiguration::lightDirZ_        = DEFAULT_LIGHT_DIR_Z;
@@ -47,6 +52,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto APP_CONFIG_ALWAYS_RUN_KEY  = "AlwaysRun";
     constexpr auto APP_CONFIG_SHADOW_W_KEY    = "ShadowMapWidth";
     constexpr auto APP_CONFIG_SHADOW_H_KEY    = "ShadowMapHeight";
+    constexpr auto APP_CONFIG_SHADOW_AREA_KEY = "ShadowAreaHalfSize";
     constexpr auto APP_CONFIG_LIGHT_DX_KEY    = "LightDirX";
     constexpr auto APP_CONFIG_LIGHT_DY_KEY    = "LightDirY";
     constexpr auto APP_CONFIG_LIGHT_DZ_KEY    = "LightDirZ";
@@ -68,6 +74,7 @@ namespace NanamiEngine::Core::Application::Configuration
         alwaysRun_        = Module::ProjectConfig::LoadOrDefaultWithPath<bool> (APP_CONFIG_PATH, APP_CONFIG_ALWAYS_RUN_KEY, DEFAULT_ALWAYS_RUN);
         shadowMapWidth_   = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_W_KEY,   DEFAULT_SHADOW_MAP_WIDTH);
         shadowMapHeight_  = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_H_KEY,   DEFAULT_SHADOW_MAP_HEIGHT);
+        shadowAreaHalfSize_ = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_SHADOW_AREA_KEY, DEFAULT_SHADOW_AREA_HALF);
         lightDirX_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DX_KEY,   DEFAULT_LIGHT_DIR_X);
         lightDirY_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DY_KEY,   DEFAULT_LIGHT_DIR_Y);
         lightDirZ_        = Module::ProjectConfig::LoadOrDefaultWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DZ_KEY,   DEFAULT_LIGHT_DIR_Z);
@@ -94,6 +101,7 @@ namespace NanamiEngine::Core::Application::Configuration
         Module::ProjectConfig::SaveWithPath<bool> (APP_CONFIG_PATH, APP_CONFIG_ALWAYS_RUN_KEY, alwaysRun_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_W_KEY,   shadowMapWidth_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_H_KEY,   shadowMapHeight_);
+        Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_SHADOW_AREA_KEY, shadowAreaHalfSize_);
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DX_KEY,   lightDirX_);
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DY_KEY,   lightDirY_);
         Module::ProjectConfig::SaveWithPath<float>(APP_CONFIG_PATH, APP_CONFIG_LIGHT_DZ_KEY,   lightDirZ_);
@@ -125,6 +133,8 @@ namespace NanamiEngine::Core::Application::Configuration
     int   AppConfiguration::GetShadowMapHeight()        { return shadowMapHeight_; }
     void  AppConfiguration::SetShadowMapWidth(int w)    { shadowMapWidth_   = w; }
     void  AppConfiguration::SetShadowMapHeight(int h)   { shadowMapHeight_  = h; }
+    float AppConfiguration::GetShadowAreaHalfSize()     { return shadowAreaHalfSize_; }
+    void  AppConfiguration::SetShadowAreaHalfSize(float halfSize) { shadowAreaHalfSize_ = halfSize; }
 
     float AppConfiguration::GetLightDirX()              { return lightDirX_; }
     float AppConfiguration::GetLightDirY()              { return lightDirY_; }
@@ -213,6 +223,14 @@ namespace NanamiEngine::Core::Application::Configuration
             Save();
         }
         ImGui::TextDisabled("* Restart required to apply");
+
+        float shadowAreaHalfSize = GetShadowAreaHalfSize();
+        ImGui::SetNextItemWidth(100);
+        if (ImGui::InputFloat("Shadow Area Half Size", &shadowAreaHalfSize))
+        {
+            SetShadowAreaHalfSize((std::max)(shadowAreaHalfSize, 1.0f));
+            Save();
+        }
 
         ImGui::Spacing();
         ImGui::Text("Light");

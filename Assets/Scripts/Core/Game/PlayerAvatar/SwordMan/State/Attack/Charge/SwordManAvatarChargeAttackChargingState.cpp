@@ -13,6 +13,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     {
         HoldHorizontalVelocity();
         isFullyCharged_ = false;
+        attackTurn_ = {};
     }
 
     void SwordManAvatarChargeAttackChargingState::DoFixedUpdate()
@@ -23,7 +24,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     void SwordManAvatarChargeAttackChargingState::DoUpdate()
     {
         // 溜め中はその場で停止し、攻撃対象へ向き直るだけ
-        RotateTowardsAttackTarget(Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
+        RotateTowardsAttackTarget(attackTurn_, Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
 
         if (!isFullyCharged_ && During_secs() >= Status().ChargeAttackMaxCharge_secs())
         {
@@ -50,11 +51,11 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         if (visitor.Automatic(SwordManAvatarStateType::ChargeAttackRelease, isFullyCharged_ && During_secs() >= Status().ChargeAttackMaxHold_secs()))
             return;
 
-        if (visitor.OnInput(SwordManAvatarStateType::ChargeAttackRelease, SwordManAvatarInput::NormalAttack, SwordManAvatarInputPhase::NotHolding, isFullyCharged_))
+        if (visitor.OnInput(SwordManAvatarStateType::ChargeAttackRelease, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::NotHolding, isFullyCharged_))
             return;
 
         // 溜め切る前に離した場合は通常コンボの1段目として出し直す
-        visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, SwordManAvatarInputPhase::NotHolding, !isFullyCharged_);
+        visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::NotHolding, !isFullyCharged_);
     }
 
     void SwordManAvatarChargeAttackChargingState::DoExit()

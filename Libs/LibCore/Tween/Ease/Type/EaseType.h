@@ -8,5 +8,8 @@ namespace LibCore
         OutQuad,
         InQuad,
         InOutQuad,
+        OutBack,
+        InBack,
+        InOutSine,
     };
 }

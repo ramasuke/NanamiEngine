@@ -4,7 +4,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 19,
+                "cereal_class_version": 21,
                 "value0": {
                     "cereal_class_version": 0
                 },
@@ -21,7 +21,7 @@
                         "id": 2147483650,
                         "data": {
                             "value0": {
-                                "value_": 100
+                                "value_": 90
                             }
                         }
                     }
@@ -160,10 +160,85 @@
                     "ptr_wrapper": {
                         "valid": 1,
                         "data": {
-                            "cereal_class_version": 0,
-                            "count": 0
+                            "cereal_class_version": 1,
+                            "count": 0,
+                            "storyQuests_": {
+                                "cereal_class_version": 0,
+                                "count": 0
+                            }
                         }
                     }
+                },
+                "wallet_": {
+                    "ptr_wrapper": {
+                        "id": 2147483651,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "balance_": {
+                                "value": {
+                                    "cereal_class_version": 0,
+                                    "value_": 138
+                                }
+                            }
+                        }
+                    }
+                },
+                "pouch_": {
+                    "cereal_class_version": 0,
+                    "stacks_": [
+                        {
+                            "cereal_class_version": 0,
+                            "item_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483652,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "cereal_class_version": 0,
+                                                "value_": "F98E0047-7959-458A-85EB-B14CE6F7382F"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "count_": 7
+                        },
+                        {
+                            "item_": {
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "value0": {
+                                                "value_": "B407D88F-D3CE-439E-8F0F-3D2746A261FE"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "count_": 4
+                        },
+                        {
+                            "item_": {
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483654,
+                                        "data": {
+                                            "value0": {
+                                                "value_": "72C0F0C4-F59E-4675-8B10-62416B7B6C0C"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "count_": 4
+                        }
+                    ]
                 }
             }
         }

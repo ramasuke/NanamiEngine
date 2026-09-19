@@ -3,8 +3,8 @@
 Run:  python tools/model/selftest.py         (from repo root)
       python -m tools.model selftest
 
-Exit 0 = all good, 1 = failure. No third-party dependencies for stages 1-3;
-stage 4 (GUI automation) is best-effort and skips cleanly when pywinauto,
+Exit 0 = all good, 1 = failure. No third-party dependencies for stages 1-8;
+stage 9 (GUI automation) is best-effort and skips cleanly when pywinauto,
 a DxLibModelViewer exe, and a test .fbx aren't all available.
 
 Stages:
@@ -26,7 +26,16 @@ Stages:
      literal-only .mv1 referencing textures under a sub-folder, a *.fbm
      folder, an absolute path, and outside the destination - checks lookup
      order, sub-folder preservation, and missing-texture reporting.
-  7. best-effort end-to-end convert() in every save mode (mesh/anim/full):
+  7. mv1.encode(): decode(encode(body)) == body for real shipped .mv1 files
+     (and the output stays within x1.25 of DxLib's size) plus synthetic edge
+     cases - empty body, keycode escapes, runs past the max match length,
+     distances needing a 3-byte index.
+  8. materials() on known models and every .mv1 under Assets/, and
+     set-emissive: only the targeted material's emissive RGB changes,
+     all/name/index specs apply in order, bad specs / unknown names /
+     animation-only files are rejected without writing, and convert rejects
+     --mode anim --emissive.
+  9. best-effort end-to-end convert() in every save mode (mesh/anim/full):
      only runs if pywinauto, a DxLibModelViewer exe ($DXLIB_MODELVIEWER or
      cli.DEFAULT_MODELVIEWER_PATH), and a test .fbx ($TOOLS_MODEL_TEST_FBX)
      are all present. Skipped elsewhere - this toolkit has no committed .fbx
@@ -37,6 +46,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import random
 import struct
 import sys
 import tempfile
@@ -353,8 +363,8 @@ def stage_texture_collection(r: Reporter) -> None:
 
     try:
         ns = argparse.Namespace(file=str(_REPO / "tools" / "model" / "selftest.py"), out="unused.mv1",
-                                 mode="anim", with_textures=True, force=False, modelviewer_path=None,
-                                 timeout=1.0, debug_dir=None)
+                                 mode="anim", with_textures=True, emissive=[], force=False,
+                                 modelviewer_path=None, timeout=1.0, debug_dir=None)
         try:
             cli.cmd_convert(ns)
         except cli.CliError as e:
@@ -367,6 +377,167 @@ def stage_texture_collection(r: Reporter) -> None:
         r.fail("convert anim+textures rejection", traceback.format_exc())
 
 
+ENCODE_FIXTURES = [
+    _REPO / "Assets" / "Art" / "Models" / "Basic" / "Cube.mv1",
+    _REPO / "Assets" / "Art" / "Models" / "Fantasy" / "DirtyHouse" / "dirtyHouse.mv1",
+    _REPO / "Assets" / "Art" / "Models" / "Monster" / "Hyenas" / "Hyenas_A4_AllMotion.mv1",
+]
+_MAX_ENCODE_RATIO = 1.25
+
+_CUBE_MV1 = _REPO / "Assets" / "Art" / "Models" / "Basic" / "Cube.mv1"
+_DIRTY_HOUSE_MV1 = _REPO / "Assets" / "Art" / "Models" / "Fantasy" / "DirtyHouse" / "dirtyHouse.mv1"
+_ANIM_ONLY_MV1 = _REPO / "Assets" / "Art" / "Animation" / "Man" / "Jump.mv1"
+
+
+def stage_mv1_encode(r: Reporter) -> None:
+    r.section("stage 7: mv1.encode() round trip")
+    for path in ENCODE_FIXTURES:
+        name = path.relative_to(_REPO).as_posix()
+        try:
+            if not path.exists():
+                r.ok(f"{name} (skipped: not present)")
+                continue
+            data = path.read_bytes()
+            body = mv1.decode(data)
+            encoded = mv1.encode(body)
+            if mv1.decode(encoded) != body:
+                raise AssertionError("decode(encode(body)) != body")
+            ratio = len(encoded) / len(data)
+            if ratio > _MAX_ENCODE_RATIO:
+                raise AssertionError(f"encoded {len(encoded)} bytes vs DxLib's {len(data)} "
+                                      f"(x{ratio:.2f} > x{_MAX_ENCODE_RATIO}) - is the LZ search broken?")
+            r.ok(f"{name}: round trip, {len(encoded)} bytes (x{ratio:.3f} of DxLib's output)")
+        except Exception:  # noqa: BLE001
+            r.fail(name, traceback.format_exc())
+
+    rng = random.Random(1)
+    far_block = rng.randbytes(70000)
+    synthetic = {
+        "empty body": b"",
+        "3-byte body": b"abc",
+        "every byte value (keycode escapes)": bytes(range(256)) * 8 + rng.randbytes(5000),
+        "runs longer than the max match length": b"\x00" * 20000 + b"\x01" * 9000 + b"\x00" * 3,
+        "repeat at a 3-byte distance": far_block + far_block,
+    }
+    for label, body in synthetic.items():
+        try:
+            encoded = mv1.encode(body)
+            if mv1.decode(encoded) != body:
+                raise AssertionError("decode(encode(body)) != body")
+            r.ok(f"synthetic {label}: round trip ({len(body)} -> {len(encoded)} bytes)")
+        except Exception:  # noqa: BLE001
+            r.fail(f"synthetic {label}", traceback.format_exc())
+
+
+def stage_materials(r: Reporter) -> None:
+    r.section("stage 8: materials() / set-emissive")
+    try:
+        if not _CUBE_MV1.exists() or not _DIRTY_HOUSE_MV1.exists():
+            r.ok("known material tables (skipped: fixtures not present)")
+        else:
+            cube = mv1.materials(mv1.decode(_CUBE_MV1.read_bytes()))
+            if [m.name for m in cube] != ["Material"] or cube[0].emissive[:3] != (0.453125,) * 3:
+                raise AssertionError(f"Cube.mv1 materials = {cube!r}")
+            house = mv1.materials(mv1.decode(_DIRTY_HOUSE_MV1.read_bytes()))
+            if [m.name for m in house] != ["Wall", "wood_1", "Roof"]:
+                raise AssertionError(f"dirtyHouse.mv1 material names = {[m.name for m in house]!r}")
+            r.ok("Cube.mv1 = [Material] (emissive 0.453125), dirtyHouse.mv1 = [Wall, wood_1, Roof]")
+    except Exception:  # noqa: BLE001
+        r.fail("known material tables", traceback.format_exc())
+
+    try:
+        files = 0
+        count = 0
+        for path in sorted((_REPO / "Assets").rglob("*.mv1")):
+            try:
+                count += len(mv1.materials(mv1.decode(path.read_bytes())))
+            except ValueError as e:
+                raise AssertionError(f"{path.relative_to(_REPO).as_posix()}: {e}") from e
+            files += 1
+        r.ok(f"every .mv1 under Assets/ has a readable material table ({files} files, {count} materials)")
+    except Exception:  # noqa: BLE001
+        r.fail("material table corpus", traceback.format_exc())
+
+    if not _DIRTY_HOUSE_MV1.exists():
+        r.ok("set-emissive (skipped: dirtyHouse.mv1 not present)")
+        return
+
+    def set_emissive(src: Path, out: Path | None, *specs: str) -> None:
+        cli.cmd_set_emissive(argparse.Namespace(mv1=str(src), out=str(out) if out else None, emissive=list(specs)))
+
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "dirtyHouse.mv1"
+            src.write_bytes(_DIRTY_HOUSE_MV1.read_bytes())
+            before = mv1.decode(src.read_bytes())
+            set_emissive(src, None, "Roof=1,0.5,0.25")
+            after = mv1.decode(src.read_bytes())
+            table = mv1.materials(after)
+            if table[2].emissive[:3] != (1.0, 0.5, 0.25):
+                raise AssertionError(f"Roof emissive = {table[2].emissive!r}")
+            roof = mv1.materials(before)[2].offset + 0x3C
+            changed = [i for i in range(len(before)) if before[i] != after[i]]
+            if len(before) != len(after) or any(not roof <= i < roof + 12 for i in changed):
+                raise AssertionError(f"bytes outside Roof's emissive RGB changed: {changed[:10]}")
+            if cli.looks_like_mv1(src):
+                raise AssertionError(f"looks_like_mv1() flagged the patched file: {cli.looks_like_mv1(src)}")
+        r.ok("set-emissive Roof=1,0.5,0.25 changes only Roof's emissive RGB (in place)")
+    except Exception:  # noqa: BLE001
+        r.fail("set-emissive by name", traceback.format_exc())
+
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "sub" / "out.mv1"
+            set_emissive(_DIRTY_HOUSE_MV1, out, "0,0,0", "Roof=2,2,2", "1=0.5,0.5,0.5")
+            got = [m.emissive[:3] for m in mv1.materials(mv1.decode(out.read_bytes()))]
+            if got != [(0.0, 0.0, 0.0), (0.5, 0.5, 0.5), (2.0, 2.0, 2.0)]:
+                raise AssertionError(f"emissive after all/name/index specs = {got!r}")
+        r.ok("set-emissive --out: all-materials spec, later name/index specs override it")
+    except Exception:  # noqa: BLE001
+        r.fail("set-emissive spec order", traceback.format_exc())
+
+    rejections = [
+        ("unknown material name", _DIRTY_HOUSE_MV1, ["Glass=1,1,1"], "Roof"),
+        ("two components", _DIRTY_HOUSE_MV1, ["1,1"], "R,G,B"),
+        ("negative component", _DIRTY_HOUSE_MV1, ["1,-1,1"], ">= 0"),
+        ("animation-only .mv1", _ANIM_ONLY_MV1, ["1,1,1"], "no materials"),
+    ]
+    for label, src, specs, needle in rejections:
+        try:
+            if not src.exists():
+                r.ok(f"set-emissive rejects {label} (skipped: fixture not present)")
+                continue
+            with tempfile.TemporaryDirectory() as tmp:
+                out = Path(tmp) / "out.mv1"
+                try:
+                    set_emissive(src, out, *specs)
+                except cli.CliError as e:
+                    if needle not in str(e):
+                        raise AssertionError(f"error does not mention {needle!r}: {e}")
+                else:
+                    raise AssertionError("expected CliError")
+                if out.exists():
+                    raise AssertionError("a rejected set-emissive still wrote its output")
+            r.ok(f"set-emissive rejects {label}")
+        except Exception:  # noqa: BLE001
+            r.fail(f"set-emissive rejects {label}", traceback.format_exc())
+
+    try:
+        ns = argparse.Namespace(file=str(_REPO / "tools" / "model" / "selftest.py"), out="unused.mv1",
+                                 mode="anim", with_textures=False, emissive=["1,1,1"], force=False,
+                                 modelviewer_path=None, timeout=1.0, debug_dir=None)
+        try:
+            cli.cmd_convert(ns)
+        except cli.CliError as e:
+            if "--mode anim" not in str(e):
+                raise AssertionError(f"unexpected error: {e}")
+        else:
+            raise AssertionError("convert --mode anim --emissive should be rejected")
+        r.ok("convert rejects --mode anim --emissive before launching anything")
+    except Exception:  # noqa: BLE001
+        r.fail("convert anim+emissive rejection", traceback.format_exc())
+
+
 def _find_modelviewer() -> Path | None:
     for candidate in (os.environ.get("DXLIB_MODELVIEWER"), cli.DEFAULT_MODELVIEWER_PATH):
         if candidate and Path(candidate).exists():
@@ -375,7 +546,7 @@ def _find_modelviewer() -> Path | None:
 
 
 def stage_e2e_convert(r: Reporter) -> None:
-    r.section("stage 7: end-to-end convert() in every save mode (best-effort, machine-specific)")
+    r.section("stage 9: end-to-end convert() in every save mode (best-effort, machine-specific)")
     try:
         import pywinauto  # noqa: F401
     except ImportError:
@@ -430,6 +601,8 @@ def main() -> int:
     stage_texture_copy(r)
     stage_mv1_decode(r)
     stage_texture_collection(r)
+    stage_mv1_encode(r)
+    stage_materials(r)
     stage_e2e_convert(r)
     return r.finish()
 

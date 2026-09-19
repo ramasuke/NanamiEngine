@@ -67,7 +67,10 @@ namespace GamePlay::Ui
     void LoadingScreenUi::Show(const std::shared_ptr<Asset::StageData>& stageData)
     {
         if (stageData)
+        {
             ApplyStageData(*stageData);
+            shownStageData_ = stageData;
+        }
 
         if (const auto hint = hintCard_.get())
             hint->Reset();
@@ -109,7 +112,7 @@ namespace GamePlay::Ui
 
     Coroutine::Task<void> LoadingScreenUi::WaitCoverOpaqueAsync() const
     {
-        co_await Coroutine::WaitUntil([this] { return coverBlendRate_ >= 255.0f; });
+        co_await Coroutine::WaitUntil([this] { return IsCoverOpaque(); });
     }
 
     void LoadingScreenUi::OnStart()

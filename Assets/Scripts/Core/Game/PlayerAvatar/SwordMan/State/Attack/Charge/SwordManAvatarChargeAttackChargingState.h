@@ -11,7 +11,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     class SwordManAvatarChargeAttackChargingState final : public SwordManAvatarStateBase
     {
     public:
-        DEFINE_STATE_CONSTRUCTOR(SwordManAvatarChargeAttackChargingState)
+        explicit SwordManAvatarChargeAttackChargingState(const SwordManAvatarStateArgs& args) : SwordManAvatarStateBase(args) {}
 
     private:
         void DoEnter() override;
@@ -25,7 +25,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void SustainChargeShake() const;
 
         [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::ChargeAttackCharging; }
-        [[nodiscard]] SwordManAvatarControlAcceptance ControlAcceptance() const override { return SwordManAvatarControlAcceptance::Accept; }
+        [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Accept; }
         void VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const override;
 
     private:
@@ -33,5 +33,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         bool isFullyCharged_ = false;
         /** @brief 最大溜め保持中のオーラ。ステートを抜けるときに破棄する */
         std::weak_ptr<GameObject::IGameObject> chargeHoldParticle_;
+        AttackTurn attackTurn_;
     };
 }

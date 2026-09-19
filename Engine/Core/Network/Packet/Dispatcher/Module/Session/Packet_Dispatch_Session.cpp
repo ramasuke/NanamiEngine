@@ -22,7 +22,7 @@ namespace NanamiEngine::Core::Network
         , instanceRegistry_(instanceRegistry)
         , syncTransform_(syncTransform)
     {
-        // 新規参加者へ所有者の上書き一覧を送る
+        // 新規参加者へ所有者テーブルを送る
         newPeerSubscription_ = networkSystem_.OnConnectPlayer().subscribe(
             [this](const ENetEvent* event)
             {
@@ -65,8 +65,8 @@ namespace NanamiEngine::Core::Network
     void SessionDispatcher::OnOwnershipSnapshotReceived(const Packet& packet)
     {
         size_t offset = 0;
-        const auto overrides = packet.Data().Read<std::vector<OwnerOverride>>(offset);
-        for (const auto& [id, owner] : overrides)
+        const auto owners = packet.Data().Read<std::vector<ObjectOwner>>(offset);
+        for (const auto& [id, owner] : owners)
             instanceRegistry_.SetOwner(id, owner);
     }
 
@@ -100,12 +100,12 @@ namespace NanamiEngine::Core::Network
 
     void SessionDispatcher::SendOwnershipSnapshotTo(_ENetPeer* peer) const
     {
-        const auto overrides = instanceRegistry_.CollectOwnerOverrides();
-        if (overrides.empty())
+        const auto owners = instanceRegistry_.CollectOwners();
+        if (owners.empty())
             return;
 
         Packet packet = Packet::Create(DefaultPacketType::OwnershipSnapshot);
-        packet.Data().Write(overrides);
+        packet.Data().Write(owners);
         networkSystem_.SendTo(peer, packet);
     }
 }

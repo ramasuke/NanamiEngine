@@ -74,6 +74,12 @@ namespace Editor::Npc::Enemy::Behaviour
         return GameCore::Npc::Friendly::Behaviour::TickStatus::Failure;
     }
 
+    void ActionNode::DoResetRuntimeState()
+    {
+        if (action_)
+            action_->Reset();
+    }
+
     void ActionNode::SetConnectToNextNode(const std::shared_ptr<NodeBase> nextNode)
     {
         

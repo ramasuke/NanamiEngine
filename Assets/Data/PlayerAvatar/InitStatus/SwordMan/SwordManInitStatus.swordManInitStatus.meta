@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 16,
+                "cereal_class_version": 19,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -134,10 +134,18 @@
                     "ptr_wrapper": {
                         "valid": 1,
                         "data": {
-                            "cereal_class_version": 0,
-                            "count": 0
+                            "cereal_class_version": 1,
+                            "count": 0,
+                            "storyQuests_": {
+                                "cereal_class_version": 0,
+                                "count": 0
+                            }
                         }
                     }
+                },
+                "initialMoney_": {
+                    "cereal_class_version": 0,
+                    "value_": 0
                 }
             }
         }

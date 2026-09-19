@@ -24,7 +24,7 @@ namespace NanamiEngine::Core::Network
         OwnerLeavePolicy policy;
     };
     
-    struct OwnerOverride final
+    struct ObjectOwner final
     {
         NetworkObjectId id;
         PlayerId        owner;
@@ -44,11 +44,16 @@ namespace NanamiEngine::Core::Network
     public:
         virtual ~INetworkObjectInstanceRegistry() = default;
 
-        /** 登録。所有者が未設定なら id.SpawnerId()が初期所有者 */
+        /**
+         * 登録。owner は初期所有者で、既に所有者が設定済みのエントリは上書きしない。
+         * 後入りピアには OwnershipSnapshot が spawn 履歴の再送より先に届き、履歴パケットが運ぶ
+         * 所有者は移譲前の値なので、後から来るこの登録で巻き戻さないようにするため
+         */
         virtual void RegisterWithId(
             NetworkObjectId id,
             const std::weak_ptr<Module::GameObject::IGameObject>& object,
-            OwnerLeavePolicy policy) = 0;
+            OwnerLeavePolicy policy,
+            PlayerId owner) = 0;
 
         virtual void Unregister(NetworkObjectId id) = 0;
         // 1つの GameObject が複数エントリを持つ場合も全て解除する
@@ -63,7 +68,7 @@ namespace NanamiEngine::Core::Network
         virtual void SetOwner(NetworkObjectId id, PlayerId owner) = 0;
 
         [[nodiscard]] virtual std::vector<OwnedEntry> CollectOwnedBy(PlayerId owner) const = 0;
-        /** 生存インスタンスのうち owner != id.SpawnerId() のもの */
-        [[nodiscard]] virtual std::vector<OwnerOverride> CollectOwnerOverrides() const = 0;
+        /** 生存インスタンスの id と所有者の一覧 */
+        [[nodiscard]] virtual std::vector<ObjectOwner> CollectOwners() const = 0;
     };
 }

@@ -26,6 +26,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             bool isEnable);
 
         void OnChangeState(SwordManAvatarStateType type) override;
+        void OnChangeState(EventSceneStateType type) override;
         void OnEnable()  override;
         void OnDisable() override;
 

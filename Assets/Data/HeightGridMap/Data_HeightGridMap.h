@@ -162,7 +162,7 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(HeightGridMap, HEIGHT_GRID_MAP_EXTENSION_LABEL)
+REGISTER_SCRIPTABLE_OBJECT(HeightGridMap, HEIGHT_GRID_MAP_EXTENSION_LABEL, "Stage")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::HeightGridMap, 2);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::HeightGridMap);

@@ -25,10 +25,12 @@ namespace Editor::Npc::Behaviour
         [[nodiscard]] GameCore::Npc::Friendly::Behaviour::TickStatus
         DoTick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context) override;
 
+        void DoResetRuntimeState() override;
         void SetConnectToNextNode(std::shared_ptr<NodeBase> nextNode) override;
         void DoOnDrawGui() override;
 
         [[nodiscard]] int PickWeightedIndex();
+        void PickNextChild();
 
         std::vector<std::shared_ptr<NodeBase>> children_;
         std::vector<int> weights_;

@@ -1,0 +1,106 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::MagicSpellData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Magic/FireBall.magicSpell",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "9A4208A2-41CD-4422-A611-FB6B4A5E06CD"
+                    }
+                },
+                "displayName_": "火球",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "F11C9304-01B0-4C2A-807D-2D2FD9D7023C"
+                                }
+                            }
+                        }
+                    }
+                },
+                "castSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "199B8FAD-8140-42B7-BC96-2529AFF8FB5D"
+                                }
+                            }
+                        }
+                    }
+                },
+                "manaCost_": 12.0,
+                "cooldown_secs_": 2.0,
+                "castFireTime_secs_": 0.8799999952316284,
+                "castTotalDuration_secs_": 1.2999999523162842,
+                "effect_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GamePlay::Magic::ProjectileSpellEffect",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "projectilePrefab_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "6B85C261-0A93-49FF-AC43-5B1099EEE9A0"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "power_": {
+                                "cereal_class_version": 0,
+                                "value_": 18
+                            },
+                            "speed_": 180.0,
+                            "range_": 220.0
+                        }
+                    }
+                },
+                "castMotion_": 7,
+                "castEffectPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "7989CC37-B484-47C6-A1D9-06E49E905E20"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

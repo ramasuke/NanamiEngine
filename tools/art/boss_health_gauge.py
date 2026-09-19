@@ -4,9 +4,9 @@
 
 Writes BossHealthCrest / BossHealthCrestGlow / BossHealthShard_{Fill,FillDanger,Trail,Empty}.png and a
 SpriteFile .png.meta for each (an existing .meta keeps its GUID, so regenerating never breaks references).
-One shard sprite serves all eight shards: it is drawn pointing up (tip at the top, base at the bottom) and each
-Shard object's BossHealthShardRenderer rotates it around the crown pivot (its Transform) with DrawRectRotaGraph2F,
-clipping the fill from the base. The crest is an ImageRenderer, its glow a BlendImageRenderer (Add).
+One shard sprite serves all eight shards: it is drawn pointing up (tip at the top, base at the bottom). Each
+Shard object sits on the crown pivot and carries the rotation; its Crystal child is a NanamiUi::Slider
+(BottomToTop, fillStart/EndInset_ = the sprite's transparent padding) offset so the rotation happens around the pivot. The crest is an ImageRenderer, its glow a BlendImageRenderer (Add).
 The layout values BossHealthGaugeUI.prefab has to agree with are printed at the end (GEOMETRY).
 --preview also composites the crown at 100% / 60% / 22% HP the same way the renderers draw it.
 
@@ -258,8 +258,9 @@ SPRITES = {
 GEOMETRY = {
     'Shards localPos': (0.0, ROOT_TO_PIVOT_PX),
     'Shard0..N rot.z (deg)': [round(-ARC_DEG / 2 + ARC_DEG * i / (SHARD_COUNT - 1), 3) for i in range(SHARD_COUNT)],
-    'BossHealthShardRenderer.baseDistance_': SHARD_BASE_U * PX_PER_UNIT,
-    'BossHealthShardRenderer.padding_px_': SHARD_PAD_PX,
+    'Shard0..N/Crystal localPos': (-SHARD_W_PX / 2, -(SHARD_H_PX - SHARD_PAD_PX + SHARD_BASE_U * PX_PER_UNIT)),
+    'Crystal Slider.drawSize_': (SHARD_W_PX, SHARD_H_PX),
+    'Crystal Slider.fillStartInset_/fillEndInset_': SHARD_PAD_PX,
     'Crest localPos': (0.0, ROOT_TO_PIVOT_PX + CREST_OFFSET_U * PX_PER_UNIT),
     'BossName localPos': (0.0, NAME_TOP_PX),
 }
@@ -277,7 +278,7 @@ def write_sprite(out_dir, name, image):
     return guid
 
 
-# ---------------------------------------------------------------- preview (mirrors BossHealthShardRenderer + crest renderers)
+# ---------------------------------------------------------------- preview (mirrors the Crystal Sliders + crest renderers)
 def premul(im):
     a = np.asarray(im, np.float32) / 255
     a[..., :3] *= a[..., 3:]

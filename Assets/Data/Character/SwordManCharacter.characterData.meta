@@ -1,0 +1,50 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::CharacterData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Character/SwordManCharacter.characterData",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "2FE28541-AC86-411C-84B7-E6A19AA7AC76"
+                    }
+                },
+                "displayName_": "剣士",
+                "reading_": "SWORDMAN",
+                "tagline_": "斧一本で前に出る",
+                "avatarType_": 0,
+                "isUnlocked_": true,
+                "powerPips_": 4,
+                "toughnessPips_": 4,
+                "agilityPips_": 3,
+                "descriptionLines_": [
+                    "斧を振るう近接の要。",
+                    "溜め攻撃と回避に長ける。"
+                ],
+                "displayModelPrefab_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "4FDA33F8-A181-40A1-B802-CDA67C933147"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -4,12 +4,8 @@
 #include "../../../../../Data/EnemyBehaviour/Data_EnemyBehaviourFile.h"
 #include "../../PlayerAvatar/ITakablePlayerAttack/ITakablePlayerAttack.h"
 #include "../../PlayerAvatar/LockOnTarget/ILockOnTarget.h"
+#include "../../PlayerAvatar/LockOnTarget/LockOnPoint.h"
 #include "Status/EnemyStatus.h"
-
-namespace GameCore::PlayerAvatar
-{
-    class LockOnPoint;
-}
 
 namespace GameCore::Npc::Enemy
 {
@@ -47,7 +43,7 @@ namespace GameCore::Npc
         std::shared_ptr<std::queue<std::unique_ptr<IDamage>>> onDamagedStack_;
         bool hasNetworkBehaviourTree_ = false;
         Enemy::IShowHealthGaugeProvider* showHealthGaugeProvider_ = nullptr;
-        std::weak_ptr<PlayerAvatar::LockOnPoint> lockOnPoint_;
+        [[serialize(5)]] FIELD(PlayerAvatar::LockOnPoint) lockOnPoint_;
 
 #pragma region Serialization Function
     public:
@@ -60,6 +56,7 @@ namespace GameCore::Npc
             archive(CEREAL_NVP(behaviourData_));
             archive(CEREAL_NVP(currentStatus_));
             archive(CEREAL_NVP(isNetworkSyncStatus_));
+            archive(CEREAL_NVP(lockOnPoint_));
         }
 
         template <class Archive>
@@ -71,8 +68,9 @@ namespace GameCore::Npc
             if (version >= 1) archive(CEREAL_NVP(behaviourData_));
             if (version >= 4) archive(CEREAL_NVP(currentStatus_));
             if (version >= 4) archive(CEREAL_NVP(isNetworkSyncStatus_));
+            if (version >= 5) archive(CEREAL_NVP(lockOnPoint_));
         }
 #pragma endregion
     };
 };
-ENGINE_REGISTER_COMPONENT(GameCore::Npc::EnemyBase, 4)
+ENGINE_REGISTER_COMPONENT(GameCore::Npc::EnemyBase, 5)

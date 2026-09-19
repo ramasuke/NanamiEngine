@@ -35,13 +35,10 @@ namespace NanamiEngine::Module::Component
         [[nodiscard]] glm::vec3 LinearVelocity() const;
         void SetLinearVelocity(const glm::vec3& velocity) const;
         void AddLinearVelocity(const glm::vec3& velocity) const;
-        // deg/s
         [[nodiscard]] glm::vec3 AngularVelocity() const;
-        // deg/s
         void SetAngularVelocity(const glm::vec3& angularVelocity) const;
         void AddTorque(const glm::vec3& torque) const;
         [[nodiscard]] std::optional<glm::vec3> CenterOfMassPosition() const;
-        // まとめている形状全体のワールド空間AABB(first=min, second=max)
         [[nodiscard]] std::optional<std::pair<glm::vec3, glm::vec3>> WorldBounds() const;
 
     private:

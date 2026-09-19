@@ -1,0 +1,106 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::MagicSpellData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Magic/ExplosionBlast.magicSpell",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "D995F289-E2EE-46A6-AA63-D78890773E8D"
+                    }
+                },
+                "displayName_": "爆炎",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "FA28D471-1CF9-4810-975E-6B663E7EAA5B"
+                                }
+                            }
+                        }
+                    }
+                },
+                "castSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "AA3BBAB9-B80E-42F6-9B74-22640B4216B6"
+                                }
+                            }
+                        }
+                    }
+                },
+                "manaCost_": 25.0,
+                "cooldown_secs_": 8.0,
+                "castFireTime_secs_": 1.3300000429153443,
+                "castTotalDuration_secs_": 1.75,
+                "effect_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GamePlay::Magic::AreaSpellEffect",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "blastPrefab_": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 2147483653,
+                                        "data": {
+                                            "cereal_class_version": 0,
+                                            "value0": {
+                                                "value_": "96ACC436-247E-427D-A53A-EDA047FA9EB7"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "power_": {
+                                "cereal_class_version": 0,
+                                "value_": 35
+                            },
+                            "delay_secs_": 0.44999998807907107,
+                            "range_": 150.0
+                        }
+                    }
+                },
+                "castMotion_": 6,
+                "castEffectPrefab_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "value0": {
+                                    "value_": "A66AAB2A-4CA5-4B87-B2FE-61914381DA7B"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

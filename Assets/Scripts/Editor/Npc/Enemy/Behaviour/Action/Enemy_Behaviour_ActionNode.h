@@ -18,6 +18,7 @@ namespace Editor::Npc::Enemy::Behaviour
     private:
         [[nodiscard]] GameCore::Npc::Enemy::Behaviour::TickStatus DoTick(const GameCore::Npc::Enemy::Behaviour::Action::TickContext& context) override;
         [[nodiscard]] GameCore::Npc::Friendly::Behaviour::TickStatus DoTick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context) override;
+        void DoResetRuntimeState() override;
         void SetConnectToNextNode(std::shared_ptr<NodeBase> nextNode) override;
         void DoOnDrawGui() override;
 

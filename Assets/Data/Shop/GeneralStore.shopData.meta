@@ -1,0 +1,77 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::ShopData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Shop/GeneralStore.shopData",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "566BA196-4856-4CEB-83F4-3DAB2180602B"
+                    }
+                },
+                "title_": "よろず屋　本日の品",
+                "entries_": [
+                    {
+                        "cereal_class_version": 0,
+                        "item_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483650,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "F98E0047-7959-458A-85EB-B14CE6F7382F"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "price_": 60
+                    },
+                    {
+                        "item_": {
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483651,
+                                    "data": {
+                                        "value0": {
+                                            "value_": "B407D88F-D3CE-439E-8F0F-3D2746A261FE"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "price_": 25
+                    },
+                    {
+                        "item_": {
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483652,
+                                    "data": {
+                                        "value0": {
+                                            "value_": "72C0F0C4-F59E-4675-8B10-62416B7B6C0C"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "price_": 120
+                    }
+                ]
+            }
+        }
+    }
+}

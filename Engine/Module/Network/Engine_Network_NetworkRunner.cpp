@@ -1,9 +1,9 @@
 ﻿#include "Engine_Network_NetworkRunner.h"
 
+#include <algorithm>
 #include "../../Core/Network/Engine_Network_INetworkSystem.h"
+#include "../../Core/Network/Discovery/LanSessionAdvertiser.h"
 #include "../../Core/Application/Configuration/Network/ApplicationConfiguration_Network.h"
-#include "../../Core/Coroutine/Awaitable/WaitForObservable/Coroutine_WaitForObservable.h"
-#include "../../Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
 #include "../Exception/Engine_Module_Exception.h"
 #include "../Log/NanamiEngine_Module_Log.h"
 
@@ -33,34 +33,87 @@ namespace NanamiEngine::Module::Network
         return defaultPacketDispatcher_.value();
     }
 
-    void NetworkRunnerBase::Initialize()
+    void NetworkRunnerBase::StartHost(const std::string& sessionKey)
     {
+        Start({ Core::Network::Mode::Server, Core::Network::HostEndpoint{} });
+        if (networkSystem_->GetConnectionState() != Core::Network::ConnectionState::Failed)
+            lanAdvertiser_ = std::make_unique<Core::Network::LanSessionAdvertiser>(sessionKey, networkSystem_->ListenPort());
+    }
+
+    void NetworkRunnerBase::StartClient(const Core::Network::HostEndpoint& host)
+    {
+        Start({ Core::Network::Mode::Client, host });
+    }
+
+    void NetworkRunnerBase::Start(const Core::Network::NetworkStartSettings& settings)
+    {
+        assert(!networkSystem_ && "NetworkRunner は開始済み。やり直すときは先に Shutdown する");
+
         Core::Application::Configuration::NetworkConfiguration::Load();
-        networkSystem_ = DoCreateUseNetworkSystem();
+        networkSystem_ = DoCreateUseNetworkSystem(settings);
         defaultPacketDispatcher_.emplace(*networkSystem_, networkSystem_->GetInstanceRegistry());
         DoInitialize();
     }
 
+    void NetworkRunnerBase::Shutdown()
+    {
+        //NOTE: ディスパッチャーは networkSystem_ を参照しているので先に消す
+        lanAdvertiser_.reset();
+        if (networkSystem_)
+            DoShutdown();
+        
+        defaultPacketDispatcher_.reset();
+        networkSystem_.reset();
+    }
+
+    bool NetworkRunnerBase::IsStarted() const
+    {
+        return static_cast<bool>(networkSystem_);
+    }
+
+    bool NetworkRunnerBase::IsServer() const
+    {
+        return networkSystem_ && networkSystem_->IsServer();
+    }
+
+    Core::Network::ConnectionState NetworkRunnerBase::GetConnectionState() const
+    {
+        assert(networkSystem_ && "NetworkRunner が開始されていない");
+        return networkSystem_->GetConnectionState();
+    }
+
     Core::Network::PlayerId NetworkRunnerBase::GetPlayerId() const
     {
+        if (!networkSystem_)
+            return Core::Network::PlayerId::Invalid();
+        
         return PlayerIdProvider().GetPlayerId();
     }
 
     Core::Network::PlayerId NetworkRunnerBase::OwnerOf(const Core::Network::NetworkObjectId id) const
     {
+        if (!networkSystem_)
+            return Core::Network::PlayerId::Invalid();
+        
         return networkSystem_->GetInstanceRegistry().OwnerOf(id);
     }
 
     bool NetworkRunnerBase::IsLocallyOwned(const Core::Network::NetworkObjectId id) const
     {
         const auto owner = OwnerOf(id);
-        //NOTE: オフライン時は双方 Invalid になるので、Invalid 同士の一致で権威が立たないよう明示的に弾く
         return owner != Core::Network::PlayerId::Invalid() && owner == GetPlayerId();
     }
 
     void NetworkRunnerBase::OnUpdate()
     {
+        if (!networkSystem_)
+            return;
+
         networkSystem_->Update();
+        if (lanAdvertiser_)
+        {
+            lanAdvertiser_->Update();
+        }
         DispatchPollPackets();
         defaultPacketDispatcher_->Update();
     }
@@ -77,7 +130,6 @@ namespace NanamiEngine::Module::Network
             }
             catch (const Exception::PacketDeserializeException& exception)
             {
-                // ペイロードが壊れている・改ざんされているパケットは 1 つだけ捨てて次へ進む
                 LogWarning("NetworkRunner: パケットの処理に失敗しました: " + std::string(exception.what()));
             }
         }
@@ -85,6 +137,9 @@ namespace NanamiEngine::Module::Network
 
     void NetworkRunnerBase::SendNetworkPacket(const Core::Network::Packet& packet)
     {
+        if (!networkSystem_)
+            return;
+        
         PacketSender().Send(packet);
     }
 
@@ -102,13 +157,42 @@ namespace NanamiEngine::Module::Network
     {
         if (networkSystem_)
         {
-            ImGui::Text(("playerId: " + networkSystem_->GetPlayerId().ToString()).c_str());
+            constexpr std::array<const char*, 4> CONNECTION_STATE_NAMES{ "Connecting", "Connected", "Failed", "Disconnected" };
+            ImGui::Text("role: %s", networkSystem_->IsServer() ? "Host" : "Client");
+            ImGui::Text("state: %s", CONNECTION_STATE_NAMES[static_cast<size_t>(networkSystem_->GetConnectionState())]);
+            if (lanAdvertiser_)
+            {
+                ImGui::Text("session: %s%s", lanAdvertiser_->SessionKey().c_str(), lanAdvertiser_->IsListening() ? "" : " (not advertised)");
+            }
 
-            // Spawn したピアと現在の所有者が異なるオブジェクト(離脱者から移譲されたもの)
-            const auto overrides = networkSystem_->GetInstanceRegistry().CollectOwnerOverrides();
-            ImGui::Text("owner overrides: %d", static_cast<int>(overrides.size()));
-            for (const auto& [id, owner] : overrides)
+            const auto localPlayerId = networkSystem_->GetPlayerId();
+            ImGui::Text(("playerId: " + localPlayerId.ToString()).c_str());
+
+            auto owners = networkSystem_->GetInstanceRegistry().CollectOwners();
+            std::ranges::sort(owners, [](const auto& lhs, const auto& rhs)
+            {
+                if (lhs.owner != rhs.owner) return lhs.owner < rhs.owner;
+                return lhs.id < rhs.id;
+            });
+
+            ImGui::Text("network objects: %d", static_cast<int>(owners.size()));
+            for (const auto& [id, owner] : owners)
+            {
+                const bool isLocal = owner == localPlayerId;
+                if (isLocal)
+                {
+                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.45f, 1.0f, 0.45f, 1.0f));
+                }
                 ImGui::BulletText("id %s -> owner %s", id.ToString().c_str(), owner.ToString().c_str());
+                if (isLocal)
+                {
+                    ImGui::PopStyleColor();
+                }
+            }
+        }
+        else
+        {
+            ImGui::Text("not started");
         }
         ImGuiHelper::OnDrawInputField("sampleSpawnPrefab_", sampleSpawnPrefab_);
         if (ImGui::Button("Sample Spawn Prefab"))
@@ -119,11 +203,9 @@ namespace NanamiEngine::Module::Network
     
     void NetworkRunnerBase::Spawn(Asset::PrefabGameObjectFile& prefabFile, const glm::vec3 position, const glm::quat rotation)
     {
+        if (!defaultPacketDispatcher_)
+            return;
+        
         defaultPacketDispatcher_->Spawn().DispatchSendPacket(prefabFile, position, rotation);
-    }
-
-    Coroutine::Task<void> NetworkRunnerBase::OnConnectedAsync()
-    {
-        co_await Coroutine::WaitForObservable(defaultPacketDispatcher_->ReceivedAssignPlayerId().OnAssignedPlayerId());
     }
 }

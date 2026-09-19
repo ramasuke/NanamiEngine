@@ -136,7 +136,7 @@
             "ptr_wrapper": {
                 "id": 2147483654,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -169,7 +169,7 @@
                                     "value2": {
                                         "cereal_class_version": 0
                                     },
-                                    "blendMode_": 0,
+                                    "blendMode_": 1,
                                     "blendRate_": 235,
                                     "spriteFile_": {
                                         "value0": {
@@ -202,20 +202,20 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 2.1,
-                            "value1": 2.1,
+                            "value0": 2.0999999046325685,
+                            "value1": 2.0999999046325685,
                             "value2": 1.0
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 2.1,
+                                "value0": 2.0999999046325685,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 2.1,
+                                "value1": 2.0999999046325685,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
@@ -233,7 +233,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -298,20 +299,20 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 1.7,
-                            "value1": 1.7,
+                            "value0": 1.7000000476837159,
+                            "value1": 1.7000000476837159,
                             "value2": 1.0
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 1.7,
+                                "value0": 1.7000000476837159,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 1.7,
+                                "value1": 1.7000000476837159,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
@@ -329,7 +330,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -404,20 +406,20 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.45,
-                            "value1": 0.45,
+                            "value0": 0.44999998807907107,
+                            "value1": 0.44999998807907107,
                             "value2": 1.0
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 0.45,
+                                "value0": 0.44999998807907107,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 0.45,
+                                "value1": 0.44999998807907107,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
@@ -435,10 +437,12 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 0
 }

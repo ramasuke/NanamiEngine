@@ -88,7 +88,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         
         // Playerを操作可能に変更
         playerAvatar_.lock()->GetEventSceneStateMachine().OnEnable();
-        playerAvatar_.lock()->GetEventSceneStateMachine().OnChangeState(PlayerAvatar::SwordMan::SwordManAvatarStateType::Idle);
+        playerAvatar_.lock()->GetEventSceneStateMachine().OnChangeState(PlayerAvatar::EventSceneStateType::Idle);
     }
     
     Coroutine::Task<void> AboardAirShipMovie::AirShipMovieFirstCameraMoveAsync()
@@ -108,7 +108,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         const auto player = playerAvatar_.lock();
         
         player->PlayerTransform().LookAtY(Context()->PlayerFirstMoveTarget().GetWorldPos());
-        player->GetEventSceneStateMachine().OnChangeState(PlayerAvatar::SwordMan::SwordManAvatarStateType::Walk);
+        player->GetEventSceneStateMachine().OnChangeState(PlayerAvatar::EventSceneStateType::Walk);
         player->GetEventSceneStateMachine().OnDisable();
 
         const auto tween = tweeny::from(player->PlayerTransform().GetWorldPos())
@@ -121,7 +121,7 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
     Coroutine::Task<void> AboardAirShipMovie::AirShipMovieArmStretchPlayerAsync()
     {
         using namespace PlayerAvatar::SwordMan::State;
-        playerAvatar_.lock()->GetEventSceneStateMachine().OnChangeState(PlayerAvatar::SwordMan::SwordManAvatarStateType::ArmStretch);
+        playerAvatar_.lock()->GetEventSceneStateMachine().OnChangeState(PlayerAvatar::EventSceneStateType::ArmStretch);
         co_await Coroutine::WaitForSeconds(static_cast<float>(Context()->PlayerArmStretchDuring_msecs()) / 1000);
         Context()->SecondVirtualCamera()->OnDisable();
     }

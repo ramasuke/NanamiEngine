@@ -25,37 +25,66 @@ namespace NanamiEngine::Core::Network
         }
     }
 
-    EnetUDPNetworkSystem::EnetUDPNetworkSystem()
+    EnetUDPNetworkSystem::EnetUDPNetworkSystem(const NetworkStartSettings& settings)
+        : mode_(settings.mode)
     {
         enet_initialize();
-        
-        if (Application::Configuration::NetworkConfiguration::IsServer())
-        {
-            ENetAddress address{};
-            address.host = ENET_HOST_ANY;
-            address.port = PORT_ADDRESS;
 
-            const int maxClients = Application::Configuration::NetworkConfiguration::GetMaxClients();
-            host_ = enet_host_create(&address, maxClients, 2, 0, 0);
-            
-            playerId_ = PlayerId(nextPlayerId_++);
-            
-            Packet packet = Packet::Create(DefaultPacketType::AssignPlayerId);
-            packet.Data().Write(playerId_);
-            receivedQueue_.push(packet);
-        }
+        if (mode_ == Mode::Server)
+            StartServer();
         else
+            StartClient(settings.host);
+    }
+
+    void EnetUDPNetworkSystem::StartServer()
+    {
+        ENetAddress address{};
+        address.host = ENET_HOST_ANY;
+        address.port = PORT_ADDRESS;
+
+        const int maxClients = Application::Configuration::NetworkConfiguration::GetMaxClients();
+        host_ = enet_host_create(&address, maxClients, 2, 0, 0);
+        if (!host_)
         {
-            host_ = enet_host_create(nullptr, 1, 2, 0, 0);
-
-            ENetAddress address{};
-            enet_address_set_host(&address, Application::Configuration::NetworkConfiguration::GetServerAddress());
-            address.port = PORT_ADDRESS;
-
-            peer_ = enet_host_connect(host_, &address, 2, 0);
-            if (peer_)
-                enet_peer_timeout(peer_, 0, PEER_TIMEOUT_MIN_MS, PEER_TIMEOUT_MAX_MS);
+            Module::LogError("EnetUDPNetworkSystem: ポート " + std::to_string(PORT_ADDRESS) + " で待ち受けられませんでした");
+            state_ = ConnectionState::Failed;
+            return;
         }
+
+        playerId_ = PlayerId(nextPlayerId_++);
+        state_ = ConnectionState::Connected;
+
+        Packet packet = Packet::Create(DefaultPacketType::AssignPlayerId);
+        packet.Data().Write(playerId_);
+        receivedQueue_.push(packet);
+    }
+
+    void EnetUDPNetworkSystem::StartClient(const HostEndpoint& host)
+    {
+        host_ = enet_host_create(nullptr, 1, 2, 0, 0);
+        if (!host_)
+        {
+            Module::LogError("EnetUDPNetworkSystem: クライアント用のソケットを作れませんでした");
+            state_ = ConnectionState::Failed;
+            return;
+        }
+
+        ENetAddress address{};
+        if (enet_address_set_host(&address, host.address.c_str()) != 0)
+        {
+            Module::LogError("EnetUDPNetworkSystem: 接続先のアドレスを解決できませんでした: " + host.address);
+            state_ = ConnectionState::Failed;
+            return;
+        }
+        address.port = host.port;
+
+        peer_ = enet_host_connect(host_, &address, 2, 0);
+        if (!peer_)
+        {
+            state_ = ConnectionState::Failed;
+            return;
+        }
+        enet_peer_timeout(peer_, 0, PEER_TIMEOUT_MIN_MS, PEER_TIMEOUT_MAX_MS);
     }
 
     EnetUDPNetworkSystem::~EnetUDPNetworkSystem()
@@ -86,6 +115,9 @@ namespace NanamiEngine::Core::Network
 
     void EnetUDPNetworkSystem::Update()
     {
+        if (!host_)
+            return;
+
         const float sendInterval = 1.0f / static_cast<float>(Application::Configuration::NetworkConfiguration::GetUnreliableSendRate());
         unreliableAccumulator_ += Time::DeltaTime();
         unreliableSendAllowed_ = unreliableAccumulator_ >= sendInterval;
@@ -100,7 +132,7 @@ namespace NanamiEngine::Core::Network
             {
             case ENET_EVENT_TYPE_CONNECT:
                 {
-                    if (Application::Configuration::NetworkConfiguration::IsServer())
+                    if (mode_ == Mode::Server)
                     {
                         if (nextPlayerId_ > MAX_PLAYER_ID)
                         {
@@ -121,10 +153,6 @@ namespace NanamiEngine::Core::Network
                         SendTo(event.peer, p);
 
                         onConnectPlayer_.get_subscriber().on_next(&event);
-                    }
-                    else
-                    {
-
                     }
                     break;
                 }
@@ -157,10 +185,17 @@ namespace NanamiEngine::Core::Network
                     const PlayerId leftId = DecodePeerData(event.peer->data);
                     Module::Log("Disconnect peer=" + leftId.ToString() + " data=" + std::to_string(event.data));
 
-                    if (Application::Configuration::NetworkConfiguration::IsServer())
+                    if (mode_ == Mode::Server)
                     {
                         peers_.erase(leftId);
                         NotifyPlayerLeft(leftId);
+                    }
+                    else if (event.peer == peer_)
+                    {
+                        // PlayerId をもらう前に切れたなら接続失敗(相手が居ない・満員など)
+                        state_ = state_ == ConnectionState::Connecting
+                            ? ConnectionState::Failed
+                            : ConnectionState::Disconnected;
                     }
 
                     event.peer->data = nullptr;
@@ -177,6 +212,9 @@ namespace NanamiEngine::Core::Network
 
     void EnetUDPNetworkSystem::Send(const Packet& packet)
     {
+        if (!host_)
+            return;
+
         const bool isUnreliable = packet.Delivery() == DeliveryMode::Unreliable;
         if (isUnreliable && !unreliableSendAllowed_)
             return;
@@ -189,7 +227,7 @@ namespace NanamiEngine::Core::Network
 
         ENetPacket* p = enet_packet_create(buffer.Data(), buffer.Size(), flag);
 
-        if (Application::Configuration::NetworkConfiguration::IsServer())
+        if (mode_ == Mode::Server)
         {
             enet_host_broadcast(host_, ch, p);
             return;
@@ -239,9 +277,26 @@ namespace NanamiEngine::Core::Network
         return playerId_;
     }
 
+    bool EnetUDPNetworkSystem::IsServer() const
+    {
+        return mode_ == Mode::Server;
+    }
+
     void EnetUDPNetworkSystem::SetPlayerId(const PlayerId playerId)
     {
         playerId_ = playerId;
+        if (state_ == ConnectionState::Connecting)
+            state_ = ConnectionState::Connected;
+    }
+
+    ConnectionState EnetUDPNetworkSystem::GetConnectionState() const
+    {
+        return state_;
+    }
+
+    std::uint16_t EnetUDPNetworkSystem::ListenPort() const
+    {
+        return mode_ == Mode::Server && host_ ? host_->address.port : 0;
     }
 
     rxcpp::observable<ENetEvent*> EnetUDPNetworkSystem::OnConnectPlayer()

@@ -39,3 +39,5 @@
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Weather/SetStorm/Enemy_Behaviour_Action_SetStorm.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Weather/Lightning/Enemy_Behaviour_Action_Lightning.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Hyena/CallAllies/Enemy_Behaviour_Action_CallAllies.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Stun/Enemy_Behaviour_Action_Stun.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/OpenWeakPointWindow/Enemy_Behaviour_Action_OpenWeakPointWindow.h"

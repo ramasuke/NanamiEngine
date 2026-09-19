@@ -2,6 +2,7 @@
 #include <functional>
 
 #include "IPlayerAvatarInput.h"
+#include "PlayerAvatarInput.h"
 
 namespace GameCore::PlayerAvatar
 {
