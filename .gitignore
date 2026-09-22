@@ -11,6 +11,11 @@ x64/
 x86/
 # Toolbar "Build" output (Config > Build > Output Directory)
 /Build/
+# Engine static lib (NanamiEngineLib.vcxproj) and its intermediates
+/lib/
+/obj/
+# Engine distributions (tools/engine_dist)
+/dist/
 
 # Visual Studio
 .vs/

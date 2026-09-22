@@ -104,7 +104,7 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
   `ICollider`/`ColliderBase` を共通基底に持つ `BoxCollider` / `CapsuleCollider` /
   `CylinderCollider` / `SphereCollider` / `StaticMeshCollider`。接触イベントは
   `ICollisionEnterable`/`ICollisionExitable`/`ISensorEnterable`/`ISensorExitable`/`ISensorStayable`
-  を実装するか、`CollisionListener` コンポーネントの rxcpp observable（`OnCollisionEnterAsObservable`
+  を実装するか、`CollisionListener` コンポーネントの `R4::Observable`（`OnCollisionEnterAsObservable`
   等）で受け取ります。Collider系は中間C++基底クラスがフィールドを持つ構造のため、
   `tools/scene add-component` では新規インスタンスを1から構築できない既知の制限があります。
 - **Asset** — `AssetBase`/`Asset` 基底と `AssetFactory`。具体的なアセット種別として
@@ -155,7 +155,7 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
 `Editor/`（インゲームエディタ拡張）・`GamePlay/`（Coreの上に乗る具体的なコンテンツ）に分かれています。
 
 - **`Core/Game/PlayerAvatar/`** — `IPlayerAvatar`/`PlayerAvatar` を中心に、`Animator`、
-  `AttackArea`、`CameraGroup`、`Chattable`、`Input`/`InputAction`、`LockOnTarget`（ロックオン対象
+  `AttackArea`、`CameraGroup`、`Interactable`、`Input`/`InputAction`、`LockOnTarget`（ロックオン対象
   `ILockOnTarget`/`LockOnPoint`）、`Quest`、`State`/`StateMachine`（テンプレートベースからenum管理へ
   リファクタ済み）、`Status`、`Wakeable`（ダウン状態からの蘇生 `IPlayerWakeable`）、`SwordMan` などの
   サブフォルダ。`SwordMan/State/` には `Idle`/`Walk`/`Run`/`Jump`/`Attack`/`AvoidRolling`/`Hurt`/
@@ -192,7 +192,7 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
 - **`GamePlay/AttackArea/`** — センサー内の対象にダメージを与える攻撃範囲（`NetworkComponent`）。
   ダメージは「対象を自ピアが所有している場合」にだけ適用する被弾側判定で、敵の攻撃発火は
   `AttackAreaFire` RPCで各ピアの同じ `AttackArea` 上に再現されます。
-- **`GamePlay/PlayerAvatar/`**（`Bullet`、`ChattableArea`、`HitShakeReceiver`、
+- **`GamePlay/PlayerAvatar/`**（`Bullet`、`InteractableArea`、`HitShakeReceiver`、
   `LockOnDetectionArea`、`SwordMan`、`WakeUpArea`（ダウンした味方の蘇生範囲））、
   **`GamePlay/Prop/`**（`AirShip`、`Canon`、`Cloud`、`DestructibleObject`、`IslandPedestial`、
   `LatticeBarrier`、`ProximityReveal`）、**`GamePlay/Ui/`**（`ActionInstructTutorial`、
@@ -247,7 +247,7 @@ enet(UDP) 上に構築されたクライアント/サーバー型モデルです
   - `MaxClients`、`UnreliableSendRate`（信頼性なし送信の間引きレート）
 - **中核クラス**: `Engine/Core/Network/EnetUDPNetworkSystem` が `INetworkSystem` を実装し、
   `enet::ENetHost`/`ENetPeer` をラップ。信頼性なし送信用のアキュムレータと送信間隔制御、
-  接続時に発火する rxcpp の `onConnectPlayer_` サブジェクトを持ちます。ローカル/オフライン用に
+  接続時に発火する `onConnectPlayer_`（`R4::Subject`）を持ちます。ローカル/オフライン用に
   `NullNetworkSystem` も存在します。
 - **オブジェクト同期**: `NetworkObjectBase`/`INetworkObject` が同期用サブオブジェクトを
   `CreateSyncObject<T>`/`RegisterSyncObject<T>` で登録する仕組み。任意の型を同期できる
@@ -492,15 +492,17 @@ SDFベースで生成し、`SpriteFile` の `.png.meta` も出力します（既
 ## サードパーティ依存
 
 **`Libs/`**: `ImGui`、`ImGuizmo`（Transformのギズモ操作）、`JoltPhysics`、`LibCore`（自社製補助
-ライブラリ: `BlackBoard`、DxLibラッパー、`FilePathHelper`、ImGuiヘルパー、rxcppの
-`ReadOnlyReactiveContext`/`SerializableSubject`、Tween(`Ease`含む)、cereal用glmアダプタ等）、
+ライブラリ: `BlackBoard`、DxLibラッパー、`FilePathHelper`、ImGuiヘルパー、Tween(`Ease`含む)、cereal用glmアダプタ等）、
 `Singleton`、`cereal`、`enet`、`glm`、`rxcpp`、`tweeny`。
 
 **`Packages/`**（Unityのパッケージ命名を意識した自社製の任意追加モジュール）:
 - `Cinemachine/` — `CinemachineCameraBrain`/`CineMachineVirtualCamera` によるカメラブレイン＋
   バーチャルカメラシステム。
-- `R4/` — `SensorEnterableAsObservable`/`SensorExitableAsObservable`/`SensorStayableAsObservable`。
-  物理センサー/トリガーのenter/stay/exitイベントをrxcppのobservableでラップ。
+- `R4/` — rxcpp を Unity の R3 風に包んだリアクティブ層（`Observable`/`Subject`/`ReactiveProperty`/
+  `SerializableReactiveProperty`/`Disposable`/`CancellationToken`、`Subscribe(...).AddTo(this)`）。
+  ゲーム/エンジンのコードは rxcpp を直接使わずこれを使う。物理センサー/トリガーのenter/stay/exitを
+  流す `SensorEnterableAsObservable`/`SensorExitableAsObservable`/`SensorStayableAsObservable` もここ。
+  詳細は `Packages/R4/README.md`。
 - `AssetUpdater/` — 配信アセットの更新確認。サーバーの `manifest.json`（全アセットの一覧）を取得して
   手元の `installed.json` と突き合わせ、差分を返す。`IAssetUpdater` を `HttpAssetUpdater`（WinHTTP）と
   `NullAssetUpdater`（常に更新なし）で差し替えられる。エンジンからは呼ばれず、使いたいゲームだけが

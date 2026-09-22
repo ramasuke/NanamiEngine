@@ -1,9 +1,16 @@
 # NanamiEngine
 
-A custom C++ game engine + game (DxLib / ImGui / Jolt / cereal). Single Visual
-Studio project `NanamiEngine.vcxproj` (toolset v143, C++20), hand-maintained with
-explicit file lists — **there is no globbing**, so a new `.cpp`/`.h` must be added
-to the `.vcxproj` by hand (and, optionally, `.vcxproj.filters`).
+A custom C++ game engine + game (DxLib / ImGui / Jolt / cereal), toolset v143, C++20. `NanamiEngine.sln` has two
+hand-maintained projects with explicit file lists — **there is no globbing**, so a new `.cpp`/`.h` must be added by hand
+(and, optionally, to the `.vcxproj.filters`):
+
+- `NanamiEngineLib.vcxproj` — static lib `lib/<Editor|Game>/<Debug|Release>/NanamiEngine.lib`: `Engine/`, `Packages/`,
+  `Libs/`, `Main.cpp` (WinMain lives in the lib).
+- `NanamiEngine.vcxproj` — the game exe: `Assets/**` sources only; links the lib with `/WHOLEARCHIVE` (static
+  self-registration would otherwise be dropped by the linker).
+
+Shared compiler/linker settings live in `NanamiEngine.props` / `NanamiEngine.Game.props`, not in the vcxproj files.
+Game code includes engine headers root-relative (`#include "Engine/..."`, `"Packages/..."`, `"Libs/..."`).
 
 ## Building from the CLI
 
@@ -17,8 +24,10 @@ MSBuild.exe NanamiEngine.sln -p:Configuration=Debug -p:Platform=x64 -p:Preferred
 MSBuild.exe NanamiEngine.sln -p:Configuration=Release -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12
 ```
 
-`Release|x64` is a real /MT release build (the default for the game build that the editor's *Build Settings* window runs
-through `GameBuilder`; Debug is selectable there); `Release|Win32` / `Debug|Win32` are unmaintained. Build Settings
+The solution only has `x64` configurations. `-p:NanamiApplicationMode=Game` builds the game (non-editor) variant into
+`x64/Game/<Configuration>/` (the lib into `lib/Game/...`); the editor's *Build Settings* window runs exactly that through
+`GameBuilder` on the project's own `.sln` (Release by default, Debug selectable; MSBuild is found with vswhere unless a
+path is set). Build Settings
 stores product name + start scene in `ProjectConfig/Build/Runtime/` (shipped with the game, read at startup) and the
 editor-only MSBuild path / output dir / configuration in `ProjectConfig/Build/`. Per-file `<ClCompile>` blocks must not hardcode configuration-specific settings
 (`RuntimeLibrary`, `Optimization`, `PreprocessorDefinitions`, `ObjectFileName` under `x64\Debug\`, …) — Visual
@@ -27,6 +36,16 @@ Studio writes them when you edit a single file's properties, and they then leak 
 `-p:PreferredToolArchitecture=x64` is **required** — the 32-bit compiler runs out
 of heap on the deep cereal template instantiations (`error C1060`). MSBuild lives at
 `C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe`.
+
+## Engine packages & NanamiHub
+
+`python -m tools.engine_dist build --version <v> [--zip]` builds the lib in all 4 configurations and assembles
+`dist/NanamiEngine-<v>/` (headers, libs, props, `stdafx.*`, and the new-project template from
+`tools/engine_dist/template/`); running it **is a build**, so the same go-ahead rule applies (`--skip-build` reuses
+`lib/`). `python tools/engine_dist/selftest.py` checks the assembly without building. NanamiHub (C# WPF, .NET 9;
+separate repo `ramasuke/NanamiHub`, cloned next to this one) is the launcher: it installs those packages to `%LOCALAPPDATA%\NanamiHub\Engines\<v>\`, creates projects
+from the template (`EnginePath.props` points a project at its engine, `ProjectConfig/ProjectInfo.json` records the
+version), builds the editor exe and starts it with `-project <dir>`. This repo is itself a project ("source" engine).
 
 ## Source encoding
 
@@ -40,6 +59,45 @@ Narrow string literals are compiled as **UTF-8** (`/execution-charset:utf-8`), w
 `Module::Log` and `TextRenderer::text_` expect. DxLib's string parameters are Shift-JIS, so pass
 through `LibCore::Dxlib::Utf8ToShiftJis`. The flag lives in every `<AdditionalOptions>` of the
 `.vcxproj`, including per-file ones that don't inherit `%(AdditionalOptions)` — keep it when adding one.
+
+## cereal registration goes in the .cpp
+
+`CEREAL_REGISTER_TYPE` / `CEREAL_REGISTER_POLYMORPHIC_RELATION` / `ENGINE_REGISTER_COMPONENT(T)` /
+`REGISTER_ATTACK_AREA_TYPE` / `REGISTER_PLAYER_AVATAR_BASE` belong at the end of the type's `.cpp`
+(global scope), which must `#include` `Engine/Module/Serialization/Engine_Module_SerializationRegistration.h`
+so the type is bound to both archives (JSON + PortableBinary). `CEREAL_CLASS_VERSION` (and the wrappers'
+`ATTACK_AREA_CLASS_VERSION` / `PLAYER_AVATAR_BASE_CLASS_VERSION`) stays in the **header**: it must be
+visible wherever the type is serialised. A registration in a header re-instantiates the type's serialisers
+in every file that includes it — that was ~90% of the object code. Never change the spelling of a
+registered type name (cereal stores the macro argument as `polymorphic_name` in every saved file).
+
+## Engine code must not depend on game code
+
+`Engine/` and `Packages/` must never `#include` anything under `Assets/` (they are compiled into the engine lib that
+other projects link). Game code plugs in through registration instead:
+Add Component menu entries via `AddComponent::RegisterMenu` (game menu: `Assets/Scripts/Editor/AddComponentMenu/`),
+lock-on framing via `CineMachine::Behaviour::SetLockOnPositionResolver`. Physics layers other than `Default` are
+per-project data (`ProjectConfig/Physics/LayerNames.json` + `LayerCollisionMasks.json`, edited in Config > Physics);
+look them up with `Physics::NameToLayer("Enemy")`, never add enum values. The exe takes `-project <dir>` (sets the
+working directory), and the game exe is built with `-p:NanamiApplicationMode=Game` (defines `NANAMI_GAME_BUILD`).
+
+## Reactive code goes through R4 (not rxcpp)
+
+rxcpp is wrapped by **`Packages/R4`** (`NanamiEngine::R4`, R3-style): `R4::Subject<T>`, `R4::Observable<T>`,
+`R4::ReactiveProperty<T>` / `ReadOnlyReactiveProperty<T>` / `SerializableReactiveProperty<T>`, `R4::Unit`,
+`R4::Disposable` / `CompositeDisposable` / `SerialDisposable`, `R4::CancellationToken`. Only `Packages/R4/Core/`
+(and `stdafx.h`'s precompiled `rx.hpp`) may name `rxcpp::` - include `Packages/R4/R4.h` instead. `Subscribe` returns a
+`[[nodiscard]]` `Disposable`: in a Component write `.Subscribe(...).AddTo(this)` (released by
+`DestroyCancellationToken()`, which `ComponentGroup::OnDestroy` cancels after `OnDestroy()`); elsewhere keep it in a
+`Disposable` / `SerialDisposable` member and dispose it yourself. See **`Packages/R4/README.md`**.
+
+## In-game UI design
+
+Before designing or building any in-game UI screen (sprites, prefab, View/Presenter), read
+**`docs/UIDesign.md`**: the two visual families (tangible tavern props for screens vs. the teal HUD), the
+palette / fonts / hint-tag / wording / motion conventions taken from the existing prefabs, the texture helpers
+in `tools/art/character_select.py`, and the mock-on-a-real-screen -> `--emit` -> `*_prefab.py` workflow.
+Show the user 2-3 composited mocks before implementing a new screen.
 
 ## Behaviour trees & actions (Enemy + FriendlyNpc)
 
@@ -227,7 +285,8 @@ copies next to them). Fix the reference; don't loosen the check. References that
 screen while the game runs, and `TtfFontFile` keeps fonts registered via `AddFontResourceEx` until exit, so every
 player's apply would fail. Ship font changes in a new zip. The client side (`Packages/AssetUpdater`: check ->
 confirm -> download to `.update/` -> transactional apply into `Assets/` -> relaunch) only ever runs when
-`APPLICATION_MODE == Game` **and** `installed.json` exists; never let it run from the editor, where it would
+`APPLICATION_MODE == Game` **and** `installed.json` exists (`GameBuilder` writes it next to the exported exe - a
+hash list of the exported `Assets/` - unless Build Settings > *Asset Updates* is off); never let it run from the editor, where it would
 overwrite the working `Assets/` with the published set and delete files that were never uploaded.
 
 Hashing is cached by mtime+size, and the `.efkefc`/`.mv1` reference lists by content hash, in

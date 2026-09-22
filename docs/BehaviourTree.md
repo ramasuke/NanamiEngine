@@ -261,14 +261,18 @@ MSBuild.exe NanamiEngine.sln -p:Configuration=Debug -p:Platform=x64 -p:Preferred
    (gate newer members in `load` with `if (version >= N)`).
    After the class: `REGISTER_ENEMY_ACTION_WITH_NAME(<Name>, "<Category>::<Name>")`
    (inside the namespace), then at global scope `CEREAL_CLASS_VERSION` (only if
-   versioned), `CEREAL_REGISTER_TYPE(<fqn>)`,
-   `CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, <fqn>)`.
+   versioned). The type registration goes in the `.cpp`, not the header (see 2.).
    Copy `Content/Other/Sample/MoveFront/…SampleMoveFront.{h,cpp}` (no params) or
    `Content/Wait/Seconds/…WaitSeconds.{h,cpp}` (one param) as a starting point.
 
 2. **`Enemy_Behaviour_Action_<Name>.cpp`**: `#include` its own header, implement
    `DoTick` / `DoDrawGui` in `namespace GameCore::Npc::Enemy::Behaviour` with an
    `Action::` qualifier. `stdafx.h` is force-included by the project — no PCH line needed.
+   Also `#include` `Engine/Module/Serialization/Engine_Module_SerializationRegistration.h`
+   (relative path) and end the file, at global scope, with `CEREAL_REGISTER_TYPE(<fqn>);` and
+   `CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, <fqn>);`.
+   Registering in the header would re-instantiate the type's serialisers in every file that
+   includes it, which is what used to dominate the build time.
 
 3. **Three wiring points** (no code-gen / globbing exists):
    * `Assets/Scripts/Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionHeaders.h`

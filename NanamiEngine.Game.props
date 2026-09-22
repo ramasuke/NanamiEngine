@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- ゲーム exe (エディタ版/ゲーム版) のビルド設定。NanamiEngine.props の後に読む -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(NanamiApplicationMode)'=='Editor'">
+    <OutDir>$(ProjectDir)x64\$(Configuration)\</OutDir>
+    <IntDir>x64\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <!-- NOTE: 起動中のエディタ exe や中間ファイルと混ざらないよう出力先を分ける -->
+  <PropertyGroup Condition="'$(NanamiApplicationMode)'=='Game'">
+    <OutDir>$(ProjectDir)x64\Game\$(Configuration)\</OutDir>
+    <IntDir>x64\Game\$(Configuration)\obj\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>$(NanamiEngineLib);%(AdditionalDependencies)</AdditionalDependencies>
+      <!-- WARNING: 静的初期化子で自己登録するオブジェクトがリンカに捨てられないよう lib を丸ごとリンクする -->
+      <AdditionalOptions>"/WHOLEARCHIVE:$(NanamiEngineLib)" %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+</Project>

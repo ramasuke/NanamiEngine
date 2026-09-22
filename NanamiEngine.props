@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- エンジン lib とゲーム exe で共有するビルド設定 -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <NanamiEngineDir Condition="'$(NanamiEngineDir)'==''">$(MSBuildThisFileDirectory)</NanamiEngineDir>
+    <NanamiEngineDir Condition="!HasTrailingSlash('$(NanamiEngineDir)')">$(NanamiEngineDir)\</NanamiEngineDir>
+    <!-- Editor | Game -->
+    <NanamiApplicationMode Condition="'$(NanamiApplicationMode)'==''">Editor</NanamiApplicationMode>
+    <NanamiEngineLibDir>$(NanamiEngineDir)lib\$(NanamiApplicationMode)\$(Configuration)\</NanamiEngineLibDir>
+    <NanamiEngineLib>$(NanamiEngineLibDir)NanamiEngine.lib</NanamiEngineLib>
+    <NanamiEngineIncludeDirs>$(NanamiEngineDir);$(NanamiEngineDir)Libs\glm;$(NanamiEngineDir)Libs\プロジェクトに追加すべきファイル_VC用;$(NanamiEngineDir)Libs\cereal\include;$(NanamiEngineDir)Libs\ImGui;$(NanamiEngineDir)Libs\ImGuizmo;$(NanamiEngineDir)Libs\rxcpp;$(NanamiEngineDir)Libs\JoltPhysics;$(NanamiEngineDir)Libs\tweeny;$(NanamiEngineDir)Libs\enet\include</NanamiEngineIncludeDirs>
+    <NanamiEngineLibraryDirs>$(NanamiEngineDir)Libs\ImGui;$(NanamiEngineDir)Libs\glm;$(NanamiEngineDir)Libs\プロジェクトに追加すべきファイル_VC用;$(NanamiEngineDir)Libs\ImGuizmo;$(NanamiEngineDir)Libs\JoltPhysics;$(NanamiEngineDir)Libs\tweeny</NanamiEngineLibraryDirs>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PreprocessorDefinitions>_WINDOWS;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(NanamiEngineIncludeDirs);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/bigobj /execution-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
+      <EnableUnitySupport>true</EnableUnitySupport>
+      <UnityFilesPerBatch>32</UnityFilesPerBatch>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(NanamiEngineLibraryDirs);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <PerUserRedirection>true</PerUserRedirection>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(NanamiEngineLibraryDirs);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalOptions>/Z7 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(NanamiApplicationMode)'=='Game'">
+    <ClCompile>
+      <PreprocessorDefinitions>NANAMI_GAME_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+</Project>

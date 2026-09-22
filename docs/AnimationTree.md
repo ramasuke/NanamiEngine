@@ -17,7 +17,7 @@ let you hand-edit safely.
 | node types (`IAnimationNode` subclasses) | `Engine/Module/AnimationTree/Node/**` |
 | transitions / conditions | `Engine/Module/AnimationTree/NodePath/**` |
 | controller parameters (`additionParameters_`) | `Libs/LibCore/BlackBoard/{AnimationParameter,IAnimationParameter}.h`, `Libs/LibCore/BlackBoard/Group/ParameterGroup.h` |
-| in-engine graph editor | `Engine/Core/Application/Window/Main/Animator/AnimatorWindow.{h,cpp}`, `AnimationTree::OnDrawGraphEditorGui` |
+| in-engine graph editor | `Engine/Core/Application/Window/Main/Animator/AnimatorWindow.{h,cpp}`, `AnimationTree::OnDrawGraphEditorGui`, `Engine/Module/AnimationTree/Editor/AnimationTreeGraphDelegate.{h,cpp}` (ImGuizmo `GraphEditor` adapter, hosted by `Engine/Module/Gui/Graph/Editor/GraphEditorHost.{h,cpp}`) |
 | the toolkit | `tools/animtree/` — `python -m tools.animtree <cmd>` |
 
 A GameObject/Prefab binds a tree through the `Animator` component's
@@ -31,6 +31,26 @@ python -m tools.scene add-component --guid <gameobject-guid> --type Animator --p
 (Bone-driven transforms — e.g. a hitbox following a hand bone — are not part of
 `Animator`. Add a `BoneSync` component next to the `ModelRenderer` and give it a
 `TransformSync`; `Animator` v5 dropped the old, never-populated `animationSyncs_` field.)
+
+### In-engine graph editor (Animator window)
+
+Drawn with ImGuizmo's `GraphEditor` (`Libs/ImGuizmo/GraphEditor.{h,cpp}`, locally patched — every
+change is marked `NanamiEngine patch`). Nodes are still positioned by each node's saved `position_`, so the
+editor changes nothing in the `.animTree` format.
+
+| action | how |
+|---|---|
+| pan / zoom / fit | middle-drag / wheel / `F` or toolbar *Fit All* (*Fit Selected* for the selection) |
+| select | click a node (shows it in the Inspector), left-drag on empty space for a box, Shift to add |
+| move | drag selected nodes |
+| add a transition | drag from a node's output slot (right) to a clip node's input slot (left); from *Any State* it becomes a `fromAnyStateNodeNodePath` |
+| edit a transition | click the link (arrow shows the direction) — its `AnimationNodePath` opens in the Inspector |
+| delete | right-click a link / node, or select it and press `Delete` (Entry / Any State can't be deleted; deleting a clip node also removes its transitions) |
+| add a clip node | right-click on empty space → *Add AnimationClipNode* |
+
+The *Running AnimationTree Viewer* shows the same graph read-only (no moving / editing), with the playing
+node outlined yellow, the fading-out node purple, a progress bar under each playing clip, and the blending
+transition in orange.
 
 ---
 
@@ -242,8 +262,9 @@ control.
 ## 4. Adding a new `IAnimationNode` type
 
 **No scaffold command exists for this in v1.** The in-engine "Add node"
-affordance is a single hardcoded block inside
-`AnimationTree::OnDrawGraphEditorGui()` in `AnimationTree.cpp` itself:
+affordance is a single hardcoded block in the background context menu of
+`AnimationTreeGraphDelegate::DrawContextMenus()`
+(`Engine/Module/AnimationTree/Editor/AnimationTreeGraphDelegate.cpp`):
 
 ```cpp
 if (ImGui::MenuItem("Add AnimationClipNode"))
@@ -256,8 +277,8 @@ if (ImGui::MenuItem("Add AnimationClipNode"))
 — engine core, not a peripheral generated-content file the way BehaviourTree's
 `Enemy_Behaviour_ActionHeaders.h` aggregator is. `IAnimationNode`'s virtual
 interface (`InitForGamePlay`, `OnUpdateBlendRate`, `OnUpdateAnimation`,
-`OnExitNode`, `OnUpdated`, `Position`, `GetAnimDuration_secs`,
-`OnDrawGraphEditorGui`) is also far more involved than BehaviourTree's
+`OnExitNode`, `OnUpdated`, `Position`, `SetPosition`, `GetAnimDuration_secs`,
+`GraphNodeName`, optional `GraphNodeDetail`) is also far more involved than BehaviourTree's
 `ActionBase` (effectively just `DoTick`), so a generated stub would compile
 but be non-functional in the graph editor — worse than "doesn't compile yet."
 This mirrors `tools/scene`'s existing precedent of not having an
@@ -274,18 +295,23 @@ This mirrors `tools/scene`'s existing precedent of not having an
    (glm::vec2) member somewhere in the list — `tools/animtree`'s catalog
    scanner keys off those two member *names* specifically (`self_guid`/
    `self_pos`), not their type, to find the node's identity/canvas-position
-   fields. After the class, at file scope: `CEREAL_CLASS_VERSION`,
-   `CEREAL_REGISTER_TYPE(<fqn>)`,
-   `CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::AnimationTree::IAnimationNode, <fqn>)`.
+   fields. After the class, at file scope: `CEREAL_CLASS_VERSION`. The `.cpp`
+   includes `Engine/Module/Serialization/Engine_Module_SerializationRegistration.h` and ends, at
+   file scope, with `CEREAL_REGISTER_TYPE(<fqn>);` and
+   `CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::AnimationTree::IAnimationNode, <fqn>);`
+   (never in the header — see CLAUDE.md).
    Copy `Node/ClipNode/AnimationClipNode.{h,cpp}` as a starting point.
 2. `NanamiEngine.vcxproj` (+ `.vcxproj.filters`) — add `<ClCompile>`/
    `<ClInclude>` entries by hand (no toolkit command does this yet for
    AnimationTree — `tools/animtree/vcxproj.py` is a re-export shim kept for
    structural symmetry, unused in v1).
-3. `AnimationTree.cpp`'s `OnDrawGraphEditorGui()` — add a matching
-   `ImGui::MenuItem("Add <Name>")` block to the node-context-menu code shown
+3. `AnimationTreeGraphDelegate.cpp` — add a matching
+   `ImGui::MenuItem("Add <Name>")` block to the background context menu shown
    above, constructing and inserting the new node the same way
-   `AnimationClipNode` does.
+   `AnimationClipNode` does. If the new type needs its own header colour or
+   slot count, add a `TemplateKind` for it (`KindOf` / `GetTemplate`); the
+   delegate otherwise treats every non-Entry/AnyState node like a clip
+   (1 input, 1 output, deletable).
 4. `python -m tools.animtree regen-catalog` and commit `tools/animtree/catalog.json`
    so the toolkit can read/write the new type (`add-clip-node`-equivalent
    authoring for it is not generated automatically — extend `edits.py`/

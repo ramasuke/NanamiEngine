@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- NanamiHub がエンジンのバージョンを切り替えるときに書き換える -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <NanamiEngineDir>__ENGINE_DIR__</NanamiEngineDir>
+  </PropertyGroup>
+</Project>

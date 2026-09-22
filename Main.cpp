@@ -1,7 +1,9 @@
 ﻿#include "DxLib.h"
+#include <shellapi.h>
 #include <exception>
 #include <memory>
 #include <string>
+#include <string_view>
 
 #include "Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "Engine/Core/Application/ApplicationBase.h"
@@ -11,6 +13,40 @@
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 
 extern "C" __declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+
+#pragma comment(lib, "Shell32.lib")
+
+// -project <フォルダ> があればそこを作業ディレクトリにする
+bool ApplyProjectArgument()
+{
+	int argc = 0;
+	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+	if (argv == nullptr)
+		return true;
+
+	bool succeeded = true;
+	for (int i = 1; i < argc; ++i)
+	{
+		const std::wstring_view argument = argv[i];
+		if (argument != L"-project" && argument != L"--project")
+			continue;
+
+		if (i + 1 >= argc)
+		{
+			MessageBoxW(nullptr, L"-project の後にプロジェクトフォルダを指定してください", L"NanamiEngine", MB_OK | MB_ICONERROR);
+			succeeded = false;
+		}
+		else if (!SetCurrentDirectoryW(argv[i + 1]))
+		{
+			const std::wstring message = std::wstring(L"プロジェクトフォルダを開けません: ") + argv[i + 1];
+			MessageBoxW(nullptr, message.c_str(), L"NanamiEngine", MB_OK | MB_ICONERROR);
+			succeeded = false;
+		}
+		break;
+	}
+	LocalFree(argv);
+	return succeeded;
+}
 
 void StartApplicationAsync()
 {
@@ -29,6 +65,10 @@ void StartApplicationAsync()
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
+	// WARNING: ログや設定を読む前に呼ぶこと
+	if (!ApplyProjectArgument())
+		return 1;
+
 	//起動時の Scene 破損など回復できないエラーはダイアログを出して終了する
 	try
 	{
