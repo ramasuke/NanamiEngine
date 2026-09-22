@@ -1,11 +1,11 @@
 ﻿#pragma once
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Color/Color32.h"
-#include "../../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/LifeCycleCallback/Awake/IAwakable.h"
-#include "../../../../../Engine/Module/NanamiUI/Button/NanamiUi_Button.h"
-#include "../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Color/Color32.h"
+#include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/LifeCycleCallback/Awake/IAwakable.h"
+#include "Engine/Module/NanamiUI/Button/NanamiUi_Button.h"
+#include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 
 namespace GamePlay::Ui
 {
@@ -23,8 +23,8 @@ namespace GamePlay::Ui
         void SetHighlighted(bool isHighlighted);
         void Tick(float deltaSecs);
 
-        [[nodiscard]] rxcpp::observable<NanamiUi::MouseState> OnClick() const;
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit> OnHover() const;
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiUi::MouseState> OnClick() const;
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit> OnHover() const;
 
     private:
         void OnAwake() override;

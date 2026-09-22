@@ -1,7 +1,7 @@
 ﻿#include "Data_FriendNpcBehaviourFile.h"
 
-#include "../../../Engine/Module/Exception/Engine_Module_Exception.h"
-#include "../../../Engine/Module/Log/NanamiEngine_Module_Log.h"
+#include "Engine/Module/Exception/Engine_Module_Exception.h"
+#include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "../../Scripts/Core/Game/Npc/Friendly/Behaviour/Friendly_BehaviourTree.h"
 #include "../../Scripts/Editor/Npc/Friendly/Behaviour/Window/FriendlyNpcBehaviourWindow.h"
 

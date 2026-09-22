@@ -3,12 +3,12 @@
 #include <vector>
 
 #include "Ui_SwordMan_ActionInstructTutorialStep.h"
-#include "../../../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
-#include "../../../../../../Engine/Core/Coroutine/Task/Task.h"
-#include "../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
-#include "../../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Libs/LibCore/cereal/glm/GlmHelper.h"
+#include "Engine/Core/Coroutine/Task/Task.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
+#include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 
 namespace GameCore::PlayerAvatar::SwordMan
 {

@@ -3,11 +3,11 @@
 #include "Enemy_Behaviour_ActionFactory.h"
 #include "imgui_internal.h"
 #include "../../../../BehaviourTree/Window/DrawNodeHelper.h"
-#include "../../../../../../../Engine/Module/Gui/Graph/GraphGui.h"
+#include "Engine/Module/Gui/Graph/GraphGui.h"
 #include "../../../../BehaviourTree/Window/Node/Npc_Behaviour_NodeHeaders.h"
 #include "../cereal/include/cereal/archives/json.hpp"
 #include "Enemy_Behaviour_ActionHeaders.h"
-#include "../../../../../../../Engine/Module/Gui/StaticReflection/Engine_Module_StaticReflection.h"
+#include "Engine/Module/Gui/StaticReflection/Engine_Module_StaticReflection.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/TickStatus/Friendly_Behaviour_TickStatus.h"
 #include "cereal/archives/portable_binary.hpp"
 

@@ -3,14 +3,13 @@
 #include <algorithm>
 #include <string>
 
+#include "Ui_ItemBarSource.h"
 #include "Ui_ItemSlot.h"
-#include "../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-#include "../../../Core/Game/PlayerAvatar/SwordMan/State/Transition/SwordManAvatarStateTransition.h"
-#include "../../PlayerAvatar/SwordMan/SwordManAvatar.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 
 namespace GamePlay::Ui
 {
@@ -18,7 +17,6 @@ namespace GamePlay::Ui
     {
         using GameCore::PlayerAvatar::PlayerAvatarInputDevice;
         using GameCore::PlayerAvatar::PlayerAvatarControlAcceptance;
-        using GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateAction;
 
         float ItemBarMoveTowards(const float current, const float target, const float maxDelta)
         {
@@ -38,42 +36,12 @@ namespace GamePlay::Ui
         }
     }
 
-    class ItemBar::ActionCollector final : public GameCore::PlayerAvatar::SwordMan::ISwordManAvatarTransitionVisitor
+    void ItemBar::Initialize(const std::shared_ptr<IItemBarSource>& source)
     {
-    public:
-        [[nodiscard]] bool IsShown () const { return isShown_;  }
-        [[nodiscard]] bool IsUsable() const { return isUsable_; }
+        source_ = source;
 
-        bool Automatic(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateType, bool) override { return false; }
-        bool OnInput(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateType,
-                     GameCore::PlayerAvatar::SwordMan::SwordManAvatarInput,
-                     GameCore::PlayerAvatar::PlayerAvatarInputPhase, bool) override { return false; }
-        bool OnInputWhenReady(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateType,
-                              GameCore::PlayerAvatar::SwordMan::SwordManAvatarInput,
-                              GameCore::PlayerAvatar::PlayerAvatarInputPhase, bool, bool) override { return false; }
-
-        void Action(const SwordManAvatarStateAction action, const bool isUsable) override
-        {
-            if (action == SwordManAvatarStateAction::CycleItem)
-                isShown_ = true;
-            if (action == SwordManAvatarStateAction::UseItem)
-            {
-                isShown_ = true;
-                isUsable_ = isUsable;
-            }
-        }
-
-    private:
-        bool isShown_  = false;
-        bool isUsable_ = false;
-    };
-
-    void ItemBar::Initialize(const std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& swordManAvatar)
-    {
-        swordManAvatar_ = swordManAvatar;
-
-        if (const auto avatar = swordManAvatar.lock())
-            SpawnSlots(avatar->PlayerStatus().Pouch());
+        if (const auto* pouch = source_ ? source_->Pouch() : nullptr)
+            SpawnSlots(*pouch);
     }
 
     void ItemBar::SpawnSlots(const GameCore::PlayerAvatar::ItemPouch& pouch)
@@ -212,15 +180,15 @@ namespace GamePlay::Ui
     void ItemBar::OnUpdate()
     {
         const float deltaTime = Time::DeltaTime();
-        const auto avatar = swordManAvatar_.lock();
-        if (!avatar)
+        auto* const pouchPtr = source_ ? source_->Pouch() : nullptr;
+        if (!pouchPtr)
         {
             barAlpha_ = ItemBarMoveTowards(barAlpha_, 0.0f, ItemBarStepRate(deltaTime, fadeDuration_secs_));
             FadeOutSlots();
             return;
         }
 
-        const auto device = avatar->GetInputAction().CurrentDevice();
+        const auto device = source_->CurrentDevice();
         if (isDeviceDirty_ || device != device_)
         {
             device_ = device;
@@ -228,18 +196,16 @@ namespace GamePlay::Ui
             ApplyDeviceGlyphs();
         }
 
-        const auto state = avatar->GetStateMachine().CurrentStateValue();
-        const auto acceptance = state ? state->ControlAcceptance() : PlayerAvatarControlAcceptance::None;
+        const auto declaration = source_->Declaration();
+        const auto acceptance = declaration.acceptance;
         // Momentary は一瞬で終わるので、直前に宣言された内容をそのまま引き継ぐ(帯が瞬かない)
         if (acceptance == PlayerAvatarControlAcceptance::Accept)
         {
-            ActionCollector collector;
-            state->VisitTransitions(collector);
-            isShownDeclared_  = collector.IsShown();
-            isUsableDeclared_ = collector.IsUsable();
+            isShownDeclared_  = declaration.isShown;
+            isUsableDeclared_ = declaration.isUsable;
         }
 
-        auto& pouch = avatar->PlayerStatus().Pouch();
+        auto& pouch = *pouchPtr;
         if (isContentDirty_ || pouch.Revision() != lastRevision_)
         {
             if (!isContentDirty_ && pouch.SelectedIndex() != lastSelectedIndex_)

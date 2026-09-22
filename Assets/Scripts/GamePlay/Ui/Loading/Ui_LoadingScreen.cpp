@@ -4,29 +4,33 @@
 #include <cmath>
 
 #include "DxLib.h"
-#include "../../../../../Engine/Core/Application/ApplicationBase.h"
-#include "../../../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
-#include "../../../../../Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
+#include "Engine/Core/Application/ApplicationBase.h"
+#include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
+#include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 
 using GameCore::Scene::Main::SceneLoadStep;
 
 namespace
 {
-    /** @brief 段階ごとの進捗の取り分。合計 1.0 */
-    float LoadingScreenStepWeight(const SceneLoadStep step)
+    /**
+     * @brief 段階ごとの進捗の取り分。合計 1.0。
+     *        接続を挟まないシーンでは Connecting の取り分を読み込みと暖機へ回す
+     */
+    float LoadingScreenStepWeight(const SceneLoadStep step, const bool hasNetworkStep)
     {
         switch (step)
         {
-        case SceneLoadStep::Deserializing: return 0.55f;
-        case SceneLoadStep::Warmup:        return 0.20f;
-        case SceneLoadStep::Connecting:    return 0.20f;
+        case SceneLoadStep::Deserializing: return hasNetworkStep ? 0.55f : 0.65f;
+        case SceneLoadStep::Warmup:        return hasNetworkStep ? 0.20f : 0.30f;
+        case SceneLoadStep::Connecting:    return hasNetworkStep ? 0.20f : 0.0f;
         case SceneLoadStep::Spawning:      return 0.05f;
         default:                           return 0.0f;
         }
     }
 
     /** @brief その段階より前に積み上がっている取り分 */
-    float LoadingScreenWeightBefore(const SceneLoadStep step)
+    float LoadingScreenWeightBefore(const SceneLoadStep step, const bool hasNetworkStep)
     {
         float sum = 0.0f;
         for (const SceneLoadStep passed : {SceneLoadStep::Deserializing, SceneLoadStep::Warmup,
@@ -35,7 +39,7 @@ namespace
             if (passed == step)
                 return sum;
 
-            sum += LoadingScreenStepWeight(passed);
+            sum += LoadingScreenStepWeight(passed, hasNetworkStep);
         }
         return sum;
     }
@@ -64,18 +68,26 @@ namespace
 
 namespace GamePlay::Ui
 {
-    void LoadingScreenUi::Show(const std::shared_ptr<Asset::StageData>& stageData)
+    void LoadingScreenUi::Show(
+        const std::optional<GameCore::Scene::Main::SceneType> from,
+        const GameCore::Scene::Main::SceneType to,
+        const GameCore::Scene::Main::SceneTransitionOptions& options)
     {
-        if (stageData)
+        const auto route = FindRoute(from, to);
+        if (!route)
         {
-            ApplyStageData(*stageData);
-            shownStageData_ = stageData;
+            NanamiEngine::Module::LogWarning(
+                "LoadingScreenUi: " + std::string(GameCore::Scene::Main::ToString(to)) + " への航路が routes_ にありません");
         }
+
+        routeStatusText_ = route ? route->StatusText() : std::string("移動中…");
+        hasNetworkStep_  = route && route->HasNetworkStep();
+        if (const auto routeMap = routeMap_.get(); routeMap && route)
+            routeMap->Begin(*route, options.isStageCleared);
 
         if (const auto hint = hintCard_.get())
             hint->Reset();
 
-        phase_ = Phase::FadingIn;
         step_ = SceneLoadStep::Deserializing;
         statusMessage_.clear();
         stepElapsedSecs_ = 0.0f;
@@ -83,10 +95,31 @@ namespace GamePlay::Ui
         displayedProgress_ = 0.0f;
         lastShownPercent_ = -1;
         isHideRequested_ = false;
-        lastTickMs_ = GetNowCount();
+        isStatusDirty_ = true;
 
-        SetVisualEnabled(true);
+        switch (phase_)
+        {
+        case Phase::Hidden:
+            lastTickMs_ = GetNowCount();
+            coverBlendRate_ = 0.0f;
+            phase_ = Phase::CoveringGame;
+            break;
+        case Phase::RevealingGame:
+            // 地図は消えたあと。幕が明け切る前なので、その濃さから覆い直す
+            phase_ = Phase::CoveringGame;
+            break;
+        case Phase::CoveringMap:
+            // 地図はまだ出ている。幕を明けて見せ直す
+            phase_ = Phase::RevealingMap;
+            break;
+        case Phase::CoveringGame:
+        case Phase::RevealingMap:
+        case Phase::Visible:
+            break;
+        }
+
         ApplyCoverBlendRate();
+        UpdateStatusText();
     }
 
     void LoadingScreenUi::SetStep(const SceneLoadStep step)
@@ -103,11 +136,30 @@ namespace GamePlay::Ui
         step_ = SceneLoadStep::Failed;
         stepElapsedSecs_ = 0.0f;
         statusMessage_ = message;
+        isStatusDirty_ = true;
+        UpdateStatusText();
     }
 
     void LoadingScreenUi::BeginHide()
     {
         isHideRequested_ = true;
+    }
+
+    bool LoadingScreenUi::IsCoverOpaque() const
+    {
+        switch (phase_)
+        {
+        case Phase::RevealingMap:
+        case Phase::Visible:
+        case Phase::CoveringMap:
+            return true;
+        case Phase::CoveringGame:
+        case Phase::RevealingGame:
+            return coverBlendRate_ >= 255.0f;
+        case Phase::Hidden:
+            return false;
+        }
+        return false;
     }
 
     Coroutine::Task<void> LoadingScreenUi::WaitCoverOpaqueAsync() const
@@ -117,11 +169,15 @@ namespace GamePlay::Ui
 
     void LoadingScreenUi::OnStart()
     {
-        // 起動直後から出ていないように、常駐しているぶんを自分で畳んでおく
+        // 起動直後から出ていないように、常駐しているぶんを自分で畳んでおく。
+        // 起動時のタイトルの読み込みは OnStart より先に Show するので、そのときは触らない
+        lastTickMs_ = GetNowCount();
+        if (phase_ != Phase::Hidden)
+            return;
+
         SetVisualEnabled(false);
         coverBlendRate_ = 0.0f;
         ApplyCoverBlendRate();
-        lastTickMs_ = GetNowCount();
     }
 
     void LoadingScreenUi::OnUpdate()
@@ -132,9 +188,13 @@ namespace GamePlay::Ui
 
         stepElapsedSecs_ += deltaSecs;
         shownElapsedSecs_ += deltaSecs;
+        animationSecs_ += deltaSecs;
 
         UpdateProgress(deltaSecs);
         UpdateCoverFade(deltaSecs);
+
+        if (const auto routeMap = routeMap_.get())
+            routeMap->Tick(displayedProgress_, animationSecs_);
     }
 
     float LoadingScreenUi::TickWallClockSeconds()
@@ -148,55 +208,66 @@ namespace GamePlay::Ui
         return std::clamp(deltaSecs, 0.0f, 0.25f);
     }
 
-    void LoadingScreenUi::ApplyStageData(const Asset::StageData& stageData) const
+    std::shared_ptr<Asset::LoadingRouteData> LoadingScreenUi::FindRoute(
+        const std::optional<GameCore::Scene::Main::SceneType> from,
+        const GameCore::Scene::Main::SceneType to) const
     {
-        if (const auto thumbnail = stageData.ThumbnailSprite())
+        std::shared_ptr<Asset::LoadingRouteData> best;
+        int bestScore = 0;
+        for (const auto& field : routes_)
         {
-            if (const auto cardThumbnail = cardThumbnail_.get())
-                cardThumbnail->SetSprite(thumbnail);
-            if (const auto backdrop = backdrop_.get())
-                backdrop->SetSprite(thumbnail);
-        }
+            const auto route = field.get();
+            if (!route || !route->Matches(from.value_or(to), from.has_value(), to))
+                continue;
 
-        if (const auto element = stageData.ElementSprite())
-        {
-            if (const auto cardElement = cardElement_.get())
-                cardElement->SetSprite(element);
+            if (route->MatchScore() > bestScore)
+            {
+                best = route;
+                bestScore = route->MatchScore();
+            }
         }
-
-        if (const auto stageName = stageNameText_.get())
-            stageName->SetText(stageData.DisplayName());
-        if (const auto tag = tagText_.get())
-            tag->SetText(stageData.TagText());
-        if (const auto pips = difficultyPips_.get())
-            pips->SetDifficulty(stageData.Difficulty());
+        return best;
     }
 
     void LoadingScreenUi::UpdateCoverFade(const float deltaSecs)
     {
-        if (phase_ == Phase::FadingIn)
+        const float inStep  = 255.0f * deltaSecs / std::max(fadeInSecs_, 0.01f);
+        const float outStep = 255.0f * deltaSecs / std::max(fadeOutSecs_, 0.01f);
+
+        switch (phase_)
         {
-            coverBlendRate_ += 255.0f * deltaSecs / std::max(fadeInSecs_, 0.01f);
+        case Phase::CoveringGame:
+            coverBlendRate_ = std::min(255.0f, coverBlendRate_ + inStep);
             if (coverBlendRate_ >= 255.0f)
             {
-                coverBlendRate_ = 255.0f;
-                phase_ = Phase::Visible;
+                SetVisualEnabled(true);
+                phase_ = Phase::RevealingMap;
             }
-        }
-        else if (phase_ == Phase::Visible)
-        {
-            if (CanHide())
-                phase_ = Phase::FadingOut;
-        }
-        else if (phase_ == Phase::FadingOut)
-        {
-            coverBlendRate_ -= 255.0f * deltaSecs / std::max(fadeOutSecs_, 0.01f);
+            break;
+        case Phase::RevealingMap:
+            coverBlendRate_ = std::max(0.0f, coverBlendRate_ - inStep);
             if (coverBlendRate_ <= 0.0f)
+                phase_ = Phase::Visible;
+            break;
+        case Phase::Visible:
+            if (CanHide())
+                phase_ = Phase::CoveringMap;
+            break;
+        case Phase::CoveringMap:
+            coverBlendRate_ = std::min(255.0f, coverBlendRate_ + outStep);
+            if (coverBlendRate_ >= 255.0f)
             {
-                coverBlendRate_ = 0.0f;
-                phase_ = Phase::Hidden;
                 SetVisualEnabled(false);
+                phase_ = Phase::RevealingGame;
             }
+            break;
+        case Phase::RevealingGame:
+            coverBlendRate_ = std::max(0.0f, coverBlendRate_ - outStep);
+            if (coverBlendRate_ <= 0.0f)
+                phase_ = Phase::Hidden;
+            break;
+        case Phase::Hidden:
+            break;
         }
 
         ApplyCoverBlendRate();
@@ -214,8 +285,23 @@ namespace GamePlay::Ui
         if (step_ == SceneLoadStep::Completed)
             displayedProgress_ = std::min(1.0f, displayedProgress_ + deltaSecs / std::max(finishSecs_, 0.01f));
 
-        if (const auto progressBar = progressBar_.get())
-            progressBar->SetValue(displayedProgress_);
+        UpdateStatusText();
+    }
+
+    void LoadingScreenUi::UpdateStatusText()
+    {
+        const bool isFailed = step_ == SceneLoadStep::Failed;
+        if (isStatusDirty_)
+        {
+            isStatusDirty_ = false;
+            if (const auto statusText = statusText_.get())
+                statusText->SetText(isFailed ? statusMessage_ : routeStatusText_);
+            if (const auto percentText = percentText_.get())
+                percentText->SetEnable(isVisualEnabled_ && !isFailed);
+        }
+
+        if (isFailed)
+            return;
 
         const int percent = static_cast<int>(displayedProgress_ * 100.0f);
         if (percent == lastShownPercent_)
@@ -223,27 +309,32 @@ namespace GamePlay::Ui
 
         // TextRenderer は SetText のたびにテクスチャを作り直すので、整数%が動いた時だけ触る
         lastShownPercent_ = percent;
-        if (const auto statusText = statusText_.get())
-        {
-            statusText->SetText(step_ == SceneLoadStep::Failed
-                ? statusMessage_
-                : "転 送 中 …   " + std::to_string(percent) + "%");
-        }
+        if (const auto percentText = percentText_.get())
+            percentText->SetText(std::to_string(percent) + "%");
     }
 
-    void LoadingScreenUi::SetVisualEnabled(const bool isEnabled) const
+    void LoadingScreenUi::SetVisualEnabled(const bool isEnabled)
     {
+        isVisualEnabled_ = isEnabled;
         if (const auto visualRoot = visualRoot_.get())
             visualRoot->SetEnable(isEnabled);
+
+        // 親の SetEnable で一律に書き換わった子の出し分けを付け直す
+        if (const auto routeMap = routeMap_.get())
+            routeMap->SetShown(isEnabled);
+        if (const auto percentText = percentText_.get())
+            percentText->SetEnable(isEnabled && step_ != SceneLoadStep::Failed);
     }
 
     void LoadingScreenUi::ApplyCoverBlendRate() const
     {
+        const auto cover = cover_.get();
+        if (!cover)
+            return;
+
         const int blendRate = static_cast<int>(coverBlendRate_);
-        if (const auto cover = cover_.get())
-            cover->SetBlendRate(blendRate);
-        if (const auto backdrop = backdrop_.get())
-            backdrop->SetBlendRate(blendRate * backdropBlendRate_ / 255);
+        cover->SetEnable(blendRate > 0);
+        cover->SetBlendRate(blendRate);
     }
 
     float LoadingScreenUi::CalcRawProgress() const
@@ -256,8 +347,9 @@ namespace GamePlay::Ui
         const float deserializeProgress01 =
             Core::Application::ApplicationBase::GameWindow()->SceneLoadProgress01();
 
-        return LoadingScreenWeightBefore(step_)
-             + LoadingScreenStepWeight(step_) * LoadingScreenStepRatio(step_, stepElapsedSecs_, deserializeProgress01);
+        return LoadingScreenWeightBefore(step_, hasNetworkStep_)
+             + LoadingScreenStepWeight(step_, hasNetworkStep_)
+             * LoadingScreenStepRatio(step_, stepElapsedSecs_, deserializeProgress01);
     }
 
     bool LoadingScreenUi::CanHide() const
@@ -271,22 +363,21 @@ namespace GamePlay::Ui
     {
         ImGuiHelper::OnDrawInputField("visualRoot_", visualRoot_);
         ImGuiHelper::OnDrawInputField("cover_", cover_);
-        ImGuiHelper::OnDrawInputField("backdrop_", backdrop_);
-        ImGuiHelper::OnDrawInputField("cardThumbnail_", cardThumbnail_);
-        ImGuiHelper::OnDrawInputField("cardElement_", cardElement_);
-        ImGuiHelper::OnDrawInputField("stageNameText_", stageNameText_);
-        ImGuiHelper::OnDrawInputField("tagText_", tagText_);
-        ImGuiHelper::OnDrawInputField("difficultyPips_", difficultyPips_);
-        ImGuiHelper::OnDrawInputField("progressBar_", progressBar_);
+        ImGuiHelper::OnDrawInputField("routeMap_", routeMap_);
+        ImGuiHelper::OnDrawInputField("routes_", routes_, [this]
+        {
+            if (ImGui::Button("Add##routes_"))
+                routes_.emplace_back();
+        });
         ImGuiHelper::OnDrawInputField("statusText_", statusText_);
+        ImGuiHelper::OnDrawInputField("percentText_", percentText_);
         ImGuiHelper::OnDrawInputField("hintCard_", hintCard_);
         ImGuiHelper::OnDrawInputField("fadeInSecs_", fadeInSecs_);
         ImGuiHelper::OnDrawInputField("fadeOutSecs_", fadeOutSecs_);
         ImGuiHelper::OnDrawInputField("minShowSecs_", minShowSecs_);
         ImGuiHelper::OnDrawInputField("progressFollowRate_", progressFollowRate_);
         ImGuiHelper::OnDrawInputField("finishSecs_", finishSecs_);
-        ImGuiHelper::OnDrawInputField("backdropBlendRate_", backdropBlendRate_);
         ImGui::Text("progress: %.3f", displayedProgress_);
-        ImGui::Text("step: %d", static_cast<int>(step_));
+        ImGui::Text("step: %d  phase: %d", static_cast<int>(step_), static_cast<int>(phase_));
     }
 }

@@ -1,6 +1,6 @@
 ﻿#include "DestructibleObject.h"
 
-#include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../Pickup/GamePlay_LootDrop.h"
 
 namespace GamePlay::Prop

@@ -4,9 +4,9 @@
 #include <cmath>
 #include "DxLib.h"
 #include "../Sound/SoundPlayer.h"
-#include "../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
-#include "../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Configuration/ApplicationConfiguration.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 
 namespace GamePlay::Weather
 {
@@ -155,7 +155,7 @@ namespace GamePlay::Weather
 
     void WeatherService::ApplySky() const
     {
-        const glm::vec3 tint   = Lerp(clearSkyTint_, stormSkyTint_, stormIntensity_);
+        const glm::vec3 tint   = Lerp(clearSkyTint_.ToVec3(), stormSkyTint_.ToVec3(), stormIntensity_);
         const glm::vec3 litSky = Lerp(tint, glm::vec3(1.0f), LightningBrightness() * skyFlashWeight_);
         if (skyDomeUpper_) skyDomeUpper_->SetTint(litSky);
         if (skyDomeLower_) skyDomeLower_->SetTint(litSky);
@@ -177,10 +177,7 @@ namespace GamePlay::Weather
         }
 
         SetFogEnable(TRUE);
-        SetFogColor(
-            static_cast<int>(stormFogColor_.r * 255.0f),
-            static_cast<int>(stormFogColor_.g * 255.0f),
-            static_cast<int>(stormFogColor_.b * 255.0f));
+        SetFogColor(stormFogColor_.R(), stormFogColor_.G(), stormFogColor_.B());
         SetFogStartEnd(
             Lerp(clearFogStart_, stormFogStart_, stormIntensity_),
             Lerp(clearFogEnd_,   stormFogEnd_,   stormIntensity_));
@@ -188,7 +185,7 @@ namespace GamePlay::Weather
 
     void WeatherService::ApplyLight() const
     {
-        const glm::vec3 base = Lerp(clearLightColor_, stormLightColor_, stormIntensity_);
+        const glm::vec3 base = Lerp(clearLightColor_, stormLightColor_.ToVec3(), stormIntensity_);
         const glm::vec3 lit  = Lerp(base, clearLightColor_ * lightningLightBoost_, LightningBrightness());
         SetLightDifColor(GetColorF(lit.r, lit.g, lit.b, 1.0f));
 
@@ -222,8 +219,8 @@ namespace GamePlay::Weather
     {
         SetFogEnable(FALSE);
         SetLightDifColor(GetColorF(clearLightColor_.r, clearLightColor_.g, clearLightColor_.b, 1.0f));
-        if (skyDomeUpper_) skyDomeUpper_->SetTint(clearSkyTint_);
-        if (skyDomeLower_) skyDomeLower_->SetTint(clearSkyTint_);
+        if (skyDomeUpper_) skyDomeUpper_->SetTint(clearSkyTint_.ToVec3());
+        if (skyDomeLower_) skyDomeLower_->SetTint(clearSkyTint_.ToVec3());
         if (flashRenderer_) flashRenderer_->SetBlendRate(0);
     }
 
@@ -238,18 +235,18 @@ namespace GamePlay::Weather
         ImGuiHelper::OnDrawInputField("thunderNearSound_", thunderNearSound_);
         ImGuiHelper::OnDrawInputField("thunderFarSound1_", thunderFarSound1_);
         ImGuiHelper::OnDrawInputField("thunderFarSound2_", thunderFarSound2_);
-        ImGuiHelper::OnDrawInputField("clearSkyTint_",     clearSkyTint_    );
-        ImGuiHelper::OnDrawInputField("stormSkyTint_",     stormSkyTint_    );
+        clearSkyTint_   .DrawColorEdit("clearSkyTint_");
+        stormSkyTint_   .DrawColorEdit("stormSkyTint_");
         ImGuiHelper::OnDrawInputField("clearUpperRotateSpeedDeg_", clearUpperRotateSpeedDeg_);
         ImGuiHelper::OnDrawInputField("stormUpperRotateSpeedDeg_", stormUpperRotateSpeedDeg_);
         ImGuiHelper::OnDrawInputField("clearLowerRotateSpeedDeg_", clearLowerRotateSpeedDeg_);
         ImGuiHelper::OnDrawInputField("stormLowerRotateSpeedDeg_", stormLowerRotateSpeedDeg_);
-        ImGuiHelper::OnDrawInputField("stormFogColor_",    stormFogColor_   );
+        stormFogColor_  .DrawColorEdit("stormFogColor_");
         ImGuiHelper::OnDrawInputField("clearFogStart_",    clearFogStart_   );
         ImGuiHelper::OnDrawInputField("clearFogEnd_",      clearFogEnd_     );
         ImGuiHelper::OnDrawInputField("stormFogStart_",    stormFogStart_   );
         ImGuiHelper::OnDrawInputField("stormFogEnd_",      stormFogEnd_     );
-        ImGuiHelper::OnDrawInputField("stormLightColor_",  stormLightColor_ );
+        stormLightColor_.DrawColorEdit("stormLightColor_");
         ImGuiHelper::OnDrawInputField("maxSustainShake_",  maxSustainShake_ );
         ImGuiHelper::OnDrawInputField("particlePlayThreshold_", particlePlayThreshold_);
         ImGuiHelper::OnDrawInputField("flashMaxBlendRate_",     flashMaxBlendRate_    );

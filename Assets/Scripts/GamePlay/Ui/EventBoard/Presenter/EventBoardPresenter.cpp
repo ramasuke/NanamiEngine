@@ -9,7 +9,7 @@
 #include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_IQuestGroup.h"
-#include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_StoryQuestBase.h"
+#include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_ITakeableQuest.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
 
@@ -100,9 +100,9 @@ namespace GamePlay::Ui
             }
         }
 
-        questModel_ ->Cursor().OnSelectionChanged().subscribe([this](size_t) { Refresh(); });
-        eventModel_ ->Cursor().OnSelectionChanged().subscribe([this](size_t) { Refresh(); });
-        noticeModel_->Cursor().OnSelectionChanged().subscribe([this](size_t) { Refresh(); });
+        questModel_ ->Cursor().OnSelectionChanged().Subscribe([this](size_t) { Refresh(); }).AddTo(this);
+        eventModel_ ->Cursor().OnSelectionChanged().Subscribe([this](size_t) { Refresh(); }).AddTo(this);
+        noticeModel_->Cursor().OnSelectionChanged().Subscribe([this](size_t) { Refresh(); }).AddTo(this);
 
         // 調べたときの押しっぱなしを、開いた直後の入力として拾わない
         previousKeys_ = ReadKeys();
@@ -198,7 +198,7 @@ namespace GamePlay::Ui
             return;
 
         const auto owner = suspendedAvatar_.lock();
-        const auto quest = GameCore::PlayerAvatar::StoryQuestBase::Clone(questModel_->Selected()->quest->Quest());
+        const auto quest = GameCore::PlayerAvatar::Quest::CloneQuest(questModel_->Selected()->quest->Quest());
         if (!owner || !quest)
             return;
 

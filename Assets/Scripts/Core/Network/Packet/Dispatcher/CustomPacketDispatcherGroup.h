@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 #include "Module/SpawnPlayer/Packet_Dispatch_SpawnPlayer.h"
 #include "Module/SpawnEnemy/Packet_Dispatch_SpawnEnemy.h"
 

@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../Engine/Core/Network/Packet/NetworkSystem_Packet.h"
+#include "Engine/Core/Network/Packet/NetworkSystem_Packet.h"
 
 namespace GameCore::Network
 {

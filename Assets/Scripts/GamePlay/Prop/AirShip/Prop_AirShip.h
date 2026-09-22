@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 
 namespace GamePlay::Prop
 {

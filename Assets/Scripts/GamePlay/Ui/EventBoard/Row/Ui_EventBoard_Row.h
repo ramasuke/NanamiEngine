@@ -1,15 +1,15 @@
 ﻿#pragma once
 #include <functional>
 
-#include "../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../Engine/Module/Asset/Sound/SoundFile.h"
-#include "../../../../../../Engine/Module/Asset/Sprite/SpriteFile.h"
-#include "../../../../../../Engine/Module/Color/Color32.h"
-#include "../../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../../Engine/Module/Component/ImageRenderer/ImageRenderer.h"
-#include "../../../../../../Engine/Module/LifeCycleCallback/Awake/IAwakable.h"
-#include "../../../../../../Engine/Module/NanamiUI/Button/NanamiUi_Button.h"
-#include "../../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
+#include "Engine/Module/Asset/Sprite/SpriteFile.h"
+#include "Engine/Module/Color/Color32.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/ImageRenderer/ImageRenderer.h"
+#include "Engine/Module/LifeCycleCallback/Awake/IAwakable.h"
+#include "Engine/Module/NanamiUI/Button/NanamiUi_Button.h"
+#include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../Model/EventBoardModel.h"
 
 namespace GamePlay::Ui

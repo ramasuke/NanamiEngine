@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "../../../../../Engine/Module/Color/Color32.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Color/Color32.h"
+#include "Engine/Module/Component/ComponentBase.h"
 
 namespace NanamiEngine::Module::Asset
 {

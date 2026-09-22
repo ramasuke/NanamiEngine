@@ -21,19 +21,15 @@ namespace GamePlay::Ui
     public:
         [[nodiscard]] const RowRequests& Requests() const { return requests_; }
 
-        bool Automatic(MagicCasterAvatarStateType, bool) override { return false; }
-
-        bool OnInput(const MagicCasterAvatarStateType to, const MagicCasterAvatarInput input, const PlayerAvatarInputPhase phase, const bool isUsable) override
+        void OnInput(const MagicCasterAvatarStateType to, const MagicCasterAvatarInput input, const PlayerAvatarInputPhase phase, const bool isUsable, bool) override
         {
             if (const auto label = TransitionLabel(to, phase))
                 Offer(InputGlyph(input), *label, isUsable);
-            return false;
         }
 
-        bool Cast(const bool isBasicSpellUsable) override
+        void Cast(const bool isBasicSpellUsable) override
         {
             Offer(Glyph::Cast, Label::Cast, isBasicSpellUsable);
-            return false;
         }
 
         void Action(const MagicCasterAvatarStateAction action, const bool isUsable) override
@@ -43,6 +39,9 @@ namespace GamePlay::Ui
             case MagicCasterAvatarStateAction::Move:          Offer(Glyph::Move,   Label::Move,          isUsable); return;
             case MagicCasterAvatarStateAction::LockOn:        Offer(Glyph::LockOn, Label::LockOn,        isUsable); return;
             case MagicCasterAvatarStateAction::LockOnRelease: Offer(Glyph::LockOn, Label::LockOnRelease, isUsable); return;
+            // アイテムの切替/使用は専用のアイテム欄が出すので、操作ガイドには行を持たない
+            case MagicCasterAvatarStateAction::CycleItem:
+            case MagicCasterAvatarStateAction::UseItem:       return;
             }
         }
 

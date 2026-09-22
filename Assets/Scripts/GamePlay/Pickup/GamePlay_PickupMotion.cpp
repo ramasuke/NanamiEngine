@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <random>
 
-#include "../../../../Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
-#include "../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 
 namespace GamePlay::Pickup
 {

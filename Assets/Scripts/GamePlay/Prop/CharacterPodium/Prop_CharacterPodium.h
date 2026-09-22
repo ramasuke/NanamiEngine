@@ -2,10 +2,10 @@
 #include <vector>
 
 #include "cereal/types/vector.hpp"
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
 #include "../../../../Data/Character/Data_CharacterData.h"
 
 namespace GamePlay::Prop

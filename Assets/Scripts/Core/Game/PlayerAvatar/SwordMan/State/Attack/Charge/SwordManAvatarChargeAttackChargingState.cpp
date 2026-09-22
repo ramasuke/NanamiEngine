@@ -1,8 +1,8 @@
 ﻿#include "SwordManAvatarChargeAttackChargingState.h"
 
-#include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
-#include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-#include "../../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
+#include "Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../Input/PlayerAvatarInput_void.h"
@@ -44,16 +44,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         // アイテム欄は出したままにするが、この State では使えない。宣言しないと大砲と同じ扱いでアイテム欄ごと消えてしまう
         visitor.Action(SwordManAvatarStateAction::CycleItem, false);
         visitor.Action(SwordManAvatarStateAction::UseItem, false);
-        if (visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged()))
-            return;
-
+        visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged());
         // 最大溜めのまま保持し続けた場合は自動で解放する
-        if (visitor.Automatic(SwordManAvatarStateType::ChargeAttackRelease, isFullyCharged_ && During_secs() >= Status().ChargeAttackMaxHold_secs()))
-            return;
-
-        if (visitor.OnInput(SwordManAvatarStateType::ChargeAttackRelease, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::NotHolding, isFullyCharged_))
-            return;
-
+        visitor.Automatic(SwordManAvatarStateType::ChargeAttackRelease, isFullyCharged_ && During_secs() >= Status().ChargeAttackMaxHold_secs());
+        visitor.OnInput(SwordManAvatarStateType::ChargeAttackRelease, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::NotHolding, isFullyCharged_);
         // 溜め切る前に離した場合は通常コンボの1段目として出し直す
         visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::NotHolding, !isFullyCharged_);
     }

@@ -6,7 +6,7 @@
 #include <type_traits>
 
 #include "IMagicSpellEffect.h"
-#include "../../../../../Libs/Singleton/LibCore_SingletonBase.h"
+#include "Libs/Singleton/LibCore_SingletonBase.h"
 
 namespace GameCore::Magic
 {

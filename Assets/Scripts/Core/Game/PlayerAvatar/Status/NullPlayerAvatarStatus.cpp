@@ -46,10 +46,9 @@ namespace GameCore::PlayerAvatar
         return maxHealth_;
     }
 
-    rxcpp::observable<StatusParameter::Health> NullPlayerAvatarStatus::OnChangeHealth() const
+    R4::Observable<StatusParameter::Health> NullPlayerAvatarStatus::OnChangeHealth() const
     {
-        static rxcpp::subjects::subject<StatusParameter::Health> s;
-        return s.get_observable();
+        return R4::Observable<StatusParameter::Health>::Never();
     }
 
     StatusParameter::Health NullPlayerAvatarStatus::Health() const
@@ -62,7 +61,7 @@ namespace GameCore::PlayerAvatar
         return maxStamina_;
     }
 
-    LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Stamina> NullPlayerAvatarStatus::Stamina() const
+    R4::ReadOnlyReactiveProperty<StatusParameter::Stamina> NullPlayerAvatarStatus::Stamina() const
     {
         return stamina_.AsReadOnly();
     }
@@ -105,7 +104,7 @@ namespace GameCore::PlayerAvatar
     {
     }
 
-    void NullPlayerAvatarStatus::NullQuestGroup::Subscribe(const std::shared_ptr<StoryQuestBase>& addQuest)
+    void NullPlayerAvatarStatus::NullQuestGroup::Subscribe(const std::shared_ptr<Quest::ITakeableQuest>& addQuest)
     {
     }
 
@@ -123,9 +122,8 @@ namespace GameCore::PlayerAvatar
         return false;
     }
 
-    rxcpp::observable<StatusParameter::Health> NullPlayerAvatarStatus::NullStatusEvent::OnDamage() const
+    R4::Observable<StatusParameter::Health> NullPlayerAvatarStatus::NullStatusEvent::OnDamage() const
     {
-        static rxcpp::subjects::subject<StatusParameter::Health> s;
-        return s.get_observable();
+        return R4::Observable<StatusParameter::Health>::Never();
     }
 }

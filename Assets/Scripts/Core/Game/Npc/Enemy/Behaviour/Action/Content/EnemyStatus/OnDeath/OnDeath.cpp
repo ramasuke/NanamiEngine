@@ -1,11 +1,12 @@
 ﻿#include "OnDeath.h"
 
 #include "../../../../../../../Game.h"
-#include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../Scene/Main/Group/Main_GameSceneGroup.h"
 #include "../../../../../../../Scene/Main/Content/Title/TitleScene.h"
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 #include "../../../../../Status/EnemyStatus.h"
+#include "../../../../../EnemyBase.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -18,6 +19,10 @@ namespace GameCore::Npc::Enemy::Behaviour
         // (非権威側は権威ゲートによりこのBT自体をTickしないため、OnDestroyも自動では呼ばれない)
         if (context.IsNetworkAuthority())
             GameCore::Network::EnemyDeathRpc::Send(context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable);
+
+        // 協力プレイでは各ピアがそれぞれのプレイヤーの記録帳に付ける(非権威側は EnemyDeathRpc の受信側で付ける)
+        if (const auto enemy = context.EnemyGameObject().Components().Catch<EnemyBase>().lock())
+            enemy->NotifyDefeated();
 
         context.EnemyGameObject().OnDestroy();
         return TickStatus::Success;

@@ -4,8 +4,8 @@
 #include <string>
 
 #include "../../Format/Ui_MoneyFormat.h"
-#include "../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 
 namespace GamePlay::Ui
 {

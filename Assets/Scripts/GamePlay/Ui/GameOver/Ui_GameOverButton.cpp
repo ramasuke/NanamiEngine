@@ -45,12 +45,12 @@ namespace GamePlay::Ui
         Apply();
     }
 
-    rxcpp::observable<NanamiUi::MouseState> GameOverButton::OnClick() const
+    R4::Observable<NanamiUi::MouseState> GameOverButton::OnClick() const
     {
         return button_.lock()->OnClick();
     }
 
-    rxcpp::observable<LibCore::Rx::unit> GameOverButton::OnHover() const
+    R4::Observable<R4::Unit> GameOverButton::OnHover() const
     {
         return button_.lock()->OnHover();
     }

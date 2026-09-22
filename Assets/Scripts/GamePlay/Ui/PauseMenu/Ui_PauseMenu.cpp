@@ -8,8 +8,8 @@
 
 #include "Model/PauseMenuModel.h"
 #include "../Format/Ui_MoneyFormat.h"
-#include "../../../../../Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
-#include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../Core/Game/PlayerAvatar/Item/ItemPouch.h"
 #include "../../../Core/Game/PlayerAvatar/SwordMan/Status/SwordManAvatarStatus.h"
 
@@ -105,7 +105,7 @@ namespace GamePlay::Ui
         if (healthBar_)  healthBar_ ->SetValue(maxHealth > 0 ? static_cast<float>(health) / static_cast<float>(maxHealth) : 0.0f);
         if (healthText_) healthText_->SetText(PauseMenuFormatGauge(health, maxHealth));
 
-        const float stamina    = status.Stamina().Value().Value();
+        const float stamina    = status.Stamina().CurrentValue().Value();
         const float maxStamina = status.MaxStamina().Value();
         if (staminaBar_)  staminaBar_ ->SetValue(maxStamina > 0.0f ? stamina / maxStamina : 0.0f);
         if (staminaText_) staminaText_->SetText(PauseMenuFormatGauge(static_cast<int>(std::lround(stamina)),

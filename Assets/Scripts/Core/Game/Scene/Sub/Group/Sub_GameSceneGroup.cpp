@@ -3,8 +3,8 @@
 #include <ranges>
 #include <utility>
 
-#include "../../../../../../../Engine/Module/Exception/Engine_Module_Exception.h"
-#include "../../../../../../../Engine/Module/Log/NanamiEngine_Module_Log.h"
+#include "Engine/Module/Exception/Engine_Module_Exception.h"
+#include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "../Sub_IGameScene.h"
 #include "../Factory/SubSceneFactory.h"
 

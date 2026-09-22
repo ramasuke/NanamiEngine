@@ -11,6 +11,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     {
         TickStatus DoTick(const TickContext& context) override;
         void       DoDrawGui() override;
+        void       DoReset() override;
 
         [[serialize(0)]] std::string stunStateKeyName_ = "StunState";
         [[serialize(0)]] int downAnimationNumber_ = 0;

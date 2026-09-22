@@ -4,10 +4,11 @@
 #include <vector>
 
 #include "cereal/types/memory.hpp"
+#include "cereal/types/polymorphic.hpp"
 #include "cereal/types/vector.hpp"
-#include "../../../Engine/Core/Object/Field/Field.h"
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
-#include "../../Scripts/Core/Game/PlayerAvatar/Quest/PlayerAvatar_StoryQuestBase.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "../../Scripts/Core/Game/PlayerAvatar/Quest/PlayerAvatar_ITakeableQuest.h"
 #include "../Stage/Data_StageData.h"
 #include "Data_EventNotice.h"
 
@@ -34,7 +35,7 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] std::shared_ptr<StageData>      Stage           () const { return stage_.get();      }
         [[nodiscard]] std::shared_ptr<EventNotice>    Event           () const { return event_.get();      }
         /** @brief 受注のときはこれを複製して渡す。空なら「準備中」 */
-        [[nodiscard]] const std::shared_ptr<GameCore::PlayerAvatar::StoryQuestBase>& Quest() const { return quest_; }
+        [[nodiscard]] const std::shared_ptr<GameCore::PlayerAvatar::Quest::ITakeableQuest>& Quest() const { return quest_; }
 
     private:
         [[serialize(0)]] std::string              title_;
@@ -44,7 +45,7 @@ namespace NanamiEngine::Module::Asset
         [[serialize(0)]] std::vector<std::string> descriptionLines_;
         [[serialize(0)]] FIELD(StageData)         stage_;
         [[serialize(0)]] FIELD(EventNotice)       event_;
-        [[serialize(0)]] std::shared_ptr<GameCore::PlayerAvatar::StoryQuestBase> quest_;
+        [[serialize(0)]] std::shared_ptr<GameCore::PlayerAvatar::Quest::ITakeableQuest> quest_;
 
 #pragma region Serialization Function
     public:

@@ -3,8 +3,8 @@
 #include <vector>
 
 #include "SwordManAvatarStateType.h"
-#include "../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../Engine/Module/Asset/Sound/SoundFile.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "../../State/PlayerAvatarStateBase.h"
 #include "../Animation/SwordManAvatarAnimation.h"
 #include "../InputAction/SwordManAvatarInputAction.h"

@@ -1,9 +1,11 @@
 ﻿#include "PlayerAvatar_SwordMan_StatusPresenter.h"
 
 #include "../SwordManAvatarStatus.h"
-#include "../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../GamePlay/Ui/ControlGuide/Ui_SwordManControlGuide.h"
 #include "../../../../../../GamePlay/Ui/ItemBar/Ui_ItemBar.h"
+#include "../../../../../../GamePlay/Ui/ItemBar/Ui_ItemBarSource.h"
+#include "../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../GamePlay/Ui/PauseMenu/Presenter/PauseMenuPresenter.h"
 #include "../../../../../../GamePlay/Ui/PlayerStatus/Ui_LowHealthScreenEffect.h"
 
@@ -26,7 +28,7 @@ namespace GamePlay::PlayerAvatar::SwordMan
             if (const auto itemBarObject = Scene::GameObject::Instantiate(*itemBarPrefab_.get(), Entity().lock()).lock())
             {
                 if (const auto itemBar = itemBarObject->Components().Catch<Ui::ItemBar>().lock())
-                    itemBar->Initialize(swordManAvatar);
+                    itemBar->Initialize(std::make_shared<Ui::AvatarItemBarSource<SwordManAvatar, GameCore::PlayerAvatar::SwordMan::ISwordManAvatarTransitionVisitor>>(swordManAvatar));
             }
         }
 

@@ -7,7 +7,24 @@
     },
     "components_": {
         "cereal_class_version": 0,
-        "componentCount": 0
+        "componentCount": 1,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "GamePlay::Prop::ChargeStuckObstacle",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "30CB0A92-4660-477B-97A9-9DEC4EFD6FFE"
+                        },
+                        "isEnable_": true
+                    }
+                }
+            }
+        }
     },
     "transform_": {
         "cereal_class_version": 0,
@@ -55,10 +72,10 @@
         },
         "childCount": 1,
         "child": {
-            "polymorphic_id": 2147483649,
+            "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483649,
+                "id": 2147483650,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -75,10 +92,10 @@
                     "components_": {
                         "componentCount": 2,
                         "component_0": {
-                            "polymorphic_id": 2147483650,
+                            "polymorphic_id": 2147483651,
                             "polymorphic_name": "NanamiEngine::Module::Component::ModelRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483650,
+                                "id": 2147483651,
                                 "data": {
                                     "cereal_class_version": 5,
                                     "value0": {
@@ -105,7 +122,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483651,
+                                                "id": 2147483652,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -120,10 +137,10 @@
                             }
                         },
                         "component_1": {
-                            "polymorphic_id": 2147483651,
+                            "polymorphic_id": 2147483652,
                             "polymorphic_name": "NanamiEngine::Module::Component::StaticMeshCollider",
                             "ptr_wrapper": {
-                                "id": 2147483652,
+                                "id": 2147483653,
                                 "data": {
                                     "cereal_class_version": 4,
                                     "value0": {

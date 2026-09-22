@@ -1,8 +1,7 @@
 ﻿#pragma once
 #include <cstdint>
 
-#include "../../../../../../Libs/LibCore/Rx/ReadOnlyReactiveContext/ReadOnlyReactiveContext.h"
-#include "../../../../../../Libs/LibCore/Rx/SerializableSubject/unit/unit.h"
+#include "Packages/R4/R4.h"
 #include "../../StatusParameter/Health/Health.h"
 #include "../../StatusParameter/Stamina/Stamina.h"
 #include "../cereal/include/cereal/cereal.hpp"
@@ -53,10 +52,10 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual ItemPouch&       Pouch()       = 0;
         [[nodiscard]] virtual const ItemPouch& Pouch() const = 0;
         [[nodiscard]] virtual const StatusParameter::Health&                                MaxHealth() const = 0;
-        [[nodiscard]] virtual rxcpp::observable<StatusParameter::Health> OnChangeHealth() const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<StatusParameter::Health> OnChangeHealth() const = 0;
         [[nodiscard]] virtual StatusParameter::Health                    Health() const = 0;
         [[nodiscard]] virtual const StatusParameter::Stamina&                                MaxStamina() const = 0;
-        [[nodiscard]] virtual LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Stamina> Stamina() const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::ReadOnlyReactiveProperty<StatusParameter::Stamina> Stamina() const = 0;
         [[nodiscard]] virtual bool CanRun() const = 0;
         [[nodiscard]] virtual StatusParameter::MoveSpeed GetWalkSpeed() const = 0;
         [[nodiscard]] virtual StatusParameter::MoveSpeed GetRunSpeed () const = 0;
@@ -67,15 +66,13 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual bool  IsDowned () const { return false; }
         [[nodiscard]] virtual bool  IsDeath  () const { return false; }
         virtual void Revive() {}
-        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit> OnBecomeInjured() const
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<NanamiEngine::R4::Unit> OnBecomeInjured() const
         {
-            static rxcpp::subjects::subject<LibCore::Rx::unit> s;
-            return s.get_observable();
+            return NanamiEngine::R4::Observable<NanamiEngine::R4::Unit>::Never();
         }
-        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit> OnRecoverFromInjured() const
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<NanamiEngine::R4::Unit> OnRecoverFromInjured() const
         {
-            static rxcpp::subjects::subject<LibCore::Rx::unit> s;
-            return s.get_observable();
+            return NanamiEngine::R4::Observable<NanamiEngine::R4::Unit>::Never();
         }
         virtual void OnDrawGui() = 0;
         virtual void AddOnDamageStack(std::unique_ptr<IDamage> damageContext) = 0;

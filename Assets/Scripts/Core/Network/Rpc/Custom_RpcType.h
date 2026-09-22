@@ -6,8 +6,8 @@
 #include "vec3.hpp"
 #include "gtc/quaternion.hpp"
 #include "../LibCore/cereal/glm/GlmHelper.h"
-#include "../../../../../Engine/Module/Guid/Guid.h"
-#include "../../../../../Engine/Module/Network/Rpc/Engine_Network_Rpc.h"
+#include "Engine/Module/Guid/Guid.h"
+#include "Engine/Module/Network/Rpc/Engine_Network_Rpc.h"
 #include "../../Game/Damage/Physics/Game_Damage_PhysicsPower.h"
 #include "../../Game/Scene/Main/Type/MainSceneType.h"
 
@@ -50,7 +50,8 @@ namespace GameCore::Network
     using PurposeCameraRpc      = Module::Network::RpcDef<ERpcType::PurposeCamera, std::string, int>;
     using ScenePurposeCameraRpc = Module::Network::RpcDef<ERpcType::ScenePurposeCamera, Guid, int>;
     using ChatRpc               = Module::Network::RpcDef<ERpcType::Chat, std::string, Guid>;
-    using ChangeMainSceneRpc    = Module::Network::RpcDef<ERpcType::ChangeMainScene, Scene::Main::SceneType>;
+    /** 行き先と、ステージを踏破して戻るか(ロード画面の地図に印を押す) */
+    using ChangeMainSceneRpc    = Module::Network::RpcDef<ERpcType::ChangeMainScene, Scene::Main::SceneType, bool>;
     using ShakeCameraRpc        = Module::Network::RpcDef<ERpcType::ShakeCamera, float, float>;
     using SetStormRpc           = Module::Network::RpcDef<ERpcType::SetStorm, float, float>;
     using LightningRpc          = Module::Network::RpcDef<ERpcType::Lightning, float, float>;

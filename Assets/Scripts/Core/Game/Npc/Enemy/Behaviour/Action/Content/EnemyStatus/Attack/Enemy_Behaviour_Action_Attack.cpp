@@ -1,7 +1,7 @@
 ﻿#include "Enemy_Behaviour_Action_Attack.h"
 
-#include "../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 #include "../../../../../AttackArea/Enemy_AttackArea.h"

@@ -1,7 +1,7 @@
 ﻿#include "GamePlay_ChannelSpellEffect.h"
 
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../Core/Game/Magic/IMagicCaster.h"
 #include "../Component/GamePlay_MagicChannel.h"
 #include "../GamePlay_MagicAim.h"

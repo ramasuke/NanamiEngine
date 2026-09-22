@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../../../Friendly_Behaviour_ActionBase.h"
-#include "../../../../../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../../../../../../../Data/Enemy/Factory/EnemyFactory.h"
 #include "../../../../../../Enemy/Type/EnemyKind.h"
 #include "../../../../../../../../../Editor/Npc/Friendly/Behaviour/Action/Friendly_Behaviour_ActionFactory.h"

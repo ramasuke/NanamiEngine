@@ -5,9 +5,9 @@
 #include <vector>
 
 #include "cereal/types/vector.hpp"
-#include "../../../Engine/Core/Object/Field/Field.h"
-#include "../../../Engine/Module/Asset/Sprite/SpriteFile.h"
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Sprite/SpriteFile.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 
 namespace NanamiEngine::Module::Asset
 {

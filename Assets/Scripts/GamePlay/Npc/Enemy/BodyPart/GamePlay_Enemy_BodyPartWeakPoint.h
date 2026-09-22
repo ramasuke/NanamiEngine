@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <memory>
-#include "../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../Core/Game/PlayerAvatar/LockOnTarget/ILockOnTarget.h"
 
 namespace GamePlay::Npc::Enemy
@@ -21,6 +21,8 @@ namespace GamePlay::Npc::Enemy
         /** @brief 破壊が成立した瞬間だけ true。破壊済みの部位は蓄積を続けるだけで二度と成立しない */
         bool AccumulateDamage(int damageValue);
         [[nodiscard]] bool IsBroken() const { return isBroken_; }
+        /** @brief 破壊したときにボスを気絶させる部位か(脚など) */
+        [[nodiscard]] bool IsStunOnBreak() const { return isStunOnBreak_; }
         /** @brief 大技の予備動作中など、狙わせたい間だけ弱点として露出させる */
         void OpenWeakWindow(float duration_secs);
         [[nodiscard]] bool IsWeakWindowOpen() const { return weakWindowRemaining_secs_ > 0.0f; }
@@ -40,6 +42,7 @@ namespace GamePlay::Npc::Enemy
         [[serialize(1)]] FIELD(Component::ParticleSystem) weakWindowHint_;
         // Manual 再生のパーティクルはループしないので、露出中はこの間隔で鳴らし直す
         [[serialize(0)]] float hintRetrigger_secs_ = 1.0f;
+        [[serialize(2)]] bool  isStunOnBreak_      = false;
 
         int   accumulatedDamage_        = 0;
         bool  isBroken_                 = false;
@@ -56,6 +59,7 @@ namespace GamePlay::Npc::Enemy
             archive(CEREAL_NVP(durability_));
             archive(CEREAL_NVP(weakWindowHint_));
             archive(CEREAL_NVP(hintRetrigger_secs_));
+            archive(CEREAL_NVP(isStunOnBreak_));
         }
 
         template<class Archive>
@@ -64,9 +68,10 @@ namespace GamePlay::Npc::Enemy
             if (version >= 0) archive(CEREAL_NVP(durability_));
             if (version >= 1) archive(CEREAL_NVP(weakWindowHint_));
             if (version >= 0) archive(CEREAL_NVP(hintRetrigger_secs_));
+            if (version >= 2) archive(CEREAL_NVP(isStunOnBreak_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Npc::Enemy::BodyPartWeakPoint, 1)
+ENGINE_REGISTER_COMPONENT(GamePlay::Npc::Enemy::BodyPartWeakPoint, 2)

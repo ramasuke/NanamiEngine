@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "../../../../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../../../../../../Engine/Module/Asset/Sound/SoundFile.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "../../../Context/Main_SceneContextBase.h"
 
 namespace GameCore::Scene

@@ -14,7 +14,7 @@ namespace GamePlay::Ui
 
         selectedIndex_ = index;
         hasSelection_ = true;
-        onSelectionChanged_.get_subscriber().on_next(index);
+        onSelectionChanged_.OnNext(index);
     }
 
     GameCore::Scene::Main::SceneType StageSelectModel::SelectedSceneType() const

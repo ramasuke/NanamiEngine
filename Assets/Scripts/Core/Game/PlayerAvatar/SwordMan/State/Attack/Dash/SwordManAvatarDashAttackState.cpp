@@ -1,9 +1,9 @@
 ﻿#include "SwordManAvatarDashAttackState.h"
 
 #include "ext/quaternion_geometric.hpp"
-#include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
-#include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-#include "../../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
+#include "Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::State

@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../Engine/Module/Asset/Font/Ttf/TtfFontFile.h"
-#include "../../../../Engine/Module/Color/Color32.h"
-#include "../../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Font/Ttf/TtfFontFile.h"
+#include "Engine/Module/Color/Color32.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace GamePlay::Data
 {

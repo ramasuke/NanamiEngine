@@ -41,3 +41,4 @@
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Hyena/CallAllies/Enemy_Behaviour_Action_CallAllies.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Stun/Enemy_Behaviour_Action_Stun.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/OpenWeakPointWindow/Enemy_Behaviour_Action_OpenWeakPointWindow.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Tyrannosaurus/ChargeRush/Enemy_Behaviour_Action_ChargeRush.h"

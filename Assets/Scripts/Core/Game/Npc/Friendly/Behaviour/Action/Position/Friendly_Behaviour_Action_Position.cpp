@@ -1,6 +1,6 @@
 ﻿#include "Friendly_Behaviour_Action_Position.h"
 
-#include "../../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../TickContext/Friendly_Behaviour_TickContext.h"
 
 namespace GameCore::Npc::Friendly::Behaviour::Action

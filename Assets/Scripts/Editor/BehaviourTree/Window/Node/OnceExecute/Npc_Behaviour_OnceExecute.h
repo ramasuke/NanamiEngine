@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "../Npc_BehaviourNodeBase.h"
-#include "../../../../../../../Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
+#include "Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/TickStatus/Friendly_Behaviour_TickStatus.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/TickStatus/TickStatus.h"
 

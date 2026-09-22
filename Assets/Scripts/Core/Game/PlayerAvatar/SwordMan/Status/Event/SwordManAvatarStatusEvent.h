@@ -1,9 +1,8 @@
 ﻿#pragma once
 #include "IObservableStatusEvent.h"
-#include "../../../../../../../../Libs/LibCore/Rx/SerializableSubject/unit/unit.h"
+#include "Packages/R4/R4.h"
 #include "../../../Status/Event/PlayerAvatar_IStatusEvent.h"
 #include "../../State/IStatusEventSubject/SwordMan_State_IStatusEventSubject.h"
-#include "../rxcpp/rx.hpp"
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
@@ -11,16 +10,16 @@ namespace GameCore::PlayerAvatar::SwordMan
                               public IObservableStatusEvent,
                               public State::IStatusEventSubject
     {
-        [[nodiscard]] rxcpp::observable<StatusParameter::Health> OnDamage              () const override { return onDamage_              .get_observable(); }
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnComboAttack         () const override { return onComboAttack_         .get_observable(); }
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnDashAttack          () const override { return onDashAttack_          .get_observable(); }
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnRun                 () const override { return onRun_                 .get_observable(); }
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnAvoidRolling        () const override { return onAvoidRolling_        .get_observable(); }
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnMove                () const override { return onMove_                .get_observable(); }
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnJump                () const override { return onJump_                .get_observable(); }
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnChargeAttack        () const override { return onChargeAttack_        .get_observable(); }
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnJumpAttack          () const override { return onJumpAttack_          .get_observable(); }
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit      > OnLockOn              () const override { return onLockOn_              .get_observable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<StatusParameter::Health> OnDamage              () const override { return onDamage_              .AsObservable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnComboAttack         () const override { return onComboAttack_         .AsObservable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnDashAttack          () const override { return onDashAttack_          .AsObservable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnRun                 () const override { return onRun_                 .AsObservable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnAvoidRolling        () const override { return onAvoidRolling_        .AsObservable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnMove                () const override { return onMove_                .AsObservable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnJump                () const override { return onJump_                .AsObservable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnChargeAttack        () const override { return onChargeAttack_        .AsObservable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnJumpAttack          () const override { return onJumpAttack_          .AsObservable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnLockOn              () const override { return onLockOn_              .AsObservable(); }
 
         void InvokeOnDamage   (const StatusParameter::Health& currentHealth) const override;
         void InvokeOnDeath       () const override;
@@ -35,16 +34,16 @@ namespace GameCore::PlayerAvatar::SwordMan
         void InvokeOnLockOn      () const override;
 
     private:
-        rxcpp::subjects::subject<StatusParameter::Health> onDamage_;
-        rxcpp::subjects::subject<LibCore::Rx::unit>       onDeath_;
-        rxcpp::subjects::subject<LibCore::Rx::unit>       onComboAttack_;
-        rxcpp::subjects::subject<LibCore::Rx::unit>       onRun_;
-        rxcpp::subjects::subject<LibCore::Rx::unit>       onDashAttack_;
-        rxcpp::subjects::subject<LibCore::Rx::unit>       onAvoidRolling_;
-        rxcpp::subjects::subject<LibCore::Rx::unit>       onMove_;
-        rxcpp::subjects::subject<LibCore::Rx::unit>       onJump_;
-        rxcpp::subjects::subject<LibCore::Rx::unit>       onChargeAttack_;
-        rxcpp::subjects::subject<LibCore::Rx::unit>       onJumpAttack_;
-        rxcpp::subjects::subject<LibCore::Rx::unit>       onLockOn_;
+        NanamiEngine::R4::Subject<StatusParameter::Health> onDamage_;
+        NanamiEngine::R4::Subject<NanamiEngine::R4::Unit>       onDeath_;
+        NanamiEngine::R4::Subject<NanamiEngine::R4::Unit>       onComboAttack_;
+        NanamiEngine::R4::Subject<NanamiEngine::R4::Unit>       onRun_;
+        NanamiEngine::R4::Subject<NanamiEngine::R4::Unit>       onDashAttack_;
+        NanamiEngine::R4::Subject<NanamiEngine::R4::Unit>       onAvoidRolling_;
+        NanamiEngine::R4::Subject<NanamiEngine::R4::Unit>       onMove_;
+        NanamiEngine::R4::Subject<NanamiEngine::R4::Unit>       onJump_;
+        NanamiEngine::R4::Subject<NanamiEngine::R4::Unit>       onChargeAttack_;
+        NanamiEngine::R4::Subject<NanamiEngine::R4::Unit>       onJumpAttack_;
+        NanamiEngine::R4::Subject<NanamiEngine::R4::Unit>       onLockOn_;
     };
 }

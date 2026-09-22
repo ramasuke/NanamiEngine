@@ -1,9 +1,9 @@
 ﻿#include "Ui_NpcChatting.h"
 
-#include "../../../../../Engine/Core/Coroutine/Coroutine.h"
+#include "Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../Data/NpcChatText/Data_NpcChat.h"
 #include "../../../Core/Game/Settings/GameSettings.h"
-#include "../../Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
 
 namespace GamePlay::Ui
 {

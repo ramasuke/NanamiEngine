@@ -1,8 +1,8 @@
 ﻿#include "Enemy_Behaviour_Action_Stun.h"
 
-#include "../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Component/Animator/Animator.h"
+#include "Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -10,7 +10,10 @@ namespace GameCore::Npc::Enemy::Behaviour
     {
         const auto stunState = context.Parameter()->Catch<int>(stunStateKeyName_);
         if (!stunState || stunState->Get() == 0)
+        {
+            during_secs_ = 0.0f;
             return TickStatus::Failure;
+        }
 
         during_secs_ += Time::DeltaTime();
 
@@ -23,6 +26,11 @@ namespace GameCore::Npc::Enemy::Behaviour
         during_secs_ = 0.0f;
         stunState->Set(0);
         return TickStatus::Success;
+    }
+
+    void Action::Stun::DoReset()
+    {
+        during_secs_ = 0.0f;
     }
 
     void Action::Stun::DoDrawGui()

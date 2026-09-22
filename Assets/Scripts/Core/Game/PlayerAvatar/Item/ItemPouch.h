@@ -37,8 +37,8 @@ namespace GameCore::PlayerAvatar
 
         /** @param direction 正で右隣、負で左隣。端は反対側へ回り込む */
         void Cycle(int direction);
-        /** @brief 選択中のアイテムの効果を target に掛けて1つ減らす @return 使ったアイテム。使えなかったら nullptr */
-        std::shared_ptr<Asset::ItemData> UseSelected(Item::IItemEffectTarget& target);
+        /** @brief 選択中のアイテムの効果を target に掛けて1つ減らす @param user 使ったアバター @return 使ったアイテム。使えなかったら nullptr */
+        std::shared_ptr<Asset::ItemData> UseSelected(Item::IItemEffectTarget& target, const std::shared_ptr<GameObject::IGameObject>& user);
 
         [[nodiscard]] int CountOf(const Asset::ItemData& item) const;
         [[nodiscard]] int ReceivableCount(const Asset::ItemData& item) const;

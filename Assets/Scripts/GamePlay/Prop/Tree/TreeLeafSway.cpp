@@ -2,7 +2,7 @@
 
 #include <DxLib.h>
 
-#include "../../../../../Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Time/Time.h"
 #include "../../Weather/WindZone.h"
 
 namespace GamePlay::Prop

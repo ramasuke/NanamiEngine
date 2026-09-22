@@ -1,8 +1,8 @@
 ﻿#include "Enemy_Behaviour_Action_OnDamage.h"
 
-#include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
-#include "../../../../../../../../../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
+#include "Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 #include "../../../../../../../../../GamePlay/Npc/Enemy/BodyPart/GamePlay_Enemy_BodyPartWeakPoint.h"
 #include "../../../../../../../../../GamePlay/Spawn/GamePlay_PrefabSpawner.h"
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
@@ -17,7 +17,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             return TickStatus::Failure;
 
         const bool isStunned = IsStunned(context);
-        bool       isStunTriggered = false;
+        int        stunStateValue = 0;
 
         auto& damageStacks = *context.OnDamaged();
         while (!damageStacks.empty())
@@ -30,8 +30,8 @@ namespace GameCore::Npc::Enemy::Behaviour
 
             context.EnemyStatus()->Get().OnDamage(appliedDamage);
 
-            if (TryTriggerStun(context, *onDamaged, rawDamage))
-                isStunTriggered = true;
+            if (const int value = ResolveStunStateValue(context, *onDamaged, rawDamage); value != 0 && stunStateValue == 0)
+                stunStateValue = value;
 
             // ダウン中のボスは滑らない
             if (!isStunned && knockbackForcePerDamage_ > 0.0f)
@@ -46,10 +46,11 @@ namespace GameCore::Npc::Enemy::Behaviour
             damageStacks.pop();
         }
 
-        if (isStunTriggered)
+        // NOTE: 気絶中に別のスタンで上書きすると、進行中の Stun の経過時間が別の枝に持ち越されるので重ねない
+        if (stunStateValue != 0 && !isStunned)
         {
             if (const auto stunState = context.Parameter()->Catch<int>(stunStateKeyName_))
-                stunState->Set(1);
+                stunState->Set(stunStateValue);
         }
 
         if (damageEffectPrefab_.get())
@@ -77,23 +78,29 @@ namespace GameCore::Npc::Enemy::Behaviour
         return stunState && stunState->Get() != 0;
     }
 
-    bool Action::OnDamage::TryTriggerStun(const TickContext& context, const IDamage& damage, const int rawDamage) const
+    int Action::OnDamage::ResolveStunStateValue(const TickContext& context, const IDamage& damage, const int rawDamage) const
     {
         const auto hitPart = damage.HitPart().lock();
         if (!hitPart)
-            return false;
+            return 0;
 
         const auto weakPoint = GamePlay::Npc::Enemy::BodyPartWeakPoint::FindFrom(hitPart, context.EnemyGameObject());
         if (!weakPoint)
-            return false;
+            return 0;
 
         const bool isChargeCounter = weakPoint->IsChargeCounter(damage.IsChargedAttack());
         const bool isJustBroken    = weakPoint->AccumulateDamage(rawDamage);
 
         if (stunStateKeyName_.empty())
-            return false;
+            return 0;
 
-        return isChargeCounter || isJustBroken;
+        if (isChargeCounter)
+            return chargeCounterStunStateValue_;
+
+        if (isJustBroken && weakPoint->IsStunOnBreak())
+            return breakStunStateValue_;
+
+        return 0;
     }
 
     void Action::OnDamage::DoDrawGui()
@@ -105,5 +112,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("knockbackForcePerDamage_", knockbackForcePerDamage_);
         ImGuiHelper::OnDrawInputField("stunStateKeyName_", stunStateKeyName_);
         ImGuiHelper::OnDrawInputField("stunnedDamageScale_", stunnedDamageScale_);
+        ImGuiHelper::OnDrawInputField("chargeCounterStunStateValue_", chargeCounterStunStateValue_);
+        ImGuiHelper::OnDrawInputField("breakStunStateValue_", breakStunStateValue_);
     }
 }

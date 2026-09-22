@@ -1,7 +1,7 @@
 #include "SwordManAvatar_AvoidRolling.h"
 
-#include "../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
-#include "../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
 

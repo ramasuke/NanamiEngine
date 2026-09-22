@@ -4,11 +4,11 @@
 #include "../glm/vec3.hpp"
 #include "../../CustomPacketDispatcherBase.h"
 #include "../../../Custom_PacketType.h"
-#include "../../../../../../../../Engine/Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
+#include "Engine/Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
 #include "../../../../../../../Data/Enemy/Factory/EnemyFactory.h"
 #include "../../../../../Game/Npc/Enemy/Type/EnemyKind.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
-#include "../rxcpp/rx.hpp"
+#include "Packages/R4/R4.h"
 
 namespace NanamiEngine::Module::GameObject
 {
@@ -42,7 +42,7 @@ namespace GameCore::Network
             Core::Network::Packet          packet;
         };
         std::vector<HistoryEntry> spawnPacketHistory_;
-        rxcpp::composite_subscription newPlayerSubscription_;
+        R4::Disposable newPlayerSubscription_;
         Asset::EnemyFactory& enemyFactory_;
     };
 }

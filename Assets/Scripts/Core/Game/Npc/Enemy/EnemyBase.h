@@ -1,11 +1,14 @@
 ﻿#pragma once
-#include "../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
 #include "../../../../../Data/EnemyBehaviour/Data_EnemyBehaviourFile.h"
 #include "../../PlayerAvatar/ITakablePlayerAttack/ITakablePlayerAttack.h"
 #include "../../PlayerAvatar/LockOnTarget/ILockOnTarget.h"
 #include "../../PlayerAvatar/LockOnTarget/LockOnPoint.h"
 #include "Status/EnemyStatus.h"
+#include "Type/EnemyKind.h"
+
+#include <optional>
 
 namespace GameCore::Npc::Enemy
 {
@@ -25,11 +28,16 @@ namespace GameCore::Npc
         virtual ~EnemyBase() override;
         [[nodiscard]] virtual std::shared_ptr<Enemy::BehaviourTree> BehaviourTree() const { return behaviour_; }
         [[nodiscard]] glm::vec3 LockOnPosition() override;
+        /** @brief 倒されたことを記録帳に付ける。同じ個体で2回呼んでも1体として数える */
+        void NotifyDefeated();
+
 
     protected:
         virtual void DoAwake() { }
         virtual void DoUpdate() { }
         [[nodiscard]] virtual SyncParam<Enemy::EnemyStatus>& NetworkStatus() { return currentStatus_; }
+        /** @brief 記録帳に付けるときの種別。nullopt なら数えない(練習用の的など) */
+        [[nodiscard]] virtual std::optional<Enemy::EnemyKind> RecordKind() const { return std::nullopt; }
         
     private:
         void OnAwake () override;
@@ -42,6 +50,7 @@ namespace GameCore::Npc
         std::shared_ptr<Enemy::BehaviourTree> behaviour_;
         std::shared_ptr<std::queue<std::unique_ptr<IDamage>>> onDamagedStack_;
         bool hasNetworkBehaviourTree_ = false;
+        bool isDefeatRecorded_ = false;
         Enemy::IShowHealthGaugeProvider* showHealthGaugeProvider_ = nullptr;
         [[serialize(5)]] FIELD(PlayerAvatar::LockOnPoint) lockOnPoint_;
 

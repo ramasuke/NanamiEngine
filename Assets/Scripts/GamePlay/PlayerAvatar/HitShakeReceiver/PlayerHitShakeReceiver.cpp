@@ -2,8 +2,8 @@
 
 #include <cmath>
 
-#include "../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../Engine/Module/Component/ModelRenderer/ModelRenderer.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Component/ModelRenderer/ModelRenderer.h"
 
 namespace
 {

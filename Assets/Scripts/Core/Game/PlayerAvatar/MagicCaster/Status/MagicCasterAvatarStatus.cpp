@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <cassert>
 
-#include "../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 #include "../../../Damage/Game_Damage_IDamage.h"
 #include "../../../Magic/IMagicSpell.h"
 
@@ -53,10 +53,13 @@ namespace GameCore::PlayerAvatar::MagicCaster
         if (attackBuffRemaining_secs_ > 0.0f)
             attackBuffRemaining_secs_ = (std::max)(attackBuffRemaining_secs_ - Time::DeltaTime(), 0.0f);
 
-        if (!IsDeath() && mana_.get() < maxMana_)
+        if (invincibleRemaining_secs_ > 0.0f)
+            invincibleRemaining_secs_ = (std::max)(invincibleRemaining_secs_ - Time::DeltaTime(), 0.0f);
+
+        if (!IsDeath() && mana_.Value() < maxMana_)
         {
-            const auto regened = mana_.get() + StatusParameter::Mana(manaRegenPerSecond_ * Time::DeltaTime());
-            mana_.OnNext(maxMana_ <= regened ? maxMana_ : regened);
+            const auto regened = mana_.Value() + StatusParameter::Mana(manaRegenPerSecond_ * Time::DeltaTime());
+            mana_.Value(maxMana_ <= regened ? maxMana_ : regened);
         }
 
         assert(stateMachine_ && "MagicCasterAvatarStatus: stateMachine_ is not set");
@@ -64,15 +67,15 @@ namespace GameCore::PlayerAvatar::MagicCaster
         {
         case MagicCasterAvatarStateType::Run:
         {
-            const auto drained = stamina_.get() - StatusParameter::Stamina(staminaDrainPerSecond_ * Time::DeltaTime());
+            const auto drained = stamina_.Value() - StatusParameter::Stamina(staminaDrainPerSecond_ * Time::DeltaTime());
             if (drained <= StatusParameter::Stamina(0.0f))
             {
-                stamina_.OnNext(StatusParameter::Stamina(0.0f));
+                stamina_.Value(StatusParameter::Stamina(0.0f));
                 isStaminaExhausted_ = true;
             }
             else
             {
-                stamina_.OnNext(drained);
+                stamina_.Value(drained);
             }
             break;
         }
@@ -81,16 +84,16 @@ namespace GameCore::PlayerAvatar::MagicCaster
             break;
         default:
         {
-            const auto regened = stamina_.get() + StatusParameter::Stamina(staminaRegenPerSecond_ * Time::DeltaTime());
+            const auto regened = stamina_.Value() + StatusParameter::Stamina(staminaRegenPerSecond_ * Time::DeltaTime());
             if (maxStamina_ <= regened)
             {
-                stamina_.OnNext(maxStamina_);
+                stamina_.Value(maxStamina_);
             }
             else
             {
-                stamina_.OnNext(regened);
+                stamina_.Value(regened);
             }
-            if (isStaminaExhausted_ && stamina_.get() >= StatusParameter::Stamina(maxStamina_.Value() * minStaminaRatioToResumeRun_))
+            if (isStaminaExhausted_ && stamina_.Value() >= StatusParameter::Stamina(maxStamina_.Value() * minStaminaRatioToResumeRun_))
             {
                 isStaminaExhausted_ = false;
             }
@@ -106,19 +109,26 @@ namespace GameCore::PlayerAvatar::MagicCaster
 
     void MagicCasterAvatarStatus::AddOnDamageStack(std::unique_ptr<IDamage> damageContext)
     {
+        if (invincibleRemaining_secs_ > 0.0f)
+            return;
+
         onDamagedStack_.push(std::move(damageContext));
     }
 
     void MagicCasterAvatarStatus::ApplyDamage()
     {
+        if (onDamagedStack_.empty())
+            return;
+
         while (!onDamagedStack_.empty())
         {
             const auto damageContext = std::move(onDamagedStack_.front());
             onDamagedStack_.pop();
             currentHealth_->Set(StatusParameter::Health(currentHealth_->Get().Value() - damageContext->DamageValue()));
-            onChangeHealth_.get_subscriber().on_next(currentHealth_->Get());
-            event_->onDamage_.get_subscriber().on_next(currentHealth_->Get());
+            onChangeHealth_.OnNext(currentHealth_->Get());
+            event_->onDamage_.OnNext(currentHealth_->Get());
         }
+        invincibleRemaining_secs_ = invincibleDuration_secs_;
     }
 
     void MagicCasterAvatarStatus::DiscardDamage()
@@ -133,7 +143,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
             return false;
         if (cooldownRemaining_secs_[static_cast<size_t>(slot)] > 0.0f)
             return false;
-        return mana_.get() >= StatusParameter::Mana(spell.ManaCost());
+        return mana_.Value() >= StatusParameter::Mana(spell.ManaCost());
     }
 
     void MagicCasterAvatarStatus::BeginCast(const int slot, const GameCore::Magic::IMagicSpell& spell)
@@ -141,8 +151,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         if (!IsValidSpellSlot(slot))
             return;
 
-        const auto remained = mana_.get() - StatusParameter::Mana(spell.ManaCost());
-        mana_.OnNext(remained <= StatusParameter::Mana(0.0f) ? StatusParameter::Mana(0.0f) : remained);
+        const auto remained = mana_.Value() - StatusParameter::Mana(spell.ManaCost());
+        mana_.Value(remained <= StatusParameter::Mana(0.0f) ? StatusParameter::Mana(0.0f) : remained);
 
         cooldownRemaining_secs_[static_cast<size_t>(slot)] = spell.Cooldown_secs();
         cooldownDuration_secs_ [static_cast<size_t>(slot)] = spell.Cooldown_secs();
@@ -169,7 +179,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
 
         const int healed = (std::min)(currentHealth_->Get().Value() + amount.Value(), maxHealth_.Value());
         currentHealth_->Set(StatusParameter::Health(healed));
-        onChangeHealth_.get_subscriber().on_next(currentHealth_->Get());
+        onChangeHealth_.OnNext(currentHealth_->Get());
     }
 
     void MagicCasterAvatarStatus::RestoreStamina(const float amount)
@@ -177,9 +187,9 @@ namespace GameCore::PlayerAvatar::MagicCaster
         if (amount <= 0.0f)
             return;
 
-        const auto restored = stamina_.get() + StatusParameter::Stamina(amount);
-        stamina_.OnNext(maxStamina_ <= restored ? maxStamina_ : restored);
-        if (isStaminaExhausted_ && stamina_.get() >= StatusParameter::Stamina(maxStamina_.Value() * minStaminaRatioToResumeRun_))
+        const auto restored = stamina_.Value() + StatusParameter::Stamina(amount);
+        stamina_.Value(maxStamina_ <= restored ? maxStamina_ : restored);
+        if (isStaminaExhausted_ && stamina_.Value() >= StatusParameter::Stamina(maxStamina_.Value() * minStaminaRatioToResumeRun_))
             isStaminaExhausted_ = false;
     }
 
@@ -194,15 +204,15 @@ namespace GameCore::PlayerAvatar::MagicCaster
 
     void MagicCasterAvatarStatus::ConsumeStamina(const float cost)
     {
-        const auto consumed = stamina_.get() - StatusParameter::Stamina(cost);
+        const auto consumed = stamina_.Value() - StatusParameter::Stamina(cost);
         if (consumed <= StatusParameter::Stamina(0.0f))
         {
-            stamina_.OnNext(StatusParameter::Stamina(0.0f));
+            stamina_.Value(StatusParameter::Stamina(0.0f));
             isStaminaExhausted_ = true;
         }
         else
         {
-            stamina_.OnNext(consumed);
+            stamina_.Value(consumed);
         }
     }
 
@@ -223,6 +233,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         LibCore::ImGuiHelper::OnDrawInputField("jumpCooldown_secs_", jumpCooldown_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpStaminaCost_", jumpStaminaCost_);
         LibCore::ImGuiHelper::OnDrawInputField("damageStateDuration_secs_", damageStateDuration_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("invincibleDuration_secs_", invincibleDuration_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("invincibleRemaining_secs_", invincibleRemaining_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("deathStateDuration_secs_", deathStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("maxMana_", maxMana_);
         LibCore::ImGuiHelper::OnDrawInputField("mana_", mana_);

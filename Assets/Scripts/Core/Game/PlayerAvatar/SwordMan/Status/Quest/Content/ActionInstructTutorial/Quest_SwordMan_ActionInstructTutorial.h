@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "../../../../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../SwordMan_ITakeableSwordManQuest.h"
 #include "../../SwordMan_QuestContext.h"
 #include "../../SwordMan_QuestFactory.h"
-#include "../../../../../../../../../../Engine/Core/Coroutine/Task/Task.h"
+#include "Engine/Core/Coroutine/Task/Task.h"
 #include "../../../../../Quest/PlayerAvatar_QuestType.h"
 #include "cereal/types/polymorphic.hpp"
 

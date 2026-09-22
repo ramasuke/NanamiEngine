@@ -4,7 +4,7 @@
 #include <functional>
 #include <memory>
 #include <type_traits>
-#include "../../../../../../../../../Libs/Singleton/LibCore_SingletonBase.h"
+#include "Libs/Singleton/LibCore_SingletonBase.h"
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {

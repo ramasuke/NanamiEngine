@@ -3,9 +3,9 @@
 #include <algorithm>
 #include <cmath>
 
-#include "../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../../../../PlayerAvatar/IPlayerAvatar.h"
 #include "../glm/gtx/quaternion.hpp"
 #include "../glm/gtx/vector_angle.hpp"

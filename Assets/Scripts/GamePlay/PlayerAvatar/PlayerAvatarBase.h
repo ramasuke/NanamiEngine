@@ -2,13 +2,13 @@
 #include <utility>
 
 #include "../../Core/Network/Rpc/Custom_RpcType.h"
-#include "../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../Engine/Module/Component/ModelRenderer/ModelRenderer.h"
-#include "../../../../Engine/Module/LifeCycleCallback/FixedUpdate/IFixedUpdatable.h"
-#include "../../../../Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
-#include "../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
-#include "../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/Component/ModelRenderer/ModelRenderer.h"
+#include "Engine/Module/LifeCycleCallback/FixedUpdate/IFixedUpdatable.h"
+#include "Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
+#include "Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../Core/Game/Damage/Game_Damage_IDamage.h"
 #include "../../Core/Game/Npc/Enemy/ITakableEnemyAttack/ITakableEnemyAttack.h"
 #include "../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
@@ -16,10 +16,11 @@
 #include "../../Core/Game/PlayerAvatar/RequireType/RequireType.h"
 #include "../../Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
 #include "../Ui/NpcChatting/Ui_NpcChatting.h"
-#include "ChattableArea/ChattableArea.h"
+#include "InteractableArea/InteractableArea.h"
 #include "WakeUpArea/WakeUpArea.h"
 #include "../../Core/Game/PlayerAvatar/Wakeable/IPlayerWakeable.h"
-#include "../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/IVirtualCameraTarget.h"
 
 namespace GamePlay::PlayerAvatar
 {
@@ -31,7 +32,8 @@ namespace GamePlay::PlayerAvatar
                              public LifeCycleCallback::IFixedUpdatable,
                              public GameCore::IPlayerAvatar,
                              public GameCore::Npc::Enemy::ITakableEnemyAttack,
-                             public GameCore::PlayerAvatar::IPlayerWakeable
+                             public GameCore::PlayerAvatar::IPlayerWakeable,
+                             public CineMachine::IVirtualCameraTarget
     {
         using Animator     = RequireType::Animator    <TraitsT>;
         using StateMachine = RequireType::StateMachine<TraitsT>;
@@ -76,7 +78,7 @@ namespace GamePlay::PlayerAvatar
         void ApplySyncState(uint8_t stateValue) override;
 
         [[nodiscard]] Ui::NpcChatting            & NpcChattingUi   () const override { return *chattingUi_.get(); }
-        [[nodiscard]] PlayerAvatar::ChattableArea& ChattableArea   () const override;
+        [[nodiscard]] PlayerAvatar::InteractableArea& InteractableArea   () const override;
         [[nodiscard]] PlayerAvatar::WakeUpArea   & WakeUpArea      () const override;
         [[nodiscard]] const glm::vec3            & FeatStepPosition() const override;
 
@@ -85,8 +87,11 @@ namespace GamePlay::PlayerAvatar
         void RequestWakeUp     () override;
         [[nodiscard]] bool IsDowned() const override { return status_->IsDowned(); }
         [[nodiscard]] const GameObject::Transform& WakeableTransform() const override { return Transform(); }
+        // ModelRendererは物理ステップ間を補間した位置に描くので、Transformを追うとカメラとモデルがずれてカクつく
+        [[nodiscard]] glm::vec3 CameraTargetPosition() const override;
 
         std::weak_ptr<Component::Animator> animatorComponent_;
+        std::weak_ptr<Component::ModelRenderer> modelRenderer_;
 
         std::unique_ptr<Animator          > animator_     = nullptr;
         std::unique_ptr<StateMachine      > stateMachine_ = nullptr;
@@ -96,7 +101,7 @@ namespace GamePlay::PlayerAvatar
         std::weak_ptr  <Component::RigidBody> rigidBody_  ;
         [[serialize(0)]] FIELD(Ui::NpcChatting) chattingUi_;
         [[serialize(3)]] FIELD(GameObject::IGameObject) featStep_;
-        [[serialize(4)]] FIELD(PlayerAvatar::ChattableArea) chattableArea_;
+        [[serialize(4)]] FIELD(PlayerAvatar::InteractableArea) interactableArea_;
         [[serialize(4)]] FIELD(PlayerAvatar::WakeUpArea) wakeUpArea_;
 
 #pragma region Serialization Function
@@ -110,7 +115,7 @@ namespace GamePlay::PlayerAvatar
                 archive(cereal::base_class<NetworkComponent>(this));
             archive(CEREAL_NVP(chattingUi_));
             archive(CEREAL_NVP(featStep_));
-            archive(CEREAL_NVP(chattableArea_));
+            archive(CEREAL_NVP(interactableArea_));
             archive(CEREAL_NVP(wakeUpArea_));
         }
         template<class Archive>
@@ -122,7 +127,7 @@ namespace GamePlay::PlayerAvatar
                 archive(cereal::base_class<NetworkComponent>(this));
             if (version >= 1) archive(CEREAL_NVP(chattingUi_));
             if (version >= 3) archive(CEREAL_NVP(featStep_));
-            if (version >= 4) archive(CEREAL_NVP(chattableArea_));
+            if (version >= 4) archive(CEREAL_NVP(interactableArea_));
             if (version >= 4) archive(CEREAL_NVP(wakeUpArea_));
         }
 #pragma endregion
@@ -141,7 +146,7 @@ namespace GamePlay::PlayerAvatar
         std::shared_ptr<InputAction > inputAction,
         const std::weak_ptr<CameraGroup>& cameraGroup)
     {
-        RequireComponent<Component::ModelRenderer>();
+        modelRenderer_ = RequireComponent<Component::ModelRenderer>();
         PlayerAvatars_().push_back(Components().Catch<IPlayerAvatar>());
         
         animatorComponent_ = RequireComponent<Component::Animator>();
@@ -204,13 +209,10 @@ namespace GamePlay::PlayerAvatar
     void PlayerAvatarBase<TraitsT>::SubscribeStateToAnimator()
     {
         stateMachine_->CurrentState()
-            .subscribe([this](const std::shared_ptr<State>& state)
+            .Subscribe([this](const std::shared_ptr<State>& state)
             {
                 animator_->ChangeAnimation(state->AnimationType());
-            },
-            [](const std::exception_ptr&){ },
-            []{ }
-        );
+            }).AddTo(this);
     }
 
     template <RequireType::Traits TraitsT>
@@ -257,12 +259,12 @@ namespace GamePlay::PlayerAvatar
     }
     
     template <RequireType::Traits TraitsT>
-    ChattableArea& PlayerAvatarBase<TraitsT>::ChattableArea() const
+    InteractableArea& PlayerAvatarBase<TraitsT>::InteractableArea() const
     {
-        if (!chattableArea_)
-            throw std::exception("not found ChattableArea");
+        if (!interactableArea_)
+            throw std::exception("not found InteractableArea");
 
-        return *chattableArea_.get();
+        return *interactableArea_.get();
     }
 
     template <RequireType::Traits TraitsT>
@@ -278,6 +280,14 @@ namespace GamePlay::PlayerAvatar
     void PlayerAvatarBase<TraitsT>::RequestWakeUp()
     {
         GameCore::Network::WakeUpPlayerRpc::Send(GetNetworkObjectId(), Core::Network::DeliveryMode::Reliable);
+    }
+
+    template <RequireType::Traits TraitsT>
+    glm::vec3 PlayerAvatarBase<TraitsT>::CameraTargetPosition() const
+    {
+        if (const auto modelRenderer = modelRenderer_.lock())
+            return modelRenderer->RenderWorldPos();
+        return Transform().GetWorldPos();
     }
 
     template <RequireType::Traits TraitsT>

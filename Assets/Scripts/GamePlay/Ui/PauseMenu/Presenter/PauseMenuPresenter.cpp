@@ -25,14 +25,6 @@ namespace GamePlay::Ui
     public:
         [[nodiscard]] bool IsDeclared() const { return isDeclared_; }
 
-        bool Automatic(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateType, bool) override { return false; }
-        bool OnInput(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateType,
-                     GameCore::PlayerAvatar::SwordMan::SwordManAvatarInput,
-                     GameCore::PlayerAvatar::PlayerAvatarInputPhase, bool) override { return false; }
-        bool OnInputWhenReady(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStateType,
-                              GameCore::PlayerAvatar::SwordMan::SwordManAvatarInput,
-                              GameCore::PlayerAvatar::PlayerAvatarInputPhase, bool, bool) override { return false; }
-
         void Action(const SwordManAvatarStateAction action, const bool isUsable) override
         {
             if (action == SwordManAvatarStateAction::OpenMenu && isUsable)

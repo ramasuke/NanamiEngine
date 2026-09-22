@@ -3,7 +3,7 @@
 #include <algorithm>
 
 #include "DxLib.h"
-#include "../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "Engine/Module/Physics/Engine_Physics_Physics.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -66,16 +66,26 @@ namespace NanamiEngine::Module::Asset
 
         map_.assign(static_cast<size_t>(divisionsX_) * divisionsZ_, Data::HeightGridMap::HeightGridCell{});
 
+        // セルのXZ範囲を覆う薄い箱を真下へ流し、セル内で最初に当たる(=最も高い)面の高さを取る
+        constexpr float BOX_HALF_HEIGHT = 0.05f;
+        const glm::vec2 cellSize = CellSize();
+        const glm::vec3 halfExtents(
+            (std::max)(cellSize.x * 0.5f * boxScale_, BOX_HALF_HEIGHT),
+            BOX_HALF_HEIGHT,
+            (std::max)(cellSize.y * 0.5f * boxScale_, BOX_HALF_HEIGHT));
+
         for (int z = 0; z < divisionsZ_; ++z)
         {
             for (int x = 0; x < divisionsX_; ++x)
             {
-                const auto hit = Physics::Raycast(CellCenterOrigin(x, z), glm::vec3(0, -1, 0), rayDistance_, layerMask_);
+                const glm::vec3 origin = CellCenterOrigin(x, z);
+                const auto hit = Physics::BoxCast(origin, halfExtents, glm::vec3(0, -1, 0), rayDistance_, layerMask_);
 
                 auto& cell = map_[static_cast<size_t>(z) * divisionsX_ + x];
                 if (hit.Hit())
                 {
-                    cell.height = hit.Position().y;
+                    // 面同士の接触では接触点が面上の任意点になるため、箱の底面が止まった高さを使う
+                    cell.height = origin.y - hit.Distance() - BOX_HALF_HEIGHT;
                 }
             }
         }
@@ -157,7 +167,8 @@ namespace NanamiEngine::Module::Asset
             divisionsZ_ = (std::max)(divisionsZ_, 1);
 
         ImGui::DragFloat("Sampling Height", &samplingHeight_, 0.1f);
-        ImGui::DragFloat("Ray Distance", &rayDistance_, 0.1f, 0.01f, 100000.0f);
+        ImGui::DragFloat("Cast Distance", &rayDistance_, 0.1f, 0.01f, 100000.0f);
+        ImGui::SliderFloat("Box Scale", &boxScale_, 0.01f, 1.0f);
 
         Physics::DrawLayerMaskGui("Layer Mask", layerMask_);
 

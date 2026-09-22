@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <../cereal/include/cereal/types/vector.hpp>
 #include "../../../Enemy_Behaviour_ActionBase.h"
-#include "../../../../../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
 #include "../../../FieldGameObject/Enemy_Behaviour_Action_FieldGameObject.h"
 

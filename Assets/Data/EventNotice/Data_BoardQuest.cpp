@@ -3,7 +3,7 @@
 #include <algorithm>
 
 #include "../../Scripts/Core/Game/PlayerAvatar/Quest/PlayerAvatar_QuestType.h"
-#include "../../Scripts/Core/Game/PlayerAvatar/Quest/PlayerAvatar_StoryQuestFactory.h"
+#include "../../Scripts/Core/Game/PlayerAvatar/Quest/PlayerAvatar_TakeableQuestFactory.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -32,9 +32,9 @@ namespace NanamiEngine::Module::Asset
         if (!ImGui::CollapsingHeader("quest_", ImGuiTreeNodeFlags_DefaultOpen))
             return;
 
-        const auto& quests = GameCore::PlayerAvatar::StoryQuestFactory::Instance().CreatableQuests();
+        const auto& quests = GameCore::PlayerAvatar::TakeableQuestFactory::Instance().CreatableQuests();
         if (quests.empty())
-            ImGui::TextDisabled("StoryQuest がまだ登録されていません");
+            ImGui::TextDisabled("受注できるクエストがまだ登録されていません");
 
         for (const auto& [questName, createQuest] : quests)
         {

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <optional>
 
-#include "../../../../../../../../Libs/glm/vec2.hpp"
+#include "Libs/glm/vec2.hpp"
 #include "../../State/Transition/SwordManControlGuideFocus.h"
 
 namespace GameCore::PlayerAvatar::SwordMan

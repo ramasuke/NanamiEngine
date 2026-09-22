@@ -1,13 +1,13 @@
 #include "SwordManAvatarChattingState.h"
 
-#include "../../../../../../GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
-#include "../../../Chattable/IPlayerChattable.h"
+#include "../../../../../../GamePlay/PlayerAvatar/InteractableArea/InteractableArea.h"
+#include "../../../Interactable/IPlayerInteractable.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::State
 {
     void SwordManAvatarChattingState::DoEnter()
     {
-        ChattableArea().CatchChatTarget().lock()->OnChat();
+        InteractableArea().CatchInteractTarget().lock()->OnInteract();
         OnChangeState(SwordManAvatarStateType::Idle);
     }
 

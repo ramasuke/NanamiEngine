@@ -1,6 +1,6 @@
 ﻿#include "SwordManAvatar_HurtState.h"
 
-#include "../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "../../../../../../GamePlay/Ui/PlayerStatus/Ui_DamageFlash.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
 

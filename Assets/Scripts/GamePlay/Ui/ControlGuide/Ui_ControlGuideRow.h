@@ -1,13 +1,13 @@
 ﻿#pragma once
 #include <memory>
 #include <string>
-#include "../../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
-#include "../../../../../Engine/Module/Asset/Sprite/SpriteFile.h"
-#include "../../../../../Engine/Module/Color/Color32.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
-#include "../../../../../Engine/Module/NanamiUI/LayoutGroup/LayoutElement.h"
-#include "../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Libs/LibCore/cereal/glm/GlmHelper.h"
+#include "Engine/Module/Asset/Sprite/SpriteFile.h"
+#include "Engine/Module/Color/Color32.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
+#include "Engine/Module/NanamiUI/LayoutGroup/LayoutElement.h"
+#include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 
 namespace GamePlay::Ui
 {

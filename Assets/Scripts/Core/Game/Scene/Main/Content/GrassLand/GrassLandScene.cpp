@@ -7,10 +7,10 @@
 #include "DxLib.h"
 #include "../../Loading/Main_SceneLoadStep.h"
 
-#include "../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
-#include "../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
-#include "../../../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Core/Coroutine/Coroutine.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../PlayerAvatar/PlayerAvatar.h"
 #include "../../Group/Main_GameSceneGroup.h"
 #include "../../../Sub/Group/Sub_IGameSceneGroup.h"
@@ -36,30 +36,16 @@ namespace GameCore::Scene::Main
             throw std::runtime_error("GrassLandSceneContextが設定されていません。GameManage.sceneにGrassLandSceneContextを追加してください。");
         }
 
-        ++loadGeneration_;
-        Coroutine::StartCoroutine(OnEnterAsync(loadGeneration_));
+        Coroutine::StartCoroutine(OnEnterAsync(BeginEnter()));
     }
 
     Coroutine::Task<void> GrassLandScene::OnEnterAsync(const int generation)
     {
-        LoadingScreen().SetStep(SceneLoadStep::Deserializing);
-
-        co_await LoadMainSceneAsync();
-        if (generation != loadGeneration_)
+        if (!co_await LoadMainSceneAsync(generation))
             co_return;
-
-        if (HasMainSceneLoadFailed())
-        {
-            LoadingScreen().Fail("ステージの読み込みに失敗しました");
-            Coroutine::StartCoroutine(BackToMainIslandAsync(generation));
-            co_return;
-        }
-
-        scene_ = LoadedMainScene();
 
         // Context の FIELD は読み込んだシーン内の GameObject を指すので、
         // AddContent による解決が済むこのタイミングより前には触れない
-        LoadingScreen().SetStep(SceneLoadStep::Warmup);
         Context()->Init();
 
         // メインシーンが居ない間に Instantiate が走らないよう、ロード完了まで待ってから積む
@@ -68,14 +54,13 @@ namespace GameCore::Scene::Main
 
         LoadingScreen().SetStep(SceneLoadStep::Connecting);
         co_await GamePlay::Network::JoinOrHostStageAsync(Context()->WeakNetworkRunner(), std::string(ToString(SceneType::GrassLand)));
-        if (generation != loadGeneration_)
+        if (!IsCurrentEnter(generation))
             co_return;
 
         auto& networkRunner = Context()->NetworkRunner();
         if (!networkRunner.IsStarted() || networkRunner.GetConnectionState() != Core::Network::ConnectionState::Connected)
         {
-            LoadingScreen().Fail("マルチプレイの接続に失敗しました");
-            Coroutine::StartCoroutine(BackToMainIslandAsync(generation));
+            FailEnter(generation, "マルチプレイの接続に失敗しました");
             co_return;
         }
 
@@ -103,21 +88,9 @@ namespace GameCore::Scene::Main
         arrivalMovie_ = std::make_shared<GrassLand::GrassLandArrivalMovie>(playerAvatar_, Context());
         arrivalMovie_->Begin();
 
-        LoadingScreen().SetStep(SceneLoadStep::Completed);
-        LoadingScreen().BeginHide();
+        CompleteEnter(generation);
 
         Coroutine::StartCoroutine(GrassLand::GrassLandArrivalMovie::PlayAsync(arrivalMovie_));
-    }
-
-    Coroutine::Task<void> GrassLandScene::BackToMainIslandAsync(const int generation)
-    {
-        const int startedMs = GetNowCount();
-        co_await Coroutine::WaitUntil([startedMs] { return GetNowCount() - startedMs >= 2000; });
-        if (generation != loadGeneration_)
-            co_return;
-
-        Game::Instance().Scenes().RequestChangeScene(SceneType::MainIsland);
-        LoadingScreen().BeginHide();
     }
 
     void GrassLandScene::Enter()
@@ -127,9 +100,6 @@ namespace GameCore::Scene::Main
 
     void GrassLandScene::DoDispose()
     {
-        // 走っているロードコルーチンを無効化する。コルーチン自体は止められない
-        ++loadGeneration_;
-
         if (arrivalMovie_)
             arrivalMovie_->Cancel();
         arrivalMovie_.reset();
@@ -142,8 +112,6 @@ namespace GameCore::Scene::Main
         playerAvatar_.reset();
 
         GamePlay::Sound::SoundPlayer::StopBgm(Context()->BGM());
-        Core::Application::ApplicationBase::GameWindow()->RemoveContent(scene_.lock());
-        scene_.reset();
     }
 
     void GrassLandScene::OnDrawGui()

@@ -1,7 +1,7 @@
 ﻿#include "Npc_Behaviour_OnceExecute.h"
 
 #include "../../DrawNodeHelper.h"
-#include "../../../../../../../Engine/Module/Gui/Graph/NodeOption/NodeOption.h"
+#include "Engine/Module/Gui/Graph/NodeOption/NodeOption.h"
 #include "cereal/archives/json.hpp"
 #include "cereal/archives/portable_binary.hpp"
 

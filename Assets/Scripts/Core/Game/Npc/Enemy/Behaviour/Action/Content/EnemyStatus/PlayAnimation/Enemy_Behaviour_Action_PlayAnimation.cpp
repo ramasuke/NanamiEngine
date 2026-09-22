@@ -1,6 +1,6 @@
 ﻿#include "Enemy_Behaviour_Action_PlayAnimation.h"
 
-#include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../../../GamePlay/Sound/SoundPlayer.h"
 
 namespace GameCore::Npc::Enemy::Behaviour

@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <memory>
 
-#include "../../../../../../../Engine/Core/Application/Window/Popup/Interface/IPopupWindow.h"
-#include "../../../../../../../Engine/Core/Application/Window/Popup/Factory/PopupWindowFactory.h"
+#include "Engine/Core/Application/Window/Popup/Interface/IPopupWindow.h"
+#include "Engine/Core/Application/Window/Popup/Factory/PopupWindowFactory.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Friendly_BehaviourTree.h"
 
 namespace Editor::Npc::Friendly

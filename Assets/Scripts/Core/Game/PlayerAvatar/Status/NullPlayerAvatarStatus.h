@@ -9,7 +9,7 @@
 #include "../Item/ItemPouch.h"
 #include "../../StatusParameter/Health/Health.h"
 #include "../../StatusParameter/MoveSpeed/MoveSpeed.h"
-#include "../../../../../../Libs/LibCore/Rx/SerializableSubject/SerializableSubject.h"
+#include "Packages/R4/R4.h"
 
 namespace GameCore::PlayerAvatar
 {
@@ -33,11 +33,11 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] const ItemPouch              & Pouch         () const override { return pouch_; }
 
         [[nodiscard]] const StatusParameter::Health&                     MaxHealth() const override;
-        [[nodiscard]] rxcpp::observable<StatusParameter::Health> OnChangeHealth() const override;
+        [[nodiscard]] NanamiEngine::R4::Observable<StatusParameter::Health> OnChangeHealth() const override;
         [[nodiscard]] StatusParameter::Health                            Health() const override;
 
         [[nodiscard]] const StatusParameter::Stamina&                                MaxStamina() const override;
-        [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Stamina> Stamina   () const override;
+        [[nodiscard]] NanamiEngine::R4::ReadOnlyReactiveProperty<StatusParameter::Stamina> Stamina   () const override;
         [[nodiscard]] bool                                                           CanRun    () const override;
 
         [[nodiscard]] StatusParameter::MoveSpeed GetWalkSpeed          () const override;
@@ -55,7 +55,7 @@ namespace GameCore::PlayerAvatar
         class NullQuestGroup final : public IQuestGroup
         {
         public:
-            void Subscribe(const std::shared_ptr<StoryQuestBase>& addQuest) override;
+            void Subscribe(const std::shared_ptr<Quest::ITakeableQuest>& addQuest) override;
             [[nodiscard]] bool IsTaking(const QuestType& quest) const override;
         };
 
@@ -69,7 +69,7 @@ namespace GameCore::PlayerAvatar
         class NullStatusEvent final : public IStatusEvent
         {
         public:
-            [[nodiscard]] rxcpp::observable<StatusParameter::Health> OnDamage() const override;
+            [[nodiscard]] NanamiEngine::R4::Observable<StatusParameter::Health> OnDamage() const override;
         };
 
         std::unique_ptr<NullQuestGroup        > quest_        ;
@@ -81,6 +81,6 @@ namespace GameCore::PlayerAvatar
         StatusParameter::Health  maxHealth_;
         StatusParameter::Stamina maxStamina_;
 
-        LibCore::Rx::SerializableSubject<StatusParameter::Stamina> stamina_;
+        NanamiEngine::R4::SerializableReactiveProperty<StatusParameter::Stamina> stamina_;
     };
 }

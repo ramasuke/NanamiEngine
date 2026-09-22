@@ -2,9 +2,9 @@
 
 #include <algorithm>
 
-#include "../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../Core/Game/PlayerAvatar/ITakablePlayerAttack/ITakablePlayerAttack.h"
 #include "../../Spawn/GamePlay_PrefabSpawner.h"
 #include "../GamePlay_MagicAim.h"

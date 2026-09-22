@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../Engine/Module/Asset/Scene/SceneFile.h"
-#include "../../../../../../../Engine/Module/Component/ComponentBase.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Scene/SceneFile.h"
+#include "Engine/Module/Component/ComponentBase.h"
 
 namespace GameCore::Scene::Sub
 {

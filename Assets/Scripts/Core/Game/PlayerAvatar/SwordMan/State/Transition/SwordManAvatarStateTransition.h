@@ -14,12 +14,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         AvoidRolling,
         NormalAttack,
         DashAttack,
-        CannonAttack,
         Chat,
-        LockOn,
-        CycleItemNext,
-        CycleItemPrev,
-        UseItem,
     };
 
     /// State を遷移させない操作
@@ -36,11 +31,6 @@ namespace GameCore::PlayerAvatar::SwordMan
         OpenMenu,
     };
 
-    class ISwordManAvatarTransitionVisitor
-        : public IPlayerAvatarTransitionVisitor<SwordManAvatarStateType, SwordManAvatarInput, SwordManAvatarStateAction>
-    {
-    public:
-        /** @param isReady 使用可否としては見せないタイミング条件 */
-        virtual bool OnInputWhenReady(SwordManAvatarStateType to, SwordManAvatarInput input, PlayerAvatarInputPhase phase, bool isUsable, bool isReady) = 0;
-    };
+    using ISwordManAvatarTransitionVisitor =
+        IPlayerAvatarTransitionVisitor<SwordManAvatarStateType, SwordManAvatarInput, SwordManAvatarStateAction>;
 }

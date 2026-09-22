@@ -28,10 +28,10 @@ namespace GamePlay::Ui
         if (!button)
             return;
 
-        button->OnClick().subscribe(DestroyCancellationToken(), [onClick](NanamiUi::MouseState)
+        button->OnClick().Subscribe([onClick](NanamiUi::MouseState)
         {
             onClick();
-        });
+        }).AddTo(this);
     }
 
     void ShopRow::SetHighlighted(const bool isHighlighted) const

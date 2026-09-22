@@ -1,7 +1,7 @@
 ﻿#include "Prop_AirShip.h"
 
-#include "../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Physics/Component/Collider/Engine_Physics_ColliderBase.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 
 namespace GamePlay::Prop
 {

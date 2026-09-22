@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "../Npc_BehaviourNodeBase.h"
-#include "../../../../../../../Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
+#include "Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
 
 namespace Editor::Npc::Behaviour
 {

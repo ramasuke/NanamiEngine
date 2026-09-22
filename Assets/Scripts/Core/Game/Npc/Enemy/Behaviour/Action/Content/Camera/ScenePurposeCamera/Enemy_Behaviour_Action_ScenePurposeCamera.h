@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../../../Enemy_Behaviour_ActionBase.h"
-#include "../../../../../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../../../../../Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
 
 namespace GameCore::Npc::Enemy::Behaviour::Action

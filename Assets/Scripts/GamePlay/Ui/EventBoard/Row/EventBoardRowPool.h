@@ -3,12 +3,12 @@
 #include <memory>
 #include <vector>
 
-#include "../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../../../Engine/Module/Component/ImageRenderer/ImageRenderer.h"
-#include "../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Component/ImageRenderer/ImageRenderer.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../Model/BoardListCursor.h"
 
 namespace GamePlay::Ui

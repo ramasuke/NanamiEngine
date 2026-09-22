@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include "../IDestructibleObject.h"
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Component/ComponentBase.h"
 #include "../../../../Data/Drop/Data_DropTable.h"
 #include "../../../Core/Game/StatusParameter/Health/Health.h"
 

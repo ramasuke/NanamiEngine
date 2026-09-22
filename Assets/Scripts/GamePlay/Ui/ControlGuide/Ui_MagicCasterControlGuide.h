@@ -3,9 +3,9 @@
 #include <memory>
 #include <string>
 #include "Ui_ControlGuide.h"
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/Sprite/SpriteFile.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Sprite/SpriteFile.h"
+#include "Engine/Module/Component/ComponentBase.h"
 #include "../../../Core/Game/PlayerAvatar/InputAction/PlayerAvatarInputDevice.h"
 #include "../../../Core/Game/PlayerAvatar/MagicCaster/State/Transition/MagicCasterAvatarStateTransition.h"
 

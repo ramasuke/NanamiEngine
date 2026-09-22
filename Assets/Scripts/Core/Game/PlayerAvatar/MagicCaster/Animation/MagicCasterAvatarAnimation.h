@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 namespace GameCore::PlayerAvatar::MagicCaster
 {
@@ -11,5 +11,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         Cast = 4,
         Hurt = 5,
         Death = 6,
+        Fall  = 7,
+        Chatting = 8,
     };
 }

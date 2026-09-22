@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <memory>
 #include <string>
-#include "../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace GameCore::PlayerAvatar::Quest
 {

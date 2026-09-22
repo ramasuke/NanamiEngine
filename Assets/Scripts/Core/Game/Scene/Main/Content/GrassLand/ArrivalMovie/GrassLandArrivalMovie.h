@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <memory>
 
-#include "../../../../../../../../../Engine/Core/Coroutine/Task/Task.h"
-#include "../../../../../../../../../Libs/glm/vec3.hpp"
+#include "Engine/Core/Coroutine/Task/Task.h"
+#include "Libs/glm/vec3.hpp"
 
 namespace GameCore
 {

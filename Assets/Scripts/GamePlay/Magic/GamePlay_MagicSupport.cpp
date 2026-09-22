@@ -1,8 +1,8 @@
 ﻿#include "GamePlay_MagicSupport.h"
 
 #include "geometric.hpp"
-#include "../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../Core/Game/PlayerAvatar/Item/Effect/IItemEffectTarget.h"
 #include "../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"

@@ -11,8 +11,8 @@
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
 #include "../../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 
 namespace GamePlay::Ui
 {
@@ -33,16 +33,16 @@ namespace GamePlay::Ui
             if (!button)
                 continue;
 
-            button->OnHover().subscribe(DestroyCancellationToken(), [this, index](LibCore::Rx::unit)
+            button->OnHover().Subscribe([this, index](R4::Unit)
             {
                 if (phase_ == Phase::Presenting && view_->IsInputReady())
                     Select(index);
-            });
-            button->OnClick().subscribe(DestroyCancellationToken(), [this, index](NanamiUi::MouseState)
+            }).AddTo(this);
+            button->OnClick().Subscribe([this, index](NanamiUi::MouseState)
             {
                 if (phase_ == Phase::Presenting && view_->IsInputReady())
                     Decide(index);
-            });
+            }).AddTo(this);
         }
     }
 
@@ -69,28 +69,19 @@ namespace GamePlay::Ui
             break;
 
         case Phase::LeavingByLoading:
+            // 石版はロード画面の下に隠れてから消す。先に消すと倒れたプレイヤーが一瞬見える
             if (GameCore::Game::Instance().LoadingScreen().IsCoverOpaque())
             {
                 view_->HideImmediately();
-                RequestSceneChange(false);
+                phase_ = Phase::WaitingSceneChange;
             }
             break;
 
-        case Phase::LeavingByCurtain:
-            if (view_->IsCurtainClosed())
-                RequestSceneChange(true);
-            break;
-
         case Phase::WaitingSceneChange:
+            // 新しいシーンの入場が済むまでは、前のシーンの倒れたプレイヤーを数えない
             if (GameCore::Game::Instance().Scenes().HasPendingChange())
                 break;
 
-            holdSecs_ += deltaSecs;
-            if (isCurtainUsed_ && holdSecs_ < curtainHoldSecs_)
-                break;
-
-            if (isCurtainUsed_)
-                view_->OpenCurtain();
             fallenSecs_ = 0.0f;
             phase_ = Phase::Watching;
             break;
@@ -196,35 +187,19 @@ namespace GamePlay::Ui
             return;
         }
 
-        pendingSceneType_ = *currentSceneType;
-
-        // ステージ選択から入ったステージは、ロード画面の手順(Show→覆い切ってから遷移)でしか明けない
-        auto& loadingScreen = GameCore::Game::Instance().LoadingScreen();
-        const auto stageData = loadingScreen.ShownStageData();
-        if (stageData && stageData->SceneType() == pendingSceneType_)
-        {
-            loadingScreen.Show(stageData);
-            phase_ = Phase::LeavingByLoading;
-            return;
-        }
-
-        view_->BeginCurtain();
-        phase_ = Phase::LeavingByCurtain;
+        RequestSceneChange(*currentSceneType);
     }
 
     void GameOverPresenter::ReturnToTitle()
     {
-        pendingSceneType_ = GameCore::Scene::Main::SceneType::Title;
-        view_->BeginCurtain();
-        phase_ = Phase::LeavingByCurtain;
+        RequestSceneChange(GameCore::Scene::Main::SceneType::Title);
     }
 
-    void GameOverPresenter::RequestSceneChange(const bool isCurtainUsed)
+    void GameOverPresenter::RequestSceneChange(const GameCore::Scene::Main::SceneType sceneType)
     {
-        GameCore::Game::Instance().Scenes().RequestChangeScene(pendingSceneType_);
-        isCurtainUsed_ = isCurtainUsed;
-        holdSecs_ = 0.0f;
-        phase_ = Phase::WaitingSceneChange;
+        // ロード画面を出して覆い切るのを待つところまで GameSceneGroup が受け持つ
+        GameCore::Game::Instance().Scenes().RequestChangeScene(sceneType);
+        phase_ = Phase::LeavingByLoading;
     }
 
     void GameOverPresenter::Abort()

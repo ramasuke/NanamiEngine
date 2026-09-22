@@ -24,6 +24,12 @@ namespace GameCore::Scene::Main
          * @warning Sceneインスタンスが破棄されたときの関数ではなく、Sceneが変更された後に呼ばれるだけの処理。
          */
         virtual void Dispose()   = 0;
+
+        /**
+         * @brief Init で始めた読み込みと入場の準備が済んだか。
+         *        GameSceneGroup はこれが true になるまでロード画面を明けない
+         */
+        [[nodiscard]] virtual bool IsEntered() const = 0;
         
         /** @brief Scene状態のDebug描画 */
         virtual void OnDrawGui() = 0;

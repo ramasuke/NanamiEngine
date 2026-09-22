@@ -10,7 +10,7 @@ namespace GameCore::PlayerAvatar::Item
     class HealHealthEffect final : public IItemEffect
     {
     public:
-        void Apply(IItemEffectTarget& target) const override;
+        void Apply(IItemEffectTarget& target, const std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject>& user) const override;
 
     private:
         [[serialize(0)]] int amount_ = 0;

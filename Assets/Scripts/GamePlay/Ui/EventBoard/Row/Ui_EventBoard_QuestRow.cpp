@@ -1,6 +1,6 @@
 ﻿#include "Ui_EventBoard_QuestRow.h"
 
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../Sound/SoundPlayer.h"
 
 namespace GamePlay::Ui
@@ -44,18 +44,18 @@ namespace GamePlay::Ui
     {
         EnsureComponents();
 
-        selectButton_->OnHover().subscribe([this](auto)
+        selectButton_->OnHover().Subscribe([this](auto)
         {
             if (const auto sound = hoverSound_.get())
                 Sound::SoundPlayer::PlaySe(*sound, Sound::SoundPlayer::Position());
             isHovering_ = true;
             RefreshAppearance();
-        });
-        selectButton_->OnHoverExit().subscribe([this](auto)
+        }).AddTo(this);
+        selectButton_->OnHoverExit().Subscribe([this](auto)
         {
             isHovering_ = false;
             RefreshAppearance();
-        });
+        }).AddTo(this);
     }
 
     void EventBoardQuestRow::Bind(const QuestBoardEntry& entry)
@@ -78,10 +78,10 @@ namespace GamePlay::Ui
     void EventBoardQuestRow::SubscribeOnClickSelectButton(std::function<void()> onClick)
     {
         EnsureComponents();
-        selectButton_->OnClick().subscribe([onClick](NanamiUi::MouseState)
+        selectButton_->OnClick().Subscribe([onClick](NanamiUi::MouseState)
         {
             onClick();
-        });
+        }).AddTo(this);
     }
 
     void EventBoardQuestRow::SetHighlighted(const bool isHighlighted)

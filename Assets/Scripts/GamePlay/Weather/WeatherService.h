@@ -1,12 +1,13 @@
 ﻿#pragma once
 #include <random>
-#include "../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../Engine/Module/Component/Skydome3D/SkyDome3D.h"
-#include "../../../../Engine/Module/Component/Rotator/Rotator.h"
-#include "../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
-#include "../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
-#include "../../../../Engine/Module/Asset/Sound/SoundFile.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/Skydome3D/SkyDome3D.h"
+#include "Engine/Module/Component/Rotator/Rotator.h"
+#include "Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
+#include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
+#include "Engine/Module/Color/Color32.h"
 
 namespace GamePlay::Weather
 {
@@ -58,18 +59,18 @@ namespace GamePlay::Weather
         [[serialize(0)]] FIELD(Asset::SoundFile)             thunderFarSound1_;
         [[serialize(0)]] FIELD(Asset::SoundFile)             thunderFarSound2_;
 
-        [[serialize(0)]] glm::vec3 clearSkyTint_ = glm::vec3(1.00f, 1.00f, 1.00f);
-        [[serialize(0)]] glm::vec3 stormSkyTint_ = glm::vec3(0.26f, 0.29f, 0.36f);
+        [[serialize(0)]] NanamiEngine::Color32 clearSkyTint_ = NanamiEngine::Color32(255, 255, 255);
+        [[serialize(0)]] NanamiEngine::Color32 stormSkyTint_ = NanamiEngine::Color32( 66,  74,  92);
         [[serialize(0)]] float clearUpperRotateSpeedDeg_ =   0.35f;
         [[serialize(0)]] float stormUpperRotateSpeedDeg_ =   8.00f;
         [[serialize(0)]] float clearLowerRotateSpeedDeg_ =  -0.60f;
         [[serialize(0)]] float stormLowerRotateSpeedDeg_ = -14.00f;
-        [[serialize(0)]] glm::vec3 stormFogColor_ = glm::vec3(0.27f, 0.29f, 0.33f);
+        [[serialize(0)]] NanamiEngine::Color32 stormFogColor_ = NanamiEngine::Color32(69, 74, 84);
         [[serialize(0)]] float clearFogStart_ = 1200.0f;
         [[serialize(0)]] float clearFogEnd_   = 5000.0f;
         [[serialize(0)]] float stormFogStart_ =  150.0f;
         [[serialize(0)]] float stormFogEnd_   =  900.0f;
-        [[serialize(0)]] glm::vec3 stormLightColor_ = glm::vec3(0.45f, 0.48f, 0.58f);
+        [[serialize(0)]] NanamiEngine::Color32 stormLightColor_ = NanamiEngine::Color32(115, 122, 148);
         [[serialize(0)]] float maxSustainShake_       = 0.06f;
         [[serialize(0)]] float particlePlayThreshold_ = 0.25f;
         [[serialize(0)]] int   flashMaxBlendRate_     = 235;
@@ -160,18 +161,18 @@ namespace GamePlay::Weather
             if (version >= 0) archive(CEREAL_NVP(thunderNearSound_));
             if (version >= 0) archive(CEREAL_NVP(thunderFarSound1_));
             if (version >= 0) archive(CEREAL_NVP(thunderFarSound2_));
-            if (version >= 0) archive(CEREAL_NVP(clearSkyTint_));
-            if (version >= 0) archive(CEREAL_NVP(stormSkyTint_));
+            LoadColor(archive, version, "clearSkyTint_", clearSkyTint_);
+            LoadColor(archive, version, "stormSkyTint_", stormSkyTint_);
             if (version >= 0) archive(CEREAL_NVP(clearUpperRotateSpeedDeg_));
             if (version >= 0) archive(CEREAL_NVP(stormUpperRotateSpeedDeg_));
             if (version >= 0) archive(CEREAL_NVP(clearLowerRotateSpeedDeg_));
             if (version >= 0) archive(CEREAL_NVP(stormLowerRotateSpeedDeg_));
-            if (version >= 0) archive(CEREAL_NVP(stormFogColor_));
+            LoadColor(archive, version, "stormFogColor_", stormFogColor_);
             if (version >= 0) archive(CEREAL_NVP(clearFogStart_));
             if (version >= 0) archive(CEREAL_NVP(clearFogEnd_));
             if (version >= 0) archive(CEREAL_NVP(stormFogStart_));
             if (version >= 0) archive(CEREAL_NVP(stormFogEnd_));
-            if (version >= 0) archive(CEREAL_NVP(stormLightColor_));
+            LoadColor(archive, version, "stormLightColor_", stormLightColor_);
             if (version >= 0) archive(CEREAL_NVP(maxSustainShake_));
             if (version >= 0) archive(CEREAL_NVP(particlePlayThreshold_));
             if (version >= 0) archive(CEREAL_NVP(flashMaxBlendRate_));
@@ -188,8 +189,23 @@ namespace GamePlay::Weather
             if (version >= 0) archive(CEREAL_NVP(distantThunderMinInterval_secs_));
             if (version >= 0) archive(CEREAL_NVP(distantThunderMaxInterval_secs_));
         }
+
+    private:
+        // version 1 までは色を 0..1 の glm::vec3 で保存していた
+        template<class Archive>
+        static void LoadColor(Archive& archive, const std::uint32_t version, const char* name, NanamiEngine::Color32& color)
+        {
+            if (version >= 2)
+            {
+                archive(cereal::make_nvp(name, color));
+                return;
+            }
+            glm::vec3 legacy;
+            archive(cereal::make_nvp(name, legacy));
+            color = NanamiEngine::Color32::FromVec3(legacy);
+        }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Weather::WeatherService, 1)
+ENGINE_REGISTER_COMPONENT(GamePlay::Weather::WeatherService, 2)

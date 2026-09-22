@@ -1,7 +1,7 @@
 ﻿#include "BgmPlayer.h"
 
 #include "../SoundPlayer.h"
-#include "../../../../../Engine/Module/Component/AudioSource/AudioSource.h"
+#include "Engine/Module/Component/AudioSource/AudioSource.h"
 
 namespace GamePlay::Sound
 {

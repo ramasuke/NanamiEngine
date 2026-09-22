@@ -2,14 +2,14 @@
 #include <cstdint>
 
 #include "vec3.hpp"
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/Sound/SoundFile.h"
-#include "../../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../Engine/Module/LifeCycleCallback/Start/IStartable.h"
-#include "../../../../../Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
-#include "../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
+#include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
+#include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
+#include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "Ui_GameOverButton.h"
 
 namespace GamePlay::Ui

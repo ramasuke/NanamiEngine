@@ -2,8 +2,8 @@
 #include <vector>
 
 #include "cereal/types/vector.hpp"
-#include "../../../Engine/Core/Object/Field/Field.h"
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "Data_Announcement.h"
 #include "Data_BoardQuest.h"
 #include "Data_EventNotice.h"

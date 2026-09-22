@@ -25,11 +25,11 @@ namespace GamePlay::Ui
         /** @brief 端で止める。名簿は短いので巡回させない */
         void MoveSelection(int delta);
 
-        [[nodiscard]] rxcpp::observable<size_t> OnSelectionChanged() const { return onSelectionChanged_.get_observable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<size_t> OnSelectionChanged() const { return onSelectionChanged_.AsObservable(); }
 
     private:
         std::vector<std::shared_ptr<Asset::CharacterData>> characters_;
         size_t selectedIndex_ = 0;
-        rxcpp::subjects::subject<size_t> onSelectionChanged_;
+        NanamiEngine::R4::Subject<size_t> onSelectionChanged_;
     };
 }

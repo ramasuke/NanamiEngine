@@ -1,8 +1,8 @@
 ﻿#include "PlayerAvatar_CompletedQuestGroup.h"
 
 #include <cereal/types/unordered_set.hpp>
-#include "../../../../../../../Engine/Module/LocalPrefs/Engine_Module_LocalPrefs.h"
-#include "../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/LocalPrefs/Engine_Module_LocalPrefs.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace GameCore::PlayerAvatar::Quest
 {

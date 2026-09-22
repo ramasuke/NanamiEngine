@@ -15,6 +15,7 @@ void GameCore::PlayerAvatar::MagicCaster::State::RunState::DoFixedUpdate()
 void GameCore::PlayerAvatar::MagicCaster::State::RunState::DoUpdate()
 {
     UpdateLockOn();
+    UpdateItemPouchInput();
     UpdateTransitions();
 }
 
@@ -29,6 +30,8 @@ void GameCore::PlayerAvatar::MagicCaster::State::RunState::VisitTransitions(
     visitor.Cast(CanCastBasicSpell());
     visitor.Action(MagicCasterAvatarStateAction::Move, true);
     VisitLockOnAction(visitor);
+    visitor.Action(MagicCasterAvatarStateAction::CycleItem, true);
+    visitor.Action(MagicCasterAvatarStateAction::UseItem, Status().Pouch().CanUseSelected());
 }
 
 void GameCore::PlayerAvatar::MagicCaster::State::RunState::DoExit()

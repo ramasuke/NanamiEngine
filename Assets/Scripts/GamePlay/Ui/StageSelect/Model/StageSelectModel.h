@@ -22,12 +22,12 @@ namespace GamePlay::Ui
         [[nodiscard]] GameCore::Scene::Main::SceneType SelectedSceneType() const;
         [[nodiscard]] std::shared_ptr<Asset::StageData> SelectedStageData() const;
 
-        [[nodiscard]] rxcpp::observable<size_t> OnSelectionChanged() const { return onSelectionChanged_.get_observable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<size_t> OnSelectionChanged() const { return onSelectionChanged_.AsObservable(); }
 
     private:
         std::vector<std::weak_ptr<StageSelectStageUi>> stages_;
         bool hasSelection_ = false;
         size_t selectedIndex_ = 0;
-        rxcpp::subjects::subject<size_t> onSelectionChanged_;
+        NanamiEngine::R4::Subject<size_t> onSelectionChanged_;
     };
 }

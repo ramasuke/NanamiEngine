@@ -1,10 +1,7 @@
 ﻿#include "Packet_Dispatch_SpawnPlayer.h"
 
 #include "cereal/types/vector.hpp"
-#pragma comment(lib, "Ws2_32.lib")
-#pragma comment(lib, "winmm.lib")
-#include "enet/enet.h"
-#include "../../../../../../../../Engine/Core/Network/Packet/Dispatcher/Packet_PacketDispatcherGroup.h"
+#include "Engine/Core/Network/Packet/Dispatcher/Packet_PacketDispatcherGroup.h"
 #include "../../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
 #include "../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../Game/PlayerAvatar/Status/NullPlayerAvatarStatus.h"
@@ -19,31 +16,27 @@ namespace GameCore::Network
             : CustomDispatcherBase(defaultDispatchers, playerIdProvider, packetSender)
             , playerAvatarFactory_(playerAvatarFactory)
     {
-        if (IsServer())
-        {
-            newPlayerSubscription_ = PacketSender().OnConnectPlayer().subscribe(
-                [this](const ENetEvent* event)
+        // NOTE: 中継サーバー経由ではホストかどうかが接続後に決まるので、ここでは IsServer() で絞らない(通知はホストにしか来ない)
+        newPlayerSubscription_ = PacketSender().OnConnectPlayer().Subscribe(
+            [this](const Core::Network::PlayerId joined)
+            {
+                // 既に破棄されたアバター(離脱者)の履歴は再送せずに捨てる
+                for (auto it = spawnPacketHistory_.begin(); it != spawnPacketHistory_.end();)
                 {
-                    // 既に破棄されたアバター(離脱者)の履歴は再送せずに捨てる
-                    for (auto it = spawnPacketHistory_.begin(); it != spawnPacketHistory_.end();)
+                    if (DefaultDispatch().FindNetworkObject(it->rootId).lock())
                     {
-                        if (DefaultDispatch().FindNetworkObject(it->rootId).lock())
-                        {
-                            PacketSender().SendTo(event->peer, it->packet);
-                            ++it;
-                        }
-                        else
-                        {
-                            it = spawnPacketHistory_.erase(it);
-                        }
+                        PacketSender().SendTo(joined, it->packet);
+                        ++it;
                     }
-                },
-                [](std::exception_ptr) {}
-            );
-        }
+                    else
+                    {
+                        it = spawnPacketHistory_.erase(it);
+                    }
+                }
+            });
 
         // 離脱者のアバター本体は SessionDispatcher が破棄済み。ここでは付属のステータスUI等を片付ける
-        playerLeftSubscription_ = DefaultDispatch().Session().OnPlayerLeft().subscribe(
+        playerLeftSubscription_ = DefaultDispatch().Session().OnPlayerLeft().Subscribe(
             [this](const Core::Network::PlayerId left)
             {
                 const auto it = remoteAttachments_.find(left.Value());
@@ -51,15 +44,13 @@ namespace GameCore::Network
                     return;
                 playerAvatarFactory_.DestroyAttachments(it->second);
                 remoteAttachments_.erase(it);
-            },
-            [](std::exception_ptr) {}
-        );
+            });
     }
 
     SpawnPlayerDispatcher::~SpawnPlayerDispatcher()
     {
-        newPlayerSubscription_.unsubscribe();
-        playerLeftSubscription_.unsubscribe();
+        newPlayerSubscription_.Dispose();
+        playerLeftSubscription_.Dispose();
     }
 
     std::weak_ptr<IPlayerAvatar>

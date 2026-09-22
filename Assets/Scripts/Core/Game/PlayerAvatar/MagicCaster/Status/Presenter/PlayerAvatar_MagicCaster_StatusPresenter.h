@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../../../Status/Presenter/PlayerAvatar_StatusPresenterBase.h"
-#include "../../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 
 namespace GameCore::PlayerAvatar::MagicCaster
 {
@@ -28,6 +28,7 @@ namespace GamePlay::PlayerAvatar::MagicCaster
     private:
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) spellPalettePrefab_;
         [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) controlGuidePrefab_;
+        [[serialize(2)]] FIELD(Asset::PrefabGameObjectFile) itemBarPrefab_;
 
 #pragma region Serialization Function
     public:
@@ -38,6 +39,7 @@ namespace GamePlay::PlayerAvatar::MagicCaster
             archive(cereal::base_class<ComponentBase>(this));
             archive(CEREAL_NVP(spellPalettePrefab_));
             archive(CEREAL_NVP(controlGuidePrefab_));
+            archive(CEREAL_NVP(itemBarPrefab_));
         }
 
         template <class Archive>
@@ -46,9 +48,10 @@ namespace GamePlay::PlayerAvatar::MagicCaster
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 0) archive(CEREAL_NVP(spellPalettePrefab_));
             if (version >= 1) archive(CEREAL_NVP(controlGuidePrefab_));
+            if (version >= 2) archive(CEREAL_NVP(itemBarPrefab_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::MagicCaster::StatusPresenter, 1)
+ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::MagicCaster::StatusPresenter, 2)

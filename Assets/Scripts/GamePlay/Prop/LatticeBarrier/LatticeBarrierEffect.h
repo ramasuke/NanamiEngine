@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/Component/Shader/IShaderConstantBufferHost.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/Shader/IShaderConstantBufferHost.h"
 
 namespace GamePlay::Prop
 {

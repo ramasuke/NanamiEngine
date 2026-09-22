@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../../../Friendly_Behaviour_ActionBase.h"
-#include "../../../../../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../../../../../../Editor/Npc/Friendly/Behaviour/Action/Friendly_Behaviour_ActionFactory.h"
 #include "../../../../../../../../../GamePlay/Prop/MerchantStall/Prop_MerchantStall.h"
 #include "cereal/types/base_class.hpp"

@@ -1,7 +1,7 @@
 ﻿#include "Friendly_Behaviour_Action_SetRotation.h"
 
-#include "../../../../../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../../../../../../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {

@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <cassert>
 
-#include "../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 #include "../../../../../../Data/PlayerAvatar/InitStatus/SwordMan/Data_SwordManInitStatus.h"
 #include "../../../Damage/Game_Damage_IDamage.h"
 #include "Quest/SwordMan_QuestGroup.h"
@@ -39,12 +39,12 @@ namespace GameCore::PlayerAvatar::SwordMan
         , chargeAttackHoldThreshold_secs_(0.2f)
         , chargeAttackMaxCharge_secs_    (1.0f)
         , chargeAttackMaxHold_secs_      (3.0f)
-        , chargeAttack_                  (Damage::PhysicsPower(15), EnhancePower(15), 0.4333333333f, 0.9083333333f)
+        , chargeAttack_                  (Damage::PhysicsPower(8), EnhancePower(15), 0.4333333333f, 0.9083333333f)
         , chargeHitFeel_                 (1.2f, 0.18f, 7.0f, 0.8f, 0.25f)
         , chargeAttackLungeStart_secs_   (0.0f)
         , chargeAttackLungeSpeed_        (28.0f)
         , chargeAttackStaminaCost_       (30.0f)
-        , jumpAttack_                    (Damage::PhysicsPower(12), EnhancePower(12), 0.1f, 0.6666666667f)
+        , jumpAttack_                    (Damage::PhysicsPower(6), EnhancePower(12), 0.1f, 0.6666666667f)
         , jumpAttackHitFeel_             (1.0f, 0.15f, 6.5f, 0.8f, 0.22f)
         , jumpAttackWindup_secs_         (0.3f)
         , jumpAttackPlungeSpeed_         (120.0f)
@@ -98,7 +98,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         , chargeAttackLungeStart_secs_        (initStatus.ChargeAttackLungeStart_secs())
         , chargeAttackLungeSpeed_             (initStatus.ChargeAttackLungeSpeed())
         , chargeAttackStaminaCost_            (initStatus.ChargeAttackStaminaCost())
-        , jumpAttack_                         (Damage::PhysicsPower(12), EnhancePower(12), 0.1f, 0.6666666667f)
+        , jumpAttack_                         (Damage::PhysicsPower(6), EnhancePower(12), 0.1f, 0.6666666667f)
         , jumpAttackHitFeel_                  (1.0f, 0.15f, 6.5f, 0.8f, 0.22f)
         , jumpAttackWindup_secs_              (0.3f)
         , jumpAttackPlungeSpeed_              (120.0f)
@@ -145,21 +145,24 @@ namespace GameCore::PlayerAvatar::SwordMan
             attackBuffRemaining_secs_ = (std::max)(attackBuffRemaining_secs_, 0.0f);
         }
 
+        if (invincibleRemaining_secs_ > 0.0f)
+            invincibleRemaining_secs_ = (std::max)(invincibleRemaining_secs_ - Time::DeltaTime(), 0.0f);
+
         assert(stateMachine_ && "SwordManAvatarStatus: stateMachine_ is not set");
         switch (stateMachine_->GetCurrentStateType())
         {
         case SwordManAvatarStateType::Run:
         case SwordManAvatarStateType::InjuredRun:
         {
-            const auto drained = stamina_.get() - StatusParameter::Stamina(staminaDrainPerSecond_ * Time::DeltaTime());
+            const auto drained = stamina_.Value() - StatusParameter::Stamina(staminaDrainPerSecond_ * Time::DeltaTime());
             if (drained <= StatusParameter::Stamina(0.0f))
             {
-                stamina_.OnNext(StatusParameter::Stamina(0.0f));
+                stamina_.Value(StatusParameter::Stamina(0.0f));
                 isStaminaExhausted_ = true;
             }
             else
             {
-                stamina_.OnNext(drained);
+                stamina_.Value(drained);
             }
             break;
         }
@@ -170,16 +173,16 @@ namespace GameCore::PlayerAvatar::SwordMan
             break;
         default:
         {
-            const auto regened = stamina_.get() + StatusParameter::Stamina(staminaRegenPerSecond_ * Time::DeltaTime());
+            const auto regened = stamina_.Value() + StatusParameter::Stamina(staminaRegenPerSecond_ * Time::DeltaTime());
             if (maxStamina_ <= regened)
             {
-                stamina_.OnNext(maxStamina_);
+                stamina_.Value(maxStamina_);
             }
             else
             {
-                stamina_.OnNext(regened);
+                stamina_.Value(regened);
             }
-            if (isStaminaExhausted_ && stamina_.get() >= StatusParameter::Stamina(maxStamina_.Value() * minStaminaRatioToResumeRun_))
+            if (isStaminaExhausted_ && stamina_.Value() >= StatusParameter::Stamina(maxStamina_.Value() * minStaminaRatioToResumeRun_))
             {
                 isStaminaExhausted_ = false;
             }
@@ -189,9 +192,9 @@ namespace GameCore::PlayerAvatar::SwordMan
 
         const bool currentlyInjured = IsInjured();
         if (currentlyInjured && !wasInjured_)
-            onBecomeInjured_.get_subscriber().on_next(LibCore::Rx::unit{});
+            onBecomeInjured_.OnNext(R4::Unit{});
         else if (!currentlyInjured && wasInjured_)
-            onRecoverFromInjured_.get_subscriber().on_next(LibCore::Rx::unit{});
+            onRecoverFromInjured_.OnNext(R4::Unit{});
         wasInjured_ = currentlyInjured;
     }
 
@@ -204,18 +207,25 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStatus::AddOnDamageStack(std::unique_ptr<IDamage> damageContext)
     {
+        if (invincibleRemaining_secs_ > 0.0f)
+            return;
+
         onDamagedStack_.push(std::move(damageContext));
     }
 
     void SwordManAvatarStatus::ApplyDamage()
     {
+        if (onDamagedStack_.empty())
+            return;
+
         while (!onDamagedStack_.empty())
         {
             const auto damageContext = std::move(onDamagedStack_.front());
             onDamagedStack_.pop();
             currentHealth_->Set(StatusParameter::Health(currentHealth_->Get().Value() - damageContext->DamageValue()));
-            onChangeHealth_.get_subscriber().on_next(currentHealth_->Get());
+            onChangeHealth_.OnNext(currentHealth_->Get());
         }
+        invincibleRemaining_secs_ = invincibleDuration_secs_;
     }
 
     void SwordManAvatarStatus::DiscardDamage()
@@ -241,15 +251,15 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStatus::ConsumeStamina(const float cost)
     {
-        const auto consumed = stamina_.get() - StatusParameter::Stamina(cost);
+        const auto consumed = stamina_.Value() - StatusParameter::Stamina(cost);
         if (consumed <= StatusParameter::Stamina(0.0f))
         {
-            stamina_.OnNext(StatusParameter::Stamina(0.0f));
+            stamina_.Value(StatusParameter::Stamina(0.0f));
             isStaminaExhausted_ = true;
         }
         else
         {
-            stamina_.OnNext(consumed);
+            stamina_.Value(consumed);
         }
     }
 
@@ -266,7 +276,7 @@ namespace GameCore::PlayerAvatar::SwordMan
     void SwordManAvatarStatus::Revive()
     {
         currentHealth_->Set(StatusParameter::Health(static_cast<int>(maxHealth_.Value() * reviveHealthRatio_)));
-        onChangeHealth_.get_subscriber().on_next(currentHealth_->Get());
+        onChangeHealth_.OnNext(currentHealth_->Get());
         isDowned_ = false;
     }
 
@@ -277,7 +287,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
         const int healed = (std::min)(currentHealth_->Get().Value() + amount.Value(), maxHealth_.Value());
         currentHealth_->Set(StatusParameter::Health(healed));
-        onChangeHealth_.get_subscriber().on_next(currentHealth_->Get());
+        onChangeHealth_.OnNext(currentHealth_->Get());
     }
 
     void SwordManAvatarStatus::RestoreStamina(const float amount)
@@ -285,9 +295,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         if (amount <= 0.0f)
             return;
 
-        const auto restored = stamina_.get() + StatusParameter::Stamina(amount);
-        stamina_.OnNext(maxStamina_ <= restored ? maxStamina_ : restored);
-        if (isStaminaExhausted_ && stamina_.get() >= StatusParameter::Stamina(maxStamina_.Value() * minStaminaRatioToResumeRun_))
+        const auto restored = stamina_.Value() + StatusParameter::Stamina(amount);
+        stamina_.Value(maxStamina_ <= restored ? maxStamina_ : restored);
+        if (isStaminaExhausted_ && stamina_.Value() >= StatusParameter::Stamina(maxStamina_.Value() * minStaminaRatioToResumeRun_))
             isStaminaExhausted_ = false;
     }
 
@@ -343,6 +353,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         LibCore::ImGuiHelper::OnDrawInputField("jumpCooldownRemaining_secs_", jumpCooldownRemaining_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpStaminaCost_", jumpStaminaCost_);
         LibCore::ImGuiHelper::OnDrawInputField("damageStateDuration_secs_", damageStateDuration_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("invincibleDuration_secs_", invincibleDuration_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("invincibleRemaining_secs_", invincibleRemaining_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("deathStateDuration_secs_", deathStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("downStateDuration_secs_", downStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("fallDownStateDuration_secs_", fallDownStateDuration_secs_);

@@ -56,12 +56,12 @@ namespace GameCore::PlayerAvatar::SwordMan
         : PlayerAvatarStateMachineBase(std::move(factory), initialState, disableState, isEnable)
         , swordManCurrentState_(nullptr)
     {
-        PlayerAvatarStateMachineBase::CurrentState()
-            .subscribe([this](const std::shared_ptr<IPlayerAvatarState>& state)
+        baseStateSubscription_.Set(PlayerAvatarStateMachineBase::CurrentState()
+            .Subscribe([this](const std::shared_ptr<IPlayerAvatarState>& state)
             {
-                swordManCurrentState_.get_subscriber().on_next(
+                swordManCurrentState_.OnNext(
                     std::dynamic_pointer_cast<SwordManAvatarStateBase>(state));
-            });
+            }));
     }
 
     void SwordManAvatarStateMachine::OnChangeState(SwordManAvatarStateType type) { Base::OnChangeState(type); }
@@ -69,14 +69,14 @@ namespace GameCore::PlayerAvatar::SwordMan
     void SwordManAvatarStateMachine::OnEnable()  { Base::OnEnable();  }
     void SwordManAvatarStateMachine::OnDisable() { Base::OnDisable(); }
 
-    rxcpp::observable<std::shared_ptr<SwordManAvatarStateBase>> SwordManAvatarStateMachine::CurrentState() const
+    R4::Observable<std::shared_ptr<SwordManAvatarStateBase>> SwordManAvatarStateMachine::CurrentState() const
     {
-        return swordManCurrentState_.get_observable();
+        return swordManCurrentState_.AsObservable();
     }
 
     std::shared_ptr<const SwordManAvatarStateBase> SwordManAvatarStateMachine::CurrentStateValue() const
     {
-        return swordManCurrentState_.get_value();
+        return swordManCurrentState_.Value();
     }
 
     std::unique_ptr<SwordManAvatarStateMachine> CreateStateMachine(

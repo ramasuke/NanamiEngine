@@ -2,8 +2,8 @@
 #include "cereal/archives/json.hpp"
 #include "cereal/types/base_class.hpp"
 #include "cereal/types/polymorphic.hpp"
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../Core/Game/Magic/IMagicSpellEffect.h"
 #include "../../../Core/Game/Magic/MagicSpellEffectFactory.h"
 

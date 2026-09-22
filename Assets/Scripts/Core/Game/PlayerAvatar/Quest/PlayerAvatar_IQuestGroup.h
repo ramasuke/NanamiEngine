@@ -9,11 +9,7 @@ namespace GameCore::PlayerAvatar
 namespace GameCore::PlayerAvatar::Quest
 {
     class CompletedQuestGroup;
-}
-
-namespace GameCore::PlayerAvatar
-{
-    class StoryQuestBase;
+    class ITakeableQuest;
 }
 
 namespace GameCore::PlayerAvatar
@@ -22,7 +18,8 @@ namespace GameCore::PlayerAvatar
     {
     public:
         virtual ~IQuestGroup() = default;
-        virtual void Subscribe(const std::shared_ptr<StoryQuestBase>& addQuest) = 0;
+        /** @brief 職業を問わないクエスト(メインストーリー・依頼)を受ける */
+        virtual void Subscribe(const std::shared_ptr<Quest::ITakeableQuest>& addQuest) = 0;
         /** @brief 受注中(まだ達成していない)か */
         [[nodiscard]] virtual bool IsTaking(const QuestType& quest) const = 0;
     };

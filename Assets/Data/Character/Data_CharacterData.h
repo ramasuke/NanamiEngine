@@ -3,9 +3,9 @@
 #include <vector>
 
 #include "cereal/types/vector.hpp"
-#include "../../../Engine/Core/Object/Field/Field.h"
-#include "../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "../../Scripts/Core/Game/PlayerAvatar/Type/PlayerAvatarType.h"
 
 namespace NanamiEngine::Module::Asset

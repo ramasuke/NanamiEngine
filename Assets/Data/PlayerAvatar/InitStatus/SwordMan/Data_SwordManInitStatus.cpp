@@ -23,7 +23,7 @@ namespace NanamiEngine::Module::Asset
         , chargeAttackHoldThreshold_secs_     (0.2f)
         , chargeAttackMaxCharge_secs_         (1.0f)
         , chargeAttackMaxHold_secs_           (3.0f)
-        , chargeAttack_                       (GameCore::Damage::PhysicsPower(15), GameCore::PlayerAvatar::EnhancePower(15), 0.4333333333f, 0.9083333333f)
+        , chargeAttack_                       (GameCore::Damage::PhysicsPower(8), GameCore::PlayerAvatar::EnhancePower(15), 0.4333333333f, 0.9083333333f)
         , chargeHitFeel_                      (1.2f, 0.18f, 7.0f, 0.8f, 0.25f)
         , chargeAttackLungeStart_secs_        (0.0f)
         , chargeAttackLungeSpeed_             (28.0f)

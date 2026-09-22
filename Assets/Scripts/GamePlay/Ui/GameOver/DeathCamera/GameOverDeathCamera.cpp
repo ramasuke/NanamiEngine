@@ -4,9 +4,9 @@
 #include <cmath>
 
 #include "geometric.hpp"
-#include "../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../../Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
 
 namespace GamePlay::Ui
 {

@@ -1,6 +1,6 @@
 ﻿#include "Friendly_Behaviour_Action_OpenShop.h"
 
-#include "../../../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../../../GamePlay/Ui/Shop/Presenter/ShopPresenter.h"
 
 namespace GameCore::Npc::Friendly::Behaviour

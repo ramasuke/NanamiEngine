@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <cmath>
 
-#include "../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../Core/Game/PlayerAvatar/CameraGroup/PlayerAvatarCameraGroupBase.h"
 #include "../../../Core/Game/PlayerAvatar/LockOnTarget/ILockOnTarget.h"
 

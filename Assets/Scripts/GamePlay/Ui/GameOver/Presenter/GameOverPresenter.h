@@ -1,11 +1,11 @@
 ﻿#pragma once
 #include <cstdint>
 
-#include "../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../../Engine/Module/LifeCycleCallback/Start/IStartable.h"
-#include "../../../../../../Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
+#include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "../../../../Core/Game/Scene/Main/Type/MainSceneType.h"
 
 namespace GamePlay::Ui
@@ -20,7 +20,7 @@ namespace GamePlay::Ui
      *
      * 倒れたかどうかは同期されている体力(IsDeath)で見るので、キャラの種類にも
      * ローカル/リモートにも依らない。1人でも立っていれば救助の余地があるので出さない。
-     * もう一度挑む: ステージ選択から入ったステージならロード画面で入り直し、それ以外は暗転で今のシーンを作り直す
+     * どちらを選んでも遷移は GameSceneGroup に頼むだけで、ロード画面が覆い切ったところで石版を消す
      */
     class GameOverPresenter final : public Component::ComponentBase,
                                     public LifeCycleCallback::IStartable,
@@ -32,7 +32,6 @@ namespace GamePlay::Ui
             Watching,
             Presenting,
             LeavingByLoading,
-            LeavingByCurtain,
             WaitingSceneChange,
         };
 
@@ -49,7 +48,7 @@ namespace GamePlay::Ui
         void Decide(int index);
         void Retry();
         void ReturnToTitle();
-        void RequestSceneChange(bool isCurtainUsed);
+        void RequestSceneChange(GameCore::Scene::Main::SceneType sceneType);
         void Abort();
 
         [[nodiscard]] static bool AreAllPlayersFallen();
@@ -61,10 +60,7 @@ namespace GamePlay::Ui
 
         std::shared_ptr<GameOverScreenUi> view_;
         Phase phase_ = Phase::Watching;
-        GameCore::Scene::Main::SceneType pendingSceneType_ = GameCore::Scene::Main::SceneType::Title;
-        bool isCurtainUsed_ = false;
         float fallenSecs_ = 0.0f;
-        float holdSecs_ = 0.0f;
         int selection_ = 0;
         int lastTickMs_ = 0;
 

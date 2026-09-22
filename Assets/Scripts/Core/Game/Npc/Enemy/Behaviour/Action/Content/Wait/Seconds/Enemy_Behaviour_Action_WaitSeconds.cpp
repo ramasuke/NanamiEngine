@@ -1,6 +1,6 @@
 ﻿#include "Enemy_Behaviour_Action_WaitSeconds.h"
 
-#include "../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Time/Time.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {

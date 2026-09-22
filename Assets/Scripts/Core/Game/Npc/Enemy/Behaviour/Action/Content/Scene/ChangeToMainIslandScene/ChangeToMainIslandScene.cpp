@@ -14,10 +14,13 @@ namespace GameCore::Npc::Enemy::Behaviour
         if (context.IsNetworkAuthority())
         {
             GameCore::Network::ChangeMainSceneRpc::Send(
-                context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable, Scene::Main::SceneType::MainIsland);
+                context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable, Scene::Main::SceneType::MainIsland, true);
         }
 
-        Game::Instance().Scenes().RequestChangeScene(Scene::Main::SceneType::MainIsland);
+        // ボスを倒して戻るので、ロード画面の地図に踏破の印を押す
+        Game::Instance().Scenes().RequestChangeScene(
+            Scene::Main::SceneType::MainIsland,
+            Scene::Main::SceneTransitionOptions{ .isStageCleared = true });
         
         return TickStatus::Abort;
     }

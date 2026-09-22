@@ -1,6 +1,7 @@
 ﻿#include "Game_CustomNetworkRunner.h"
 
-#include "../../../Engine/Core/Network/EnetUDPNetworkSystem.h"
+#include "Engine/Core/Network/EnetUDPNetworkSystem.h"
+#include "Engine/Core/Network/RelayNetworkSystem.h"
 
 namespace GamePlay::Network
 {
@@ -33,6 +34,8 @@ namespace GamePlay::Network
     std::unique_ptr<Core::Network::INetworkSystem> CustomNetworkRunner::DoCreateUseNetworkSystem(
         const Core::Network::NetworkStartSettings& settings) const
     {
+        if (settings.transport == Core::Network::Transport::RelayServer)
+            return std::make_unique<Core::Network::RelayNetworkSystem>(settings);
         return std::make_unique<Core::Network::EnetUDPNetworkSystem>(settings);
     }
 

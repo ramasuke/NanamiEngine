@@ -1,7 +1,7 @@
 ﻿#include "Ui_BossHealthGaugePresenter.h"
 
 #include "Ui_BossHealthGauge.h"
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "../../../Core/Game/Npc/Enemy/Boss/BossEnemyBase.h"
 
 namespace GamePlay::Ui
@@ -20,16 +20,14 @@ namespace GamePlay::Ui
         if (const auto gauge = view_.lock())
             gauge->SetHealthRate(status.Health() / maxHealth);
 
-        status.HealthObservable().subscribe(
-            DestroyCancellationToken(),
-            [weakView = view_, maxHealth](const GameCore::StatusParameter::Health health)
+        status.HealthObservable().Subscribe([weakView = view_, maxHealth](const GameCore::StatusParameter::Health health)
             {
                 if (const auto gauge = weakView.lock())
                     gauge->SetHealthRate(health / maxHealth);
-            });
+            }).AddTo(this);
 
         // ボスが消えたらゲージUIごと自分も片付ける
-        boss.DestroyCancellationToken().add(
+        boss.DestroyCancellationToken().Register(
             [weakSelf = Components().Catch<BossHealthGaugePresenter>()]
             {
                 if (const auto self = weakSelf.lock())

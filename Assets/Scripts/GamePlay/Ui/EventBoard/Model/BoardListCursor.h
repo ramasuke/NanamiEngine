@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <cstddef>
 
-#include "rx.hpp"
+#include "Packages/R4/R4.h"
 
 namespace GamePlay::Ui
 {
@@ -23,13 +23,13 @@ namespace GamePlay::Ui
         /** @brief 端で止める */
         void Move(int delta);
 
-        [[nodiscard]] rxcpp::observable<size_t> OnSelectionChanged() const { return onSelectionChanged_.get_observable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<size_t> OnSelectionChanged() const { return onSelectionChanged_.AsObservable(); }
 
     private:
         size_t count_             = 0;
         size_t visibleRowCount_   = 0;
         size_t selectedIndex_     = 0;
         size_t firstVisibleIndex_ = 0;
-        rxcpp::subjects::subject<size_t> onSelectionChanged_;
+        NanamiEngine::R4::Subject<size_t> onSelectionChanged_;
     };
 }

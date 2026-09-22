@@ -5,9 +5,9 @@
 #include <numbers>
 #include <random>
 
-#include "../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "GamePlay_MoneyPickup.h"
 
 namespace GamePlay::Pickup

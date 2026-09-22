@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../../../Engine/Core/Object/IObject.h"
+#include "Engine/Core/Object/IObject.h"
 #include "Action/TickContext/Friendly_Behaviour_TickContext.h"
 
 namespace NanamiEngine::Module::BlackBoard

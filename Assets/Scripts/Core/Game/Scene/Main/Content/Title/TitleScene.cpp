@@ -1,8 +1,8 @@
 ﻿#include "TitleScene.h"
 
-#include "../../../../../../../../Engine/Core/Application/ApplicationBase.h"
-#include "../../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
+#include "Engine/Core/Application/ApplicationBase.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
 
 namespace GameCore::Scene::Main
@@ -14,8 +14,17 @@ namespace GameCore::Scene::Main
     
     void TitleScene::Init()
     {
+        // TitleSceneContext は GameManage 側に居るので、読み込みより先に触ってよい
         Context()->Init();
-        scene_ = LoadMainScene();
+        Coroutine::StartCoroutine(OnEnterAsync(BeginEnter()));
+    }
+
+    Coroutine::Task<void> TitleScene::OnEnterAsync(const int generation)
+    {
+        if (!co_await LoadMainSceneAsync(generation))
+            co_return;
+
+        CompleteEnter(generation);
     }
     
     void TitleScene::Enter()
@@ -26,7 +35,6 @@ namespace GameCore::Scene::Main
     void TitleScene::DoDispose()
     {
         GamePlay::Sound::SoundPlayer::StopAllBgm();
-        Core::Application::ApplicationBase::GameWindow()->RemoveContent(scene_.lock());
     }
     
     void TitleScene::OnDrawGui()

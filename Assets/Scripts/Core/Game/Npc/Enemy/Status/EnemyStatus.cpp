@@ -1,7 +1,7 @@
 ﻿#include "EnemyStatus.h"
 
-#include "../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 
 namespace GameCore::Npc::Enemy
 {

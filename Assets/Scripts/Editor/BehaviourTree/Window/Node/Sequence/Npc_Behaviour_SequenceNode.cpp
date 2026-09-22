@@ -3,7 +3,7 @@
 #include <format>
 
 #include "../../DrawNodeHelper.h"
-#include "../../../../../../../Engine/Module/Gui/Graph/GraphGui.h"
+#include "Engine/Module/Gui/Graph/GraphGui.h"
 #include "../Npc_Behaviour_NodeHeaders.h"
 #include <../cereal/include/cereal/types/vector.hpp>
 

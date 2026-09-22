@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../Core/Game/PlayerAvatar/Chattable/IPlayerChattable.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "../../../Core/Game/PlayerAvatar/Interactable/IPlayerInteractable.h"
 #include "../../Ui/BillBoardNpcChatIcon/BillBoardNpcChatIcon.h"
 
 namespace GamePlay::Prop
@@ -13,14 +13,14 @@ namespace GamePlay::Prop
      */
     class EventNoticeBoard final : public Component::ComponentBase,
                                    public LifeCycleCallback::IStartable,
-                                   public GameCore::PlayerAvatar::IPlayerChattable
+                                   public GameCore::PlayerAvatar::IPlayerInteractable
     {
     private:
         void OnStart        () override;
-        void OnChattable    () override;
-        void OnExitChattable() override;
-        void OnChat         () override;
-        [[nodiscard]] const GameObject::Transform& ChattableTransform() const override;
+        void OnInteractable    () override;
+        void OnExitInteractable() override;
+        void OnInteract         () override;
+        [[nodiscard]] const GameObject::Transform& InteractableTransform() const override;
 
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) eventBoardUiPrefab_;
         [[serialize(0)]] FIELD(Ui::BillBoardNpcChatIcon) chatIcon_;

@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <memory>
 
-#include "../../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../../Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "../Model/PauseMenuModel.h"
 
 namespace GamePlay::PlayerAvatar::SwordMan

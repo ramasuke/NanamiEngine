@@ -1,9 +1,9 @@
 ﻿#include "SwordManAvatarJumpAttackLandState.h"
 
 #include "ext/quaternion_geometric.hpp"
-#include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
-#include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-#include "../../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
+#include "Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../Input/PlayerAvatarInput_void.h"
 
@@ -34,13 +34,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarJumpAttackLandState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const
     {
-        if (visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged()))
-            return;
-
+        visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged());
         const bool isFinished = During_secs() > Status().JumpAttack().Duration_secs();
-        if (visitor.Automatic(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk,
-                              isFinished && Input().Move().IsUpdatePressed()))
-            return;
+        visitor.Automatic(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk,
+                          isFinished && Input().Move().IsUpdatePressed());
         visitor.Automatic(SwordManAvatarStateType::Idle, isFinished);
     }
 

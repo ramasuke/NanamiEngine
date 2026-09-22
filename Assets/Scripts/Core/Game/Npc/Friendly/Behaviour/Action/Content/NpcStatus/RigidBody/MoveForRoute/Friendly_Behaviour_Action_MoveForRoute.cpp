@@ -1,8 +1,8 @@
 ﻿#include "Friendly_Behaviour_Action_MoveForRoute.h"
 
-#include "../../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "gtc/quaternion.hpp"
 
 namespace

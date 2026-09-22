@@ -6,6 +6,8 @@ namespace GameCore::Npc::Enemy
     class SampleEnemy final : public EnemyBase
     {
     private:
+        [[nodiscard]] std::optional<EnemyKind> RecordKind() const override { return EnemyKind::Normal; }
+
 #pragma region Serialization Function
     public:
         void OnDrawGui()

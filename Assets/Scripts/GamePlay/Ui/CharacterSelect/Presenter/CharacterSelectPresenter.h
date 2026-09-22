@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../../Engine/Module/LifeCycleCallback/Start/IStartable.h"
-#include "../../../../../../Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
+#include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "../Model/CharacterSelectModel.h"
 
 namespace GamePlay::Ui
@@ -26,7 +26,10 @@ namespace GamePlay::Ui
                                            public LifeCycleCallback::IUpdatable
     {
     public:
-        /** @brief OnStart より前に呼ぶ */
+        /**
+         * @brief 展示台を渡す。OnStart の前後どちらでもよく、両方揃った時点で開く
+         * @details Instantiate の中で OnStart まで走るので、生成直後の Bind は OnStart の後になる
+         */
         void Bind(const std::weak_ptr<Prop::CharacterPodium>& podium);
 
     private:
@@ -34,6 +37,9 @@ namespace GamePlay::Ui
         void OnUpdate () override;
         void OnDestroy() override;
 
+        void Open();
+        /** @brief 開く前に捨てる。アバターや展示台のカメラには触らない */
+        void Discard();
         void Confirm();
         /** @param didSwitch 差し替えた後は新しいアバターが操作可能な状態で出来ているので、元のアバターは触らない */
         void Close(bool didSwitch);
@@ -48,6 +54,9 @@ namespace GamePlay::Ui
         bool wasConfirmPressed_ = false;
         bool wasCancelPressed_  = false;
         bool isClosed_ = false;
+        bool hasStarted_ = false;
+        // isOpen_ を立てたのが自分の時だけ、破棄時に下ろす
+        bool hasClaimedOpen_ = false;
 
         // 会話のたびに二重に生えるのを防ぐ
         static bool isOpen_;

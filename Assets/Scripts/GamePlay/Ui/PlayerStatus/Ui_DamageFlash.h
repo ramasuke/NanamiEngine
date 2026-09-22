@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <vector>
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
 
 namespace GamePlay::Ui
 {

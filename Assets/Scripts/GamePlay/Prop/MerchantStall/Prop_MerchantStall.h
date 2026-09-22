@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
 
 namespace GamePlay::Prop
 {

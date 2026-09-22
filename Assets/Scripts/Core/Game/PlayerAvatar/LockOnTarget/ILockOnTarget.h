@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../../Libs/glm/vec3.hpp"
+#include "Libs/glm/vec3.hpp"
 
 namespace NanamiEngine::Module::GameObject
 {

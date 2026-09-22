@@ -4,11 +4,11 @@
 
 #include "cereal/types/vector.hpp"
 #include "vec2.hpp"
-#include "../../../Engine/Core/Object/Field/Field.h"
-#include "../../../Engine/Module/Asset/Sprite/SpriteFile.h"
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Sprite/SpriteFile.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "../../Scripts/Core/Game/Scene/Main/Type/MainSceneType.h"
-#include "../../../Libs/LibCore/cereal/glm/GlmHelper.h"
+#include "Libs/LibCore/cereal/glm/GlmHelper.h"
 
 namespace NanamiEngine::Module::Asset
 {

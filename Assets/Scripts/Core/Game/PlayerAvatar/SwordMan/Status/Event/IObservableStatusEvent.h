@@ -1,10 +1,5 @@
 ﻿#pragma once
-#include "../rxcpp/rx.hpp"
-
-namespace LibCore::Rx
-{
-    struct unit;
-}
+#include "Packages/R4/R4.h"
 
 namespace GameCore::StatusParameter
 {
@@ -17,15 +12,15 @@ namespace GameCore::PlayerAvatar::SwordMan
     {
     public:
         virtual ~IObservableStatusEvent() = default;
-        [[nodiscard]] virtual rxcpp::observable<StatusParameter::Health> OnDamage              () const = 0;
-        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit      > OnComboAttack         () const = 0;
-        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit      > OnRun                 () const = 0;
-        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit      > OnDashAttack          () const = 0;
-        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit      > OnAvoidRolling        () const = 0;
-        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit      > OnMove                () const = 0;
-        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit      > OnJump                () const = 0;
-        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit      > OnChargeAttack        () const = 0;
-        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit      > OnJumpAttack          () const = 0;
-        [[nodiscard]] virtual rxcpp::observable<LibCore::Rx::unit      > OnLockOn              () const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<StatusParameter::Health> OnDamage              () const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnComboAttack         () const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnRun                 () const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnDashAttack          () const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnAvoidRolling        () const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnMove                () const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnJump                () const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnChargeAttack        () const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnJumpAttack          () const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<NanamiEngine::R4::Unit      > OnLockOn              () const = 0;
     };
 }

@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../../Engine/Module/NanamiUI/Slider/NanamiUi_Slider.h"
+#include "Engine/Module/NanamiUI/Slider/NanamiUi_Slider.h"
 #include "../../../../Core/Game/Npc/Enemy/Boss/BossEnemyBase.h"
 #include "../../../Ui/BossHealthGauge/Ui_BossHealthGauge.h"
 
@@ -7,6 +7,9 @@ namespace GamePlay::Npc::Enemy
 {
     class Tyrannosaurus final : public GameCore::Npc::BossEnemyBase
     {
+    private:
+        [[nodiscard]] std::optional<GameCore::Npc::Enemy::EnemyKind> RecordKind() const override { return GameCore::Npc::Enemy::EnemyKind::Tyrannosaurus; }
+
 #pragma region Serialization Function
     public:
         template<class Archive>

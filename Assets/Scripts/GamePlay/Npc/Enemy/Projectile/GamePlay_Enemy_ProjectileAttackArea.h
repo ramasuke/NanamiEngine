@@ -3,8 +3,8 @@
 #include <vector>
 
 #include "GamePlay_Enemy_IAttackProjectile.h"
-#include "../../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../../Engine/Module/Physics/ContactCallback/SensorEnterable/Engine_Physics_ISensorEnterable.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Physics/ContactCallback/SensorEnterable/Engine_Physics_ISensorEnterable.h"
 
 namespace GamePlay::Npc::Enemy
 {

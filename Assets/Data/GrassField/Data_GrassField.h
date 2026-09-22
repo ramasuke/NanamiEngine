@@ -9,8 +9,9 @@
 #include "vec3.hpp"
 #include "cereal/types/string.hpp"
 #include "cereal/types/vector.hpp"
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
-#include "../../../Libs/LibCore/cereal/glm/GlmHelper.h"
+#include "Engine/Module/Color/Color32.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Libs/LibCore/cereal/glm/GlmHelper.h"
 
 namespace Data::GrassField
 {
@@ -89,8 +90,8 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] float     WidthMax       () const { return widthMax_;        }
         [[nodiscard]] float     BendAmount     () const { return bendAmount_;      }
         [[nodiscard]] float     ColorVariation () const { return colorVariation_;  }
-        [[nodiscard]] glm::vec3 BaseColor      () const { return baseColor_;       }
-        [[nodiscard]] glm::vec3 TipColor       () const { return tipColor_;        }
+        [[nodiscard]] glm::vec3 BaseColor      () const { return baseColor_.ToVec3(); }
+        [[nodiscard]] glm::vec3 TipColor       () const { return tipColor_.ToVec3();  }
         [[nodiscard]] float     Ambient        () const { return ambient_;         }
         [[nodiscard]] float     WindStrength   () const { return windStrength_;    }
         [[nodiscard]] float     MaxDrawDistance() const { return maxDrawDistance_; }
@@ -115,10 +116,10 @@ namespace NanamiEngine::Module::Asset
         float widthMax_   = 8.0f;
         float bendAmount_ = 0.25f;
 
-        glm::vec3 baseColor_      {0.12f, 0.32f, 0.08f};
-        glm::vec3 tipColor_       {0.55f, 0.78f, 0.30f};
-        float     colorVariation_ = 0.25f;
-        float     ambient_        = 0.4f;
+        NanamiEngine::Color32 baseColor_      {31, 82, 20};
+        NanamiEngine::Color32 tipColor_       {140, 199, 77};
+        float                 colorVariation_ = 0.25f;
+        float                 ambient_        = 0.4f;
 
         float windStrength_     = 15.0f;
 
@@ -171,8 +172,8 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(widthMin_));
             archive(CEREAL_NVP(widthMax_));
             archive(CEREAL_NVP(bendAmount_));
-            archive(CEREAL_NVP(baseColor_));
-            archive(CEREAL_NVP(tipColor_));
+            LoadColor(archive, version, "baseColor_", baseColor_);
+            LoadColor(archive, version, "tipColor_",  tipColor_);
             archive(CEREAL_NVP(colorVariation_));
             archive(CEREAL_NVP(ambient_));
             archive(CEREAL_NVP(windStrength_));
@@ -183,13 +184,28 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(chunks));
             DecodeChunks(chunks);
         }
+
+    private:
+        // version 1 までは色を 0..1 の glm::vec3 で保存していた
+        template <class Archive>
+        static void LoadColor(Archive& archive, const std::uint32_t version, const char* name, NanamiEngine::Color32& color)
+        {
+            if (version >= 2)
+            {
+                archive(cereal::make_nvp(name, color));
+                return;
+            }
+            glm::vec3 legacy;
+            archive(cereal::make_nvp(name, legacy));
+            color = NanamiEngine::Color32::FromVec3(legacy);
+        }
 #pragma endregion
     };
 }
 
 REGISTER_SCRIPTABLE_OBJECT(GrassField, GRASS_FIELD_EXTENSION_LABEL, "Stage")
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::GrassField, 1);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::GrassField, 2);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::GrassField);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::GrassField);
 #pragma endregion

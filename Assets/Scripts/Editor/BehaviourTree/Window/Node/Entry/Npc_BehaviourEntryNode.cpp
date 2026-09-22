@@ -1,7 +1,7 @@
 ﻿#include "Npc_BehaviourEntryNode.h"
 
 #include "../../DrawNodeHelper.h"
-#include "../../../../../../../Engine/Module/Gui/Graph/GraphGui.h"
+#include "Engine/Module/Gui/Graph/GraphGui.h"
 #include "../cereal/include/cereal/archives/json.hpp"
 #include "../Npc_Behaviour_NodeHeaders.h"
 #include "../cereal/include/cereal/archives/portable_binary.hpp"

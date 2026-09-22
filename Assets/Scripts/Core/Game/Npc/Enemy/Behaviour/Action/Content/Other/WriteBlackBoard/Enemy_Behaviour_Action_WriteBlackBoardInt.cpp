@@ -1,6 +1,6 @@
 ﻿#include "Enemy_Behaviour_Action_WriteBlackBoardInt.h"
 
-#include "../../../../../../../../../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
+#include "Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {

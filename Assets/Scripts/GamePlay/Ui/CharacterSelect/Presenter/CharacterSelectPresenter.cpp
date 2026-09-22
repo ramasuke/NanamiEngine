@@ -11,6 +11,7 @@
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "../../../../Core/Game/Scene/Main/Content/MainIslandScene/MainIsLandScene.h"
 #include "../../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
+#include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 
 namespace GamePlay::Ui
 {
@@ -25,18 +26,37 @@ namespace GamePlay::Ui
     void CharacterSelectPresenter::Bind(const std::weak_ptr<Prop::CharacterPodium>& podium)
     {
         podium_ = podium;
+        if (hasStarted_)
+            Open();
     }
 
     void CharacterSelectPresenter::OnStart()
     {
-        const auto podium = podium_.lock();
-        if (isOpen_ || !podium || podium->Characters().empty())
+        hasStarted_ = true;
+        if (!podium_.expired())
+            Open();
+    }
+
+    void CharacterSelectPresenter::Open()
+    {
+        if (isClosed_ || model_)
+            return;
+
+        if (isOpen_)
         {
-            isClosed_ = true;
-            Entity().lock()->OnDestroy();
+            Discard();
+            return;
+        }
+
+        const auto podium = podium_.lock();
+        if (!podium || podium->Characters().empty())
+        {
+            NanamiEngine::Module::LogError("CharacterSelectPresenter: 展示台が無いか名簿が空なので、キャラ選択を開けません");
+            Discard();
             return;
         }
         isOpen_ = true;
+        hasClaimedOpen_ = true;
 
         view_  = RequireComponent<CharacterSelectUi>();
         model_ = std::make_unique<CharacterSelectModel>(podium->Characters());
@@ -55,14 +75,14 @@ namespace GamePlay::Ui
             }
         }
 
-        model_->OnSelectionChanged().subscribe([this](const size_t index)
+        model_->OnSelectionChanged().Subscribe([this](const size_t index)
         {
             view_->HighlightRow(index);
             if (const auto character = model_->Selected())
                 view_->ShowDetail(*character);
             if (const auto current = podium_.lock())
                 current->ShowCharacter(index);
-        });
+        }).AddTo(this);
 
         // 今いるキャラに合わせて開く
         const auto owner = GameCore::PlayerAvatar::Owner();
@@ -92,8 +112,16 @@ namespace GamePlay::Ui
 
     void CharacterSelectPresenter::OnUpdate()
     {
-        if (isClosed_ || !model_)
+        if (isClosed_)
             return;
+
+        // Bind は生成と同じ Tick で来るので、最初の Update までに来なければ誰も渡していない
+        if (!model_)
+        {
+            NanamiEngine::Module::LogError("CharacterSelectPresenter: 展示台が Bind されていないので、キャラ選択を開けません");
+            Discard();
+            return;
+        }
 
         XINPUT_STATE xInput{};
         GetJoypadXInputState(DX_INPUT_PAD1, &xInput);
@@ -171,8 +199,15 @@ namespace GamePlay::Ui
         Entity().lock()->OnDestroy();
     }
 
+    void CharacterSelectPresenter::Discard()
+    {
+        isClosed_ = true;
+        Entity().lock()->OnDestroy();
+    }
+
     void CharacterSelectPresenter::OnDestroy()
     {
-        isOpen_ = false;
+        if (hasClaimedOpen_)
+            isOpen_ = false;
     }
 }

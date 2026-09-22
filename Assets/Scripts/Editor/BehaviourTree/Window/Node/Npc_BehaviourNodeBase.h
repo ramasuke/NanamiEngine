@@ -4,7 +4,7 @@
 
 #include "Npc_Behaviour_NodeFactory.h"
 #include "vec2.hpp"
-#include "../../../../../../Engine/Core/Object/IObject.h"
+#include "Engine/Core/Object/IObject.h"
 #include "../../../../Core/Game/Npc/Enemy/Behaviour/Action/TickContext/Enemy_Behaviour_TickContext.h"
 #include "../../../../Core/Game/Npc/Enemy/Behaviour/TickStatus/TickStatus.h"
 #include "../../../../Core/Game/Npc/Friendly/Behaviour/TickStatus/Friendly_Behaviour_TickStatus.h"

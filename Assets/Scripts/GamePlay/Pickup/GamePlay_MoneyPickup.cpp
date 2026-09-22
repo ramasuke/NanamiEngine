@@ -1,8 +1,8 @@
 ﻿#include "GamePlay_MoneyPickup.h"
 
-#include "../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
 #include "../../Core/Game/PlayerAvatar/Wallet/PlayerAvatar_Wallet.h"
 #include "../Sound/SoundPlayer.h"

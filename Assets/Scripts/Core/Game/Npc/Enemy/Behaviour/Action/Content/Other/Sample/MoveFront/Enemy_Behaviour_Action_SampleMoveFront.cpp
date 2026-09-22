@@ -1,6 +1,6 @@
 ﻿#include "Enemy_Behaviour_Action_SampleMoveFront.h"
 
-#include "../../../../../../../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {

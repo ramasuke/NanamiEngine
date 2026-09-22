@@ -1,5 +1,5 @@
 ﻿#include "MoveSpeed.h"
-#include "../../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
+#include "Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 
 GameCore::StatusParameter::MoveSpeed::MoveSpeed(const float value)
     : value_(value)

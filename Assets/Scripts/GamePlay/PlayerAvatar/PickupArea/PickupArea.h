@@ -1,10 +1,10 @@
 ﻿#pragma once
 #include <vector>
 
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
-#include "../../../../../Engine/Module/Physics/ContactCallback/SensorEnterable/Engine_Physics_ISensorEnterable.h"
-#include "../../../../../Engine/Module/Physics/ContactCallback/SensorExitable/Engine_Physics_ISensorExitable.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
+#include "Engine/Module/Physics/ContactCallback/SensorEnterable/Engine_Physics_ISensorEnterable.h"
+#include "Engine/Module/Physics/ContactCallback/SensorExitable/Engine_Physics_ISensorExitable.h"
 
 namespace GameCore::PlayerAvatar
 {

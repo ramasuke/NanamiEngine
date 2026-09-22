@@ -5,8 +5,8 @@
 
 #include "DxLib.h"
 #include "glm.hpp"
-#include "../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../Engine/Module/Log/NanamiEngine_Module_Log.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "../../Weather/WindZone.h"
 
 namespace GamePlay::Prop

@@ -8,10 +8,10 @@ namespace GamePlay::Ui
 {
     void StageSelectStageUi::SubscribeOnClickSelectButton(std::function<void()> onClick)
     {
-        selectButton_->OnClick().subscribe([onClick](NanamiUi::MouseState)
+        selectButton_->OnClick().Subscribe([onClick](NanamiUi::MouseState)
         {
             onClick();
-        });
+        }).AddTo(this);
     }
 
     void StageSelectStageUi::SetHighlighted(const bool isHighlighted)
@@ -38,21 +38,21 @@ namespace GamePlay::Ui
         difficultyPips_->SetDifficulty(stageData_->Difficulty());
         SetHighlighted(false);
 
-        selectButton_->OnHover().subscribe([this](auto)
+        selectButton_->OnHover().Subscribe([this](auto)
         {
             Sound::SoundPlayer::PlaySe(*selectButtonHoverSound_.get(), Sound::SoundPlayer::Position());
             isHovering_ = true;
             RefreshAppearance();
-        });
-        selectButton_->OnHoverExit().subscribe([this](auto)
+        }).AddTo(this);
+        selectButton_->OnHoverExit().Subscribe([this](auto)
         {
             isHovering_ = false;
             RefreshAppearance();
-        });
-        selectButton_->OnClick().subscribe([this](NanamiUi::MouseState)
+        }).AddTo(this);
+        selectButton_->OnClick().Subscribe([this](NanamiUi::MouseState)
         {
             Sound::SoundPlayer::PlaySe(*selectButtonClickSound_.get(), Sound::SoundPlayer::Position());
-        });
+        }).AddTo(this);
     }
 
     void StageSelectStageUi::OnDrawGui()

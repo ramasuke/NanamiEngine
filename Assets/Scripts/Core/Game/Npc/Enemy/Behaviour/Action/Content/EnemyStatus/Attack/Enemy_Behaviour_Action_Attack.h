@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../../../Enemy_Behaviour_ActionBase.h"
-#include "../../../../../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../../../../../Engine/Module/Asset/Sound/SoundFile.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
 #include "../../../../../../../Damage/Physics/Game_Damage_PhysicsPower.h"
 #include "../../Other/WriteBlackBoard/Enemy_Behaviour_Action_WriteBlackBoardInt.h"

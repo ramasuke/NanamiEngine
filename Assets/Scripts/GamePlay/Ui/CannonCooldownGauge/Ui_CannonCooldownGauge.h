@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "../../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/Font/Ttf/TtfFontFile.h"
-#include "../../../../../Engine/Module/Asset/Sprite/SpriteFile.h"
-#include "../../../../../Engine/Module/Color/Color32.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
+#include "Libs/LibCore/cereal/glm/GlmHelper.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Font/Ttf/TtfFontFile.h"
+#include "Engine/Module/Asset/Sprite/SpriteFile.h"
+#include "Engine/Module/Color/Color32.h"
+#include "Engine/Module/Component/ComponentBase.h"
 
 namespace GamePlay::Ui
 {

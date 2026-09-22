@@ -20,6 +20,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         Move,
         LockOn,
         LockOnRelease,
+        CycleItem,
+        UseItem,
     };
 
     class IMagicCasterAvatarTransitionVisitor
@@ -30,6 +32,6 @@ namespace GameCore::PlayerAvatar::MagicCaster
          * @brief 基本魔法か持ち込み枠の詠唱へ移る
          * @param isBasicSpellUsable 操作ガイドの表示専用。撃てるかどうかは枠ごとに TryBeginCast が判定する
          */
-        virtual bool Cast(bool isBasicSpellUsable) = 0;
+        virtual void Cast(bool isBasicSpellUsable) {}
     };
 }

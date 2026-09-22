@@ -13,7 +13,7 @@ namespace NanamiEngine::Module::Component
 
 namespace GameCore::PlayerAvatar
 {
-    class IPlayerChattable;
+    class IPlayerInteractable;
 }
 
 namespace GameCore::PlayerAvatar
@@ -33,7 +33,7 @@ namespace NanamiEngine::Module::GameObject
 
 namespace GamePlay::PlayerAvatar
 {
-    class ChattableArea;
+    class InteractableArea;
 }
 
 namespace GamePlay::PlayerAvatar
@@ -59,7 +59,7 @@ namespace GameCore
         /** @brief EventScene用のStateMachine */
         [[nodiscard]] virtual PlayerAvatar::IPlayerAvatarEventSceneStateMachine& GetEventSceneStateMachine() const = 0;
         [[nodiscard]] virtual NanamiEngine::Module::Component::RigidBody       & RigidBody       () const = 0;
-        [[nodiscard]] virtual GamePlay::PlayerAvatar::ChattableArea            & ChattableArea   () const = 0;
+        [[nodiscard]] virtual GamePlay::PlayerAvatar::InteractableArea            & InteractableArea   () const = 0;
         [[nodiscard]] virtual GamePlay::PlayerAvatar::WakeUpArea               & WakeUpArea      () const = 0;
         [[nodiscard]] virtual GamePlay::Ui::NpcChatting                        & NpcChattingUi   () const = 0;
         [[nodiscard]] virtual const glm::vec3&                                   FeatStepPosition() const = 0;

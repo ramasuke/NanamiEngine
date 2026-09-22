@@ -1,7 +1,7 @@
 ﻿#include "MainProgression.h"
 
-#include "../../../../../Engine/Module/LocalPrefs/Engine_Module_LocalPrefs.h"
-#include "../../../../../Engine/Module/LocalPrefs/Editor/Engine_Module_LocalPrefs_Editor_ToolBar.h"
+#include "Engine/Module/LocalPrefs/Engine_Module_LocalPrefs.h"
+#include "Engine/Module/LocalPrefs/Editor/Engine_Module_LocalPrefs_Editor_ToolBar.h"
 
 namespace GameCore
 {

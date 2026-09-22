@@ -1,8 +1,8 @@
 ﻿#include "Prop_Canon.h"
 
-#include "../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
-#include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../Sound/SoundPlayer.h"
 
 namespace GamePlay::Prop

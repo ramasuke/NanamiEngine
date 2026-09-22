@@ -1,6 +1,6 @@
 ﻿#include "SwordManAvatarTraits.h"
 
-#include "../../../../../../../Engine/Module/LocalPrefs/Editor/Engine_Module_LocalPrefs_Editor_ToolBar.h"
+#include "Engine/Module/LocalPrefs/Editor/Engine_Module_LocalPrefs_Editor_ToolBar.h"
 #include "../../Status/PlayerAvatarStatus.h"
 
 namespace GameCore::PlayerAvatar::SwordMan

@@ -1,10 +1,10 @@
 ﻿#include "UI_DealDamageTextBillBoard.h"
-#include "../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
-#include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../Npc/Enemy/BodyPart/GamePlay_Enemy_BodyPartWeakPoint.h"
 
 namespace GamePlay::Ui

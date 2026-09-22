@@ -2,9 +2,9 @@
 #include <array>
 #include <string>
 
-#include "../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "../../Magic/Data_MagicSpellData.h"
 
 namespace NanamiEngine::Module::Asset

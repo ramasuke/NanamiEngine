@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "vec3.hpp"
-#include "../../../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 #include "../../Core/Game/StatusParameter/Money/Money.h"
 
 namespace NanamiEngine::Module::Asset

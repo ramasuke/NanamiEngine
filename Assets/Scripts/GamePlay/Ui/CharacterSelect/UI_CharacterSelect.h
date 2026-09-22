@@ -2,11 +2,11 @@
 #include <vector>
 
 #include "cereal/types/vector.hpp"
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../StageSelect/Difficulty/StageDifficultyPips.h"
 #include "Row/Ui_CharacterSelect_Row.h"
 

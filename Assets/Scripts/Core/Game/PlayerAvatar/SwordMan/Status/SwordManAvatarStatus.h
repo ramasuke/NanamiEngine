@@ -10,11 +10,11 @@
 #include "cereal/types/vector.hpp"
 #include <queue>
 
-#include "../../../../../../../Engine/Core/Network/Object/NetworkObjectBase.h"
-#include "../../../../../../../Engine/Core/Network/Object/Creator/NetworkParamCreator.h"
-#include "../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../Engine/Module/Asset/Sound/SoundFile.h"
-#include "../../../../../../../Libs/LibCore/Rx/SerializableSubject/SerializableSubject.h"
+#include "Engine/Core/Network/Object/NetworkObjectBase.h"
+#include "Engine/Core/Network/Object/Creator/NetworkParamCreator.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
+#include "Packages/R4/R4.h"
 #include "../../../Damage/Physics/Game_Damage_PhysicsPower.h"
 #include "../../StateMachine/IReadOnlyPlayerAvatarStateMachine.h"
 #include "../State/SwordManAvatarStateType.h"
@@ -57,20 +57,20 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] IControlGuideFocusPresentation& GuideFocusPresentation() const { return *controlGuideFocus_; }
         
         [[nodiscard]] const StatusParameter::Health&                                MaxHealth() const override { return maxHealth_;           }
-        [[nodiscard]] rxcpp::observable<StatusParameter::Health>         OnChangeHealth() const override { return onChangeHealth_.get_observable(); }
+        [[nodiscard]] R4::Observable<StatusParameter::Health>         OnChangeHealth() const override { return onChangeHealth_.AsObservable(); }
         [[nodiscard]] StatusParameter::Health                            Health() const override { return currentHealth_->Get(); }
         [[nodiscard]] bool                                               IsDeath  () const override { return minHealth_ >= currentHealth_->Get();   }
         [[nodiscard]] bool                                               IsInjured() const override;
         [[nodiscard]] bool                                               IsDowned () const override { return isDowned_; }
                       void                                               SetDowned(bool downed) { isDowned_ = downed; }
                       void                                               Revive() override;
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit>               OnBecomeInjured    () const override { return onBecomeInjured_    .get_observable(); }
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit>               OnRecoverFromInjured() const override { return onRecoverFromInjured_.get_observable(); }
+        [[nodiscard]] R4::Observable<R4::Unit>               OnBecomeInjured    () const override { return onBecomeInjured_    .AsObservable(); }
+        [[nodiscard]] R4::Observable<R4::Unit>               OnRecoverFromInjured() const override { return onRecoverFromInjured_.AsObservable(); }
         [[nodiscard]] const StatusParameter::Stamina&                                MaxStamina() const override { return maxStamina_;           }
-        [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Stamina> Stamina   () const override { return stamina_.AsReadOnly(); }
+        [[nodiscard]] R4::ReadOnlyReactiveProperty<StatusParameter::Stamina> Stamina   () const override { return stamina_.AsReadOnly(); }
         [[nodiscard]] bool                                                           CanRun    () const override { return !isStaminaExhausted_; }
-        [[nodiscard]] bool                                                           CanAvoidRolling() const { return stamina_.get() >= StatusParameter::Stamina(avoidRollingStaminaCost_); }
-        [[nodiscard]] bool                                                           CanChargeAttack() const { return stamina_.get() >= StatusParameter::Stamina(chargeAttackStaminaCost_); }
+        [[nodiscard]] bool                                                           CanAvoidRolling() const { return stamina_.Value() >= StatusParameter::Stamina(avoidRollingStaminaCost_); }
+        [[nodiscard]] bool                                                           CanChargeAttack() const { return stamina_.Value() >= StatusParameter::Stamina(chargeAttackStaminaCost_); }
                       void                                                           SetStateMachine(const IReadOnlyPlayerAvatarStateMachine<SwordManAvatarStateType>& stateMachine) { stateMachine_ = &stateMachine; }
 
         [[nodiscard]] const std::vector<AttackParam<Damage::PhysicsPower>>& ComboNormalAttack() const { return comboNormalAttack_; }
@@ -104,7 +104,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] float                             GetJumpPower                         () const override { return jumpPower_;                }
         [[nodiscard]] float                             GetJumpStateDuration_secs            () const override { return jumpStateDuration_secs_;   }
         [[nodiscard]] float                             JumpCooldown_secs                    () const          { return jumpCooldown_secs_;        }
-        [[nodiscard]] bool                              CanJump                              () const          { return jumpCooldownRemaining_secs_ <= 0.0f && stamina_.get() >= StatusParameter::Stamina(jumpStaminaCost_); }
+        [[nodiscard]] bool                              CanJump                              () const          { return jumpCooldownRemaining_secs_ <= 0.0f && stamina_.Value() >= StatusParameter::Stamina(jumpStaminaCost_); }
         [[nodiscard]] AttackParam<Damage::PhysicsPower> DashAttack                           () const          { return dashAttack_;  }
         [[nodiscard]] float                             DashAttackLungeSpeed                 () const          { return dashAttackLungeSpeed_secs_; }
         [[nodiscard]] bool                              IsDamaged                            () const;
@@ -144,11 +144,11 @@ namespace GameCore::PlayerAvatar::SwordMan
         
         [[serialize(0)]] StatusParameter::Health maxHealth_;
         [[serialize(0)]] StatusParameter::Health minHealth_;
-        rxcpp::subjects::subject<StatusParameter::Health> onChangeHealth_;
+        R4::Subject<StatusParameter::Health> onChangeHealth_;
         [[serialize(0)]] SyncParam<StatusParameter::Health> currentHealth_ = SyncParamFactory::Create<StatusParameter::Health>(this, StatusParameter::Health(100));
         
         [[serialize(0)]] StatusParameter::Stamina maxStamina_;
-        [[serialize(0)]] LibCore::Rx::SerializableSubject<StatusParameter::Stamina> stamina_;
+        [[serialize(0)]] R4::SerializableReactiveProperty<StatusParameter::Stamina> stamina_;
         [[serialize(0)]] float staminaDrainPerSecond_;
         [[serialize(0)]] float staminaRegenPerSecond_;
         [[serialize(0)]] float minStaminaRatioToResumeRun_ = 0.3f;
@@ -198,8 +198,8 @@ namespace GameCore::PlayerAvatar::SwordMan
 
         [[serialize(0)]] float                          injuredHealthRatio_ = 0.3f;
         bool                                            wasInjured_         = false;
-        rxcpp::subjects::subject<LibCore::Rx::unit>     onBecomeInjured_;
-        rxcpp::subjects::subject<LibCore::Rx::unit>     onRecoverFromInjured_;
+        R4::Subject<R4::Unit>     onBecomeInjured_;
+        R4::Subject<R4::Unit>     onRecoverFromInjured_;
 
         std::queue<std::unique_ptr<IDamage>>   onDamagedStack_;
 
@@ -207,6 +207,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serialize(21)]] ItemPouch pouch_;
         float     attackBuffRemaining_secs_ = 0.0f;
         float     attackBuffRate_ = 1.0f;
+        // NOTE: 被ダメージ(ApplyDamage)から数える。無敵中のダメージはスタックに積まずに捨てる
+        float     invincibleDuration_secs_  = 2.0f;
+        float     invincibleRemaining_secs_ = 0.0f;
 
         void ConsumeStamina(float cost);
         
@@ -222,7 +225,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             archive(cereal::base_class<IPlayerAvatarStatus>(this));
             archive(CEREAL_NVP(maxHealth_));
             archive(CEREAL_NVP(minHealth_));
-            [[serialize(0)]] LibCore::Rx::SerializableSubject<StatusParameter::Health> health_;
+            [[serialize(0)]] R4::SerializableReactiveProperty<StatusParameter::Health> health_;
             if (version <= 1) archive(CEREAL_NVP(health_));
             if (version >= 2) archive(CEREAL_NVP(currentHealth_));
             archive(CEREAL_NVP(maxStamina_));
@@ -276,7 +279,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             archive(cereal::base_class<IPlayerAvatarStatus>(this));
             if (version >= 0) archive(CEREAL_NVP(maxHealth_));
             if (version >= 0) archive(CEREAL_NVP(minHealth_));
-            [[serialize(0)]] LibCore::Rx::SerializableSubject<StatusParameter::Health> health_;
+            [[serialize(0)]] R4::SerializableReactiveProperty<StatusParameter::Health> health_;
             if (version <= 1) archive(CEREAL_NVP(health_));
             if (version >= 2) archive(CEREAL_NVP(currentHealth_));
             if (version >= 5) archive(CEREAL_NVP(maxStamina_));

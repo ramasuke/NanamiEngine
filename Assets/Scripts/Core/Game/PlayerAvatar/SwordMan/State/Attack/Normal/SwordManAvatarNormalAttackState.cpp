@@ -1,9 +1,9 @@
 ﻿#include "SwordManAvatarNormalAttackState.h"
 
-#include "../../../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../../../Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
-#include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-#include "../../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "../../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../Input/PlayerAvatarInput_void.h"
@@ -71,12 +71,10 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         // アイテム欄は出したままにするが、この State では使えない。宣言しないと大砲と同じ扱いでアイテム欄ごと消えてしまう
         visitor.Action(SwordManAvatarStateAction::CycleItem, false);
         visitor.Action(SwordManAvatarStateAction::UseItem, false);
-        if (visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged()))
-            return;
-
+        visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged());
         visitor.Action(SwordManAvatarStateAction::ComboAttack, currentCombo_ + 1 < static_cast<int>(Status().ComboNormalAttack().size()));
         // 1段目の発生前まで押し続けていたら、ため攻撃の溜めへ移行する
-        visitor.OnInputWhenReady(
+        visitor.OnInput(
             SwordManAvatarStateType::ChargeAttackCharging,
             SwordManAvatarInput::NormalAttack,
             PlayerAvatarInputPhase::Holding,

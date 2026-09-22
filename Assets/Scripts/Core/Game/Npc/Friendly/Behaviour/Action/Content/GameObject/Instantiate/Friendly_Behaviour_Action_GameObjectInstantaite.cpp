@@ -1,6 +1,6 @@
 ﻿#include "Friendly_Behaviour_Action_GameObjectInstantaite.h"
 
-#include "../../../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../TickStatus/Friendly_Behaviour_TickStatus.h"
 
 namespace GameCore::Npc::Friendly::Behaviour

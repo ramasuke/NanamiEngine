@@ -1,9 +1,9 @@
 ﻿#pragma once
 #include <string>
 
-#include "../../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
-#include "../../../../../../Libs/cereal/include/cereal/cereal.hpp"
-#include "../../../../../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
+#include "Libs/cereal/include/cereal/cereal.hpp"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace GamePlay::Ui
 {

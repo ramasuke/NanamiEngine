@@ -1,7 +1,7 @@
 #pragma once
 #include "../../../Enemy_Behaviour_ActionBase.h"
-#include "../../../../../../../../../../../Engine/Core/Coroutine/Task/Task.h"
-#include "../../../../../../../../../../../Engine/Core/Object/Field/Field.h"
+#include "Engine/Core/Coroutine/Task/Task.h"
+#include "Engine/Core/Object/Field/Field.h"
 #include "../../../../../../../../../../Data/NpcChatText/Data_NpcChat.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
 #include "cereal/types/base_class.hpp"

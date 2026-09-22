@@ -1,8 +1,8 @@
 ﻿#include "GamePlay_Enemy_BodyPartWeakPoint.h"
 
-#include "../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 
 namespace GamePlay::Npc::Enemy
 {
@@ -99,6 +99,7 @@ namespace GamePlay::Npc::Enemy
         ImGuiHelper::OnDrawInputField("durability_", durability_);
         ImGuiHelper::OnDrawInputField("weakWindowHint_", weakWindowHint_);
         ImGuiHelper::OnDrawInputField("hintRetrigger_secs_", hintRetrigger_secs_);
+        ImGuiHelper::OnDrawInputField("isStunOnBreak_", isStunOnBreak_);
 
         ImGui::Text("Accumulated: %d", accumulatedDamage_);
         ImGui::Text("Broken: %s", isBroken_ ? "true" : "false");

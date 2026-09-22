@@ -1,7 +1,8 @@
 ﻿#include "ILockOnTarget.h"
 
-#include "../../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/LockOn/LockOnPositionResolver.h"
 
 namespace GameCore::PlayerAvatar
 {
@@ -14,4 +15,13 @@ namespace GameCore::PlayerAvatar
 
         return target.Transform().GetWorldPos();
     }
+}
+
+namespace
+{
+    const bool lockOnPositionResolverRegistered = []
+    {
+        NanamiEngine::CineMachine::Behaviour::SetLockOnPositionResolver(&GameCore::PlayerAvatar::LockOnPositionOf);
+        return true;
+    }();
 }

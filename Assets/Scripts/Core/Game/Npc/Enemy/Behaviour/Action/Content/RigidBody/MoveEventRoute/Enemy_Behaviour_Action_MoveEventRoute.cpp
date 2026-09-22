@@ -1,10 +1,10 @@
 ﻿#include "Enemy_Behaviour_Action_MoveEventRoute.h"
 
-#include "../../../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
-#include "../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForTween/Coroutine_WaitForTween.h"
-#include "../../../../../../../../../../../Libs/LibCore/Tween/Ease/Ease.h"
-#include "../../../../../../../../../../../Libs/LibCore/Tween/Ease/Type/EaseType.h"
+#include "Engine/Core/Coroutine/Coroutine.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitForTween/Coroutine_WaitForTween.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "Libs/LibCore/Tween/Ease/Type/EaseType.h"
 #include "../../../../../../../../../../Data/EventNpcWalkingRoute/RoutePoint/Data_Event_Npc_WalkingRoute_RoutePoint.h"
 
 namespace

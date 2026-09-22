@@ -2,8 +2,8 @@
 #include <cstdint>
 
 #include "Data_ItemData.h"
-#include "../../../Engine/Core/Object/Field/Field.h"
-#include "../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 
 namespace NanamiEngine::Module::Asset
 {

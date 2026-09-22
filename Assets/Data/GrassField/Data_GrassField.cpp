@@ -10,11 +10,11 @@
 #include "glm.hpp"
 #include "ImGuizmo.h"
 #include "cereal/external/base64.hpp"
-#include "../../../Engine/Core/Application/ApplicationBase.h"
-#include "../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
-#include "../../../Engine/Core/FileSystem/Directory/Directory.h"
-#include "../../../Engine/Module/Log/NanamiEngine_Module_Log.h"
-#include "../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "Engine/Core/Application/ApplicationBase.h"
+#include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
+#include "Engine/Core/FileSystem/Directory/Directory.h"
+#include "Engine/Module/Log/NanamiEngine_Module_Log.h"
+#include "Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../Scripts/GamePlay/Prop/Grass/Grassable.h"
 
 namespace NanamiEngine::Module::Asset
@@ -334,8 +334,8 @@ namespace NanamiEngine::Module::Asset
             ++revision_;
 
         ImGui::SeparatorText("Color");
-        ImGui::ColorEdit3 ("Base Color", &baseColor_.x);
-        ImGui::ColorEdit3 ("Tip Color",  &tipColor_.x);
+        baseColor_.DrawColorEdit("Base Color");
+        tipColor_ .DrawColorEdit("Tip Color");
         ImGui::SliderFloat("Ambient",    &ambient_, 0.0f, 1.0f);
 
         // 向き・速さ・周波数は WindZone(シーンに1つ)が持つ。ここにあるのは草の振幅だけ

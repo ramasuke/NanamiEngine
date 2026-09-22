@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include "../../../../../../../../../../../Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/ComponentBase.h"
 #include "../../../../../../../PlayerAvatar/IPlayerAvatar.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "Engine/Module/Physics/Engine_Physics_Physics.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {

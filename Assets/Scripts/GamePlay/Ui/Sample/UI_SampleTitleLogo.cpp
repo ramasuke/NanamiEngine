@@ -1,6 +1,6 @@
 ﻿#include "UI_SampleTitleLogo.h"
 
-#include "../../../../../Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Time/Time.h"
 
 namespace GamePlay::Ui
 {

@@ -1,7 +1,7 @@
 ﻿#include "SwordManAvatar_DisableState.h"
 
-#include "../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
+#include "Engine/Module/Component/Animator/Animator.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
 
 void GameCore::PlayerAvatar::SwordMan::State::DisableState::DoEnter()
 {

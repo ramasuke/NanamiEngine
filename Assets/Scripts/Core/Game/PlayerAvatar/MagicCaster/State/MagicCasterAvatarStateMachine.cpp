@@ -40,12 +40,12 @@ namespace GameCore::PlayerAvatar::MagicCaster
         : PlayerAvatarStateMachineBase(std::move(factory), initialState, disableState, isEnable)
         , magicCasterCurrentState_(nullptr)
     {
-        PlayerAvatarStateMachineBase::CurrentState()
-            .subscribe([this](const std::shared_ptr<IPlayerAvatarState>& state)
+        baseStateSubscription_.Set(PlayerAvatarStateMachineBase::CurrentState()
+            .Subscribe([this](const std::shared_ptr<IPlayerAvatarState>& state)
             {
-                magicCasterCurrentState_.get_subscriber().on_next(
+                magicCasterCurrentState_.OnNext(
                     std::dynamic_pointer_cast<MagicCasterAvatarStateBase>(state));
-            });
+            }));
     }
 
     void MagicCasterAvatarStateMachine::OnChangeState(MagicCasterAvatarStateType type) { Base::OnChangeState(type); }
@@ -53,14 +53,14 @@ namespace GameCore::PlayerAvatar::MagicCaster
     void MagicCasterAvatarStateMachine::OnEnable()  { Base::OnEnable();  }
     void MagicCasterAvatarStateMachine::OnDisable() { Base::OnDisable(); }
 
-    rxcpp::observable<std::shared_ptr<MagicCasterAvatarStateBase>> MagicCasterAvatarStateMachine::CurrentState() const
+    R4::Observable<std::shared_ptr<MagicCasterAvatarStateBase>> MagicCasterAvatarStateMachine::CurrentState() const
     {
-        return magicCasterCurrentState_.get_observable();
+        return magicCasterCurrentState_.AsObservable();
     }
 
     std::shared_ptr<const MagicCasterAvatarStateBase> MagicCasterAvatarStateMachine::CurrentStateValue() const
     {
-        return magicCasterCurrentState_.get_value();
+        return magicCasterCurrentState_.Value();
     }
 
     std::unique_ptr<MagicCasterAvatarStateMachine> CreateStateMachine(

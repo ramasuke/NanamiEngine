@@ -6,21 +6,21 @@
 #include <random>
 #include <vector>
 
-#include "../../../../../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
-#include "../../../../../../../Engine/Core/Application/Configuration/Physics/ApplicationConfiguration_Physics.h"
-#include "../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../Engine/Module/Component/BoneSync/BoneSync.h"
-#include "../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
-#include "../../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
-#include "../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-#include "../../../../../../../Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
+#include "Engine/Core/Application/Configuration/ApplicationConfiguration.h"
+#include "Engine/Core/Application/Configuration/Physics/ApplicationConfiguration_Physics.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/Component/BoneSync/BoneSync.h"
+#include "Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
 #include "../../../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
-#include "../../../../../GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
+#include "../../../../../GamePlay/PlayerAvatar/InteractableArea/InteractableArea.h"
 #include "../../../../../GamePlay/PlayerAvatar/HitShakeReceiver/PlayerHitShakeReceiver.h"
 #include "../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../../GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h"
-#include "../../Chattable/IPlayerChattable.h"
+#include "../../Interactable/IPlayerInteractable.h"
 #include "../../Input/PlayerAvatarInput_void.h"
 #include "../../LockOnTarget/ILockOnTarget.h"
 #include "../../LockOnTarget/PlayerAvatarLockOn.h"
@@ -257,7 +257,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStateBase::UseSelectedPouchItem() const
     {
-        const auto used = Status().Pouch().UseSelected(Status());
+        const auto used = Status().Pouch().UseSelected(Status(), Context().PlayerAvatarObject());
         if (!used)
             return;
 
@@ -291,11 +291,6 @@ namespace GameCore::PlayerAvatar::SwordMan
             {
             }
 
-            bool OnInputWhenReady(const SwordManAvatarStateType to, const SwordManAvatarInput input, const PlayerAvatarInputPhase phase, const bool isUsable, const bool isReady) override
-            {
-                return TryChange(to, isUsable && isReady && IsTriggered(input, phase));
-            }
-
         private:
             [[nodiscard]] bool IsTriggered(const SwordManAvatarInput input, const PlayerAvatarInputPhase phase) const override
             {
@@ -307,12 +302,7 @@ namespace GameCore::PlayerAvatar::SwordMan
                 case SwordManAvatarInput::AvoidRolling: return IsInputInPhase(input_.AvoidRolling(), phase);
                 case SwordManAvatarInput::NormalAttack: return IsInputInPhase(input_.NormalAttack(), phase);
                 case SwordManAvatarInput::DashAttack:   return IsInputInPhase(input_.DashAttack(),   phase);
-                case SwordManAvatarInput::CannonAttack: return IsInputInPhase(input_.CannonAttack(), phase);
                 case SwordManAvatarInput::Chat:         return IsInputInPhase(input_.Chat(),         phase);
-                case SwordManAvatarInput::LockOn:       return IsInputInPhase(input_.LockOn(),       phase);
-                case SwordManAvatarInput::CycleItemNext:return IsInputInPhase(input_.CycleItemNext(),phase);
-                case SwordManAvatarInput::CycleItemPrev:return IsInputInPhase(input_.CycleItemPrev(),phase);
-                case SwordManAvatarInput::UseItem:      return IsInputInPhase(input_.UseItem(),      phase);
                 }
                 return false;
             }

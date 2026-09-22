@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "rx-observable.hpp"
+#include "Packages/R4/R4.h"
 
 namespace GameCore::StatusParameter
 {
@@ -13,6 +13,6 @@ namespace GameCore::PlayerAvatar
     public:
         virtual ~IStatusEvent() = default;
 
-        [[nodiscard]] virtual rxcpp::observable<StatusParameter::Health> OnDamage() const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<StatusParameter::Health> OnDamage() const = 0;
     };
 }

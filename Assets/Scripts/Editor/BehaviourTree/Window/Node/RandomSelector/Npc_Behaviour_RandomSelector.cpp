@@ -1,7 +1,7 @@
 ﻿#include "Npc_Behaviour_RandomSelector.h"
 
 #include "../../DrawNodeHelper.h"
-#include "../../../../../../../Engine/Module/Gui/Graph/GraphGui.h"
+#include "Engine/Module/Gui/Graph/GraphGui.h"
 #include "../Npc_Behaviour_NodeHeaders.h"
 
 #include <algorithm>

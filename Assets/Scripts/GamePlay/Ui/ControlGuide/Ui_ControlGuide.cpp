@@ -5,11 +5,11 @@
 #include <numbers>
 
 #include "Ui_ControlGuideRow.h"
-#include "../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 
 namespace GamePlay::Ui
 {

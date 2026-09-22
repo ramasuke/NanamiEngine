@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include "../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
 #include "../Attack/Normal/SwordManAvatarNormalAttackState.h"
@@ -55,15 +55,12 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             return;
         }
 
-        if (visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, true))
-            return;
+        visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, true);
         const bool isMoving = Input().Move().IsUpdatePressed();
-        if (visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run,
-                            SwordManAvatarInput::Run, PlayerAvatarInputPhase::Holding, isMoving))
-            return;
-        if (visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk,
-                            SwordManAvatarInput::Move, PlayerAvatarInputPhase::Holding, true))
-            return;
+        visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run,
+                        SwordManAvatarInput::Run, PlayerAvatarInputPhase::Holding, isMoving);
+        visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredWalk : SwordManAvatarStateType::Walk,
+                        SwordManAvatarInput::Move, PlayerAvatarInputPhase::Holding, true);
         visitor.Automatic(SwordManAvatarStateType::Idle, true);
     }
 

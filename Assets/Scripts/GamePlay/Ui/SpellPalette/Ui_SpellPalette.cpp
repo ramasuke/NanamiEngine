@@ -7,11 +7,11 @@
 
 #include "trigonometric.hpp"
 #include "Ui_SpellSlot.h"
-#include "../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../Core/Game/Magic/IMagicSpell.h"
 #include "../../../Core/Game/PlayerAvatar/Input/PlayerAvatarInput_void.h"
 #include "../../PlayerAvatar/MagicCaster/MagicCasterAvatar.h"
@@ -144,7 +144,7 @@ namespace GamePlay::Ui
             return;
 
         const auto& status = avatar->PlayerStatus();
-        const float mana = status.Mana().Value().Value();
+        const float mana = status.Mana().CurrentValue().Value();
 
         for (int i = 0; i < SPELL_LOADOUT_SLOT_COUNT; ++i)
         {
@@ -216,7 +216,7 @@ namespace GamePlay::Ui
             return;
 
         const auto& status = avatar->PlayerStatus();
-        const float mana = status.Mana().Value().Value();
+        const float mana = status.Mana().CurrentValue().Value();
         const float maxMana = status.MaxMana().Value();
         const float rate = maxMana > 0.0f ? std::clamp(mana / maxMana, 0.0f, 1.0f) : 0.0f;
         const int alpha = SpellPaletteToBlendRate(groupAlpha);

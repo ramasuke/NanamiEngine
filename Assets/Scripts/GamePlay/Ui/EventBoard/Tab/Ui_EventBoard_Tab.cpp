@@ -1,6 +1,6 @@
 ﻿#include "Ui_EventBoard_Tab.h"
 
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 
 namespace GamePlay::Ui
 {
@@ -53,10 +53,10 @@ namespace GamePlay::Ui
     void EventBoardTab::SubscribeOnClick(std::function<void()> onClick)
     {
         EnsureComponents();
-        selectButton_->OnClick().subscribe([onClick](NanamiUi::MouseState)
+        selectButton_->OnClick().Subscribe([onClick](NanamiUi::MouseState)
         {
             onClick();
-        });
+        }).AddTo(this);
     }
 
     void EventBoardTab::OnDrawGui()

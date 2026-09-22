@@ -3,9 +3,10 @@
 #include <cmath>
 #include <numbers>
 
-#include "../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../Core/Game/PlayerAvatar/Item/IItemReceiver.h"
+#include "../../Core/Game/PlayerAvatar/Record/PlayerAvatar_RecordBook.h"
 #include "../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
 #include "../Sound/SoundPlayer.h"
 #include "GamePlay_PickupMotion.h"
@@ -73,7 +74,10 @@ namespace GamePlay::Pickup
         if (receiver == nullptr)
             return;
 
-        receiver->ReceiveItem(item_.get(), count_);
+        const auto item     = item_.get();
+        const int  received = receiver->ReceiveItem(item, count_);
+        if (item && received > 0)
+            GameCore::PlayerAvatar::Record::RecordBook::Instance().RecordAcquire(item->GetGuid(), received);
         if (pickupSound_)
             Sound::SoundPlayer::PlaySe(*pickupSound_.get(), Transform().GetWorldPos());
 

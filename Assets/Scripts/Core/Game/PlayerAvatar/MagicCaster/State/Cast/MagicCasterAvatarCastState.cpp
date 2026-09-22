@@ -1,9 +1,9 @@
 ﻿#include "MagicCasterAvatarCastState.h"
 
-#include "../../../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../GamePlay/Magic/GamePlay_MagicCasting.h"
 
 namespace

@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../../Engine/Module/NanamiUI/Slider/NanamiUi_Slider.h"
+#include "Engine/Module/NanamiUI/Slider/NanamiUi_Slider.h"
 #include "../../../../Core/Game/Npc/Enemy/EnemyBase.h"
 
 namespace GamePlay::Npc::Enemy
@@ -8,6 +8,7 @@ namespace GamePlay::Npc::Enemy
     {
     private:
         void DoAwake() override;
+        [[nodiscard]] std::optional<GameCore::Npc::Enemy::EnemyKind> RecordKind() const override { return GameCore::Npc::Enemy::EnemyKind::Hyena; }
         void DoUpdate() override;
         
 

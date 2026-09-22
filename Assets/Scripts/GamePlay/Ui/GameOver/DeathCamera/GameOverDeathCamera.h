@@ -1,11 +1,11 @@
 ﻿#pragma once
-#include "../../../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
-#include "../../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../../Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
-#include "../../../../../../Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
-#include "../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Follow/VirtualCameraFollowBehaviour.h"
-#include "../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/LookAt/VirtualCameraLookAtBehaviour.h"
+#include "Libs/LibCore/cereal/glm/GlmHelper.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
+#include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/Follow/VirtualCameraFollowBehaviour.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/LookAt/VirtualCameraLookAtBehaviour.h"
 
 namespace GamePlay::Ui
 {

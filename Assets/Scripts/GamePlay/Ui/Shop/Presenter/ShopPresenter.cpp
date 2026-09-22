@@ -10,7 +10,7 @@
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
 #include "../../../../Core/Game/PlayerAvatar/Wallet/PlayerAvatar_Wallet.h"
-#include "../../../../../../Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Time/Time.h"
 
 namespace GamePlay::Ui
 {
@@ -71,19 +71,19 @@ namespace GamePlay::Ui
         {
             model_->Cursor().Select(model_->Cursor().FirstVisibleIndex() + row);
         });
-        model_->Cursor().OnSelectionChanged().subscribe(DestroyCancellationToken(), [this](size_t)
+        model_->Cursor().OnSelectionChanged().Subscribe([this](size_t)
         {
             model_->ResetQuantity();
             PlaySound(cursorSound_);
             Refresh();
-        });
+        }).AddTo(this);
 
         if (status)
         {
-            status->Wallet().Observe().Subscribe(DestroyCancellationToken(), [this](const GameCore::StatusParameter::Money balance)
+            status->Wallet().Observe().Subscribe([this](const GameCore::StatusParameter::Money balance)
             {
                 view_->SetMoney(balance.Value());
-            });
+            }).AddTo(this);
         }
 
         // 話しかけたときの押しっぱなしを、開いた直後の入力として拾わない

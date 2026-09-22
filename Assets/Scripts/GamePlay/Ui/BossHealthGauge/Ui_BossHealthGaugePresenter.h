@@ -2,7 +2,7 @@
 #include <memory>
 #include <string>
 
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/ComponentBase.h"
 
 namespace GameCore::Npc
 {

@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Component/ComponentBase.h"
 #include "../../../../Data/FriendlyNpcBehviour/Data_FriendNpcBehaviourFile.h"
 #include "../../../../Data/FriendlyNpcStatus/Base/Data_FriendlyNpcBaseStatus.h"
 #include "../../../Core/Game/Npc/Friendly/IFriendlyNpc.h"
-#include "../../../Core/Game/PlayerAvatar/Chattable/IPlayerChattable.h"
+#include "../../../Core/Game/PlayerAvatar/Interactable/IPlayerInteractable.h"
 #include "../../Ui/BillBoardNpcChatIcon/BillBoardNpcChatIcon.h"
 #include "../../Ui/NpcChatting/Ui_NpcChatting.h"
 
@@ -13,7 +13,7 @@ namespace GamePlay::Npc::Friendly
     class FriendlyNpc final : public Component::ComponentBase,
                               public LifeCycleCallback::IAwakable,
                               public LifeCycleCallback::IUpdatable,
-                              public GameCore::PlayerAvatar::IPlayerChattable,
+                              public GameCore::PlayerAvatar::IPlayerInteractable,
                               public GameCore::Npc::IFriendlyNpc
     {
     public:
@@ -24,10 +24,10 @@ namespace GamePlay::Npc::Friendly
     private:
         void OnAwake        () override;
         void OnUpdate       () override;
-        void OnChattable    () override;
-        void OnExitChattable() override;
-        void OnChat         () override;
-        [[nodiscard]] const GameObject::Transform& ChattableTransform() const override;
+        void OnInteractable    () override;
+        void OnExitInteractable() override;
+        void OnInteract         () override;
+        [[nodiscard]] const GameObject::Transform& InteractableTransform() const override;
 
         [[serialize(0)]] std::string name_;
         [[serialize(0)]] FIELD(Asset::FriendNpcBehaviourFile) friendlyNpcBehaviourFile_;

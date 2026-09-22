@@ -30,7 +30,7 @@ namespace GamePlay::Ui
             return;
 
         selectedIndex_ = index;
-        onSelectionChanged_.get_subscriber().on_next(selectedIndex_);
+        onSelectionChanged_.OnNext(selectedIndex_);
     }
 
     void CharacterSelectModel::MoveSelection(const int delta)

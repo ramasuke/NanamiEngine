@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../../../Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/ComponentBase.h"
 #include "../Type/EnemyKind.h"
 
 namespace GameCore::Npc::Enemy

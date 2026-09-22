@@ -2,10 +2,10 @@
 
 #include <fstream>
 
-#include "../../../../../../../Engine/Core/Network/Object/Creator/NetworkParamCreator.h"
-#include "../../../../../../../Engine/Module/Gui/Graph/GraphGui.h"
-#include "../../../../../../../Engine/Module/Serialization/Engine_Module_Serialization.h"
-#include "../../../../../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
+#include "Engine/Core/Network/Object/Creator/NetworkParamCreator.h"
+#include "Engine/Module/Gui/Graph/GraphGui.h"
+#include "Engine/Module/Serialization/Engine_Module_Serialization.h"
+#include "Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 #include "../../../../../Editor/BehaviourTree/Window/Node/Entry/Npc_BehaviourEntryNode.h"
 #include "../cereal/include/cereal/archives/json.hpp"
 

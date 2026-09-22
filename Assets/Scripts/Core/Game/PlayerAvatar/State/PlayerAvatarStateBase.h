@@ -10,9 +10,9 @@
 #include "../CameraGroup/PlayerAvatarCameraGroupBase.h"
 #include "../Input/PlayerAvatarInput_void.h"
 #include "../LockOnTarget/PlayerAvatarLockOn.h"
-#include "../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -113,7 +113,7 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] auto&                                 CameraGroup  () const { return Context().Camera(); }
         [[nodiscard]] bool                                  ExpiredCamera() const { return Context().ExpiredCamera(); }
         [[nodiscard]] const auto&                           Resources    () const { return Context().Resources(); }
-        [[nodiscard]] GamePlay::PlayerAvatar::ChattableArea& ChattableArea() const { return Context().ChattableArea(); }
+        [[nodiscard]] GamePlay::PlayerAvatar::InteractableArea& InteractableArea() const { return Context().InteractableArea(); }
         [[nodiscard]] State::PlayerAvatarStateCondition     Conditions   () const { return State::PlayerAvatarStateCondition(context_); }
         [[nodiscard]] State::PlayerAvatarStateAction        Actions      () const { return State::PlayerAvatarStateAction   (context_); }
 

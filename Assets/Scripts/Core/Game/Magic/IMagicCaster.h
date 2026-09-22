@@ -3,8 +3,8 @@
 
 #include "vec3.hpp"
 #include "gtc/quaternion.hpp"
-#include "../../../../../Engine/Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
-#include "../../../../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace NanamiEngine::Module::GameObject
 {

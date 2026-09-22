@@ -2,8 +2,8 @@
 #include <memory>
 
 #include "../../../IPlayerAvatar.h"
-#include "../../Engine/Module/Namespace/EngineNamespace.h"
-#include "../../../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "../../../AttackArea/PlayerAvatarAttackArea.h"
 #include "../../../State/Context/IPlayerAvatarStateContext.h"
 #include "../../CameraGroup/SwordManAvatarCameraGroup.h"
@@ -52,7 +52,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] PlayerAvatarCameraGroupBase          &   CameraGroup            () const override { return *cameraGroup_      .lock();                     }
         [[nodiscard]] GamePlay::Ui::NpcChatting            &   NpcChattingUi          () const override { return playerAvatar_      .lock()->NpcChattingUi();    }
         [[nodiscard]] Component::RigidBody                 &   PlayerAvatarRigidBody  () const override { return playerAvatar_      .lock()->RigidBody();        }
-        [[nodiscard]] GamePlay::PlayerAvatar::ChattableArea&   ChattableArea          () const override { return playerAvatar_      .lock()->ChattableArea();    }
+        [[nodiscard]] GamePlay::PlayerAvatar::InteractableArea&   InteractableArea          () const override { return playerAvatar_      .lock()->InteractableArea();    }
         [[nodiscard]] GamePlay::PlayerAvatar::WakeUpArea   &   WakeUpArea             () const override { return playerAvatar_      .lock()->WakeUpArea();       }
         [[nodiscard]] const glm::vec3&                         PlayerAvatarFeatStepPos() const override { return playerAvatar_      .lock()->FeatStepPosition(); }
         [[nodiscard]] float                                    GroundCheckRadius      () const override;

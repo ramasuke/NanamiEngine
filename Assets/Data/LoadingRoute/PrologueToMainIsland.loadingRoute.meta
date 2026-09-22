@@ -1,0 +1,77 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::LoadingRouteData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\LoadingRoute/PrologueToMainIsland.loadingRoute",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "927C8AED-065C-4D3C-A24B-2CCBF69417A7"
+                    }
+                },
+                "isFromAnywhere_": true,
+                "fromScene_": 2,
+                "toScene_": 1,
+                "isHover_": false,
+                "hoverCenter_": {
+                    "value0": 495.0,
+                    "value1": 600.0
+                },
+                "hoverRadius_": {
+                    "value0": 120.0,
+                    "value1": 60.0
+                },
+                "hoverLapSecs_": 7.0,
+                "p0_": {
+                    "value0": 165.0,
+                    "value1": 918.0
+                },
+                "p1_": {
+                    "value0": 300.0,
+                    "value1": 960.0
+                },
+                "p2_": {
+                    "value0": 402.0,
+                    "value1": 858.0
+                },
+                "p3_": {
+                    "value0": 474.0,
+                    "value1": 750.0
+                },
+                "kickerText_": "序 章",
+                "titleText_": "拠点の島へ",
+                "statusText_": "航行中…",
+                "fromCaption_": "",
+                "fromCaptionPosition_": {
+                    "value0": 0.0,
+                    "value1": 0.0
+                },
+                "toCaption_": "目 的 地",
+                "toCaptionPosition_": {
+                    "value0": 495.0,
+                    "value1": 903.0
+                },
+                "hasDestCircle_": true,
+                "destCirclePosition_": {
+                    "value0": 495.0,
+                    "value1": 637.0
+                },
+                "destCircleScale_": 1.12,
+                "stampPosition_": {
+                    "value0": 1272.0,
+                    "value1": 312.0
+                },
+                "cloudDirection_": -1.0,
+                "hasNetworkStep_": false
+            }
+        }
+    }
+}

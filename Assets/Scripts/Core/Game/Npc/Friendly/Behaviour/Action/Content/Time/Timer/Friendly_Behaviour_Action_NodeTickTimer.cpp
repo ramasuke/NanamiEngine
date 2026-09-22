@@ -1,6 +1,6 @@
 ﻿#include "Friendly_Behaviour_Action_NodeTickTimer.h"
 
-#include "../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Time/Time.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {

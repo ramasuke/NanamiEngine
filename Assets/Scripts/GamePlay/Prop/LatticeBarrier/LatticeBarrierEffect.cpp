@@ -1,7 +1,7 @@
 ﻿#include "LatticeBarrierEffect.h"
-#include "../../../../../Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Time/Time.h"
 #include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/PlayerAvatar.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 
 namespace GamePlay::Prop
 {

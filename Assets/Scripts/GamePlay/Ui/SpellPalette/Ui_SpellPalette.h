@@ -2,15 +2,15 @@
 #include <array>
 #include <memory>
 
-#include "../../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../../Engine/Module/Asset/Sprite/SpriteFile.h"
-#include "../../../../../Engine/Module/Color/Color32.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
-#include "../../../../../Engine/Module/Component/CircleGaugeRenderer/CircleGaugeRenderer.h"
-#include "../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Libs/LibCore/cereal/glm/GlmHelper.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Asset/Sprite/SpriteFile.h"
+#include "Engine/Module/Color/Color32.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
+#include "Engine/Module/Component/CircleGaugeRenderer/CircleGaugeRenderer.h"
+#include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../../../Core/Game/PlayerAvatar/InputAction/PlayerAvatarInputDevice.h"
 #include "../../../Core/Game/PlayerAvatar/MagicCaster/Spell/MagicCasterSpellSlot.h"
 

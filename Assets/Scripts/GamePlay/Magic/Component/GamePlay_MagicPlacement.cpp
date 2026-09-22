@@ -1,6 +1,6 @@
 ﻿#include "GamePlay_MagicPlacement.h"
 
-#include "../../../../../Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Time/Time.h"
 #include "../../Spawn/GamePlay_PrefabSpawner.h"
 
 namespace GamePlay::Magic

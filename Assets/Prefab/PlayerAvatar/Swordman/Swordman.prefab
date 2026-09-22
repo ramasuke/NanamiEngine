@@ -136,7 +136,7 @@
                                 }
                             }
                         },
-                        "chattableArea_": {
+                        "interactableArea_": {
                             "cereal_class_version": 0,
                             "value0": {
                                 "polymorphic_id": 1073741824,
@@ -495,7 +495,7 @@
                         "value0": {}
                     },
                     "isActive_": false,
-                    "name_": "ChattableArea",
+                    "name_": "InteractableArea",
                     "guid_": {
                         "value_": "67CFBD1F-36A9-4481-A9F7-04848E828174"
                     },
@@ -503,7 +503,7 @@
                         "componentCount": 2,
                         "component_0": {
                             "polymorphic_id": 2147483659,
-                            "polymorphic_name": "GamePlay::PlayerAvatar::ChattableArea",
+                            "polymorphic_name": "GamePlay::PlayerAvatar::InteractableArea",
                             "ptr_wrapper": {
                                 "id": 2147483671,
                                 "data": {

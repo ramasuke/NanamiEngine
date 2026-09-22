@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "../../../../../../Libs/Singleton/LibCore_SingletonBase.h"
+#include "Libs/Singleton/LibCore_SingletonBase.h"
 #include "../../Type/BehaviourTreeType.h"
 
 namespace Editor::Npc::Behaviour

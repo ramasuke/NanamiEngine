@@ -1,6 +1,6 @@
 ﻿#include "Enemy_Behaviour_Action_RotateOnPlayer.h"
 
-#include "../../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Time/Time.h"
 #include "../../../../../../../../PlayerAvatar/IPlayerAvatar.h"
 #include "../glm/gtx/quaternion.hpp"
 #include "../glm/gtx/vector_angle.hpp"

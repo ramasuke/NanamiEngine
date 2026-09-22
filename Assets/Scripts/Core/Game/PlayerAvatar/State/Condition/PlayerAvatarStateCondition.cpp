@@ -1,8 +1,8 @@
 ﻿#include "PlayerAvatarStateCondition.h"
 
-#include "../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
-#include "../../../../../../../Engine/Module/Physics/Component/Listener/Collision/Engine_Physics_CollisionListener.h"
-#include "../../../../../GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
+#include "Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "Engine/Module/Physics/Component/Listener/Collision/Engine_Physics_CollisionListener.h"
+#include "../../../../../GamePlay/PlayerAvatar/InteractableArea/InteractableArea.h"
 #include "../../../../../GamePlay/PlayerAvatar/WakeUpArea/WakeUpArea.h"
 #include "../../../../../GamePlay/Prop/Canon/Prop_Canon.h"
 #include "../../../../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
@@ -32,7 +32,7 @@ namespace GameCore::PlayerAvatar::State
                                    mask).Hit();
     }
 
-    bool PlayerAvatarStateCondition::IsChattable() const
+    bool PlayerAvatarStateCondition::IsInteractable() const
     {
         // 会話UIは全NPCで共有しているため、表示中に別NPCと会話を始めると文章が重なる
         const auto& subScenes = GameCore::Game::Instance().SubScenes();
@@ -40,7 +40,7 @@ namespace GameCore::PlayerAvatar::State
             chattingUIScene && chattingUIScene->Context().Npc().IsDisplaying())
             return false;
 
-        return !stateContext_->ChattableArea().CatchChatTarget().expired();
+        return !stateContext_->InteractableArea().CatchInteractTarget().expired();
     }
 
     bool PlayerAvatarStateCondition::CanWakeUp() const

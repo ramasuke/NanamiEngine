@@ -1,13 +1,13 @@
 ﻿#include "MagicCasterAvatarChattingState.h"
 
-#include "../../../../../../GamePlay/PlayerAvatar/ChattableArea/ChattableArea.h"
-#include "../../../Chattable/IPlayerChattable.h"
+#include "../../../../../../GamePlay/PlayerAvatar/InteractableArea/InteractableArea.h"
+#include "../../../Interactable/IPlayerInteractable.h"
 
 namespace GameCore::PlayerAvatar::MagicCaster::State
 {
     void ChattingState::DoEnter()
     {
-        ChattableArea().CatchChatTarget().lock()->OnChat();
+        InteractableArea().CatchInteractTarget().lock()->OnInteract();
         OnChangeState(MagicCasterAvatarStateType::Idle);
     }
 

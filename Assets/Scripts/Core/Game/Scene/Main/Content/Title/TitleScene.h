@@ -11,11 +11,11 @@ namespace GameCore::Scene::Main
 
     private:
         void Init     () override;
+        Coroutine::Task<void> OnEnterAsync(int generation);
         void Enter    () override;
         void DoDispose() override;
         void OnDrawGui() override;
-
-    private:
-        std::weak_ptr<NanamiEngine::Scene::Scene> scene_;
+        /** @brief タイトルが読めなければ逃げ場が無いので、そのまま画面を明ける */
+        [[nodiscard]] std::optional<SceneType> FallbackSceneOnFailure() const override { return std::nullopt; }
     };
 }

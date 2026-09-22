@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include "DxLib.h"
-#include "../../../../../Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Time/Time.h"
 
 namespace GamePlay::Ui
 {
@@ -22,13 +22,12 @@ namespace GamePlay::Ui
         danger_       = isDowned_ ? 0.0f : CalcDanger(healthRate_);
         downedWeight_ = isDowned_ ? 1.0f : 0.0f;
 
-        subscription_.unsubscribe();
-        subscription_ = rxcpp::composite_subscription();
+        subscription_.Dispose();
         // OnChangeHealth は Set 直後に流れるので、この時点の IsDeath は新しいHPを反映している
-        model.OnChangeHealth().subscribe(subscription_, [this, &model](const GameCore::StatusParameter::Health health)
+        subscription_.Set(model.OnChangeHealth().Subscribe([this, &model](const GameCore::StatusParameter::Health health)
             {
                 OnChangeHealth(health, model.IsDeath());
-            });
+            }));
     }
 
     void LowHealthScreenEffect::OnAwake()
@@ -38,7 +37,7 @@ namespace GamePlay::Ui
 
     void LowHealthScreenEffect::OnDestroy()
     {
-        subscription_.unsubscribe();
+        subscription_.Dispose();
     }
 
     void LowHealthScreenEffect::OnUpdate()

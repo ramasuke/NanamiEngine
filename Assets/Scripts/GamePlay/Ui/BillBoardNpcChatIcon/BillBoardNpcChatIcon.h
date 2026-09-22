@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/NanamiUI/BillBoard3D/BillboardAnimation3D.h"
-#include "../../../../../Engine/Module/NanamiUI/BillBoard3D/DrawBillboard3D.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/NanamiUI/BillBoard3D/BillboardAnimation3D.h"
+#include "Engine/Module/NanamiUI/BillBoard3D/DrawBillboard3D.h"
 
 namespace GamePlay::Ui
 {

@@ -1,6 +1,6 @@
 ﻿#include "Friendly_Behaviour_Action_PlayAnimation.h"
 
-#include "../../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/Component/Animator/Animator.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {

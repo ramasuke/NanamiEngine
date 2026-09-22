@@ -1,7 +1,7 @@
 ﻿#include "StageSelectPresenter.h"
 
 #include "DxLib.h"
-#include "../../../../../../Engine/Core/Coroutine/Coroutine.h"
+#include "Engine/Core/Coroutine/Coroutine.h"
 #include "../UI_StageSelect.h"
 
 namespace GamePlay::Ui
@@ -23,7 +23,7 @@ namespace GamePlay::Ui
             }
         }
 
-        model_->OnSelectionChanged().subscribe([this](const size_t index)
+        model_->OnSelectionChanged().Subscribe([this](const size_t index)
         {
             view_->HighlightSelectedStage(index);
             view_->SetWorldEnterButtonEnabled(true);
@@ -33,15 +33,15 @@ namespace GamePlay::Ui
                 view_->ShowMapMarker(stage->MapMarkerPosition(), stage->IsCleared());
                 view_->ShowStageDetail(*stage->Data());
             }
-        });
+        }).AddTo(this);
 
         view_->SetWorldEnterButtonEnabled(false);
         view_->ShowNoSelectionDetail();
 
-        view_->OnWorldEnterButtonClicked().subscribe([this](NanamiUi::MouseState)
+        view_->OnWorldEnterButtonClicked().Subscribe([this](NanamiUi::MouseState)
         {
             TryEnterWorld();
-        });
+        }).AddTo(this);
     }
 
     void StageSelectPresenter::OnUpdate()
@@ -61,8 +61,6 @@ namespace GamePlay::Ui
         if (!model_ || !model_->HasSelection())
             return;
 
-        Coroutine::StartCoroutine(view_->PlayEnterWorldTransitionAsync(
-            model_->SelectedSceneType(),
-            model_->SelectedStageData()));
+        view_->EnterWorld(model_->SelectedSceneType());
     }
 }

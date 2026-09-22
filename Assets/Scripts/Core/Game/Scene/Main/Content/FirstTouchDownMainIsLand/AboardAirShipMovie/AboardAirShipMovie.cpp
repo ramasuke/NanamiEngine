@@ -1,17 +1,17 @@
 ﻿#include "AboardAirShipMovie.h"
 
-#include "../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
-#include "../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForObservable/Coroutine_WaitForObservable.h"
-#include "../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForSubscription/Coroutine_WaitForSubscription.h"
-#include "../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForTween/Coroutine_WaitForTween.h"
-#include "../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
-#include "../../../../../../../../../Engine/Core/Coroutine/Awaitable/Yield/Coroutine_WaitYield.h"
-#include "../../../../../../../../../Engine/Module/NanamiUI/BlendAnimationRenderer/BlendAnmiationRenderer.h"
-#include "../../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-#include "../../../../../../../../../Libs/LibCore/Tween/Ease/Ease.h"
-#include "../../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Follow/VirtualCameraFollowBehaviour.h"
-#include "../../../Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
-#include "../../../Engine/Core/Coroutine/Awaitable/WaitForTweenV/Coroutine_WaitForTweenV.h"
+#include "Engine/Core/Coroutine/Coroutine.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitForObservable/Coroutine_WaitForObservable.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitForSubscription/Coroutine_WaitForSubscription.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitForTween/Coroutine_WaitForTween.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
+#include "Engine/Core/Coroutine/Awaitable/Yield/Coroutine_WaitYield.h"
+#include "Engine/Module/NanamiUI/BlendAnimationRenderer/BlendAnmiationRenderer.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/Follow/VirtualCameraFollowBehaviour.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitForTweenV/Coroutine_WaitForTweenV.h"
 #include "../../../../../PlayerAvatar/SwordMan/State/SwordManAvatarStateMachine.h"
 #include "../../../../../PlayerAvatar/SwordMan/State/ArmStretch/SwordManAvatarArmStretchState.h"
 #include "../../../../../PlayerAvatar/SwordMan/State/Walk/SwordManAvatarWalkState.h"
@@ -28,15 +28,32 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         
     }
 
+    Coroutine::Task<void> AboardAirShipMovie::PlayAsync(const std::shared_ptr<AboardAirShipMovie> movie)
+    {
+        co_await movie->Invoke();
+    }
+
+    Coroutine::Task<void> AboardAirShipMovie::StagingAsync(const std::shared_ptr<AboardAirShipMovie> movie)
+    {
+        co_await movie->AirShipMovieStagingAsync();
+    }
+
+    bool AboardAirShipMovie::ShouldStop() const
+    {
+        return isCancelled_ || playerAvatar_.expired() || context_.expired();
+    }
+
     Coroutine::Task<void> AboardAirShipMovie::Invoke()
     {
-        Coroutine::StartCoroutine(AirShipMovieStagingAsync());
+        Coroutine::StartCoroutine(StagingAsync(shared_from_this()));
         co_await AboardAirShipMovieMoveAirShipAsync();
     }
-    
+
     Coroutine::Task<void> AboardAirShipMovie::AboardAirShipMovieMoveAirShipAsync()
     {
         co_await Coroutine::WaitForSeconds(20.0f);
+        if (ShouldStop())
+            co_return;
         
         // 1度目の飛行機の移動
         const auto firstMoveTween = tweeny::from(Context()->AirShip()->Transform().GetWorldPos())
@@ -45,6 +62,8 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
                                     .via(Tween::Ease(EaseType::Linear));
         
         co_await Coroutine::WaitForTween(Context()->AirShip()->Transform(), firstMoveTween);
+        if (ShouldStop())
+            co_return;
     
         // 2度目の飛行機の移動と回転
         const auto secondMoveTween = tweeny::from(
@@ -58,6 +77,8 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
              .via(Tween::Ease(EaseType::OutQuad), Tween::Ease(EaseType::OutQuad));
         
         co_await Coroutine::WaitForTween(Context()->AirShip()->Transform(), secondMoveTween);
+        if (ShouldStop())
+            co_return;
         
         playerAvatar_.lock()->PlayerTransform().SetParent(std::weak_ptr<GameObject::IGameObject>(), true);
         context_.lock()->BoundryAirShipCollider().OnDestroy();
@@ -73,6 +94,8 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         
         // 一度目のカメラ移動
         co_await AirShipMovieFirstCameraMoveAsync();
+        if (ShouldStop())
+            co_return;
         
         // カメラの切り替え
         Context()->FirstVirtualCamera()->OnDisable();
@@ -81,8 +104,12 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         // Playerの歩き
         context_.lock()->TitleLogo().lock()->Entity().lock()->SetEnable(true);
         co_await AirShipMovieWalkPlayerAsync      ();
+        if (ShouldStop())
+            co_return;
         // PlayerのArmStretch
         co_await AirShipMovieArmStretchPlayerAsync();
+        if (ShouldStop())
+            co_return;
 
         StartFadeInUi();
         
@@ -123,6 +150,9 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
         using namespace PlayerAvatar::SwordMan::State;
         playerAvatar_.lock()->GetEventSceneStateMachine().OnChangeState(PlayerAvatar::EventSceneStateType::ArmStretch);
         co_await Coroutine::WaitForSeconds(static_cast<float>(Context()->PlayerArmStretchDuring_msecs()) / 1000);
+        if (ShouldStop())
+            co_return;
+        
         Context()->SecondVirtualCamera()->OnDisable();
     }
 

@@ -1,7 +1,7 @@
 ﻿#include "Ui_DamageFlash.h"
 
 #include <algorithm>
-#include "../../../../../Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Time/Time.h"
 
 namespace GamePlay::Ui
 {

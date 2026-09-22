@@ -1,7 +1,7 @@
 ﻿#include "Enemy_Behaviour_Action_MoveToPlayerPos.h"
 
-#include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../../../../PlayerAvatar/IPlayerAvatar.h"
 
 namespace GameCore::Npc::Enemy::Behaviour

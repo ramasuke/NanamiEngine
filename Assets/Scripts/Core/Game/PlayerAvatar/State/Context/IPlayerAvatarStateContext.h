@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "../../IPlayerAvatar.h"
-#include "../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace NanamiEngine::Module::GameObject
 {
@@ -34,7 +34,7 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual GameObject::Transform                &   PlayerAvatarTransform    () const = 0;
         [[nodiscard]] virtual GamePlay::Ui::NpcChatting            &   NpcChattingUi            () const = 0;
         [[nodiscard]] virtual PlayerAvatarCameraGroupBase          &   CameraGroup              () const = 0;
-        [[nodiscard]] virtual GamePlay::PlayerAvatar::ChattableArea&   ChattableArea            () const = 0;
+        [[nodiscard]] virtual GamePlay::PlayerAvatar::InteractableArea&   InteractableArea            () const = 0;
         [[nodiscard]] virtual GamePlay::PlayerAvatar::WakeUpArea   &   WakeUpArea               () const = 0;
         [[nodiscard]] virtual const glm::vec3&                         PlayerAvatarFeatStepPos  () const = 0;
         [[nodiscard]] virtual float                                    GroundCheckRadius        () const = 0;

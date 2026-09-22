@@ -17,26 +17,22 @@ namespace GamePlay::PlayerAvatar
         const Ui::PlayerStatus& view,
         const GameCore::PlayerAvatar::IPlayerAvatarStatus& model)
     {
-        auto onDestroySubscription = rxcpp::composite_subscription();
-
         // OnChangeHealth は購読時に現在値を流さないので、HPの数字とゲージを最初に一度そろえておく
         view.UpdateHealthBar(model.MaxHealth(), model.Health());
-        model.OnChangeHealth().subscribe(onDestroySubscription, [&](const GameCore::StatusParameter::Health currentHealth)
+        model.OnChangeHealth().Subscribe([&](const GameCore::StatusParameter::Health currentHealth)
             {
                 view.UpdateHealthBar(model.MaxHealth(), currentHealth);
-            });
-        model.Event().OnDamage().subscribe(
-                onDestroySubscription,
-                [&view](GameCore::StatusParameter::Health) { view.OnDamageHealthBar(); });
+            }).AddTo(this);
+        model.Event().OnDamage().Subscribe([&view](GameCore::StatusParameter::Health) { view.OnDamageHealthBar(); }).AddTo(this);
         
-        model.Stamina().Subscribe(onDestroySubscription, [&](const GameCore::StatusParameter::Stamina currentStamina)
+        model.Stamina().Subscribe([&](const GameCore::StatusParameter::Stamina currentStamina)
             {
                 view.UpdateStaminaBar(model.MaxStamina(), currentStamina);
-            });
+            }).AddTo(this);
 
         view.OnIsInjured(model.IsInjured());
-        model.OnBecomeInjured().subscribe(onDestroySubscription, [&view](LibCore::Rx::unit) { view.OnIsInjured(true); });
-        model.OnRecoverFromInjured().subscribe(onDestroySubscription, [&view](LibCore::Rx::unit) { view.OnIsInjured(false); });
+        model.OnBecomeInjured().Subscribe([&view](R4::Unit) { view.OnIsInjured(true); }).AddTo(this);
+        model.OnRecoverFromInjured().Subscribe([&view](R4::Unit) { view.OnIsInjured(false); }).AddTo(this);
     }
 
     void StatusPresenterBase::OnDrawGui()

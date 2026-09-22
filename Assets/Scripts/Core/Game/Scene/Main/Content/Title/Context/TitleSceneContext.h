@@ -1,6 +1,6 @@
 #pragma once
-#include "../../../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../../../Engine/Module/Asset/Scene/SceneFile.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Scene/SceneFile.h"
 #include "../../../Context/Main_SceneContextBase.h"
 
 namespace GameCore::Scene

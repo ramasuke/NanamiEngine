@@ -24,18 +24,10 @@ namespace GamePlay::Ui
     public:
         [[nodiscard]] const RowRequests& Requests() const { return requests_; }
 
-        bool Automatic(SwordManAvatarStateType, bool) override { return false; }
-
-        bool OnInput(const SwordManAvatarStateType to, const SwordManAvatarInput input, const PlayerAvatarInputPhase phase, const bool isUsable) override
+        void OnInput(const SwordManAvatarStateType to, const SwordManAvatarInput input, const PlayerAvatarInputPhase phase, const bool isUsable, bool) override
         {
             if (const auto label = TransitionLabel(to, phase))
                 Offer(InputGlyph(input), *label, isUsable);
-            return false;
-        }
-
-        bool OnInputWhenReady(const SwordManAvatarStateType to, const SwordManAvatarInput input, const PlayerAvatarInputPhase phase, const bool isUsable, bool) override
-        {
-            return OnInput(to, input, phase, isUsable);
         }
 
         void Action(const SwordManAvatarStateAction action, const bool isUsable) override
@@ -125,10 +117,8 @@ namespace GamePlay::Ui
             case SwordManAvatarInput::Jump:         return Glyph::Jump;
             case SwordManAvatarInput::AvoidRolling: return Glyph::AvoidRolling;
             case SwordManAvatarInput::NormalAttack:
-            case SwordManAvatarInput::DashAttack:
-            case SwordManAvatarInput::CannonAttack: return Glyph::Attack;
+            case SwordManAvatarInput::DashAttack:   return Glyph::Attack;
             case SwordManAvatarInput::Chat:         return Glyph::Interact;
-            case SwordManAvatarInput::LockOn:       return Glyph::LockOn;
             }
             return Glyph::Move;
         }

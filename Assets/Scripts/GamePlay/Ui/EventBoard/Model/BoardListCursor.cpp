@@ -21,7 +21,7 @@ namespace GamePlay::Ui
         else if (visibleRowCount_ > 0 && selectedIndex_ >= firstVisibleIndex_ + visibleRowCount_)
             firstVisibleIndex_ = selectedIndex_ - visibleRowCount_ + 1;
 
-        onSelectionChanged_.get_subscriber().on_next(selectedIndex_);
+        onSelectionChanged_.OnNext(selectedIndex_);
     }
 
     void BoardListCursor::Move(const int delta)

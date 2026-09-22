@@ -1,7 +1,7 @@
 ﻿#include "Enemy_Behaviour_TickContext.h"
 
-#include "../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../../Game.h"
 #include "../../../../../../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
 #include "../../../../../PlayerAvatar/IPlayerAvatar.h"

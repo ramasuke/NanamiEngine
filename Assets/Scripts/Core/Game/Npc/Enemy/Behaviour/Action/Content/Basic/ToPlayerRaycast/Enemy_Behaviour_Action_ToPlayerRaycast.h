@@ -3,7 +3,7 @@
 #include "cereal/types/vector.hpp"
 #include "../../../Enemy_Behaviour_ActionBase.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
+#include "Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
 #include "cereal/types/base_class.hpp"
 #include "cereal/types/polymorphic.hpp"
 
@@ -15,7 +15,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         TickStatus DoTick(const TickContext& context) override;
         void       DoDrawGui() override;
 
-        [[serialize(0)]] std::vector<Physics::Layer> layers_      = { Physics::Layer::Enemy };
+        [[serialize(0)]] std::vector<Physics::Layer> layers_      = { Physics::NameToLayer("Enemy") };
         [[serialize(1)]] float                       maxDistance_ = 10.0f;
         [[serialize(2)]] float                       offsetY_     = 10.0f;
 

@@ -1,6 +1,6 @@
 ﻿#include "Enemy_Behaviour_Action_PurposeCamera.h"
 
-#include "../../../../../../../../../../../Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
+#include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 
 namespace GameCore::Npc::Enemy::Behaviour

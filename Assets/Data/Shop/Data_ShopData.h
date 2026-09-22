@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "cereal/types/vector.hpp"
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "Data_ShopEntry.h"
 
 namespace NanamiEngine::Module::Asset

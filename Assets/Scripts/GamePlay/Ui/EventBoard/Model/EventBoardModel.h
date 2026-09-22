@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "BoardListCursor.h"
-#include "../../../../../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 #include "../../../../../Data/EventNotice/Data_EventNotice.h"
 
 namespace GamePlay::Ui

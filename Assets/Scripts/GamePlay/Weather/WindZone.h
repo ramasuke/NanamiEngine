@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "vec2.hpp"
-#include "../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../Engine/Module/LifeCycleCallback/InitRenderable/IInitRenderable.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/LifeCycleCallback/InitRenderable/IInitRenderable.h"
 
 namespace GamePlay::Weather
 {

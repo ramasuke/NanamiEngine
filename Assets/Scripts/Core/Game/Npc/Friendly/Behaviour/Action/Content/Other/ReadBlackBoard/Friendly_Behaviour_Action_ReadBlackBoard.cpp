@@ -1,6 +1,6 @@
 ﻿#include "Friendly_Behaviour_Action_ReadBlackBoard.h"
 
-#include "../../../../../../../../../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
+#include "Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {

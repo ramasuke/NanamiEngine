@@ -1,8 +1,8 @@
 ﻿#include "PlayerAvatarCameraGroupBase.h"
 
-#include "../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/LockOn/LockOnCameraBehaviour.h"
-#include "../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
-#include "../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/LockOn/LockOnCameraBehaviour.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
 
 namespace GameCore::PlayerAvatar
 {

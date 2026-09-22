@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../../Engine/Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
+#include "Engine/Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
 
 namespace GameCore::PlayerAvatar
 {

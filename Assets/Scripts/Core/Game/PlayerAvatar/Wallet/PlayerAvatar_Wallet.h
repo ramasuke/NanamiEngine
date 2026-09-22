@@ -2,7 +2,7 @@
 #include <cstdint>
 
 #include "../../StatusParameter/Money/Money.h"
-#include "../../../../../../Libs/LibCore/Rx/SerializableSubject/SerializableSubject.h"
+#include "Packages/R4/R4.h"
 
 namespace GameCore::PlayerAvatar
 {
@@ -13,10 +13,10 @@ namespace GameCore::PlayerAvatar
         Wallet();
         explicit Wallet(StatusParameter::Money balance);
 
-        [[nodiscard]] StatusParameter::Money Balance   () const { return balance_.get(); }
-        [[nodiscard]] bool                   CanAfford (const StatusParameter::Money price) const { return balance_.get() >= price; }
+        [[nodiscard]] StatusParameter::Money Balance   () const { return balance_.Value(); }
+        [[nodiscard]] bool                   CanAfford (const StatusParameter::Money price) const { return balance_.Value() >= price; }
         /** @brief 購読した時点で現在値が流れる */
-        [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Money> Observe() const { return balance_.AsReadOnly(); }
+        [[nodiscard]] NanamiEngine::R4::ReadOnlyReactiveProperty<StatusParameter::Money> Observe() const { return balance_.AsReadOnly(); }
 
         /** @brief 0以下は無視する */
         void Earn(StatusParameter::Money amount);
@@ -24,7 +24,7 @@ namespace GameCore::PlayerAvatar
         bool TrySpend(StatusParameter::Money price);
 
     private:
-        [[serialize(0)]] LibCore::Rx::SerializableSubject<StatusParameter::Money> balance_;
+        [[serialize(0)]] NanamiEngine::R4::SerializableReactiveProperty<StatusParameter::Money> balance_;
 
 #pragma region Serialization Function
     public:

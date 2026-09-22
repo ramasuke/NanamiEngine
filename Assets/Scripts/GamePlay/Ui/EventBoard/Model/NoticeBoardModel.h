@@ -6,7 +6,7 @@
 
 #include "AnnouncementReadLog.h"
 #include "BoardListCursor.h"
-#include "../../../../../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 #include "../../../../../Data/EventNotice/Data_Announcement.h"
 
 namespace GamePlay::Ui

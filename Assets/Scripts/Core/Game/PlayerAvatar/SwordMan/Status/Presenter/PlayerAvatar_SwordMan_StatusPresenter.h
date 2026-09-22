@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../../../Status/Presenter/PlayerAvatar_StatusPresenterBase.h"
-#include "../../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../../../GamePlay/Ui/PlayerStatus/Ui_LowHealthScreenEffect.h"
 
 namespace GameCore::PlayerAvatar::SwordMan

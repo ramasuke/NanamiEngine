@@ -19,11 +19,13 @@ namespace GameCore::Scene::Main
         
     private:
         void Init     () override;
+        Coroutine::Task<void> OnEnterAsync(int generation);
         void Enter    () override;
         void DoDispose  () override;
         void OnDrawGui() override;
+        /** @brief 拠点が読めなければタイトルへ戻す */
+        [[nodiscard]] std::optional<SceneType> FallbackSceneOnFailure() const override { return SceneType::Title; }
         
-        std::weak_ptr<NanamiEngine::Scene::Scene> scene_;
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
         Asset::PlayerAvatarAttachments attachments_;
     };

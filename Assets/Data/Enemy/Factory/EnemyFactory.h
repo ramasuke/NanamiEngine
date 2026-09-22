@@ -3,9 +3,9 @@
 
 #include "vec3.hpp"
 #include "gtc/quaternion.hpp"
-#include "../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "../../../Scripts/Core/Game/Npc/Enemy/Type/EnemyKind.h"
 #include "../../../Scripts/GamePlay/Npc/Enemy/Hyena/HyenaRepository.h"
 

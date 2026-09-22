@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "../../../../BehaviourTree/Window/Node/Npc_BehaviourNodeBase.h"
-#include "../../../../../../../Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
+#include "Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionBase.h"
 
 namespace Editor::Npc::Enemy::Behaviour

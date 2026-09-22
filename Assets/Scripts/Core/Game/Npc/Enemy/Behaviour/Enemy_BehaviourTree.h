@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "../../../../../../../Engine/Core/Network/Object/Creator/NetworkParamCreator.h"
-#include "../../../../../../../Engine/Core/Object/IObject.h"
+#include "Engine/Core/Network/Object/Creator/NetworkParamCreator.h"
+#include "Engine/Core/Object/IObject.h"
 #include "Action/TickContext/Enemy_Behaviour_TickContext.h"
 
 namespace NanamiEngine::Module::BlackBoard

@@ -1,10 +1,10 @@
 ﻿#pragma once
 #include <cstdint>
 
-#include "../rxcpp/rx.hpp"
+#include "Packages/R4/R4.h"
 #include "../cereal/include/cereal/cereal.hpp"
 #include "../../../../StatusParameter/Money/Money.h"
-#include "../../../../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
+#include "Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 
 namespace GameCore::PlayerAvatar
 {

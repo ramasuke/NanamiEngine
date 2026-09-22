@@ -1,0 +1,77 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::LoadingRouteData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\LoadingRoute/DepartToGrassLand.loadingRoute",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "6C7E0013-9E20-4A33-B372-FB9238ACA91F"
+                    }
+                },
+                "isFromAnywhere_": false,
+                "fromScene_": 2,
+                "toScene_": 0,
+                "isHover_": false,
+                "hoverCenter_": {
+                    "value0": 495.0,
+                    "value1": 600.0
+                },
+                "hoverRadius_": {
+                    "value0": 120.0,
+                    "value1": 60.0
+                },
+                "hoverLapSecs_": 7.0,
+                "p0_": {
+                    "value0": 600.0,
+                    "value1": 592.0
+                },
+                "p1_": {
+                    "value0": 810.0,
+                    "value1": 300.0
+                },
+                "p2_": {
+                    "value0": 1140.0,
+                    "value1": 645.0
+                },
+                "p3_": {
+                    "value0": 1290.0,
+                    "value1": 412.0
+                },
+                "kickerText_": "出 航",
+                "titleText_": "草原地帯へ",
+                "statusText_": "航行中…",
+                "fromCaption_": "出 発 地",
+                "fromCaptionPosition_": {
+                    "value0": 495.0,
+                    "value1": 903.0
+                },
+                "toCaption_": "目 的 地",
+                "toCaptionPosition_": {
+                    "value0": 1395.0,
+                    "value1": 603.0
+                },
+                "hasDestCircle_": true,
+                "destCirclePosition_": {
+                    "value0": 1395.0,
+                    "value1": 372.0
+                },
+                "destCircleScale_": 1.0,
+                "stampPosition_": {
+                    "value0": 1272.0,
+                    "value1": 312.0
+                },
+                "cloudDirection_": -1.0,
+                "hasNetworkStep_": true
+            }
+        }
+    }
+}

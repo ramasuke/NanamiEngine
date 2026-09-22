@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <cassert>
 #include <concepts>
 #include <memory>
@@ -9,7 +9,7 @@
 #include "IReadOnlyPlayerAvatarStateMachine.h"
 #include "../../../Network/Rpc/Custom_RpcType.h"
 #include "../State/IPlayerAvatarState.h"
-#include "../rxcpp/subjects/rx-behavior.hpp"
+#include "Packages/R4/R4.h"
 
 namespace GameCore::PlayerAvatar
 {
@@ -47,8 +47,8 @@ namespace GameCore::PlayerAvatar
             if (!isEnable_)
                 return;
             
-            if (currentState_.get_value())
-                currentState_.get_value()->OnUpdate();
+            if (currentState_.Value())
+                currentState_.Value()->OnUpdate();
         }
 
         void NetworkTick(const Core::Network::NetworkObjectId id, const bool hasStateAuthority) override
@@ -68,8 +68,8 @@ namespace GameCore::PlayerAvatar
             if (!isEnable_)
                 return;
             
-            if (currentState_.get_value())
-                currentState_.get_value()->OnFixedUpdate();
+            if (currentState_.Value())
+                currentState_.Value()->OnFixedUpdate();
         }
 
         void ApplySyncState(const uint8_t stateValue)
@@ -83,14 +83,14 @@ namespace GameCore::PlayerAvatar
         
         void OnDrawGui()
         {
-            ImGui::Text(("currentState: " + std::string(typeid(*currentState_.get_value()).name())).c_str());
+            ImGui::Text(("currentState: " + std::string(typeid(*currentState_.Value()).name())).c_str());
 
             if (ImGui::TreeNode("States"))
             {
                 for (const auto& [stateType, state] : states_)
                 {
                     const char* typeName = typeid(*state).name();
-                    if (const bool isCurrent = (currentState_.get_value() == state);
+                    if (const bool isCurrent = (currentState_.Value() == state);
                         ImGui::Selectable(typeName, isCurrent))
                     {
                         OnChangeState(stateType);
@@ -105,13 +105,13 @@ namespace GameCore::PlayerAvatar
         {
             assert(states_.contains(type));
             
-            if (currentState_.get_value() && isEnable_)
-                currentState_.get_value()->OnExit();
+            if (currentState_.Value() && isEnable_)
+                currentState_.Value()->OnExit();
 
             currentStateType_ = type;
-            currentState_.get_subscriber().on_next(states_.at(type));
+            currentState_.OnNext(states_.at(type));
             if (isEnable_)
-                currentState_.get_value()->OnEnter();
+                currentState_.Value()->OnEnter();
         }
 
         [[nodiscard]] uint8_t GetCurrentStateValue() const
@@ -128,15 +128,16 @@ namespace GameCore::PlayerAvatar
         virtual void OnDisable() { OnChangeState(disableState_); }
 
     protected:
-        rxcpp::observable<std::shared_ptr<IPlayerAvatarState>> CurrentState()
+        NanamiEngine::R4::Observable<std::shared_ptr<IPlayerAvatarState>> CurrentState()
         {
-            return currentState_.get_observable();
+            return currentState_.AsObservable();
         }
 
     private:
         bool isEnable_ = false; 
         const StateMap states_;
-        rxcpp::subjects::behavior<std::shared_ptr<IPlayerAvatarState>> currentState_;
+        // 同じステートへの遷移も通知するので、更新は Value(v) ではなく OnNext(v)
+        NanamiEngine::R4::ReactiveProperty<std::shared_ptr<IPlayerAvatarState>> currentState_;
         StateTypeT       currentStateType_;
         const StateTypeT initialState_;
         const StateTypeT disableState_;

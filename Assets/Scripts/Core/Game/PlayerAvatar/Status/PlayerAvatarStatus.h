@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../../../../../../Engine/Module/LocalPrefs/Engine_Module_LocalPrefs.h"
+#include "Engine/Module/LocalPrefs/Engine_Module_LocalPrefs.h"
 #include "../RequireType/RequireType.h"
-#include "../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace GameCore::PlayerAvatar
 {

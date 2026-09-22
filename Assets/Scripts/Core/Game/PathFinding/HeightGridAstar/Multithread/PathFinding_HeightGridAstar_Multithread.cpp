@@ -5,7 +5,7 @@
 #include <limits>
 #include <utility>
 
-#include "../../../../../../../Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Time/Time.h"
 
 namespace GameCore::PathFinding
 {

@@ -1,8 +1,8 @@
 ﻿#include "SoundPlayer.h"
 
 #include "DxLib.h"
-#include "../../../../Engine/Module/Asset/Sound/SoundFile.h"
-#include "../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 
 namespace GamePlay::Sound
 {

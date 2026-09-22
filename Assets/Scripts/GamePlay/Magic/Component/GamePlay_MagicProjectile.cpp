@@ -1,8 +1,8 @@
 ﻿#include "GamePlay_MagicProjectile.h"
 
-#include "../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
-#include "../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../Spawn/GamePlay_PrefabSpawner.h"
 #include "../GamePlay_MagicAim.h"

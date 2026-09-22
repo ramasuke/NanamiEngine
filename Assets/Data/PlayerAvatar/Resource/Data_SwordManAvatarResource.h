@@ -5,10 +5,10 @@
 #include "cereal/types/string.hpp"
 #include "cereal/types/vector.hpp"
 
-#include "../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../Engine/Module/Asset/Sound/SoundFile.h"
-#include "../../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "../../Item/Data_ItemStack.h"
 
 namespace NanamiEngine::Module::Asset

@@ -1,0 +1,90 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::ItemData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 3,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Item/Herb.itemData",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "B41ECD33-8590-4692-80FB-EF9C79CCF2C8"
+                    }
+                },
+                "displayName_": "薬草",
+                "iconSprite_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "AC54D14D-4298-40A5-95D0-E1BDAC78ACFC"
+                                }
+                            }
+                        }
+                    }
+                },
+                "useSound_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                }
+                            }
+                        }
+                    }
+                },
+                "maxStack_": 10,
+                "effects_": [
+                    {
+                        "polymorphic_id": 2147483650,
+                        "polymorphic_name": "GameCore::PlayerAvatar::Item::HealHealthEffect",
+                        "ptr_wrapper": {
+                            "id": 2147483652,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0
+                                },
+                                "amount_": 15
+                            }
+                        }
+                    }
+                ],
+                "pickupPrefab_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483653,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "531F5A21-5708-4739-BD07-8A6E92431F90"
+                                }
+                            }
+                        }
+                    }
+                },
+                "descriptionLines_": [
+                    "体力を少し回復する。",
+                    "草原のあちこちに生えている。"
+                ]
+            }
+        }
+    }
+}

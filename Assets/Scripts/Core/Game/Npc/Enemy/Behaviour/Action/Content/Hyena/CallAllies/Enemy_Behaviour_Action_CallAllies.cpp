@@ -3,10 +3,10 @@
 #include <algorithm>
 #include <random>
 
-#include "../../../../../../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
-#include "../../../../../../../../../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 #include "../../../../../../../../../GamePlay/Npc/Enemy/Hyena/GamePlay_Enemy_Hyena.h"
 #include "../../../../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"

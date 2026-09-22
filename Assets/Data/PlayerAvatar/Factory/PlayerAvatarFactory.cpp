@@ -1,8 +1,8 @@
 ﻿#include "PlayerAvatarFactory.h"
 
 #include "../../../Scripts/Core/Game/PlayerAvatar/PlayerAvatar.h"
-#include "../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-#include "../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../Scripts/Core/Game/Game.h"
 #include "../../../Scripts/GamePlay/PlayerAvatar/PlayerAvatarBase.h"
 #include "../../../Scripts/GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"

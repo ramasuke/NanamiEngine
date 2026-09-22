@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../Engine/Module/Component/AudioSource/AudioSource.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/AudioSource/AudioSource.h"
 
 namespace GamePlay::Sound
 {

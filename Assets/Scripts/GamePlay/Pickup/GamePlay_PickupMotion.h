@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "vec3.hpp"
-#include "../../../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace NanamiEngine::Module::GameObject
 {

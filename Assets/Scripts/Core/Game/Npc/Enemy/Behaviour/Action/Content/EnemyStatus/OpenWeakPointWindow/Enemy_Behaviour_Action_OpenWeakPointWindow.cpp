@@ -1,6 +1,6 @@
 ﻿#include "Enemy_Behaviour_Action_OpenWeakPointWindow.h"
 
-#include "../../../../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../../../../../../GamePlay/Npc/Enemy/BodyPart/GamePlay_Enemy_BodyPartWeakPoint.h"
 
 namespace GameCore::Npc::Enemy::Behaviour

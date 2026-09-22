@@ -2,8 +2,8 @@
 #include <memory>
 #include <vector>
 #include "../Npc_BehaviourNodeBase.h"
-#include "../../../../../../../Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
-#include "../../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace Editor::Npc::Behaviour
 {

@@ -1,7 +1,7 @@
 ﻿#include "Ui_PlayerStatus.h"
 
-#include "../../../../../Engine/Core/Coroutine/Coroutine.h"
-#include "../../../../../Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
+#include "Engine/Core/Coroutine/Coroutine.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
 #include "../../../Core/Game/StatusParameter/Health/Health.h"
 #include "../../../Core/Game/StatusParameter/Stamina/Stamina.h"
 

@@ -1,7 +1,7 @@
 #include "Ui_InjuredMask.h"
 
 #include <cmath>
-#include "../../../../../Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/Time/Time.h"
 
 namespace GamePlay::Ui
 {

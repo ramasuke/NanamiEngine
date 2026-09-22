@@ -1,7 +1,7 @@
 ﻿#include "StageDifficultyPips.h"
 
-#include "../../../../../../Engine/Module/Component/ImageRenderer/ImageRenderer.h"
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Component/ImageRenderer/ImageRenderer.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 
 namespace GamePlay::Ui
 {

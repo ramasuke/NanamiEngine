@@ -9,12 +9,12 @@ namespace NanamiEngine::Module::Asset
     {
     }
 
-    void ItemData::ApplyEffects(GameCore::PlayerAvatar::Item::IItemEffectTarget& target) const
+    void ItemData::ApplyEffects(GameCore::PlayerAvatar::Item::IItemEffectTarget& target, const std::shared_ptr<GameObject::IGameObject>& user) const
     {
         for (const auto& effect : effects_)
         {
             if (effect)
-                effect->Apply(target);
+                effect->Apply(target, user);
         }
     }
 

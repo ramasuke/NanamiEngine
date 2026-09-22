@@ -1,5 +1,5 @@
 ﻿#include "../../Custom_RpcType.h"
-#include "../../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "../../../../Game/Npc/Enemy/EnemyBase.h"
 
 namespace
@@ -13,6 +13,7 @@ namespace
             GameCore::Network::EnemyDeathRpc::OnTargeted<GameCore::Npc::EnemyBase>(
                 [](GameCore::Npc::EnemyBase& enemy)
                 {
+                    enemy.NotifyDefeated();
                     if (const auto entity = enemy.Entity().lock())
                         entity->OnDestroy();
                 },

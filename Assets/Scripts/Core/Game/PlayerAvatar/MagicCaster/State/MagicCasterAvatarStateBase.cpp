@@ -3,6 +3,7 @@
 #include "../../../../../../Data/PlayerAvatar/Resource/Data_MagicCasterAvatarResource.h"
 #include "../../Input/PlayerAvatarInput_void.h"
 #include "../../LockOnTarget/ILockOnTarget.h"
+#include "../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../Spell/MagicCasterSpellSlot.h"
 
 namespace GameCore::PlayerAvatar::MagicCaster
@@ -60,13 +61,12 @@ namespace GameCore::PlayerAvatar::MagicCaster
             {
             }
 
-            bool Cast(bool) override
+            void Cast(bool) override
             {
                 if (HasChanged() || !tryBeginCast_())
-                    return false;
+                    return;
 
                 MarkChanged();
-                return true;
             }
 
         private:
@@ -105,5 +105,27 @@ namespace GameCore::PlayerAvatar::MagicCaster
         glm::vec3 toAim = LockOnPositionOf(*target) - Transform().GetWorldPos();
         toAim.y = 0.0f;
         Actions().RotateTowards(toAim, Status().GetMoveRotateSpeed());
+    }
+
+    void MagicCasterAvatarStateBase::UpdateItemPouchInput() const
+    {
+        auto& pouch = Status().Pouch();
+
+        if (Input().CycleItemNext().IsPressed())
+            pouch.Cycle(1);
+        if (Input().CycleItemPrev().IsPressed())
+            pouch.Cycle(-1);
+        if (Input().UseItem().IsPressed())
+            UseSelectedPouchItem();
+    }
+
+    void MagicCasterAvatarStateBase::UseSelectedPouchItem() const
+    {
+        const auto used = Status().Pouch().UseSelected(Status(), Context().PlayerAvatarObject());
+        if (!used)
+            return;
+
+        if (const auto sound = used->UseSound())
+            GamePlay::Sound::SoundPlayer::PlaySe(*sound, Transform().GetWorldPos());
     }
 }

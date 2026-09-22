@@ -30,8 +30,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarJumpAttackAirState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const
     {
-        if (visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged()))
-            return;
+        visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged());
         visitor.Automatic(SwordManAvatarStateType::JumpAttackLand, Conditions().IsGround());
     }
 }

@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../../../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../../../Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
-#include "../../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../TickContext/Friendly_Behaviour_TickContext.h"
 
 namespace GameCore::Npc::Friendly::Behaviour::Action

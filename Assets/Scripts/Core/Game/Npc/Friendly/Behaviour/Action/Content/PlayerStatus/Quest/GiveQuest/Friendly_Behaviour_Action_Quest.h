@@ -1,7 +1,9 @@
 ﻿#pragma once
 #include "../../../../Friendly_Behaviour_ActionBase.h"
 #include "../../../../../../../../../../Editor/Npc/Friendly/Behaviour/Action/Friendly_Behaviour_ActionFactory.h"
-#include "../../../../../../../../PlayerAvatar/Quest/PlayerAvatar_StoryQuestBase.h"
+#include "../../../../../../../../PlayerAvatar/Quest/PlayerAvatar_ITakeableQuest.h"
+#include "cereal/types/memory.hpp"
+#include "cereal/types/polymorphic.hpp"
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {
@@ -11,7 +13,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         void       DoDrawGui() override;
 
         
-        std::shared_ptr<PlayerAvatar::StoryQuestBase> quest_;
+        std::shared_ptr<PlayerAvatar::Quest::ITakeableQuest> quest_;
         
 #pragma region Serialization Function
     public:

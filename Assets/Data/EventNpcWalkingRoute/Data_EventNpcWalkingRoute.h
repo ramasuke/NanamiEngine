@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "RoutePoint/Data_Event_Npc_WalkingRoute_RoutePoint.h"
 
 namespace NanamiEngine::Module::Asset

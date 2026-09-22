@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "../../../../../Engine/Core/Coroutine/Task/Task.h"
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Engine/Core/Coroutine/Task/Task.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 
 namespace GamePlay::Data
 {

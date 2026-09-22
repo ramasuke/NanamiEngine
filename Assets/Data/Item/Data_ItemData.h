@@ -7,11 +7,11 @@
 #include "cereal/types/memory.hpp"
 #include "cereal/types/polymorphic.hpp"
 #include "cereal/types/vector.hpp"
-#include "../../../Engine/Core/Object/Field/Field.h"
-#include "../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../Engine/Module/Asset/Sound/SoundFile.h"
-#include "../../../Engine/Module/Asset/Sprite/SpriteFile.h"
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
+#include "Engine/Module/Asset/Sprite/SpriteFile.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "../../Scripts/Core/Game/PlayerAvatar/Item/Effect/IItemEffect.h"
 
 namespace GameCore::PlayerAvatar::Item
@@ -38,7 +38,7 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] const std::vector<std::string>& DescriptionLines() const { return descriptionLines_; }
         /** 地面に落ちたときの拾い物(ItemPickup 付き)。中身は生成側が渡すので、プレハブはこのアイテムを参照しない */
         [[nodiscard]] std::shared_ptr<PrefabGameObjectFile> PickupPrefab() const { return pickupPrefab_.get(); }
-        void ApplyEffects(GameCore::PlayerAvatar::Item::IItemEffectTarget& target) const;
+        void ApplyEffects(GameCore::PlayerAvatar::Item::IItemEffectTarget& target, const std::shared_ptr<GameObject::IGameObject>& user) const;
 
     private:
         [[serialize(0)]] std::string       displayName_;

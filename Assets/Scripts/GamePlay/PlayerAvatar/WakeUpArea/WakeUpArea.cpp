@@ -1,6 +1,6 @@
 #include "WakeUpArea.h"
 
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../Core/Game/PlayerAvatar/Wakeable/IPlayerWakeable.h"
 
 namespace GamePlay::PlayerAvatar

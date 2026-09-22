@@ -13,10 +13,10 @@
 #include "../Spell/MagicCasterSpellSlot.h"
 #include "cereal/types/polymorphic.hpp"
 
-#include "../../../../../../../Engine/Core/Network/Object/NetworkObjectBase.h"
-#include "../../../../../../../Engine/Core/Network/Object/Creator/NetworkParamCreator.h"
-#include "../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../Libs/LibCore/Rx/SerializableSubject/SerializableSubject.h"
+#include "Engine/Core/Network/Object/NetworkObjectBase.h"
+#include "Engine/Core/Network/Object/Creator/NetworkParamCreator.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Packages/R4/R4.h"
 #include "../../../Damage/Physics/Game_Damage_PhysicsPower.h"
 #include "../../StateMachine/IReadOnlyPlayerAvatarStateMachine.h"
 #include "../State/MagicCasterAvatarStateType.h"
@@ -56,12 +56,12 @@ namespace GameCore::PlayerAvatar::MagicCaster
         int ReceiveItem(const std::shared_ptr<Asset::ItemData>& item, const int count) override { return pouch_.Add(item, count); }
 
         [[nodiscard]] const StatusParameter::Health&                     MaxHealth() const override { return maxHealth_; }
-        [[nodiscard]] rxcpp::observable<StatusParameter::Health> OnChangeHealth() const override { return onChangeHealth_.get_observable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<StatusParameter::Health> OnChangeHealth() const override { return onChangeHealth_.AsObservable(); }
         [[nodiscard]] StatusParameter::Health                            Health() const override { return currentHealth_->Get(); }
         [[nodiscard]] bool                                               IsDeath() const override { return minHealth_ >= currentHealth_->Get(); }
 
         [[nodiscard]] const StatusParameter::Stamina&                                MaxStamina() const override { return maxStamina_; }
-        [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Stamina> Stamina   () const override { return stamina_.AsReadOnly(); }
+        [[nodiscard]] NanamiEngine::R4::ReadOnlyReactiveProperty<StatusParameter::Stamina> Stamina   () const override { return stamina_.AsReadOnly(); }
         [[nodiscard]] bool                                                           CanRun    () const override { return !isStaminaExhausted_; }
 
         [[nodiscard]] StatusParameter::MoveSpeed GetWalkSpeed         () const override { return walkSpeed_; }
@@ -72,12 +72,12 @@ namespace GameCore::PlayerAvatar::MagicCaster
 
         void SetStateMachine(const IReadOnlyPlayerAvatarStateMachine<MagicCasterAvatarStateType>& stateMachine) { stateMachine_ = &stateMachine; }
 
-        [[nodiscard]] bool CanJump() const { return jumpCooldownRemaining_secs_ <= 0.0f && stamina_.get() >= StatusParameter::Stamina(jumpStaminaCost_); }
+        [[nodiscard]] bool CanJump() const { return jumpCooldownRemaining_secs_ <= 0.0f && stamina_.Value() >= StatusParameter::Stamina(jumpStaminaCost_); }
         void StartJumpCooldown() { jumpCooldownRemaining_secs_ = jumpCooldown_secs_; }
         void ConsumeJumpStamina() { ConsumeStamina(jumpStaminaCost_); }
 
         [[nodiscard]] const StatusParameter::Mana&                                MaxMana() const { return maxMana_; }
-        [[nodiscard]] LibCore::Rx::ReadOnlyReactiveContext<StatusParameter::Mana> Mana   () const { return mana_.AsReadOnly(); }
+        [[nodiscard]] NanamiEngine::R4::ReadOnlyReactiveProperty<StatusParameter::Mana> Mana   () const { return mana_.AsReadOnly(); }
         /** @brief slot は MagicCasterSpellSlot.h の枠番号。クールタイム中か MP が足りなければ false */
         [[nodiscard]] bool CanCast(int slot, const GameCore::Magic::IMagicSpell& spell) const;
         /** @brief MP を払い、その枠のクールタイムを始める */
@@ -105,8 +105,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         class StatusEvent final : public IStatusEvent
         {
         public:
-            [[nodiscard]] rxcpp::observable<StatusParameter::Health> OnDamage() const override { return onDamage_.get_observable(); }
-            rxcpp::subjects::subject<StatusParameter::Health> onDamage_;
+            [[nodiscard]] NanamiEngine::R4::Observable<StatusParameter::Health> OnDamage() const override { return onDamage_.AsObservable(); }
+            NanamiEngine::R4::Subject<StatusParameter::Health> onDamage_;
         };
 
         std::shared_ptr<StatusEvent> event_ = std::make_shared<StatusEvent>();
@@ -117,11 +117,11 @@ namespace GameCore::PlayerAvatar::MagicCaster
 
         [[serialize(0)]] StatusParameter::Health maxHealth_;
         [[serialize(0)]] StatusParameter::Health minHealth_;
-        rxcpp::subjects::subject<StatusParameter::Health> onChangeHealth_;
+        NanamiEngine::R4::Subject<StatusParameter::Health> onChangeHealth_;
         [[serialize(0)]] SyncParam<StatusParameter::Health> currentHealth_ = SyncParamFactory::Create<StatusParameter::Health>(this, StatusParameter::Health(100));
 
         [[serialize(0)]] StatusParameter::Stamina maxStamina_;
-        [[serialize(0)]] LibCore::Rx::SerializableSubject<StatusParameter::Stamina> stamina_;
+        [[serialize(0)]] NanamiEngine::R4::SerializableReactiveProperty<StatusParameter::Stamina> stamina_;
         [[serialize(0)]] float staminaDrainPerSecond_;
         [[serialize(0)]] float staminaRegenPerSecond_;
         [[serialize(0)]] float minStaminaRatioToResumeRun_ = 0.3f;
@@ -141,13 +141,16 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[serialize(0)]] float deathStateDuration_secs_;
 
         [[serialize(2)]] StatusParameter::Mana maxMana_;
-        [[serialize(2)]] LibCore::Rx::SerializableSubject<StatusParameter::Mana> mana_;
+        [[serialize(2)]] NanamiEngine::R4::SerializableReactiveProperty<StatusParameter::Mana> mana_;
         [[serialize(2)]] float manaRegenPerSecond_;
         std::array<float, SPELL_SLOT_COUNT> cooldownRemaining_secs_ {};
         std::array<float, SPELL_SLOT_COUNT> cooldownDuration_secs_ {};
 
         float attackBuffRate_ = 1.0f;
         float attackBuffRemaining_secs_ = 0.0f;
+        // NOTE: 被ダメージ(ApplyDamage)から数える。無敵中のダメージはスタックに積まずに捨てる
+        float invincibleDuration_secs_  = 2.0f;
+        float invincibleRemaining_secs_ = 0.0f;
 
         std::queue<std::unique_ptr<IDamage>> onDamagedStack_;
 

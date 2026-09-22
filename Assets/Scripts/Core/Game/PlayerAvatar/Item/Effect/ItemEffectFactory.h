@@ -6,7 +6,7 @@
 #include <type_traits>
 
 #include "IItemEffect.h"
-#include "../../../../../../../Libs/Singleton/LibCore_SingletonBase.h"
+#include "Libs/Singleton/LibCore_SingletonBase.h"
 
 namespace GameCore::PlayerAvatar::Item
 {

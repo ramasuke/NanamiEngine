@@ -1,7 +1,7 @@
 ﻿#include "SwordManAvatarWalkState.h"
 
-#include "../../../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
 

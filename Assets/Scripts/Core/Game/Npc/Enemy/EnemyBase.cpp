@@ -1,12 +1,13 @@
 ﻿#include "EnemyBase.h"
 
-#include "../../../../../../Engine/Core/Application/ApplicationBase.h"
-#include "../../../../../../Engine/Module/Component/Animator/Animator.h"
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Core/Application/ApplicationBase.h"
+#include "Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../Editor/Npc/Enemy/Behaviour/Window/RunningEnemyBehaviourTreeWindow.h"
 #include "../../../../GamePlay/PlayerAvatar/HitShakeReceiver/PlayerHitShakeReceiver.h"
 #include "../../../../GamePlay/Npc/Enemy/NetworkBehaviourTree/GamePlay_NetworkBehaviourTree.h"
 #include "Behaviour/Enemy_BehaviourTree.h"
+#include "../../PlayerAvatar/Record/PlayerAvatar_RecordBook.h"
 #include "ShowHealthGaugeProvider/IShowHealthGaugeProvider.h"
 
 namespace GameCore::Npc
@@ -46,6 +47,16 @@ namespace GameCore::Npc
             position = parent->Transform().GetLocalMatrix() * position;
 
         return glm::vec3(Transform().GetWorldMatrix() * position);
+    }
+
+    void EnemyBase::NotifyDefeated()
+    {
+        if (isDefeatRecorded_)
+            return;
+        isDefeatRecorded_ = true;
+
+        if (const auto kind = RecordKind())
+            PlayerAvatar::Record::RecordBook::Instance().RecordDefeat(*kind);
     }
 
     void EnemyBase::OnUpdate()

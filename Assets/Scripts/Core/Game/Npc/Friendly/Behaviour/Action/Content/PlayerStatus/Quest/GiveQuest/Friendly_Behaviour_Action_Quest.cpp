@@ -3,7 +3,7 @@
 #include "ImGuiHelper.h"
 #include "../../../../../../../../PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../../../../../PlayerAvatar/Quest/PlayerAvatar_IQuestGroup.h"
-#include "../../../../../../../../PlayerAvatar/Quest/PlayerAvatar_StoryQuestFactory.h"
+#include "../../../../../../../../PlayerAvatar/Quest/PlayerAvatar_TakeableQuestFactory.h"
 #include "../../../../../../../../PlayerAvatar/Quest/PlayerAvatar_QuestType.h"
 #include "../../../../../../../../PlayerAvatar/Status/IPlayerAvatarStatus.h"
 
@@ -12,7 +12,8 @@ namespace GameCore::Npc::Friendly::Behaviour
     TickStatus Action::TryQuest::DoTick(
         const TickContext& context)
     {
-        GetPlayerAvatar()->PlayerStatus().Quest().Subscribe(quest_);
+        // 依頼は何度でも受けられるので、ツリーが持つ原本ではなく毎回複製を渡す
+        GetPlayerAvatar()->PlayerStatus().Quest().Subscribe(PlayerAvatar::Quest::CloneQuest(quest_));
         return TickStatus::Success;
     }
 
@@ -21,7 +22,7 @@ namespace GameCore::Npc::Friendly::Behaviour
         if (!ImGui::CollapsingHeader("Quest", ImGuiTreeNodeFlags_DefaultOpen))
             return;
 
-        const auto& quests = PlayerAvatar::StoryQuestFactory::Instance().CreatableQuests();
+        const auto& quests = PlayerAvatar::TakeableQuestFactory::Instance().CreatableQuests();
 
         ImGui::Text("Select Quest");
 

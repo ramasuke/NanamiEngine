@@ -5,12 +5,12 @@
 #include "../glm/vec3.hpp"
 #include "../../CustomPacketDispatcherBase.h"
 #include "../../../Custom_PacketType.h"
-#include "../../../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../../Game/PlayerAvatar/Type/PlayerAvatarType.h"
-#include "../../../../../../../../Engine/Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
+#include "Engine/Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
 #include "../../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
-#include "../rxcpp/rx.hpp"
+#include "Packages/R4/R4.h"
 
 namespace NanamiEngine::Module::GameObject
 {
@@ -62,8 +62,8 @@ namespace GameCore::Network
             Core::Network::Packet          packet;
         };
         std::vector<HistoryEntry> spawnPacketHistory_;
-        rxcpp::composite_subscription newPlayerSubscription_;
-        rxcpp::composite_subscription playerLeftSubscription_;
+        R4::Disposable newPlayerSubscription_;
+        R4::Disposable playerLeftSubscription_;
         // キー: PlayerId
         std::unordered_map<int8_t, Asset::PlayerAvatarAttachments> remoteAttachments_;
     };

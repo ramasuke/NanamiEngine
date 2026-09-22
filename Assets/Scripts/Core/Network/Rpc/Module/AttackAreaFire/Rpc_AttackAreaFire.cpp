@@ -1,5 +1,5 @@
 ﻿#include "../../Custom_RpcType.h"
-#include "../../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "../../../../Game/Npc/Enemy/AttackArea/Enemy_AttackArea.h"
 
 namespace

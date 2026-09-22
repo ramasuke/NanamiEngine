@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "Context/Data_Chat.h"
 
 namespace NanamiEngine::Module::Asset

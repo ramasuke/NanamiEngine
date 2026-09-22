@@ -14,7 +14,7 @@ namespace GameCore::PlayerAvatar::MagicCaster::State
         void DoUpdate     () override;
         void DoExit       () override;
 
-        [[nodiscard]] MagicCaster::AnimationType AnimationType() const override { return AnimationType::Idle; }
+        [[nodiscard]] MagicCaster::AnimationType AnimationType() const override { return AnimationType::Chatting; }
         [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Momentary; }
     };
 }

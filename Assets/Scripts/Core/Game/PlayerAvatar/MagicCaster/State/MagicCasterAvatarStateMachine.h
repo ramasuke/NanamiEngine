@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../../StateMachine/PlayerAvatarStateMachineBase.h"
 #include "../../StateMachine/EventScene/IPlayerAvatarEventSceneStateMachine.h"
 #include "MagicCasterAvatarStateBase.h"
@@ -30,11 +30,12 @@ namespace GameCore::PlayerAvatar::MagicCaster
         void OnEnable()  override;
         void OnDisable() override;
 
-        rxcpp::observable<std::shared_ptr<MagicCasterAvatarStateBase>> CurrentState() const;
+        NanamiEngine::R4::Observable<std::shared_ptr<MagicCasterAvatarStateBase>> CurrentState() const;
         [[nodiscard]] std::shared_ptr<const MagicCasterAvatarStateBase> CurrentStateValue() const;
 
     private:
-        rxcpp::subjects::behavior<std::shared_ptr<MagicCasterAvatarStateBase>> magicCasterCurrentState_;
+        NanamiEngine::R4::ReactiveProperty<std::shared_ptr<MagicCasterAvatarStateBase>> magicCasterCurrentState_;
+        NanamiEngine::R4::SerialDisposable baseStateSubscription_;
     };
 
     std::unique_ptr<MagicCasterAvatarStateMachine> CreateStateMachine(

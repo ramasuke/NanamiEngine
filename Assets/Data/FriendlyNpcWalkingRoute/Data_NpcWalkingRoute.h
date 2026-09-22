@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "../LibCore/cereal/glm/GlmHelper.h"
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 
 namespace NanamiEngine::Module::Asset
 {

@@ -1,14 +1,14 @@
 ﻿#include "Friendly_Behaviour_TickContext.h"
 
 #include "../../../../../Game.h"
-#include "../../../../../../../../../Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/Component/Animator/Animator.h"
 #include "../../../../../../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
 #include "../../../../../PlayerAvatar/PlayerAvatar.h"
 #include "../../../../../Scene/Main/Group/Main_GameSceneGroup.h"
 #include "../../../../../Scene/Sub/Content/ChattingUI/ChattingUIScene.h"
 #include "../../../../../Scene/Sub/Group/Sub_GameSceneGroup.h"
 #include "../../../../../Scene/Sub/Type/SubSceneType.h"
-#include "../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {

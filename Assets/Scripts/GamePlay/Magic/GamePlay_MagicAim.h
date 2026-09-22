@@ -4,7 +4,7 @@
 #include "vec3.hpp"
 #include "gtc/quaternion.hpp"
 #include "../../Core/Game/Damage/Physics/Game_Damage_PhysicsPower.h"
-#include "../../../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace NanamiEngine::Module::GameObject
 {

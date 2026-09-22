@@ -3,10 +3,10 @@
 #include <vector>
 
 #include "vec3.hpp"
-#include "../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
-#include "../../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/RequireType/RequireType.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
 #include "../../../Scripts/Core/Game/PlayerAvatar/Type/PlayerAvatarType.h"

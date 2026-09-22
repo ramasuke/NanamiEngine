@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "../../../../../../../Engine/Core/Application/Window/Main/MainWindowBase.h"
-#include "../../../../../../../Engine/Core/Application/Window/Main/Factory/MainWindowFactory.h"
+#include "Engine/Core/Application/Window/Main/MainWindowBase.h"
+#include "Engine/Core/Application/Window/Main/Factory/MainWindowFactory.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Enemy_BehaviourTree.h"
 
 namespace Editor::Npc::Enemy

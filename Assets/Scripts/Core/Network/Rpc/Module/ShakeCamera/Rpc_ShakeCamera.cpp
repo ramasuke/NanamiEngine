@@ -1,6 +1,6 @@
 ﻿#include "../../Custom_RpcType.h"
-#include "../../../../../../../Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
-#include "../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
+#include "Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 
 namespace
 {

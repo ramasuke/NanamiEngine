@@ -47,5 +47,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         bool UpdateTransitions() const;
         /** @brief ロックオン中ならその対象へ向きを合わせる */
         void FaceAimTarget() const;
+        // VisitTransitions で CycleItem / UseItem を宣言したStateだけが呼ぶ（アイテム欄の表示がその宣言を見ている）
+        void UpdateItemPouchInput() const;
+        void UseSelectedPouchItem() const;
     };
 }

@@ -1,9 +1,9 @@
 ﻿#include "../../Custom_RpcType.h"
-#include "../../../../../../../Engine/Core/Application/ApplicationBase.h"
-#include "../../../../../../../Engine/Core/Object/Registry/ObjectRegistry.h"
-#include "../../../../../../../Engine/Module/Log/NanamiEngine_Module_Log.h"
-#include "../../../../../../../Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
-#include "../../../../../../../Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
+#include "Engine/Core/Application/ApplicationBase.h"
+#include "Engine/Core/Object/Registry/ObjectRegistry.h"
+#include "Engine/Module/Log/NanamiEngine_Module_Log.h"
+#include "Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
+#include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
 
 namespace
 {

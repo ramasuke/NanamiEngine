@@ -5,11 +5,11 @@
 #include <vector>
 
 #include "geometric.hpp"
-#include "../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
-#include "../../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
-#include "../../../../../../Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
+#include "Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
 #include "../../../../GamePlay/PlayerAvatar/LockOnDetectionArea/LockOnDetectionArea.h"
 #include "../CameraGroup/PlayerAvatarCameraGroupBase.h"
 #include "ILockOnTarget.h"

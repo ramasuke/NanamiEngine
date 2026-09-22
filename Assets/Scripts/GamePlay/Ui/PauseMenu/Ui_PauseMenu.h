@@ -4,12 +4,12 @@
 #include <vector>
 
 #include "cereal/types/vector.hpp"
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../Engine/Module/NanamiUI/Slider/NanamiUi_Slider.h"
-#include "../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/NanamiUI/Slider/NanamiUi_Slider.h"
+#include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../../../../Data/Character/Data_CharacterData.h"
 #include "../StageSelect/Difficulty/StageDifficultyPips.h"
 #include "ItemCell/Ui_PauseMenuItemCell.h"

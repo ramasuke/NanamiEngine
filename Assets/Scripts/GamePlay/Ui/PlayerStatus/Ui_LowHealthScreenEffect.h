@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
-#include "../../../../../Engine/Module/Component/ScreenColorGrade/ScreenColorGradeRenderer.h"
-#include "../../../../../Engine/Module/Asset/Sound/SoundFile.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
+#include "Engine/Module/Component/ScreenColorGrade/ScreenColorGradeRenderer.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
 
 namespace GamePlay::Ui
@@ -43,7 +43,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] int   heartbeatMaxVolume_   = 200;
 
         FIELD(NanamiUi::ScreenColorGradeRenderer) colorGrade_;
-        rxcpp::composite_subscription             subscription_;
+        NanamiEngine::R4::SerialDisposable                      subscription_;
 
         GameCore::StatusParameter::Health maxHealth_;
         GameCore::StatusParameter::Health lastHealth_;

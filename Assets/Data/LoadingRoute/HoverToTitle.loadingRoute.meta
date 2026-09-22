@@ -1,0 +1,77 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::LoadingRouteData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\LoadingRoute/HoverToTitle.loadingRoute",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "F7F67CD8-DADC-4880-89A2-61619E2A5B46"
+                    }
+                },
+                "isFromAnywhere_": true,
+                "fromScene_": 2,
+                "toScene_": 3,
+                "isHover_": true,
+                "hoverCenter_": {
+                    "value0": 495.0,
+                    "value1": 560.0
+                },
+                "hoverRadius_": {
+                    "value0": 150.0,
+                    "value1": 58.0
+                },
+                "hoverLapSecs_": 7.0,
+                "p0_": {
+                    "value0": 495.0,
+                    "value1": 560.0
+                },
+                "p1_": {
+                    "value0": 495.0,
+                    "value1": 560.0
+                },
+                "p2_": {
+                    "value0": 495.0,
+                    "value1": 560.0
+                },
+                "p3_": {
+                    "value0": 495.0,
+                    "value1": 560.0
+                },
+                "kickerText_": "休 息",
+                "titleText_": "タイトルへ",
+                "statusText_": "帰り支度中…",
+                "fromCaption_": "",
+                "fromCaptionPosition_": {
+                    "value0": 0.0,
+                    "value1": 0.0
+                },
+                "toCaption_": "",
+                "toCaptionPosition_": {
+                    "value0": 0.0,
+                    "value1": 0.0
+                },
+                "hasDestCircle_": false,
+                "destCirclePosition_": {
+                    "value0": 0.0,
+                    "value1": 0.0
+                },
+                "destCircleScale_": 1.0,
+                "stampPosition_": {
+                    "value0": 1272.0,
+                    "value1": 312.0
+                },
+                "cloudDirection_": -1.0,
+                "hasNetworkStep_": false
+            }
+        }
+    }
+}

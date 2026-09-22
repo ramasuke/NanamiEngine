@@ -1,11 +1,11 @@
 ﻿#pragma once
-#include "../../../../../Engine/Core/Coroutine/Task/Task.h"
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/Scene/SceneFile.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
-#include "../../../../../Engine/Module/Component/ImageRenderer/Animation/ImageAnimationRenderer.h"
-#include "../../../../../Engine/Module/NanamiUI/MovieRenderer/MovieRenderer.h"
+#include "Engine/Core/Coroutine/Task/Task.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Scene/SceneFile.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
+#include "Engine/Module/Component/ImageRenderer/Animation/ImageAnimationRenderer.h"
+#include "Engine/Module/NanamiUI/MovieRenderer/MovieRenderer.h"
 #include "../../../Core/Game/Scene/Main/Type/MainSceneType.h"
 #include "Stage/Ui_StageSelect_StageUI.h"
 #include "MapMarker/StageMapMarker.h"
@@ -18,14 +18,12 @@ namespace GamePlay::Ui
     {
     public:
         [[nodiscard]] std::vector<std::weak_ptr<StageSelectStageUi>> Stages() const;
-        [[nodiscard]] rxcpp::observable<NanamiUi::MouseState> OnWorldEnterButtonClicked() const { return worldEnterButton_->OnClick(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiUi::MouseState> OnWorldEnterButtonClicked() const { return worldEnterButton_->OnClick(); }
 
         void HighlightSelectedStage(size_t selectedIndex);
         void SetWorldEnterButtonEnabled(bool isEnabled);
-        // コルーチンの参照引数は最初の co_await でぶら下がるので値で受ける
-        Coroutine::Task<void> PlayEnterWorldTransitionAsync(
-            GameCore::Scene::Main::SceneType sceneType,
-            std::shared_ptr<Asset::StageData> stageData);
+        /** @brief 選んだステージへの遷移を頼む。ロード画面は GameSceneGroup が出す */
+        void EnterWorld(GameCore::Scene::Main::SceneType sceneType);
         void ShowMapMarker(const glm::vec2& position, bool isCleared);
         void ShowStageDetail(const Asset::StageData& stage);
         void ShowNoSelectionDetail();

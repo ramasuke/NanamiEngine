@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 
 namespace GameCore::Npc::Friendly
 {

@@ -1,7 +1,7 @@
 #pragma once
-#include "../../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../../Engine/Module/LifeCycleCallback/Start/IStartable.h"
-#include "../../../../../../Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
+#include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "../Model/StageSelectModel.h"
 
 namespace GamePlay::Ui

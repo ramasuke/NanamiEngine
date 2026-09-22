@@ -1,6 +1,6 @@
 ﻿#include "ProximityReveal.h"
 #include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/PlayerAvatar.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 
 namespace GamePlay::Prop
 {

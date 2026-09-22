@@ -3,10 +3,10 @@
 #include <array>
 
 #include "Quest_SwordMan_ActionInstructTutorialModel.h"
-#include "../../../../../../../../../../Libs/LibCore/Rx/SerializableSubject/unit/unit.h"
-#include "../../../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
-#include "../../../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForObservable/Coroutine_WaitForObservable.h"
-#include "../../../../../../../../../../Engine/Core/Coroutine/Task/Task.h"
+#include "Packages/R4/R4.h"
+#include "Engine/Core/Coroutine/Coroutine.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitForObservable/Coroutine_WaitForObservable.h"
+#include "Engine/Core/Coroutine/Task/Task.h"
 #include "../../../../../../../../GamePlay/Ui/ActionInstructTutorial/SwordMan/Ui_SwordMan_ActionInstructTutorial.h"
 #include "../../../ControlGuideFocus/SwordMan_IControlGuideFocusRequest.h"
 #include "../../../Event/IObservableStatusEvent.h"
@@ -19,7 +19,7 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
         struct ActionInstructTutorialStepPlan
         {
             SwordManControlGuideFocus focus;
-            rxcpp::observable<LibCore::Rx::unit> (IObservableStatusEvent::*completed)() const;
+            R4::Observable<R4::Unit> (IObservableStatusEvent::*completed)() const;
         };
 
         constexpr std::array ACTION_INSTRUCT_STEPS = {

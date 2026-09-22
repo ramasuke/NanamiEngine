@@ -4,8 +4,8 @@
 #include <numbers>
 #include <random>
 
-#include "../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../Data/Drop/Data_DropTable.h"
 #include "GamePlay_ItemPickup.h"
 #include "GamePlay_MoneyDrop.h"

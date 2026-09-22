@@ -17,13 +17,15 @@ namespace GameCore::Scene::Main
         
     private:
         void Init     () override;
+        Coroutine::Task<void> OnEnterAsync(int generation);
         void Enter    () override;
         void DoDispose() override;
         void OnDrawGui() override;
+        /** @brief 導入が読めなければタイトルへ戻す */
+        [[nodiscard]] std::optional<SceneType> FallbackSceneOnFailure() const override { return SceneType::Title; }
 
-        std::weak_ptr<NanamiEngine::Scene::Scene> scene_;
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
-        std::unique_ptr<FirstTouchDownMainIsLand::AboardAirShipMovie> aboardAirShipMovie_;
+        std::shared_ptr<FirstTouchDownMainIsLand::AboardAirShipMovie> aboardAirShipMovie_;
         std::weak_ptr<GameObject::IGameObject> playerStatusPresenter_;
     };
 }

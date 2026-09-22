@@ -1,6 +1,6 @@
 ﻿#include "PlayerAvatar_Wallet.h"
 
-#include "../../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
+#include "Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 
 namespace GameCore::PlayerAvatar
 {
@@ -19,7 +19,7 @@ namespace GameCore::PlayerAvatar
         if (amount <= StatusParameter::Money(0))
             return;
 
-        balance_.OnNext(balance_.get() + amount);
+        balance_.Value(balance_.Value() + amount);
     }
 
     bool Wallet::TrySpend(const StatusParameter::Money price)
@@ -27,7 +27,7 @@ namespace GameCore::PlayerAvatar
         if (price < StatusParameter::Money(0) || !CanAfford(price))
             return false;
 
-        balance_.OnNext(balance_.get() - price);
+        balance_.Value(balance_.Value() - price);
         return true;
     }
 

@@ -1,6 +1,6 @@
 ﻿#include "Friendly_Behaviour_Action_SetFreezePhysics.h"
 
-#include "../../../../../../../../../../../../Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {

@@ -1,8 +1,8 @@
 ﻿#include "Ui_ControlGuideRow.h"
 
-#include "../../../../../Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 
 namespace GamePlay::Ui
 {

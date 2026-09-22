@@ -1,7 +1,7 @@
 ﻿#include "Ui_SpellSlot.h"
 
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 
 namespace GamePlay::Ui
 {

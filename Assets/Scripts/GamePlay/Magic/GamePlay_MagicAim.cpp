@@ -3,11 +3,11 @@
 #include <cmath>
 
 #include "geometric.hpp"
-#include "../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
-#include "../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 #include "../../Core/Game/Damage/Physics/Game_Damage_Physics.h"
 #include "../../Core/Game/Magic/IMagicCaster.h"
 #include "../../Core/Game/PlayerAvatar/AttackArea/PlayerAvatarAttackArea.h"

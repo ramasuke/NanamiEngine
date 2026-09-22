@@ -1,6 +1,6 @@
 ﻿#include "Prop_EventNoticeBoard.h"
 
-#include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 
 namespace GamePlay::Prop
 {
@@ -10,25 +10,25 @@ namespace GamePlay::Prop
             icon->Show(true, false, false);
     }
 
-    void EventNoticeBoard::OnChattable()
+    void EventNoticeBoard::OnInteractable()
     {
         if (const auto icon = chatIcon_.get())
             icon->OnChattable();
     }
 
-    void EventNoticeBoard::OnExitChattable()
+    void EventNoticeBoard::OnExitInteractable()
     {
         if (const auto icon = chatIcon_.get())
             icon->OnExitChattable();
     }
 
-    void EventNoticeBoard::OnChat()
+    void EventNoticeBoard::OnInteract()
     {
         if (const auto prefab = eventBoardUiPrefab_.get())
             Scene::GameObject::Instantiate(prefab, glm::vec3(0.0f, 0.0f, 0.0f));
     }
 
-    const GameObject::Transform& EventNoticeBoard::ChattableTransform() const
+    const GameObject::Transform& EventNoticeBoard::InteractableTransform() const
     {
         return Transform();
     }

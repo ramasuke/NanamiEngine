@@ -1,6 +1,6 @@
 ﻿#include "SwordManAvatarIdleState.h"
 
-#include "../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
 #include "../../../Input/PlayerAvatarInput_void.h"
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoEnter()
@@ -43,7 +43,7 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::VisitTran
     
     const bool canWakeUp = Conditions().CanWakeUp();
     visitor.OnInput(SwordManAvatarStateType::WakeUp, SwordManAvatarInput::Chat, PlayerAvatarInputPhase::Pressed, canWakeUp);
-    visitor.OnInput(SwordManAvatarStateType::Chatting, SwordManAvatarInput::Chat, PlayerAvatarInputPhase::Pressed, !canWakeUp && Conditions().IsChattable());
+    visitor.OnInput(SwordManAvatarStateType::Chatting, SwordManAvatarInput::Chat, PlayerAvatarInputPhase::Pressed, !canWakeUp && Conditions().IsInteractable());
     visitor.Automatic(SwordManAvatarStateType::UseCanon, Conditions().CanUseCannon());
     visitor.Automatic(SwordManAvatarStateType::Floating, !Conditions().IsGround());
 }

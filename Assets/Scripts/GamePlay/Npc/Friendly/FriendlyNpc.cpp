@@ -1,7 +1,7 @@
 ﻿#include "FriendlyNpc.h"
 
-#include "../../../../../Engine/Core/Application/ApplicationBase.h"
-#include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Core/Application/ApplicationBase.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../Core/Game/Npc/Friendly/Behaviour/Friendly_BehaviourTree.h"
 #include "../../../Editor/Npc/Friendly/Behaviour/Window/RunningFriendlyBehaviourTreeWindow.h"
 
@@ -28,22 +28,22 @@ namespace GamePlay::Npc::Friendly
                         isChatting_);
     }
 
-    void FriendlyNpc::OnChattable()
+    void FriendlyNpc::OnInteractable()
     {
         billboardNpcChatIcon_->OnChattable();
     }
 
-    void FriendlyNpc::OnExitChattable()
+    void FriendlyNpc::OnExitInteractable()
     {
         billboardNpcChatIcon_->OnExitChattable();
     }
 
-    void FriendlyNpc::OnChat()
+    void FriendlyNpc::OnInteract()
     {
         isChatting_ = true;
     }
 
-    const GameObject::Transform& FriendlyNpc::ChattableTransform() const
+    const GameObject::Transform& FriendlyNpc::InteractableTransform() const
     {
         return Transform();
     }

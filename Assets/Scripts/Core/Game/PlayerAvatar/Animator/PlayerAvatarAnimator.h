@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "IPlayerAvatarAnimator.h"
-#include "../../../../../../Engine/Module/Component/Animator/Animator.h"
+#include "Engine/Module/Component/Animator/Animator.h"
 
 namespace GameCore::PlayerAvatar
 {

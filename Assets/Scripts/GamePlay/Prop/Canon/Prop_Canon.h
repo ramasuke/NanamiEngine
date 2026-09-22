@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../../Engine/Module/Asset/Sound/SoundFile.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
 #include "../../Ui/CannonCooldownGauge/Ui_CannonCooldownGauge.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
 

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../../../Enemy_Behaviour_ActionBase.h"
-#include "../../../../../../../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../../../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
 
@@ -11,7 +11,8 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     {
         TickStatus DoTick(const TickContext& context) override;
         [[nodiscard]] bool IsStunned(const TickContext& context) const;
-        [[nodiscard]] bool TryTriggerStun(const TickContext& context, const IDamage& damage, int rawDamage) const;
+        /** @brief このダメージで立てるスタンの値。立てないなら 0 */
+        [[nodiscard]] int ResolveStunStateValue(const TickContext& context, const IDamage& damage, int rawDamage) const;
 
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) damageEffectPrefab_;
         [[serialize(0)]] glm::vec3 damageEffectOffset_ = glm::vec3(0.0f);
@@ -20,6 +21,9 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(3)]] float knockbackForcePerDamage_ = 0.0f;
         [[serialize(4)]] std::string stunStateKeyName_;
         [[serialize(4)]] float stunnedDamageScale_ = 1.0f;
+        // NOTE: 黒板の値で溜めカウンターと部位破壊(脚など)のスタンを別の枝に振り分ける
+        [[serialize(5)]] int chargeCounterStunStateValue_ = 1;
+        [[serialize(5)]] int breakStunStateValue_ = 1;
 
 #pragma region Serialization Function
     public:
@@ -34,6 +38,8 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(knockbackForcePerDamage_);
             archive(stunStateKeyName_);
             archive(stunnedDamageScale_);
+            archive(chargeCounterStunStateValue_);
+            archive(breakStunStateValue_);
         }
 
         template<class Archive>
@@ -46,6 +52,8 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             if (version >= 3) archive(knockbackForcePerDamage_);
             if (version >= 4) archive(stunStateKeyName_);
             if (version >= 4) archive(stunnedDamageScale_);
+            if (version >= 5) archive(chargeCounterStunStateValue_);
+            if (version >= 5) archive(breakStunStateValue_);
         }
 #pragma endregion
     };
@@ -53,6 +61,6 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     REGISTER_ENEMY_ACTION_WITH_NAME(OnDamage, "EnemyStatus::OnDamage")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::OnDamage, 4)
+CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::OnDamage, 5)
 CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::OnDamage)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::OnDamage)

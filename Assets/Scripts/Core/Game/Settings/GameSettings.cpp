@@ -1,7 +1,7 @@
 ﻿#include "GameSettings.h"
 
-#include "../../../../../Engine/Module/LocalPrefs/Editor/Engine_Module_LocalPrefs_Editor_ToolBar.h"
-#include "../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
+#include "Engine/Module/LocalPrefs/Editor/Engine_Module_LocalPrefs_Editor_ToolBar.h"
+#include "Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 
 namespace GameCore
 {

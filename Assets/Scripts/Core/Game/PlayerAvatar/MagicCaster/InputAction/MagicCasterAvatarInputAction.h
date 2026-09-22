@@ -28,6 +28,9 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[nodiscard]] InputRef<void     >& LockOnSwitchRight() const { return *lockOnSwitchRight_; }
         [[nodiscard]] InputRef<void     >& Palette  () const { return *palette_;   }
         [[nodiscard]] InputRef<void     >& PageShift() const { return *pageShift_; }
+        [[nodiscard]] InputRef<void     >& CycleItemNext() const { return *cycleItemNext_; }
+        [[nodiscard]] InputRef<void     >& CycleItemPrev() const { return *cycleItemPrev_; }
+        [[nodiscard]] InputRef<void     >& UseItem      () const { return *useItem_      ; }
 
         /** @brief この瞬間に押された持ち込み枠（0〜7）。押されていなければ nullopt */
         [[nodiscard]] std::optional<int> PressedLoadoutSlot() const;
@@ -54,6 +57,10 @@ namespace GameCore::PlayerAvatar::MagicCaster
         Input<void     > lockOnSwitchRight_ = MakeInputAction([this] { return MouseWheelDelta() < 0 || XInput().ThumbRX >  LOCK_ON_SWITCH_STICK_THRESHOLD; });
         Input<void     > palette_   = MakeInputAction([this] { return IsPaletteTriggerHeld(); });
         Input<void     > pageShift_ = MakeInputAction([this] { return GetMouseInput() & MOUSE_INPUT_RIGHT || XInput().Buttons[XINPUT_BUTTON_RIGHT_SHOULDER]; });
+        // アイテムは剣士と同じ割り当て
+        Input<void     > cycleItemNext_ = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_X) || XInput().Buttons[XINPUT_BUTTON_DPAD_RIGHT]; });
+        Input<void     > cycleItemPrev_ = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_Z) || XInput().Buttons[XINPUT_BUTTON_DPAD_LEFT ]; });
+        Input<void     > useItem_       = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_R) || XInput().Buttons[XINPUT_BUTTON_LEFT_SHOULDER]; });
 
         // 時計回りに 上=Y(1) 右=B(2) 下=A(3) 左=X(4)
         std::array<Input<void>, SPELL_SLOTS_PER_PAGE> slots_ =

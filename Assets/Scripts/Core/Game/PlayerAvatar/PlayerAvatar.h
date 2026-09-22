@@ -4,7 +4,7 @@
 #include <type_traits>
 
 #include "IPlayerAvatar.h"
-#include "../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace GameCore
 {

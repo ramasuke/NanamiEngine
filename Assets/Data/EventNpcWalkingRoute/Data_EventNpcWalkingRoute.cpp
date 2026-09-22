@@ -1,7 +1,7 @@
 ﻿#include "Data_EventNpcWalkingRoute.h"
 
 #include "DxLib.h"
-#include "../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
+#include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 
 namespace NanamiEngine::Module::Asset
 {

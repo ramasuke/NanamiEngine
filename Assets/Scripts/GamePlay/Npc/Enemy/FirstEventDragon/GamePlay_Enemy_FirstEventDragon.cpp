@@ -1,6 +1,6 @@
 ﻿#include "GamePlay_Enemy_FirstEventDragon.h"
 
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 
 namespace GamePlay::Npc::Enemy
 {

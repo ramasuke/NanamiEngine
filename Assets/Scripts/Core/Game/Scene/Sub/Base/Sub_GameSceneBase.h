@@ -3,7 +3,7 @@
 #include <type_traits>
 
 #include "../Sub_IGameScene.h"
-#include "../../../../../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
+#include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "../Context/Sub_SceneContextBase.h"
 
 namespace GameCore::Scene::Sub

@@ -4,10 +4,10 @@
 #include <cmath>
 #include <optional>
 
-#include "../../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../../Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
-#include "../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../Core/Game/PlayerAvatar/SwordMan/Status/ControlGuideFocus/SwordMan_IControlGuideFocusRequest.h"
 
 namespace GamePlay::Ui

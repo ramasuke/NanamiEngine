@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../../Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
+#include "Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
 
 namespace GamePlay::Npc::Enemy
 {

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <algorithm>
 
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
 
 
 namespace GameCore::Npc::Enemy

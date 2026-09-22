@@ -1,7 +1,7 @@
 #pragma once
-#include "../../Engine/Module/Namespace/EngineNamespace.h"
-#include "../../../../../../Engine/Core/Network/Packet/Dispatcher/Packet_Dispatch_PacketDispatcherBase.h"
-#include "../../../../../../Engine/Core/Network/IPacketSender.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Core/Network/Packet/Dispatcher/Packet_Dispatch_PacketDispatcherBase.h"
+#include "Engine/Core/Network/IPacketSender.h"
 
 namespace NanamiEngine::Core::Network
 {

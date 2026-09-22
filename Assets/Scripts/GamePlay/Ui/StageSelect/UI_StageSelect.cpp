@@ -1,7 +1,7 @@
 ﻿#include "UI_StageSelect.h"
 
-#include "../../../../../Engine/Core/Coroutine/Coroutine.h"
-#include "../../../../../Engine/Core/Coroutine/Awaitable/Yield/Coroutine_WaitYield.h"
+#include "Engine/Core/Coroutine/Coroutine.h"
+#include "Engine/Core/Coroutine/Awaitable/Yield/Coroutine_WaitYield.h"
 #include "../../../Core/Game/Game.h"
 #include "../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
 
@@ -109,23 +109,14 @@ namespace GamePlay::Ui
         co_await FadeBlendRateAsync(backGroundMask_.get(), 0, backGroundMaskBlendRate_);
     }
 
-    Coroutine::Task<void> StageSelectUi::PlayEnterWorldTransitionAsync(
-        const GameCore::Scene::Main::SceneType sceneType,
-        const std::shared_ptr<Asset::StageData> stageData)
+    void StageSelectUi::EnterWorld(const GameCore::Scene::Main::SceneType sceneType)
     {
+        // 連打で同じ遷移を積み直さない。遷移が済めばこの UI ごと拠点のシーンと一緒に消える
         if (isEnteringWorld_)
-            co_return;
+            return;
 
         isEnteringWorld_ = true;
-
-        // ロード画面が覆い切ってから遷移を頼む。RequestChangeScene はキューに積むだけなので、
-        // MainIsland の Dispose が始まるのはさらに次のフレーム
-        auto& loadingScreen = GameCore::Game::Instance().LoadingScreen();
-        loadingScreen.Show(stageData);
-        co_await loadingScreen.WaitCoverOpaqueAsync();
-
         GameCore::Game::Instance().Scenes().RequestChangeScene(sceneType);
-        isEnteringWorld_ = false;
     }
 
     Coroutine::Task<void> StageSelectUi::FadeBlendRateAsync(

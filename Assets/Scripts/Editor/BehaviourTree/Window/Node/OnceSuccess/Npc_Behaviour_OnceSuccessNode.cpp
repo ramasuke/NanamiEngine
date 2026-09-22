@@ -1,7 +1,7 @@
 ﻿#include "Npc_Behaviour_OnceSuccessNode.h"
 
 #include "../../DrawNodeHelper.h"
-#include "../../../../../../../Engine/Module/Gui/Graph/NodeOption/NodeOption.h"
+#include "Engine/Module/Gui/Graph/NodeOption/NodeOption.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/TickStatus/Friendly_Behaviour_TickStatus.h"
 #include "../cereal/include/cereal/archives/json.hpp"
 #include "../cereal/include/cereal/archives/portable_binary.hpp"

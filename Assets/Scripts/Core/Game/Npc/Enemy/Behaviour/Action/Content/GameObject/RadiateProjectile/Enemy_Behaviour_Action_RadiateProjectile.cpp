@@ -1,7 +1,7 @@
 ﻿#include "Enemy_Behaviour_Action_RadiateProjectile.h"
 
-#include "../../../../../../../../../../../Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
-#include "../../../../../../../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/ComponentGroup/ComponentGroup.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "../../../../../../../../../GamePlay/Npc/Enemy/Projectile/GamePlay_Enemy_IAttackProjectile.h"
 #include "../../../../../../../../../GamePlay/Spawn/GamePlay_PrefabSpawner.h"
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"

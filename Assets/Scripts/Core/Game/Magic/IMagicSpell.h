@@ -4,8 +4,8 @@
 
 #include "MagicCastMotion.h"
 #include "MagicCastTarget.h"
-#include "../../../../../Engine/Module/Guid/Guid.h"
-#include "../../../../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/Guid/Guid.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace NanamiEngine::Module::Asset
 {

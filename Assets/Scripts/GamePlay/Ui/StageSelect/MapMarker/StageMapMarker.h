@@ -1,9 +1,9 @@
 ﻿#pragma once
 #include "vec2.hpp"
-#include "../../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../../Engine/Module/Component/ImageRenderer/ImageRenderer.h"
-#include "../../../../../../Engine/Module/LifeCycleCallback/Awake/IAwakable.h"
-#include "../../../../../../Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/ImageRenderer/ImageRenderer.h"
+#include "Engine/Module/LifeCycleCallback/Awake/IAwakable.h"
+#include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 
 namespace GamePlay::Ui
 {

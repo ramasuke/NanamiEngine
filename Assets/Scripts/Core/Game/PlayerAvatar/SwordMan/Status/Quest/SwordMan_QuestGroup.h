@@ -6,7 +6,7 @@
 #include "SwordMan_ITakeableSwordManQuest.h"
 #include "../ControlGuideFocus/SwordMan_IControlGuideFocusRequest.h"
 #include "../../../Quest/PlayerAvatar_IQuestGroup.h"
-#include "../../../Quest/PlayerAvatar_StoryQuestList.h"
+#include "../../../Quest/PlayerAvatar_QuestList.h"
 #include "../../../Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../../../Wallet/PlayerAvatar_Wallet.h"
 #include "cereal/cereal.hpp"
@@ -25,7 +25,7 @@ namespace GameCore::PlayerAvatar::SwordMan
                   const std::shared_ptr<IStatusEvent>& statusEvent,
                   const std::shared_ptr<IControlGuideFocusRequest>& guideFocus,
                   const std::shared_ptr<Wallet>& wallet);
-        void Subscribe(const std::shared_ptr<StoryQuestBase>& addQuest) override;
+        void Subscribe(const std::shared_ptr<Quest::ITakeableQuest>& addQuest) override;
         void Subscribe(const std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>& addQuest);
         void OnDrawGui();
         [[nodiscard]] std::unique_ptr<QuestGroup> DeepCoy() const;
@@ -36,8 +36,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] bool CheckCompleted(const QuestType& quest) const override;
         
         [[serialize(0)]] std::vector<std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>> quests_;
-        // 職業を問わないクエストは剣士専用の quests_ と型が違うので別の列に持つ
-        [[serialize(1)]] Quest::StoryQuestList storyQuests_;
+        // 職業を問わないクエスト(メインストーリー・依頼)は剣士専用の quests_ と型が違うので別の列に持つ
+        [[serialize(1)]] Quest::QuestList storyQuests_;
         const std::unique_ptr<Quest::CompletedQuestGroup> completedQuests_;
         std::shared_ptr<IObservableStatusEvent> event_;
         std::shared_ptr<IStatusEvent> statusEvent_;

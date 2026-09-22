@@ -1,7 +1,7 @@
 ﻿#include "GamePlay_MagicCasting.h"
 
-#include "../../../../Engine/Module/Asset/Sound/SoundFile.h"
-#include "../../../../Engine/Module/Network/Engine_Network_NetworkRunner.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
+#include "Engine/Module/Network/Engine_Network_NetworkRunner.h"
 #include "../../Core/Game/Magic/IMagicCaster.h"
 #include "../../Core/Game/Magic/IMagicSpell.h"
 #include "../../Core/Game/Magic/MagicCastTarget.h"

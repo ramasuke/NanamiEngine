@@ -5,9 +5,9 @@
 #include <numbers>
 
 #include "DxLib.h"
-#include "../../../../../Engine/Core/Application/Time/Time.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../Libs/LibCore/DxLib/ShiftJis.h"
+#include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Libs/LibCore/DxLib/ShiftJis.h"
 
 namespace GamePlay::Ui
 {

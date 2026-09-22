@@ -5,8 +5,8 @@
 
 #include "vec2.hpp"
 #include "vec3.hpp"
-#include "../../../Engine/Module/ScriptableObject/ScriptableObject.h"
-#include "../../../Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
+#include "Engine/Module/ScriptableObject/ScriptableObject.h"
+#include "Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
 
 namespace Data::HeightGridMap
@@ -28,7 +28,7 @@ namespace NanamiEngine::Module::Asset
 {
     constexpr auto HEIGHT_GRID_MAP_EXTENSION_LABEL = ".heightGridMap";
 
-    /** XZ平面のグリッド各セルから真下へRaycastし、床の高さを保持する2.5Dマップ */
+    /** XZ平面のグリッド各セルから真下へBoxCastし、床の高さを保持する2.5Dマップ */
     class HeightGridMap final : public ScriptableObject
     {
     public:
@@ -59,6 +59,8 @@ namespace NanamiEngine::Module::Asset
         int   divisionsZ_     = 10;
         float samplingHeight_ = 50.0f;
         float rayDistance_    = 100.0f;
+        // BoxCastする箱のXZサイズのセルサイズに対する倍率（1.0 = セル全面）
+        float boxScale_       = 1.0f;
         Physics::LayerMask layerMask_ = Physics::ToMask(Physics::Layer::Default);
 
         std::vector<Data::HeightGridMap::HeightGridCell> map_;
@@ -79,6 +81,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(samplingHeight_));
             archive(CEREAL_NVP(rayDistance_));
             archive(CEREAL_NVP(layerMask_));
+            archive(CEREAL_NVP(boxScale_));
 
             // map_ はデータ量が多く、同一高さ（床なしセンチネルや平坦地）が連続するため
             const std::uint32_t cellCount = static_cast<std::uint32_t>(map_.size());
@@ -124,6 +127,10 @@ namespace NanamiEngine::Module::Asset
             if (version >= 2)
                 archive(CEREAL_NVP(layerMask_));
 
+            boxScale_ = 1.0f;
+            if (version >= 3)
+                archive(CEREAL_NVP(boxScale_));
+
             map_.clear();
 
             if (version == 0)
@@ -164,7 +171,7 @@ namespace NanamiEngine::Module::Asset
 
 REGISTER_SCRIPTABLE_OBJECT(HeightGridMap, HEIGHT_GRID_MAP_EXTENSION_LABEL, "Stage")
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::HeightGridMap, 2);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::HeightGridMap, 3);
 CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::HeightGridMap);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::HeightGridMap);
 #pragma endregion

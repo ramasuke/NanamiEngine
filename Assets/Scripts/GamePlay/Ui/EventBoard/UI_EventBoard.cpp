@@ -1,7 +1,7 @@
 ﻿#include "UI_EventBoard.h"
 
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 
 namespace GamePlay::Ui
 {

@@ -5,11 +5,11 @@
 #include <string>
 #include <string_view>
 #include <vector>
-#include "../../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../../Engine/Module/Asset/Sprite/SpriteFile.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
+#include "Libs/LibCore/cereal/glm/GlmHelper.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Asset/Sprite/SpriteFile.h"
+#include "Engine/Module/Component/ComponentBase.h"
 
 namespace GamePlay::Ui
 {

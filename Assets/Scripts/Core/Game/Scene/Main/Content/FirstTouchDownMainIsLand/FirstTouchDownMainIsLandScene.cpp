@@ -1,9 +1,9 @@
 ﻿#include "FirstTouchDownMainIsLandScene.h"
 
-#include "../../../../../../../../Engine/Core/Coroutine/Coroutine.h"
-#include "../../../../../../../../Engine/Core/Coroutine/Awaitable/WaitForTween/Coroutine_WaitForTween.h"
-#include "../../../../../../../../Libs/LibCore/Tween/Ease/Ease.h"
-#include "../../../../../../../../Packages/Cinemachine/VirtualCamera/Behaviour/Follow/VirtualCameraFollowBehaviour.h"
+#include "Engine/Core/Coroutine/Coroutine.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitForTween/Coroutine_WaitForTween.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/Follow/VirtualCameraFollowBehaviour.h"
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
 #include "../../../../PlayerAvatar/PlayerAvatar.h"
@@ -26,14 +26,19 @@ namespace GameCore::Scene::Main
 
     void FirstTouchDownMainIsLandScene::Init()
     {
-        SubScene().Push(Sub::SceneType::ChattingUI);
-        
-        scene_ = LoadMainScene();
-        Context()->Init();
+        Coroutine::StartCoroutine(OnEnterAsync(BeginEnter()));
     }
-    
-    void FirstTouchDownMainIsLandScene::Enter()
+
+    Coroutine::Task<void> FirstTouchDownMainIsLandScene::OnEnterAsync(const int generation)
     {
+        if (!co_await LoadMainSceneAsync(generation))
+            co_return;
+
+        // Context の FIELD(飛行船・カメラ・タイトルロゴ)は読み込んだシーン内を指す
+        Context()->Init();
+        // メインシーンが居ない間に Instantiate が走らないよう、読み込みが済んでから積む
+        SubScene().Push(Sub::SceneType::ChattingUI);
+
         auto& context = *Context();
         
         GamePlay::Sound::SoundPlayer::PlayBgm(context.BGM());
@@ -48,18 +53,34 @@ namespace GameCore::Scene::Main
         playerAvatar_.lock()->PlayerTransform().SetLocalRot({glm::vec3{0.0f, 90.0f, 0.0f}});
         
         // 船を降りるまでのMovie開始
-        aboardAirShipMovie_ = std::make_unique<FirstTouchDownMainIsLand::AboardAirShipMovie>(playerAvatar_, Context());
-        Coroutine::StartCoroutine(aboardAirShipMovie_->ToTask());
+        aboardAirShipMovie_ = std::make_shared<FirstTouchDownMainIsLand::AboardAirShipMovie>(playerAvatar_, Context());
+        Coroutine::StartCoroutine(FirstTouchDownMainIsLand::AboardAirShipMovie::PlayAsync(aboardAirShipMovie_));
+
+        CompleteEnter(generation);
+    }
+
+    void FirstTouchDownMainIsLandScene::Enter()
+    {
+
     }
 
     void FirstTouchDownMainIsLandScene::DoDispose()
     {
-        PlayerAvatar::SaveType(*playerAvatar_.lock());
-        playerAvatar_.lock()->SaveStatus();
-        SaveGameProgression(GameProgresion::MainIsland);
-         
+        // ムービーのコルーチンは止められないので、次の区切りで抜けさせる
+        if (aboardAirShipMovie_)
+            aboardAirShipMovie_->Cancel();
+        aboardAirShipMovie_.reset();
+
+        // 読み込みの途中で抜けたときはアバターが居ない。そのときは進行も保存しない
+        if (const auto avatar = playerAvatar_.lock())
+        {
+            PlayerAvatar::SaveType(*avatar);
+            avatar->SaveStatus();
+            SaveGameProgression(GameProgresion::MainIsland);
+        }
+        playerAvatar_.reset();
+
         GamePlay::Sound::SoundPlayer::StopBgm(Context()->BGM());
-        Core::Application::ApplicationBase::GameWindow()->RemoveContent(scene_.lock());
     }
     
     void FirstTouchDownMainIsLandScene::OnDrawGui()

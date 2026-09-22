@@ -1,7 +1,7 @@
 ﻿#include "GamePlay_AttackBuffSpellEffect.h"
 
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../Core/Game/Magic/IMagicCaster.h"
 #include "../../../Core/Game/PlayerAvatar/Item/Effect/IItemEffectTarget.h"
 #include "../../Spawn/GamePlay_PrefabSpawner.h"

@@ -1,9 +1,9 @@
 ﻿#include "GamePlay_PlacementSpellEffect.h"
 
 #include "geometric.hpp"
-#include "../../../../../Engine/Module/GameObject/Interface/IGameObject.h"
-#include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/GameObject/Interface/IGameObject.h"
+#include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../Core/Game/Magic/IMagicCaster.h"
 #include "../Component/GamePlay_MagicBlast.h"
 #include "../Component/GamePlay_MagicPlacement.h"

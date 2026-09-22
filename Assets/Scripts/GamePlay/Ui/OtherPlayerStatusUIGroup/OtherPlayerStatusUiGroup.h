@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/ComponentBase.h"
 #include "../PlayerStatus/Ui_PlayerStatus.h"
 
 namespace GamePlay::Ui

@@ -43,17 +43,17 @@ namespace GameCore::PlayerAvatar
         ++revision_;
     }
 
-    std::shared_ptr<Asset::ItemData> ItemPouch::UseSelected(Item::IItemEffectTarget& target)
+    std::shared_ptr<Asset::ItemData> ItemPouch::UseSelected(Item::IItemEffectTarget& target, const std::shared_ptr<GameObject::IGameObject>& user)
     {
         if (!CanUseSelected())
             return nullptr;
 
         auto& slot = slots_[selectedIndex_];
-        // 効果がまだ無いアイテム(罠や爆弾)は減らさない
+        // 効果がまだ無いアイテムは減らさない
         if (!slot.item || !slot.item->HasEffect())
             return nullptr;
 
-        slot.item->ApplyEffects(target);
+        slot.item->ApplyEffects(target, user);
         --slot.count;
         ++revision_;
         return slot.item;

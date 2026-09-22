@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <memory>
 
-#include "../../../../../../../Engine/Core/Application/Window/Popup/Interface/IPopupWindow.h"
-#include "../../../../../../../Engine/Core/Application/Window/Popup/Factory/PopupWindowFactory.h"
+#include "Engine/Core/Application/Window/Popup/Interface/IPopupWindow.h"
+#include "Engine/Core/Application/Window/Popup/Factory/PopupWindowFactory.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Enemy_BehaviourTree.h"
 
 namespace Editor::Npc::Enemy

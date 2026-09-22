@@ -3,7 +3,7 @@
 
 #include "../glm/vec3.hpp"
 #include "../glm/gtc/quaternion.hpp"
-#include "../../../../Engine/Module/Namespace/EngineNamespace.h"
+#include "Engine/Module/Namespace/EngineNamespace.h"
 
 namespace NanamiEngine::Module::Asset
 {

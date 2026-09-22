@@ -1,8 +1,11 @@
 ﻿#include "PlayerAvatar_MagicCaster_StatusPresenter.h"
 
 #include "../MagicCasterAvatarStatus.h"
-#include "../../../../../../../../Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "../../../../../../GamePlay/PlayerAvatar/MagicCaster/MagicCasterAvatar.h"
 #include "../../../../../../GamePlay/Ui/ControlGuide/Ui_MagicCasterControlGuide.h"
+#include "../../../../../../GamePlay/Ui/ItemBar/Ui_ItemBar.h"
+#include "../../../../../../GamePlay/Ui/ItemBar/Ui_ItemBarSource.h"
 #include "../../../../../../GamePlay/Ui/SpellPalette/Ui_SpellPalette.h"
 
 namespace GamePlay::PlayerAvatar::MagicCaster
@@ -25,6 +28,15 @@ namespace GamePlay::PlayerAvatar::MagicCaster
             }
         }
 
+        if (itemBarPrefab_)
+        {
+            if (const auto itemBarObject = Scene::GameObject::Instantiate(*itemBarPrefab_.get(), Entity().lock()).lock())
+            {
+                if (const auto itemBar = itemBarObject->Components().Catch<Ui::ItemBar>().lock())
+                    itemBar->Initialize(std::make_shared<Ui::AvatarItemBarSource<MagicCasterAvatar, GameCore::PlayerAvatar::MagicCaster::IMagicCasterAvatarTransitionVisitor>>(magicCasterAvatar));
+            }
+        }
+
         if (!controlGuidePrefab_)
             return;
         if (const auto controlGuideObject = Scene::GameObject::Instantiate(*controlGuidePrefab_.get(), Entity().lock()).lock())
@@ -38,5 +50,6 @@ namespace GamePlay::PlayerAvatar::MagicCaster
     {
         ImGuiHelper::OnDrawInputField("spellPalettePrefab_", spellPalettePrefab_);
         ImGuiHelper::OnDrawInputField("controlGuidePrefab_", controlGuidePrefab_);
+        ImGuiHelper::OnDrawInputField("itemBarPrefab_", itemBarPrefab_);
     }
 }

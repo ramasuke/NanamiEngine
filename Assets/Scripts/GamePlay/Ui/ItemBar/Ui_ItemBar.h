@@ -4,38 +4,31 @@
 #include <memory>
 #include <vector>
 
-#include "../../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
-#include "../../../../../Engine/Core/Object/Field/Field.h"
-#include "../../../../../Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
-#include "../../../../../Engine/Module/Asset/Sprite/SpriteFile.h"
-#include "../../../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../../../Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
-#include "../../../../../Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Libs/LibCore/cereal/glm/GlmHelper.h"
+#include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Asset/Sprite/SpriteFile.h"
+#include "Engine/Module/Component/ComponentBase.h"
+#include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
+#include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../../../Core/Game/PlayerAvatar/InputAction/PlayerAvatarInputDevice.h"
 #include "../../../Core/Game/PlayerAvatar/Item/ItemPouch.h"
 
-namespace GamePlay::PlayerAvatar::SwordMan
-{
-    class SwordManAvatar;
-}
-
 namespace GamePlay::Ui
 {
+    class IItemBarSource;
     class ItemSlot;
 
     // 画面右下のアイテム欄。選択中を中央に置いたまま左右へ回る帯で、枠は slotPrefab_ から slots_ の子へ生成する。
     // 出入りは State が宣言する CycleItem / UseItem を見て決めるので、
-    // 宣言しない State(大砲に乗っている間など)では自動的に引っ込む
+    // 宣言しない State(大砲に乗っている間など)では自動的に引っ込む。アバターの種類は IItemBarSource が隠す
     class ItemBar final : public Component::ComponentBase,
                           public LifeCycleCallback::IUpdatable
     {
     public:
-        void Initialize(const std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar>& swordManAvatar);
+        void Initialize(const std::shared_ptr<IItemBarSource>& source);
 
     private:
-        /// State が宣言する操作から、アイテム欄を出すか・使えるかだけを拾う
-        class ActionCollector;
-
         void OnUpdate() override;
 
         /// 見せる枠数(ポーチの枠数と maxVisibleSlots_ の小さい方)に足りない分だけ枠を生成し、帯の位置を合わせ直す
@@ -77,7 +70,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] float selectPulseDuration_secs_ = 0.3f;
         [[serialize(0)]] int   selectGlowMaxAlpha_ = 210;
 
-        std::weak_ptr<GamePlay::PlayerAvatar::SwordMan::SwordManAvatar> swordManAvatar_;
+        std::shared_ptr<IItemBarSource> source_;
         std::vector<std::weak_ptr<ItemSlot>> slotViews_;
         std::size_t   visibleCount_ = 0;
         float         barAlpha_ = 0.0f;
