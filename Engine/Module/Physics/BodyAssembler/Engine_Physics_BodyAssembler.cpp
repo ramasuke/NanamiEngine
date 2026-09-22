@@ -581,7 +581,7 @@ namespace NanamiEngine::Module::Physics
             bodyInterface.SetPositionAndRotationWhenChanged(bodyId, position, rotation, JPH::EActivation::Activate);
             break;
         case JPH::EMotionType::Kinematic:
-            bodyInterface.MoveKinematic(bodyId, position, rotation, Time::DeltaTime());
+            bodyInterface.MoveKinematic(bodyId, position, rotation, Time::FixedDeltaTime());
             break;
         default:
             break;
@@ -617,7 +617,7 @@ namespace NanamiEngine::Module::Physics
         if (BodyAssemblerWarnNonFiniteTransform(position, rotation, collider, it->second.warnedNonFiniteTransform))
             return;
 
-        physics_.GetPhysicsSystem().GetBodyInterface().MoveKinematic(it->second.bodyId, position, rotation, Time::DeltaTime());
+        physics_.GetPhysicsSystem().GetBodyInterface().MoveKinematic(it->second.bodyId, position, rotation, Time::FixedDeltaTime());
     }
 
     std::optional<JPH::BodyID> BodyAssembler::BodyOf(const Component::RigidBody& rigidBody) const

@@ -28,7 +28,7 @@ namespace NanamiEngine::Core::Application::Configuration
 
     private:
         using ColliderKindFlags  = std::array<bool, static_cast<size_t>(Module::Physics::ColliderShapeKind::Count)>;
-        using ColliderLayerFlags = std::array<bool, static_cast<size_t>(Module::Physics::Layer::Count)>;
+        using ColliderLayerFlags = std::array<bool, Module::Physics::MAX_LAYER_COUNT>;
 
         static bool               showAllColliders_;
         static ColliderKindFlags  showColliderKinds_;

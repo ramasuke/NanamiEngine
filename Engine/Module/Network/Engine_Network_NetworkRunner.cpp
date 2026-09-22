@@ -45,6 +45,17 @@ namespace NanamiEngine::Module::Network
         Start({ Core::Network::Mode::Client, host });
     }
 
+    void NetworkRunnerBase::StartRelay(const std::string& sessionKey)
+    {
+        // Start() でも読み直すが、接続先はここで決めるので先に読む
+        Core::Application::Configuration::NetworkConfiguration::Load();
+        Core::Network::NetworkStartSettings settings;
+        settings.host       = Core::Application::Configuration::NetworkConfiguration::GetRelayServerEndpoint();
+        settings.transport  = Core::Network::Transport::RelayServer;
+        settings.sessionKey = sessionKey;
+        Start(settings);
+    }
+
     void NetworkRunnerBase::Start(const Core::Network::NetworkStartSettings& settings)
     {
         assert(!networkSystem_ && "NetworkRunner は開始済み。やり直すときは先に Shutdown する");

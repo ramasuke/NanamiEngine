@@ -18,6 +18,7 @@ post-processing; ``--encoding`` also accepts ``utf-8`` (no BOM) or the legacy
 
 from __future__ import annotations
 
+import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -27,6 +28,9 @@ from . import npc_kind, vcxproj
 _REPO = Path(__file__).resolve().parents[2]
 VCXPROJ = _REPO / "NanamiEngine.vcxproj"
 FILTERS = _REPO / "NanamiEngine.vcxproj.filters"
+# Every .cpp that registers a polymorphic type includes this, so the type is bound
+# to every archive the engine uses (JSON + PortableBinary).
+SERIALIZATION_REGISTRATION_HEADER = "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 _SCALAR = {
     "int": ("int", "0"),
@@ -141,17 +145,20 @@ def _render_h(kind: npc_kind.NpcKind, name: str, category: str, version: int, pa
     L.append(f'    {kind.register_macro}({name}, "{category}::{name}")')
     L.append("}")
     L.append("")
+    # CEREAL_CLASS_VERSION stays in the header (it must be visible wherever the
+    # type is serialised); the type/relation registration goes in the .cpp.
     if version and version > 0:
         L.append(f"CEREAL_CLASS_VERSION({fqn}, {version})")
-    L.append(f"CEREAL_REGISTER_TYPE({fqn})")
-    L.append(f"CEREAL_REGISTER_POLYMORPHIC_RELATION({kind.action_base_fqn}, {fqn})")
-    L.append("")
+        L.append("")
     return "\r\n".join(L)
 
 
-def _render_cpp(kind: npc_kind.NpcKind, name: str, params: list[Param]) -> str:
+def _render_cpp(kind: npc_kind.NpcKind, name: str, params: list[Param], fs_dir: Path) -> str:
+    fqn = f"{kind.action_fqn_prefix}{name}"
+    registration = Path(os.path.relpath(_REPO / SERIALIZATION_REGISTRATION_HEADER, fs_dir)).as_posix()
     L = []
     L.append(f'#include "{kind.action_file_prefix}{name}.h"')
+    L.append(f'#include "{registration}"')
     L.append("")
     L.append(f"namespace GameCore::Npc::{kind.cpp_namespace_segment}::Behaviour")
     L.append("{")
@@ -169,6 +176,11 @@ def _render_cpp(kind: npc_kind.NpcKind, name: str, params: list[Param]) -> str:
             L.append(f'        ImGuiHelper::OnDrawInputField("{p.name}", {p.name});')
         L.append("    }")
     L.append("}")
+    L.append("")
+    L.append("#pragma region SerializationMacro")
+    L.append(f"CEREAL_REGISTER_TYPE({fqn});")
+    L.append(f"CEREAL_REGISTER_POLYMORPHIC_RELATION({kind.action_base_fqn}, {fqn});")
+    L.append("#pragma endregion")
     L.append("")
     return "\r\n".join(L)
 
@@ -192,7 +204,7 @@ def add_action(name: str, category: str, *, params: list[Param] | None = None,
         raise ScaffoldError(f"{h_path.name} already exists at {fs_dir}")
 
     h_text = _render_h(kind, name, category, version, params, d_action, d_scripts)
-    cpp_text = _render_cpp(kind, name, params)
+    cpp_text = _render_cpp(kind, name, params, fs_dir)
     log: list[str] = []
 
     if dry_run:

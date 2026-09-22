@@ -80,6 +80,16 @@ def _read(path: Path) -> str:
     return raw.decode("utf-8", "replace")
 
 
+def _search_register_type(path: Path, text: str):
+    """CEREAL_REGISTER_TYPE lives in the header's sibling .cpp (CEREAL_CLASS_VERSION
+    stays in the header); older headers still carry it themselves."""
+    m = RE_REGISTER_TYPE.search(text)
+    cpp = path.with_suffix(".cpp")
+    if m is None and cpp.exists():
+        m = RE_REGISTER_TYPE.search(_read(cpp))
+    return m
+
+
 def _balanced_block(text: str, open_idx: int) -> str:
     """Return the ``{...}`` block starting at/after ``open_idx`` (inclusive braces)."""
     i = text.find("{", open_idx)
@@ -243,7 +253,7 @@ def scan() -> dict[str, Any]:
         cls = cm.group(1)
         body = _balanced_block(text, cm.end())
 
-        vt = RE_REGISTER_TYPE.search(text)
+        vt = _search_register_type(path, text)
         fqn = vt.group(1) if vt else f"NanamiEngine::Module::AnimationTree::{cls}"
         cv = RE_CLASS_VERSION.search(text)
         version = int(cv.group(2)) if cv else 0

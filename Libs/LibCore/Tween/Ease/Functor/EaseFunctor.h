@@ -5,6 +5,7 @@
 #include "../Type/EaseType.h"
 #include "../glm/fwd.hpp"
 #include "../glm/detail/type_quat.hpp"
+#include "../../../../../Engine/Module/Color/Color32.h"
 
 namespace LibCore::Tween
 {
@@ -41,6 +42,8 @@ namespace LibCore::Tween
         float     operator()(float time) const;
         glm::vec3 operator()(float time, const glm::vec3& a, const glm::vec3& b) const;
         glm::quat operator()(float time, const glm::quat& a, const glm::quat& b) const;
+        // Color32 は算術演算を持たないので、.via(Tween::Ease(...)) を付けないと tweeny の既定イージングで start のまま動かない
+        NanamiEngine::Color32 operator()(float time, const NanamiEngine::Color32& a, const NanamiEngine::Color32& b) const;
         EaseType easing_;
     };
 }

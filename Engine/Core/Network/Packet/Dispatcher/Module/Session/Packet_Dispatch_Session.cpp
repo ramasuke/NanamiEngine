@@ -1,9 +1,6 @@
 ﻿#include "Packet_Dispatch_Session.h"
 
 #include "cereal/types/vector.hpp"
-#pragma comment(lib, "Ws2_32.lib")
-#pragma comment(lib, "winmm.lib")
-#include "enet/enet.h"
 #include "../../../../Engine_Network_INetworkSystem.h"
 #include "../../../../Object/Registry/INetworkObjectInstanceRegistry.h"
 #include "../SyncTransform/Packet_Dispatch_SyncTransform.h"
@@ -23,19 +20,17 @@ namespace NanamiEngine::Core::Network
         , syncTransform_(syncTransform)
     {
         // 新規参加者へ所有者テーブルを送る
-        newPeerSubscription_ = networkSystem_.OnConnectPlayer().subscribe(
-            [this](const ENetEvent* event)
+        newPeerSubscription_ = networkSystem_.OnConnectPlayer().Subscribe(
+            [this](const struct PlayerId joined)
             {
                 if (IsServer())
-                    SendOwnershipSnapshotTo(event->peer);
-            },
-            [](std::exception_ptr) {}
-        );
+                    SendOwnershipSnapshotTo(joined);
+            });
     }
 
     SessionDispatcher::~SessionDispatcher()
     {
-        newPeerSubscription_.unsubscribe();
+        newPeerSubscription_.Dispose();
     }
 
     void SessionDispatcher::ReceivePacket(const Packet& packet)
@@ -95,10 +90,10 @@ namespace NanamiEngine::Core::Network
             }
         }
 
-        onPlayerLeft_.get_subscriber().on_next(left);
+        onPlayerLeft_.OnNext(left);
     }
 
-    void SessionDispatcher::SendOwnershipSnapshotTo(_ENetPeer* peer) const
+    void SessionDispatcher::SendOwnershipSnapshotTo(const struct PlayerId target) const
     {
         const auto owners = instanceRegistry_.CollectOwners();
         if (owners.empty())
@@ -106,6 +101,6 @@ namespace NanamiEngine::Core::Network
 
         Packet packet = Packet::Create(DefaultPacketType::OwnershipSnapshot);
         packet.Data().Write(owners);
-        networkSystem_.SendTo(peer, packet);
+        networkSystem_.SendTo(target, packet);
     }
 }

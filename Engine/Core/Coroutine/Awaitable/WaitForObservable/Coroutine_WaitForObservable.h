@@ -5,7 +5,7 @@
 #include "../../../Application/ApplicationBase.h"
 #include "../../../Application/Window/Main/Game/GameWindow.h"
 #include "../../Scheduler/CoroutineScheduler.h"
-#include "../rxcpp/rx.hpp"
+#include "../../../../../Packages/R4/R4.h"
 
 namespace Coroutine
 {
@@ -13,11 +13,10 @@ namespace Coroutine
     struct WaitForObservable final : IWaitForObservable 
     {
     public:
-        explicit WaitForObservable(rxcpp::observable<ArgT> observable)
+        explicit WaitForObservable(NanamiEngine::R4::Observable<ArgT> observable)
             : observable_(observable)
         {
-            compositeSubscription_ = observable_.subscribe(
-                rxcpp::composite_subscription(),
+            subscription_ = observable_.Subscribe(
                 [this](const ArgT&)
                 {
                     isReady_ = true;
@@ -26,7 +25,7 @@ namespace Coroutine
 
         ~WaitForObservable() override
         {
-            compositeSubscription_.unsubscribe();
+            subscription_.Dispose();
         }
 
         [[nodiscard]] bool await_ready() const noexcept override
@@ -51,9 +50,9 @@ namespace Coroutine
         }
 
     private:
-        rxcpp::composite_subscription compositeSubscription_;
+        NanamiEngine::R4::Disposable subscription_;
         std::coroutine_handle<> parentHandle_;
-        rxcpp::observable<ArgT> observable_;
+        NanamiEngine::R4::Observable<ArgT> observable_;
         bool isReady_ = false;
     };
 }

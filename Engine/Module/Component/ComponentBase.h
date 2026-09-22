@@ -8,6 +8,7 @@
 #include "../GameObject/ComponentGroup/ComponentGroup.h"
 #include "../GameObject/Interface/IGameObject.h"
 #include "../Namespace/EngineNamespace.h"
+#include "../../../Packages/R4/Core/CancellationToken/R4_CancellationToken.h"
 
 namespace NanamiEngine::Module::GameObject
 {
@@ -37,9 +38,9 @@ namespace NanamiEngine::Module::Component
         void ResetGuid();
         void SetEnable(bool enable);
         [[nodiscard]] bool IsEnable() const;
-        //NOTE: このComponentが破棄される時にunsubscribeされる購読トークン。
-        //      rxのsubscribeに渡すか、add()に破棄時の後始末を積む
-        [[nodiscard]] rxcpp::composite_subscription& DestroyCancellationToken() { return destroyCancellationToken_; }
+        //NOTE: このComponentが破棄される時にキャンセルされるトークン。
+        //      購読は Subscribe(...).AddTo(this)、破棄時の後始末は DestroyCancellationToken().Register(...)
+        [[nodiscard]] R4::CancellationToken DestroyCancellationToken() const { return destroyCancellationTokenSource_.Token(); }
         //WARNING: エンジン開発者以外使用しないでください。
         void ImplementCancelOnDestroy();
 
@@ -47,7 +48,7 @@ namespace NanamiEngine::Module::Component
         Guid guid_;
         bool isEnable_ = true;
         std::weak_ptr<GameObject::IGameObject> gameObjectRef_;
-        rxcpp::composite_subscription destroyCancellationToken_;
+        R4::CancellationTokenSource destroyCancellationTokenSource_;
 
     protected:
         template <typename T>

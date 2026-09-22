@@ -13,6 +13,9 @@ namespace NanamiEngine
         static float GetTimeScale();
         static float GetFixedAlpha();
         static void  SetFixedAlpha(float alpha);
+        // 物理の固定ステップ1回分の秒数(OnFixedUpdate / OnBeginPhysics 中はこちらを使う)
+        static float FixedDeltaTime();
+        static void  SetFixedDeltaTime(float fixedDeltaTime);
 
     private:
         static int lastTime_;
@@ -21,5 +24,6 @@ namespace NanamiEngine
         static float currentTime_;
         static int   isSkipNextFrame_;
         static float fixedAlpha_;
+        static float fixedDeltaTime_;
     };
 }

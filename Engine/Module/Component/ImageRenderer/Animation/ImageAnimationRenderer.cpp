@@ -68,7 +68,7 @@ namespace NanamiEngine::Module::NanamiUi
             pos.x,
             pos.y,
             scale.x,
-            rot.z,
+            glm::eulerAngles(rot).z,
             handles[currentFrame_],
             TRUE
         );

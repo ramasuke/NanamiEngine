@@ -30,9 +30,17 @@ namespace NanamiEngine::Core::Network
         std::uint16_t port = 0;
     };
 
+    enum class Transport
+    {
+        Direct,     // ホストが待ち受け、クライアントが直接つなぐ(LAN)
+        RelayServer // 双方が中継サーバーへつなぎ、ホストかどうかは中継サーバーが決める
+    };
+
     struct NetworkStartSettings
     {
-        Mode         mode = Mode::Client;
-        HostEndpoint host; // Client のときだけ使う
+        Mode         mode = Mode::Client; // Direct のときだけ使う
+        HostEndpoint host;                // Direct の Client では接続先、RelayServer では中継サーバー
+        Transport    transport = Transport::Direct;
+        std::string  sessionKey;          // RelayServer のときだけ使う
     };
 }

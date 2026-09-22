@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "../../Packet_Dispatch_PacketDispatcherBase.h"
-#include "../../../../../../../Libs/LibCore/Rx/SerializableSubject/unit/unit.h"
-#include "../rxcpp/rx.hpp"
+#include "../../../../../../../Packages/R4/R4.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -14,12 +13,12 @@ namespace NanamiEngine::Core::Network
     {
     public:
         explicit ReceivedAssignPlayerId(INetworkSystem& networkSystem);
-        [[nodiscard]] rxcpp::observable<LibCore::Rx::unit> OnAssignedPlayerId() const { return onAssignedPlayerId_.get_observable(); }
+        [[nodiscard]] R4::Observable<R4::Unit> OnAssignedPlayerId() const { return onAssignedPlayerId_.AsObservable(); }
         
         void ReceivePacket(const Packet& packet) override;
         
     private:
         INetworkSystem& networkSystem_;
-        rxcpp::subjects::subject<LibCore::Rx::unit> onAssignedPlayerId_;
+        R4::Subject<R4::Unit> onAssignedPlayerId_;
     };
 }

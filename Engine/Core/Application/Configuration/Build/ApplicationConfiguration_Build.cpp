@@ -13,15 +13,19 @@
 namespace NanamiEngine::Core::Application::Configuration
 {
     constexpr auto BUILD_DEFAULT_PRODUCT_NAME     = "NanamiEngine";
-    constexpr auto BUILD_DEFAULT_START_SCENE_PATH = "Assets/Scene/GameManage.scene";
-    constexpr auto BUILD_DEFAULT_MSBUILD_PATH     = R"(C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe)";
+    // NOTE: Scene の既定パスと揃える
+    constexpr auto BUILD_DEFAULT_START_SCENE_PATH = "Assets/Scene/SampleScene.scene";
+    // NOTE: 空なら vswhere で探す
+    constexpr auto BUILD_DEFAULT_MSBUILD_PATH     = "";
     constexpr auto BUILD_DEFAULT_OUTPUT_DIRECTORY = "Build/Game";
+    constexpr bool BUILD_DEFAULT_ASSET_UPDATES    = true;
 
     std::string              BuildConfiguration::productName_         = BUILD_DEFAULT_PRODUCT_NAME;
     std::string              BuildConfiguration::startSceneGuid_;
     BuildTargetConfiguration BuildConfiguration::targetConfiguration_ = BuildTargetConfiguration::Release;
     std::string              BuildConfiguration::msBuildPath_         = BUILD_DEFAULT_MSBUILD_PATH;
     std::string              BuildConfiguration::outputDirectory_     = BUILD_DEFAULT_OUTPUT_DIRECTORY;
+    bool                     BuildConfiguration::assetUpdatesEnabled_ = BUILD_DEFAULT_ASSET_UPDATES;
 
     constexpr auto BUILD_CONFIG_PATH          = "Build/";
     // RuntimeConfigDirectory() と揃える
@@ -31,6 +35,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto BUILD_CONFIGURATION_KEY    = "Configuration";
     constexpr auto BUILD_MSBUILD_PATH_KEY     = "MsBuildPath";
     constexpr auto BUILD_OUTPUT_DIRECTORY_KEY = "OutputDirectory";
+    constexpr auto BUILD_ASSET_UPDATES_KEY    = "EnableAssetUpdates";
 
     namespace
     {
@@ -43,6 +48,54 @@ namespace NanamiEngine::Core::Application::Configuration
         std::string BuildConfigTargetToString(const BuildTargetConfiguration targetConfiguration)
         {
             return targetConfiguration == BuildTargetConfiguration::Debug ? "Debug" : "Release";
+        }
+
+        std::filesystem::path BuildConfigFindMsBuildWithVswhere()
+        {
+            wchar_t programFiles[MAX_PATH] = {};
+            if (GetEnvironmentVariableW(L"ProgramFiles(x86)", programFiles, MAX_PATH) == 0)
+                return {};
+            const std::filesystem::path vswhere = std::filesystem::path(programFiles) / L"Microsoft Visual Studio" / L"Installer" / L"vswhere.exe";
+            if (std::error_code ec; !std::filesystem::is_regular_file(vswhere, ec))
+                return {};
+
+            SECURITY_ATTRIBUTES security = { sizeof(security), nullptr, TRUE };
+            HANDLE readPipe  = nullptr;
+            HANDLE writePipe = nullptr;
+            if (!CreatePipe(&readPipe, &writePipe, &security, 0))
+                return {};
+            SetHandleInformation(readPipe, HANDLE_FLAG_INHERIT, 0);
+
+            std::wstring commandLine = L"\"" + vswhere.wstring() + L"\" -latest -products * -requires Microsoft.Component.MSBuild -utf8 -find MSBuild\\**\\Bin\\MSBuild.exe";
+            STARTUPINFOW        startupInfo = {};
+            PROCESS_INFORMATION processInfo = {};
+            startupInfo.cb         = sizeof(startupInfo);
+            startupInfo.dwFlags    = STARTF_USESTDHANDLES;
+            startupInfo.hStdOutput = writePipe;
+            startupInfo.hStdError  = writePipe;
+            const bool started = CreateProcessW(nullptr, commandLine.data(), nullptr, nullptr, TRUE, CREATE_NO_WINDOW, nullptr, nullptr, &startupInfo, &processInfo);
+            CloseHandle(writePipe);
+            if (!started)
+            {
+                CloseHandle(readPipe);
+                return {};
+            }
+
+            std::string output;
+            char        buffer[512];
+            DWORD       read = 0;
+            while (ReadFile(readPipe, buffer, sizeof(buffer), &read, nullptr) && read > 0)
+                output.append(buffer, read);
+            WaitForSingleObject(processInfo.hProcess, 5000);
+            CloseHandle(processInfo.hThread);
+            CloseHandle(processInfo.hProcess);
+            CloseHandle(readPipe);
+
+            const size_t lineEnd = output.find_first_of("\r\n");
+            const std::string firstLine = output.substr(0, lineEnd);
+            if (firstLine.empty())
+                return {};
+            return BuildConfigUtf8ToPath(firstLine);
         }
 
         void BuildConfigCollectSceneFiles(FileSystem::Directory& directory, std::vector<std::shared_ptr<Module::Asset::SceneFile>>& outSceneFiles)
@@ -65,6 +118,7 @@ namespace NanamiEngine::Core::Application::Configuration
         startSceneGuid_  = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(BUILD_RUNTIME_CONFIG_PATH, BUILD_START_SCENE_GUID_KEY, std::string());
         msBuildPath_     = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(BUILD_CONFIG_PATH,         BUILD_MSBUILD_PATH_KEY,     std::string(BUILD_DEFAULT_MSBUILD_PATH));
         outputDirectory_ = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(BUILD_CONFIG_PATH,         BUILD_OUTPUT_DIRECTORY_KEY, std::string(BUILD_DEFAULT_OUTPUT_DIRECTORY));
+        assetUpdatesEnabled_ = Module::ProjectConfig::LoadOrDefaultWithPath<bool>(BUILD_CONFIG_PATH, BUILD_ASSET_UPDATES_KEY, BUILD_DEFAULT_ASSET_UPDATES);
 
         const std::string configuration = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(BUILD_CONFIG_PATH, BUILD_CONFIGURATION_KEY, BuildConfigTargetToString(BuildTargetConfiguration::Release));
         if (configuration == BuildConfigTargetToString(BuildTargetConfiguration::Debug))
@@ -88,6 +142,7 @@ namespace NanamiEngine::Core::Application::Configuration
             Module::ProjectConfig::SaveWithPath<std::string>(BUILD_CONFIG_PATH,         BUILD_CONFIGURATION_KEY,    BuildConfigTargetToString(targetConfiguration_));
             Module::ProjectConfig::SaveWithPath<std::string>(BUILD_CONFIG_PATH,         BUILD_MSBUILD_PATH_KEY,     msBuildPath_);
             Module::ProjectConfig::SaveWithPath<std::string>(BUILD_CONFIG_PATH,         BUILD_OUTPUT_DIRECTORY_KEY, outputDirectory_);
+            Module::ProjectConfig::SaveWithPath<bool>       (BUILD_CONFIG_PATH,         BUILD_ASSET_UPDATES_KEY,    assetUpdatesEnabled_);
         }
         catch (const Module::Exception::NanamiException& exception)
         {
@@ -185,7 +240,11 @@ namespace NanamiEngine::Core::Application::Configuration
 
     std::filesystem::path BuildConfiguration::MsBuildPath()
     {
-        return BuildConfigUtf8ToPath(msBuildPath_);
+        if (!msBuildPath_.empty())
+            return BuildConfigUtf8ToPath(msBuildPath_);
+
+        static const std::filesystem::path found = BuildConfigFindMsBuildWithVswhere();
+        return found;
     }
 
     void BuildConfiguration::SetOutputDirectory(const std::string& outputDirectory)
@@ -201,22 +260,12 @@ namespace NanamiEngine::Core::Application::Configuration
         return std::filesystem::absolute(BuildConfigUtf8ToPath(outputDirectory_)).lexically_normal();
     }
 
-    std::filesystem::path BuildConfiguration::StagingDirectory()
+    void BuildConfiguration::SetAssetUpdatesEnabled(const bool assetUpdatesEnabled)
     {
-        std::filesystem::path localAppData;
-        wchar_t* value = nullptr;
-        size_t   length = 0;
-        if (_wdupenv_s(&value, &length, L"LOCALAPPDATA") == 0 && value != nullptr)
-        {
-            localAppData = value;
-        }
-        free(value);
-
-        if (localAppData.empty())
-        {
-            localAppData = std::filesystem::temp_directory_path();
-        }
-        return localAppData / L"NanamiEngine" / L"GameBuild" / L"Staging";
+        if (assetUpdatesEnabled_ == assetUpdatesEnabled)
+            return;
+        assetUpdatesEnabled_ = assetUpdatesEnabled;
+        Save();
     }
 
     const wchar_t* BuildConfiguration::RuntimeConfigDirectory()

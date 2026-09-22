@@ -54,10 +54,22 @@ namespace NanamiEngine::Core::MainWindow
         }
     }
     
-    void GameWindow::BeginLoadSceneAsync(const std::string& filePath)
+    bool GameWindow::BeginLoadSceneAsync(const std::string& filePath)
     {
         if (!sceneLoader_.Begin(filePath))
+        {
             Module::LogWarning("GameWindow: 既に別のシーンを読み込み中です: " + filePath);
+            return false;
+        }
+
+        // 前回のシーンを今回の読み込み結果と取り違えないように
+        lastAsyncLoadedScene_.reset();
+        return true;
+    }
+
+    void GameWindow::CancelSceneLoad()
+    {
+        sceneLoader_.Cancel();
     }
 
     bool GameWindow::IsSceneLoading() const

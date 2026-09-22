@@ -24,7 +24,7 @@ namespace NanamiEngine::Module::NanamiUi
         const auto renderRot    = Transform().GetWorldRot  ();
         const auto renderScale  = Transform().GetWorldScale();
 
-        const float angle = renderRot  .z;
+        const float angle = glm::eulerAngles(renderRot).z;
         const float scale = renderScale.x;
 
         SetDrawBlendMode(static_cast<int>(blendMode_), blendRate_);

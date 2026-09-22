@@ -1,8 +1,7 @@
 ﻿#pragma once
 #include "../../../Engine/Module/Physics/ContactCallback/SensorEnterable/Engine_Physics_ISensorEnterable.h"
 #include "../../Engine/Module/Component/ComponentBase.h"
-#include "../rxcpp/rx.hpp"
-#include "../rxcpp/subjects/rx-subject.hpp"
+#include "../R4.h"
 #include "../../Engine/Module/Physics/ContactListener/ContactedData/Manifold/Engine_Physics_Manifold.h"
 
 namespace NanamiEngine::R4
@@ -17,13 +16,13 @@ namespace NanamiEngine::R4
                                               public Physics::Callback::ISensorEnterable
     {
     public:
-        [[nodiscard]] rxcpp::observable<SensorEnterContext> OnAction() const;
+        [[nodiscard]] R4::Observable<SensorEnterContext> OnAction() const;
 
     private:
         void OnTriggerEnter(const Physics::Manifold& contactManifold,
                             const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
 
-        rxcpp::subjects::subject<SensorEnterContext> onAction_;
+        R4::Subject<SensorEnterContext> onAction_;
         
 #pragma region Serialization Function
     public:

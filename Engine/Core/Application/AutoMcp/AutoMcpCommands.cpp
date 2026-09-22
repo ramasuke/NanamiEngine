@@ -5,6 +5,7 @@
 #include <cmath>
 #include <filesystem>
 #include <ranges>
+#include <span>
 #include <sstream>
 #include <system_error>
 #include <typeinfo>
@@ -924,11 +925,16 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
         using DebugDrawChanges = std::vector<std::pair<bool*, bool>>;
 
-        template <typename EnumT, std::size_t N>
-        static JsonValue DescribeDebugDrawFlags(const char* const (&names)[N], bool& (*flag)(EnumT), JsonAllocator& allocator)
+        static std::span<const char* const> PhysicsLayerNames()
+        {
+            return { NanamiEngine::Module::Physics::LayerNames(), static_cast<std::size_t>(NanamiEngine::Module::Physics::LayerCount()) };
+        }
+
+        template <typename EnumT>
+        static JsonValue DescribeDebugDrawFlags(const std::span<const char* const> names, bool& (*flag)(EnumT), JsonAllocator& allocator)
         {
             JsonValue value(rapidjson::kObjectType);
-            for (std::size_t i = 0; i < N; ++i)
+            for (std::size_t i = 0; i < names.size(); ++i)
                 value.AddMember(rapidjson::StringRef(names[i]), flag(static_cast<EnumT>(i)), allocator);
             return value;
         }
@@ -937,7 +943,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         {
             result.AddMember("colliders",             AutoMcpEngineAccess::DebugDrawAllColliders(), allocator);
             result.AddMember("shapes",                DescribeDebugDrawFlags(NanamiEngine::Module::Physics::COLLIDER_SHAPE_KIND_NAMES, &AutoMcpEngineAccess::DebugDrawColliderKind, allocator), allocator);
-            result.AddMember("layers",                DescribeDebugDrawFlags(NanamiEngine::Module::Physics::LAYER_NAMES, &AutoMcpEngineAccess::DebugDrawColliderLayer, allocator), allocator);
+            result.AddMember("layers",                DescribeDebugDrawFlags(PhysicsLayerNames(), &AutoMcpEngineAccess::DebugDrawColliderLayer, allocator), allocator);
             result.AddMember("triggers",              AutoMcpEngineAccess::DebugDrawTriggerColliders(), allocator);
             result.AddMember("mainCameraFrustum",     AutoMcpEngineAccess::DebugDrawMainCameraFrustum(), allocator);
             result.AddMember("virtualCameraFrustums", AutoMcpEngineAccess::DebugDrawVirtualCameraFrustums(), allocator);
@@ -950,8 +956,8 @@ namespace NanamiEngine::Core::Application::AutoMcp
         }
 
         /** @brief true/false なら全部、{"名前": bool} なら名前ごと (大文字小文字は区別しない) に切り替える */
-        template <typename EnumT, std::size_t N>
-        static void CollectDebugDrawFlags(const JsonValue& args, const char* key, const char* const (&names)[N], bool& (*flag)(EnumT), DebugDrawChanges& changes)
+        template <typename EnumT>
+        static void CollectDebugDrawFlags(const JsonValue& args, const char* key, const std::span<const char* const> names, bool& (*flag)(EnumT), DebugDrawChanges& changes)
         {
             const JsonValue* member = FindMember(args, key);
             if (member == nullptr)
@@ -959,7 +965,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
             if (member->IsBool())
             {
-                for (std::size_t i = 0; i < N; ++i)
+                for (std::size_t i = 0; i < names.size(); ++i)
                     changes.emplace_back(&flag(static_cast<EnumT>(i)), member->GetBool());
                 return;
             }
@@ -996,7 +1002,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             DebugDrawChanges changes;
             CollectDebugDrawFlag (args, "colliders", AutoMcpEngineAccess::DebugDrawAllColliders(), changes);
             CollectDebugDrawFlags(args, "shapes",    NanamiEngine::Module::Physics::COLLIDER_SHAPE_KIND_NAMES, &AutoMcpEngineAccess::DebugDrawColliderKind, changes);
-            CollectDebugDrawFlags(args, "layers",    NanamiEngine::Module::Physics::LAYER_NAMES, &AutoMcpEngineAccess::DebugDrawColliderLayer, changes);
+            CollectDebugDrawFlags(args, "layers",    PhysicsLayerNames(), &AutoMcpEngineAccess::DebugDrawColliderLayer, changes);
             CollectDebugDrawFlag (args, "triggers",  AutoMcpEngineAccess::DebugDrawTriggerColliders(), changes);
             CollectDebugDrawFlag (args, "mainCameraFrustum",     AutoMcpEngineAccess::DebugDrawMainCameraFrustum(), changes);
             CollectDebugDrawFlag (args, "virtualCameraFrustums", AutoMcpEngineAccess::DebugDrawVirtualCameraFrustums(), changes);

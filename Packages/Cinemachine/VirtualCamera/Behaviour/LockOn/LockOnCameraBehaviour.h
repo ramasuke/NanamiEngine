@@ -10,7 +10,6 @@ namespace NanamiEngine::CineMachine::Behaviour
     class LockOnCameraBehaviour final
         : public Component::ComponentBase
         , public LifeCycleCallback::IAwakable
-        , public LifeCycleCallback::IUpdatable
         , public IVirtualCameraBehaviour
     {
     public:
@@ -23,9 +22,10 @@ namespace NanamiEngine::CineMachine::Behaviour
     private:
         bool WantsImmediateApply() const override { return isImmediateApply_; }
 
-        void OnAwake () override;
-        void OnUpdate() override;
-        int  UpdatePriority() const override { return 1; }
+        void OnAwake       () override;
+        void OnCameraUpdate() override;
+        // Follow/LookAtが読むオフセットを先に書き込む
+        [[nodiscard]] VirtualCameraStage Stage() const override { return VirtualCameraStage::Driver; }
         
         void UpdateFraming(const std::shared_ptr<GameObject::IGameObject>& lockOnTarget);
         [[nodiscard]] glm::vec3 ResolveCameraCollision(const glm::vec3& originPos, const glm::vec3& desiredOffset) const;
@@ -58,7 +58,6 @@ template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<Component::ComponentBase>(this));
     archive(cereal::base_class<LifeCycleCallback::IAwakable>(this));
-    archive(cereal::base_class<LifeCycleCallback::IUpdatable>(this));
     archive(cereal::base_class<IVirtualCameraBehaviour>(this));
     archive(CEREAL_NVP(isImmediateApply_));
     archive(CEREAL_NVP(collisionBuffer_));
@@ -77,10 +76,9 @@ template<class Archive>
 void load(Archive& archive, const std::uint32_t version) {
     archive(cereal::base_class<Component::ComponentBase>(this));
     archive(cereal::base_class<LifeCycleCallback::IAwakable>(this));
-    archive(cereal::base_class<LifeCycleCallback::IUpdatable>(this));
+    if (version <= 2) LifeCycleCallback::DiscardUpdatableBase(archive);
     archive(cereal::base_class<IVirtualCameraBehaviour>(this));
     if (version >= 0) archive(CEREAL_NVP(isImmediateApply_));
-    // version 1 までの固定オフセット方式のパラメータ(フレーミング方式に移行)は読み捨てる
     if (version <= 1)
     {
         float legacyDistance = 0.0f;
@@ -107,7 +105,6 @@ void load(Archive& archive, const std::uint32_t version) {
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour, 2)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour, 3)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IUpdatable, NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);

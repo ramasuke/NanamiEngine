@@ -9,6 +9,7 @@ namespace NanamiEngine
     float Time::currentTime_     = 0.0f;
     int   Time::isSkipNextFrame_ = 0;
     float Time::fixedAlpha_      = 0.0f;
+    float Time::fixedDeltaTime_  = 1.0f / 60.0f;
 
     void Time::Update()
     {
@@ -70,5 +71,15 @@ namespace NanamiEngine
     void Time::SetFixedAlpha(const float alpha)
     {
         fixedAlpha_ = alpha;
+    }
+
+    float Time::FixedDeltaTime()
+    {
+        return fixedDeltaTime_;
+    }
+
+    void Time::SetFixedDeltaTime(const float fixedDeltaTime)
+    {
+        fixedDeltaTime_ = fixedDeltaTime;
     }
 }

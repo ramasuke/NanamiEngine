@@ -110,6 +110,36 @@ namespace Coroutine
         }
     }
 
+    void CoroutineScheduler::InvokeFixed(const float fixedDeltaTime)
+    {
+        // 前回からの登録分はこのステップから進める。
+        // resume 中に登録されたもの(連結した次の tween など)は pending に入り、次のステップから進む(同じ時間を二重に進めない)
+        if (!pendingFixedTickables_.empty())
+        {
+            fixedTickables_.insert(fixedTickables_.end(),
+                pendingFixedTickables_.begin(),
+                pendingFixedTickables_.end());
+            pendingFixedTickables_.clear();
+        }
+
+        for (auto it = fixedTickables_.begin(); it != fixedTickables_.end();)
+        {
+            auto* waitable = *it;
+            waitable->Tick(fixedDeltaTime);
+
+            if (waitable->await_ready())
+            {
+                const auto handle = waitable->CoroutineHandle();
+                it = fixedTickables_.erase(it);
+                handle.resume();
+            }
+            else
+            {
+                ++it;
+            }
+        }
+    }
+
     void CoroutineScheduler::AllClear()
     {
         std::unordered_set<void*> destroyed;
@@ -132,6 +162,10 @@ namespace Coroutine
             destroyIfNeeded(waitable->CoroutineHandle());
         for (const auto* waitable : pendingTickables_)
             destroyIfNeeded(waitable->CoroutineHandle());
+        for (const auto* waitable : fixedTickables_)
+            destroyIfNeeded(waitable->CoroutineHandle());
+        for (const auto* waitable : pendingFixedTickables_)
+            destroyIfNeeded(waitable->CoroutineHandle());
 
         // Event
         for (const auto* waitable : events_)
@@ -153,6 +187,8 @@ namespace Coroutine
 
         tickables_        .clear();
         pendingTickables_ .clear();
+        fixedTickables_       .clear();
+        pendingFixedTickables_.clear();
         events_           .clear();
         pendingEvents_    .clear();
         coroutines_       .clear();

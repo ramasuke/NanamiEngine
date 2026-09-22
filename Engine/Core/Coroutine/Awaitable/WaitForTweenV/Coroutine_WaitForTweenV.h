@@ -1,7 +1,10 @@
 ﻿#pragma once
 #include <coroutine>
+#include <functional>
+#include <type_traits>
 
 #include "../Engine_Coroutine_ITickableWaitable.h"
+#include "../TweenClock/Coroutine_TweenClock.h"
 #include "../tweeny/Tweeny/tween.h"
 #include "../../../Application/ApplicationBase.h"
 #include "../../../Application/Window/Main/Game/GameWindow.h"
@@ -14,7 +17,13 @@ namespace Coroutine
     {
     public:
         explicit WaitForTweenV(T& target, tweeny::tween<T> tween)
-            : target_(target)
+            : apply_([&target](const T& value) { target = value; })
+            , tween_(std::move(tween))
+        {}
+
+        // setter 経由でしか書けない値用(例: TextRenderer::SetTextColor)。T は tween から推論する
+        WaitForTweenV(std::type_identity_t<std::function<void(const T&)>> apply, tweeny::tween<T> tween)
+            : apply_(std::move(apply))
             , tween_(std::move(tween))
         {}
 
@@ -36,11 +45,9 @@ namespace Coroutine
 
         void Tick(float deltaTime) override
         {
-            const int dt_ms = static_cast<int>(deltaTime * 1000.0f);
+            tween_.step(clock_.Advance(deltaTime));
 
-            tween_.step(dt_ms);
-
-            ApplyTween(target_, tween_.peek());
+            apply_(tween_.peek());
         }
 
         [[nodiscard]] std::coroutine_handle<> CoroutineHandle() const override
@@ -49,13 +56,9 @@ namespace Coroutine
         }
 
     private:
-        T& target_;
+        std::function<void(const T&)> apply_;
         tweeny::tween<T> tween_;
+        TweenClock clock_;
         std::coroutine_handle<> parentHandle_{};
-
-        static void ApplyTween(T& dst, const T& value)
-        {
-            dst = value;
-        }
     };
 }

@@ -63,8 +63,11 @@ SCAN_ROOTS = ["Engine", "Packages", "Assets/Scripts"]
 # spurious registration for a literal type named "TYPE".
 _DEFINITION_FILE = "Engine/Module/Component/ComponentBase.h"
 
+# The registration lives in the component's .cpp as `ENGINE_REGISTER_COMPONENT(T);`
+# while `CEREAL_CLASS_VERSION(T, V)` stays in its header (it has to be visible
+# wherever T is serialised). The legacy header form `(T, V)` is still accepted.
 RE_ENGINE_REGISTER = re.compile(
-    r"ENGINE_REGISTER_COMPONENT\s*\(\s*([\w:]+)\s*,\s*(\d+)\s*\)"
+    r"ENGINE_REGISTER_COMPONENT\s*\(\s*([\w:]+)\s*(?:,\s*(\d+)\s*)?\)"
 )
 RE_SAVE = re.compile(r"\bvoid\s+save\s*\(\s*Archive\s*&\s*\w+\s*,")
 # One archive(...) call: a base_class<X>(this) wrapper, a CEREAL_NVP(member), or
@@ -340,10 +343,19 @@ def scan() -> dict[str, Any]:
         all_headers.append((rel, text))
         if rel == _DEFINITION_FILE:
             continue
-        if "ENGINE_REGISTER_COMPONENT" not in text:
+        cpp = path.with_suffix(".cpp")
+        cpp_text = _read(cpp) if cpp.exists() else ""
+        if "ENGINE_REGISTER_COMPONENT" not in text and "ENGINE_REGISTER_COMPONENT" not in cpp_text:
             continue
-        for m in RE_ENGINE_REGISTER.finditer(text):
-            fqn, version = m.group(1), int(m.group(2))
+        header_versions = {vm.group(1): int(vm.group(2)) for vm in RE_CLASS_VERSION.finditer(text)}
+        for m in RE_ENGINE_REGISTER.finditer(text + "\n" + cpp_text):
+            fqn = m.group(1)
+            if m.group(2) is not None:
+                version = int(m.group(2))
+            elif fqn in header_versions:
+                version = header_versions[fqn]
+            else:
+                raise RuntimeError(f"{rel}: no CEREAL_CLASS_VERSION for {fqn} registered in {cpp.name}")
             matches.append((path, rel, text, fqn, version))
             known_leaves.add(_leaf(fqn))
 

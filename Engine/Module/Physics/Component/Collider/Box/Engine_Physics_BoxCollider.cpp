@@ -24,7 +24,7 @@ void Component::BoxCollider::OnDrawGui()
     }
 
     int layerIndex = Physics::ToIndex(layer_);
-    if (ImGui::Combo("Layer", &layerIndex, Physics::LAYER_NAMES, static_cast<int>(Physics::Layer::Count)))
+    if (ImGui::Combo("Layer", &layerIndex, Physics::LayerNames(), Physics::LayerCount()))
         SetLayer(Physics::ToLayer(layerIndex));
     OnDebugDraw();
 }

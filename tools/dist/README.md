@@ -44,6 +44,12 @@ nanami-assets/
 クライアントは `manifest.json` → 手元の `installed.json` と比較 → `baseUrl + <hash>` で取得 →
 エントリの `path` に置く。
 
+`installed.json` はエディタの Build Settings でゲームを書き出すとき（*Asset Updates > Write installed.json*、既定でオン）に
+`GameBuilder` が出力先の直下に書く。中身は**書き出した `Assets/` を実際にハッシュした一覧**（`version` は `local`）で、
+配信中のどの版とも一致しなくてよい。初回起動で `manifest.json` との差分だけが落ちてくる。オフにすると `installed.json`
+を消すので、そのゲームは更新を一切確認しない（書き出したものを手元で試すとき向け。オンのままだと、配信より新しい
+ローカルのアセットが配信版に戻される）。
+
 - **URL は常に 16 進の ASCII** なので、日本語のアセットパスを percent-encode する必要が無い
 - **同じ中身は1個のブロブになる**（`internal_ground_ao_texture.jpeg` が6フォルダにある等で約 50MB 減る）
 - 一度置いたブロブは書き換わらないので、キャッシュ事故が起きず、ロールバックもマニフェストの差し替えだけで済む

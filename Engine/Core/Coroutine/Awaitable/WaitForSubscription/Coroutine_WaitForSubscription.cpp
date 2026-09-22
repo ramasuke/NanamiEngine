@@ -6,10 +6,10 @@
 
 namespace Coroutine
 {
-    WaitForSubscription::WaitForSubscription(rxcpp::composite_subscription subscription)
-        : subscription_(std::move(subscription))
+    WaitForSubscription::WaitForSubscription(R4::CancellationToken token)
+        : token_(std::move(token))
     {
-        subscription_.add([this]
+        token_.Register([this]
         {
             isReady_ = true;
         });

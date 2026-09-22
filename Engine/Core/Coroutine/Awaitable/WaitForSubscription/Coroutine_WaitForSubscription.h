@@ -2,13 +2,14 @@
 #include <coroutine>
 
 #include "../Engine_Coroutine_IEventWaitable.h"
-#include "../rxcpp/rx.hpp"
+#include "../../../../../Packages/R4/R4.h"
 
 namespace Coroutine
 {
     struct WaitForSubscription final : IEventWaitable
     {
-        explicit WaitForSubscription(rxcpp::composite_subscription subscription);
+        //NOTE: token がキャンセルされるまで待つ
+        explicit WaitForSubscription(NanamiEngine::R4::CancellationToken token);
 
         [[nodiscard]] bool await_ready() const noexcept override;
 
@@ -22,7 +23,7 @@ namespace Coroutine
 
     private:
         std::coroutine_handle<> parentHandle_{};
-        rxcpp::composite_subscription subscription_;
+        NanamiEngine::R4::CancellationToken token_;
         bool isReady_ = false;
     };
 }

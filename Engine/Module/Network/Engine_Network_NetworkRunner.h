@@ -31,7 +31,9 @@ namespace NanamiEngine::Module::Network
         void StartHost(const std::string& sessionKey);
         /** API: host へクライアントとして接続を始める。結果は GetConnectionState() で見る */
         void StartClient(const Core::Network::HostEndpoint& host);
-        /** API: 通信を止め、StartHost / StartClient をやり直せる状態に戻す */
+        /** API: 中継サーバー(Config > Network)経由で sessionKey の部屋に参加する。部屋がなければホストになる。結果は GetConnectionState() で見る */
+        void StartRelay(const std::string& sessionKey);
+        /** API: 通信を止め、StartHost / StartClient / StartRelay をやり直せる状態に戻す */
         void Shutdown();
         [[nodiscard]] bool IsStarted() const;
         [[nodiscard]] bool IsServer() const;

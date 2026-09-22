@@ -6,7 +6,6 @@
 #include "../../Module/Network/Engine_Network_PacketLog.h"
 #include "../Application/ApplicationBase.h"
 #include "../Application/Configuration/Network/ApplicationConfiguration_Network.h"
-#include "../Application/Time/Time.h"
 #include "Packet/Codec/Packet_Codec.h"
 
 namespace NanamiEngine::Core::Network
@@ -92,21 +91,7 @@ namespace NanamiEngine::Core::Network
         if (host_)
         {
             // クライアントは切断を通知してから閉じる(ホスト側がタイムアウトを待たずに DISCONNECT を受け取れる)
-            if (peer_ && peer_->state == ENET_PEER_STATE_CONNECTED)
-            {
-                enet_peer_disconnect(peer_, 0);
-
-                ENetEvent event;
-                const enet_uint32 start = enet_time_get();
-                while (enet_time_get() - start < GRACEFUL_DISCONNECT_WAIT_MS
-                       && enet_host_service(host_, &event, 10) >= 0)
-                {
-                    if (event.type == ENET_EVENT_TYPE_RECEIVE)
-                        enet_packet_destroy(event.packet);
-                    else if (event.type == ENET_EVENT_TYPE_DISCONNECT)
-                        break;
-                }
-            }
+            DisconnectGracefully(host_, peer_);
             enet_host_destroy(host_);
         }
 
@@ -118,11 +103,7 @@ namespace NanamiEngine::Core::Network
         if (!host_)
             return;
 
-        const float sendInterval = 1.0f / static_cast<float>(Application::Configuration::NetworkConfiguration::GetUnreliableSendRate());
-        unreliableAccumulator_ += Time::DeltaTime();
-        unreliableSendAllowed_ = unreliableAccumulator_ >= sendInterval;
-        if (unreliableSendAllowed_)
-            unreliableAccumulator_ = 0.0f;
+        unreliableThrottle_.Tick();
 
         ENetEvent event;
 
@@ -150,9 +131,9 @@ namespace NanamiEngine::Core::Network
                         Packet p = Packet::Create(DefaultPacketType::AssignPlayerId);
                         p.Data().Write(assignedId);
 
-                        SendTo(event.peer, p);
+                        SendToPeer(event.peer, p);
 
-                        onConnectPlayer_.get_subscriber().on_next(&event);
+                        onConnectPlayer_.OnNext(assignedId);
                     }
                     break;
                 }
@@ -216,7 +197,7 @@ namespace NanamiEngine::Core::Network
             return;
 
         const bool isUnreliable = packet.Delivery() == DeliveryMode::Unreliable;
-        if (isUnreliable && !unreliableSendAllowed_)
+        if (isUnreliable && !unreliableThrottle_.IsSendAllowed())
             return;
 
         Module::Network::LogPacket(Module::Network::PacketDirection::Send, packet.Type(), packet.Delivery(), packet.Data().Size());
@@ -239,7 +220,14 @@ namespace NanamiEngine::Core::Network
             enet_packet_destroy(p);
     }
 
-    void EnetUDPNetworkSystem::SendTo(ENetPeer* target, const Packet& packet)
+    void EnetUDPNetworkSystem::SendTo(const PlayerId target, const Packet& packet)
+    {
+        const auto it = peers_.find(target);
+        if (it != peers_.end())
+            SendToPeer(it->second, packet);
+    }
+
+    void EnetUDPNetworkSystem::SendToPeer(ENetPeer* target, const Packet& packet)
     {
         if (!target)
             return;
@@ -299,9 +287,9 @@ namespace NanamiEngine::Core::Network
         return mode_ == Mode::Server && host_ ? host_->address.port : 0;
     }
 
-    rxcpp::observable<ENetEvent*> EnetUDPNetworkSystem::OnConnectPlayer()
+    R4::Observable<PlayerId> EnetUDPNetworkSystem::OnConnectPlayer()
     {
-        return onConnectPlayer_.get_observable();
+        return onConnectPlayer_.AsObservable();
     }
 
     std::vector<Packet> EnetUDPNetworkSystem::PollPackets()

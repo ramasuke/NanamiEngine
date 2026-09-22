@@ -192,6 +192,16 @@ namespace NanamiEngine::Core::PopupWindow
             }
         }
 
+        BuildSettingsLabel("Asset Updates");
+        if (bool assetUpdates = BuildConfiguration::AssetUpdatesEnabled(); ImGui::Checkbox("Write installed.json##BuildSettingsAssetUpdates", &assetUpdates))
+        {
+            BuildConfiguration::SetAssetUpdatesEnabled(assetUpdates);
+        }
+        ImGui::SetCursorPosX(BUILD_SETTINGS_LABEL_WIDTH);
+        ImGui::TextDisabled("%s", BuildConfiguration::AssetUpdatesEnabled()
+                                         ? "The game updates its Assets/ to the published manifest on the title screen"
+                                         : "The game never checks for asset updates");
+
         BuildSettingsLabel("MSBuild");
         if (BuildSettingsEditText("##BuildSettingsMsBuildPath", msBuildPath_.buffer, msBuildPath_.active, BuildConfiguration::MsBuildPathUtf8()))
         {
@@ -201,9 +211,10 @@ namespace NanamiEngine::Core::PopupWindow
         {
             BuildSettingsErrorText("MSBuild not found");
         }
-
-        BuildSettingsLabel("Staging");
-        ImGui::TextDisabled("%s", BuildSettingsPathToUtf8(BuildConfiguration::StagingDirectory()).c_str());
+        else if (BuildConfiguration::MsBuildPathUtf8().empty())
+        {
+            ImGui::TextDisabled("(auto) %s", BuildSettingsPathToUtf8(BuildConfiguration::MsBuildPath()).c_str());
+        }
     }
 
     void BuildSettingsWindow::OnDrawActions()

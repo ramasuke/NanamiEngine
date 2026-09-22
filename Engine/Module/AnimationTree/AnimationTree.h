@@ -8,8 +8,15 @@
 #include "Node/VisualAnyStateNode/AnimationVisualAnyStateNode.h"
 #include "NodePath/AnimationNodePath.h"
 
+namespace NanamiEngine::Module::Gui::Graph
+{
+    class GraphEditorHost;
+}
+
 namespace NanamiEngine::Module::AnimationTree
 {
+    class AnimationTreeGraphDelegate;
+
     struct AnimationStateSnapshot final
     {
         Guid  primaryGuid;
@@ -35,9 +42,11 @@ namespace NanamiEngine::Module::AnimationTree
         [[nodiscard]] const Guid& GetGuid() const override { return guid_; }
         void OnSave();
         void OnUpdate(int modelHandle, float timeScale) const;
-        void OnDrawGraphEditorGui();
-        void OnDrawAllNodeGui     (ImDrawList* drawList, ImVec2 offset);
-        void OnDrawDraggingNodeGui(ImDrawList* drawList, ImVec2 offset) const;
+        /**
+         * @brief グラフエディタのウィンドウを描画する（ImGuizmo GraphEditor）
+         * @param readOnly 実行中ツリーの表示用。ノードの移動・遷移の編集を禁止する
+         */
+        void OnDrawGraphEditorGui(bool readOnly = false);
         void OnDrawGui() override;
         [[nodiscard]] BlackBoard::ParameterGroup& Param() const { return *additionConditionParameters_; }
         [[nodiscard]] const std::string& GetFilePath() const { return filePath_; }
@@ -56,8 +65,9 @@ namespace NanamiEngine::Module::AnimationTree
         [[nodiscard]] std::optional<ClipProgress> GetCurrentClipProgress() const;
 
     private:
-        /** @brief 実行中インスタンスの再生状態（再生中ノードの枠・進捗バー）をグラフ上に重ねて描画する */
-        void OnDrawRuntimeStateGui(ImDrawList* drawList, ImVec2 offset) const;
+        /** @brief グラフエディタはノード・遷移の追加 / 削除 / 再生状態の表示のため内部を直接触る */
+        friend class AnimationTreeGraphDelegate;
+
         void AddCurrentNode    (const std::shared_ptr<IAnimationNode>& node);
         void AddCurrentNodePath(AnimationNodePath* nodePath, int modelHandle, float timeScale);
         void RemoveCurrentNode (const std::shared_ptr<IAnimationNode>& node, int modelHandle);
@@ -76,8 +86,10 @@ namespace NanamiEngine::Module::AnimationTree
         std::vector<std::shared_ptr<IAnimationNode   >> currentNodes_;
         AnimationNodePath*                              currentNodePath_ = nullptr;
         std::shared_ptr<BlackBoard::ParameterGroup> additionConditionParameters_ = std::make_shared<BlackBoard::ParameterGroup>();
-        
-        std::weak_ptr<IAnimationNode> dragStartNode_;
+
+        /** @note エディタ表示状態（パン・ズーム・選択）。初回の OnDrawGraphEditorGui で作る。保存しない */
+        std::shared_ptr<Gui::Graph::GraphEditorHost> graphHost_;
+        std::shared_ptr<AnimationTreeGraphDelegate>  graphDelegate_;
     };
 }
 

@@ -1,8 +1,7 @@
 ﻿#pragma once
 #include "../../../Engine/Module/Physics/ContactCallback/SensorStayable/Engine_Physics_ISensorStayable.h"
 #include "../../Engine/Module/Component/ComponentBase.h"
-#include "../rxcpp/rx.hpp"
-#include "../rxcpp/subjects/rx-subject.hpp"
+#include "../R4.h"
 #include "../../Engine/Module/Physics/ContactListener/ContactedData/Manifold/Engine_Physics_Manifold.h"
 
 namespace NanamiEngine::R4
@@ -17,13 +16,13 @@ namespace NanamiEngine::R4
                                              public Physics::Callback::ISensorStayable
     {
     public:
-        [[nodiscard]] rxcpp::observable<SensorStayContext> OnAction() const;
+        [[nodiscard]] R4::Observable<SensorStayContext> OnAction() const;
 
     private:
         void OnTriggerStay(const Physics::Manifold& contactManifold,
                            const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
 
-        rxcpp::subjects::subject<SensorStayContext> onAction_;
+        R4::Subject<SensorStayContext> onAction_;
 
 #pragma region Serialization Function
     public:

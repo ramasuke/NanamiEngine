@@ -1,5 +1,7 @@
 ﻿#include "CineMachineVirtualCamera.h"
 
+#include <algorithm>
+
 #include "../../../Engine/Core/Application/Configuration/DebugDraw/ApplicationConfiguration_DebugDraw.h"
 #include "../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../Engine/Module/GameObject/Transform/Transform.h"
@@ -13,7 +15,7 @@
 
 void CineMachine::CineMachineVirtualCamera::SetPriority(const int priority)
 {
-    priority_.OnNext(priority);
+    priority_.Value(priority);
 }
 
 float CineMachine::CineMachineVirtualCamera::Fov() const
@@ -23,6 +25,15 @@ float CineMachine::CineMachineVirtualCamera::Fov() const
 
     const auto* brain = CinemachineCameraBrain::Instance();
     return brain ? brain->DefaultFov() : SAMPLE_CAMERA_FOV;
+}
+
+void CineMachine::CineMachineVirtualCamera::UpdateBehaviours() const
+{
+    for (const auto& cameraBehaviour : cameraBehaviours_)
+    {
+        if (const auto behaviour = cameraBehaviour.lock())
+            behaviour->OnCameraUpdate();
+    }
 }
 
 void CineMachine::CineMachineVirtualCamera::MainCameraCallback() const
@@ -53,8 +64,18 @@ bool CineMachine::CineMachineVirtualCamera::WantsImmediateApply() const
 
 void CineMachine::CineMachineVirtualCamera::OnAwake()
 {
-    cameraBehaviours_ = Components().Catches<IVirtualCameraBehaviour>();
     CinemachineCameraBrain::SubscribeVirtualCamera(Components().Catch<CineMachineVirtualCamera>());
+}
+
+void CineMachine::CineMachineVirtualCamera::OnStart()
+{
+    // ThirdPerson/LockOnがOnAwakeでRequireComponentするFollow/LookAtも拾えるよう、全員のAwake後に集める
+    cameraBehaviours_ = Components().Catches<IVirtualCameraBehaviour>();
+    std::ranges::stable_sort(cameraBehaviours_, {}, [](const std::weak_ptr<IVirtualCameraBehaviour>& behaviour)
+    {
+        const auto locked = behaviour.lock();
+        return locked ? locked->Stage() : VirtualCameraStage::Aim;
+    });
 }
 
 void CineMachine::CineMachineVirtualCamera::OnDestroy()

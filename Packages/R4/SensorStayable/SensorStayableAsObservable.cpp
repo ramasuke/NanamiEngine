@@ -2,16 +2,16 @@
 
 namespace NanamiEngine::R4
 {
-    rxcpp::observable<SensorStayContext> SensorStayableAsObservable::OnAction() const
+    R4::Observable<SensorStayContext> SensorStayableAsObservable::OnAction() const
     {
-        return onAction_.get_observable();
+        return onAction_.AsObservable();
     }
 
     void SensorStayableAsObservable::OnTriggerStay(
         const Physics::Manifold& contactManifold,
         const std::shared_ptr<GameObject::IGameObject>& gameObject)
     {
-        onAction_.get_subscriber().on_next(SensorStayContext{
+        onAction_.OnNext(SensorStayContext{
             contactManifold,
             gameObject
         });

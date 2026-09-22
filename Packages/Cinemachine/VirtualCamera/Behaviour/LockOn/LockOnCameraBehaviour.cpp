@@ -1,4 +1,5 @@
 ﻿#include "LockOnCameraBehaviour.h"
+#include "LockOnPositionResolver.h"
 
 #include <algorithm>
 #include <array>
@@ -7,15 +8,28 @@
 
 #include "DxLib.h"
 #include "../../../Brain/CinemachineCameraBrain.h"
+#include "../IVirtualCameraTarget.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 #include "../../../../../Engine/Module/Physics/RaycastHit/Engine_Physics_RaycastHit.h"
 #include "../../../../../Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
-#include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/LockOnTarget/ILockOnTarget.h"
 
 namespace
 {
+    NanamiEngine::CineMachine::Behaviour::LockOnPositionResolver& LockOnPositionResolverRef()
+    {
+        static NanamiEngine::CineMachine::Behaviour::LockOnPositionResolver resolver = nullptr;
+        return resolver;
+    }
+
+    glm::vec3 ResolveLockOnPosition(NanamiEngine::Module::GameObject::IGameObject& target)
+    {
+        if (const auto resolver = LockOnPositionResolverRef())
+            return resolver(target);
+        return target.Transform().GetWorldPos();
+    }
+
     std::pair<glm::vec3, glm::vec3> WorldBoundsOf(NanamiEngine::Module::GameObject::IGameObject& object, const float fallbackRadius)
     {
         const auto collider = object.Components().Catch<NanamiEngine::Module::Physics::ICollider>().lock();
@@ -34,6 +48,11 @@ namespace
 
 namespace NanamiEngine::CineMachine::Behaviour
 {
+    void SetLockOnPositionResolver(const LockOnPositionResolver resolver)
+    {
+        LockOnPositionResolverRef() = resolver;
+    }
+
     void LockOnCameraBehaviour::SetFollowTarget(const std::shared_ptr<GameObject::IGameObject>& followTarget)
     {
         followTarget_ = followTarget;
@@ -61,7 +80,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         virtualCamera_ = Components().Catch<CineMachineVirtualCamera>();
     }
 
-    void LockOnCameraBehaviour::OnUpdate()
+    void LockOnCameraBehaviour::OnCameraUpdate()
     {
         const auto lockOnTarget = lockOnTarget_.lock();
         if (!lockOnTarget)
@@ -78,7 +97,8 @@ namespace NanamiEngine::CineMachine::Behaviour
 
         constexpr auto worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-        const glm::vec3 playerPos = followTarget->Transform().GetWorldPos();
+        // Follow/LookAtはこの位置にオフセットを足すので、同じ基準点を使う
+        const glm::vec3 playerPos = CameraTargetPositionOf(*followTarget);
         const glm::vec3 targetPos = lockOnTarget->Transform().GetWorldPos();
 
         const glm::vec3 flatToTarget(targetPos.x - playerPos.x, 0.0f, targetPos.z - playerPos.z);
@@ -101,7 +121,7 @@ namespace NanamiEngine::CineMachine::Behaviour
             points[i + 8] = BoundsCorner(targetMin, targetMax, i);
         }
         const auto aim = lockOnAim_.lock();
-        points[16] = GameCore::PlayerAvatar::LockOnPositionOf(aim ? *aim : *lockOnTarget);
+        points[16] = ResolveLockOnPosition(aim ? *aim : *lockOnTarget);
 
         // 画面の縦横方向に投影した範囲の中心を注視点にする
         glm::vec2 projectedMin(std::numeric_limits<float>::max());

@@ -21,16 +21,16 @@ namespace NanamiEngine::Module::Component
         }
     }
 
-    rxcpp::observable<CollisionListener::CollisionEnter>
+    R4::Observable<CollisionListener::CollisionEnter>
     CollisionListener::OnCollisionEnterAsObservable() const
     {
-        return onCollisionEnter_.get_observable();
+        return onCollisionEnter_.AsObservable();
     }
 
-    rxcpp::observable<CollisionListener::CollisionEnter>
+    R4::Observable<CollisionListener::CollisionEnter>
     CollisionListener::OnTriggerEnterAsObservable() const
     {
-        return onTriggerEnter_.get_observable();
+        return onTriggerEnter_.AsObservable();
     }
 
     const CollisionListener::Container&
@@ -73,7 +73,7 @@ namespace NanamiEngine::Module::Component
         collisionEnterSet_[id] = other;
         collisionStaySet_ [id] = other;
 
-        onCollisionEnter_.get_subscriber().on_next(CollisionEnter(manifold, other));
+        onCollisionEnter_.OnNext(CollisionEnter(manifold, other));
     }
 
     void CollisionListener::OnCollisionExit(
@@ -100,7 +100,7 @@ namespace NanamiEngine::Module::Component
         triggerEnterSet_[id] = gameObject;
         triggerStaySet_ [id] = gameObject;
 
-        onTriggerEnter_.get_subscriber().on_next(CollisionEnter(manifold, gameObject));
+        onTriggerEnter_.OnNext(CollisionEnter(manifold, gameObject));
     }
 
     void CollisionListener::OnTriggerExit(

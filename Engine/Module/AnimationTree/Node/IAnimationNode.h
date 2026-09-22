@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include "../../Namespace/EngineNamespace.h"
 #include "vec2.hpp"
+#include <string>
+
 #include "../../../Core/Object/IObject.h"
-#include "../../Gui/Graph/NodeDrawResult/NodeDrawResult.h"
-#include "../rxcpp/rx.hpp"
+#include "../../../../Packages/R4/R4.h"
 
 namespace NanamiEngine::Module::AnimationTree
 {
@@ -53,11 +54,16 @@ namespace NanamiEngine::Module::AnimationTree
         virtual void  OnUpdateAnimation(int modelHandle, float timeScale) = 0;
         virtual void  OnExitNode       (int modelHandle   ) = 0;
         
-        virtual rxcpp::observable<UpdateCallbackContext> OnUpdated() = 0;
+        virtual R4::Observable<UpdateCallbackContext> OnUpdated() = 0;
         [[nodiscard]] virtual glm::vec2 Position()         const = 0;
+        /** @brief グラフエディタ上の位置（ノード左上）。表示専用でゲームプレイには影響しない */
+        virtual void SetPosition(const glm::vec2& position) = 0;
         [[nodiscard]] virtual float GetAnimDuration_secs() const = 0;
-        ///TODO: AnimationNodeBaseの場合はこちらの処理が共通か可能
-        virtual Gui::Graph::NodeDrawResult OnDrawGraphEditorGui(const ImVec2& offset, ImDrawList* drawList, std::weak_ptr<IAnimationNode> ownPtr) = 0;
+
+        /** @brief グラフエディタのノード見出しに出す名前 */
+        [[nodiscard]] virtual std::string GraphNodeName() const = 0;
+        /** @brief グラフエディタのノード本文に出す補足（1 行）。空なら何も出さない */
+        [[nodiscard]] virtual std::string GraphNodeDetail() const { return {}; }
     };
 }
 CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::IAnimationNode, 0);

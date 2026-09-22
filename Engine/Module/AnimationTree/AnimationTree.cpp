@@ -7,9 +7,10 @@
 #include "../../Core/Application/Window/Main/Animator/AnimatorWindow.h"
 #include "../../Core/Application/Window/Popup/Group/PopupWindowGroup.h"
 #include "../../Core/Application/Window/Popup/Inspector/InspectorWindow.h"
-#include "../Gui/Graph/GraphGui.h"
+#include "../Gui/Graph/Editor/GraphEditorHost.h"
 #include "../Serialization/Engine_Module_Serialization.h"
 #include "cereal/archives/json.hpp"
+#include "Editor/AnimationTreeGraphDelegate.h"
 #include "Node/ClipNode/AnimationClipNode.h"
 #include "Node/EntryNode/AnimatorEntryNode.h"
 
@@ -173,254 +174,23 @@ void AnimationTree::AnimationTree::OnUpdate(const int modelHandle, const float t
     }
 }
 
-void AnimationTree::AnimationTree::OnDrawGraphEditorGui()
+void AnimationTree::AnimationTree::OnDrawGraphEditorGui(const bool readOnly)
 {
-    ImGui::Begin(("AnimationTree##" + guid_.Value()).c_str(), nullptr);
-    ImDrawList*  drawList   = ImGui::GetWindowDrawList();
-    const ImVec2 offset     = ImGui::GetCursorScreenPos();
-    const ImVec2 windowSize = ImGui::GetWindowSize();
+    if (!graphHost_)
+        graphHost_ = std::make_shared<Gui::Graph::GraphEditorHost>();
+    if (!graphDelegate_)
+        graphDelegate_ = std::make_shared<AnimationTreeGraphDelegate>();
 
-    //グリッド描画
-    static constexpr float K_GRID_STEP = 64.0f;
-    static constexpr ImU32 K_GRID_COLOR = IM_COL32(60, 60, 60, 255);
-    Gui::Graph::DrawGrid(drawList, offset, windowSize, K_GRID_STEP,K_GRID_COLOR);
-    
-    //全Nodeの描画
-    OnDrawAllNodeGui(drawList, offset);
-    OnDrawDraggingNodeGui(drawList, offset);
-    OnDrawRuntimeStateGui(drawList, offset);
+    // 見出しはファイル名だけにする（filePath_ は UTF-8 なので std::filesystem を通さず区切り文字で切る）
+    const std::size_t separator = filePath_.find_last_of("/\\");
+    const std::string fileName  = separator == std::string::npos ? filePath_ : filePath_.substr(separator + 1);
+    const std::string title     = std::string(readOnly ? "AnimationTree [Running] " : "AnimationTree ") + fileName + "##" + guid_.Value();
 
-    // ブレンド中（再生中ノードが2つ）のみ、遷移中の NodePath を強調表示する
-    const AnimationNodePath* blendingNodePath = currentNodes_.size() >= 2 ? currentNodePath_ : nullptr;
-
-    //確定済み NodePath描画（直線 + 回転矩形）
-    for (const auto& path : AllNodePaths())
+    if (ImGui::Begin(title.c_str(), nullptr))
     {
-        const auto fromNodePos   = path->GetVisualFromNodePos();
-        const auto targetNodePos = path->GetVisualTargetNodePos();
-        const ImVec2 startPosition = offset + ImVec2(fromNodePos.x + 120.0f, fromNodePos.y + 30.0f);
-        const ImVec2 endPosition   = offset + ImVec2(targetNodePos.x, targetNodePos.y + 30.0f);
-        if (path.get() == blendingNodePath)
-            drawList->AddLine(startPosition, endPosition, IM_COL32(255, 150, 40, 255), 5.0f);
-        else
-            drawList->AddLine(startPosition, endPosition, IM_COL32(200, 200, 100, 255), 3.0f);
-
-        // --- 回転矩形構築 ---
-        const ImVec2 center = (startPosition + endPosition) * 0.5f;
-        const ImVec2 diff = endPosition - startPosition;
-        const float length = sqrtf (diff.x * diff.x + diff.y * diff.y);
-        const float angle  = atan2f(diff.y, diff.x);
-
-        const float halfLength = length * 0.5f;
-
-        ImVec2 corners[4];
-        for (int i = 0; i < 4; ++i)
-        {
-            constexpr float halfThickness = 6.0f;
-            const float dx = (i == 0 || i == 3) ? -halfLength : halfLength;
-            const float dy = (i < 2) ? -halfThickness : halfThickness;
-
-            const float rx = dx * cosf(angle) - dy * sinf(angle);
-            const float ry = dx * sinf(angle) + dy * cosf(angle);
-            corners[i] = center + ImVec2(rx, ry);
-        }
-
-        // --- 回転矩形描画（視覚補助） ---
-        drawList->AddConvexPolyFilled(corners, 4, IM_COL32(255, 255, 255, 30));
-
-        // --- ポリゴン内マウス判定（ImGui未対応なので自前で処理） ---
-        auto pointInQuad = [](const ImVec2& p, const ImVec2 quad[4]) -> bool
-        {
-            auto sign = [](const ImVec2& a, const ImVec2& b, const ImVec2& c)
-            {
-                return (a.x - c.x) * (b.y - c.y) - (b.x - c.x) * (a.y - c.y);
-            };
-            const bool b1 = sign(p, quad[0], quad[1]) < 0.0f;
-            const bool b2 = sign(p, quad[1], quad[2]) < 0.0f;
-            const bool b3 = sign(p, quad[2], quad[3]) < 0.0f;
-            const bool b4 = sign(p, quad[3], quad[0]) < 0.0f;
-            return b1 == b2 && b2 == b3 && b3 == b4;
-        };
-
-        if (ImVec2 mousePos = ImGui::GetMousePos(); pointInQuad(mousePos, corners))
-        {
-            drawList->AddLine(startPosition, endPosition, IM_COL32(255, 255, 150, 255), 4.0f);
-
-            if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-            {
-                for (auto* inspector : Core::Application::ApplicationBase::PopupWindows().Catch<Core::PopupWindow::InspectorWindow>())
-                {
-                    inspector->TryAddDisplayObject(path);
-                }
-            }
-        }
+        graphDelegate_->Draw(*this, *graphHost_, readOnly);
     }
-
-    // --- 右クリックメニューでノード追加 ---
-    if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-    {
-        ImGui::OpenPopup("NodeContextMenu");
-    }
-
-    if (ImGui::BeginPopup("NodeContextMenu"))
-    {
-        if (ImGui::MenuItem("Add AnimationClipNode"))
-        {
-            const ImVec2 mousePos = ImGui::GetMousePos() - offset;
-            const auto newNode = std::make_shared<AnimationClipNode>(glm::vec2(mousePos.x, mousePos.y));
-            nodes_[newNode->GetGuid()] = newNode;
-        }
-        ImGui::EndPopup();
-    }
-
     ImGui::End();
-}
-
-void AnimationTree::AnimationTree::OnDrawAllNodeGui(ImDrawList*  drawList, const ImVec2 offset)
-{
-    static bool isDragging = false;
-    
-    //EntryNode 描画・接続処理
-    //TODO: このnullcheckは必要性が無い可能性あり
-    if (entryNode_)
-    {
-        auto [isOnBeginDragOutput, isInputHoverReleased_] = entryNode_->OnDrawGraphEditorGui(offset, drawList, entryNode_);
-        if (isOnBeginDragOutput)
-        {
-            dragStartNode_ = entryNode_;
-            isDragging = true;
-        }
-        if (isDragging && isInputHoverReleased_)
-        {
-            if (const auto fromNode = dragStartNode_.lock())
-            {
-                if (fromNode != entryNode_)
-                {
-                    const auto path = std::make_shared<AnimationNodePath>();
-                    path->SetFromNode(fromNode);
-                    path->SetTargetNode(entryNode_);
-                    fromNodeNodePaths_.push_back(path);
-                }
-            }
-            dragStartNode_.reset();
-            isDragging = false;
-        }
-    }
-
-    //VisualAnyStateNode 描画 & 接続処理
-    //TODO: このnullcheckは必要性が無い可能性あり
-    if (visualAnyStateNode_)
-    {
-        auto [outputActive_, inputHoveredReleased_] = visualAnyStateNode_->OnDrawGraphEditorGui(offset, drawList, visualAnyStateNode_);
-        if (outputActive_)
-        {
-            dragStartNode_ = visualAnyStateNode_;
-            isDragging = true;
-        }
-
-        if (isDragging && inputHoveredReleased_)
-        {
-            if (const auto fromNode = dragStartNode_.lock())
-            {
-                // AnyStateNode → 他ノード
-                for (auto& node : nodes_ | std::views::values)
-                {
-                    if (visualAnyStateNode_ != node)
-                    {
-                        auto path = std::make_shared<AnimationNodePath>();
-                        path->SetFromNodeForGraphEditorGui(fromNode, fromNode);
-                        path->SetTargetNode(node);
-                        fromAnyStateNodeNodePaths_.push_back(path);
-                    }
-                }
-            }
-            dragStartNode_.reset();
-            isDragging = false;
-        }
-    }
-
-    //通常ノード描画・接続処理
-    for (auto& node : nodes_ | std::views::values)
-    {
-        auto [outputActive_, inputHoveredReleased_] = node->OnDrawGraphEditorGui(offset, drawList, node);
-        if (outputActive_)
-        {
-            dragStartNode_ = node;
-            isDragging = true;
-        }
-        if (isDragging && inputHoveredReleased_)
-        {
-            if (auto fromNode = dragStartNode_.lock())
-            {
-                if (fromNode != node)
-                {
-                    auto path = std::make_shared<AnimationNodePath>();
-
-                    if (visualAnyStateNode_ == fromNode)
-                    {
-                        path->SetFromNodeForGraphEditorGui(fromNode, fromNode);
-                        path->SetTargetNode(node);
-                        fromAnyStateNodeNodePaths_.push_back(path);
-                    }
-                    else
-                    {
-                        path->SetFromNodeForGraphEditorGui(fromNode, fromNode);
-                        path->SetTargetNode(node);
-                        fromNodeNodePaths_.push_back(path);
-                    }
-                }
-            }
-            dragStartNode_.reset();
-            isDragging = false;
-        }
-    }
-}
-
-void AnimationTree::AnimationTree::OnDrawDraggingNodeGui(ImDrawList* drawList, const ImVec2 offset) const
-{
-    const auto fromNode = dragStartNode_.lock();
-    if (fromNode == nullptr)
-        return;
-    
-    const ImVec2 startPos = offset + ImVec2(fromNode->Position().x + 120.0f, fromNode->Position().y + 30.0f);
-    const ImVec2 endPos = ImGui::GetMousePos();
-    drawList->AddLine(startPos, endPos, IM_COL32(255, 255, 100, 255), 3.0f);
-}
-
-void AnimationTree::AnimationTree::OnDrawRuntimeStateGui(ImDrawList* drawList, const ImVec2 offset) const
-{
-    static constexpr ImU32 K_PLAYING_BORDER_COLOR  = IM_COL32(255, 210, 60 , 255);
-    static constexpr ImU32 K_FADEOUT_BORDER_COLOR  = IM_COL32(160, 140, 220, 255);
-    static constexpr ImU32 K_PROGRESS_BG_COLOR     = IM_COL32(30 , 30 , 30 , 230);
-    static constexpr ImU32 K_PROGRESS_FILL_COLOR   = IM_COL32(80 , 200, 120, 255);
-    static constexpr float K_PROGRESS_BAR_HEIGHT   = 6.0f;
-
-    for (std::size_t i = 0; i < currentNodes_.size(); ++i)
-    {
-        const auto& node = currentNodes_[i];
-        if (!node)
-            continue;
-
-        // 末尾が遷移先（メインで再生中）、それ以外はブレンドでフェードアウト中
-        const bool   isPlaying    = i + 1 == currentNodes_.size();
-        const ImVec2 nodeMin      = offset + ImVec2(node->Position().x, node->Position().y);
-        const ImVec2 nodeMax      = nodeMin + NODE_SIZE;
-        drawList->AddRect(nodeMin, nodeMax, isPlaying ? K_PLAYING_BORDER_COLOR : K_FADEOUT_BORDER_COLOR, 6.0f, 0, 3.0f);
-
-        const auto* clip = dynamic_cast<AnimationClipNode*>(node.get());
-        if (!clip)
-            continue;
-
-        const ClipProgress progress = clip->GetClipProgress();
-        const ImVec2 barMin = ImVec2(nodeMin.x, nodeMax.y + 3.0f);
-        const ImVec2 barMax = ImVec2(nodeMax.x, barMin.y + K_PROGRESS_BAR_HEIGHT);
-        drawList->AddRectFilled(barMin, barMax, K_PROGRESS_BG_COLOR);
-        drawList->AddRectFilled(barMin, ImVec2(barMin.x + (barMax.x - barMin.x) * progress.normalizedTime, barMax.y), K_PROGRESS_FILL_COLOR);
-
-        char label[64];
-        snprintf(label, sizeof(label), "%.2f / %.2fs  blend %.2f", progress.duringSecs, progress.durationSecs, clip->GetBlendRate());
-        drawList->AddText(ImVec2(barMin.x, barMax.y + 2.0f), IM_COL32_WHITE, label);
-    }
 }
 
 void AnimationTree::AnimationTree::OnDrawGui()

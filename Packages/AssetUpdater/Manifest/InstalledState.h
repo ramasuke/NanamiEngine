@@ -1,0 +1,23 @@
+﻿#pragma once
+#include <cstddef>
+#include <filesystem>
+#include <functional>
+#include <string>
+
+namespace NanamiEngine::AssetUpdater
+{
+    struct InstalledStateResult
+    {
+        bool        ok       = false;
+        bool        canceled = false;
+        std::string error;
+        std::size_t entryCount = 0;
+    };
+
+    /**
+     * gameRoot/Assets/ の中身を実際にハッシュして、それを表す installed.json を書く。
+     * 書き出したゲームは、これで配信中の manifest.json との差分だけを更新する
+     */
+    [[nodiscard]] InstalledStateResult WriteInstalledState(const std::filesystem::path& gameRoot, const std::filesystem::path& installedState,
+                                                           const std::function<bool()>& isCanceled);
+}

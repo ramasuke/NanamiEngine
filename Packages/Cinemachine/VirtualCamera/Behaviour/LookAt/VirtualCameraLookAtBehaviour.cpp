@@ -2,6 +2,7 @@
 
 #include "../../../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "../IVirtualCameraTarget.h"
 
 void CineMachine::Behaviour::VirtualCameraLookAtBehaviour::SetTarget(
     const std::shared_ptr<GameObject::IGameObject>& target)
@@ -19,7 +20,7 @@ void CineMachine::Behaviour::VirtualCameraLookAtBehaviour::OnAwake()
     
 }
 
-void CineMachine::Behaviour::VirtualCameraLookAtBehaviour::OnUpdate()
+void CineMachine::Behaviour::VirtualCameraLookAtBehaviour::OnCameraUpdate()
 {
     LookAtTarget();
 }
@@ -38,7 +39,7 @@ void CineMachine::Behaviour::VirtualCameraLookAtBehaviour::LookAtTarget() const
         return;
         
     const glm::vec3 cameraPos = Transform().GetWorldPos();
-    const glm::vec3 targetPos = target_->Transform().GetWorldPos() + lookAtTargetOffset_;
+    const glm::vec3 targetPos = CameraTargetPositionOf(*target_.get()) + lookAtTargetOffset_;
 
     constexpr auto up = glm::vec3(0, 1, 0);
 

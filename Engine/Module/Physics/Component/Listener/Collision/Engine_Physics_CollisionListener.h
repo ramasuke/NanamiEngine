@@ -7,7 +7,7 @@
 #include "../../../ContactCallback/ICollisionExitable/Engine_Physics_ICollisionExitable.h"
 #include "../../../ContactCallback/SensorEnterable/Engine_Physics_ISensorEnterable.h"
 #include "../../../ContactCallback/SensorExitable/Engine_Physics_ISensorExitable.h"
-#include "operators/rx-all.hpp"
+#include "../../../../../../Packages/R4/R4.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -23,8 +23,8 @@ namespace NanamiEngine::Module::Component
         using CollisionEnter = std::pair<const Physics::Manifold&, const std::shared_ptr<GameObject::IGameObject>&>;
         using CollisionExit  = const std::shared_ptr<GameObject::IGameObject>&;
 
-        [[nodiscard]] rxcpp::observable<CollisionEnter> OnCollisionEnterAsObservable() const;  
-        [[nodiscard]] rxcpp::observable<CollisionEnter> OnTriggerEnterAsObservable() const; 
+        [[nodiscard]] R4::Observable<CollisionEnter> OnCollisionEnterAsObservable() const;  
+        [[nodiscard]] R4::Observable<CollisionEnter> OnTriggerEnterAsObservable() const; 
         [[nodiscard]] const Container& GetCollisionEnterObjects() const;
         [[nodiscard]] const Container& GetCollisionStayObjects () const;
         [[nodiscard]] const Container& GetTriggerEnterObjects  () const;
@@ -39,8 +39,8 @@ namespace NanamiEngine::Module::Component
             const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
         void OnTriggerExit(const std::shared_ptr<GameObject::IGameObject>& other) override;
         
-        rxcpp::subjects::subject<CollisionEnter> onCollisionEnter_;
-        rxcpp::subjects::subject<CollisionEnter> onTriggerEnter_;
+        R4::Subject<CollisionEnter> onCollisionEnter_;
+        R4::Subject<CollisionEnter> onTriggerEnter_;
         Container collisionEnterSet_;
         Container collisionStaySet_;
         Container triggerEnterSet_;

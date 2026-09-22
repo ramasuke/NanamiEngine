@@ -1,9 +1,7 @@
 ﻿#pragma once
 #include "../../Packet_Dispatch_PacketDispatcherBase.h"
 #include "../../../../PlayerId/PlayerId.h"
-#include "../rxcpp/rx.hpp"
-
-struct _ENetPeer;
+#include "../../../../../../../Packages/R4/R4.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -29,18 +27,18 @@ namespace NanamiEngine::Core::Network
         void ReceivePacket(const Packet& packet) override;
 
         /** 離脱した PlayerId を通知する */
-        [[nodiscard]] rxcpp::observable<struct PlayerId> OnPlayerLeft() const { return onPlayerLeft_.get_observable(); }
+        [[nodiscard]] R4::Observable<struct PlayerId> OnPlayerLeft() const { return onPlayerLeft_.AsObservable(); }
 
     private:
         void OnPlayerLeftReceived(const Packet& packet);
         void OnOwnershipSnapshotReceived(const Packet& packet);
         void ApplyPlayerLeft(struct PlayerId left, struct PlayerId newOwner);
-        void SendOwnershipSnapshotTo(_ENetPeer* peer) const;
+        void SendOwnershipSnapshotTo(struct PlayerId target) const;
 
         INetworkSystem& networkSystem_;
         INetworkObjectInstanceRegistry& instanceRegistry_;
         SyncTransformDispatcher& syncTransform_;
-        rxcpp::subjects::subject<struct PlayerId> onPlayerLeft_;
-        rxcpp::composite_subscription newPeerSubscription_;
+        R4::Subject<struct PlayerId> onPlayerLeft_;
+        R4::Disposable newPeerSubscription_;
     };
 }

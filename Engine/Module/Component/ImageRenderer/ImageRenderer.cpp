@@ -20,7 +20,7 @@ void Component::ImageRenderer::OnUserInterfaceRender()
     const auto renderRot    = Transform().GetWorldRot  ();
     const auto renderScale  = Transform().GetWorldScale();
 
-    const float angle = renderRot  .z;
+    const float angle = glm::eulerAngles(renderRot).z;
     const float scale = renderScale.x;
 
     DrawRotaGraphF(

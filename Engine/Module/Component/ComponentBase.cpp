@@ -21,8 +21,7 @@ void Component::ComponentBase::OnDrawGui()
 
 void Component::ComponentBase::ImplementCancelOnDestroy()
 {
-    if (destroyCancellationToken_.is_subscribed())
-        destroyCancellationToken_.unsubscribe();
+    destroyCancellationTokenSource_.Cancel();
 }
 
 void Component::ComponentBase::ResetGuid()

@@ -24,6 +24,7 @@ namespace NanamiEngine::Module::AnimationTree
 
         std::shared_ptr<IAnimationNode> GetFromNode() const { return fromNode_.lock(); }
         std::shared_ptr<IAnimationNode> GetTargetNode() const { return nextNode_.lock(); }
+        std::shared_ptr<IAnimationNode> GetVisualFromNode() const { return visualFromNode_.lock(); }
         [[nodiscard]] glm::vec2   GetVisualFromNodePos  () const { return visualFromNode_.lock()->Position(); }
         [[nodiscard]] glm::vec2   GetVisualTargetNodePos() const { return nextNode_      .lock()->Position(); }
         [[nodiscard]] const Guid& GetGuid()                const override;
@@ -44,8 +45,8 @@ namespace NanamiEngine::Module::AnimationTree
         bool  isFirstBlendingAnimation_ = true;
         bool  isBlending_               = false;
         float transitionDuring_secs_    = 0;
-        rxcpp::composite_subscription fromNodeSubscription_;
-        rxcpp::subjects::subject<IAnimationNode::UpdateCallbackContext> onUpdated_ = rxcpp::subjects::subject<IAnimationNode::UpdateCallbackContext>();
+        R4::SerialDisposable fromNodeSubscription_;
+        R4::Subject<IAnimationNode::UpdateCallbackContext> onUpdated_;
 
         [[serialize(0)]] std::unique_ptr<AnimationNodePathAdditionConditionGroup> additionConditionGroup_ = std::make_unique<AnimationNodePathAdditionConditionGroup>();
         [[serialize(0)]] float transitionDuration_secs_ = 0;

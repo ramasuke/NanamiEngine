@@ -225,6 +225,28 @@ def icon_bomb():
     return c.resolve()
 
 
+def icon_herb():
+    """薬草: 葉を3枚束ねた株と白い小花"""
+    c, X, Y, cx, cy = _icon_canvas()
+    stem = np.hypot(X - cx, np.maximum(np.abs(Y - (cy + 14)) - 6, 0)) - 1.6
+    c.over(hexc('#4e6e24'), cov(stem))
+    for angle, length, width, fill in ((-38, 14, 6.5, '#3f8a3c'), (38, 14, 6.5, '#3f8a3c'), (0, 17, 7.5, '#6fb84c')):
+        a = math.radians(angle - 90)
+        lx, ly = cx + math.cos(a) * length * 0.9, cy + 8 + math.sin(a) * length * 0.9
+        u = (X - lx) * math.cos(a) + (Y - ly) * math.sin(a)
+        v = -(X - lx) * math.sin(a) + (Y - ly) * math.cos(a)
+        blade = (np.hypot(u / length, v / width) - 1) * width
+        c.over(hexc(fill), cov(blade))
+        c.over(hexc('#1f4a1e'), cov(blade) * (1 - cov(blade + 1.5)))
+        c.over(hexc('#c8e8a0'), cov(np.abs(v) - 0.5) * cov(blade + 2.0) * 0.7)
+    for fx, fy in ((cx + 10, cy - 14), (cx + 15, cy - 9)):
+        for k in range(5):
+            b = 2 * math.pi * k / 5
+            c.over(hexc('#f6f1e0'), cov(sd_circle(X, Y, fx + math.cos(b) * 2.6, fy + math.sin(b) * 2.6, 2.1)))
+        c.over(GOLD, cov(sd_circle(X, Y, fx, fy, 1.4)))
+    return c.resolve()
+
+
 SPRITES = {
     'ItemSlot_Backing': render_backing,
     'ItemSlot_Frame': lambda: render_frame(False),
@@ -242,6 +264,7 @@ ICONS = {
     'Icon_Potion': lambda: icon_flask(hexc('#4ac262')),
     'Icon_Meat': icon_meat,
     'Icon_Bomb': icon_bomb,
+    'Icon_Herb': icon_herb,
 }
 
 def text_top(centre_y, px):

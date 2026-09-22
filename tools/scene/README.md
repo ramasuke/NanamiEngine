@@ -72,7 +72,8 @@ loop (`BoneSync`'s `sync` entries). Those still need care by hand.
   engine, since a scene's copy of a prefab is always a fully independent baked snapshot, never a
   live shared reference.
 * `add-component`'s catalog covers components registered via the `ENGINE_REGISTER_COMPONENT` macro
-  (~65 of them). A brand-new instance is written with one unnamed `valueN` slot per base class the
+  (~65 of them). The macro call `ENGINE_REGISTER_COMPONENT(T);` lives in the component's `.cpp`
+  and its version in the header's `CEREAL_CLASS_VERSION(T, V)`; the scanner reads both. A brand-new instance is written with one unnamed `valueN` slot per base class the
   component archives, in `save()` order — `ComponentBase` (`value0`: guid/enabled) plus an empty
   object for every field-less lifecycle mixin (`IInitRenderable`, `IUserInterfaceRenderable`,
   `IAwakable`, `IUpdatable`, `IRenderable`, ...; the catalog's `bases` table records which bases are

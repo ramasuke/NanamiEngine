@@ -17,32 +17,12 @@
 
 #include "../Configuration/Build/ApplicationConfiguration_Build.h"
 #include "../../../Module/Log/NanamiEngine_Module_Log.h"
+#include "../../../../Packages/AssetUpdater/Manifest/InstalledState.h"
 
 namespace NanamiEngine::Core::Application::Build
 {
     namespace
     {
-        struct GameBuildSourceOverride
-        {
-            std::wstring_view relativePath;
-            std::string_view  from;
-            std::string_view  to;
-        };
-
-        // ビルド設定の constexpr。ステージングにはソースを同期せず、置換後の内容を書く
-        constexpr GameBuildSourceOverride GAME_BUILD_SOURCE_OVERRIDES[] =
-        {
-            {
-                L"Engine/Core/Application/Configuration/ApplicationConfiguration.h",
-                "constexpr auto APPLICATION_MODE = ApplicationMode::Editor;",
-                "constexpr auto APPLICATION_MODE = ApplicationMode::Game;",
-            },
-        };
-
-        constexpr std::wstring_view GAME_BUILD_STAGED_DIRECTORIES[]      = { L"Engine", L"Packages", L"Libs", L"Assets" };
-        constexpr std::wstring_view GAME_BUILD_STAGED_ROOT_FILES[]       = { L"NanamiEngine.sln", L"NanamiEngine.vcxproj", L"NanamiEngine.vcxproj.filters", L"Main.cpp", L"stdafx.cpp", L"stdafx.h" };
-        constexpr std::wstring_view GAME_BUILD_STAGED_ASSET_EXTENSIONS[] = { L".cpp", L".h", L".hlsl" };
-
         // tools/dist/manifest.py の is_excluded と揃える。ただし .meta は実行時に要るので配る
         constexpr std::wstring_view GAME_BUILD_EXCLUDED_ASSET_DIRECTORIES[]      = { L"assets/scripts" };
         constexpr std::wstring_view GAME_BUILD_EXCLUDED_ASSET_DIRECTORY_NAMES[] = { L"_source" };
@@ -50,6 +30,9 @@ namespace NanamiEngine::Core::Application::Build
         constexpr std::wstring_view GAME_BUILD_EXCLUDED_ASSET_NAMES[]           = { L"desktop.ini", L"thumbs.db", L".ds_store" };
 
         constexpr std::wstring_view GAME_BUILD_PACKAGED_PROJECT_CONFIGS[] = { L"ProjectConfig/Application", L"ProjectConfig/Network", L"ProjectConfig/Physics" };
+
+        // AssetUpdatePresenter が作業ディレクトリ直下から読む
+        constexpr wchar_t GAME_BUILD_INSTALLED_STATE_FILE[] = L"installed.json";
 
         constexpr size_t GAME_BUILD_MAX_LOGGED_ERRORS = 50;
 
@@ -76,15 +59,6 @@ namespace NanamiEngine::Core::Application::Build
             return std::string(std::istreambuf_iterator<char>(stream), std::istreambuf_iterator<char>());
         }
 
-        void GameBuildReplaceAll(std::string& text, const std::string& from, const std::string& to)
-        {
-            if (from.empty())
-                return;
-            for (size_t position = text.find(from); position != std::string::npos; position = text.find(from, position + to.size()))
-            {
-                text.replace(position, from.size(), to);
-            }
-        }
     }
 
     GameBuilder& GameBuilder::Instance()
@@ -116,12 +90,12 @@ namespace NanamiEngine::Core::Application::Build
             using Configuration::BuildConfiguration;
 
             Paths paths;
-            paths.repositoryRoot = std::filesystem::current_path();
-            paths.stagingRoot    = BuildConfiguration::StagingDirectory();
+            paths.projectRoot    = std::filesystem::current_path();
             paths.outputRoot     = BuildConfiguration::OutputDirectory();
             paths.msBuild        = BuildConfiguration::MsBuildPath();
             paths.configuration  = BuildConfiguration::TargetConfigurationName(BuildConfiguration::TargetConfiguration());
             paths.runAfterBuild  = action == BuildAction::BuildAndRun;
+            paths.assetUpdates   = BuildConfiguration::AssetUpdatesEnabled();
 
             const std::string& productName = BuildConfiguration::ProductName();
             if (const std::string reason = BuildConfiguration::ValidateProductName(productName); !reason.empty())
@@ -132,24 +106,23 @@ namespace NanamiEngine::Core::Application::Build
             if (!BuildConfiguration::StartSceneGuid().empty() && !BuildConfiguration::FindStartSceneFile())
                 return RejectBegin("GameBuilder: 起動シーンが見つかりません。Build Settings で選び直してください (guid " + BuildConfiguration::StartSceneGuid() + ")");
             const std::string startScenePath = BuildConfiguration::StartScenePath();
-            if (!std::filesystem::is_regular_file(paths.repositoryRoot / std::filesystem::path(std::u8string(startScenePath.begin(), startScenePath.end())), ec))
+            if (!std::filesystem::is_regular_file(paths.projectRoot / std::filesystem::path(std::u8string(startScenePath.begin(), startScenePath.end())), ec))
                 return RejectBegin("GameBuilder: 起動シーンのファイルがありません: " + startScenePath);
 
-            if (!std::filesystem::is_regular_file(paths.repositoryRoot / L"NanamiEngine.vcxproj", ec))
-                return RejectBegin("GameBuilder: 作業ディレクトリに NanamiEngine.vcxproj がありません: " + PathToUtf8(paths.repositoryRoot));
+            paths.solution = FindSolution(paths.projectRoot);
+            if (paths.solution.empty())
+                return RejectBegin("GameBuilder: 作業ディレクトリに .sln がちょうど 1 つある必要があります: " + PathToUtf8(paths.projectRoot));
             if (!std::filesystem::is_regular_file(paths.msBuild, ec))
                 return RejectBegin("GameBuilder: MSBuild が見つかりません。Build Settings で設定してください: " + PathToUtf8(paths.msBuild));
-            // 同期は出力先の古いファイルを消すので、原本やステージングと重なる出力先は受け付けない
-            if (IsSameOrInside(paths.repositoryRoot, paths.outputRoot)
-                || IsSameOrInside(paths.outputRoot, paths.repositoryRoot / L"Assets")
-                || IsSameOrInside(paths.outputRoot, paths.repositoryRoot / L"ProjectConfig")
-                || IsSameOrInside(paths.outputRoot, paths.stagingRoot)
-                || IsSameOrInside(paths.stagingRoot, paths.outputRoot))
-                return RejectBegin("GameBuilder: 出力先にはリポジトリ・Assets・ProjectConfig・ステージングと重ならないフォルダを指定してください: " + PathToUtf8(paths.outputRoot));
+            // WARNING: 同期は出力先の古いファイルを消すので、プロジェクトと重なる出力先は受け付けない
+            if (IsSameOrInside(paths.projectRoot, paths.outputRoot)
+                || IsSameOrInside(paths.outputRoot, paths.projectRoot / L"Assets")
+                || IsSameOrInside(paths.outputRoot, paths.projectRoot / L"ProjectConfig"))
+                return RejectBegin("GameBuilder: 出力先にはプロジェクト・Assets・ProjectConfig と重ならないフォルダを指定してください: " + PathToUtf8(paths.outputRoot));
 
             cancelRequested_ = false;
-            phase_           = Phase::CopyingSources;
-            Module::Log("GameBuilder: Game 版 (" + PathToUtf8(paths.configuration) + ") のビルドを開始しました (ステージング: " + PathToUtf8(paths.stagingRoot) + ")");
+            phase_           = Phase::Compiling;
+            Module::Log("GameBuilder: Game 版 (" + PathToUtf8(paths.configuration) + ") のビルドを開始しました: " + PathToUtf8(paths.solution));
             worker_ = std::thread([this, paths]() { Run(paths); });
             return true;
         }
@@ -182,10 +155,9 @@ namespace NanamiEngine::Core::Application::Build
     {
         switch (phase_.load())
         {
-        case Phase::Idle:           return "Idle";
-        case Phase::CopyingSources: return "Copying sources";
-        case Phase::Compiling:      return "Compiling";
-        case Phase::Packaging:      return "Packaging";
+        case Phase::Idle:      return "Idle";
+        case Phase::Compiling: return "Compiling";
+        case Phase::Packaging: return "Packaging";
         }
         return "Idle";
     }
@@ -225,17 +197,8 @@ namespace NanamiEngine::Core::Application::Build
         StepResult result = StepResult::Failed;
         try
         {
-            phase_ = Phase::CopyingSources;
-            result = SyncSources(paths);
-            if (result == StepResult::Succeeded)
-            {
-                result = ApplyOverrides(paths);
-            }
-            if (result == StepResult::Succeeded)
-            {
-                phase_ = Phase::Compiling;
-                result = RunMsBuild(paths);
-            }
+            phase_ = Phase::Compiling;
+            result = RunMsBuild(paths);
             if (result == StepResult::Succeeded)
             {
                 phase_ = Phase::Packaging;
@@ -296,66 +259,17 @@ namespace NanamiEngine::Core::Application::Build
         Module::Log("GameBuilder: ビルドしたゲームを起動しました: " + PathToUtf8(exePath));
     }
 
-    GameBuilder::StepResult GameBuilder::SyncSources(const Paths& paths) const
-    {
-        MirrorStats stats;
-        for (const auto directory : GAME_BUILD_STAGED_DIRECTORIES)
-        {
-            if (const auto result = MirrorDirectory(paths.repositoryRoot, paths.stagingRoot, directory, IsStagedSource, stats); result != StepResult::Succeeded)
-                return result;
-        }
-        for (const auto file : GAME_BUILD_STAGED_ROOT_FILES)
-        {
-            if (CopyIfChanged(paths.repositoryRoot / file, paths.stagingRoot / file))
-                ++stats.copied;
-        }
-
-        Module::Log("GameBuilder: ソースを同期しました (コピー " + std::to_string(stats.copied) + " 件 / 削除 " + std::to_string(stats.removed) + " 件)");
-        return StepResult::Succeeded;
-    }
-
-    GameBuilder::StepResult GameBuilder::ApplyOverrides(const Paths& paths)
-    {
-        for (const auto& sourceOverride : GAME_BUILD_SOURCE_OVERRIDES)
-        {
-            const std::filesystem::path source = paths.repositoryRoot / sourceOverride.relativePath;
-            const std::filesystem::path staged = paths.stagingRoot    / sourceOverride.relativePath;
-
-            std::string content = GameBuildReadAllBytes(source);
-            const size_t position = content.find(sourceOverride.from);
-            if (position == std::string::npos || content.find(sourceOverride.from, position + 1) != std::string::npos)
-            {
-                // 置換できないまま進めると Editor 版の exe ができてしまう
-                ReportError("GameBuilder: " + PathToUtf8(sourceOverride.relativePath) + " に \"" + std::string(sourceOverride.from) + "\" がちょうど 1 か所ありません");
-                return StepResult::Failed;
-            }
-            content.replace(position, sourceOverride.from.size(), sourceOverride.to);
-
-            // 内容が同じなら書かない。更新日時が変わると、この定数を見るファイルが毎回コンパイルし直しになる
-            if (std::error_code ec; std::filesystem::is_regular_file(staged, ec) && GameBuildReadAllBytes(staged) == content)
-                continue;
-
-            std::filesystem::create_directories(staged.parent_path());
-            std::ofstream stream(staged, std::ios::binary | std::ios::trunc);
-            stream.write(content.data(), static_cast<std::streamsize>(content.size()));
-            if (!stream)
-            {
-                ReportError("GameBuilder: 書き込めませんでした: " + PathToUtf8(staged));
-                return StepResult::Failed;
-            }
-        }
-        return StepResult::Succeeded;
-    }
-
     GameBuilder::StepResult GameBuilder::RunMsBuild(const Paths& paths)
     {
-        const std::filesystem::path solution     = paths.stagingRoot / L"NanamiEngine.sln";
-        const std::filesystem::path logPath      = paths.stagingRoot / L"GameBuild.log";
-        const std::filesystem::path errorLogPath = paths.stagingRoot / L"GameBuild.errors.log";
+        const std::filesystem::path logDirectory = BuildLogDirectory(paths);
+        const std::filesystem::path logPath      = logDirectory / L"GameBuild.log";
+        const std::filesystem::path errorLogPath = logDirectory / L"GameBuild.errors.log";
+        std::filesystem::create_directories(logDirectory);
 
         // コンソール出力は CP932 なので受け取らず、UTF-8 のファイルログから読む
-        std::wstring commandLine = L"\"" + paths.msBuild.wstring() + L"\" \"" + solution.wstring() + L"\""
+        std::wstring commandLine = L"\"" + paths.msBuild.wstring() + L"\" \"" + paths.solution.wstring() + L"\""
             L" -p:Configuration=" + paths.configuration + L" -p:Platform=x64 -p:PreferredToolArchitecture=x64"
+            L" -p:NanamiApplicationMode=Game"
             L" -m -nologo -nodeReuse:false -noConsoleLogger"
             L" \"-flp:LogFile=" + logPath.wstring() + L";Verbosity=minimal;Encoding=UTF-8\""
             L" \"-flp1:LogFile=" + errorLogPath.wstring() + L";ErrorsOnly;Encoding=UTF-8\"";
@@ -374,7 +288,7 @@ namespace NanamiEngine::Core::Application::Build
         STARTUPINFOW        startupInfo = {};
         PROCESS_INFORMATION processInfo = {};
         startupInfo.cb = sizeof(startupInfo);
-        const std::wstring workingDirectory = paths.stagingRoot.wstring();
+        const std::wstring workingDirectory = paths.projectRoot.wstring();
         if (!CreateProcessW(nullptr, commandLine.data(), nullptr, nullptr, FALSE, CREATE_NO_WINDOW | CREATE_SUSPENDED,
                             nullptr, workingDirectory.c_str(), &startupInfo, &processInfo))
         {
@@ -419,10 +333,17 @@ namespace NanamiEngine::Core::Application::Build
 
     GameBuilder::StepResult GameBuilder::Package(const Paths& paths)
     {
+        const std::filesystem::path builtExe = FindBuiltExe(paths);
+        if (builtExe.empty())
+        {
+            ReportError("GameBuilder: ビルドした exe が見つかりません: " + PathToUtf8(paths.projectRoot / L"x64" / L"Game" / paths.configuration));
+            return StepResult::Failed;
+        }
+
         std::filesystem::create_directories(paths.outputRoot);
         try
         {
-            CopyIfChanged(paths.stagingRoot / L"x64" / paths.configuration / L"NanamiEngine.exe", paths.outputRoot / paths.exeFileName);
+            CopyIfChanged(builtExe, paths.outputRoot / paths.exeFileName);
         }
         catch (const std::filesystem::filesystem_error& exception)
         {
@@ -431,18 +352,41 @@ namespace NanamiEngine::Core::Application::Build
         }
 
         MirrorStats stats;
-        if (const auto result = MirrorDirectory(paths.repositoryRoot, paths.outputRoot, L"Assets", IsPackagedAsset, stats); result != StepResult::Succeeded)
+        if (const auto result = MirrorDirectory(paths.projectRoot, paths.outputRoot, L"Assets", IsPackagedAsset, stats); result != StepResult::Succeeded)
             return result;
         for (const auto directory : GAME_BUILD_PACKAGED_PROJECT_CONFIGS)
         {
-            if (const auto result = MirrorDirectory(paths.repositoryRoot, paths.outputRoot, directory, [](const std::wstring&) { return true; }, stats); result != StepResult::Succeeded)
+            if (const auto result = MirrorDirectory(paths.projectRoot, paths.outputRoot, directory, [](const std::wstring&) { return true; }, stats); result != StepResult::Succeeded)
                 return result;
         }
         // 製品名と起動シーン。ProjectConfig/Build/ 直下の MSBuild のパスなどはエディタ専用なので配らない
-        if (const auto result = MirrorDirectory(paths.repositoryRoot, paths.outputRoot, Configuration::BuildConfiguration::RuntimeConfigDirectory(), [](const std::wstring&) { return true; }, stats); result != StepResult::Succeeded)
+        if (const auto result = MirrorDirectory(paths.projectRoot, paths.outputRoot, Configuration::BuildConfiguration::RuntimeConfigDirectory(), [](const std::wstring&) { return true; }, stats); result != StepResult::Succeeded)
             return result;
 
         Module::Log("GameBuilder: アセットと設定を同期しました (コピー " + std::to_string(stats.copied) + " 件 / 削除 " + std::to_string(stats.removed) + " 件)");
+        return WriteAssetUpdateState(paths);
+    }
+
+    GameBuilder::StepResult GameBuilder::WriteAssetUpdateState(const Paths& paths)
+    {
+        const std::filesystem::path installedState = paths.outputRoot / GAME_BUILD_INSTALLED_STATE_FILE;
+        if (!paths.assetUpdates)
+        {
+            // 前回のビルドの installed.json が残っていると、無効にしたはずの更新が走る
+            std::filesystem::remove(installedState);
+            return StepResult::Succeeded;
+        }
+
+        const AssetUpdater::InstalledStateResult result = AssetUpdater::WriteInstalledState(
+            paths.outputRoot, installedState, [this] { return cancelRequested_.load(); });
+        if (result.canceled)
+            return StepResult::Canceled;
+        if (!result.ok)
+        {
+            ReportError("GameBuilder: installed.json を書けませんでした: " + result.error);
+            return StepResult::Failed;
+        }
+        Module::Log("GameBuilder: installed.json を書きました (" + std::to_string(result.entryCount) + " 件)");
         return StepResult::Succeeded;
     }
 
@@ -527,24 +471,9 @@ namespace NanamiEngine::Core::Application::Build
         return true;
     }
 
-    bool GameBuilder::IsStagedSource(const std::wstring& repositoryRelativePath)
+    bool GameBuilder::IsPackagedAsset(const std::wstring& projectRelativePath)
     {
-        const std::wstring lowered = GameBuildToLower(repositoryRelativePath);
-        for (const auto& sourceOverride : GAME_BUILD_SOURCE_OVERRIDES)
-        {
-            if (lowered == GameBuildToLower(std::wstring(sourceOverride.relativePath)))
-                return false;
-        }
-        if (lowered.starts_with(L"assets/"))
-        {
-            return std::ranges::any_of(GAME_BUILD_STAGED_ASSET_EXTENSIONS, [&lowered](const std::wstring_view extension) { return lowered.ends_with(extension); });
-        }
-        return true;
-    }
-
-    bool GameBuilder::IsPackagedAsset(const std::wstring& repositoryRelativePath)
-    {
-        const std::wstring lowered   = GameBuildToLower(repositoryRelativePath);
+        const std::wstring lowered   = GameBuildToLower(projectRelativePath);
         const size_t       lastSlash = lowered.find_last_of(L'/');
         const std::wstring name      = lastSlash == std::wstring::npos ? lowered : lowered.substr(lastSlash + 1);
 
@@ -586,6 +515,45 @@ namespace NanamiEngine::Core::Application::Build
         return true;
     }
 
+    std::filesystem::path GameBuilder::FindSolution(const std::filesystem::path& projectRoot)
+    {
+        std::filesystem::path found;
+        std::error_code       ec;
+        for (const auto& entry : std::filesystem::directory_iterator(projectRoot, ec))
+        {
+            if (!entry.is_regular_file() || GameBuildToLower(entry.path().extension().wstring()) != L".sln")
+                continue;
+            if (!found.empty())
+                return {};
+            found = entry.path();
+        }
+        return found;
+    }
+
+    std::filesystem::path GameBuilder::FindBuiltExe(const Paths& paths)
+    {
+        std::filesystem::path           newest;
+        std::filesystem::file_time_type newestTime;
+        std::error_code                 ec;
+        for (const auto& entry : std::filesystem::directory_iterator(paths.projectRoot / L"x64" / L"Game" / paths.configuration, ec))
+        {
+            if (!entry.is_regular_file() || GameBuildToLower(entry.path().extension().wstring()) != L".exe")
+                continue;
+            const auto time = entry.last_write_time();
+            if (newest.empty() || time > newestTime)
+            {
+                newest     = entry.path();
+                newestTime = time;
+            }
+        }
+        return newest;
+    }
+
+    std::filesystem::path GameBuilder::BuildLogDirectory(const Paths& paths)
+    {
+        return paths.projectRoot / L"x64" / L"Game";
+    }
+
     std::string GameBuilder::PathToUtf8(const std::filesystem::path& path)
     {
         const std::u8string utf8 = path.u8string();
@@ -601,8 +569,6 @@ namespace NanamiEngine::Core::Application::Build
         std::string text = GameBuildReadAllBytes(errorLogPath);
         if (text.starts_with("\xEF\xBB\xBF"))
             text.erase(0, 3);
-        // ステージングのパスをリポジトリのパスに置き換え、エラー箇所を原本で探せるようにする
-        GameBuildReplaceAll(text, PathToUtf8(paths.stagingRoot), PathToUtf8(paths.repositoryRoot));
 
         size_t lineCount = 0;
         size_t begin     = 0;

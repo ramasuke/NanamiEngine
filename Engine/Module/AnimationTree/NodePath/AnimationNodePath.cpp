@@ -125,16 +125,10 @@ void AnimationTree::AnimationNodePath::SubscribeUpdateNodeAnimationCallback()
     if (!node)
         return;
 
-    const auto old = std::move(fromNodeSubscription_);
-
-    fromNodeSubscription_ = rxcpp::composite_subscription();
-
-    node->OnUpdated().subscribe(
-        fromNodeSubscription_,
+    // 新しい購読を張ってから古い方を解除する
+    fromNodeSubscription_.Set(node->OnUpdated().Subscribe(
         [this](const IAnimationNode::UpdateCallbackContext context)
         {
             TryAddNextCurrentNodePath(context);
-        });
-    
-    old.unsubscribe();
+        }));
 }

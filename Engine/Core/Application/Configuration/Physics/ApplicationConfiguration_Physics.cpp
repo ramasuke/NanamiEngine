@@ -1,6 +1,9 @@
 ﻿#include "ApplicationConfiguration_Physics.h"
 #include "../../../../Module/ProjectConfig/Engine_Module_ProjectConfig.h"
+#include "../../../../Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
 #include "ImGuiHelper.h"
+#include <cereal/types/string.hpp>
+#include <cereal/types/vector.hpp>
 
 namespace NanamiEngine::Core::Application::Configuration
 {
@@ -15,8 +18,8 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEFAULT_STATIC_FRICTION_MAX_SLOPE   = 60.0f;
     constexpr auto DEFAULT_TEMP_ALLOCATOR_SIZE_MB  = 10;
     constexpr auto DEFAULT_MAX_BODIES              = 1024;
-    constexpr auto DEFAULT_MAX_BODY_PAIRS          = 1024;
-    constexpr auto DEFAULT_MAX_CONTACT_CONSTRAINTS = 1024;
+    constexpr auto DEFAULT_MAX_BODY_PAIRS          = 65536;
+    constexpr auto DEFAULT_MAX_CONTACT_CONSTRAINTS = 10240;
 
     int   PhysicsConfiguration::fixedUpdateRate_       = DEFAULT_FIXED_UPDATE_RATE;
     float PhysicsConfiguration::maxDeltaTime_          = DEFAULT_MAX_DELTA_TIME;
@@ -44,6 +47,99 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto PHYSICS_MAX_BODIES_KEY              = "MaxBodies";
     constexpr auto PHYSICS_MAX_BODY_PAIRS_KEY          = "MaxBodyPairs";
     constexpr auto PHYSICS_MAX_CONTACT_CONSTRAINTS_KEY = "MaxContactConstraints";
+    constexpr auto PHYSICS_LAYER_NAMES_KEY             = "LayerNames";
+    // NOTE: 要素が足りないレイヤーは全レイヤーと衝突する
+    constexpr auto PHYSICS_LAYER_COLLISION_MASKS_KEY   = "LayerCollisionMasks";
+    constexpr auto LAYER_NAME_BUFFER_SIZE              = 64;
+
+    namespace
+    {
+        void LoadLayers()
+        {
+            namespace Physics = Module::Physics;
+            const auto names = Module::ProjectConfig::LoadOrDefaultWithPath<std::vector<std::string>>(
+                PHYSICS_CONFIG_PATH, PHYSICS_LAYER_NAMES_KEY, { "Default" });
+            Physics::SetLayerNames(names);
+
+            const auto masks = Module::ProjectConfig::LoadOrDefaultWithPath<std::vector<Physics::LayerMask>>(
+                PHYSICS_CONFIG_PATH, PHYSICS_LAYER_COLLISION_MASKS_KEY, {});
+            for (int i = 0; i < Physics::MAX_LAYER_COUNT; ++i)
+            {
+                const auto mask = i < static_cast<int>(masks.size()) ? masks[i] : Physics::ALL_LAYERS_MASK;
+                Physics::SetCollisionMaskOf(static_cast<Physics::Layer>(i), mask);
+            }
+        }
+
+        void SaveLayers()
+        {
+            namespace Physics = Module::Physics;
+            std::vector<std::string>        names;
+            std::vector<Physics::LayerMask> masks;
+            for (int i = 0; i < Physics::LayerCount(); ++i)
+            {
+                names.emplace_back(Physics::LayerNames()[i]);
+                masks.push_back(Physics::CollisionMaskOf(static_cast<Physics::Layer>(i)));
+            }
+            Module::ProjectConfig::SaveWithPath(PHYSICS_CONFIG_PATH, PHYSICS_LAYER_NAMES_KEY,           names);
+            Module::ProjectConfig::SaveWithPath(PHYSICS_CONFIG_PATH, PHYSICS_LAYER_COLLISION_MASKS_KEY, masks);
+        }
+
+        // 戻り値：変更されたかどうか
+        bool DrawLayersGui()
+        {
+            namespace Physics = Module::Physics;
+            bool changed = false;
+
+            ImGui::Spacing();
+            ImGui::Text("Layers");
+            ImGui::Separator();
+            ImGui::TextDisabled("* Layer は番号で保存されるため末尾のみ追加/削除できる");
+
+            std::vector<std::string> names;
+            for (int i = 0; i < Physics::LayerCount(); ++i)
+                names.emplace_back(Physics::LayerNames()[i]);
+
+            for (int i = 0; i < static_cast<int>(names.size()); ++i)
+            {
+                ImGui::PushID(i);
+                char buffer[LAYER_NAME_BUFFER_SIZE] = {};
+                names[i].copy(buffer, sizeof(buffer) - 1);
+                ImGui::SetNextItemWidth(200);
+                ImGui::BeginDisabled(i == 0);
+                if (ImGui::InputText(("Layer " + std::to_string(i)).c_str(), buffer, sizeof(buffer)) && buffer[0] != '\0')
+                {
+                    names[i] = buffer;
+                    changed = true;
+                }
+                ImGui::EndDisabled();
+                ImGui::PopID();
+            }
+
+            if (static_cast<int>(names.size()) < Physics::MAX_LAYER_COUNT && ImGui::Button("Add Layer"))
+            {
+                names.push_back("Layer" + std::to_string(names.size()));
+                changed = true;
+            }
+            if (names.size() > 1)
+            {
+                ImGui::SameLine();
+                if (ImGui::Button("Remove Last Layer"))
+                {
+                    names.pop_back();
+                    changed = true;
+                }
+            }
+            if (changed)
+                Physics::SetLayerNames(names);
+
+            ImGui::Spacing();
+            ImGui::Text("Layer Collision Matrix");
+            if (Physics::DrawCollisionMatrixGui())
+                changed = true;
+
+            return changed;
+        }
+    }
 
     void PhysicsConfiguration::Load()
     {
@@ -59,6 +155,7 @@ namespace NanamiEngine::Core::Application::Configuration
         maxBodies_             = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_MAX_BODIES_KEY,              DEFAULT_MAX_BODIES);
         maxBodyPairs_          = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_MAX_BODY_PAIRS_KEY,          DEFAULT_MAX_BODY_PAIRS);
         maxContactConstraints_ = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_MAX_CONTACT_CONSTRAINTS_KEY, DEFAULT_MAX_CONTACT_CONSTRAINTS);
+        LoadLayers();
     }
 
     void PhysicsConfiguration::Save()
@@ -75,6 +172,7 @@ namespace NanamiEngine::Core::Application::Configuration
         Module::ProjectConfig::SaveWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_MAX_BODIES_KEY,              maxBodies_);
         Module::ProjectConfig::SaveWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_MAX_BODY_PAIRS_KEY,          maxBodyPairs_);
         Module::ProjectConfig::SaveWithPath<int>  (PHYSICS_CONFIG_PATH, PHYSICS_MAX_CONTACT_CONSTRAINTS_KEY, maxContactConstraints_);
+        SaveLayers();
     }
 
     int   PhysicsConfiguration::GetFixedUpdateRate()           { return fixedUpdateRate_; }
@@ -188,6 +286,9 @@ namespace NanamiEngine::Core::Application::Configuration
             staticFrictionMaxSlopeDeg_ = staticFrictionMaxSlopeDeg;
             Save();
         }
+
+        if (DrawLayersGui())
+            Save();
 
         ImGui::Spacing();
         ImGui::Text("Requires Restart");

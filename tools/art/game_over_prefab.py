@@ -10,7 +10,7 @@
 tools.scene の CLI では届かない所をここで埋める:
   * enum(BlendImageRenderer::blendMode_ / TextRenderer::textAlign_)は 0 固定で書かれるので数値で直接書く。
     blendMode_ 0 は NoBlend で、blendRate_ を無視して不透明に描いてしまう
-  * CineMachineVirtualCamera::priority_ は SerializableSubject なので {"value": n} の形で書く
+  * CineMachineVirtualCamera::priority_ は R4::SerializableReactiveProperty なので {"value": n} の形で書く
   * worldMatrix_ はエンジンが読み込み時に計算し直さないので、親から合成して書く
   * 最初から出ていないよう、Visual 以下のコンポーネントは無効で書いておく(GameOverScreenUi が有効にする)
 """

@@ -9,7 +9,6 @@ namespace NanamiEngine::CineMachine::Behaviour
     class ThirdPersonCameraBehaviour final
         : public Component::ComponentBase
         , public LifeCycleCallback::IAwakable
-        , public LifeCycleCallback::IUpdatable
         , public IVirtualCameraBehaviour
     {
     public:
@@ -21,9 +20,10 @@ namespace NanamiEngine::CineMachine::Behaviour
     private:
         bool WantsImmediateApply() const override { return isImmediateApply_; }
 
-        void OnAwake () override;
-        void OnUpdate() override;
-        int  UpdatePriority() const override { return 1; }
+        void OnAwake       () override;
+        void OnCameraUpdate() override;
+        // Follow/LookAtが読むオフセットを先に書き込む
+        [[nodiscard]] VirtualCameraStage Stage() const override { return VirtualCameraStage::Driver; }
 
         void UpdateMouseInput();
         void UpdateGamepadInput();
@@ -68,7 +68,6 @@ template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<Component::ComponentBase>(this));
     archive(cereal::base_class<LifeCycleCallback::IAwakable>(this));
-    archive(cereal::base_class<LifeCycleCallback::IUpdatable>(this));
     archive(cereal::base_class<IVirtualCameraBehaviour>(this));
     archive(CEREAL_NVP(minPitch_));
     archive(CEREAL_NVP(maxPitch_));
@@ -89,7 +88,7 @@ template<class Archive>
 void load(Archive& archive, const std::uint32_t version) {
     archive(cereal::base_class<Component::ComponentBase>(this));
     archive(cereal::base_class<LifeCycleCallback::IAwakable>(this));
-    archive(cereal::base_class<LifeCycleCallback::IUpdatable>(this));
+    if (version <= 6) LifeCycleCallback::DiscardUpdatableBase(archive);
     archive(cereal::base_class<IVirtualCameraBehaviour>(this));
     if (version >= 0) archive(CEREAL_NVP(minPitch_));
     if (version >= 0) archive(CEREAL_NVP(maxPitch_));
@@ -109,7 +108,6 @@ void load(Archive& archive, const std::uint32_t version) {
     };
 }
 
-ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ThirdPersonCameraBehaviour, 6)
+ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ThirdPersonCameraBehaviour, 7)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IAwakable, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IUpdatable, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::ThirdPersonCameraBehaviour);

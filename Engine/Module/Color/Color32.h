@@ -11,6 +11,17 @@ namespace NanamiEngine
         explicit Color32(uint8_t r = 255, uint8_t g = 255, uint8_t b = 255);
 
         [[nodiscard]] int ToDxColor() const;
+        /** @brief 0..1 に正規化した RGB。補間や倍率の計算用 */
+        [[nodiscard]] glm::vec3 ToVec3() const;
+        /** @brief 0..1 の RGB から作る。範囲外は clamp する */
+        [[nodiscard]] static Color32 FromVec3(const glm::vec3& rgb);
+
+        [[nodiscard]] uint8_t R() const { return r_; }
+        [[nodiscard]] uint8_t G() const { return g_; }
+        [[nodiscard]] uint8_t B() const { return b_; }
+
+        /** @brief カラーピッカーで編集する。変更があれば true */
+        bool DrawColorEdit(const char* label);
 
     private:
         uint8_t r_;

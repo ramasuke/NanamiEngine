@@ -45,8 +45,13 @@ namespace NanamiEngine::Core::MainWindow
         [[nodiscard]] bool TryReplaceGameObject(const Guid& replaceGameObjectGuid, const std::shared_ptr<GameObject::IGameObject>& newGameObject) const;
         void RemoveGameObject(const std::weak_ptr<GameObject::IGameObject>& removeGameObject);
 
-        /** @brief シーンをワーカースレッドで読み込み始める。完了したフレームで自動的にメインシーンへ差し替わる */
-        void BeginLoadSceneAsync(const std::string& filePath);
+        /**
+         * @brief シーンをワーカースレッドで読み込み始める。完了したフレームで自動的にメインシーンへ差し替わる
+         * @return 既に別のシーンを読み込み中なら false（何もしない）
+         */
+        bool BeginLoadSceneAsync(const std::string& filePath);
+        /** @brief 読み込み中のシーンを捨てる。捨てたシーンはメインシーンにならない。ワーカーの完了は待つ */
+        void CancelSceneLoad();
         [[nodiscard]] bool IsSceneLoading() const;
         /** @brief 読み込み中のシーンのデシリアライズ進捗。総数が読めるまでは 0 */
         [[nodiscard]] float SceneLoadProgress01() const;

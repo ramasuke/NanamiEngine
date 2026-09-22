@@ -17,6 +17,6 @@ namespace NanamiEngine::Core::Network
         size_t offset = 0;
         const auto playerId = packet.Data().Read<struct PlayerId>(offset);
         networkSystem_.SetPlayerId(playerId);
-        onAssignedPlayerId_.get_subscriber().on_next(LibCore::Rx::unit());
+        onAssignedPlayerId_.OnNext(R4::Unit());
     }
 }

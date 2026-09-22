@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "../../../Engine/Module/Component/ComponentBase.h"
-#include "../../../Libs/LibCore/Rx/SerializableSubject/SerializableSubject.h"
+#include "../../R4/R4.h"
 #include "Behaviour/IVirtualCameraBehaviour.h"
 
 namespace NanamiEngine::CineMachine
@@ -10,26 +10,30 @@ namespace NanamiEngine::CineMachine
     
     class CineMachineVirtualCamera final : public Component::ComponentBase,
                                            public LifeCycleCallback::IAwakable,
+                                           public LifeCycleCallback::IStartable,
                                            public LifeCycleCallback::IDebugRenderable
     {
     public:
-        [[nodiscard]] Rx::ReadOnlyReactiveContext<int> Priority() const { return priority_.AsReadOnly(); }
+        [[nodiscard]] R4::ReadOnlyReactiveProperty<int> Priority() const { return priority_.AsReadOnly(); }
         void SetPriority(int priority);
         // このカメラで使うFOV(度)。上書きしていなければBrainの既定FOVを返す
         [[nodiscard]] float Fov() const;
         
-        void OnDisable() { priority_.OnNext(DISABLE_PRIORITY); }
+        void OnDisable() { priority_.Value(DISABLE_PRIORITY); }
+        // BrainがLateUpdateで毎フレーム呼ぶ。BehaviourをStage()の順に更新する
+        void UpdateBehaviours() const;
         void MainCameraCallback() const;
         void OnBecameLive() const;
         [[nodiscard]] bool WantsImmediateApply() const;
 
     private:
         void OnAwake      () override;
+        void OnStart      () override;
         void OnDestroy    () override;
         void OnDrawGui    () override;
         void OnDebugRender() override;
         
-        Rx::SerializableSubject<int> priority_ = Rx::SerializableSubject(0);
+        R4::SerializableReactiveProperty<int> priority_ = R4::SerializableReactiveProperty(0);
         // Brainの既定FOVではなく、このカメラ独自のFOVを使うか
         bool  overrideFov_ = false;
         float fov_         = 60.0f;

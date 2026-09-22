@@ -521,8 +521,10 @@ def write_grass_field(records, chunk):
     def f(v):
         return Num.of_float(float(np.float32(v)))
 
+    # Color32 (0..255)。バージョンキーは常に書く (edits.color32_blob と同じ理由)
     def rgb(r, g, b):
-        return OrderedObj([('value0', f(r)), ('value1', f(g)), ('value2', f(b))])
+        return OrderedObj([('cereal_class_version', Num.of_int(0)),
+                           ('r_', Num.of_int(r)), ('g_', Num.of_int(g)), ('b_', Num.of_int(b))])
 
     chunks = []
     for i, ((cx, cz), lo, hi, count, blades) in enumerate(records):
@@ -537,7 +539,7 @@ def write_grass_field(records, chunk):
         rec['blades'] = blades
         chunks.append(rec)
     body = OrderedObj([
-        ('cereal_class_version', Num.of_int(1)),
+        ('cereal_class_version', Num.of_int(2)),
         ('value0', OrderedObj([
             ('cereal_class_version', Num.of_int(0)),
             ('value0', OrderedObj([('cereal_class_version', Num.of_int(0))])),
@@ -553,8 +555,8 @@ def write_grass_field(records, chunk):
         ('widthMin_', f(0.5)),
         ('widthMax_', f(1.1)),
         ('bendAmount_', f(0.35)),
-        ('baseColor_', rgb(0.11, 0.26, 0.07)),
-        ('tipColor_', rgb(0.5, 0.66, 0.26)),
+        ('baseColor_', rgb(28, 66, 18)),
+        ('tipColor_', rgb(128, 168, 66)),
         ('colorVariation_', f(0.35)),
         ('ambient_', f(0.6)),
         ('windStrength_', f(1.6)),

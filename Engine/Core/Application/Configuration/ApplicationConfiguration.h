@@ -9,7 +9,11 @@ namespace NanamiEngine::Core::Application::Configuration
         Game
     };
 
+#if defined(NANAMI_GAME_BUILD)
+    constexpr auto APPLICATION_MODE = ApplicationMode::Game;
+#else
     constexpr auto APPLICATION_MODE = ApplicationMode::Editor;
+#endif
     
     class AppConfiguration final
     {

@@ -48,7 +48,7 @@ namespace NanamiEngine::Module
             return;
 
         isPressing_ = true;
-        onClick.get_subscriber().on_next(state);
+        onClick.OnNext(state);
     }
     
     void NanamiUi::Button::TryHover()
@@ -59,7 +59,7 @@ namespace NanamiEngine::Module
         if (isInside && !isHovering_)
         {
             isHovering_ = true;
-            onHover.get_subscriber().on_next(Rx::unit{});
+            onHover.OnNext(R4::Unit{});
             if (const auto renderer = renderer_.lock(); renderer && onHoverSprite_)
                 renderer->SetSprite(onHoverSprite_.get());
         }
@@ -67,7 +67,7 @@ namespace NanamiEngine::Module
         else if (!isInside && isHovering_)
         {
             isHovering_ = false;
-            onHoverExit.get_subscriber().on_next(Rx::unit{});
+            onHoverExit.OnNext(R4::Unit{});
             if (const auto renderer = renderer_.lock(); renderer && onIdleSprite_)
                 renderer->SetSprite(onIdleSprite_.get());
         }
@@ -82,7 +82,7 @@ namespace NanamiEngine::Module
             return;
 
         isPressing_ = false;
-        onRelease.get_subscriber().on_next(Rx::unit{});
+        onRelease.OnNext(R4::Unit{});
     }
 
     void NanamiUi::Button::OnDrawGui()

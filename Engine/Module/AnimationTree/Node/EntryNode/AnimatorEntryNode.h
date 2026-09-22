@@ -4,7 +4,7 @@
 #include "../../../../Core/Object/Field/Field.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
 #include "../IAnimationNode.h"
-#include "../../../Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
+#include "../LibCore/ImGui/Helper/ImGuiHelper.h"
 
 namespace NanamiEngine::Module::AnimationTree
 {
@@ -16,29 +16,22 @@ namespace NanamiEngine::Module::AnimationTree
         void InitForGamePlay(int modelHandle) override;
         [[nodiscard]] const Guid& GetGuid()  const override { return guid_;         }
         [[nodiscard]] glm::vec2   Position() const override { return position_;     }
+        void SetPosition(const glm::vec2& position) override { position_ = position; }
+        [[nodiscard]] std::string GraphNodeName  () const override { return "Entry"; }
+        [[nodiscard]] std::string GraphNodeDetail() const override { return "開始"; }
         [[nodiscard]] float GetAnimDuration_secs() const override { return 0; }
         void OnUpdateBlendRate(float  blendRate) override;
         void OnUpdateAnimation(int  modelHandle, float timeScale) override;
-        rxcpp::observable<UpdateCallbackContext> OnUpdated() override { return onUpdate_.get_observable(); }
-        Gui::Graph::NodeDrawResult OnDrawGraphEditorGui(const ImVec2& offset, ImDrawList* drawList, std::weak_ptr<IAnimationNode> ownPtr) override;
+        R4::Observable<UpdateCallbackContext> OnUpdated() override { return onUpdate_.AsObservable(); }
         void OnExitNode(int modelHandle) override;
         
     private:
         glm::vec2 position_;
         Guid guid_;
         float speed_ = 1.0f;
-        rxcpp::subjects::subject<UpdateCallbackContext> onUpdate_ = rxcpp::subjects::subject<UpdateCallbackContext>();
+        R4::Subject<UpdateCallbackContext> onUpdate_ = R4::Subject<UpdateCallbackContext>();
         int animationModelHandle_ = -1;
         bool isDrag_ = false;
-
-        inline static const auto NODE_NAME = "AnimatorEntryNode";
-        inline static const auto NODE_VISUAL_STYLE = Gui::Graph::NodeVisualStyle
-        (
-            IM_COL32(0, 200, 0, 255),
-            IM_COL32(200, 200, 200, 255),
-            IM_COL32(180, 180, 100, 255),
-            IM_COL32_WHITE
-        );
 #pragma region Serialization Function
 public:
 void OnDrawGui() {

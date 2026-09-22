@@ -1,9 +1,6 @@
 ﻿#pragma once
-#include "../../../Libs/LibCore/Rx/SerializableSubject/unit/unit.h"
-#include "../rxcpp/rx.hpp"
-
-struct _ENetPeer;
-struct _ENetEvent;
+#include "../../../Packages/R4/R4.h"
+#include "PlayerId/PlayerId.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -17,7 +14,9 @@ namespace NanamiEngine::Core::Network
     public:
         virtual ~IPacketSender() = default;
         virtual void Send(const Packet& packet) = 0;
-        virtual void SendTo(_ENetPeer* target, const Packet& packet) = 0;
-        virtual rxcpp::observable<_ENetEvent*> OnConnectPlayer() = 0;
+        /** ホストのみ: target の 1 人にだけ送る */
+        virtual void SendTo(PlayerId target, const Packet& packet) = 0;
+        /** ホストのみ: クライアントが参加して PlayerId を割り当てた直後に通知する */
+        virtual R4::Observable<PlayerId> OnConnectPlayer() = 0;
     };
 }

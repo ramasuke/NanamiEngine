@@ -64,7 +64,8 @@ namespace NanamiEngine::Core::PopupWindow
 
         if (tree)
         {
-            tree->OnDrawGraphEditorGui();
+            // 実行中のインスタンスなので読み取り専用（選択・Inspector 表示のみ）
+            tree->OnDrawGraphEditorGui(true);
             tree->OnDrawGui();
         }
 

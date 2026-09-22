@@ -3,6 +3,7 @@
 #include <tuple>
 
 #include "../Engine_Coroutine_ITickableWaitable.h"
+#include "../TweenClock/Coroutine_TweenClock.h"
 #include "../../../../Module/GameObject/Transform/Transform.h"
 #include "../../../Application/ApplicationBase.h"
 #include "../../../Application/Window/Main/Game/GameWindow.h"
@@ -40,9 +41,7 @@ namespace Coroutine
 
         void Tick(const float deltaTime) override
         {
-            const int deltaTime_msecs = static_cast<int>(deltaTime * 1000.0f);
-
-            tween_.step(deltaTime_msecs);
+            tween_.step(clock_.Advance(deltaTime));
 
             ApplyTween(transformRef_, tween_.peek());
         }
@@ -54,6 +53,7 @@ namespace Coroutine
 
     private:
         tweeny::tween<Types...> tween_;
+        TweenClock clock_;
         std::coroutine_handle<> parentHandle_{};
         GameObject::Transform& transformRef_;
 

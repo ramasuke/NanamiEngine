@@ -1,12 +1,11 @@
 ﻿#pragma once
 #include "vec2.hpp"
 #include "../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
-#include "../../../../Libs/LibCore/Rx/SerializableSubject/unit/unit.h"
+#include "../../../../Packages/R4/R4.h"
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/Sprite/SpriteFile.h"
 #include "../../Component/ComponentBase.h"
 #include "../MouseEvent/MouseState.h"
-#include "../rxcpp/rx.hpp"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -20,10 +19,10 @@ namespace NanamiEngine::Module::NanamiUi
                          public LifeCycleCallback::IUpdatable
     {
     public:
-        [[nodiscard]] rxcpp::observable<MouseState> OnClick  () const { return onClick  .get_observable(); } 
-        [[nodiscard]] rxcpp::observable<Rx::unit  > OnHover  () const { return onHover  .get_observable(); }
-        [[nodiscard]] rxcpp::observable<Rx::unit  > OnHoverExit() const { return onHoverExit.get_observable(); }
-        [[nodiscard]] rxcpp::observable<Rx::unit  > OnRelease() const { return onRelease.get_observable(); }
+        [[nodiscard]] R4::Observable<MouseState> OnClick  () const { return onClick  .AsObservable(); } 
+        [[nodiscard]] R4::Observable<R4::Unit  > OnHover  () const { return onHover  .AsObservable(); }
+        [[nodiscard]] R4::Observable<R4::Unit  > OnHoverExit() const { return onHoverExit.AsObservable(); }
+        [[nodiscard]] R4::Observable<R4::Unit  > OnRelease() const { return onRelease.AsObservable(); }
 
     private:
         void OnAwake() override;
@@ -43,10 +42,10 @@ namespace NanamiEngine::Module::NanamiUi
         bool isPressing_ = false;
         bool isHovering_ = false;
 
-        rxcpp::subjects::subject<MouseState> onClick;
-        rxcpp::subjects::subject<Rx::unit  > onHover;
-        rxcpp::subjects::subject<Rx::unit  > onHoverExit;
-        rxcpp::subjects::subject<Rx::unit  > onRelease;
+        R4::Subject<MouseState> onClick;
+        R4::Subject<R4::Unit  > onHover;
+        R4::Subject<R4::Unit  > onHoverExit;
+        R4::Subject<R4::Unit  > onRelease;
         
 #pragma region Serialization Function
     public:

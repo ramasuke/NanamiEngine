@@ -1,5 +1,5 @@
 {
-  "generated_from": "b377183098a5b8e7fe572d32b184af968bac1cdc",
+  "generated_from": "200d819ee215b48087ade2c8f03838cfa22af709",
   "actions": {
     "Basic::ChasePlayerForPathFinding": {
       "class": "ChasePlayerForPathFinding",
@@ -331,7 +331,7 @@
       "class": "OnDamage",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::OnDamage",
       "leaf": "OnDamage",
-      "version": 4,
+      "version": 5,
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/OnDamage/Enemy_Behaviour_Action_OnDamage.h",
       "params": [
         {
@@ -376,6 +376,18 @@
           "member": "stunnedDamageScale_",
           "named": false,
           "shape": "float"
+        },
+        {
+          "key": "value8",
+          "member": "chargeCounterStunStateValue_",
+          "named": false,
+          "shape": "int"
+        },
+        {
+          "key": "value9",
+          "member": "breakStunStateValue_",
+          "named": false,
+          "shape": "int"
         }
       ]
     },
@@ -1056,6 +1068,120 @@
         }
       ]
     },
+    "Tyrannosaurus::ChargeRush": {
+      "class": "ChargeRush",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ChargeRush",
+      "leaf": "ChargeRush",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Tyrannosaurus/ChargeRush/Enemy_Behaviour_Action_ChargeRush.h",
+      "params": [
+        {
+          "key": "windUp_secs_",
+          "member": "windUp_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "rotateSpeed_",
+          "member": "rotateSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "moveSpeed_",
+          "member": "moveSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxRush_secs_",
+          "member": "maxRush_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "windUpAnimationNumber_",
+          "member": "windUpAnimationNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "rushAnimationNumber_",
+          "member": "rushAnimationNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "impactAnimationNumber_",
+          "member": "impactAnimationNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "impact_secs_",
+          "member": "impact_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "castOriginOffset_",
+          "member": "castOriginOffset_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "castRadius_",
+          "member": "castRadius_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "castDistance_",
+          "member": "castDistance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "wallMaxNormalY_",
+          "member": "wallMaxNormalY_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "attackAreaName_",
+          "member": "attackAreaName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "attackPower_",
+          "member": "attackPower_",
+          "named": true,
+          "shape": "nested",
+          "type": "PhysicsPower"
+        },
+        {
+          "key": "stuckStateKeyName_",
+          "member": "stuckStateKeyName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "impactSound_",
+          "member": "impactSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "finishedWriteBlackBoard_",
+          "member": "finishedWriteBlackBoard_",
+          "named": true,
+          "shape": "nested",
+          "type": "WriteBlackBoard"
+        }
+      ]
+    },
     "Ui::ShowBossHealthGauge": {
       "class": "ShowBossHealthGauge",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ShowBossHealthGauge",
@@ -1174,6 +1300,7 @@
     "GameCore::Npc::Enemy::Behaviour::Action::ChangeColliderEmotionType": "RigidBody::ChangeEmotionType",
     "GameCore::Npc::Enemy::Behaviour::Action::ChangeIsGravity": "RigidBody::ChangeIsGravity",
     "GameCore::Npc::Enemy::Behaviour::Action::ChangeToMainIslandScene": "Scene::ChangeToMainIslandScene",
+    "GameCore::Npc::Enemy::Behaviour::Action::ChargeRush": "Tyrannosaurus::ChargeRush",
     "GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding": "Basic::ChasePlayerForPathFinding",
     "GameCore::Npc::Enemy::Behaviour::Action::Chat": "Other::Chat",
     "GameCore::Npc::Enemy::Behaviour::Action::CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",
@@ -1219,6 +1346,7 @@
     "ChangeColliderEmotionType": "RigidBody::ChangeEmotionType",
     "ChangeIsGravity": "RigidBody::ChangeIsGravity",
     "ChangeToMainIslandScene": "Scene::ChangeToMainIslandScene",
+    "ChargeRush": "Tyrannosaurus::ChargeRush",
     "ChasePlayerForPathFinding": "Basic::ChasePlayerForPathFinding",
     "Chat": "Other::Chat",
     "CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",

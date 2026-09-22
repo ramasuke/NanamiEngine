@@ -75,6 +75,10 @@ struct Options
     bool mAllowQuadSelection{ true }; // multiple selection using drag and drop
     bool mRenderGrid{ true }; // grid or nothing
     bool mDrawIONameOnHover{ true }; // only draw node input/output when hovering
+    // NanamiEngine patch
+    bool mReadOnly{ false }; // nodes can be selected but not moved, links can't be edited
+    bool mAllowMultipleInputLinks{ false }; // connecting to an input keeps the links already plugged into it
+    float mHeaderHeight{ 20.f }; // node title bar height in pixels when zoom value is 1
 };
 
 // View state: scroll position and zoom factor
@@ -139,6 +143,13 @@ struct Delegate
     
     virtual const size_t GetLinkCount() = 0;
     virtual const Link GetLink(LinkIndex index) = 0;
+
+    // NanamiEngine patch: optional hooks, the defaults keep upstream behaviour.
+    virtual void LinkClicked(LinkIndex linkIndex) {}
+    // right click on a link (no node / slot under the mouse); open a context menu from here
+    virtual void RightClickLink(LinkIndex linkIndex) {}
+    virtual ImU32 LinkColor(LinkIndex linkIndex, ImU32 defaultColor) { return defaultColor; }
+    virtual void NodeDoubleClicked(NodeIndex nodeIndex) {}
 
     virtual ~Delegate() = default;
 };

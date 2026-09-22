@@ -2,6 +2,7 @@
 #include "../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
+#include "../IVirtualCameraTarget.h"
 
 void CineMachine::Behaviour::VirtualCameraFollowBehaviour::SetTarget(
     const std::shared_ptr<GameObject::IGameObject>& followTarget)
@@ -11,10 +12,10 @@ void CineMachine::Behaviour::VirtualCameraFollowBehaviour::SetTarget(
 
 glm::vec3 CineMachine::Behaviour::VirtualCameraFollowBehaviour::MoveTargetPosition() const noexcept
 {
-    return followTarget_->Transform().GetWorldPos() + followOffset_;
+    return CameraTargetPositionOf(*followTarget_.get()) + followOffset_;
 }
 
-void CineMachine::Behaviour::VirtualCameraFollowBehaviour::OnUpdate()
+void CineMachine::Behaviour::VirtualCameraFollowBehaviour::OnCameraUpdate()
 {
     if (!followTarget_)
         return;

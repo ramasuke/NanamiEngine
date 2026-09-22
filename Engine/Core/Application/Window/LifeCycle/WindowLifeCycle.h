@@ -16,7 +16,6 @@
 #include "../../../../Module/LifeCycleCallback/ShadowRenderable/IShadowRenderable.h"
 #include "../../../../Module/LifeCycleCallback/Start/IStartable.h"
 #include "../../../../Module/LifeCycleCallback/Update/IUpdatable.h"
-#include "../../../../Module/LifeCycleCallback/Update/IUpdatable_PriorityOrder.h"
 #include "../../../../Module/LifeCycleCallback/UpdatedPhysics/IEndPhysics.h"
 #include "../../../../Module/LifeCycleCallback/UserInterfaceRenderable/IUserInterfaceRenderable.h"
 #include "../../../../Module/LifeCycleCallback/UserInterfaceRenderable/IUserInterfaceRenderable_PriorityOrder.h"
@@ -72,7 +71,7 @@ namespace NanamiEngine::Core::Application
         LifeCycleOnceCallbackGroup<Module::LifeCycleCallback::IStartable>      startableCallbacks_;
 
         std::unique_ptr<Coroutine::CoroutineScheduler>                                  coroutineScheduler_;
-        LifeCycleSortCallbackGroup<Module::LifeCycleCallback::IUpdatable, Module::LifeCycleCallback::UpdatablePriorityCompare> updatableCallbacks_;
+        LifeCycleCallbackGroup<Module::LifeCycleCallback::IUpdatable>                   updatableCallbacks_;
         LifeCycleCallbackGroup<Module::LifeCycleCallback::ILateUpdatable>               lateUpdatableCallbacks_;
         LifeCycleCallbackGroup<Module::LifeCycleCallback::IFixedUpdatable>              fixedUpdatableCallbacks_;
         LifeCycleCallbackGroup<Module::LifeCycleCallback::IPreFixedUpdate>              preFixedUpdateCallbacks_;

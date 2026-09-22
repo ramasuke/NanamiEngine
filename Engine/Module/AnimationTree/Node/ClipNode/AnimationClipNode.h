@@ -4,7 +4,7 @@
 #include "../../../../Core/Object/Field/Field.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
 #include "../IAnimationNode.h"
-#include "../../../Gui/Graph/NodeOption/VisualStyle/NodeVisualStyle.h"
+#include "../LibCore/ImGui/Helper/ImGuiHelper.h"
 
 namespace NanamiEngine::Module::AnimationTree
 {
@@ -20,14 +20,13 @@ namespace NanamiEngine::Module::AnimationTree
         void OnExitNode       (int   modelHandle) override;
         void OnUpdateBlendRate(float blendRate  ) override;
 
-        Gui::Graph::NodeDrawResult OnDrawGraphEditorGui(const ImVec2& offset,
-                                                        ImDrawList* drawList,
-                                                        std::weak_ptr<IAnimationNode> ownPtr) override;
-        
         [[nodiscard]] const Guid& GetGuid             () const override { return guid_;                                       }
         [[nodiscard]] glm::vec2   Position            () const override { return position_;                                   }
+        void                      SetPosition(const glm::vec2& position) override { position_ = position;                        }
+        [[nodiscard]] std::string GraphNodeName       () const override { return name_;                                       }
+        [[nodiscard]] std::string GraphNodeDetail     () const override;
         [[nodiscard]] float       GetAnimDuration_secs() const override { return ClipEndTime() - blendAnimationOffset_secs_; }
-        rxcpp::observable<UpdateCallbackContext> OnUpdated() override;
+        R4::Observable<UpdateCallbackContext> OnUpdated() override;
 
         [[nodiscard]] float GetDuringSecs() const { return during_secs_; }
         void                SetDuringSecs(float secs) { during_secs_ = secs; }
@@ -57,15 +56,7 @@ namespace NanamiEngine::Module::AnimationTree
         float                 duration_secs_          = 0;
         float                 during_secs_            = 0;
         int                   modelAnimationIndex_    = 0;
-        rxcpp::subjects::subject<UpdateCallbackContext> onUpdate_ = rxcpp::subjects::subject<UpdateCallbackContext>();
-        
-        inline static const auto NODE_VISUAL_STYLE = Gui::Graph::NodeVisualStyle
-        (
-            IM_COL32(50 , 50 , 70 , 255),
-            IM_COL32(200, 200, 200, 255),
-            IM_COL32(180, 180, 100, 255),
-            IM_COL32_WHITE
-        );
+        R4::Subject<UpdateCallbackContext> onUpdate_ = R4::Subject<UpdateCallbackContext>();
 #pragma region Serialization Function
 public:
 void OnDrawGui() override;

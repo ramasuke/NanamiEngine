@@ -151,13 +151,26 @@ namespace NanamiEngine::Module::Component
         return d;
     }
 
+    bool ModelRenderer::IsInterpolating() const
+    {
+        return useFixedInterpolation_ && hasPrevCapture_ && hasCurrCapture_;
+    }
+
+    glm::vec3 ModelRenderer::RenderWorldPos() const
+    {
+        if (!IsInterpolating())
+            return Transform().GetWorldPos();
+
+        return glm::mix(prevWorldPos_, currWorldPos_, Time::GetFixedAlpha());
+    }
+
     MATRIX ModelRenderer::GetRenderMatrix() const
     {
         MATRIX matrix;
-        if (useFixedInterpolation_ && hasPrevCapture_ && hasCurrCapture_)
+        if (IsInterpolating())
         {
             const float alpha     = Time::GetFixedAlpha();
-            const glm::vec3 pos   = glm::mix  (prevWorldPos_, currWorldPos_, alpha);
+            const glm::vec3 pos   = RenderWorldPos();
             const glm::quat rot   = glm::slerp(prevWorldRot_, currWorldRot_, alpha);
             const glm::vec3 scale = Transform().GetWorldScale();
             const glm::mat4 mat   = glm::translate(glm::mat4(1.0f), pos)

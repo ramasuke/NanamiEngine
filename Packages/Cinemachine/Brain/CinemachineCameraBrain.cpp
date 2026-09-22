@@ -23,8 +23,22 @@ void CineMachine::CinemachineCameraBrain::OnStart()
     
 }
 
-void CineMachine::CinemachineCameraBrain::OnUpdate()
+void CineMachine::CinemachineCameraBrain::OnLateUpdate()
 {
+    // アクティブでないカメラも姿勢を更新しておく。切り替えた瞬間の補間の行き先が古い姿勢にならないように
+    // virtualCameras_はシリアライズもされるため、同じカメラが重複していても1フレームに1回だけ回す
+    std::vector<const CineMachineVirtualCamera*> updatedCameras;
+    updatedCameras.reserve(virtualCameras_.size());
+    for (const auto& virtualCamera : virtualCameras_)
+    {
+        const auto camera = virtualCamera.get();
+        if (!camera || std::ranges::find(updatedCameras, camera.get()) != updatedCameras.end())
+            continue;
+
+        updatedCameras.push_back(camera.get());
+        camera->UpdateBehaviours();
+    }
+
     if (!currentVirtualCamera_)
         return;
 
@@ -107,11 +121,7 @@ float CineMachine::CinemachineCameraBrain::CalculateSafeNear(const glm::vec3& ca
         forward - right - up,
     };
 
-    Module::Physics::LayerMask mask = Module::Physics::CreateLayerMask();
-    Module::Physics::AddLayer(mask, Module::Physics::Layer::Default);
-    // プレイヤーや敵がカメラに近づいたときにモデルがNearで欠けないよう、キャラクターも対象にする
-    Module::Physics::AddLayer(mask, Module::Physics::Layer::Player);
-    Module::Physics::AddLayer(mask, Module::Physics::Layer::Enemy);
+    const Module::Physics::LayerMask mask = nearClipLayerMask_;
 
     // 球の重なり判定はメッシュの三角形を枝刈りできず重いため、最近傍で打ち切れるレイで調べる
     float safeNear = cameraNear_;
@@ -200,7 +210,7 @@ void CineMachine::CinemachineCameraBrain::OnDrawGui()
 {
     if (currentVirtualCamera_)
     {
-        ImGui::Text(("currentVirtualCameraPriority: " + std::to_string(currentVirtualCamera_->Priority().Value())).c_str());
+        ImGui::Text(("currentVirtualCameraPriority: " + std::to_string(currentVirtualCamera_->Priority().CurrentValue())).c_str());
     }
     else
     {
@@ -224,6 +234,7 @@ void CineMachine::CinemachineCameraBrain::OnDrawGui()
     ImGuiHelper::OnDrawInputField("cameraFar_"               , cameraFar_                );
     ImGuiHelper::OnDrawInputField("minCameraNear_"           , minCameraNear_            );
     ImGuiHelper::OnDrawInputField("nearClipMargin_"          , nearClipMargin_           );
+    Module::Physics::DrawLayerMaskGui("nearClipLayerMask_", nearClipLayerMask_);
     ImGui::Text(("appliedNear: " + std::to_string(appliedNear_)).c_str());
     ImGui::Text(("appliedFov: "  + std::to_string(appliedFov_)).c_str());
 }
@@ -253,18 +264,19 @@ void CineMachine::CinemachineCameraBrain::SnapToVirtualCamera(const CineMachineV
 void CineMachine::CinemachineCameraBrain::SubscribeVirtualCamera(const std::weak_ptr<CineMachineVirtualCamera>& virtualCamera)
 {
     cameraBrain_->virtualCameras_.emplace_back(virtualCamera);
-    virtualCamera.lock()->Priority().Subscribe(
+    const auto camera = virtualCamera.lock();
+    camera->Priority().Subscribe(
             [](int)
             {
                 const auto highestPriorityVirtualCamera
                     = *std::ranges::max_element(cameraBrain_->virtualCameras_,
                             [](auto& a, auto& b)
                             {
-                                return a->Priority().Value() < b->Priority().Value();
+                                return a->Priority().CurrentValue() < b->Priority().CurrentValue();
                             });
 
                 cameraBrain_->currentVirtualCamera_ = highestPriorityVirtualCamera;
-            });
+            }).AddTo(camera.get());
 }
 
 void CineMachine::CinemachineCameraBrain::UnSubscribeVirtualCamera(
@@ -293,7 +305,7 @@ void CineMachine::CinemachineCameraBrain::UnSubscribeVirtualCamera(
             cameraBrain_->virtualCameras_,
             [](auto& a, auto& b)
             {
-                return a->Priority().Value()
-                     < b->Priority().Value();
+                return a->Priority().CurrentValue()
+                     < b->Priority().CurrentValue();
             });
 }

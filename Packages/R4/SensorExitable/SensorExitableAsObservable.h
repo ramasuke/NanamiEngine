@@ -1,8 +1,7 @@
 ﻿#pragma once
 #include "../../../Engine/Module/Physics/ContactCallback/SensorExitable/Engine_Physics_ISensorExitable.h"
 #include "../../Engine/Module/Component/ComponentBase.h"
-#include "../rxcpp/rx.hpp"
-#include "../rxcpp/subjects/rx-subject.hpp"
+#include "../R4.h"
 
 namespace NanamiEngine::R4
 {
@@ -10,12 +9,12 @@ namespace NanamiEngine::R4
                                              public Physics::Callback::ISensorExitable
     {
     public:
-        [[nodiscard]] rxcpp::observable<std::shared_ptr<GameObject::IGameObject>> OnAction() const;
+        [[nodiscard]] R4::Observable<std::shared_ptr<GameObject::IGameObject>> OnAction() const;
 
     private:
         void OnTriggerExit(const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
 
-        rxcpp::subjects::subject<std::shared_ptr<GameObject::IGameObject>> onAction_;
+        R4::Subject<std::shared_ptr<GameObject::IGameObject>> onAction_;
 
 #pragma region Serialization Function
     public:

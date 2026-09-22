@@ -5,8 +5,6 @@
 #include "DxLib.h"
 #include "../../../../Core/Application/Time/Time.h"
 #include "../../../../Core/Application/Window/Popup/Inspector/InspectorWindow.h"
-#include "../../../Gui/Graph/GraphGui.h"
-#include "../../../Gui/Graph/NodeOption/NodeOption.h"
 
 AnimationTree::AnimationClipNode::AnimationClipNode(const glm::vec2 position)
     : position_(position)
@@ -74,7 +72,7 @@ void AnimationTree::AnimationClipNode::OnUpdateAnimation(const int modelHandle, 
 
     MV1SetAttachAnimTime(modelHandle, attachedAnimationIndex_, during_secs_);
     MV1SetAttachAnimBlendRate(modelHandle, attachedAnimationIndex_, blendRate_);
-    onUpdate_.get_subscriber().on_next(UpdateCallbackContext(during_secs_, Time::DeltaTime() * speed_ * timeScale, timeScale));
+    onUpdate_.OnNext(UpdateCallbackContext(during_secs_, Time::DeltaTime() * speed_ * timeScale, timeScale));
     if (isLoop_ && during_secs_ >= clipEndTime)
     {
         during_secs_ = clipStartTime_;
@@ -107,25 +105,16 @@ AnimationTree::ClipProgress AnimationTree::AnimationClipNode::GetClipProgress() 
     return progress;
 }
 
-Gui::Graph::NodeDrawResult AnimationTree::AnimationClipNode::OnDrawGraphEditorGui(
-    const ImVec2& offset,
-    ImDrawList* drawList,
-    const std::weak_ptr<IAnimationNode> ownPtr)
+std::string AnimationTree::AnimationClipNode::GraphNodeDetail() const
 {
-    const Gui::Graph::NodeOption nodeOption
-    {
-        NODE_VISUAL_STYLE,
-        name_,
-        true,
-        true,
-        NODE_SIZE
-    };
-    return Gui::Graph::DrawNode(offset, position_, drawList, ownPtr, nodeOption, guid_);
+    char detail[64];
+    snprintf(detail, sizeof(detail), "x%.2f  %s", speed_, isLoop_ ? "Loop" : "Once");
+    return detail;
 }
 
-rxcpp::observable<AnimationTree::IAnimationNode::UpdateCallbackContext> AnimationTree::AnimationClipNode::OnUpdated()
+R4::Observable<AnimationTree::IAnimationNode::UpdateCallbackContext> AnimationTree::AnimationClipNode::OnUpdated()
 {
-    return onUpdate_.get_observable();
+    return onUpdate_.AsObservable();
 }
 
 void AnimationTree::AnimationClipNode::OnDrawGui()

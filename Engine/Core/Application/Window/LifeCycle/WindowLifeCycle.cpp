@@ -65,6 +65,7 @@ namespace NanamiEngine::Core::Application
         }
 
         const auto fixedDeltaTime = 1.0f / static_cast<float>(Configuration::PhysicsConfiguration::GetFixedUpdateRate());
+        Time::SetFixedDeltaTime(fixedDeltaTime);
         // 止めた暖機が済むまでは新しいシーンのコライダーが無く、先に Instantiate された Body だけが落ちて床を抜ける。
         // ロード明けにまとめて追いつかないよう、時間も貯めない
         if (isLoadingResource || hasDeferredPushedContents_)
@@ -87,6 +88,8 @@ namespace NanamiEngine::Core::Application
             {
                 preFixedUpdateCallbacks_.Invoke([](auto& obj) { obj.OnPreFixedUpdate(); });
                 fixedUpdatableCallbacks_.Invoke([](auto& obj) { obj.OnFixedUpdate(); });
+                // 物理ボディを動かす待機(WaitForTweenBody など)。ここで積んだ速度指示は直後の OnBeginPhysics で反映される
+                coroutineScheduler_->InvokeFixed(fixedDeltaTime);
                 ApplicationBase::Physics().Bodies().Flush();
                 beginPhysicsCallbacks_  .Invoke([](auto& obj) { obj.OnBeginPhysics(); });
                 ApplicationBase::Physics().Update(fixedDeltaTime);

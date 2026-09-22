@@ -49,14 +49,17 @@ namespace NanamiEngine::Core::Application::Configuration
 
         [[nodiscard]] static const std::string& MsBuildPathUtf8() { return msBuildPath_; }
         static void SetMsBuildPath(const std::string& msBuildPath);
+        /** @brief 未設定なら vswhere で見つけた MSBuild。見つからなければ空 */
         [[nodiscard]] static std::filesystem::path MsBuildPath();
 
         [[nodiscard]] static const std::string& OutputDirectoryUtf8() { return outputDirectory_; }
         static void SetOutputDirectory(const std::string& outputDirectory);
         /** @brief 相対パスは作業ディレクトリ (リポジトリルート) 基準で絶対パスにして返す */
         [[nodiscard]] static std::filesystem::path OutputDirectory();
-        /** @brief ソースを複製してビルドする場所。Editor 版の中間ファイルと分けるため、OneDrive の外に置く */
-        [[nodiscard]] static std::filesystem::path StagingDirectory();
+
+        /** @brief 書き出したゲームに installed.json を置き、配信中のアセットへの更新を有効にするか */
+        [[nodiscard]] static bool AssetUpdatesEnabled() { return assetUpdatesEnabled_; }
+        static void SetAssetUpdatesEnabled(bool assetUpdatesEnabled);
 
         /** @brief ゲームに同梱する設定のフォルダ (リポジトリルートからの相対パス) */
         [[nodiscard]] static const wchar_t* RuntimeConfigDirectory();
@@ -67,5 +70,6 @@ namespace NanamiEngine::Core::Application::Configuration
         static BuildTargetConfiguration targetConfiguration_;
         static std::string              msBuildPath_;
         static std::string              outputDirectory_;
+        static bool                     assetUpdatesEnabled_;
     };
 }

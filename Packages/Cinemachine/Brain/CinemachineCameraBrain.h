@@ -1,7 +1,9 @@
 ﻿#pragma once
 #include "../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../Engine/Core/Object/Field/Field.h"
+#include "../../../Engine/Module/LifeCycleCallback/LateUpdate/LateUpdate.h"
 #include "../../../Libs/glm/gtc/quaternion.hpp"
+#include "../../../Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
 #include "../VirtualCamera/CineMachineVirtualCamera.h"
 
 namespace NanamiEngine::CineMachine
@@ -9,7 +11,7 @@ namespace NanamiEngine::CineMachine
     class CinemachineCameraBrain final : public Component::ComponentBase,
                                          public LifeCycleCallback::IAwakable,
                                          public LifeCycleCallback::IStartable,
-                                         public LifeCycleCallback::IUpdatable,
+                                         public LifeCycleCallback::ILateUpdatable,
                                          public LifeCycleCallback::IDebugRenderable
     {
     public:
@@ -32,7 +34,8 @@ namespace NanamiEngine::CineMachine
     private:
         void OnAwake      () override;
         void OnStart      () override;
-        void OnUpdate     () override;
+        // 全OnUpdateの後に、VirtualCameraのBehaviourを決まった順に回してからカメラを確定させる
+        void OnLateUpdate () override;
         void OnDestroy    () override;
         void OnDebugRender() override;
         void OnDebugCameraFovRender() const;
@@ -53,6 +56,8 @@ namespace NanamiEngine::CineMachine
         float minCameraNear_           = 0.5f;
         // コライダーと描画メッシュのズレを吸収するため、空き距離に掛ける安全係数(0～1)
         float nearClipMargin_          = 0.9f;
+        // Nearクリップを縮める判定に使うレイヤー
+        Module::Physics::LayerMask nearClipLayerMask_ = Module::Physics::ToMask(Module::Physics::Layer::Default);
         // 実際にSetCameraNearFarへ渡したNear(確認用、非シリアライズ)
         float appliedNear_             = 0.1f;
         // 実際にSetupCamera_Perspectiveへ渡したFOV(確認用、非シリアライズ)
@@ -74,7 +79,7 @@ namespace NanamiEngine::CineMachine
         {
             archive(cereal::base_class<Module::Component::ComponentBase>(this));
             archive(cereal::base_class<Module::LifeCycleCallback::IAwakable>(this));
-            archive(cereal::base_class<Module::LifeCycleCallback::IUpdatable>(this));
+            archive(cereal::base_class<Module::LifeCycleCallback::ILateUpdatable>(this));
             archive(CEREAL_NVP(currentVirtualCamera_));
 
             archive(cereal::make_nvp("virtualCameraCount", static_cast<uint32_t>(virtualCameras_.size())));
@@ -91,6 +96,7 @@ namespace NanamiEngine::CineMachine
             archive(CEREAL_NVP(minCameraNear_));
             archive(CEREAL_NVP(nearClipMargin_));
             archive(CEREAL_NVP(fovLerpSpeed_secs_));
+            archive(CEREAL_NVP(nearClipLayerMask_));
         }
 
         template <class Archive>
@@ -98,7 +104,10 @@ namespace NanamiEngine::CineMachine
         {
             archive(cereal::base_class<Module::Component::ComponentBase>(this));
             archive(cereal::base_class<Module::LifeCycleCallback::IAwakable>(this));
-            archive(cereal::base_class<Module::LifeCycleCallback::IUpdatable>(this));
+            if (version <= 4)
+                Module::LifeCycleCallback::DiscardUpdatableBase(archive);
+            else
+                archive(cereal::base_class<Module::LifeCycleCallback::ILateUpdatable>(this));
             archive(CEREAL_NVP(currentVirtualCamera_));
             uint32_t count = 0;
             archive(cereal::make_nvp("virtualCameraCount", count));
@@ -125,11 +134,20 @@ namespace NanamiEngine::CineMachine
             {
             archive(CEREAL_NVP(fovLerpSpeed_secs_));
             }
+            if (version >= 6)
+            {
+            archive(CEREAL_NVP(nearClipLayerMask_));
+            }
+            else
+            {
+            // NOTE: version 5 までの固定値 (レイヤー 0～2)
+            nearClipLayerMask_ = 0b111;
+            }
             cameraBrain_ = this;
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::CinemachineCameraBrain, 4)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IUpdatable, NanamiEngine::CineMachine::CinemachineCameraBrain);
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::CinemachineCameraBrain, 6)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::ILateUpdatable, NanamiEngine::CineMachine::CinemachineCameraBrain);

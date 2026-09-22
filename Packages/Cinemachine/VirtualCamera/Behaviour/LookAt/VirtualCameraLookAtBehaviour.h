@@ -7,7 +7,6 @@ namespace NanamiEngine::CineMachine::Behaviour
 {
     class VirtualCameraLookAtBehaviour final : public Component::ComponentBase,
                                                public LifeCycleCallback::IAwakable,
-                                               public LifeCycleCallback::IUpdatable,
                                                public LifeCycleCallback::IDebugRenderable,
                                                public IVirtualCameraBehaviour
     {
@@ -18,9 +17,10 @@ namespace NanamiEngine::CineMachine::Behaviour
         void LookAtTarget() const;
 
     private:
-        void OnAwake      () override;
-        void OnUpdate     () override;
-        void OnDebugRender() override;
+        void OnAwake       () override;
+        void OnCameraUpdate() override;
+        [[nodiscard]] VirtualCameraStage Stage() const override { return VirtualCameraStage::Aim; }
+        void OnDebugRender () override;
 
         FIELD(Module::GameObject::IGameObject) target_;
         glm::vec3 lookAtTargetOffset_ = glm::vec3(0.0f);
@@ -36,7 +36,6 @@ template<class Archive>
 void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<ComponentBase>(this));
     archive(cereal::base_class<IAwakable>(this));
-    archive(cereal::base_class<IUpdatable>(this));
     archive(cereal::base_class<IDebugRenderable>(this));
     archive(cereal::base_class<IVirtualCameraBehaviour>(this));
     archive(CEREAL_NVP(target_));
@@ -47,7 +46,7 @@ template<class Archive>
 void load(Archive& archive, const std::uint32_t version) {
     archive(cereal::base_class<ComponentBase>(this));
     archive(cereal::base_class<IAwakable>(this));
-    archive(cereal::base_class<IUpdatable>(this));
+    if (version <= 1) Module::LifeCycleCallback::DiscardUpdatableBase(archive);
     archive(cereal::base_class<IDebugRenderable>(this));
     archive(cereal::base_class<IVirtualCameraBehaviour>(this));
     if (version >= 0) archive(CEREAL_NVP(target_));
@@ -57,7 +56,6 @@ void load(Archive& archive, const std::uint32_t version) {
 };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour, 1)
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour, 2)
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IUpdatable, NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour);
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour);

@@ -23,7 +23,7 @@ namespace NanamiEngine::Core::Application::Configuration
     DebugDrawConfiguration::ColliderKindFlags  DebugDrawConfiguration::showColliderKinds_  = DEFAULT_SHOW_COLLIDER_KINDS;
     DebugDrawConfiguration::ColliderLayerFlags DebugDrawConfiguration::showColliderLayers_ = []
     {
-        std::array<bool, static_cast<size_t>(Module::Physics::Layer::Count)> flags;
+        std::array<bool, Module::Physics::MAX_LAYER_COUNT> flags;
         flags.fill(DEFAULT_SHOW_COLLIDER_LAYER);
         return flags;
     }();
@@ -46,9 +46,9 @@ namespace NanamiEngine::Core::Application::Configuration
             showColliderKinds_[i] = Module::ProjectConfig::LoadOrDefaultWithPath<bool>(DEBUG_DRAW_CONFIG_PATH, key, DEFAULT_SHOW_COLLIDER_KINDS[i]);
         }
 
-        for (size_t i = 0; i < showColliderLayers_.size(); ++i)
+        for (size_t i = 0; i < static_cast<size_t>(Module::Physics::LayerCount()); ++i)
         {
-            const std::string key = std::string(DEBUG_DRAW_SHOW_LAYER_KEY_PREFIX) + Module::Physics::LAYER_NAMES[i];
+            const std::string key = std::string(DEBUG_DRAW_SHOW_LAYER_KEY_PREFIX) + Module::Physics::LayerNames()[i];
             showColliderLayers_[i] = Module::ProjectConfig::LoadOrDefaultWithPath<bool>(DEBUG_DRAW_CONFIG_PATH, key, DEFAULT_SHOW_COLLIDER_LAYER);
         }
 
@@ -68,9 +68,9 @@ namespace NanamiEngine::Core::Application::Configuration
             Module::ProjectConfig::SaveWithPath<bool>(DEBUG_DRAW_CONFIG_PATH, key, showColliderKinds_[i]);
         }
 
-        for (size_t i = 0; i < showColliderLayers_.size(); ++i)
+        for (size_t i = 0; i < static_cast<size_t>(Module::Physics::LayerCount()); ++i)
         {
-            const std::string key = std::string(DEBUG_DRAW_SHOW_LAYER_KEY_PREFIX) + Module::Physics::LAYER_NAMES[i];
+            const std::string key = std::string(DEBUG_DRAW_SHOW_LAYER_KEY_PREFIX) + Module::Physics::LayerNames()[i];
             Module::ProjectConfig::SaveWithPath<bool>(DEBUG_DRAW_CONFIG_PATH, key, showColliderLayers_[i]);
         }
 
@@ -144,9 +144,9 @@ namespace NanamiEngine::Core::Application::Configuration
         ImGui::Spacing();
         ImGui::Text("Layer");
         ImGui::PushID("ColliderLayer");
-        for (size_t i = 0; i < showColliderLayers_.size(); ++i)
+        for (size_t i = 0; i < static_cast<size_t>(Module::Physics::LayerCount()); ++i)
         {
-            if (ImGui::Checkbox(Module::Physics::LAYER_NAMES[i], &showColliderLayers_[i]))
+            if (ImGui::Checkbox(Module::Physics::LayerNames()[i], &showColliderLayers_[i]))
                 changed = true;
         }
         ImGui::PopID();

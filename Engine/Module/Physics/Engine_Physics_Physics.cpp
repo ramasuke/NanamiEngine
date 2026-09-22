@@ -12,6 +12,7 @@
 #include "../JoltPhysics/Jolt/Physics/Collision/CollisionCollectorImpl.h"
 #include "../JoltPhysics/Jolt/Physics/Collision/RayCast.h"
 #include "../JoltPhysics/Jolt/Physics/Collision/ShapeCast.h"
+#include "../JoltPhysics/Jolt/Physics/Collision/Shape/BoxShape.h"
 #include "../JoltPhysics/Jolt/Physics/Collision/Shape/SphereShape.h"
 #include "../GameObject/Interface/IGameObject.h"
 #include "../GameObject/Transform/Transform.h"
@@ -136,6 +137,73 @@ NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::Raycast
     throw std::runtime_error("Raycast hit failed!");
 }
 
+namespace NanamiEngine::Module::Physics
+{
+    namespace
+    {
+        // shapeをorigin(回転なし)からdirectionへmaxDistanceだけ移動させ、最初に当たったコライダーを返す
+        RaycastHit CastShapeClosest(
+            const JPH::Shape& shape,
+            const glm::vec3& origin,
+            const glm::vec3& direction,
+            const float maxDistance,
+            const LayerMask layerMask)
+        {
+            if constexpr (Core::Application::Configuration::APPLICATION_MODE ==
+                Core::Application::Configuration::ApplicationMode::Editor)
+            {
+                DebugDrawRaycast(origin, direction, maxDistance);
+            }
+
+            const glm::vec3 normalizedDirection = glm::normalize(direction);
+
+            const JPH::RShapeCast shapeCast(
+                &shape,
+                JPH::Vec3::sReplicate(1.0f),
+                JPH::RMat44::sTranslation(ToJPHVec3(origin)),
+                ToJPHVec3(normalizedDirection * maxDistance));
+
+            JPH::ShapeCastSettings settings;
+            // 片面メッシュ(地形など)を裏側からすり抜けないよう、裏面にも当てる
+            settings.SetBackFaceMode(JPH::EBackFaceMode::CollideWithBackFaces);
+            settings.mReturnDeepestPoint = true;
+
+            JPH::ClosestHitCollisionCollector<JPH::CastShapeCollector> collector;
+            const auto& physics = Core::Application::ApplicationBase::Physics().GetPhysicsSystem();
+
+            const CustomObjectLayerFilter layerFilter(layerMask);
+            physics.GetNarrowPhaseQuery().CastShape(
+                shapeCast,
+                settings,
+                JPH::RVec3::sZero(),
+                collector,
+                JPH::BroadPhaseLayerFilter(),
+                layerFilter,
+                NonRaycastLayerFilter());
+
+            if (!collector.HadHit())
+            {
+                return RaycastHit(false, {}, {}, 0.0f, std::shared_ptr<GameObject::IGameObject>());
+            }
+
+            const JPH::ShapeCastResult& result = collector.mHit;
+            const float     hitDistance = maxDistance * result.mFraction;
+            const glm::vec3 hitPos      = ToVec3(result.mContactPointOn2);
+            const JPH::Vec3 axis        = result.mPenetrationAxis;
+            const glm::vec3 hitNormal   = axis.IsNearZero() ? -normalizedDirection : ToVec3(-axis.Normalized());
+
+            const JPH::BodyLockRead lock(physics.GetBodyLockInterface(), result.mBodyID2);
+            if (!lock.Succeeded())
+            {
+                return RaycastHit(false, {}, {}, 0.0f, std::shared_ptr<GameObject::IGameObject>());
+            }
+
+            const auto userData = ToUserData(lock.GetBody().GetUserData());
+            return RaycastHit(true, hitPos, hitNormal, hitDistance, userData->Entity());
+        }
+    }
+}
+
 NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::SphereCast(
     const glm::vec3& origin,
     const float radius,
@@ -143,61 +211,26 @@ NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::SphereC
     const float maxDistance,
     const LayerMask layerMask)
 {
-    if constexpr (Core::Application::Configuration::APPLICATION_MODE ==
-        Core::Application::Configuration::ApplicationMode::Editor)
-    {
-        DebugDrawRaycast(origin, direction, maxDistance);
-    }
-
-    const glm::vec3 normalizedDirection = glm::normalize(direction);
-
     const JPH::SphereShape sphere(radius);
     // スタック上のShapeを参照カウントで破棄させないためのガード
     sphere.SetEmbedded();
 
-    const JPH::RShapeCast shapeCast(
-        &sphere,
-        JPH::Vec3::sReplicate(1.0f),
-        JPH::RMat44::sTranslation(ToJPHVec3(origin)),
-        ToJPHVec3(normalizedDirection * maxDistance));
+    return CastShapeClosest(sphere, origin, direction, maxDistance, layerMask);
+}
 
-    JPH::ShapeCastSettings settings;
-    // 片面メッシュ(地形など)を裏側からすり抜けないよう、裏面にも当てる
-    settings.SetBackFaceMode(JPH::EBackFaceMode::CollideWithBackFaces);
-    settings.mReturnDeepestPoint = true;
+NanamiEngine::Module::Physics::RaycastHit NanamiEngine::Module::Physics::BoxCast(
+    const glm::vec3& origin,
+    const glm::vec3& halfExtents,
+    const glm::vec3& direction,
+    const float maxDistance,
+    const LayerMask layerMask)
+{
+    // convex radius 0 = 角を丸めない（デフォルト値だとhalfExtentsが小さい時にassertになる）
+    const JPH::BoxShape box(ToJPHVec3(halfExtents), 0.0f);
+    // スタック上のShapeを参照カウントで破棄させないためのガード
+    box.SetEmbedded();
 
-    JPH::ClosestHitCollisionCollector<JPH::CastShapeCollector> collector;
-    const auto& physics = Core::Application::ApplicationBase::Physics().GetPhysicsSystem();
-
-    const CustomObjectLayerFilter layerFilter(layerMask);
-    physics.GetNarrowPhaseQuery().CastShape(
-        shapeCast,
-        settings,
-        JPH::RVec3::sZero(),
-        collector,
-        JPH::BroadPhaseLayerFilter(),
-        layerFilter,
-        NonRaycastLayerFilter());
-
-    if (!collector.HadHit())
-    {
-        return RaycastHit(false, {}, {}, 0.0f, std::shared_ptr<GameObject::IGameObject>());
-    }
-
-    const JPH::ShapeCastResult& result = collector.mHit;
-    const float     hitDistance = maxDistance * result.mFraction;
-    const glm::vec3 hitPos      = ToVec3(result.mContactPointOn2);
-    const JPH::Vec3 axis        = result.mPenetrationAxis;
-    const glm::vec3 hitNormal   = axis.IsNearZero() ? -normalizedDirection : ToVec3(-axis.Normalized());
-
-    const JPH::BodyLockRead lock(physics.GetBodyLockInterface(), result.mBodyID2);
-    if (!lock.Succeeded())
-    {
-        return RaycastHit(false, {}, {}, 0.0f, std::shared_ptr<GameObject::IGameObject>());
-    }
-
-    const auto userData = ToUserData(lock.GetBody().GetUserData());
-    return RaycastHit(true, hitPos, hitNormal, hitDistance, userData->Entity());
+    return CastShapeClosest(box, origin, direction, maxDistance, layerMask);
 }
 
 void NanamiEngine::Module::Physics::DebugDrawRaycast(

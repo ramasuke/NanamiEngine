@@ -23,6 +23,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
+// NanamiEngine patch (keep this list up to date when touching this file; grep "NanamiEngine patch"):
+//  - interaction state moved from file-scope statics to one EditorState per host window
+//  - link hover / click / right click (Delegate::LinkClicked, RightClickLink, LinkColor), arrows on links
+//  - Delegate::NodeDoubleClicked, re-notify SelectNode(true) when clicking a selected node
+//  - Options::mReadOnly (no moving nodes / editing links), Options::mAllowMultipleInputLinks,
+//    Options::mHeaderHeight; node header + title scale with the zoom factor
+//  - wheel zoom only while the host window is hovered, canvas child has no scrollbars
+//  - right click on a node body reports the node (it used to need a hovered slot)
+//  - link view clipping uses the region instead of the screen origin
 
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "imgui_internal.h"
@@ -30,6 +39,7 @@
 #include <vector>
 #include <float.h>
 #include <array>
+#include <unordered_map>
 #include "GraphEditor.h"
 #include "ImGuiHelper.h"
 
@@ -50,7 +60,7 @@ static ImVec2 GetInputSlotPos(Delegate& delegate, const Node& node, SlotIndex sl
     ImVec2 Size = node.mRect.GetSize() * factor;
     size_t InputsCount = delegate.GetTemplate(node.mTemplateIndex).mInputCount;
     return ImVec2(node.mRect.Min.x * factor,
-                  node.mRect.Min.y * factor + Size.y * ((float)slotIndex + 1) / ((float)InputsCount + 1) + 8.f);
+                  node.mRect.Min.y * factor + Size.y * ((float)slotIndex + 1) / ((float)InputsCount + 1) + 8.f * factor); // NanamiEngine patch: * factor
 }
 
 static ImVec2 GetOutputSlotPos(Delegate& delegate, const Node& node, SlotIndex slotIndex, float factor)
@@ -58,7 +68,7 @@ static ImVec2 GetOutputSlotPos(Delegate& delegate, const Node& node, SlotIndex s
     ImVec2 Size = node.mRect.GetSize() * factor;
     size_t OutputsCount = delegate.GetTemplate(node.mTemplateIndex).mOutputCount;
     return ImVec2(node.mRect.Min.x * factor + Size.x,
-                  node.mRect.Min.y * factor + Size.y * ((float)slotIndex + 1) / ((float)OutputsCount + 1) + 8.f);
+                  node.mRect.Min.y * factor + Size.y * ((float)slotIndex + 1) / ((float)OutputsCount + 1) + 8.f * factor); // NanamiEngine patch: * factor
 }
 
 static ImRect GetNodeRect(const Node& node, float factor)
@@ -66,10 +76,6 @@ static ImRect GetNodeRect(const Node& node, float factor)
     ImVec2 Size = node.mRect.GetSize() * factor;
     return ImRect(node.mRect.Min * factor, node.mRect.Min * factor + Size);
 }
-
-static ImVec2 editingNodeSource;
-static bool editingInput = false;
-static ImVec2 captureOffset;
 
 enum NodeOperation
 {
@@ -79,14 +85,35 @@ enum NodeOperation
     NO_MovingNodes,
     NO_EditInput,
     NO_PanView,
+    NO_ClickingLink, // NanamiEngine patch: a link was clicked, swallow the drag until release
 };
-static NodeOperation nodeOperation = NO_None;
+
+// NanamiEngine patch: the interaction state used to be file-scope statics shared by every
+// GraphEditor::Show call, so two graph windows open at once fought over it. It now lives in
+// one EditorState per host window (keyed by ImGui ID) and Show() points gState at it.
+struct EditorState
+{
+    ImVec2 editingNodeSource;
+    bool editingInput = false;
+    ImVec2 captureOffset;
+    NodeOperation nodeOperation = NO_None;
+    NodeIndex hoveredNode = NodeIndex(-1);
+    ImVec2 quadSelectPos;
+    NodeIndex editingNodeIndex = NodeIndex(-1);
+    SlotIndex editingSlotIndex = SlotIndex(-1);
+    LinkIndex hoveredLink = LinkIndex(-1);
+};
+static EditorState gDefaultState;
+static EditorState* gState = &gDefaultState;
+static std::unordered_map<ImGuiID, EditorState> gStates;
 
 static void HandleZoomScroll(ImRect regionRect, ViewState& viewState, const Options& options)
 {
     ImGuiIO& io = ImGui::GetIO();
 
-    if (regionRect.Contains(io.MousePos))
+    // NanamiEngine patch: also require the host window to be hovered, so the wheel over a popup or
+    // another docked window on top of the canvas doesn't zoom it.
+    if (regionRect.Contains(io.MousePos) && ImGui::IsWindowHovered(ImGuiHoveredFlags_ChildWindows))
     {
         if (io.MouseWheel < -FLT_EPSILON)
         {
@@ -111,7 +138,11 @@ static void HandleZoomScroll(ImRect regionRect, ViewState& viewState, const Opti
 
 void GraphEditorClear()
 {
-    nodeOperation = NO_None;
+    gDefaultState = EditorState{};
+    for (auto& state : gStates)
+    {
+        state.second = EditorState{};
+    }
 }
 
 static void FitNodes(Delegate& delegate, ViewState& viewState, const ImVec2 viewSize, bool selectedNodesOnly)
@@ -165,8 +196,16 @@ static void DisplayLinks(Delegate& delegate,
                          const float factor,
                          const ImRect regionRect,
                          NodeIndex hoveredNode,
-                         const Options& options)
+                         const Options& options,
+                         const bool allowLinkHover)
 {
+    // NanamiEngine patch: link hit-testing. The hovered link is drawn from last frame's result
+    // (a one-frame lag nobody sees) and clicks on it are dispatched from Show().
+    ImGuiIO& io = ImGui::GetIO();
+    const float hoverDistance = options.mLineThickness * factor + 4.f;
+    float closestLinkDistance = FLT_MAX;
+    LinkIndex closestLink = -1;
+
     const size_t linkCount = delegate.GetLinkCount();
     for (LinkIndex linkIndex = 0; linkIndex < linkCount; linkIndex++)
     {
@@ -177,17 +216,48 @@ static void DisplayLinks(Delegate& delegate,
         ImVec2 p2 = offset + GetInputSlotPos(delegate, nodeOutput, link.mOutputSlotIndex, factor);
 
         // con. view clipping
-        if ((p1.y < 0.f && p2.y < 0.f) || (p1.y > regionRect.Max.y && p2.y > regionRect.Max.y) ||
-            (p1.x < 0.f && p2.x < 0.f) || (p1.x > regionRect.Max.x && p2.x > regionRect.Max.x))
+        // NanamiEngine patch: clip against the region, not the screen origin.
+        if ((p1.y < regionRect.Min.y && p2.y < regionRect.Min.y) || (p1.y > regionRect.Max.y && p2.y > regionRect.Max.y) ||
+            (p1.x < regionRect.Min.x && p2.x < regionRect.Min.x) || (p1.x > regionRect.Max.x && p2.x > regionRect.Max.x))
             continue;
 
-        bool highlightCons = hoveredNode == link.mInputNodeIndex || hoveredNode == link.mOutputNodeIndex;
-        uint32_t col = delegate.GetTemplate(nodeInput.mTemplateIndex).mHeaderColor | (highlightCons ? 0xF0F0F0 : 0);
+        const bool linkHovered = gState->hoveredLink == linkIndex;
+        bool highlightCons = linkHovered || hoveredNode == link.mInputNodeIndex || hoveredNode == link.mOutputNodeIndex;
+        uint32_t col = delegate.LinkColor(linkIndex, delegate.GetTemplate(nodeInput.mTemplateIndex).mHeaderColor) | (highlightCons ? 0xF0F0F0 : 0);
         if (options.mDisplayLinksAsCurves)
         {
             // curves
-             drawList->AddBezierCubic(p1, p1 + ImVec2(50, 0) * factor, p2 + ImVec2(-50, 0) * factor, p2, 0xFF000000, options.mLineThickness * 1.5f * factor);
-             drawList->AddBezierCubic(p1, p1 + ImVec2(50, 0) * factor, p2 + ImVec2(-50, 0) * factor, p2, col, options.mLineThickness * 1.5f * factor);
+            // NanamiEngine patch: tangent grows with the horizontal distance so links that go
+            // backwards (target left of source) make a readable loop instead of a kink, and an
+            // arrow at the middle shows the direction.
+            const float tangent = ImMax(50.f, fabsf(p2.x - p1.x) * 0.5f) * factor;
+            const ImVec2 c1 = p1 + ImVec2(tangent, 0.f);
+            const ImVec2 c2 = p2 - ImVec2(tangent, 0.f);
+            const float thickness = options.mLineThickness * 1.5f * factor * (linkHovered ? 1.5f : 1.f);
+            drawList->AddBezierCubic(p1, c1, c2, p2, 0xFF000000, thickness * 1.6f);
+            drawList->AddBezierCubic(p1, c1, c2, p2, col, thickness);
+
+            const ImVec2 mid = ImBezierCubicCalc(p1, c1, c2, p2, 0.5f);
+            ImVec2 dir = ImBezierCubicCalc(p1, c1, c2, p2, 0.52f) - ImBezierCubicCalc(p1, c1, c2, p2, 0.48f);
+            const float dirLength = sqrtf(dir.x * dir.x + dir.y * dir.y);
+            if (dirLength > FLT_EPSILON)
+            {
+                dir = dir / dirLength;
+                const ImVec2 normal(-dir.y, dir.x);
+                const float arrow = (6.f + options.mLineThickness) * factor;
+                drawList->AddTriangleFilled(mid + dir * arrow, mid - dir * arrow + normal * arrow, mid - dir * arrow - normal * arrow, col);
+            }
+
+            if (allowLinkHover)
+            {
+                const ImVec2 closest = ImBezierCubicClosestPointCasteljau(p1, c1, c2, p2, io.MousePos, ImGui::GetStyle().CurveTessellationTol);
+                const float distance = Distance(closest, io.MousePos);
+                if (distance < hoverDistance && distance < closestLinkDistance)
+                {
+                    closestLinkDistance = distance;
+                    closestLink = linkIndex;
+                }
+            }
              /*
             ImVec2 p10 = p1 + ImVec2(20.f * factor, 0.f);
             ImVec2 p20 = p2 - ImVec2(20.f * factor, 0.f);
@@ -278,8 +348,23 @@ static void DisplayLinks(Delegate& delegate,
             {
                 drawList->AddPolyline(pts.data(), ptCount, pass ? col : 0xFF000000, false, (pass ? options.mLineThickness : (options.mLineThickness * 1.5f)) * highLightFactor);
             }
+
+            if (allowLinkHover)
+            {
+                for (int i = 0; i + 1 < ptCount; i++)
+                {
+                    const ImVec2 closest = ImLineClosestPoint(pts[i], pts[i + 1], io.MousePos);
+                    const float distance = Distance(closest, io.MousePos);
+                    if (distance < hoverDistance && distance < closestLinkDistance)
+                    {
+                        closestLinkDistance = distance;
+                        closestLink = linkIndex;
+                    }
+                }
+            }
         }
     }
+    gState->hoveredLink = closestLink;
 }
 
 static void HandleQuadSelection(Delegate& delegate, ImDrawList* drawList, const ImVec2 offset, const float factor, ImRect contentRect, const Options& options)
@@ -289,14 +374,13 @@ static void HandleQuadSelection(Delegate& delegate, ImDrawList* drawList, const 
         return;
     }
     ImGuiIO& io = ImGui::GetIO();
-    static ImVec2 quadSelectPos;
     //auto& nodes = delegate->GetNodes();
     auto nodeCount = delegate.GetNodeCount();
 
-    if (nodeOperation == NO_QuadSelecting && ImGui::IsWindowFocused())
+    if (gState->nodeOperation == NO_QuadSelecting && ImGui::IsWindowFocused())
     {
-        const ImVec2 bmin = ImMin(quadSelectPos, io.MousePos);
-        const ImVec2 bmax = ImMax(quadSelectPos, io.MousePos);
+        const ImVec2 bmin = ImMin(gState->quadSelectPos, io.MousePos);
+        const ImVec2 bmax = ImMax(gState->quadSelectPos, io.MousePos);
         drawList->AddRectFilled(bmin, bmax, options.mQuadSelection, 1.f);
         drawList->AddRect(bmin, bmax, options.mQuadSelectionBorder, 1.f);
         if (!io.MouseDown[0])
@@ -309,7 +393,7 @@ static void HandleQuadSelection(Delegate& delegate, ImDrawList* drawList, const 
                 }
             }
 
-            nodeOperation = NO_None;
+            gState->nodeOperation = NO_None;
             ImRect selectionRect(bmin, bmax);
             for (unsigned int nodeIndex = 0; nodeIndex < nodeCount; nodeIndex++)
             {
@@ -337,11 +421,11 @@ static void HandleQuadSelection(Delegate& delegate, ImDrawList* drawList, const 
             }
         }
     }
-    else if (nodeOperation == NO_None && io.MouseDown[0] && ImGui::IsWindowFocused() &&
+    else if (gState->nodeOperation == NO_None && io.MouseDown[0] && ImGui::IsWindowFocused() &&
              contentRect.Contains(io.MousePos))
     {
-        nodeOperation = NO_QuadSelecting;
-        quadSelectPos = io.MousePos;
+        gState->nodeOperation = NO_QuadSelecting;
+        gState->quadSelectPos = io.MousePos;
     }
 }
 
@@ -356,9 +440,6 @@ static bool HandleConnections(ImDrawList* drawList,
                        SlotIndex& outputSlotOver,
                        const bool inMinimap)
 {
-    static NodeIndex editingNodeIndex;
-    static SlotIndex editingSlotIndex;
-
     ImGuiIO& io = ImGui::GetIO();
     const auto node = delegate.GetNode(nodeIndex);
     const auto nodeTemplate = delegate.GetTemplate(node.mTemplateIndex);
@@ -387,7 +468,7 @@ static bool HandleConnections(ImDrawList* drawList,
             ImVec2 p =
                 offset + (i ? GetOutputSlotPos(delegate, node, slotIndex, factor) : GetInputSlotPos(delegate, node, slotIndex, factor));
             float distance = Distance(p, io.MousePos);
-            bool overCon = (nodeOperation == NO_None || nodeOperation == NO_EditingLink) &&
+            bool overCon = (gState->nodeOperation == NO_None || gState->nodeOperation == NO_EditingLink) &&
                            (distance < options.mNodeSlotRadius * 2.f) && (distance < closestDistance);
 
 
@@ -399,7 +480,7 @@ static bool HandleConnections(ImDrawList* drawList,
 
             ImRect nodeRect = GetNodeRect(node, factor);
             if (!inMinimap && (overCon || (nodeRect.Contains(io.MousePos - offset) && closestConn == -1 &&
-                            (editingInput == (i != 0)) && nodeOperation == NO_EditingLink)))
+                            (gState->editingInput == (i != 0)) && gState->nodeOperation == NO_EditingLink)))
             {
                 closestDistance = distance;
                 closestConn = slotIndex;
@@ -440,17 +521,17 @@ static bool HandleConnections(ImDrawList* drawList,
             drawList->AddCircleFilled(closestPos, options.mNodeSlotRadius * options.mNodeSlotHoverFactor, slotColor);
             drawList->AddText(io.FontDefault, 16, closestTextPos + ImVec2(1, 1), IM_COL32(0, 0, 0, 255), conText);
             drawList->AddText(io.FontDefault, 16, closestTextPos, IM_COL32(250, 250, 250, 255), conText);
-            bool inputToOutput = (!editingInput && !i) || (editingInput && i);
-            if (nodeOperation == NO_EditingLink && !io.MouseDown[0] && !bDrawOnly)
+            bool inputToOutput = (!gState->editingInput && !i) || (gState->editingInput && i);
+            if (gState->nodeOperation == NO_EditingLink && !io.MouseDown[0] && !bDrawOnly)
             {
                 if (inputToOutput)
                 {
                     // check loopback
                     Link nl;
-                    if (editingInput)
-                        nl = Link{nodeIndex, closestConn, editingNodeIndex, editingSlotIndex};
+                    if (gState->editingInput)
+                        nl = Link{nodeIndex, closestConn, gState->editingNodeIndex, gState->editingSlotIndex};
                     else
-                        nl = Link{editingNodeIndex, editingSlotIndex, nodeIndex, closestConn};
+                        nl = Link{gState->editingNodeIndex, gState->editingSlotIndex, nodeIndex, closestConn};
 
                     if (!delegate.AllowedLink(nl.mOutputNodeIndex, nl.mInputNodeIndex))
                     {
@@ -469,7 +550,8 @@ static bool HandleConnections(ImDrawList* drawList,
 
                     if (!alreadyExisting)
                     {
-                        for (unsigned int linkIndex = 0; linkIndex < linkCount; linkIndex++)
+                        // NanamiEngine patch: optionally keep the links already plugged into this input.
+                        for (unsigned int linkIndex = 0; linkIndex < linkCount && !options.mAllowMultipleInputLinks; linkIndex++)
                         {
                             const auto link = delegate.GetLink(linkIndex);
                             if (link.mOutputNodeIndex == nl.mOutputNodeIndex && link.mOutputSlotIndex == nl.mOutputSlotIndex)
@@ -486,15 +568,16 @@ static bool HandleConnections(ImDrawList* drawList,
             }
             // when ImGui::IsWindowHovered() && !ImGui::IsAnyItemActive() is uncommented, one can't click the node
             // input/output when mouse is over the node itself.
-            if (nodeOperation == NO_None &&
-                /*ImGui::IsWindowHovered() && !ImGui::IsAnyItemActive() &&*/ io.MouseClicked[0] && !bDrawOnly)
+            if (gState->nodeOperation == NO_None &&
+                /*ImGui::IsWindowHovered() && !ImGui::IsAnyItemActive() &&*/ io.MouseClicked[0] && !bDrawOnly &&
+                !options.mReadOnly) // NanamiEngine patch
             {
-                nodeOperation = NO_EditingLink;
-                editingInput = i == 0;
-                editingNodeSource = closestPos;
-                editingNodeIndex = nodeIndex;
-                editingSlotIndex = closestConn;
-                if (editingInput)
+                gState->nodeOperation = NO_EditingLink;
+                gState->editingInput = i == 0;
+                gState->editingNodeSource = closestPos;
+                gState->editingNodeIndex = nodeIndex;
+                gState->editingSlotIndex = closestConn;
+                if (gState->editingInput && !options.mAllowMultipleInputLinks) // NanamiEngine patch
                 {
                     // remove existing link
                     for (unsigned int linkIndex = 0; linkIndex < linkCount; linkIndex++)
@@ -587,13 +670,16 @@ static bool DrawNode(ImDrawList* drawList,
     ImGui::InvisibleButton("node", ImVec2(maxWidth, maxHeight));
     // must be called right after creating the control we want to be able to move
     bool nodeMovingActive = ImGui::IsItemActive();
+    // NanamiEngine patch: clicks and double-clicks on the node body.
+    const bool nodeClicked = ImGui::IsItemClicked(ImGuiMouseButton_Left);
+    const bool nodeDoubleClicked = ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left);
 
     // Save the size of what we have emitted and whether any of the widgets are being used
     bool nodeWidgetsActive = (!old_any_active && ImGui::IsAnyItemActive());
     ImVec2 nodeRectangleMax = nodeRectangleMin + nodeSize;
 
     bool nodeHovered = false;
-    if (ImGui::IsItemHovered() && nodeOperation == NO_None && !overInput)
+    if (ImGui::IsItemHovered() && gState->nodeOperation == NO_None && !overInput)
     {
         nodeHovered = true;
     }
@@ -614,13 +700,23 @@ static bool DrawNode(ImDrawList* drawList,
                 }
                 delegate.SelectNode(nodeIndex, true);
             }
+            // NanamiEngine patch: re-notify a click on an already selected node (the delegate uses
+            // SelectNode(true) to show the node in the inspector again).
+            else if (nodeClicked && !io.KeyShift)
+            {
+                delegate.SelectNode(nodeIndex, true);
+            }
         }
     }
-    if (nodeMovingActive && io.MouseDown[0] && nodeHovered && !inMinimap)
+    if (nodeDoubleClicked && !inMinimap)
     {
-        if (nodeOperation != NO_MovingNodes)
+        delegate.NodeDoubleClicked(nodeIndex);
+    }
+    if (nodeMovingActive && io.MouseDown[0] && nodeHovered && !inMinimap && !options.mReadOnly) // NanamiEngine patch: mReadOnly
+    {
+        if (gState->nodeOperation != NO_MovingNodes)
         {
-            nodeOperation = NO_MovingNodes;
+            gState->nodeOperation = NO_MovingNodes;
         }
     }
 
@@ -668,15 +764,24 @@ static bool DrawNode(ImDrawList* drawList,
 
     //delegate->DrawNodeImage(drawList, ImRect(imgPos, imgPosMax), marge, nodeIndex);
 
+    // NanamiEngine patch: the header and its title scale with the zoom factor (they used to stay
+    // 20px / font size, overflowing zoomed-out nodes), the title is white on a rounded-top header.
+    const float headerHeight = options.mHeaderHeight * factor;
     drawList->AddRectFilled(nodeRectangleMin,
-                            ImVec2(nodeRectangleMax.x, nodeRectangleMin.y + 20),
-                            nodeTemplate.mHeaderColor, options.mRounding);
+                            ImVec2(nodeRectangleMax.x, nodeRectangleMin.y + headerHeight),
+                            nodeTemplate.mHeaderColor, options.mRounding, ImDrawFlags_RoundCornersTop);
 
-    drawList->PushClipRect(nodeRectangleMin, ImVec2(nodeRectangleMax.x, nodeRectangleMin.y + 20), true);
-    drawList->AddText(nodeRectangleMin + ImVec2(2, 2), IM_COL32(0, 0, 0, 255), node.mName);
-    drawList->PopClipRect();
+    const float titleFontSize = ImGui::GetFontSize() * factor;
+    if (titleFontSize >= 6.f)
+    {
+        drawList->PushClipRect(nodeRectangleMin, ImVec2(nodeRectangleMax.x, nodeRectangleMin.y + headerHeight), true);
+        const ImVec2 titlePos = nodeRectangleMin + ImVec2(6.f * factor, (headerHeight - titleFontSize) * 0.5f);
+        drawList->AddText(ImGui::GetFont(), titleFontSize, titlePos + ImVec2(1, 1), IM_COL32(0, 0, 0, 160), node.mName);
+        drawList->AddText(ImGui::GetFont(), titleFontSize, titlePos, IM_COL32(255, 255, 255, 255), node.mName);
+        drawList->PopClipRect();
+    }
 
-    ImRect customDrawRect(nodeRectangleMin + ImVec2(options.mRounding, 20 + options.mRounding), nodeRectangleMax - ImVec2(options.mRounding, options.mRounding));
+    ImRect customDrawRect(nodeRectangleMin + ImVec2(options.mRounding, headerHeight + options.mRounding), nodeRectangleMax - ImVec2(options.mRounding, options.mRounding));
     if (customDrawRect.Max.y > customDrawRect.Min.y && customDrawRect.Max.x > customDrawRect.Min.x)
     {
         delegate.CustomDraw(drawList, customDrawRect, nodeIndex);
@@ -826,6 +931,9 @@ void Show(Delegate& delegate, const Options& options, ViewState& viewState, bool
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.f, 0.f));
     ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.f);
 
+    // NanamiEngine patch: one EditorState per host window.
+    gState = &gStates[ImGui::GetID("##GraphEditorState")];
+
     const ImVec2 windowPos = ImGui::GetCursorScreenPos();
     const ImVec2 canvasSize = ImGui::GetContentRegionAvail();
     const ImVec2 scrollRegionLocalPos(0, 0);
@@ -834,10 +942,11 @@ void Show(Delegate& delegate, const Options& options, ViewState& viewState, bool
 
     HandleZoomScroll(regionRect, viewState, options);
     ImVec2 offset = ImGui::GetCursorScreenPos() + viewState.mPosition * viewState.mFactor;
-    captureOffset = viewState.mPosition * viewState.mFactor;
+    gState->captureOffset = viewState.mPosition * viewState.mFactor;
 
     //ImGui::InvisibleButton("GraphEditorButton", canvasSize);
-    ImGui::BeginChild(71711, canvasSize, true, ImGuiWindowFlags_None);
+    // NanamiEngine patch: no scrollbars / wheel scrolling, the wheel zooms.
+    ImGui::BeginChild(71711, canvasSize, true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
     ImGui::SetCursorPos(windowPos);
     ImGui::BeginGroup();
@@ -867,7 +976,6 @@ void Show(Delegate& delegate, const Options& options, ViewState& viewState, bool
 
     if (enabled)
     {
-        static NodeIndex hoveredNode = -1;
         // Display links
         drawList->ChannelsSplit(3);
 
@@ -884,19 +992,21 @@ void Show(Delegate& delegate, const Options& options, ViewState& viewState, bool
         drawList->ChannelsSetCurrent(1); // Background
 
         // Links
-        DisplayLinks(delegate, drawList, offset, viewState.mFactor, regionRect, hoveredNode, options);
+        const bool allowLinkHover = !inMinimap && gState->nodeOperation == NO_None && regionRect.Contains(io.MousePos) &&
+                                    ImGui::IsWindowHovered();
+        DisplayLinks(delegate, drawList, offset, viewState.mFactor, regionRect, gState->hoveredNode, options, allowLinkHover);
 
         // edit node link
-        if (nodeOperation == NO_EditingLink)
+        if (gState->nodeOperation == NO_EditingLink)
         {
-            ImVec2 p1 = editingNodeSource;
+            ImVec2 p1 = gState->editingNodeSource;
             ImVec2 p2 = io.MousePos;
             drawList->AddLine(p1, p2, IM_COL32(200, 200, 200, 255), 3.0f);
         }
 
         // Display nodes
         drawList->PushClipRect(regionRect.Min, regionRect.Max, true);
-        hoveredNode = -1;
+        gState->hoveredNode = -1;
 
         SlotIndex inputSlotOver = -1;
         SlotIndex outputSlotOver = -1;
@@ -953,7 +1063,7 @@ void Show(Delegate& delegate, const Options& options, ViewState& viewState, bool
                 */
                 if (DrawNode(drawList, nodeIndex, offset, viewState.mFactor, delegate, overInput, options, inMinimap, regionRect))
                 {
-                    hoveredNode = nodeIndex;
+                    gState->hoveredNode = nodeIndex;
                 }
 
                 HandleConnections(drawList, nodeIndex, offset, viewState.mFactor, delegate, options, true, inputSlot, outputSlot, inMinimap);
@@ -972,7 +1082,7 @@ void Show(Delegate& delegate, const Options& options, ViewState& viewState, bool
 
         drawList->PopClipRect();
 
-        if (nodeOperation == NO_MovingNodes)
+        if (gState->nodeOperation == NO_MovingNodes)
         {
             if (ImGui::IsMouseDragging(0, 1))
             {
@@ -986,6 +1096,14 @@ void Show(Delegate& delegate, const Options& options, ViewState& viewState, bool
 
         drawList->ChannelsSetCurrent(0);
 
+        // NanamiEngine patch: clicking a link (nodes and slots on top of it take priority).
+        if (!inMinimap && gState->hoveredLink != -1 && gState->hoveredNode == -1 && nodeOver == -1 &&
+            gState->nodeOperation == NO_None && io.MouseClicked[0] && ImGui::IsWindowHovered())
+        {
+            delegate.LinkClicked(gState->hoveredLink);
+            gState->nodeOperation = NO_ClickingLink;
+        }
+
         // quad selection
         if (!inMinimap)
         {
@@ -995,31 +1113,41 @@ void Show(Delegate& delegate, const Options& options, ViewState& viewState, bool
         drawList->ChannelsMerge();
 
         // releasing mouse button means it's done in any operation
-        if (nodeOperation == NO_PanView)
+        if (gState->nodeOperation == NO_PanView)
         {
             if (!io.MouseDown[2])
             {
-                nodeOperation = NO_None;
+                gState->nodeOperation = NO_None;
             }
         }
-        else if (nodeOperation != NO_None && !io.MouseDown[0])
+        else if (gState->nodeOperation != NO_None && !io.MouseDown[0])
         {
-            nodeOperation = NO_None;
+            gState->nodeOperation = NO_None;
         }
 
         // right click
-        if (!inMinimap && nodeOperation == NO_None && regionRect.Contains(io.MousePos) &&
+        // NanamiEngine patch: nodeOver is only set while a slot is hovered, so a right click on a
+        // node body used to report "no node"; fall back to the hovered node, then to the hovered link.
+        if (!inMinimap && gState->nodeOperation == NO_None && regionRect.Contains(io.MousePos) && ImGui::IsWindowHovered() &&
                 (ImGui::IsMouseClicked(1) /*|| (ImGui::IsWindowFocused() && ImGui::IsKeyPressedMap(ImGuiKey_Tab))*/))
         {
-            delegate.RightClick(nodeOver, inputSlotOver, outputSlotOver);
+            const NodeIndex clickedNode = (nodeOver != -1) ? nodeOver : gState->hoveredNode;
+            if (clickedNode == -1 && gState->hoveredLink != -1)
+            {
+                delegate.RightClickLink(gState->hoveredLink);
+            }
+            else
+            {
+                delegate.RightClick(clickedNode, inputSlotOver, outputSlotOver);
+            }
         }
 
         // Scrolling
-        if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemActive() && io.MouseClicked[2] && nodeOperation == NO_None)
+        if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemActive() && io.MouseClicked[2] && gState->nodeOperation == NO_None)
         {
-            nodeOperation = NO_PanView;
+            gState->nodeOperation = NO_PanView;
         }
-        if (nodeOperation == NO_PanView)
+        if (gState->nodeOperation == NO_PanView)
         {
             viewState.mPosition += io.MouseDelta / viewState.mFactor;
         }

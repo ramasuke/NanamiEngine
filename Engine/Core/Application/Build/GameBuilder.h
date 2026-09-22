@@ -37,11 +37,7 @@ namespace NanamiEngine::Core::Application::Build
         size_t                   omittedErrorCount = 0;
     };
 
-    /**
-     * @brief APPLICATION_MODE を Game に書き換えたソースを MSBuild でビルドし、配布用フォルダにまとめる。
-     *        書き換えたソースを作業ツリーに置くとエディタ側が再ビルドになるので、
-     *        その場ではビルドせず、ステージングへ複製してからビルドする
-     */
+    /** @brief プロジェクトの .sln をゲーム版 (NanamiApplicationMode=Game) で MSBuild し、配布用フォルダにまとめる */
     class GameBuilder final
     {
     public:
@@ -67,7 +63,6 @@ namespace NanamiEngine::Core::Application::Build
         enum class Phase
         {
             Idle,
-            CopyingSources,
             Compiling,
             Packaging,
         };
@@ -82,8 +77,8 @@ namespace NanamiEngine::Core::Application::Build
         /** @brief Begin で取った Build Settings の写し。ビルド中に設定を変えても影響しない */
         struct Paths
         {
-            std::filesystem::path repositoryRoot;
-            std::filesystem::path stagingRoot;
+            std::filesystem::path projectRoot;
+            std::filesystem::path solution;
             std::filesystem::path outputRoot;
             std::filesystem::path msBuild;
             /** @brief MSBuild の Configuration 名 (Release / Debug) */
@@ -91,6 +86,8 @@ namespace NanamiEngine::Core::Application::Build
             /** @brief 出力する exe のファイル名 (製品名 + ".exe") */
             std::filesystem::path exeFileName;
             bool                  runAfterBuild = false;
+            /** @brief 出力先に installed.json を書き、配信中のアセットへの更新を有効にする */
+            bool                  assetUpdates  = false;
         };
 
         struct MirrorStats
@@ -99,16 +96,15 @@ namespace NanamiEngine::Core::Application::Build
             size_t removed = 0;
         };
 
-        /** @brief リポジトリルートからの相対パス (区切りは '/') を受け取り、同期対象なら true を返す */
+        /** @brief プロジェクトルートからの相対パス (区切りは '/') を受け取り、同期対象なら true を返す */
         using MirrorFilter = std::function<bool(const std::wstring& repositoryRelativePath)>;
 
         GameBuilder() = default;
 
         void       Run           (const Paths& paths);
-        StepResult SyncSources   (const Paths& paths) const;
-        StepResult ApplyOverrides(const Paths& paths);
         StepResult RunMsBuild    (const Paths& paths);
         StepResult Package       (const Paths& paths);
+        StepResult WriteAssetUpdateState(const Paths& paths);
         void       LaunchGame    (const Paths& paths);
 
         /** @brief ログに出し、直近のビルド結果のエラー一覧にも入れる */
@@ -123,8 +119,12 @@ namespace NanamiEngine::Core::Application::Build
         /** @brief サイズか更新日時が違うときだけコピーし、更新日時を元に揃える。コピーしたら true */
         static bool CopyIfChanged(const std::filesystem::path& source, const std::filesystem::path& destination);
 
-        static bool IsStagedSource  (const std::wstring& repositoryRelativePath);
-        static bool IsPackagedAsset (const std::wstring& repositoryRelativePath);
+        static bool IsPackagedAsset (const std::wstring& projectRelativePath);
+        /** @brief projectRoot 直下の .sln がちょうど 1 つならそれを返す */
+        static std::filesystem::path FindSolution(const std::filesystem::path& projectRoot);
+        /** @brief ビルドした exe (x64/Game/<Configuration>/ の中で一番新しい .exe) */
+        static std::filesystem::path FindBuiltExe(const Paths& paths);
+        static std::filesystem::path BuildLogDirectory(const Paths& paths);
         static bool IsSameOrInside  (const std::filesystem::path& path, const std::filesystem::path& base);
         static std::string PathToUtf8(const std::filesystem::path& path);
         void LogBuildErrors(const std::filesystem::path& errorLogPath, const Paths& paths);

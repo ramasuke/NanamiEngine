@@ -6,7 +6,7 @@
 #include "../../../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../../../Engine/Module/Physics/RaycastHit/Engine_Physics_RaycastHit.h"
 #include "../../../../../Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
-#include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/IPlayerAvatar.h"
+#include "../IVirtualCameraTarget.h"
 #include "gtx/rotate_vector.hpp"
 
 namespace
@@ -46,7 +46,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         lookAt_ = RequireComponent<VirtualCameraLookAtBehaviour>();
     }
 
-    void ThirdPersonCameraBehaviour::OnUpdate()
+    void ThirdPersonCameraBehaviour::OnCameraUpdate()
     {
         if (!target_)
             return;
@@ -102,7 +102,7 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     void ThirdPersonCameraBehaviour::UpdateFollowTargetBehaviour() const
     {
-        const glm::vec3 targetPos = target_->Transform().GetWorldPos();
+        const glm::vec3 targetPos = CameraTargetPositionOf(*target_.get());
         const glm::vec3 lookAtPos = targetPos + lookAtOffsetPos_;
 
         const glm::mat4 rotY = glm::rotate(glm::mat4(1.0f), yaw_,   glm::vec3(0,1,0));
@@ -120,21 +120,12 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     glm::vec3 ThirdPersonCameraBehaviour::ResolveCameraCollision(const glm::vec3& desiredOffset) const
     {
-        // Player取得（暫定実装: 本来はネットワーク上の自身が操作するPlayerを取得する）
-        const auto& playerAvatars = GameCore::IPlayerAvatar::PlayerAvatars();
-        if (playerAvatars.empty())
-            return desiredOffset;
-
-        const auto player = playerAvatars.at(0).lock();
-        if (!player)
-            return desiredOffset;
-
         const float distance = glm::length(desiredOffset);
         if (distance <= 0.0f)
             return desiredOffset;
 
-        // Playerの注視点を起点に、カメラの理想位置へ向けてrayを飛ばす
-        const glm::vec3 origin    = player->PlayerTransform().GetWorldPos() + lookAtOffsetPos_;
+        // 追従対象の注視点を起点に、カメラの理想位置へ向けてrayを飛ばす
+        const glm::vec3 origin    = CameraTargetPositionOf(*target_.get()) + lookAtOffsetPos_;
         const glm::vec3 direction = desiredOffset / distance;
 
         Module::Physics::LayerMask mask = Module::Physics::CreateLayerMask();
