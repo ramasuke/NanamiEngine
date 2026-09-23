@@ -1,4 +1,4 @@
-"""CLI subcommands for tools.model: convert, install, materials, set-emissive.
+"""CLI subcommands for tools.model: convert, install, materials, set-emissive, set-culling.
 
 Unlike ``tools/effect`` (which shells out to Effekseer's real, documented
 CUI), DxLib's ``DxLibModelViewer_64bit.exe`` has no CLI/CUI mode at all - it's
@@ -407,6 +407,31 @@ def cmd_set_emissive(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_set_culling(args: argparse.Namespace) -> int:
+    src = _resolve(args.mv1)
+    if not src.exists():
+        raise CliError(f"{src} does not exist")
+    dest = _resolve(args.out) if args.out else src
+    try:
+        body = mv1_mod.decode(src.read_bytes())
+        before = mv1_mod.mesh_culling(body)
+        patched = mv1_mod.with_mesh_culling(body, mv1_mod.CULLING_MODES[args.mode])
+    except ValueError as e:
+        raise CliError(f"cannot read the mesh table of {src.name}: {e}") from e
+    encoded = mv1_mod.encode(patched)
+    if mv1_mod.decode(encoded) != patched:
+        raise CliError(f"internal error: re-encoded {src.name} does not decode back to the patched "
+                       "model; nothing was written")
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    tmp = dest.with_name(dest.name + ".tmp")
+    tmp.write_bytes(encoded)
+    os.replace(tmp, dest)
+    names = {v: k for k, v in mv1_mod.CULLING_MODES.items()}
+    print(f"culling   {len(before)} mesh(es): {', '.join(names[m] for m in before)} -> {args.mode}")
+    print(f"wrote {dest}")
+    return 0
+
+
 # ---------------------------------------------------------------------------
 def _wrap(fn):
     def run(args: argparse.Namespace) -> int:
@@ -466,3 +491,10 @@ def register(sub: argparse._SubParsersAction) -> None:
                      help=_EMISSIVE_HELP)
     sp.add_argument("--out", default=None, help="write here instead of overwriting the input (its .meta is never touched)")
     sp.set_defaults(func=_wrap(cmd_set_emissive))
+
+    sp = sub.add_parser("set-culling", help="set the back-face culling of every mesh in a .mv1 (none = draw both sides)")
+    sp.add_argument("mv1", help=".mv1 file to modify")
+    sp.add_argument("--mode", required=True, choices=sorted(mv1_mod.CULLING_MODES),
+                     help="none = double-sided; left = DxLib's default for converted models")
+    sp.add_argument("--out", default=None, help="write here instead of overwriting the input (its .meta is never touched)")
+    sp.set_defaults(func=_wrap(cmd_set_culling))

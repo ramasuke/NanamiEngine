@@ -43,6 +43,16 @@ string, e.g. ``dirtyHouse.mv1`` = Wall / wood_1 / Roof)::
     record+0x3c  COLOR_F   emissive  (DxLibModelViewer's "自己発光")
     record+0x4c  f32       power
 
+Mesh table (empirically confirmed 2026-09-23 by saving the same model through
+DxLib's ``MV1SaveModelToMV1File`` with ``MV1SetMeshBackCulling`` on and off -
+the only bytes that changed were one per mesh - and checked against every
+``.mv1`` under ``Assets/Art/Models/Fantasy``)::
+
+    body+0x48  u32   mesh count
+    body+0x4c  u32   offset of the first record; records are 0x6c bytes apart
+
+    record+0x35  u8   back-face culling (DX_CULLING_NONE 0 / LEFT 1 / RIGHT 2)
+
 The LZ stream DxLib writes (checked on 40 shipped files) uses matches up to
 8195 bytes long, overlapping matches (distance < length), and 1-3 byte
 distances (index size 0-2, never 3); ``encode`` emits only those forms.
@@ -74,6 +84,11 @@ _MAT_AMBIENT = 0x1C
 _MAT_SPECULAR = 0x2C
 _MAT_EMISSIVE = 0x3C
 _MAT_POWER = 0x4C
+_MESH_COUNT = 0x48
+_MESH_TABLE = 0x4C
+_MESH_STRIDE = 0x6C
+_MESH_CULLING = 0x35
+CULLING_MODES = {"none": 0, "left": 1, "right": 2}
 _COLOR = struct.Struct("<4f")
 _RGB = struct.Struct("<3f")
 _U32 = struct.Struct("<I")
@@ -314,4 +329,28 @@ def with_emissive(body: bytes, colors: dict[int, tuple[float, float, float]]) ->
         if not 0 <= index < len(table):
             raise ValueError(f"material index {index} out of range (model has {len(table)})")
         _RGB.pack_into(patched, table[index].offset + _MAT_EMISSIVE, *rgb)
+    return bytes(patched)
+
+
+def mesh_culling(body: bytes) -> list[int]:
+    """Back-face culling mode of every mesh (see the module docstring)."""
+    if len(body) < _MESH_TABLE + _U32.size:
+        raise ValueError(f"body is only {len(body)} byte(s), too short for the model header")
+    count = _U32.unpack_from(body, _MESH_COUNT)[0]
+    table = _U32.unpack_from(body, _MESH_TABLE)[0]
+    if count and table + count * _MESH_STRIDE > len(body):
+        raise ValueError(f"{count} mesh record(s) at 0x{table:x} run past the end of the body")
+    modes = [body[table + i * _MESH_STRIDE + _MESH_CULLING] for i in range(count)]
+    if any(m not in CULLING_MODES.values() for m in modes):
+        raise ValueError(f"mesh culling bytes {modes} are not all culling modes; the mesh table layout does not match")
+    return modes
+
+
+def with_mesh_culling(body: bytes, mode: int) -> bytes:
+    """``body`` with every mesh's back-face culling set to ``mode``."""
+    count = len(mesh_culling(body))
+    table = _U32.unpack_from(body, _MESH_TABLE)[0]
+    patched = bytearray(body)
+    for i in range(count):
+        patched[table + i * _MESH_STRIDE + _MESH_CULLING] = mode
     return bytes(patched)

@@ -389,6 +389,13 @@ def build_server(client: EngineClient | None = None, poll_interval: float = 0.1)
             "lockRootMotion": lock_root_motion, "rootFrameIndex": root_frame_index}))
 
     @tool
+    def animation_view_bones(name_contains: str | None = None) -> str:
+        """World matrices of the AnimationView model's frames (bones) in the current pose: position and the
+        axisX/axisY/axisZ rows, plus the model matrix. name_contains filters frames (case-insensitive substring).
+        Freeze the pose first (animation_view_set(playing=False) + animation_view_set_clip(time=...))."""
+        return _dump(call("animationview.bones", {"nameContains": name_contains}))
+
+    @tool
     def animation_view_set_clip(slot: Literal["A", "B"] = "A", animation_path: str | None = None,
                                 animation_guid: str | None = None, use_model_clips: bool = False,
                                 clip_name: str | None = None, clip_index: int | None = None,

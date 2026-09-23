@@ -485,6 +485,35 @@ def _coerce(shape: str, raw: str) -> Any:
     raise EditError(f"cannot set a param of shape {shape!r}")
 
 
+def _is_flag_combination(values: dict, number: int) -> bool:
+    # NOTE: 全値が 0 か 2 の累乗の enum はビットフラグとみなし、OR した値も許す
+    flags = [int(v) for v in values.values()]
+    if not all(v == 0 or (v > 0 and v & (v - 1) == 0) for v in flags):
+        return False
+    mask = 0
+    for v in flags:
+        mask |= v
+    return number >= 0 and number & ~mask == 0
+
+
+def _enum_value(pinfo: dict, raw: str) -> int:
+    """An enum param takes an enumerator name (``Hyena`` / ``EnemyKind::Hyena``)
+    or its integer; names are checked against the catalog's ``values``."""
+    values: Optional[dict] = pinfo.get("values")
+    name = raw.strip().rsplit("::", 1)[-1]
+    if values and name in values:
+        return int(values[name])
+    try:
+        number = int(raw, 0)
+    except ValueError:
+        known = ", ".join(values) if values else "unknown (use the integer value)"
+        raise EditError(f"{pinfo['member']}: {raw!r} is not a {pinfo['enum']} value ({known})")
+    if values and number not in values.values() and not _is_flag_combination(values, number):
+        raise EditError(f"{pinfo['member']}: {number} is not a {pinfo['enum']} value "
+                        f"({', '.join(f'{k}={v}' for k, v in values.items())})")
+    return number
+
+
 def _set_field_guid(node: Any, guid: str) -> None:
     # cereal only emits `cereal_class_version` the first time a given type is
     # serialised in an archive - so a Field<T>/FieldHolder<T> at the first
@@ -544,6 +573,8 @@ def _set_one_param(comp: model.Component, entry: dict, key: str, raw: str) -> st
         _set_field_guid(node, _coerce(shape, raw))
     elif shape == "color32":
         _set_color32(comp.data[jkey], _coerce(shape, raw))
+    elif shape == "int" and pinfo.get("enum"):
+        comp.data[jkey] = Num.of_int(_enum_value(pinfo, raw))
     else:
         comp.data[jkey] = _coerce(shape, raw)
     return pinfo["member"]

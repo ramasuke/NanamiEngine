@@ -45,7 +45,8 @@ EXPECTED_TOOLS = {
     "gameobject_select", "gameobject_destroy", "play", "stop", "end_play", "time_set_scale",
     "camera_get", "camera_set", "debug_draw_get", "debug_draw_set", "log_tail",
     "assets_find", "assets_reload", "model_view_open", "model_view_state", "model_view_select", "model_view_close",
-    "animation_view_open", "animation_view_state", "animation_view_set", "animation_view_set_clip", "preview_camera",
+    "animation_view_open", "animation_view_state", "animation_view_set", "animation_view_set_clip", "animation_view_bones",
+    "preview_camera",
 }
 
 

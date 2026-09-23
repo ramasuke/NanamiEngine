@@ -44,7 +44,7 @@ HERB_ICON = asset_guid(REPO / 'Assets/Art/UI/Item/Icon_Herb.png.meta')
 HARVEST_SOUND = asset_guid(REPO / 'Assets/Audio/Physics/GrassSways.mp3.meta')
 OPEN_SOUND = asset_guid(REPO / 'Assets/Audio/Physics/HolyGlass.mp3.meta')
 HARVEST_PARTICLE = asset_guid(REPO / 'Assets/Prefab/Particle/FootstepDust.prefab.meta')
-OPEN_PARTICLE = asset_guid(REPO / 'Assets/Prefab/Particle/DragonDefeatSparkle.prefab.meta')
+OPEN_PARTICLE = asset_guid(REPO / 'Assets/Prefab/Particle/ChestOpenBurst.prefab.meta')   # tools/art/chest_open_effect.py
 
 HERB_MODEL_SCALE = MODEL_SCALE * 1.8   # 草 (高さ 5 前後) に埋もれないよう大きめ
 HERB = {
@@ -59,6 +59,8 @@ CHEST_MONEY, CHEST_COINS = 30, 6
 
 # Blender の寸法 (tools/art/loot/assets_loot.py の CHEST_* と合わせる)
 CHEST_D, CHEST_H = 0.60, 0.46
+# 実寸 (幅 1 m) だとプレイヤーの横で小さすぎるのでルートごと拡大する。調べるアイコンはその分だけ縮めて元の見た目に戻す
+CHEST_SCALE = 2.0
 
 
 def engine(x, y, z):
@@ -229,13 +231,19 @@ def build_treasure_chest(drop_table_guid):
     prefab = new_prefab('TreasureChest')
     b = Builder(prefab)
     root = prefab.root
-    model_node(b, prefab, root, 'TreasureChest_Base')
+    body = model_node(b, prefab, root, 'TreasureChest_Base')
     lid = edits.add_gameobject(prefab, parent=root.guid, name='Lid', pos=engine(0.0, -CHEST_D / 2, CHEST_H))
     model_node(b, prefab, lid, 'TreasureChest_Lid')
     drop = edits.add_gameobject(prefab, parent=root.guid, name='DropPoint', pos=engine(0.0, 0.1, CHEST_H + 0.25))
-    icon = add_chat_icon(prefab, 10.0)
+    icon = add_chat_icon(prefab, 16.0 / CHEST_SCALE)
+    icon_node = next(n for n in all_nodes(prefab.root) if n.name == 'ChatIcon')
+    icon_scale = float(edits._vec3_floats(icon_node.transform.local_scale)[0]) / CHEST_SCALE
+    edits.set_transform(prefab, icon_node.guid, scale=(icon_scale, icon_scale, icon_scale))
+    edits.set_transform(prefab, root.guid, scale=(CHEST_SCALE, CHEST_SCALE, CHEST_SCALE))
     comp = b.component(root, 'TreasureChest', dropTable_=drop_table_guid, lid_=lid.guid, dropPoint_=drop.guid,
-                       openParticle_=OPEN_PARTICLE, openSound_=OPEN_SOUND, chatIcon_=icon)
+                       openParticle_=OPEN_PARTICLE, openSound_=OPEN_SOUND, chatIcon_=icon,
+                       openAngle_deg_=-105.0, openDuration_secs_=0.45, body_=body.guid, shakeDuration_secs_=0.55,
+                       shakeAngle_deg_=5.0, shakeFrequency_hz_=9.0)
     root.components.remove(comp)
     size = engine(1.0, CHEST_D + 0.04, CHEST_H + 0.3)
     root.components[:0] = [comp, box_collider(size, (0.0, size[1] / 2, 0.0)), kinematic_body()]

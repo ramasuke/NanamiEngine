@@ -283,10 +283,10 @@ KEEPER_BEHIND = 75.0 * MODEL_SCALE * STALL_ROOT_SCALE   # カウンターの奥 
 KEEPER_SOURCE = 'CharacterBrokerNpc'
 KEEPER_NAME = 'MerchantNpc'
 KEEPER_DISPLAY_NAME = 'よろず屋の店主'
-KEEPER_MODEL = asset_guid(REPO / 'Assets/Art/Models/Woman/Kachujin G Rosales.mv1.meta')
+# NOTE: Mixamo "Peasant Man"。クリップ (Happy Idle / General Conversation) も同じキャラで書き出したもの
+KEEPER_MODEL = asset_guid(REPO / 'Assets/Art/Models/Man/Merchant.mv1.meta')
 KEEPER_BEHAVIOUR = asset_guid(REPO / 'Assets/Data/FriendlyNpcBehviour/Merchant.friendBehaviourData.meta')
-# 仲介人は専用の animTree に替わったので、店主は汎用の NPC 待機 (Kachujin の骨と名前が合うことを確認済み) に固定する
-KEEPER_ANIMATION_TREE = asset_guid(REPO / 'Assets/Animations/ActionInstructure.animTree.meta')
+KEEPER_ANIMATION_TREE = asset_guid(REPO / 'Assets/Animations/Merchant.animTree.meta')
 
 
 def audit_path_of(tree, guid):

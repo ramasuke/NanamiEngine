@@ -3,8 +3,10 @@
     python tools/art/event_board.py --shot <screenshot.png> --out-dir <dir> [--banner-shot <grassland.png>]
 
 拠点の掲示板を調べたときに出る画面の完成イメージを 1920x1080 で出す。
-v1 は「今後のイベント」の一覧だけ(mock_decided)。v2 は木札の見出しで 依頼 / 催し / お知らせ の3頁を切り替える(mock_v2、
-配置は V2、部品は v2_sprites)。--emit は v2 で使う部品を書き出す。
+v1 は「今後のイベント」の一覧だけ(mock_decided)。v2 は木札の見出しで 依頼 / 催し / お知らせ / 復興 の4頁を切り替える
+(mock_v2、配置は V2、部品は v2_sprites)。--emit は v2 で使う部品を書き出す。
+復興の頁だけは暗幕を敷かず、右下の小さな見積の札だけを出す。真ん中にはカメラが寄った施設の場所が映る
+(モックの --shot には、下見中の実画面を渡す)。
 素材(羊皮紙・木・釘・蝋・真鍮)は酒場のキャラ選択 (tools/art/character_select.py) と同じものを使い、
 汎用のフラットな角丸パネルに寄せない。
 
@@ -664,26 +666,33 @@ HINT_CONFIRM_SPRITE = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'CharacterSelect' / 
 POSTER_ORIGIN = (740, 120)   # 1060x880 のポスターの左上。頁の中の右側はこれからの相対で決める
 QUEST_PHOTO_SIZE = (400, 240)
 QUEST_PHOTO_BORDER = 10
-TAB_SIZE = (168, 76)
+TAB_SIZE = (140, 76)
+RESTORATION_CARD_ORIGIN = (1250, 575)   # 620x430 の見積の札の左上
+RESTORATION_CARD_SIZE = (620, 430)
+GOLD_INK = (150, 84, 26)
 
 
 def on_poster(x, y):
     return POSTER_ORIGIN[0] + x, POSTER_ORIGIN[1] + y
 
 
+def on_card(x, y):
+    return RESTORATION_CARD_ORIGIN[0] + x, RESTORATION_CARD_ORIGIN[1] + y
+
+
 V2 = {
     'strip': (400, 598),
     'strip_size': (560, 800),
     'tab_rope': (400, 73),
-    'tabs_root': (222, 124),
-    'tab_spacing': 178,
-    'tab_labels': ['依 頼', '催 し', 'お知らせ'],
-    'tab_hint_lb': (86, 128),
-    'tab_hint_rb': (714, 128),
+    'tabs_root': (181, 124),
+    'tab_spacing': 146,
+    'tab_labels': ['依 頼', '催 し', 'お知らせ', '復 興'],
+    'tab_hint_lb': (74, 128),
+    'tab_hint_rb': (726, 128),
     # 木札 (EventBoardTab.prefab / 板の中心が原点)
     'tab_cords': (0, -46),
-    'tab_label': ((0, -17), 32),
-    'tab_badge': (76, -30),
+    'tab_label': ((0, -15), 28),
+    'tab_badge': (62, -30),
     'tab_badge_text': ((0, -11), 22),
     'tab_selected_scale': 1.06,
     'tab_selected_drop': 8,
@@ -731,6 +740,24 @@ V2 = {
     'n_date': (on_poster(990, 73), 22),
     'n_title': (on_poster(70, 143), 46),
     'n_body': (on_poster(78, 267), 26, 48, 10),
+    # 普請の札 (EventBoardRestorationRow.prefab)
+    'rrow_name': ((-220, -40), 30),
+    'rrow_coin': (112, -22),
+    'rrow_cost': ((128, -38), 26),
+    'rrow_note': ((-218, 16), 19),
+    'rrow_stamp': (166, 26),
+    # 見積の札 (札の左上からの相対。復興の頁は暗幕を敷かず、真ん中に施設の場所を映す)
+    'r_card': on_card(RESTORATION_CARD_SIZE[0] / 2, RESTORATION_CARD_SIZE[1] / 2),
+    'r_card_nail': on_card(RESTORATION_CARD_SIZE[0] / 2, 16),
+    'r_empty': (on_card(RESTORATION_CARD_SIZE[0] / 2, 196), 24),
+    'r_name': (on_card(40, 34), 40),
+    'r_state': (on_card(580, 46), 24),          # 右寄せ
+    'r_condition': (on_card(128, 106), 22),
+    'r_cost': (on_card(160, 168), 32),
+    'r_balance': (on_card(160, 220), 28),
+    'r_remain': (on_card(160, 266), 32),
+    'r_desc': (on_card(40, 336), 21, 34, 2),
+    'r_seal': (on_card(520, 244), 0.62),        # 中心, 倍率(150px の判を縮める)
 }
 
 
@@ -832,6 +859,20 @@ def v2_quest_poster():
     return p
 
 
+def v2_restoration_card():
+    """見積の札。項目名・罫線・金貨は焼き、施設の名前と値は上に重ねる"""
+    w, h = RESTORATION_CARD_SIZE
+    p = cs.parchment(w, h, 816, aged=0.12, ragged=8.0)
+    d = ImageDraw.Draw(p)
+    cs.text(p, (40, 118), '条 件', 20, (*INK_FADE, 255), BODY_FONT, anchor='lm')
+    d.line([(36, 150), (w - 36, 150)], fill=INK_FADE, width=2)
+    for y, label in [(188, '費 用'), (238, '所持金'), (284, '残 り')]:
+        cs.text(p, (40, y), label, 20, (*INK_FADE, 255), BODY_FONT, anchor='lm')
+    place(p, v2_coin(30), 140, 188)
+    d.line([(36, 318), (w - 36, 318)], fill=(160, 136, 104), width=1)
+    return p
+
+
 def v2_letter():
     """便箋。罫線と署名は焼き、種類の角印・日時・題名・本文は上に重ねる"""
     w, h = 1060, 880
@@ -872,6 +913,12 @@ def v2_sprites():
         'QuestPhotoShade': banner_shade(*QUEST_PHOTO_SIZE),
         'Letter': v2_letter(),
         'UnreadSeal': v2_unread_seal(),
+        'RestorationCard': v2_restoration_card(),
+        'RestorationStamp_Restored': stamp('竣 工', px=26),
+        'RestorationStamp_Locked': stamp('未 開', px=26, color=INK_FADE),
+        'RestorationSeal_Open': v2_seal_ring(150, '普 請 印', INK_FADE, False),
+        'RestorationSeal_Locked': v2_seal_ring(150, '未 開', INK_FADE, False),
+        'RestorationSeal_Restored': v2_seal_ring(150, '竣 工', STAMP_RED, True),
     }
     for kind in V2_KINDS:
         s[f'KindChip_{kind}'] = v2_chip(V2_KIND_LABEL[kind], V2_KIND_COLOR[kind], 18, width=76)
@@ -897,6 +944,8 @@ V2_HINTS_WITH_ACCEPT = [('HintTag_LBRB', 84, '切り替え'), ('HintTag_UpDown',
                         ('HintTag_Confirm', 46, '受注する'), ('HintTag_Cancel', 46, '閉じる')]
 V2_HINTS_WITHOUT_ACCEPT = [('HintTag_LBRB', 84, '切り替え'), ('HintTag_UpDown', 68, '選ぶ'),
                            ('HintTag_Cancel', 46, '閉じる')]
+V2_HINTS_WITH_RESTORE = [('HintTag_LBRB', 84, '切り替え'), ('HintTag_UpDown', 68, '選ぶ'),
+                         ('HintTag_Confirm', 46, '直す'), ('HintTag_Cancel', 46, '閉じる')]
 
 # 仮データ (モック用。本番は .boardQuest / .announcement)
 V2_QUESTS = [
@@ -923,6 +972,18 @@ V2_NOTICES = [
     dict(title='ハイエナが地形にはまる不具合について', kind='Bug', date='9/15(火)', datetime='9/15(火) 20:00', unread=False,
          lines=[]),
 ]
+# 復興 (本番は Assets/Data/Restoration/*.restorationFacility。金額は仮)
+V2_FACILITIES = [
+    dict(key='Dock', name='船着き場', cost=500, state='open', cond='',
+         lines=['桟橋を架け直す。', '定期船がまた寄れるようになる。']),
+    dict(key='GeneralStore', name='雑貨屋の修繕', cost=1200, state='open', cond='',
+         lines=['屋根と棚を直す。', '商人の品揃えが一段増える。']),
+    dict(key='HunterLodge', name='狩人小屋', cost=2500, state='locked', cond='草原の大顎を倒してから',
+         lines=['狩人の一族が住む小屋。', '食料と薬を扱う店が開く。']),
+    dict(key='Field', name='畑', cost=1800, state='locked', cond='狩人小屋が建ってから',
+         lines=['小屋の裏を耕す。', '薬草が折々に採れる。']),
+]
+V2_WALLET = 1000
 V2_STATE_TEXT = {'open': '受付中', 'taking': '受注中', 'cleared': '達成済み', 'preparing': '準備中'}
 V2_ROW_STAMP = {'taking': 'QuestStamp_Taking', 'cleared': 'QuestStamp_Cleared', 'preparing': 'QuestStamp_Preparing'}
 V2_SEAL = {'open': 'QuestSeal_Open', 'taking': 'QuestSeal_Taking', 'cleared': 'QuestSeal_Cleared',
@@ -943,13 +1004,25 @@ def _draw_pips(im, center0, gap, k, rank):
         place(im, _scaled(filled if i < rank else empty, k), center0[0] + i * gap, center0[1])
 
 
+def restoration_state(e):
+    """(状況の文言, 札の2行目, 色の種類)。RestorationBoardModel::Reevaluate と同じ"""
+    if e['state'] == 'restored':
+        return '竣工', '直した', 'default'
+    if e['state'] == 'locked':
+        return '未開', e['cond'], 'default'
+    if V2_WALLET >= e['cost']:
+        return '直せる', '直せる', 'default'
+    return 'お金が足りない', 'お金が足りない', 'refused'
+
+
 def mock_v2(base, art_fn, tab=0, selected=0):
     """v2 のプレハブと同じ部品・同じ座標で描いた完成イメージ"""
     L, V = LAYOUT, V2
     sp = {**decided_sprites(), **v2_sprites()}
     sp['HintTag_Cancel'] = Image.open(HINT_CANCEL_SPRITE).convert('RGBA')
     sp['HintTag_Confirm'] = Image.open(HINT_CONFIRM_SPRITE).convert('RGBA')
-    arr = np.asarray(base.convert('RGB'), np.float32) * (1 - L['veil_blend'] / 255)
+    veil = 0 if tab == 3 else L['veil_blend']
+    arr = np.asarray(base.convert('RGB'), np.float32) * (1 - veil / 255)
     im = Image.fromarray(arr.astype(np.uint8), 'RGB').convert('RGBA')
 
     place(im, sp['Strip'], *V['strip'])
@@ -979,7 +1052,7 @@ def mock_v2(base, art_fn, tab=0, selected=0):
     place(im, sp['HintTag_RB'], *V['tab_hint_rb'])
 
     ox, oy = V['rows_origin']
-    rows = V2_QUESTS if tab == 0 else V2_NOTICES if tab == 2 else ENTRIES
+    rows = V2_QUESTS if tab == 0 else V2_NOTICES if tab == 2 else V2_FACILITIES if tab == 3 else ENTRIES
     for i, e in enumerate(rows[:V['max_rows']]):
         sel = i == selected
         k = L['row_selected_scale'] if sel else 1.0
@@ -1007,6 +1080,15 @@ def mock_v2(base, art_fn, tab=0, selected=0):
             draw_text(im, at(V['nrow_title'][0]), round(V['nrow_title'][1] * k), e['title'], INK)
             if e['unread']:
                 place(im, sp['UnreadSeal'], *at(V['nrow_unread']))
+        elif tab == 3:
+            s_, note, color = restoration_state(e)
+            draw_text(im, at(V['rrow_name'][0]), round(V['rrow_name'][1] * k), e['name'], INK, BRUSH_FONT)
+            place(im, _scaled(sp['Coin_Small'], k), *at(V['rrow_coin']))
+            draw_text(im, at(V['rrow_cost'][0]), round(V['rrow_cost'][1] * k), f"{e['cost']:,} G", INK, BRUSH_FONT)
+            draw_text(im, at(V['rrow_note'][0]), round(V['rrow_note'][1] * k), note,
+                      STAMP_RED if color == 'refused' else INK_FADE)
+            if e['state'] in ('restored', 'locked'):
+                place(im, _scaled(sp[f"RestorationStamp_{e['state'].capitalize()}"], k), *at(V['rrow_stamp']))
         else:
             draw_text(im, at(L['row_title'][0]), round(L['row_title'][1] * k), e['title'], INK, BRUSH_FONT)
             draw_text(im, at(L['row_status'][0]), round(L['row_status'][1] * k), e['status'],
@@ -1051,6 +1133,27 @@ def mock_v2(base, art_fn, tab=0, selected=0):
         (bx, by), bpx, gap, _ = V['n_body']
         for i, line in enumerate(e['lines']):
             draw_text(im, (bx, by + i * gap), bpx, line, INK)
+    elif tab == 3:
+        state_text, _, color = restoration_state(e)
+        is_open, is_locked = e['state'] == 'open', e['state'] == 'locked'
+        refused = color == 'refused'
+        place(im, sp['RestorationCard'], *V['r_card'])
+        place(im, sp['Nail'], *V['r_card_nail'])
+        draw_text(im, V['r_name'][0], V['r_name'][1], e['name'], INK, BRUSH_FONT)
+        draw_text(im, V['r_state'][0], V['r_state'][1], state_text,
+                  INK_FADE if is_locked else STAMP_RED if refused or e['state'] == 'restored' else INK, align='right')
+        draw_text(im, V['r_condition'][0], V['r_condition'][1], e['cond'] or 'なし',
+                  STAMP_RED if is_locked else INK_FADE)
+        draw_text(im, V['r_cost'][0], V['r_cost'][1], f"{e['cost']:,} G", INK, BRUSH_FONT)
+        draw_text(im, V['r_balance'][0], V['r_balance'][1], f'{V2_WALLET:,} G', INK, BRUSH_FONT)
+        draw_text(im, V['r_remain'][0], V['r_remain'][1], f"{V2_WALLET - e['cost']:,} G" if is_open else '―',
+                  (STAMP_RED if refused else GOLD_INK) if is_open else INK_FADE, BRUSH_FONT)
+        (dx, dy), dpx, gap, _ = V['r_desc']
+        for i, line in enumerate(e['lines']):
+            draw_text(im, (dx, dy + i * gap), dpx, line, INK)
+        seal = {'open': 'RestorationSeal_Open', 'locked': 'RestorationSeal_Locked',
+                'restored': 'RestorationSeal_Restored'}[e['state']]
+        place(im, _scaled(sp[seal], V['r_seal'][1]), *V['r_seal'][0])
     else:
         place(im, sp['Poster'], *L['poster'])
         place(im, art_fn(e['banner'], BANNER_SIZE), *L['banner'])
@@ -1067,10 +1170,13 @@ def mock_v2(base, art_fn, tab=0, selected=0):
             draw_text(im, (dx, dy + i * gap), dpx, line, INK)
         if e['ongoing']:
             place(im, sp['OngoingStamp'], *L['stamp'])
-    place(im, sp['Nail'], *V['poster_nail'])
+    if tab != 3:
+        place(im, sp['Nail'], *V['poster_nail'])
 
     can_accept = tab == 0 and e['state'] == 'open'
-    for item in v2_hint_layout(V2_HINTS_WITH_ACCEPT if can_accept else V2_HINTS_WITHOUT_ACCEPT):
+    can_restore = tab == 3 and e['state'] == 'open'
+    hints = V2_HINTS_WITH_ACCEPT if can_accept else V2_HINTS_WITH_RESTORE if can_restore else V2_HINTS_WITHOUT_ACCEPT
+    for item in v2_hint_layout(hints):
         if item['kind'] == 'text':
             draw_text(im, item['pos'], L['hint_px'], item['text'], HINT_COLOR)
         else:
@@ -1117,6 +1223,9 @@ def main():
         ('E_v2_quest', 'v2  依頼', lambda b, f: mock_v2(b, f, tab=0)),
         ('F_v2_event', 'v2  催し', lambda b, f: mock_v2(b, f, tab=1)),
         ('G_v2_notice', 'v2  お知らせ', lambda b, f: mock_v2(b, f, tab=2)),
+        ('H_v2_restore', 'v2  復興', lambda b, f: mock_v2(b, f, tab=3)),
+        ('I_v2_restore_short', 'v2  復興(お金が足りない)', lambda b, f: mock_v2(b, f, tab=3, selected=1)),
+        ('J_v2_restore_locked', 'v2  復興(未開)', lambda b, f: mock_v2(b, f, tab=3, selected=2)),
     ]
     mocks = []
     for key, label, fn in plans:

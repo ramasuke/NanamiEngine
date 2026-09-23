@@ -57,6 +57,7 @@ editor and check *Config > AutoMCP > Enable AutoMCP*. If you change the port the
 | `assets_reload` | `assets.reload` | same as *Config > Application > Reload Assets*: re-scans `Assets/` so assets / `.meta` added or rewritten on disk are registered; waits until `loadingResourceCount` is 0 (polls `status`). Loaded scenes keep the old asset instances, so `scene_reload` afterwards |
 | `model_view_open`, `model_view_state`, `model_view_select`, `model_view_close` | `modelview.*` | show a `.mv1` in ModelView by path (full or unique tail like `SwordMan.mv1`) or guid; `open` waits until loaded |
 | `animation_view_open`, `animation_view_state`, `animation_view_set`, `animation_view_set_clip` | `animationview.*` | model + clip slots A/B (source `.mv1`, clip by name/index, time, speed, loop, range), play/pause, blend, root-motion lock; `set_clip` waits for the source to load and the clip to attach |
+| `animation_view_bones` | `animationview.bones` | world matrix (position + axis rows) of every frame/bone in the current pose, optional name filter, plus the model matrix |
 | `preview_camera` | `preview.camera` | ModelView/AnimationView camera: re-fit from yaw/pitch, or exact position + look-at |
 
 Wire format: request `{"id":1,"cmd":"status","args":{}}\n`, response

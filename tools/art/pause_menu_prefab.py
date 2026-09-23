@@ -111,7 +111,11 @@ def slider(builder, parent, name, spec, fill_sprite):
         node, 'Slider',
         gaugeSprite_=fill_sprite, backgroundSprite_=sprite_guid('Bar_Frame'),
         drawPosition_='0,0', drawSize_=f'{w},{h}', value_='1', renderOrder_=ORDER_PARTS,
-        isStretchToDrawSize_='true', trailDelay_secs_='0.5', trailDuration_secs_='0.8', tipWidth_='18',
+        isStretchToDrawSize_='true')
+    # 目盛りは Slider の上に GaugeEffects で重ねる
+    builder.component(
+        node, 'GaugeEffects',
+        renderOrder_=ORDER_PARTS + 1, trailDelay_secs_='0.5', trailDuration_secs_='0.8', tipWidth_='18',
         tickCount_='5', tickInsetY_='1.5', tickShadowAlpha_='110', tickHighlightAlpha_='0', bandInsetY_='3',
         gaugeFadeDuration_secs_='0.3', pulseFrequency_hz_='1.4', pulseMaxAlpha_='0')
     return node, comp

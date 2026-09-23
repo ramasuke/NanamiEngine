@@ -5,8 +5,9 @@
     python tools/art/event_board_prefab.py --prop # 加えて 3D の看板 Prop/EventNoticeBoard.prefab
     python tools/art/event_board_prefab.py --place # 加えて看板を MainIslandScene の酒場の仲介人の右に置く
 
-組むもの: 行(EventBoardRow / EventBoardQuestRow / EventBoardNoticeRow)、木札(EventBoardTab)、
-頁(EventBoardEventPage / EventBoardQuestPage / EventBoardNoticePage)、それらを生成するルートの EventBoardUI。
+組むもの: 行(EventBoardRow / EventBoardQuestRow / EventBoardNoticeRow / EventBoardRestorationRow)、木札(EventBoardTab)、
+頁(EventBoardEventPage / EventBoardQuestPage / EventBoardNoticePage / EventBoardRestorationPage)、
+それらを生成するルートの EventBoardUI。
 .meta(asset guid)は既存があれば保つので、組み直しても外(看板の eventBoardUiPrefab_ など)からの参照は切れない。
 組み方の道具(Builder / save_prefab など)は game_over_prefab.py のものを使う。
 """
@@ -38,6 +39,9 @@ PIP_FILLED = asset_guid(str(art.PIP_FILLED_SPRITE) + '.meta')
 PIP_EMPTY = asset_guid(str(art.PIP_EMPTY_SPRITE) + '.meta')
 # 受注印を押す音。ゲームオーバーの石版が落ちる音と同じ鈍い打撃
 ACCEPT_SOUND = asset_guid(REPO / 'Assets/Audio/Physics/打撃2.mp3.meta')
+# 普請の代金を払う音と、足りないときの断りの音は店と同じ
+RESTORE_SOUND = asset_guid(REPO / 'Assets/Audio/UI/Shop_Purchase.mp3.meta')
+REFUSE_SOUND = asset_guid(REPO / 'Assets/Audio/UI/Shop_Refuse.mp3.meta')
 ALIGN_CENTER = 1
 ALIGN_RIGHT = 2
 
@@ -199,6 +203,35 @@ def build_notice_row():
     row.data['kindChipSprites_'] = [edits.field_blob('SpriteFile', sprite_guid(f'KindChip_{k}')) for k in art.V2_KINDS]
     ticket_fields(b, row, seal)
     return save_prefab(prefab, PREFAB_DIR, 'EventBoardNoticeRow')
+
+
+def build_restoration_row():
+    """普請の札"""
+    L, V = art.LAYOUT, art.V2
+    prefab = new_prefab('EventBoardRestorationRow')
+    b = Builder(prefab)
+    root = prefab.root
+
+    seal = ticket_root(b, root)
+    name = text(b, root, 'NameText', V['rrow_name'][0], V['rrow_name'][1], '', art.INK,
+                ORDER_TICKET_TEXT, font=FONT_BRUSH)
+    image(b, root, 'Coin', V['rrow_coin'], sprite_guid('Coin_Small'), ORDER_TICKET_TEXT)
+    cost = text(b, root, 'CostText', V['rrow_cost'][0], V['rrow_cost'][1], '', art.INK,
+                ORDER_TICKET_TEXT, font=FONT_BRUSH)
+    note = text(b, root, 'NoteText', V['rrow_note'][0], V['rrow_note'][1], '', art.INK_FADE, ORDER_TICKET_TEXT)
+    stamp = image(b, root, 'StateStamp', V['rrow_stamp'], sprite_guid('RestorationStamp_Restored'),
+                  ORDER_TICKET_STAMP, enabled=False)
+
+    row = b.component(root, 'EventBoardRestorationRow', selectedScale_=str(L['row_selected_scale']),
+                      defaultNoteColor_=rgb(art.INK_FADE), refusedNoteColor_=rgb(art.STAMP_RED))
+    b.field(row, 'nameText_', guid_of(name))
+    b.field(row, 'costText_', guid_of(cost))
+    b.field(row, 'noteText_', guid_of(note))
+    b.field(row, 'stateStamp_', guid_of(stamp))
+    b.field(row, 'restoredStampSprite_', sprite_guid('RestorationStamp_Restored'))
+    b.field(row, 'lockedStampSprite_', sprite_guid('RestorationStamp_Locked'))
+    ticket_fields(b, row, seal)
+    return save_prefab(prefab, PREFAB_DIR, 'EventBoardRestorationRow')
 
 
 def build_tab():
@@ -384,6 +417,57 @@ def build_notice_page(row_prefab_guid):
     return save_prefab(prefab, PREFAB_DIR, 'EventBoardNoticePage')
 
 
+def build_restoration_page(row_prefab_guid):
+    """復興の頁。大きな紙の代わりに右下の見積の札だけを置き、真ん中は下見のカメラに空けておく"""
+    V = art.V2
+    prefab = new_prefab('EventBoardRestorationPage')
+    b = Builder(prefab)
+    root = prefab.root
+    page = b.component(root, 'EventBoardRestorationPage', defaultColor_=rgb(art.INK), fadedColor_=rgb(art.INK_FADE),
+                       refusedColor_=rgb(art.STAMP_RED), remainColor_=rgb(art.GOLD_INK),
+                       notApplicableText_='―', noConditionText_='なし')
+    page_list(b, root, page, row_prefab_guid)
+    image(b, root, 'Card', V['r_card'], sprite_guid('RestorationCard'), ORDER_POSTER)
+    image(b, root, 'CardNail', V['r_card_nail'], sprite_guid('Nail'), ORDER_POSTER_STAMP)
+    empty = text(b, root, 'EmptyText', V['r_empty'][0], V['r_empty'][1], 'まだ普請の段取りは付いていない',
+                 art.INK_FADE, ORDER_POSTER_TEXT, align=ALIGN_CENTER, enabled=False)
+
+    detail = b.node(root, 'Detail')
+    name = text(b, detail, 'NameText', V['r_name'][0], V['r_name'][1], '', art.INK, ORDER_POSTER_TEXT,
+                font=FONT_BRUSH)
+    state = text(b, detail, 'StateText', V['r_state'][0], V['r_state'][1], '', art.INK, ORDER_POSTER_TEXT,
+                 align=ALIGN_RIGHT)
+    condition = text(b, detail, 'ConditionText', V['r_condition'][0], V['r_condition'][1], '', art.INK_FADE,
+                     ORDER_POSTER_TEXT)
+    cost = text(b, detail, 'CostText', V['r_cost'][0], V['r_cost'][1], '', art.INK, ORDER_POSTER_TEXT,
+                font=FONT_BRUSH)
+    balance = text(b, detail, 'BalanceText', V['r_balance'][0], V['r_balance'][1], '', art.INK, ORDER_POSTER_TEXT,
+                   font=FONT_BRUSH)
+    remain = text(b, detail, 'RemainText', V['r_remain'][0], V['r_remain'][1], '', art.GOLD_INK, ORDER_POSTER_TEXT,
+                  font=FONT_BRUSH)
+    (dx, dy), dpx, line_gap, count = V['r_desc']
+    lines = [text(b, detail, f'DescLine{i}', (dx, dy + i * line_gap), dpx, '', art.INK, ORDER_POSTER_TEXT)
+             for i in range(count)]
+    seal_pos, seal_scale = V['r_seal']
+    seal = image(b, detail, 'Seal', seal_pos, sprite_guid('RestorationSeal_Open'), ORDER_POSTER_STAMP,
+                 scale=seal_scale)
+
+    b.field(page, 'detailRoot_', detail.guid)
+    b.field(page, 'detailNameText_', guid_of(name))
+    b.field(page, 'detailStateText_', guid_of(state))
+    b.field(page, 'detailConditionText_', guid_of(condition))
+    b.field(page, 'detailCostText_', guid_of(cost))
+    b.field(page, 'detailBalanceText_', guid_of(balance))
+    b.field(page, 'detailRemainText_', guid_of(remain))
+    page.data['detailDescriptionLines_'] = [edits.field_blob('TextRenderer', guid_of(line)) for line in lines]
+    b.field(page, 'detailSeal_', guid_of(seal))
+    b.field(page, 'emptyText_', guid_of(empty))
+    b.field(page, 'openSealSprite_', sprite_guid('RestorationSeal_Open'))
+    b.field(page, 'lockedSealSprite_', sprite_guid('RestorationSeal_Locked'))
+    b.field(page, 'restoredSealSprite_', sprite_guid('RestorationSeal_Restored'))
+    return save_prefab(prefab, PREFAB_DIR, 'EventBoardRestorationPage')
+
+
 # ---------------------------------------------------------------- 掲示板の画面 (見出し + 頁 + 操作ガイド)
 HINT_SPRITES = {
     'HintTag_Cancel': HINT_CANCEL,
@@ -403,14 +487,14 @@ def hint_group(b, parent, name, items):
     return group
 
 
-def build_ui(tab_guid, quest_page_guid, event_page_guid, notice_page_guid):
+def build_ui(tab_guid, quest_page_guid, event_page_guid, notice_page_guid, restoration_page_guid):
     L, V = art.LAYOUT, art.V2
     prefab = new_prefab('EventBoardUI')
     b = Builder(prefab)
     root = prefab.root
 
-    b.image(root, 'Veil', (art.SCREEN_W / 2, art.SCREEN_H / 2), BLACK_MASK, ORDER_VEIL, L['veil_blend'],
-            scale=L['veil_scale'])
+    veil, _ = b.image(root, 'Veil', (art.SCREEN_W / 2, art.SCREEN_H / 2), BLACK_MASK, ORDER_VEIL, L['veil_blend'],
+                      scale=L['veil_scale'])
     image(b, root, 'Strip', V['strip'], sprite_guid('Strip'), ORDER_BOARD)
     image(b, root, 'TabRope', V['tab_rope'], sprite_guid('TabRope'), ORDER_TAB_ROPE)
     image(b, root, 'TabHintLB', V['tab_hint_lb'], sprite_guid('HintTag_LB'), ORDER_TAB)
@@ -419,6 +503,7 @@ def build_ui(tab_guid, quest_page_guid, event_page_guid, notice_page_guid):
     pages = b.node(root, 'Pages')
     with_accept = hint_group(b, root, 'HintsWithAccept', art.V2_HINTS_WITH_ACCEPT)
     without_accept = hint_group(b, root, 'HintsWithoutAccept', art.V2_HINTS_WITHOUT_ACCEPT)
+    with_restore = hint_group(b, root, 'HintsWithRestore', art.V2_HINTS_WITH_RESTORE)
 
     ui = b.component(root, 'EventBoardUi', tabSpacing_px_=str(V['tab_spacing']))
     b.field(ui, 'tabPrefab_', tab_guid)
@@ -429,10 +514,15 @@ def build_ui(tab_guid, quest_page_guid, event_page_guid, notice_page_guid):
     b.field(ui, 'pagesRoot_', pages.guid)
     b.field(ui, 'hintsWithAccept_', with_accept.guid)
     b.field(ui, 'hintsWithoutAccept_', without_accept.guid)
+    b.field(ui, 'restorationPagePrefab_', restoration_page_guid)
+    b.field(ui, 'hintsWithRestore_', with_restore.guid)
+    b.field(ui, 'veil_', veil.guid)
 
     presenter = b.component(root, 'EventBoardPresenter')
     b.field(presenter, 'board_', BOARD_DATA)
     b.field(presenter, 'acceptSound_', ACCEPT_SOUND)
+    b.field(presenter, 'restoreSound_', RESTORE_SOUND)
+    b.field(presenter, 'refuseSound_', REFUSE_SOUND)
     return save_prefab(prefab, PREFAB_DIR, 'EventBoardUI')
 
 
@@ -440,11 +530,13 @@ def build_all():
     row_guid, _ = build_row()
     quest_row_guid, _ = build_quest_row()
     notice_row_guid, _ = build_notice_row()
+    restoration_row_guid, _ = build_restoration_row()
     tab_guid, _ = build_tab()
     event_page_guid, _ = build_event_page(row_guid)
     quest_page_guid, _ = build_quest_page(quest_row_guid)
     notice_page_guid, _ = build_notice_page(notice_row_guid)
-    ui_guid, _ = build_ui(tab_guid, quest_page_guid, event_page_guid, notice_page_guid)
+    restoration_page_guid, _ = build_restoration_page(restoration_row_guid)
+    ui_guid, _ = build_ui(tab_guid, quest_page_guid, event_page_guid, notice_page_guid, restoration_page_guid)
     return ui_guid
 
 

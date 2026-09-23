@@ -29,7 +29,7 @@ PREFABS = {
     'HerbPatch': REPO / 'Assets' / 'Prefab' / 'Prop' / 'Loot' / 'HerbPatch.prefab',
 }
 # 足元を調べる半径と、地面へ沈める深さ (world)。斜面で浮かないよう一番低い所に合わせてから少し埋める
-FOOTPRINT = {'TreasureChest': (3.5, 0.3), 'HerbPatch': (1.5, 0.2)}
+FOOTPRINT = {'TreasureChest': (7.0, 0.6), 'HerbPatch': (1.5, 0.2)}
 GROUPS = {'TreasureChest': 'TreasureChests', 'HerbPatch': 'Herbs'}
 
 
@@ -54,9 +54,14 @@ def main():
     placements = json.loads(PLACEMENTS.read_text(encoding='utf-8'))
     terrain = Terrain()
     scene = reader.read_scene_file(SCENE)
+    # NOTE: 元の並び順に戻さないと、後ろのルートの polymorphic_id が全部ずれて差分が膨らむ
+    index = next((i for i, r in enumerate(scene.roots) if r.name == ROOT_NAME), None)
     scene.roots = [r for r in scene.roots if r.name != ROOT_NAME]
 
     root = edits.add_gameobject(scene, parent=None, name=ROOT_NAME)
+    if index is not None:
+        scene.roots.remove(root)
+        scene.roots.insert(index, root)
     count = 0
     for kind, path in PREFABS.items():
         prefab = reader.read_prefab_file(path)
@@ -79,9 +84,9 @@ def main():
 
     text = writer.write_scene(scene)
     tree = loads(text)
-    stripper = StrayVersionStripper(catalog_mod.load(), f'/gameObject_{len(scene.roots) - 1}/')
+    stripper = StrayVersionStripper(catalog_mod.load(), f'/gameObject_{scene.roots.index(root)}/')
     stripper.run(tree, '')
-    strip_prefab_field_versions(tree[f'gameObject_{len(scene.roots) - 1}'])
+    strip_prefab_field_versions(tree[f'gameObject_{scene.roots.index(root)}'])
     text = dumps(tree)
     check(text, validate.validate_scene(scene), SCENE.name)
     SCENE.write_bytes(to_file_bytes(text))

@@ -150,6 +150,26 @@ def _classify_member(decl_type: str, enums: set[str], known_types: set[str]) -> 
     return {"shape": "unknown", "type": leaf or t}
 
 
+def _with_out_of_line_save(path: Path, cls: str, body: str) -> str:
+    """save() only declared in the header and defined in the sibling .cpp (e.g. TrySwordManQuest):
+    swap the declaration for that definition so _parse_serializable can read it."""
+    decl = RE_SAVE.search(body)
+    if not decl:
+        return body
+    brace, semi = body.find("{", decl.end()), body.find(";", decl.end())
+    if brace != -1 and (semi == -1 or brace < semi):
+        return body  # defined in-class
+    cpp = path.with_suffix(".cpp")
+    if not cpp.exists():
+        return body
+    text = _read(cpp)
+    m = re.search(rf"\b{re.escape(cls)}::save\s*\(\s*Archive\s*&\s*\w+\s*,", text)
+    if not m:
+        return body
+    definition = "void save(Archive& archive, const std::uint32_t version) const" + _balanced_block(text, m.end())
+    return body[:decl.start()] + definition + body[semi + 1:]
+
+
 def _parse_serializable(body: str, known_types: set[str]) -> tuple[list[dict], list[str]]:
     """Return (params, member_names) from a class/struct body."""
     body = _strip_comments(body)
@@ -256,7 +276,7 @@ def scan(kind: str = "enemy") -> dict[str, Any]:
         rb = cfg.register_bare_re.search(text)
         display = rn.group(2) if rn else (rb.group(1) if rb else cls)
 
-        params, _members = _parse_serializable(body, known_leaves)
+        params, _members = _parse_serializable(_with_out_of_line_save(path, cls, body), known_leaves)
         rel = path.relative_to(content_root).as_posix()
 
         actions[display] = {

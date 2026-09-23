@@ -83,6 +83,9 @@ RE_CLASS_VERSION = re.compile(r"CEREAL_CLASS_VERSION\s*\(\s*([\w:]+)\s*,\s*(\d+)
 RE_FIELD_MACRO = re.compile(r"FIELD\s*\(\s*([\w:]+)\s*\)")
 RE_FIELD_TMPL = re.compile(r"\bField\s*<\s*([\w:]+)\s*>")
 RE_VECTOR = re.compile(r"std::vector\s*<\s*([\w:<>\s]+?)\s*>")
+RE_ENUM = re.compile(r"\benum\s+(?:class\s+|struct\s+)?(\w+)\s*(?::\s*[\w:\s]+?)?\s*\{")
+RE_RECORD = re.compile(r"(\benum\s+)?\b(?:class|struct)\s+(\w+)\b[^;{]*\{")
+RE_ENUM_VALUE_EXPR = re.compile(r"^[\w\s()<>|+\-]+$")
 
 
 def _leaf(name: str) -> str:
@@ -151,7 +154,54 @@ def _find_class_body(text: str, leaf: str) -> str:
     return ""
 
 
-def _classify_member(decl_type: str, known_types: set[str]) -> dict:
+def _enumerators(body: str) -> Optional[dict[str, int]]:
+    """``{name: value}`` of one enum body, or ``None`` if a value is anything
+    but literals / earlier enumerators combined with ``<< | + -``."""
+    values: dict[str, int] = {}
+    nxt = 0
+    for item in _strip_comments(body).split(","):
+        item = item.strip("{} \t\r\n")
+        if not item:
+            continue
+        name, _, expr = item.partition("=")
+        name, expr = name.strip(), expr.strip()
+        if not re.fullmatch(r"\w+", name):
+            return None
+        if expr:
+            if not RE_ENUM_VALUE_EXPR.match(expr):
+                return None
+            expr = re.sub(r"(?<=\d)[uUlL]+\b", "", expr)
+            try:
+                nxt = int(eval(expr, {"__builtins__": {}}, dict(values)))
+            except Exception:
+                return None
+        values[name] = nxt
+        nxt += 1
+    return values
+
+
+def _scan_enums(headers: list[tuple[str, str]]) -> dict[str, Optional[dict[str, int]]]:
+    """Every enum leaf declared in the scanned headers -> its enumerators
+    (``None`` when unparsable, or when the leaf is declared more than once with
+    different values). cereal archives an enum as its underlying integer, so an
+    enum member is an ``int`` param. A leaf that is also a class/struct name
+    somewhere is left out - the member could be either."""
+    enums: dict[str, Optional[dict[str, int]]] = {}
+    records: set[str] = set()
+    for _rel, text in headers:
+        stripped = _strip_comments(text)
+        records.update(m.group(2) for m in RE_RECORD.finditer(stripped) if not m.group(1))
+        for m in RE_ENUM.finditer(stripped):
+            leaf = m.group(1)
+            values = _enumerators(_balanced_block(stripped, m.end() - 1))
+            if leaf in enums and enums[leaf] != values:
+                values = None
+            enums[leaf] = values
+    return {k: v for k, v in enums.items() if k not in records}
+
+
+def _classify_member(decl_type: str, known_types: set[str],
+                     enums: Optional[dict[str, Optional[dict[str, int]]]] = None) -> dict:
     t = decl_type.strip()
     m = RE_FIELD_MACRO.search(t) or RE_FIELD_TMPL.search(t)
     if m:
@@ -178,12 +228,19 @@ def _classify_member(decl_type: str, known_types: set[str]) -> dict:
     ):
         return {"shape": "int"}
     leaf = _leaf(t)
+    if enums and leaf in enums:
+        info: dict[str, Any] = {"shape": "int", "enum": leaf}
+        if enums[leaf] is not None:
+            info["values"] = enums[leaf]
+        return info
     if leaf in known_types:
         return {"shape": "nested", "type": leaf}
     return {"shape": "unknown", "type": leaf or t}
 
 
-def _parse_serializable(body: str, known_types: set[str]) -> tuple[list[dict], list[dict], bool]:
+def _parse_serializable(body: str, known_types: set[str],
+                        enums: Optional[dict[str, Optional[dict[str, int]]]] = None
+                        ) -> tuple[list[dict], list[dict], bool]:
     """Return ``(params, bases, interleaved)`` from a class body's ``save()``.
 
     ``bases`` is every ``archive(cereal::base_class<X>(this))`` call, in archive
@@ -253,7 +310,7 @@ def _parse_serializable(body: str, known_types: set[str]) -> tuple[list[dict], l
     params: list[dict] = []
     positional = len(bases)  # the valueN counter continues after the base slots
     for member, named in order:
-        info = _classify_member(_decl_type(member), known_types)
+        info = _classify_member(_decl_type(member), known_types, enums)
         if named:
             key = member
         else:
@@ -359,11 +416,12 @@ def scan() -> dict[str, Any]:
             matches.append((path, rel, text, fqn, version))
             known_leaves.add(_leaf(fqn))
 
+    enums = _scan_enums(all_headers)
     base_leaves: set[str] = set()
     for path, rel, text, fqn, version in matches:
         leaf = _leaf(fqn)
         body = _find_class_body(text, leaf)
-        params, bases, interleaved = (_parse_serializable(body, known_leaves)
+        params, bases, interleaved = (_parse_serializable(body, known_leaves, enums)
                                       if body else ([], [], False))
         base_leaves.update(b["leaf"] for b in bases)
         components[fqn] = {

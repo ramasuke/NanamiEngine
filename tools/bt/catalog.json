@@ -1,5 +1,5 @@
 {
-  "generated_from": "200d819ee215b48087ade2c8f03838cfa22af709",
+  "generated_from": "6b1f1d7a4b1b9cd0ef5301c1deeee7a53d1d0928",
   "actions": {
     "Basic::ChasePlayerForPathFinding": {
       "class": "ChasePlayerForPathFinding",
@@ -63,6 +63,183 @@
           "named": true,
           "shape": "vector",
           "elem": "ivec2"
+        }
+      ]
+    },
+    "Basic::CircleAroundPlayer": {
+      "class": "CircleAroundPlayer",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::CircleAroundPlayer",
+      "leaf": "CircleAroundPlayer",
+      "version": 1,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Basic/CircleAroundPlayer/Enemy_Behaviour_Action_CircleAroundPlayer.h",
+      "params": [
+        {
+          "key": "moveSpeed_",
+          "member": "moveSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "rotateSpeed_",
+          "member": "rotateSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "minSeconds_",
+          "member": "minSeconds_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxSeconds_",
+          "member": "maxSeconds_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "desiredRadius_",
+          "member": "desiredRadius_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "radiusGain_",
+          "member": "radiusGain_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "animationNumber_",
+          "member": "animationNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "radiusShrinkPerSec_",
+          "member": "radiusShrinkPerSec_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "minRadius_",
+          "member": "minRadius_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "Basic::RecoverFacingPlayer": {
+      "class": "RecoverFacingPlayer",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::RecoverFacingPlayer",
+      "leaf": "RecoverFacingPlayer",
+      "version": 2,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Basic/RecoverFacingPlayer/Enemy_Behaviour_Action_RecoverFacingPlayer.h",
+      "params": [
+        {
+          "key": "minSeconds_",
+          "member": "minSeconds_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxSeconds_",
+          "member": "maxSeconds_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "rotateSpeed_",
+          "member": "rotateSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "animationNumber_",
+          "member": "animationNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "holdSeconds_",
+          "member": "holdSeconds_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "turnRotateSpeed_",
+          "member": "turnRotateSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "turnWalkAngle_",
+          "member": "turnWalkAngle_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "turnMoveSpeed_",
+          "member": "turnMoveSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "turnAnimationNumber_",
+          "member": "turnAnimationNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "faceToleranceDeg_",
+          "member": "faceToleranceDeg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "turnLeftAnimationNumber_",
+          "member": "turnLeftAnimationNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "turnRightAnimationNumber_",
+          "member": "turnRightAnimationNumber_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "turnInPlaceAngle_",
+          "member": "turnInPlaceAngle_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "Basic::ToPlayerAngle": {
+      "class": "ToPlayerAngle",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerAngle",
+      "leaf": "ToPlayerAngle",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Basic/ToPlayerAngle/Enemy_Behaviour_Action_ToPlayerAngle.h",
+      "params": [
+        {
+          "key": "minDegree_",
+          "member": "minDegree_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "maxDegree_",
+          "member": "maxDegree_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "useAbsolute_",
+          "member": "useAbsolute_",
+          "named": true,
+          "shape": "bool"
         }
       ]
     },
@@ -431,7 +608,7 @@
       "class": "PhysicsAttack",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::PhysicsAttack",
       "leaf": "PhysicsAttack",
-      "version": 4,
+      "version": 5,
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Attack/Enemy_Behaviour_Action_Attack.h",
       "params": [
         {
@@ -478,6 +655,42 @@
           "named": true,
           "shape": "field",
           "type": "SoundFile"
+        },
+        {
+          "key": "trackRotateSpeed_",
+          "member": "trackRotateSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "trackEnd_secs_",
+          "member": "trackEnd_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "lungeSpeed_",
+          "member": "lungeSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "lungeStart_secs_",
+          "member": "lungeStart_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "lungeEnd_secs_",
+          "member": "lungeEnd_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "lungeStopDistance_",
+          "member": "lungeStopDistance_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -544,6 +757,64 @@
         {
           "key": "getUpDuration_secs_",
           "member": "getUpDuration_secs_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
+    "GameObject::FallIsland": {
+      "class": "FallIsland",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::FallIsland",
+      "leaf": "FallIsland",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/GameObject/FallIsland/Enemy_Behaviour_Action_FallIsland.h",
+      "params": [
+        {
+          "key": "target_",
+          "member": "target_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "pivot_",
+          "member": "pivot_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "tiltAxis_",
+          "member": "tiltAxis_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "tiltAngleDeg_",
+          "member": "tiltAngleDeg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "tiltSecs_",
+          "member": "tiltSecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fallAngleDeg_",
+          "member": "fallAngleDeg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fallDistance_",
+          "member": "fallDistance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "fallSecs_",
+          "member": "fallSecs_",
           "named": true,
           "shape": "float"
         }
@@ -792,6 +1063,41 @@
         }
       ]
     },
+    "Particle::AttachParticle": {
+      "class": "AttachParticle",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::AttachParticle",
+      "leaf": "AttachParticle",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Particle/AttachParticle/Enemy_Behaviour_Action_AttachParticle.h",
+      "params": [
+        {
+          "key": "position_",
+          "member": "position_",
+          "named": true,
+          "shape": "vec3"
+        },
+        {
+          "key": "lifeTime_",
+          "member": "lifeTime_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "target_",
+          "member": "target_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "particlePrefab_",
+          "member": "particlePrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        }
+      ]
+    },
     "Particle::GenerateParticle": {
       "class": "GenerateParticle",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::GenerateParticle",
@@ -993,6 +1299,14 @@
           "type": "SceneFile"
         }
       ]
+    },
+    "Scene::LockPlayerCannon": {
+      "class": "LockPlayerCannon",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::LockPlayerCannon",
+      "leaf": "LockPlayerCannon",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Scene/LockPlayerCannon/Enemy_Behaviour_Action_LockPlayerCannon.h",
+      "params": []
     },
     "Sound::PlayBGM": {
       "class": "PlayBGM",
@@ -1296,6 +1610,7 @@
   },
   "by_fqn": {
     "GameCore::Npc::Enemy::Behaviour::Action::AddRotation": "Transform::Rotation::AddRotation",
+    "GameCore::Npc::Enemy::Behaviour::Action::AttachParticle": "Particle::AttachParticle",
     "GameCore::Npc::Enemy::Behaviour::Action::CallAllies": "Hyena::CallAllies",
     "GameCore::Npc::Enemy::Behaviour::Action::ChangeColliderEmotionType": "RigidBody::ChangeEmotionType",
     "GameCore::Npc::Enemy::Behaviour::Action::ChangeIsGravity": "RigidBody::ChangeIsGravity",
@@ -1304,12 +1619,15 @@
     "GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding": "Basic::ChasePlayerForPathFinding",
     "GameCore::Npc::Enemy::Behaviour::Action::Chat": "Other::Chat",
     "GameCore::Npc::Enemy::Behaviour::Action::CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",
+    "GameCore::Npc::Enemy::Behaviour::Action::CircleAroundPlayer": "Basic::CircleAroundPlayer",
     "GameCore::Npc::Enemy::Behaviour::Action::ConditionArriveDuration": "EnemyStatus::Condition::ArriveDuration",
+    "GameCore::Npc::Enemy::Behaviour::Action::FallIsland": "GameObject::FallIsland",
     "GameCore::Npc::Enemy::Behaviour::Action::GenerateParticle": "Particle::GenerateParticle",
     "GameCore::Npc::Enemy::Behaviour::Action::IsCurrentHealthRate": "EnemyStatus::Condition::IsCurrentHealthRate",
     "GameCore::Npc::Enemy::Behaviour::Action::IsOnDamage": "EnemyStatus::Condition::IsOnDamage",
     "GameCore::Npc::Enemy::Behaviour::Action::IsTargetInAttackArea": "EnemyStatus::Condition::IsTargetInAttackArea",
     "GameCore::Npc::Enemy::Behaviour::Action::Lightning": "Weather::Lightning",
+    "GameCore::Npc::Enemy::Behaviour::Action::LockPlayerCannon": "Scene::LockPlayerCannon",
     "GameCore::Npc::Enemy::Behaviour::Action::MoveEventRoute": "RigidBody::MoveEventRoute",
     "GameCore::Npc::Enemy::Behaviour::Action::MoveToPlayerPos": "RigidBody::MoveToePlayerPos",
     "GameCore::Npc::Enemy::Behaviour::Action::OnDamage": "EnemyStatus::OnDamage",
@@ -1324,6 +1642,7 @@
     "GameCore::Npc::Enemy::Behaviour::Action::Random": "Other::Random",
     "GameCore::Npc::Enemy::Behaviour::Action::ReadBlackBoard": "Other::ReadBlackBoard<Int>",
     "GameCore::Npc::Enemy::Behaviour::Action::ReadBlackBoardBool": "Other::ReadBlackBoard<Bool>",
+    "GameCore::Npc::Enemy::Behaviour::Action::RecoverFacingPlayer": "Basic::RecoverFacingPlayer",
     "GameCore::Npc::Enemy::Behaviour::Action::RotateOnPlayer": "Transform::Rotation::RotateOnPlayer",
     "GameCore::Npc::Enemy::Behaviour::Action::SampleMoveFront": "Other::Sample::MoveFront",
     "GameCore::Npc::Enemy::Behaviour::Action::ScenePurposeCamera": "Camera::ScenePurposeCamera",
@@ -1333,6 +1652,7 @@
     "GameCore::Npc::Enemy::Behaviour::Action::ShootDownAirShip": "RigidBody::Other::ShootDownAirShip",
     "GameCore::Npc::Enemy::Behaviour::Action::ShowBossHealthGauge": "Ui::ShowBossHealthGauge",
     "GameCore::Npc::Enemy::Behaviour::Action::Stun": "EnemyStatus::Stun",
+    "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerAngle": "Basic::ToPlayerAngle",
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance": "Basic::ToPlayerDistance",
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerRaycast": "Basic::ToPlayerRaycast",
     "GameCore::Npc::Enemy::Behaviour::Action::WaitSeconds": "Wait::Seconds::WaitSeconds",
@@ -1342,6 +1662,7 @@
   },
   "by_leaf": {
     "AddRotation": "Transform::Rotation::AddRotation",
+    "AttachParticle": "Particle::AttachParticle",
     "CallAllies": "Hyena::CallAllies",
     "ChangeColliderEmotionType": "RigidBody::ChangeEmotionType",
     "ChangeIsGravity": "RigidBody::ChangeIsGravity",
@@ -1350,12 +1671,15 @@
     "ChasePlayerForPathFinding": "Basic::ChasePlayerForPathFinding",
     "Chat": "Other::Chat",
     "CheckCompleteQuest": "PlayerStatus::CheckCompleteQuest",
+    "CircleAroundPlayer": "Basic::CircleAroundPlayer",
     "ConditionArriveDuration": "EnemyStatus::Condition::ArriveDuration",
+    "FallIsland": "GameObject::FallIsland",
     "GenerateParticle": "Particle::GenerateParticle",
     "IsCurrentHealthRate": "EnemyStatus::Condition::IsCurrentHealthRate",
     "IsOnDamage": "EnemyStatus::Condition::IsOnDamage",
     "IsTargetInAttackArea": "EnemyStatus::Condition::IsTargetInAttackArea",
     "Lightning": "Weather::Lightning",
+    "LockPlayerCannon": "Scene::LockPlayerCannon",
     "MoveEventRoute": "RigidBody::MoveEventRoute",
     "MoveToPlayerPos": "RigidBody::MoveToePlayerPos",
     "OnDamage": "EnemyStatus::OnDamage",
@@ -1370,6 +1694,7 @@
     "Random": "Other::Random",
     "ReadBlackBoard": "Other::ReadBlackBoard<Int>",
     "ReadBlackBoardBool": "Other::ReadBlackBoard<Bool>",
+    "RecoverFacingPlayer": "Basic::RecoverFacingPlayer",
     "RotateOnPlayer": "Transform::Rotation::RotateOnPlayer",
     "SampleMoveFront": "Other::Sample::MoveFront",
     "ScenePurposeCamera": "Camera::ScenePurposeCamera",
@@ -1379,6 +1704,7 @@
     "ShootDownAirShip": "RigidBody::Other::ShootDownAirShip",
     "ShowBossHealthGauge": "Ui::ShowBossHealthGauge",
     "Stun": "EnemyStatus::Stun",
+    "ToPlayerAngle": "Basic::ToPlayerAngle",
     "ToPlayerDistance": "Basic::ToPlayerDistance",
     "ToPlayerRaycast": "Basic::ToPlayerRaycast",
     "WaitSeconds": "Wait::Seconds::WaitSeconds",

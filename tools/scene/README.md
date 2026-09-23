@@ -92,7 +92,11 @@ loop (`BoneSync`'s `sync` entries). Those still need care by hand.
 * A component param is only settable via `set-component-params`/`add-component --param` when its
   shape is one of `int | float | bool | string | vec2 | vec3 | field` (`catalog.SETTABLE_SHAPES`).
   `vector`/`nested`/`unknown`-shaped params round-trip losslessly but must be finished in the
-  editor or by hand.
+  editor or by hand. An enum member (declared under the scan roots, and not sharing its name with a
+  class/struct) is an `int` param with `enum`/`values` in the catalog: set it by enumerator name
+  (`enemyKind_=Hyena` or `EnemyKind::Hyena`) or by integer; values outside the enum are refused
+  (OR-ed values are accepted for flag enums whose enumerators are all 0 or powers of two). Declare
+  the member as the enum type, not as `int`.
 * A GameObject's `mark_` (the editor-only `GameObjectMark` shown in GameWindow, index into
   `model.MARK_NAMES`) is round-tripped and printed by `show`, but no CLI verb sets it yet — pick it in
   the Inspector. It was appended after `transform_` in class version 1 (`SceneGameObject`,

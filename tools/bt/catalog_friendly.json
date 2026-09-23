@@ -1,5 +1,5 @@
 {
-  "generated_from": "200d819ee215b48087ade2c8f03838cfa22af709",
+  "generated_from": "6b1f1d7a4b1b9cd0ef5301c1deeee7a53d1d0928",
   "actions": {
     "Camera::EnablePurposeCamera": {
       "class": "PurposeCamera",
@@ -350,7 +350,72 @@
       "leaf": "TrySwordManQuest",
       "version": 0,
       "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/PlayerStatus/Quest/GiveQuest/SwordMan/Friendly_Behaviour_Action_SwordManQuest.h",
-      "params": []
+      "params": [
+        {
+          "key": "quest_",
+          "member": "quest_",
+          "named": true,
+          "shape": "unknown",
+          "type": "shared_ptr"
+        }
+      ]
+    },
+    "Story::IsRestored": {
+      "class": "IsRestored",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::IsRestored",
+      "leaf": "IsRestored",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/Story/IsRestored/Friendly_Behaviour_Action_IsRestored.h",
+      "params": [
+        {
+          "key": "facility_",
+          "member": "facility_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "expected_",
+          "member": "expected_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "Story::IsStoryFlag": {
+      "class": "IsStoryFlag",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::IsStoryFlag",
+      "leaf": "IsStoryFlag",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/Story/IsStoryFlag/Friendly_Behaviour_Action_IsStoryFlag.h",
+      "params": [
+        {
+          "key": "flag_",
+          "member": "flag_",
+          "named": true,
+          "shape": "int"
+        },
+        {
+          "key": "expected_",
+          "member": "expected_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "Story::SetStoryFlag": {
+      "class": "SetStoryFlag",
+      "fqn": "GameCore::Npc::Friendly::Behaviour::Action::SetStoryFlag",
+      "leaf": "SetStoryFlag",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/Story/SetStoryFlag/Friendly_Behaviour_Action_SetStoryFlag.h",
+      "params": [
+        {
+          "key": "flag_",
+          "member": "flag_",
+          "named": true,
+          "shape": "int"
+        }
+      ]
     },
     "Time::NodeTickTimer": {
       "class": "NodeTickTimer",
@@ -441,6 +506,8 @@
     "GameCore::Npc::Friendly::Behaviour::Action::GameObjectSetEnable": "GameObject::SetEnable",
     "GameCore::Npc::Friendly::Behaviour::Action::ImplementChat": "NpcStatus::Chat::Chat",
     "GameCore::Npc::Friendly::Behaviour::Action::IsChat": "NpcStatus::Chat::IsChatting",
+    "GameCore::Npc::Friendly::Behaviour::Action::IsRestored": "Story::IsRestored",
+    "GameCore::Npc::Friendly::Behaviour::Action::IsStoryFlag": "Story::IsStoryFlag",
     "GameCore::Npc::Friendly::Behaviour::Action::MoveForRoute": "NpcStatus::RigidBody::MoveForRoute",
     "GameCore::Npc::Friendly::Behaviour::Action::NodeTickTimer": "Time::NodeTickTimer",
     "GameCore::Npc::Friendly::Behaviour::Action::OpenCharacterSelect": "Ui::OpenCharacterSelect",
@@ -453,6 +520,7 @@
     "GameCore::Npc::Friendly::Behaviour::Action::SetFreezePhysics": "NpcStatus::RigidBody::SetFreezePhysics",
     "GameCore::Npc::Friendly::Behaviour::Action::SetLinearVelocity": "NpcStatus::RigidBody::SetLinearVelocity",
     "GameCore::Npc::Friendly::Behaviour::Action::SetRotation": "NpcStatus::Transform::LookAtY",
+    "GameCore::Npc::Friendly::Behaviour::Action::SetStoryFlag": "Story::SetStoryFlag",
     "GameCore::Npc::Friendly::Behaviour::Action::TryQuest": "PlayerStatus::Quest::TryGiveQuest",
     "GameCore::Npc::Friendly::Behaviour::Action::TrySwordManQuest": "PlayerStatus::Quest::TrySwordManQuest",
     "GameCore::Npc::Friendly::Behaviour::Action::WriteBlackBoard": "Other::WriteBlackBoard"
@@ -464,6 +532,8 @@
     "GameObjectSetEnable": "GameObject::SetEnable",
     "ImplementChat": "NpcStatus::Chat::Chat",
     "IsChat": "NpcStatus::Chat::IsChatting",
+    "IsRestored": "Story::IsRestored",
+    "IsStoryFlag": "Story::IsStoryFlag",
     "MoveForRoute": "NpcStatus::RigidBody::MoveForRoute",
     "NodeTickTimer": "Time::NodeTickTimer",
     "OpenCharacterSelect": "Ui::OpenCharacterSelect",
@@ -476,6 +546,7 @@
     "SetFreezePhysics": "NpcStatus::RigidBody::SetFreezePhysics",
     "SetLinearVelocity": "NpcStatus::RigidBody::SetLinearVelocity",
     "SetRotation": "NpcStatus::Transform::LookAtY",
+    "SetStoryFlag": "Story::SetStoryFlag",
     "TryQuest": "PlayerStatus::Quest::TryGiveQuest",
     "TrySwordManQuest": "PlayerStatus::Quest::TrySwordManQuest",
     "WriteBlackBoard": "Other::WriteBlackBoard"

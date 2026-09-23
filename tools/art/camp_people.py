@@ -1,7 +1,7 @@
 """GrassLandScene の北の棚のキャンプに、ティラノ (狩猟民の呼び名で「大顎」) に村を追われた避難民を4人置く。
 
     python tools/art/camp_people.py models [--role Elder ...]   # C:\\Temp\\CampPeople の Mixamo FBX -> Assets の .mv1
-    python tools/art/camp_people.py data                        # AnimTree / 会話 (.npcChat) / BT を作り直す (GUID は保つ)
+    python tools/art/camp_people.py data                        # AnimTree を作り直す (GUID は保つ)
     python tools/art/camp_people.py place                       # GrassLandScene の CampPeople ルートを置き直す
 
 - 見た目と動きは Mixamo。キャラごとに T ポーズ (FBX Binary) と、同じキャラで書き出したクリップ2本
@@ -9,8 +9,7 @@
   Mixamo のクリップは書き出したキャラでしか正しく動かず、DxLibModelViewer は日本語パスを開けない。
 - AnimTree は State 0 = 待機 / 1 = 会話。AnyState 遷移は「クリップ長 - blendAnimationOffset」を過ぎてから判定されるので、
   offset を巨大にして毎フレーム判定させる (0 だと話しかけても今のクリップが終わるまで切り替わらない)。
-- BT: 吹き出しは最初の1回だけ出す (毎フレーム Show すると、近づいたときのアイコンの切り替えが上書きされる)。
-  話しかけられたら State 1、初回は長い会話 (blackboard Talked)、2回目からは短い一言、終わったら State 0。
+- 会話 (.npcChat) と BT は story_npcs.py が物語の進み具合に合わせて作る。AnimTree の State 0 = 待機 / 1 = 会話はそちらと揃える。
 - NPC は MainIslandScene の仲介人 (CharacterBrokerNpc) の複製。Dynamic + constraints 61 でないと会話センサーに拾われない。
   長老は capsule の下端を座面の高さにして、切り株 (TreeStump) の上に重力で乗せる。村娘は物資の山の前に背中を預けて床に座る。
 - Settlement (settlement_scatter.py) とは別のルートなので、キャンプを置き直しても消えない。置き物を動かしたらこちらも見直す。
@@ -82,47 +81,25 @@ class Role:
     seat_cm: float         # 0 なら立ち/床。>0 なら切り株に腰掛ける座面の高さ (cm)
     seat_ahead: float      # 切り株の中心を足元からどれだけ前に置くか (world)
     clear_grass: float     # 足元の草を抜く半径 (world)。0 なら抜かない
-    first: list
-    again: list
 
 
 ROLES = [
     Role('Elder', 'Abe', '狩猟民の長', 'SittingIdle', 'SittingTalking',
          pos=(972.0, 1188.0), face=CAMPFIRE, scale=0.1,
          capsule=((0.0, 91.5, 0.0), 28.0, 41.0), icon_y=175.0,
-         seat_cm=43.0, seat_ahead=1.5, clear_grass=4.0,
-         first=['……よそ者か。\nこんな山の上まで、よく来たな。',
-                'わしらは下の盆地に村を構えていた\n狩人の一族だ。',
-                'ある晩、地鳴りと共に大顎が現れてな。\n家も柵も、何もかも踏み潰された。',
-                '命からがら、この棚まで逃げてきた。\nだが食い物も矢も、そう長くはもたん。',
-                'あんたが腕の立つ冒険者なら……\nどうか、あやつを村から追い払ってくれ。'],
-         again=['大顎は今も村の跡に居座っておる。\nわしらの帰る場所は、あそこしかない。']),
+         seat_cm=43.0, seat_ahead=1.5, clear_grass=4.0),
     Role('Lookout', 'Morak', '見張りの若者', 'LookingAround', 'Talking',
          pos=(1003.0, 1112.0), face=BASIN, scale=0.1,
          capsule=((0.0, 90.0, 0.0), 35.0, 110.0), icon_y=215.0,
-         seat_cm=0.0, seat_ahead=0.0, clear_grass=0.0,
-         first=['しっ、静かに。……盆地の真ん中、\nあの影が見えるか？',
-                'あれが村を潰した大顎だ。\n昼も夜も、ずっとあそこにいる。',
-                '近づかなければ、なぜか動かない。\nでも踏み込んだら最後、吠えて突っ込んでくる。',
-                '突進は正面に立つな、横へ跳べ。\n……ここから見てるからな。'],
-         again=['大顎は相変わらずだ。\n村の跡から一歩も動かない。']),
+         seat_cm=0.0, seat_ahead=0.0, clear_grass=0.0),
     Role('Huntress', 'Erika Archer', '弓の狩人', 'NeutralIdle', 'Talking',
          pos=(1008.0, 1146.0), face=CAMPFIRE, scale=0.1,
          capsule=((0.0, 88.0, 0.0), 30.0, 116.0), icon_y=212.0,
-         seat_cm=0.0, seat_ahead=0.0, clear_grass=0.0,
-         first=['肉を干してるところ。\n狩り場を追われて、これが最後の蓄えなの。',
-                '西の林にはハイエナの群れがいる。\n三頭ひと組で動くから、囲まれないで。',
-                '遠吠えには気をつけて。仲間を呼ぶ合図よ。\n放っておくと、周りの群れまで集まってくる。'],
-         again=['遠吠えが聞こえたら、先に黙らせること。\nそれが群れと戦うコツよ。']),
+         seat_cm=0.0, seat_ahead=0.0, clear_grass=0.0),
     Role('Wounded', 'Peasant Girl', 'けがをした村娘', 'SittingDazed', 'SittingFloor',
          pos=(1041.3, 1164.4), face=CAMPFIRE, scale=0.085,
          capsule=((0.0, 48.0, -15.0), 25.0, 46.0), icon_y=135.0,
-         seat_cm=0.0, seat_ahead=0.0, clear_grass=9.0,
-         first=['……あ、冒険者さん？\nごめんなさい、うまく立てなくて。',
-                'あの晩、村から逃げる途中で\n大顎に追いつかれたの。',
-                '真横に逃げれば大丈夫だと思ったのに、\nあいつ、首を振って横まで噛みついてきた。',
-                'それに、あの頭突き……\nまともに受けちゃだめよ。'],
-         again=['……私のことはいいの。\n村を、取り戻して。']),
+         seat_cm=0.0, seat_ahead=0.0, clear_grass=9.0),
 ]
 
 
@@ -201,13 +178,24 @@ def check_page(text):
     text.encode('cp932')   # DxLib へは Shift-JIS で渡るので、CP932 に無い字 (〜 など) は消える
 
 
+def strip_versions(obj):
+    if isinstance(obj, OrderedObj):
+        for key in [k for k, _ in obj.items() if k == 'cereal_class_version']:
+            obj.pop(key)
+        for _, value in obj.items():
+            strip_versions(value)
+    return obj
+
+
 def write_npc_chat(name, pages):
     """Merchant.npcChat.meta と同じ並びで書く。本体の .npcChat は 0 バイト、中身は .meta"""
     for page in pages:
         check_page(page)
     template = loads(read_text(CHAT_DIR / 'Merchant.npcChat.meta'))
     data = template['value0']['ptr_wrapper']['data']
-    first_item, other_item = data['item_0'], data['item_1']
+    first_item = data['item_0']
+    # NOTE: cereal は型ごとに初出だけ版を書くので、2件目以降は版の無い形にする
+    other_item = data['item_1'] if 'item_1' in data.keys() else strip_versions(copy.deepcopy(first_item))
 
     meta_path = CHAT_DIR / f'{name}.npcChat.meta'
     guid = asset_guid(meta_path) if meta_path.exists() else meta_base.mint_guid()
@@ -267,52 +255,10 @@ def apply_ops(kind_module, path, ops):
         Path(f.name).unlink()
 
 
-def behaviour_tree(r, first_chat, again_chat):
-    name = f'CampPeople{r.key}'
-    guid = recreate('tools.bt', name, BT_DIR / f'{name}.friendBehaviourData',
-                    BT_DIR / f'{name}.friendBehaviourData.meta', '--npc-kind', 'friendly')
-    g = {k: meta_base.mint_guid() for k in ('root', 'once', 'select', 'talk', 'pick', 'firstSeq')}
-
-    def action(parent, label, kind, params=None):
-        node = meta_base.mint_guid()
-        out = [{'op': 'add-node', 'parent': parent, 'kind': 'action', 'name': label, 'type': kind, 'guid': node}]
-        if params:
-            # set-params は CLI と同じく文字列で受け取る
-            values = {k: (str(v).lower() if isinstance(v, bool) else str(v)) for k, v in params.items()}
-            out.append({'op': 'set-params', 'node': node, 'set': values})
-        return out
-
-    ops = [
-        {'op': 'add-bb-param', 'name': 'Talked', 'value': 0},
-        {'op': 'add-node', 'parent': 'entry', 'kind': 'sequence', 'guid': g['root']},
-        {'op': 'add-node', 'parent': g['root'], 'kind': 'once-exec', 'guid': g['once']},
-        *action(g['once'], 'Show Chat Icon', 'SetEnableShowChatIcon',
-                {'value1': True, 'value2': True, 'value3': False, 'value4': False}),
-        {'op': 'add-node', 'parent': g['root'], 'kind': 'selector', 'guid': g['select']},
-        {'op': 'add-node', 'parent': g['select'], 'kind': 'sequence', 'guid': g['talk']},
-        *action(g['talk'], 'IsChat', 'IsChat'),
-        *action(g['talk'], 'Talk Animation', 'PlayAnimation', {'animatorSetParamNumber_': 1}),
-        {'op': 'add-node', 'parent': g['talk'], 'kind': 'selector', 'guid': g['pick']},
-        {'op': 'add-node', 'parent': g['pick'], 'kind': 'sequence', 'guid': g['firstSeq']},
-        *action(g['firstSeq'], 'Not Talked Yet', 'ReadBlackBoard', {'keyName_': 'Talked', 'equalValue_': 0}),
-        *action(g['firstSeq'], 'First Talk', 'Chat', {'value1': first_chat}),
-        *action(g['firstSeq'], 'Mark Talked', 'WriteBlackBoard', {'keyName_': 'Talked', 'value_': 1}),
-        *action(g['pick'], 'Talk Again', 'Chat', {'value1': again_chat}),
-        *action(g['talk'], 'Idle Animation', 'PlayAnimation', {'animatorSetParamNumber_': 0}),
-        *action(g['select'], 'Idle Animation', 'PlayAnimation', {'animatorSetParamNumber_': 0}),
-    ]
-    apply_ops('tools.bt', f'Assets/Data/FriendlyNpcBehviour/{name}.friendBehaviourData', ops)
-    run('tools.bt', 'validate', f'Assets/Data/FriendlyNpcBehviour/{name}.friendBehaviourData')
-    return guid
-
-
 def data(roles):
     for r in roles:
         print(f'{r.key}')
-        first = write_npc_chat(f'CampPeople{r.key}_First', r.first)
-        again = write_npc_chat(f'CampPeople{r.key}_Again', r.again)
         anim_tree(r)
-        behaviour_tree(r, first, again)
 
 
 # ---------------------------------------------------------------- scene

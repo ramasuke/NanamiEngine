@@ -42,6 +42,7 @@ python -m tools.model <command>        # or: python tools/model.py <command>
 | `convert FILE OUT --mode mesh\|anim\|full [--with-textures] [--emissive ...]` | convert `FILE` (e.g. `.fbx`) → `OUT` (`.mv1`) by driving the real `DxLibModelViewer_64bit.exe` GUI; see "Save modes" / "`--with-textures`" / "Emissive" below |
 | `materials MV1` | list the `.mv1`'s materials (index, name, diffuse, emissive) — the names `--emissive` takes |
 | `set-emissive MV1 --emissive ... [--out PATH]` | set the emissive color of an already-converted `.mv1` (in place unless `--out`; the `.meta`/GUID is untouched) |
+| `set-culling MV1 --mode none\|left\|right [--out PATH]` | set the back-face culling of every mesh (DxLib converts with `left`; `none` = double-sided, for models you can see into such as broken buildings; the `.meta`/GUID is untouched) |
 | `install MV1 --dest ...` | copy a converted `.mv1` into `Assets/`, mint a fresh-GUID `.meta` (an existing `.meta` at `--dest` is kept as-is, GUID included, so re-installing never breaks prefab references), and (with `--with-textures`) place every texture the `.mv1` references next to it, (with `--source`) copy the original `.fbx` under `<dest-dir>/_Source/`, and (with `--textures`) bulk-copy image files under `<dest-dir>/textures/` |
 
 ### Save modes (`convert --mode`, required)
