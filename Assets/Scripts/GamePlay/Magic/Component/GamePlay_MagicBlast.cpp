@@ -71,6 +71,7 @@ namespace GamePlay::Magic
 
         if (const auto entity = Entity().lock())
         {
+            bool hasShaken = false;
             for (const auto& target : targets_)
             {
                 const auto part = target.part.lock();
@@ -79,6 +80,9 @@ namespace GamePlay::Magic
 
                 ApplySpellDamage(*entity, part, power_);
                 ShowSpellDamageText(caster_, part, power_, HitPartPosition(*part));
+                // NOTE: 揺れは重なるので、何体巻き込んでも 1 回だけ
+                if (!hasShaken)
+                    hasShaken = ShakeOnSpellHit(caster_, part, hitShakeIntensity_, hitShakeDuration_secs_);
             }
         }
 
@@ -94,6 +98,8 @@ namespace GamePlay::Magic
         ImGuiHelper::OnDrawInputField("detonatePrefab_", detonatePrefab_);
         ImGuiHelper::OnDrawInputField("detonateEffectLifeTime_secs_", detonateEffectLifeTime_secs_);
         ImGuiHelper::OnDrawInputField("detonateOnEnter_", detonateOnEnter_);
+        ImGuiHelper::OnDrawInputField("hitShakeIntensity_", hitShakeIntensity_);
+        ImGuiHelper::OnDrawInputField("hitShakeDuration_secs_", hitShakeDuration_secs_);
         ImGui::Text("armed: %s  targets: %d", isArmed_ ? "true" : "false", static_cast<int>(targets_.size()));
     }
 }

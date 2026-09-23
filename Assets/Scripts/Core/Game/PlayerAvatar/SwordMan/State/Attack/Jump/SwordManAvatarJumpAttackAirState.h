@@ -20,7 +20,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         void VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const override;
 
     private:
-        AttackTurn attackTurn_;
-        bool       isPlunging_ = false;
+        bool isPlunging_ = false;
     };
 }

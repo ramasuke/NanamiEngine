@@ -17,7 +17,7 @@
                         "value_": "AAC1D754-3E1B-4C71-9DE6-5F4BB6A1F06B"
                     }
                 },
-                "count": 1,
+                "count": 2,
                 "item_0": {
                     "cereal_class_version": 0,
                     "font_": {
@@ -35,9 +35,30 @@
                             }
                         }
                     },
-                    "text_": "欠片の光は草原に落ちた。\n紫の台座から渡れ。",
+                    "text_": "一番近い欠片の光は、草原に落ちた。\nあの紫の台座から渡れる。",
                     "textColor_": {
                         "cereal_class_version": 0,
+                        "r_": 255,
+                        "g_": 255,
+                        "b_": 255
+                    }
+                },
+                "item_1": {
+                    "font_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483651,
+                                "data": {
+                                    "value0": {
+                                        "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "text_": "欠片の周りの魔物は気が立っている。\n……無理はするなよ。",
+                    "textColor_": {
                         "r_": 255,
                         "g_": 255,
                         "b_": 255

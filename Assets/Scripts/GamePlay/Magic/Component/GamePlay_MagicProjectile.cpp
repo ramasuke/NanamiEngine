@@ -52,6 +52,7 @@ namespace GamePlay::Magic
         if (const auto entity = Entity().lock())
             ApplySpellDamage(*entity, other, power_);
         ShowSpellDamageText(caster_, other, power_, Transform().GetWorldPos());
+        ShakeOnSpellHit(caster_, other, hitShakeIntensity_, hitShakeDuration_secs_);
         Impact();
     }
 
@@ -69,6 +70,8 @@ namespace GamePlay::Magic
     {
         ImGuiHelper::OnDrawInputField("impactPrefab_", impactPrefab_);
         ImGuiHelper::OnDrawInputField("impactLifeTime_secs_", impactLifeTime_secs_);
+        ImGuiHelper::OnDrawInputField("hitShakeIntensity_", hitShakeIntensity_);
+        ImGuiHelper::OnDrawInputField("hitShakeDuration_secs_", hitShakeDuration_secs_);
         ImGui::Text("launched: %s  remaining: %.2f", isLaunched_ ? "true" : "false", remainingLifeTime_secs_);
     }
 }

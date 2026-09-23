@@ -28,6 +28,8 @@ namespace GamePlay::Magic
 
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) impactPrefab_;
         [[serialize(0)]] float impactLifeTime_secs_ = 2.0f;
+        [[serialize(1)]] float hitShakeIntensity_     = 0.3f;
+        [[serialize(1)]] float hitShakeDuration_secs_ = 0.12f;
 
         std::weak_ptr<GameObject::IGameObject> caster_;
         GameCore::Damage::PhysicsPower power_;
@@ -45,6 +47,8 @@ namespace GamePlay::Magic
             archive(cereal::base_class<ComponentBase>(this));
             archive(CEREAL_NVP(impactPrefab_));
             archive(CEREAL_NVP(impactLifeTime_secs_));
+            archive(CEREAL_NVP(hitShakeIntensity_));
+            archive(CEREAL_NVP(hitShakeDuration_secs_));
         }
 
         template<class Archive>
@@ -53,9 +57,11 @@ namespace GamePlay::Magic
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 0) archive(CEREAL_NVP(impactPrefab_));
             if (version >= 0) archive(CEREAL_NVP(impactLifeTime_secs_));
+            if (version >= 1) archive(CEREAL_NVP(hitShakeIntensity_));
+            if (version >= 1) archive(CEREAL_NVP(hitShakeDuration_secs_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Magic::MagicProjectile, 0);
+CEREAL_CLASS_VERSION(GamePlay::Magic::MagicProjectile, 1);

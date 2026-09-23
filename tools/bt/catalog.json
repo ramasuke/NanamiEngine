@@ -1,5 +1,5 @@
 {
-  "generated_from": "6b1f1d7a4b1b9cd0ef5301c1deeee7a53d1d0928",
+  "generated_from": "7d59e04c50caf66ce01b1d6d967d72e2e21a4577",
   "actions": {
     "Basic::ChasePlayerForPathFinding": {
       "class": "ChasePlayerForPathFinding",
@@ -1021,6 +1021,28 @@
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/Sample/MoveFront/Enemy_Behaviour_Action_SampleMoveFront.h",
       "params": []
     },
+    "Other::StartChat": {
+      "class": "StartChat",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::StartChat",
+      "leaf": "StartChat",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/StartChat/Enemy_Behaviour_Action_StartChat.h",
+      "params": [
+        {
+          "key": "displayName_",
+          "member": "displayName_",
+          "named": true,
+          "shape": "string"
+        },
+        {
+          "key": "chatData_",
+          "member": "chatData_",
+          "named": true,
+          "shape": "field",
+          "type": "NpcChat"
+        }
+      ]
+    },
     "Other::WriteBlackBoard<Bool>": {
       "class": "WriteBlackBoardBool",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoardBool",
@@ -1651,6 +1673,7 @@
     "GameCore::Npc::Enemy::Behaviour::Action::ShakeCamera": "Camera::ShakeCamera",
     "GameCore::Npc::Enemy::Behaviour::Action::ShootDownAirShip": "RigidBody::Other::ShootDownAirShip",
     "GameCore::Npc::Enemy::Behaviour::Action::ShowBossHealthGauge": "Ui::ShowBossHealthGauge",
+    "GameCore::Npc::Enemy::Behaviour::Action::StartChat": "Other::StartChat",
     "GameCore::Npc::Enemy::Behaviour::Action::Stun": "EnemyStatus::Stun",
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerAngle": "Basic::ToPlayerAngle",
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance": "Basic::ToPlayerDistance",
@@ -1703,6 +1726,7 @@
     "ShakeCamera": "Camera::ShakeCamera",
     "ShootDownAirShip": "RigidBody::Other::ShootDownAirShip",
     "ShowBossHealthGauge": "Ui::ShowBossHealthGauge",
+    "StartChat": "Other::StartChat",
     "Stun": "EnemyStatus::Stun",
     "ToPlayerAngle": "Basic::ToPlayerAngle",
     "ToPlayerDistance": "Basic::ToPlayerDistance",

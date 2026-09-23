@@ -10,6 +10,7 @@ namespace GamePlay::Ui
 {
     /**
      * @brief OS カーソルの代わりにマウス位置へ出すカーソル。ゲームビルドでだけ表示する。
+     * マウスで操作する UI (NanamiUi::Button) が出ている間だけ表示し、
      * 三人称カメラがマウスを中央に留めている間と、ウィンドウが非アクティブの間は隠す
      */
     class GameCursor final : public Component::ComponentBase,
@@ -23,16 +24,28 @@ namespace GamePlay::Ui
         [[nodiscard]] bool ShouldShow(int mouseX, int mouseY) const;
         void SetVisible(bool visible);
         void SetPressed(bool pressed);
+        void UpdatePress(bool isMouseDown);
+        void UpdateScale();
 
         [[serialize(0)]] FIELD(GameObject::IGameObject) visualRoot_;
         [[serialize(0)]] FIELD(NanamiUi::ImageAnimationRenderer) idle_;
         [[serialize(0)]] FIELD(NanamiUi::ImageAnimationRenderer) press_;
         // クリックのアニメを出している時間
         [[serialize(0)]] float pressDuration_secs_ = 0.24f;
+        // 全体の大きさ
+        [[serialize(1)]] float baseScale_ = 0.55f;
+        // 押している間の縮小率
+        [[serialize(1)]] float holdScale_ = 0.8f;
+        // 離した瞬間に跳ねる大きさ
+        [[serialize(1)]] float releaseScale_ = 1.2f;
+        // 目標の大きさへ寄る速さ
+        [[serialize(1)]] float scaleSpeed_ = 18.0f;
 
         bool isVisible_ = false;
         bool wasMouseDown_ = false;
+        bool isHolding_ = false;
         float pressRemaining_secs_ = 0.0f;
+        float animScale_ = 1.0f;
 
 #pragma region Serialization Function
     public:
@@ -46,6 +59,10 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(idle_));
             archive(CEREAL_NVP(press_));
             archive(CEREAL_NVP(pressDuration_secs_));
+            archive(CEREAL_NVP(baseScale_));
+            archive(CEREAL_NVP(holdScale_));
+            archive(CEREAL_NVP(releaseScale_));
+            archive(CEREAL_NVP(scaleSpeed_));
         }
 
         template<class Archive>
@@ -56,9 +73,13 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(idle_));
             if (version >= 0) archive(CEREAL_NVP(press_));
             if (version >= 0) archive(CEREAL_NVP(pressDuration_secs_));
+            if (version >= 1) archive(CEREAL_NVP(baseScale_));
+            if (version >= 1) archive(CEREAL_NVP(holdScale_));
+            if (version >= 1) archive(CEREAL_NVP(releaseScale_));
+            if (version >= 1) archive(CEREAL_NVP(scaleSpeed_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::GameCursor, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::GameCursor, 1);

@@ -17,7 +17,7 @@
                         "value_": "C1A3EE3D-17EC-4FBB-B4ED-77AE71DBAC2E"
                     }
                 },
-                "count": 2,
+                "count": 4,
                 "item_0": {
                     "cereal_class_version": 0,
                     "font_": {
@@ -35,7 +35,7 @@
                             }
                         }
                     },
-                    "text_": "よう、竜を落とした新入りか。\n依頼ならそこの掲示板だ。",
+                    "text_": "よう、新入り。ドラゴンを撃ち落とした\nってのは、あんたか。",
                     "textColor_": {
                         "cereal_class_version": 0,
                         "r_": 255,
@@ -57,7 +57,49 @@
                             }
                         }
                     },
-                    "text_": "仲間が要るなら、\nうちの腕利きを連れていきな。",
+                    "text_": "あの騒ぎで逃げ出した連中もいるが、\n残った腕利きは本物だ。",
+                    "textColor_": {
+                        "r_": 255,
+                        "g_": 255,
+                        "b_": 255
+                    }
+                },
+                "item_2": {
+                    "font_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "value0": {
+                                        "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "text_": "依頼を受けるなら、そこの掲示板だ。\n稼ぎは島の立て直しに回るからな。",
+                    "textColor_": {
+                        "r_": 255,
+                        "g_": 255,
+                        "b_": 255
+                    }
+                },
+                "item_3": {
+                    "font_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "value0": {
+                                        "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "text_": "腕の立つ仲間が要るなら、\nうちから好きなのを連れていきな。",
                     "textColor_": {
                         "r_": 255,
                         "g_": 255,

@@ -26,6 +26,7 @@ namespace GamePlay::Ui
         case QuestBoardState::Taking:    return taking;
         case QuestBoardState::Cleared:   return cleared;
         case QuestBoardState::Preparing: return preparing;
+        case QuestBoardState::Locked:    return locked;
         case QuestBoardState::Open:      return nullptr;
         }
         return nullptr;
@@ -63,13 +64,13 @@ namespace GamePlay::Ui
     {
         EnsureComponents();
 
-        titleText_ ->SetText(entry.quest->Title());
+        titleText_ ->SetText(entry.titleText);
         placeText_ ->SetText(entry.placeText);
         rewardText_->SetText(entry.rewardText);
         ShowQuestBoardRankPips(rankPips_, entry.quest->Rank(), filledPipSprite_.get(), emptyPipSprite_.get());
         eventChip_->SetEnable(entry.isEventQuest);
 
-        const QuestBoardStampSprites stamps{ takingStampSprite_.get(), clearedStampSprite_.get(), preparingStampSprite_.get() };
+        const QuestBoardStampSprites stamps{ takingStampSprite_.get(), clearedStampSprite_.get(), preparingStampSprite_.get(), lockedStampSprite_.get() };
         const auto stamp = stamps.For(entry.state);
         stateStamp_->SetEnable(stamp != nullptr);
         if (stamp)
@@ -118,6 +119,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("takingStampSprite_", takingStampSprite_);
         ImGuiHelper::OnDrawInputField("clearedStampSprite_", clearedStampSprite_);
         ImGuiHelper::OnDrawInputField("preparingStampSprite_", preparingStampSprite_);
+        ImGuiHelper::OnDrawInputField("lockedStampSprite_", lockedStampSprite_);
         ImGuiHelper::OnDrawInputField("selectedTicketSprite_", selectedTicketSprite_);
         ImGuiHelper::OnDrawInputField("unselectedTicketSprite_", unselectedTicketSprite_);
         ImGuiHelper::OnDrawInputField("hoverSound_", hoverSound_);

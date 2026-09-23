@@ -13,6 +13,11 @@ namespace NanamiEngine::Module::Asset
     {
     }
 
+    bool BoardQuest::IsUnlocked(const GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockContext& context) const
+    {
+        return GameCore::PlayerAvatar::Quest::Unlock::AreAllSatisfied(unlockConditions_, context);
+    }
+
     void BoardQuest::OnDrawGui()
     {
         LibCore::ImGuiHelper::OnDrawInputField("title_", title_);
@@ -29,6 +34,8 @@ namespace NanamiEngine::Module::Asset
         });
         LibCore::ImGuiHelper::OnDrawInputField("stage_", stage_);
         LibCore::ImGuiHelper::OnDrawInputField("event_", event_);
+        GameCore::PlayerAvatar::Quest::Unlock::DrawQuestUnlockConditions("unlockConditions_", unlockConditions_);
+        LibCore::ImGuiHelper::OnDrawInputField("lockedText_", lockedText_);
 
         if (!ImGui::CollapsingHeader("quest_", ImGuiTreeNodeFlags_DefaultOpen))
             return;

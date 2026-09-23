@@ -4,6 +4,7 @@
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
 #include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/LookAt/VirtualCameraLookAtBehaviour.h"
 
 namespace
 {
@@ -13,7 +14,7 @@ namespace
         ScenePurposeCameraRpcRegistration()
         {
             GameCore::Network::ScenePurposeCameraRpc::OnTargeted<NanamiEngine::Module::Network::NetworkGameObject>(
-                [](NanamiEngine::Module::Network::NetworkGameObject&, Guid cameraGuid, int priority)
+                [](NanamiEngine::Module::Network::NetworkGameObject& sender, Guid cameraGuid, int priority)
                 {
                     const auto camera = NanamiEngine::Core::Application::ApplicationBase::ObjectRegistry()
                         .Catch<NanamiEngine::CineMachine::CineMachineVirtualCamera>(cameraGuid).lock();
@@ -23,6 +24,13 @@ namespace
                         return;
                     }
                     camera->SetPriority(priority);
+
+                    // NOTE: 権威側と同じく、注視先が空のLookAtは送り元の敵を追いかける
+                    if (const auto lookAt = camera->Components().Catch<NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour>().lock();
+                        lookAt && !lookAt->HasTarget())
+                    {
+                        lookAt->SetTarget(sender.Entity().lock());
+                    }
                 },
                 NanamiEngine::Module::Network::RpcOwnershipFilter::SkipIfOwner);
         }

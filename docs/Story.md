@@ -71,11 +71,14 @@
    `IslandCrumble`（島の底が崩れ落ちる）を出す（BT の "DestroyIslandState 2..4"。`tools/art/island_destruction_effects.py`）。
 5. 墜ちたドラゴンが島の中心に爪を突き立て、**島の心臓を砕いて**飛び去る。
    欠片は三方の狩り場へ散り、島がぐらりと傾いて暗転する。
-   → 実装済み（`FirstEventDragon` の BT の "Heart ..." ノード）: 演出カメラ → `ToIslandHeart` のルートで拠点の島の中心へ降下 →
+   → 実装済み（`FirstEventDragon` の BT の "Heart ..." ノード）: シーンの `Heart Dive Camera`（LookAt でドラゴンを追う）→
+   教官の叫び（`StartChat` で待たずに流す。降下・爪・心臓が砕ける瞬間に3行が重なる）→ `ToIslandHeart` のルートで拠点の島の中心へ降下 →
    爪（`Attack1`）→ `IslandHeartBreak`（光の柱・地割れ・突き出す岩）と島の縁の崩落 → `HeartShardScatter`（緑・金・赤の光が
    三方へ散る。`tools/art/heart_shatter_effect.py`）→ 揺れ → 島の底が崩れ落ちる →
    島全体を映すカメラで、噴水の島（`SecondIsland`）と家の島（`ThirdIsland`）が橋ごと傾いて雲の下へ落ちていく
-   （BT アクション `FallIsland`。燃えていた炎と煙は `AttachParticle` で島に付いたまま一緒に落ちる）→ 教官の叫び → 巣へ帰る。
+   （BT アクション `FallIsland`。燃えていた炎と煙は `AttachParticle` で島に付いたまま一緒に落ちる）→ `Heart Dive Camera` のまま巣へ帰るのを見送る。
+   NOTE: Sequence は毎フレーム子0から Tick し直すので、待ち（`WaitSeconds` / ルート / 会話）の手前に置く生成・再生・カメラ切替は
+   1つずつ `OnceExecute` で包む（包まないと待っている間ずっと毎フレーム出る）。
    この2つの島と3本の橋は `MainIslandScene` には無い（落ちた設定）。
 
 序章を抜けると `StoryFlag::PrologueCleared` が立つ（実装済み）。
@@ -243,8 +246,7 @@ python tools/art/story_npcs.py --only camp     # prologue / dragon / island / ne
 ## 8. 台詞を書くときの決まり
 
 - 1つの `text_` は **2行まで**（改行は `\n`）。1行は **22 字まで**。CP932 に無い字（「〜」など）は使えない。
-- 会話は短く。`_First`（初めて話しかけたとき）は2〜3ページ、`_Again`（2回目以降）は1ページで要点だけ。
-  1行は16字くらいを目安にし、筋とゲームのヒントに要らない前置き・言い換えは削る。
+- `_First`（初めて話しかけたとき）は3〜5ページ、`_Again`（2回目以降）は1ページで要点だけ。
 - 間は「……」で表す（「...」は使わない）。
 - 説明は台詞の中でする。ナレーションは使わない。
 - ゲームの操作は、NPC が世界の言葉で言う（例:「正面に立つな、横へ跳べ。」）。ボタン名は出さない。

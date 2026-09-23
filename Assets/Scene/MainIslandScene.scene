@@ -23825,7 +23825,7 @@
                 "isActive_": true,
                 "name_": "RestorationSite_Dock",
                 "guid_": {
-                    "value_": "66779CBE-9CE7-40A8-9C7E-D9C2A4CF3AB3"
+                    "value_": "FF458386-4091-420B-8D21-FD7F82C9933C"
                 },
                 "components_": {
                     "componentCount": 1,
@@ -23835,10 +23835,10 @@
                         "ptr_wrapper": {
                             "id": 2147484396,
                             "data": {
-                                "cereal_class_version": 1,
+                                "cereal_class_version": 2,
                                 "value0": {
                                     "guid_": {
-                                        "value_": "5195107B-3E01-4560-94F9-4B912E785130"
+                                        "value_": "9610C93F-746C-4D33-8E9A-4223C71B9654"
                                     },
                                     "isEnable_": true
                                 },
@@ -23863,7 +23863,7 @@
                                             "id": 2147484398,
                                             "data": {
                                                 "value0": {
-                                                    "value_": "38A72452-467B-49D2-92D0-C360F1C8DED0"
+                                                    "value_": "00000000-0000-0000-0000-000000000000"
                                                 }
                                             }
                                         }
@@ -23876,13 +23876,26 @@
                                             "id": 2147484399,
                                             "data": {
                                                 "value0": {
-                                                    "value_": "0FAE9BB1-29A7-45E3-8C04-0725968EFDE9"
+                                                    "value_": "E067DC88-A82F-4E7E-8B73-FF1BA369760A"
                                                 }
                                             }
                                         }
                                     }
                                 },
-                                "previewPriority_": 0
+                                "previewPriority_": 0,
+                                "restoredPrefab_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147484400,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "2B40425C-9189-4AA4-BD39-F57569845EB8"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -23930,683 +23943,11 @@
                             "value3": 1.0
                         }
                     },
-                    "childCount": 3,
-                    "child": {
-                        "polymorphic_id": 5,
-                        "ptr_wrapper": {
-                            "id": 2147484400,
-                            "data": {
-                                "value0": {
-                                    "value0": {}
-                                },
-                                "isActive_": true,
-                                "name_": "Restored",
-                                "guid_": {
-                                    "value_": "38A72452-467B-49D2-92D0-C360F1C8DED0"
-                                },
-                                "components_": {
-                                    "componentCount": 0
-                                },
-                                "transform_": {
-                                    "localPos_": {
-                                        "value0": 0.0,
-                                        "value1": 0.0,
-                                        "value2": 0.0
-                                    },
-                                    "localRot_": {
-                                        "value0": 0.0,
-                                        "value1": 0.0,
-                                        "value2": 0.0,
-                                        "value3": 1.0
-                                    },
-                                    "localScale_": {
-                                        "value0": 1.0,
-                                        "value1": 1.0,
-                                        "value2": 1.0
-                                    },
-                                    "worldMatrix_": {
-                                        "value0": {
-                                            "value0": 1.0,
-                                            "value1": 0.0,
-                                            "value2": 0.0,
-                                            "value3": 0.0
-                                        },
-                                        "value1": {
-                                            "value0": 0.0,
-                                            "value1": 1.0,
-                                            "value2": 0.0,
-                                            "value3": 0.0
-                                        },
-                                        "value2": {
-                                            "value0": 0.0,
-                                            "value1": 0.0,
-                                            "value2": 1.0,
-                                            "value3": 0.0
-                                        },
-                                        "value3": {
-                                            "value0": -78.0,
-                                            "value1": 22.299999237060547,
-                                            "value2": 125.0,
-                                            "value3": 1.0
-                                        }
-                                    },
-                                    "childCount": 6,
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484401,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Collider",
-                                                "guid_": {
-                                                    "value_": "D88DEF9A-2E26-48E6-AD2D-3D68342F6CA4"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 3,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484402,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "value0": {
-                                                                        "guid_": {
-                                                                            "value_": "EB25602E-9FF8-4557-86E7-BE46F087D9DF"
-                                                                        },
-                                                                        "isEnable_": false
-                                                                    },
-                                                                    "offset_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "offsetRotation_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "layer_": 0,
-                                                                    "isSensor_": false,
-                                                                    "friction_": 0.20000000298023225
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "size_": {
-                                                                    "value0": 23.200000762939454,
-                                                                    "value1": 1.600000023841858,
-                                                                    "value2": 22.399999618530275
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": 0.0,
-                                                        "value1": 22.799999237060548,
-                                                        "value2": 0.0
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": -0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 1.0,
-                                                        "value1": 1.0,
-                                                        "value2": 1.0
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 1.0,
-                                                            "value1": 0.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 1.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.0,
-                                                            "value2": 1.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": -78.0,
-                                                            "value1": 45.099998474121094,
-                                                            "value2": 125.0,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 0
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    },
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484403,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Collider",
-                                                "guid_": {
-                                                    "value_": "AED82422-935C-4296-8912-973531E4D9D4"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 3,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484404,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "value0": {
-                                                                        "guid_": {
-                                                                            "value_": "DB863C43-DF48-46D5-A26B-76B6817D1AD1"
-                                                                        },
-                                                                        "isEnable_": false
-                                                                    },
-                                                                    "offset_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "offsetRotation_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "layer_": 0,
-                                                                    "isSensor_": false,
-                                                                    "friction_": 0.20000000298023225
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "size_": {
-                                                                    "value0": 2.0,
-                                                                    "value1": 22.399999618530275,
-                                                                    "value2": 2.0
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": -10.272000312805176,
-                                                        "value1": 11.199999809265137,
-                                                        "value2": -10.272000312805176
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": -0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 1.0,
-                                                        "value1": 1.0,
-                                                        "value2": 1.0
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 1.0,
-                                                            "value1": 0.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 1.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.0,
-                                                            "value2": 1.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": -88.27200317382812,
-                                                            "value1": 33.5,
-                                                            "value2": 114.72799682617188,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 0
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    },
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484405,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Collider",
-                                                "guid_": {
-                                                    "value_": "3CC61869-9FA6-4314-B21B-AC896EC2EED5"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 3,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484406,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "value0": {
-                                                                        "guid_": {
-                                                                            "value_": "ED13AD15-AE0D-4E6B-8DB5-9D4D68205800"
-                                                                        },
-                                                                        "isEnable_": false
-                                                                    },
-                                                                    "offset_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "offsetRotation_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "layer_": 0,
-                                                                    "isSensor_": false,
-                                                                    "friction_": 0.20000000298023225
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "size_": {
-                                                                    "value0": 2.0,
-                                                                    "value1": 22.399999618530275,
-                                                                    "value2": 2.0
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": 10.272000312805176,
-                                                        "value1": 11.199999809265137,
-                                                        "value2": -10.272000312805176
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": -0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 1.0,
-                                                        "value1": 1.0,
-                                                        "value2": 1.0
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 1.0,
-                                                            "value1": 0.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 1.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.0,
-                                                            "value2": 1.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": -67.72799682617188,
-                                                            "value1": 33.5,
-                                                            "value2": 114.72799682617188,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 0
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    },
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484407,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Collider",
-                                                "guid_": {
-                                                    "value_": "95EA48B7-BA5A-4C45-B487-5CCA5AAB884D"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 3,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484408,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "value0": {
-                                                                        "guid_": {
-                                                                            "value_": "83FA4FDD-3E00-4631-B360-C86889BCCAB4"
-                                                                        },
-                                                                        "isEnable_": false
-                                                                    },
-                                                                    "offset_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "offsetRotation_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "layer_": 0,
-                                                                    "isSensor_": false,
-                                                                    "friction_": 0.20000000298023225
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "size_": {
-                                                                    "value0": 2.0,
-                                                                    "value1": 22.399999618530275,
-                                                                    "value2": 2.0
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": 10.272000312805176,
-                                                        "value1": 11.199999809265137,
-                                                        "value2": 10.272000312805176
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": -0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 1.0,
-                                                        "value1": 1.0,
-                                                        "value2": 1.0
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 1.0,
-                                                            "value1": 0.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 1.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.0,
-                                                            "value2": 1.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": -67.72799682617188,
-                                                            "value1": 33.5,
-                                                            "value2": 135.27200317382812,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 0
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    },
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484409,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Collider",
-                                                "guid_": {
-                                                    "value_": "E606FD55-BD0E-4EC9-AEF0-6F98926B3B20"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 3,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484410,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "value0": {
-                                                                        "guid_": {
-                                                                            "value_": "FDA3EA71-C387-44F6-9DD6-ECA9434D926D"
-                                                                        },
-                                                                        "isEnable_": false
-                                                                    },
-                                                                    "offset_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "offsetRotation_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "layer_": 0,
-                                                                    "isSensor_": false,
-                                                                    "friction_": 0.20000000298023225
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "size_": {
-                                                                    "value0": 2.0,
-                                                                    "value1": 22.399999618530275,
-                                                                    "value2": 2.0
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": -10.272000312805176,
-                                                        "value1": 11.199999809265137,
-                                                        "value2": 10.272000312805176
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": -0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 1.0,
-                                                        "value1": 1.0,
-                                                        "value2": 1.0
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 1.0,
-                                                            "value1": 0.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 1.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.0,
-                                                            "value2": 1.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": -88.27200317382812,
-                                                            "value1": 33.5,
-                                                            "value2": 135.27200317382812,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 0
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    },
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484411,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Model",
-                                                "guid_": {
-                                                    "value_": "E93F1720-F1AF-439C-B8D2-80F5611ED5F7"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 2,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484412,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "guid_": {
-                                                                        "value_": "B85A6650-9409-4561-8EB2-2239150FB8CE"
-                                                                    },
-                                                                    "isEnable_": false
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "value4": {},
-                                                                "mv1File_": {
-                                                                    "value0": {
-                                                                        "polymorphic_id": 1073741824,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484413,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "value_": "E2110EE3-A169-40AC-A75C-2F807350F66D"
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "useFixedInterpolation_": false
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 0.07999999821186066,
-                                                        "value1": 0.07999999821186066,
-                                                        "value2": 0.07999999821186066
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 0.07999999821186066,
-                                                            "value1": 0.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.07999999821186066,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.0,
-                                                            "value2": 0.07999999821186066,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": -78.0,
-                                                            "value1": 22.299999237060547,
-                                                            "value2": 125.0,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 0
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    }
-                                },
-                                "mark_": 0
-                            }
-                        }
-                    },
+                    "childCount": 2,
                     "child": {
                         "polymorphic_id": 1,
                         "ptr_wrapper": {
-                            "id": 2147484414,
+                            "id": 2147484401,
                             "data": {
                                 "value0": {
                                     "value0": {}
@@ -24614,7 +23955,7 @@
                                 "isActive_": true,
                                 "name_": "PreviewTarget",
                                 "guid_": {
-                                    "value_": "8FEB59E1-3A33-42A3-8828-883CF02BFEB9"
+                                    "value_": "C867F055-CB48-4D24-8CC5-CDDD7919D4A2"
                                 },
                                 "components_": {
                                     "componentCount": 0
@@ -24671,7 +24012,7 @@
                     "child": {
                         "polymorphic_id": 1,
                         "ptr_wrapper": {
-                            "id": 2147484415,
+                            "id": 2147484402,
                             "data": {
                                 "value0": {
                                     "value0": {}
@@ -24679,18 +24020,18 @@
                                 "isActive_": true,
                                 "name_": "PreviewCamera",
                                 "guid_": {
-                                    "value_": "F32F7FC3-41E5-46B2-B83B-4BB9247556D6"
+                                    "value_": "0527742C-C397-4594-B4BA-CBB2FC089150"
                                 },
                                 "components_": {
                                     "componentCount": 2,
                                     "component_0": {
                                         "polymorphic_id": 10,
                                         "ptr_wrapper": {
-                                            "id": 2147484416,
+                                            "id": 2147484403,
                                             "data": {
                                                 "value0": {
                                                     "guid_": {
-                                                        "value_": "0FAE9BB1-29A7-45E3-8C04-0725968EFDE9"
+                                                        "value_": "E067DC88-A82F-4E7E-8B73-FF1BA369760A"
                                                     },
                                                     "isEnable_": true
                                                 },
@@ -24705,11 +24046,11 @@
                                     "component_1": {
                                         "polymorphic_id": 20,
                                         "ptr_wrapper": {
-                                            "id": 2147484417,
+                                            "id": 2147484404,
                                             "data": {
                                                 "value0": {
                                                     "guid_": {
-                                                        "value_": "C7A4DF91-63AE-4FEC-AB54-D346D7461988"
+                                                        "value_": "BE2EED54-0891-4674-9E7E-975C84FFA201"
                                                     },
                                                     "isEnable_": true
                                                 },
@@ -24720,10 +24061,10 @@
                                                     "value0": {
                                                         "polymorphic_id": 1073741824,
                                                         "ptr_wrapper": {
-                                                            "id": 2147484418,
+                                                            "id": 2147484405,
                                                             "data": {
                                                                 "value0": {
-                                                                    "value_": "8FEB59E1-3A33-42A3-8828-883CF02BFEB9"
+                                                                    "value_": "C867F055-CB48-4D24-8CC5-CDDD7919D4A2"
                                                                 }
                                                             }
                                                         }
@@ -24795,7 +24136,7 @@
     "gameObject_18": {
         "polymorphic_id": 5,
         "ptr_wrapper": {
-            "id": 2147484419,
+            "id": 2147484406,
             "data": {
                 "value0": {
                     "value0": {}
@@ -24803,18 +24144,18 @@
                 "isActive_": true,
                 "name_": "RestorationSite_GeneralStore",
                 "guid_": {
-                    "value_": "3D4FB6EA-4E00-4E73-86AA-A65614822661"
+                    "value_": "4083F2B4-30A0-4350-A229-2463EEAE1FFF"
                 },
                 "components_": {
                     "componentCount": 1,
                     "component_0": {
                         "polymorphic_id": 34,
                         "ptr_wrapper": {
-                            "id": 2147484420,
+                            "id": 2147484407,
                             "data": {
                                 "value0": {
                                     "guid_": {
-                                        "value_": "A53AA5B7-FACA-4A30-B730-2DD178C8D83B"
+                                        "value_": "6ABF6821-AE24-4E07-88B0-15A01E5598A5"
                                     },
                                     "isEnable_": true
                                 },
@@ -24823,7 +24164,7 @@
                                     "value0": {
                                         "polymorphic_id": 1073741824,
                                         "ptr_wrapper": {
-                                            "id": 2147484421,
+                                            "id": 2147484408,
                                             "data": {
                                                 "value0": {
                                                     "value_": "00000000-0000-0000-0000-000000000000"
@@ -24836,10 +24177,10 @@
                                     "value0": {
                                         "polymorphic_id": 1073741824,
                                         "ptr_wrapper": {
-                                            "id": 2147484422,
+                                            "id": 2147484409,
                                             "data": {
                                                 "value0": {
-                                                    "value_": "90B5F944-51B5-4CFD-A134-13955F5DE1FB"
+                                                    "value_": "00000000-0000-0000-0000-000000000000"
                                                 }
                                             }
                                         }
@@ -24849,16 +24190,29 @@
                                     "value0": {
                                         "polymorphic_id": 1073741824,
                                         "ptr_wrapper": {
-                                            "id": 2147484423,
+                                            "id": 2147484410,
                                             "data": {
                                                 "value0": {
-                                                    "value_": "22B43191-4DA9-4C38-AE7F-97F5A5345F56"
+                                                    "value_": "848F3D8A-7C06-4479-8DAC-EF8E4FC539A5"
                                                 }
                                             }
                                         }
                                     }
                                 },
-                                "previewPriority_": 0
+                                "previewPriority_": 0,
+                                "restoredPrefab_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147484411,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "E245896A-BA01-4F94-8723-D3986BB5013C"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -24906,275 +24260,11 @@
                             "value3": 1.0
                         }
                     },
-                    "childCount": 3,
-                    "child": {
-                        "polymorphic_id": 5,
-                        "ptr_wrapper": {
-                            "id": 2147484424,
-                            "data": {
-                                "value0": {
-                                    "value0": {}
-                                },
-                                "isActive_": true,
-                                "name_": "Restored",
-                                "guid_": {
-                                    "value_": "90B5F944-51B5-4CFD-A134-13955F5DE1FB"
-                                },
-                                "components_": {
-                                    "componentCount": 0
-                                },
-                                "transform_": {
-                                    "localPos_": {
-                                        "value0": 0.0,
-                                        "value1": 0.0,
-                                        "value2": 0.0
-                                    },
-                                    "localRot_": {
-                                        "value0": 0.0,
-                                        "value1": 0.0,
-                                        "value2": 0.0,
-                                        "value3": 1.0
-                                    },
-                                    "localScale_": {
-                                        "value0": 1.0,
-                                        "value1": 1.0,
-                                        "value2": 1.0
-                                    },
-                                    "worldMatrix_": {
-                                        "value0": {
-                                            "value0": 1.0,
-                                            "value1": 0.0,
-                                            "value2": 0.0,
-                                            "value3": 0.0
-                                        },
-                                        "value1": {
-                                            "value0": 0.0,
-                                            "value1": 1.0,
-                                            "value2": 0.0,
-                                            "value3": 0.0
-                                        },
-                                        "value2": {
-                                            "value0": 0.0,
-                                            "value1": 0.0,
-                                            "value2": 1.0,
-                                            "value3": 0.0
-                                        },
-                                        "value3": {
-                                            "value0": 28.0,
-                                            "value1": 22.299999237060547,
-                                            "value2": 68.0,
-                                            "value3": 1.0
-                                        }
-                                    },
-                                    "childCount": 2,
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484425,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Collider",
-                                                "guid_": {
-                                                    "value_": "F7901D8B-A00A-43D6-99CE-B87643BD5E04"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 3,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484426,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "value0": {
-                                                                        "guid_": {
-                                                                            "value_": "1FC872A0-39A2-41F8-8354-21BC45086417"
-                                                                        },
-                                                                        "isEnable_": false
-                                                                    },
-                                                                    "offset_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "offsetRotation_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "layer_": 0,
-                                                                    "isSensor_": false,
-                                                                    "friction_": 0.20000000298023225
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "size_": {
-                                                                    "value0": 32.0,
-                                                                    "value1": 14.399999618530274,
-                                                                    "value2": 19.200000762939454
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": 0.0,
-                                                        "value1": 7.199999809265137,
-                                                        "value2": -9.199999809265137
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": -0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 1.0,
-                                                        "value1": 1.0,
-                                                        "value2": 1.0
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 1.0,
-                                                            "value1": 0.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 1.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.0,
-                                                            "value2": 1.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": 28.0,
-                                                            "value1": 29.5,
-                                                            "value2": 58.79999923706055,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 0
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    },
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484427,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Model",
-                                                "guid_": {
-                                                    "value_": "9603E6B3-9FCE-4731-9751-19AAA30B430A"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 2,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484428,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "guid_": {
-                                                                        "value_": "96308B54-569C-4AD1-B7A7-ED7D357C265A"
-                                                                    },
-                                                                    "isEnable_": false
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "value4": {},
-                                                                "mv1File_": {
-                                                                    "value0": {
-                                                                        "polymorphic_id": 1073741824,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484429,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "value_": "13168E90-CF51-467C-A643-1BE8FC263493"
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "useFixedInterpolation_": false
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 0.07999999821186066,
-                                                        "value1": 0.07999999821186066,
-                                                        "value2": 0.07999999821186066
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 0.07999999821186066,
-                                                            "value1": 0.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.07999999821186066,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.0,
-                                                            "value2": 0.07999999821186066,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": 28.0,
-                                                            "value1": 22.299999237060547,
-                                                            "value2": 68.0,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 0
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    }
-                                },
-                                "mark_": 0
-                            }
-                        }
-                    },
+                    "childCount": 2,
                     "child": {
                         "polymorphic_id": 1,
                         "ptr_wrapper": {
-                            "id": 2147484430,
+                            "id": 2147484412,
                             "data": {
                                 "value0": {
                                     "value0": {}
@@ -25182,7 +24272,7 @@
                                 "isActive_": true,
                                 "name_": "PreviewTarget",
                                 "guid_": {
-                                    "value_": "711C2684-74A1-4378-930B-B4A7B60FEFD2"
+                                    "value_": "ABD9CF04-2B45-4E72-8F21-C4BD673EA7B4"
                                 },
                                 "components_": {
                                     "componentCount": 0
@@ -25239,7 +24329,7 @@
                     "child": {
                         "polymorphic_id": 1,
                         "ptr_wrapper": {
-                            "id": 2147484431,
+                            "id": 2147484413,
                             "data": {
                                 "value0": {
                                     "value0": {}
@@ -25247,18 +24337,18 @@
                                 "isActive_": true,
                                 "name_": "PreviewCamera",
                                 "guid_": {
-                                    "value_": "C32D8CC9-13BC-43D3-AB20-0162E2DEB7BC"
+                                    "value_": "3055E3DD-A9E8-47EE-8C6F-A3EC3988EE3D"
                                 },
                                 "components_": {
                                     "componentCount": 2,
                                     "component_0": {
                                         "polymorphic_id": 10,
                                         "ptr_wrapper": {
-                                            "id": 2147484432,
+                                            "id": 2147484414,
                                             "data": {
                                                 "value0": {
                                                     "guid_": {
-                                                        "value_": "22B43191-4DA9-4C38-AE7F-97F5A5345F56"
+                                                        "value_": "848F3D8A-7C06-4479-8DAC-EF8E4FC539A5"
                                                     },
                                                     "isEnable_": true
                                                 },
@@ -25273,11 +24363,11 @@
                                     "component_1": {
                                         "polymorphic_id": 20,
                                         "ptr_wrapper": {
-                                            "id": 2147484433,
+                                            "id": 2147484415,
                                             "data": {
                                                 "value0": {
                                                     "guid_": {
-                                                        "value_": "8FF92D0A-8A96-4A31-B06B-3F05290C7B04"
+                                                        "value_": "BB83D27B-067E-4E40-B8F6-CB65D89B229A"
                                                     },
                                                     "isEnable_": true
                                                 },
@@ -25288,10 +24378,10 @@
                                                     "value0": {
                                                         "polymorphic_id": 1073741824,
                                                         "ptr_wrapper": {
-                                                            "id": 2147484434,
+                                                            "id": 2147484416,
                                                             "data": {
                                                                 "value0": {
-                                                                    "value_": "711C2684-74A1-4378-930B-B4A7B60FEFD2"
+                                                                    "value_": "ABD9CF04-2B45-4E72-8F21-C4BD673EA7B4"
                                                                 }
                                                             }
                                                         }
@@ -25363,7 +24453,7 @@
     "gameObject_19": {
         "polymorphic_id": 5,
         "ptr_wrapper": {
-            "id": 2147484435,
+            "id": 2147484417,
             "data": {
                 "value0": {
                     "value0": {}
@@ -25371,18 +24461,18 @@
                 "isActive_": true,
                 "name_": "RestorationSite_HunterLodge",
                 "guid_": {
-                    "value_": "A5B952B9-52D8-4CE8-A53D-1805C6BFD5F1"
+                    "value_": "2C16F155-1F36-4C1F-BCE6-DE161DDE2196"
                 },
                 "components_": {
                     "componentCount": 1,
                     "component_0": {
                         "polymorphic_id": 34,
                         "ptr_wrapper": {
-                            "id": 2147484436,
+                            "id": 2147484418,
                             "data": {
                                 "value0": {
                                     "guid_": {
-                                        "value_": "40FED6AE-ED5F-46BB-AC80-EDB7FC48585E"
+                                        "value_": "9260324B-1F1D-4C90-9F0A-F704167483D5"
                                     },
                                     "isEnable_": true
                                 },
@@ -25391,7 +24481,7 @@
                                     "value0": {
                                         "polymorphic_id": 1073741824,
                                         "ptr_wrapper": {
-                                            "id": 2147484437,
+                                            "id": 2147484419,
                                             "data": {
                                                 "value0": {
                                                     "value_": "00000000-0000-0000-0000-000000000000"
@@ -25404,10 +24494,10 @@
                                     "value0": {
                                         "polymorphic_id": 1073741824,
                                         "ptr_wrapper": {
-                                            "id": 2147484438,
+                                            "id": 2147484420,
                                             "data": {
                                                 "value0": {
-                                                    "value_": "2A6A824A-A257-42C2-BABC-8FB47B01A95C"
+                                                    "value_": "00000000-0000-0000-0000-000000000000"
                                                 }
                                             }
                                         }
@@ -25417,16 +24507,29 @@
                                     "value0": {
                                         "polymorphic_id": 1073741824,
                                         "ptr_wrapper": {
-                                            "id": 2147484439,
+                                            "id": 2147484421,
                                             "data": {
                                                 "value0": {
-                                                    "value_": "B897884C-9E40-4758-BCF1-C6E20B72F80C"
+                                                    "value_": "2AD7EA84-EBE0-435C-A221-474621688446"
                                                 }
                                             }
                                         }
                                     }
                                 },
-                                "previewPriority_": 0
+                                "previewPriority_": 0,
+                                "restoredPrefab_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147484422,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "C0D78DC4-D036-4315-B870-46FD1F973B0C"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -25474,275 +24577,11 @@
                             "value3": 1.0
                         }
                     },
-                    "childCount": 3,
-                    "child": {
-                        "polymorphic_id": 5,
-                        "ptr_wrapper": {
-                            "id": 2147484440,
-                            "data": {
-                                "value0": {
-                                    "value0": {}
-                                },
-                                "isActive_": true,
-                                "name_": "Restored",
-                                "guid_": {
-                                    "value_": "2A6A824A-A257-42C2-BABC-8FB47B01A95C"
-                                },
-                                "components_": {
-                                    "componentCount": 0
-                                },
-                                "transform_": {
-                                    "localPos_": {
-                                        "value0": 0.0,
-                                        "value1": 0.0,
-                                        "value2": 0.0
-                                    },
-                                    "localRot_": {
-                                        "value0": 0.0,
-                                        "value1": 0.0,
-                                        "value2": 0.0,
-                                        "value3": 1.0
-                                    },
-                                    "localScale_": {
-                                        "value0": 1.0,
-                                        "value1": 1.0,
-                                        "value2": 1.0
-                                    },
-                                    "worldMatrix_": {
-                                        "value0": {
-                                            "value0": 1.0,
-                                            "value1": 0.0,
-                                            "value2": 0.0,
-                                            "value3": 0.0
-                                        },
-                                        "value1": {
-                                            "value0": 0.0,
-                                            "value1": 1.0,
-                                            "value2": 0.0,
-                                            "value3": 0.0
-                                        },
-                                        "value2": {
-                                            "value0": 0.0,
-                                            "value1": 0.0,
-                                            "value2": 1.0,
-                                            "value3": 0.0
-                                        },
-                                        "value3": {
-                                            "value0": -39.0,
-                                            "value1": 22.299999237060547,
-                                            "value2": 54.0,
-                                            "value3": 1.0
-                                        }
-                                    },
-                                    "childCount": 2,
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484441,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Collider",
-                                                "guid_": {
-                                                    "value_": "B6CBD736-09AA-4FEC-B566-7EFA4BC76E82"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 3,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484442,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "value0": {
-                                                                        "guid_": {
-                                                                            "value_": "2A9AE8F8-B580-49D7-849F-7618025987FF"
-                                                                        },
-                                                                        "isEnable_": false
-                                                                    },
-                                                                    "offset_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "offsetRotation_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "layer_": 0,
-                                                                    "isSensor_": false,
-                                                                    "friction_": 0.20000000298023225
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "size_": {
-                                                                    "value0": 25.600000381469728,
-                                                                    "value1": 22.399999618530275,
-                                                                    "value2": 25.600000381469728
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": 0.0,
-                                                        "value1": 11.199999809265137,
-                                                        "value2": 0.0
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": -0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 1.0,
-                                                        "value1": 1.0,
-                                                        "value2": 1.0
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 1.0,
-                                                            "value1": 0.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 1.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.0,
-                                                            "value2": 1.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": -39.0,
-                                                            "value1": 33.5,
-                                                            "value2": 54.0,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 0
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    },
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484443,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Model",
-                                                "guid_": {
-                                                    "value_": "BC672222-DB11-403D-BE91-EE9F68B65E7B"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 2,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484444,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "guid_": {
-                                                                        "value_": "86AE3C9C-F03F-484C-A4E2-3214BA4C0262"
-                                                                    },
-                                                                    "isEnable_": false
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "value4": {},
-                                                                "mv1File_": {
-                                                                    "value0": {
-                                                                        "polymorphic_id": 1073741824,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484445,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "value_": "73B78CB4-7974-41CD-BD3D-5CED8E237558"
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "useFixedInterpolation_": false
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 0.07999999821186066,
-                                                        "value1": 0.07999999821186066,
-                                                        "value2": 0.07999999821186066
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 0.07999999821186066,
-                                                            "value1": 0.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.07999999821186066,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.0,
-                                                            "value2": 0.07999999821186066,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": -39.0,
-                                                            "value1": 22.299999237060547,
-                                                            "value2": 54.0,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 0
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    }
-                                },
-                                "mark_": 0
-                            }
-                        }
-                    },
+                    "childCount": 2,
                     "child": {
                         "polymorphic_id": 1,
                         "ptr_wrapper": {
-                            "id": 2147484446,
+                            "id": 2147484423,
                             "data": {
                                 "value0": {
                                     "value0": {}
@@ -25750,7 +24589,7 @@
                                 "isActive_": true,
                                 "name_": "PreviewTarget",
                                 "guid_": {
-                                    "value_": "0F809185-DAC4-4AAB-8226-CB4816B4809C"
+                                    "value_": "835A5C8F-E84A-4A9F-A0D2-D6D6AC71C6E6"
                                 },
                                 "components_": {
                                     "componentCount": 0
@@ -25807,7 +24646,7 @@
                     "child": {
                         "polymorphic_id": 1,
                         "ptr_wrapper": {
-                            "id": 2147484447,
+                            "id": 2147484424,
                             "data": {
                                 "value0": {
                                     "value0": {}
@@ -25815,18 +24654,18 @@
                                 "isActive_": true,
                                 "name_": "PreviewCamera",
                                 "guid_": {
-                                    "value_": "40E01C2F-30FB-4214-8051-B39671BE1084"
+                                    "value_": "77691A51-3B15-445D-A303-9C0B9A1C3397"
                                 },
                                 "components_": {
                                     "componentCount": 2,
                                     "component_0": {
                                         "polymorphic_id": 10,
                                         "ptr_wrapper": {
-                                            "id": 2147484448,
+                                            "id": 2147484425,
                                             "data": {
                                                 "value0": {
                                                     "guid_": {
-                                                        "value_": "B897884C-9E40-4758-BCF1-C6E20B72F80C"
+                                                        "value_": "2AD7EA84-EBE0-435C-A221-474621688446"
                                                     },
                                                     "isEnable_": true
                                                 },
@@ -25841,11 +24680,11 @@
                                     "component_1": {
                                         "polymorphic_id": 20,
                                         "ptr_wrapper": {
-                                            "id": 2147484449,
+                                            "id": 2147484426,
                                             "data": {
                                                 "value0": {
                                                     "guid_": {
-                                                        "value_": "FAEDA0AA-2DAE-4852-BA48-9B77D3DDE17C"
+                                                        "value_": "F7B5A28B-36F5-4635-B11B-6775211E5237"
                                                     },
                                                     "isEnable_": true
                                                 },
@@ -25856,10 +24695,10 @@
                                                     "value0": {
                                                         "polymorphic_id": 1073741824,
                                                         "ptr_wrapper": {
-                                                            "id": 2147484450,
+                                                            "id": 2147484427,
                                                             "data": {
                                                                 "value0": {
-                                                                    "value_": "0F809185-DAC4-4AAB-8226-CB4816B4809C"
+                                                                    "value_": "835A5C8F-E84A-4A9F-A0D2-D6D6AC71C6E6"
                                                                 }
                                                             }
                                                         }
@@ -25931,7 +24770,7 @@
     "gameObject_20": {
         "polymorphic_id": 5,
         "ptr_wrapper": {
-            "id": 2147484451,
+            "id": 2147484428,
             "data": {
                 "value0": {
                     "value0": {}
@@ -25939,18 +24778,18 @@
                 "isActive_": true,
                 "name_": "RestorationSite_Field",
                 "guid_": {
-                    "value_": "48621E9D-B87B-44BA-8A6E-1B597F04CD8A"
+                    "value_": "A6AF0BE3-2C96-4BA6-9232-F721485F4571"
                 },
                 "components_": {
                     "componentCount": 1,
                     "component_0": {
                         "polymorphic_id": 34,
                         "ptr_wrapper": {
-                            "id": 2147484452,
+                            "id": 2147484429,
                             "data": {
                                 "value0": {
                                     "guid_": {
-                                        "value_": "1DFA1B31-4325-479A-92F0-4DAF8FB18939"
+                                        "value_": "6CDB015E-742F-4828-9CBE-0317D70ABC8F"
                                     },
                                     "isEnable_": true
                                 },
@@ -25959,7 +24798,7 @@
                                     "value0": {
                                         "polymorphic_id": 1073741824,
                                         "ptr_wrapper": {
-                                            "id": 2147484453,
+                                            "id": 2147484430,
                                             "data": {
                                                 "value0": {
                                                     "value_": "00000000-0000-0000-0000-000000000000"
@@ -25972,10 +24811,10 @@
                                     "value0": {
                                         "polymorphic_id": 1073741824,
                                         "ptr_wrapper": {
-                                            "id": 2147484454,
+                                            "id": 2147484431,
                                             "data": {
                                                 "value0": {
-                                                    "value_": "2EFDC7C6-E5C5-4DBB-8566-075EE99FCC8C"
+                                                    "value_": "00000000-0000-0000-0000-000000000000"
                                                 }
                                             }
                                         }
@@ -25985,16 +24824,29 @@
                                     "value0": {
                                         "polymorphic_id": 1073741824,
                                         "ptr_wrapper": {
-                                            "id": 2147484455,
+                                            "id": 2147484432,
                                             "data": {
                                                 "value0": {
-                                                    "value_": "C773DE25-991A-4176-B8D0-2A44504536F1"
+                                                    "value_": "0D595E56-64FC-40FD-AAD9-1A25BBE79E00"
                                                 }
                                             }
                                         }
                                     }
                                 },
-                                "previewPriority_": 0
+                                "previewPriority_": 0,
+                                "restoredPrefab_": {
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147484433,
+                                            "data": {
+                                                "value0": {
+                                                    "value_": "06A91B0D-A700-43A9-8AF2-44677A2F24F9"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -26042,275 +24894,11 @@
                             "value3": 1.0
                         }
                     },
-                    "childCount": 3,
-                    "child": {
-                        "polymorphic_id": 5,
-                        "ptr_wrapper": {
-                            "id": 2147484456,
-                            "data": {
-                                "value0": {
-                                    "value0": {}
-                                },
-                                "isActive_": true,
-                                "name_": "Restored",
-                                "guid_": {
-                                    "value_": "2EFDC7C6-E5C5-4DBB-8566-075EE99FCC8C"
-                                },
-                                "components_": {
-                                    "componentCount": 0
-                                },
-                                "transform_": {
-                                    "localPos_": {
-                                        "value0": 0.0,
-                                        "value1": 0.0,
-                                        "value2": 0.0
-                                    },
-                                    "localRot_": {
-                                        "value0": 0.0,
-                                        "value1": 0.0,
-                                        "value2": 0.0,
-                                        "value3": 1.0
-                                    },
-                                    "localScale_": {
-                                        "value0": 1.0,
-                                        "value1": 1.0,
-                                        "value2": 1.0
-                                    },
-                                    "worldMatrix_": {
-                                        "value0": {
-                                            "value0": 1.0,
-                                            "value1": 0.0,
-                                            "value2": 0.0,
-                                            "value3": 0.0
-                                        },
-                                        "value1": {
-                                            "value0": 0.0,
-                                            "value1": 1.0,
-                                            "value2": 0.0,
-                                            "value3": 0.0
-                                        },
-                                        "value2": {
-                                            "value0": 0.0,
-                                            "value1": 0.0,
-                                            "value2": 1.0,
-                                            "value3": 0.0
-                                        },
-                                        "value3": {
-                                            "value0": 45.0,
-                                            "value1": 22.299999237060547,
-                                            "value2": 125.0,
-                                            "value3": 1.0
-                                        }
-                                    },
-                                    "childCount": 2,
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484457,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Collider",
-                                                "guid_": {
-                                                    "value_": "E221CA6E-AA20-40E3-BEA0-43975D854963"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 3,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484458,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "value0": {
-                                                                        "guid_": {
-                                                                            "value_": "E5DAF1ED-821D-4ADB-BF86-C6BBBD437783"
-                                                                        },
-                                                                        "isEnable_": false
-                                                                    },
-                                                                    "offset_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "offsetRotation_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "layer_": 0,
-                                                                    "isSensor_": false,
-                                                                    "friction_": 0.20000000298023225
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "size_": {
-                                                                    "value0": 28.799999237060548,
-                                                                    "value1": 16.799999237060548,
-                                                                    "value2": 12.0
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": 0.0,
-                                                        "value1": 8.0,
-                                                        "value2": 0.0
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": -0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 1.0,
-                                                        "value1": 1.0,
-                                                        "value2": 1.0
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 1.0,
-                                                            "value1": 0.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 1.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.0,
-                                                            "value2": 1.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": 45.0,
-                                                            "value1": 30.299999237060547,
-                                                            "value2": 125.0,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 0
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    },
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484459,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Model",
-                                                "guid_": {
-                                                    "value_": "3BBD1B91-8310-4219-A252-6664C1D49638"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 2,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484460,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "guid_": {
-                                                                        "value_": "7C4F48B6-BE9A-45D4-92D7-582F00C74B45"
-                                                                    },
-                                                                    "isEnable_": false
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "value4": {},
-                                                                "mv1File_": {
-                                                                    "value0": {
-                                                                        "polymorphic_id": 1073741824,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484461,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "value_": "E1B46F2B-2B5C-4571-A58E-DD3818D8A3F3"
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "useFixedInterpolation_": false
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 0.07999999821186066,
-                                                        "value1": 0.07999999821186066,
-                                                        "value2": 0.07999999821186066
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 0.07999999821186066,
-                                                            "value1": 0.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.07999999821186066,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.0,
-                                                            "value2": 0.07999999821186066,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": 45.0,
-                                                            "value1": 22.299999237060547,
-                                                            "value2": 125.0,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 0
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    }
-                                },
-                                "mark_": 0
-                            }
-                        }
-                    },
+                    "childCount": 2,
                     "child": {
                         "polymorphic_id": 1,
                         "ptr_wrapper": {
-                            "id": 2147484462,
+                            "id": 2147484434,
                             "data": {
                                 "value0": {
                                     "value0": {}
@@ -26318,7 +24906,7 @@
                                 "isActive_": true,
                                 "name_": "PreviewTarget",
                                 "guid_": {
-                                    "value_": "60E531BC-8034-4549-8B69-CB74C3AF8B13"
+                                    "value_": "3B63AA7F-0F62-45BE-82C2-19BD3A37E9F6"
                                 },
                                 "components_": {
                                     "componentCount": 0
@@ -26375,7 +24963,7 @@
                     "child": {
                         "polymorphic_id": 1,
                         "ptr_wrapper": {
-                            "id": 2147484463,
+                            "id": 2147484435,
                             "data": {
                                 "value0": {
                                     "value0": {}
@@ -26383,18 +24971,18 @@
                                 "isActive_": true,
                                 "name_": "PreviewCamera",
                                 "guid_": {
-                                    "value_": "0A2AF2C0-A554-4475-A4DA-4659839B6B6E"
+                                    "value_": "542A9263-E6F3-4763-BE3B-0952E8262F41"
                                 },
                                 "components_": {
                                     "componentCount": 2,
                                     "component_0": {
                                         "polymorphic_id": 10,
                                         "ptr_wrapper": {
-                                            "id": 2147484464,
+                                            "id": 2147484436,
                                             "data": {
                                                 "value0": {
                                                     "guid_": {
-                                                        "value_": "C773DE25-991A-4176-B8D0-2A44504536F1"
+                                                        "value_": "0D595E56-64FC-40FD-AAD9-1A25BBE79E00"
                                                     },
                                                     "isEnable_": true
                                                 },
@@ -26409,11 +24997,11 @@
                                     "component_1": {
                                         "polymorphic_id": 20,
                                         "ptr_wrapper": {
-                                            "id": 2147484465,
+                                            "id": 2147484437,
                                             "data": {
                                                 "value0": {
                                                     "guid_": {
-                                                        "value_": "B6D65BFB-87C7-41B5-98C5-546284027FC2"
+                                                        "value_": "248E39AA-EF59-4963-B501-44828EFB3955"
                                                     },
                                                     "isEnable_": true
                                                 },
@@ -26424,10 +25012,10 @@
                                                     "value0": {
                                                         "polymorphic_id": 1073741824,
                                                         "ptr_wrapper": {
-                                                            "id": 2147484466,
+                                                            "id": 2147484438,
                                                             "data": {
                                                                 "value0": {
-                                                                    "value_": "60E531BC-8034-4549-8B69-CB74C3AF8B13"
+                                                                    "value_": "3B63AA7F-0F62-45BE-82C2-19BD3A37E9F6"
                                                                 }
                                                             }
                                                         }

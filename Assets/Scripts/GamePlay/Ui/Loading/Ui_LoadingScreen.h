@@ -8,6 +8,7 @@
 #include "cereal/types/vector.hpp"
 #include "Engine/Core/Coroutine/Task/Task.h"
 #include "Engine/Core/Object/Field/Field.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
@@ -87,6 +88,8 @@ namespace GamePlay::Ui
         void UpdateStatusText();
         void SetVisualEnabled(bool isEnabled);
         void ApplyCoverBlendRate() const;
+        /** @brief 表示の出入りに合わせて BGM を鳴らし始め、音量を寄せ、隠れたら止める */
+        void UpdateBgm() const;
         [[nodiscard]] float CalcRawProgress() const;
         [[nodiscard]] bool CanHide() const;
 
@@ -103,6 +106,9 @@ namespace GamePlay::Ui
         [[serialize(1)]] float minShowSecs_ = 1.60f;
         [[serialize(1)]] float progressFollowRate_ = 6.0f;
         [[serialize(1)]] float finishSecs_ = 0.35f;
+        /** ロード画面が出ている間ループさせる */
+        [[serialize(2)]] FIELD(Asset::SoundFile) bgm_;
+        [[serialize(2)]] int bgmVolume_ = 200;
 
         Phase phase_ = Phase::Hidden;
         GameCore::Scene::Main::SceneLoadStep step_ = GameCore::Scene::Main::SceneLoadStep::Idle;
@@ -141,6 +147,8 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(minShowSecs_));
             archive(CEREAL_NVP(progressFollowRate_));
             archive(CEREAL_NVP(finishSecs_));
+            archive(CEREAL_NVP(bgm_));
+            archive(CEREAL_NVP(bgmVolume_));
         }
 
         template<class Archive>
@@ -163,9 +171,14 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(minShowSecs_));
             archive(CEREAL_NVP(progressFollowRate_));
             archive(CEREAL_NVP(finishSecs_));
+            if (version >= 2)
+            {
+                archive(CEREAL_NVP(bgm_));
+                archive(CEREAL_NVP(bgmVolume_));
+            }
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::LoadingScreenUi, 1);
+CEREAL_CLASS_VERSION(GamePlay::Ui::LoadingScreenUi, 2);

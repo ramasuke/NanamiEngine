@@ -607,6 +607,15 @@ namespace NanamiEngine::Module::Physics
         transform.SetWorldRot(glm::quat(rotation.GetW(), rotation.GetX(), rotation.GetY(), rotation.GetZ()));
     }
 
+    void BodyAssembler::PullTransforms() const
+    {
+        for (const auto& entry : rigidBodies_ | std::views::values)
+        {
+            if (const auto rigidBody = entry.rigidBody.lock())
+                PullTransform(*rigidBody);
+        }
+    }
+
     void BodyAssembler::MoveSensor(const Component::ColliderBase& collider) const
     {
         const auto it = colliders_.find(&collider);

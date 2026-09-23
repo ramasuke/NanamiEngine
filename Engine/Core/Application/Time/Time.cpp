@@ -3,7 +3,7 @@
 
 namespace NanamiEngine
 {
-    int   Time::lastTime_        = 0;
+    long long Time::lastTime_    = 0;
     float Time::deltaTime_       = 0.0f;
     float Time::timeScale_       = 1.0f;
     float Time::currentTime_     = 0.0f;
@@ -18,7 +18,8 @@ namespace NanamiEngine
             isSkipNextFrame_--;
         }
         
-        const int now = GetNowCount();
+        // NOTE: ms 単位だと 16/17ms の揺れで固定ステップ数と補間の alpha がぶれるので µs で測る
+        const long long now = GetNowHiPerformanceCount();
 
         if (lastTime_ == 0)
         {
@@ -27,7 +28,7 @@ namespace NanamiEngine
             return;
         }
 
-        const float rawDelta = (now - lastTime_) / 1000.0f;
+        const float rawDelta = static_cast<float>(static_cast<double>(now - lastTime_) / 1'000'000.0);
 
         deltaTime_ = rawDelta * timeScale_;
         currentTime_ += deltaTime_;

@@ -4,7 +4,8 @@
     python tools/art/restoration_sites.py --no-place # prefab だけ組む
 
 施設1つ = RestorationSite_<Name>.prefab (Assets/Prefab/Prop/Restoration/)。root に RestorationGate、子に
-建った姿(Restored)・下見のカメラ(PreviewCamera → PreviewTarget を見る)を持つ。
+下見のカメラ(PreviewCamera → PreviewTarget を見る)を持つ。建った姿は子に置かず、RestorationGate の restoredPrefab_ に
+Settlement の prefab を入れて、建てた時(と下見中)だけ生成する(隠しただけではコライダーが当たり続けるため)。
 施設は壊れた物を直すのではなく新しく建てるので、建てる前は何も置かない(brokenObject_ は空)。
 掲示板の「復興」で施設を選ぶと、そのカメラへ寄って建った姿を出す(RestorationGate::BeginPreview)。
 置き直すときは前の RestorationSite_* をシーンから消してから置く。
@@ -19,7 +20,7 @@ sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from tools.common.cereal_json import Num, OrderedObj, to_file_bytes  # noqa: E402
-from tools.scene import edits, model, reader, validate, writer  # noqa: E402
+from tools.scene import edits, reader, validate, writer  # noqa: E402
 
 from event_board_prefab import (  # noqa: E402
     MAIN_ISLAND_SCENE, bake_rotated_world_matrices, first_versions, strip_repeat_versions, to_collider_base_v5)
@@ -52,24 +53,11 @@ def all_nodes(node):
         yield from all_nodes(child)
 
 
-def instance(prefab, parent, name, source):
-    node = edits.instantiate_prefab(prefab, reader.read_prefab_file(SETTLEMENT_DIR / f'{source}.prefab'),
-                                    parent=parent.guid)
-    node.name = name
-    return node
-
-
 def build_site(site):
     prefab = new_prefab(f"RestorationSite_{site['name']}")
     b = Builder(prefab)
     root = prefab.root
 
-    restored = instance(prefab, root, 'Restored', site['restored'])
-    # NOTE: 建った姿は最初は隠す。GameObject の isActive_ は読み込みでは効かないので、コンポーネントを切っておく
-    #       (RestorationGate が SetEnable でまとめて入れ直す)
-    for node in all_nodes(restored):
-        for comp in node.components:
-            model.set_component_enabled(comp, False)
     target = edits.add_gameobject(prefab, parent=root.guid, name='PreviewTarget', pos=TARGET_OFFSET)
     camera_node = edits.add_gameobject(prefab, parent=root.guid, name='PreviewCamera',
                                        pos=site.get('camera', CAMERA_OFFSET))
@@ -79,7 +67,7 @@ def build_site(site):
     b.field(look_at, 'target_', target.guid)
 
     gate = b.component(root, 'RestorationGate', facility_=site['facility'])
-    b.field(gate, 'restoredObject_', restored.guid)
+    b.field(gate, 'restoredPrefab_', asset_guid(Path(str(SETTLEMENT_DIR / f"{site['restored']}.prefab") + '.meta')))
     b.field(gate, 'previewCamera_', guid_of(camera))
     return save_site_prefab(prefab, f"RestorationSite_{site['name']}")
 

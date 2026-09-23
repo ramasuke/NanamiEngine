@@ -23,12 +23,13 @@ namespace GamePlay::Ui
         const std::shared_ptr<Asset::SpriteFile>& filledSprite,
         const std::shared_ptr<Asset::SpriteFile>& emptySprite);
 
-    /** @brief 受注中・達成・準備中の判の絵。受付中は nullptr(判を押さない) */
+    /** @brief 受注中・達成・準備中・未解放の判の絵。受付中は nullptr(判を押さない) */
     struct QuestBoardStampSprites
     {
         std::shared_ptr<Asset::SpriteFile> taking;
         std::shared_ptr<Asset::SpriteFile> cleared;
         std::shared_ptr<Asset::SpriteFile> preparing;
+        std::shared_ptr<Asset::SpriteFile> locked;
 
         [[nodiscard]] std::shared_ptr<Asset::SpriteFile> For(QuestBoardState state) const;
     };
@@ -68,6 +69,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Asset::SpriteFile) unselectedTicketSprite_;
         [[serialize(0)]] FIELD(Asset::SoundFile) hoverSound_;
         [[serialize(0)]] float selectedScale_ = 1.05f;
+        [[serialize(1)]] FIELD(Asset::SpriteFile) lockedStampSprite_;
 
         glm::vec3 baseScale_ = glm::vec3(1.0f);
         bool isHighlighted_ = false;
@@ -97,6 +99,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(unselectedTicketSprite_));
             archive(CEREAL_NVP(hoverSound_));
             archive(CEREAL_NVP(selectedScale_));
+            archive(CEREAL_NVP(lockedStampSprite_));
         }
 
         template<typename Archive>
@@ -119,9 +122,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(unselectedTicketSprite_));
             if (version >= 0) archive(CEREAL_NVP(hoverSound_));
             if (version >= 0) archive(CEREAL_NVP(selectedScale_));
+            if (version >= 1) archive(CEREAL_NVP(lockedStampSprite_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardQuestRow, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardQuestRow, 1);

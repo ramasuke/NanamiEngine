@@ -7,14 +7,54 @@
 
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
 
 namespace
 {
+    using LibCore::EaseType;
+    using LibCore::Tween::Ease;
+    using LibCore::Tween::Ms;
+    using LibCore::Tween::TweenPlayer;
+
     /** ロード画面の配置の基準にしている画面の大きさ */
     constexpr glm::vec2 LOADING_ROUTE_MAP_SCREEN_CENTER = glm::vec2(960.0f, 540.0f);
     constexpr int LOADING_ROUTE_MAP_SAMPLE_COUNT = 128;
     /** 飛行船の後ろに並べる煙の、進み具合でのずらし幅 */
     constexpr float LOADING_ROUTE_MAP_TRAIL_STEP = 0.035f;
+    /** 揺れの片道の秒。周期が揃わないようにずらしてある */
+    constexpr float LOADING_ROUTE_MAP_SHIP_BOB_SECS    = 1.31f;
+    constexpr float LOADING_ROUTE_MAP_ZOOM_SWAY_SECS   = 3.49f;
+    constexpr float LOADING_ROUTE_MAP_PAN_SWAY_X_SECS  = 4.49f;
+    constexpr float LOADING_ROUTE_MAP_PAN_SWAY_Y_SECS  = 2.86f;
+    constexpr glm::vec2 LOADING_ROUTE_MAP_PAN_SWAY_PX  = glm::vec2(4.0f, 3.0f);
+
+    /** @brief -1..1 を行って戻ってを繰り返す */
+    void LoadingRouteMapStartSway(TweenPlayer<float>& sway, const float halfSecs)
+    {
+        if (sway.IsPlaying())
+            return;
+
+        sway.Set(tweeny::from(-1.0f).to(1.0f).during(Ms(halfSecs)).via(Ease(EaseType::InOutSine)));
+        sway.PlayForward();
+    }
+
+    float LoadingRouteMapTickSway(TweenPlayer<float>& sway, const float deltaSecs)
+    {
+        if (sway.Tick(deltaSecs))
+        {
+            if (sway.IsForward())
+                sway.PlayBackward();
+            else
+                sway.PlayForward();
+        }
+        return sway.Value();
+    }
+
+    /** @brief 再生していないときは等倍 */
+    float LoadingRouteMapScaleRate(const TweenPlayer<float>& tween)
+    {
+        return tween.IsPlaying() ? tween.Value() : 1.0f;
+    }
 
     glm::vec2 LoadingRouteMapBezier(const Asset::LoadingRouteData& route, const float t)
     {
@@ -41,7 +81,8 @@ namespace GamePlay::Ui
 {
     void LoadingRouteMap::Begin(const Asset::LoadingRouteData& route, const bool isStageCleared)
     {
-        CaptureCloudBases();
+        CapturePrefabBases();
+        StartSways();
 
         hasFromCaption_ = !route.FromCaption().empty();
         hasToCaption_   = !route.ToCaption().empty();
@@ -85,21 +126,26 @@ namespace GamePlay::Ui
 
         // 向きが決まるまでは右向きで出す
         isShipFacingLeft_ = false;
+        isShipSpriteLeft_ = false;
+        shipFlipTween_.Stop();
         if (const auto ship = ship_.get())
             ship->SetSprite(shipRightSprite_.get());
 
+        RestartDrawIns();
         ApplyElementVisibility();
-        Tick(0.0f, 0.0f);
+        Tick(0.0f, 0.0f, 0.0f);
     }
 
     void LoadingRouteMap::SetShown(const bool isShown)
     {
         isShown_ = isShown;
+        if (isShown)
+            RestartDrawIns();
         ApplyElementVisibility();
         UpdateTrail(lastProgress01_, lastClockSecs_);
     }
 
-    void LoadingRouteMap::Tick(const float progress01, const float clockSecs)
+    void LoadingRouteMap::Tick(const float progress01, const float clockSecs, const float deltaSecs)
     {
         const float progress = std::clamp(progress01, 0.0f, 1.0f);
         lastProgress01_ = progress;
@@ -107,15 +153,17 @@ namespace GamePlay::Ui
         const RoutePoint point = isHover_ ? HoverAt(clockSecs) : RouteAt(progress);
 
         if (!isHover_)
-            UpdateRouteDashes(progress);
+            UpdateRouteDashes(progress, deltaSecs);
 
-        UpdateShip(point, clockSecs);
+        UpdateShip(point, deltaSecs);
         UpdateTrail(progress, clockSecs);
 
         // 飛行船そのものより少し後ろを追うと、画面の中で飛行船が前へ出ていくように見える
         const glm::vec2 focus = isHover_ ? hoverCenter_ : RouteAt(std::max(0.0f, progress - cameraLag_)).position;
-        UpdateCamera(focus, clockSecs);
+        UpdateCamera(focus, deltaSecs);
         UpdateClouds(clockSecs);
+        UpdateDestCircle(deltaSecs);
+        UpdateStamp(deltaSecs);
     }
 
     void LoadingRouteMap::BuildRouteSamples(const Asset::LoadingRouteData& route)
@@ -162,13 +210,25 @@ namespace GamePlay::Ui
         return { position, tangent };
     }
 
-    void LoadingRouteMap::CaptureCloudBases()
+    void LoadingRouteMap::CapturePrefabBases()
     {
-        // prefab に置いた位置を流れの基準にする。動かし始める前に一度だけ覚える
-        if (isCloudBaseCaptured_)
+        // 雲は置いた位置を流れの基準に、飛行船・判・点線は置いた大きさを tween の等倍にする
+        if (isPrefabBaseCaptured_)
             return;
 
-        isCloudBaseCaptured_ = true;
+        isPrefabBaseCaptured_ = true;
+        if (const auto ship = ship_.get())
+            shipBaseScale_ = ship->Transform().GetLocalScale();
+        if (const auto stamp = clearedStamp_.get())
+            stampBaseScale_ = stamp->Transform().GetLocalScale();
+
+        dashBaseScales_.clear();
+        for (const auto& field : routeDashes_)
+        {
+            const auto dash = field.get();
+            dashBaseScales_.push_back(dash ? dash->Transform().GetLocalScale() : glm::vec3(1.0f));
+        }
+
         const auto capture = [](const std::vector<FIELD(NanamiUi::BlendImageRenderer)>& clouds, std::vector<glm::vec2>& bases)
         {
             bases.clear();
@@ -182,10 +242,20 @@ namespace GamePlay::Ui
         capture(frontClouds_, frontCloudBases_);
     }
 
+    void LoadingRouteMap::StartSways()
+    {
+        LoadingRouteMapStartSway(shipBobTween_, LOADING_ROUTE_MAP_SHIP_BOB_SECS);
+        LoadingRouteMapStartSway(cameraZoomSwayTween_, LOADING_ROUTE_MAP_ZOOM_SWAY_SECS);
+        LoadingRouteMapStartSway(cameraPanSwayXTween_, LOADING_ROUTE_MAP_PAN_SWAY_X_SECS);
+        LoadingRouteMapStartSway(cameraPanSwayYTween_, LOADING_ROUTE_MAP_PAN_SWAY_Y_SECS);
+    }
+
     void LoadingRouteMap::LayoutRouteDashes()
     {
         const std::size_t count = routeDashes_.size();
         dashPassed_.assign(count, static_cast<char>(-1));
+        dashPopTweens_.assign(count, TweenPlayer<float>());
+        dashBaseScales_.resize(count, glm::vec3(1.0f));
 
         for (std::size_t i = 0; i < count; ++i)
         {
@@ -193,6 +263,7 @@ namespace GamePlay::Ui
             if (!dash)
                 continue;
 
+            dash->Transform().SetLocalScale(dashBaseScales_[i]);
             if (isHover_)
                 continue;
 
@@ -204,50 +275,80 @@ namespace GamePlay::Ui
         }
     }
 
-    void LoadingRouteMap::UpdateRouteDashes(const float progress01)
+    void LoadingRouteMap::UpdateRouteDashes(const float progress01, const float deltaSecs)
     {
-        const std::size_t count = routeDashes_.size();
+        const std::size_t count = std::min(routeDashes_.size(), dashPassed_.size());
         for (std::size_t i = 0; i < count; ++i)
         {
             const auto dash = routeDashes_[i].get();
             if (!dash)
                 continue;
 
+            auto& pop = dashPopTweens_[i];
             const float at = (static_cast<float>(i) + 0.5f) / static_cast<float>(count);
             const char isPassed = at <= progress01 ? 1 : 0;
-            if (dashPassed_[i] == isPassed)
+            if (dashPassed_[i] != isPassed)
+            {
+                // 通り過ぎた区間を赤インクでなぞる。差し替えは変わったときだけ
+                // NOTE: 航路を出した直後(-1 から)は弾ませない
+                if (isPassed && dashPassed_[i] == 0)
+                {
+                    pop.Play(tweeny::from(dashPopScale_).to(1.0f)
+                        .during(Ms(dashPop_secs_)).via(Ease(EaseType::OutBack)));
+                }
+                dashPassed_[i] = isPassed;
+                dash->SetSprite(isPassed ? dashPassedSprite_.get() : dashSprite_.get());
+            }
+
+            if (!pop.IsPlaying())
                 continue;
 
-            // 通り過ぎた区間を赤インクでなぞる。差し替えは変わったときだけ
-            dashPassed_[i] = isPassed;
-            dash->SetSprite(isPassed ? dashPassedSprite_.get() : dashSprite_.get());
+            pop.Tick(deltaSecs);
+            dash->Transform().SetLocalScale(dashBaseScales_[i] * LoadingRouteMapScaleRate(pop));
         }
     }
 
-    void LoadingRouteMap::UpdateShip(const RoutePoint& point, const float clockSecs)
+    void LoadingRouteMap::UpdateShip(const RoutePoint& point, const float deltaSecs)
     {
         const auto ship = ship_.get();
         if (!ship)
             return;
 
-        // 左へ進むときは左向きの絵に替える。回転で裏返すと上下が逆さになる
+        // 左へ進むときは左向きの絵に替える。回転で裏返すと上下が逆さになるので、横に潰して裏返す
         if (std::abs(point.tangent.x) > 0.001f)
         {
             const bool isFacingLeft = point.tangent.x < 0.0f;
             if (isFacingLeft != isShipFacingLeft_)
             {
                 isShipFacingLeft_ = isFacingLeft;
-                ship->SetSprite(isFacingLeft ? shipLeftSprite_.get() : shipRightSprite_.get());
+                const float halfSecs = shipFlip_secs_ * 0.5f;
+                shipFlipTween_.Play(tweeny::from(1.0f)
+                    .to(0.0f).during(Ms(halfSecs)).via(Ease(EaseType::InQuad))
+                    .to(1.0f).during(Ms(halfSecs)).via(Ease(EaseType::OutQuad)));
             }
+        }
+
+        shipFlipTween_.Tick(deltaSecs);
+        // 潰れ切るまでは元の向きの絵のまま
+        const bool isSpriteLeft = shipFlipTween_.IsPlaying() && shipFlipTween_.Progress() < 0.5f
+            ? !isShipFacingLeft_
+            : isShipFacingLeft_;
+        if (isSpriteLeft != isShipSpriteLeft_)
+        {
+            isShipSpriteLeft_ = isSpriteLeft;
+            ship->SetSprite(isSpriteLeft ? shipLeftSprite_.get() : shipRightSprite_.get());
         }
 
         const glm::vec2 heading = isShipFacingLeft_ ? -point.tangent : point.tangent;
         const float tiltLimit = glm::radians(shipTiltLimitDeg_);
         const float tilt = std::clamp(std::atan2(heading.y, std::max(heading.x, 0.001f)), -tiltLimit, tiltLimit);
-        const float bob = std::sin(clockSecs * 2.4f) * shipBobPx_;
+        const float bob = LoadingRouteMapTickSway(shipBobTween_, deltaSecs) * shipBobPx_;
 
         LoadingRouteMapSetLocalPos(ship->Transform(), point.position + glm::vec2(0.0f, -shipLiftPx_ + bob));
         ship->Transform().SetLocalRot(LoadingRouteMapRotationZ(tilt));
+        // NOTE: 幅 0 の行列にしないよう、潰し切らずに少しだけ残す
+        const float flipRate = std::max(LoadingRouteMapScaleRate(shipFlipTween_), 0.02f);
+        ship->Transform().SetLocalScale(glm::vec3(shipBaseScale_.x * flipRate, shipBaseScale_.y, shipBaseScale_.z));
 
         if (const auto shadow = shipShadow_.get())
             LoadingRouteMapSetLocalPos(shadow->Transform(), point.position + shadowOffset_);
@@ -283,17 +384,22 @@ namespace GamePlay::Ui
         }
     }
 
-    void LoadingRouteMap::UpdateCamera(const glm::vec2& focus, const float clockSecs) const
+    void LoadingRouteMap::UpdateCamera(const glm::vec2& focus, const float deltaSecs)
     {
+        const float zoomSway = LoadingRouteMapTickSway(cameraZoomSwayTween_, deltaSecs);
+        const glm::vec2 panSway = glm::vec2(
+            LoadingRouteMapTickSway(cameraPanSwayXTween_, deltaSecs),
+            LoadingRouteMapTickSway(cameraPanSwayYTween_, deltaSecs));
+
         const auto camera = camera_.get();
         if (!camera)
             return;
 
         // 画面中心を基準に拡大し、追う点が中心へ寄るようにずらす。机の端が見えないよう、ずらす量には上限を掛ける
-        const float zoom = cameraZoom_ + std::sin(clockSecs * 0.9f) * cameraZoomWobble_;
+        const float zoom = cameraZoom_ + zoomSway * cameraZoomWobble_;
         glm::vec2 pan = -zoom * cameraFollow_ * (focus - LOADING_ROUTE_MAP_SCREEN_CENTER);
         pan = glm::clamp(pan, -cameraMaxPan_, cameraMaxPan_);
-        pan += glm::vec2(std::sin(clockSecs * 0.7f) * 4.0f, std::sin(clockSecs * 1.1f) * 3.0f);
+        pan += panSway * LOADING_ROUTE_MAP_PAN_SWAY_PX;
 
         const glm::vec2 origin = LOADING_ROUTE_MAP_SCREEN_CENTER - zoom * LOADING_ROUTE_MAP_SCREEN_CENTER + pan;
         camera->Transform().SetLocalPos(glm::vec3(origin, 0.0f));
@@ -328,6 +434,56 @@ namespace GamePlay::Ui
         drift(frontClouds_, frontCloudBases_, frontCloudSpeed_);
     }
 
+    void LoadingRouteMap::RestartDrawIns()
+    {
+        // 〇は書き始めは速く、閉じるところで緩める。黒幕が明けるのを待ってから描く
+        destCircleTween_.Play(tweeny::from(0.0f)
+            .to(0.0f).during(Ms(destCircleDelay_secs_))
+            .to(1.0f).during(Ms(destCircleDraw_secs_)).via(Ease(EaseType::OutCubic)));
+        if (const auto destCircle = destCircle_.get())
+            destCircle->SetFillRate(0.0f);
+
+        // 判は〇を描き終えてから、大きく現れて押し込む
+        const float stampWaitSecs = (hasDestCircle_ ? destCircleDelay_secs_ + destCircleDraw_secs_ : destCircleDelay_secs_)
+                                  + stampDelay_secs_;
+        stampTween_.Play(tweeny::from(0.0f)
+            .to(0.0f).during(Ms(stampWaitSecs))
+            .to(stampStartScale_).during(Ms(0.0f))
+            .to(1.0f).during(Ms(stampPress_secs_)).via(Ease(EaseType::OutCubic)));
+        isStampPressing_ = false;
+    }
+
+    void LoadingRouteMap::UpdateDestCircle(const float deltaSecs)
+    {
+        destCircleTween_.Tick(deltaSecs);
+
+        const auto destCircle = destCircle_.get();
+        if (!destCircle || !hasDestCircle_)
+            return;
+
+        destCircle->SetFillRate(destCircleTween_.Value());
+    }
+
+    void LoadingRouteMap::UpdateStamp(const float deltaSecs)
+    {
+        stampTween_.Tick(deltaSecs);
+
+        const auto stamp = clearedStamp_.get();
+        if (!stamp || !isStageCleared_)
+            return;
+
+        const float scaleRate = stampTween_.Value();
+        const bool isPressing = scaleRate > 0.0f;
+        if (isPressing != isStampPressing_)
+        {
+            isStampPressing_ = isPressing;
+            ApplyElementVisibility();
+        }
+
+        if (isPressing)
+            stamp->Transform().SetLocalScale(stampBaseScale_ * scaleRate);
+    }
+
     void LoadingRouteMap::ApplyElementVisibility() const
     {
         if (const auto caption = fromCaptionText_.get())
@@ -337,7 +493,7 @@ namespace GamePlay::Ui
         if (const auto destCircle = destCircle_.get())
             destCircle->SetEnable(isShown_ && hasDestCircle_);
         if (const auto stamp = clearedStamp_.get())
-            stamp->SetEnable(isShown_ && isStageCleared_);
+            stamp->SetEnable(isShown_ && isStageCleared_ && isStampPressing_);
 
         for (const auto& field : routeDashes_)
         {
@@ -393,6 +549,14 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("cloudShadowSpeed_", cloudShadowSpeed_);
         ImGuiHelper::OnDrawInputField("frontCloudSpeed_", frontCloudSpeed_);
         ImGuiHelper::OnDrawInputField("cloudWrapRangeX_", cloudWrapRangeX_);
+        ImGuiHelper::OnDrawInputField("destCircleDelay_secs_", destCircleDelay_secs_);
+        ImGuiHelper::OnDrawInputField("destCircleDraw_secs_", destCircleDraw_secs_);
+        ImGuiHelper::OnDrawInputField("stampDelay_secs_", stampDelay_secs_);
+        ImGuiHelper::OnDrawInputField("stampPress_secs_", stampPress_secs_);
+        ImGuiHelper::OnDrawInputField("stampStartScale_", stampStartScale_);
+        ImGuiHelper::OnDrawInputField("dashPopScale_", dashPopScale_);
+        ImGuiHelper::OnDrawInputField("dashPop_secs_", dashPop_secs_);
+        ImGuiHelper::OnDrawInputField("shipFlip_secs_", shipFlip_secs_);
     }
 }
 

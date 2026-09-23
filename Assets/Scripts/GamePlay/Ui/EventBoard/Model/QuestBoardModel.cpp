@@ -6,6 +6,7 @@
 #include "../../Format/Ui_MoneyFormat.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_IQuestGroup.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
+#include "../../../../Core/Game/PlayerAvatar/Quest/Unlock/PlayerAvatar_QuestUnlockContext.h"
 
 namespace GamePlay::Ui
 {
@@ -14,15 +15,18 @@ namespace GamePlay::Ui
         QuestBoardState ResolveQuestBoardState(
             const Asset::BoardQuest& quest,
             const GameCore::PlayerAvatar::IQuestGroup* takingQuests,
-            const GameCore::PlayerAvatar::Quest::ICompleteQuestGroup* completedQuests)
+            const GameCore::PlayerAvatar::Quest::ICompleteQuestGroup* completedQuests,
+            const GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockContext& unlockContext)
         {
             const auto& content = quest.Quest();
+            if (content && completedQuests && completedQuests->CheckCompleted(content->QuestType()))
+                return QuestBoardState::Cleared;
+            if (content && takingQuests && takingQuests->IsTaking(content->QuestType()))
+                return QuestBoardState::Taking;
+            if (completedQuests && !quest.IsUnlocked(unlockContext))
+                return QuestBoardState::Locked;
             if (!content)
                 return QuestBoardState::Preparing;
-            if (completedQuests && completedQuests->CheckCompleted(content->QuestType()))
-                return QuestBoardState::Cleared;
-            if (takingQuests && takingQuests->IsTaking(content->QuestType()))
-                return QuestBoardState::Taking;
             return QuestBoardState::Open;
         }
 
@@ -30,8 +34,11 @@ namespace GamePlay::Ui
             const std::vector<std::shared_ptr<Asset::BoardQuest>>& quests,
             const std::chrono::sys_seconds now,
             const GameCore::PlayerAvatar::IQuestGroup* takingQuests,
-            const GameCore::PlayerAvatar::Quest::ICompleteQuestGroup* completedQuests)
+            const GameCore::PlayerAvatar::Quest::ICompleteQuestGroup* completedQuests,
+            const GameCore::Story::StoryProgress* story)
         {
+            const GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockContext unlockContext{ story, completedQuests };
+
             std::vector<QuestBoardEntry> entries;
             for (const auto& quest : quests)
             {
@@ -41,7 +48,7 @@ namespace GamePlay::Ui
 
                 QuestBoardEntry entry;
                 entry.quest        = quest;
-                entry.state        = ResolveQuestBoardState(*quest, takingQuests, completedQuests);
+                entry.state        = ResolveQuestBoardState(*quest, takingQuests, completedQuests, unlockContext);
                 entry.isEventQuest = event != nullptr;
 
                 const auto stage = quest->Stage();
@@ -51,12 +58,25 @@ namespace GamePlay::Ui
                 const auto end = event ? event->EndTime() : std::nullopt;
                 entry.limitText = end ? FormatEventBoardDateTime(*end) + " まで" : "なし";
                 entry.stateText = ToQuestBoardStateText(entry.state);
+                entry.titleText = quest->Title();
+                entry.goalText  = quest->GoalText();
+                if (entry.state == QuestBoardState::Locked)
+                {
+                    entry.titleText  = "？？？";
+                    entry.goalText   = quest->LockedText();
+                    entry.rewardText = "―";
+                    entry.limitText  = "―";
+                }
                 entries.push_back(std::move(entry));
             }
 
-            std::stable_partition(entries.begin(), entries.end(), [](const QuestBoardEntry& entry)
+            const auto lockedBegin = std::stable_partition(entries.begin(), entries.end(), [](const QuestBoardEntry& entry)
             {
-                return entry.state != QuestBoardState::Cleared;
+                return entry.state != QuestBoardState::Locked && entry.state != QuestBoardState::Cleared;
+            });
+            std::stable_partition(lockedBegin, entries.end(), [](const QuestBoardEntry& entry)
+            {
+                return entry.state == QuestBoardState::Locked;
             });
             return entries;
         }
@@ -70,6 +90,7 @@ namespace GamePlay::Ui
         case QuestBoardState::Taking:    return "受注中";
         case QuestBoardState::Cleared:   return "達成済み";
         case QuestBoardState::Preparing: return "準備中";
+        case QuestBoardState::Locked:    return "未解放";
         }
         return "";
     }
@@ -79,8 +100,9 @@ namespace GamePlay::Ui
         const std::chrono::sys_seconds now,
         const GameCore::PlayerAvatar::IQuestGroup* takingQuests,
         const GameCore::PlayerAvatar::Quest::ICompleteQuestGroup* completedQuests,
+        const GameCore::Story::StoryProgress* story,
         const size_t visibleRowCount)
-        : entries_(BuildQuestBoardEntries(quests, now, takingQuests, completedQuests))
+        : entries_(BuildQuestBoardEntries(quests, now, takingQuests, completedQuests, story))
         , cursor_(entries_.size(), visibleRowCount)
     {
     }

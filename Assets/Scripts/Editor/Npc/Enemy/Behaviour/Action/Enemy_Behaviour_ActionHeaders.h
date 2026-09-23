@@ -48,3 +48,4 @@
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Scene/LockPlayerCannon/Enemy_Behaviour_Action_LockPlayerCannon.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/GameObject/FallIsland/Enemy_Behaviour_Action_FallIsland.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Particle/AttachParticle/Enemy_Behaviour_Action_AttachParticle.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Other/StartChat/Enemy_Behaviour_Action_StartChat.h"

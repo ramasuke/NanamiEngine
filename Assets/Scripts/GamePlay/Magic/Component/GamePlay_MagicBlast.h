@@ -42,6 +42,8 @@ namespace GamePlay::Magic
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) detonatePrefab_;
         [[serialize(0)]] float detonateEffectLifeTime_secs_ = 2.0f;
         [[serialize(0)]] bool  detonateOnEnter_ = false;
+        [[serialize(1)]] float hitShakeIntensity_     = 0.6f;
+        [[serialize(1)]] float hitShakeDuration_secs_ = 0.18f;
 
         std::vector<BlastTarget> targets_;
         std::weak_ptr<GameObject::IGameObject> caster_;
@@ -61,6 +63,8 @@ namespace GamePlay::Magic
             archive(CEREAL_NVP(detonatePrefab_));
             archive(CEREAL_NVP(detonateEffectLifeTime_secs_));
             archive(CEREAL_NVP(detonateOnEnter_));
+            archive(CEREAL_NVP(hitShakeIntensity_));
+            archive(CEREAL_NVP(hitShakeDuration_secs_));
         }
 
         template<class Archive>
@@ -70,9 +74,11 @@ namespace GamePlay::Magic
             if (version >= 0) archive(CEREAL_NVP(detonatePrefab_));
             if (version >= 0) archive(CEREAL_NVP(detonateEffectLifeTime_secs_));
             if (version >= 0) archive(CEREAL_NVP(detonateOnEnter_));
+            if (version >= 1) archive(CEREAL_NVP(hitShakeIntensity_));
+            if (version >= 1) archive(CEREAL_NVP(hitShakeDuration_secs_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Magic::MagicBlast, 0);
+CEREAL_CLASS_VERSION(GamePlay::Magic::MagicBlast, 1);

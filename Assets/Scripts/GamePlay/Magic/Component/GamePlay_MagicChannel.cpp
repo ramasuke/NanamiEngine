@@ -83,6 +83,7 @@ namespace GamePlay::Magic
         if (!entity)
             return;
 
+        bool hasShaken = false;
         for (const auto& target : targets_)
         {
             const auto part = target.part.lock();
@@ -92,6 +93,8 @@ namespace GamePlay::Magic
             const glm::vec3 hitPos = HitPartPosition(*part);
             ApplySpellDamage(*entity, part, powerPerTick_);
             ShowSpellDamageText(caster_, part, powerPerTick_, hitPos);
+            if (!hasShaken)
+                hasShaken = ShakeOnSpellHit(caster_, part, hitShakeIntensity_, hitShakeDuration_secs_);
 
             if (hitPrefab_)
                 Spawn::SpawnPrefab(*hitPrefab_.get(), hitPos, hitEffectLifeTime_secs_);
@@ -102,6 +105,8 @@ namespace GamePlay::Magic
     {
         ImGuiHelper::OnDrawInputField("hitPrefab_", hitPrefab_);
         ImGuiHelper::OnDrawInputField("hitEffectLifeTime_secs_", hitEffectLifeTime_secs_);
+        ImGuiHelper::OnDrawInputField("hitShakeIntensity_", hitShakeIntensity_);
+        ImGuiHelper::OnDrawInputField("hitShakeDuration_secs_", hitShakeDuration_secs_);
         ImGuiHelper::OnDrawInputField("linger_secs_", linger_secs_);
         ImGui::Text("channeling: %s  remaining: %.2f  targets: %d",
                     isChanneling_ ? "true" : "false", remainingDuration_secs_, static_cast<int>(targets_.size()));

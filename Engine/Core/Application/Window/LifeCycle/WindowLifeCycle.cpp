@@ -93,6 +93,7 @@ namespace NanamiEngine::Core::Application
                 ApplicationBase::Physics().Bodies().Flush();
                 beginPhysicsCallbacks_  .Invoke([](auto& obj) { obj.OnBeginPhysics(); });
                 ApplicationBase::Physics().Update(fixedDeltaTime);
+                ApplicationBase::Physics().Bodies().PullTransforms();
                 endPhysicsCallbacks_    .Invoke([](auto& obj) { obj.OnUpdatedPhysics(); });
 
                 accumulator_ -= fixedDeltaTime;

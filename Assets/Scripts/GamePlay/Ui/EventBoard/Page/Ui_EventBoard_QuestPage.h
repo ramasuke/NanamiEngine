@@ -66,6 +66,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Asset::SpriteFile) preparingSealSprite_;
         [[serialize(0)]] Color32 takingStateColor_  = Color32(146, 38, 30);
         [[serialize(0)]] Color32 defaultStateColor_ = Color32(48, 30, 20);
+        [[serialize(1)]] FIELD(Asset::SpriteFile) lockedSealSprite_;
 
         std::vector<std::weak_ptr<EventBoardQuestRow>> rows_;
 
@@ -107,6 +108,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(preparingSealSprite_));
             archive(CEREAL_NVP(takingStateColor_));
             archive(CEREAL_NVP(defaultStateColor_));
+            archive(CEREAL_NVP(lockedSealSprite_));
         }
 
         template<typename Archive>
@@ -143,9 +145,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(preparingSealSprite_));
             if (version >= 0) archive(CEREAL_NVP(takingStateColor_));
             if (version >= 0) archive(CEREAL_NVP(defaultStateColor_));
+            if (version >= 1) archive(CEREAL_NVP(lockedSealSprite_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardQuestPage, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardQuestPage, 1);

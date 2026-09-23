@@ -3,6 +3,7 @@
 #include "DxLib.h"
 #include "Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/NanamiUI/Button/NanamiUi_Button.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
@@ -15,7 +16,10 @@ namespace GamePlay::Ui
         SetVisible(false);
         SetPressed(false);
         pressRemaining_secs_ = 0.0f;
+        isHolding_ = false;
+        animScale_ = 1.0f;
         wasMouseDown_ = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;
+        UpdateScale();
     }
 
     void GameCursor::OnUpdate()
@@ -27,19 +31,42 @@ namespace GamePlay::Ui
         SetVisible(ShouldShow(mouseX, mouseY));
 
         const bool isMouseDown = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;
+        UpdatePress(isMouseDown);
+        wasMouseDown_ = isMouseDown;
+
+        UpdateScale();
+    }
+
+    void GameCursor::UpdatePress(const bool isMouseDown)
+    {
         if (isVisible_ && isMouseDown && !wasMouseDown_)
         {
+            isHolding_ = true;
             pressRemaining_secs_ = pressDuration_secs_;
             SetPressed(true);
         }
-        wasMouseDown_ = isMouseDown;
+        else if (isHolding_ && !isMouseDown)
+        {
+            isHolding_ = false;
+            animScale_ = releaseScale_;
+        }
 
         if (pressRemaining_secs_ > 0.0f)
-        {
             pressRemaining_secs_ -= Time::DeltaTime();
-            if (pressRemaining_secs_ <= 0.0f)
-                SetPressed(false);
-        }
+
+        // NOTE: 長押し中は押した絵のまま、離した後も最短 pressDuration_secs_ は残す
+        if (!isHolding_ && pressRemaining_secs_ <= 0.0f)
+            SetPressed(false);
+    }
+
+    void GameCursor::UpdateScale()
+    {
+        const float target = isHolding_ ? holdScale_ : 1.0f;
+        const float t = 1.0f - std::exp(-scaleSpeed_ * Time::DeltaTime());
+        animScale_ += (target - animScale_) * t;
+
+        if (const auto root = visualRoot_.get())
+            root->Transform().SetLocalScale(glm::vec3(baseScale_ * animScale_));
     }
 
     bool GameCursor::ShouldShow(const int mouseX, const int mouseY) const
@@ -50,6 +77,9 @@ namespace GamePlay::Ui
 
         // NOTE: エディタは ImGui を触るため OS カーソルのままにする
         if constexpr (APPLICATION_MODE != ApplicationMode::Game)
+            return false;
+
+        if (!NanamiUi::Button::IsAnyActive())
             return false;
 
         if (NanamiEngine::CineMachine::Behaviour::ThirdPersonCameraBehaviour::IsMousePinned())
@@ -70,6 +100,14 @@ namespace GamePlay::Ui
         isVisible_ = visible;
         if (const auto root = visualRoot_.get())
             root->SetEnable(visible);
+
+        if (!visible)
+        {
+            isHolding_ = false;
+            pressRemaining_secs_ = 0.0f;
+            animScale_ = 1.0f;
+            SetPressed(false);
+        }
     }
 
     void GameCursor::SetPressed(const bool pressed)
@@ -86,6 +124,10 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("idle_", idle_);
         ImGuiHelper::OnDrawInputField("press_", press_);
         ImGuiHelper::OnDrawInputField("pressDuration_secs_", pressDuration_secs_);
+        ImGuiHelper::OnDrawInputField("baseScale_", baseScale_);
+        ImGuiHelper::OnDrawInputField("holdScale_", holdScale_);
+        ImGuiHelper::OnDrawInputField("releaseScale_", releaseScale_);
+        ImGuiHelper::OnDrawInputField("scaleSpeed_", scaleSpeed_);
     }
 }
 

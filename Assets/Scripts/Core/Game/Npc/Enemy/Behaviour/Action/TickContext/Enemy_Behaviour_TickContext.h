@@ -82,6 +82,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         
 
         [[nodiscard]] GameObject::IGameObject& EnemyGameObject() const { return *enemyGameObject_.lock(); }
+        [[nodiscard]] std::shared_ptr<GameObject::IGameObject> EnemyGameObjectPtr() const { return enemyGameObject_.lock(); }
         [[nodiscard]] GameObject::Transform  & EnemyTransform () const;
         [[nodiscard]] Component::Animator    & EnemyAnimator  () const { return *enemyAnimator_  .lock(); }
         [[nodiscard]] Component::RigidBody   & EnemyRigidBody () const { return *enemyRigidBody_ .lock(); }

@@ -21,7 +21,7 @@ namespace NanamiEngine::Module::Asset
     void DrawBoardTimeWarning(const std::string& text);
 
     /**
-     * @brief 掲示板に貼るイベント告知1件。開始・終了は "YYYY-MM-DD HH:MM"(日本時間) で書く。
+     * @brief 掲示板に貼るイベント告知1件。開始・終了は "YYYY-MM-DD HH:MM"(日本時間)
      */
     class EventNotice final : public ScriptableObject
     {

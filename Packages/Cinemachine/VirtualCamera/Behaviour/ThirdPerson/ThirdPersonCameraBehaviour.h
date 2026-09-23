@@ -37,8 +37,6 @@ namespace NanamiEngine::CineMachine::Behaviour
         [[nodiscard]] glm::vec3 ResolveCameraCollision(const glm::vec3& desiredOffset) const;
 
         bool isLockMousePos_ = true;
-        // ブレインの補完を無視して仮想カメラのTransformを即時適用するか。
-        // ThirdPersonでは補完による視点の遅れが不自然なため既定で有効。
         bool isImmediateApply_ = true;
 
         float yaw_              = 0.0f;

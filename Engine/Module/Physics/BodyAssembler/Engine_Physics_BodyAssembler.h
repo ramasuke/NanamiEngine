@@ -60,6 +60,8 @@ namespace NanamiEngine::Module::Physics
 
         void PushTransform(const Component::RigidBody& rigidBody) const;
         void PullTransform(const Component::RigidBody& rigidBody) const;
+        // NOTE: OnUpdatedPhysics より前に全 Body を書き戻す(補間の取り込みが呼び出し順に左右されないように)
+        void PullTransforms() const;
         // RigidBody に付いている Sensor を、自分の Transform の位置へ動かす
         void MoveSensor(const Component::ColliderBase& collider) const;
 

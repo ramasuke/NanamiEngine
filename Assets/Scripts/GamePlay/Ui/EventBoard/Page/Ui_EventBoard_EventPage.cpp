@@ -46,6 +46,7 @@ namespace GamePlay::Ui
         detailPeriodText_->SetText(entry->periodText);
         detailStatusText_->SetText(entry->statusText);
         detailStatusText_->SetTextColor(entry->isOngoing ? ongoingStatusColor_ : upcomingStatusColor_);
+        
         if (const auto stamp = detailOngoingStamp_.get())
             stamp->SetEnable(entry->isOngoing);
 

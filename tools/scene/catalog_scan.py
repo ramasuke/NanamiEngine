@@ -82,6 +82,7 @@ RE_ARCHIVE_CALL = re.compile(
 RE_CLASS_VERSION = re.compile(r"CEREAL_CLASS_VERSION\s*\(\s*([\w:]+)\s*,\s*(\d+)\s*\)")
 RE_FIELD_MACRO = re.compile(r"FIELD\s*\(\s*([\w:]+)\s*\)")
 RE_FIELD_TMPL = re.compile(r"\bField\s*<\s*([\w:]+)\s*>")
+RE_REACTIVE = re.compile(r"\bSerializableReactiveProperty\s*<\s*(.+)>")
 RE_VECTOR = re.compile(r"std::vector\s*<\s*([\w:<>\s]+?)\s*>")
 RE_ENUM = re.compile(r"\benum\s+(?:class\s+|struct\s+)?(\w+)\s*(?::\s*[\w:\s]+?)?\s*\{")
 RE_RECORD = re.compile(r"(\benum\s+)?\b(?:class|struct)\s+(\w+)\b[^;{]*\{")
@@ -203,6 +204,12 @@ def _scan_enums(headers: list[tuple[str, str]]) -> dict[str, Optional[dict[str, 
 def _classify_member(decl_type: str, known_types: set[str],
                      enums: Optional[dict[str, Optional[dict[str, int]]]] = None) -> dict:
     t = decl_type.strip()
+    # NOTE: R4::SerializableReactiveProperty<T> は {"value": T} として保存される
+    mr = RE_REACTIVE.search(t)
+    if mr:
+        info = _classify_member(mr.group(1), known_types, enums)
+        info["reactive"] = True
+        return info
     m = RE_FIELD_MACRO.search(t) or RE_FIELD_TMPL.search(t)
     if m:
         return {"shape": "field", "type": _leaf(m.group(1))}

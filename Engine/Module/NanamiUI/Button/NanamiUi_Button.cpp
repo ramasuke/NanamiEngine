@@ -5,8 +5,21 @@
 #include "../../GameObject/Transform/Transform.h"
 #include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
+namespace
+{
+    // NOTE: 更新順に依存しないよう、数フレーム分は有効扱いを保つ
+    constexpr int ACTIVE_HOLD_MS = 100;
+
+    int lastActiveMs = -ACTIVE_HOLD_MS * 100;
+}
+
 namespace NanamiEngine::Module
 {
+    bool NanamiUi::Button::IsAnyActive()
+    {
+        return GetNowCount() - lastActiveMs < ACTIVE_HOLD_MS;
+    }
+
     void NanamiUi::Button::OnAwake()
     {
         renderer_ = Components().Catch<IInteractivableRenderer>();  
@@ -14,6 +27,8 @@ namespace NanamiEngine::Module
 
     void NanamiUi::Button::OnUpdate()
     {
+        lastActiveMs = GetNowCount();
+
         TryHover();
         TryClick();
         TryRelease();

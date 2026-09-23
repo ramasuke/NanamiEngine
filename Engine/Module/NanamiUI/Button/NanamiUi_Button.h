@@ -24,6 +24,9 @@ namespace NanamiEngine::Module::NanamiUi
         [[nodiscard]] R4::Observable<R4::Unit  > OnHoverExit() const { return onHoverExit.AsObservable(); }
         [[nodiscard]] R4::Observable<R4::Unit  > OnRelease() const { return onRelease.AsObservable(); }
 
+        // 有効な Button が直近で更新されていれば true (マウスで操作する UI が出ている)
+        [[nodiscard]] static bool IsAnyActive();
+
     private:
         void OnAwake() override;
         void OnUpdate() override;

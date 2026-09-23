@@ -230,15 +230,14 @@ def _set_guid_field(text, key, guid):
     return text
 
 
+# NOTE: pickupPrefab_ で同じ型が先に出ているので cereal_class_version は書かない (書くと位置読みの value0 がずれて読めない)
 PARTICLE_FIELD = '''
                 "useParticle_": {{
-                    "cereal_class_version": 0,
                     "value0": {{
                         "polymorphic_id": 1073741824,
                         "ptr_wrapper": {{
                             "id": {id},
                             "data": {{
-                                "cereal_class_version": 0,
                                 "value0": {{
                                     "value_": "{guid}"
                                 }}

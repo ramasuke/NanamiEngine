@@ -330,7 +330,16 @@ def color32_blob(r: int, g: int, b: int) -> Ver:
                literal_presence=True)
 
 
+def _reactive_wrap(pinfo: dict, value: Any) -> Any:
+    # NOTE: SerializableReactiveProperty<T> は {"value": T} で保存される
+    return OrderedObj([("value", value)]) if pinfo.get("reactive") else value
+
+
 def _param_blob(pinfo: dict) -> Any:
+    return _reactive_wrap(pinfo, _param_blob_inner(pinfo))
+
+
+def _param_blob_inner(pinfo: dict) -> Any:
     shape = pinfo.get("shape")
     if shape in ("int", "float", "bool", "string"):
         return _default_scalar(shape, pinfo.get("default"))
@@ -574,9 +583,9 @@ def _set_one_param(comp: model.Component, entry: dict, key: str, raw: str) -> st
     elif shape == "color32":
         _set_color32(comp.data[jkey], _coerce(shape, raw))
     elif shape == "int" and pinfo.get("enum"):
-        comp.data[jkey] = Num.of_int(_enum_value(pinfo, raw))
+        comp.data[jkey] = _reactive_wrap(pinfo, Num.of_int(_enum_value(pinfo, raw)))
     else:
-        comp.data[jkey] = _coerce(shape, raw)
+        comp.data[jkey] = _reactive_wrap(pinfo, _coerce(shape, raw))
     return pinfo["member"]
 
 

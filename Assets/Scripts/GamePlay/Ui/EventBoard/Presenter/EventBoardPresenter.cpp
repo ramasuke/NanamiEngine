@@ -14,6 +14,7 @@
 #include "../../../../Core/Game/PlayerAvatar/Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
 #include "../../../../Core/Game/PlayerAvatar/Wallet/PlayerAvatar_Wallet.h"
+#include "../../../../Core/Game/Story/Story_StoryProgress.h"
 #include "Engine/Core/Application/ApplicationBase.h"
 #include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
@@ -71,6 +72,7 @@ namespace GamePlay::Ui
             now,
             owner ? &owner->PlayerStatus().Quest() : nullptr,
             owner ? &owner->PlayerStatus().CompletedQuest() : nullptr,
+            &GameCore::Story::StoryProgress::Instance(),
             questPage ? questPage->MaxVisibleRows() : 0);
         eventModel_ = std::make_unique<EventBoardModel>(
             board ? board->Notices() : std::vector<std::shared_ptr<Asset::EventNotice>>{},

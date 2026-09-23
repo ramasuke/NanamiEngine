@@ -18,7 +18,7 @@ namespace NanamiEngine
         static void  SetFixedDeltaTime(float fixedDeltaTime);
 
     private:
-        static int lastTime_;
+        static long long lastTime_;
         static float deltaTime_;
         static float timeScale_;
         static float currentTime_;

@@ -145,6 +145,13 @@ class Builder(pm.PrefabBuilder):
         comp.data['blendMode_'] = Num.of_int(BLEND_ALPHA)
         return node, comp
 
+    def gauge(self, parent, name, pos, sprite_guid, order, start, span, fill):
+        node = self.node(parent, name, pos)
+        comp = self.component(node, 'CircleGaugeRenderer', spriteFile_=sprite_guid, blendRate_='255',
+                              renderOrder_=order, startPercent_=start, spanPercent_=span, fillRate_=fill)
+        comp.data['blendMode_'] = Num.of_int(BLEND_ALPHA)
+        return node, comp
+
     def label(self, parent, name, spec, order, text=None):
         """spec は layout() の文字の指定。pos は TextRenderer の基準点(左揃えは左上、中央揃えは上辺中央)"""
         node = self.node(parent, name, spec['pos'], spec['px'] / FONT_PX)
@@ -187,7 +194,9 @@ def build_prefab(route_guids):
         _, comp = b.image(dashes_root, f'Dash{i:02d}', art.DEPART_ROUTE[0], sprite('LoadingMap_Dash'), ORDER_DASH)
         dashes.append(pm.guid_of(comp))
 
-    _, dest_circle = b.image(camera, 'DestCircle', geo['dest_circle']['center'], sprite('LoadingMap_DestCircle'), ORDER_DEST_CIRCLE)
+    # 〇は LoadingRouteMap が fillRate を 0 -> 1 に動かして、1時あたりから一筆で描く
+    _, dest_circle = b.gauge(camera, 'DestCircle', geo['dest_circle']['center'], sprite('LoadingMap_DestCircle'),
+                             ORDER_DEST_CIRCLE, start='8', span='100', fill='0')
     _, stamp = b.image(camera, 'ClearedStamp', geo['stamp']['center'], CLEARED_SEAL, ORDER_STAMP)
     _, kicker = b.label(camera, 'Kicker', geo['kicker'], ORDER_MAP_TEXT)
     _, title = b.label(camera, 'Title', geo['title'], ORDER_MAP_TEXT)
@@ -226,7 +235,8 @@ def build_prefab(route_guids):
         dashSprite_=sprite('LoadingMap_Dash'), dashPassedSprite_=sprite('LoadingMap_DashPassed'),
         cameraZoom_='1.16', cameraZoomWobble_='0.012', cameraFollow_='0.6', cameraLag_='0.06',
         cameraMaxPan_='250,140', shipLiftPx_='33', shipBobPx_='3', shipTiltLimitDeg_='14',
-        shadowOffset_='12,9', cloudShadowSpeed_='36', frontCloudSpeed_='150', cloudWrapRangeX_='-600,2520')
+        shadowOffset_='12,9', cloudShadowSpeed_='36', frontCloudSpeed_='150', cloudWrapRangeX_='-600,2520',
+        destCircleDelay_secs_='0.35', destCircleDraw_secs_='0.5')
     b.field(route_map, 'camera_', camera.guid)
     b.field(route_map, 'ship_', pm.guid_of(ship))
     b.field(route_map, 'shipShadow_', pm.guid_of(ship_shadow))

@@ -123,6 +123,13 @@ namespace GamePlay::Ui
 
         ApplyCoverBlendRate();
         UpdateStatusText();
+
+        if (const auto bgm = bgm_.get(); bgm && CheckSoundMem(bgm->GetDxLibHandle()) != 1)
+        {
+            ChangeVolumeSoundMem(0, bgm->GetDxLibHandle());
+            PlaySoundMem(bgm->GetDxLibHandle(), DX_PLAYTYPE_LOOP, TRUE);
+        }
+        UpdateBgm();
     }
 
     void LoadingScreenUi::SetStep(const SceneLoadStep step)
@@ -196,7 +203,7 @@ namespace GamePlay::Ui
         UpdateCoverFade(deltaSecs);
 
         if (const auto routeMap = routeMap_.get())
-            routeMap->Tick(displayedProgress_, animationSecs_);
+            routeMap->Tick(displayedProgress_, animationSecs_, deltaSecs);
     }
 
     float LoadingScreenUi::TickWallClockSeconds()
@@ -273,6 +280,7 @@ namespace GamePlay::Ui
         }
 
         ApplyCoverBlendRate();
+        UpdateBgm();
     }
 
     void LoadingScreenUi::PlayCover(const float from, const float to, const float fullFadeSecs)
@@ -345,6 +353,37 @@ namespace GamePlay::Ui
         cover->SetBlendRate(blendRate);
     }
 
+    void LoadingScreenUi::UpdateBgm() const
+    {
+        const auto bgm = bgm_.get();
+        if (!bgm)
+            return;
+
+        const float cover01 = coverTween_.Value() / 255.0f;
+        float volume01 = 0.0f;
+        switch (phase_)
+        {
+        case Phase::CoveringGame:
+            volume01 = cover01;
+            break;
+        case Phase::RevealingMap:
+        case Phase::Visible:
+            volume01 = 1.0f;
+            break;
+        case Phase::CoveringMap:
+            volume01 = 1.0f - cover01;
+            break;
+        case Phase::RevealingGame:
+        case Phase::Hidden:
+            // NOTE: 地図を消した時点で次のシーンの BGM に明け渡す
+            StopSoundMem(bgm->GetDxLibHandle());
+            return;
+        }
+
+        ChangeVolumeSoundMem(static_cast<int>(static_cast<float>(bgmVolume_) * std::clamp(volume01, 0.0f, 1.0f)),
+                             bgm->GetDxLibHandle());
+    }
+
     float LoadingScreenUi::CalcRawProgress() const
     {
         if (step_ == SceneLoadStep::Completed)
@@ -385,6 +424,8 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("minShowSecs_", minShowSecs_);
         ImGuiHelper::OnDrawInputField("progressFollowRate_", progressFollowRate_);
         ImGuiHelper::OnDrawInputField("finishSecs_", finishSecs_);
+        ImGuiHelper::OnDrawInputField("bgm_", bgm_);
+        ImGui::SliderInt("bgmVolume_", &bgmVolume_, 0, 255);
         ImGui::Text("progress: %.3f", displayedProgress_);
         ImGui::Text("step: %d  phase: %d", static_cast<int>(step_), static_cast<int>(phase_));
     }

@@ -7,7 +7,8 @@
 - Assets/Audio/Physics/{Pickup_Coin,Pickup_Item}.mp3                      : 常に書く (--install 不要)
 
 単位は m (tools/art/magic_fx_lib.py と同じ)。原点は拾い物のあった位置 (地面近く)。
-一度に何枚も拾うので、エフェクトは小さく短く (0.5 秒ほど)、SE も短く明るくしてある。
+一度に何枚も拾うので、エフェクトは小さく短く (0.5 秒ほど)、SE も短くしてある。
+お金の SE はリアル寄りの世界観に合わせ、硬貨の擦れる音だけで作る (チャイム的な音程は付けない)。
 SE の部品・mp3 形式・.meta は tools/art/magic_sfx.py のもの。
 """
 from __future__ import annotations
@@ -134,16 +135,37 @@ def _bell(f, d, tau):
     return sum(m.osc(f * ratio, d) * gain * m.exp_decay(d, tau / (1 + ratio * 0.3), 0.001) for ratio, gain in partials)
 
 
+def _coin_hit(f, rng, d=0.12):
+    """硬貨どうしが触れる1回分。非整数倍の振動モードが短く減衰するだけで、音程感は出さない"""
+    modes = [(1.0, 1.0), (1.69, 0.7), (2.47, 0.5), (3.31, 0.3), (4.23, 0.18)]
+    out = np.zeros(m.n_of(d))
+    for ratio, gain in modes:
+        fr = f * ratio * rng.uniform(0.985, 1.015)
+        if fr > m.SR * 0.45:
+            continue
+        out += m.osc(fr, d) * gain * m.exp_decay(d, rng.uniform(0.025, 0.05) / ratio ** 0.5, 0.0003)
+    tick = m.hp(m.white(0.006, rng) * m.exp_decay(0.006, 0.0012, 0.0002), 2500)
+    m.at(out, m.norm(tick), 0.0, 0.6)
+    return m.norm(out)
+
+
 def pickup_coin(rng):
-    """「チャリン」: 硬貨の当たる短い音のすぐ後に、5度上の澄んだ音"""
-    d = 0.45
+    """数枚の硬貨が擦れ合って革袋に収まる「ジャリッ」。ベルやチャイムの音程は入れない"""
+    d = 0.32
     buf = np.zeros(m.n_of(d))
-    clink = m.hp(m.white(0.02, rng) * m.exp_decay(0.02, 0.004, 0.0005), 3000)
-    m.at(buf, m.norm(clink), 0.0, 0.35)
-    m.at(buf, m.norm(_bell(1975, d, 0.12)), 0.0, 0.75)     # B6
-    m.at(buf, m.norm(_bell(2960, d - 0.06, 0.16)), 0.06, 0.9)  # F#7
-    stereo = m.reverb(buf, rng, rt60=0.3, mix=0.12, predelay=0.004, bright=9000)
-    return m.finish(stereo, -4.0, fade_out=0.06)
+    # 手で掴んで袋に入れる時の鈍い擦れと当たり
+    rustle = m.bp(m.white(0.1, rng), 400, 2500) * m.exp_decay(0.1, 0.03, 0.008)
+    m.at(buf, m.norm(rustle), 0.0, 0.18)
+    thump = m.lp(m.white(0.05, rng), 350) * m.exp_decay(0.05, 0.012, 0.001)
+    m.at(buf, m.norm(thump), 0.02, 0.35)
+    # 硬貨の触れ合い。間隔も高さも不揃いにして、後ほど小さく
+    t = 0.008
+    for i in range(5):
+        m.at(buf, _coin_hit(rng.uniform(2600, 4200), rng), t, 0.55 * 0.72 ** i * rng.uniform(0.8, 1.0))
+        t += rng.uniform(0.018, 0.045)
+    buf = m.lp(buf, 9000)
+    stereo = m.reverb(buf, rng, rt60=0.18, mix=0.06, predelay=0.003, bright=6000)
+    return m.finish(stereo, -8.0, fade_out=0.05)
 
 
 def pickup_item(rng):

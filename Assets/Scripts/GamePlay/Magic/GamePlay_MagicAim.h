@@ -38,6 +38,11 @@ namespace GamePlay::Magic
                              const std::shared_ptr<GameObject::IGameObject>& hitObject,
                              GameCore::Damage::PhysicsPower power,
                              const glm::vec3& position);
+    /** @brief 撃ち手の画面でだけ、hitObject の持ち主が敵ならカメラを揺らす。揺れは重なるので、揺らしたかを返す */
+    bool ShakeOnSpellHit(const std::weak_ptr<GameObject::IGameObject>& caster,
+                         const std::shared_ptr<GameObject::IGameObject>& hitObject,
+                         float intensity,
+                         float duration_secs);
     /** @brief 部位のコライダーの重心。コライダーがなければ Transform の位置 */
     [[nodiscard]] glm::vec3 HitPartPosition(GameObject::IGameObject& part);
 }

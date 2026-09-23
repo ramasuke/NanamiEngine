@@ -1,5 +1,5 @@
 {
-  "generated_from": "6b1f1d7a4b1b9cd0ef5301c1deeee7a53d1d0928",
+  "generated_from": "7d59e04c50caf66ce01b1d6d967d72e2e21a4577",
   "components": {
     "CineMachine::Behaviour::NoiseCameraBehaviour": {
       "class": "NoiseCameraBehaviour",
@@ -541,7 +541,7 @@
       "class": "MagicBlast",
       "fqn": "GamePlay::Magic::MagicBlast",
       "leaf": "MagicBlast",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -571,6 +571,18 @@
           "member": "detonateOnEnter_",
           "named": true,
           "shape": "bool"
+        },
+        {
+          "key": "hitShakeIntensity_",
+          "member": "hitShakeIntensity_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "hitShakeDuration_secs_",
+          "member": "hitShakeDuration_secs_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -578,7 +590,7 @@
       "class": "MagicChannel",
       "fqn": "GamePlay::Magic::MagicChannel",
       "leaf": "MagicChannel",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -606,6 +618,18 @@
         {
           "key": "linger_secs_",
           "member": "linger_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "hitShakeIntensity_",
+          "member": "hitShakeIntensity_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "hitShakeDuration_secs_",
+          "member": "hitShakeDuration_secs_",
           "named": true,
           "shape": "float"
         }
@@ -646,7 +670,7 @@
       "class": "MagicProjectile",
       "fqn": "GamePlay::Magic::MagicProjectile",
       "leaf": "MagicProjectile",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -668,6 +692,18 @@
         {
           "key": "impactLifeTime_secs_",
           "member": "impactLifeTime_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "hitShakeIntensity_",
+          "member": "hitShakeIntensity_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "hitShakeDuration_secs_",
+          "member": "hitShakeDuration_secs_",
           "named": true,
           "shape": "float"
         }
@@ -1907,7 +1943,7 @@
       "class": "RestorationGate",
       "fqn": "GamePlay::Prop::RestorationGate",
       "leaf": "RestorationGate",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1951,6 +1987,13 @@
           "member": "previewPriority_",
           "named": true,
           "shape": "int"
+        },
+        {
+          "key": "restoredPrefab_",
+          "member": "restoredPrefab_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
         }
       ]
     },
@@ -3880,7 +3923,7 @@
       "class": "EventBoardQuestPage",
       "fqn": "GamePlay::Ui::EventBoardQuestPage",
       "leaf": "EventBoardQuestPage",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -4097,6 +4140,13 @@
           "member": "defaultStateColor_",
           "named": true,
           "shape": "color32"
+        },
+        {
+          "key": "lockedSealSprite_",
+          "member": "lockedSealSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
         }
       ]
     },
@@ -4104,7 +4154,7 @@
       "class": "EventBoardQuestRow",
       "fqn": "GamePlay::Ui::EventBoardQuestRow",
       "leaf": "EventBoardQuestRow",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -4226,6 +4276,13 @@
           "member": "selectedScale_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "lockedStampSprite_",
+          "member": "lockedStampSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
         }
       ]
     },
@@ -4787,7 +4844,7 @@
       "class": "GameCursor",
       "fqn": "GamePlay::Ui::GameCursor",
       "leaf": "GameCursor",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -4823,6 +4880,30 @@
         {
           "key": "pressDuration_secs_",
           "member": "pressDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "baseScale_",
+          "member": "baseScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "holdScale_",
+          "member": "holdScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "releaseScale_",
+          "member": "releaseScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "scaleSpeed_",
+          "member": "scaleSpeed_",
           "named": true,
           "shape": "float"
         }
@@ -5726,7 +5807,7 @@
       "class": "LoadingRouteMap",
       "fqn": "GamePlay::Ui::LoadingRouteMap",
       "leaf": "LoadingRouteMap",
-      "version": 0,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -5806,7 +5887,7 @@
           "member": "destCircle_",
           "named": true,
           "shape": "field",
-          "type": "ImageRenderer"
+          "type": "CircleGaugeRenderer"
         },
         {
           "key": "clearedStamp_",
@@ -5928,6 +6009,54 @@
           "member": "cloudWrapRangeX_",
           "named": true,
           "shape": "vec2"
+        },
+        {
+          "key": "destCircleDelay_secs_",
+          "member": "destCircleDelay_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "destCircleDraw_secs_",
+          "member": "destCircleDraw_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stampDelay_secs_",
+          "member": "stampDelay_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stampPress_secs_",
+          "member": "stampPress_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stampStartScale_",
+          "member": "stampStartScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "dashPopScale_",
+          "member": "dashPopScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "dashPop_secs_",
+          "member": "dashPop_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "shipFlip_secs_",
+          "member": "shipFlip_secs_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -5935,7 +6064,7 @@
       "class": "LoadingScreenUi",
       "fqn": "GamePlay::Ui::LoadingScreenUi",
       "leaf": "LoadingScreenUi",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -6025,6 +6154,19 @@
           "member": "finishSecs_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "bgm_",
+          "member": "bgm_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "bgmVolume_",
+          "member": "bgmVolume_",
+          "named": true,
+          "shape": "int"
         }
       ]
     },
@@ -9058,7 +9200,8 @@
           "key": "priority_",
           "member": "priority_",
           "named": true,
-          "shape": "int"
+          "shape": "int",
+          "reactive": true
         },
         {
           "key": "overrideFov_",

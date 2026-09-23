@@ -47,13 +47,13 @@ namespace GamePlay::Ui
         if (event)
             detailEventText_->SetText(event->Title());
 
-        detailTitleText_ ->SetText(quest.Title());
+        detailTitleText_ ->SetText(entry->titleText);
         detailClientText_->SetText(quest.ClientName());
         detailPlaceText_ ->SetText(entry->placeText);
         ShowQuestBoardRankPips(detailRankPips_, quest.Rank(), filledPipSprite_.get(), emptyPipSprite_.get());
         detailStateText_ ->SetText(entry->stateText);
         detailStateText_ ->SetTextColor(entry->state == QuestBoardState::Taking ? takingStateColor_ : defaultStateColor_);
-        detailGoalText_  ->SetText(quest.GoalText());
+        detailGoalText_  ->SetText(entry->goalText);
         detailRewardText_->SetText(entry->rewardText);
         detailLimitText_ ->SetText(entry->limitText);
 
@@ -64,13 +64,13 @@ namespace GamePlay::Ui
             if (!text)
                 continue;
 
-            const bool hasLine = i < lines.size();
+            const bool hasLine = entry->state != QuestBoardState::Locked && i < lines.size();
             text->SetEnable(hasLine);
             if (hasLine)
                 text->SetText(lines[i]);
         }
 
-        const QuestBoardStampSprites stamps{ takingSealSprite_.get(), clearedSealSprite_.get(), preparingSealSprite_.get() };
+        const QuestBoardStampSprites stamps{ takingSealSprite_.get(), clearedSealSprite_.get(), preparingSealSprite_.get(), lockedSealSprite_.get() };
         const auto seal = stamps.For(entry->state);
         detailSeal_->SetSprite(seal ? seal : openSealSprite_.get());
     }
@@ -117,6 +117,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("takingSealSprite_", takingSealSprite_);
         ImGuiHelper::OnDrawInputField("clearedSealSprite_", clearedSealSprite_);
         ImGuiHelper::OnDrawInputField("preparingSealSprite_", preparingSealSprite_);
+        ImGuiHelper::OnDrawInputField("lockedSealSprite_", lockedSealSprite_);
         ImGuiHelper::OnDrawInputField("takingStateColor_", takingStateColor_);
         ImGuiHelper::OnDrawInputField("defaultStateColor_", defaultStateColor_);
     }

@@ -41,6 +41,9 @@ namespace GamePlay::Magic
         [[serialize(0)]] float hitEffectLifeTime_secs_ = 0.8f;
         /** @brief 当て終わってから消えるまでの時間。見た目の消え際を切らないため */
         [[serialize(0)]] float linger_secs_ = 0.5f;
+        /** @brief 1回当てるごとの揺れ。何体に当たっても 1 回分 */
+        [[serialize(1)]] float hitShakeIntensity_     = 0.15f;
+        [[serialize(1)]] float hitShakeDuration_secs_ = 0.08f;
 
         std::vector<ChannelTarget> targets_;
         std::weak_ptr<GameObject::IGameObject> caster_;
@@ -62,6 +65,8 @@ namespace GamePlay::Magic
             archive(CEREAL_NVP(hitPrefab_));
             archive(CEREAL_NVP(hitEffectLifeTime_secs_));
             archive(CEREAL_NVP(linger_secs_));
+            archive(CEREAL_NVP(hitShakeIntensity_));
+            archive(CEREAL_NVP(hitShakeDuration_secs_));
         }
 
         template<class Archive>
@@ -71,9 +76,11 @@ namespace GamePlay::Magic
             if (version >= 0) archive(CEREAL_NVP(hitPrefab_));
             if (version >= 0) archive(CEREAL_NVP(hitEffectLifeTime_secs_));
             if (version >= 0) archive(CEREAL_NVP(linger_secs_));
+            if (version >= 1) archive(CEREAL_NVP(hitShakeIntensity_));
+            if (version >= 1) archive(CEREAL_NVP(hitShakeDuration_secs_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Magic::MagicChannel, 0);
+CEREAL_CLASS_VERSION(GamePlay::Magic::MagicChannel, 1);
