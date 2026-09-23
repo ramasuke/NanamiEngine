@@ -11,6 +11,7 @@
 #include "../../Core/Game/Damage/Physics/Game_Damage_Physics.h"
 #include "../../Core/Game/Magic/IMagicCaster.h"
 #include "../../Core/Game/PlayerAvatar/AttackArea/PlayerAvatarAttackArea.h"
+#include "../../Core/Game/Npc/Friendly/IFriendlyNpc.h"
 #include "../../Core/Game/PlayerAvatar/ITakablePlayerAttack/ITakablePlayerAttack.h"
 #include "../../Core/Game/PlayerAvatar/LockOnTarget/ILockOnTarget.h"
 #include "../Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h"
@@ -107,6 +108,10 @@ namespace GamePlay::Magic
 
         const auto owner = Physics::FindBodyOwner(hitObject);
         if (!owner || owner->Components().Catch<GameCore::PlayerAvatar::ITakablePlayerAttack>().expired())
+            return;
+
+        // 村人は驚くだけでダメージは受けない
+        if (!owner->Components().Catch<GameCore::Npc::IFriendlyNpc>().expired())
             return;
 
         const auto magicCaster = casterObject->Components().Catch<GameCore::Magic::IMagicCaster>().lock();

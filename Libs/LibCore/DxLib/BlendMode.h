@@ -1,15 +1,15 @@
 ﻿#pragma once
-#include "DxLib.h"
+
 
 namespace LibCore::Dxlib
 {
     enum class BlendMode : int
     {
-        NoBlend = DX_BLENDMODE_NOBLEND,
-        Alpha   = DX_BLENDMODE_ALPHA,
-        Add     = DX_BLENDMODE_ADD,
-        Sub     = DX_BLENDMODE_SUB,
-        Mul     = DX_BLENDMODE_MUL,
+        NoBlend = 0,
+        Alpha   = 1,
+        Add     = 2,
+        Sub     = 3,
+        Mul     = 4,
     };
     
     inline static const char* BlendModeLabelNames[] =

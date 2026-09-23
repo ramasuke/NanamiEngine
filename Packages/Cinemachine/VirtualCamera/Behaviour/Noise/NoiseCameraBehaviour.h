@@ -68,5 +68,4 @@ namespace NanamiEngine::CineMachine::Behaviour
     };
 }
 
-ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::NoiseCameraBehaviour, 0)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::NoiseCameraBehaviour);
+CEREAL_CLASS_VERSION(CineMachine::Behaviour::NoiseCameraBehaviour, 0);

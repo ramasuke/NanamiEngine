@@ -9,12 +9,12 @@ namespace NanamiEngine::R4
                                              public Physics::Callback::ISensorExitable
     {
     public:
-        [[nodiscard]] R4::Observable<std::shared_ptr<GameObject::IGameObject>> OnAction() const;
+        [[nodiscard]] Observable<std::shared_ptr<GameObject::IGameObject>> OnAction() const;
 
     private:
         void OnTriggerExit(const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
 
-        R4::Subject<std::shared_ptr<GameObject::IGameObject>> onAction_;
+        Subject<std::shared_ptr<GameObject::IGameObject>> onAction_;
 
 #pragma region Serialization Function
     public:
@@ -35,4 +35,4 @@ namespace NanamiEngine::R4
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::R4::SensorExitableAsObservable, 0)
+CEREAL_CLASS_VERSION(NanamiEngine::R4::SensorExitableAsObservable, 0);

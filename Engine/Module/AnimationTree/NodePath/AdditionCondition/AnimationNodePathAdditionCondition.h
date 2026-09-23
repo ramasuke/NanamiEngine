@@ -50,20 +50,3 @@ namespace NanamiEngine::Module::AnimationTree
 CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<bool>, 0);
 CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<int>, 0);
 CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<float>, 0);
-
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<bool>);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<int>);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<float>);
-
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    NanamiEngine::Module::AnimationTree::IAnimationNodePathAdditionCondition,
-    NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<bool>
-);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    NanamiEngine::Module::AnimationTree::IAnimationNodePathAdditionCondition,
-    NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<int>
-);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    NanamiEngine::Module::AnimationTree::IAnimationNodePathAdditionCondition,
-    NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<float>
-);

@@ -1,4 +1,5 @@
 ﻿#include "Friendly_Behaviour_Action_SampleFirstEventDragonChat.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Friendly::Behaviour::Action
 {
@@ -23,3 +24,8 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         ImGuiHelper::OnDrawInputField("AppearFirstEventDragonPosition_", appearFirstEventDragonPosition_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::SampleFirstEventDragonChat)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::ActionBase, GameCore::Npc::Friendly::Behaviour::Action::SampleFirstEventDragonChat)
+#pragma endregion

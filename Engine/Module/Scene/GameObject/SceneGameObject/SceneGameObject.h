@@ -67,5 +67,3 @@ namespace NanamiEngine::Scene
 }
 
 CEREAL_CLASS_VERSION(NanamiEngine::Scene::SceneGameObject, 1);
-CEREAL_REGISTER_TYPE(NanamiEngine::Scene::SceneGameObject);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::GameObject::IGameObject, NanamiEngine::Scene::SceneGameObject);

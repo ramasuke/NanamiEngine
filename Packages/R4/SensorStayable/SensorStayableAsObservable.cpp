@@ -1,4 +1,5 @@
 ﻿#include "SensorStayableAsObservable.h"
+#include "../../../Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::R4
 {
@@ -21,3 +22,7 @@ namespace NanamiEngine::R4
     {
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::R4::SensorStayableAsObservable);
+#pragma endregion

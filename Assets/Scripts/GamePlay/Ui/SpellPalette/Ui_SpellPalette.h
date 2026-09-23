@@ -11,6 +11,7 @@
 #include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
 #include "Engine/Module/Component/CircleGaugeRenderer/CircleGaugeRenderer.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 #include "../../../Core/Game/PlayerAvatar/InputAction/PlayerAvatarInputDevice.h"
 #include "../../../Core/Game/PlayerAvatar/MagicCaster/Spell/MagicCasterSpellSlot.h"
 
@@ -46,7 +47,7 @@ namespace GamePlay::Ui
         /// 向き（0=上 1=右 2=下 3=左）ごとの手前の置き場所と奥の置き場所
         [[nodiscard]] glm::vec3 FrontAnchorPos(int direction) const;
         [[nodiscard]] glm::vec3 BackAnchorPos (int direction) const;
-        [[nodiscard]] int FrontPage() const { return pageBlend_ >= 0.5f ? 1 : 0; }
+        [[nodiscard]] int FrontPage() const { return pageSwap_.Value() >= 0.5f ? 1 : 0; }
 
         [[serialize(0)]] FIELD(GameObject::IGameObject) slotsRoot_;
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) slotPrefab_;
@@ -104,9 +105,9 @@ namespace GamePlay::Ui
         std::weak_ptr<GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar> avatar_;
         std::array<std::weak_ptr<SpellSlot>, GameCore::PlayerAvatar::MagicCaster::SPELL_LOADOUT_SLOT_COUNT> slotViews_;
         std::array<bool, GameCore::PlayerAvatar::MagicCaster::SPELL_LOADOUT_SLOT_COUNT> shownManaLack_ {};
-        float visibleRate_ = 0.0f;
-        float openRate_    = 0.0f;
-        float pageBlend_   = 0.0f;
+        LibCore::Tween::TweenPlayer<float> visibleFade_;
+        LibCore::Tween::TweenPlayer<float> openFade_;
+        LibCore::Tween::TweenPlayer<float> pageSwap_;
         bool  isSpawned_      = false;
         bool  isSpellsDirty_  = true;
         bool  isDeviceDirty_  = true;
@@ -221,4 +222,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::SpellPalette, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::SpellPalette, 0);

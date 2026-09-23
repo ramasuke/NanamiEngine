@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <functional>
 #include <memory>
+#include <vector>
 
 #include "MagicCasterAvatarStateType.h"
 #include "../../State/PlayerAvatarStateBase.h"
@@ -25,6 +26,11 @@ namespace GameCore::PlayerAvatar::MagicCaster
         virtual ~MagicCasterAvatarStateBase() override = default;
 
     protected:
+        struct FootstepLatch
+        {
+            std::vector<bool> boneAirborne;
+        };
+
         /** ---- 以下サンドボックスパターン ---- */
         [[nodiscard]] std::weak_ptr<GameObject::IGameObject>     CastPoint       () const { return Context().CastPoint(); }
         [[nodiscard]] Magic::IMagicCaster&                       Caster          () const { return Context().Caster(); }
@@ -32,6 +38,9 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[nodiscard]] std::shared_ptr<const Magic::IMagicSpell>  PendingSpell    () const { return Context().PendingSpell(); }
         /** @brief 枠番号（MagicCasterSpellSlot.h）の魔法。空の枠なら nullptr */
         [[nodiscard]] std::shared_ptr<const Magic::IMagicSpell>  SpellAt(int slot) const;
+
+        /** @brief 足ボーンが接地した瞬間に足元へ土煙を出す。Walk / Run が毎フレーム呼ぶ */
+        void TryEmitFootstep(FootstepLatch& latch) const;
 
         /**
          * @brief 基本魔法（RT / 左クリック）か LT+ボタン（1〜4）の入力を見て、撃てるなら枠を決めて Cast へ移る
@@ -48,7 +57,9 @@ namespace GameCore::PlayerAvatar::MagicCaster
         /** @brief ロックオン中ならその対象へ向きを合わせる */
         void FaceAimTarget() const;
         // VisitTransitions で CycleItem / UseItem を宣言したStateだけが呼ぶ（アイテム欄の表示がその宣言を見ている）
-        void UpdateItemPouchInput() const;
-        void UseSelectedPouchItem() const;
+        /** @return 使うモーションのステートへ移ったら true。そのフレームは呼び出し元の遷移を見ない */
+        bool UpdateItemPouchInput() const;
+        /** @return 使うモーションのステートへ移ったら true */
+        bool UseSelectedPouchItem() const;
     };
 }

@@ -33,5 +33,3 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     REGISTER_ENEMY_ACTION_WITH_NAME(WriteBlackBoard, "Other::WriteBlackBoard<Int>")
 }
 CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoard, 0)
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoard)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoard)

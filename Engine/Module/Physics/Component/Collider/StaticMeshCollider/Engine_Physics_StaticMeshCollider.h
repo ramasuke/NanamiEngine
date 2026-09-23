@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "../Engine_Physics_ColliderBase.h"
 #include "../../../../Component/ComponentBase.h"
+#include "../../../../Asset/MV1/MV1File.h"
+#include "../../../../../Core/Object/Field/Field.h"
 #include "../JoltPhysics/Jolt/Jolt.h"
 #include "../JoltPhysics/Jolt/Physics/Collision/Shape/Shape.h"
 
@@ -16,6 +18,8 @@ namespace NanamiEngine::Module::Component
         bool  simplifyEnabled_   = true;
         float maxSimplifyError_  = 5.0f;
         float minTriangleRatio_  = 0.05f;
+        // NOTE: 設定すると ModelRenderer の見た目ではなくこのモデルから判定を作る(半壊版の瓦礫を判定に含めない等)
+        FIELD(Asset::Mv1File) collisionMv1File_;
 
     private:
         void OnAwake    () override;
@@ -43,6 +47,7 @@ namespace NanamiEngine::Module::Component
             archive(CEREAL_NVP(simplifyEnabled_));
             archive(CEREAL_NVP(maxSimplifyError_));
             archive(CEREAL_NVP(minTriangleRatio_));
+            archive(CEREAL_NVP(collisionMv1File_));
         }
 
         template<class Archive>
@@ -55,8 +60,8 @@ namespace NanamiEngine::Module::Component
                     archive(CEREAL_NVP(maxSimplifyError_));
                     archive(CEREAL_NVP(minTriangleRatio_));
                 }
+                if (version >= 5) archive(CEREAL_NVP(collisionMv1File_));
             } else {
-                // v2 以前はフィールドを直接保存していたため移行 (NVP なしの位置引数)
                 archive(cereal::base_class<ComponentBase>(this));
                 glm::vec3 tmpOffset;
                 archive(tmpOffset);
@@ -74,4 +79,4 @@ namespace NanamiEngine::Module::Component
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::StaticMeshCollider, 4)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::StaticMeshCollider, 5);

@@ -14,6 +14,7 @@
 #include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 #include "../../../../Data/LoadingRoute/Data_LoadingRouteData.h"
 #include "../../../Core/Game/Scene/Main/Loading/Main_SceneLoadStep.h"
 #include "../../../Core/Game/Scene/Main/Transition/Main_SceneTransitionOptions.h"
@@ -80,6 +81,8 @@ namespace GamePlay::Ui
             std::optional<GameCore::Scene::Main::SceneType> from,
             GameCore::Scene::Main::SceneType to) const;
         void UpdateCoverFade(float deltaSecs);
+        /** @brief 幕を from から to へ動かす。途中から折り返しても、幕全体を fullFadeSecs で動かす速さのまま */
+        void PlayCover(float from, float to, float fullFadeSecs);
         void UpdateProgress(float deltaSecs);
         void UpdateStatusText();
         void SetVisualEnabled(bool isEnabled);
@@ -110,7 +113,7 @@ namespace GamePlay::Ui
         float shownElapsedSecs_ = 0.0f;
         /** 地図の動きに使う時計。表示し直しても巻き戻さない */
         float animationSecs_ = 0.0f;
-        float coverBlendRate_ = 0.0f;
+        LibCore::Tween::TweenPlayer<float> coverTween_;
         float displayedProgress_ = 0.0f;
         int lastShownPercent_ = -1;
         int lastTickMs_ = 0;
@@ -165,4 +168,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::LoadingScreenUi, 1)
+CEREAL_CLASS_VERSION(GamePlay::Ui::LoadingScreenUi, 1);

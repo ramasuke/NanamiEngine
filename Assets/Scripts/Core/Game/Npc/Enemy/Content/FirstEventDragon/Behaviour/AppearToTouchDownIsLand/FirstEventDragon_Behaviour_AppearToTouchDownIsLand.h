@@ -43,5 +43,3 @@ namespace GameCore::Npc::Enemy::FirstEventDragon
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::FirstEventDragon::AppearToTouchDownIsLand, 0)
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::FirstEventDragon::AppearToTouchDownIsLand)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::FirstEventDragon::AppearToTouchDownIsLand)

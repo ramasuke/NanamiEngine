@@ -12,6 +12,7 @@
 
 #include "../../../../GameObject/Transform/Transform.h"
 #include "../../../../Log/NanamiEngine_Module_Log.h"
+#include "../../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 static bool ExtractMeshFromDxModel(
     const int modelHandle,
@@ -128,16 +129,31 @@ namespace NanamiEngine::Module::Component
     {
         shapeBuildAttempted_ = true;
 
-        const auto modelRenderer = Components().Catch<ModelRenderer>().lock();
-        if (!modelRenderer || modelRenderer->modelDxLibHandle_ < 0)
-        {
-            LogError("StaticMeshCollider: ModelRenderer のモデルが見つかりません");
-            return false;
-        }
-
         JPH::VertexList verts;
         JPH::IndexedTriangleList tris;
-        if (!ExtractMeshFromDxModel(modelRenderer->modelDxLibHandle_, verts, tris))
+        bool extracted = false;
+        if (collisionMv1File_)
+        {
+            const int handle = collisionMv1File_->LoadDxLibHandle();
+            if (handle < 0)
+            {
+                LogError("StaticMeshCollider: collisionMv1File_ を読み込めません: " + collisionMv1File_->GetContentPath());
+                return false;
+            }
+            extracted = ExtractMeshFromDxModel(handle, verts, tris);
+            MV1DeleteModel(handle);
+        }
+        else
+        {
+            const auto modelRenderer = Components().Catch<ModelRenderer>().lock();
+            if (!modelRenderer || modelRenderer->modelDxLibHandle_ < 0)
+            {
+                LogError("StaticMeshCollider: ModelRenderer のモデルが見つかりません");
+                return false;
+            }
+            extracted = ExtractMeshFromDxModel(modelRenderer->modelDxLibHandle_, verts, tris);
+        }
+        if (!extracted)
         {
             LogError("StaticMeshCollider: モデルからメッシュを取得できません");
             return false;
@@ -228,6 +244,7 @@ namespace NanamiEngine::Module::Component
         {
             layer_ = Physics::ToLayer(layerIndex);
         }
+        ImGuiHelper::OnDrawInputField("collisionMv1File_", collisionMv1File_);
         ImGuiHelper::OnDrawInputField("simplifyEnabled_", simplifyEnabled_);
         if (simplifyEnabled_)
         {
@@ -242,3 +259,7 @@ namespace NanamiEngine::Module::Component
         OnDebugDraw();
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::StaticMeshCollider);
+#pragma endregion

@@ -47,4 +47,4 @@ void load(Archive& archive, const std::uint32_t version) {
 #pragma endregion
 };
 }
-ENGINE_REGISTER_COMPONENT(GameCore::Scene::SceneContextBase, 4)
+CEREAL_CLASS_VERSION(GameCore::Scene::SceneContextBase, 4);

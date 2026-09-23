@@ -35,6 +35,4 @@ void load(Archive& archive, const std::uint32_t version) {
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(GameCore::Scene::TitleSceneContext, 0);
-CEREAL_REGISTER_TYPE(GameCore::Scene::TitleSceneContext);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::SceneContextBase, GameCore::Scene::TitleSceneContext);
 #pragma endregion

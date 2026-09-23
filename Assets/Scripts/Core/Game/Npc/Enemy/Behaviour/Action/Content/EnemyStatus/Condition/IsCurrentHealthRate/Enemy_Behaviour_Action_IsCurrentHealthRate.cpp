@@ -1,6 +1,7 @@
 ﻿#include "Enemy_Behaviour_Action_IsCurrentHealthRate.h"
 #include "../../../../../../Status/EnemyStatus.h"
 #include <algorithm>
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -25,3 +26,10 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGui::SliderFloat("Health Threshold (%)", &rate_, 0.0f, 100.0f, "%.1f %%");
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::IsCurrentHealthRate)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(
+    GameCore::Npc::Enemy::Behaviour::ActionBase,
+    GameCore::Npc::Enemy::Behaviour::Action::IsCurrentHealthRate)
+#pragma endregion

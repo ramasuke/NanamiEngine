@@ -46,4 +46,4 @@ namespace GamePlay::Magic
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Magic::MagicPlacement, 0)
+CEREAL_CLASS_VERSION(GamePlay::Magic::MagicPlacement, 0);

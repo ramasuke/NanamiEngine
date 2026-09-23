@@ -4,14 +4,24 @@
 #include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../Sound/SoundPlayer.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Prop
 {
-    void Canon::Use() const
+    void Canon::Use()
     {
+        prevCameraPriority_ = shootCamera_->Priority().CurrentValue();
         shootCamera_->SetPriority(100);
         if (cannonUi_)
             cannonUi_->Show();
+    }
+
+    void Canon::Leave()
+    {
+        // NOTE: 100 のままだと同じ priority の演出カメラと競合する
+        shootCamera_->SetPriority(prevCameraPriority_);
+        if (cannonUi_)
+            cannonUi_->Hide();
     }
 
     void Canon::Shoot()
@@ -70,3 +80,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("cannonUi_", cannonUi_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::Canon);
+#pragma endregion

@@ -5,6 +5,7 @@
 #include "../../../../../../../../../PlayerAvatar/SwordMan/Status/Quest/SwordMan_QuestFactory.h"
 #include "cereal/archives/portable_binary.hpp"
 #include "../../../../../../../../../PlayerAvatar/SwordMan/Status/Quest/SwordMan_QuestHeaders.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {
@@ -63,3 +64,8 @@ namespace GameCore::Npc::Friendly::Behaviour
     template void Action::TrySwordManQuest::load<cereal::PortableBinaryOutputArchive>(cereal::PortableBinaryOutputArchive&, const std::uint32_t);
     template void Action::TrySwordManQuest::load<cereal::PortableBinaryInputArchive >(cereal::PortableBinaryInputArchive &, const std::uint32_t);
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::TrySwordManQuest)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::ActionBase, GameCore::Npc::Friendly::Behaviour::Action::TrySwordManQuest)
+#pragma endregion

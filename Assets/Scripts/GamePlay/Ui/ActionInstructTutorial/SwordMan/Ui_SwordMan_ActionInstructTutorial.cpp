@@ -8,7 +8,9 @@
 #include "Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "../../../../Core/Game/PlayerAvatar/SwordMan/Status/ControlGuideFocus/SwordMan_IControlGuideFocusRequest.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -21,16 +23,24 @@ namespace GamePlay::Ui
             return std::max(current - maxDelta, target);
         }
 
-        float TutorialStepRate(const float deltaTime, const float duration_secs)
+        tweeny::tween<float> TutorialFadeTween(const float duration_secs)
         {
-            return duration_secs > 0.0f ? deltaTime / duration_secs : 1.0f;
+            return tweeny::from(0.0f).to(1.0f).during(LibCore::Tween::Ms(duration_secs));
         }
 
-        float TutorialEaseOutBack(const float rate)
+        void TutorialFade(LibCore::Tween::TweenPlayer<float>& fade, const bool isOn, const float deltaTime)
         {
-            constexpr float OVERSHOOT = 1.70158f;
-            const float t = std::clamp(rate, 0.0f, 1.0f) - 1.0f;
-            return 1.0f + (OVERSHOOT + 1.0f) * t * t * t + OVERSHOOT * t * t;
+            if (isOn)
+                fade.PlayForward();
+            else
+                fade.PlayBackward();
+            fade.Tick(deltaTime);
+        }
+
+        void TutorialResetFade(LibCore::Tween::TweenPlayer<float>& fade)
+        {
+            fade.PlayBackward();
+            fade.Complete();
         }
 
         int TutorialBlendRate(const float alpha)
@@ -50,6 +60,9 @@ namespace GamePlay::Ui
             return;
         isPartsCaught_ = true;
 
+        appearFade_.Set(TutorialFadeTween(appearDuration_secs_));
+        textFade_  .Set(TutorialFadeTween(textFadeDuration_secs_));
+        clearFade_ .Set(TutorialFadeTween(clearPopDuration_secs_));
         if (card_)
             cardBasePos_ = card_->Transform().GetLocalPos();
     }
@@ -70,8 +83,8 @@ namespace GamePlay::Ui
         stepIndex_ = stepIndex;
         isShown_   = true;
         isCleared_ = false;
-        clearRate_ = 0.0f;
-        textRate_  = 0.0f;
+        TutorialResetFade(clearFade_);
+        TutorialResetFade(textFade_);
 
         if (const auto entity = Entity().lock())
             entity->SetEnable(true);
@@ -105,9 +118,9 @@ namespace GamePlay::Ui
         CatchParts();
 
         const float deltaTime = Time::DeltaTime();
-        appearRate_ = TutorialMoveTowards(appearRate_, isShown_ ? 1.0f : 0.0f, TutorialStepRate(deltaTime, appearDuration_secs_));
-        textRate_   = TutorialMoveTowards(textRate_  , isShown_ ? 1.0f : 0.0f, TutorialStepRate(deltaTime, textFadeDuration_secs_));
-        clearRate_  = TutorialMoveTowards(clearRate_ , isCleared_ ? 1.0f : 0.0f, TutorialStepRate(deltaTime, clearPopDuration_secs_));
+        TutorialFade(appearFade_, isShown_,   deltaTime);
+        TutorialFade(textFade_,   isShown_,   deltaTime);
+        TutorialFade(clearFade_,  isCleared_, deltaTime);
 
         const std::optional<glm::vec2> anchor = guideFocus_ ? guideFocus_->FocusAnchor() : std::optional<glm::vec2>{};
         const glm::vec2 target = anchor ? *anchor + anchorOffset_px_ : fallbackPos_px_;
@@ -119,7 +132,7 @@ namespace GamePlay::Ui
         PresentText();
         PresentFade();
 
-        if (!isShown_ && appearRate_ <= 0.0f)
+        if (!isShown_ && appearFade_.Value() <= 0.0f)
         {
             if (const auto entity = Entity().lock())
                 entity->SetEnable(false);
@@ -131,29 +144,32 @@ namespace GamePlay::Ui
         if (!card_)
             return;
 
-        const float hidden = 1.0f - appearRate_;
+        const float hidden = 1.0f - appearFade_.Value();
         card_->Transform().SetLocalPos(cardBasePos_ + glm::vec3(appearSlide_px_ * hidden * hidden, 0.0f, 0.0f));
 
         if (clearMark_)
         {
-            const float pop = TutorialEaseOutBack(clearRate_) * clearMarkPopScale_;
+            const float pop = LibCore::Tween::Ease(LibCore::EaseType::OutBack).Ease(clearFade_.Value()) * clearMarkPopScale_;
             clearMark_->Transform().SetLocalScale(glm::vec3(std::max(pop, 0.0f)));
         }
     }
 
     void SwordManActionInstructTutorial::PresentFade() const
     {
-        const float panelAlpha = 255.0f * appearRate_ * bodyAlphaRate_;
-        const float taskAlpha  = 255.0f * appearRate_ * textRate_ * (1.0f - clearRate_);
-        const float clearAlpha = 255.0f * appearRate_ * clearRate_;
+        const float appearRate = appearFade_.Value();
+        const float textRate   = textFade_.Value();
+        const float clearRate  = clearFade_.Value();
+        const float panelAlpha = 255.0f * appearRate * bodyAlphaRate_;
+        const float taskAlpha  = 255.0f * appearRate * textRate * (1.0f - clearRate);
+        const float clearAlpha = 255.0f * appearRate * clearRate;
 
         if (panel_)         panel_        ->SetBlendRate(TutorialBlendRate(panelAlpha));
         if (tail_)          tail_         ->SetBlendRate(TutorialBlendRate(panelAlpha));
-        if (accent_)        accent_       ->SetBlendRate(TutorialBlendRate(255.0f * appearRate_ * (1.0f - clearRate_)));
+        if (accent_)        accent_       ->SetBlendRate(TutorialBlendRate(255.0f * appearRate * (1.0f - clearRate)));
         if (accentCleared_) accentCleared_->SetBlendRate(TutorialBlendRate(clearAlpha));
         if (clearMark_)     clearMark_    ->SetBlendRate(TutorialBlendRate(clearAlpha));
 
-        if (stepText_)  stepText_ ->SetBlendRate(TutorialBlendRate(255.0f * appearRate_ * textRate_));
+        if (stepText_)  stepText_ ->SetBlendRate(TutorialBlendRate(255.0f * appearRate * textRate));
         if (titleText_) titleText_->SetBlendRate(TutorialBlendRate(taskAlpha));
         if (bodyText_)  bodyText_ ->SetBlendRate(TutorialBlendRate(taskAlpha));
         if (clearText_) clearText_->SetBlendRate(TutorialBlendRate(clearAlpha));
@@ -162,7 +178,7 @@ namespace GamePlay::Ui
     void SwordManActionInstructTutorial::OnDrawGui()
     {
         ImGui::Text("step: %d / %d", static_cast<int>(stepIndex_ + 1), static_cast<int>(steps_.size()));
-        ImGui::Text("appear %.2f  text %.2f  clear %.2f", appearRate_, textRate_, clearRate_);
+        ImGui::Text("appear %.2f  text %.2f  clear %.2f", appearFade_.Value(), textFade_.Value(), clearFade_.Value());
 
         ImGuiHelper::OnDrawInputField("card_", card_);
         ImGuiHelper::OnDrawInputField("panel_", panel_);
@@ -197,3 +213,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("bodyAlphaRate_", bodyAlphaRate_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::SwordManActionInstructTutorial);
+#pragma endregion

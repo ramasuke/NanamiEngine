@@ -11,6 +11,7 @@
 #include "../../../../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 #include "../../../../Enemy_BehaviourTree.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -117,3 +118,8 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("howlSound_", howlSound_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::CallAllies)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::CallAllies)
+#pragma endregion

@@ -24,7 +24,6 @@ namespace NanamiEngine::R4
         [[nodiscard]] static Observable Return(T value) { return Observable(rxcpp::observable<>::just(std::move(value)).as_dynamic()); }
 
 #pragma region Subscribe
-        //NOTE: 戻り値の Disposable を AddTo(this) などで寿命に結びつけること
         template <typename OnNextF>
         [[nodiscard]] Disposable Subscribe(OnNextF&& onNext) const
         {

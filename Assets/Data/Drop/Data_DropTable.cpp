@@ -1,4 +1,5 @@
 ﻿#include "Data_DropTable.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -19,3 +20,9 @@ namespace NanamiEngine::Module::Asset
         });
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(DropTable, DROP_TABLE_EXTENSION_LABEL, "Item")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::DropTable);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::DropTable);
+#pragma endregion

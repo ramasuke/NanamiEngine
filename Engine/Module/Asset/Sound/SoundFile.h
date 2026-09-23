@@ -49,7 +49,4 @@ namespace NanamiEngine::Module::Asset
 }
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SoundFile, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SoundFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::SoundFile);
 #pragma endregion
-REGISTER_ASSET(SoundFile, ".mp3")

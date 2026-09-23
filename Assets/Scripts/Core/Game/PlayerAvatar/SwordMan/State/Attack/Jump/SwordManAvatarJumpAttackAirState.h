@@ -21,5 +21,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     private:
         AttackTurn attackTurn_;
+        bool       isPlunging_ = false;
     };
 }

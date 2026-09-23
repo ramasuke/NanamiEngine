@@ -61,7 +61,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         }
 
         const bool isHit = NormalAttackArea().TryPhysicsAttack(Player(), BuffedAttackPower(attackStatus.AttackPower()));
-        PlayAttackSe(isHit);
+        PlayAttackSe(isHit, Resources().JumpAttackWhiffSound(), Resources().JumpAttackHitSound());
 
         if (!isHit)
             return;

@@ -29,6 +29,4 @@ namespace NanamiEngine::Module::Network
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(Network::NetworkAnimator, 0);
-CEREAL_REGISTER_TYPE(Network::NetworkAnimator);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Network::NetworkComponent, Network::NetworkAnimator);
 #pragma endregion

@@ -57,9 +57,4 @@ namespace Editor::Npc::Behaviour
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(Editor::Npc::Behaviour::RandomSelectorNode, 1);
-CEREAL_REGISTER_TYPE(Editor::Npc::Behaviour::RandomSelectorNode);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    Editor::Npc::Behaviour::NodeBase,
-    Editor::Npc::Behaviour::RandomSelectorNode
-);
 #pragma endregion

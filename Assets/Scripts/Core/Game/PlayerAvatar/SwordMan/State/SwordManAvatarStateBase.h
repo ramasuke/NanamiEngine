@@ -45,7 +45,8 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     private:
         void OnLockOnEngaged() const override;
-        void UseSelectedPouchItem() const;
+        /** @return 使うモーションのステートへ移ったら true */
+        bool UseSelectedPouchItem() const;
         [[nodiscard]] std::shared_ptr<GameObject::IGameObject> FindNearestLockOnTarget() const;
         [[nodiscard]] std::shared_ptr<GameObject::IGameObject> ResolveAttackTarget(AttackTurn& turn) const;
 
@@ -63,11 +64,14 @@ namespace GameCore::PlayerAvatar::SwordMan
         void TryEmitFootstep(FootstepLatch& latch, const std::vector<FIELD(Asset::SoundFile)>& footstepSounds) const;
         void PlayRandomSe(const std::vector<FIELD(Asset::SoundFile)>& sounds, const glm::vec3& position) const;
         void PlayAttackSe(bool isHit) const;
+        /** 専用の空振り/ヒット音を鳴らす。未設定の側は PlayAttackSe(isHit) と同じ共通の音になる */
+        void PlayAttackSe(bool isHit, const FIELD(Asset::SoundFile)& whiffSound, const FIELD(Asset::SoundFile)& hitSound) const;
         void ResetMoveSpeedFromVelocity(MoveSpeedRamp& ramp) const;
         void LungeForward(float speed) const;
         void MoveForward(MoveSpeedRamp& ramp, StatusParameter::MoveSpeed maxSpeed, float accelerationTime_secs, float decelerationTime_secs) const;
         // VisitTransitions で CycleItem / UseItem を宣言したStateだけが呼ぶ（アイテム欄の表示がその宣言を見ている）
-        void UpdateItemPouchInput() const;
+        /** @return 使うモーションのステートへ移ったら true。そのフレームは呼び出し元の遷移を見ない */
+        bool UpdateItemPouchInput() const;
         [[nodiscard]] Damage::PhysicsPower BuffedAttackPower(Damage::PhysicsPower base) const;
         bool UpdateTransitions() const;
         void RotateTowardsAttackTarget(AttackTurn& turn, float smoothTime_secs, float maxRotateSpeed) const;

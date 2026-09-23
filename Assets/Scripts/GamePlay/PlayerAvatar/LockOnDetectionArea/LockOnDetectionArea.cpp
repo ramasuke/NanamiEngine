@@ -1,6 +1,7 @@
 ﻿#include "LockOnDetectionArea.h"
 
 #include "../../../Core/Game/PlayerAvatar/LockOnTarget/ILockOnTarget.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::PlayerAvatar
 {
@@ -40,3 +41,7 @@ namespace GamePlay::PlayerAvatar
         ImGui::Separator();
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::LockOnDetectionArea);
+#pragma endregion

@@ -71,4 +71,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::CharacterSelectUi, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::CharacterSelectUi, 0);

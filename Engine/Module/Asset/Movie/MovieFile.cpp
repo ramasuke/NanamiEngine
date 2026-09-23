@@ -1,6 +1,7 @@
 ﻿#include "MovieFile.h"
 
 #include "DxLib.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -31,3 +32,9 @@ namespace NanamiEngine::Module::Asset
         LibCore::ImGuiHelper::OnDrawInputField("guid_", guid_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::MovieFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::MovieFile);
+REGISTER_ASSET(MovieFile, ".mp4")
+#pragma endregion

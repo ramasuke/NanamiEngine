@@ -4,6 +4,7 @@
 #include "../../../../../../../Scene/Main/Content/MainIslandScene/MainIsLandScene.h"
 #include "../../../../../../../Scene/Main/Group/Main_GameSceneGroup.h"
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -30,3 +31,8 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("sceneFile_", sceneFile_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ChangeToMainIslandScene)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::ChangeToMainIslandScene)
+#pragma endregion

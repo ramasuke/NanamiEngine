@@ -3,6 +3,7 @@
 #include "../GameObject/Engine_Network_NetworkGameObject.h"
 #include "../../../../../Core/Network/Packet/Dispatcher/Packet_PacketDispatcherGroup.h"
 #include "../../../../Network/Engine_Network_NetworkRunner.h"
+#include "../../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Network
 {
@@ -24,3 +25,7 @@ namespace NanamiEngine::Module::Network
     {
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(Network::NetworkTransform);
+#pragma endregion

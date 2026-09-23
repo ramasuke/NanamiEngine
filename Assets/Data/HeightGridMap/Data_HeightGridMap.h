@@ -59,7 +59,7 @@ namespace NanamiEngine::Module::Asset
         int   divisionsZ_     = 10;
         float samplingHeight_ = 50.0f;
         float rayDistance_    = 100.0f;
-        // BoxCastする箱のXZサイズのセルサイズに対する倍率（1.0 = セル全面）
+        // BoxCastする箱のXZサイズのセルサイズに対する倍率（1.0 = セル1個）
         float boxScale_       = 1.0f;
         Physics::LayerMask layerMask_ = Physics::ToMask(Physics::Layer::Default);
 
@@ -169,9 +169,6 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(HeightGridMap, HEIGHT_GRID_MAP_EXTENSION_LABEL, "Stage")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::HeightGridMap, 3);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::HeightGridMap);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::HeightGridMap);
 #pragma endregion

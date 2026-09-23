@@ -2,6 +2,7 @@
 
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../Pickup/GamePlay_LootDrop.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Prop
 {
@@ -54,3 +55,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("dropTable_", dropTable_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::DestructibleObject);
+#pragma endregion

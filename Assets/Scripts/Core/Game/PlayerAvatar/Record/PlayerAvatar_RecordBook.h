@@ -1,12 +1,12 @@
 ﻿#pragma once
 #include <cstdint>
 #include <map>
-#include <string>
+#include <unordered_map>
 
 #include "PlayerAvatar_IRecordBook.h"
 #include "cereal/cereal.hpp"
 #include "cereal/types/map.hpp"
-#include "cereal/types/string.hpp"
+#include "cereal/types/unordered_map.hpp"
 #include "Libs/Singleton/LibCore_SingletonBase.h"
 
 namespace GameCore::PlayerAvatar::Record
@@ -16,10 +16,10 @@ namespace GameCore::PlayerAvatar::Record
     /** @brief 記録帳の中身。LocalPrefs/RecordBook.json にこの形で残る */
     struct RecordBookData
     {
-        /** EnemyKind の int 値 → 倒した数 */
-        [[serialize(0)]] std::map<int, int>         defeated_;
+        /** 敵の種別 → 倒した数 */
+        [[serialize(0)]] std::map<Npc::Enemy::EnemyKind, int>  defeated_;
         /** ItemData の guid → 手に入れた数 */
-        [[serialize(0)]] std::map<std::string, int> acquired_;
+        [[serialize(0)]] std::unordered_map<Guid, int, GuidHash> acquired_;
 
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const
@@ -37,8 +37,7 @@ namespace GameCore::PlayerAvatar::Record
     };
 
     /**
-     * @brief 記録帳。敵の死亡やアイテムの取得の側にはプレイヤーへの参照が無いので、職業をまたいで1冊のシングルトンにする。
-     * 数えるたびに LocalPrefs へ書き出す(CompletedQuests と同じ流儀)
+     * 数えるたびに LocalPrefs へ書き出す
      */
     class RecordBook final : public SingletonBase<RecordBook>,
                              public IRecordBook
@@ -53,8 +52,8 @@ namespace GameCore::PlayerAvatar::Record
         [[nodiscard]] int DefeatedCount(Npc::Enemy::EnemyKind kind) const override;
         [[nodiscard]] int AcquiredCount(const Guid& item) const override;
 
-        [[nodiscard]] rxcpp::observable<Npc::Enemy::EnemyKind> OnDefeat () const override { return onDefeat_ .get_observable(); }
-        [[nodiscard]] rxcpp::observable<AcquiredRecord>        OnAcquire() const override { return onAcquire_.get_observable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<Npc::Enemy::EnemyKind> OnDefeat () const override { return onDefeat_ .AsObservable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<AcquiredRecord>        OnAcquire() const override { return onAcquire_.AsObservable(); }
 
         void OnDrawGui() const;
 
@@ -62,8 +61,8 @@ namespace GameCore::PlayerAvatar::Record
         void Save() const;
 
         RecordBookData data_;
-        rxcpp::subjects::subject<Npc::Enemy::EnemyKind> onDefeat_;
-        rxcpp::subjects::subject<AcquiredRecord>        onAcquire_;
+        NanamiEngine::R4::Subject<Npc::Enemy::EnemyKind> onDefeat_;
+        NanamiEngine::R4::Subject<AcquiredRecord>        onAcquire_;
     };
 }
 

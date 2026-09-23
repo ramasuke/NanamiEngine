@@ -7,6 +7,7 @@
 #include "../../../../../../GamePlay/Ui/ItemBar/Ui_ItemBar.h"
 #include "../../../../../../GamePlay/Ui/ItemBar/Ui_ItemBarSource.h"
 #include "../../../../../../GamePlay/Ui/SpellPalette/Ui_SpellPalette.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::PlayerAvatar::MagicCaster
 {
@@ -53,3 +54,7 @@ namespace GamePlay::PlayerAvatar::MagicCaster
         ImGuiHelper::OnDrawInputField("itemBarPrefab_", itemBarPrefab_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::MagicCaster::StatusPresenter);
+#pragma endregion

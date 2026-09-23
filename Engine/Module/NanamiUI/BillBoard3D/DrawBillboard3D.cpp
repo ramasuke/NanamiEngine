@@ -4,6 +4,8 @@
 #include "DxLib.h"
 #include "../../GameObject/Transform/Transform.h"
 #include "../../Log/NanamiEngine_Module_Log.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
+#include "../../../../Libs/LibCore/DxLib/DxMath.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -32,7 +34,7 @@ namespace NanamiEngine::Module::NanamiUi
             SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(alpha_ * 255.0f));
 
         DrawBillboard3D(
-            Transform().GetDxWorldPos(),
+            LibCore::Dxlib::ToDxVector(Transform().GetWorldPos()),
             0.5f,
             0.5f,
             Transform().GetWorldScale().x,
@@ -52,3 +54,7 @@ namespace NanamiEngine::Module::NanamiUi
         ImGuiHelper::OnDrawInputField("angle_", angle_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiUi::Billboard3D);
+#pragma endregion

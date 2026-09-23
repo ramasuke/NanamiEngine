@@ -3,6 +3,7 @@
 #include "DxLib.h"
 #include "../../../../Core/Application/Time/Time.h"
 #include "../../../GameObject/Transform/Transform.h"
+#include "../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -90,3 +91,7 @@ namespace NanamiEngine::Module::NanamiUi
         ImGuiHelper::OnDrawInputField("cooldownSecs_"          , cooldownSecs_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::ImageAnimationRenderer);
+#pragma endregion

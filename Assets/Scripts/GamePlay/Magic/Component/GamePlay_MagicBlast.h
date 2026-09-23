@@ -75,4 +75,4 @@ namespace GamePlay::Magic
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Magic::MagicBlast, 0)
+CEREAL_CLASS_VERSION(GamePlay::Magic::MagicBlast, 0);

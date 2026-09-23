@@ -58,7 +58,7 @@
                         },
                         "offset_": {
                             "value0": 0.0,
-                            "value1": 4.04,
+                            "value1": 4.039999961853027,
                             "value2": 0.0
                         },
                         "offsetRotation_": {
@@ -68,7 +68,7 @@
                         },
                         "layer_": 0,
                         "isSensor_": false,
-                        "friction_": 0.2
+                        "friction_": 0.20000000298023225
                     },
                     "value1": {
                         "cereal_class_version": 0
@@ -80,9 +80,9 @@
                         "cereal_class_version": 0
                     },
                     "size_": {
-                        "value0": 20.48,
-                        "value1": 8.08,
-                        "value2": 7.36
+                        "value0": 20.479999542236329,
+                        "value1": 8.079999923706055,
+                        "value2": 7.360000133514404
                     }
                 }
             }
@@ -139,7 +139,7 @@
             "ptr_wrapper": {
                 "id": 2147483652,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -175,9 +175,7 @@
                                     "value3": {
                                         "cereal_class_version": 0
                                     },
-                                    "value4": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value4": {},
                                     "mv1File_": {
                                         "cereal_class_version": 0,
                                         "value0": {
@@ -211,27 +209,27 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.08,
-                            "value1": 0.08,
-                            "value2": 0.08
+                            "value0": 0.07999999821186066,
+                            "value1": 0.07999999821186066,
+                            "value2": 0.07999999821186066
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 0.08,
+                                "value0": 0.07999999821186066,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 0.08,
+                                "value1": 0.07999999821186066,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value2": {
                                 "value0": 0.0,
                                 "value1": 0.0,
-                                "value2": 0.08,
+                                "value2": 0.07999999821186066,
                                 "value3": 0.0
                             },
                             "value3": {
@@ -242,7 +240,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -265,7 +264,7 @@
                     "transform_": {
                         "localPos_": {
                             "value0": 0.0,
-                            "value1": 8.08,
+                            "value1": 8.079999923706055,
                             "value2": 0.0
                         },
                         "localRot_": {
@@ -300,7 +299,7 @@
                             },
                             "value3": {
                                 "value0": 0.0,
-                                "value1": 8.08,
+                                "value1": 8.079999923706055,
                                 "value2": 0.0,
                                 "value3": 1.0
                             }
@@ -332,18 +331,10 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value3": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value4": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "value4": {},
                                                     "mv1File_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -364,49 +355,50 @@
                                     },
                                     "transform_": {
                                         "localPos_": {
-                                            "value0": -5.6000000000000005,
+                                            "value0": -5.599999904632568,
                                             "value1": 0.0,
-                                            "value2": -1.2
+                                            "value2": -1.2000000476837159
                                         },
                                         "localRot_": {
                                             "value0": 0.0,
-                                            "value1": 0.17364817766693033,
+                                            "value1": 0.1736481785774231,
                                             "value2": 0.0,
-                                            "value3": 0.984807753012208
+                                            "value3": 0.9848077297210693
                                         },
                                         "localScale_": {
-                                            "value0": 0.08,
-                                            "value1": 0.08,
-                                            "value2": 0.08
+                                            "value0": 0.07999999821186066,
+                                            "value1": 0.07999999821186066,
+                                            "value2": 0.07999999821186066
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.08,
+                                                "value0": 0.07999999821186066,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.08,
+                                                "value1": 0.07999999821186066,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value2": {
                                                 "value0": 0.0,
                                                 "value1": 0.0,
-                                                "value2": 0.08,
+                                                "value2": 0.07999999821186066,
                                                 "value3": 0.0
                                             },
                                             "value3": {
-                                                "value0": -5.6000000000000005,
-                                                "value1": 8.08,
-                                                "value2": -1.2,
+                                                "value0": -5.599999904632568,
+                                                "value1": 8.079999923706055,
+                                                "value2": -1.2000000476837159,
                                                 "value3": 1.0
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -436,18 +428,10 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value3": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value4": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "value4": {},
                                                     "mv1File_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -468,49 +452,50 @@
                                     },
                                     "transform_": {
                                         "localPos_": {
-                                            "value0": -0.8,
+                                            "value0": -0.800000011920929,
                                             "value1": 0.0,
-                                            "value2": -0.96
+                                            "value2": -0.9599999785423279
                                         },
                                         "localRot_": {
                                             "value0": 0.0,
-                                            "value1": -0.3007057995042731,
+                                            "value1": -0.30070579051971438,
                                             "value2": 0.0,
-                                            "value3": 0.9537169507482269
+                                            "value3": 0.9537169337272644
                                         },
                                         "localScale_": {
-                                            "value0": 0.08,
-                                            "value1": 0.08,
-                                            "value2": 0.08
+                                            "value0": 0.07999999821186066,
+                                            "value1": 0.07999999821186066,
+                                            "value2": 0.07999999821186066
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.08,
+                                                "value0": 0.07999999821186066,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.08,
+                                                "value1": 0.07999999821186066,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value2": {
                                                 "value0": 0.0,
                                                 "value1": 0.0,
-                                                "value2": 0.08,
+                                                "value2": 0.07999999821186066,
                                                 "value3": 0.0
                                             },
                                             "value3": {
-                                                "value0": -0.8,
-                                                "value1": 8.08,
-                                                "value2": -0.96,
+                                                "value0": -0.800000011920929,
+                                                "value1": 8.079999923706055,
+                                                "value2": -0.9599999785423279,
                                                 "value3": 1.0
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         },
@@ -540,18 +525,10 @@
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value2": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value3": {
-                                                        "cereal_class_version": 0
-                                                    },
-                                                    "value4": {
-                                                        "cereal_class_version": 0
-                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "value4": {},
                                                     "mv1File_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -572,53 +549,55 @@
                                     },
                                     "transform_": {
                                         "localPos_": {
-                                            "value0": 4.4,
+                                            "value0": 4.400000095367432,
                                             "value1": 0.0,
-                                            "value2": -0.64
+                                            "value2": -0.6399999856948853
                                         },
                                         "localRot_": {
                                             "value0": 0.0,
-                                            "value1": 0.08715574274765817,
+                                            "value1": 0.08715574443340302,
                                             "value2": 0.0,
-                                            "value3": 0.9961946980917455
+                                            "value3": 0.9961947202682495
                                         },
                                         "localScale_": {
-                                            "value0": 0.08,
-                                            "value1": 0.08,
-                                            "value2": 0.08
+                                            "value0": 0.07999999821186066,
+                                            "value1": 0.07999999821186066,
+                                            "value2": 0.07999999821186066
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.08,
+                                                "value0": 0.07999999821186066,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.08,
+                                                "value1": 0.07999999821186066,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value2": {
                                                 "value0": 0.0,
                                                 "value1": 0.0,
-                                                "value2": 0.08,
+                                                "value2": 0.07999999821186066,
                                                 "value3": 0.0
                                             },
                                             "value3": {
-                                                "value0": 4.4,
-                                                "value1": 8.08,
-                                                "value2": -0.64,
+                                                "value0": 4.400000095367432,
+                                                "value1": 8.079999923706055,
+                                                "value2": -0.6399999856948853,
                                                 "value3": 1.0
                                             }
                                         },
                                         "childCount": 0
-                                    }
+                                    },
+                                    "mark_": 0
                                 }
                             }
                         }
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -682,7 +661,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -728,23 +708,18 @@
                             "ptr_wrapper": {
                                 "id": 2147483668,
                                 "data": {
-                                    "cereal_class_version": 1,
+                                    "cereal_class_version": 2,
                                     "value0": {
                                         "guid_": {
                                             "value_": "170C2343-6487-4A1F-8558-8E69688460F4"
                                         },
                                         "isEnable_": true
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value1": {},
                                     "value2": {
                                         "cereal_class_version": 0
                                     },
                                     "value3": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value4": {
                                         "cereal_class_version": 0
                                     },
                                     "target_": {
@@ -815,10 +790,12 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 0
 }

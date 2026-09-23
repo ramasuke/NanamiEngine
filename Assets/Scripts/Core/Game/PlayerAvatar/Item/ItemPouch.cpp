@@ -59,6 +59,18 @@ namespace GameCore::PlayerAvatar
         return slot.item;
     }
 
+    bool ItemPouch::Use(const Asset::ItemData& item, Item::IItemEffectTarget& target, const std::shared_ptr<GameObject::IGameObject>& user)
+    {
+        const std::size_t index = FindSlotIndex(item);
+        if (index >= slots_.size() || slots_[index].count <= 0 || !item.HasEffect())
+            return false;
+
+        item.ApplyEffects(target, user);
+        --slots_[index].count;
+        ++revision_;
+        return true;
+    }
+
     std::size_t ItemPouch::FindSlotIndex(const Asset::ItemData& item) const
     {
         const auto it = std::ranges::find_if(slots_, [&](const Slot& slot) { return slot.item.get() == &item; });

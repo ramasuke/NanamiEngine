@@ -8,9 +8,17 @@
 #include "cereal/types/base_class.hpp"
 #include "cereal/types/polymorphic.hpp"
 
+namespace GamePlay::Prop
+{
+    class ChargeBreakPillar;
+}
+
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
-    /** @brief プレイヤーへ向き直ってから一直線に突進し、ChargeStuckObstacle に当たったら頭が刺さったことを黒板に書く */
+    /**
+     * @brief プレイヤーへ向き直ってから一直線に突進し、ChargeStuckObstacle に当たったら頭が刺さったことを黒板に書く
+     * @note 刺さった先が ChargeBreakPillar なら柱を倒し、柱のダメージを自分に入れる
+     */
     class ChargeRush final : public ActionBase
     {
         enum class Phase
@@ -34,8 +42,10 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         void RotateToPlayer(const TickContext& context) const;
         void TryHitPlayer  (const TickContext& context);
         // NOTE: 自分の体と地面(上向きの面)は当たっていないものとして扱う
-        [[nodiscard]] CastResult CastForward(const TickContext& context) const;
+        // NOTE: 刺さった先が倒せる柱なら stuckPillar_ に残す
+        [[nodiscard]] CastResult CastForward(const TickContext& context);
         void PlayImpactSound(const TickContext& context) const;
+        void CollapsePillar (const TickContext& context) const;
         TickStatus Finish(const TickContext& context);
 
         [[serialize(0)]] float       windUp_secs_           = 0.6f;
@@ -62,6 +72,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         glm::vec3 rushDirection_ = glm::vec3(0.0f, 0.0f, -1.0f);
         bool      isAttacked_    = false;
         bool      isStuck_       = false;
+        std::weak_ptr<GamePlay::Prop::ChargeBreakPillar> stuckPillar_;
 
     public:
         template<class Archive>

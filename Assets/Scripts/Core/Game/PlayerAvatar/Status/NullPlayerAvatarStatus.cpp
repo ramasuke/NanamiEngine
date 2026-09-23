@@ -104,8 +104,9 @@ namespace GameCore::PlayerAvatar
     {
     }
 
-    void NullPlayerAvatarStatus::NullQuestGroup::Subscribe(const std::shared_ptr<Quest::ITakeableQuest>& addQuest)
+    bool NullPlayerAvatarStatus::NullQuestGroup::Subscribe(const std::shared_ptr<Quest::ITakeableQuest>& addQuest)
     {
+        return false;
     }
 
     bool NullPlayerAvatarStatus::NullQuestGroup::IsTaking(const QuestType& quest) const

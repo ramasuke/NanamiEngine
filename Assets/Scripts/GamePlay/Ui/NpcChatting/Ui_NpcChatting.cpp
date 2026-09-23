@@ -4,6 +4,7 @@
 #include "../../../../Data/NpcChatText/Data_NpcChat.h"
 #include "../../../Core/Game/Settings/GameSettings.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -65,3 +66,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("npcNameTextBox_", npcNameTextBox_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::NpcChatting);
+#pragma endregion

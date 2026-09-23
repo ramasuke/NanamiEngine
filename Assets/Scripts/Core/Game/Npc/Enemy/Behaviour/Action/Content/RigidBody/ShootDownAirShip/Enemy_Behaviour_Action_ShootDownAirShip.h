@@ -11,7 +11,6 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         TickStatus DoTick(const TickContext& context) override;
         void DoDrawGui() override;
 
-
         FIELD(GamePlay::Prop::AirShip) shootDownAirShip_;
         
 #pragma region Serialization Function
@@ -33,5 +32,3 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::ShootDownAirShip, 0)
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ShootDownAirShip)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::ShootDownAirShip)

@@ -8,6 +8,7 @@
 #include "../../../../../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../../../../../GamePlay/Ui/PauseMenu/Presenter/PauseMenuPresenter.h"
 #include "../../../../../../GamePlay/Ui/PlayerStatus/Ui_LowHealthScreenEffect.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::PlayerAvatar::SwordMan
 {
@@ -58,3 +59,7 @@ namespace GamePlay::PlayerAvatar::SwordMan
         ImGuiHelper::OnDrawInputField("pauseMenuPrefab_", pauseMenuPrefab_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::SwordMan::StatusPresenter);
+#pragma endregion

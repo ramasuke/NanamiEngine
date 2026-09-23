@@ -5,7 +5,9 @@
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "../../Npc/Enemy/BodyPart/GamePlay_Enemy_BodyPartWeakPoint.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -34,20 +36,49 @@ namespace GamePlay::Ui
             billBoard->Play(value, emphasis);
     }
 
+    float DealDamageTextBillBoard::ScaleForDamage(const int value) const
+    {
+        const int   minDamage = (std::max)(minScaleDamage_, 1);
+        const int   maxDamage = (std::max)(maxScaleDamage_, minDamage + 1);
+        const float lo = std::log(static_cast<float>(minDamage));
+        const float hi = std::log(static_cast<float>(maxDamage));
+        const float t  = glm::clamp((std::log(static_cast<float>((std::max)(value, 1))) - lo) / (hi - lo), 0.0f, 1.0f);
+        return glm::mix(minScale_, maxScale_, t);
+    }
+
     void DealDamageTextBillBoard::Play(const int value, const Emphasis emphasis)
     {
         const auto textRenderer = RequireComponent<NanamiUi::TextRenderer>();
         textRenderer->SetText(std::to_string(value));
 
+        const bool isHeavy = value >= heavyDamage_;
+
+        float scale = ScaleForDamage(value);
         if (emphasis != Emphasis::Normal)
         {
             textRenderer->SetTextColor(emphasis == Emphasis::WeakPointStun ? weakPointStunColor_ : breakablePartColor_);
-            Transform().SetLocalScale(Transform().GetLocalScale() * emphasisScaleRate_);
+            scale *= emphasisScaleRate_;
+        }
+        else if (isHeavy)
+        {
+            textRenderer->SetTextColor(heavyColor_);
         }
 
-        startPos_    = Transform().GetLocalPos();
-        elapsedTime_ = 0.0f;
-        isPlaying_   = true;
+        baseScale_ = Transform().GetLocalScale() * scale;
+        Transform().SetLocalScale(baseScale_);
+
+        if (isHeavy)
+        {
+            Transform().SetLocalScale(baseScale_ * popScaleRate_);
+            popTween_.Play(tweeny::from(popScaleRate_)
+                .to(1.0f).during(LibCore::Tween::Ms(popTime_secs_))
+                .via(LibCore::Tween::Ease(LibCore::EaseType::OutCubic)));
+        }
+
+        startPos_ = Transform().GetLocalPos();
+        heightTween_.Play(tweeny::from(0.0f)
+            .to(riseAmount_).during(LibCore::Tween::Ms(riseTime_))
+            .to(riseAmount_ - fallAmount_).during(LibCore::Tween::Ms(fallTime_)));
     }
 
     void DealDamageTextBillBoard::OnAwake()
@@ -57,33 +88,23 @@ namespace GamePlay::Ui
 
     void DealDamageTextBillBoard::OnUpdate()
     {
-        if (!isPlaying_)
+        if (popTween_.IsPlaying())
+        {
+            popTween_.Tick(Time::DeltaTime());
+            Transform().SetLocalScale(baseScale_ * popTween_.Value());
+        }
+
+        if (!heightTween_.IsPlaying())
             return;
 
-        elapsedTime_ += Time::DeltaTime();
+        const bool finished = heightTween_.Tick(Time::DeltaTime());
 
         glm::vec3 pos = startPos_;
-
-        if (elapsedTime_ < riseTime_)
-        {
-            const float t = elapsedTime_ / riseTime_;
-            pos.y += t * riseAmount_;
-        }
-        else if (elapsedTime_ < riseTime_ + fallTime_)
-        {
-            const float t = (elapsedTime_ - riseTime_) / fallTime_;
-            pos.y += riseAmount_ - t * fallAmount_;
-        }
-        else
-        {
-            pos.y += riseAmount_ - fallAmount_;
-            isPlaying_ = false;
-            Transform().SetLocalPos(pos);
-            Entity().lock()->OnDestroy();
-            return;
-        }
-
+        pos.y += heightTween_.Value();
         Transform().SetLocalPos(pos);
+
+        if (finished)
+            Entity().lock()->OnDestroy();
     }
 
     void DealDamageTextBillBoard::OnDrawGui()
@@ -95,5 +116,17 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("breakablePartColor_", breakablePartColor_);
         ImGuiHelper::OnDrawInputField("weakPointStunColor_", weakPointStunColor_);
         ImGuiHelper::OnDrawInputField("emphasisScaleRate_",  emphasisScaleRate_);
+        ImGuiHelper::OnDrawInputField("minScaleDamage_", minScaleDamage_);
+        ImGuiHelper::OnDrawInputField("maxScaleDamage_", maxScaleDamage_);
+        ImGuiHelper::OnDrawInputField("minScale_",       minScale_);
+        ImGuiHelper::OnDrawInputField("maxScale_",       maxScale_);
+        ImGuiHelper::OnDrawInputField("heavyDamage_",    heavyDamage_);
+        ImGuiHelper::OnDrawInputField("heavyColor_",     heavyColor_);
+        ImGuiHelper::OnDrawInputField("popScaleRate_",   popScaleRate_);
+        ImGuiHelper::OnDrawInputField("popTime_secs_",   popTime_secs_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::DealDamageTextBillBoard);
+#pragma endregion

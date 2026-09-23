@@ -15,6 +15,7 @@
 #include "Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 #include "Libs/tweeny/Tweeny/tweeny.h"
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/Follow/VirtualCameraFollowBehaviour.h"
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/LookAt/VirtualCameraLookAtBehaviour.h"
@@ -172,27 +173,33 @@ namespace GameCore::Scene::GrassLand
 
         // 勢いよく開いて一度行き過ぎ、歩き出してしばらくしたら一度膨らんでから閉じる
         const glm::vec3 closedScale = self->portalScale_ * ARRIVAL_PORTAL_MIN_OPEN_RATE;
-        auto portalScale = tweeny::from(closedScale)
+        auto portalScaleTween = tweeny::from(closedScale)
             .to(closedScale       ).during(openDelay_msecs )
             .to(self->portalScale_).during(open_msecs      ).via(Tween::Ease(EaseType::OutBack))
             .to(self->portalScale_).during(closeDelay_msecs)
             .to(closedScale       ).during(close_msecs     ).via(Tween::Ease(EaseType::InBack));
 
         const glm::vec3 walkFrom = self->WalkPos(0.0f);
-        auto walk = tweeny::from(walkFrom)
+        auto walkTween = tweeny::from(walkFrom)
             .to(walkFrom           ).during(walkStart_msecs)
             .to(self->WalkPos(1.0f)).during(walk_msecs     ).via(Tween::Ease(EaseType::Linear));
 
-        auto cameraOffset = tweeny::from(self->cameraStartPos_ - anchor)
+        auto cameraOffsetTween = tweeny::from(self->cameraStartPos_ - anchor)
             .to(self->cameraEndPos_ - anchor).during(walkStart_msecs + walk_msecs).via(Tween::Ease(EaseType::InOutSine));
 
-        const std::uint32_t end_msecs = (std::max)(walk.duration() + static_cast<std::uint32_t>(hold_msecs), portalScale.duration());
+        const std::uint32_t end_msecs = (std::max)(walkTween.duration() + static_cast<std::uint32_t>(hold_msecs), portalScaleTween.duration());
 
-        float         elapsed_secs  = 0.0f;
-        std::uint32_t elapsed_msecs = 0;
+        LibCore::Tween::TweenPlayer<glm::vec3> portalScale;
+        LibCore::Tween::TweenPlayer<glm::vec3> walk;
+        LibCore::Tween::TweenPlayer<glm::vec3> cameraOffset;
+        portalScale .Play(std::move(portalScaleTween ));
+        walk        .Play(std::move(walkTween        ));
+        cameraOffset.Play(std::move(cameraOffsetTween));
+
+        float elapsed_secs = 0.0f;
         bool isWalking   = false;
         bool isSkipArmed = false;
-        while (elapsed_msecs < end_msecs)
+        while (elapsed_secs * 1000.0f < static_cast<float>(end_msecs))
         {
             co_await Coroutine::WaitYield();
             if (self->isCanceled_)
@@ -202,17 +209,19 @@ namespace GameCore::Scene::GrassLand
             if (!avatar)
                 break;
 
-            // 秒で積んでからミリ秒へ直す。フレームごとにミリ秒へ切り捨てて積むと、その分だけ演出が遅れていく
-            elapsed_secs += Time::DeltaTime();
-            elapsed_msecs = static_cast<std::uint32_t>(elapsed_secs * 1000.0f);
+            const float deltaTime = Time::DeltaTime();
+            elapsed_secs += deltaTime;
+            portalScale .Tick(deltaTime);
+            walk        .Tick(deltaTime);
+            cameraOffset.Tick(deltaTime);
 
-            if (elapsed_msecs >= portalScale.duration())
+            if (portalScale.IsFinished())
                 self->DestroyPortal();
             else if (const auto portal = self->portal_.lock())
-                portal->Transform().SetLocalScale(portalScale.seek(elapsed_msecs));
+                portal->Transform().SetLocalScale(portalScale.Value());
 
             // 開ききった時点では膜の奥にいるので、ここで出しても膜に隠れて見えない
-            if (!isWalking && elapsed_msecs >= static_cast<std::uint32_t>(walkStart_msecs))
+            if (!isWalking && elapsed_secs * 1000.0f >= static_cast<float>(walkStart_msecs))
             {
                 isWalking = true;
                 self->SetAvatarVisible(true);
@@ -228,10 +237,10 @@ namespace GameCore::Scene::GrassLand
 
             if (isWalking && !self->isWalkFinished_)
             {
-                glm::vec3 pos = walk.seek(elapsed_msecs);
+                glm::vec3 pos = walk.Value();
                 pos.y = ArrivalGroundY(pos, self->groundPos_.y);
                 avatar->PlayerTransform().SetWorldPos(pos);
-                if (walk.isFinished())
+                if (walk.IsFinished())
                 {
                     self->isWalkFinished_ = true;
                     avatar->GetEventSceneStateMachine().OnChangeState(PlayerAvatar::EventSceneStateType::Idle);
@@ -239,7 +248,7 @@ namespace GameCore::Scene::GrassLand
             }
 
             if (const auto follow = self->cameraFollow_.lock())
-                follow->followOffset_ = cameraOffset.seek(elapsed_msecs);
+                follow->followOffset_ = cameraOffset.Value();
 
             // ステージ選択の決定キーを押しっぱなしで来ても即スキップにならないよう、一度離すまで待つ
             const bool isDown = ArrivalIsSkipInputDown();

@@ -2,6 +2,7 @@
 
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../../../GamePlay/Ui/Shop/Presenter/ShopPresenter.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {
@@ -27,3 +28,8 @@ namespace GameCore::Npc::Friendly::Behaviour
         ImGuiHelper::OnDrawInputField("stall_", stall_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::OpenShop)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::ActionBase, GameCore::Npc::Friendly::Behaviour::Action::OpenShop)
+#pragma endregion

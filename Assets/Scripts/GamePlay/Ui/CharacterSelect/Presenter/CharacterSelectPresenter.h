@@ -38,6 +38,7 @@ namespace GamePlay::Ui
         void OnDestroy() override;
 
         void Open();
+        [[nodiscard]] bool IsAnotherOpen() const;
         /** @brief 開く前に捨てる。アバターや展示台のカメラには触らない */
         void Discard();
         void Confirm();
@@ -55,11 +56,8 @@ namespace GamePlay::Ui
         bool wasCancelPressed_  = false;
         bool isClosed_ = false;
         bool hasStarted_ = false;
-        // isOpen_ を立てたのが自分の時だけ、破棄時に下ろす
-        bool hasClaimedOpen_ = false;
-
         // 会話のたびに二重に生えるのを防ぐ
-        static bool isOpen_;
+        bool isOpen_ = false;
 
 #pragma region Serialization Function
     public:
@@ -80,4 +78,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::CharacterSelectPresenter, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::CharacterSelectPresenter, 0);

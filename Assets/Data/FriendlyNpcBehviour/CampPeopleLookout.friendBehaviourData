@@ -12,7 +12,7 @@
                     },
                     "guid_": {
                         "cereal_class_version": 0,
-                        "value_": "9A26DCDD-A6CC-4701-9F49-E5FBADEBFF4D"
+                        "value_": "B4AA6578-5175-4025-ABDB-6834258CFB6E"
                     },
                     "position_": {
                         "value0": 120.0,
@@ -29,7 +29,7 @@
                             "value0": {
                                 "value0": {},
                                 "guid_": {
-                                    "value_": "68E14470-FF70-4BF3-934F-8DA309094B22"
+                                    "value_": "3BF94287-2F45-4827-9FF4-409D03939D38"
                                 },
                                 "position_": {
                                     "value0": 120.0,
@@ -47,7 +47,7 @@
                                             "value0": {
                                                 "value0": {},
                                                 "guid_": {
-                                                    "value_": "9DBF84AB-6152-4324-BE30-712DD5F829FC"
+                                                    "value_": "8C6EF550-5058-4E4D-90CF-B563E016F312"
                                                 },
                                                 "position_": {
                                                     "value0": 120.0,
@@ -64,7 +64,7 @@
                                                         "value0": {
                                                             "value0": {},
                                                             "guid_": {
-                                                                "value_": "30470B99-F905-4E38-85F5-BD4B14841488"
+                                                                "value_": "52CAE2E6-EFE6-470E-B4AE-DDE14454CCC3"
                                                             },
                                                             "position_": {
                                                                 "value0": 120.0,
@@ -106,10 +106,10 @@
                                             "value0": {
                                                 "value0": {},
                                                 "guid_": {
-                                                    "value_": "3EEE4851-A091-4921-B90E-44414452D94A"
+                                                    "value_": "CCEB5257-7CF8-4239-B5C9-18ABB4121864"
                                                 },
                                                 "position_": {
-                                                    "value0": 247.0,
+                                                    "value0": 374.0,
                                                     "value1": 280.0
                                                 }
                                             },
@@ -122,7 +122,7 @@
                                                             "value0": {
                                                                 "value0": {},
                                                                 "guid_": {
-                                                                    "value_": "22186CFC-FA49-4779-9DFF-929BC576507E"
+                                                                    "value_": "8318E96A-8AED-4714-8BB8-4150F6ECCC87"
                                                                 },
                                                                 "position_": {
                                                                     "value0": 120.0,
@@ -138,7 +138,7 @@
                                                                             "value0": {
                                                                                 "value0": {},
                                                                                 "guid_": {
-                                                                                    "value_": "0B36158A-DFE8-4E84-80EB-081778FA224E"
+                                                                                    "value_": "0F7DA741-299A-480E-B650-F7E1B4BF7D25"
                                                                                 },
                                                                                 "position_": {
                                                                                     "value0": 120.0,
@@ -168,7 +168,7 @@
                                                                             "value0": {
                                                                                 "value0": {},
                                                                                 "guid_": {
-                                                                                    "value_": "E761E221-CB2D-4FF4-8960-EF79D0CB3B91"
+                                                                                    "value_": "5AA97D5C-F01F-4420-83E5-4AEFF371E3F1"
                                                                                 },
                                                                                 "position_": {
                                                                                     "value0": 120.0,
@@ -199,10 +199,10 @@
                                                                             "value0": {
                                                                                 "value0": {},
                                                                                 "guid_": {
-                                                                                    "value_": "3AE67C9A-05A4-409F-8FBB-86440447D338"
+                                                                                    "value_": "BAD3C3AD-8C85-4F63-B6C4-B7B300B7D4BB"
                                                                                 },
                                                                                 "position_": {
-                                                                                    "value0": 184.0,
+                                                                                    "value0": 310.0,
                                                                                     "value1": 520.0
                                                                                 }
                                                                             },
@@ -215,7 +215,7 @@
                                                                                             "value0": {
                                                                                                 "value0": {},
                                                                                                 "guid_": {
-                                                                                                    "value_": "6DFC00F7-DEDD-47B1-B8B5-DE28D8F7682A"
+                                                                                                    "value_": "124AC3FD-DF73-484F-AE17-309301287C93"
                                                                                                 },
                                                                                                 "position_": {
                                                                                                     "value0": 120.0,
@@ -231,24 +231,24 @@
                                                                                                             "value0": {
                                                                                                                 "value0": {},
                                                                                                                 "guid_": {
-                                                                                                                    "value_": "54FE3A20-EB8A-4446-8B42-2867E1D77C4F"
+                                                                                                                    "value_": "DDB67072-379F-4768-AA13-95305FD6B0A5"
                                                                                                                 },
                                                                                                                 "position_": {
                                                                                                                     "value0": 120.0,
                                                                                                                     "value1": 640.0
                                                                                                                 }
                                                                                                             },
-                                                                                                            "name_": "Not Talked Yet",
+                                                                                                            "name_": "GrassLandCleared == True",
                                                                                                             "action_": {
                                                                                                                 "polymorphic_id": 2147483656,
-                                                                                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::ReadBlackBoard",
+                                                                                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::IsStoryFlag",
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
                                                                                                                     "data": {
                                                                                                                         "cereal_class_version": 0,
                                                                                                                         "value0": {},
-                                                                                                                        "keyName_": "Talked",
-                                                                                                                        "equalValue_": 0
+                                                                                                                        "flag_": 2,
+                                                                                                                        "expected_": true
                                                                                                                     }
                                                                                                                 }
                                                                                                             }
@@ -263,16 +263,48 @@
                                                                                                             "value0": {
                                                                                                                 "value0": {},
                                                                                                                 "guid_": {
-                                                                                                                    "value_": "76A763F5-B8F5-43DA-BED9-CD46862ADDAF"
+                                                                                                                    "value_": "D585A83A-E91D-4653-9331-D1891132664D"
                                                                                                                 },
                                                                                                                 "position_": {
                                                                                                                     "value0": 120.0,
                                                                                                                     "value1": 700.0
                                                                                                                 }
                                                                                                             },
-                                                                                                            "name_": "First Talk",
+                                                                                                            "name_": "ClearedTalked == 0",
                                                                                                             "action_": {
                                                                                                                 "polymorphic_id": 2147483657,
+                                                                                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::ReadBlackBoard",
+                                                                                                                "ptr_wrapper": {
+                                                                                                                    "valid": 1,
+                                                                                                                    "data": {
+                                                                                                                        "cereal_class_version": 0,
+                                                                                                                        "value0": {},
+                                                                                                                        "keyName_": "ClearedTalked",
+                                                                                                                        "equalValue_": 0
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "polymorphic_id": 3,
+                                                                                                    "ptr_wrapper": {
+                                                                                                        "id": 2147483661,
+                                                                                                        "data": {
+                                                                                                            "value0": {
+                                                                                                                "value0": {},
+                                                                                                                "guid_": {
+                                                                                                                    "value_": "337AB4DD-EE60-4F51-ADA5-CD13C25FA50A"
+                                                                                                                },
+                                                                                                                "position_": {
+                                                                                                                    "value0": 120.0,
+                                                                                                                    "value1": 760.0
+                                                                                                                }
+                                                                                                            },
+                                                                                                            "name_": "Cleared",
+                                                                                                            "action_": {
+                                                                                                                "polymorphic_id": 2147483658,
                                                                                                                 "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::Chat",
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
@@ -284,9 +316,223 @@
                                                                                                                             "value0": {
                                                                                                                                 "polymorphic_id": 1073741824,
                                                                                                                                 "ptr_wrapper": {
-                                                                                                                                    "id": 2147483661,
+                                                                                                                                    "id": 2147483662,
                                                                                                                                     "data": {
                                                                                                                                         "cereal_class_version": 0,
+                                                                                                                                        "value0": {
+                                                                                                                                            "value_": "49087149-65C9-496B-8D87-226C84320D89"
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "polymorphic_id": 3,
+                                                                                                    "ptr_wrapper": {
+                                                                                                        "id": 2147483663,
+                                                                                                        "data": {
+                                                                                                            "value0": {
+                                                                                                                "value0": {},
+                                                                                                                "guid_": {
+                                                                                                                    "value_": "B5074D6A-5D09-4F43-AF4E-7E143B534A35"
+                                                                                                                },
+                                                                                                                "position_": {
+                                                                                                                    "value0": 120.0,
+                                                                                                                    "value1": 820.0
+                                                                                                                }
+                                                                                                            },
+                                                                                                            "name_": "ClearedTalked = 1",
+                                                                                                            "action_": {
+                                                                                                                "polymorphic_id": 2147483659,
+                                                                                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::WriteBlackBoard",
+                                                                                                                "ptr_wrapper": {
+                                                                                                                    "valid": 1,
+                                                                                                                    "data": {
+                                                                                                                        "cereal_class_version": 0,
+                                                                                                                        "value0": {},
+                                                                                                                        "keyName_": "ClearedTalked",
+                                                                                                                        "value_": 1
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "polymorphic_id": 1,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483664,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "FC3D23AA-852E-4689-9E35-850746905169"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 247.0,
+                                                                                                    "value1": 580.0
+                                                                                                }
+                                                                                            },
+                                                                                            "children_": [
+                                                                                                {
+                                                                                                    "polymorphic_id": 3,
+                                                                                                    "ptr_wrapper": {
+                                                                                                        "id": 2147483665,
+                                                                                                        "data": {
+                                                                                                            "value0": {
+                                                                                                                "value0": {},
+                                                                                                                "guid_": {
+                                                                                                                    "value_": "9073D55A-63A0-4C63-8C61-5508042D3CAD"
+                                                                                                                },
+                                                                                                                "position_": {
+                                                                                                                    "value0": 247.0,
+                                                                                                                    "value1": 640.0
+                                                                                                                }
+                                                                                                            },
+                                                                                                            "name_": "GrassLandCleared == True",
+                                                                                                            "action_": {
+                                                                                                                "polymorphic_id": 8,
+                                                                                                                "ptr_wrapper": {
+                                                                                                                    "valid": 1,
+                                                                                                                    "data": {
+                                                                                                                        "value0": {},
+                                                                                                                        "flag_": 2,
+                                                                                                                        "expected_": true
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "polymorphic_id": 3,
+                                                                                                    "ptr_wrapper": {
+                                                                                                        "id": 2147483666,
+                                                                                                        "data": {
+                                                                                                            "value0": {
+                                                                                                                "value0": {},
+                                                                                                                "guid_": {
+                                                                                                                    "value_": "18D63C13-D8FF-4C49-8C4C-7F66BA810618"
+                                                                                                                },
+                                                                                                                "position_": {
+                                                                                                                    "value0": 247.0,
+                                                                                                                    "value1": 700.0
+                                                                                                                }
+                                                                                                            },
+                                                                                                            "name_": "Cleared Again",
+                                                                                                            "action_": {
+                                                                                                                "polymorphic_id": 10,
+                                                                                                                "ptr_wrapper": {
+                                                                                                                    "valid": 1,
+                                                                                                                    "data": {
+                                                                                                                        "value0": {},
+                                                                                                                        "value1": {
+                                                                                                                            "value0": {
+                                                                                                                                "polymorphic_id": 1073741824,
+                                                                                                                                "ptr_wrapper": {
+                                                                                                                                    "id": 2147483667,
+                                                                                                                                    "data": {
+                                                                                                                                        "value0": {
+                                                                                                                                            "value_": "62E5A0C9-F711-437A-B779-207E29749E2E"
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "polymorphic_id": 1,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483668,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "A5760705-824F-42C2-AE9C-80A681A4AB03"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 374.0,
+                                                                                                    "value1": 580.0
+                                                                                                }
+                                                                                            },
+                                                                                            "children_": [
+                                                                                                {
+                                                                                                    "polymorphic_id": 3,
+                                                                                                    "ptr_wrapper": {
+                                                                                                        "id": 2147483669,
+                                                                                                        "data": {
+                                                                                                            "value0": {
+                                                                                                                "value0": {},
+                                                                                                                "guid_": {
+                                                                                                                    "value_": "A63723DE-A5B6-4F31-860A-0EAFA98CB87E"
+                                                                                                                },
+                                                                                                                "position_": {
+                                                                                                                    "value0": 374.0,
+                                                                                                                    "value1": 640.0
+                                                                                                                }
+                                                                                                            },
+                                                                                                            "name_": "Talked == 0",
+                                                                                                            "action_": {
+                                                                                                                "polymorphic_id": 9,
+                                                                                                                "ptr_wrapper": {
+                                                                                                                    "valid": 1,
+                                                                                                                    "data": {
+                                                                                                                        "value0": {},
+                                                                                                                        "keyName_": "Talked",
+                                                                                                                        "equalValue_": 0
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                },
+                                                                                                {
+                                                                                                    "polymorphic_id": 3,
+                                                                                                    "ptr_wrapper": {
+                                                                                                        "id": 2147483670,
+                                                                                                        "data": {
+                                                                                                            "value0": {
+                                                                                                                "value0": {},
+                                                                                                                "guid_": {
+                                                                                                                    "value_": "EE17006A-4630-4436-8521-952F5E611E27"
+                                                                                                                },
+                                                                                                                "position_": {
+                                                                                                                    "value0": 374.0,
+                                                                                                                    "value1": 700.0
+                                                                                                                }
+                                                                                                            },
+                                                                                                            "name_": "First Talk",
+                                                                                                            "action_": {
+                                                                                                                "polymorphic_id": 10,
+                                                                                                                "ptr_wrapper": {
+                                                                                                                    "valid": 1,
+                                                                                                                    "data": {
+                                                                                                                        "value0": {},
+                                                                                                                        "value1": {
+                                                                                                                            "value0": {
+                                                                                                                                "polymorphic_id": 1073741824,
+                                                                                                                                "ptr_wrapper": {
+                                                                                                                                    "id": 2147483671,
+                                                                                                                                    "data": {
                                                                                                                                         "value0": {
                                                                                                                                             "value_": "40815E9F-FF4B-4153-8381-7DAB3F0A2DBB"
                                                                                                                                         }
@@ -303,26 +549,24 @@
                                                                                                 {
                                                                                                     "polymorphic_id": 3,
                                                                                                     "ptr_wrapper": {
-                                                                                                        "id": 2147483662,
+                                                                                                        "id": 2147483672,
                                                                                                         "data": {
                                                                                                             "value0": {
                                                                                                                 "value0": {},
                                                                                                                 "guid_": {
-                                                                                                                    "value_": "E278B569-86D0-46C7-882A-1F9D38043776"
+                                                                                                                    "value_": "BCE0C573-ECF2-41AD-AE35-ED9271EA55A9"
                                                                                                                 },
                                                                                                                 "position_": {
-                                                                                                                    "value0": 120.0,
+                                                                                                                    "value0": 374.0,
                                                                                                                     "value1": 760.0
                                                                                                                 }
                                                                                                             },
-                                                                                                            "name_": "Mark Talked",
+                                                                                                            "name_": "Talked = 1",
                                                                                                             "action_": {
-                                                                                                                "polymorphic_id": 2147483658,
-                                                                                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::WriteBlackBoard",
+                                                                                                                "polymorphic_id": 11,
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
                                                                                                                     "data": {
-                                                                                                                        "cereal_class_version": 0,
                                                                                                                         "value0": {},
                                                                                                                         "keyName_": "Talked",
                                                                                                                         "value_": 1
@@ -339,21 +583,21 @@
                                                                                 {
                                                                                     "polymorphic_id": 3,
                                                                                     "ptr_wrapper": {
-                                                                                        "id": 2147483663,
+                                                                                        "id": 2147483673,
                                                                                         "data": {
                                                                                             "value0": {
                                                                                                 "value0": {},
                                                                                                 "guid_": {
-                                                                                                    "value_": "5C572B29-F67F-4E67-91C3-28465353B86B"
+                                                                                                    "value_": "4BA8E78E-53C1-4B75-B787-3C10ACC40EEB"
                                                                                                 },
                                                                                                 "position_": {
-                                                                                                    "value0": 247.0,
+                                                                                                    "value0": 501.0,
                                                                                                     "value1": 580.0
                                                                                                 }
                                                                                             },
                                                                                             "name_": "Talk Again",
                                                                                             "action_": {
-                                                                                                "polymorphic_id": 9,
+                                                                                                "polymorphic_id": 10,
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
                                                                                                     "data": {
@@ -362,7 +606,7 @@
                                                                                                             "value0": {
                                                                                                                 "polymorphic_id": 1073741824,
                                                                                                                 "ptr_wrapper": {
-                                                                                                                    "id": 2147483664,
+                                                                                                                    "id": 2147483674,
                                                                                                                     "data": {
                                                                                                                         "value0": {
                                                                                                                             "value_": "167148E8-47FA-4855-9F9C-1973B039F3AC"
@@ -384,16 +628,16 @@
                                                                 {
                                                                     "polymorphic_id": 3,
                                                                     "ptr_wrapper": {
-                                                                        "id": 2147483665,
+                                                                        "id": 2147483675,
                                                                         "data": {
                                                                             "value0": {
                                                                                 "value0": {},
                                                                                 "guid_": {
-                                                                                    "value_": "F9B5AEE4-B09F-4BA7-B03A-49CE5BD491EA"
+                                                                                    "value_": "74460516-04D6-415B-9EBD-915439447275"
                                                                                 },
                                                                                 "position_": {
                                                                                     "value0": 120.0,
-                                                                                    "value1": 820.0
+                                                                                    "value1": 880.0
                                                                                 }
                                                                             },
                                                                             "name_": "Idle Animation",
@@ -417,15 +661,15 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483666,
+                                                        "id": 2147483676,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
                                                                 "guid_": {
-                                                                    "value_": "D2D5CBC8-D3FB-4EA4-9E77-9367003B5C0A"
+                                                                    "value_": "E2F27E4F-0A03-4444-8166-E7E880CD18A2"
                                                                 },
                                                                 "position_": {
-                                                                    "value0": 374.0,
+                                                                    "value0": 628.0,
                                                                     "value1": 340.0
                                                                 }
                                                             },
@@ -458,18 +702,29 @@
         "ptr_wrapper": {
             "valid": 1,
             "data": {
-                "value0": 1,
+                "value0": 2,
                 "value1": {
-                    "polymorphic_id": 2147483659,
+                    "polymorphic_id": 2147483660,
                     "polymorphic_name": "NanamiEngine::Module::AnimationTree::AnimationParameter<int>",
                     "ptr_wrapper": {
-                        "id": 2147483667,
+                        "id": 2147483677,
                         "data": {
                             "cereal_class_version": 0,
                             "value0": {
                                 "cereal_class_version": 0
                             },
                             "name_": "Talked",
+                            "value_": 0
+                        }
+                    }
+                },
+                "value2": {
+                    "polymorphic_id": 12,
+                    "ptr_wrapper": {
+                        "id": 2147483678,
+                        "data": {
+                            "value0": {},
+                            "name_": "ClearedTalked",
                             "value_": 0
                         }
                     }

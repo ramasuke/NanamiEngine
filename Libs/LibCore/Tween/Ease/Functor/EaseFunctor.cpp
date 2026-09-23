@@ -5,6 +5,11 @@ float LibCore::Tween::EaseFunctor::operator()(const float time) const
     return Ease(time);
 }
 
+float LibCore::Tween::EaseFunctor::operator()(const float time, const float a, const float b) const
+{
+    return a + (b - a) * Ease(time);
+}
+
 glm::vec3 LibCore::Tween::EaseFunctor::operator()(const float time, const glm::vec3& a, const glm::vec3& b) const
 {
     return glm::mix(a, b, Ease(time));

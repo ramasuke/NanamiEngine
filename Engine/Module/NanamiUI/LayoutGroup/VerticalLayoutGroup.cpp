@@ -5,6 +5,7 @@
 #include "../../GameObject/ComponentGroup/ComponentGroup.h"
 #include "../../GameObject/Transform/Transform.h"
 #include "../../GameObject/Interface/IGameObject.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -89,3 +90,7 @@ namespace NanamiEngine::Module::NanamiUi
         ImGuiHelper::OnDrawInputField("centerOnOrigin_", centerOnOrigin_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::VerticalLayoutGroup);
+#pragma endregion

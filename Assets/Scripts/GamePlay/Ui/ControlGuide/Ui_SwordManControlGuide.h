@@ -231,4 +231,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::SwordManControlGuide, 3)
+CEREAL_CLASS_VERSION(GamePlay::Ui::SwordManControlGuide, 3);

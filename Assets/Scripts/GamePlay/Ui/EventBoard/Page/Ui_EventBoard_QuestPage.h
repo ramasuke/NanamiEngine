@@ -148,4 +148,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::EventBoardQuestPage, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardQuestPage, 0);

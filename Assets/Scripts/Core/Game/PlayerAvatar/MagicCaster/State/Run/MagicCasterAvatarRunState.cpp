@@ -4,6 +4,7 @@
 
 void GameCore::PlayerAvatar::MagicCaster::State::RunState::DoEnter()
 {
+    footstep_ = {};
 }
 
 void GameCore::PlayerAvatar::MagicCaster::State::RunState::DoFixedUpdate()
@@ -14,9 +15,11 @@ void GameCore::PlayerAvatar::MagicCaster::State::RunState::DoFixedUpdate()
 
 void GameCore::PlayerAvatar::MagicCaster::State::RunState::DoUpdate()
 {
+    TryEmitFootstep(footstep_);
+
     UpdateLockOn();
-    UpdateItemPouchInput();
-    UpdateTransitions();
+    if (!UpdateItemPouchInput())
+        UpdateTransitions();
 }
 
 void GameCore::PlayerAvatar::MagicCaster::State::RunState::VisitTransitions(
@@ -27,6 +30,7 @@ void GameCore::PlayerAvatar::MagicCaster::State::RunState::VisitTransitions(
     visitor.OnInput(MagicCasterAvatarStateType::Idle, MagicCasterAvatarInput::Move, PlayerAvatarInputPhase::NotHolding, true);
     visitor.Automatic(MagicCasterAvatarStateType::Walk, !Input().Run().IsUpdatePressed() || !Status().CanRun());
     visitor.OnInput(MagicCasterAvatarStateType::Jump, MagicCasterAvatarInput::Jump, PlayerAvatarInputPhase::Pressed, Status().CanJump());
+    visitor.OnInput(MagicCasterAvatarStateType::AvoidRolling, MagicCasterAvatarInput::AvoidRolling, PlayerAvatarInputPhase::Pressed, Status().CanAvoidRolling());
     visitor.Cast(CanCastBasicSpell());
     visitor.Action(MagicCasterAvatarStateAction::Move, true);
     VisitLockOnAction(visitor);

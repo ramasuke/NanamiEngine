@@ -3,6 +3,7 @@
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Npc::Enemy
 {
@@ -106,3 +107,7 @@ namespace GamePlay::Npc::Enemy
         ImGui::Text("WeakWindow: %.2f", weakWindowRemaining_secs_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Npc::Enemy::BodyPartWeakPoint);
+#pragma endregion

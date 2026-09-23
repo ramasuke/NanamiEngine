@@ -41,4 +41,4 @@ namespace NanamiEngine::Module::Component
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::CameraFollowTransform, 0)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::CameraFollowTransform, 0);

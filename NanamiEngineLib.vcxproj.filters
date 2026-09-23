@@ -814,6 +814,9 @@
     <ClCompile Include="Engine\Module\Component\BoneSync\BoneSync.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Module\Component\LookAtBone\LookAtBone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Module\Component\BoneSync\BonePose\BonePose.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1111,7 +1114,7 @@
     <ClCompile Include="Libs\LibCore\BlackBoard\IAnimationParameter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Libs\LibCore\glm\GlmHelper.cpp">
+    <ClCompile Include="Libs\LibCore\DxLib\DxMath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Libs\Singleton\LibCore_SingletonBase.cpp">
@@ -4490,6 +4493,9 @@
     <ClInclude Include="Libs\LibCore\Tween\Ease\Type\EaseType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Libs\LibCore\Tween\Player\TweenPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Libs\LibCore\Tween\Vec3Tween\Vec3Tween.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -4799,7 +4805,7 @@
     <ClInclude Include="Libs\LibCore\BlackBoard\IAnimationParameter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Libs\LibCore\glm\GlmHelper.h">
+    <ClInclude Include="Libs\LibCore\DxLib\DxMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Libs\Singleton\LibCore_SingletonBase.h">

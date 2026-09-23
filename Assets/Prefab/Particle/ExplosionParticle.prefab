@@ -7,7 +7,7 @@
     },
     "components_": {
         "cereal_class_version": 0,
-        "componentCount": 1,
+        "componentCount": 2,
         "component_0": {
             "polymorphic_id": 2147483649,
             "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
@@ -45,6 +45,38 @@
                     },
                     "playingDuration_secs_": 4.0,
                     "playMode_": 1
+                }
+            }
+        },
+        "component_1": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "GamePlay::Sound::SpawnSound",
+            "ptr_wrapper": {
+                "id": 2147483651,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "3C0B6D2E-8E4A-4F71-9B5D-2A7E61C4F9A3"
+                        },
+                        "isEnable_": true
+                    },
+                    "sound_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483652,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "43E4B459-75A3-43D5-B5AF-C0E02B282857"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "delay_secs_": 0.0
                 }
             }
         }

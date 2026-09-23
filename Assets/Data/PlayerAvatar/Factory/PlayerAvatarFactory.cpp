@@ -15,6 +15,7 @@
 #include "../../../Scripts/Core/Game/Scene/Sub/Group/Sub_GameSceneGroup.h"
 #include "../../../Scripts/GamePlay/Ui/OtherPlayerStatusUIGroup/OtherPlayerStatusUiGroup.h"
 #include "../../../Scripts/GamePlay/Ui/PlayerStatus/Ui_PlayerStatus.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -208,3 +209,9 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("otherPlayerAvatarStatusPresenterPrefab_", otherPlayerAvatarStatusPresenterPrefab_);
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(PlayerAvatarFactory, PLAYER_AVATAR_FACTORY_EXTENSION_LABEL, "Player")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::PlayerAvatarFactory);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::PlayerAvatarFactory);
+#pragma endregion

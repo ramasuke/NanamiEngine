@@ -5,8 +5,10 @@
 
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "../../../Core/Game/PlayerAvatar/CameraGroup/PlayerAvatarCameraGroupBase.h"
 #include "../../../Core/Game/PlayerAvatar/LockOnTarget/ILockOnTarget.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -20,18 +22,14 @@ namespace GamePlay::Ui
         // 確定演出でブラケットが回りながらスナップしてくる角度
         constexpr float ENGAGE_BRACKET_ANGLE         = PI * 0.25f;
         constexpr float MIN_SCALE_RATE               = 0.001f;
+    }
 
-        float EaseOutBack(const float t)
-        {
-            constexpr float overshoot = 1.70158f;
-            const float x = t - 1.0f;
-            return x * x * ((overshoot + 1.0f) * x + overshoot) + 1.0f;
-        }
-
-        float EaseOutQuad(const float t)
-        {
-            return 1.0f - (1.0f - t) * (1.0f - t);
-        }
+    LockOnReticle::LockOnReticle()
+    {
+        // 候補マーカーは一定速度で 0<->1 を往復する
+        candidateFade_.Set(tweeny::from(0.0f).to(1.0f)
+            .during(LibCore::Tween::Ms(CANDIDATE_FADE_SECS))
+            .via(LibCore::Tween::Ease(LibCore::EaseType::OutQuad)));
     }
 
     void LockOnReticle::InitRenderer()
@@ -65,22 +63,24 @@ namespace GamePlay::Ui
         const bool isEngaged  = target != nullptr;
         if (isEngaged && (!wasEngaged_ || target != lockedTarget_.lock()))
         {
-            phase_          = Phase::Engaging;
-            phaseTime_secs_ = 0.0f;
-            lockedTarget_   = target;
+            phase_        = Phase::Engaging;
+            lockedTarget_ = target;
+            PlayEngage();
         }
         else if (!isEngaged && wasEngaged_)
         {
             // lockedTarget_ は残し、生きていれば解除演出中も対象に追従させる
-            phase_          = Phase::Releasing;
-            phaseTime_secs_ = 0.0f;
+            phase_ = Phase::Releasing;
+            PlayRelease();
         }
         wasEngaged_ = isEngaged;
 
-        phaseTime_secs_ += deltaTime;
-        if (phase_ == Phase::Engaging && phaseTime_secs_ >= engageDuration_secs_)
+        const bool isPhaseFinished = scaleRateTween_.Tick(deltaTime);
+        alphaTween_       .Tick(deltaTime);
+        bracketAngleTween_.Tick(deltaTime);
+        if (isPhaseFinished && phase_ == Phase::Engaging)
             phase_ = Phase::Locked;
-        if (phase_ == Phase::Releasing && phaseTime_secs_ >= releaseDuration_secs_)
+        if (isPhaseFinished && phase_ == Phase::Releasing)
         {
             phase_ = Phase::Hidden;
             lockedTarget_.reset();
@@ -91,10 +91,31 @@ namespace GamePlay::Ui
             candidateTarget_ = candidate;
 
         // 候補が消えた後も、最後の位置でフェードアウトさせる
-        const float fadeStep = CANDIDATE_FADE_SECS > 0.0f ? deltaTime / CANDIDATE_FADE_SECS : 1.0f;
-        candidateFade_ = candidate
-            ? std::min(1.0f, candidateFade_ + fadeStep)
-            : std::max(0.0f, candidateFade_ - fadeStep);
+        if (candidate)
+            candidateFade_.PlayForward();
+        else
+            candidateFade_.PlayBackward();
+        candidateFade_.Tick(deltaTime);
+    }
+
+    void LockOnReticle::PlayEngage()
+    {
+        const uint16_t duration = LibCore::Tween::Ms(engageDuration_secs_);
+        scaleRateTween_.Play(tweeny::from(engageStartScaleRate_).to(1.0f)
+            .during(duration).via(LibCore::Tween::Ease(LibCore::EaseType::OutBack)));
+        alphaTween_.Play(tweeny::from(0.0f).to(1.0f)
+            .during(duration).via(LibCore::Tween::Ease(LibCore::EaseType::OutQuad)));
+        bracketAngleTween_.Play(tweeny::from(ENGAGE_BRACKET_ANGLE).to(0.0f)
+            .during(duration).via(LibCore::Tween::Ease(LibCore::EaseType::OutBack)));
+    }
+
+    void LockOnReticle::PlayRelease()
+    {
+        const uint16_t duration = LibCore::Tween::Ms(releaseDuration_secs_);
+        scaleRateTween_.Play(tweeny::from(1.0f).to(releaseEndScaleRate_)
+            .during(duration).via(LibCore::Tween::Ease(LibCore::EaseType::OutQuad)));
+        alphaTween_.Play(tweeny::from(1.0f).to(0.0f)
+            .during(duration).via(LibCore::Tween::Ease(LibCore::EaseType::OutQuad)));
     }
 
     void LockOnReticle::OnUserInterfaceRender()
@@ -103,7 +124,7 @@ namespace GamePlay::Ui
             return;
 
         // 対象の位置は全ての Update が終わった描画時点で取る（Update 順による1フレーム遅れを避ける）
-        if (candidateFade_ > 0.0f)
+        if (candidateFade_.Value() > 0.0f)
         {
             if (const auto candidate = candidateTarget_.lock())
                 candidatePointWorld_ = GameCore::PlayerAvatar::LockOnPositionOf(*candidate);
@@ -114,7 +135,7 @@ namespace GamePlay::Ui
                 candidatePointWorld_,
                 candidateScale_,
                 0.0f,
-                EaseOutQuad(candidateFade_) * candidateAlpha_ * pulse);
+                candidateFade_.Value() * candidateAlpha_ * pulse);
         }
 
         if (phase_ == Phase::Hidden)
@@ -130,23 +151,17 @@ namespace GamePlay::Ui
         switch (phase_)
         {
         case Phase::Engaging:
-        {
-            const float t = engageDuration_secs_ > 0.0f ? std::clamp(phaseTime_secs_ / engageDuration_secs_, 0.0f, 1.0f) : 1.0f;
-            scaleRate    = engageStartScaleRate_ + (1.0f - engageStartScaleRate_) * EaseOutBack(t);
-            alpha        = EaseOutQuad(t);
-            bracketAngle = ENGAGE_BRACKET_ANGLE * (1.0f - EaseOutBack(t));
+            scaleRate    = scaleRateTween_.Value();
+            alpha        = alphaTween_.Value();
+            bracketAngle = bracketAngleTween_.Value();
             break;
-        }
         case Phase::Locked:
             breathRate = 1.0f + lockedBreathScale_ * (0.5f - 0.5f * std::cos(elapsed_secs_ * 2.0f * PI / LOCKED_BREATH_PERIOD_SECS));
             break;
         case Phase::Releasing:
-        {
-            const float t = releaseDuration_secs_ > 0.0f ? std::clamp(phaseTime_secs_ / releaseDuration_secs_, 0.0f, 1.0f) : 1.0f;
-            scaleRate = 1.0f + (releaseEndScaleRate_ - 1.0f) * EaseOutQuad(t);
-            alpha     = 1.0f - EaseOutQuad(t);
+            scaleRate = scaleRateTween_.Value();
+            alpha     = alphaTween_.Value();
             break;
-        }
         case Phase::Hidden:
             return;
         }
@@ -156,12 +171,32 @@ namespace GamePlay::Ui
         DrawSprite(bracketSprite_.get(), lockOnPointWorld_, scale * breathRate, bracketAngle, alpha);
     }
 
+    float LockOnReticle::DistanceScaleRate(const glm::vec3& worldPos) const
+    {
+        // NOTE: GetCameraPosition との距離ではなく、画面位置と同じ ConvWorldPosToScreenPos で
+        //       「1ユニットが何ピクセルに映るか」を測り、referenceDistance_ 先でのそれとの比にする
+        const float maxRate = std::max(minDistanceScale_, maxDistanceScale_);
+        const float tanHalfFov = std::tan(GetCameraFov() * 0.5f);
+        int screenWidth = 0, screenHeight = 0;
+        GetDrawScreenSize(&screenWidth, &screenHeight);
+        if (referenceDistance_ <= 0.0f || tanHalfFov <= 0.0f || screenHeight <= 0)
+            return maxRate;
+
+        const VECTOR pos     = VGet(worldPos.x, worldPos.y, worldPos.z);
+        const VECTOR a       = ConvWorldPosToScreenPos(pos);
+        const VECTOR b       = ConvWorldPosToScreenPos(VAdd(pos, GetCameraUpVector()));
+        const float  current = std::hypot(b.x - a.x, b.y - a.y);
+        const float  reference = static_cast<float>(screenHeight) * 0.5f / (tanHalfFov * referenceDistance_);
+
+        return std::clamp(current / reference, minDistanceScale_, maxRate);
+    }
+
     void LockOnReticle::DrawSprite(
         const std::shared_ptr<Asset::SpriteFile>& sprite,
         const glm::vec3& worldPos,
         const float scale,
         const float angle,
-        const float alpha)
+        const float alpha) const
     {
         if (!sprite || alpha <= 0.0f || scale <= 0.0f)
             return;
@@ -172,7 +207,7 @@ namespace GamePlay::Ui
             return;
 
         SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(std::clamp(alpha, 0.0f, 1.0f) * 255.0f));
-        DrawRotaGraphF(screenPos.x, screenPos.y, scale, angle, sprite->GetDxLibHandle(), TRUE);
+        DrawRotaGraphF(screenPos.x, screenPos.y, scale * DistanceScaleRate(worldPos), angle, sprite->GetDxLibHandle(), TRUE);
         SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
     }
 
@@ -190,5 +225,13 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("engageDuration_secs_",  engageDuration_secs_);
         ImGuiHelper::OnDrawInputField("engageStartScaleRate_", engageStartScaleRate_);
         ImGuiHelper::OnDrawInputField("releaseDuration_secs_", releaseDuration_secs_);
-        ImGuiHelper::OnDrawInputField("releaseEndScaleRate_",  releaseEndScaleRate_);    }
+        ImGuiHelper::OnDrawInputField("releaseEndScaleRate_",  releaseEndScaleRate_);
+        ImGuiHelper::OnDrawInputField("referenceDistance_",    referenceDistance_);
+        ImGuiHelper::OnDrawInputField("minDistanceScale_",     minDistanceScale_);
+        ImGuiHelper::OnDrawInputField("maxDistanceScale_",     maxDistanceScale_);
+    }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::LockOnReticle);
+#pragma endregion

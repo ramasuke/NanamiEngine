@@ -89,4 +89,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::TextRenderer, 4)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::NanamiUi::TextRenderer, 4);

@@ -11,7 +11,6 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         TickStatus DoTick(const TickContext& context) override;
         void       DoDrawGui() override;
 
-
         [[serialize(0)]] FIELD(Asset::SoundFile) bgm_;
         
 #pragma region Serialization Function
@@ -32,5 +31,3 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     REGISTER_ENEMY_ACTION_WITH_NAME(PlayBGM, "Sound::PlayBGM")
 }
 CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::PlayBGM, 0)
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::PlayBGM)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::PlayBGM)

@@ -6,19 +6,15 @@
 #include "geometric.hpp"
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
     namespace
     {
         constexpr float GAME_OVER_CAMERA_DEG_TO_RAD = 3.14159265358979323846f / 180.0f;
-
-        float GameOverCameraEaseOut(const float rate)
-        {
-            const float inv = 1.0f - rate;
-            return 1.0f - inv * inv;
-        }
     }
 
     void GameOverDeathCamera::Begin(const std::shared_ptr<GameObject::IGameObject>& target)
@@ -60,7 +56,9 @@ namespace GamePlay::Ui
 
         follow->SetTarget(target);
         lookAt->SetTarget(target);
-        elapsedSecs_ = 0.0f;
+        shotTween_.Play(tweeny::from(0.0f).to(1.0f)
+            .during(LibCore::Tween::Ms(shotSecs_))
+            .via(LibCore::Tween::Ease(LibCore::EaseType::OutQuad)));
         isPlaying_ = true;
         ApplyShot(0.0f);
 
@@ -80,9 +78,8 @@ namespace GamePlay::Ui
             return;
         }
 
-        elapsedSecs_ += Time::DeltaTime();
-        const float rate = shotSecs_ > 0.0f ? std::clamp(elapsedSecs_ / shotSecs_, 0.0f, 1.0f) : 1.0f;
-        ApplyShot(GameOverCameraEaseOut(rate));
+        shotTween_.Tick(Time::DeltaTime());
+        ApplyShot(shotTween_.Value());
     }
 
     void GameOverDeathCamera::ApplyShot(const float rate) const
@@ -112,6 +109,10 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("endPitchDeg_", endPitchDeg_);
         ImGuiHelper::OnDrawInputField("endDistance_", endDistance_);
         ImGuiHelper::OnDrawInputField("endLookAtOffset_", endLookAtOffset_);
-        ImGui::Text("playing: %d  elapsed: %.2f", isPlaying_ ? 1 : 0, elapsedSecs_);
+        ImGui::Text("playing: %d  progress: %.2f", isPlaying_ ? 1 : 0, shotTween_.Progress());
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::GameOverDeathCamera);
+#pragma endregion

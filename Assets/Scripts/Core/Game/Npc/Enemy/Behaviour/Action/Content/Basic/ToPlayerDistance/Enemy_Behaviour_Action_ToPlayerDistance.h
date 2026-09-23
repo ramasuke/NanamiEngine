@@ -44,8 +44,3 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance, 1)
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    GameCore::Npc::Enemy::Behaviour::ActionBase,
-    GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance
-)

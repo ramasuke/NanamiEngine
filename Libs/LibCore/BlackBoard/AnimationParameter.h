@@ -67,20 +67,3 @@ namespace NanamiEngine
 CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationParameter<bool>, 0);
 CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationParameter<int>, 0);
 CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationParameter<float>, 0);
-
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationParameter<bool>);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationParameter<int>);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationParameter<float>);
-
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    NanamiEngine::Module::AnimationTree::IAnimationParameter,
-    NanamiEngine::Module::AnimationTree::AnimationParameter<bool>
-);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    NanamiEngine::Module::AnimationTree::IAnimationParameter,
-    NanamiEngine::Module::AnimationTree::AnimationParameter<int>
-);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    NanamiEngine::Module::AnimationTree::IAnimationParameter,
-    NanamiEngine::Module::AnimationTree::AnimationParameter<float>
-);

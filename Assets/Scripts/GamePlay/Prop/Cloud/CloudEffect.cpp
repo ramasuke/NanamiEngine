@@ -1,5 +1,6 @@
 ﻿#include "CloudEffect.h"
 #include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Prop
 {
@@ -52,3 +53,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("density_",    density_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::CloudEffect);
+#pragma endregion

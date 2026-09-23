@@ -63,4 +63,4 @@ namespace NanamiEngine::Module::Component
     };
 }
 
-ENGINE_REGISTER_COMPONENT(Component::CollisionListener, 0)
+CEREAL_CLASS_VERSION(Component::CollisionListener, 0);

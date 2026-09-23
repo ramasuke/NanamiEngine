@@ -3,6 +3,7 @@
 
 #include "../../../Core/Application/Window/Main/ModelView/ModelViewWindow.h"
 #include "../../Log/NanamiEngine_Module_Log.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -93,3 +94,10 @@ namespace NanamiEngine::Module::Asset
     const Guid& Mv1File::GetGuid        () const { return guid_; }
     std::string Mv1File::GetContentPath () const { return contentPath_; }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::Mv1File);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::Mv1File);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::Mv1File);
+REGISTER_ASSET(Mv1File, ".mv1")
+#pragma endregion

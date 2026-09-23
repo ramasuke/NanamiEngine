@@ -46,4 +46,4 @@ namespace GamePlay::PlayerAvatar
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::WakeUpArea, 0)
+CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::WakeUpArea, 0);

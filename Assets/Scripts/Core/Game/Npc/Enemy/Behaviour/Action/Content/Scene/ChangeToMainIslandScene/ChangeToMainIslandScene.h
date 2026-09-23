@@ -32,6 +32,3 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     
     REGISTER_ENEMY_ACTION_WITH_NAME(ChangeToMainIslandScene, "Scene::ChangeToMainIslandScene")
 }
-
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ChangeToMainIslandScene)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::ChangeToMainIslandScene)

@@ -9,6 +9,7 @@
 #include "../../../../../../Npc/Friendly/Behaviour/Action/TickContext/Friendly_Behaviour_TickContext.h"
 #include "../../../../../Quest/Completed/PlayerAvatar_CompletedQuestGroup.h"
 #include "../../../../../Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::PlayerAvatar::SwordMan::Quest
 {
@@ -45,3 +46,8 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
         ImGuiHelper::OnDrawInputField("questUiPrefab_", questUiPrefab_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::Quest::ActionInstructTutorial);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest, GameCore::PlayerAvatar::SwordMan::Quest::ActionInstructTutorial);
+#pragma endregion

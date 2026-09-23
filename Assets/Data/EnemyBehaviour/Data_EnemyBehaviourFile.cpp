@@ -4,6 +4,7 @@
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "../../Scripts/Core/Game/Npc/Enemy/Behaviour/Enemy_BehaviourTree.h"
 #include "../../Scripts/Editor/Npc/Enemy/Behaviour/Window/EnemyNpcBehaviourWindow.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -42,3 +43,9 @@ namespace NanamiEngine::Module::Asset
         std::make_shared<GameCore::Npc::Enemy::BehaviourTree>(GetContentPath())->OnSave();
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(EnemyBehaviourFile, ENEMY_BEHAVIOUR_DATA_LABEL, "Npc::Enemy")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::EnemyBehaviourFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::EnemyBehaviourFile);
+#pragma endregion

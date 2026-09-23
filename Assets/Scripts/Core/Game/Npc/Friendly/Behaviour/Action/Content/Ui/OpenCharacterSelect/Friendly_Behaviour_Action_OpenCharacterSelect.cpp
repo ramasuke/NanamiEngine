@@ -5,6 +5,7 @@
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../../../../GamePlay/Ui/CharacterSelect/Presenter/CharacterSelectPresenter.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace
 {
@@ -64,3 +65,8 @@ namespace GameCore::Npc::Friendly::Behaviour
         ImGuiHelper::OnDrawInputField("podium_", podium_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::OpenCharacterSelect)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::ActionBase, GameCore::Npc::Friendly::Behaviour::Action::OpenCharacterSelect)
+#pragma endregion

@@ -12,6 +12,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         Run,
         Jump,
         Chat,
+        AvoidRolling,
     };
 
     /// State を遷移させない操作

@@ -54,4 +54,4 @@ namespace GamePlay::PlayerAvatar::MagicCaster
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::MagicCaster::StatusPresenter, 2)
+CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::MagicCaster::StatusPresenter, 2);

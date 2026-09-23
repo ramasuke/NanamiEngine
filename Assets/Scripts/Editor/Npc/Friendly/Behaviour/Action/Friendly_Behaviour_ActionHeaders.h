@@ -19,3 +19,6 @@
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/PlayerStatus/Quest/CheckComplete/Friendly_Behaviour_Action_CheckCompleteQuest.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Ui/OpenCharacterSelect/Friendly_Behaviour_Action_OpenCharacterSelect.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Ui/OpenShop/Friendly_Behaviour_Action_OpenShop.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Story/IsStoryFlag/Friendly_Behaviour_Action_IsStoryFlag.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Story/IsRestored/Friendly_Behaviour_Action_IsRestored.h"
+#include "../../../../../Core/Game/Npc/Friendly/Behaviour/Action/Content/Story/SetStoryFlag/Friendly_Behaviour_Action_SetStoryFlag.h"

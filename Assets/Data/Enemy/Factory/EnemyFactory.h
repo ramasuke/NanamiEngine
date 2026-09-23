@@ -86,9 +86,6 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(EnemyFactory, ENEMY_FACTORY_EXTENSION_LABEL, "Npc::Enemy")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::EnemyFactory, 1);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::EnemyFactory);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::EnemyFactory);
 #pragma endregion

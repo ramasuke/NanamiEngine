@@ -3,6 +3,7 @@
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/NanamiUI/BillBoard3D/BillboardAnimation3D.h"
 #include "Engine/Module/NanamiUI/BillBoard3D/DrawBillboard3D.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 
 namespace GamePlay::Ui
 {
@@ -17,6 +18,9 @@ namespace GamePlay::Ui
         void Hide();
         void OnChattable();
         void OnExitChattable();
+        /** @brief 攻撃された・ぶつかられた間だけビックリマークだけを出す。End で元の表示に戻す */
+        void BeginReactionSurprise();
+        void EndReactionSurprise();
 
     private:
         enum class IconMotion
@@ -35,10 +39,15 @@ namespace GamePlay::Ui
             glm::vec3 basePos        = {};
             glm::vec3 baseScale      = {};
             float     baseAngle      = 0.0f;
+            // 表示された瞬間のポップ
+            LibCore::Tween::TweenPlayer<float> popScale;
+            LibCore::Tween::TweenPlayer<float> popAlpha;
             std::weak_ptr<NanamiUi::Billboard3D> billboard;
         };
 
         void OnUpdate() override;
+        // リアクション中は実際の表示ではなく、戻す時の表示状態を書き換える
+        void SetIconEnable(GameObject::IGameObject* icon, bool& reactionSaved, bool enable) const;
         static void UpdateIcon(
             const std::shared_ptr<GameObject::IGameObject>& object,
             const std::shared_ptr<NanamiUi::BillboardAnimation3D>& rimGlow,
@@ -46,6 +55,10 @@ namespace GamePlay::Ui
             IconMotion motion);
 
         bool isShow_ = true;
+        bool isReactionSurprise_ = false;
+        bool savedChattable_     = false;
+        bool savedChatting_      = false;
+        bool savedSurprise_      = false;
         IconState chattableState_;
         IconState chattingState_;
         IconState surpriseState_;
@@ -79,4 +92,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::BillBoardNpcChatIcon, 2)
+CEREAL_CLASS_VERSION(GamePlay::Ui::BillBoardNpcChatIcon, 2);

@@ -1,5 +1,6 @@
 ﻿#include "MagicCasterAvatarStateMachine.h"
 
+#include "AvoidRolling/MagicCasterAvatarAvoidRollingState.h"
 #include "Cast/MagicCasterAvatarCastState.h"
 #include "Chatting/MagicCasterAvatarChattingState.h"
 #include "Death/MagicCasterAvatarDeathState.h"
@@ -9,6 +10,7 @@
 #include "Idle/MagicCasterAvatarIdleState.h"
 #include "Jump/MagicCasterAvatarJumpState.h"
 #include "Run/MagicCasterAvatarRunState.h"
+#include "UseItem/MagicCasterAvatarUseItemState.h"
 #include "Walk/MagicCasterAvatarWalkState.h"
 
 #include "../../../../../GamePlay/PlayerAvatar/MagicCaster/MagicCasterAvatar.h"
@@ -50,8 +52,6 @@ namespace GameCore::PlayerAvatar::MagicCaster
 
     void MagicCasterAvatarStateMachine::OnChangeState(MagicCasterAvatarStateType type) { Base::OnChangeState(type); }
     void MagicCasterAvatarStateMachine::OnChangeState(const EventSceneStateType type) { Base::OnChangeState(ToMagicCasterEventSceneState(type)); }
-    void MagicCasterAvatarStateMachine::OnEnable()  { Base::OnEnable();  }
-    void MagicCasterAvatarStateMachine::OnDisable() { Base::OnDisable(); }
 
     R4::Observable<std::shared_ptr<MagicCasterAvatarStateBase>> MagicCasterAvatarStateMachine::CurrentState() const
     {
@@ -78,7 +78,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
             playerAvatar->CastPoint(),
             playerAvatar->Resources(),
             std::static_pointer_cast<Magic::IMagicCaster>(playerAvatar),
-            playerAvatar->CatchLockOnDetectionArea()
+            playerAvatar->CatchLockOnDetectionArea(),
+            playerAvatar->CatchSuccessAvoidRollingParticle()
         );
 
         auto stateMachine = std::make_unique<MagicCasterAvatarStateMachine>(
@@ -98,6 +99,10 @@ namespace GameCore::PlayerAvatar::MagicCaster
                     {MagicCasterAvatarStateType::Hurt,     std::make_shared<HurtState>   (args)},
                     {MagicCasterAvatarStateType::Death,    std::make_shared<DeathState>  (args)},
                     {MagicCasterAvatarStateType::Chatting, std::make_shared<ChattingState>(args)},
+                    {MagicCasterAvatarStateType::AvoidRolling, std::make_shared<AvoidRollingState>(args)},
+                    {MagicCasterAvatarStateType::UseItemDrink, std::make_shared<UseItemState>(args, MagicCaster::AnimationType::ItemDrink)},
+                    {MagicCasterAvatarStateType::UseItemEat,   std::make_shared<UseItemState>(args, MagicCaster::AnimationType::ItemEat  )},
+                    {MagicCasterAvatarStateType::UseItemPlace, std::make_shared<UseItemState>(args, MagicCaster::AnimationType::ItemPlace)},
                 };
             },
             MagicCasterAvatarStateType::Idle,

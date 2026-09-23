@@ -8,6 +8,7 @@
 #include "../../../../../../../Data/PlayerAvatar/Factory/PlayerAvatarFactory.h"
 #include "../../../../PlayerAvatar/PlayerAvatar.h"
 #include "../../../../PlayerAvatar/Status/NullPlayerAvatarStatus.h"
+#include "../../../../Story/Story_StoryProgress.h"
 #include "../../../Sub/Group/Sub_IGameSceneGroup.h"
 #include "../../../Sub/Type/SubSceneType.h"
 #include "AboardAirShipMovie/AboardAirShipMovie.h"
@@ -77,10 +78,12 @@ namespace GameCore::Scene::Main
             PlayerAvatar::SaveType(*avatar);
             avatar->SaveStatus();
             SaveGameProgression(GameProgresion::MainIsland);
+            Story::StoryProgress::Instance().Set(Story::StoryFlag::PrologueCleared);
         }
         playerAvatar_.reset();
 
-        GamePlay::Sound::SoundPlayer::StopBgm(Context()->BGM());
+        // NOTE: ボスの BT (PlayBGM) が差し替えた BGM も流れているので、シーンの BGM だけでなく全部止める
+        GamePlay::Sound::SoundPlayer::StopAllBgm();
     }
     
     void FirstTouchDownMainIsLandScene::OnDrawGui()

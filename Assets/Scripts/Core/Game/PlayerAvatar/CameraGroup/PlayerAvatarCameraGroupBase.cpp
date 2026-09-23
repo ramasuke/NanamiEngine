@@ -3,6 +3,7 @@
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/LockOn/LockOnCameraBehaviour.h"
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::PlayerAvatar
 {
@@ -85,3 +86,7 @@ namespace GameCore::PlayerAvatar
         ImGuiHelper::OnDrawInputField("lockOnCamera_", lockOnCamera_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase);
+#pragma endregion

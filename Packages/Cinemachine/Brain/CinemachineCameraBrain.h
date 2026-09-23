@@ -15,6 +15,8 @@ namespace NanamiEngine::CineMachine
                                          public LifeCycleCallback::IDebugRenderable
     {
     public:
+        ~CinemachineCameraBrain() override;
+
         void OnDrawGui() override;
         void ApplyVirtualCameraMatrix() const;
         void ApplyVirtualCameraMatrix(const CineMachineVirtualCamera& virtualCamera) const;
@@ -48,6 +50,8 @@ namespace NanamiEngine::CineMachine
         float positionLerpSpeed_secs_  = 5.0f;
         float rotationSlerpSpeed_secs_ = 5.0f;
         float fovLerpSpeed_secs_       = 5.0f;
+        // アクティブなVirtualCameraが切り替わったときに、前の姿勢から新しいカメラへ補間する時間(0で補間なし)
+        float cameraBlendDuration_secs_ = 0.5f;
         // VirtualCameraがFOVを上書きしないときに使う既定FOV
         float fov_                     = 100.0f;
         float cameraNear_              = 0.1f;
@@ -71,6 +75,14 @@ namespace NanamiEngine::CineMachine
         float smoothedFov_ = 100.0f;
         bool hasSmoothedPose_ = false;
         const CineMachineVirtualCamera* liveCamera_ = nullptr;
+
+        // NOTE: isImmediateApply_なカメラ(ThirdPerson等)へ切り替えても補間されるよう、切り替え時だけ時間ベースで補間する
+        const CineMachineVirtualCamera* blendTargetCamera_ = nullptr;
+        bool      isBlending_     = false;
+        float     blendElapsed_   = 0.0f;
+        glm::vec3 blendFromPos_   = glm::vec3(0.0f);
+        glm::quat blendFromRot_   = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+        float     blendFromFov_   = 100.0f;
 
 #pragma region Serialization Function
     public:
@@ -97,6 +109,7 @@ namespace NanamiEngine::CineMachine
             archive(CEREAL_NVP(nearClipMargin_));
             archive(CEREAL_NVP(fovLerpSpeed_secs_));
             archive(CEREAL_NVP(nearClipLayerMask_));
+            archive(CEREAL_NVP(cameraBlendDuration_secs_));
         }
 
         template <class Archive>
@@ -143,11 +156,14 @@ namespace NanamiEngine::CineMachine
             // NOTE: version 5 までの固定値 (レイヤー 0～2)
             nearClipLayerMask_ = 0b111;
             }
+            if (version >= 7)
+            {
+            archive(CEREAL_NVP(cameraBlendDuration_secs_));
+            }
             cameraBrain_ = this;
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::CinemachineCameraBrain, 6)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::ILateUpdatable, NanamiEngine::CineMachine::CinemachineCameraBrain);
+CEREAL_CLASS_VERSION(NanamiEngine::CineMachine::CinemachineCameraBrain, 7);

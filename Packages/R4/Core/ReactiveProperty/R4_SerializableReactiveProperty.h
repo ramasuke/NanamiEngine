@@ -7,7 +7,6 @@
 namespace NanamiEngine::R4
 {
     ///NOTE: cereal で保存でき、インスペクタで編集できる ReactiveProperty（R3 の SerializableReactiveProperty<T>）
-    ///      保存形式は {"value": ...}（旧 LibCore::Rx::SerializableSubject と同じなので既存データをそのまま読める）
     template <typename T>
     class SerializableReactiveProperty final : public ReactiveProperty<T>
     {

@@ -14,7 +14,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
@@ -197,7 +197,9 @@
                     "unusableAlphaRate_": 0.6000000238418579,
                     "fadeDuration_secs_": 0.25,
                     "selectPulseDuration_secs_": 0.30000001192092898,
-                    "selectGlowMaxAlpha_": 210
+                    "selectGlowMaxAlpha_": 210,
+                    "slideDuration_secs_": 0.18000000715255738,
+                    "selectPopRate_": 0.11999999731779099
                 }
             }
         }

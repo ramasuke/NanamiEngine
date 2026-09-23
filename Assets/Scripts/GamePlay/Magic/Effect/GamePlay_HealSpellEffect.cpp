@@ -6,6 +6,7 @@
 #include "../../../Core/Game/PlayerAvatar/Item/Effect/IItemEffectTarget.h"
 #include "../../Spawn/GamePlay_PrefabSpawner.h"
 #include "../GamePlay_MagicSupport.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Magic
 {
@@ -40,3 +41,8 @@ namespace GamePlay::Magic
         ImGuiHelper::OnDrawInputField("effectLifeTime_secs_", effectLifeTime_secs_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GamePlay::Magic::HealSpellEffect);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Magic::IMagicSpellEffect, GamePlay::Magic::HealSpellEffect);
+#pragma endregion

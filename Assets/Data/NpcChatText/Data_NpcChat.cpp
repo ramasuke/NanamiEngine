@@ -1,4 +1,5 @@
 ﻿#include "Data_NpcChat.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 Asset::NpcChat::NpcChat(const std::string& contentPath)
     : ScriptableObject(contentPath)
@@ -39,3 +40,9 @@ void Asset::NpcChat::OnDrawGui()
     if (ImGui::Button("Add Text"))
         npcChatTexts_.emplace_back();
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(NpcChat, FRIENDLY_NPC_CHAT_EXTENSION_LABEL, "Npc::Friendly")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::NpcChat);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::NpcChat);
+#pragma endregion

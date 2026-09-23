@@ -65,7 +65,12 @@ through `LibCore::Dxlib::Utf8ToShiftJis`. The flag lives in every `<AdditionalOp
 `CEREAL_REGISTER_TYPE` / `CEREAL_REGISTER_POLYMORPHIC_RELATION` / `ENGINE_REGISTER_COMPONENT(T)` /
 `REGISTER_ATTACK_AREA_TYPE` / `REGISTER_PLAYER_AVATAR_BASE` belong at the end of the type's `.cpp`
 (global scope), which must `#include` `Engine/Module/Serialization/Engine_Module_SerializationRegistration.h`
-so the type is bound to both archives (JSON + PortableBinary). `CEREAL_CLASS_VERSION` (and the wrappers'
+so the type is bound to both archives (JSON + PortableBinary). Those are the only archives polymorphic types are
+bound to - don't serialise polymorphic pointers through `cereal::BinaryArchive` (use PortableBinary).
+`REGISTER_ASSET` / `REGISTER_SCRIPTABLE_OBJECT` / `REGISTER_CREATABLE_ASSET_EXTENSION` go in the `.cpp` too: in a
+header they define a `static` registrar per including file (the factory's vectors got one entry per file) and
+instantiate the JSON `.meta` loader everywhere. The legacy `ENGINE_REGISTER_COMPONENT(T, V)` still compiles, but
+only use it in a `.cpp` when `V` is 0. `CEREAL_CLASS_VERSION` (and the wrappers'
 `ATTACK_AREA_CLASS_VERSION` / `PLAYER_AVATAR_BASE_CLASS_VERSION`) stays in the **header**: it must be
 visible wherever the type is serialised. A registration in a header re-instantiates the type's serialisers
 in every file that includes it — that was ~90% of the object code. Never change the spelling of a
@@ -81,6 +86,15 @@ per-project data (`ProjectConfig/Physics/LayerNames.json` + `LayerCollisionMasks
 look them up with `Physics::NameToLayer("Enemy")`, never add enum values. The exe takes `-project <dir>` (sets the
 working directory), and the game exe is built with `-p:NanamiApplicationMode=Game` (defines `NANAMI_GAME_BUILD`).
 
+## Engine headers must not expose DxLib
+
+Headers under `Engine/`, `Packages/` and `Libs/LibCore/` must not `#include "DxLib.h"` / `EffekseerForDXLib.h` or use
+DxLib types (`VECTOR`, `MATRIX`, `DX_*`, …) in their declarations - public APIs take glm types, `Color32`,
+`LibCore::Dxlib::BlendMode` (DxLib-free; values `static_assert`ed in `DxMath.cpp`) and plain `int` handles. The only
+exception is the bridge folder `Libs/LibCore/DxLib/` (`DxMath.h`: `ToDxVector`/`ToDxMatrix`/`FromDxMatrix`, `ShiftJis.h`),
+which is included **only from `.cpp` files**. Converting at the call site looks like
+`MV1SetMatrix(handle, LibCore::Dxlib::ToDxMatrix(Transform().GetWorldMatrix()))`.
+
 ## Reactive code goes through R4 (not rxcpp)
 
 rxcpp is wrapped by **`Packages/R4`** (`NanamiEngine::R4`, R3-style): `R4::Subject<T>`, `R4::Observable<T>`,
@@ -91,6 +105,28 @@ rxcpp is wrapped by **`Packages/R4`** (`NanamiEngine::R4`, R3-style): `R4::Subje
 `DestroyCancellationToken()`, which `ComponentGroup::OnDestroy` cancels after `OnDestroy()`); elsewhere keep it in a
 `Disposable` / `SerialDisposable` member and dispose it yourself. See **`Packages/R4/README.md`**.
 
+## Multiplayer: relay server & room codes
+
+Online play goes through the relay server **NanamiRelay** (separate repo `ramasuke/EnviroHunter-Server`, cloned next
+to this one; VPS `160.16.76.201:1234`). Host and clients all connect *out* to it, so no port forwarding; the game
+logic still runs on the host. The wire format is one header kept **identical in both repos** -
+`Assets/Scripts/GamePlay/Network/Relay/RelayProtocol.h` and `protocol/RelayProtocol.h` - bump `PROTOCOL_VERSION`
+(server accepts `MIN_PROTOCOL_VERSION`..`PROTOCOL_VERSION`) whenever the bytes change, and re-run the server's
+`relay_selftest` (`build_windows.bat`, then `relay_selftest.exe --port 34567` against a local `nanami-relay.exe`).
+
+A stage is entered through `JoinOrHostStageAsync` with the room the player picked in stage select
+(`SetNextStageRoom`, used once, then back to a public room):
+
+- **Public** (`RelayRoom::Mode::Public`) - share a room keyed by `(appId, stage)`; falls back to LAN discovery,
+  then to hosting alone.
+- **Create** - the relay mints a 6-digit code and answers `RoomCreated`; `CustomNetworkRunner::RelayRoomCode()`
+  then has it, and `RoomCodeHud` shows it in the corner of the stage (`OtherPlayerStatusUiScene.scene`).
+- **Join** - the code's room only. No LAN fallback; a refusal (`RoomNotFound` / `RoomFull` / `SessionMismatch`)
+  comes back as the loading screen's failure message.
+
+Relay connection settings (address / port / `appId`) are LocalPrefs, not shipped data: toolbar > LocalPrefs >
+RelayServer (`LocalPrefs/Network/RelayServer.json`).
+
 ## In-game UI design
 
 Before designing or building any in-game UI screen (sprites, prefab, View/Presenter), read
@@ -98,6 +134,15 @@ Before designing or building any in-game UI screen (sprites, prefab, View/Presen
 palette / fonts / hint-tag / wording / motion conventions taken from the existing prefabs, the texture helpers
 in `tools/art/character_select.py`, and the mock-on-a-real-screen -> `--emit` -> `*_prefab.py` workflow.
 Show the user 2-3 composited mocks before implementing a new screen.
+
+## Story & island restoration
+
+Before writing dialogue, quests, facilities or story events, read **`docs/Story.md`** (the source of truth: canon
+vs. 【未設計】 parts - don't invent the desert/rocky stories, propose them). Progress lives in
+`GameCore::Story::StoryProgress` (`StoryFlag` / `Facility`, local-only, never synced in multiplayer); append new enum
+values at the end. `GamePlay::Prop::RestorationGate` swaps a broken/restored child GameObject by `Facility`.
+NPC dialogue and the story NPCs' BTs are generated by `python tools/art/story_npcs.py` (its `CHATS` is the source of
+truth for the lines) - edit the script and re-run it instead of hand-editing `.npcChat.meta` / the trees.
 
 ## Behaviour trees & actions (Enemy + FriendlyNpc)
 
@@ -215,6 +260,7 @@ python -m tools.model convert <in.fbx> <out.mv1> --mode mesh|anim|full [--with-t
 python -m tools.model install <out.mv1> --dest Assets/Art/.../<Name>.mv1 [--with-textures] [--source <in.fbx>] [--textures <dir>]
 python -m tools.model materials <mv1>                                   # material names + diffuse/emissive
 python -m tools.model set-emissive <mv1> --emissive [MATERIAL=]R,G,B ... [--out <path>]
+python -m tools.model set-culling <mv1> --mode none|left|right [--out <path>]      # none = double-sided meshes
 python tools/model/selftest.py              # .meta/.mv1-codec gate; GUI-automation stage is best-effort/skips cleanly
 ```
 

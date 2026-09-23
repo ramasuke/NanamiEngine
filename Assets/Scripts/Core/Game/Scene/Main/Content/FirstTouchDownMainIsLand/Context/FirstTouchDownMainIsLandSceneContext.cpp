@@ -1,4 +1,5 @@
 ﻿#include "FirstTouchDownMainIsLandSceneContext.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Scene
 {
@@ -46,3 +47,8 @@ namespace GameCore::Scene
         ImGuiHelper::OnDrawInputField("swordManCameraGroupPrefab_", swordManCameraGroupPrefab_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Scene::FirstTouchDownMainIsLandSceneContext);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::SceneContextBase, GameCore::Scene::FirstTouchDownMainIsLandSceneContext);
+#pragma endregion

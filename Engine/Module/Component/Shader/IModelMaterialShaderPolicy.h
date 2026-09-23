@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <string>
-#include <DxLib.h>
+
+#include "../../../../Libs/LibCore/DxLib/BlendMode.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -10,7 +11,7 @@ namespace NanamiEngine::Module::Component
         int  vsHandle       = -1;
         int  psHandle       = -1;
         int  cbHandle       = -1;    // b4に積む定数バッファ。ポリシー側が生成・更新済みであること
-        int  blendMode      = DX_BLENDMODE_NOBLEND;
+        LibCore::Dxlib::BlendMode blendMode = LibCore::Dxlib::BlendMode::NoBlend;
         int  blendParam     = 0;
         bool disableZWrite  = false; // DxLibのZ書き込み制御はモデル単位しか無いため、1つでもtrueならモデル全体がOFFになる
         bool disableCulling = false; // この材質を使うメッシュを両面描画にする

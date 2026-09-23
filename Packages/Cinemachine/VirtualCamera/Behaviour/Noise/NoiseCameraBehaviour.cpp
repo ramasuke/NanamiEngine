@@ -5,6 +5,7 @@
 #include "../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../Brain/CinemachineCameraBrain.h"
+#include "../../../../../Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::CineMachine::Behaviour
 {
@@ -67,11 +68,15 @@ namespace NanamiEngine::CineMachine::Behaviour
         const glm::vec3 posOffset = gain * positionAmplitude_ * posNoise;
         const glm::vec3 angleRad  = gain * glm::radians(rotationAmplitude_deg_) * rotNoise;
 
-        const glm::vec3 brainPos = CinemachineCameraBrain::Instance()->Transform().GetWorldPos();
-        const glm::quat brainRot = CinemachineCameraBrain::Instance()->Transform().GetWorldRot();
+        auto* brain = CinemachineCameraBrain::Instance();
+        if (!brain)
+            return;
 
-        CinemachineCameraBrain::Instance()->Transform().SetWorldPos(brainPos + brainRot * posOffset);
-        CinemachineCameraBrain::Instance()->Transform().SetWorldRot(brainRot * glm::quat(angleRad));
+        const glm::vec3 brainPos = brain->Transform().GetWorldPos();
+        const glm::quat brainRot = brain->Transform().GetWorldRot();
+
+        brain->Transform().SetWorldPos(brainPos + brainRot * posOffset);
+        brain->Transform().SetWorldRot(brainRot * glm::quat(angleRad));
     }
 
     void NoiseCameraBehaviour::OnDrawGui()
@@ -86,3 +91,8 @@ namespace NanamiEngine::CineMachine::Behaviour
         ImGuiHelper::OnDrawInputField("seed_",                  seed_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::NoiseCameraBehaviour);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::NoiseCameraBehaviour);
+#pragma endregion

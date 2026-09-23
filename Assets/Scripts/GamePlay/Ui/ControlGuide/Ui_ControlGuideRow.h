@@ -98,4 +98,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::ControlGuideRow, 2)
+CEREAL_CLASS_VERSION(GamePlay::Ui::ControlGuideRow, 2);

@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 3,
+                "cereal_class_version": 5,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -42,7 +42,7 @@
                             "data": {
                                 "cereal_class_version": 0,
                                 "value0": {
-                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                    "value_": "D5A5CA7B-1928-44E0-898F-56202E93C026"
                                 }
                             }
                         }
@@ -83,7 +83,25 @@
                 "descriptionLines_": [
                     "体力を大きく回復する。",
                     "狩りの合間にひと口。"
-                ]
+                ],
+                "useParticle_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "13C3EC5E-EC26-49D6-B71A-FEAADE1E5D54"
+                                }
+                            }
+                        }
+                    }
+                },
+                "useMotion_": 1,
+                "useEffectTime_secs_": 1.47,
+                "useTotalDuration_secs_": 2.7
             }
         }
     }

@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "DxLib.h"
 #include "../MainWindowBase.h"
 #include "../../../Editor/Camera/Free/Editor3DCamera.h"
 #include "../Factory/MainWindowFactory.h"
@@ -32,7 +31,6 @@ namespace NanamiEngine::Core::MainWindow
         void ChangeMainScene(const std::shared_ptr<Scene::Scene>& scene);
         [[nodiscard]] Scene::Scene& MainScene() const { return *mainScene_.lock(); }
         [[nodiscard]] std::shared_ptr<Scene::Scene> CatchScene(const Guid& guid) const;
-        [[nodiscard]] VECTOR    GetCameraDxPosition      () const { return {editorCamera_.GetPosition().x, editorCamera_.GetPosition().y, editorCamera_.GetPosition().z}; }
         [[nodiscard]] glm::vec3 GetCameraPosition        () const { return editorCamera_.GetPosition(); }
         [[nodiscard]] glm::quat GetCameraRotation        () const { return editorCamera_.GetRotataion       (); }
         [[nodiscard]] glm::mat4 GetCameraViewMatrix      () const { return editorCamera_.GetViewMatrix      (); }

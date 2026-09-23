@@ -33,5 +33,3 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     REGISTER_ENEMY_ACTION_WITH_NAME(PurposeCamera, "Camera::PurposeCamera")
 }
 CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::PurposeCamera, 1)
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::PurposeCamera)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::PurposeCamera)

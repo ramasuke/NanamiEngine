@@ -1,6 +1,7 @@
 ﻿#include "Data_EventNotice.h"
 
 #include <cstdio>
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -75,3 +76,9 @@ namespace NanamiEngine::Module::Asset
         LibCore::ImGuiHelper::OnDrawInputField("bannerSprite_", bannerSprite_);
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(EventNotice, EVENT_NOTICE_EXTENSION_LABEL, "EventBoard")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::EventNotice);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::EventNotice);
+#pragma endregion

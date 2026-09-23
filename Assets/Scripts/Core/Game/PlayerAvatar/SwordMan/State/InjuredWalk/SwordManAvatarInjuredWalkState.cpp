@@ -27,8 +27,8 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         TryEmitFootstep(footstep_, Resources().WalkFootstepSounds());
 
         UpdateLockOn();
-        UpdateItemPouchInput();
-        UpdateTransitions();
+        if (!UpdateItemPouchInput())
+            UpdateTransitions();
     }
 
     void SwordManAvatarInjuredWalkState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const

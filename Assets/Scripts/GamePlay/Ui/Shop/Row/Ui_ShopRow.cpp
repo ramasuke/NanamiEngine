@@ -3,6 +3,7 @@
 #include <string>
 
 #include "../../Format/Ui_MoneyFormat.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -52,3 +53,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("unaffordablePriceColor_", unaffordablePriceColor_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::ShopRow);
+#pragma endregion

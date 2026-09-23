@@ -10,6 +10,7 @@
 #include "Page/Ui_EventBoard_EventPage.h"
 #include "Page/Ui_EventBoard_NoticePage.h"
 #include "Page/Ui_EventBoard_QuestPage.h"
+#include "Page/Ui_EventBoard_RestorationPage.h"
 #include "Tab/Ui_EventBoard_Tab.h"
 
 namespace GamePlay::Ui
@@ -20,14 +21,23 @@ namespace GamePlay::Ui
         Quest = 0,
         Event,
         Notice,
+        Restoration,
     };
 
-    constexpr size_t EVENT_BOARD_TAB_COUNT = 3;
+    constexpr size_t EVENT_BOARD_TAB_COUNT = 4;
+
+    /** @brief 操作ガイドの A に何を出すか */
+    enum class EventBoardConfirmHint
+    {
+        None,
+        Accept,
+        Restore,
+    };
 
     [[nodiscard]] std::string_view ToEventBoardTabLabel(EventBoardTabType type);
 
     /**
-     * @brief 掲示板の見た目のまとめ役。上に木札の見出しを吊り、下に選んだ見出しの頁(依頼 / 催し / お知らせ)だけを出す。
+     * @brief 掲示板の見た目のまとめ役。上に木札の見出しを吊り、下に選んだ見出しの頁(依頼 / 催し / お知らせ / 復興)だけを出す。
      * 見出しと頁はそれぞれ自分の prefab を持ち、ここで生成する。
      */
     class EventBoardUi final : public Component::ComponentBase
@@ -39,15 +49,16 @@ namespace GamePlay::Ui
         [[nodiscard]] std::shared_ptr<EventBoardQuestPage>  QuestPage () const { return questPage_ .lock(); }
         [[nodiscard]] std::shared_ptr<EventBoardEventPage>  EventPage () const { return eventPage_ .lock(); }
         [[nodiscard]] std::shared_ptr<EventBoardNoticePage> NoticePage() const { return noticePage_.lock(); }
+        [[nodiscard]] std::shared_ptr<EventBoardRestorationPage> RestorationPage() const { return restorationPage_.lock(); }
         [[nodiscard]] std::shared_ptr<EventBoardTab>        Tab(EventBoardTabType type) const;
 
         /**
-         * @brief 選んだ見出しを垂らし、その頁だけを出す。
+         * @brief 選んだ見出しを垂らし、その頁だけを出す。復興の頁では島を見せるため暗幕を外す。
          * 頁を出し直すと子の部品が全部有効に戻るので、呼んだ側はこのあと頁を Bind し直すこと
          */
         void ShowTab(EventBoardTabType type) const;
-        /** @brief 操作ガイドに「A 受注する」を出すか */
-        void ShowAcceptHint(bool canAccept) const;
+        /** @brief 操作ガイドに「A 受注する」「A 直す」のどちらかを出すか、A を出さないか */
+        void ShowConfirmHint(EventBoardConfirmHint hint) const;
 
     private:
         template<typename PageT>
@@ -63,11 +74,15 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(GameObject::IGameObject) pagesRoot_;
         [[serialize(0)]] FIELD(GameObject::IGameObject) hintsWithAccept_;
         [[serialize(0)]] FIELD(GameObject::IGameObject) hintsWithoutAccept_;
+        [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) restorationPagePrefab_;
+        [[serialize(1)]] FIELD(GameObject::IGameObject) hintsWithRestore_;
+        [[serialize(1)]] FIELD(GameObject::IGameObject) veil_;
 
         std::array<std::weak_ptr<EventBoardTab>, EVENT_BOARD_TAB_COUNT> tabs_;
         std::weak_ptr<EventBoardQuestPage>  questPage_;
         std::weak_ptr<EventBoardEventPage>  eventPage_;
         std::weak_ptr<EventBoardNoticePage> noticePage_;
+        std::weak_ptr<EventBoardRestorationPage> restorationPage_;
         bool isBuilt_ = false;
 
 #pragma region Serialization Function
@@ -87,6 +102,9 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(pagesRoot_));
             archive(CEREAL_NVP(hintsWithAccept_));
             archive(CEREAL_NVP(hintsWithoutAccept_));
+            archive(CEREAL_NVP(restorationPagePrefab_));
+            archive(CEREAL_NVP(hintsWithRestore_));
+            archive(CEREAL_NVP(veil_));
         }
 
         template<typename Archive>
@@ -102,9 +120,12 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(pagesRoot_));
             if (version >= 0) archive(CEREAL_NVP(hintsWithAccept_));
             if (version >= 0) archive(CEREAL_NVP(hintsWithoutAccept_));
+            if (version >= 1) archive(CEREAL_NVP(restorationPagePrefab_));
+            if (version >= 1) archive(CEREAL_NVP(hintsWithRestore_));
+            if (version >= 1) archive(CEREAL_NVP(veil_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::EventBoardUi, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardUi, 1);

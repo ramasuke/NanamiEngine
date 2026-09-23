@@ -5,6 +5,8 @@
 
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -30,16 +32,14 @@ namespace GamePlay::Ui
         constexpr float CHATTING_BREATH_SCALE       = 0.05f;
         constexpr float CHATTING_BREATH_PERIOD_SECS = 1.6f;
 
-        float EaseOutBack(const float t)
+        void PlayPop(LibCore::Tween::TweenPlayer<float>& popScale, LibCore::Tween::TweenPlayer<float>& popAlpha)
         {
-            constexpr float overshoot = 1.70158f;
-            const float x = t - 1.0f;
-            return x * x * ((overshoot + 1.0f) * x + overshoot) + 1.0f;
-        }
-
-        float EaseOutQuad(const float t)
-        {
-            return 1.0f - (1.0f - t) * (1.0f - t);
+            popScale.Play(tweeny::from(0.0f).to(1.0f)
+                .during(LibCore::Tween::Ms(POP_DURATION_SECS))
+                .via(LibCore::Tween::Ease(LibCore::EaseType::OutBack)));
+            popAlpha.Play(tweeny::from(0.0f).to(1.0f)
+                .during(LibCore::Tween::Ms(POP_DURATION_SECS))
+                .via(LibCore::Tween::Ease(LibCore::EaseType::OutQuad)));
         }
     }
 
@@ -50,18 +50,18 @@ namespace GamePlay::Ui
     {
         isShow_ = true;
 
-        if (chattableIcon_) chattableIcon_->SetEnable(chattableIcon);
-        if (chattingIcon_)  chattingIcon_ ->SetEnable(chattingIcon);
-        if (surpriseIcon_)  surpriseIcon_ ->SetEnable(surpriseIcon);
+        SetIconEnable(chattableIcon_.get().get(), savedChattable_, chattableIcon);
+        SetIconEnable(chattingIcon_ .get().get(), savedChatting_ , chattingIcon);
+        SetIconEnable(surpriseIcon_ .get().get(), savedSurprise_ , surpriseIcon);
     }
 
     void BillBoardNpcChatIcon::Hide()
     {
         isShow_ = false;
 
-        if (chattableIcon_) chattableIcon_->SetEnable(false);
-        if (chattingIcon_)  chattingIcon_ ->SetEnable(false);
-        if (surpriseIcon_)  surpriseIcon_ ->SetEnable(false);
+        SetIconEnable(chattableIcon_.get().get(), savedChattable_, false);
+        SetIconEnable(chattingIcon_ .get().get(), savedChatting_ , false);
+        SetIconEnable(surpriseIcon_ .get().get(), savedSurprise_ , false);
     }
 
     void BillBoardNpcChatIcon::OnChattable()
@@ -69,8 +69,8 @@ namespace GamePlay::Ui
         if (!isShow_)
             return;
 
-        if (chattableIcon_) chattableIcon_->SetEnable(false);
-        if (chattingIcon_)  chattingIcon_ ->SetEnable(true);
+        SetIconEnable(chattableIcon_.get().get(), savedChattable_, false);
+        SetIconEnable(chattingIcon_ .get().get(), savedChatting_ , true);
     }
 
     void BillBoardNpcChatIcon::OnExitChattable()
@@ -78,8 +78,45 @@ namespace GamePlay::Ui
         if (!isShow_)
             return;
 
-        if (chattableIcon_) chattableIcon_->SetEnable(true);
+        SetIconEnable(chattableIcon_.get().get(), savedChattable_, true);
+        SetIconEnable(chattingIcon_ .get().get(), savedChatting_ , false);
+    }
+
+    void BillBoardNpcChatIcon::BeginReactionSurprise()
+    {
+        if (isReactionSurprise_)
+            return;
+
+        savedChattable_ = chattableIcon_ && chattableIcon_->IsEnable();
+        savedChatting_  = chattingIcon_  && chattingIcon_ ->IsEnable();
+        savedSurprise_  = surpriseIcon_  && surpriseIcon_ ->IsEnable();
+        isReactionSurprise_ = true;
+
+        if (chattableIcon_) chattableIcon_->SetEnable(false);
         if (chattingIcon_)  chattingIcon_ ->SetEnable(false);
+        if (surpriseIcon_)  surpriseIcon_ ->SetEnable(true);
+    }
+
+    void BillBoardNpcChatIcon::EndReactionSurprise()
+    {
+        if (!isReactionSurprise_)
+            return;
+
+        isReactionSurprise_ = false;
+        if (chattableIcon_) chattableIcon_->SetEnable(savedChattable_);
+        if (chattingIcon_)  chattingIcon_ ->SetEnable(savedChatting_);
+        if (surpriseIcon_)  surpriseIcon_ ->SetEnable(savedSurprise_);
+    }
+
+    void BillBoardNpcChatIcon::SetIconEnable(GameObject::IGameObject* icon, bool& reactionSaved, const bool enable) const
+    {
+        if (!icon)
+            return;
+
+        if (isReactionSurprise_)
+            reactionSaved = enable;
+        else
+            icon->SetEnable(enable);
     }
 
     void BillBoardNpcChatIcon::OnUpdate()
@@ -115,6 +152,9 @@ namespace GamePlay::Ui
             // シーン読み込み時点で表示済みのアイコンはポップさせない
             state.shownTime_secs = POP_DURATION_SECS;
             state.isCaptured     = true;
+            PlayPop(state.popScale, state.popAlpha);
+            state.popScale.Complete();
+            state.popAlpha.Complete();
         }
 
         const auto billboard = state.billboard.lock();
@@ -125,7 +165,10 @@ namespace GamePlay::Ui
         // 有効/無効は呼び出し元を問わず毎フレームの変化で検知する
         const bool isEnabled = billboard->IsEnable();
         if (isEnabled && !state.wasEnabled)
+        {
             state.shownTime_secs = 0.0f;
+            PlayPop(state.popScale, state.popAlpha);
+        }
         state.wasEnabled = isEnabled;
 
         if (!isEnabled)
@@ -137,12 +180,14 @@ namespace GamePlay::Ui
             return;
         }
 
-        state.shownTime_secs += Time::DeltaTime();
+        const float deltaTime = Time::DeltaTime();
+        state.shownTime_secs += deltaTime;
+        state.popScale.Tick(deltaTime);
+        state.popAlpha.Tick(deltaTime);
         const float time = state.shownTime_secs;
-        const float popT = std::clamp(time / POP_DURATION_SECS, 0.0f, 1.0f);
 
         glm::vec3 offset    = {};
-        float     scaleRate = EaseOutBack(popT);
+        float     scaleRate = state.popScale.Value();
         float     angle     = state.baseAngle;
         // 枠を走る光の進み具合 (0..1)。負なら光らせない
         float     sweepT    = -1.0f;
@@ -177,7 +222,7 @@ namespace GamePlay::Ui
         }
         }
 
-        const float alpha = EaseOutQuad(popT);
+        const float alpha = state.popAlpha.Value();
 
         object->Transform().SetLocalPos  (state.basePos + offset);
         object->Transform().SetLocalScale(state.baseScale * std::max(scaleRate, MIN_SCALE_RATE));
@@ -205,3 +250,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("surpriseRimGlow_", surpriseRimGlow_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::BillBoardNpcChatIcon);
+#pragma endregion

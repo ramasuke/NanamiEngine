@@ -1,6 +1,7 @@
 ﻿#include "HorizontalLayoutGroup.h"
 #include "../../GameObject/Transform/Transform.h"
 #include "../../GameObject/Interface/IGameObject.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -42,3 +43,7 @@ namespace NanamiEngine::Module::NanamiUi
         ImGuiHelper::OnDrawInputField("reverseArrangement_", reverseArrangement_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::HorizontalLayoutGroup);
+#pragma endregion

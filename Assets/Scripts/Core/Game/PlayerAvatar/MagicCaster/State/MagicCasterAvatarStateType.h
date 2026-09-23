@@ -15,5 +15,9 @@ namespace GameCore::PlayerAvatar::MagicCaster
         Hurt = 7,
         Death = 8,
         Chatting = 9,
+        AvoidRolling = 10,
+        UseItemDrink = 11,
+        UseItemEat = 12,
+        UseItemPlace = 13,
     };
 }

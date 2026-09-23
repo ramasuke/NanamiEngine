@@ -21,15 +21,24 @@ namespace NanamiEngine::Module::Asset
         explicit SwordManAvatarResource(const std::string& contentPath = "");
         [[nodiscard]] PrefabGameObjectFile& NormalAttackParticlePrefab() const { return *normalAttackParticlePrefab_.get(); }
         [[nodiscard]] PrefabGameObjectFile& DealDamageTextBillBoardPrefab() const { return *dealDamageTextBillBoardPrefab_.get(); }
-        /** 攻撃が空振りしたときの風切り音。ダッシュ/ため/ジャンプ攻撃と、段ぶんの音がないコンボで鳴る */
+        /** 攻撃が空振りしたときの風切り音。ため攻撃と、専用の音がないダッシュ/ジャンプ攻撃・段ぶんの音がないコンボで鳴る */
         [[nodiscard]] SoundFile& AttackWhiffSound() const { return *attackWhiffSound_.get(); }
-        /** 攻撃が敵に当たったときの打撃音。ダッシュ/ため/ジャンプ攻撃と、段ぶんの音がないコンボで鳴る */
+        /** 攻撃が敵に当たったときの打撃音。ため攻撃と、専用の音がないダッシュ/ジャンプ攻撃・段ぶんの音がないコンボで鳴る */
         [[nodiscard]] SoundFile& AttackHitSound  () const { return *attackHitSound_  .get(); }
         [[nodiscard]] bool HasAttackHitSound() const { return static_cast<bool>(attackHitSound_); }
         /** 通常攻撃コンボの段ごとの空振り音。段が進むほど大きく振る想定で、足りない段は attackWhiffSound_ を鳴らす */
         [[nodiscard]] const std::vector<FIELD(SoundFile)>& ComboNormalAttackWhiffSounds() const { return comboNormalAttackWhiffSounds_; }
         /** 通常攻撃コンボの段ごとの打撃音。段が進むほど重く長い音を入れる想定で、足りない段は attackHitSound_ を鳴らす */
         [[nodiscard]] const std::vector<FIELD(SoundFile)>& ComboNormalAttackHitSounds() const { return comboNormalAttackHitSounds_; }
+        /** ダッシュ攻撃の空振り/ヒット音。未設定なら attackWhiffSound_ / attackHitSound_ を鳴らす */
+        [[nodiscard]] const FIELD(SoundFile)& DashAttackWhiffSound() const { return dashAttackWhiffSound_; }
+        [[nodiscard]] const FIELD(SoundFile)& DashAttackHitSound  () const { return dashAttackHitSound_;   }
+        /** ジャンプ攻撃の着地の叩きつけの空振り/ヒット音。未設定なら attackWhiffSound_ / attackHitSound_ を鳴らす */
+        [[nodiscard]] const FIELD(SoundFile)& JumpAttackWhiffSound() const { return jumpAttackWhiffSound_; }
+        [[nodiscard]] const FIELD(SoundFile)& JumpAttackHitSound  () const { return jumpAttackHitSound_;   }
+        /** ジャンプ攻撃の振りかぶりを終えて急降下を始めた瞬間に1回鳴らす */
+        [[nodiscard]] SoundFile& JumpAttackPlungeSound() const { return *jumpAttackPlungeSound_.get(); }
+        [[nodiscard]] bool HasJumpAttackPlungeSound() const { return static_cast<bool>(jumpAttackPlungeSound_); }
         /** ステージ開始時に持っているアイテム。ポーチはセーブに乗せず毎回ここから作り直す */
         [[nodiscard]] const std::vector<ItemStack>& InitialItems() const { return initialItems_; }
         [[nodiscard]] SoundFile& AvoidRollingSound    () const { return *avoidRollingSound_    .get(); }
@@ -145,6 +154,11 @@ namespace NanamiEngine::Module::Asset
         [[serialize(21)]] float                         slopeCheckRadius_            = 3.5f;
         [[serialize(21)]] float                         slopeCheckUpOffset_          = 0.0f;
         [[serialize(21)]] float                         slopeCheckDistance_          = 2.5f;
+        [[serialize(22)]] FIELD(SoundFile)              dashAttackWhiffSound_;
+        [[serialize(22)]] FIELD(SoundFile)              dashAttackHitSound_;
+        [[serialize(22)]] FIELD(SoundFile)              jumpAttackWhiffSound_;
+        [[serialize(22)]] FIELD(SoundFile)              jumpAttackHitSound_;
+        [[serialize(22)]] FIELD(SoundFile)              jumpAttackPlungeSound_;
 
         
 #pragma region Serialization Function
@@ -219,6 +233,11 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(slopeCheckRadius_));
             archive(CEREAL_NVP(slopeCheckUpOffset_));
             archive(CEREAL_NVP(slopeCheckDistance_));
+            archive(CEREAL_NVP(dashAttackWhiffSound_));
+            archive(CEREAL_NVP(dashAttackHitSound_));
+            archive(CEREAL_NVP(jumpAttackWhiffSound_));
+            archive(CEREAL_NVP(jumpAttackHitSound_));
+            archive(CEREAL_NVP(jumpAttackPlungeSound_));
         }
 
         template<class Archive>
@@ -354,14 +373,20 @@ namespace NanamiEngine::Module::Asset
                 archive(CEREAL_NVP(slopeCheckUpOffset_));
                 archive(CEREAL_NVP(slopeCheckDistance_));
             }
+
+            if (version >= 22)
+            {
+                archive(CEREAL_NVP(dashAttackWhiffSound_));
+                archive(CEREAL_NVP(dashAttackHitSound_));
+                archive(CEREAL_NVP(jumpAttackWhiffSound_));
+                archive(CEREAL_NVP(jumpAttackHitSound_));
+                archive(CEREAL_NVP(jumpAttackPlungeSound_));
+            }
         }
 #pragma endregion
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(SwordManAvatarResource, SWORD_MAN_RESOURCE_EXTENSION_LABEL, "Player::SwordMan")
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 21);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManAvatarResource);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManAvatarResource);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 22);
 #pragma endregion

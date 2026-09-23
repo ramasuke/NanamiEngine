@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include "DxLib.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -64,3 +65,7 @@ namespace NanamiEngine::Module::NanamiUi
         ImGui::Text("screenHandle_: %d (%dx%d)", screenHandle_, screenWidth_, screenHeight_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::ScreenColorGradeRenderer);
+#pragma endregion

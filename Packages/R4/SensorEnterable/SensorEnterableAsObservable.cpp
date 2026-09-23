@@ -1,4 +1,5 @@
 ﻿#include "SensorEnterableAsObservable.h"
+#include "../../../Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 void R4::SensorEnterableAsObservable::OnTriggerEnter(
     const Physics::Manifold& contactManifold,
@@ -11,3 +12,7 @@ R4::Observable<R4::SensorEnterContext> R4::SensorEnterableAsObservable::OnAction
 {
     return onAction_.AsObservable();
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::R4::SensorEnterableAsObservable);
+#pragma endregion

@@ -149,7 +149,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483654,
                                 "data": {
-                                    "cereal_class_version": 2,
+                                    "cereal_class_version": 3,
                                     "value0": {
                                         "guid_": {
                                             "value_": "E5AA55ED-4D90-4A94-BBB0-5C9E2C3E27D7"
@@ -160,9 +160,6 @@
                                         "cereal_class_version": 0
                                     },
                                     "value2": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value3": {
                                         "cereal_class_version": 0
                                     },
                                     "followTarget_": {
@@ -194,7 +191,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483656,
                                 "data": {
-                                    "cereal_class_version": 1,
+                                    "cereal_class_version": 2,
                                     "value0": {
                                         "guid_": {
                                             "value_": "4CDB4569-573D-47A3-99F9-F47F284E0372"
@@ -206,7 +203,6 @@
                                     },
                                     "value2": {},
                                     "value3": {},
-                                    "value4": {},
                                     "target_": {
                                         "value0": {
                                             "polymorphic_id": 1073741824,
@@ -234,7 +230,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483658,
                                 "data": {
-                                    "cereal_class_version": 6,
+                                    "cereal_class_version": 7,
                                     "value0": {
                                         "guid_": {
                                             "value_": "D547A90B-F987-4D0E-A9E5-CDEA8F446461"
@@ -243,11 +239,10 @@
                                     },
                                     "value1": {},
                                     "value2": {},
-                                    "value3": {},
-                                    "minPitch_": -1.2,
-                                    "maxPitch_": 0.6,
+                                    "minPitch_": -1.2000000476837159,
+                                    "maxPitch_": 0.6000000238418579,
                                     "mouseSensitivity_": 0.004999999888241291,
-                                    "distance_": 23.0,
+                                    "distance_": 27.0,
                                     "target_": {
                                         "value0": {
                                             "polymorphic_id": 1073741824,
@@ -454,7 +449,6 @@
                                     },
                                     "value1": {},
                                     "value2": {},
-                                    "value3": {},
                                     "followTarget_": {
                                         "value0": {
                                             "polymorphic_id": 1073741824,
@@ -490,7 +484,6 @@
                                     "value1": {},
                                     "value2": {},
                                     "value3": {},
-                                    "value4": {},
                                     "target_": {
                                         "value0": {
                                             "polymorphic_id": 1073741824,
@@ -518,7 +511,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483670,
                                 "data": {
-                                    "cereal_class_version": 2,
+                                    "cereal_class_version": 3,
                                     "value0": {
                                         "guid_": {
                                             "value_": "4B144714-105C-4960-92AA-0729081DB65E"
@@ -527,7 +520,6 @@
                                     },
                                     "value1": {},
                                     "value2": {},
-                                    "value3": {},
                                     "isImmediateApply_": false,
                                     "collisionBuffer_": 0.30000001192092898,
                                     "followTarget_": {
@@ -571,7 +563,7 @@
                                     },
                                     "collisionRadius_": 2.0,
                                     "pitchAngle_deg_": 15.0,
-                                    "minDistance_": 8.0,
+                                    "minDistance_": 27.0,
                                     "maxDistance_": 45.0,
                                     "framingMargin_": 0.10000000149011612,
                                     "fallbackBoundsRadius_": 1.0
@@ -684,7 +676,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483676,
                                 "data": {
-                                    "cereal_class_version": 0,
+                                    "cereal_class_version": 1,
                                     "value0": {
                                         "guid_": {
                                             "value_": "87589E16-A3B3-448F-B41D-7637E60802FF"
@@ -733,15 +725,18 @@
                                             }
                                         }
                                     },
-                                    "reticleScale_": 0.3799999952316284,
-                                    "candidateScale_": 0.4399999976158142,
+                                    "reticleScale_": 0.6,
+                                    "candidateScale_": 0.7,
                                     "candidateAlpha_": 0.6000000238418579,
                                     "ringRotateSpeed_": 0.25,
                                     "lockedBreathScale_": 0.004999999888241291,
                                     "engageDuration_secs_": 0.11999999731779099,
                                     "engageStartScaleRate_": 2.0,
                                     "releaseDuration_secs_": 0.2199999988079071,
-                                    "releaseEndScaleRate_": 1.5
+                                    "releaseEndScaleRate_": 1.5,
+                                    "referenceDistance_": 60.0,
+                                    "minDistanceScale_": 0.15000000596046448,
+                                    "maxDistanceScale_": 1.600000023841858
                                 }
                             }
                         }

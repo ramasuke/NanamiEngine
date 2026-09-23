@@ -3,6 +3,7 @@
 #include "../../../Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../GameObject/Transform/Transform.h"
 #include "../../../../Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -51,3 +52,7 @@ namespace NanamiEngine::Module::Component
         ImGuiHelper::OnDrawInputField("followZ_", followZ_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::CameraFollowTransform);
+#pragma endregion

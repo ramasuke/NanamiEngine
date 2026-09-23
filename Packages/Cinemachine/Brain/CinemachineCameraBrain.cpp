@@ -10,8 +10,16 @@
 #include "../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "../../../Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
+#include "../../../Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 CineMachine::CinemachineCameraBrain* CineMachine::CinemachineCameraBrain::cameraBrain_ = nullptr;
+
+CineMachine::CinemachineCameraBrain::~CinemachineCameraBrain()
+{
+    // NOTE: RemoveComponent は OnDestroy を呼ばないので、デストラクタでも解除する
+    if (cameraBrain_ == this)
+        cameraBrain_ = nullptr;
+}
 
 void CineMachine::CinemachineCameraBrain::OnAwake()
 {
@@ -54,7 +62,37 @@ void CineMachine::CinemachineCameraBrain::OnLateUpdate()
         hasSmoothedPose_ = true;
     }
 
-    if (currentVirtualCamera_->WantsImmediateApply())
+    const float dt = Time::DeltaTime();
+
+    // アクティブなVirtualCameraが切り替わったら、その時点の姿勢から新しいカメラへ補間を始める。
+    // 最初のカメラ(シーン開始時)は補間しない
+    const CineMachineVirtualCamera* targetCamera = currentVirtualCamera_.get().get();
+    if (targetCamera != blendTargetCamera_)
+    {
+        if (blendTargetCamera_ != nullptr && cameraBlendDuration_secs_ > 0.0f)
+        {
+            isBlending_   = true;
+            blendElapsed_ = 0.0f;
+            blendFromPos_ = smoothedPos_;
+            blendFromRot_ = smoothedRot_;
+            blendFromFov_ = smoothedFov_;
+        }
+        blendTargetCamera_ = targetCamera;
+    }
+
+    if (isBlending_)
+    {
+        blendElapsed_ += dt;
+        const float rate = std::clamp(blendElapsed_ / cameraBlendDuration_secs_, 0.0f, 1.0f);
+        const float t    = rate * rate * (3.0f - 2.0f * rate);
+        // 行き先は毎フレームのtargetなので、移動中のカメラにも追従したまま合流する
+        smoothedPos_ = glm::mix(blendFromPos_, targetPos, t);
+        smoothedRot_ = glm::slerp(blendFromRot_, targetRot, t);
+        smoothedFov_ = glm::mix(blendFromFov_, targetFov, t);
+        if (rate >= 1.0f)
+            isBlending_ = false;
+    }
+    else if (currentVirtualCamera_->WantsImmediateApply())
     {
         // lerp/slerpを完全にスキップしてVirtualCameraのTransformを即時適用する。
         smoothedPos_ = targetPos;
@@ -64,7 +102,6 @@ void CineMachine::CinemachineCameraBrain::OnLateUpdate()
     else
     {
         // 補完の開始点は揺れを含まないsmoothedPos_/smoothedRot_にする。
-        const float dt = Time::DeltaTime();
         smoothedPos_ = glm::mix(smoothedPos_, targetPos, 1.0f - std::exp(-positionLerpSpeed_secs_ * dt));
         smoothedRot_ = glm::slerp(smoothedRot_, targetRot, 1.0f - std::exp(-rotationSlerpSpeed_secs_ * dt));
         smoothedFov_ = glm::mix(smoothedFov_, targetFov, 1.0f - std::exp(-fovLerpSpeed_secs_ * dt));
@@ -229,6 +266,7 @@ void CineMachine::CinemachineCameraBrain::OnDrawGui()
     ImGuiHelper::OnDrawInputField("positionLerpSpeed_secs_"  , positionLerpSpeed_secs_   );
     ImGuiHelper::OnDrawInputField("rotationSlerpSpeed_secs_" , rotationSlerpSpeed_secs_  );
     ImGuiHelper::OnDrawInputField("fovLerpSpeed_secs_"       , fovLerpSpeed_secs_        );
+    ImGuiHelper::OnDrawInputField("cameraBlendDuration_secs_", cameraBlendDuration_secs_ );
     ImGuiHelper::OnDrawInputField("fov_ (default)"           , fov_                      );
     ImGuiHelper::OnDrawInputField("cameraNear_"              , cameraNear_               );
     ImGuiHelper::OnDrawInputField("cameraFar_"               , cameraFar_                );
@@ -257,17 +295,27 @@ void CineMachine::CinemachineCameraBrain::SnapToVirtualCamera(const CineMachineV
     smoothedRot_ = virtualCamera.Transform().GetWorldRot();
     smoothedFov_ = virtualCamera.Fov();
     hasSmoothedPose_ = true;
+    // スナップ先への切り替え補間は不要
+    blendTargetCamera_ = &virtualCamera;
+    isBlending_ = false;
     Transform().SetWorldPos(smoothedPos_);
     Transform().SetWorldRot(smoothedRot_);
 }
 
 void CineMachine::CinemachineCameraBrain::SubscribeVirtualCamera(const std::weak_ptr<CineMachineVirtualCamera>& virtualCamera)
 {
-    cameraBrain_->virtualCameras_.emplace_back(virtualCamera);
     const auto camera = virtualCamera.lock();
+    if (cameraBrain_ == nullptr || !camera)
+        return;
+
+    cameraBrain_->virtualCameras_.emplace_back(virtualCamera);
     camera->Priority().Subscribe(
             [](int)
             {
+                // NOTE: Brain が先に破棄された後で Priority が変わることがある
+                if (cameraBrain_ == nullptr || cameraBrain_->virtualCameras_.empty())
+                    return;
+
                 const auto highestPriorityVirtualCamera
                     = *std::ranges::max_element(cameraBrain_->virtualCameras_,
                             [](auto& a, auto& b)
@@ -309,3 +357,8 @@ void CineMachine::CinemachineCameraBrain::UnSubscribeVirtualCamera(
                      < b->Priority().CurrentValue();
             });
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::CinemachineCameraBrain);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::ILateUpdatable, NanamiEngine::CineMachine::CinemachineCameraBrain);
+#pragma endregion

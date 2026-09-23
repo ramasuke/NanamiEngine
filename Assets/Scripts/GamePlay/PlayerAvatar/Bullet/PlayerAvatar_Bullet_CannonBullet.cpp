@@ -6,6 +6,7 @@
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../Core/Game/Damage/Physics/Game_Damage_Physics.h"
 #include "../../../Core/Game/PlayerAvatar/ITakablePlayerAttack/ITakablePlayerAttack.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::PlayerAvatar::Bullet
 {
@@ -52,3 +53,7 @@ namespace GamePlay::PlayerAvatar::Bullet
         ImGuiHelper::OnDrawInputField("explosionParticle_", explosionParticle_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::Bullet::CannonBullet);
+#pragma endregion

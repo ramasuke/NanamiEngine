@@ -11,7 +11,6 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         TickStatus DoTick(const TickContext& context) override;
         void       DoDrawGui() override;
 
-
         FIELD(CineMachine::CineMachineVirtualCamera) purposeCamera_;
         bool onPurposeCameraEnable_ = true;
         
@@ -38,5 +37,3 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::PurposeCamera, 0)
-CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::PurposeCamera)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::ActionBase, GameCore::Npc::Friendly::Behaviour::Action::PurposeCamera)

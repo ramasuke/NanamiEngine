@@ -3,6 +3,8 @@
 #include <DxLib.h>
 
 #include "../../GameObject/Transform/Transform.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
+#include "../../../../Libs/LibCore/DxLib/DxMath.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -12,7 +14,7 @@ namespace NanamiEngine::Module::Component
             return;
 
         DrawSphere3D(
-            Transform().GetDxWorldPos(),
+            LibCore::Dxlib::ToDxVector(Transform().GetWorldPos()),
             radius_,
             divNum_,
             color_    .ToDxColor(),
@@ -30,3 +32,7 @@ namespace NanamiEngine::Module::Component
         ImGuiHelper::OnDrawInputField("fill_"     , fill_     );
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::SphereRenderer);
+#pragma endregion

@@ -6,7 +6,9 @@
 #include "../Sound/SoundPlayer.h"
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Core/Application/Configuration/ApplicationConfiguration.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/Shake/ShakeCameraBehaviour.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Weather
 {
@@ -28,11 +30,13 @@ namespace GamePlay::Weather
         stormTarget_ = target;
         if (blendSeconds <= 0.0f)
         {
-            stormIntensity_  = target;
-            stormBlendSpeed_ = 0.0f;
+            stormIntensity_ = target;
+            stormTween_.Stop();
             return;
         }
-        stormBlendSpeed_ = std::abs(target - stormIntensity_) / blendSeconds;
+        stormTween_.Play(tweeny::from(stormIntensity_).to(target)
+            .during(LibCore::Tween::Ms(blendSeconds))
+            .via(LibCore::Tween::Ease(LibCore::EaseType::Linear)));
     }
 
     void WeatherService::Lightning(const float intensity, const float durationSeconds)
@@ -91,13 +95,11 @@ namespace GamePlay::Weather
 
     void WeatherService::UpdateIntensity(const float deltaTime)
     {
-        if (stormIntensity_ == stormTarget_)
+        if (!stormTween_.IsPlaying())
             return;
 
-        const float step = stormBlendSpeed_ * deltaTime;
-        stormIntensity_ = stormIntensity_ < stormTarget_
-            ? (std::min)(stormIntensity_ + step, stormTarget_)
-            : (std::max)(stormIntensity_ - step, stormTarget_);
+        // NOTE: 終端は補間の丸めを避けて目標値ちょうどに揃える(ApplyFog が 0 と比較する)
+        stormIntensity_ = stormTween_.Tick(deltaTime) ? stormTarget_ : stormTween_.Value();
     }
 
     void WeatherService::UpdateLightning(const float deltaTime)
@@ -272,3 +274,7 @@ namespace GamePlay::Weather
         if (ImGui::Button("Lightning")) Lightning(1.0f, 0.45f);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Weather::WeatherService);
+#pragma endregion

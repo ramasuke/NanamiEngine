@@ -12,6 +12,7 @@
 #include "Behaviour/Noise/NoiseCameraBehaviour.h"
 #include "Behaviour/Shake/ShakeCameraBehaviour.h"
 #include "Behaviour/ThirdPerson/ThirdPersonCameraBehaviour.h"
+#include "../../../Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 void CineMachine::CineMachineVirtualCamera::SetPriority(const int priority)
 {
@@ -151,3 +152,7 @@ void CineMachine::CineMachineVirtualCamera::OnDebugRender()
     DrawTriangle3D({eye.x, eye.y, eye.z}, {p3.x, p3.y, p3.z}, {p4.x, p4.y, p4.z}, color, false);
     DrawTriangle3D({eye.x, eye.y, eye.z}, {p4.x, p4.y, p4.z}, {p1.x, p1.y, p1.z}, color, false);
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::CineMachineVirtualCamera);
+#pragma endregion

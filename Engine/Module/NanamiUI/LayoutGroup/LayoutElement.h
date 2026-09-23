@@ -33,4 +33,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::LayoutElement, 0)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::NanamiUi::LayoutElement, 0);

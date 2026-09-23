@@ -1,6 +1,7 @@
 ﻿#include "Engine_Network_NetworkComponent.h"
 
 #include "../../Engine_Network_NetworkRunner.h"
+#include "../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Network
 {
@@ -35,3 +36,7 @@ namespace NanamiEngine::Module::Network
         return NetworkRunnerBase::Instance();
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(Network::NetworkComponent);
+#pragma endregion

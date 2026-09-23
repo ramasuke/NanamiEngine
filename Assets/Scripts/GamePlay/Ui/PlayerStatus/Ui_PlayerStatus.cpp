@@ -1,9 +1,11 @@
 ﻿#include "Ui_PlayerStatus.h"
 
 #include "Engine/Core/Coroutine/Coroutine.h"
+#include "../GaugeEffects/Ui_GaugeEffects.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
 #include "../../../Core/Game/StatusParameter/Health/Health.h"
 #include "../../../Core/Game/StatusParameter/Stamina/Stamina.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -13,9 +15,16 @@ namespace GamePlay::Ui
     {
         const float healthRate = health / maxHealth;
         healthBar_->SetValue(healthRate);
+        const auto effects = healthBar_->Components().Catch<GaugeEffects>().lock();
         if (const auto gaugeSprite = SelectHealthGaugeSprite(healthRate))
-            healthBar_->ChangeGaugeSprite(gaugeSprite);
-        healthBar_->SetPulse(healthGaugeDangerSprite_ && healthRate > 0.0f && healthRate <= dangerHealthRate_);
+        {
+            if (effects)
+                effects->ChangeGaugeSprite(gaugeSprite);
+            else
+                healthBar_->SetGaugeSprite(gaugeSprite);
+        }
+        if (effects)
+            effects->SetPulse(healthGaugeDangerSprite_ && healthRate > 0.0f && healthRate <= dangerHealthRate_);
 
         if (hpCurrentText_)
         {
@@ -104,3 +113,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("healthTextDangerColor_", healthTextDangerColor_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PlayerStatus);
+#pragma endregion

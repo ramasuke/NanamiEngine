@@ -49,4 +49,4 @@ namespace NanamiEngine::Module::Component
 #pragma endregion
     };
 }
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::BoxCollider, 6)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::BoxCollider, 6);

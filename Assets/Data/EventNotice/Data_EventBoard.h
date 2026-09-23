@@ -7,13 +7,14 @@
 #include "Data_Announcement.h"
 #include "Data_BoardQuest.h"
 #include "Data_EventNotice.h"
+#include "../Restoration/Data_RestorationFacility.h"
 
 namespace NanamiEngine::Module::Asset
 {
     constexpr auto EVENT_BOARD_EXTENSION_LABEL = ".eventBoard";
 
     /**
-     * @brief 掲示板に貼るものの一覧。催し(.eventNotice)・依頼(.boardQuest)・お知らせ(.announcement)を
+     * @brief 掲示板に貼るものの一覧。催し(.eventNotice)・依頼(.boardQuest)・お知らせ(.announcement)・復興(.restorationFacility)を
      * このアセットに足すだけで貼り出せ、シーンもプレハブも触らない。
      * 終わった催しや期間外の依頼は表示側で弾くので、ここから外さなくてもよい。
      */
@@ -25,11 +26,13 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] std::vector<std::shared_ptr<EventNotice>>  Notices      () const;
         [[nodiscard]] std::vector<std::shared_ptr<BoardQuest>>   Quests       () const;
         [[nodiscard]] std::vector<std::shared_ptr<Announcement>> Announcements() const;
+        [[nodiscard]] std::vector<std::shared_ptr<RestorationFacility>> Facilities() const;
 
     private:
         [[serialize(0)]] std::vector<FIELD(EventNotice)>  notices_;
         [[serialize(1)]] std::vector<FIELD(BoardQuest)>   quests_;
         [[serialize(1)]] std::vector<FIELD(Announcement)> announcements_;
+        [[serialize(2)]] std::vector<FIELD(RestorationFacility)> facilities_;
 
 #pragma region Serialization Function
     public:
@@ -42,6 +45,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(notices_));
             archive(CEREAL_NVP(quests_));
             archive(CEREAL_NVP(announcements_));
+            archive(CEREAL_NVP(facilities_));
         }
 
         template<class Archive>
@@ -51,14 +55,12 @@ namespace NanamiEngine::Module::Asset
             if (version >= 0) archive(CEREAL_NVP(notices_));
             if (version >= 1) archive(CEREAL_NVP(quests_));
             if (version >= 1) archive(CEREAL_NVP(announcements_));
+            if (version >= 2) archive(CEREAL_NVP(facilities_));
         }
 #pragma endregion
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(EventBoardData, EVENT_BOARD_EXTENSION_LABEL, "EventBoard")
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::EventBoardData, 1);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::EventBoardData);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::EventBoardData);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::EventBoardData, 2);
 #pragma endregion

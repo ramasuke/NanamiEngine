@@ -105,6 +105,4 @@ void load(Archive& archive, const std::uint32_t version) {
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour, 3)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);
+CEREAL_CLASS_VERSION(NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour, 3);

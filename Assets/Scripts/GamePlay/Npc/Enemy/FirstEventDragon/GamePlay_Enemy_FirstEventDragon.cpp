@@ -1,6 +1,7 @@
 ﻿#include "GamePlay_Enemy_FirstEventDragon.h"
 
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Npc::Enemy
 {
@@ -13,3 +14,8 @@ namespace GamePlay::Npc::Enemy
 
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GamePlay::Npc::Enemy::FirstEventDragon);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::BossEnemyBase, GamePlay::Npc::Enemy::FirstEventDragon);
+#pragma endregion

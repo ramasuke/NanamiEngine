@@ -5,6 +5,8 @@
 #include <numbers>
 
 #include "Engine/Core/Application/Time/Time.h"
+#include "../GaugeEffects/Ui_GaugeEffects.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -13,13 +15,17 @@ namespace GamePlay::Ui
         if (bossNameText_)
             bossNameText_->SetText(bossName);
 
-        value_             = 0.0f;
-        introElapsed_secs_ = 0.0f;
-        pulseTime_secs_    = 0.0f;
+        value_          = 0.0f;
+        pulseTime_secs_ = 0.0f;
+        introFill_.Play(tweeny::from(0.0f).to(1.0f).during(LibCore::Tween::Ms(introFillDuration_secs_)));
         for (const auto& shard : shards_)
         {
-            if (shard)
-                shard->SetValueImmediate(0.0f);
+            if (!shard)
+                continue;
+
+            shard->SetValue(0.0f);
+            if (const auto effects = shard->Components().Catch<GaugeEffects>().lock())
+                effects->SnapTrail();
         }
         ApplyToRenderers();
         Entity().lock()->SetEnable(true);
@@ -44,8 +50,13 @@ namespace GamePlay::Ui
                 continue;
 
             shard->SetValue(std::clamp(value_ * count - static_cast<float>(i), 0.0f, 1.0f));
-            if (fillSprite)
-                shard->ChangeGaugeSprite(fillSprite);
+            if (!fillSprite)
+                continue;
+
+            if (const auto effects = shard->Components().Catch<GaugeEffects>().lock())
+                effects->ChangeGaugeSprite(fillSprite);
+            else
+                shard->SetGaugeSprite(fillSprite);
         }
 
         if (crestGlow_)
@@ -60,7 +71,7 @@ namespace GamePlay::Ui
 
     bool BossHealthGauge::IsIntroPlaying() const
     {
-        return introElapsed_secs_ < introFillDuration_secs_;
+        return introFill_.IsPlaying();
     }
 
     bool BossHealthGauge::IsDanger() const
@@ -74,9 +85,8 @@ namespace GamePlay::Ui
 
         if (IsIntroPlaying())
         {
-            introElapsed_secs_ += deltaTime;
-            const float introRate = introFillDuration_secs_ > 0.0f ? std::min(1.0f, introElapsed_secs_ / introFillDuration_secs_) : 1.0f;
-            value_ = std::min(targetRate_, introRate);
+            introFill_.Tick(deltaTime);
+            value_ = std::min(targetRate_, introFill_.Value());
         }
 
         pulseTime_secs_ = IsDanger() ? pulseTime_secs_ + deltaTime : 0.0f;
@@ -111,3 +121,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("introFillDuration_secs_", introFillDuration_secs_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::BossHealthGauge);
+#pragma endregion

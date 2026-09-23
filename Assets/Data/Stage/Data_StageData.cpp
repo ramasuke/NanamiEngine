@@ -1,4 +1,5 @@
 #include "Data_StageData.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -26,3 +27,9 @@ namespace NanamiEngine::Module::Asset
         });
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(StageData, STAGE_DATA_EXTENSION_LABEL, "Stage")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::StageData);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::StageData);
+#pragma endregion

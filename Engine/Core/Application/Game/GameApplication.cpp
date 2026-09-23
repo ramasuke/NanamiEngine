@@ -12,6 +12,8 @@ namespace NanamiEngine::Core::Application::Game
 {
     GameApplication::GameApplication()
     {
+        // NOTE: ゲーム側のカーソル (GamePlay::Ui::GameCursor) を描くので OS のカーソルは消す
+        SetMouseDispFlag(FALSE);
         GameWindow()->Play();
     }
 

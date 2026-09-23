@@ -63,8 +63,4 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::Mv1File, 1);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::Mv1File);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::Mv1File);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::Mv1File);
 #pragma endregion
-REGISTER_ASSET(Mv1File, ".mv1")

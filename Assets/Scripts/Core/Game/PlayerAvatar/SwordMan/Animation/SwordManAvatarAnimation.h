@@ -24,6 +24,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         FallDown     = 40,
         Down         = 41,
         GetUp        = 42,
+        ItemDrink    = 60,
+        ItemEat      = 61,
+        ItemPlace    = 62,
         ArmStretch   = 101,
         Death        = 300,
     };

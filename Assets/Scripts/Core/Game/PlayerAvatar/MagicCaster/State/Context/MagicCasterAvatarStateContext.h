@@ -15,6 +15,11 @@ namespace NanamiEngine::Module::Asset
     class MagicCasterAvatarResource;
 }
 
+namespace NanamiEngine::Module::Component
+{
+    class ParticleSystem;
+}
+
 namespace GamePlay::PlayerAvatar
 {
     class LockOnDetectionArea;
@@ -41,7 +46,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
                                                const std::weak_ptr<GameObject::IGameObject       >& castPoint   ,
                                                const std::weak_ptr<Asset::MagicCasterAvatarResource>& resources ,
                                                const std::weak_ptr<Magic::IMagicCaster           >& caster      ,
-                                               const std::weak_ptr<GamePlay::PlayerAvatar::LockOnDetectionArea>& lockOnDetectionArea);
+                                               const std::weak_ptr<GamePlay::PlayerAvatar::LockOnDetectionArea>& lockOnDetectionArea,
+                                               const std::weak_ptr<Component::ParticleSystem     >& successAvoidRollingParticle);
 
         [[nodiscard]] MagicCasterAvatarStatus     & Status() const { return *status_;             }
         [[nodiscard]] MagicCasterAvatarInputAction& Input () const { return *inputAction_;        }
@@ -68,6 +74,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[nodiscard]] Magic::IMagicCaster&                     Caster                 () const { return *caster_.lock(); }
         [[nodiscard]] bool ExpiredLockOnDetectionArea() const { return lockOnDetectionArea_.expired(); }
         [[nodiscard]] GamePlay::PlayerAvatar::LockOnDetectionArea& LockOnDetectionArea() const { return *lockOnDetectionArea_.lock(); }
+        /** @brief プレハブで未設定なら nullptr */
+        [[nodiscard]] std::shared_ptr<Component::ParticleSystem> SuccessAvoidRollingParticle() const { return successAvoidRollingParticle_.lock(); }
 
         /** @brief Cast State に入る直前に、撃つ枠と魔法を置く */
         void SetPendingCast(int slot, const std::shared_ptr<const Magic::IMagicSpell>& spell) { pendingSpellSlot_ = slot; pendingSpell_ = spell; }
@@ -84,6 +92,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         const std::weak_ptr<Asset::MagicCasterAvatarResource> resources_;
         const std::weak_ptr<Magic::IMagicCaster> caster_;
         const std::weak_ptr<GamePlay::PlayerAvatar::LockOnDetectionArea> lockOnDetectionArea_;
+        const std::weak_ptr<Component::ParticleSystem> successAvoidRollingParticle_;
         int pendingSpellSlot_ = 0;
         std::shared_ptr<const Magic::IMagicSpell> pendingSpell_;
     };

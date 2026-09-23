@@ -62,4 +62,4 @@ namespace GamePlay::Prop
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Prop::CharacterPodium, 0)
+CEREAL_CLASS_VERSION(GamePlay::Prop::CharacterPodium, 0);

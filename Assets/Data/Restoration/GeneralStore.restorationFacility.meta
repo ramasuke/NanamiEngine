@@ -1,0 +1,33 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::RestorationFacility",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Restoration/GeneralStore.restorationFacility",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "865966AC-B4DC-439C-8871-511947D983BB"
+                    }
+                },
+                "facility_": 1,
+                "name_": "雑貨屋の修繕",
+                "descriptionLines_": [
+                    "屋根と棚を直す。",
+                    "商人の品揃えが一段増える。"
+                ],
+                "cost_": 1200,
+                "requiredStoryFlag_": -1,
+                "requiredFacility_": -1,
+                "conditionText_": ""
+            }
+        }
+    }
+}

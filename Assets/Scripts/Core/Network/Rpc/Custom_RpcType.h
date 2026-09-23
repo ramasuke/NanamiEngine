@@ -38,6 +38,12 @@ namespace GameCore::Network
 
         /** プレイヤー固有 */
         CastSpell,
+
+        /** 設置物 */
+        ChargePillarCollapse,
+
+        /** 汎用演出RPC (後から足したもの。途中に挟むと既存の番号がずれるので末尾に置く) */
+        SpawnFollowingPrefab,
     };
 
     using WakeUpPlayerRpc    = Module::Network::RpcDef<ERpcType::WakeUpPlayer>;
@@ -47,10 +53,12 @@ namespace GameCore::Network
     using PlayBgmRpc            = Module::Network::RpcDef<ERpcType::PlayBgm, Guid>;
     using SpawnPrefabRpc        = Module::Network::RpcDef<ERpcType::SpawnPrefab, Guid, glm::vec3, float>;
     using SpawnMovingPrefabRpc  = Module::Network::RpcDef<ERpcType::SpawnMovingPrefab, Guid, glm::vec3, glm::quat, glm::vec3, float, bool, Damage::PhysicsPower>;
+    /** 送り先の NetworkGameObject に付いて行くプレハブ */
+    using SpawnFollowingPrefabRpc = Module::Network::RpcDef<ERpcType::SpawnFollowingPrefab, Guid>;
     using PurposeCameraRpc      = Module::Network::RpcDef<ERpcType::PurposeCamera, std::string, int>;
     using ScenePurposeCameraRpc = Module::Network::RpcDef<ERpcType::ScenePurposeCamera, Guid, int>;
     using ChatRpc               = Module::Network::RpcDef<ERpcType::Chat, std::string, Guid>;
-    /** 行き先と、ステージを踏破して戻るか(ロード画面の地図に印を押す) */
+    /** 行き先と、ステージを踏破して戻るか */
     using ChangeMainSceneRpc    = Module::Network::RpcDef<ERpcType::ChangeMainScene, Scene::Main::SceneType, bool>;
     using ShakeCameraRpc        = Module::Network::RpcDef<ERpcType::ShakeCamera, float, float>;
     using SetStormRpc           = Module::Network::RpcDef<ERpcType::SetStorm, float, float>;
@@ -59,6 +67,10 @@ namespace GameCore::Network
     using AttackAreaFireRpc     = Module::Network::RpcDef<ERpcType::AttackAreaFire, Damage::PhysicsPower>;
     using EnemyDeathRpc         = Module::Network::RpcDef<ERpcType::EnemyDeath>;
 
-    /** 魔法の guid と、撃った画面で決めた MagicCastTarget（起点・向き・着弾点・威力の倍率） */
+    /** 魔法の guid と、撃った画面で決めた MagicCastTarget */
     using CastSpellRpc          = Module::Network::RpcDef<ERpcType::CastSpell, Guid, glm::vec3, glm::quat, glm::vec3, float>;
+
+    // NOTE: シーンに置かれた設置物は NetworkObjectId を持たないので、送り手の NetworkObjectId 宛てに送って位置で特定する
+    /** 倒れた柱の位置と倒れる向き */
+    using ChargePillarCollapseRpc = Module::Network::RpcDef<ERpcType::ChargePillarCollapse, glm::vec3, glm::vec3>;
 }

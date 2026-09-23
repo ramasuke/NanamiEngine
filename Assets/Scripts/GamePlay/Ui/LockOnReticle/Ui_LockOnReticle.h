@@ -2,6 +2,7 @@
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Asset/Sprite/SpriteFile.h"
 #include "Engine/Module/Component/ComponentBase.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 
 namespace GameCore::PlayerAvatar
 {
@@ -17,6 +18,9 @@ namespace GamePlay::Ui
                                 public LifeCycleCallback::IUserInterfaceRenderable,
                                 public LifeCycleCallback::IUpdatable
     {
+    public:
+        LockOnReticle();
+
     private:
         enum class Phase
         {
@@ -32,24 +36,31 @@ namespace GamePlay::Ui
         [[nodiscard]] int GetRenderOrder() const override { return renderOrder_; }
 
         [[nodiscard]] std::shared_ptr<GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase> CatchCameraGroup();
-        static void DrawSprite(
+        // カメラから遠いほど小さく、近いほど大きくする倍率
+        [[nodiscard]] float DistanceScaleRate(const glm::vec3& worldPos) const;
+        void DrawSprite(
             const std::shared_ptr<Asset::SpriteFile>& sprite,
             const glm::vec3& worldPos,
             float scale,
             float angle,
-            float alpha);
+            float alpha) const;
+        void PlayEngage();
+        void PlayRelease();
 
         std::weak_ptr<GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase> cameraGroup_;
 
         Phase     phase_           = Phase::Hidden;
-        float     phaseTime_secs_  = 0.0f;
         float     elapsed_secs_    = 0.0f;
         float     ringAngle_       = 0.0f;
         bool      wasEngaged_      = false;
         std::weak_ptr<GameObject::IGameObject> lockedTarget_;
         glm::vec3 lockOnPointWorld_ = {};
+        // 確定・解除演出。3本とも同じ長さで、終わりは scaleRateTween_ で判定する
+        LibCore::Tween::TweenPlayer<float> scaleRateTween_;
+        LibCore::Tween::TweenPlayer<float> alphaTween_;
+        LibCore::Tween::TweenPlayer<float> bracketAngleTween_;
 
-        float     candidateFade_   = 0.0f;
+        LibCore::Tween::TweenPlayer<float> candidateFade_;
         std::weak_ptr<GameObject::IGameObject> candidateTarget_;
         glm::vec3 candidatePointWorld_ = {};
 
@@ -57,8 +68,8 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Asset::SpriteFile) ringSprite_;
         [[serialize(0)]] FIELD(Asset::SpriteFile) bracketSprite_;
         [[serialize(0)]] FIELD(Asset::SpriteFile) candidateSprite_;
-        [[serialize(0)]] float reticleScale_          = 0.38f;
-        [[serialize(0)]] float candidateScale_        = 0.44f;
+        [[serialize(0)]] float reticleScale_          = 0.6f;
+        [[serialize(0)]] float candidateScale_        = 0.7f;
         [[serialize(0)]] float candidateAlpha_        = 0.6f;
         [[serialize(0)]] float ringRotateSpeed_       = 0.25f;
         [[serialize(0)]] float lockedBreathScale_     = 0.005f;
@@ -66,6 +77,10 @@ namespace GamePlay::Ui
         [[serialize(0)]] float engageStartScaleRate_  = 2.0f;
         [[serialize(0)]] float releaseDuration_secs_  = 0.22f;
         [[serialize(0)]] float releaseEndScaleRate_   = 1.5f;
+        // reticleScale_ / candidateScale_ はこの距離での大きさ
+        [[serialize(1)]] float referenceDistance_     = 60.0f;
+        [[serialize(1)]] float minDistanceScale_      = 0.15f;
+        [[serialize(1)]] float maxDistanceScale_      = 1.6f;
 
 #pragma region Serialization Function
     public:
@@ -87,6 +102,9 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(engageStartScaleRate_));
             archive(CEREAL_NVP(releaseDuration_secs_));
             archive(CEREAL_NVP(releaseEndScaleRate_));
+            archive(CEREAL_NVP(referenceDistance_));
+            archive(CEREAL_NVP(minDistanceScale_));
+            archive(CEREAL_NVP(maxDistanceScale_));
         }
 
         template<class Archive>
@@ -105,9 +123,12 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(engageStartScaleRate_));
             if (version >= 0) archive(CEREAL_NVP(releaseDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(releaseEndScaleRate_));
+            if (version >= 1) archive(CEREAL_NVP(referenceDistance_));
+            if (version >= 1) archive(CEREAL_NVP(minDistanceScale_));
+            if (version >= 1) archive(CEREAL_NVP(maxDistanceScale_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::LockOnReticle, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::LockOnReticle, 1);

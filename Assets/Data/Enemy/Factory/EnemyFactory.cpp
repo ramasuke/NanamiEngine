@@ -7,6 +7,7 @@
 #include "../../../Scripts/GamePlay/Npc/Enemy/Hyena/GamePlay_Enemy_Hyena.h"
 #include "../../../Scripts/GamePlay/Ui/BossHealthGauge/Ui_BossHealthGauge.h"
 #include "../../../Scripts/GamePlay/Ui/BossHealthGauge/Ui_BossHealthGaugePresenter.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -108,3 +109,9 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("bossHealthGaugePresenterPrefab_", bossHealthGaugePresenterPrefab_);
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(EnemyFactory, ENEMY_FACTORY_EXTENSION_LABEL, "Npc::Enemy")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::EnemyFactory);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::EnemyFactory);
+#pragma endregion

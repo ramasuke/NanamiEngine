@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <array>
 #include <cstdint>
 
 #include "vec3.hpp"
@@ -10,6 +11,7 @@
 #include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 #include "Ui_GameOverButton.h"
 
 namespace GamePlay::Ui
@@ -57,7 +59,9 @@ namespace GamePlay::Ui
         /** @brief timeScale にも SkipNextFrame にも影響されない壁時計の差分を返す */
         [[nodiscard]] float TickWallClockSeconds();
 
-        void UpdateIntro();
+        void PlayIntroTweens();
+        void TickContentTweens(float deltaSecs);
+        void UpdateIntro(float deltaSecs);
         void UpdateCurtain(float deltaSecs);
         void TickButtons(float deltaSecs) const;
         /** @param appearRate 石版・鉄札・操作ヒントの見え方。幕とは別に下ろす */
@@ -98,9 +102,17 @@ namespace GamePlay::Ui
         [[serialize(0)]] float curtainOpenSecs_ = 0.6f;
 
         Phase phase_ = Phase::Hidden;
+        /** 効果音と入力受付の合図に使う時計 */
         float elapsedSecs_ = 0.0f;
-        float curtainElapsedSecs_ = 0.0f;
-        float curtainFromVeil_ = 0.0f;
+        /** 出だしの幕と、抜けるときの幕の両方に使う */
+        LibCore::Tween::TweenPlayer<float> veilTween_;
+        /** 基準位置からの下向きのずれ */
+        LibCore::Tween::TweenPlayer<float> slabOffsetTween_;
+        LibCore::Tween::TweenPlayer<float> slabAlphaTween_;
+        LibCore::Tween::TweenPlayer<float> dirtAlphaTween_;
+        /** 鉄札ごとの出方 0..1 */
+        std::array<LibCore::Tween::TweenPlayer<float>, 2> buttonRiseTweens_;
+        LibCore::Tween::TweenPlayer<float> hintAlphaTween_;
         int selection_ = RETRY_INDEX;
         bool isStingPlayed_ = false;
         bool isSlabLanded_ = false;
@@ -182,4 +194,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::GameOverScreenUi, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::GameOverScreenUi, 0);

@@ -54,4 +54,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PauseMenuRow, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::PauseMenuRow, 0);

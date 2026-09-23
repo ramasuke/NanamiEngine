@@ -33,6 +33,3 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 
     REGISTER_ENEMY_ACTION_WITH_NAME(ShakeCamera, "Camera::ShakeCamera")
 }
-
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ShakeCamera)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::ShakeCamera)

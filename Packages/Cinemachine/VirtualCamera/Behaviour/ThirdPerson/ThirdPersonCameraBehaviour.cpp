@@ -8,11 +8,17 @@
 #include "../../../../../Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
 #include "../IVirtualCameraTarget.h"
 #include "gtx/rotate_vector.hpp"
+#include "../../../../../Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace
 {
     constexpr float STICK_MAX       = 32767.0f;
     constexpr int   STICK_DEAD_ZONE = 8000;
+    // NOTE: カメラが止まったら数フレームで固定が外れた扱いにする
+    constexpr int   MOUSE_PIN_HOLD_MS = 100;
+
+    // NOTE: 初回の差分が大きくても固定していない扱いになるよう、十分昔にしておく
+    int lastMousePinnedMs = -MOUSE_PIN_HOLD_MS * 100;
 }
 
 namespace NanamiEngine::CineMachine::Behaviour
@@ -40,6 +46,11 @@ namespace NanamiEngine::CineMachine::Behaviour
         isImmediateApply_ = enable;
     }
 
+    bool ThirdPersonCameraBehaviour::IsMousePinned()
+    {
+        return GetNowCount() - lastMousePinnedMs < MOUSE_PIN_HOLD_MS;
+    }
+
     void ThirdPersonCameraBehaviour::OnAwake()
     {
         follow_ = RequireComponent<VirtualCameraFollowBehaviour>();
@@ -65,8 +76,9 @@ namespace NanamiEngine::CineMachine::Behaviour
         int mouseX, mouseY;
         GetMousePoint(&mouseX, &mouseY);
         
-        static int centerX = Core::Application::Configuration::AppConfiguration::GetWindowWidth () / 2;
-        static int centerY = Core::Application::Configuration::AppConfiguration::GetWindowHeight() / 2;
+        // NOTE: ウィンドウサイズが変わっても追従するよう毎回求める
+        const int centerX = Core::Application::Configuration::AppConfiguration::GetWindowWidth () / 2;
+        const int centerY = Core::Application::Configuration::AppConfiguration::GetWindowHeight() / 2;
 
         const int dx = mouseX - centerX;
         const int dy = mouseY - centerY;
@@ -74,6 +86,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         if (isLockMousePos_)
         {
             SetMousePoint(centerX, centerY);
+            lastMousePinnedMs = GetNowCount();
         }
 
         yaw_   += dx * mouseSensitivity_;
@@ -175,3 +188,9 @@ namespace NanamiEngine::CineMachine::Behaviour
         ImGuiHelper::OnDrawInputField("isImmediateApply_", isImmediateApply_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ThirdPersonCameraBehaviour);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IAwakable, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
+#pragma endregion

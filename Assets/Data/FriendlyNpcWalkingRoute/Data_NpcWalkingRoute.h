@@ -53,9 +53,6 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(NpcWalkingRoute, FRIENDLY_NPC_WALKING_ROUTE_EXTENSION_LABEL, "Npc::Friendly")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::NpcWalkingRoute, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::NpcWalkingRoute);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::NpcWalkingRoute);
 #pragma endregion

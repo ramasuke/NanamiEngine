@@ -1,5 +1,8 @@
 ﻿#include "SwordManAvatarJumpAttackAirState.h"
 
+#include "../../../../../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
+#include "../../../../../../../GamePlay/Sound/SoundPlayer.h"
+
 namespace GameCore::PlayerAvatar::SwordMan::State
 {
     void SwordManAvatarJumpAttackAirState::DoEnter()
@@ -7,11 +10,17 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         StatusEvent().InvokeJumpAttack();
         RigidBody().SetLinearVelocity(glm::vec3(0.0f));
         attackTurn_ = {};
+        isPlunging_ = false;
     }
 
     void SwordManAvatarJumpAttackAirState::DoFixedUpdate()
     {
-        const float verticalSpeed = During_secs() < Status().JumpAttackWindup_secs() ? 0.0f : -Status().JumpAttackPlungeSpeed();
+        const bool isPlunging = During_secs() >= Status().JumpAttackWindup_secs();
+        if (isPlunging && !isPlunging_ && Resources().HasJumpAttackPlungeSound())
+            GamePlay::Sound::SoundPlayer::PlaySe(Resources().JumpAttackPlungeSound(), Transform().GetWorldPos());
+        isPlunging_ = isPlunging;
+
+        const float verticalSpeed = isPlunging ? -Status().JumpAttackPlungeSpeed() : 0.0f;
         RigidBody().SetLinearVelocity(glm::vec3(0.0f, verticalSpeed, 0.0f));
     }
 

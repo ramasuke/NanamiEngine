@@ -6,9 +6,11 @@
 #include "Scene/Main/Content/Title/TitleScene.h"
 #include "Scene/Sub/Context/Sub_SceneContextBase.h"
 #include "Scene/Sub/Group/Sub_GameSceneGroup.h"
+#include "Story/Story_StoryProgress.h"
 #include "Engine/Core/Application/ApplicationBase.h"
 #include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore
 {
@@ -19,7 +21,12 @@ namespace GameCore
     {
     }
     
-    Game::~Game() = default;
+    Game::~Game()
+    {
+        // NOTE: RemoveComponent は OnDestroy を呼ばないので、デストラクタでも解除する
+        if (instance_ == this)
+            instance_ = nullptr;
+    }
     
     Scene::Sub::GameSceneGroup& Game::SubScenes() const
     {
@@ -91,6 +98,12 @@ namespace GameCore
         subSceneGroup_->Update();
     }
     
+    void Game::OnDestroy()
+    {
+        if (instance_ == this)
+            instance_ = nullptr;
+    }
+    
     void Game::OnDrawGui()
     {
         ImGuiHelper::OnDrawInputField("sceneContexts_", sceneContexts_);
@@ -117,5 +130,12 @@ namespace GameCore
         ImGuiHelper::OnDrawInputField("subSceneContexts_"   , subSceneContexts_);
         ImGuiHelper::OnDrawInputField("stageLoadingSceneFile_", stageLoadingSceneFile_);
         ImGuiHelper::OnDrawInputField("gameOverSceneFile_", gameOverSceneFile_);
+
+        Story::StoryProgress::Instance().OnDrawGui();
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GameCore::Game);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, GameCore::Game);
+#pragma endregion

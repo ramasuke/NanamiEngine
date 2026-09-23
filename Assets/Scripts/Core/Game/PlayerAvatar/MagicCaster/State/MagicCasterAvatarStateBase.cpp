@@ -1,8 +1,11 @@
 ﻿#include "MagicCasterAvatarStateBase.h"
 
+#include "Engine/Module/Component/BoneSync/BoneSync.h"
+#include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../Data/PlayerAvatar/Resource/Data_MagicCasterAvatarResource.h"
 #include "../../Input/PlayerAvatarInput_void.h"
 #include "../../LockOnTarget/ILockOnTarget.h"
+#include "../../../../../GamePlay/Item/GamePlay_ItemUseCue.h"
 #include "../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../Spell/MagicCasterSpellSlot.h"
 
@@ -11,6 +14,45 @@ namespace GameCore::PlayerAvatar::MagicCaster
     MagicCasterAvatarStateBase::MagicCasterAvatarStateBase(const MagicCasterAvatarStateArgs& args)
         : PlayerAvatarStateBase(args)
     {
+    }
+
+    void MagicCasterAvatarStateBase::TryEmitFootstep(FootstepLatch& latch) const
+    {
+        if (!Resources().HasFootstepParticlePrefab())
+            return;
+
+        const auto boneSync = Player().Components().Catch<Component::BoneSync>().lock();
+        if (!boneSync)
+            return;
+
+        const auto& boneNames = Resources().FootstepBoneNames();
+        if (latch.boneAirborne.size() != boneNames.size())
+            latch.boneAirborne.assign(boneNames.size(), false);
+
+        const glm::vec3 featStepPos   = Context().PlayerAvatarFeatStepPos();
+        const float     contactHeight = Resources().FootstepContactHeight();
+
+        for (size_t boneIndex = 0; boneIndex < boneNames.size(); ++boneIndex)
+        {
+            const auto bonePose = boneSync->GetBoneWorldPose(boneSync->FindBoneIndex(boneNames[boneIndex]));
+            if (!bonePose)
+                continue;
+
+            const float height = bonePose->Position().y - featStepPos.y;
+            if (height > contactHeight)
+            {
+                latch.boneAirborne[boneIndex] = true;
+                continue;
+            }
+            // 浮いてから降りてきた最初のフレームだけ出す。接地したまま閾値付近で揺れても繰り返さない
+            if (!latch.boneAirborne[boneIndex])
+                continue;
+
+            latch.boneAirborne[boneIndex] = false;
+
+            const glm::vec3 stepPos(bonePose->Position().x, featStepPos.y, bonePose->Position().z);
+            Scene::GameObject::Instantiate(Resources().FootstepParticlePrefab(), stepPos);
+        }
     }
 
     std::shared_ptr<const Magic::IMagicSpell> MagicCasterAvatarStateBase::SpellAt(const int slot) const
@@ -78,6 +120,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
                 case MagicCasterAvatarInput::Run:  return IsInputInPhase(input_.Run(),  phase);
                 case MagicCasterAvatarInput::Jump: return IsInputInPhase(input_.Jump(), phase);
                 case MagicCasterAvatarInput::Chat: return IsInputInPhase(input_.Chat(), phase);
+                case MagicCasterAvatarInput::AvoidRolling: return IsInputInPhase(input_.AvoidRolling(), phase);
                 }
                 return false;
             }
@@ -104,10 +147,10 @@ namespace GameCore::PlayerAvatar::MagicCaster
         // 部位は真上にあることもあるので、高さを消してから渡す(RotateTowards の長さ判定をすり抜けて水平成分 0 を正規化しないように)
         glm::vec3 toAim = LockOnPositionOf(*target) - Transform().GetWorldPos();
         toAim.y = 0.0f;
-        Actions().RotateTowards(toAim, Status().GetMoveRotateSpeed());
+        Actions().RotateTowards(toAim, Status().GetAimRotateSpeed());
     }
 
-    void MagicCasterAvatarStateBase::UpdateItemPouchInput() const
+    bool MagicCasterAvatarStateBase::UpdateItemPouchInput() const
     {
         auto& pouch = Status().Pouch();
 
@@ -115,17 +158,28 @@ namespace GameCore::PlayerAvatar::MagicCaster
             pouch.Cycle(1);
         if (Input().CycleItemPrev().IsPressed())
             pouch.Cycle(-1);
-        if (Input().UseItem().IsPressed())
-            UseSelectedPouchItem();
+        return Input().UseItem().IsPressed() && UseSelectedPouchItem();
     }
 
-    void MagicCasterAvatarStateBase::UseSelectedPouchItem() const
+    bool MagicCasterAvatarStateBase::UseSelectedPouchItem() const
     {
-        const auto used = Status().Pouch().UseSelected(Status(), Context().PlayerAvatarObject());
-        if (!used)
-            return;
+        auto& pouch = Status().Pouch();
+        const auto selected = pouch.Selected();
+        if (!pouch.CanUseSelected() || !selected->item || !selected->item->HasEffect())
+            return false;
 
-        if (const auto sound = used->UseSound())
-            GamePlay::Sound::SoundPlayer::PlaySe(*sound, Transform().GetWorldPos());
+        switch (selected->item->UseMotion())
+        {
+        case Item::ItemUseMotion::Drink: pouch.SetPendingUse(selected->item); OnChangeState(MagicCasterAvatarStateType::UseItemDrink); return true;
+        case Item::ItemUseMotion::Eat:   pouch.SetPendingUse(selected->item); OnChangeState(MagicCasterAvatarStateType::UseItemEat);   return true;
+        case Item::ItemUseMotion::Place: pouch.SetPendingUse(selected->item); OnChangeState(MagicCasterAvatarStateType::UseItemPlace); return true;
+        case Item::ItemUseMotion::Instant:
+            break;
+        }
+
+        const auto user = Context().PlayerAvatarObject();
+        if (const auto used = pouch.UseSelected(Status(), user))
+            GamePlay::Item::PlayItemUseCue(*used, user);
+        return false;
     }
 }

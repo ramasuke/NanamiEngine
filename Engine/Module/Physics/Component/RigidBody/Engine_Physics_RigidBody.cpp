@@ -4,6 +4,7 @@
 #include "../../../../Core/Physics/Physics.h"
 #include "../../BodyAssembler/Engine_Physics_BodyAssembler.h"
 #include "../../JoltUtility/Engine_Physics_JoltUtility.h"
+#include "../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -157,3 +158,7 @@ namespace NanamiEngine::Module::Component
             SetAngularVelocity(glm::vec3(0.0f));
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::RigidBody);
+#pragma endregion

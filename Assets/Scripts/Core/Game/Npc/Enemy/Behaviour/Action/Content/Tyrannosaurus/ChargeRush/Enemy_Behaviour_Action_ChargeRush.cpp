@@ -10,9 +10,11 @@
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 #include "Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 #include "../../../../../../../PlayerAvatar/IPlayerAvatar.h"
+#include "../../../../../../../../../GamePlay/Prop/ChargeBreakPillar/GamePlay_ChargeBreakPillar.h"
 #include "../../../../../../../../../GamePlay/Prop/ChargeStuckObstacle/GamePlay_ChargeStuckObstacle.h"
 #include "../../../../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
+#include "../../../../../../../Damage/Game_Damage_IDamage.h"
 #include "../../../../../AttackArea/Enemy_AttackArea.h"
 #include "../glm/gtx/quaternion.hpp"
 
@@ -32,6 +34,25 @@ namespace GameCore::Npc::Enemy::Behaviour
             }
             return false;
         }
+
+        /** @brief 倒した柱から受けるダメージ。部位には当たらない */
+        class PillarCollapseDamage final : public GameCore::IDamage
+        {
+        public:
+            PillarCollapseDamage(const int value, const glm::vec3& direction)
+                : value_(value), direction_(direction)
+            {
+            }
+
+            int DamageValue() override { return value_; }
+            [[nodiscard]] glm::vec3 DamageDirection() const override { return direction_; }
+            [[nodiscard]] std::weak_ptr<GameObject::IGameObject> HitPart() const override { return {}; }
+            [[nodiscard]] bool IsChargedAttack() const override { return false; }
+
+        private:
+            int       value_;
+            glm::vec3 direction_;
+        };
 
         glm::vec3 FlatForward(const GameObject::Transform& transform)
         {
@@ -82,6 +103,7 @@ namespace GameCore::Npc::Enemy::Behaviour
                 return Finish(context);
 
             PlayImpactSound(context);
+            CollapsePillar(context);
             isStuck_     = true;
             phase_       = Phase::Impact;
             during_secs_ = 0.0f;
@@ -163,7 +185,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         isAttacked_ = true;
     }
 
-    Action::ChargeRush::CastResult Action::ChargeRush::CastForward(const TickContext& context) const
+    Action::ChargeRush::CastResult Action::ChargeRush::CastForward(const TickContext& context)
     {
         const auto&     transform = context.EnemyTransform();
         const glm::vec3 origin    = transform.GetWorldPos() + transform.GetWorldRot() * castOriginOffset_;
@@ -175,9 +197,11 @@ namespace GameCore::Npc::Enemy::Behaviour
         if (hit.Normal().y > wallMaxNormalY_ || IsPartOf(hit.HitObject(), context.EnemyGameObject()))
             return CastResult::None;
 
-        return GamePlay::Prop::ChargeStuckObstacle::FindFrom(hit.HitObject())
-            ? CastResult::StuckObstacle
-            : CastResult::Wall;
+        if (!GamePlay::Prop::ChargeStuckObstacle::FindFrom(hit.HitObject()))
+            return CastResult::Wall;
+
+        stuckPillar_ = GamePlay::Prop::ChargeBreakPillar::FindFrom(hit.HitObject());
+        return CastResult::StuckObstacle;
     }
 
     void Action::ChargeRush::PlayImpactSound(const TickContext& context) const
@@ -191,6 +215,22 @@ namespace GameCore::Npc::Enemy::Behaviour
         {
             GameCore::Network::PlaySeRpc::Send(
                 context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable, impactSound_->GetGuid(), position);
+        }
+    }
+
+    void Action::ChargeRush::CollapsePillar(const TickContext& context) const
+    {
+        const auto pillar = stuckPillar_.lock();
+        if (!pillar || !pillar->Collapse(rushDirection_))
+            return;
+
+        if (pillar->CollapseDamage() > 0)
+            context.OnDamaged()->push(std::make_unique<PillarCollapseDamage>(pillar->CollapseDamage(), -rushDirection_));
+
+        if (context.IsNetworkAuthority())
+        {
+            GameCore::Network::ChargePillarCollapseRpc::Send(
+                context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable, pillar->Transform().GetWorldPos(), rushDirection_);
         }
     }
 
@@ -212,6 +252,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         during_secs_ = 0.0f;
         isAttacked_  = false;
         isStuck_     = false;
+        stuckPillar_.reset();
     }
 
     void Action::ChargeRush::DoDrawGui()

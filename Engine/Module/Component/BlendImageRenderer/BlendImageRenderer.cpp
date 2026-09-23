@@ -1,6 +1,7 @@
 ﻿#include "BlendImageRenderer.h"
 
 #include "../../GameObject/Transform/Transform.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -56,3 +57,7 @@ namespace NanamiEngine::Module::NanamiUi
         ImGuiHelper::OnDrawInputField("renderOrder_", renderOrder_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::BlendImageRenderer);
+#pragma endregion

@@ -59,7 +59,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         HoldHorizontalVelocity();
 
         const bool isHit = DashAttackArea().TryPhysicsAttack(Player(), BuffedAttackPower(attackStatus.AttackPower()));
-        PlayAttackSe(isHit);
+        PlayAttackSe(isHit, Resources().DashAttackWhiffSound(), Resources().DashAttackHitSound());
 
         if (isHit)
         {

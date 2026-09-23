@@ -7,6 +7,8 @@
 #include "../../Core/Game/PlayerAvatar/SwordMan/CameraGroup/SwordManAvatarCameraGroup.h"
 #include "../../Core/Game/PlayerAvatar/Type/PlayerAvatarType.h"
 #include "../../Core/Network/Packet/Dispatcher/CustomPacketDispatcherGroup.h"
+#include "Relay/RelayRoom.h"
+#include "Relay/RelayServerSettings.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -30,6 +32,17 @@ namespace GamePlay::Network
 
         [[nodiscard]] GameCore::Network::CustomDispatcherGroup& CustomDispatcher();
 
+        /**
+         * 中継サーバー経由で sessionKey の部屋に入る。公開部屋なら空きが無ければホストになる。結果は GetConnectionState() で見る
+         * @note 非公開部屋のコードと断られた理由は RelayRoomCode() / RelayFailure() で読める
+         */
+        void StartRelay(const std::string& sessionKey, const RelayServerSettings& relay, const RelayRoom& room = {});
+
+        /** 非公開部屋のコード。公開部屋・LAN・未接続では空 */
+        [[nodiscard]] std::string RelayRoomCode() const;
+        /** 中継サーバーの部屋に入る前に切れた理由 */
+        [[nodiscard]] std::optional<std::string> RelayFailure() const;
+
         std::weak_ptr<GameCore::IPlayerAvatar> SpawnPlayerAvatar(
             GameCore::PlayerAvatar::PlayerAvatarType type,
             glm::vec3 position,
@@ -47,7 +60,19 @@ namespace GamePlay::Network
         [[nodiscard]] std::unique_ptr<Core::Network::INetworkSystem> DoCreateUseNetworkSystem(
             const Core::Network::NetworkStartSettings& settings) const override;
         
+        struct RelayStart
+        {
+            std::string         sessionKey;
+            RelayServerSettings settings;
+            RelayRoom           room;
+            std::shared_ptr<RelayRoomStatus> status;
+        };
+
         std::optional<GameCore::Network::CustomDispatcherGroup> customDispatcherGroup_;
+        // StartRelay の間だけ入り、DoCreateUseNetworkSystem が EnetRelayNetworkSystem を選ぶ目印になる
+        std::optional<RelayStart> pendingRelayStart_;
+        // インスペクタ表示用: 最後に中継サーバー経由で始めたときの接続先
+        std::optional<RelayStart> activeRelay_;
         [[serialize(1)]] FIELD(Asset::PlayerAvatarFactory) playerAvatarFactory_;
         [[serialize(4)]] FIELD(Asset::EnemyFactory) enemyFactory_;
         
@@ -78,6 +103,4 @@ namespace GamePlay::Network
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(GamePlay::Network::CustomNetworkRunner, 4);
-CEREAL_REGISTER_TYPE(GamePlay::Network::CustomNetworkRunner);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Network::NetworkRunnerBase, GamePlay::Network::CustomNetworkRunner);
 #pragma endregion

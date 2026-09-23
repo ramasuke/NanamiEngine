@@ -8,6 +8,7 @@
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 #include "../../../../../../../Damage/Game_Damage_IDamage.h"
 #include "../../../../../Status/EnemyStatus.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -116,3 +117,8 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("breakStunStateValue_", breakStunStateValue_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::OnDamage)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::OnDamage)
+#pragma endregion

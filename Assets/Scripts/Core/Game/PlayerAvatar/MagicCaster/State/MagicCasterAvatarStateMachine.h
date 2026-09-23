@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "../../StateMachine/PlayerAvatarStateMachineBase.h"
-#include "../../StateMachine/EventScene/IPlayerAvatarEventSceneStateMachine.h"
 #include "MagicCasterAvatarStateBase.h"
 
 namespace GamePlay::PlayerAvatar::MagicCaster
@@ -10,8 +9,7 @@ namespace GamePlay::PlayerAvatar::MagicCaster
 
 namespace GameCore::PlayerAvatar::MagicCaster
 {
-    class MagicCasterAvatarStateMachine final : public PlayerAvatarStateMachineBase<MagicCasterAvatarStateType>,
-                                                public IPlayerAvatarEventSceneStateMachine
+    class MagicCasterAvatarStateMachine final : public PlayerAvatarStateMachineBase<MagicCasterAvatarStateType>
     {
     public:
         using Base = PlayerAvatarStateMachineBase;
@@ -27,8 +25,6 @@ namespace GameCore::PlayerAvatar::MagicCaster
 
         void OnChangeState(MagicCasterAvatarStateType type) override;
         void OnChangeState(EventSceneStateType type) override;
-        void OnEnable()  override;
-        void OnDisable() override;
 
         NanamiEngine::R4::Observable<std::shared_ptr<MagicCasterAvatarStateBase>> CurrentState() const;
         [[nodiscard]] std::shared_ptr<const MagicCasterAvatarStateBase> CurrentStateValue() const;

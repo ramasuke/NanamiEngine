@@ -11,6 +11,9 @@
 #include "../../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
 #include "../../../../Core/Game/PlayerAvatar/Wallet/PlayerAvatar_Wallet.h"
 #include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Application/ApplicationBase.h"
+#include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -20,7 +23,20 @@ namespace GamePlay::Ui
         constexpr short SHOP_STICK_DEADZONE = 12000;
     }
 
-    bool ShopPresenter::isOpen_ = false;
+    bool ShopPresenter::IsAnotherOpen() const
+    {
+        bool found = false;
+        NanamiEngine::Core::Application::ApplicationBase::GameWindow()->MainScene().ForEachGameObject(
+            [this, &found](const std::shared_ptr<GameObject::IGameObject>& gameObject)
+            {
+                if (found)
+                    return;
+
+                const auto presenter = gameObject->Components().Catch<ShopPresenter>().lock();
+                found = presenter && presenter.get() != this && presenter->isOpen_;
+            });
+        return found;
+    }
 
     void ShopPresenter::Bind(const std::weak_ptr<Prop::MerchantStall>& stall)
     {
@@ -29,9 +45,8 @@ namespace GamePlay::Ui
 
     void ShopPresenter::OnStart()
     {
-        if (isOpen_)
+        if (IsAnotherOpen())
         {
-            isDuplicate_ = true;
             isClosed_ = true;
             Entity().lock()->OnDestroy();
             return;
@@ -226,8 +241,7 @@ namespace GamePlay::Ui
 
     void ShopPresenter::OnDestroy()
     {
-        if (!isDuplicate_)
-            isOpen_ = false;
+        isOpen_ = false;
     }
 
     void ShopPresenter::OnDrawGui()
@@ -240,3 +254,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("quantityRepeatInterval_secs_", quantityRepeatInterval_secs_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::ShopPresenter);
+#pragma endregion

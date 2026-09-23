@@ -67,7 +67,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[nodiscard]] StatusParameter::MoveSpeed GetWalkSpeed         () const override { return walkSpeed_; }
         [[nodiscard]] StatusParameter::MoveSpeed GetRunSpeed          () const override { return runSpeed_; }
         [[nodiscard]] float                      GetMoveRotateSpeed  () const override { return moveRotateSpeed_; }
-        [[nodiscard]] float                      GetJumpPower        () const override { return jumpPower_; }
+        [[nodiscard]] float                      GetAimRotateSpeed   () const          { return aimRotateSpeed_; }
+        [[nodiscard]] float                      GetJumpPower      () const override { return jumpPower_; }
         [[nodiscard]] float                      GetJumpStateDuration_secs() const override { return jumpStateDuration_secs_; }
 
         void SetStateMachine(const IReadOnlyPlayerAvatarStateMachine<MagicCasterAvatarStateType>& stateMachine) { stateMachine_ = &stateMachine; }
@@ -75,6 +76,10 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[nodiscard]] bool CanJump() const { return jumpCooldownRemaining_secs_ <= 0.0f && stamina_.Value() >= StatusParameter::Stamina(jumpStaminaCost_); }
         void StartJumpCooldown() { jumpCooldownRemaining_secs_ = jumpCooldown_secs_; }
         void ConsumeJumpStamina() { ConsumeStamina(jumpStaminaCost_); }
+
+        [[nodiscard]] bool  CanAvoidRolling() const { return stamina_.Value() >= StatusParameter::Stamina(avoidRollingStaminaCost_); }
+        [[nodiscard]] float AvoidRollingStateDuration_secs() const { return avoidRollingStateDuration_secs_; }
+        void ConsumeAvoidRollingStamina() { ConsumeStamina(avoidRollingStaminaCost_); }
 
         [[nodiscard]] const StatusParameter::Mana&                                MaxMana() const { return maxMana_; }
         [[nodiscard]] NanamiEngine::R4::ReadOnlyReactiveProperty<StatusParameter::Mana> Mana   () const { return mana_.AsReadOnly(); }
@@ -131,11 +136,15 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[serialize(0)]] StatusParameter::MoveSpeed walkSpeed_;
         [[serialize(0)]] StatusParameter::MoveSpeed runSpeed_;
         [[serialize(0)]] float moveRotateSpeed_;
+        // NOTE: 狙いへの向き直り(FaceAimTarget)用。移動の回転速度とは別にする
+        float aimRotateSpeed_ = 6.2f;
         [[serialize(0)]] float jumpPower_;
         [[serialize(0)]] float jumpStateDuration_secs_;
         [[serialize(0)]] float jumpCooldown_secs_;
         [[serialize(0)]] float jumpStaminaCost_;
         float jumpCooldownRemaining_secs_ = 0.0f;
+        [[serialize(5)]] float avoidRollingStateDuration_secs_;
+        [[serialize(5)]] float avoidRollingStaminaCost_;
 
         [[serialize(0)]] float damageStateDuration_secs_;
         [[serialize(0)]] float deathStateDuration_secs_;
@@ -188,6 +197,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
             archive(CEREAL_NVP(manaRegenPerSecond_));
             archive(CEREAL_NVP(quests_));
             archive(CEREAL_NVP(pouch_));
+            archive(CEREAL_NVP(avoidRollingStateDuration_secs_));
+            archive(CEREAL_NVP(avoidRollingStaminaCost_));
         }
 
         template <class Archive>
@@ -227,13 +238,13 @@ namespace GameCore::PlayerAvatar::MagicCaster
             if (version >= 2) archive(CEREAL_NVP(manaRegenPerSecond_));
             if (version >= 3) archive(CEREAL_NVP(quests_));
             if (version >= 4) archive(CEREAL_NVP(pouch_));
+            if (version >= 5) archive(CEREAL_NVP(avoidRollingStateDuration_secs_));
+            if (version >= 5) archive(CEREAL_NVP(avoidRollingStaminaCost_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus, 4);
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::IPlayerAvatarStatus, GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus);
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus, 5);
 #pragma endregion

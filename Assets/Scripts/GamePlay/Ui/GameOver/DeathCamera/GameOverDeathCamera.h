@@ -3,6 +3,7 @@
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 #include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/Follow/VirtualCameraFollowBehaviour.h"
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/LookAt/VirtualCameraLookAtBehaviour.h"
@@ -40,7 +41,8 @@ namespace GamePlay::Ui
         float startPitch_rad_ = 0.0f;
         float startDistance_ = 0.0f;
         glm::vec3 startLookAtOffset_ = glm::vec3(0.0f);
-        float elapsedSecs_ = 0.0f;
+        // 0..1 の進行度(OutQuad)。終わった後も 1 のまま毎フレーム当て続ける
+        LibCore::Tween::TweenPlayer<float> shotTween_;
         bool isPlaying_ = false;
 
 #pragma region Serialization Function
@@ -74,4 +76,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::GameOverDeathCamera, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::GameOverDeathCamera, 0);

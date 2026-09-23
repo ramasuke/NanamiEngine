@@ -2,6 +2,7 @@
 
 #include "../../../../../../../../../GamePlay/Weather/WeatherService.h"
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -30,3 +31,8 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("durationSeconds_", durationSeconds_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::Lightning)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::Lightning)
+#pragma endregion

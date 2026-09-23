@@ -2,6 +2,7 @@
 
 #include "Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 #include "../../../../../../../../../GamePlay/Ui/BillBoardNpcChatIcon/BillBoardNpcChatIcon.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Friendly::Behaviour
 {
@@ -30,3 +31,8 @@ namespace GameCore::Npc::Friendly::Behaviour
         ImGuiHelper::OnDrawInputField("surpriseIcon_", surpriseIcon_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::SetEnableShowChatIcon)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::ActionBase, GameCore::Npc::Friendly::Behaviour::Action::SetEnableShowChatIcon)
+#pragma endregion

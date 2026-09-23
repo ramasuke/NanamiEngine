@@ -4,6 +4,7 @@
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "../../Scripts/Core/Game/Npc/Friendly/Behaviour/Friendly_BehaviourTree.h"
 #include "../../Scripts/Editor/Npc/Friendly/Behaviour/Window/FriendlyNpcBehaviourWindow.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -41,3 +42,9 @@ namespace NanamiEngine::Module::Asset
         std::make_shared<GameCore::Npc::Friendly::BehaviourTree>(GetContentPath())->OnSave();
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(FriendNpcBehaviourFile, FRIENDLY_NPC_BEHAVIOUR_DATA_EXTENSION_LABEL, "Npc::Friendly")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::FriendNpcBehaviourFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::FriendNpcBehaviourFile);
+#pragma endregion

@@ -1,4 +1,5 @@
-#include "Data_SwordManAvatarResource.h"
+﻿#include "Data_SwordManAvatarResource.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -13,6 +14,11 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("dealDamageTextBillBoardPrefab_",dealDamageTextBillBoardPrefab_);
         ImGuiHelper::OnDrawInputField("attackWhiffSound_", attackWhiffSound_);
         ImGuiHelper::OnDrawInputField("attackHitSound_", attackHitSound_);
+        ImGuiHelper::OnDrawInputField("dashAttackWhiffSound_", dashAttackWhiffSound_);
+        ImGuiHelper::OnDrawInputField("dashAttackHitSound_", dashAttackHitSound_);
+        ImGuiHelper::OnDrawInputField("jumpAttackPlungeSound_", jumpAttackPlungeSound_);
+        ImGuiHelper::OnDrawInputField("jumpAttackWhiffSound_", jumpAttackWhiffSound_);
+        ImGuiHelper::OnDrawInputField("jumpAttackHitSound_", jumpAttackHitSound_);
         ImGuiHelper::OnDrawInputField("avoidRollingSound_", avoidRollingSound_);
         ImGuiHelper::OnDrawInputField("justAvoidRollingSound_", justAvoidRollingSound_);
         ImGuiHelper::OnDrawInputField("jumpSound_", jumpSound_);
@@ -81,3 +87,9 @@ namespace NanamiEngine::Module::Asset
         });
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(SwordManAvatarResource, SWORD_MAN_RESOURCE_EXTENSION_LABEL, "Player::SwordMan")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManAvatarResource);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManAvatarResource);
+#pragma endregion

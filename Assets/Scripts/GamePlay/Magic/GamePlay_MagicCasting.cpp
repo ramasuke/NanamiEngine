@@ -10,7 +10,9 @@
 
 namespace GamePlay::Magic
 {
-    void CastSpell(const GameCore::Magic::IMagicSpell& spell, const GameCore::Magic::IMagicCaster& caster)
+    void CastSpell(
+        const GameCore::Magic::IMagicSpell& spell,
+        const GameCore::Magic::IMagicCaster& caster)
     {
         const auto target = spell.Aim(caster);
         ExecuteSpell(spell, caster, target);
@@ -18,6 +20,7 @@ namespace GamePlay::Magic
         const auto casterId = caster.CasterNetworkObjectId();
         if (casterId == Core::Network::NetworkObjectId::Invalid())
             return;
+        
         if (!Module::Network::NetworkRunnerBase::TryGetInstance())
             return;
 

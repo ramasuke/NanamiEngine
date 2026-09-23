@@ -3,37 +3,66 @@
 #include "DxLib.h"
 #include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
+#include "Libs/LibCore/DxLib/DxMath.h"
 
 namespace GamePlay::Sound
 {
     SoundPlayer* SoundPlayer::instance_ = nullptr;
 
+    SoundPlayer::~SoundPlayer()
+    {
+        // NOTE: RemoveComponent は OnDestroy を呼ばないので、デストラクタでも解除する
+        if (instance_ == this)
+            instance_ = nullptr;
+    }
+
     glm::vec3 SoundPlayer::Position()
     {
-        return instance_->Transform().GetWorldPos(); 
+        if (!instance_)
+            return glm::vec3(0.0f);
+
+        return instance_->Transform().GetWorldPos();
     }
 
     void SoundPlayer::PlaySe(const Asset::SoundFile& sound, const glm::vec3& soundPosition)
     {
+        if (!instance_ || !instance_->audioSource_)
+            return;
+
         instance_->audioSource_->Play(sound, soundPosition);
     }
 
     void SoundPlayer::PlayBgm(const std::weak_ptr<Asset::SoundFile>& sound)
     {
+        if (!instance_)
+            return;
+
+        const auto soundFile = sound.lock();
+        if (!soundFile)
+            return;
+
         instance_->audioSource_ = instance_->RequireComponent<Component::AudioSource>();
-        
+
         instance_->bgmSounds_.push_back(sound);
         instance_->audioSource_->SetLoop(true);
-        instance_->audioSource_->Play(*sound.lock(), instance_->Transform().GetWorldPos());
+        instance_->audioSource_->Play(*soundFile, instance_->Transform().GetWorldPos());
         instance_->audioSource_->SetLoop(false);
     }
 
     void SoundPlayer::StopAllBgm()
     {
-        for (const auto& bgm : instance_->bgmSounds_)
+        if (!instance_)
+            return;
+
+        // NOTE: StopBgm が bgmSounds_ から erase するので、コピーを回す
+        const auto bgmSounds = instance_->bgmSounds_;
+        for (const auto& bgm : bgmSounds)
         {
             StopBgm(bgm);
         }
+        // NOTE: 期限切れの weak_ptr は StopBgm が早期 return して残るので捨てる
+        instance_->bgmSounds_.clear();
     }
 
     void SoundPlayer::StopBgm(const std::weak_ptr<Asset::SoundFile>& sound)
@@ -68,15 +97,17 @@ namespace GamePlay::Sound
 
     void SoundPlayer::OnUpdate()
     {
-        for (auto& bgmSoundFile: instance_->bgmSounds_)
+        for (const auto& bgmSound : bgmSounds_)
         {
-            Set3DPositionSoundMem(Transform().GetDxWorldPos(), bgmSoundFile.lock()->GetDxLibHandle());
+            if (const auto bgmSoundFile = bgmSound.lock())
+                Set3DPositionSoundMem(LibCore::Dxlib::ToDxVector(Transform().GetWorldPos()), bgmSoundFile->GetDxLibHandle());
         }
     }
 
     void SoundPlayer::OnDestroy()
     {
-        
+        if (instance_ == this)
+            instance_ = nullptr;
     }
 
     void SoundPlayer::OnDrawGui()
@@ -84,3 +115,7 @@ namespace GamePlay::Sound
         ImGuiHelper::OnDrawInputField("audioSource_", audioSource_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Sound::SoundPlayer);
+#pragma endregion

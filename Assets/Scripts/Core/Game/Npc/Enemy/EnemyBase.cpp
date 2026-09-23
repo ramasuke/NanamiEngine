@@ -9,6 +9,7 @@
 #include "Behaviour/Enemy_BehaviourTree.h"
 #include "../../PlayerAvatar/Record/PlayerAvatar_RecordBook.h"
 #include "ShowHealthGaugeProvider/IShowHealthGaugeProvider.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc
 {
@@ -53,8 +54,8 @@ namespace GameCore::Npc
     {
         if (isDefeatRecorded_)
             return;
+        
         isDefeatRecorded_ = true;
-
         if (const auto kind = RecordKind())
             PlayerAvatar::Record::RecordBook::Instance().RecordDefeat(*kind);
     }
@@ -100,3 +101,7 @@ namespace GameCore::Npc
         }
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GameCore::Npc::EnemyBase);
+#pragma endregion

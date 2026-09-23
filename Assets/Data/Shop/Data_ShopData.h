@@ -49,9 +49,6 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(ShopData, SHOP_DATA_EXTENSION_LABEL, "Item")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::ShopData, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::ShopData);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::ShopData);
 #pragma endregion

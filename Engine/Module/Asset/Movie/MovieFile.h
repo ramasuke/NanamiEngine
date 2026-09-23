@@ -42,7 +42,4 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::MovieFile, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::MovieFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::MovieFile);
 #pragma endregion
-REGISTER_ASSET(MovieFile, ".mp4")

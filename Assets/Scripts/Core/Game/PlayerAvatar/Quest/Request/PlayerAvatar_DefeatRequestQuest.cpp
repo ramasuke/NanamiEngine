@@ -10,13 +10,13 @@ namespace GameCore::PlayerAvatar::Quest::Request
         return records.DefeatedCount(enemyKind_);
     }
 
-    rxcpp::observable<int> DefeatRequestQuest::ObserveRecord(const Record::IRecordBook& records) const
+    NanamiEngine::R4::Observable<int> DefeatRequestQuest::ObserveRecord(const Record::IRecordBook& records) const
     {
         const auto kind = enemyKind_;
         const auto* book = &records;
         return records.OnDefeat()
-            .filter([kind](const Npc::Enemy::EnemyKind defeated) { return defeated == kind; })
-            .map([kind, book](Npc::Enemy::EnemyKind) { return book->DefeatedCount(kind); });
+            .Where([kind](const Npc::Enemy::EnemyKind defeated) { return defeated == kind; })
+            .Select([kind, book](Npc::Enemy::EnemyKind) { return book->DefeatedCount(kind); });
     }
 
     void DefeatRequestQuest::DoDrawGui()

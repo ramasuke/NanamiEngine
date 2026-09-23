@@ -15,6 +15,8 @@
 #include "../../Core/Game/PlayerAvatar/StateMachine/PlayerAvatarStateMachineBase.h"
 #include "../../Core/Game/PlayerAvatar/RequireType/RequireType.h"
 #include "../../Core/Game/PlayerAvatar/Status/PlayerAvatarStatus.h"
+#include "../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_ITakeableQuest.h"
+#include "../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_QuestJournal.h"
 #include "../Ui/NpcChatting/Ui_NpcChatting.h"
 #include "InteractableArea/InteractableArea.h"
 #include "WakeUpArea/WakeUpArea.h"
@@ -57,6 +59,11 @@ namespace GamePlay::PlayerAvatar
         [[nodiscard]] GameObject::Transform& PlayerTransform() const override { return Transform(); }
         [[nodiscard]] Status& PlayerStatus() const override { return *status_; }
         void SaveStatus() override;
+        /**
+         * @brief 職業を問わないクエスト(QuestJournal)をこのアバターのものにする。手元で操作するアバターだけが呼ぶ。
+         * 保存済みの状態から読み直すので、ステータスを読み込んだ直後に呼ぶ
+         */
+        void BindQuestJournal();
         void EnableStateMachiine() override;
         void DisableStateMachine() override;
 
@@ -228,7 +235,23 @@ namespace GamePlay::PlayerAvatar
         if (status_->IsDeath())
             return;
 
+        // 報酬を入れた所持金と、受注・達成の記録は同じ時点で保存する。
+        // 間で落ちたときは報酬が消えるほうに倒す(受注が残っていれば読み直したときにもう一度達成できる)
+        GameCore::PlayerAvatar::Quest::QuestJournal::Instance().Save();
         GameCore::PlayerAvatar::SaveStatus<Status, TraitsT>(status_);
+    }
+
+    template <RequireType::Traits TraitsT>
+    void PlayerAvatarBase<TraitsT>::BindQuestJournal()
+    {
+        auto& journal = GameCore::PlayerAvatar::Quest::QuestJournal::Instance();
+        journal.Reload();
+        journal.Adopt(status_->Quest().ReleaseLegacyQuests());
+        journal.OnRewarded()
+            .Subscribe([this](const GameCore::StatusParameter::Money& reward)
+            {
+                status_->Wallet().Earn(reward);
+            }).AddTo(this);
     }
 
     template <RequireType::Traits TraitsT>
@@ -300,9 +323,12 @@ namespace GamePlay::PlayerAvatar
     }
 
     // PlayerAvatarBase<Traits>をcerealに登録するマクロ
-#define REGISTER_PLAYER_AVATAR_BASE(TraitsType)                                  \
+    // NOTE: PLAYER_AVATAR_BASE_CLASS_VERSION はヘッダ、REGISTER_PLAYER_AVATAR_BASE は .cpp に書く
+#define PLAYER_AVATAR_BASE_CLASS_VERSION(TraitsType)                             \
 CEREAL_CLASS_VERSION(                                                            \
-GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>, 4) \
+GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>, 4)
+
+#define REGISTER_PLAYER_AVATAR_BASE(TraitsType)                                  \
 CEREAL_REGISTER_TYPE(                                                            \
 GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>)    \
 CEREAL_REGISTER_POLYMORPHIC_RELATION(                                            \

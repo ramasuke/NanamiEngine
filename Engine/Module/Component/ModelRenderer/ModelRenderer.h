@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <DxLib.h>
 #include <memory>
 #include <string>
 #include <utility>
@@ -48,7 +47,7 @@ namespace NanamiEngine::Module::Component
         void OnUpdatedPhysics() override;
 
         [[nodiscard]] bool   IsInterpolating() const;
-        [[nodiscard]] MATRIX GetRenderMatrix() const;
+        [[nodiscard]] glm::mat4 GetRenderMatrix() const;
         void RefreshTriangleListInfo();
         void ResolveMaterialPasses      (const PolicyList& policies);
         void RestoreDefaultMaterialState();
@@ -109,4 +108,4 @@ void load(Archive& archive, const std::uint32_t version) {
 #pragma endregion
 };
 }
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::ModelRenderer, 5)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::ModelRenderer, 5);

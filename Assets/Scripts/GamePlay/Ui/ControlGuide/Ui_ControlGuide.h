@@ -10,6 +10,7 @@
 #include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "Engine/Module/Asset/Sprite/SpriteFile.h"
 #include "Engine/Module/Component/ComponentBase.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 
 namespace GamePlay::Ui
 {
@@ -40,10 +41,10 @@ namespace GamePlay::Ui
         {
             std::shared_ptr<Asset::SpriteFile> glyph;
             std::string label;
-            float visibility        = 0.0f;
-            float usableRate        = 0.0f;
-            float focusRate         = 0.0f;
-            float pulseElapsed_secs = 0.0f;
+            LibCore::Tween::TweenPlayer<float> visibility;
+            LibCore::Tween::TweenPlayer<float> usableRate;
+            LibCore::Tween::TweenPlayer<float> focusRate;
+            LibCore::Tween::TweenPlayer<float> pulse;
             bool  isActive          = false;
             bool  isContentDirty    = true;
             bool  isFocused         = false;
@@ -74,7 +75,7 @@ namespace GamePlay::Ui
 
         std::vector<std::weak_ptr<ControlGuideRow>> rowViews_;
         std::vector<RowState> rowStates_;
-        float guideAlpha_ = 0.0f;
+        LibCore::Tween::TweenPlayer<float> guideFade_;
         float focusElapsed_secs_ = 0.0f;
         float anyFocusRate_ = 0.0f;
 
@@ -125,4 +126,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::ControlGuide, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::ControlGuide, 0);

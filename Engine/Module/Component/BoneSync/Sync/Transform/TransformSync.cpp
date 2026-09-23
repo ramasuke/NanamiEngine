@@ -3,6 +3,7 @@
 #include "../../BonePose/BonePose.h"
 #include "../../../../GameObject/Transform/Transform.h"
 #include "../../../../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
+#include "../../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Bone
 {
@@ -29,3 +30,8 @@ namespace NanamiEngine::Module::Bone
         LibCore::ImGuiHelper::OnDrawInputField("syncRotation_", syncRotation_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Bone::TransformSync);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Bone::BoneSyncBase, NanamiEngine::Module::Bone::TransformSync);
+#pragma endregion

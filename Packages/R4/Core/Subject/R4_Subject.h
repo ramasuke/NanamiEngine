@@ -5,15 +5,13 @@
 namespace NanamiEngine::R4
 {
     ///NOTE: OnNext した値を購読者へ流す（R3 の Subject<T>）
-    ///      持ち主がコピーされた時に購読者が連動しないよう、コピー先は購読者なしの新しい Subject から始まり、
-    ///      代入しても自分の購読者はそのまま
     template <typename T>
     class Subject final
     {
     public:
         Subject() = default;
         Subject(const Subject&) { }
-        // rxcpp の subject はムーブ元が空になるので、ムーブは同じ実体を共有する
+        // rxcpp の subject はムーブ元が空になるので、ムーブは共有
         Subject(Subject&& other) : subject_(other.subject_) { }
         Subject& operator=(const Subject&) { return *this; }
         Subject& operator=(Subject&&)      { return *this; }

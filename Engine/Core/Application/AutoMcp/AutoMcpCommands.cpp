@@ -1292,6 +1292,52 @@ namespace NanamiEngine::Core::Application::AutoMcp
             DescribeAnimationViewState(*window, false, result, allocator);
         }
 
+        static void CommandAnimationViewBones(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        {
+            const auto window      = ApplicationBase::MainWindows().Catch<MainWindow::AnimationViewWindow>();
+            const int  modelHandle = AutoMcpEngineAccess::AnimationViewStage(*window).ModelHandle();
+            if (!IsDxHandleReady(modelHandle))
+                throw AutoMcpError("the AnimationView model is not loaded yet");
+
+            // NOTE: 部分一致(大文字小文字無視)。空なら全フレーム
+            const std::string filter = ToLowerAscii(OptionalString(args, "nameContains", std::string()));
+
+            const auto rowOf = [&](const MATRIX& matrix, const int row)
+            {
+                return MakeVec3(glm::vec3(matrix.m[row][0], matrix.m[row][1], matrix.m[row][2]), allocator);
+            };
+
+            JsonValue frames(rapidjson::kArrayType);
+            const int frameNum = MV1GetFrameNum(modelHandle);
+            for (int frame = 0; frame < frameNum; ++frame)
+            {
+                const std::string name = DxLibName(MV1GetFrameName(modelHandle, frame));
+                if (!filter.empty() && ToLowerAscii(name).find(filter) == std::string::npos)
+                    continue;
+
+                const MATRIX world = MV1GetFrameLocalWorldMatrix(modelHandle, frame);
+                JsonValue value(rapidjson::kObjectType);
+                value.AddMember("index",    frame, allocator);
+                value.AddMember("name",     MakeString(name, allocator), allocator);
+                value.AddMember("parent",   MV1GetFrameParent(modelHandle, frame), allocator);
+                value.AddMember("position", rowOf(world, 3), allocator);
+                value.AddMember("axisX",    rowOf(world, 0), allocator);
+                value.AddMember("axisY",    rowOf(world, 1), allocator);
+                value.AddMember("axisZ",    rowOf(world, 2), allocator);
+                frames.PushBack(value, allocator);
+            }
+
+            const MATRIX model = MV1GetMatrix(modelHandle);
+            JsonValue modelMatrix(rapidjson::kObjectType);
+            modelMatrix.AddMember("position", rowOf(model, 3), allocator);
+            modelMatrix.AddMember("axisX",    rowOf(model, 0), allocator);
+            modelMatrix.AddMember("axisY",    rowOf(model, 1), allocator);
+            modelMatrix.AddMember("axisZ",    rowOf(model, 2), allocator);
+
+            result.AddMember("modelMatrix", modelMatrix, allocator);
+            result.AddMember("frames",      frames, allocator);
+        }
+
         static void CommandAnimationViewSetClip(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
         {
             const auto        window   = ApplicationBase::MainWindows().Catch<MainWindow::AnimationViewWindow>();
@@ -1439,6 +1485,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             {"animationview.state",     {AutoMcpPhase::FrameEnd,   CommandAnimationViewState}},
             {"animationview.set",       {AutoMcpPhase::FrameEnd,   CommandAnimationViewSet}},
             {"animationview.set_clip",  {AutoMcpPhase::FrameEnd,   CommandAnimationViewSetClip}},
+            {"animationview.bones",     {AutoMcpPhase::FrameEnd,   CommandAnimationViewBones}},
             {"preview.camera",          {AutoMcpPhase::FrameEnd,   CommandPreviewCamera}},
         };
         return commands;

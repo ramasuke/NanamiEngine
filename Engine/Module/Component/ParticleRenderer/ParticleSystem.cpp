@@ -2,6 +2,7 @@
 #include "EffekseerForDXLib.h"
 #include "../../../Core/Application/Time/Time.h"
 #include "../../GameObject/Transform/Transform.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 void Component::ParticleSystem::Play()
 {
@@ -163,3 +164,7 @@ void Component::ParticleSystem::OnDrawGui()
         Play();
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::ParticleSystem);
+#pragma endregion

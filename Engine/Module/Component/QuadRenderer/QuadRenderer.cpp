@@ -3,6 +3,8 @@
 #include <vector>
 
 #include "../../GameObject/Transform/Transform.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
+#include "../../../../Libs/LibCore/DxLib/DxMath.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -93,7 +95,7 @@ namespace NanamiEngine::Module::Component
         if (!IsEnable() || !HasCustomShader())
             return;
 
-        const MATRIX worldMat = Transform().GetDxWorldMatrix();
+        const MATRIX worldMat = LibCore::Dxlib::ToDxMatrix(Transform().GetWorldMatrix());
         SetTransformToWorld(&worldMat);
 
         const int cbHandle = GetOrCreateShaderConstantBufferHandle();
@@ -144,3 +146,7 @@ namespace NanamiEngine::Module::Component
         ImGui::Text("cbHandle_: %d  (slot b%d)", cbHandle_, CUSTOM_SHADER_CB_SLOT);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::QuadRenderer);
+#pragma endregion

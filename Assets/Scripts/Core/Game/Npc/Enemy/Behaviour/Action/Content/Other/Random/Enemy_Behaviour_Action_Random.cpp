@@ -2,6 +2,7 @@
 
 #include <random>
 #include <algorithm>
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -20,3 +21,11 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("Success Rate (%)", successRate_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::Random)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(
+    GameCore::Npc::Enemy::Behaviour::ActionBase,
+    GameCore::Npc::Enemy::Behaviour::Action::Random
+)
+#pragma endregion

@@ -19,13 +19,13 @@
                 },
                 "maxHealth_": {
                     "cereal_class_version": 0,
-                    "value_": 100
+                    "value_": 150
                 },
                 "minHealth_": {
                     "value_": 0
                 },
                 "health_": {
-                    "value_": 100
+                    "value_": 150
                 },
                 "maxStamina_": {
                     "cereal_class_version": 0,
@@ -40,7 +40,7 @@
                     "cereal_class_version": 0,
                     "value0": {
                         "cereal_class_version": 0,
-                        "value_": 10
+                        "value_": 15
                     },
                     "value1": {
                         "cereal_class_version": 0,
@@ -91,7 +91,7 @@
                 "chargeAttackMaxHold_secs_": 3.0,
                 "chargeAttack_": {
                     "value0": {
-                        "value_": 8
+                        "value_": 35
                     },
                     "value1": {
                         "value0": 15
@@ -134,12 +134,8 @@
                     "ptr_wrapper": {
                         "valid": 1,
                         "data": {
-                            "cereal_class_version": 1,
-                            "count": 0,
-                            "storyQuests_": {
-                                "cereal_class_version": 0,
-                                "count": 0
-                            }
+                            "cereal_class_version": 2,
+                            "count": 0
                         }
                     }
                 },

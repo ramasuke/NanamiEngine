@@ -8,6 +8,7 @@
 #include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 using GameCore::Scene::Main::SceneLoadStep;
 
@@ -101,15 +102,17 @@ namespace GamePlay::Ui
         {
         case Phase::Hidden:
             lastTickMs_ = GetNowCount();
-            coverBlendRate_ = 0.0f;
+            PlayCover(0.0f, 255.0f, fadeInSecs_);
             phase_ = Phase::CoveringGame;
             break;
         case Phase::RevealingGame:
             // 地図は消えたあと。幕が明け切る前なので、その濃さから覆い直す
+            PlayCover(coverTween_.Value(), 255.0f, fadeInSecs_);
             phase_ = Phase::CoveringGame;
             break;
         case Phase::CoveringMap:
             // 地図はまだ出ている。幕を明けて見せ直す
+            PlayCover(coverTween_.Value(), 0.0f, fadeInSecs_);
             phase_ = Phase::RevealingMap;
             break;
         case Phase::CoveringGame:
@@ -155,7 +158,7 @@ namespace GamePlay::Ui
             return true;
         case Phase::CoveringGame:
         case Phase::RevealingGame:
-            return coverBlendRate_ >= 255.0f;
+            return coverTween_.Value() >= 255.0f;
         case Phase::Hidden:
             return false;
         }
@@ -176,7 +179,6 @@ namespace GamePlay::Ui
             return;
 
         SetVisualEnabled(false);
-        coverBlendRate_ = 0.0f;
         ApplyCoverBlendRate();
     }
 
@@ -231,39 +233,39 @@ namespace GamePlay::Ui
 
     void LoadingScreenUi::UpdateCoverFade(const float deltaSecs)
     {
-        const float inStep  = 255.0f * deltaSecs / std::max(fadeInSecs_, 0.01f);
-        const float outStep = 255.0f * deltaSecs / std::max(fadeOutSecs_, 0.01f);
+        const bool isCoverFinished = coverTween_.Tick(deltaSecs);
 
         switch (phase_)
         {
         case Phase::CoveringGame:
-            coverBlendRate_ = std::min(255.0f, coverBlendRate_ + inStep);
-            if (coverBlendRate_ >= 255.0f)
+            if (isCoverFinished)
             {
                 SetVisualEnabled(true);
                 phase_ = Phase::RevealingMap;
+                PlayCover(255.0f, 0.0f, fadeInSecs_);
             }
             break;
         case Phase::RevealingMap:
-            coverBlendRate_ = std::max(0.0f, coverBlendRate_ - inStep);
-            if (coverBlendRate_ <= 0.0f)
+            if (isCoverFinished)
                 phase_ = Phase::Visible;
             break;
         case Phase::Visible:
             if (CanHide())
+            {
                 phase_ = Phase::CoveringMap;
+                PlayCover(0.0f, 255.0f, fadeOutSecs_);
+            }
             break;
         case Phase::CoveringMap:
-            coverBlendRate_ = std::min(255.0f, coverBlendRate_ + outStep);
-            if (coverBlendRate_ >= 255.0f)
+            if (isCoverFinished)
             {
                 SetVisualEnabled(false);
                 phase_ = Phase::RevealingGame;
+                PlayCover(255.0f, 0.0f, fadeOutSecs_);
             }
             break;
         case Phase::RevealingGame:
-            coverBlendRate_ = std::max(0.0f, coverBlendRate_ - outStep);
-            if (coverBlendRate_ <= 0.0f)
+            if (isCoverFinished)
                 phase_ = Phase::Hidden;
             break;
         case Phase::Hidden:
@@ -271,6 +273,12 @@ namespace GamePlay::Ui
         }
 
         ApplyCoverBlendRate();
+    }
+
+    void LoadingScreenUi::PlayCover(const float from, const float to, const float fullFadeSecs)
+    {
+        const float secs = std::max(fullFadeSecs, 0.01f) * std::abs(to - from) / 255.0f;
+        coverTween_.Play(tweeny::from(from).to(to).during(LibCore::Tween::Ms(secs)));
     }
 
     void LoadingScreenUi::UpdateProgress(const float deltaSecs)
@@ -332,7 +340,7 @@ namespace GamePlay::Ui
         if (!cover)
             return;
 
-        const int blendRate = static_cast<int>(coverBlendRate_);
+        const int blendRate = static_cast<int>(coverTween_.Value());
         cover->SetEnable(blendRate > 0);
         cover->SetBlendRate(blendRate);
     }
@@ -381,3 +389,7 @@ namespace GamePlay::Ui
         ImGui::Text("step: %d  phase: %d", static_cast<int>(step_), static_cast<int>(phase_));
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::LoadingScreenUi);
+#pragma endregion

@@ -2,6 +2,7 @@
 #include <vector>
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 
 namespace GamePlay::Ui
 {
@@ -23,8 +24,7 @@ namespace GamePlay::Ui
 
         static std::vector<DamageFlashUI*> instances_;
 
-        float trauma_   = 0.0f;
-        float duration_ = 0.25f;
+        LibCore::Tween::TweenPlayer<float> trauma_;
 
         [[serialize(0)]] int   maxBlendRate_     = 150;
         [[serialize(0)]] float defaultIntensity_ = 0.5f;
@@ -55,4 +55,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::DamageFlashUI, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::DamageFlashUI, 0);

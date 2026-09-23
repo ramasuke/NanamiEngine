@@ -46,4 +46,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::ScreenColorGradeRenderer, 0)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::NanamiUi::ScreenColorGradeRenderer, 0);

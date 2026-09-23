@@ -4,6 +4,7 @@
 
 #include "Engine/Core/Application/Time/Time.h"
 #include "../../Weather/WindZone.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Prop
 {
@@ -77,7 +78,7 @@ namespace GamePlay::Prop
         outPass.vsHandle       = vsFile_->GetVsHandle();
         outPass.psHandle       = psFile_->GetPsHandle();
         outPass.cbHandle       = cbHandle;
-        outPass.blendMode      = DX_BLENDMODE_NOBLEND; // 葉は PS の clip() で抜くのでブレンドしない
+        outPass.blendMode      = LibCore::Dxlib::BlendMode::NoBlend; // 葉は PS の clip() で抜くのでブレンドしない
         outPass.blendParam     = 0;
         outPass.disableZWrite  = false;
         outPass.disableCulling = true;                 // 葉カードは裏からも見える
@@ -104,3 +105,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("ambient_",           ambient_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::TreeLeafSway);
+#pragma endregion

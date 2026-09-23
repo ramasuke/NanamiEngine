@@ -82,9 +82,6 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(BoardQuest, BOARD_QUEST_EXTENSION_LABEL, "EventBoard")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::BoardQuest, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::BoardQuest);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::BoardQuest);
 #pragma endregion

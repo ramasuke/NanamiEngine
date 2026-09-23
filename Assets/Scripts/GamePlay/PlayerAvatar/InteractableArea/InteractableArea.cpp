@@ -2,6 +2,7 @@
 
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../Core/Game/PlayerAvatar/Interactable/IPlayerInteractable.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::PlayerAvatar
 {
@@ -138,3 +139,7 @@ namespace GamePlay::PlayerAvatar
         }
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::InteractableArea);
+#pragma endregion

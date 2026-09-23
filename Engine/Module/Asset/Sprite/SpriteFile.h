@@ -58,8 +58,4 @@ void load(Archive& archive, const std::uint32_t version) {
 }
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SpriteFile, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SpriteFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::SpriteFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::SpriteFile);
 #pragma endregion
-REGISTER_ASSET(SpriteFile, ".png")

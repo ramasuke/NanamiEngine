@@ -10,6 +10,7 @@
 #include "../../../../../Module/Component/ModelRenderer/ModelRenderer.h"
 #include "../../../../../Module/GameObject/Transform/Transform.h"
 #include "../../../../../Module/Scene/GameObject/SceneGameObject/SceneGameObject.h"
+#include "../../../../../../Libs/LibCore/DxLib/DxMath.h"
 
 namespace NanamiEngine::Core::MainWindow
 {
@@ -99,9 +100,9 @@ namespace NanamiEngine::Core::MainWindow
         return renderer ? renderer->modelDxLibHandle_ : -1;
     }
 
-    MATRIX ModelPreviewStage::PreviewWorldMatrix() const
+    glm::mat4 ModelPreviewStage::PreviewWorldMatrix() const
     {
-        return previewObject_ ? previewObject_->Transform().GetDxWorldMatrix() : MGetIdent();
+        return previewObject_ ? previewObject_->Transform().GetWorldMatrix() : glm::mat4(1.0f);
     }
 
     void ModelPreviewStage::EnsurePreviewObject(const std::shared_ptr<IMainWindow>& owner)
@@ -132,7 +133,7 @@ namespace NanamiEngine::Core::MainWindow
 
         const int handle = renderer->modelDxLibHandle_;
         // フレームのローカル→ワールド行列にプレビュー Transform を含めるため、先に行列を設定しておく
-        MV1SetMatrix(handle, previewObject_->Transform().GetDxWorldMatrix());
+        MV1SetMatrix(handle, LibCore::Dxlib::ToDxMatrix(previewObject_->Transform().GetWorldMatrix()));
 
         glm::vec3 minPos( FLT_MAX);
         glm::vec3 maxPos(-FLT_MAX);

@@ -1,4 +1,5 @@
 ﻿#include "Ui_PauseMenuRow.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -24,3 +25,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("underline_", underline_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PauseMenuRow);
+#pragma endregion

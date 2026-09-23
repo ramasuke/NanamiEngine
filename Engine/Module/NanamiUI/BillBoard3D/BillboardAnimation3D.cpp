@@ -3,6 +3,8 @@
 #include <algorithm>
 #include "DxLib.h"
 #include "../../GameObject/Transform/Transform.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
+#include "../../../../Libs/LibCore/DxLib/DxMath.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -50,7 +52,7 @@ namespace NanamiEngine::Module::NanamiUi
         SetWriteZBuffer3D(FALSE);
 
         DrawBillboard3D(
-            Transform().GetDxWorldPos(),
+            LibCore::Dxlib::ToDxVector(Transform().GetWorldPos()),
             0.5f,
             0.5f,
             Transform().GetWorldScale().x,
@@ -72,3 +74,7 @@ namespace NanamiEngine::Module::NanamiUi
         ImGui::SliderInt("frame_", &frame_, 0, std::max(GetFrameCount() - 1, 0));
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiUi::BillboardAnimation3D);
+#pragma endregion

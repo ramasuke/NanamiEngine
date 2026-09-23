@@ -7,6 +7,7 @@
 #include "../../../Core/Game/PlayerAvatar/ITakablePlayerAttack/ITakablePlayerAttack.h"
 #include "../../Spawn/GamePlay_PrefabSpawner.h"
 #include "../GamePlay_MagicAim.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Magic
 {
@@ -96,3 +97,7 @@ namespace GamePlay::Magic
         ImGui::Text("armed: %s  targets: %d", isArmed_ ? "true" : "false", static_cast<int>(targets_.size()));
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Magic::MagicBlast);
+#pragma endregion

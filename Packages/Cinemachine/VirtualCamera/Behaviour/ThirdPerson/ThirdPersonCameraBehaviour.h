@@ -17,6 +17,8 @@ namespace NanamiEngine::CineMachine::Behaviour
         void SetEnableLockMousePos(bool enable);
         void SetEnableImmediateApply(bool enable);
 
+        [[nodiscard]] static bool IsMousePinned();
+
     private:
         bool WantsImmediateApply() const override { return isImmediateApply_; }
 
@@ -33,7 +35,6 @@ namespace NanamiEngine::CineMachine::Behaviour
 
         // Playerからカメラへrayを飛ばし、障害物にめり込まない位置までオフセットを縮める
         [[nodiscard]] glm::vec3 ResolveCameraCollision(const glm::vec3& desiredOffset) const;
-
 
         bool isLockMousePos_ = true;
         // ブレインの補完を無視して仮想カメラのTransformを即時適用するか。
@@ -108,6 +109,4 @@ void load(Archive& archive, const std::uint32_t version) {
     };
 }
 
-ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ThirdPersonCameraBehaviour, 7)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IAwakable, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::ThirdPersonCameraBehaviour);
+CEREAL_CLASS_VERSION(CineMachine::Behaviour::ThirdPersonCameraBehaviour, 7);

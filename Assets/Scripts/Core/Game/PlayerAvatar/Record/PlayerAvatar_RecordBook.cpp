@@ -11,9 +11,9 @@ namespace GameCore::PlayerAvatar::Record
 
     void RecordBook::RecordDefeat(const Npc::Enemy::EnemyKind kind)
     {
-        ++data_.defeated_[static_cast<int>(kind)];
+        ++data_.defeated_[kind];
         Save();
-        onDefeat_.get_subscriber().on_next(kind);
+        onDefeat_.OnNext(kind);
     }
 
     void RecordBook::RecordAcquire(const Guid& item, const int count)
@@ -21,20 +21,20 @@ namespace GameCore::PlayerAvatar::Record
         if (count <= 0 || item.Value().empty())
             return;
 
-        data_.acquired_[item.Value()] += count;
+        data_.acquired_[item] += count;
         Save();
-        onAcquire_.get_subscriber().on_next(AcquiredRecord{ item, count });
+        onAcquire_.OnNext(AcquiredRecord{ item, count });
     }
 
     int RecordBook::DefeatedCount(const Npc::Enemy::EnemyKind kind) const
     {
-        const auto found = data_.defeated_.find(static_cast<int>(kind));
+        const auto found = data_.defeated_.find(kind);
         return found != data_.defeated_.end() ? found->second : 0;
     }
 
     int RecordBook::AcquiredCount(const Guid& item) const
     {
-        const auto found = data_.acquired_.find(item.Value());
+        const auto found = data_.acquired_.find(item);
         return found != data_.acquired_.end() ? found->second : 0;
     }
 
@@ -54,6 +54,6 @@ namespace GameCore::PlayerAvatar::Record
 
         ImGui::Text("Acquired");
         for (const auto& [item, count] : data_.acquired_)
-            ImGui::BulletText("%s: %d", item.c_str(), count);
+            ImGui::BulletText("%s: %d", item.Value().c_str(), count);
     }
 }

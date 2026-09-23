@@ -1,6 +1,7 @@
 ﻿#include "WindZone.h"
 #include <cmath>
 #include <DxLib.h>
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Weather
 {
@@ -60,3 +61,7 @@ namespace GamePlay::Weather
         ImGuiHelper::OnDrawInputField("frequency_",        frequency_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Weather::WindZone);
+#pragma endregion

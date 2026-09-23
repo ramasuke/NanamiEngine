@@ -55,7 +55,7 @@ namespace GameCore::PlayerAvatar
         class NullQuestGroup final : public IQuestGroup
         {
         public:
-            void Subscribe(const std::shared_ptr<Quest::ITakeableQuest>& addQuest) override;
+            bool Subscribe(const std::shared_ptr<Quest::ITakeableQuest>& addQuest) override;
             [[nodiscard]] bool IsTaking(const QuestType& quest) const override;
         };
 

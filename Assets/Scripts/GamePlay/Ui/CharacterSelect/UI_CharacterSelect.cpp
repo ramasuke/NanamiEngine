@@ -4,6 +4,7 @@
 
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -86,3 +87,7 @@ namespace GamePlay::Ui
         });
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::CharacterSelectUi);
+#pragma endregion

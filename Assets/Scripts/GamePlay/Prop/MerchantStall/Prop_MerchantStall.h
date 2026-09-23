@@ -41,4 +41,4 @@ namespace GamePlay::Prop
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Prop::MerchantStall, 0)
+CEREAL_CLASS_VERSION(GamePlay::Prop::MerchantStall, 0);

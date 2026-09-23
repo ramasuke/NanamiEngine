@@ -51,6 +51,7 @@ namespace GamePlay::Ui
         void OnDestroy() override;
 
         [[nodiscard]] static Keys ReadKeys();
+        [[nodiscard]] bool IsAnotherOpen() const;
         void UpdateQuantity(const Keys& keys);
         void ChangeQuantity(int delta);
         void Purchase();
@@ -76,10 +77,8 @@ namespace GamePlay::Ui
         float quantityRepeat_secs_ = 0.0f;
         bool isClosing_ = false;
         bool isClosed_ = false;
-        bool isDuplicate_ = false;
-
         // 話しかけるたびに二重に生えるのを防ぐ
-        static bool isOpen_;
+        bool isOpen_ = false;
 
 #pragma region Serialization Function
     public:
@@ -112,4 +111,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::ShopPresenter, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::ShopPresenter, 0);

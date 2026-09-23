@@ -2,6 +2,7 @@
 
 #include "../../Scripts/Core/Game/Magic/IMagicCaster.h"
 #include "../../Scripts/Core/Game/Magic/MagicSpellEffectFactory.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -56,3 +57,9 @@ namespace NanamiEngine::Module::Asset
         LibCore::ImGuiHelper::OnDrawInputField("effect_", effect_);
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(MagicSpellData, MAGIC_SPELL_DATA_EXTENSION_LABEL, "Player::MagicCaster")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::MagicSpellData);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::MagicSpellData);
+#pragma endregion

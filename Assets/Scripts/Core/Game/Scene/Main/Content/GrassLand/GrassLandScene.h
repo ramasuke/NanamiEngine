@@ -3,6 +3,7 @@
 
 #include "../../Base/Main_GameSceneBase.h"
 #include "Context/GrassLandSceneContext.h"
+#include "Packages/R4/R4.h"
 
 namespace GameCore::Scene::GrassLand
 {
@@ -29,5 +30,6 @@ namespace GameCore::Scene::Main
         
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
         std::shared_ptr<GrassLand::GrassLandArrivalMovie> arrivalMovie_;
+        NanamiEngine::R4::Disposable stageClearSubscription_;
     };
 }

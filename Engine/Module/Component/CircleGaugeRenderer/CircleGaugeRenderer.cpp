@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "../../GameObject/Transform/Transform.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -66,3 +67,7 @@ namespace NanamiEngine::Module::NanamiUi
         ImGui::SliderFloat("fillRate_", &fillRate_, 0.0f, 1.0f);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::CircleGaugeRenderer);
+#pragma endregion

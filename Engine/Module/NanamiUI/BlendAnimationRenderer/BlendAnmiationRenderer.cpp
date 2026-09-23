@@ -1,6 +1,7 @@
 ﻿#include "BlendAnmiationRenderer.h"
 #include "../../../Core/Application/Time/Time.h"
 #include <algorithm>
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -36,3 +37,7 @@ namespace NanamiEngine::Module::NanamiUi
         ImGuiHelper::OnDrawInputField("addBlendRate_secs_", addBlendRate_secs_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiUi::BlendAnimationRenderer);
+#pragma endregion

@@ -2,6 +2,7 @@
 
 #include "../../../../../../../../GamePlay/Spawn/GamePlay_PrefabSpawner.h"
 #include "../../../../../../../Network/Rpc/Custom_RpcType.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -43,3 +44,10 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("particlePrefab_", particlePrefab_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::GenerateParticle)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(
+    GameCore::Npc::Enemy::Behaviour::ActionBase,
+    GameCore::Npc::Enemy::Behaviour::Action::GenerateParticle)
+#pragma endregion

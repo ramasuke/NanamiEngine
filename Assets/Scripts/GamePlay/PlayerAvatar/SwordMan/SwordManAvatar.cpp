@@ -2,6 +2,7 @@
 
 #include "../../../Core/Game/PlayerAvatar/AttackArea/PlayerAvatarAttackArea.h"
 #include "../../../Core/Game/PlayerAvatar/Type/PlayerAvatarType.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::PlayerAvatar::SwordMan
 {
@@ -39,3 +40,9 @@ namespace GamePlay::PlayerAvatar::SwordMan
         ImGuiHelper::OnDrawInputField("successAvoidRollingParticle_", successAvoidRollingParticle_);
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_PLAYER_AVATAR_BASE(SwordMan::SwordManAvatarTraits)
+CEREAL_REGISTER_TYPE(GamePlay::PlayerAvatar::SwordMan::SwordManAvatar);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::SwordMan::SwordManAvatarTraits>, GamePlay::PlayerAvatar::SwordMan::SwordManAvatar);
+#pragma endregion

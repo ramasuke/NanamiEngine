@@ -10,6 +10,7 @@
 #include "../../../../Core/Physics/Physics.h"
 #include "../../../Physics/BodyAssembler/Engine_Physics_BodyAssembler.h"
 #include "cereal/archives/portable_binary.hpp"
+#include "../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 void Scene::CopiedPrefabGameObject::InitGameObject(const std::weak_ptr<IGameObject>& parent, const std::shared_ptr<IGameObject>& ownPtr)
 {
@@ -260,3 +261,8 @@ void Scene::CopiedPrefabGameObject::OnDrawTreeGui(const bool drawChildren)
 
     ImGui::PopID();
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Scene::CopiedPrefabGameObject);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::GameObject::IGameObject, NanamiEngine::Scene::CopiedPrefabGameObject);
+#pragma endregion

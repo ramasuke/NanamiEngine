@@ -7,6 +7,7 @@
 #include "../../../Core/Game/PlayerAvatar/AttackArea/PlayerAvatarAttackArea.h"
 #include "../../../Core/Game/PlayerAvatar/Pickable/IPlayerPickable.h"
 #include "../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::PlayerAvatar
 {
@@ -84,3 +85,7 @@ namespace GamePlay::PlayerAvatar
         ImGui::Text("Pickables: %d", static_cast<int>(pickables_.size()));
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::PickupArea);
+#pragma endregion

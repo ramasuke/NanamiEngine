@@ -7,6 +7,7 @@
 #include "../../../../../../../../Network/Rpc/Custom_RpcType.h"
 #include "../../../../../Status/EnemyStatus.h"
 #include "../../../../../EnemyBase.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -16,11 +17,10 @@ namespace GameCore::Npc::Enemy::Behaviour
             return TickStatus::Failure;
 
         // 権威側限定Tickなら、他ピアにも同じ NetworkObjectId の個体を破棄させる
-        // (非権威側は権威ゲートによりこのBT自体をTickしないため、OnDestroyも自動では呼ばれない)
         if (context.IsNetworkAuthority())
             GameCore::Network::EnemyDeathRpc::Send(context.NetworkObjectId(), Core::Network::DeliveryMode::Reliable);
 
-        // 協力プレイでは各ピアがそれぞれのプレイヤーの記録帳に付ける(非権威側は EnemyDeathRpc の受信側で付ける)
+        // 協力プレイでは各ピアがそれぞれのプレイヤーの記録帳に付ける
         if (const auto enemy = context.EnemyGameObject().Components().Catch<EnemyBase>().lock())
             enemy->NotifyDefeated();
 
@@ -33,3 +33,8 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("animatorSetParam_", animatorSetParam_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::OnDeath)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::OnDeath)
+#pragma endregion

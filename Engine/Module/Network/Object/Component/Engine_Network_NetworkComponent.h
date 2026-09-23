@@ -86,4 +86,4 @@ namespace NanamiEngine::Module::Network
 #pragma endregion
     };
 }
-ENGINE_REGISTER_COMPONENT(Network::NetworkComponent, 0)
+CEREAL_CLASS_VERSION(Network::NetworkComponent, 0);

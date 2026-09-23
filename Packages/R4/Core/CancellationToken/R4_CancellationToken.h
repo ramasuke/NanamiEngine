@@ -12,7 +12,7 @@ namespace NanamiEngine::R4
     public:
         CancellationToken() = default;
         explicit CancellationToken(rxcpp::composite_subscription subscription);
-        // rxcpp の購読はムーブ元が空になり、触ると std::terminate するので、ムーブもコピーとして扱う
+        // ムーブもコピーとして扱う
         CancellationToken(const CancellationToken&) = default;
         CancellationToken(CancellationToken&& other) : subscription_(other.subscription_) { }
         CancellationToken& operator=(const CancellationToken&) = default;

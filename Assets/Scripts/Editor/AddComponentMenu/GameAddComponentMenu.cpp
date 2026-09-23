@@ -20,6 +20,7 @@
 #include "../../GamePlay/Npc/Enemy/TrainingDummy/TrainingDummy.h"
 #include "../../GamePlay/Npc/Enemy/Tyrannosaurus/GamePlay_Enemy_Tyrannosaurus.h"
 #include "../../GamePlay/Npc/Friendly/FriendlyNpc.h"
+#include "../../GamePlay/Npc/Friendly/Reaction/FriendlyNpcReaction.h"
 #include "../../GamePlay/Magic/Component/GamePlay_MagicBlast.h"
 #include "../../GamePlay/Magic/Component/GamePlay_MagicChannel.h"
 #include "../../GamePlay/Magic/Component/GamePlay_MagicPlacement.h"
@@ -31,6 +32,7 @@
 #include "../../GamePlay/PlayerAvatar/SwordMan/SwordManAvatar.h"
 #include "../../GamePlay/Prop/AirShip/Prop_AirShip.h"
 #include "../../GamePlay/Prop/ProximityReveal/ProximityReveal.h"
+#include "../../GamePlay/Prop/RestorationGate/Prop_RestorationGate.h"
 #include "../../GamePlay/Prop/Canon/Prop_Canon.h"
 #include "../../GamePlay/Prop/DestructibleObject/DestructibleObject.h"
 #include "../../GamePlay/Prop/Grass/Grassable.h"
@@ -46,6 +48,7 @@
 #include "../../GamePlay/Ui/ActionInstructTutorial/SwordMan/Ui_SwordMan_ActionInstructTutorial.h"
 #include "../../GamePlay/Ui/BillBoardNpcChatIcon/BillBoardNpcChatIcon.h"
 #include "../../GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h"
+#include "../../GamePlay/Ui/GaugeEffects/Ui_GaugeEffects.h"
 #include "../../GamePlay/Ui/NpcChatting/Ui_NpcChatting.h"
 #include "../../GamePlay/Ui/OtherPlayerStatusUIGroup/OtherPlayerStatusUiGroup.h"
 #include "../../GamePlay/Ui/Sample/UI_SampleTitleLogo.h"
@@ -75,6 +78,7 @@
 #include "../../GamePlay/Prop/HerbPatch/Prop_HerbPatch.h"
 #include "../../GamePlay/Prop/ChargeStuckObstacle/GamePlay_ChargeStuckObstacle.h"
 #include "../../GamePlay/Prop/TreasureChest/Prop_TreasureChest.h"
+#include "../../GamePlay/Prop/ChargeBreakPillar/GamePlay_ChargeBreakPillar.h"
 #include "../../GamePlay/Ui/EventBoard/UI_EventBoard.h"
 #include "../../GamePlay/Ui/EventBoard/Row/Ui_EventBoard_Row.h"
 #include "../../GamePlay/Ui/EventBoard/Presenter/EventBoardPresenter.h"
@@ -138,6 +142,7 @@ namespace Editor::AddComponentMenu
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::BillBoardNpcChatIcon>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::SampleTitleLogo >(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::PlayerStatus    >(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::GaugeEffects    >(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::SampleTitleScene>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::SwordManActionInstructTutorial>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Ui::StageSelectUi>(addComponent);
@@ -223,6 +228,7 @@ namespace Editor::AddComponentMenu
                 if (ImGui::TreeNode("Friendly"))
                 {
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Friendly::FriendlyNpc>(addComponent);
+                    AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Friendly::FriendlyNpcReaction>(addComponent);
                     ImGui::TreePop();
                     ImGui::Spacing();
                 }
@@ -258,9 +264,11 @@ namespace Editor::AddComponentMenu
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::MerchantStall>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::EventNoticeBoard>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::HerbPatch>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::RestorationGate>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::TreasureChest>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::DestructibleObject>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::ChargeStuckObstacle>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::ChargeBreakPillar>(addComponent);
                 if (ImGui::TreeNode("Grass"))
                 {
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::Grassable    >(addComponent);

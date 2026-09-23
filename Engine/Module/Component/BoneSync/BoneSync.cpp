@@ -5,7 +5,8 @@
 #include "../ModelRenderer/ModelRenderer.h"
 #include "../../GameObject/Transform/Transform.h"
 #include "../../../../Libs/LibCore/DxLib/ShiftJis.h"
-#include "../../../../Libs/LibCore/glm/GlmHelper.h"
+#include "../../../../Libs/LibCore/DxLib/DxMath.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace
 {
@@ -105,8 +106,8 @@ std::optional<glm::mat4> Component::BoneSync::GetBoneWorldMatrix(const int boneI
 
     // MV1GetFrameLocalWorldMatrix は最後に描画で MV1SetMatrix された行列(補間・描画オフセット込み)基準なので、
     // それを打ち消してモデル空間に戻し、今の Transform を掛け直す
-    const glm::mat4 renderMatrix     = LibCore::Glm::FromDxLibMatrix(MV1GetMatrix(modelHandle));
-    const glm::mat4 boneRenderMatrix = LibCore::Glm::FromDxLibMatrix(MV1GetFrameLocalWorldMatrix(modelHandle, boneIndex));
+    const glm::mat4 renderMatrix     = LibCore::Dxlib::FromDxMatrix(MV1GetMatrix(modelHandle));
+    const glm::mat4 boneRenderMatrix = LibCore::Dxlib::FromDxMatrix(MV1GetFrameLocalWorldMatrix(modelHandle, boneIndex));
     const glm::mat4 boneWorldMatrix  = Transform().GetWorldMatrix() * glm::inverse(renderMatrix) * boneRenderMatrix;
     if (!BoneSyncIsFinite(boneWorldMatrix))
         return std::nullopt;
@@ -166,3 +167,7 @@ void Component::BoneSync::OnDrawGui()
     ImGui::TreePop();
     ImGui::Spacing();
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::BoneSync);
+#pragma endregion

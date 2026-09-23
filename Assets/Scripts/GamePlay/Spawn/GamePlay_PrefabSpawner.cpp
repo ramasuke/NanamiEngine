@@ -3,6 +3,7 @@
 #include "Engine/Core/Coroutine/Coroutine.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitForTween/Coroutine_WaitForTween.h"
+#include "Engine/Core/Coroutine/Awaitable/Yield/Coroutine_WaitYield.h"
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
@@ -23,6 +24,53 @@ namespace GamePlay::Spawn
                 co_return;
 
             object->OnDestroy();
+        }
+
+        Coroutine::Task<void> FollowAsync(
+            std::weak_ptr<GameObject::IGameObject> gameObject,
+            std::weak_ptr<GameObject::IGameObject> target)
+        {
+            while (true)
+            {
+                co_await Coroutine::WaitYield();
+
+                const auto object = gameObject.lock();
+                const auto followed = target.lock();
+                if (!object || !followed)
+                    co_return;
+
+                object->Transform().SetWorldPos(followed->Transform().GetWorldPos());
+            }
+        }
+
+        Coroutine::Task<void> AttachAsync(
+            std::weak_ptr<GameObject::IGameObject> gameObject,
+            std::weak_ptr<GameObject::IGameObject> target)
+        {
+            glm::vec3 localPos{};
+            {
+                const auto object   = gameObject.lock();
+                const auto attached = target.lock();
+                if (!object || !attached)
+                    co_return;
+
+                const auto& targetTransform = attached->Transform();
+                localPos = glm::inverse(targetTransform.GetWorldRot())
+                         * (object->Transform().GetWorldPos() - targetTransform.GetWorldPos());
+            }
+
+            while (true)
+            {
+                co_await Coroutine::WaitYield();
+
+                const auto object   = gameObject.lock();
+                const auto attached = target.lock();
+                if (!object || !attached)
+                    co_return;
+
+                const auto& targetTransform = attached->Transform();
+                object->Transform().SetWorldPos(targetTransform.GetWorldPos() + targetTransform.GetWorldRot() * localPos);
+            }
         }
 
         Coroutine::Task<void> MoveAsync(
@@ -63,6 +111,31 @@ namespace GamePlay::Spawn
         if (lifeTime_secs > 0.0f)
             Coroutine::StartCoroutine(DestroyAfterTimeAsync(spawned, lifeTime_secs));
 
+        return spawned;
+    }
+
+    std::weak_ptr<GameObject::IGameObject> SpawnAttachedPrefab(
+        Asset::PrefabGameObjectFile& prefab,
+        const glm::vec3& position,
+        const std::shared_ptr<GameObject::IGameObject>& target,
+        const float lifeTime_secs)
+    {
+        const auto spawned = SpawnPrefab(prefab, position, lifeTime_secs);
+        if (target)
+            Coroutine::StartCoroutine(AttachAsync(spawned, target));
+
+        return spawned;
+    }
+
+    std::weak_ptr<GameObject::IGameObject> SpawnFollowingPrefab(
+        Asset::PrefabGameObjectFile& prefab,
+        const std::shared_ptr<GameObject::IGameObject>& target)
+    {
+        if (!target)
+            return {};
+
+        const auto spawned = Scene::GameObject::Instantiate(prefab, target->Transform().GetWorldPos());
+        Coroutine::StartCoroutine(FollowAsync(spawned, target));
         return spawned;
     }
 

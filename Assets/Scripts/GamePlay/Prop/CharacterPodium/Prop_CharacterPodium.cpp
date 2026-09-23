@@ -2,6 +2,7 @@
 
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Prop
 {
@@ -71,3 +72,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("focusPriority_", focusPriority_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::CharacterPodium);
+#pragma endregion

@@ -109,5 +109,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PlayerStatus, 10)
-
+CEREAL_CLASS_VERSION(GamePlay::Ui::PlayerStatus, 10);

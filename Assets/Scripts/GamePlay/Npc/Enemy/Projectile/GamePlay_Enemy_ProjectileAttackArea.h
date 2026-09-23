@@ -39,4 +39,4 @@ namespace GamePlay::Npc::Enemy
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Npc::Enemy::AttackProjectile, 0)
+CEREAL_CLASS_VERSION(GamePlay::Npc::Enemy::AttackProjectile, 0);

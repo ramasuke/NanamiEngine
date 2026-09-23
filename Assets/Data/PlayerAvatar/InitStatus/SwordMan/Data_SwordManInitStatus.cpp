@@ -1,4 +1,5 @@
 ﻿#include "Data_SwordManInitStatus.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -6,9 +7,9 @@ namespace NanamiEngine::Module::Asset
         : ScriptableObject(contentPath)
         , quests_(std::make_unique<GameCore::PlayerAvatar::SwordMan::QuestGroup>())
         , comboNormalAttack_{
-            GameCore::PlayerAvatar::AttackParam(GameCore::Damage::PhysicsPower(1), GameCore::PlayerAvatar::EnhancePower(1), 0.2673473869f, 0.5028546333f),
-            GameCore::PlayerAvatar::AttackParam(GameCore::Damage::PhysicsPower(2), GameCore::PlayerAvatar::EnhancePower(2), 0.7004830918f, 0.9738691261f),
-            GameCore::PlayerAvatar::AttackParam(GameCore::Damage::PhysicsPower(3), GameCore::PlayerAvatar::EnhancePower(3), 1.2878787879f, 1.5151515152f)}
+            GameCore::PlayerAvatar::AttackParam(GameCore::Damage::PhysicsPower(10), GameCore::PlayerAvatar::EnhancePower(1), 0.2673473869f, 0.5028546333f),
+            GameCore::PlayerAvatar::AttackParam(GameCore::Damage::PhysicsPower(12), GameCore::PlayerAvatar::EnhancePower(2), 0.7004830918f, 0.9738691261f),
+            GameCore::PlayerAvatar::AttackParam(GameCore::Damage::PhysicsPower(18), GameCore::PlayerAvatar::EnhancePower(3), 1.2878787879f, 1.5151515152f)}
         , maxStamina_                         (GameCore::StatusParameter::Stamina(100.0f))
         , staminaDrainPerSecond_              (20.0f)
         , staminaRegenPerSecond_              (10.0f)
@@ -23,7 +24,7 @@ namespace NanamiEngine::Module::Asset
         , chargeAttackHoldThreshold_secs_     (0.2f)
         , chargeAttackMaxCharge_secs_         (1.0f)
         , chargeAttackMaxHold_secs_           (3.0f)
-        , chargeAttack_                       (GameCore::Damage::PhysicsPower(8), GameCore::PlayerAvatar::EnhancePower(15), 0.4333333333f, 0.9083333333f)
+        , chargeAttack_                       (GameCore::Damage::PhysicsPower(35), GameCore::PlayerAvatar::EnhancePower(15), 0.4333333333f, 0.9083333333f)
         , chargeHitFeel_                      (1.2f, 0.18f, 7.0f, 0.8f, 0.25f)
         , chargeAttackLungeStart_secs_        (0.0f)
         , chargeAttackLungeSpeed_             (28.0f)
@@ -87,3 +88,9 @@ namespace NanamiEngine::Module::Asset
         LibCore::ImGuiHelper::OnDrawInputField("initialMoney_", initialMoney_);
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(SwordManInitStatus, SWORD_MAN_INIT_STATUS_EXTENSION_LABEL, "Player::SwordMan")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManInitStatus);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManInitStatus);
+#pragma endregion

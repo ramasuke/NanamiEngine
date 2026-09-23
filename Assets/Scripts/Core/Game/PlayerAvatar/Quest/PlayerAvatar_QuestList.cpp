@@ -1,6 +1,7 @@
 ﻿#include "PlayerAvatar_QuestList.h"
 
 #include <algorithm>
+#include <utility>
 
 namespace GameCore::PlayerAvatar::Quest
 {
@@ -14,13 +15,14 @@ namespace GameCore::PlayerAvatar::Quest
         }
     }
 
-    void QuestList::Add(const std::shared_ptr<ITakeableQuest>& quest, const QuestContext& context)
+    bool QuestList::Add(const std::shared_ptr<ITakeableQuest>& quest, const QuestContext& context)
     {
-        if (!quest)
-            return;
+        if (!quest || Contains(quest->QuestType()))
+            return false;
 
         quests_.push_back(quest);
         quest->StartQuest(context);
+        return true;
     }
 
     void QuestList::Remove(const QuestType& type)
@@ -29,6 +31,20 @@ namespace GameCore::PlayerAvatar::Quest
         {
             return quest->QuestType() == type;
         });
+    }
+
+    void QuestList::Merge(const std::vector<std::shared_ptr<ITakeableQuest>>& quests)
+    {
+        for (const auto& quest : quests)
+        {
+            if (quest && !Contains(quest->QuestType()))
+                quests_.push_back(quest);
+        }
+    }
+
+    std::vector<std::shared_ptr<ITakeableQuest>> QuestList::Release()
+    {
+        return std::exchange(quests_, {});
     }
 
     bool QuestList::Contains(const QuestType& type) const

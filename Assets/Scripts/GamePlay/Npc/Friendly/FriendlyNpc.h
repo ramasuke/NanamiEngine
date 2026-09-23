@@ -10,6 +10,8 @@
 
 namespace GamePlay::Npc::Friendly
 {
+    class FriendlyNpcReaction;
+
     class FriendlyNpc final : public Component::ComponentBase,
                               public LifeCycleCallback::IAwakable,
                               public LifeCycleCallback::IUpdatable,
@@ -20,6 +22,8 @@ namespace GamePlay::Npc::Friendly
         explicit FriendlyNpc();
         ~FriendlyNpc() override;
         [[nodiscard]] std::shared_ptr<GameCore::Npc::Friendly::BehaviourTree> BehaviourTree() const { return behaviour_; }
+        [[nodiscard]] std::shared_ptr<Ui::BillBoardNpcChatIcon> ChatIcon() const { return billboardNpcChatIcon_.get(); }
+        [[nodiscard]] bool IsChatting() const { return isChatting_; }
 
     private:
         void OnAwake        () override;
@@ -35,6 +39,7 @@ namespace GamePlay::Npc::Friendly
         [[serialize(6)]] FIELD(Ui::BillBoardNpcChatIcon) billboardNpcChatIcon_;
         
         std::shared_ptr<GameCore::Npc::Friendly::BehaviourTree> behaviour_;
+        std::weak_ptr<FriendlyNpcReaction> reaction_;
         bool isChatting_  = false;
 
 #pragma region Serialization Function
@@ -63,4 +68,4 @@ namespace GamePlay::Npc::Friendly
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Npc::Friendly::FriendlyNpc, 6)
+CEREAL_CLASS_VERSION(GamePlay::Npc::Friendly::FriendlyNpc, 6);

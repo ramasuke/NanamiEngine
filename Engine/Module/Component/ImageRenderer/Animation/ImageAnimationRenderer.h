@@ -53,4 +53,4 @@ void load(Archive& archive, const std::uint32_t version) {
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::ImageAnimationRenderer, 1)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::NanamiUi::ImageAnimationRenderer, 1);

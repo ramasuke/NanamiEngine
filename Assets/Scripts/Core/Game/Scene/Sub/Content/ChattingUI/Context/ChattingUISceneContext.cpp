@@ -1,4 +1,5 @@
 ﻿#include "ChattingUISceneContext.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Scene::Sub
 {
@@ -12,3 +13,8 @@ namespace GameCore::Scene::Sub
         ImGuiHelper::OnDrawInputField("npcChatting_", npcChatting_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Scene::Sub::ChattingUISceneContext);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::Sub::SceneContextBase, GameCore::Scene::Sub::ChattingUISceneContext);
+#pragma endregion

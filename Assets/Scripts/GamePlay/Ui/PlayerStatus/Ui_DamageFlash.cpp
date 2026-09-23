@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -12,8 +13,9 @@ namespace GamePlay::Ui
         if (duration <= 0.0f)
             return;
 
-        trauma_   = std::clamp(trauma_ + intensity, 0.0f, 1.0f);
-        duration_ = duration;
+        // NOTE: 残りに足して 1/duration 毎秒で減らすので、区間長は残量に比例させる
+        const float trauma = std::clamp(trauma_.Value() + intensity, 0.0f, 1.0f);
+        trauma_.Play(tweeny::from(trauma).to(0.0f).during(LibCore::Tween::Ms(duration * trauma)));
     }
 
     void DamageFlashUI::Flash()
@@ -46,11 +48,11 @@ namespace GamePlay::Ui
 
     void DamageFlashUI::OnUpdate()
     {
-        if (trauma_ <= 0.0f || !blendRenderer_)
+        if (!trauma_.IsPlaying() || !blendRenderer_)
             return;
 
-        trauma_ = (std::max)(0.0f, trauma_ - Time::DeltaTime() / duration_);
-        blendRenderer_->SetBlendRate(static_cast<int>(trauma_ * static_cast<float>(maxBlendRate_)));
+        trauma_.Tick(Time::DeltaTime());
+        blendRenderer_->SetBlendRate(static_cast<int>(trauma_.Value() * static_cast<float>(maxBlendRate_)));
     }
 
     void DamageFlashUI::OnDrawGui()
@@ -63,3 +65,7 @@ namespace GamePlay::Ui
             Flash();
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::DamageFlashUI);
+#pragma endregion

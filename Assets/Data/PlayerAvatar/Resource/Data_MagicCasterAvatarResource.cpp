@@ -1,4 +1,5 @@
 ﻿#include "Data_MagicCasterAvatarResource.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -31,5 +32,20 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("slopeCheckUpOffset_", slopeCheckUpOffset_);
         ImGuiHelper::OnDrawInputField("slopeCheckDistance_", slopeCheckDistance_);
         ImGuiHelper::OnDrawInputField("dealDamageTextBillBoardPrefab_", dealDamageTextBillBoardPrefab_);
+        ImGuiHelper::OnDrawInputField("avoidRollingSound_", avoidRollingSound_);
+        ImGuiHelper::OnDrawInputField("justAvoidRollingSound_", justAvoidRollingSound_);
+        ImGuiHelper::OnDrawInputField("footstepParticlePrefab_", footstepParticlePrefab_);
+        ImGuiHelper::OnDrawInputField("footstepContactHeight_", footstepContactHeight_);
+        ImGuiHelper::OnDrawInputField("footstepBoneNames_", footstepBoneNames_, [this]
+        {
+            if (ImGui::Button("Add Footstep Bone"))
+                footstepBoneNames_.emplace_back();
+        });
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(MagicCasterAvatarResource, MAGIC_CASTER_RESOURCE_EXTENSION_LABEL, "Player::MagicCaster")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::MagicCasterAvatarResource);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::MagicCasterAvatarResource);
+#pragma endregion

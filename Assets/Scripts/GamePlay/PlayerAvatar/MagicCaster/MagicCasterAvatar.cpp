@@ -1,6 +1,7 @@
 ﻿#include "MagicCasterAvatar.h"
 
 #include "../../../Core/Game/PlayerAvatar/Type/PlayerAvatarType.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::PlayerAvatar::MagicCaster
 {
@@ -34,5 +35,12 @@ namespace GamePlay::PlayerAvatar::MagicCaster
         ImGuiHelper::OnDrawInputField("resources_", resources_);
         ImGuiHelper::OnDrawInputField("castPoint_", castPoint_);
         ImGuiHelper::OnDrawInputField("lockOnDetectionArea_", lockOnDetectionArea_);
+        ImGuiHelper::OnDrawInputField("successAvoidRollingParticle_", successAvoidRollingParticle_);
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_PLAYER_AVATAR_BASE(MagicCaster::MagicCasterAvatarTraits)
+CEREAL_REGISTER_TYPE(GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarTraits>, GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar);
+#pragma endregion

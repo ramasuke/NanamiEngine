@@ -6,6 +6,7 @@
 #include "../../Format/Ui_MoneyFormat.h"
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -75,31 +76,38 @@ namespace GamePlay::Ui
         if (!stamp)
             return;
 
-        if (stampElapsed_secs_ < 0.0f)
+        if (!stampAlpha_.IsPlaying())
             stampBaseScale_ = stamp->Transform().GetLocalScale();
-        stampElapsed_secs_ = 0.0f;
         stamp->SetEnable(true);
+
+        // NOTE: 区間ごとに ms へ丸めると2本の合計がずれるので、境目の時刻から引き算で区間長を出す
+        const float    duration   = std::max(stampDuration_secs_, 0.01f);
+        const uint16_t totalMs    = LibCore::Tween::Ms(duration);
+        const uint16_t pressEndMs = LibCore::Tween::Ms(duration * SHOP_STAMP_PRESS_RATE);
+        const uint16_t fadeFromMs = LibCore::Tween::Ms(duration * SHOP_STAMP_FADE_RATE);
+        stampScale_.Play(tweeny::from(stampStartScale_)
+            .to(1.0f).during(pressEndMs)
+            .to(1.0f).during(static_cast<uint16_t>(totalMs - pressEndMs)));
+        stampAlpha_.Play(tweeny::from(0.0f)
+            .to(1.0f).during(pressEndMs)
+            .to(1.0f).during(static_cast<uint16_t>(fadeFromMs - pressEndMs))
+            .to(0.0f).during(static_cast<uint16_t>(totalMs - fadeFromMs)));
     }
 
     void ShopReceipt::OnUpdate()
     {
         const auto stamp = paidStamp_.get();
-        if (!stamp || stampElapsed_secs_ < 0.0f)
+        if (!stamp || !stampAlpha_.IsPlaying())
             return;
 
-        stampElapsed_secs_ += Time::DeltaTime();
-        const float duration = std::max(stampDuration_secs_, 0.01f);
-        const float t = std::clamp(stampElapsed_secs_ / duration, 0.0f, 1.0f);
+        const float deltaTime = Time::DeltaTime();
+        stampScale_.Tick(deltaTime);
+        const bool finished = stampAlpha_.Tick(deltaTime);
+        stamp->Transform().SetLocalScale(stampBaseScale_ * stampScale_.Value());
+        stamp->SetBlendRate(static_cast<int>(255.0f * stampAlpha_.Value()));
 
-        const float press = std::clamp(t / SHOP_STAMP_PRESS_RATE, 0.0f, 1.0f);
-        const float fade  = std::clamp((t - SHOP_STAMP_FADE_RATE) / (1.0f - SHOP_STAMP_FADE_RATE), 0.0f, 1.0f);
-        const float scale = stampStartScale_ + (1.0f - stampStartScale_) * press;
-        stamp->Transform().SetLocalScale(stampBaseScale_ * scale);
-        stamp->SetBlendRate(static_cast<int>(255.0f * press * (1.0f - fade)));
-
-        if (t >= 1.0f)
+        if (finished)
         {
-            stampElapsed_secs_ = -1.0f;
             stamp->Transform().SetLocalScale(stampBaseScale_);
             stamp->SetEnable(false);
         }
@@ -132,3 +140,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("stampStartScale_", stampStartScale_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::ShopReceipt);
+#pragma endregion

@@ -2,6 +2,7 @@
 
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -12,6 +13,7 @@ namespace GamePlay::Ui
         case EventBoardTabType::Quest:  return "依 頼";
         case EventBoardTabType::Event:  return "催 し";
         case EventBoardTabType::Notice: return "お知らせ";
+        case EventBoardTabType::Restoration: return "復 興";
         }
         return "";
     }
@@ -56,6 +58,7 @@ namespace GamePlay::Ui
         questPage_  = InstantiatePage<EventBoardQuestPage>(questPagePrefab_);
         eventPage_  = InstantiatePage<EventBoardEventPage>(eventPagePrefab_);
         noticePage_ = InstantiatePage<EventBoardNoticePage>(noticePagePrefab_);
+        restorationPage_ = InstantiatePage<EventBoardRestorationPage>(restorationPagePrefab_);
     }
 
     std::shared_ptr<EventBoardTab> EventBoardUi::Tab(const EventBoardTabType type) const
@@ -80,6 +83,10 @@ namespace GamePlay::Ui
             if (const auto page = NoticePage())
                 return page->Entity().lock();
             return nullptr;
+        case EventBoardTabType::Restoration:
+            if (const auto page = RestorationPage())
+                return page->Entity().lock();
+            return nullptr;
         }
         return nullptr;
     }
@@ -94,14 +101,18 @@ namespace GamePlay::Ui
             if (const auto page = PageObject(tabType))
                 page->SetEnable(tabType == type);
         }
+        if (const auto veil = veil_.get())
+            veil->SetEnable(type != EventBoardTabType::Restoration);
     }
 
-    void EventBoardUi::ShowAcceptHint(const bool canAccept) const
+    void EventBoardUi::ShowConfirmHint(const EventBoardConfirmHint hint) const
     {
         if (const auto hints = hintsWithAccept_.get())
-            hints->SetEnable(canAccept);
+            hints->SetEnable(hint == EventBoardConfirmHint::Accept);
+        if (const auto hints = hintsWithRestore_.get())
+            hints->SetEnable(hint == EventBoardConfirmHint::Restore);
         if (const auto hints = hintsWithoutAccept_.get())
-            hints->SetEnable(!canAccept);
+            hints->SetEnable(hint == EventBoardConfirmHint::None);
     }
 
     void EventBoardUi::OnDrawGui()
@@ -112,8 +123,15 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("questPagePrefab_", questPagePrefab_);
         ImGuiHelper::OnDrawInputField("eventPagePrefab_", eventPagePrefab_);
         ImGuiHelper::OnDrawInputField("noticePagePrefab_", noticePagePrefab_);
+        ImGuiHelper::OnDrawInputField("restorationPagePrefab_", restorationPagePrefab_);
         ImGuiHelper::OnDrawInputField("pagesRoot_", pagesRoot_);
         ImGuiHelper::OnDrawInputField("hintsWithAccept_", hintsWithAccept_);
         ImGuiHelper::OnDrawInputField("hintsWithoutAccept_", hintsWithoutAccept_);
+        ImGuiHelper::OnDrawInputField("hintsWithRestore_", hintsWithRestore_);
+        ImGuiHelper::OnDrawInputField("veil_", veil_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::EventBoardUi);
+#pragma endregion

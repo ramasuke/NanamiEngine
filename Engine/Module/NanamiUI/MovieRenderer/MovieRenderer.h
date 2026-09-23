@@ -55,4 +55,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::MovieRenderer, 1)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::NanamiUi::MovieRenderer, 1);

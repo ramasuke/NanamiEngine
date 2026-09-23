@@ -1,6 +1,7 @@
 ﻿#include "SpriteAnimationFile.h"
 
 #include "DxLib.h"
+#include "../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -88,3 +89,10 @@ namespace NanamiEngine::Module::Asset
         }
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SpriteAnimationFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::SpriteAnimationFile);
+REGISTER_ASSET(SpriteAnimationFile, SPRITE_ANIMATION_FILE_EXTENSION_LABEL)
+REGISTER_CREATABLE_ASSET_EXTENSION("SpriteAnimation", SPRITE_ANIMATION_FILE_EXTENSION_LABEL, "Animation")
+#pragma endregion

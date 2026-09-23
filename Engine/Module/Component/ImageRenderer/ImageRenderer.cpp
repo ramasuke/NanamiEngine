@@ -1,6 +1,7 @@
 ﻿#include "ImageRenderer.h"
 
 #include "../../GameObject/Transform/Transform.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 void Component::ImageRenderer::SetSprite(const std::weak_ptr<Asset::SpriteFile>& sprite)
 {
@@ -43,3 +44,8 @@ void Component::ImageRenderer::OnDrawGui()
     ImGuiHelper::OnDrawInputField("spriteFile_", spriteFile_);
     ImGuiHelper::OnDrawInputField("renderPriority_", renderPriority_);
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::ImageRenderer);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IUserInterfaceRenderable, NanamiEngine::Module::Component::ImageRenderer);
+#pragma endregion

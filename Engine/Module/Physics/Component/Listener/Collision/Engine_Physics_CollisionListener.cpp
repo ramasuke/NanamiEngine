@@ -1,4 +1,5 @@
 ﻿#include "Engine_Physics_CollisionListener.h"
+#include "../../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -119,3 +120,7 @@ namespace NanamiEngine::Module::Component
     {
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(Component::CollisionListener);
+#pragma endregion

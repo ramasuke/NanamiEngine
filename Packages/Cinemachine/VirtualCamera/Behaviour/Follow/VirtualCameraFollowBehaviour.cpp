@@ -3,6 +3,7 @@
 #include "../../../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../IVirtualCameraTarget.h"
+#include "../../../../../Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 void CineMachine::Behaviour::VirtualCameraFollowBehaviour::SetTarget(
     const std::shared_ptr<GameObject::IGameObject>& followTarget)
@@ -33,3 +34,8 @@ void CineMachine::Behaviour::VirtualCameraFollowBehaviour::OnDebugRender()
         Transform().SetWorldPos(MoveTargetPosition());
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour);
+#pragma endregion

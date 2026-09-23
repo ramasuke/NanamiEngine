@@ -1,5 +1,6 @@
 ﻿#include "SpriteFile.h"
 #include "DxLib.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -68,3 +69,10 @@ namespace NanamiEngine::Module::Asset
         return contentPath_;
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SpriteFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::SpriteFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::SpriteFile);
+REGISTER_ASSET(SpriteFile, ".png")
+#pragma endregion

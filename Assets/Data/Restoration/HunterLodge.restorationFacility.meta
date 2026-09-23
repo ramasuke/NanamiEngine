@@ -1,0 +1,33 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::RestorationFacility",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Restoration/HunterLodge.restorationFacility",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "08DCEE18-C0A3-46AB-8FD8-ACC0FF4DAC14"
+                    }
+                },
+                "facility_": 2,
+                "name_": "狩人小屋",
+                "descriptionLines_": [
+                    "狩人の一族が住む小屋。",
+                    "食料と薬を扱う店が開く。"
+                ],
+                "cost_": 2500,
+                "requiredStoryFlag_": 2,
+                "requiredFacility_": -1,
+                "conditionText_": "草原の大顎を倒してから"
+            }
+        }
+    }
+}

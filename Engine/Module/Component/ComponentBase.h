@@ -80,7 +80,16 @@ namespace NanamiEngine::Module::Component
     }
 }
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::ComponentBase, 0);
-#define ENGINE_REGISTER_COMPONENT(TYPE, VERSION)                                                \
-    CEREAL_CLASS_VERSION(TYPE, VERSION);                                                        \
+// NOTE: ENGINE_REGISTER_COMPONENT(T) はコンポーネントの .cpp に書き、CEREAL_CLASS_VERSION(T, V) はヘッダに残す
+// WARNING: 旧形式の ENGINE_REGISTER_COMPONENT(T, V) もビルドは通るが、ヘッダに書くと include 先すべてで保存・読み込みコードが生成される
+#define ENGINE_REGISTER_COMPONENT_TYPE_(TYPE)                                                   \
     CEREAL_REGISTER_TYPE(TYPE);                                                                 \
     CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, TYPE);
+#define ENGINE_REGISTER_COMPONENT_WITH_VERSION_(TYPE, VERSION)                                  \
+    CEREAL_CLASS_VERSION(TYPE, VERSION);                                                        \
+    ENGINE_REGISTER_COMPONENT_TYPE_(TYPE)
+#define ENGINE_REGISTER_COMPONENT_EXPAND_(x) x
+#define ENGINE_REGISTER_COMPONENT_SELECT_(_1, _2, NAME, ...) NAME
+#define ENGINE_REGISTER_COMPONENT(...)                                                          \
+    ENGINE_REGISTER_COMPONENT_EXPAND_(ENGINE_REGISTER_COMPONENT_SELECT_(__VA_ARGS__,            \
+        ENGINE_REGISTER_COMPONENT_WITH_VERSION_, ENGINE_REGISTER_COMPONENT_TYPE_, )(__VA_ARGS__))

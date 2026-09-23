@@ -1,6 +1,7 @@
 ﻿#include "HlslVsFile.h"
 #include <DxLib.h>
 #include "../../Log/NanamiEngine_Module_Log.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -35,3 +36,10 @@ namespace NanamiEngine::Module::Asset
         LibCore::ImGuiHelper::OnDrawInputField("vsHandle_",    vsHandle_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::HlslVsFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::HlslVsFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::HlslVsFile);
+REGISTER_ASSET(HlslVsFile, ".vso")
+#pragma endregion

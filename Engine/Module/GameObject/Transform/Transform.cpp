@@ -247,25 +247,6 @@ namespace NanamiEngine::Module::GameObject
         };
     }
     
-    VECTOR Transform::GetDxWorldPos() const
-    {
-        const auto position = GetWorldPos();
-        return VGet(position.x, position.y, position.z);
-    }
-    
-    MATRIX Transform::GetDxWorldMatrix() const
-    {
-        const glm::mat4& m = worldMatrix_;
-        MATRIX dxMat;
-    
-        dxMat.m[0][0] = m[0][0]; dxMat.m[0][1] = m[0][1]; dxMat.m[0][2] = m[0][2]; dxMat.m[0][3] = m[0][3];
-        dxMat.m[1][0] = m[1][0]; dxMat.m[1][1] = m[1][1]; dxMat.m[1][2] = m[1][2]; dxMat.m[1][3] = m[1][3];
-        dxMat.m[2][0] = m[2][0]; dxMat.m[2][1] = m[2][1]; dxMat.m[2][2] = m[2][2]; dxMat.m[2][3] = m[2][3];
-        dxMat.m[3][0] = m[3][0]; dxMat.m[3][1] = m[3][1]; dxMat.m[3][2] = m[3][2]; dxMat.m[3][3] = m[3][3];
-    
-        return dxMat;
-    }
-    
     void Transform::SetParent(const std::weak_ptr<IGameObject>& parent, const bool keepWorldScale)
     {
         if (parent_.lock() == parent.lock())

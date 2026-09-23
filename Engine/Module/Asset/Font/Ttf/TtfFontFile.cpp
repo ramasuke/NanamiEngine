@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cmath>
 #include "../../../../../Libs/LibCore/DxLib/ShiftJis.h"
+#include "../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -58,3 +59,10 @@ namespace NanamiEngine::Module::Asset
         return handle;
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::TtfFontFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::TtfFontFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::TtfFontFile);
+REGISTER_ASSET(TtfFontFile, ".ttf")
+#pragma endregion

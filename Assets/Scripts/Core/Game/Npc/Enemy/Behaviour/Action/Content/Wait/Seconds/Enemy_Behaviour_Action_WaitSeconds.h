@@ -34,6 +34,3 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     };
     REGISTER_ENEMY_ACTION_WITH_NAME(WaitSeconds, "Wait::Seconds::WaitSeconds")
 }
-
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::WaitSeconds)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::WaitSeconds)

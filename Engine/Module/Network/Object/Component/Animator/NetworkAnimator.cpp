@@ -3,6 +3,7 @@
 #include "../../../../../../Engine/Module/Network/Engine_Network_NetworkRunner.h"
 #include "../../../../../../Engine/Module/Network/Object/Component/GameObject/Engine_Network_NetworkGameObject.h"
 #include "../../../../../../Engine/Module/Component/Animator/Animator.h"
+#include "../../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Network
 {
@@ -28,3 +29,8 @@ namespace NanamiEngine::Module::Network
             .SyncAnimation().DispatchSendPacket(id, state);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(Network::NetworkAnimator);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Network::NetworkComponent, Network::NetworkAnimator);
+#pragma endregion

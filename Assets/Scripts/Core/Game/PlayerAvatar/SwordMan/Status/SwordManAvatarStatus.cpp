@@ -9,6 +9,7 @@
 #include "../../../Damage/Game_Damage_IDamage.h"
 #include "Quest/SwordMan_QuestGroup.h"
 #include "Event/SwordManAvatarStatusEvent.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
@@ -16,19 +17,19 @@ namespace GameCore::PlayerAvatar::SwordMan
         : event_ (std::make_shared<StatusEvent>())
         , quests_(std::make_unique<QuestGroup>())
         , wallet_(std::make_shared<PlayerAvatar::Wallet>())
-        , maxHealth_(100)
+        , maxHealth_(150)
         , maxStamina_(StatusParameter::Stamina(100.0f))
         , stamina_(StatusParameter::Stamina(100.0f))
         , staminaDrainPerSecond_(10.0f)
         , staminaRegenPerSecond_(30.0f)
         , minStaminaRatioToResumeRun_(0.3f)
         , comboNormalAttack_ {
-            AttackParam(Damage::PhysicsPower(1), EnhancePower(1), 0.2673473869f, 0.5028546333f),
-            AttackParam(Damage::PhysicsPower(2), EnhancePower(2), 0.7004830918f, 0.9738691261f),
-            AttackParam(Damage::PhysicsPower(3), EnhancePower(3), 1.2878787879f, 1.5151515152f)}
+            AttackParam(Damage::PhysicsPower(10), EnhancePower(1), 0.2673473869f, 0.5028546333f),
+            AttackParam(Damage::PhysicsPower(12), EnhancePower(2), 0.7004830918f, 0.9738691261f),
+            AttackParam(Damage::PhysicsPower(18), EnhancePower(3), 1.2878787879f, 1.5151515152f)}
         , comboNormalAttackStateDuration_secs_(1.5151515152f)
         , attackedShockedStateDuration_secs_  (0.9090909091f)
-        , dashAttack_                    (Damage::PhysicsPower(10), EnhancePower(10), 0.5303030303f, 0.6060606061f)
+        , dashAttack_                    (Damage::PhysicsPower(15), EnhancePower(10), 0.5303030303f, 0.6060606061f)
         , dashAttackLungeSpeed_secs_          (55.0f)
         , comboHitFeel_ {
             HitFeelParam(0.3f, 0.1090909091f, 5.0f , 0.5f, 0.12f, 5.0f),
@@ -39,12 +40,12 @@ namespace GameCore::PlayerAvatar::SwordMan
         , chargeAttackHoldThreshold_secs_(0.2f)
         , chargeAttackMaxCharge_secs_    (1.0f)
         , chargeAttackMaxHold_secs_      (3.0f)
-        , chargeAttack_                  (Damage::PhysicsPower(8), EnhancePower(15), 0.4333333333f, 0.9083333333f)
+        , chargeAttack_                  (Damage::PhysicsPower(35), EnhancePower(15), 0.4333333333f, 0.9083333333f)
         , chargeHitFeel_                 (1.2f, 0.18f, 7.0f, 0.8f, 0.25f)
         , chargeAttackLungeStart_secs_   (0.0f)
         , chargeAttackLungeSpeed_        (28.0f)
         , chargeAttackStaminaCost_       (30.0f)
-        , jumpAttack_                    (Damage::PhysicsPower(6), EnhancePower(12), 0.1f, 0.6666666667f)
+        , jumpAttack_                    (Damage::PhysicsPower(22), EnhancePower(12), 0.1f, 0.6666666667f)
         , jumpAttackHitFeel_             (1.0f, 0.15f, 6.5f, 0.8f, 0.22f)
         , jumpAttackWindup_secs_         (0.3f)
         , jumpAttackPlungeSpeed_         (120.0f)
@@ -128,7 +129,7 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStatus::Init()
     {
-        quests_->Init(event_, event_, controlGuideFocus_, wallet_);
+        quests_->Init(event_, controlGuideFocus_, wallet_);
     }
 
     void SwordManAvatarStatus::OnUpdate()
@@ -362,3 +363,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         LibCore::ImGuiHelper::OnDrawInputField("reviveHealthRatio_", reviveHealthRatio_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::IPlayerAvatarStatus, GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
+#pragma endregion

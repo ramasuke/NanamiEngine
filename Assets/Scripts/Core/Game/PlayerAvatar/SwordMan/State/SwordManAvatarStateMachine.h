@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "../../StateMachine/PlayerAvatarStateMachineBase.h"
-#include "../../StateMachine/EventScene/IPlayerAvatarEventSceneStateMachine.h"
 #include "SwordManAvatarStateBase.h"
 
 namespace GamePlay::PlayerAvatar::SwordMan
@@ -10,8 +9,7 @@ namespace GamePlay::PlayerAvatar::SwordMan
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
-    class SwordManAvatarStateMachine final : public PlayerAvatarStateMachineBase<SwordManAvatarStateType>,
-                                             public IPlayerAvatarEventSceneStateMachine
+    class SwordManAvatarStateMachine final : public PlayerAvatarStateMachineBase<SwordManAvatarStateType>
     {
     public:
         using Base = PlayerAvatarStateMachineBase;
@@ -27,15 +25,13 @@ namespace GameCore::PlayerAvatar::SwordMan
 
         void OnChangeState(SwordManAvatarStateType type) override;
         void OnChangeState(EventSceneStateType type) override;
-        void OnEnable()  override;
-        void OnDisable() override;
 
-        NanamiEngine::R4::Observable<std::shared_ptr<SwordManAvatarStateBase>> CurrentState() const;
+        R4::Observable<std::shared_ptr<SwordManAvatarStateBase>> CurrentState() const;
         [[nodiscard]] std::shared_ptr<const SwordManAvatarStateBase> CurrentStateValue() const;
 
     private:
-        NanamiEngine::R4::ReactiveProperty<std::shared_ptr<SwordManAvatarStateBase>> swordManCurrentState_;
-        NanamiEngine::R4::SerialDisposable baseStateSubscription_;
+        R4::ReactiveProperty<std::shared_ptr<SwordManAvatarStateBase>> swordManCurrentState_;
+        R4::SerialDisposable baseStateSubscription_;
     };
 
     std::unique_ptr<SwordManAvatarStateMachine> CreateStateMachine(

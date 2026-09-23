@@ -35,6 +35,4 @@ namespace GameCore::Scene::Sub
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(GameCore::Scene::Sub::ChattingUISceneContext, 1);
-CEREAL_REGISTER_TYPE(GameCore::Scene::Sub::ChattingUISceneContext);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::Sub::SceneContextBase, GameCore::Scene::Sub::ChattingUISceneContext);
 #pragma endregion

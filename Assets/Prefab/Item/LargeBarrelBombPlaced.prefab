@@ -157,7 +157,7 @@
             "ptr_wrapper": {
                 "id": 2147483653,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -179,7 +179,6 @@
                                 "data": {
                                     "cereal_class_version": 5,
                                     "value0": {
-                                        "cereal_class_version": 0,
                                         "guid_": {
                                             "value_": "BE0877E8-9EAB-476E-8710-634960A70790"
                                         },
@@ -194,9 +193,7 @@
                                     "value3": {
                                         "cereal_class_version": 0
                                     },
-                                    "value4": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value4": {},
                                     "mv1File_": {
                                         "cereal_class_version": 0,
                                         "value0": {
@@ -230,9 +227,9 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.12,
-                            "value1": 0.12,
-                            "value2": 0.12
+                            "value0": 0.11999999731779099,
+                            "value1": 0.11999999731779099,
+                            "value2": 0.11999999731779099
                         },
                         "worldMatrix_": {
                             "value0": {
@@ -261,7 +258,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }

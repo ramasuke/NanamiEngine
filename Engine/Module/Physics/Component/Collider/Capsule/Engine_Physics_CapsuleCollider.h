@@ -57,4 +57,4 @@ namespace NanamiEngine::Module::Component
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::CapsuleCollider, 3)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::CapsuleCollider, 3);

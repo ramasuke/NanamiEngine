@@ -9,6 +9,7 @@
 #include "../../../../../../../PlayerAvatar/IPlayerAvatar.h"
 #include "../glm/gtx/quaternion.hpp"
 #include "../glm/gtx/vector_angle.hpp"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -115,3 +116,11 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("animationNumber_", animationNumber_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(
+    GameCore::Npc::Enemy::Behaviour::ActionBase,
+    GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding
+)
+#pragma endregion

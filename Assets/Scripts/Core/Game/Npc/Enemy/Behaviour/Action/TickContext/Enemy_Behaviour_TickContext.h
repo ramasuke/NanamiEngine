@@ -93,6 +93,8 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[nodiscard]] IShowHealthGaugeProvider* ShowHealthGaugeProvider() const { return showHealthGaugeProvider_; }
         [[nodiscard]] std::shared_ptr<IPlayerAvatar> Player() const;
         [[nodiscard]] static const std::vector<std::weak_ptr<IPlayerAvatar>>& AllPlayer();
+        // 水平距離で一番近いプレイヤーの位置。プレイヤーがいなければ false
+        [[nodiscard]] bool NearestPlayerPosition(const glm::vec3& from, glm::vec3& out) const;
         [[nodiscard]] const PlayerAvatar::IQuestGroup& PlayerQuest() const;
         [[nodiscard]] const PlayerAvatar::Quest::ICompleteQuestGroup& PlayerCompleteQuest() const;
         [[nodiscard]] const GamePlay::Ui::NpcChatting& ChatUi() const;

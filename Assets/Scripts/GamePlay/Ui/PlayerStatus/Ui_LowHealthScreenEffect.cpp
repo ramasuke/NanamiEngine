@@ -4,6 +4,7 @@
 #include <cmath>
 #include "DxLib.h"
 #include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -19,8 +20,8 @@ namespace GamePlay::Ui
         maxHealth_  = model.MaxHealth();
         lastHealth_ = model.Health();
         OnChangeHealth(model.Health(), model.IsDeath());
-        danger_       = isDowned_ ? 0.0f : CalcDanger(healthRate_);
-        downedWeight_ = isDowned_ ? 1.0f : 0.0f;
+        danger_ = isDowned_ ? 0.0f : CalcDanger(healthRate_);
+        ResetDownedFade(isDowned_);
 
         subscription_.Dispose();
         // OnChangeHealth は Set 直後に流れるので、この時点の IsDeath は新しいHPを反映している
@@ -33,6 +34,7 @@ namespace GamePlay::Ui
     void LowHealthScreenEffect::OnAwake()
     {
         colorGrade_ = Components().Catch<NanamiUi::ScreenColorGradeRenderer>().lock();
+        ResetDownedFade(false);
     }
 
     void LowHealthScreenEffect::OnDestroy()
@@ -48,10 +50,12 @@ namespace GamePlay::Ui
 
         const float targetDanger = isDowned ? 0.0f : CalcDanger(healthRate);
         danger_ += (targetDanger - danger_) * (1.0f - std::exp(-deltaTime / (std::max)(dangerSmooth_secs_, 0.001f)));
-        downedWeight_ = std::clamp(
-            downedWeight_ + (isDowned ? deltaTime : -deltaTime) / (std::max)(downedFade_secs_, 0.001f),
-            0.0f,
-            1.0f);
+        if (isDowned)
+            downedFade_.PlayForward();
+        else
+            downedFade_.PlayBackward();
+        downedFade_.Tick(deltaTime);
+        const float downedWeight = downedFade_.Value();
 
         const float bpm = std::lerp(minBpm_, maxBpm_, danger_);
         sinceBeat_secs_ += deltaTime;
@@ -61,7 +65,7 @@ namespace GamePlay::Ui
             PlayHeartbeat(danger_);
         }
 
-        const float awakeWeight = 1.0f - downedWeight_;
+        const float awakeWeight = 1.0f - downedWeight;
         if (vignette_)
         {
             const float blendRate = danger_ * (static_cast<float>(vignetteBlendRate_) + static_cast<float>(pulseAddBlendRate_) * CalcPulse(sinceBeat_secs_));
@@ -71,8 +75,8 @@ namespace GamePlay::Ui
         {
             colorGrade_->SetSaturation(static_cast<int>(
                 -danger_ * static_cast<float>(maxDesaturation_) * awakeWeight
-                - static_cast<float>(downedDesaturation_) * downedWeight_));
-            colorGrade_->SetBright(static_cast<int>(-static_cast<float>(downedDarken_) * downedWeight_));
+                - static_cast<float>(downedDesaturation_) * downedWeight));
+            colorGrade_->SetBright(static_cast<int>(-static_cast<float>(downedDarken_) * downedWeight));
         }
     }
 
@@ -89,6 +93,13 @@ namespace GamePlay::Ui
             PlayHeartbeat((std::max)(danger_, targetDanger));
         }
         lastHealth_ = health;
+    }
+
+    void LowHealthScreenEffect::ResetDownedFade(const bool isDowned)
+    {
+        downedFade_.Set(tweeny::from(0.0f).to(1.0f).during(LibCore::Tween::Ms(downedFade_secs_)));
+        if (isDowned)
+            downedFade_.Complete();
     }
 
     void LowHealthScreenEffect::PlayHeartbeat(const float danger) const
@@ -144,6 +155,10 @@ namespace GamePlay::Ui
         ImGui::Separator();
         ImGui::SliderFloat("debugOverrideHealthRate_ (-1 = off)", &debugOverrideHealthRate_, -1.0f, 1.0f);
         ImGui::Checkbox("debugForceDowned_", &debugForceDowned_);
-        ImGui::Text("healthRate_: %.2f  danger_: %.2f  downedWeight_: %.2f", healthRate_, danger_, downedWeight_);
+        ImGui::Text("healthRate_: %.2f  danger_: %.2f  downedWeight_: %.2f", healthRate_, danger_, downedFade_.Value());
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::LowHealthScreenEffect);
+#pragma endregion

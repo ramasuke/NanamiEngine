@@ -24,6 +24,7 @@
 #include "InjuredWalk/SwordManAvatarInjuredWalkState.h"
 #include "Run/SwordManAvatarRunState.h"
 #include "UseCanon/SwordManAvatarUseCanonState.h"
+#include "UseItem/SwordManAvatarUseItemState.h"
 #include "WakeUp/SwordManAvatar_WakeUpState.h"
 #include "Walk/SwordManAvatarWalkState.h"
 #include "WarpIn/SwordManAvatar_WarpInState.h"
@@ -66,8 +67,6 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     void SwordManAvatarStateMachine::OnChangeState(SwordManAvatarStateType type) { Base::OnChangeState(type); }
     void SwordManAvatarStateMachine::OnChangeState(const EventSceneStateType type) { Base::OnChangeState(ToSwordManEventSceneState(type)); }
-    void SwordManAvatarStateMachine::OnEnable()  { Base::OnEnable();  }
-    void SwordManAvatarStateMachine::OnDisable() { Base::OnDisable(); }
 
     R4::Observable<std::shared_ptr<SwordManAvatarStateBase>> SwordManAvatarStateMachine::CurrentState() const
     {
@@ -132,6 +131,9 @@ namespace GameCore::PlayerAvatar::SwordMan
                     {SwordManAvatarStateType::JumpAttackAir,      std::make_shared<SwordManAvatarJumpAttackAirState>     (args)},
                     {SwordManAvatarStateType::JumpAttackLand,     std::make_shared<SwordManAvatarJumpAttackLandState>    (args)},
                     {SwordManAvatarStateType::WarpIn,             std::make_shared<WarpInState>                          (args)},
+                    {SwordManAvatarStateType::UseItemDrink,       std::make_shared<UseItemState>(args, SwordMan::AnimationType::ItemDrink)},
+                    {SwordManAvatarStateType::UseItemEat,         std::make_shared<UseItemState>(args, SwordMan::AnimationType::ItemEat  )},
+                    {SwordManAvatarStateType::UseItemPlace,       std::make_shared<UseItemState>(args, SwordMan::AnimationType::ItemPlace)},
                 };
             },
             SwordManAvatarStateType::Idle,

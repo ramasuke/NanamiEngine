@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <optional>
+
 #include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "Libs/LibCore/cereal/glm/GlmHelper.h"
 #include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
@@ -6,6 +8,7 @@
 #include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
 #include "../../../../../../../GamePlay/Network/Game_CustomNetworkRunner.h"
 #include "../../../../../Npc/Enemy/SpawnPoint/EnemySpawnPoint.h"
+#include "../../../../../Story/Story_StageClear.h"
 #include "../../../Context/Main_SceneContextBase.h"
 
 namespace GameCore::Scene
@@ -52,6 +55,8 @@ namespace GameCore::Scene
         [[nodiscard]] const glm::vec3& ArrivalCameraEnd  () const { return arrivalCameraEnd_;   }
         /** 歩いているプレイヤーの、足元から注視点までの高さ */
         [[nodiscard]] float ArrivalLookAtHeight() const { return arrivalLookAtHeight_; }
+        /** このステージのクリア条件。どちらかが -1 なら無し */
+        [[nodiscard]] std::optional<Story::StageClearCondition> StageClear() const;
 
     private:
         [[serialize(1)]] FIELD(Asset::SoundFile) bgm_;
@@ -72,6 +77,9 @@ namespace GameCore::Scene
         [[serialize(9)]] glm::vec3 arrivalCameraStart_            = glm::vec3(22.0f, 3.5f, 24.0f);
         [[serialize(9)]] glm::vec3 arrivalCameraEnd_              = glm::vec3(18.0f, 2.5f, 36.0f);
         [[serialize(9)]] float     arrivalLookAtHeight_           = 12.0f;
+        // NOTE: tools.scene で設定できるよう EnemyKind / Story::StoryFlag を int で持つ
+        [[serialize(11)]] int      clearEnemyKind_                = -1;
+        [[serialize(11)]] int      clearStoryFlag_                = -1;
 
 #pragma region Serialization Function
     public:
@@ -98,6 +106,8 @@ namespace GameCore::Scene
             archive(CEREAL_NVP(arrivalCameraStart_));
             archive(CEREAL_NVP(arrivalCameraEnd_));
             archive(CEREAL_NVP(arrivalLookAtHeight_));
+            archive(CEREAL_NVP(clearEnemyKind_));
+            archive(CEREAL_NVP(clearStoryFlag_));
         }
 
         template<class Archive>
@@ -147,13 +157,16 @@ namespace GameCore::Scene
                 archive(CEREAL_NVP(arrivalCameraEnd_));
                 archive(CEREAL_NVP(arrivalLookAtHeight_));
             }
+            if (version >= 11)
+            {
+                archive(CEREAL_NVP(clearEnemyKind_));
+                archive(CEREAL_NVP(clearStoryFlag_));
+            }
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::GrassLandSceneContext, 10);
-CEREAL_REGISTER_TYPE(GameCore::Scene::GrassLandSceneContext);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::SceneContextBase, GameCore::Scene::GrassLandSceneContext);
+CEREAL_CLASS_VERSION(GameCore::Scene::GrassLandSceneContext, 11);
 #pragma endregion

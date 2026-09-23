@@ -18,7 +18,6 @@ namespace NanamiEngine::R4
 
     ///NOTE: 購読の寿命。Dispose() で購読解除。コピーしても同じ購読を指す
     ///      Subscribe の戻り値は必ず AddTo / RegisterTo するか、メンバに持って自分で Dispose() する
-    ///      （破棄されても自動では解除しない）
     class Disposable final
     {
     public:

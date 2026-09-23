@@ -10,21 +10,30 @@
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
     namespace
     {
-        float ControlGuideMoveTowards(const float current, const float target, const float maxDelta)
+        tweeny::tween<float> ControlGuideFadeTween(const float duration_secs)
         {
-            if (current < target)
-                return (std::min)(current + maxDelta, target);
-            return (std::max)(current - maxDelta, target);
+            return tweeny::from(0.0f).to(1.0f).during(LibCore::Tween::Ms(duration_secs));
         }
 
-        float ControlGuideStepRate(const float deltaTime, const float duration_secs)
+        void ControlGuideFade(LibCore::Tween::TweenPlayer<float>& fade, const bool isOn, const float deltaTime)
         {
-            return duration_secs > 0.0f ? deltaTime / duration_secs : 1.0f;
+            if (isOn)
+                fade.PlayForward();
+            else
+                fade.PlayBackward();
+            fade.Tick(deltaTime);
+        }
+
+        void ControlGuidePlayPulse(LibCore::Tween::TweenPlayer<float>& pulse, const float duration_secs)
+        {
+            if (duration_secs > 0.0f)
+                pulse.Play(tweeny::from(1.0f).to(0.0f).during(LibCore::Tween::Ms(duration_secs)));
         }
 
         int ControlGuideToBlendRate(const float alpha)
@@ -49,6 +58,14 @@ namespace GamePlay::Ui
             rowViews_.push_back(rowObject ? rowObject->Components().Catch<ControlGuideRow>() : std::weak_ptr<ControlGuideRow>{});
         }
         rowStates_.assign(count, RowState{});
+        for (auto& row : rowStates_)
+        {
+            row.visibility.Set(ControlGuideFadeTween(rowFadeDuration_secs_));
+            row.usableRate.Set(ControlGuideFadeTween(rowFadeDuration_secs_));
+            row.focusRate .Set(ControlGuideFadeTween(focusFadeDuration_secs_));
+            ControlGuidePlayPulse(row.pulse, pulseDuration_secs_);
+        }
+        guideFade_.Set(ControlGuideFadeTween(guideFadeDuration_secs_));
     }
 
     void ControlGuide::Present(
@@ -58,7 +75,7 @@ namespace GamePlay::Ui
         const bool isFocusCleared)
     {
         const float deltaTime = Time::DeltaTime();
-        guideAlpha_ = ControlGuideMoveTowards(guideAlpha_, isShown ? 1.0f : 0.0f, ControlGuideStepRate(deltaTime, guideFadeDuration_secs_));
+        ControlGuideFade(guideFade_, isShown, deltaTime);
         focusElapsed_secs_ = focusedRow ? focusElapsed_secs_ + deltaTime : 0.0f;
 
         const std::size_t count = (std::min)({ rowStates_.size(), rowViews_.size(), requests.size() });
@@ -67,7 +84,7 @@ namespace GamePlay::Ui
         {
             if (isShown)
                 AnimateRow(rowStates_[i], requests[i], focusedRow == i, deltaTime);
-            anyFocusRate_ = (std::max)(anyFocusRate_, rowStates_[i].focusRate);
+            anyFocusRate_ = (std::max)(anyFocusRate_, rowStates_[i].focusRate.Value());
         }
         for (std::size_t i = 0; i < count; ++i)
         {
@@ -78,7 +95,7 @@ namespace GamePlay::Ui
 
     std::optional<glm::vec2> ControlGuide::RowAnchor(const std::size_t row) const
     {
-        if (row >= rowViews_.size() || guideAlpha_ <= 0.0f)
+        if (row >= rowViews_.size() || guideFade_.Value() <= 0.0f)
             return std::nullopt;
 
         const auto view = rowViews_[row].lock();
@@ -97,9 +114,9 @@ namespace GamePlay::Ui
         // 入力機器の切替で絵だけが変わった時は、光らせずに差し替える
         const bool isGlyphChanged = request.isShown && row.glyph != request.glyph;
         if (isActive && (!row.isActive || isLabelChanged))
-            row.pulseElapsed_secs = 0.0f;
+            ControlGuidePlayPulse(row.pulse, pulseDuration_secs_);
         else
-            row.pulseElapsed_secs += deltaTime;
+            row.pulse.Tick(deltaTime);
         row.isActive = isActive;
 
         // 消えていく行は直前の中身のままフェードさせる
@@ -116,16 +133,18 @@ namespace GamePlay::Ui
             row.isFocusDirty = true;
         }
 
-        const float step = ControlGuideStepRate(deltaTime, rowFadeDuration_secs_);
-        row.visibility = ControlGuideMoveTowards(row.visibility, request.isShown  ? 1.0f : 0.0f, step);
-        row.usableRate = ControlGuideMoveTowards(row.usableRate, request.isUsable ? 1.0f : 0.0f, step);
-        row.focusRate  = ControlGuideMoveTowards(row.focusRate, isFocused ? 1.0f : 0.0f, ControlGuideStepRate(deltaTime, focusFadeDuration_secs_));
+        ControlGuideFade(row.visibility, request.isShown,  deltaTime);
+        ControlGuideFade(row.usableRate, request.isUsable, deltaTime);
+        ControlGuideFade(row.focusRate,  isFocused,        deltaTime);
     }
 
     void ControlGuide::PresentRow(ControlGuideRow& view, RowState& row, const RowRequest& request, const bool isCleared) const
     {
         // 出始めた行はすぐ有効にして枠を確保し、消える行はフェードし終えてから無効にしてレイアウトから外す
-        const bool isEnabled = guideAlpha_ > 0.0f && (request.isShown || row.visibility > 0.0f);
+        const float guideAlpha = guideFade_.Value();
+        const float visibility = row.visibility.Value();
+        const float focusRate  = row.focusRate.Value();
+        const bool isEnabled = guideAlpha > 0.0f && (request.isShown || visibility > 0.0f);
         if (view.IsEnable() != isEnabled)
         {
             if (const auto entity = view.Entity().lock())
@@ -145,17 +164,16 @@ namespace GamePlay::Ui
             row.isFocusDirty = false;
         }
 
-        const float usableAlphaRate = std::lerp(static_cast<float>(dimAlpha_) / 255.0f, 1.0f, row.usableRate);
+        const float usableAlphaRate = std::lerp(static_cast<float>(dimAlpha_) / 255.0f, 1.0f, row.usableRate.Value());
         // 指されている行は常に最前面の明るさ、それ以外はフォーカス中だけさらに沈める
-        const float focusDimRate = std::lerp(1.0f - unfocusedDimRate_ * anyFocusRate_, 1.0f, row.focusRate);
-        const float bodyAlpha  = 255.0f * guideAlpha_ * row.visibility * (std::max)(usableAlphaRate, row.focusRate) * focusDimRate;
-        const float pulse      = pulseDuration_secs_ > 0.0f ? (std::max)(0.0f, 1.0f - row.pulseElapsed_secs / pulseDuration_secs_) : 0.0f;
-        const float pulseAlpha = pulse * guideAlpha_ * row.visibility;
-        const float hidden     = 1.0f - row.visibility;
+        const float focusDimRate = std::lerp(1.0f - unfocusedDimRate_ * anyFocusRate_, 1.0f, focusRate);
+        const float bodyAlpha  = 255.0f * guideAlpha * visibility * (std::max)(usableAlphaRate, focusRate) * focusDimRate;
+        const float pulseAlpha = row.pulse.Value() * guideAlpha * visibility;
+        const float hidden     = 1.0f - visibility;
         // 行の枠もフェードと一緒に smoothstep で伸び縮みさせ、上下の行を跳ねさせない
-        const float slotRate   = row.visibility * row.visibility * (3.0f - 2.0f * row.visibility);
+        const float slotRate   = visibility * visibility * (3.0f - 2.0f * visibility);
 
-        const float focusAlpha  = row.focusRate * guideAlpha_ * row.visibility;
+        const float focusAlpha  = focusRate * guideAlpha * visibility;
         const float breath      = 0.5f + 0.5f * std::sin(focusElapsed_secs_ * 2.0f * std::numbers::pi_v<float> / (std::max)(focusPulsePeriod_secs_, 0.01f));
         const float markAlpha   = 255.0f * focusAlpha * std::lerp(0.55f, 1.0f, breath);
 
@@ -176,7 +194,7 @@ namespace GamePlay::Ui
 
     void ControlGuide::OnDrawGui()
     {
-        ImGui::Text("guideAlpha_: %.2f", guideAlpha_);
+        ImGui::Text("guideAlpha_: %.2f", guideFade_.Value());
 
         ImGuiHelper::OnDrawInputField("rows_", rows_);
         ImGuiHelper::OnDrawInputField("rowPrefab_", rowPrefab_);
@@ -195,3 +213,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("unfocusedDimRate_", unfocusedDimRate_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::ControlGuide);
+#pragma endregion

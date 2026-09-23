@@ -1,5 +1,6 @@
 ﻿#include "SoundFile.h"
 #include "DxLib.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 NanamiEngine::Module::Asset::SoundFile::SoundFile(std::string contentPath)
     : contentPath_(std::move(contentPath))
@@ -37,3 +38,9 @@ void NanamiEngine::Module::Asset::SoundFile::OnDrawGui()
 
     ImGui::Text("dxLibId: %d", dxLibHandle_);
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SoundFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::SoundFile);
+REGISTER_ASSET(SoundFile, ".mp3")
+#pragma endregion

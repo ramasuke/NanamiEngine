@@ -55,4 +55,4 @@ namespace GamePlay::Prop
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Prop::DestructibleObject, 4)
+CEREAL_CLASS_VERSION(GamePlay::Prop::DestructibleObject, 4);

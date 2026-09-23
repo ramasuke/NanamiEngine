@@ -1,5 +1,6 @@
 ﻿#include "LayoutElement.h"
 #include <algorithm>
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -18,3 +19,7 @@ namespace NanamiEngine::Module::NanamiUi
         ImGui::SliderFloat("mainAxisRate_", &mainAxisRate_, 0.0f, 1.0f);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::LayoutElement);
+#pragma endregion

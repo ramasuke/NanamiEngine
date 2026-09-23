@@ -3,6 +3,7 @@
 #include "../../../../3DRender/Shapes/Shapes.h"
 #include "../../../../GameObject/Transform/Transform.h"
 #include "../../../JoltUtility/Engine_Physics_JoltUtility.h"
+#include "../../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 void Component::BoxCollider::OnDrawGui()
 {
@@ -65,3 +66,7 @@ JPH::RefConst<JPH::Shape> Component::BoxCollider::CreateColliderShape() const
     
     return Physics::CreateBoxShape(colliderShapeScale);
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::BoxCollider);
+#pragma endregion

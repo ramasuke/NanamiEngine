@@ -7,6 +7,7 @@
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 #include "Packages/AssetUpdater/Task/AssetUpdateTask.h"
 #include "../Ui_AssetUpdateTag.h"
 
@@ -66,6 +67,7 @@ namespace GamePlay::Ui
         [[nodiscard]] AssetUpdateParcel Parcel() const;
         void PlaySound(const FIELD(Asset::SoundFile)& sound) const;
         void UpdatePreview();
+        void PlayPreviewDownload();
 
         [[serialize(0)]] FIELD(Asset::SoundFile) stampSound_;
         [[serialize(0)]] FIELD(Asset::SoundFile) confirmSound_;
@@ -77,7 +79,8 @@ namespace GamePlay::Ui
         bool canRelaunch_ = false;
 
         Preview preview_ = Preview::None;
-        float previewElapsed_secs_ = 0.0f;
+        /** 偽の受け取りの進み 0..1 */
+        LibCore::Tween::TweenPlayer<float> previewDownloadTween_;
 
 #pragma region Serialization Function
     public:
@@ -102,4 +105,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::AssetUpdatePresenter, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::AssetUpdatePresenter, 0);

@@ -13,6 +13,7 @@
 #include "Engine/Module/Asset/Sprite/SpriteFile.h"
 #include "Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "../../Scripts/Core/Game/PlayerAvatar/Item/Effect/IItemEffect.h"
+#include "../../Scripts/Core/Game/PlayerAvatar/Item/ItemUseMotion.h"
 
 namespace GameCore::PlayerAvatar::Item
 {
@@ -32,7 +33,13 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] const std::string&          DisplayName         () const { return displayName_;          }
         [[nodiscard]] std::shared_ptr<SpriteFile> IconSprite          () const { return iconSprite_.get();     }
         [[nodiscard]] std::shared_ptr<SoundFile>  UseSound            () const { return useSound_.get();       }
+        /** @brief 使ったときに使い手へ付いて行く演出。一度だけ再生して消えるプレハブ */
+        [[nodiscard]] std::shared_ptr<PrefabGameObjectFile> UseParticle() const { return useParticle_.get(); }
         [[nodiscard]] int                         MaxStack            () const { return maxStack_;             }
+        /** @brief 使うときのモーション。Instant 以外は useEffectTime_secs_ で効き、useTotalDuration_secs_ で動けるようになる */
+        [[nodiscard]] GameCore::PlayerAvatar::Item::ItemUseMotion UseMotion() const { return useMotion_; }
+        [[nodiscard]] float                       UseEffectTime_secs  () const { return useEffectTime_secs_;   }
+        [[nodiscard]] float                       UseTotalDuration_secs() const { return useTotalDuration_secs_; }
         [[nodiscard]] bool                        HasEffect           () const { return !effects_.empty();     }
         /** @brief 店の勘定書きなどに出す説明。1要素が1行 */
         [[nodiscard]] const std::vector<std::string>& DescriptionLines() const { return descriptionLines_; }
@@ -48,6 +55,10 @@ namespace NanamiEngine::Module::Asset
         [[serialize(1)]] std::vector<std::shared_ptr<GameCore::PlayerAvatar::Item::IItemEffect>> effects_;
         [[serialize(2)]] FIELD(PrefabGameObjectFile) pickupPrefab_;
         [[serialize(3)]] std::vector<std::string> descriptionLines_;
+        [[serialize(4)]] FIELD(PrefabGameObjectFile) useParticle_;
+        [[serialize(5)]] GameCore::PlayerAvatar::Item::ItemUseMotion useMotion_ = GameCore::PlayerAvatar::Item::ItemUseMotion::Instant;
+        [[serialize(5)]] float useEffectTime_secs_    = 0.0f;
+        [[serialize(5)]] float useTotalDuration_secs_ = 0.0f;
 
 #pragma region Serialization Function
     public:
@@ -64,6 +75,10 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(effects_));
             archive(CEREAL_NVP(pickupPrefab_));
             archive(CEREAL_NVP(descriptionLines_));
+            archive(CEREAL_NVP(useParticle_));
+            archive(CEREAL_NVP(useMotion_));
+            archive(CEREAL_NVP(useEffectTime_secs_));
+            archive(CEREAL_NVP(useTotalDuration_secs_));
         }
 
         template<class Archive>
@@ -77,14 +92,15 @@ namespace NanamiEngine::Module::Asset
             if (version >= 1) archive(CEREAL_NVP(effects_));
             if (version >= 2) archive(CEREAL_NVP(pickupPrefab_));
             if (version >= 3) archive(CEREAL_NVP(descriptionLines_));
+            if (version >= 4) archive(CEREAL_NVP(useParticle_));
+            if (version >= 5) archive(CEREAL_NVP(useMotion_));
+            if (version >= 5) archive(CEREAL_NVP(useEffectTime_secs_));
+            if (version >= 5) archive(CEREAL_NVP(useTotalDuration_secs_));
         }
 #pragma endregion
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(ItemData, ITEM_DATA_EXTENSION_LABEL, "Item")
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::ItemData, 3);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::ItemData);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::ItemData);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::ItemData, 5);
 #pragma endregion

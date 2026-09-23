@@ -54,4 +54,4 @@ namespace GamePlay::Weather
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Weather::WindZone, 0)
+CEREAL_CLASS_VERSION(GamePlay::Weather::WindZone, 0);

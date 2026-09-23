@@ -5,6 +5,7 @@
 #include "../../../Core/Game/Magic/IMagicCaster.h"
 #include "../Component/GamePlay_MagicBlast.h"
 #include "../GamePlay_MagicAim.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Magic
 {
@@ -39,3 +40,8 @@ namespace GamePlay::Magic
         ImGuiHelper::OnDrawInputField("range_", range_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GamePlay::Magic::AreaSpellEffect);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Magic::IMagicSpellEffect, GamePlay::Magic::AreaSpellEffect);
+#pragma endregion

@@ -2,7 +2,6 @@
 #include <string>
 #include <unordered_map>
 
-#include "DxLib.h"
 #include "../../../Color/Color32.h"
 #include "../../../LifeCycleCallback/EnableAsset/IEnablableAsset.h"
 #include "../../AssetBase.h"
@@ -98,8 +97,4 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::TtfFontFile, 4);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::TtfFontFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::TtfFontFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::TtfFontFile);
 #pragma endregion
-REGISTER_ASSET(TtfFontFile, ".ttf")

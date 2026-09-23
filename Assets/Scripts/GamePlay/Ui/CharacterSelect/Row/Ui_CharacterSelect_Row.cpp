@@ -2,6 +2,7 @@
 
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../Sound/SoundPlayer.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -88,3 +89,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("selectedScale_", selectedScale_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::CharacterSelectRow);
+#pragma endregion

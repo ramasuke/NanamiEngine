@@ -2,6 +2,7 @@
 
 #include "DxLib.h"
 #include "../../GameObject/Transform/Transform.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -83,3 +84,7 @@ namespace NanamiEngine::Module::NanamiUi
         }
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::MovieRenderer);
+#pragma endregion

@@ -32,5 +32,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         JumpAttackAir      = 24,
         JumpAttackLand     = 25,
         WarpIn             = 26,
+        UseItemDrink       = 27,
+        UseItemEat         = 28,
+        UseItemPlace       = 29,
     };
 }

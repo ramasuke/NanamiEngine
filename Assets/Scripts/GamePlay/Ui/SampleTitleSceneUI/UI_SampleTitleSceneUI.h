@@ -45,4 +45,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::SampleTitleScene, 1)
+CEREAL_CLASS_VERSION(GamePlay::Ui::SampleTitleScene, 1);

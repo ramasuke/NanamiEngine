@@ -5,6 +5,7 @@
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/TickStatus/Friendly_Behaviour_TickStatus.h"
 #include "../cereal/include/cereal/archives/json.hpp"
 #include "../cereal/include/cereal/archives/portable_binary.hpp"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace Editor::Npc::Behaviour
 {
@@ -117,3 +118,8 @@ namespace Editor::Npc::Behaviour
     template void OnceSuccessNode::save<cereal::PortableBinaryOutputArchive>(cereal::PortableBinaryOutputArchive&, const std::uint32_t) const;
     template void OnceSuccessNode::load<cereal::PortableBinaryInputArchive>(cereal::PortableBinaryInputArchive&, const std::uint32_t);
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(Editor::Npc::Behaviour::OnceSuccessNode);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(Editor::Npc::Behaviour::NodeBase, Editor::Npc::Behaviour::OnceSuccessNode);
+#pragma endregion

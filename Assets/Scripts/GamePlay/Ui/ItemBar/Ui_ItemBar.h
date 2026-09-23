@@ -11,6 +11,7 @@
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 #include "../../../Core/Game/PlayerAvatar/InputAction/PlayerAvatarInputDevice.h"
 #include "../../../Core/Game/PlayerAvatar/Item/ItemPouch.h"
 
@@ -19,9 +20,7 @@ namespace GamePlay::Ui
     class IItemBarSource;
     class ItemSlot;
 
-    // 画面右下のアイテム欄。選択中を中央に置いたまま左右へ回る帯で、枠は slotPrefab_ から slots_ の子へ生成する。
-    // 出入りは State が宣言する CycleItem / UseItem を見て決めるので、
-    // 宣言しない State(大砲に乗っている間など)では自動的に引っ込む。アバターの種類は IItemBarSource が隠す
+    // 画面右下のアイテム欄
     class ItemBar final : public Component::ComponentBase,
                           public LifeCycleCallback::IUpdatable
     {
@@ -31,12 +30,15 @@ namespace GamePlay::Ui
     private:
         void OnUpdate() override;
 
-        /// 見せる枠数(ポーチの枠数と maxVisibleSlots_ の小さい方)に足りない分だけ枠を生成し、帯の位置を合わせ直す
+        /// 見せる枠数に足りない分だけ枠を生成し、帯の位置を合わせ直す
         void SpawnSlots(const GameCore::PlayerAvatar::ItemPouch& pouch);
-        /// 枠の中身(アイコン・個数・名前)を作り直す。ポーチが変わったときだけ呼ぶ
+        /// 枠の中身を作り直す。
         void RefreshContent(const GameCore::PlayerAvatar::ItemPouch& pouch);
         void PresentSlots(const GameCore::PlayerAvatar::ItemPouch& pouch) const;
         void FadeOutSlots() const;
+        void ApplyStripSlide() const;
+        /// 前の選択から今の選択まで、回り込みを含めて近い向きに何枠動いたか
+        [[nodiscard]] int SelectionStep(const GameCore::PlayerAvatar::ItemPouch& pouch) const;
         void ApplyDeviceGlyphs() const;
         /// 左から i 番目の枠が映すポーチの添字。選択中が中央に来るように回す
         [[nodiscard]] std::size_t PouchIndexOf(const GameCore::PlayerAvatar::ItemPouch& pouch, std::size_t slotIndex) const;
@@ -69,12 +71,17 @@ namespace GamePlay::Ui
         [[serialize(0)]] float fadeDuration_secs_ = 0.25f;
         [[serialize(0)]] float selectPulseDuration_secs_ = 0.3f;
         [[serialize(0)]] int   selectGlowMaxAlpha_ = 210;
+        [[serialize(1)]] float slideDuration_secs_ = 0.18f;
+        [[serialize(1)]] float selectPopRate_ = 0.12f;
 
         std::shared_ptr<IItemBarSource> source_;
         std::vector<std::weak_ptr<ItemSlot>> slotViews_;
         std::size_t   visibleCount_ = 0;
-        float         barAlpha_ = 0.0f;
-        float         selectPulse_secs_ = 1000.0f;
+        LibCore::Tween::TweenPlayer<float> barFade_;
+        LibCore::Tween::TweenPlayer<float> selectPulse_;
+
+        LibCore::Tween::TweenPlayer<float> slideTween_;
+        float         stripBaseX_ = 0.0f;
         std::uint32_t lastRevision_ = 0;
         std::size_t   lastSelectedIndex_ = 0;
         bool          isContentDirty_ = true;
@@ -112,6 +119,8 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(fadeDuration_secs_));
             archive(CEREAL_NVP(selectPulseDuration_secs_));
             archive(CEREAL_NVP(selectGlowMaxAlpha_));
+            archive(CEREAL_NVP(slideDuration_secs_));
+            archive(CEREAL_NVP(selectPopRate_));
         }
 
         template<class Archive>
@@ -139,9 +148,11 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(fadeDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(selectPulseDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(selectGlowMaxAlpha_));
+            if (version >= 1) archive(CEREAL_NVP(slideDuration_secs_));
+            if (version >= 1) archive(CEREAL_NVP(selectPopRate_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::ItemBar, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::ItemBar, 1);

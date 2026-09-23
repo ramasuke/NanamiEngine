@@ -23,4 +23,4 @@ namespace GamePlay::Prop
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Prop::Grassable, 0)
+CEREAL_CLASS_VERSION(GamePlay::Prop::Grassable, 0);

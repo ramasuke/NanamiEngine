@@ -63,9 +63,6 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(DropTable, DROP_TABLE_EXTENSION_LABEL, "Item")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::DropTable, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::DropTable);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::DropTable);
 #pragma endregion

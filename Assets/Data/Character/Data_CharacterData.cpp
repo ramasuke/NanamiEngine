@@ -1,4 +1,5 @@
 ﻿#include "Data_CharacterData.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -31,3 +32,9 @@ namespace NanamiEngine::Module::Asset
         LibCore::ImGuiHelper::OnDrawInputField("displayModelPrefab_", displayModelPrefab_);
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(CharacterData, CHARACTER_DATA_EXTENSION_LABEL, "Player")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::CharacterData);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::CharacterData);
+#pragma endregion

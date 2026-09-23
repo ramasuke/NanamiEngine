@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <DxLib.h>
 
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/Hlsl/HlslVsFile.h"
@@ -66,4 +65,4 @@ void load(Archive& archive, const std::uint32_t version) {
 #pragma endregion
     };
 }
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::QuadRenderer, 0)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::QuadRenderer, 0);

@@ -1,6 +1,7 @@
 ﻿#include "Ui_PauseMenuItemCell.h"
 
 #include <string>
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -16,3 +17,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("countText_", countText_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PauseMenuItemCell);
+#pragma endregion

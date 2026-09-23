@@ -3,6 +3,7 @@
 #include "../../../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../IVirtualCameraTarget.h"
+#include "../../../../../Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 void CineMachine::Behaviour::VirtualCameraLookAtBehaviour::SetTarget(
     const std::shared_ptr<GameObject::IGameObject>& target)
@@ -64,3 +65,9 @@ void CineMachine::Behaviour::VirtualCameraLookAtBehaviour::LookAtTarget() const
     const glm::quat lookAtRotation = glm::normalize(glm::quat_cast(lookAtMatrix));
     Transform().SetWorldRot(lookAtRotation);
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour);
+#pragma endregion

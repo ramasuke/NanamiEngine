@@ -87,4 +87,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::EventBoardTab, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardTab, 0);

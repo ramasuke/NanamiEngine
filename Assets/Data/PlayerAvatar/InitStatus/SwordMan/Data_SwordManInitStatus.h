@@ -108,7 +108,6 @@ namespace NanamiEngine::Module::Asset
         [[serialize(5)]] float                                injuredHealthRatio_ = 0.3f;
         [[serialize(19)]] GameCore::StatusParameter::Money     initialMoney_;
 
-
 #pragma region Serialization Function
     public:
         void OnDrawGui() override;
@@ -210,9 +209,6 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(SwordManInitStatus, SWORD_MAN_INIT_STATUS_EXTENSION_LABEL, "Player::SwordMan")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManInitStatus, 19);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManInitStatus);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManInitStatus);
 #pragma endregion

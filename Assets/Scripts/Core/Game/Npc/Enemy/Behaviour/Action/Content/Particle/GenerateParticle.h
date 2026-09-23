@@ -41,7 +41,3 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::GenerateParticle, 0)
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::GenerateParticle)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    GameCore::Npc::Enemy::Behaviour::ActionBase,
-    GameCore::Npc::Enemy::Behaviour::Action::GenerateParticle)

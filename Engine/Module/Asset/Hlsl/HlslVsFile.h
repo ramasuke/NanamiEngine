@@ -52,8 +52,4 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::HlslVsFile, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::HlslVsFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::HlslVsFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::HlslVsFile);
 #pragma endregion
-REGISTER_ASSET(HlslVsFile, ".vso")

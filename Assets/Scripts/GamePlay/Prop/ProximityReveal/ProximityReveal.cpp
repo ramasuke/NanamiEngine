@@ -1,6 +1,7 @@
 ﻿#include "ProximityReveal.h"
 #include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Prop
 {
@@ -55,7 +56,7 @@ namespace GamePlay::Prop
         outPass.vsHandle      = vsFile_->GetVsHandle();
         outPass.psHandle      = psFile_->GetPsHandle();
         outPass.cbHandle      = cbHandle;
-        outPass.blendMode     = DX_BLENDMODE_ALPHA;
+        outPass.blendMode     = LibCore::Dxlib::BlendMode::Alpha;
         outPass.blendParam    = 255;
         outPass.disableZWrite = true;
         return true;
@@ -80,3 +81,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("psFile_",          psFile_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::ProximityReveal);
+#pragma endregion

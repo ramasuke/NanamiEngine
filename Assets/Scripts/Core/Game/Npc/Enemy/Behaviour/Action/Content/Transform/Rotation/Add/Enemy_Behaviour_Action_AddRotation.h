@@ -29,6 +29,3 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     };
     REGISTER_ENEMY_ACTION_WITH_NAME(AddRotation, "Transform::Rotation::AddRotation")
 }
-
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::AddRotation)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::AddRotation)

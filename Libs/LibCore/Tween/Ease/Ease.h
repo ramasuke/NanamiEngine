@@ -7,4 +7,10 @@ namespace LibCore::Tween
     {
         return EaseFunctor{ easing };
     }
+
+    // Back系の行き過ぎ量を変える
+    inline EaseFunctor Ease(const EaseType easing, const float overshoot)
+    {
+        return EaseFunctor{ easing, overshoot };
+    }
 }

@@ -1,0 +1,70 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::NpcChat",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\NpcChatText/FirstDragon Heart Shatter.npcChat",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "76CCFF8D-5636-43A8-88FC-6EAA7E8F631B"
+                    }
+                },
+                "count": 2,
+                "item_0": {
+                    "cereal_class_version": 0,
+                    "font_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "text_": "やったか……！？\n――待て、様子がおかしい！",
+                    "textColor_": {
+                        "cereal_class_version": 0,
+                        "r_": 255,
+                        "g_": 255,
+                        "b_": 255
+                    }
+                },
+                "item_1": {
+                    "font_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483651,
+                                "data": {
+                                    "value0": {
+                                        "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "text_": "島の心臓を砕かれた！\n何かに掴まれ！",
+                    "textColor_": {
+                        "r_": 255,
+                        "g_": 255,
+                        "b_": 255
+                    }
+                }
+            }
+        }
+    }
+}

@@ -8,7 +8,7 @@ namespace GameCore::PlayerAvatar::Quest::Request
     {
     private:
         [[nodiscard]] int CurrentRecord(const Record::IRecordBook& records) const override;
-        [[nodiscard]] rxcpp::observable<int> ObserveRecord(const Record::IRecordBook& records) const override;
+        [[nodiscard]] NanamiEngine::R4::Observable<int> ObserveRecord(const Record::IRecordBook& records) const override;
         void DoDrawGui() override;
 
         [[serialize(0)]] Npc::Enemy::EnemyKind enemyKind_ = Npc::Enemy::EnemyKind::Hyena;

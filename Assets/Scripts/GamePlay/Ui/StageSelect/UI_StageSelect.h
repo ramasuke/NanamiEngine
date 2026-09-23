@@ -9,6 +9,7 @@
 #include "../../../Core/Game/Scene/Main/Type/MainSceneType.h"
 #include "Stage/Ui_StageSelect_StageUI.h"
 #include "MapMarker/StageMapMarker.h"
+#include "Room/Ui_StageSelect_RoomUi.h"
 #include "../cereal/include/cereal/types/vector.hpp"
 
 namespace GamePlay::Ui
@@ -22,25 +23,21 @@ namespace GamePlay::Ui
 
         void HighlightSelectedStage(size_t selectedIndex);
         void SetWorldEnterButtonEnabled(bool isEnabled);
-        /** @brief 選んだステージへの遷移を頼む。ロード画面は GameSceneGroup が出す */
+        /** @brief 選んだステージへの遷移 */
         void EnterWorld(GameCore::Scene::Main::SceneType sceneType);
         void ShowMapMarker(const glm::vec2& position, bool isCleared);
         void ShowStageDetail(const Asset::StageData& stage);
         void ShowNoSelectionDetail();
+        [[nodiscard]] std::shared_ptr<StageSelectRoomUi> Room() const { return roomUi_.get(); }
 
     private:
         void OnStart() override;
         void OnDestroy() override;
         Coroutine::Task<void> StartStageSelectAsync();
         Coroutine::Task<void> AppearBackGroundMaskAsync();
-        // shared_ptr で受けるとコルーチンのフレームがコンポーネントを生かし続け、
-        // GameObject だけ先に死んだ状態で描画が回って Transform() が落ちる。
-        // this を持たないよう static にしてあるのも同じ理由
         static Coroutine::Task<void> FadeBlendRateAsync(std::weak_ptr<NanamiUi::BlendImageRenderer> renderer, int from, int to);
         static Coroutine::Task<void> FadeBlendRateAsync(std::weak_ptr<NanamiUi::MovieRenderer> renderer, int from, int to);
         void SetDetailDifficultyVisible(bool isVisible);
-
-
 
         [[serialize(0)]] FIELD(Asset::SoundFile) bgm_;
 
@@ -66,6 +63,7 @@ namespace GamePlay::Ui
         [[serialize(6)]] FIELD(StageDifficultyPips) detailDifficulty_;
         [[serialize(6)]] std::vector<FIELD(NanamiUi::TextRenderer)> detailDescriptionLines_;
         [[serialize(5)]] std::string noSelectionTitle_;
+        [[serialize(7)]] FIELD(StageSelectRoomUi) roomUi_;
 
 #pragma region Serialization Function
     public:
@@ -95,6 +93,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(detailDifficulty_));
             archive(CEREAL_NVP(detailDescriptionLines_));
             archive(CEREAL_NVP(noSelectionTitle_));
+            archive(CEREAL_NVP(roomUi_));
         }
 
         template<typename Archive>
@@ -121,9 +120,10 @@ namespace GamePlay::Ui
             if (version >= 6) archive(CEREAL_NVP(detailDifficulty_));
             if (version >= 6) archive(CEREAL_NVP(detailDescriptionLines_));
             if (version >= 5) archive(CEREAL_NVP(noSelectionTitle_));
+            if (version >= 7) archive(CEREAL_NVP(roomUi_));
         }
 #pragma endregion
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::StageSelectUi, 6)
+CEREAL_CLASS_VERSION(GamePlay::Ui::StageSelectUi, 7);

@@ -17,6 +17,9 @@
 #include "../../../Sub/Type/SubSceneType.h"
 #include "../../../../Game.h"
 #include "ArrivalMovie/GrassLandArrivalMovie.h"
+#include "../../../../PlayerAvatar/Record/PlayerAvatar_RecordBook.h"
+#include "../../../../Story/Story_StageClear.h"
+#include "../../../../Story/Story_StoryProgress.h"
 
 namespace GameCore::Scene::Main
 {
@@ -36,6 +39,15 @@ namespace GameCore::Scene::Main
             throw std::runtime_error("GrassLandSceneContextが設定されていません。GameManage.sceneにGrassLandSceneContextを追加してください。");
         }
 
+        // NOTE: 記録帳と同じく協力プレイでも各ピアで立つ(物語の進み具合は共有しない)
+        if (const auto stageClear = Context()->StageClear())
+        {
+            stageClearSubscription_ = Story::WatchStageClear(
+                PlayerAvatar::Record::RecordBook::Instance().OnDefeat(),
+                *stageClear,
+                [](const Story::StoryFlag flag) { Story::StoryProgress::Instance().Set(flag); });
+        }
+
         Coroutine::StartCoroutine(OnEnterAsync(BeginEnter()));
     }
 
@@ -53,14 +65,15 @@ namespace GameCore::Scene::Main
         SubScene().Push(Sub::SceneType::OtherPlayerStatus);
 
         LoadingScreen().SetStep(SceneLoadStep::Connecting);
-        co_await GamePlay::Network::JoinOrHostStageAsync(Context()->WeakNetworkRunner(), std::string(ToString(SceneType::GrassLand)));
+        const auto joinFailure = co_await GamePlay::Network::JoinOrHostStageAsync(
+            Context()->WeakNetworkRunner(), std::string(ToString(SceneType::GrassLand)));
         if (!IsCurrentEnter(generation))
             co_return;
 
         auto& networkRunner = Context()->NetworkRunner();
         if (!networkRunner.IsStarted() || networkRunner.GetConnectionState() != Core::Network::ConnectionState::Connected)
         {
-            FailEnter(generation, "マルチプレイの接続に失敗しました");
+            FailEnter(generation, joinFailure.value_or("マルチプレイの接続に失敗しました"));
             co_return;
         }
 
@@ -77,6 +90,9 @@ namespace GameCore::Scene::Main
         {
             for (const auto& spawnPoint : Context()->EnemySpawnPoints())
             {
+                // NOTE: 倒したボスなどは、ホストの物語の進み具合で湧かせない
+                if (!spawnPoint->ShouldSpawn())
+                    continue;
                 networkRunner.SpawnEnemy(
                     spawnPoint->Kind(),
                     spawnPoint->Transform().GetWorldPos(),
@@ -100,6 +116,8 @@ namespace GameCore::Scene::Main
 
     void GrassLandScene::DoDispose()
     {
+        stageClearSubscription_.Dispose();
+
         if (arrivalMovie_)
             arrivalMovie_->Cancel();
         arrivalMovie_.reset();
@@ -111,7 +129,8 @@ namespace GameCore::Scene::Main
         }
         playerAvatar_.reset();
 
-        GamePlay::Sound::SoundPlayer::StopBgm(Context()->BGM());
+        // NOTE: ボスの BT (PlayBGM) が差し替えた BGM も流れているので、シーンの BGM だけでなく全部止める
+        GamePlay::Sound::SoundPlayer::StopAllBgm();
     }
 
     void GrassLandScene::OnDrawGui()

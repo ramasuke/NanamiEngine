@@ -23,8 +23,8 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::DoFixedUp
     HoldHorizontalVelocity();
 
     UpdateLockOn();
-    UpdateItemPouchInput();
-    UpdateTransitions();
+    if (!UpdateItemPouchInput())
+        UpdateTransitions();
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::VisitTransitions(

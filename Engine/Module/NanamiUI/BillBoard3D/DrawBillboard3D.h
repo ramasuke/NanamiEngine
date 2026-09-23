@@ -49,4 +49,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiUi::Billboard3D, 2)
+CEREAL_CLASS_VERSION(NanamiUi::Billboard3D, 2);

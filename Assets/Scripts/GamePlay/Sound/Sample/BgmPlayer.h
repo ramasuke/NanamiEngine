@@ -34,4 +34,4 @@ namespace GamePlay::Sound
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Sound::BgmPlayObject, 0)
+CEREAL_CLASS_VERSION(GamePlay::Sound::BgmPlayObject, 0);

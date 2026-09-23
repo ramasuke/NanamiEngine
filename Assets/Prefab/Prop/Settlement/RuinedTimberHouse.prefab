@@ -77,7 +77,7 @@
             "ptr_wrapper": {
                 "id": 2147483650,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -101,7 +101,6 @@
                                     "value0": {
                                         "cereal_class_version": 6,
                                         "value0": {
-                                            "cereal_class_version": 0,
                                             "guid_": {
                                                 "value_": "925E9C11-109B-4F8F-B506-E94EFD04567D"
                                             },
@@ -119,7 +118,7 @@
                                         },
                                         "layer_": 0,
                                         "isSensor_": false,
-                                        "friction_": 0.2
+                                        "friction_": 0.20000000298023225
                                     },
                                     "value1": {
                                         "cereal_class_version": 0
@@ -131,8 +130,8 @@
                                         "cereal_class_version": 0
                                     },
                                     "size_": {
-                                        "value0": 51.2,
-                                        "value1": 28.8,
+                                        "value0": 51.20000076293945,
+                                        "value1": 28.799999237060548,
                                         "value2": 4.0
                                     }
                                 }
@@ -142,8 +141,8 @@
                     "transform_": {
                         "localPos_": {
                             "value0": 0.0,
-                            "value1": 11.2,
-                            "value2": 20.4
+                            "value1": 11.199999809265137,
+                            "value2": 20.399999618530275
                         },
                         "localRot_": {
                             "value0": 0.0,
@@ -178,12 +177,13 @@
                             "value3": {
                                 "value0": 0.0,
                                 "value1": 11.199999809265137,
-                                "value2": 20.399999618530273,
+                                "value2": 20.399999618530275,
                                 "value3": 1.0
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -226,21 +226,15 @@
                                         },
                                         "layer_": 0,
                                         "isSensor_": false,
-                                        "friction_": 0.2
+                                        "friction_": 0.20000000298023225
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value2": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value3": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "value3": {},
                                     "size_": {
                                         "value0": 4.0,
-                                        "value1": 28.8,
-                                        "value2": 43.2
+                                        "value1": 28.799999237060548,
+                                        "value2": 43.20000076293945
                                     }
                                 }
                             }
@@ -248,8 +242,8 @@
                     },
                     "transform_": {
                         "localPos_": {
-                            "value0": -24.4,
-                            "value1": 11.2,
+                            "value0": -24.399999618530275,
+                            "value1": 11.199999809265137,
                             "value2": 0.0
                         },
                         "localRot_": {
@@ -283,14 +277,15 @@
                                 "value3": 0.0
                             },
                             "value3": {
-                                "value0": -24.399999618530273,
+                                "value0": -24.399999618530275,
                                 "value1": 11.199999809265137,
                                 "value2": 0.0,
                                 "value3": 1.0
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -333,20 +328,14 @@
                                         },
                                         "layer_": 0,
                                         "isSensor_": false,
-                                        "friction_": 0.2
+                                        "friction_": 0.20000000298023225
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value2": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value3": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "value3": {},
                                     "size_": {
-                                        "value0": 51.2,
-                                        "value1": 7.2,
+                                        "value0": 51.20000076293945,
+                                        "value1": 7.199999809265137,
                                         "value2": 4.0
                                     }
                                 }
@@ -397,7 +386,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -440,21 +430,15 @@
                                         },
                                         "layer_": 0,
                                         "isSensor_": false,
-                                        "friction_": 0.2
+                                        "friction_": 0.20000000298023225
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value2": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value3": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "value3": {},
                                     "size_": {
                                         "value0": 4.0,
-                                        "value1": 7.2,
-                                        "value2": 43.2
+                                        "value1": 7.199999809265137,
+                                        "value2": 43.20000076293945
                                     }
                                 }
                             }
@@ -504,7 +488,8 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -547,21 +532,15 @@
                                         },
                                         "layer_": 0,
                                         "isSensor_": false,
-                                        "friction_": 0.2
+                                        "friction_": 0.20000000298023225
                                     },
-                                    "value1": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value2": {
-                                        "cereal_class_version": 0
-                                    },
-                                    "value3": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value1": {},
+                                    "value2": {},
+                                    "value3": {},
                                     "size_": {
-                                        "value0": 44.8,
-                                        "value1": 2.4,
-                                        "value2": 45.76811067597492
+                                        "value0": 44.79999923706055,
+                                        "value1": 2.4000000953674318,
+                                        "value2": 45.76811218261719
                                     }
                                 }
                             }
@@ -569,15 +548,15 @@
                     },
                     "transform_": {
                         "localPos_": {
-                            "value0": -3.5999999999999996,
-                            "value1": 14.4,
-                            "value2": -15.200000000000001
+                            "value0": -3.5999999046325685,
+                            "value1": 14.399999618530274,
+                            "value2": -15.199999809265137
                         },
                         "localRot_": {
-                            "value0": -0.3129088116099384,
+                            "value0": -0.312908798456192,
                             "value1": 0.0,
                             "value2": -0.0,
-                            "value3": 0.9497831730854343
+                            "value3": 0.9497831463813782
                         },
                         "localScale_": {
                             "value0": 1.0,
@@ -604,14 +583,15 @@
                                 "value3": 0.0
                             },
                             "value3": {
-                                "value0": -3.5999999046325684,
-                                "value1": 14.399999618530273,
+                                "value0": -3.5999999046325685,
+                                "value1": 14.399999618530274,
                                 "value2": -15.199999809265137,
                                 "value3": 1.0
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         },
@@ -652,9 +632,7 @@
                                     "value3": {
                                         "cereal_class_version": 0
                                     },
-                                    "value4": {
-                                        "cereal_class_version": 0
-                                    },
+                                    "value4": {},
                                     "mv1File_": {
                                         "cereal_class_version": 0,
                                         "value0": {
@@ -688,9 +666,9 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.08,
-                            "value1": 0.08,
-                            "value2": 0.08
+                            "value0": 0.07999999821186066,
+                            "value1": 0.07999999821186066,
+                            "value2": 0.07999999821186066
                         },
                         "worldMatrix_": {
                             "value0": {
@@ -719,10 +697,12 @@
                             }
                         },
                         "childCount": 0
-                    }
+                    },
+                    "mark_": 0
                 }
             }
         }
     },
+    "mark_": 0,
     "value0": 0
 }

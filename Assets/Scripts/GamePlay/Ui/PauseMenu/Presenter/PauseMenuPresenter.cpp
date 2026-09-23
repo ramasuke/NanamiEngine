@@ -8,6 +8,7 @@
 #include "../../../../Core/Game/PlayerAvatar/SwordMan/State/Transition/SwordManAvatarStateTransition.h"
 #include "../../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
 #include "../../../PlayerAvatar/SwordMan/SwordManAvatar.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -159,3 +160,7 @@ namespace GamePlay::Ui
         return declaration.IsDeclared();
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::PauseMenuPresenter);
+#pragma endregion

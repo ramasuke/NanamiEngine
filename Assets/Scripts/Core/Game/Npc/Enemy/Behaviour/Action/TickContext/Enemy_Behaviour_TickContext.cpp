@@ -54,6 +54,30 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         return IPlayerAvatar::PlayerAvatars();
     }
 
+    bool TickContext::NearestPlayerPosition(const glm::vec3& from, glm::vec3& out) const
+    {
+        bool  found     = false;
+        float nearestSq = 0.0f;
+        for (const auto& weakPlayer : AllPlayer())
+        {
+            const auto player = weakPlayer.lock();
+            if (!player)
+                continue;
+
+            const glm::vec3 pos = player->PlayerTransform().GetWorldPos();
+            const float dx = pos.x - from.x;
+            const float dz = pos.z - from.z;
+            const float distSq = dx * dx + dz * dz;
+            if (found && distSq >= nearestSq)
+                continue;
+
+            found     = true;
+            nearestSq = distSq;
+            out       = pos;
+        }
+        return found;
+    }
+
     const PlayerAvatar::IQuestGroup& TickContext::PlayerQuest() const
     {
         return Player()->PlayerStatus().Quest();

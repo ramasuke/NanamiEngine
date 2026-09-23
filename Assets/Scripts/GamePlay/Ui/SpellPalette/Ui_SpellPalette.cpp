@@ -15,6 +15,7 @@
 #include "../../../Core/Game/Magic/IMagicSpell.h"
 #include "../../../Core/Game/PlayerAvatar/Input/PlayerAvatarInput_void.h"
 #include "../../PlayerAvatar/MagicCaster/MagicCasterAvatar.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -34,16 +35,13 @@ namespace GamePlay::Ui
             glm::vec2(-1.0f,  0.0f),
         };
 
-        float SpellPaletteMoveTowards(const float current, const float target, const float maxDelta)
+        void SpellPaletteFade(LibCore::Tween::TweenPlayer<float>& fade, const bool isOn, const float deltaTime)
         {
-            if (current < target)
-                return (std::min)(current + maxDelta, target);
-            return (std::max)(current - maxDelta, target);
-        }
-
-        float SpellPaletteStepRate(const float deltaTime, const float duration_secs)
-        {
-            return duration_secs > 0.0f ? deltaTime / duration_secs : 1.0f;
+            if (isOn)
+                fade.PlayForward();
+            else
+                fade.PlayBackward();
+            fade.Tick(deltaTime);
         }
 
         int SpellPaletteToBlendRate(const float alpha)
@@ -62,6 +60,9 @@ namespace GamePlay::Ui
     void SpellPalette::Initialize(const std::weak_ptr<GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar>& avatar)
     {
         avatar_ = avatar;
+        visibleFade_.Set(tweeny::from(0.0f).to(1.0f).during(LibCore::Tween::Ms(fadeDuration_secs_)));
+        openFade_   .Set(tweeny::from(0.0f).to(1.0f).during(LibCore::Tween::Ms(fadeDuration_secs_)));
+        pageSwap_   .Set(tweeny::from(0.0f).to(1.0f).during(LibCore::Tween::Ms(pageSwapDuration_secs_)));
         SpawnSlots();
     }
 
@@ -145,6 +146,7 @@ namespace GamePlay::Ui
 
         const auto& status = avatar->PlayerStatus();
         const float mana = status.Mana().CurrentValue().Value();
+        const float pageBlend = pageSwap_.Value();
 
         for (int i = 0; i < SPELL_LOADOUT_SLOT_COUNT; ++i)
         {
@@ -154,7 +156,7 @@ namespace GamePlay::Ui
 
             const int page      = i / SPELL_SLOTS_PER_PAGE;
             const int direction = i % SPELL_SLOTS_PER_PAGE;
-            const float frontWeight = page == 0 ? 1.0f - pageBlend_ : pageBlend_;
+            const float frontWeight = page == 0 ? 1.0f - pageBlend : pageBlend;
 
             if (const auto viewObject = view->Entity().lock())
             {
@@ -180,7 +182,7 @@ namespace GamePlay::Ui
                 .scale         = backScale_ + (1.0f - backScale_) * frontWeight,
                 .bodyAlpha     = SpellPaletteToBlendRate(bodyAlpha),
                 .iconAlpha     = SpellPaletteToBlendRate(spell ? bodyAlpha * (isLacking ? manaLackIconRate_ : 1.0f) : 0.0f),
-                .activeAlpha   = SpellPaletteToBlendRate(frontAlpha * openRate_),
+                .activeAlpha   = SpellPaletteToBlendRate(frontAlpha * openFade_.Value()),
                 .manaLackAlpha = SpellPaletteToBlendRate(isLacking ? bodyAlpha : 0.0f),
                 .cooldownRate  = cooldownRate,
                 .cooldownAlpha = SpellPaletteToBlendRate(cooldownRate > 0.0f ? bodyAlpha : 0.0f),
@@ -195,7 +197,7 @@ namespace GamePlay::Ui
         const auto avatar = avatar_.lock();
         const auto resources = avatar ? avatar->Resources().lock() : nullptr;
         const FIELD(NanamiUi::TextRenderer)* names[] = { &nameTop_, &nameRight_, &nameBottom_, &nameLeft_ };
-        const int nameAlpha = SpellPaletteToBlendRate(groupAlpha * openRate_);
+        const int nameAlpha = SpellPaletteToBlendRate(groupAlpha * openFade_.Value());
 
         for (int direction = 0; direction < SPELL_SLOTS_PER_PAGE; ++direction)
         {
@@ -264,7 +266,8 @@ namespace GamePlay::Ui
         const auto avatar = avatar_.lock();
         if (!avatar)
         {
-            visibleRate_ = 0.0f;
+            visibleFade_.PlayBackward();
+            visibleFade_.Complete();
             FadeOut();
             return;
         }
@@ -291,16 +294,15 @@ namespace GamePlay::Ui
         // キーボードは 1〜4 を直接押すので、右クリック（2ページ目）を押している間だけ開いた見た目にする
         const bool isOpen = isShown && (input.Palette().IsUpdatePressed() || (!isPad && input.PageShift().IsUpdatePressed()));
 
-        const float fadeStep = SpellPaletteStepRate(deltaTime, fadeDuration_secs_);
-        visibleRate_ = SpellPaletteMoveTowards(visibleRate_, isShown ? 1.0f : 0.0f, fadeStep);
-        openRate_    = SpellPaletteMoveTowards(openRate_, isOpen ? 1.0f : 0.0f, fadeStep);
-        pageBlend_   = SpellPaletteMoveTowards(pageBlend_, input.IsSecondPage() ? 1.0f : 0.0f,
-                                               SpellPaletteStepRate(deltaTime, pageSwapDuration_secs_));
+        SpellPaletteFade(visibleFade_, isShown, deltaTime);
+        SpellPaletteFade(openFade_, isOpen, deltaTime);
+        SpellPaletteFade(pageSwap_, input.IsSecondPage(), deltaTime);
 
-        const float groupAlpha = 255.0f * visibleRate_ * (idleAlphaRate_ + (1.0f - idleAlphaRate_) * openRate_);
+        const float openRate = openFade_.Value();
+        const float groupAlpha = 255.0f * visibleFade_.Value() * (idleAlphaRate_ + (1.0f - idleAlphaRate_) * openRate);
         const int groupBlendRate = SpellPaletteToBlendRate(groupAlpha);
 
-        if (halo_)         halo_        ->SetBlendRate(SpellPaletteToBlendRate(groupAlpha * openRate_));
+        if (halo_)         halo_        ->SetBlendRate(SpellPaletteToBlendRate(groupAlpha * openRate));
         if (circle_)       circle_      ->SetBlendRate(groupBlendRate);
         if (paletteGlyph_) paletteGlyph_->SetBlendRate(groupBlendRate);
         if (pageGlyph_)    pageGlyph_   ->SetBlendRate(groupBlendRate);
@@ -369,3 +371,7 @@ namespace GamePlay::Ui
             isSpellsDirty_ = true;
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::SpellPalette);
+#pragma endregion

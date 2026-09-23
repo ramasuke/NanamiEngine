@@ -59,5 +59,4 @@ namespace GameCore::Npc
 }
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(GameCore::Npc::BossEnemyBase, 1);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::EnemyBase, GameCore::Npc::BossEnemyBase);
 #pragma endregion

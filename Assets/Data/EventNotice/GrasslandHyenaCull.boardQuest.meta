@@ -56,7 +56,30 @@
                     }
                 },
                 "quest_": {
-                    "polymorphic_id": 0
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GameCore::PlayerAvatar::Quest::Request::DefeatRequestQuest",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "rewardMoney_": {
+                                        "cereal_class_version": 0,
+                                        "value_": 300
+                                    }
+                                },
+                                "questType_": 3,
+                                "requiredCount_": 8,
+                                "startRecord_": {
+                                    "nullopt": true
+                                }
+                            },
+                            "enemyKind_": 2
+                        }
+                    }
                 }
             }
         }

@@ -3,6 +3,7 @@
 #include "Engine/Module/Component/Animator/Animator.h"
 #include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../../../../../../../PlayerAvatar/IPlayerAvatar.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -34,3 +35,11 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("animationNumber_", animationNumber_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::MoveToPlayerPos)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(
+    GameCore::Npc::Enemy::Behaviour::ActionBase,
+    GameCore::Npc::Enemy::Behaviour::Action::MoveToPlayerPos
+)
+#pragma endregion

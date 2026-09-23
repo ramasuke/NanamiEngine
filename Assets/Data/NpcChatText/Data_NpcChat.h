@@ -49,9 +49,6 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(NpcChat, FRIENDLY_NPC_CHAT_EXTENSION_LABEL, "Npc::Friendly")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::NpcChat, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::NpcChat);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::NpcChat);
 #pragma endregion

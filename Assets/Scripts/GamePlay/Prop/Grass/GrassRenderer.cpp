@@ -8,6 +8,7 @@
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "../../Weather/WindZone.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Prop
 {
@@ -288,3 +289,7 @@ namespace GamePlay::Prop
         ImGui::Text("Chunks: %d / %d drawn", drawnChunkCount_, static_cast<int>(chunkBuffers_.size()));
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::GrassRenderer);
+#pragma endregion

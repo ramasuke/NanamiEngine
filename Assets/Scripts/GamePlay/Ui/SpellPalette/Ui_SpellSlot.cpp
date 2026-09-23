@@ -2,6 +2,7 @@
 
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -90,3 +91,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("glyphDistance_", glyphDistance_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::SpellSlot);
+#pragma endregion

@@ -16,13 +16,13 @@ namespace GameCore::PlayerAvatar::Quest::Request
         return records.AcquiredCount(ItemGuid());
     }
 
-    rxcpp::observable<int> CollectRequestQuest::ObserveRecord(const Record::IRecordBook& records) const
+    NanamiEngine::R4::Observable<int> CollectRequestQuest::ObserveRecord(const Record::IRecordBook& records) const
     {
         const auto item = ItemGuid();
         const auto* book = &records;
         return records.OnAcquire()
-            .filter([item](const Record::AcquiredRecord& acquired) { return acquired.item == item; })
-            .map([item, book](const Record::AcquiredRecord&) { return book->AcquiredCount(item); });
+            .Where([item](const Record::AcquiredRecord& acquired) { return acquired.item == item; })
+            .Select([item, book](const Record::AcquiredRecord&) { return book->AcquiredCount(item); });
     }
 
     void CollectRequestQuest::DoDrawGui()

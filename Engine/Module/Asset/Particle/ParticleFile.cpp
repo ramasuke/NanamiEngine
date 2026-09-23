@@ -1,6 +1,7 @@
 ﻿#include "ParticleFile.h"
 
 #include "EffekseerForDXLib.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -32,3 +33,9 @@ namespace NanamiEngine::Module::Asset
     }
     std::string ParticleFile::GetContentPath () const { return contentPath_; }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::ParticleFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::ParticleFile);
+REGISTER_ASSET(ParticleFile, ".efkefc")
+#pragma endregion

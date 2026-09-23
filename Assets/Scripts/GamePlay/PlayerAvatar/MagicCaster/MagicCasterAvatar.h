@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../PlayerAvatarBase.h"
+#include "Engine/Module/Component/ParticleRenderer/ParticleSystem.h"
 #include "../../../../Data/PlayerAvatar/Resource/Data_MagicCasterAvatarResource.h"
 #include "../../../Core/Game/Magic/IMagicCaster.h"
 #include "../../../Core/Game/PlayerAvatar/MagicCaster/Traits/MagicCasterAvatarTraits.h"
@@ -14,6 +15,7 @@ namespace GamePlay::PlayerAvatar::MagicCaster
         [[nodiscard]] std::weak_ptr<Asset::MagicCasterAvatarResource> Resources() const { return resources_.get(); }
         [[nodiscard]] std::weak_ptr<GameObject::IGameObject> CastPoint() const { return castPoint_.get(); }
         [[nodiscard]] std::weak_ptr<LockOnDetectionArea> CatchLockOnDetectionArea() const { return lockOnDetectionArea_.get(); }
+        [[nodiscard]] std::weak_ptr<Component::ParticleSystem> CatchSuccessAvoidRollingParticle() const { return successAvoidRollingParticle_.get(); }
         [[nodiscard]] PlayerAvatarType Type() const override;
 
         [[nodiscard]] std::shared_ptr<GameObject::IGameObject> CasterObject() const override { return Entity().lock(); }
@@ -28,6 +30,7 @@ namespace GamePlay::PlayerAvatar::MagicCaster
         [[serialize(0)]] FIELD(Asset::MagicCasterAvatarResource) resources_;
         [[serialize(0)]] FIELD(GameObject::IGameObject) castPoint_;
         [[serialize(1)]] FIELD(LockOnDetectionArea) lockOnDetectionArea_;
+        [[serialize(2)]] FIELD(Component::ParticleSystem) successAvoidRollingParticle_;
 
 #pragma region Serialization Function
     public:
@@ -39,6 +42,7 @@ namespace GamePlay::PlayerAvatar::MagicCaster
             archive(CEREAL_NVP(resources_));
             archive(CEREAL_NVP(castPoint_));
             archive(CEREAL_NVP(lockOnDetectionArea_));
+            archive(CEREAL_NVP(successAvoidRollingParticle_));
         }
 
         template <class Archive>
@@ -48,14 +52,13 @@ namespace GamePlay::PlayerAvatar::MagicCaster
             archive(CEREAL_NVP(resources_));
             archive(CEREAL_NVP(castPoint_));
             if (version >= 1) archive(CEREAL_NVP(lockOnDetectionArea_));
+            if (version >= 2) archive(CEREAL_NVP(successAvoidRollingParticle_));
         }
 #pragma endregion
     };
 }
 
-REGISTER_PLAYER_AVATAR_BASE(MagicCaster::MagicCasterAvatarTraits)
+PLAYER_AVATAR_BASE_CLASS_VERSION(MagicCaster::MagicCasterAvatarTraits)
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar, 1);
-CEREAL_REGISTER_TYPE(GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarTraits>, GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar);
+CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar, 2);
 #pragma endregion

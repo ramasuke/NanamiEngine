@@ -31,30 +31,31 @@ namespace NanamiEngine::Module::Network
         void StartHost(const std::string& sessionKey);
         /** API: host へクライアントとして接続を始める。結果は GetConnectionState() で見る */
         void StartClient(const Core::Network::HostEndpoint& host);
-        /** API: 中継サーバー(Config > Network)経由で sessionKey の部屋に参加する。部屋がなければホストになる。結果は GetConnectionState() で見る */
-        void StartRelay(const std::string& sessionKey);
-        /** API: 通信を止め、StartHost / StartClient / StartRelay をやり直せる状態に戻す */
+        /** API: 通信を止め、StartHost / StartClient をやり直せる状態に戻す */
         void Shutdown();
         [[nodiscard]] bool IsStarted() const;
         [[nodiscard]] bool IsServer() const;
         [[nodiscard]] Core::Network::ConnectionState GetConnectionState() const;
-        /** API: PlayerIDの取得(未開始なら Invalid) */
+        /** API: PlayerIDの取得 */
         [[nodiscard]] Core::Network::PlayerId GetPlayerId() const;
-        /** API: NetworkObjectId の現在の所有者(未登録なら Invalid)。ID の上位バイト(Spawn したピア)とは別物 */
+        /** API: NetworkObjectId の現在の所有者 */
         [[nodiscard]] Core::Network::PlayerId OwnerOf(Core::Network::NetworkObjectId id) const;
         /** API: 自分がそのオブジェクトの所有者(権威)か */
         [[nodiscard]] bool IsLocallyOwned(Core::Network::NetworkObjectId id) const;
         /** API: Defaultで設定されているPacket割り当て処理一覧 */
         Core::Network::DefaultPacketDispatcher& DefaultDispatcher();
-        /** API: パケット送信（NetworkTransform等のコンポーネントから呼ぶ） */
+        /** API: パケット送信 */
         void SendNetworkPacket(const Core::Network::Packet& packet);
         
         /** --- Defaultの通信処理API一覧 --- */
         //API: Network上で共有するオブジェクトの生成処理
         void Spawn(Asset::PrefabGameObjectFile& prefabFile, glm::vec3 position, glm::quat rotation);
 
-    private:
+    protected:
+        /** settings は DoCreateUseNetworkSystem にそのまま渡る。独自の INetworkSystem で始める派生クラス向け */
         void Start(const Core::Network::NetworkStartSettings& settings);
+
+    private:
         void OnUpdate() override;
         /** 受け取ったパケットを処理 */
         void DispatchPollPackets();
@@ -99,4 +100,4 @@ namespace NanamiEngine::Module::Network
     };
 }
 
-ENGINE_REGISTER_COMPONENT(Network::NetworkRunnerBase, 1)
+CEREAL_CLASS_VERSION(Network::NetworkRunnerBase, 1);

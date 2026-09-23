@@ -32,6 +32,4 @@ namespace GameCore::PlayerAvatar::SwordMan
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup, 0);
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase, GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup);
 #pragma endregion

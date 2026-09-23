@@ -10,6 +10,7 @@
 #include "Engine/Module/Gui/StaticReflection/Engine_Module_StaticReflection.h"
 #include "../../../../../Core/Game/Npc/Friendly/Behaviour/TickStatus/Friendly_Behaviour_TickStatus.h"
 #include "cereal/archives/portable_binary.hpp"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace Editor::Npc::Enemy::Behaviour
 {
@@ -113,3 +114,8 @@ namespace Editor::Npc::Enemy::Behaviour
     template void ActionNode::save<cereal::PortableBinaryOutputArchive>(cereal::PortableBinaryOutputArchive&, const std::uint32_t) const;
     template void ActionNode::load<cereal::PortableBinaryInputArchive>(cereal::PortableBinaryInputArchive&, const std::uint32_t);
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(Editor::Npc::Enemy::Behaviour::ActionNode);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(Editor::Npc::Behaviour::NodeBase, Editor::Npc::Enemy::Behaviour::ActionNode);
+#pragma endregion

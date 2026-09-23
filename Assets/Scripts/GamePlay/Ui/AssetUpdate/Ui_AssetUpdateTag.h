@@ -17,6 +17,7 @@
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "Engine/Module/NanamiUI/Button/NanamiUi_Button.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 
 namespace GamePlay::Ui
 {
@@ -146,7 +147,9 @@ namespace GamePlay::Ui
 
         bool  isStarted_ = false;
         Phase phase_ = Phase::Hidden;
-        float phaseElapsed_secs_ = 0.0f;
+        /** 札の基準位置からの縦のずれ */
+        LibCore::Tween::TweenPlayer<float> dropTween_;
+        LibCore::Tween::TweenPlayer<float> veilTween_;
         glm::vec3 tagBasePos_ = glm::vec3(0.0f);
         bool  hasConfirm_ = false;
         bool  hasCancel_  = false;
@@ -154,11 +157,13 @@ namespace GamePlay::Ui
         float targetProgress_    = 0.0f;
         float displayedProgress_ = 0.0f;
         int   litHoofCount_      = 0;
-        std::vector<float> hoofPopElapsed_secs_;
+        std::vector<LibCore::Tween::TweenPlayer<float>> hoofPopTweens_;
 
         std::weak_ptr<NanamiUi::BlendImageRenderer> pressingStamp_;
         glm::vec3 stampBaseScale_ = glm::vec3(1.0f);
-        float stampElapsed_secs_ = -1.0f;
+        /** 押している途中だけ再生中 */
+        LibCore::Tween::TweenPlayer<float> stampScaleTween_;
+        LibCore::Tween::TweenPlayer<float> stampAlphaTween_;
 
 #pragma region Serialization Function
     public:
@@ -259,4 +264,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::AssetUpdateTagUi, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::AssetUpdateTagUi, 0);

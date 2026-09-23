@@ -2,6 +2,8 @@
 
 #include "../../../Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../GameObject/Transform/Transform.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
+#include "../../../../Libs/LibCore/DxLib/DxMath.h"
 
 namespace
 {
@@ -82,7 +84,7 @@ void Component::SkyDome3D::OnUpdate()
     if (mainCamera_)
     {
         MV1SetMatrix(skyDomeModelDxLibHandle_, BuildSkyDomeMatrix(
-            mainCamera_->Transform().GetDxWorldPos(), Transform().GetWorldRot(), Transform().GetWorldScale()));
+            LibCore::Dxlib::ToDxVector(mainCamera_->Transform().GetWorldPos()), Transform().GetWorldRot(), Transform().GetWorldScale()));
     }
 }
 
@@ -100,7 +102,7 @@ void Component::SkyDome3D::OnDebugRender()
     if (!Core::Application::ApplicationBase::GameWindow()->IsPlayMode())
     {
         MV1SetMatrix(skyDomeModelDxLibHandle_, BuildSkyDomeMatrix(
-            Core::Application::ApplicationBase::GameWindow()->GetCameraDxPosition(), Transform().GetWorldRot(), Transform().GetWorldScale()));
+            LibCore::Dxlib::ToDxVector(Core::Application::ApplicationBase::GameWindow()->GetCameraPosition()), Transform().GetWorldRot(), Transform().GetWorldScale()));
     }
 }
 
@@ -115,3 +117,9 @@ void Component::SkyDome3D::OnDrawGui()
     ImGuiHelper::OnDrawInputField("skyDomeModelDxLibHandle_", skyDomeModelDxLibHandle_);
     ImGuiHelper::OnDrawInputField("mainCamera_", mainCamera_);
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::SkyDome3D);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IInitRenderable, NanamiEngine::Module::Component::SkyDome3D);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IRenderable, NanamiEngine::Module::Component::SkyDome3D);
+#pragma endregion

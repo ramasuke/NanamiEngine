@@ -10,6 +10,7 @@
 #include "../../../Time/Time.h"
 #include "../../../../../Module/Component/ModelRenderer/ModelRenderer.h"
 #include "../../../../../../Libs/LibCore/DxLib/ShiftJis.h"
+#include "../../../../../../Libs/LibCore/DxLib/DxMath.h"
 
 namespace NanamiEngine::Core::MainWindow
 {
@@ -160,7 +161,7 @@ namespace NanamiEngine::Core::MainWindow
         }
 
         // ModelRenderer は描画時にオフセット込みの行列を設定し直すので、ここではオフセット無しの行列で姿勢を取る
-        const MATRIX world = stage_.PreviewWorldMatrix();
+        const MATRIX world = LibCore::Dxlib::ToDxMatrix(stage_.PreviewWorldMatrix());
         MV1SetMatrix(modelHandle, world);
         const VECTOR basePos    = FrameBasePosition(modelHandle, rootFrameIndex_, world);
         const VECTOR currentPos = MV1GetFramePosition(modelHandle, rootFrameIndex_);

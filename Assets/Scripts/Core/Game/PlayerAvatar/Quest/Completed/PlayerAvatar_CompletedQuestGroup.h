@@ -27,6 +27,10 @@ namespace GameCore::PlayerAvatar::Quest
         void Subscribe(const QuestType& completeQuest);
         [[nodiscard]] bool CheckCompleted(const QuestType& quest) const;
 
+        /** @brief 保存されている内容で上書きする。保存していない達成は消える */
+        void Reload();
+        void Save() const;
+
     private:
         std::unordered_set<QuestType> completedQuests_;
     };

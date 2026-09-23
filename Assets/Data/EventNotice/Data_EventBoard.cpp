@@ -1,4 +1,5 @@
 ﻿#include "Data_EventBoard.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -37,6 +38,11 @@ namespace NanamiEngine::Module::Asset
         return ResolveEventBoardFields(announcements_);
     }
 
+    std::vector<std::shared_ptr<RestorationFacility>> EventBoardData::Facilities() const
+    {
+        return ResolveEventBoardFields(facilities_);
+    }
+
     void EventBoardData::OnDrawGui()
     {
         LibCore::ImGuiHelper::OnDrawInputField("notices_", notices_, [this]
@@ -60,5 +66,18 @@ namespace NanamiEngine::Module::Asset
                 announcements_.emplace_back();
             }
         });
+        LibCore::ImGuiHelper::OnDrawInputField("facilities_", facilities_, [this]
+        {
+            if (ImGui::Button("Add Facility"))
+            {
+                facilities_.emplace_back();
+            }
+        });
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(EventBoardData, EVENT_BOARD_EXTENSION_LABEL, "EventBoard")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::EventBoardData);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::EventBoardData);
+#pragma endregion

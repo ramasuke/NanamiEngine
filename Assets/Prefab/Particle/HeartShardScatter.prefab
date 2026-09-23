@@ -1,0 +1,99 @@
+{
+    "isActive_": true,
+    "name_": "HeartShardScatter",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "15747CE2-97BC-4B05-8406-73E9973F7B9C"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 1,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "6CD8348D-0E49-4D41-9B15-58184B72B6E9"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "particleFile_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "98C7911F-B764-456A-A763-B2164973EF31"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "playingDuration_secs_": 2.6,
+                    "playMode_": 1
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 8.0,
+            "value1": 8.0,
+            "value2": 8.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 8.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 8.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 8.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 0
+    },
+    "value0": 0
+}

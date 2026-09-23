@@ -6,6 +6,7 @@
 #include "../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../Spawn/GamePlay_PrefabSpawner.h"
 #include "../GamePlay_MagicAim.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Magic
 {
@@ -71,3 +72,7 @@ namespace GamePlay::Magic
         ImGui::Text("launched: %s  remaining: %.2f", isLaunched_ ? "true" : "false", remainingLifeTime_secs_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Magic::MagicProjectile);
+#pragma endregion

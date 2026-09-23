@@ -6,6 +6,8 @@
 
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -19,26 +21,12 @@ namespace GamePlay::Ui
         constexpr const char* ASSET_UPDATE_WARNING_FAILED    = "このままでは冒険に出られません";
         constexpr const char* ASSET_UPDATE_WARNING_TOO_OLD   = "新しい版のゲームが要ります";
 
-        float AssetUpdateRate(const float elapsedSecs, const float durationSecs)
-        {
-            if (durationSecs <= 0.0f)
-                return 1.0f;
-            return std::clamp(elapsedSecs / durationSecs, 0.0f, 1.0f);
-        }
+        using LibCore::EaseType;
+        using LibCore::Tween::Ease;
+        using LibCore::Tween::Ms;
 
-        float AssetUpdateEaseOutCubic(const float rate)
-        {
-            const float inv = 1.0f - rate;
-            return 1.0f - inv * inv * inv;
-        }
-
-        /** @brief 少し行き過ぎてから戻る。吊るした札が紐の長さで止まって揺れ戻る感じ */
-        float AssetUpdateEaseOutBack(const float rate)
-        {
-            constexpr float overshoot = 1.4f;
-            const float inv = rate - 1.0f;
-            return 1.0f + (overshoot + 1.0f) * inv * inv * inv + overshoot * inv * inv;
-        }
+        // 降りるときに少し行き過ぎてから戻る量。吊るした札が紐の長さで止まって揺れ戻る感じ
+        constexpr float ASSET_UPDATE_DROP_OVERSHOOT = 1.4f;
 
         /** @brief UTF-8 の1文字の長さ。壊れた先頭バイトは1バイトとして進める */
         size_t AssetUpdateCharLength(const unsigned char lead)
@@ -125,7 +113,7 @@ namespace GamePlay::Ui
 
         if (const auto tag = tagRoot_.get())
             tagBasePos_ = tag->Transform().GetLocalPos();
-        hoofPopElapsed_secs_.assign(hoofPrints_.size(), -1.0f);
+        hoofPopTweens_.assign(hoofPrints_.size(), LibCore::Tween::TweenPlayer<float>{});
         HideStamps();
 
         // 最初は何も出さない。状態が決まってから Show* で開く
@@ -208,7 +196,10 @@ namespace GamePlay::Ui
             return;
 
         phase_ = Phase::Leaving;
-        phaseElapsed_secs_ = 0.0f;
+        // 引っ込むのは降りるより速く、加速しながら上へ抜ける
+        const float leaveSecs = dropDuration_secs_ * 0.7f;
+        dropTween_.Play(tweeny::from(0.0f).to(-dropDistance_px_).during(Ms(leaveSecs)).via(Ease(EaseType::InQuad)));
+        veilTween_.Play(tweeny::from(1.0f).to(0.0f).during(Ms(leaveSecs)));
         hasConfirm_ = false;
         hasCancel_ = false;
     }
@@ -252,7 +243,9 @@ namespace GamePlay::Ui
         if (phase_ == Phase::Hidden || phase_ == Phase::Leaving)
         {
             phase_ = Phase::Entering;
-            phaseElapsed_secs_ = 0.0f;
+            dropTween_.Play(tweeny::from(-dropDistance_px_).to(0.0f)
+                .during(Ms(dropDuration_secs_)).via(Ease(EaseType::OutBack, ASSET_UPDATE_DROP_OVERSHOOT)));
+            veilTween_.Play(tweeny::from(0.0f).to(1.0f).during(Ms(dropDuration_secs_)).via(Ease(EaseType::OutCubic)));
             UpdateMotion(0.0f);
         }
     }
@@ -299,17 +292,20 @@ namespace GamePlay::Ui
         renderer->SetBlendRate(0);
         pressingStamp_ = renderer;
         stampBaseScale_ = renderer->Transform().GetLocalScale();
-        stampElapsed_secs_ = 0.0f;
+        stampScaleTween_.Play(tweeny::from(stampStartScale_).to(1.0f)
+            .during(Ms(stampDuration_secs_)).via(Ease(EaseType::OutCubic)));
+        // 朱は押す時間の前半で乗り切る
+        stampAlphaTween_.Play(tweeny::from(0.0f).to(1.0f).during(Ms(stampDuration_secs_ * 0.5f)));
         UpdateStamp(0.0f);
     }
 
     void AssetUpdateTagUi::HideStamps()
     {
         // 押している途中の判子は大きさを戻してから隠す
-        if (const auto pressing = pressingStamp_.lock(); pressing && stampElapsed_secs_ >= 0.0f)
+        if (const auto pressing = pressingStamp_.lock(); pressing && stampScaleTween_.IsPlaying())
             pressing->Transform().SetLocalScale(stampBaseScale_);
         pressingStamp_.reset();
-        stampElapsed_secs_ = -1.0f;
+        stampScaleTween_.Stop();
 
         for (const auto* stamp : {&receivedStamp_, &undeliveredStamp_, &wrongVersionStamp_})
         {
@@ -330,8 +326,8 @@ namespace GamePlay::Ui
             const bool isLit = static_cast<int>(i) < litCount;
             print->SetSprite(std::weak_ptr<Asset::SpriteFile>(isLit ? hoofFilledSprite_.get() : hoofEmptySprite_.get()));
             print->Transform().SetLocalScale(glm::vec3(1.0f));
-            if (i < hoofPopElapsed_secs_.size())
-                hoofPopElapsed_secs_[i] = -1.0f;
+            if (i < hoofPopTweens_.size())
+                hoofPopTweens_[i].Stop();
         }
     }
 
@@ -352,45 +348,30 @@ namespace GamePlay::Ui
 
     void AssetUpdateTagUi::UpdateMotion(const float deltaSecs)
     {
-        phaseElapsed_secs_ += deltaSecs;
-        const auto tag = tagRoot_.get();
+        if (phase_ != Phase::Entering && phase_ != Phase::Leaving)
+            return;
 
-        switch (phase_)
+        const bool isFinished = dropTween_.Tick(deltaSecs);
+        veilTween_.Tick(deltaSecs);
+        const auto tag = tagRoot_.get();
+        if (tag)
+            tag->Transform().SetLocalPos(tagBasePos_ + glm::vec3(0.0f, dropTween_.Value(), 0.0f));
+        ApplyVeil(veilTween_.Value());
+        if (!isFinished)
+            return;
+
+        if (phase_ == Phase::Entering)
         {
-        case Phase::Entering:
-        {
-            const float rate = AssetUpdateRate(phaseElapsed_secs_, dropDuration_secs_);
-            const float offset = -dropDistance_px_ * (1.0f - AssetUpdateEaseOutBack(rate));
-            if (tag)
-                tag->Transform().SetLocalPos(tagBasePos_ + glm::vec3(0.0f, offset, 0.0f));
-            ApplyVeil(AssetUpdateEaseOutCubic(rate));
-            if (rate >= 1.0f)
-                phase_ = Phase::Shown;
+            phase_ = Phase::Shown;
             return;
         }
-        case Phase::Leaving:
-        {
-            // 引っ込むのは降りるより速く、加速しながら上へ抜ける
-            const float rate = AssetUpdateRate(phaseElapsed_secs_, dropDuration_secs_ * 0.7f);
-            const float offset = -dropDistance_px_ * rate * rate;
-            if (tag)
-                tag->Transform().SetLocalPos(tagBasePos_ + glm::vec3(0.0f, offset, 0.0f));
-            ApplyVeil(1.0f - rate);
-            if (rate >= 1.0f)
-            {
-                phase_ = Phase::Hidden;
-                HideStamps();
-                if (tag)
-                    tag->Transform().SetLocalPos(tagBasePos_);
-                if (const auto root = visualRoot_.get())
-                    root->SetEnable(false);
-            }
-            return;
-        }
-        case Phase::Shown:
-        case Phase::Hidden:
-            return;
-        }
+
+        phase_ = Phase::Hidden;
+        HideStamps();
+        if (tag)
+            tag->Transform().SetLocalPos(tagBasePos_);
+        if (const auto root = visualRoot_.get())
+            root->SetEnable(false);
     }
 
     void AssetUpdateTagUi::UpdateProgress(const float deltaSecs)
@@ -415,8 +396,11 @@ namespace GamePlay::Ui
             if (!print)
                 continue;
             print->SetSprite(std::weak_ptr<Asset::SpriteFile>(hoofFilledSprite_.get()));
-            if (static_cast<size_t>(i) < hoofPopElapsed_secs_.size())
-                hoofPopElapsed_secs_[static_cast<size_t>(i)] = 0.0f;
+            if (static_cast<size_t>(i) < hoofPopTweens_.size())
+            {
+                hoofPopTweens_[static_cast<size_t>(i)].Play(tweeny::from(hoofPopScale_).to(1.0f)
+                    .during(Ms(hoofPopDuration_secs_)).via(Ease(EaseType::OutCubic)));
+            }
         }
         litHoofCount_ = std::max(litHoofCount_, lit);
     }
@@ -424,42 +408,36 @@ namespace GamePlay::Ui
     void AssetUpdateTagUi::UpdateStamp(const float deltaSecs)
     {
         const auto stamp = pressingStamp_.lock();
-        if (!stamp || stampElapsed_secs_ < 0.0f)
+        if (!stamp || !stampScaleTween_.IsPlaying())
             return;
 
         // 降りてくる途中では押さない。札が止まってから押す
         if (phase_ == Phase::Entering)
             return;
 
-        stampElapsed_secs_ += deltaSecs;
-        const float rate = AssetUpdateRate(stampElapsed_secs_, stampDuration_secs_);
-        const float press = AssetUpdateEaseOutCubic(rate);
-        stamp->Transform().SetLocalScale(stampBaseScale_ * std::lerp(stampStartScale_, 1.0f, press));
-        stamp->SetBlendRate(static_cast<int>(255.0f * std::min(1.0f, rate * 2.0f)));
+        const bool isFinished = stampScaleTween_.Tick(deltaSecs);
+        stampAlphaTween_.Tick(deltaSecs);
+        stamp->Transform().SetLocalScale(stampBaseScale_ * stampScaleTween_.Value());
+        stamp->SetBlendRate(static_cast<int>(255.0f * stampAlphaTween_.Value()));
 
-        if (rate >= 1.0f)
+        if (isFinished)
         {
             stamp->Transform().SetLocalScale(stampBaseScale_);
             stamp->SetBlendRate(255);
-            stampElapsed_secs_ = -1.0f;
         }
     }
 
     void AssetUpdateTagUi::UpdateHoofPops(const float deltaSecs)
     {
-        for (size_t i = 0; i < hoofPopElapsed_secs_.size() && i < hoofPrints_.size(); ++i)
+        for (size_t i = 0; i < hoofPopTweens_.size() && i < hoofPrints_.size(); ++i)
         {
-            float& elapsed = hoofPopElapsed_secs_[i];
-            if (elapsed < 0.0f)
+            auto& pop = hoofPopTweens_[i];
+            if (!pop.IsPlaying())
                 continue;
 
-            const auto print = hoofPrints_[i].get();
-            elapsed += deltaSecs;
-            const float rate = AssetUpdateRate(elapsed, hoofPopDuration_secs_);
-            if (print)
-                print->Transform().SetLocalScale(glm::vec3(std::lerp(hoofPopScale_, 1.0f, AssetUpdateEaseOutCubic(rate))));
-            if (rate >= 1.0f)
-                elapsed = -1.0f;
+            pop.Tick(deltaSecs);
+            if (const auto print = hoofPrints_[i].get())
+                print->Transform().SetLocalScale(glm::vec3(pop.Value()));
         }
     }
 
@@ -522,3 +500,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("errorMaxLines_", errorMaxLines_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::AssetUpdateTagUi);
+#pragma endregion

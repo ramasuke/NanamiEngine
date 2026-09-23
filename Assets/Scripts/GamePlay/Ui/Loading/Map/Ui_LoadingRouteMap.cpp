@@ -6,6 +6,7 @@
 #include <numbers>
 
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace
 {
@@ -394,3 +395,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("cloudWrapRangeX_", cloudWrapRangeX_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::LoadingRouteMap);
+#pragma endregion

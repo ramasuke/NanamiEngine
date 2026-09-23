@@ -4,6 +4,7 @@
 #include "Engine/Core/Coroutine/Awaitable/Yield/Coroutine_WaitYield.h"
 #include "../../../Core/Game/Game.h"
 #include "../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -190,5 +191,10 @@ namespace GamePlay::Ui
             }
         });
         ImGuiHelper::OnDrawInputField("noSelectionTitle_", noSelectionTitle_);
+        ImGuiHelper::OnDrawInputField("roomUi_", roomUi_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::StageSelectUi);
+#pragma endregion

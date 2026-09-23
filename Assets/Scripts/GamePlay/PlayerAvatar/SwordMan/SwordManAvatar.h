@@ -61,9 +61,7 @@ namespace GamePlay::PlayerAvatar::SwordMan
     };
 }
 
-REGISTER_PLAYER_AVATAR_BASE(SwordMan::SwordManAvatarTraits)
+PLAYER_AVATAR_BASE_CLASS_VERSION(SwordMan::SwordManAvatarTraits)
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::SwordMan::SwordManAvatar, 5);
-CEREAL_REGISTER_TYPE(GamePlay::PlayerAvatar::SwordMan::SwordManAvatar);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::SwordMan::SwordManAvatarTraits>, GamePlay::PlayerAvatar::SwordMan::SwordManAvatar);
 #pragma endregion

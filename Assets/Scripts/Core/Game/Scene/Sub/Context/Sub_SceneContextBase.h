@@ -37,4 +37,4 @@ namespace GameCore::Scene::Sub
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GameCore::Scene::Sub::SceneContextBase, 1)
+CEREAL_CLASS_VERSION(GameCore::Scene::Sub::SceneContextBase, 1);

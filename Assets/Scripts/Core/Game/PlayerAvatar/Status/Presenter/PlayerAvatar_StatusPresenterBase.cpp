@@ -3,6 +3,7 @@
 #include "../IPlayerAvatarStatus.h"
 #include "../../../../../GamePlay/Ui/PlayerStatus/Ui_PlayerStatus.h"
 #include "../Event/PlayerAvatar_IStatusEvent.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::PlayerAvatar
 {
@@ -39,3 +40,7 @@ namespace GamePlay::PlayerAvatar
     {
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::StatusPresenterBase);
+#pragma endregion

@@ -9,6 +9,7 @@
 #include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "../glm/gtx/quaternion.hpp"
 #include "../glm/gtx/vector_angle.hpp"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -145,3 +146,11 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("animationIdleNumber_", animationIdleNumber_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::WanderMove)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(
+    GameCore::Npc::Enemy::Behaviour::ActionBase,
+    GameCore::Npc::Enemy::Behaviour::Action::WanderMove
+)
+#pragma endregion

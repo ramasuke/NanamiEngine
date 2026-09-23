@@ -3,6 +3,7 @@
 #include "../EventBoard/Row/EventBoardRowPool.h"
 #include "../Format/Ui_MoneyFormat.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -124,3 +125,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("receipt_", receipt_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::ShopUi);
+#pragma endregion

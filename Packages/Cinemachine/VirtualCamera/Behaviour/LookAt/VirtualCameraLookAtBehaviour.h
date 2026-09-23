@@ -56,6 +56,4 @@ void load(Archive& archive, const std::uint32_t version) {
 };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour, 2)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour);
+CEREAL_CLASS_VERSION(NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour, 2);

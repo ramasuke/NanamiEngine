@@ -48,4 +48,4 @@ namespace GamePlay::Prop
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Prop::EventNoticeBoard, 0)
+CEREAL_CLASS_VERSION(GamePlay::Prop::EventNoticeBoard, 0);

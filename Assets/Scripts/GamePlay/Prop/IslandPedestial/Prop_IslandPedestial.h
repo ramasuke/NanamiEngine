@@ -43,4 +43,4 @@ namespace GamePlay::Prop
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Prop::IslandPedestial, 1)
+CEREAL_CLASS_VERSION(GamePlay::Prop::IslandPedestial, 1);

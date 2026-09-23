@@ -16,6 +16,7 @@ namespace GamePlay::Ui
     {
     public:
         void Show();
+        void Hide();
         void SetCooldown(float remain_secs, float total_secs);
         void PlayShoot();
 
@@ -232,4 +233,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::CannonCooldownGauge, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::CannonCooldownGauge, 0);

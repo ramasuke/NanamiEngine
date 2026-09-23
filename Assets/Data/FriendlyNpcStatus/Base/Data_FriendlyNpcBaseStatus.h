@@ -39,9 +39,6 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(FriendlyNpcResources, FRIENDLY_NPC_BASE_RESOURCES_DATA_EXTENSION_LABEL, "Npc::Friendly")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::FriendlyNpcResources, 1);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::FriendlyNpcResources);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::FriendlyNpcResources);
 #pragma endregion

@@ -4,6 +4,7 @@
 
 #include "../../../../../../../../PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../../../AttackArea/Enemy_AttackArea.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -24,3 +25,8 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("isInner_", isInner_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::IsTargetInAttackArea)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::IsTargetInAttackArea)
+#pragma endregion

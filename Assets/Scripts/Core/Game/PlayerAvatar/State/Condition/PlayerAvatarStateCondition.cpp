@@ -53,7 +53,8 @@ namespace GameCore::PlayerAvatar::State
         const auto collisionListener = stateContext_->PlayerAvatarObject()->Components().Catch<Component::CollisionListener>();
         for (const auto& gameobject : collisionListener.lock()->GetCollisionStayObjects() | std::views::values)
         {
-            if (!gameobject.lock()->Components().Catch<GamePlay::Prop::Canon>().expired())
+            if (const auto canon = gameobject.lock()->Components().Catch<GamePlay::Prop::Canon>().lock();
+                canon && !canon->IsLocked())
             {
                 return true;
             }

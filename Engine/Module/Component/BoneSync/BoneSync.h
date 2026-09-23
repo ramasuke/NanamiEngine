@@ -67,4 +67,4 @@ namespace NanamiEngine::Module::Component
 #pragma endregion
     };
 }
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::BoneSync, 0)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::BoneSync, 0);

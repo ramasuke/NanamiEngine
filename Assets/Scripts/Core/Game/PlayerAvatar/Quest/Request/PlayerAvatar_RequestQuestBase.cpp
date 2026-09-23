@@ -10,7 +10,7 @@ namespace GameCore::PlayerAvatar::Quest::Request
     RequestQuestBase:: RequestQuestBase() = default;
     RequestQuestBase::~RequestQuestBase()
     {
-        subscription_.unsubscribe();
+        subscription_.Dispose();
     }
 
     void RequestQuestBase::StartQuest(const QuestContext& context)
@@ -21,11 +21,9 @@ namespace GameCore::PlayerAvatar::Quest::Request
         if (!startRecord_)
             startRecord_ = current;
 
-        subscription_.unsubscribe();
-        subscription_ = rxcpp::composite_subscription();
-
+        subscription_.Dispose();
         auto& completedQuests = context.completedQuests;
-        ObserveRecord(context.records).subscribe(subscription_, [this, &completedQuests](const int currentRecord)
+        subscription_ = ObserveRecord(context.records).Subscribe([this, &completedQuests](const int currentRecord)
         {
             CheckComplete(currentRecord, completedQuests);
         });
@@ -48,7 +46,7 @@ namespace GameCore::PlayerAvatar::Quest::Request
 
         // CompleteQuest の中で受注リストから外されて自分が破棄されるので、先に購読を切り、種別は写してから渡す。
         // これより後で this に触れない
-        subscription_.unsubscribe();
+        subscription_.Dispose();
         const auto type = questType_;
         completedQuests.CompleteQuest(type);
     }

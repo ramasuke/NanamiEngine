@@ -1,6 +1,7 @@
 ﻿#include "Ui_EventBoard_NoticePage.h"
 
 #include "../Row/EventBoardRowPool.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -83,3 +84,7 @@ namespace GamePlay::Ui
         });
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::EventBoardNoticePage);
+#pragma endregion

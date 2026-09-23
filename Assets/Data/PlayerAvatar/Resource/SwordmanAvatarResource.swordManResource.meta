@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 20,
+                "cereal_class_version": 22,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -878,7 +878,76 @@
                 "landingParticleMinFallSpeed_": 45.0,
                 "landingParticleMaxFallSpeed_": 260.0,
                 "landingParticleMinScale_": 0.699999988079071,
-                "landingParticleMaxScale_": 1.600000023841858
+                "landingParticleMaxScale_": 1.600000023841858,
+                "maxWalkableSlope_deg_": 45.0,
+                "slopeCheckRadius_": 3.5,
+                "slopeCheckUpOffset_": 0.0,
+                "slopeCheckDistance_": 2.5,
+                "dashAttackWhiffSound_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483713,
+                            "data": {
+                                "value0": {
+                                    "value_": "ED08F8F4-8136-4EBE-A100-128B91D49672"
+                                }
+                            }
+                        }
+                    }
+                },
+                "dashAttackHitSound_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483714,
+                            "data": {
+                                "value0": {
+                                    "value_": "8D2D93DA-7535-4C97-BD8D-E930B554818A"
+                                }
+                            }
+                        }
+                    }
+                },
+                "jumpAttackWhiffSound_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483715,
+                            "data": {
+                                "value0": {
+                                    "value_": "76D0EB7A-6C53-475A-B843-6E6BB96DDEC7"
+                                }
+                            }
+                        }
+                    }
+                },
+                "jumpAttackHitSound_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483716,
+                            "data": {
+                                "value0": {
+                                    "value_": "999A5AF7-ADCD-4DC9-A01E-9FDEBB85CC83"
+                                }
+                            }
+                        }
+                    }
+                },
+                "jumpAttackPlungeSound_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483717,
+                            "data": {
+                                "value0": {
+                                    "value_": "49AECBB6-20B0-4A9E-9A64-43FF5B03B281"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

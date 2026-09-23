@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <cassert>
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/Asset/Scene/SceneFile.h"
@@ -34,7 +35,11 @@ namespace GameCore
         Game();
         ~Game() override;
         void OnDrawGui() override;
-        [[nodiscard]] static Game& Instance() { return *instance_; }
+        [[nodiscard]] static Game& Instance()
+        {
+            assert(instance_ && "Game がシーンに無いか、既に破棄されています");
+            return *instance_;
+        }
         [[nodiscard]] Scene::Main::GameSceneGroup& Scenes() const { return *sceneGroup_; }
         [[nodiscard]] Scene::Sub:: GameSceneGroup& SubScenes() const;
         [[nodiscard]] GamePlay::Ui::LoadingScreenUi& LoadingScreen() const { return *loadingScreen_; }
@@ -48,6 +53,7 @@ namespace GameCore
         void InitGameOverScene();
         void OnAwake () override;
         void OnUpdate() override;
+        void OnDestroy() override;
         
         std::unique_ptr<Scene::Main::GameSceneGroup> sceneGroup_;
         [[serialize(0)]] FIELD(GameObject::IGameObject) sceneContexts_;
@@ -87,6 +93,4 @@ void load(Archive& archive, const std::uint32_t version) {
 };
 }
 
-
-ENGINE_REGISTER_COMPONENT(GameCore::Game, 4)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, GameCore::Game);
+CEREAL_CLASS_VERSION(GameCore::Game, 4);

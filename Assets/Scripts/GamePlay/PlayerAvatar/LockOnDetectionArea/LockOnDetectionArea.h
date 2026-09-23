@@ -45,4 +45,4 @@ namespace GamePlay::PlayerAvatar
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::LockOnDetectionArea, 0)
+CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::LockOnDetectionArea, 0);

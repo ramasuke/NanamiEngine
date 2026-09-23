@@ -11,5 +11,9 @@ namespace LibCore
         OutBack,
         InBack,
         InOutSine,
+        OutCubic,
+        InCubic,
+        InOutCubic,
+        SmoothStep,
     };
 }

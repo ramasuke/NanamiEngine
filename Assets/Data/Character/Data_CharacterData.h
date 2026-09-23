@@ -83,9 +83,6 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(CharacterData, CHARACTER_DATA_EXTENSION_LABEL, "Player")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::CharacterData, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::CharacterData);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::CharacterData);
 #pragma endregion

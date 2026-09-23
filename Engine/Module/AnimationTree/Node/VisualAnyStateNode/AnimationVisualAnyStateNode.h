@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "../LibCore/cereal/glm/GlmHelper.h"
 #include "../IAnimationNode.h"
 #include "../LibCore/ImGui/Helper/ImGuiHelper.h"
 
@@ -49,6 +50,4 @@ namespace NanamiEngine::Module::AnimationTree
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationVisualAnyStateNode, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationVisualAnyStateNode);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::AnimationTree::IAnimationNode, NanamiEngine::Module::AnimationTree::AnimationVisualAnyStateNode);
 #pragma endregion

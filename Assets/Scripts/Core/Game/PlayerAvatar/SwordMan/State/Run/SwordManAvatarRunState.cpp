@@ -20,8 +20,8 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::DoUpdate()
     TryEmitFootstep(footstep_, Resources().RunFootstepSounds());
 
     UpdateLockOn();
-    UpdateItemPouchInput();
-    UpdateTransitions();
+    if (!UpdateItemPouchInput())
+        UpdateTransitions();
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarRunState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const

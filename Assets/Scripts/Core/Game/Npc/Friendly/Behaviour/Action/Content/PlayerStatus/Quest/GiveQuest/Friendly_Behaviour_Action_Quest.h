@@ -33,6 +33,3 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
     
     REGISTER_FRIENDLY_ACTION_WITH_NAME(TryQuest, "PlayerStatus::Quest::TryGiveQuest")
 }
-
-CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::TryQuest)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::ActionBase, GameCore::Npc::Friendly::Behaviour::Action::TryQuest)

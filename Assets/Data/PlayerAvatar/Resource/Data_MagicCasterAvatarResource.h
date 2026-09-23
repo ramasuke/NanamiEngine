@@ -1,9 +1,14 @@
 ﻿#pragma once
 #include <array>
 #include <string>
+#include <vector>
+
+#include "cereal/types/string.hpp"
+#include "cereal/types/vector.hpp"
 
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
+#include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "Engine/Module/ScriptableObject/ScriptableObject.h"
 #include "../../Magic/Data_MagicSpellData.h"
 
@@ -35,6 +40,17 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] float SlopeCheckDistance  () const { return slopeCheckDistance_;   }
         /** 魔法が当たったときに撃ち手の画面に出すダメージ表記。未設定なら nullptr */
         [[nodiscard]] std::shared_ptr<PrefabGameObjectFile> DealDamageTextBillBoardPrefab() const { return dealDamageTextBillBoardPrefab_.get(); }
+        /** 未設定なら nullptr */
+        [[nodiscard]] std::shared_ptr<SoundFile> AvoidRollingSound    () const { return avoidRollingSound_    .get(); }
+        /** 回避中に攻撃を受け流したときの音。未設定なら nullptr */
+        [[nodiscard]] std::shared_ptr<SoundFile> JustAvoidRollingSound() const { return justAvoidRollingSound_.get(); }
+
+        [[nodiscard]] PrefabGameObjectFile& FootstepParticlePrefab() const { return *footstepParticlePrefab_.get(); }
+        [[nodiscard]] bool HasFootstepParticlePrefab() const { return static_cast<bool>(footstepParticlePrefab_); }
+        /** 接地を見る足ボーンの名前。左右それぞれ1本ずつ入れる想定 */
+        [[nodiscard]] const std::vector<std::string>& FootstepBoneNames() const { return footstepBoneNames_; }
+        /** 足ボーンが足元(FeatStep)からこの高さまで降りてきたら接地扱いにする。一度この高さを超えるまで次は出さない */
+        [[nodiscard]] float FootstepContactHeight() const { return footstepContactHeight_; }
 
     private:
         [[serialize(1)]] FIELD(MagicSpellData) basicSpell_;
@@ -47,6 +63,11 @@ namespace NanamiEngine::Module::Asset
         [[serialize(2)]] float slopeCheckUpOffset_   = 0.0f;
         [[serialize(2)]] float slopeCheckDistance_   = 2.5f;
         [[serialize(3)]] FIELD(PrefabGameObjectFile) dealDamageTextBillBoardPrefab_;
+        [[serialize(4)]] FIELD(SoundFile) avoidRollingSound_;
+        [[serialize(4)]] FIELD(SoundFile) justAvoidRollingSound_;
+        [[serialize(5)]] FIELD(PrefabGameObjectFile) footstepParticlePrefab_;
+        [[serialize(5)]] std::vector<std::string>    footstepBoneNames_;
+        [[serialize(5)]] float                       footstepContactHeight_ = 5.0f;
 
 #pragma region Serialization Function
     public:
@@ -67,6 +88,11 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(slopeCheckUpOffset_));
             archive(CEREAL_NVP(slopeCheckDistance_));
             archive(CEREAL_NVP(dealDamageTextBillBoardPrefab_));
+            archive(CEREAL_NVP(avoidRollingSound_));
+            archive(CEREAL_NVP(justAvoidRollingSound_));
+            archive(CEREAL_NVP(footstepParticlePrefab_));
+            archive(CEREAL_NVP(footstepBoneNames_));
+            archive(CEREAL_NVP(footstepContactHeight_));
         }
 
         template<class Archive>
@@ -102,14 +128,19 @@ namespace NanamiEngine::Module::Asset
                 archive(CEREAL_NVP(slopeCheckDistance_));
             }
             if (version >= 3) archive(CEREAL_NVP(dealDamageTextBillBoardPrefab_));
+            if (version >= 4) archive(CEREAL_NVP(avoidRollingSound_));
+            if (version >= 4) archive(CEREAL_NVP(justAvoidRollingSound_));
+            if (version >= 5)
+            {
+                archive(CEREAL_NVP(footstepParticlePrefab_));
+                archive(CEREAL_NVP(footstepBoneNames_));
+                archive(CEREAL_NVP(footstepContactHeight_));
+            }
         }
 #pragma endregion
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(MagicCasterAvatarResource, MAGIC_CASTER_RESOURCE_EXTENSION_LABEL, "Player::MagicCaster")
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::MagicCasterAvatarResource, 3);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::MagicCasterAvatarResource);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::MagicCasterAvatarResource);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::MagicCasterAvatarResource, 5);
 #pragma endregion

@@ -9,7 +9,6 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
     {
         TickStatus DoTick(const TickContext& context) override;
 
-
         [[serialize(0)]] Physics::Constraints constraints_ = Physics::Constraints::None;
         
 #pragma region Serialization Function
@@ -33,5 +32,3 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::SetFreezePhysics, 0)
-CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::SetFreezePhysics)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::ActionBase, GameCore::Npc::Friendly::Behaviour::Action::SetFreezePhysics)

@@ -103,4 +103,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::GridLayoutGroup, 0)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::NanamiUi::GridLayoutGroup, 0);

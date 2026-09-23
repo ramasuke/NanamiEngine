@@ -12,6 +12,9 @@
 #include "../../../../Core/Game/Scene/Main/Content/MainIslandScene/MainIsLandScene.h"
 #include "../../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
+#include "Engine/Core/Application/ApplicationBase.h"
+#include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -21,7 +24,20 @@ namespace GamePlay::Ui
         constexpr short CHARACTER_SELECT_STICK_DEADZONE = 12000;
     }
 
-    bool CharacterSelectPresenter::isOpen_ = false;
+    bool CharacterSelectPresenter::IsAnotherOpen() const
+    {
+        bool found = false;
+        NanamiEngine::Core::Application::ApplicationBase::GameWindow()->MainScene().ForEachGameObject(
+            [this, &found](const std::shared_ptr<GameObject::IGameObject>& gameObject)
+            {
+                if (found)
+                    return;
+
+                const auto presenter = gameObject->Components().Catch<CharacterSelectPresenter>().lock();
+                found = presenter && presenter.get() != this && presenter->isOpen_;
+            });
+        return found;
+    }
 
     void CharacterSelectPresenter::Bind(const std::weak_ptr<Prop::CharacterPodium>& podium)
     {
@@ -42,7 +58,7 @@ namespace GamePlay::Ui
         if (isClosed_ || model_)
             return;
 
-        if (isOpen_)
+        if (IsAnotherOpen())
         {
             Discard();
             return;
@@ -56,7 +72,6 @@ namespace GamePlay::Ui
             return;
         }
         isOpen_ = true;
-        hasClaimedOpen_ = true;
 
         view_  = RequireComponent<CharacterSelectUi>();
         model_ = std::make_unique<CharacterSelectModel>(podium->Characters());
@@ -207,7 +222,10 @@ namespace GamePlay::Ui
 
     void CharacterSelectPresenter::OnDestroy()
     {
-        if (hasClaimedOpen_)
-            isOpen_ = false;
+        isOpen_ = false;
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::CharacterSelectPresenter);
+#pragma endregion

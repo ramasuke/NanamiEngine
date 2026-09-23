@@ -4,6 +4,7 @@
 
 #include "DxLib.h"
 #include "Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -182,3 +183,9 @@ namespace NanamiEngine::Module::Asset
         ImGui::Text("Cells: %d (%d x %d)", static_cast<int>(map_.size()), divisionsX_, divisionsZ_);
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(HeightGridMap, HEIGHT_GRID_MAP_EXTENSION_LABEL, "Stage")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::HeightGridMap);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::HeightGridMap);
+#pragma endregion

@@ -8,6 +8,7 @@
 #include "../../../Core/Game/PlayerAvatar/ITakablePlayerAttack/ITakablePlayerAttack.h"
 #include "../../Spawn/GamePlay_PrefabSpawner.h"
 #include "../GamePlay_MagicAim.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Magic
 {
@@ -106,3 +107,7 @@ namespace GamePlay::Magic
                     isChanneling_ ? "true" : "false", remainingDuration_secs_, static_cast<int>(targets_.size()));
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Magic::MagicChannel);
+#pragma endregion

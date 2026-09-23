@@ -91,9 +91,6 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(Announcement, ANNOUNCEMENT_EXTENSION_LABEL, "EventBoard")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::Announcement, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::Announcement);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::Announcement);
 #pragma endregion

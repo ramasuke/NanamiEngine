@@ -7,6 +7,7 @@
 #include "Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 #include "../../../Damage/Game_Damage_IDamage.h"
 #include "../../../Magic/IMagicSpell.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::PlayerAvatar::MagicCaster
 {
@@ -19,11 +20,13 @@ namespace GameCore::PlayerAvatar::MagicCaster
         , minStaminaRatioToResumeRun_(0.3f)
         , walkSpeed_(20.0f)
         , runSpeed_(55.0f)
-        , moveRotateSpeed_(6.2f)
-        , jumpPower_(65.0f)
+        , moveRotateSpeed_(4.65f)
+        , jumpPower_(90.0f)
         , jumpStateDuration_secs_(0.45f)
         , jumpCooldown_secs_(0.5f)
         , jumpStaminaCost_(15.0f)
+        , avoidRollingStateDuration_secs_(0.4090909064f)
+        , avoidRollingStaminaCost_(20.0f)
         , damageStateDuration_secs_(1.0f)
         , deathStateDuration_secs_(1.8f)
         , maxMana_(StatusParameter::Mana(100.0f))
@@ -37,7 +40,6 @@ namespace GameCore::PlayerAvatar::MagicCaster
 
     void MagicCasterAvatarStatus::Init()
     {
-        quests_->Init(event_, wallet_);
     }
 
     void MagicCasterAvatarStatus::OnUpdate()
@@ -79,6 +81,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
             }
             break;
         }
+        case MagicCasterAvatarStateType::AvoidRolling:
         case MagicCasterAvatarStateType::Jump:
         case MagicCasterAvatarStateType::Floating:
             break;
@@ -232,6 +235,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         LibCore::ImGuiHelper::OnDrawInputField("jumpStateDuration_secs_", jumpStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpCooldown_secs_", jumpCooldown_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("jumpStaminaCost_", jumpStaminaCost_);
+        LibCore::ImGuiHelper::OnDrawInputField("avoidRollingStateDuration_secs_", avoidRollingStateDuration_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("avoidRollingStaminaCost_", avoidRollingStaminaCost_);
         LibCore::ImGuiHelper::OnDrawInputField("damageStateDuration_secs_", damageStateDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("invincibleDuration_secs_", invincibleDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("invincibleRemaining_secs_", invincibleRemaining_secs_);
@@ -243,3 +248,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         ImGui::Text("attackBuff: x%.2f (%.1fs)", AttackPowerRate(), attackBuffRemaining_secs_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::IPlayerAvatarStatus, GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus);
+#pragma endregion

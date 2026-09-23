@@ -5,6 +5,7 @@
 #include "Engine/Module/Component/Animator/Animator.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "../../Animation/FirstEventDragon_AnimationType.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::FirstEventDragon
 {
@@ -66,3 +67,8 @@ namespace GameCore::Npc::Enemy::FirstEventDragon
         ImGuiHelper::OnDrawInputField("toTouchDownIsLandRoute_", toTouchDownIsLandRoute_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::FirstEventDragon::AppearToTouchDownIsLand)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::FirstEventDragon::AppearToTouchDownIsLand)
+#pragma endregion

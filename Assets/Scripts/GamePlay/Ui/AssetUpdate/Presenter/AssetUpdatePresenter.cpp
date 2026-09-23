@@ -12,6 +12,7 @@
 #include "Packages/AssetUpdater/Null/NullAssetUpdater.h"
 #include "Packages/AssetUpdater/System/Relaunch.h"
 #include "../../../Sound/SoundPlayer.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -24,6 +25,8 @@ namespace GamePlay::Ui
 
         // エディタの Preview で使う偽の荷
         constexpr float ASSET_UPDATE_PREVIEW_DOWNLOAD_SECS = 6.0f;
+        // 受け取り終えてから入れ終えた札に移るまで
+        constexpr float ASSET_UPDATE_PREVIEW_UNPACK_SECS = 1.0f;
         constexpr std::uint64_t ASSET_UPDATE_PREVIEW_BYTES = 327'576'781;   // 312.4 MB
         constexpr std::uint64_t ASSET_UPDATE_PREVIEW_FILES = 147;
 
@@ -228,7 +231,7 @@ namespace GamePlay::Ui
         case Preview::Offer:
         case Preview::Undelivered:
             preview_ = Preview::Receiving;
-            previewElapsed_secs_ = 0.0f;
+            PlayPreviewDownload();
             view_->ShowReceiving();
             return;
         case Preview::Received:
@@ -296,17 +299,23 @@ namespace GamePlay::Ui
             return;
 
         // 偽の受け取り: 一定の速さで進め、終わったら入れ終えた札に移る
-        previewElapsed_secs_ += Time::DeltaTime();
-        const float rate = std::clamp(previewElapsed_secs_ / ASSET_UPDATE_PREVIEW_DOWNLOAD_SECS, 0.0f, 1.0f);
+        const bool isFinished = previewDownloadTween_.Tick(Time::DeltaTime());
+        const float rate = previewDownloadTween_.Value();
         const auto received = static_cast<std::uint64_t>(static_cast<double>(ASSET_UPDATE_PREVIEW_BYTES) * rate);
         const auto files = static_cast<std::uint32_t>(static_cast<float>(ASSET_UPDATE_PREVIEW_FILES) * rate);
         view_->SetProgress(rate, AssetUpdateAmountText(received, ASSET_UPDATE_PREVIEW_BYTES, files, ASSET_UPDATE_PREVIEW_FILES));
-        if (previewElapsed_secs_ >= ASSET_UPDATE_PREVIEW_DOWNLOAD_SECS + 1.0f)
+        if (isFinished)
         {
             preview_ = Preview::Received;
             view_->ShowReceived(Parcel(), true);
             PlaySound(stampSound_);
         }
+    }
+
+    void AssetUpdatePresenter::PlayPreviewDownload()
+    {
+        previewDownloadTween_.Play(tweeny::from(0.0f).to(1.0f).during(LibCore::Tween::Ms(ASSET_UPDATE_PREVIEW_DOWNLOAD_SECS))
+            .to(1.0f).during(LibCore::Tween::Ms(ASSET_UPDATE_PREVIEW_UNPACK_SECS)));
     }
 
     void AssetUpdatePresenter::OnDrawGui()
@@ -321,7 +330,7 @@ namespace GamePlay::Ui
         const auto preview = [this](const Preview next, auto show)
         {
             preview_ = next;
-            previewElapsed_secs_ = 0.0f;
+            PlayPreviewDownload();
             show();
         };
         if (ImGui::Button("Offer"))
@@ -346,3 +355,7 @@ namespace GamePlay::Ui
             preview(Preview::None, [this] { view_->Hide(); });
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::AssetUpdatePresenter);
+#pragma endregion

@@ -49,4 +49,4 @@ namespace GamePlay::PlayerAvatar::Bullet
     
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::Bullet::CannonBullet, 0)
+CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::Bullet::CannonBullet, 0);

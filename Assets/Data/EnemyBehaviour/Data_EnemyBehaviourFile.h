@@ -3,7 +3,6 @@
 
 #include "Engine/Module/ScriptableObject/ScriptableObject.h"
 
-
 namespace GameCore::Npc::Enemy
 {
     class BehaviourTree;
@@ -27,10 +26,6 @@ namespace NanamiEngine::Module::Asset
     };
 }
 
-REGISTER_SCRIPTABLE_OBJECT(EnemyBehaviourFile, ENEMY_BEHAVIOUR_DATA_LABEL, "Npc::Enemy")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::EnemyBehaviourFile, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::EnemyBehaviourFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::EnemyBehaviourFile);
 #pragma endregion
-

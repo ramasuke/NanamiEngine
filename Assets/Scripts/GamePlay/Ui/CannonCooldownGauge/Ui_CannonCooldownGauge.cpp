@@ -8,6 +8,8 @@
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Libs/LibCore/DxLib/ShiftJis.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -25,6 +27,9 @@ namespace GamePlay::Ui
         constexpr float RECOIL_FREQUENCY = 26.0f;
         constexpr float RECOIL_DAMPING = 9.0f;
         constexpr float EMBER_START_ANGLE_DEG = 20.0f;
+
+        constexpr LibCore::Tween::EaseFunctor EASE_OUT_CUBIC{ LibCore::EaseType::OutCubic };
+        constexpr LibCore::Tween::EaseFunctor SPARK_POP_EASE{ LibCore::EaseType::OutBack, 1.9f };
 
         class ScopedDrawState final
         {
@@ -58,18 +63,6 @@ namespace GamePlay::Ui
             return duration > 0.0f ? std::clamp(elapsed / duration, 0.0f, 1.0f) : 1.0f;
         }
 
-        float EaseOutCubic(const float x)
-        {
-            const float inv = 1.0f - std::clamp(x, 0.0f, 1.0f);
-            return 1.0f - inv * inv * inv;
-        }
-
-        float EaseOutBack(const float x)
-        {
-            const float t = std::clamp(x, 0.0f, 1.0f) - 1.0f;
-            return 1.0f + 2.9f * t * t * t + 1.9f * t * t;
-        }
-
         void SetAlphaBlend(const int blendMode, const float alpha)
         {
             SetDrawBlendMode(blendMode, static_cast<int>(std::clamp(alpha, 0.0f, 1.0f) * 255.0f));
@@ -89,6 +82,11 @@ namespace GamePlay::Ui
         readyElapsed_secs_  = 0.0f;
         shootElapsed_secs_  = 1000.0f;
         Entity().lock()->SetEnable(true);
+    }
+
+    void CannonCooldownGauge::Hide()
+    {
+        Entity().lock()->SetEnable(false);
     }
 
     void CannonCooldownGauge::SetCooldown(const float remain_secs, const float total_secs)
@@ -136,7 +134,7 @@ namespace GamePlay::Ui
             pose.shockwaveRate = u < shockwaveDuration_secs_ ? u / shockwaveDuration_secs_ : -1.0f;
             pose.bombDim       = bombDimRate_ * (1.0f - Rate(u, BOMB_BRIGHTEN_SECS));
             pose.bombAngle     = wobbleAngle_deg_ * DEG_TO_RAD * std::sin(TAU * wobbleFrequency_hz_ * u) * settle;
-            pose.spark         = EaseOutBack(Rate(u, sparkPopDuration_secs_)) * flicker;
+            pose.spark         = SPARK_POP_EASE.Ease(Rate(u, sparkPopDuration_secs_)) * flicker;
             pose.isPromptLit   = true;
             pose.promptFlash   = flash;
 
@@ -173,7 +171,7 @@ namespace GamePlay::Ui
         else
         {
             const float pop = Rate(u - drainDuration_secs_, COUNT_POP_IN_SECS);
-            pose.countScale = 1.5f - 0.5f * EaseOutCubic(pop);
+            pose.countScale = 1.5f - 0.5f * EASE_OUT_CUBIC.Ease(pop);
             pose.countAlpha = pop;
         }
 
@@ -182,7 +180,7 @@ namespace GamePlay::Ui
             const float launch = Rate(u, launchDuration_secs_);
             pose.bombDim    = 0.0f;
             pose.bombScale  = 1.0f - LAUNCH_SHRINK_RATE * launch;
-            pose.bombOffset = launchOffset_ * EaseOutCubic(launch);
+            pose.bombOffset = launchOffset_ * EASE_OUT_CUBIC.Ease(launch);
             pose.bombAlpha  = 1.0f - launch;
         }
         else
@@ -242,7 +240,7 @@ namespace GamePlay::Ui
         }
         if (shockwaveSprite_ && pose.shockwaveRate >= 0.0f && shockwaveSpriteRadius_ > 0.0f)
         {
-            const float radius = shockwaveStartRadius_ + (shockwaveEndRadius_ - shockwaveStartRadius_) * EaseOutCubic(pose.shockwaveRate);
+            const float radius = shockwaveStartRadius_ + (shockwaveEndRadius_ - shockwaveStartRadius_) * EASE_OUT_CUBIC.Ease(pose.shockwaveRate);
             SetAlphaBlend(DX_BLENDMODE_ADD, std::pow(1.0f - pose.shockwaveRate, 1.5f));
             DrawRotaGraphF(root.x, root.y, radius / shockwaveSpriteRadius_, 0.0, shockwaveSprite_->GetDxLibHandle(), TRUE);
         }
@@ -284,7 +282,7 @@ namespace GamePlay::Ui
 
             if (emberSprite_ && pose.shockwaveRate >= 0.0f && emberSpriteRadius_ > 0.0f)
             {
-                const float distance = emberDistance_ * EaseOutCubic(pose.shockwaveRate);
+                const float distance = emberDistance_ * EASE_OUT_CUBIC.Ease(pose.shockwaveRate);
                 const float fade = 1.0f - pose.shockwaveRate;
                 const float emberScale = (3.2f * fade + 0.4f) / emberSpriteRadius_;
                 SetAlphaBlend(DX_BLENDMODE_ALPHA, fade);
@@ -379,3 +377,7 @@ namespace GamePlay::Ui
         emberCount_ = std::max(emberCount_, 0);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::CannonCooldownGauge);
+#pragma endregion

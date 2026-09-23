@@ -63,4 +63,4 @@ namespace GamePlay::Prop
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Prop::ProximityReveal, 1)
+CEREAL_CLASS_VERSION(GamePlay::Prop::ProximityReveal, 1);

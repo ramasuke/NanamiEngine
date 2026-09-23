@@ -64,4 +64,4 @@ void load(Archive& archive, const std::uint32_t version) {
 };
 }
 
-ENGINE_REGISTER_COMPONENT(GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase, 3)
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase, 3);

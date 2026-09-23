@@ -3,7 +3,7 @@
     "name_": "EventBoardTab",
     "guid_": {
         "cereal_class_version": 0,
-        "value_": "9A86C7CF-4621-4D23-BFFB-2364F90B92EE"
+        "value_": "CAB1C750-9454-4940-BD71-2D13C880DD3F"
     },
     "components_": {
         "cereal_class_version": 0,
@@ -18,7 +18,7 @@
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
-                            "value_": "489D90F7-C0D3-45E6-8792-17F3B253FE7D"
+                            "value_": "DA162993-91E2-4485-A0AB-0CA252A4BA76"
                         },
                         "isEnable_": true
                     },
@@ -56,12 +56,12 @@
                     "cereal_class_version": 1,
                     "value0": {
                         "guid_": {
-                            "value_": "2D9B5E4B-580A-43AD-9FD5-99C450B5AFF5"
+                            "value_": "9397FC19-4823-44FC-B555-4E40592C411C"
                         },
                         "isEnable_": true
                     },
                     "eventAreaSize_": {
-                        "value0": 168.0,
+                        "value0": 140.0,
                         "value1": 76.0
                     },
                     "onIdleSprite_": {
@@ -102,7 +102,7 @@
                     "cereal_class_version": 0,
                     "value0": {
                         "guid_": {
-                            "value_": "2A175489-2C82-40C8-B75A-534B78FE8F7E"
+                            "value_": "01999F06-4F8B-47E1-B275-AD580BDAAA04"
                         },
                         "isEnable_": true
                     },
@@ -115,7 +115,7 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "value_": "833E108B-3158-4808-9B7D-11F17C6F3EBF"
+                                        "value_": "D2DA7FAB-CB97-40FB-97DF-A717029F2224"
                                     }
                                 }
                             }
@@ -130,7 +130,7 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "value_": "AE2D0BF1-2CF7-499C-82B2-B51E6854ACB6"
+                                        "value_": "91ED5557-A963-4E55-836F-8E278AC86AC8"
                                     }
                                 }
                             }
@@ -143,7 +143,7 @@
                                 "id": 2147483657,
                                 "data": {
                                     "value0": {
-                                        "value_": "E089B926-659F-4B8D-A79E-F1F886001B97"
+                                        "value_": "C74A9E0C-3298-4C5E-832A-A163849201C1"
                                     }
                                 }
                             }
@@ -186,7 +186,7 @@
                         "g_": 146,
                         "b_": 116
                     },
-                    "selectedScale_": 1.059999942779541,
+                    "selectedScale_": 1.06,
                     "selectedDrop_px_": 8.0
                 }
             }
@@ -243,7 +243,7 @@
             "ptr_wrapper": {
                 "id": 2147483660,
                 "data": {
-                    "cereal_class_version": 1,
+                    "cereal_class_version": 0,
                     "value0": {
                         "cereal_class_version": 0,
                         "value0": {
@@ -253,7 +253,7 @@
                     "isActive_": true,
                     "name_": "Cords",
                     "guid_": {
-                        "value_": "B1CC57AD-E129-4136-9BD7-B37AA4AFA3A7"
+                        "value_": "55772A76-2705-4695-8E93-5AE026769931"
                     },
                     "components_": {
                         "componentCount": 1,
@@ -264,12 +264,16 @@
                                 "data": {
                                     "value0": {
                                         "guid_": {
-                                            "value_": "ECD5C288-F5A5-4A25-B331-3C205686E7BE"
+                                            "value_": "EA6160AF-808C-4E8D-BB32-81C5BCFF5E39"
                                         },
                                         "isEnable_": true
                                     },
-                                    "value1": {},
-                                    "value2": {},
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
+                                    "value2": {
+                                        "cereal_class_version": 0
+                                    },
                                     "spriteFile_": {
                                         "value0": {
                                             "polymorphic_id": 1073741824,
@@ -332,8 +336,7 @@
                             }
                         },
                         "childCount": 0
-                    },
-                    "mark_": 0
+                    }
                 }
             }
         },
@@ -348,7 +351,7 @@
                     "isActive_": true,
                     "name_": "Label",
                     "guid_": {
-                        "value_": "03A06227-0D35-401D-8BC8-956FE27EBFD5"
+                        "value_": "E3D8BDD5-18F7-4E47-A7A2-E05BC328A3C7"
                     },
                     "components_": {
                         "componentCount": 1,
@@ -361,11 +364,13 @@
                                     "cereal_class_version": 4,
                                     "value0": {
                                         "guid_": {
-                                            "value_": "833E108B-3158-4808-9B7D-11F17C6F3EBF"
+                                            "value_": "D2DA7FAB-CB97-40FB-97DF-A717029F2224"
                                         },
                                         "isEnable_": true
                                     },
-                                    "value1": {},
+                                    "value1": {
+                                        "cereal_class_version": 0
+                                    },
                                     "fontFile_": {
                                         "cereal_class_version": 0,
                                         "value0": {
@@ -397,7 +402,7 @@
                     "transform_": {
                         "localPos_": {
                             "value0": 0.0,
-                            "value1": -17.0,
+                            "value1": -15.0,
                             "value2": 0.0
                         },
                         "localRot_": {
@@ -407,20 +412,20 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.5333333611488342,
-                            "value1": 0.5333333611488342,
+                            "value0": 0.4666666666666667,
+                            "value1": 0.4666666666666667,
                             "value2": 1.0
                         },
                         "worldMatrix_": {
                             "value0": {
-                                "value0": 0.5333333611488342,
+                                "value0": 0.4666666666666667,
                                 "value1": 0.0,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
                             "value1": {
                                 "value0": 0.0,
-                                "value1": 0.5333333611488342,
+                                "value1": 0.4666666666666667,
                                 "value2": 0.0,
                                 "value3": 0.0
                             },
@@ -432,14 +437,13 @@
                             },
                             "value3": {
                                 "value0": 0.0,
-                                "value1": -17.0,
+                                "value1": -15.0,
                                 "value2": 0.0,
                                 "value3": 1.0
                             }
                         },
                         "childCount": 0
-                    },
-                    "mark_": 0
+                    }
                 }
             }
         },
@@ -454,14 +458,14 @@
                     "isActive_": true,
                     "name_": "Badge",
                     "guid_": {
-                        "value_": "AE2D0BF1-2CF7-499C-82B2-B51E6854ACB6"
+                        "value_": "91ED5557-A963-4E55-836F-8E278AC86AC8"
                     },
                     "components_": {
                         "componentCount": 0
                     },
                     "transform_": {
                         "localPos_": {
-                            "value0": 76.0,
+                            "value0": 62.0,
                             "value1": -30.0,
                             "value2": 0.0
                         },
@@ -496,7 +500,7 @@
                                 "value3": 0.0
                             },
                             "value3": {
-                                "value0": 76.0,
+                                "value0": 62.0,
                                 "value1": -30.0,
                                 "value2": 0.0,
                                 "value3": 1.0
@@ -514,7 +518,7 @@
                                     "isActive_": true,
                                     "name_": "Seal",
                                     "guid_": {
-                                        "value_": "D0C1A33A-61D1-46BA-9264-C9023E638E44"
+                                        "value_": "B6201F4E-0AB4-4B11-80EB-4EB43AF1D390"
                                     },
                                     "components_": {
                                         "componentCount": 1,
@@ -525,12 +529,16 @@
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
-                                                            "value_": "18341006-C4D5-4817-A3A3-0EABB395882C"
+                                                            "value_": "64BA63F1-F5BC-4FCE-AC88-48135E854F10"
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {},
-                                                    "value2": {},
+                                                    "value1": {
+                                                        "cereal_class_version": 0
+                                                    },
+                                                    "value2": {
+                                                        "cereal_class_version": 0
+                                                    },
                                                     "spriteFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -586,15 +594,14 @@
                                                 "value3": 0.0
                                             },
                                             "value3": {
-                                                "value0": 76.0,
+                                                "value0": 62.0,
                                                 "value1": -30.0,
                                                 "value2": 0.0,
                                                 "value3": 1.0
                                             }
                                         },
                                         "childCount": 0
-                                    },
-                                    "mark_": 0
+                                    }
                                 }
                             }
                         },
@@ -609,7 +616,7 @@
                                     "isActive_": true,
                                     "name_": "CountText",
                                     "guid_": {
-                                        "value_": "DF40A792-D17A-438F-A30D-B31C75D5EBEF"
+                                        "value_": "BB888FBC-FBD3-4EDF-B1A0-47C7E2150740"
                                     },
                                     "components_": {
                                         "componentCount": 1,
@@ -620,11 +627,13 @@
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
-                                                            "value_": "E089B926-659F-4B8D-A79E-F1F886001B97"
+                                                            "value_": "C74A9E0C-3298-4C5E-832A-A163849201C1"
                                                         },
                                                         "isEnable_": true
                                                     },
-                                                    "value1": {},
+                                                    "value1": {
+                                                        "cereal_class_version": 0
+                                                    },
                                                     "fontFile_": {
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
@@ -664,20 +673,20 @@
                                             "value3": 1.0
                                         },
                                         "localScale_": {
-                                            "value0": 0.36666667461395266,
-                                            "value1": 0.36666667461395266,
+                                            "value0": 0.36666666666666664,
+                                            "value1": 0.36666666666666664,
                                             "value2": 1.0
                                         },
                                         "worldMatrix_": {
                                             "value0": {
-                                                "value0": 0.36666667461395266,
+                                                "value0": 0.36666666666666664,
                                                 "value1": 0.0,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
                                             "value1": {
                                                 "value0": 0.0,
-                                                "value1": 0.36666667461395266,
+                                                "value1": 0.36666666666666664,
                                                 "value2": 0.0,
                                                 "value3": 0.0
                                             },
@@ -688,24 +697,21 @@
                                                 "value3": 0.0
                                             },
                                             "value3": {
-                                                "value0": 76.0,
+                                                "value0": 62.0,
                                                 "value1": -41.0,
                                                 "value2": 0.0,
                                                 "value3": 1.0
                                             }
                                         },
                                         "childCount": 0
-                                    },
-                                    "mark_": 0
+                                    }
                                 }
                             }
                         }
-                    },
-                    "mark_": 0
+                    }
                 }
             }
         }
     },
-    "mark_": 0,
     "value0": 0
 }

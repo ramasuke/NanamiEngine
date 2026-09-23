@@ -1,6 +1,7 @@
 ﻿#include "Enemy_Behaviour_Action_ConditionArriveDuration.h"
 
 #include "../../../../../../Status/EnemyStatus.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -19,3 +20,8 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("arriveDuration_secs_", arriveDuration_secs_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ConditionArriveDuration)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::ConditionArriveDuration)
+#pragma endregion

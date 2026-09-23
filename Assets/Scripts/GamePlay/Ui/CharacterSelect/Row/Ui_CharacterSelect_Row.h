@@ -90,4 +90,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::CharacterSelectRow, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::CharacterSelectRow, 0);

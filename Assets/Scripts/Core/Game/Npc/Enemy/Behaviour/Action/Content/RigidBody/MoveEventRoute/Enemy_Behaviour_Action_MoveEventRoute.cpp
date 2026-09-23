@@ -6,6 +6,7 @@
 #include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "Libs/LibCore/Tween/Ease/Type/EaseType.h"
 #include "../../../../../../../../../../Data/EventNpcWalkingRoute/RoutePoint/Data_Event_Npc_WalkingRoute_RoutePoint.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace
 {
@@ -134,3 +135,9 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("rotateSpeedDeg_", rotateSpeedDeg_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::MoveEventRoute)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase,
+                                     GameCore::Npc::Enemy::Behaviour::Action::MoveEventRoute)
+#pragma endregion

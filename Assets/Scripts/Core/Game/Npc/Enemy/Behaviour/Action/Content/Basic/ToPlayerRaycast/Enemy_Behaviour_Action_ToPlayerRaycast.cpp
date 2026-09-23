@@ -5,6 +5,7 @@
 #include "Engine/Module/Component/ComponentBase.h"
 #include "../../../../../../../PlayerAvatar/IPlayerAvatar.h"
 #include "Engine/Module/Physics/Engine_Physics_Physics.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -52,3 +53,11 @@ namespace GameCore::Npc::Enemy::Behaviour
             layers_.push_back(Physics::Layer::Default);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ToPlayerRaycast)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(
+    GameCore::Npc::Enemy::Behaviour::ActionBase,
+    GameCore::Npc::Enemy::Behaviour::Action::ToPlayerRaycast
+)
+#pragma endregion

@@ -58,4 +58,4 @@ namespace GamePlay::Magic
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Magic::MagicProjectile, 0)
+CEREAL_CLASS_VERSION(GamePlay::Magic::MagicProjectile, 0);

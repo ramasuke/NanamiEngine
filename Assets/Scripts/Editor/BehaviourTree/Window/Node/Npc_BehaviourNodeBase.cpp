@@ -1,6 +1,7 @@
 ﻿#include "Npc_BehaviourNodeBase.h"
 
 #include "ImGuiHelper.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace Editor::Npc::Behaviour
 {
@@ -41,3 +42,8 @@ namespace Editor::Npc::Behaviour
         return lastFriendlyTickStatus_;
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(Editor::Npc::Behaviour::NodeBase);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Object::IObject, Editor::Npc::Behaviour::NodeBase);
+#pragma endregion

@@ -2,6 +2,7 @@
 
 #include "Engine/Core/Application/Time/Time.h"
 #include "../../Spawn/GamePlay_PrefabSpawner.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Magic
 {
@@ -35,3 +36,7 @@ namespace GamePlay::Magic
         ImGui::Text("placed: %s  remaining: %.2f", isPlaced_ ? "true" : "false", remainingLifeTime_secs_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Magic::MagicPlacement);
+#pragma endregion

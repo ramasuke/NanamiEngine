@@ -1,4 +1,5 @@
 ﻿#include "Prop_MerchantStall.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Prop
 {
@@ -20,3 +21,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("focusPriority_", focusPriority_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::MerchantStall);
+#pragma endregion

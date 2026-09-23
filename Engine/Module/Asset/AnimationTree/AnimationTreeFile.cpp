@@ -5,6 +5,7 @@
 #include "../../../Core/Application/Window/Main/Animator/AnimatorWindow.h"
 #include "../../Exception/Engine_Module_Exception.h"
 #include "../../Log/NanamiEngine_Module_Log.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 Asset::AnimationTreeFile::AnimationTreeFile(std::string contentPath)
     : contentPath_(std::move(contentPath))
@@ -51,3 +52,10 @@ void Asset::AnimationTreeFile::OnDrawGui()
     LibCore::ImGuiHelper::OnDrawInputField("contentPath_", contentPath_);
     LibCore::ImGuiHelper::OnDrawInputField("guid_", guid_);
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::AnimationTreeFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::AnimationTreeFile);
+REGISTER_ASSET(AnimationTreeFile, ANIMATION_TREE_FILE_EXTENSION_LABEL)
+REGISTER_CREATABLE_ASSET_EXTENSION("AnimationTree", ANIMATION_TREE_FILE_EXTENSION_LABEL, "Animation")
+#pragma endregion

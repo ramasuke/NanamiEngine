@@ -11,10 +11,8 @@ namespace GameCore::Npc::Enemy
     };
 }
 
-REGISTER_ATTACK_AREA_TYPE(GameCore::Npc::Enemy::ITakableEnemyAttack)
+ATTACK_AREA_CLASS_VERSION(GameCore::Npc::Enemy::ITakableEnemyAttack)
 #pragma region SerializationMacro
 // NOTE: 2 = 基底が NetworkComponent になった版(GamePlay::AttackArea の load が参照する)
 CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::AttackArea, 2);
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::AttackArea);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GamePlay::AttackArea<GameCore::Npc::Enemy::ITakableEnemyAttack>, GameCore::Npc::Enemy::AttackArea);
 #pragma endregion

@@ -3,30 +3,26 @@
 #include <algorithm>
 
 #include "SwordMan_QuestContext.h"
-#include "../../../Quest/PlayerAvatar_QuestContext.h"
 #include "../../../Quest/PlayerAvatar_ITakeableQuest.h"
-#include "../../../Quest/Completed/PlayerAvatar_CompletedQuestGroup.h"
+#include "../../../Quest/PlayerAvatar_QuestJournal.h"
 #include "../../../Record/PlayerAvatar_RecordBook.h"
-#include "cereal/archives/binary.hpp"
+#include "cereal/archives/portable_binary.hpp"
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
     QuestGroup::QuestGroup(
         const std::vector<std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>>& quests)
-        : quests_(quests   )
-        , completedQuests_(std::make_unique<Quest::CompletedQuestGroup>())
+        : quests_(quests)
     {
     }
 
     QuestGroup::~QuestGroup() = default;
 
     void QuestGroup::Init(const std::shared_ptr<IObservableStatusEvent>& event,
-                          const std::shared_ptr<IStatusEvent>& statusEvent,
                           const std::shared_ptr<IControlGuideFocusRequest>& guideFocus,
                           const std::shared_ptr<Wallet>& wallet)
     {
         event_       = event;
-        statusEvent_ = statusEvent;
         guideFocus_  = guideFocus;
         wallet_      = wallet;
 
@@ -34,18 +30,26 @@ namespace GameCore::PlayerAvatar::SwordMan
         {
             quest->StartQuest(Npc::Friendly::Behaviour::Action::SwordManQuestContext{ *event_, *guideFocus_, *this });
         }
-        storyQuests_.StartAll(Quest::QuestContext{ *statusEvent_, *this, Record::RecordBook::Instance() });
     }
 
-    void QuestGroup::Subscribe(const std::shared_ptr<Quest::ITakeableQuest>& addQuest)
+    bool QuestGroup::Subscribe(const std::shared_ptr<Quest::ITakeableQuest>& addQuest)
     {
-        storyQuests_.Add(addQuest, Quest::QuestContext{ *statusEvent_, *this, Record::RecordBook::Instance() });
+        return Quest::QuestJournal::Instance().Take(addQuest);
     }
 
-    void QuestGroup::Subscribe(const std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>& addQuest)
+    bool QuestGroup::Subscribe(const std::shared_ptr<Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest>& addQuest)
     {
+        if (!addQuest || IsTaking(addQuest->QuestType()))
+            return false;
+
         quests_.push_back(addQuest);
         addQuest->StartQuest(Npc::Friendly::Behaviour::Action::SwordManQuestContext{ *event_, *guideFocus_, *this });
+        return true;
+    }
+
+    std::vector<std::shared_ptr<Quest::ITakeableQuest>> QuestGroup::ReleaseLegacyQuests()
+    {
+        return legacyStoryQuests_.Release();
     }
 
     void QuestGroup::OnDrawGui()
@@ -54,7 +58,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         {
             quest->OnDrawGui();
         }
-        storyQuests_.OnDrawGui();
+        Quest::QuestJournal::Instance().OnDrawGui();
         Record::RecordBook::Instance().OnDrawGui();
     }
 
@@ -63,14 +67,15 @@ namespace GameCore::PlayerAvatar::SwordMan
         std::stringstream ss;
 
         {
-            cereal::BinaryOutputArchive outputArchive(ss);
+            // NOTE: 型登録が紐付くのは JSON と PortableBinary だけ
+            cereal::PortableBinaryOutputArchive outputArchive(ss);
             outputArchive(*this);
         }
 
         auto copy = std::make_unique<QuestGroup>();
 
         {
-            cereal::BinaryInputArchive inputArchive(ss);
+            cereal::PortableBinaryInputArchive inputArchive(ss);
             inputArchive(*copy);
         }
 
@@ -83,43 +88,34 @@ namespace GameCore::PlayerAvatar::SwordMan
         {
             return taking->QuestType() == quest;
         });
-        return isSwordManQuest || storyQuests_.Contains(quest);
+        return isSwordManQuest || Quest::QuestJournal::Instance().IsTaking(quest);
     }
 
     void QuestGroup::CompleteQuest(const QuestType& completeQuest)
     {
-        // 依頼は何度でも受けられるので、達成のたびに報酬を出し、達成済みとしては残さない
-        if (const auto* request = storyQuests_.Find(completeQuest); request && request->IsRepeatable())
+        const auto swordManQuest = std::ranges::find_if(quests_, [&completeQuest](const auto& quest)
         {
-            if (wallet_)
-                wallet_->Earn(request->RewardMoney());
-            storyQuests_.Remove(completeQuest);
+            return quest->QuestType() == completeQuest;
+        });
+        if (swordManQuest == quests_.end())
+        {
+            Quest::QuestJournal::Instance().CompleteQuest(completeQuest);
             return;
         }
 
         // 完了フラグはセーブをまたいで残るので、受け直しても報酬が出るのは初回だけ
-        if (wallet_ && !completedQuests_->CheckCompleted(completeQuest))
-        {
-            const auto swordManQuest = std::ranges::find_if(quests_, [&completeQuest](const auto& quest)
-            {
-                return quest->QuestType() == completeQuest;
-            });
-            if (swordManQuest != quests_.end())
-                wallet_->Earn((*swordManQuest)->RewardMoney());
-            else if (const auto* storyQuest = storyQuests_.Find(completeQuest))
-                wallet_->Earn(storyQuest->RewardMoney());
-        }
+        const auto reward = (*swordManQuest)->RewardMoney();
+        if (Quest::QuestJournal::Instance().MarkCompleted(completeQuest) && wallet_)
+            wallet_->Earn(reward);
 
-        completedQuests_->Subscribe(completeQuest);
         std::erase_if(quests_, [completeQuest](const auto& quest)
         {
             return quest->QuestType() == completeQuest;
         });
-        storyQuests_.Remove(completeQuest);
     }
 
     bool QuestGroup::CheckCompleted(const QuestType& quest) const
     {
-        return completedQuests_->CheckCompleted(quest);
+        return Quest::QuestJournal::Instance().CheckCompleted(quest);
     }
 }

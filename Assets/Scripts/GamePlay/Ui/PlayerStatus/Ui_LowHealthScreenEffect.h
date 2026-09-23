@@ -3,6 +3,7 @@
 #include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
 #include "Engine/Module/Component/ScreenColorGrade/ScreenColorGradeRenderer.h"
 #include "Engine/Module/Asset/Sound/SoundFile.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 #include "../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
 
 namespace GamePlay::Ui
@@ -21,6 +22,7 @@ namespace GamePlay::Ui
         void OnUpdate () override;
 
         void OnChangeHealth(const GameCore::StatusParameter::Health& health, bool isDeath);
+        void ResetDownedFade(bool isDowned);
         void PlayHeartbeat(float danger) const;
         [[nodiscard]] float CalcDanger(float healthRate) const;
         [[nodiscard]] float CalcPulse (float sinceBeat_secs) const;
@@ -50,7 +52,7 @@ namespace GamePlay::Ui
         float healthRate_     = 1.0f;
         bool  isDowned_       = false;
         float danger_         = 0.0f;
-        float downedWeight_   = 0.0f;
+        LibCore::Tween::TweenPlayer<float> downedFade_;
         float sinceBeat_secs_ = 10.0f;
 
         float debugOverrideHealthRate_ = -1.0f;
@@ -105,4 +107,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::LowHealthScreenEffect, 1)
+CEREAL_CLASS_VERSION(GamePlay::Ui::LowHealthScreenEffect, 1);

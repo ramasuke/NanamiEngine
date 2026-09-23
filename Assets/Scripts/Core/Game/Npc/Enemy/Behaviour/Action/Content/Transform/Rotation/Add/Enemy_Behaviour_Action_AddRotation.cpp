@@ -1,4 +1,5 @@
 ﻿#include "Enemy_Behaviour_Action_AddRotation.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -25,3 +26,8 @@ namespace GameCore::Npc::Enemy::Behaviour
         );
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::AddRotation)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::AddRotation)
+#pragma endregion

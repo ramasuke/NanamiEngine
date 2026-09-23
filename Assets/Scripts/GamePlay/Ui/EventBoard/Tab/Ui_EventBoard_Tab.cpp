@@ -1,6 +1,7 @@
 ﻿#include "Ui_EventBoard_Tab.h"
 
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -72,3 +73,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("selectedDrop_px_", selectedDrop_px_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::EventBoardTab);
+#pragma endregion

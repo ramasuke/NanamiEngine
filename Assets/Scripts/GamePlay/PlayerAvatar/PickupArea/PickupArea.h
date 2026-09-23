@@ -50,4 +50,4 @@ namespace GamePlay::PlayerAvatar
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::PickupArea, 0)
+CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::PickupArea, 0);

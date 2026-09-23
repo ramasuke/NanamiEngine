@@ -35,7 +35,6 @@ namespace GameCore::Magic
         [[nodiscard]] virtual MagicCastMotion                    CastMotion            () const = 0;
         /** @brief Cast State の頭から撃ち手の足元に出す演出。モーションの手の動きに合わせて作ってある。無ければ nullptr */
         [[nodiscard]] virtual std::shared_ptr<Asset::PrefabGameObjectFile> CastEffectPrefab() const = 0;
-        /** @brief RPC で魔法を指す識別子 */
         [[nodiscard]] virtual const Guid&                        SpellGuid             () const = 0;
         [[nodiscard]] virtual MagicCastTarget Aim(const IMagicCaster& caster) const = 0;
         virtual void Execute(const IMagicCaster& caster, const MagicCastTarget& target) const = 0;

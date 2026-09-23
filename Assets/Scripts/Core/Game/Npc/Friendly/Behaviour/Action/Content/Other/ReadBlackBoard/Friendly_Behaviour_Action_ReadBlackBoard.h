@@ -33,5 +33,3 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
     REGISTER_FRIENDLY_ACTION_WITH_NAME(ReadBlackBoard, "Other::ReadBlackBoard")
 }
 CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::ReadBlackBoard, 0)
-CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::ReadBlackBoard)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::ActionBase, GameCore::Npc::Friendly::Behaviour::Action::ReadBlackBoard)

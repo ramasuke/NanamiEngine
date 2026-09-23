@@ -1,4 +1,5 @@
 ﻿#include "AnimationVisualAnyStateNode.h"
+#include "../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::AnimationTree
 {
@@ -18,3 +19,8 @@ namespace NanamiEngine::Module::AnimationTree
     {
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationVisualAnyStateNode);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::AnimationTree::IAnimationNode, NanamiEngine::Module::AnimationTree::AnimationVisualAnyStateNode);
+#pragma endregion

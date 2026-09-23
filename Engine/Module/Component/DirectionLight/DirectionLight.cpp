@@ -1,6 +1,7 @@
 ﻿#include "DirectionLight.h"
 
 #include "DxLib.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -20,3 +21,8 @@ namespace NanamiEngine::Module::Component
     {
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::DirectionLight);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IRenderable, NanamiEngine::Module::Component::DirectionLight);
+#pragma endregion

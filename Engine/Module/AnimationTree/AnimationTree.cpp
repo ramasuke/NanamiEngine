@@ -13,6 +13,7 @@
 #include "Editor/AnimationTreeGraphDelegate.h"
 #include "Node/ClipNode/AnimationClipNode.h"
 #include "Node/EntryNode/AnimatorEntryNode.h"
+#include "../Serialization/Engine_Module_SerializationRegistration.h"
 
 AnimationTree::AnimationTree::AnimationTree(std::string filePath)
     : filePath_(std::move(filePath))
@@ -344,3 +345,8 @@ std::optional<AnimationTree::ClipProgress> AnimationTree::AnimationTree::GetCurr
     }
     return std::nullopt;
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationTree);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Object::IObject, NanamiEngine::Module::AnimationTree::AnimationTree);
+#pragma endregion

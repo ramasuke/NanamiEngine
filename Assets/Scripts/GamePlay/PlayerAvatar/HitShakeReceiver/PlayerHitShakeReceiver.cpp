@@ -4,6 +4,8 @@
 
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/Component/ModelRenderer/ModelRenderer.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace
 {
@@ -19,40 +21,49 @@ namespace GamePlay::PlayerAvatar
             modelRenderer_ = Components().Catch<Component::ModelRenderer>();
 
         direction_     = direction;
-        amplitude_     = amplitude;
         duration_secs_ = duration_secs;
-        elapsed_secs_  = 0.0f;
-        isPlaying_     = duration_secs > 0.0f;
+        if (duration_secs <= 0.0f)
+        {
+            envelope_.Stop();
+            return;
+        }
+
+        // NOTE: a + (b - a) * OutQuad(t) で b = 0 なので amplitude * (1 - t)^2
+        envelope_.Play(tweeny::from(amplitude).to(0.0f)
+            .during(LibCore::Tween::Ms(duration_secs))
+            .via(LibCore::Tween::Ease(LibCore::EaseType::OutQuad)));
     }
 
     void PlayerHitShakeReceiver::OnUpdate()
     {
-        if (!isPlaying_)
+        if (!envelope_.IsPlaying())
             return;
 
         const auto modelRenderer = modelRenderer_.lock();
         if (!modelRenderer)
         {
-            isPlaying_ = false;
+            envelope_.Stop();
             return;
         }
 
-        elapsed_secs_ += Time::DeltaTime();
-        if (elapsed_secs_ >= duration_secs_)
+        if (envelope_.Tick(Time::DeltaTime()))
         {
-            isPlaying_ = false;
             modelRenderer->SetRenderOffset(glm::vec3(0.0f));
             return;
         }
 
         // 当たった瞬間に押し込まれ、減衰しながら振動して戻る
-        const float remain = 1.0f - elapsed_secs_ / duration_secs_;
-        modelRenderer->SetRenderOffset(direction_ * (amplitude_ * remain * remain * std::cos(elapsed_secs_ * SHAKE_ANGULAR_FREQUENCY)));
+        const float elapsed_secs = envelope_.Progress() * duration_secs_;
+        modelRenderer->SetRenderOffset(direction_ * (envelope_.Value() * std::cos(elapsed_secs * SHAKE_ANGULAR_FREQUENCY)));
     }
 
     void PlayerHitShakeReceiver::OnDrawGui()
     {
-        ImGui::Text("isPlaying: %s", isPlaying_ ? "true" : "false");
-        ImGui::Text("elapsed / duration: %.3f / %.3f", elapsed_secs_, duration_secs_);
+        ImGui::Text("isPlaying: %s", envelope_.IsPlaying() ? "true" : "false");
+        ImGui::Text("elapsed / duration: %.3f / %.3f", envelope_.Progress() * duration_secs_, duration_secs_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::PlayerHitShakeReceiver);
+#pragma endregion

@@ -7,6 +7,7 @@
 #include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
 #include "Engine/Module/NanamiUI/Slider/NanamiUi_Slider.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 
 namespace GamePlay::Ui
 {
@@ -38,7 +39,8 @@ namespace GamePlay::Ui
 
         float targetRate_ = 1.0f;
         float value_ = 0.0f;
-        float introElapsed_secs_ = 0.0f;
+        // 登場時に 0 から満ちていく上限
+        LibCore::Tween::TweenPlayer<float> introFill_;
         float pulseTime_secs_ = 0.0f;
 
 #pragma region Serialization Function
@@ -83,4 +85,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::BossHealthGauge, 3)
+CEREAL_CLASS_VERSION(GamePlay::Ui::BossHealthGauge, 3);

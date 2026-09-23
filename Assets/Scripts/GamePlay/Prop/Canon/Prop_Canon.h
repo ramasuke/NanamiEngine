@@ -14,10 +14,15 @@ namespace GamePlay::Prop
                         public LifeCycleCallback::IUpdatable
     {
     public:
-        void Use() const;
+        void Use();
+        void Leave();
         void Shoot();
         void RightRotate();
         void LeftRotate();
+
+        // NOTE: イベント演出に入ったら乗れなくする。乗っている Player は UseCanon ステートから降りる
+        void Lock() { isLocked_ = true; }
+        [[nodiscard]] bool IsLocked() const { return isLocked_; }
 
     private:
         void OnAwake() override;
@@ -25,7 +30,9 @@ namespace GamePlay::Prop
 
         
         glm::vec3 position_;
-        
+        bool isLocked_ = false;
+        int  prevCameraPriority_ = 0;
+
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) bulletPrefab_;
         [[serialize(0)]] float bulletForceSpeed_ = 10.0f;
         [[serialize(0)]] FIELD(Asset::SoundFile) shootSound_;
@@ -76,4 +83,4 @@ namespace GamePlay::Prop
     
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Prop::Canon, 5)
+CEREAL_CLASS_VERSION(GamePlay::Prop::Canon, 5);

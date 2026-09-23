@@ -2,6 +2,7 @@
 
 #include "../../../Engine_Network_NetworkRunner.h"
 #include "../../../../../Core/Network/Object/Awakable/INetworkAwakable.h"
+#include "../../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Network
 {
@@ -24,3 +25,7 @@ namespace NanamiEngine::Module::Network
         ImGui::Text(networkObjectId_.ToString().c_str());
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(Network::NetworkGameObject);
+#pragma endregion

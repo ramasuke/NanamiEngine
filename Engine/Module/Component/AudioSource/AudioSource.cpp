@@ -3,6 +3,8 @@
 #include "DxLib.h"
 #include "../../Asset/Sound/SoundFile.h"
 #include "../../GameObject/Transform/Transform.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
+#include "../../../../Libs/LibCore/DxLib/DxMath.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -34,7 +36,7 @@ namespace NanamiEngine::Module::Component
     void AudioSource::OnUpdate()
     {
         const auto soundListenAngle = Transform().GetWorldEulerAngle();
-        Set3DSoundListenerPosAndFrontPos_UpVecY(Transform().GetDxWorldPos(), VECTOR(soundListenAngle.x, soundListenAngle.y, soundListenAngle.z));
+        Set3DSoundListenerPosAndFrontPos_UpVecY(LibCore::Dxlib::ToDxVector(Transform().GetWorldPos()), VECTOR(soundListenAngle.x, soundListenAngle.y, soundListenAngle.z));
     }
 
     void AudioSource::OnDrawGui()
@@ -43,3 +45,7 @@ namespace NanamiEngine::Module::Component
         ImGui::SliderInt("volume_", &volume_, 0, 255);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::AudioSource);
+#pragma endregion

@@ -1,6 +1,7 @@
 ﻿#include "Enemy_Behaviour_Action_SetLinearVelocity.h"
 
 #include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -20,3 +21,8 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("isGravity_", isGravity_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::SetLinearVelocity)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::SetLinearVelocity)
+#pragma endregion

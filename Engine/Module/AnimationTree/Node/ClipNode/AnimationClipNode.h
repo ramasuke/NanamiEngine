@@ -96,6 +96,4 @@ void load(Archive& archive, const std::uint32_t version) {
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationClipNode, 3);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationClipNode);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::AnimationTree::IAnimationNode, NanamiEngine::Module::AnimationTree::AnimationClipNode);
 #pragma endregion

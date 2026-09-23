@@ -3,6 +3,7 @@
 #include "../../../../3DRender/Shapes/Shapes.h"
 #include "../../../../GameObject/Transform/Transform.h"
 #include "../../../JoltUtility/Engine_Physics_JoltUtility.h"
+#include "../../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -58,3 +59,7 @@ namespace NanamiEngine::Module::Component
         OnDebugDraw();
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::CapsuleCollider);
+#pragma endregion

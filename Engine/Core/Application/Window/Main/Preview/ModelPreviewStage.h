@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <DxLib.h>
 #include <memory>
 
 #include "../Interface/IMainWindow.h"
@@ -51,7 +50,7 @@ namespace NanamiEngine::Core::MainWindow
         /** @brief 表示中モデルの DxLib ハンドル。未設定・ロード待ちなら -1 */
         [[nodiscard]] int ModelHandle() const;
         [[nodiscard]] std::shared_ptr<Module::Component::ModelRenderer> Renderer() const { return modelRenderer_.lock(); }
-        [[nodiscard]] MATRIX PreviewWorldMatrix() const;
+        [[nodiscard]] glm::mat4 PreviewWorldMatrix() const;
 
     private:
         void EnsurePreviewObject(const std::shared_ptr<IMainWindow>& owner);

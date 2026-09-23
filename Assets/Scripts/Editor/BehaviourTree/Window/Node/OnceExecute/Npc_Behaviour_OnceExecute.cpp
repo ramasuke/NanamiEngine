@@ -4,6 +4,7 @@
 #include "Engine/Module/Gui/Graph/NodeOption/NodeOption.h"
 #include "cereal/archives/json.hpp"
 #include "cereal/archives/portable_binary.hpp"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace Editor::Npc::Behaviour
 {
@@ -118,3 +119,8 @@ namespace Editor::Npc::Behaviour
     template void OnceExecute::save<cereal::PortableBinaryOutputArchive>(cereal::PortableBinaryOutputArchive&, const std::uint32_t) const;
     template void OnceExecute::load<cereal::PortableBinaryInputArchive>(cereal::PortableBinaryInputArchive&, const std::uint32_t);
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(Editor::Npc::Behaviour::OnceExecute);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(Editor::Npc::Behaviour::NodeBase, Editor::Npc::Behaviour::OnceExecute);
+#pragma endregion

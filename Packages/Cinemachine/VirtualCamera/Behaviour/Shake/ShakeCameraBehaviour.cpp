@@ -4,6 +4,7 @@
 #include "../../../../../Engine/Core/Application/Time/Time.h"
 #include "../../../../../Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../Brain/CinemachineCameraBrain.h"
+#include "../../../../../Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::CineMachine::Behaviour
 {
@@ -16,8 +17,9 @@ namespace NanamiEngine::CineMachine::Behaviour
         if (duration <= 0.0f)
             return;
 
-        trauma_   = std::clamp(trauma_ + intensity, 0.0f, 1.0f);
-        duration_ = duration;
+        // NOTE: 重ねた揺れも 1 あたり duration 秒の速さで 0 へ減らす
+        const float trauma = std::clamp(trauma_.Value() + intensity, 0.0f, 1.0f);
+        trauma_.Play(tweeny::from(trauma).to(0.0f).during(LibCore::Tween::Ms(duration * trauma)));
     }
 
     void ShakeCameraBehaviour::Shake()
@@ -69,18 +71,16 @@ namespace NanamiEngine::CineMachine::Behaviour
             sustain_ = 0.0f;
         sustainRequest_ = 0.0f;
 
-        if (trauma_ <= 0.0f)
-            return;
-
-        trauma_ = std::max(0.0f, trauma_ - deltaTime / duration_);
+        trauma_.Tick(deltaTime);
     }
 
     void ShakeCameraBehaviour::MainCameraCallback()
     {
-        if (trauma_ <= 0.0f && sustain_ <= 0.0f)
+        const float trauma = trauma_.Value();
+        if (trauma <= 0.0f && sustain_ <= 0.0f)
             return;
 
-        const float shake        = trauma_ * trauma_;
+        const float shake        = trauma * trauma;
         const float sustainShake = sustain_ * sustain_;
         const float t            = Time::CurrentTime() * frequency_;
         const float sustainT     = Time::CurrentTime() * sustainFrequency_;
@@ -105,14 +105,18 @@ namespace NanamiEngine::CineMachine::Behaviour
         const glm::vec3 posOffset = posAmplitude_ * (shake * posNoise + sustainShake * sustainPosNoise);
         const glm::vec3 angleRad  = glm::radians(angleAmplitude_) * (shake * rotNoise + sustainShake * sustainRotNoise);
 
-        const glm::vec3 brainPos = CinemachineCameraBrain::Instance()->Transform().GetWorldPos();
-        const glm::quat brainRot = CinemachineCameraBrain::Instance()->Transform().GetWorldRot();
+        auto* brain = CinemachineCameraBrain::Instance();
+        if (!brain)
+            return;
+
+        const glm::vec3 brainPos = brain->Transform().GetWorldPos();
+        const glm::quat brainRot = brain->Transform().GetWorldRot();
 
         const glm::vec3 shakenPos = brainPos + brainRot * posOffset;
         const glm::quat shakenRot = brainRot * glm::quat(angleRad);
 
-        CinemachineCameraBrain::Instance()->Transform().SetWorldPos(shakenPos);
-        CinemachineCameraBrain::Instance()->Transform().SetWorldRot(shakenRot);
+        brain->Transform().SetWorldPos(shakenPos);
+        brain->Transform().SetWorldRot(shakenRot);
     }
 
     void ShakeCameraBehaviour::OnDrawGui()
@@ -134,3 +138,8 @@ namespace NanamiEngine::CineMachine::Behaviour
             SustainShake(defaultIntensity_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ShakeCameraBehaviour);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::ShakeCameraBehaviour);
+#pragma endregion

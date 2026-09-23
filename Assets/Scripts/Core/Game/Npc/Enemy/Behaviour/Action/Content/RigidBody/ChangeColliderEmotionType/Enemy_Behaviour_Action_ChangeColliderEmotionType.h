@@ -39,5 +39,3 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 }
 
 CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::ChangeColliderEmotionType, 0)
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ChangeColliderEmotionType)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::ChangeColliderEmotionType)

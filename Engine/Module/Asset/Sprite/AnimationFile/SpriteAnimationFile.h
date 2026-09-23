@@ -94,8 +94,4 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SpriteAnimationFile, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SpriteAnimationFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::SpriteAnimationFile);
 #pragma endregion
-REGISTER_ASSET(SpriteAnimationFile, SPRITE_ANIMATION_FILE_EXTENSION_LABEL)
-REGISTER_CREATABLE_ASSET_EXTENSION("SpriteAnimation", SPRITE_ANIMATION_FILE_EXTENSION_LABEL, "Animation")

@@ -10,6 +10,7 @@
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 #include "../../../../../Data/Item/Data_ItemData.h"
 #include "../Model/ShopModel.h"
 
@@ -61,7 +62,9 @@ namespace GamePlay::Ui
         [[serialize(0)]] float stampDuration_secs_ = 0.6f;
         [[serialize(0)]] float stampStartScale_ = 1.6f;
 
-        float stampElapsed_secs_ = -1.0f;
+        // 2本とも同じ長さ。終わりは stampAlpha_ で判定する
+        LibCore::Tween::TweenPlayer<float> stampScale_;
+        LibCore::Tween::TweenPlayer<float> stampAlpha_;
         glm::vec3 stampBaseScale_ = glm::vec3(1.0f);
 
 #pragma region Serialization Function
@@ -117,4 +120,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::ShopReceipt, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::ShopReceipt, 0);

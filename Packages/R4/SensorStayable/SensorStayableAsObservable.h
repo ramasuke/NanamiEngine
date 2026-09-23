@@ -41,4 +41,4 @@ namespace NanamiEngine::R4
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::R4::SensorStayableAsObservable, 0)
+CEREAL_CLASS_VERSION(NanamiEngine::R4::SensorStayableAsObservable, 0);

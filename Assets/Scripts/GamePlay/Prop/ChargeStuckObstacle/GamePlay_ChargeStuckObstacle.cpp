@@ -8,13 +8,13 @@ namespace GamePlay::Prop
     std::shared_ptr<ChargeStuckObstacle> ChargeStuckObstacle::FindFrom(GameObject::IGameObject& hitObject)
     {
         if (auto obstacle = hitObject.Components().Catch<ChargeStuckObstacle>().lock())
-            return obstacle;
+            return obstacle->IsEnable() ? obstacle : nullptr;
 
         auto current = hitObject.Transform().GetParent();
         while (current)
         {
             if (auto obstacle = current->Components().Catch<ChargeStuckObstacle>().lock())
-                return obstacle;
+                return obstacle->IsEnable() ? obstacle : nullptr;
 
             current = current->Transform().GetParent();
         }

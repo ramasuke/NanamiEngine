@@ -80,33 +80,51 @@
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
-                        "guid_": {
-                            "value_": "63FEFD16-2067-4E77-B521-233D7F6715FE"
-                        },
-                        "isEnable_": true
-                    },
-                    "amount_": {
-                        "cereal_class_version": 0,
-                        "value_": 1
-                    },
-                    "launchUpSpeed_": 70.0,
-                    "launchSideSpeedMin_": 12.0,
-                    "launchSideSpeedMax_": 30.0,
-                    "pickupDelay_secs_": 0.6000000238418579,
-                    "pickupSound_": {
                         "cereal_class_version": 0,
                         "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483652,
-                                "data": {
-                                    "cereal_class_version": 0,
-                                    "value0": {
-                                        "value_": "69ABA6E3-AF53-4917-BA87-B87E650697E4"
+                            "guid_": {
+                                "value_": "63FEFD16-2067-4E77-B521-233D7F6715FE"
+                            },
+                            "isEnable_": true
+                        },
+                        "launchUpSpeed_": 70.0,
+                        "launchSideSpeedMin_": 12.0,
+                        "launchSideSpeedMax_": 30.0,
+                        "pickupDelay_secs_": 0.6000000238418579,
+                        "pickupSound_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483652,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "8CDC5446-EE05-43E4-8CD3-E10DD86B5EF1"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "pickupParticle_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483653,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "51F23774-78CF-43A7-A4FB-47F8441AD01C"
+                                        }
                                     }
                                 }
                             }
                         }
+                    },
+                    "amount_": {
+                        "cereal_class_version": 0,
+                        "value_": 1
                     }
                 }
             }
@@ -161,7 +179,7 @@
             "polymorphic_id": 2147483652,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483653,
+                "id": 2147483654,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -181,7 +199,7 @@
                             "polymorphic_id": 2147483653,
                             "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
                             "ptr_wrapper": {
-                                "id": 2147483654,
+                                "id": 2147483655,
                                 "data": {
                                     "cereal_class_version": 1,
                                     "value0": {
@@ -201,7 +219,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483655,
+                                                "id": 2147483656,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {

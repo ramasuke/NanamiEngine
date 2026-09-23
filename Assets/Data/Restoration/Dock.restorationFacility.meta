@@ -1,0 +1,33 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::RestorationFacility",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Restoration/Dock.restorationFacility",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "0A9B1D7B-ACE7-4CBA-BBC3-77702BC1D605"
+                    }
+                },
+                "facility_": 0,
+                "name_": "船着き場",
+                "descriptionLines_": [
+                    "桟橋を架け直す。",
+                    "定期船がまた寄れるようになる。"
+                ],
+                "cost_": 500,
+                "requiredStoryFlag_": -1,
+                "requiredFacility_": -1,
+                "conditionText_": ""
+            }
+        }
+    }
+}

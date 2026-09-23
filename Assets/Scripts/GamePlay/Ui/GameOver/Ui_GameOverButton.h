@@ -6,6 +6,7 @@
 #include "Engine/Module/LifeCycleCallback/Awake/IAwakable.h"
 #include "Engine/Module/NanamiUI/Button/NanamiUi_Button.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 
 namespace GamePlay::Ui
 {
@@ -44,7 +45,8 @@ namespace GamePlay::Ui
 
         std::weak_ptr<NanamiUi::Button> button_;
         float appearRate_ = 0.0f;
-        float highlight_ = 0.0f;
+        /** 0 で普段の札、1 で選ばれた札。選び直すと今の濃さから折り返す */
+        LibCore::Tween::TweenPlayer<float> highlightTween_;
         bool isHighlighted_ = false;
         float emberPhase_ = 0.0f;
 
@@ -89,4 +91,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::GameOverButton, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::GameOverButton, 0);

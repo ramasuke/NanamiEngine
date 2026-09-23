@@ -2,6 +2,7 @@
 
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../Core/Game/PlayerAvatar/Wakeable/IPlayerWakeable.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::PlayerAvatar
 {
@@ -100,3 +101,7 @@ namespace GamePlay::PlayerAvatar
         }
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::WakeUpArea);
+#pragma endregion

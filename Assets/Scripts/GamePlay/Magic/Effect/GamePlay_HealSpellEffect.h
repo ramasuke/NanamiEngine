@@ -53,6 +53,4 @@ namespace GamePlay::Magic
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(GamePlay::Magic::HealSpellEffect, 0);
-CEREAL_REGISTER_TYPE(GamePlay::Magic::HealSpellEffect);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Magic::IMagicSpellEffect, GamePlay::Magic::HealSpellEffect);
 #pragma endregion

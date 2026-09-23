@@ -14,6 +14,7 @@
 #include "../../../../../Engine/Module/Physics/Component/Collider/Engine_Physics_ICollider.h"
 #include "../../../../../Engine/Module/Physics/RaycastHit/Engine_Physics_RaycastHit.h"
 #include "../../../../../Engine/Module/Physics/Layer/Engine_Physics_PhysicsLayer.h"
+#include "../../../../../Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace
 {
@@ -209,3 +210,9 @@ namespace NanamiEngine::CineMachine::Behaviour
         ImGuiHelper::OnDrawInputField("lookAt_", lookAt_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::LockOnCameraBehaviour);
+#pragma endregion

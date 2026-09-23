@@ -59,5 +59,3 @@ namespace NanamiEngine::Module::GameObject
 }
 
 CEREAL_CLASS_VERSION(NanamiEngine::Module::GameObject::IGameObject, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::GameObject::IGameObject);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Object::IObject, NanamiEngine::Module::GameObject::IGameObject);

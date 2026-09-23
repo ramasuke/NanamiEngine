@@ -76,7 +76,10 @@ namespace Editor::Npc::Behaviour
         DoTick(const GameCore::Npc::Friendly::Behaviour::Action::TickContext& context) override;
 
         void SetConnectToNextNode(std::shared_ptr<NodeBase> nextNode) override;
-        
+
+        // NOTE: RandomSelector が枝を選び直すたびに、もう一度 1 回だけ実行できるように戻す
+        void DoResetRuntimeState() override { state_ = State::NotExecuted; }
+
 #pragma region Serialization Function
     public:
         template<class Archive> void save(Archive& archive, const std::uint32_t version) const;
@@ -96,6 +99,4 @@ namespace Editor::Npc::Behaviour
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(Editor::Npc::Behaviour::OnceExecute, 0);
-CEREAL_REGISTER_TYPE(Editor::Npc::Behaviour::OnceExecute);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Editor::Npc::Behaviour::NodeBase, Editor::Npc::Behaviour::OnceExecute);
 #pragma endregion

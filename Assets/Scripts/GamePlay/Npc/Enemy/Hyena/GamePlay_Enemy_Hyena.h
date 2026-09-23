@@ -30,6 +30,4 @@ namespace GamePlay::Npc::Enemy
 }
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(GamePlay::Npc::Enemy::Hyena, 0);
-CEREAL_REGISTER_TYPE(GamePlay::Npc::Enemy::Hyena);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::EnemyBase, GamePlay::Npc::Enemy::Hyena);
 #pragma endregion

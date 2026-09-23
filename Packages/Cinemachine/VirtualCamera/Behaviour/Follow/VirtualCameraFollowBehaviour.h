@@ -50,5 +50,4 @@ void load(Archive& archive, const std::uint32_t version) {
 };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour, 3)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour);
+CEREAL_CLASS_VERSION(NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour, 3);

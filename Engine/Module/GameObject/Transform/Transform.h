@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "DxLib.h"
 #include <../../Libs/glm/glm.hpp>
 #include <../../Libs/glm/gtc/matrix_transform.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
@@ -48,8 +47,6 @@ namespace NanamiEngine::Module::GameObject
         [[nodiscard]] glm::quat        GetWorldRot      () const;
         [[nodiscard]] glm::vec3        GetWorldEulerAngle() const;
         [[nodiscard]] glm::vec3        GetWorldScale    () const;
-        [[nodiscard]] VECTOR           GetDxWorldPos    () const;
-        [[nodiscard]] MATRIX           GetDxWorldMatrix () const;
         
         void SetParent(const std::weak_ptr<IGameObject>& parent, bool keepWorldScale = true);
 

@@ -13,6 +13,7 @@ namespace GameCore::Npc::Enemy
     void EnemyStatus::OnDamage(const int damageValue)
     {
         currentHealth_->Set(StatusParameter::Health(currentHealth_->Get().Value() - damageValue));
+        onHealth_.OnNext(currentHealth_->Get());
     }
 
     void EnemyStatus::OnDrawGui()

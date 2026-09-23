@@ -3,6 +3,7 @@
 
 #include "../NanamiUi_IInteractivableRenderer.h"
 #include "../../GameObject/Transform/Transform.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module
 {
@@ -119,3 +120,7 @@ namespace NanamiEngine::Module
                position.y + eventAreaSize_.y > mouseY;
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiUi::Button);
+#pragma endregion

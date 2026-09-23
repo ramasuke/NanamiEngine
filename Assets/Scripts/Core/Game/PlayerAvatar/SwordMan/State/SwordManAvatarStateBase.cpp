@@ -16,10 +16,12 @@
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
 #include "../../../../../../Data/PlayerAvatar/Resource/Data_SwordManAvatarResource.h"
+#include "../../../../../GamePlay/Item/GamePlay_ItemUseCue.h"
 #include "../../../../../GamePlay/PlayerAvatar/InteractableArea/InteractableArea.h"
 #include "../../../../../GamePlay/PlayerAvatar/HitShakeReceiver/PlayerHitShakeReceiver.h"
 #include "../../../../../GamePlay/Sound/SoundPlayer.h"
 #include "../../../../../GamePlay/Ui/DealDamageTextBillBoard/UI_DealDamageTextBillBoard.h"
+#include "../../../Npc/Friendly/IFriendlyNpc.h"
 #include "../../Interactable/IPlayerInteractable.h"
 #include "../../Input/PlayerAvatarInput_void.h"
 #include "../../LockOnTarget/ILockOnTarget.h"
@@ -125,6 +127,16 @@ namespace GameCore::PlayerAvatar::SwordMan
         GamePlay::Sound::SoundPlayer::PlaySe(sound, Transform().GetWorldPos());
     }
 
+    void SwordManAvatarStateBase::PlayAttackSe(const bool isHit, const FIELD(Asset::SoundFile)& whiffSound, const FIELD(Asset::SoundFile)& hitSound) const
+    {
+        if (const auto sound = (isHit ? hitSound : whiffSound).get())
+        {
+            GamePlay::Sound::SoundPlayer::PlaySe(*sound, Transform().GetWorldPos());
+            return;
+        }
+        PlayAttackSe(isHit);
+    }
+
     void SwordManAvatarStateBase::LungeForward(const float speed) const
     {
         const glm::vec3 forward = glm::normalize(glm::vec3(Transform().GetWorldRot() * glm::vec3(0.0f, 0.0f, -1.0f)));
@@ -170,6 +182,10 @@ namespace GameCore::PlayerAvatar::SwordMan
 
         for (const auto& attackTarget : attackArea.Targets())
         {
+            // 村人は驚くだけでダメージは受けない
+            if (!attackTarget.GameObject().Components().Catch<GameCore::Npc::IFriendlyNpc>().expired())
+                continue;
+
             // ダメージ側(AttackArea::ApplyPhysicsAttack)と同じ基準で当たった部位を決める
             const auto hitPart = attackTarget.NearestPart(attackPosition).lock();
 
@@ -243,7 +259,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         return true;
     }
 
-    void SwordManAvatarStateBase::UpdateItemPouchInput() const
+    bool SwordManAvatarStateBase::UpdateItemPouchInput() const
     {
         auto& pouch = Status().Pouch();
 
@@ -251,18 +267,29 @@ namespace GameCore::PlayerAvatar::SwordMan
             pouch.Cycle(1);
         if (Input().CycleItemPrev().IsPressed())
             pouch.Cycle(-1);
-        if (Input().UseItem().IsPressed())
-            UseSelectedPouchItem();
+        return Input().UseItem().IsPressed() && UseSelectedPouchItem();
     }
 
-    void SwordManAvatarStateBase::UseSelectedPouchItem() const
+    bool SwordManAvatarStateBase::UseSelectedPouchItem() const
     {
-        const auto used = Status().Pouch().UseSelected(Status(), Context().PlayerAvatarObject());
-        if (!used)
-            return;
+        auto& pouch = Status().Pouch();
+        const auto selected = pouch.Selected();
+        if (!pouch.CanUseSelected() || !selected->item || !selected->item->HasEffect())
+            return false;
 
-        if (const auto sound = used->UseSound())
-            GamePlay::Sound::SoundPlayer::PlaySe(*sound, Transform().GetWorldPos());
+        switch (selected->item->UseMotion())
+        {
+        case Item::ItemUseMotion::Drink: pouch.SetPendingUse(selected->item); OnChangeState(SwordManAvatarStateType::UseItemDrink); return true;
+        case Item::ItemUseMotion::Eat:   pouch.SetPendingUse(selected->item); OnChangeState(SwordManAvatarStateType::UseItemEat);   return true;
+        case Item::ItemUseMotion::Place: pouch.SetPendingUse(selected->item); OnChangeState(SwordManAvatarStateType::UseItemPlace); return true;
+        case Item::ItemUseMotion::Instant:
+            break;
+        }
+
+        const auto user = Context().PlayerAvatarObject();
+        if (const auto used = pouch.UseSelected(Status(), user))
+            GamePlay::Item::PlayItemUseCue(*used, user);
+        return false;
     }
 
     Damage::PhysicsPower SwordManAvatarStateBase::BuffedAttackPower(const Damage::PhysicsPower base) const

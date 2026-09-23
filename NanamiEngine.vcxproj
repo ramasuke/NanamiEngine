@@ -41,6 +41,7 @@
     <ClCompile Include="Assets\Data\EventNotice\Data_EventNotice.cpp" />
     <ClCompile Include="Assets\Data\EventNotice\Data_BoardQuest.cpp" />
     <ClCompile Include="Assets\Data\EventNotice\Data_Announcement.cpp" />
+    <ClCompile Include="Assets\Data\Restoration\Data_RestorationFacility.cpp" />
     <ClCompile Include="Assets\Data\Item\Data_ItemData.cpp" />
     <ClCompile Include="Assets\Data\Shop\Data_ShopData.cpp" />
     <ClCompile Include="Assets\Data\Drop\Data_DropTable.cpp" />
@@ -51,6 +52,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_PhysicsPower.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Game.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\MainProgression\MainProgression.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Story\Story_StoryProgress.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Story\Story_StageClear.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\RestorationGate\Prop_RestorationGate.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\AttackArea\Enemy_AttackArea.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ChasePlayerForPathFinding\Enemy_Behaviour_Action_ChasePlayerForPathFinding.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ToPlayerDistance\Enemy_Behaviour_Action_ToPlayerDistance.cpp" />
@@ -134,6 +138,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Time\Timer\Friendly_Behaviour_Action_NodeTickTimer.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Ui\OpenCharacterSelect\Friendly_Behaviour_Action_OpenCharacterSelect.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Ui\OpenShop\Friendly_Behaviour_Action_OpenShop.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Story\IsStoryFlag\Friendly_Behaviour_Action_IsStoryFlag.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Story\IsRestored\Friendly_Behaviour_Action_IsRestored.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Story\SetStoryFlag\Friendly_Behaviour_Action_SetStoryFlag.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\FieldGameObject\Friendly_Behaviour_Action_FieldGameObject.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Friendly_Behaviour_ActionBase.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Position\Friendly_Behaviour_Action_Position.cpp" />
@@ -377,11 +384,10 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Weather\WeatherService.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Weather\WindZone.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Spawn\GamePlay_PrefabSpawner.cpp" />
-    <ClCompile Include="Assets\Scripts\GamePlay\Pickup\GamePlay_MoneyDrop.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Pickup\GamePlay_MoneyPickup.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Pickup\GamePlay_ItemPickup.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Pickup\GamePlay_LootDrop.cpp" />
-    <ClCompile Include="Assets\Scripts\GamePlay\Pickup\GamePlay_PickupMotion.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Pickup\GamePlay_PickupItemBase.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\BossHealthGauge\Ui_BossHealthGauge.cpp" />
@@ -431,6 +437,9 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Page\Ui_EventBoard_QuestPage.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Page\Ui_EventBoard_NoticePage.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Tab\Ui_EventBoard_Tab.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\RestorationBoardModel.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_RestorationRow.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Page\Ui_EventBoard_RestorationPage.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\Shop\Presenter\ShopPresenter.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\Shop\UI_Shop.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\Shop\Receipt\Ui_ShopReceipt.cpp" />
@@ -466,6 +475,28 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\AssetUpdate\Presenter\AssetUpdatePresenter.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\Presenter\PlayerAvatar_MagicCaster_StatusPresenter.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\Quest\MagicCaster_QuestGroup.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\RecoverFacingPlayer\Enemy_Behaviour_Action_RecoverFacingPlayer.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\CircleAroundPlayer\Enemy_Behaviour_Action_CircleAroundPlayer.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ToPlayerAngle\Enemy_Behaviour_Action_ToPlayerAngle.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\LockPlayerCannon\Enemy_Behaviour_Action_LockPlayerCannon.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\FallIsland\Enemy_Behaviour_Action_FallIsland.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Particle\AttachParticle\Enemy_Behaviour_Action_AttachParticle.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestJournal.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\AvoidRolling\MagicCasterAvatarAvoidRollingState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemUseAction.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\UseItem\MagicCasterAvatarUseItemState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\UseItem\SwordManAvatarUseItemState.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\Prop\Rpc_Prop.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\SpawnFollowingPrefab\Rpc_SpawnFollowingPrefab.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Item\GamePlay_ItemUseCue.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Network\Relay\EnetRelayNetworkSystem.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Network\Relay\RelayServerSettings.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Friendly\Reaction\FriendlyNpcReaction.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\ChargeBreakPillar\GamePlay_ChargeBreakPillar.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\GaugeEffects\Ui_GaugeEffects.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\RoomCode\Ui_RoomCodeHud.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\GameCursor\Ui_GameCursor.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Room\Ui_StageSelect_RoomUi.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
       <IncludeInUnityFile>false</IncludeInUnityFile>
@@ -492,6 +523,7 @@
     <ClInclude Include="Assets\Data\EventNotice\Data_EventNotice.h" />
     <ClInclude Include="Assets\Data\EventNotice\Data_BoardQuest.h" />
     <ClInclude Include="Assets\Data\EventNotice\Data_Announcement.h" />
+    <ClInclude Include="Assets\Data\Restoration\Data_RestorationFacility.h" />
     <ClInclude Include="Assets\Data\Item\Data_ItemData.h" />
     <ClInclude Include="Assets\Data\Item\Data_ItemStack.h" />
     <ClInclude Include="Assets\Data\Shop\Data_ShopEntry.h" />
@@ -505,6 +537,11 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Damage\Physics\Game_Damage_PhysicsPower.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Game.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\MainProgression\MainProgression.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_Facility.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StoryFlag.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StoryProgress.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StageClear.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\RestorationGate\Prop_RestorationGate.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\AttackArea\Enemy_AttackArea.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ChasePlayerForPathFinding\Enemy_Behaviour_Action_ChasePlayerForPathFinding.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ToPlayerDistance\Enemy_Behaviour_Action_ToPlayerDistance.h" />
@@ -587,6 +624,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Time\Timer\Friendly_Behaviour_Action_NodeTickTimer.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Ui\OpenCharacterSelect\Friendly_Behaviour_Action_OpenCharacterSelect.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Ui\OpenShop\Friendly_Behaviour_Action_OpenShop.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Story\IsStoryFlag\Friendly_Behaviour_Action_IsStoryFlag.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Story\IsRestored\Friendly_Behaviour_Action_IsRestored.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Content\Story\SetStoryFlag\Friendly_Behaviour_Action_SetStoryFlag.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\FieldGameObject\Friendly_Behaviour_Action_FieldGameObject.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Friendly_Behaviour_ActionBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Friendly\Behaviour\Action\Position\Friendly_Behaviour_Action_Position.h" />
@@ -805,11 +845,10 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SpawnSound.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Spawn\GamePlay_PrefabSpawner.h" />
-    <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_MoneyDrop.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_MoneyPickup.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_ItemPickup.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_LootDrop.h" />
-    <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_PickupMotion.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_PickupItemBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\IItemReceiver.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\BillBoardNpcChatIcon\BillBoardNpcChatIcon.h" />
@@ -820,6 +859,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_MagicCasterControlGuide.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ControlGuide\Ui_SwordManControlGuide.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemPouch.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemUseMotion.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\Effect\IItemEffect.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\Effect\IItemEffectTarget.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\Effect\ItemEffectFactory.h" />
@@ -896,6 +936,9 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Page\Ui_EventBoard_NoticePage.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Tab\Ui_EventBoard_Tab.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\EventBoardRowPool.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\RestorationBoardModel.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_RestorationRow.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Page\Ui_EventBoard_RestorationPage.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Shop\Presenter\ShopPresenter.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Shop\UI_Shop.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Shop\Receipt\Ui_ShopReceipt.h" />
@@ -940,6 +983,26 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\Presenter\PlayerAvatar_MagicCaster_StatusPresenter.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\Quest\MagicCaster_QuestGroup.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Network\Session\GamePlay_StageSessionMatchmaking.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Item\GamePlay_ItemUseCue.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\GaugeEffects\Ui_GaugeEffects.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\AvoidRolling\MagicCasterAvatarAvoidRollingState.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\StageSelect\Room\Ui_StageSelect_RoomUi.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\RoomCode\Ui_RoomCodeHud.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\GameCursor\Ui_GameCursor.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\RecoverFacingPlayer\Enemy_Behaviour_Action_RecoverFacingPlayer.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\CircleAroundPlayer\Enemy_Behaviour_Action_CircleAroundPlayer.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ToPlayerAngle\Enemy_Behaviour_Action_ToPlayerAngle.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\LockPlayerCannon\Enemy_Behaviour_Action_LockPlayerCannon.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\FallIsland\Enemy_Behaviour_Action_FallIsland.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Particle\AttachParticle\Enemy_Behaviour_Action_AttachParticle.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestJournal.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemUseAction.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\UseItem\MagicCasterAvatarUseItemState.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\SwordMan\State\UseItem\SwordManAvatarUseItemState.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Network\Relay\EnetRelayNetworkSystem.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Network\Relay\RelayServerSettings.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Friendly\Reaction\FriendlyNpcReaction.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\ChargeBreakPillar\GamePlay_ChargeBreakPillar.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Animations\" />

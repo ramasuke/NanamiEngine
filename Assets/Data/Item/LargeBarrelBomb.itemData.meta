@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 3,
+                "cereal_class_version": 5,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -42,7 +42,7 @@
                             "data": {
                                 "cereal_class_version": 0,
                                 "value0": {
-                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                    "value_": "6F4A42BD-5F35-46D4-B9ED-21C2D172BCF5"
                                 }
                             }
                         }
@@ -100,7 +100,25 @@
                 },
                 "descriptionLines_": [
                     "置いて起爆する大きな樽。"
-                ]
+                ],
+                "useParticle_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483655,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "54F1D511-84BB-4935-9439-0ED60EDEFF08"
+                                }
+                            }
+                        }
+                    }
+                },
+                "useMotion_": 3,
+                "useEffectTime_secs_": 1.59,
+                "useTotalDuration_secs_": 2.78
             }
         }
     }

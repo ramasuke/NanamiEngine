@@ -1,0 +1,70 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::NpcChat",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\NpcChatText/CampPeopleElder_Cleared.npcChat",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "96D3CB8A-44B9-4E53-B896-06AC6F6CC1E6"
+                    }
+                },
+                "count": 2,
+                "item_0": {
+                    "cereal_class_version": 0,
+                    "font_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "text_": "……本当に大顎を倒したか。\nこの光る石は、あんたのものじゃ。",
+                    "textColor_": {
+                        "cereal_class_version": 0,
+                        "r_": 255,
+                        "g_": 255,
+                        "b_": 255
+                    }
+                },
+                "item_1": {
+                    "font_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483651,
+                                "data": {
+                                    "value0": {
+                                        "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "text_": "若い者を何人か預けよう。\nあんたの島の立て直しに使ってくれ。",
+                    "textColor_": {
+                        "r_": 255,
+                        "g_": 255,
+                        "b_": 255
+                    }
+                }
+            }
+        }
+    }
+}

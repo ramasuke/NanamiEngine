@@ -72,4 +72,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::CircleGaugeRenderer, 0)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::NanamiUi::CircleGaugeRenderer, 0);

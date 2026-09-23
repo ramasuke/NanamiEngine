@@ -12,7 +12,7 @@ namespace GameCore::PlayerAvatar
         Kill10Slimes,
         FindLostRing,
 
-        // 汎用の依頼(討伐・収集)。依頼書ごとに1つ割り当てる
+        // 汎用依頼
         GrasslandHyenaCull,
         HyenaHuntWeek1,
         RockyTyrant,

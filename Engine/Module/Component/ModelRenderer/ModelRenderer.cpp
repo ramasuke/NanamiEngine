@@ -4,6 +4,8 @@
 #include "../../GameObject/Transform/Transform.h"
 #include <../../Libs/glm/gtc/matrix_transform.hpp>
 #include <algorithm>
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
+#include "../../../../Libs/LibCore/DxLib/DxMath.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -141,16 +143,6 @@ namespace NanamiEngine::Module::Component
         }
     }
 
-    static MATRIX GlmMatToDxMat(const glm::mat4& m)
-    {
-        MATRIX d;
-        d.m[0][0]=m[0][0]; d.m[0][1]=m[0][1]; d.m[0][2]=m[0][2]; d.m[0][3]=m[0][3];
-        d.m[1][0]=m[1][0]; d.m[1][1]=m[1][1]; d.m[1][2]=m[1][2]; d.m[1][3]=m[1][3];
-        d.m[2][0]=m[2][0]; d.m[2][1]=m[2][1]; d.m[2][2]=m[2][2]; d.m[2][3]=m[2][3];
-        d.m[3][0]=m[3][0]; d.m[3][1]=m[3][1]; d.m[3][2]=m[3][2]; d.m[3][3]=m[3][3];
-        return d;
-    }
-
     bool ModelRenderer::IsInterpolating() const
     {
         return useFixedInterpolation_ && hasPrevCapture_ && hasCurrCapture_;
@@ -164,9 +156,9 @@ namespace NanamiEngine::Module::Component
         return glm::mix(prevWorldPos_, currWorldPos_, Time::GetFixedAlpha());
     }
 
-    MATRIX ModelRenderer::GetRenderMatrix() const
+    glm::mat4 ModelRenderer::GetRenderMatrix() const
     {
-        MATRIX matrix;
+        glm::mat4 matrix;
         if (IsInterpolating())
         {
             const float alpha     = Time::GetFixedAlpha();
@@ -176,16 +168,16 @@ namespace NanamiEngine::Module::Component
             const glm::mat4 mat   = glm::translate(glm::mat4(1.0f), pos)
                                   * glm::mat4_cast(rot)
                                   * glm::scale(glm::mat4(1.0f), scale);
-            matrix = GlmMatToDxMat(mat);
+            matrix = mat;
         }
         else
         {
-            matrix = Transform().GetDxWorldMatrix();
+            matrix = Transform().GetWorldMatrix();
         }
 
-        matrix.m[3][0] += renderOffset_.x;
-        matrix.m[3][1] += renderOffset_.y;
-        matrix.m[3][2] += renderOffset_.z;
+        matrix[3][0] += renderOffset_.x;
+        matrix[3][1] += renderOffset_.y;
+        matrix[3][2] += renderOffset_.z;
         return matrix;
     }
 
@@ -222,7 +214,7 @@ namespace NanamiEngine::Module::Component
             if (matched)
             {
                 anyDisableZWrite = anyDisableZWrite || resolved.disableZWrite;
-                MV1SetMaterialDrawBlendMode (modelDxLibHandle_, i, resolved.blendMode);
+                MV1SetMaterialDrawBlendMode (modelDxLibHandle_, i, static_cast<int>(resolved.blendMode));
                 MV1SetMaterialDrawBlendParam(modelDxLibHandle_, i, resolved.blendParam);
             }
             else
@@ -327,7 +319,7 @@ namespace NanamiEngine::Module::Component
         if (!IsEnable() || modelDxLibHandle_ == -1)
             return;
 
-        MV1SetMatrix(modelDxLibHandle_, GetRenderMatrix());
+        MV1SetMatrix(modelDxLibHandle_, LibCore::Dxlib::ToDxMatrix(GetRenderMatrix()));
 
         // 影は常に標準シェーダー
         const PolicyList policies = Components().Catches<IModelMaterialShaderPolicy>();
@@ -353,7 +345,7 @@ namespace NanamiEngine::Module::Component
         if (!IsEnable() || modelDxLibHandle_ == -1)
             return;
 
-        MV1SetMatrix(modelDxLibHandle_, GetRenderMatrix());
+        MV1SetMatrix(modelDxLibHandle_, LibCore::Dxlib::ToDxMatrix(GetRenderMatrix()));
 
         const PolicyList policies = Components().Catches<IModelMaterialShaderPolicy>();
         if (policies.empty())
@@ -391,3 +383,7 @@ namespace NanamiEngine::Module::Component
         }
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::ModelRenderer);
+#pragma endregion

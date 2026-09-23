@@ -62,6 +62,7 @@ void GameObject::AddComponent::OnDrawRendererGui(std::shared_ptr<Component::Comp
         OnDrawTryAddComponentGui<Component::QuadRenderer   >(addComponent);
         OnDrawTryAddComponentGui<Component::Animator       >(addComponent);
         OnDrawTryAddComponentGui<Component::BoneSync       >(addComponent);
+        OnDrawTryAddComponentGui<Component::LookAtBone     >(addComponent);
         OnDrawTryAddComponentGui<Component::ParticleSystem >(addComponent);
         OnDrawTryAddComponentGui<Component::DirectionLight >(addComponent);
         OnDrawTryAddComponentGui<Component::SkyDome3D      >(addComponent);

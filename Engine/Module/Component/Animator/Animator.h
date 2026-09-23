@@ -78,4 +78,4 @@ namespace NanamiEngine::Module::Component
         return *animationTree_->Param().Catch<T>(paramName);
     }
 }
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::Animator, 5)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::Animator, 5);

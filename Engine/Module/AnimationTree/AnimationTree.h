@@ -95,6 +95,4 @@ namespace NanamiEngine::Module::AnimationTree
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationTree, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationTree);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Object::IObject, NanamiEngine::Module::AnimationTree::AnimationTree);
 #pragma endregion

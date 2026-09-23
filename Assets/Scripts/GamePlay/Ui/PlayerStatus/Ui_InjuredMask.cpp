@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -35,3 +36,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("cycleDuration_secs_", cycleDuration_secs_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::InjuredMaskUI);
+#pragma endregion

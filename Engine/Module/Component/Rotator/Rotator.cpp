@@ -2,6 +2,7 @@
 
 #include "../../../Core/Application/Time/Time.h"
 #include "../../GameObject/Transform/Transform.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 void Component::Rotator::OnUpdate()
 {
@@ -17,3 +18,8 @@ void Component::Rotator::OnDrawGui()
     ImGuiHelper::OnDrawInputField("rotateAxis_", rotateAxis_);
     ImGuiHelper::OnDrawInputField("rotateSpeedDegPerSec_", rotateSpeedDegPerSec_);
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::Rotator);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IUpdatable, NanamiEngine::Module::Component::Rotator);
+#pragma endregion

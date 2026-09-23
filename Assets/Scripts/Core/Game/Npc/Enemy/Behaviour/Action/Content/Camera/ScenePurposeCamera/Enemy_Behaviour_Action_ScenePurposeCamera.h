@@ -11,7 +11,6 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         TickStatus DoTick(const TickContext& context) override;
         void       DoDrawGui() override;
 
-
         [[serialize(0)]] FIELD(CineMachine::CineMachineVirtualCamera) purposeCamera_;
         [[serialize(0)]] int priority_ = 100;
         
@@ -35,5 +34,3 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     REGISTER_ENEMY_ACTION_WITH_NAME(ScenePurposeCamera, "Camera::ScenePurposeCamera")
 }
 CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::ScenePurposeCamera, 0)
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ScenePurposeCamera)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::ScenePurposeCamera)

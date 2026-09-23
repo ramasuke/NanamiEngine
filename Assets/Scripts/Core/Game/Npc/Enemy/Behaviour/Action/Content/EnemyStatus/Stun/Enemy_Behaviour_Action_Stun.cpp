@@ -3,6 +3,7 @@
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/Component/Animator/Animator.h"
 #include "Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour
 {
@@ -42,3 +43,8 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("getUpDuration_secs_", getUpDuration_secs_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::Stun)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::Stun)
+#pragma endregion

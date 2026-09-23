@@ -93,7 +93,8 @@ namespace GameCore::Scene::Main
         playerAvatar_.reset();
         attachments_ = {};
         
-        GamePlay::Sound::SoundPlayer::StopBgm(Context()->BGM());
+        // NOTE: 敵の BT (PlayBGM) が差し替えた BGM も残さないよう、シーンの BGM だけでなく全部止める
+        GamePlay::Sound::SoundPlayer::StopAllBgm();
     }
 
     void MainIslandScene::OnDrawGui()

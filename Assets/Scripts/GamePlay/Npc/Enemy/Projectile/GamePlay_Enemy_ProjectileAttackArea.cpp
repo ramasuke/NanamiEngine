@@ -6,6 +6,7 @@
 #include "../../../../Core/Game/Damage/Physics/Game_Damage_Physics.h"
 #include "../../../../Core/Game/Npc/Enemy/AttackArea/Enemy_AttackArea.h"
 #include "../../../../Core/Game/Npc/Enemy/ITakableEnemyAttack/ITakableEnemyAttack.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Npc::Enemy
 {
@@ -49,3 +50,7 @@ namespace GamePlay::Npc::Enemy
         ImGui::Text("Damage: %d", power_.Value());
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Npc::Enemy::AttackProjectile);
+#pragma endregion

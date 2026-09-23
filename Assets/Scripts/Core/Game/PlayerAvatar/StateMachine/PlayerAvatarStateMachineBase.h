@@ -7,6 +7,7 @@
 #include "ImGuiHelper.h"
 #include "IPlayerAvatarStateMachine.h"
 #include "IReadOnlyPlayerAvatarStateMachine.h"
+#include "EventScene/IPlayerAvatarEventSceneStateMachine.h"
 #include "../../../Network/Rpc/Custom_RpcType.h"
 #include "../State/IPlayerAvatarState.h"
 #include "Packages/R4/R4.h"
@@ -18,7 +19,8 @@ namespace GameCore::PlayerAvatar
 
     template<Uint8Enum StateTypeT>
     class PlayerAvatarStateMachineBase : public IPlayerAvatarStateMachine,
-                                         public IReadOnlyPlayerAvatarStateMachine<StateTypeT>
+                                         public IReadOnlyPlayerAvatarStateMachine<StateTypeT>,
+                                         public IPlayerAvatarEventSceneStateMachine
     {
     public:
         using StateMap              = std::unordered_map<StateTypeT, std::shared_ptr<IPlayerAvatarState>>;
@@ -124,8 +126,8 @@ namespace GameCore::PlayerAvatar
             return currentStateType_;
         }
 
-        virtual void OnEnable()  { OnChangeState(initialState_); }
-        virtual void OnDisable() { OnChangeState(disableState_); }
+        void OnEnable()  override { OnChangeState(initialState_); }
+        void OnDisable() override { OnChangeState(disableState_); }
 
     protected:
         NanamiEngine::R4::Observable<std::shared_ptr<IPlayerAvatarState>> CurrentState()

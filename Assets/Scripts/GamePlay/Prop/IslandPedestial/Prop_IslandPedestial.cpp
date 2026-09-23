@@ -2,6 +2,7 @@
 
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Prop
 {
@@ -31,3 +32,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("collisionListener_", collisionListener_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::IslandPedestial);
+#pragma endregion

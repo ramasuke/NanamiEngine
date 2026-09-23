@@ -160,6 +160,9 @@ namespace NanamiEngine::Module::Asset
             std::move(stateMachine),
             inputAction,
             cameraGroup);
+        // 他のプレイヤーのアバターは相手のステータスを写しただけなので、こちらのクエストには触れさせない
+        if (enableInputAction)
+            playerAvatar->BindQuestJournal();
 
         playerAvatarObject->Transform().SetWorldPos(summonPosition);
         playerAvatarObject->Transform().SetParent(parent);
@@ -167,9 +170,6 @@ namespace NanamiEngine::Module::Asset
     }
 }
 
-REGISTER_SCRIPTABLE_OBJECT(PlayerAvatarFactory, PLAYER_AVATAR_FACTORY_EXTENSION_LABEL, "Player")
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::PlayerAvatarFactory, 4);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::PlayerAvatarFactory);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::PlayerAvatarFactory);
 #pragma endregion

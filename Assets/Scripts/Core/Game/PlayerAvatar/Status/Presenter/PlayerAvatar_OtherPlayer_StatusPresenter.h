@@ -30,4 +30,4 @@ namespace GamePlay::PlayerAvatar::OtherPlayer
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter, 0)
+CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter, 0);

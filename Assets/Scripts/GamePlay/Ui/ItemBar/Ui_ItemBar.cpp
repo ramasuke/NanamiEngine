@@ -10,6 +10,8 @@
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -18,17 +20,11 @@ namespace GamePlay::Ui
         using GameCore::PlayerAvatar::PlayerAvatarInputDevice;
         using GameCore::PlayerAvatar::PlayerAvatarControlAcceptance;
 
-        float ItemBarMoveTowards(const float current, const float target, const float maxDelta)
-        {
-            if (current < target)
-                return std::min(current + maxDelta, target);
-            return std::max(current - maxDelta, target);
-        }
+        using LibCore::EaseType;
+        using LibCore::Tween::Ease;
+        using LibCore::Tween::Ms;
 
-        float ItemBarStepRate(const float deltaTime, const float duration_secs)
-        {
-            return duration_secs > 0.0f ? deltaTime / duration_secs : 1.0f;
-        }
+        constexpr float ITEM_BAR_PI = 3.14159265f;
 
         int ItemBarToBlendRate(const float alpha)
         {
@@ -39,6 +35,7 @@ namespace GamePlay::Ui
     void ItemBar::Initialize(const std::shared_ptr<IItemBarSource>& source)
     {
         source_ = source;
+        barFade_.Set(tweeny::from(0.0f).to(1.0f).during(LibCore::Tween::Ms(fadeDuration_secs_)));
 
         if (const auto* pouch = source_ ? source_->Pouch() : nullptr)
             SpawnSlots(*pouch);
@@ -63,12 +60,10 @@ namespace GamePlay::Ui
         visibleCount_ = wantedCount;
 
         // HorizontalLayoutGroup は原点から右へ並べるので、枠の数だけ帯を左へずらして右端を固定する。
-        // ルートの位置が「一番右の枠の中心」になる
-        const float stripOffsetX = -static_cast<float>(visibleCount_ - 1) * slotPitch_px_;
-        const glm::vec3 slotsPos = slotsObject->Transform().GetLocalPos();
-        slotsObject->Transform().SetLocalPos(glm::vec3(stripOffsetX, slotsPos.y, slotsPos.z));
+        stripBaseX_ = -static_cast<float>(visibleCount_ - 1) * slotPitch_px_;
+        ApplyStripSlide();
 
-        // 名前は選択中の枠(帯の中央)の真上に出す
+        // 名前は選択中の枠の真上に出す
         const float centreX = (static_cast<float>(CenterSlotIndex()) - static_cast<float>(visibleCount_ - 1)) * slotPitch_px_;
         if (namePlate_)
         {
@@ -117,10 +112,13 @@ namespace GamePlay::Ui
     void ItemBar::PresentSlots(const GameCore::PlayerAvatar::ItemPouch& pouch) const
     {
         const float usableRate = isUsableDeclared_ ? 1.0f : unusableAlphaRate_;
-        const float pulse = selectPulseDuration_secs_ > 0.0f
-            ? std::max(0.0f, 1.0f - selectPulse_secs_ / selectPulseDuration_secs_)
-            : 0.0f;
-        const float groupAlpha = 255.0f * barAlpha_ * usableRate;
+        const float barAlpha = barFade_.Value();
+        const float groupAlpha = 255.0f * barAlpha * usableRate;
+        const float slide = slideTween_.Value();
+        const float dimRate = static_cast<float>(dimAlpha_) / 255.0f;
+        const float lastSlotPos = static_cast<float>(visibleCount_ - 1);
+        // 選ばれた瞬間に膨らんで戻る(0 -> 1 -> 0)
+        const float pop = selectPopRate_ * std::sin(ITEM_BAR_PI * (1.0f - selectPulse_.Value()));
 
         for (std::size_t i = 0; i < visibleCount_ && i < slotViews_.size(); ++i)
         {
@@ -128,25 +126,34 @@ namespace GamePlay::Ui
             if (!view)
                 continue;
 
-            const bool isSelected = (i == CenterSlotIndex());
+            // 帯がずれている間は、枠の見た目上の位置と中央との距離で選択中らしさを補間する
+            const float slotPos = static_cast<float>(i) + slide;
+            const float selectedRate = 1.0f - std::min(std::abs(slotPos - static_cast<float>(CenterSlotIndex())), 1.0f);
+            // 帯の端からはみ出している枠(回り込んで入ってくる枠)は薄くする
+            const float overflow = std::max(-slotPos, slotPos - lastSlotPos);
+            const float edgeRate = 1.0f - std::clamp(overflow, 0.0f, 1.0f);
+
             const auto& slot = pouch.Slots()[PouchIndexOf(pouch, i)];
             const float emptyRate = slot.count > 0 ? 1.0f : emptyAlphaRate_;
-            const float bodyAlpha = groupAlpha * (isSelected ? 1.0f : static_cast<float>(dimAlpha_) / 255.0f);
+            const float bodyAlpha = groupAlpha * edgeRate * std::lerp(dimRate, 1.0f, selectedRate);
+            const float scale = std::lerp(unselectedScale_, selectedScale_, selectedRate) * (1.0f + pop * selectedRate);
 
             view->Apply(ItemSlot::Appearance{
-                .scale              = isSelected ? selectedScale_ : unselectedScale_,
+                .scale              = scale,
                 .bodyAlpha          = ItemBarToBlendRate(bodyAlpha),
                 .iconAlpha          = ItemBarToBlendRate(bodyAlpha * emptyRate),
-                .frameAlpha         = ItemBarToBlendRate(isSelected ? 0.0f : bodyAlpha),
-                .selectedFrameAlpha = ItemBarToBlendRate(isSelected ? bodyAlpha : 0.0f),
-                .selectGlowAlpha    = ItemBarToBlendRate(isSelected ? static_cast<float>(selectGlowMaxAlpha_) * pulse * barAlpha_ : 0.0f),
+                .frameAlpha         = ItemBarToBlendRate(bodyAlpha * (1.0f - selectedRate)),
+                .selectedFrameAlpha = ItemBarToBlendRate(bodyAlpha * selectedRate),
+                .selectGlowAlpha    = ItemBarToBlendRate(static_cast<float>(selectGlowMaxAlpha_) * selectPulse_.Value() * barAlpha * selectedRate),
                 .countAlpha         = ItemBarToBlendRate(bodyAlpha * emptyRate),
             });
         }
 
         const int groupBlendRate = ItemBarToBlendRate(groupAlpha);
+        // 名前は帯が止まるにつれて浮かび上がらせる
+        const float nameRate = 1.0f - std::min(std::abs(slide), 1.0f);
         if (namePlate_)  namePlate_ ->SetBlendRate(groupBlendRate);
-        if (nameText_)   nameText_  ->SetBlendRate(groupBlendRate);
+        if (nameText_)   nameText_  ->SetBlendRate(ItemBarToBlendRate(groupAlpha * nameRate));
         if (cycleGlyph_) cycleGlyph_->SetBlendRate(groupBlendRate);
         if (cycleLabel_) cycleLabel_->SetBlendRate(groupBlendRate);
         if (useGlyph_)   useGlyph_  ->SetBlendRate(groupBlendRate);
@@ -169,6 +176,31 @@ namespace GamePlay::Ui
         if (useLabel_)   useLabel_  ->SetBlendRate(0);
     }
 
+    void ItemBar::ApplyStripSlide() const
+    {
+        if (!slots_)
+            return;
+
+        const auto slotsObject = slots_.get();
+        const glm::vec3 slotsPos = slotsObject->Transform().GetLocalPos();
+        const float slideX = stripBaseX_ + slideTween_.Value() * slotPitch_px_;
+        slotsObject->Transform().SetLocalPos(glm::vec3(slideX, slotsPos.y, slotsPos.z));
+    }
+
+    int ItemBar::SelectionStep(const GameCore::PlayerAvatar::ItemPouch& pouch) const
+    {
+        const auto size = static_cast<int>(pouch.Slots().size());
+        if (size <= 0)
+            return 0;
+
+        int step = (static_cast<int>(pouch.SelectedIndex()) - static_cast<int>(lastSelectedIndex_)) % size;
+        if (step > size / 2)
+            step -= size;
+        else if (step < -size / 2)
+            step += size;
+        return step;
+    }
+
     void ItemBar::ApplyDeviceGlyphs() const
     {
         const bool isPad = device_ == PlayerAvatarInputDevice::Gamepad;
@@ -183,7 +215,8 @@ namespace GamePlay::Ui
         auto* const pouchPtr = source_ ? source_->Pouch() : nullptr;
         if (!pouchPtr)
         {
-            barAlpha_ = ItemBarMoveTowards(barAlpha_, 0.0f, ItemBarStepRate(deltaTime, fadeDuration_secs_));
+            barFade_.PlayBackward();
+            barFade_.Tick(deltaTime);
             FadeOutSlots();
             return;
         }
@@ -198,7 +231,7 @@ namespace GamePlay::Ui
 
         const auto declaration = source_->Declaration();
         const auto acceptance = declaration.acceptance;
-        // Momentary は一瞬で終わるので、直前に宣言された内容をそのまま引き継ぐ(帯が瞬かない)
+        // Momentary は一瞬で終わるので、直前に宣言された内容をそのまま引き継ぐ
         if (acceptance == PlayerAvatarControlAcceptance::Accept)
         {
             isShownDeclared_  = declaration.isShown;
@@ -208,8 +241,12 @@ namespace GamePlay::Ui
         auto& pouch = *pouchPtr;
         if (isContentDirty_ || pouch.Revision() != lastRevision_)
         {
-            if (!isContentDirty_ && pouch.SelectedIndex() != lastSelectedIndex_)
-                selectPulse_secs_ = 0.0f;
+            if (!isContentDirty_ && pouch.SelectedIndex() != lastSelectedIndex_ && selectPulseDuration_secs_ > 0.0f)
+                selectPulse_.Play(tweeny::from(1.0f).to(0.0f).during(LibCore::Tween::Ms(selectPulseDuration_secs_)));
+
+            // 中身は即座に回るので、帯を前の位置へずらしておいて中央へ戻す
+            if (const int step = isContentDirty_ ? 0 : SelectionStep(pouch); step != 0 && slideDuration_secs_ > 0.0f)
+                slideTween_.Play(tweeny::from(static_cast<float>(step)).to(0.0f).during(Ms(slideDuration_secs_)).via(Ease(EaseType::OutCubic)));
 
             lastRevision_ = pouch.Revision();
             lastSelectedIndex_ = pouch.SelectedIndex();
@@ -220,8 +257,14 @@ namespace GamePlay::Ui
         }
 
         const bool isShown = acceptance != PlayerAvatarControlAcceptance::None && isShownDeclared_ && visibleCount_ > 0;
-        barAlpha_ = ItemBarMoveTowards(barAlpha_, isShown ? 1.0f : 0.0f, ItemBarStepRate(deltaTime, fadeDuration_secs_));
-        selectPulse_secs_ += deltaTime;
+        if (isShown)
+            barFade_.PlayForward();
+        else
+            barFade_.PlayBackward();
+        barFade_.Tick(deltaTime);
+        selectPulse_.Tick(deltaTime);
+        slideTween_.Tick(deltaTime);
+        ApplyStripSlide();
 
         PresentSlots(pouch);
     }
@@ -252,3 +295,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("selectGlowMaxAlpha_", selectGlowMaxAlpha_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::ItemBar);
+#pragma endregion

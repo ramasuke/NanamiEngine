@@ -34,7 +34,7 @@ namespace GameCore::PlayerAvatar::Quest::Request
         /** @brief 今の記録帳の数(受注からの差ではなく通算) */
         [[nodiscard]] virtual int CurrentRecord(const Record::IRecordBook& records) const = 0;
         /** @brief 対象の数が増えたときに、増えたあとの通算を流す */
-        [[nodiscard]] virtual rxcpp::observable<int> ObserveRecord(const Record::IRecordBook& records) const = 0;
+        [[nodiscard]] virtual NanamiEngine::R4::Observable<int> ObserveRecord(const Record::IRecordBook& records) const = 0;
         virtual void DoDrawGui() = 0;
 
     private:
@@ -45,7 +45,7 @@ namespace GameCore::PlayerAvatar::Quest::Request
         // 受注した時点の通算。空なら未受注(掲示板の原本など)
         [[serialize(0)]] std::optional<int>      startRecord_;
         const Record::IRecordBook*               records_ = nullptr;
-        rxcpp::composite_subscription            subscription_;
+        NanamiEngine::R4::Disposable                           subscription_;
 
 #pragma region Serialization Function
     public:

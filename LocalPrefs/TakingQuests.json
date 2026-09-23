@@ -1,0 +1,77 @@
+{
+    "TakingQuests": {
+        "cereal_class_version": 0,
+        "count": 3,
+        "value0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "GameCore::PlayerAvatar::Quest::Request::DefeatRequestQuest",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0,
+                            "rewardMoney_": {
+                                "cereal_class_version": 0,
+                                "value_": 800
+                            }
+                        },
+                        "questType_": 4,
+                        "requiredCount_": 20,
+                        "startRecord_": {
+                            "nullopt": false,
+                            "data": 21
+                        }
+                    },
+                    "enemyKind_": 2
+                }
+            }
+        },
+        "value1": {
+            "polymorphic_id": 1,
+            "ptr_wrapper": {
+                "id": 2147483650,
+                "data": {
+                    "value0": {
+                        "value0": {
+                            "rewardMoney_": {
+                                "value_": 300
+                            }
+                        },
+                        "questType_": 3,
+                        "requiredCount_": 8,
+                        "startRecord_": {
+                            "nullopt": false,
+                            "data": 21
+                        }
+                    },
+                    "enemyKind_": 2
+                }
+            }
+        },
+        "value2": {
+            "polymorphic_id": 1,
+            "ptr_wrapper": {
+                "id": 2147483651,
+                "data": {
+                    "value0": {
+                        "value0": {
+                            "rewardMoney_": {
+                                "value_": 1500
+                            }
+                        },
+                        "questType_": 5,
+                        "requiredCount_": 1,
+                        "startRecord_": {
+                            "nullopt": false,
+                            "data": 2
+                        }
+                    },
+                    "enemyKind_": 3
+                }
+            }
+        }
+    }
+}

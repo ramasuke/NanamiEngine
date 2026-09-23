@@ -36,4 +36,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::OtherPlayerStatusUiGroup, 0)
+CEREAL_CLASS_VERSION(GamePlay::Ui::OtherPlayerStatusUiGroup, 0);

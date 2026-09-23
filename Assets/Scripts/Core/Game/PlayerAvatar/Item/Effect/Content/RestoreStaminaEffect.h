@@ -40,6 +40,4 @@ namespace GameCore::PlayerAvatar::Item
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::Item::RestoreStaminaEffect, 0);
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::Item::RestoreStaminaEffect);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::Item::IItemEffect, GameCore::PlayerAvatar::Item::RestoreStaminaEffect);
 #pragma endregion

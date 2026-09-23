@@ -3,6 +3,7 @@
 #include <optional>
 
 #include "../../PlayerAvatar/MagicCaster/MagicCasterAvatar.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -199,3 +200,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("chatLabel_", chatLabel_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::MagicCasterControlGuide);
+#pragma endregion

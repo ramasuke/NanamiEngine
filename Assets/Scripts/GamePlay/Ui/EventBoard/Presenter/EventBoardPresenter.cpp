@@ -6,12 +6,17 @@
 #include "DxLib.h"
 
 #include "../../../Sound/SoundPlayer.h"
+#include "../../../Prop/RestorationGate/Prop_RestorationGate.h"
 #include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_IQuestGroup.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_ITakeableQuest.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
+#include "../../../../Core/Game/PlayerAvatar/Wallet/PlayerAvatar_Wallet.h"
+#include "Engine/Core/Application/ApplicationBase.h"
+#include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -21,11 +26,24 @@ namespace GamePlay::Ui
         constexpr short EVENT_BOARD_STICK_DEADZONE = 12000;
     }
 
-    bool EventBoardPresenter::isOpen_ = false;
+    bool EventBoardPresenter::IsAnotherOpen() const
+    {
+        bool found = false;
+        NanamiEngine::Core::Application::ApplicationBase::GameWindow()->MainScene().ForEachGameObject(
+            [this, &found](const std::shared_ptr<GameObject::IGameObject>& gameObject)
+            {
+                if (found)
+                    return;
+
+                const auto presenter = gameObject->Components().Catch<EventBoardPresenter>().lock();
+                found = presenter && presenter.get() != this && presenter->isOpen_;
+            });
+        return found;
+    }
 
     void EventBoardPresenter::OnStart()
     {
-        if (isOpen_)
+        if (IsAnotherOpen())
         {
             isClosed_ = true;
             Entity().lock()->OnDestroy();
@@ -46,6 +64,7 @@ namespace GamePlay::Ui
         const auto questPage  = view_->QuestPage();
         const auto eventPage  = view_->EventPage();
         const auto noticePage = view_->NoticePage();
+        const auto restorationPage = view_->RestorationPage();
 
         questModel_ = std::make_unique<QuestBoardModel>(
             board ? board->Quests() : std::vector<std::shared_ptr<Asset::BoardQuest>>{},
@@ -61,6 +80,10 @@ namespace GamePlay::Ui
             board ? board->Announcements() : std::vector<std::shared_ptr<Asset::Announcement>>{},
             now,
             noticePage ? noticePage->MaxVisibleRows() : 0);
+        restorationModel_ = std::make_unique<RestorationBoardModel>(
+            board ? board->Facilities() : std::vector<std::shared_ptr<Asset::RestorationFacility>>{},
+            owner ? &owner->PlayerStatus().Wallet() : nullptr,
+            restorationPage ? restorationPage->MaxVisibleRows() : 0);
 
         if (questPage)
         {
@@ -86,6 +109,14 @@ namespace GamePlay::Ui
                 noticeModel_->Cursor().Select(noticeModel_->Cursor().FirstVisibleIndex() + row);
             });
         }
+        if (restorationPage)
+        {
+            restorationPage->BuildRows(std::min(restorationModel_->Entries().size(), restorationModel_->Cursor().VisibleRowCount()));
+            restorationPage->SubscribeOnClickRow([this](const size_t row)
+            {
+                restorationModel_->Cursor().Select(restorationModel_->Cursor().FirstVisibleIndex() + row);
+            });
+        }
 
         for (size_t i = 0; i < EVENT_BOARD_TAB_COUNT; ++i)
         {
@@ -103,6 +134,7 @@ namespace GamePlay::Ui
         questModel_ ->Cursor().OnSelectionChanged().Subscribe([this](size_t) { Refresh(); }).AddTo(this);
         eventModel_ ->Cursor().OnSelectionChanged().Subscribe([this](size_t) { Refresh(); }).AddTo(this);
         noticeModel_->Cursor().OnSelectionChanged().Subscribe([this](size_t) { Refresh(); }).AddTo(this);
+        restorationModel_->Cursor().OnSelectionChanged().Subscribe([this](size_t) { Refresh(); }).AddTo(this);
 
         // 調べたときの押しっぱなしを、開いた直後の入力として拾わない
         previousKeys_ = ReadKeys();
@@ -128,7 +160,7 @@ namespace GamePlay::Ui
         if (keys.tabNext && !previousKeys_.tabNext)
             SwitchTab(1);
         if (keys.confirm && !previousKeys_.confirm)
-            Accept();
+            Confirm();
 
         const bool isCancelPressed = keys.cancel && !previousKeys_.cancel;
         previousKeys_ = keys;
@@ -162,6 +194,7 @@ namespace GamePlay::Ui
         case EventBoardTabType::Quest:  return questModel_->Cursor();
         case EventBoardTabType::Event:  return eventModel_->Cursor();
         case EventBoardTabType::Notice: return noticeModel_->Cursor();
+        case EventBoardTabType::Restoration: return restorationModel_->Cursor();
         }
         return questModel_->Cursor();
     }
@@ -173,6 +206,25 @@ namespace GamePlay::Ui
 
         const auto entry = questModel_->Selected();
         return entry && entry->state == QuestBoardState::Open;
+    }
+
+    bool EventBoardPresenter::CanRestoreSelected() const
+    {
+        if (currentTab_ != EventBoardTabType::Restoration || suspendedAvatar_.expired())
+            return false;
+
+        // NOTE: お金が足りなくても A は出す。押すと断りの音で足りないと分かる(店と同じ)
+        const auto entry = restorationModel_->Selected();
+        return entry && entry->state == RestorationBoardState::Open;
+    }
+
+    EventBoardConfirmHint EventBoardPresenter::ConfirmHint() const
+    {
+        if (CanAcceptSelected())
+            return EventBoardConfirmHint::Accept;
+        if (CanRestoreSelected())
+            return EventBoardConfirmHint::Restore;
+        return EventBoardConfirmHint::None;
     }
 
     void EventBoardPresenter::SwitchTab(const int delta)
@@ -192,7 +244,23 @@ namespace GamePlay::Ui
         Refresh();
     }
 
-    void EventBoardPresenter::Accept()
+    void EventBoardPresenter::Confirm()
+    {
+        switch (currentTab_)
+        {
+        case EventBoardTabType::Quest:
+            AcceptQuest();
+            break;
+        case EventBoardTabType::Restoration:
+            RestoreFacility();
+            break;
+        case EventBoardTabType::Event:
+        case EventBoardTabType::Notice:
+            break;
+        }
+    }
+
+    void EventBoardPresenter::AcceptQuest()
     {
         if (!CanAcceptSelected())
             return;
@@ -202,13 +270,36 @@ namespace GamePlay::Ui
         if (!owner || !quest)
             return;
 
-        owner->PlayerStatus().Quest().Subscribe(quest);
+        if (!owner->PlayerStatus().Quest().Subscribe(quest))
+            return;
         owner->SaveStatus();
         questModel_->MarkSelectedTaking();
 
-        if (const auto sound = acceptSound_.get())
-            Sound::SoundPlayer::PlaySe(*sound, Sound::SoundPlayer::Position());
+        PlaySe(acceptSound_);
         Refresh();
+    }
+
+    void EventBoardPresenter::RestoreFacility()
+    {
+        if (!CanRestoreSelected())
+            return;
+
+        const auto owner = suspendedAvatar_.lock();
+        if (!owner || !restorationModel_->RestoreSelected())
+        {
+            PlaySe(refuseSound_);
+            return;
+        }
+        owner->SaveStatus();
+
+        PlaySe(restoreSound_);
+        Refresh();
+    }
+
+    void EventBoardPresenter::PlaySe(const FIELD(Asset::SoundFile)& sound) const
+    {
+        if (const auto file = sound.get())
+            Sound::SoundPlayer::PlaySe(*file, Sound::SoundPlayer::Position());
     }
 
     void EventBoardPresenter::Refresh()
@@ -229,11 +320,45 @@ namespace GamePlay::Ui
             if (const auto page = view_->NoticePage())
                 page->Bind(*noticeModel_);
             break;
+        case EventBoardTabType::Restoration:
+            if (const auto page = view_->RestorationPage())
+                page->Bind(*restorationModel_);
+            break;
         }
 
         if (const auto tab = view_->Tab(EventBoardTabType::Notice))
             tab->SetBadgeCount(noticeModel_->UnreadCount());
-        view_->ShowAcceptHint(CanAcceptSelected());
+        view_->ShowConfirmHint(ConfirmHint());
+        UpdatePreview();
+    }
+
+    void EventBoardPresenter::UpdatePreview()
+    {
+        std::optional<GameCore::Story::Facility> wanted;
+        if (!isClosed_ && currentTab_ == EventBoardTabType::Restoration)
+        {
+            if (const auto entry = restorationModel_->Selected())
+                wanted = entry->facility->Facility();
+        }
+        if (wanted == previewFacility_)
+            return;
+
+        EndPreview();
+        previewFacility_ = wanted;
+        if (!wanted)
+            return;
+        if (const auto gate = Prop::RestorationGate::Find(*wanted))
+            gate->BeginPreview();
+    }
+
+    void EventBoardPresenter::EndPreview()
+    {
+        if (!previewFacility_)
+            return;
+
+        if (const auto gate = Prop::RestorationGate::Find(*previewFacility_))
+            gate->EndPreview();
+        previewFacility_.reset();
     }
 
     void EventBoardPresenter::Close()
@@ -241,6 +366,7 @@ namespace GamePlay::Ui
         if (isClosed_)
             return;
         isClosed_ = true;
+        EndPreview();
 
         if (const auto owner = suspendedAvatar_.lock())
             owner->EnableStateMachiine();
@@ -250,6 +376,7 @@ namespace GamePlay::Ui
 
     void EventBoardPresenter::OnDestroy()
     {
+        EndPreview();
         isOpen_ = false;
     }
 
@@ -257,5 +384,11 @@ namespace GamePlay::Ui
     {
         ImGuiHelper::OnDrawInputField("board_", board_);
         ImGuiHelper::OnDrawInputField("acceptSound_", acceptSound_);
+        ImGuiHelper::OnDrawInputField("restoreSound_", restoreSound_);
+        ImGuiHelper::OnDrawInputField("refuseSound_", refuseSound_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::EventBoardPresenter);
+#pragma endregion

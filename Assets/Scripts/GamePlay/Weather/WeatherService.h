@@ -8,6 +8,7 @@
 #include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
 #include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "Engine/Module/Color/Color32.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 
 namespace GamePlay::Weather
 {
@@ -91,7 +92,7 @@ namespace GamePlay::Weather
 
         float stormIntensity_   = 0.0f;
         float stormTarget_      = 0.0f;
-        float stormBlendSpeed_  = 0.0f;
+        LibCore::Tween::TweenPlayer<float> stormTween_;
         float lightningStrength_ = 0.0f;
         float lightningElapsed_  = 0.0f;
         float lightningDuration_ = 0.0f;
@@ -208,4 +209,4 @@ namespace GamePlay::Weather
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Weather::WeatherService, 2)
+CEREAL_CLASS_VERSION(GamePlay::Weather::WeatherService, 2);

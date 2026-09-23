@@ -9,6 +9,7 @@
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
@@ -68,9 +69,9 @@ namespace GamePlay::Ui
         bool isShown_ = false;
         bool isCleared_ = false;
         std::size_t stepIndex_ = 0;
-        float appearRate_ = 0.0f;
-        float textRate_ = 0.0f;
-        float clearRate_ = 0.0f;
+        LibCore::Tween::TweenPlayer<float> appearFade_;
+        LibCore::Tween::TweenPlayer<float> textFade_;
+        LibCore::Tween::TweenPlayer<float> clearFade_;
         glm::vec2 cardPos_px_ = glm::vec2(0.0f);
         glm::vec3 cardBasePos_ = glm::vec3(0.0f);
 
@@ -148,4 +149,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::SwordManActionInstructTutorial, 5)
+CEREAL_CLASS_VERSION(GamePlay::Ui::SwordManActionInstructTutorial, 5);

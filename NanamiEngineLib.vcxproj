@@ -109,7 +109,6 @@
     <ClCompile Include="Engine\Core\Network\PlayerId\PlayerId.cpp" />
     <ClCompile Include="Engine\Core\Network\EnetUDPNetworkSystem.cpp" />
     <ClCompile Include="Engine\Core\Network\EnetPeerSupport.cpp" />
-    <ClCompile Include="Engine\Core\Network\RelayNetworkSystem.cpp" />
     <ClCompile Include="Engine\Core\Network\NullNetworkSystem.cpp" />
     <ClCompile Include="Engine\Core\Network\Packet\NetworkSystem_Packet.cpp" />
     <ClCompile Include="Engine\Core\Object\Field\GuidRemap\GuidRemap.cpp" />
@@ -176,6 +175,7 @@
     <ClCompile Include="Engine\Module\Component\Rotator\Rotator.cpp" />
     <ClCompile Include="Engine\Module\Component\CameraFollowTransform\CameraFollowTransform.cpp" />
     <ClCompile Include="Engine\Module\Component\BoneSync\BoneSync.cpp" />
+    <ClCompile Include="Engine\Module\Component\LookAtBone\LookAtBone.cpp" />
     <ClCompile Include="Engine\Module\Component\BoneSync\BonePose\BonePose.cpp" />
     <ClCompile Include="Engine\Module\Component\Skydome3D\SkyDome3D.cpp" />
     <ClCompile Include="Engine\Module\Component\SphereRenderer\SphereRenderer.cpp" />
@@ -1078,7 +1078,7 @@
       <ForcedIncludeFiles></ForcedIncludeFiles>
       <IncludeInUnityFile>false</IncludeInUnityFile>
     </ClCompile>
-    <ClCompile Include="Libs\LibCore\glm\GlmHelper.cpp">
+    <ClCompile Include="Libs\LibCore\DxLib\DxMath.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ForcedIncludeFiles></ForcedIncludeFiles>
       <IncludeInUnityFile>false</IncludeInUnityFile>
@@ -1254,8 +1254,6 @@
     <ClInclude Include="Engine\Core\Network\PlayerId\PlayerId.h" />
     <ClInclude Include="Engine\Core\Network\EnetUDPNetworkSystem.h" />
     <ClInclude Include="Engine\Core\Network\EnetPeerSupport.h" />
-    <ClInclude Include="Engine\Core\Network\RelayNetworkSystem.h" />
-    <ClInclude Include="Engine\Core\Network\Relay\RelayProtocol.h" />
     <ClInclude Include="Engine\Core\Network\NullNetworkSystem.h" />
     <ClInclude Include="Engine\Core\Network\Discovery\LanSessionMessage.h" />
     <ClInclude Include="Engine\Core\Network\Discovery\LanSessionAdvertiser.h" />
@@ -1316,6 +1314,8 @@
     <ClInclude Include="Engine\Module\ProjectConfig\Engine_Module_ProjectConfig.h" />
     <ClInclude Include="Engine\Module\Color\Color32.h" />
     <ClInclude Include="Engine\Module\Component\Animator\Animator.h" />
+    <ClInclude Include="Engine\Module\Component\Animator\IAnimationPoseModifier.h" />
+    <ClInclude Include="Engine\Module\Component\LookAtBone\LookAtBone.h" />
     <ClInclude Include="Engine\Module\Component\AudioSource\AudioSource.h" />
     <ClInclude Include="Engine\Module\Component\BlendImageRenderer\BlendImageRenderer.h" />
     <ClInclude Include="Engine\Module\Component\ScreenColorGrade\ScreenColorGradeRenderer.h" />
@@ -2281,12 +2281,13 @@
     <ClInclude Include="Libs\LibCore\DxLib\BlendMode.h" />
     <ClInclude Include="Libs\LibCore\DxLib\ShiftJis.h" />
     <ClInclude Include="Libs\LibCore\FilePathHelper\FilePathHelper.h" />
-    <ClInclude Include="Libs\LibCore\glm\GlmHelper.h" />
+    <ClInclude Include="Libs\LibCore\DxLib\DxMath.h" />
     <ClInclude Include="Libs\LibCore\ImGui\Helper\ImGuiHelper.h" />
     <ClInclude Include="Libs\LibCore\ImGui\Wrapper\ImGuiWrapper.h" />
     <ClInclude Include="Libs\LibCore\Tween\Ease\Ease.h" />
     <ClInclude Include="Libs\LibCore\Tween\Ease\Functor\EaseFunctor.h" />
     <ClInclude Include="Libs\LibCore\Tween\Ease\Type\EaseType.h" />
+    <ClInclude Include="Libs\LibCore\Tween\Player\TweenPlayer.h" />
     <ClInclude Include="Libs\LibCore\Tween\Vec3Tween\Vec3Tween.h" />
     <ClInclude Include="Libs\rxcpp\operators\rx-all.hpp" />
     <ClInclude Include="Libs\rxcpp\operators\rx-amb.hpp" />

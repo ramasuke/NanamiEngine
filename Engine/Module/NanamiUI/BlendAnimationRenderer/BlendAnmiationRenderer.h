@@ -40,4 +40,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiUi::BlendAnimationRenderer, 0)
+CEREAL_CLASS_VERSION(NanamiUi::BlendAnimationRenderer, 0);

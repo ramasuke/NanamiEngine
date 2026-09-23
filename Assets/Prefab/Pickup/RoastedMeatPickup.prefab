@@ -80,17 +80,54 @@
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
-                        "guid_": {
-                            "value_": "47C7A34A-DE77-4A47-AD11-656765CF3AEA"
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "guid_": {
+                                "value_": "47C7A34A-DE77-4A47-AD11-656765CF3AEA"
+                            },
+                            "isEnable_": true
                         },
-                        "isEnable_": true
+                        "launchUpSpeed_": 70.0,
+                        "launchSideSpeedMin_": 8.0,
+                        "launchSideSpeedMax_": 20.0,
+                        "pickupDelay_secs_": 0.6000000238418579,
+                        "pickupSound_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483652,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "033D4D91-7787-4F9F-9F60-732FAA20DFAA"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "pickupParticle_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483653,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "4403358F-FB15-4528-8872-0637FC1F8B6D"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "item_": {
                         "cereal_class_version": 0,
                         "value0": {
                             "polymorphic_id": 1073741824,
                             "ptr_wrapper": {
-                                "id": 2147483652,
+                                "id": 2147483654,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -101,31 +138,12 @@
                         }
                     },
                     "count_": 1,
-                    "launchUpSpeed_": 70.0,
-                    "launchSideSpeedMin_": 8.0,
-                    "launchSideSpeedMax_": 20.0,
-                    "pickupDelay_secs_": 0.6,
-                    "pickupSound_": {
-                        "cereal_class_version": 0,
-                        "value0": {
-                            "polymorphic_id": 1073741824,
-                            "ptr_wrapper": {
-                                "id": 2147483653,
-                                "data": {
-                                    "cereal_class_version": 0,
-                                    "value0": {
-                                        "value_": "56DF5228-FE18-4EE8-BF52-EF32931D76D1"
-                                    }
-                                }
-                            }
-                        }
-                    },
                     "model_": {
                         "cereal_class_version": 0,
                         "value0": {
                             "polymorphic_id": 1073741824,
                             "ptr_wrapper": {
-                                "id": 2147483654,
+                                "id": 2147483655,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -136,7 +154,7 @@
                         }
                     },
                     "spinSpeed_degPerSec_": 45.0,
-                    "bobHeight_": 0.32,
+                    "bobHeight_": 0.3199999928474426,
                     "bobPeriod_secs_": 2.0
                 }
             }
@@ -191,7 +209,7 @@
             "polymorphic_id": 2147483652,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483655,
+                "id": 2147483656,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -211,7 +229,7 @@
                             "polymorphic_id": 2147483653,
                             "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
                             "ptr_wrapper": {
-                                "id": 2147483656,
+                                "id": 2147483657,
                                 "data": {
                                     "cereal_class_version": 1,
                                     "value0": {
@@ -231,7 +249,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483657,
+                                                "id": 2147483658,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -260,9 +278,9 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 2.4,
-                            "value1": 2.4,
-                            "value2": 2.4
+                            "value0": 2.4000000953674318,
+                            "value1": 2.4000000953674318,
+                            "value2": 2.4000000953674318
                         },
                         "worldMatrix_": {
                             "value0": {
@@ -299,7 +317,7 @@
         "child": {
             "polymorphic_id": 4,
             "ptr_wrapper": {
-                "id": 2147483658,
+                "id": 2147483659,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -315,7 +333,7 @@
                             "polymorphic_id": 2147483654,
                             "polymorphic_name": "NanamiEngine::Module::Component::ModelRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483659,
+                                "id": 2147483660,
                                 "data": {
                                     "cereal_class_version": 5,
                                     "value0": {
@@ -335,7 +353,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483660,
+                                                "id": 2147483661,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -353,7 +371,7 @@
                     "transform_": {
                         "localPos_": {
                             "value0": 0.0,
-                            "value1": 0.30000000000000004,
+                            "value1": 0.30000001192092898,
                             "value2": 0.0
                         },
                         "localRot_": {
@@ -363,9 +381,9 @@
                             "value3": 1.0
                         },
                         "localScale_": {
-                            "value0": 0.08,
-                            "value1": 0.08,
-                            "value2": 0.08
+                            "value0": 0.07999999821186066,
+                            "value1": 0.07999999821186066,
+                            "value2": 0.07999999821186066
                         },
                         "worldMatrix_": {
                             "value0": {

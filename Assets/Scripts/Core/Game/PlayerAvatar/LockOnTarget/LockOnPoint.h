@@ -23,4 +23,4 @@ namespace GameCore::PlayerAvatar
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GameCore::PlayerAvatar::LockOnPoint, 0)
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::LockOnPoint, 0);

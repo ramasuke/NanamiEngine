@@ -35,5 +35,4 @@ void load(Archive& archive, const std::uint32_t version) {
 };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::DirectionLight, 1)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IRenderable, NanamiEngine::Module::Component::DirectionLight);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::DirectionLight, 1);

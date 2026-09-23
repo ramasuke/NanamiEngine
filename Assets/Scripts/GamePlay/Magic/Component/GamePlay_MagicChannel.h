@@ -76,4 +76,4 @@ namespace GamePlay::Magic
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Magic::MagicChannel, 0)
+CEREAL_CLASS_VERSION(GamePlay::Magic::MagicChannel, 0);

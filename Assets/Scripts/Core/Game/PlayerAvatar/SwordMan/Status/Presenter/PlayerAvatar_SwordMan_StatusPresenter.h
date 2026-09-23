@@ -63,4 +63,4 @@ namespace GamePlay::PlayerAvatar::SwordMan
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::SwordMan::StatusPresenter, 5)
+CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::SwordMan::StatusPresenter, 5);

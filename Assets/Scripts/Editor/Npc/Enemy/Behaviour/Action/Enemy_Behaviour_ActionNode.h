@@ -44,6 +44,4 @@ namespace Editor::Npc::Enemy::Behaviour
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(Editor::Npc::Enemy::Behaviour::ActionNode, 1);
-CEREAL_REGISTER_TYPE(Editor::Npc::Enemy::Behaviour::ActionNode);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Editor::Npc::Behaviour::NodeBase, Editor::Npc::Enemy::Behaviour::ActionNode);
 #pragma endregion

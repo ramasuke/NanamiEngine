@@ -1,8 +1,10 @@
 ﻿#include "Animator.h"
 
+#include "IAnimationPoseModifier.h"
 #include "../ModelRenderer/ModelRenderer.h"
 #include "../../../Core/Application/ApplicationBase.h"
 #include "../../../Core/Application/Window/Popup/RunningAnimationTree/RunningAnimationTreeWindow.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 void Component::Animator::OnAwake()
 {
@@ -21,6 +23,15 @@ void Component::Animator::OnLateUpdate()
 
     modelDxLibHandle_ = Entity().lock()->Components().Catch<ModelRenderer>().lock()->modelDxLibHandle_;
     animationTree_->OnUpdate(modelDxLibHandle_, timeScale_);
+
+    if (modelDxLibHandle_ == -1)
+        return;
+
+    for (const auto& weakModifier : Components().Catches<IAnimationPoseModifier>())
+    {
+        if (const auto modifier = weakModifier.lock())
+            modifier->OnModifyPose(modelDxLibHandle_);
+    }
 }
 
 void Component::Animator::InitAnimationTree()
@@ -71,3 +82,7 @@ void Component::Animator::OnDrawGui()
         ImGui::Spacing();
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::Animator);
+#pragma endregion

@@ -4,6 +4,7 @@
 
 #include "../../../Core/Game/PlayerAvatar/SwordMan/Status/ControlGuideFocus/SwordMan_IControlGuideFocusPresentation.h"
 #include "../../PlayerAvatar/SwordMan/SwordManAvatar.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -314,3 +315,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("cannonFireLabel_", cannonFireLabel_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::SwordManControlGuide);
+#pragma endregion

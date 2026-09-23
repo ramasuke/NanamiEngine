@@ -1,46 +1,28 @@
 ﻿#include "Ui_GameOverScreen.h"
 
 #include <algorithm>
-#include <cmath>
 
 #include "DxLib.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
     namespace
     {
+        using LibCore::EaseType;
+        using LibCore::Tween::Ease;
+        using LibCore::Tween::Ms;
+
         // 石版が浮き上がり切るまでの割合。残りで落ちて着地する
         constexpr float GAME_OVER_SLAB_PEAK_RATE = 0.65f;
 
-        /** @brief 開始からの経過を長さで割った 0..1。長さ 0 は即完了として扱う */
-        float GameOverRate(const float sinceStartSecs, const float durationSecs)
+        /** @brief delaySecs だけ 0 のまま待ってから、durationSecs で 1 まで一定の速さで上がる */
+        tweeny::tween<float> GameOverDelayedRate(const float delaySecs, const float durationSecs)
         {
-            if (durationSecs <= 0.0f)
-                return sinceStartSecs >= 0.0f ? 1.0f : 0.0f;
-
-            return std::clamp(sinceStartSecs / durationSecs, 0.0f, 1.0f);
-        }
-
-        float GameOverSmoothstep(const float rate) { return rate * rate * (3.0f - 2.0f * rate); }
-
-        float GameOverEaseOutCubic(const float rate)
-        {
-            const float inv = 1.0f - rate;
-            return 1.0f - inv * inv * inv;
-        }
-
-        /** @brief 下から勢いよく持ち上がって少し浮き、加速しながら落ちて止まる。戻り値は基準位置からの下向きのずれ */
-        float GameOverSlabOffset(const float rate, const float riseDistance, const float overshoot)
-        {
-            if (rate < GAME_OVER_SLAB_PEAK_RATE)
-            {
-                const float up = GameOverEaseOutCubic(rate / GAME_OVER_SLAB_PEAK_RATE);
-                return std::lerp(riseDistance, -overshoot, up);
-            }
-
-            const float fall = (rate - GAME_OVER_SLAB_PEAK_RATE) / (1.0f - GAME_OVER_SLAB_PEAK_RATE);
-            return -overshoot * (1.0f - fall * fall);
+            return tweeny::from(0.0f).to(0.0f).during(Ms(delaySecs))
+                .to(1.0f).during(Ms(durationSecs));
         }
 
         int GameOverBlend(const float rate) { return std::clamp(static_cast<int>(255.0f * rate), 0, 255); }
@@ -64,7 +46,7 @@ namespace GamePlay::Ui
     {
         phase_ = Phase::Intro;
         elapsedSecs_ = 0.0f;
-        curtainElapsedSecs_ = 0.0f;
+        PlayIntroTweens();
         isStingPlayed_ = false;
         isSlabLanded_ = false;
         lastTickMs_ = GetNowCount();
@@ -90,8 +72,8 @@ namespace GamePlay::Ui
             return;
 
         const auto veil = veil_.get();
-        curtainFromVeil_ = veil ? static_cast<float>(veil->GetBlendRate()) : 0.0f;
-        curtainElapsedSecs_ = 0.0f;
+        const float fromVeil = veil ? static_cast<float>(veil->GetBlendRate()) : 0.0f;
+        veilTween_.Play(tweeny::from(fromVeil).to(255.0f).during(Ms(curtainCloseSecs_)));
         phase_ = Phase::Closing;
     }
 
@@ -100,7 +82,7 @@ namespace GamePlay::Ui
         if (phase_ != Phase::Closed)
             return;
 
-        curtainElapsedSecs_ = 0.0f;
+        veilTween_.Play(tweeny::from(255.0f).to(0.0f).during(Ms(curtainOpenSecs_)));
         phase_ = Phase::Opening;
     }
 
@@ -122,11 +104,12 @@ namespace GamePlay::Ui
             return;
 
         elapsedSecs_ += deltaSecs;
+        TickContentTweens(deltaSecs);
         TickButtons(deltaSecs);
 
         if (phase_ == Phase::Intro || phase_ == Phase::Waiting)
         {
-            UpdateIntro();
+            UpdateIntro(deltaSecs);
             return;
         }
 
@@ -143,9 +126,37 @@ namespace GamePlay::Ui
         return std::clamp(deltaSecs, 0.0f, 0.25f);
     }
 
-    void GameOverScreenUi::UpdateIntro()
+    void GameOverScreenUi::PlayIntroTweens()
     {
-        ApplyVeil(static_cast<float>(veilBlendRate_) * GameOverSmoothstep(GameOverRate(elapsedSecs_, veilFadeSecs_)));
+        veilTween_.Play(tweeny::from(0.0f).to(static_cast<float>(veilBlendRate_))
+            .during(Ms(veilFadeSecs_)).via(Ease(EaseType::SmoothStep)));
+
+        // 下から勢いよく持ち上がって少し浮き、加速しながら落ちて止まる
+        slabOffsetTween_.Play(tweeny::from(slabRiseDistance_px_).to(slabRiseDistance_px_).during(Ms(slabDelaySecs_))
+            .to(-slabOvershoot_px_).during(Ms(slabRiseSecs_ * GAME_OVER_SLAB_PEAK_RATE)).via(Ease(EaseType::OutCubic))
+            .to(0.0f).during(Ms(slabRiseSecs_ * (1.0f - GAME_OVER_SLAB_PEAK_RATE))).via(Ease(EaseType::InQuad)));
+        slabAlphaTween_.Play(GameOverDelayedRate(slabDelaySecs_, slabRiseSecs_ / 3.0f));
+        dirtAlphaTween_.Play(GameOverDelayedRate(slabDelaySecs_ + slabRiseSecs_, dirtFadeSecs_));
+
+        for (size_t i = 0; i < buttonRiseTweens_.size(); ++i)
+            buttonRiseTweens_[i].Play(GameOverDelayedRate(buttonsDelaySecs_ + buttonStaggerSecs_ * static_cast<float>(i), buttonsRiseSecs_));
+        hintAlphaTween_.Play(GameOverDelayedRate(buttonsDelaySecs_ + buttonStaggerSecs_ * 2.0f, buttonsRiseSecs_));
+    }
+
+    void GameOverScreenUi::TickContentTweens(const float deltaSecs)
+    {
+        slabOffsetTween_.Tick(deltaSecs);
+        slabAlphaTween_.Tick(deltaSecs);
+        dirtAlphaTween_.Tick(deltaSecs);
+        for (auto& tween : buttonRiseTweens_)
+            tween.Tick(deltaSecs);
+        hintAlphaTween_.Tick(deltaSecs);
+    }
+
+    void GameOverScreenUi::UpdateIntro(const float deltaSecs)
+    {
+        veilTween_.Tick(deltaSecs);
+        ApplyVeil(veilTween_.Value());
 
         if (!isStingPlayed_ && elapsedSecs_ >= stingDelaySecs_)
         {
@@ -168,14 +179,12 @@ namespace GamePlay::Ui
 
     void GameOverScreenUi::UpdateCurtain(const float deltaSecs)
     {
-        curtainElapsedSecs_ += deltaSecs;
-
         if (phase_ == Phase::Closing)
         {
-            const float closeRate = GameOverRate(curtainElapsedSecs_, curtainCloseSecs_);
-            ApplyVeil(std::lerp(curtainFromVeil_, 255.0f, closeRate));
-            ApplyContentAlpha(1.0f - closeRate);
-            if (closeRate >= 1.0f)
+            const bool isFinished = veilTween_.Tick(deltaSecs);
+            ApplyVeil(veilTween_.Value());
+            ApplyContentAlpha(1.0f - veilTween_.Progress());
+            if (isFinished)
                 phase_ = Phase::Closed;
             return;
         }
@@ -187,9 +196,9 @@ namespace GamePlay::Ui
             return;
         }
 
-        const float openRate = GameOverRate(curtainElapsedSecs_, curtainOpenSecs_);
-        ApplyVeil(255.0f * (1.0f - openRate));
-        if (openRate >= 1.0f)
+        const bool isFinished = veilTween_.Tick(deltaSecs);
+        ApplyVeil(veilTween_.Value());
+        if (isFinished)
             HideImmediately();
     }
 
@@ -203,14 +212,12 @@ namespace GamePlay::Ui
 
     void GameOverScreenUi::ApplyContentAlpha(const float appearRate) const
     {
-        const float slabRate = GameOverRate(elapsedSecs_ - slabDelaySecs_, slabRiseSecs_);
-        SetSlabOffset(GameOverSlabOffset(slabRate, slabRiseDistance_px_, slabOvershoot_px_));
+        SetSlabOffset(slabOffsetTween_.Value());
         if (const auto slab = slab_.get())
-            slab->SetBlendRate(GameOverBlend(std::min(1.0f, slabRate * 3.0f) * appearRate));
+            slab->SetBlendRate(GameOverBlend(slabAlphaTween_.Value() * appearRate));
 
-        const float dirtRate = GameOverRate(elapsedSecs_ - slabDelaySecs_ - slabRiseSecs_, dirtFadeSecs_);
         if (const auto dirt = slabDirt_.get())
-            dirt->SetBlendRate(GameOverBlend(dirtRate * appearRate));
+            dirt->SetBlendRate(GameOverBlend(dirtAlphaTween_.Value() * appearRate));
 
         const std::shared_ptr<GameOverButton> buttons[] = { retryButton_.get(), titleButton_.get() };
         const glm::vec3 basePositions[] = { retryBasePos_, titleBasePos_ };
@@ -219,13 +226,12 @@ namespace GamePlay::Ui
             if (!buttons[i])
                 continue;
 
-            const float rate = GameOverRate(elapsedSecs_ - buttonsDelaySecs_ - buttonStaggerSecs_ * static_cast<float>(i), buttonsRiseSecs_);
-            SetButtonOffset(buttons[i], basePositions[i], buttonRiseDistance_px_ * (1.0f - GameOverEaseOutCubic(rate)));
+            const float rate = buttonRiseTweens_[static_cast<size_t>(i)].Value();
+            SetButtonOffset(buttons[i], basePositions[i], buttonRiseDistance_px_ * (1.0f - Ease(EaseType::OutCubic).Ease(rate)));
             buttons[i]->SetAppearRate(rate * appearRate);
         }
 
-        const float hintRate = GameOverRate(elapsedSecs_ - buttonsDelaySecs_ - buttonStaggerSecs_ * 2.0f, buttonsRiseSecs_);
-        const int hintBlend = GameOverBlend(hintRate * appearRate);
+        const int hintBlend = GameOverBlend(hintAlphaTween_.Value() * appearRate);
         if (const auto tag = moveHintTag_.get())
             tag->SetBlendRate(hintBlend);
         if (const auto text = moveHintText_.get())
@@ -315,3 +321,7 @@ namespace GamePlay::Ui
         ImGui::Text("phase: %d  elapsed: %.2f", static_cast<int>(phase_), elapsedSecs_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::GameOverScreenUi);
+#pragma endregion

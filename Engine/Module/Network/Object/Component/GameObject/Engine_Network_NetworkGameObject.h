@@ -34,4 +34,4 @@ namespace NanamiEngine::Module::Network
 #pragma endregion
     };
 }
-ENGINE_REGISTER_COMPONENT(Network::NetworkGameObject, 0)
+CEREAL_CLASS_VERSION(Network::NetworkGameObject, 0);

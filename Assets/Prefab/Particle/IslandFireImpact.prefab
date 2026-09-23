@@ -1,0 +1,99 @@
+{
+    "isActive_": true,
+    "name_": "IslandFireImpact",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "E5579F42-ABFA-4B77-AE3B-D4542E24D4F3"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 1,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "84D0282F-06A4-4658-A2A6-4BC6CD0DED6E"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "particleFile_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "77147842-E630-48A7-97B7-FAB249CFC981"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "playingDuration_secs_": 3.43,
+                    "playMode_": 1
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 8.0,
+            "value1": 8.0,
+            "value2": 8.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 8.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 8.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 8.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 0
+    },
+    "value0": 0
+}

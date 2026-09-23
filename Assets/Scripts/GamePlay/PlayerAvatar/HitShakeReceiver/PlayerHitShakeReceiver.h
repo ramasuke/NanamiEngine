@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Engine/Module/Component/ComponentBase.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 
 namespace NanamiEngine::Module::Component
 {
@@ -22,10 +23,9 @@ namespace GamePlay::PlayerAvatar
 
         std::weak_ptr<Component::ModelRenderer> modelRenderer_;
         glm::vec3 direction_     = {};
-        float     amplitude_     = 0.0f;
         float     duration_secs_ = 0.0f;
-        float     elapsed_secs_  = 0.0f;
-        bool      isPlaying_     = false;
+        // 振幅の減衰 amplitude * (1 - t)^2
+        LibCore::Tween::TweenPlayer<float> envelope_;
 
 #pragma region Serialization Function
     public:
@@ -44,4 +44,4 @@ namespace GamePlay::PlayerAvatar
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::PlayerHitShakeReceiver, 0)
+CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::PlayerHitShakeReceiver, 0);

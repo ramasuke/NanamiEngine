@@ -4,7 +4,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 4,
+                "cereal_class_version": 5,
                 "value0": {
                     "cereal_class_version": 0
                 },
@@ -45,7 +45,7 @@
                 "runSpeed_": {
                     "value_": 55.0
                 },
-                "moveRotateSpeed_": 6.199999809265137,
+                "moveRotateSpeed_": 4.650000095367432,
                 "jumpPower_": 65.0,
                 "jumpStateDuration_secs_": 0.44999998807907107,
                 "jumpCooldown_secs_": 0.5,
@@ -60,7 +60,7 @@
                             "balance_": {
                                 "value": {
                                     "cereal_class_version": 0,
-                                    "value_": 33
+                                    "value_": 63
                                 }
                             }
                         }
@@ -81,39 +81,16 @@
                     "ptr_wrapper": {
                         "valid": 1,
                         "data": {
-                            "cereal_class_version": 0,
-                            "storyQuests_": {
-                                "cereal_class_version": 0,
-                                "count": 0
-                            }
+                            "cereal_class_version": 1
                         }
                     }
                 },
                 "pouch_": {
                     "cereal_class_version": 0,
-                    "stacks_": [
-                        {
-                            "cereal_class_version": 0,
-                            "item_": {
-                                "cereal_class_version": 0,
-                                "value0": {
-                                    "polymorphic_id": 1073741824,
-                                    "ptr_wrapper": {
-                                        "id": 2147483652,
-                                        "data": {
-                                            "cereal_class_version": 0,
-                                            "value0": {
-                                                "cereal_class_version": 0,
-                                                "value_": "F98E0047-7959-458A-85EB-B14CE6F7382F"
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            "count_": 1
-                        }
-                    ]
-                }
+                    "stacks_": []
+                },
+                "avoidRollingStateDuration_secs_": 0.40909090638160708,
+                "avoidRollingStaminaCost_": 20.0
             }
         }
     }

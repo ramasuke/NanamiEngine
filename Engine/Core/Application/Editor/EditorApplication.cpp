@@ -18,7 +18,7 @@
 #include "../../../Module/SafeExecute/Engine_Module_SafeExecute.h"
 #include "../AutoMcp/AutoMcpServer.h"
 #include "../Build/GameBuilder.h"
-#include "../../../../Libs/LibCore/glm/GlmHelper.h"
+#include "../../../../Libs/LibCore/DxLib/DxMath.h"
 
 Core::Application::EditorApplication::EditorApplication()
 {
@@ -108,8 +108,8 @@ void Core::Application::EditorApplication::OnDrawGizmo()
     ImGuizmo::SetDrawlist(ImGui::GetBackgroundDrawList());
     ImGuizmo::SetRect(0.0f, 0.0f, io.DisplaySize.x, io.DisplaySize.y);
 
-    glm::mat4 view  = LibCore::Glm::FromDxLibMatrix(GetCameraViewMatrix());
-    glm::mat4 proj  = LibCore::Glm::FromDxLibMatrix(GetCameraProjectionMatrix());
+    glm::mat4 view  = LibCore::Dxlib::FromDxMatrix(GetCameraViewMatrix());
+    glm::mat4 proj  = LibCore::Dxlib::FromDxMatrix(GetCameraProjectionMatrix());
     glm::mat4 world = target->Transform().GetWorldMatrix();
 
     const bool  useSnap = ImGui::IsKeyDown(ImGuiKey_LeftCtrl) || ImGui::IsKeyDown(ImGuiKey_RightCtrl);

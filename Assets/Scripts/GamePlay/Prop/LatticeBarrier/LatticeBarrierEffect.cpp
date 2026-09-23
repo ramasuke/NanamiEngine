@@ -2,6 +2,7 @@
 #include "Engine/Core/Application/Time/Time.h"
 #include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Prop
 {
@@ -72,3 +73,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("fadeWidth_",     fadeWidth_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Prop::LatticeBarrierEffect);
+#pragma endregion

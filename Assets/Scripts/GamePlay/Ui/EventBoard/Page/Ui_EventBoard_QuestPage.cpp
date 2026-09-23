@@ -1,6 +1,7 @@
 ﻿#include "Ui_EventBoard_QuestPage.h"
 
 #include "../Row/EventBoardRowPool.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -120,3 +121,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("defaultStateColor_", defaultStateColor_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::EventBoardQuestPage);
+#pragma endregion

@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "../../GameObject/Transform/Transform.h"
 #include "../../GameObject/Interface/IGameObject.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -64,3 +65,7 @@ namespace NanamiEngine::Module::NanamiUi
         ImGuiHelper::OnDrawEnumField("startCorner_", startCorner_, GRID_START_CORNERS, ToString);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::GridLayoutGroup);
+#pragma endregion

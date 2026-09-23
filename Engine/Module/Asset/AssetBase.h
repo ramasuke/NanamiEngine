@@ -27,5 +27,3 @@ namespace NanamiEngine::Module::Asset
     };
 }
 CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::AssetBase, 0);
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::AssetBase);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Object::IObject, NanamiEngine::Module::Asset::AssetBase);

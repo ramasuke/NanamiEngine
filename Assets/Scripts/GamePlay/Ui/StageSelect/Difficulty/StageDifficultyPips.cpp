@@ -2,6 +2,7 @@
 
 #include "Engine/Module/Component/ImageRenderer/ImageRenderer.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -23,3 +24,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("emptySprite_", emptySprite_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::StageDifficultyPips);
+#pragma endregion

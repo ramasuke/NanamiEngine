@@ -277,7 +277,10 @@ namespace GamePlay
     }
 }
 
+// NOTE: ATTACK_AREA_CLASS_VERSION はヘッダ、REGISTER_ATTACK_AREA_TYPE は .cpp に書く
+#define ATTACK_AREA_CLASS_VERSION(TYPE)                                                     \
+CEREAL_CLASS_VERSION(GamePlay::AttackArea<TYPE>, 2);
+
 #define REGISTER_ATTACK_AREA_TYPE(TYPE)                                                     \
-CEREAL_CLASS_VERSION(GamePlay::AttackArea<TYPE>, 2);                                        \
 CEREAL_REGISTER_TYPE(GamePlay::AttackArea<TYPE>);                                           \
 CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GamePlay::AttackArea<TYPE>);

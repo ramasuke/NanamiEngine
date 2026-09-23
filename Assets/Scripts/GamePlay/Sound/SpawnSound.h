@@ -41,4 +41,4 @@ namespace GamePlay::Sound
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Sound::SpawnSound, 0)
+CEREAL_CLASS_VERSION(GamePlay::Sound::SpawnSound, 0);

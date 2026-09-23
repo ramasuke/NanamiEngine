@@ -13,7 +13,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         const std::weak_ptr  <GameObject::IGameObject     >& castPoint   ,
         const std::weak_ptr  <Asset::MagicCasterAvatarResource>& resources,
         const std::weak_ptr  <Magic::IMagicCaster             >& caster,
-        const std::weak_ptr  <GamePlay::PlayerAvatar::LockOnDetectionArea>& lockOnDetectionArea
+        const std::weak_ptr  <GamePlay::PlayerAvatar::LockOnDetectionArea>& lockOnDetectionArea,
+        const std::weak_ptr  <Component::ParticleSystem   >& successAvoidRollingParticle
         )
         : status_             (status             )
         , playerAvatarObject_ (playerAvatar       )
@@ -24,6 +25,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         , resources_          (resources          )
         , caster_             (caster             )
         , lockOnDetectionArea_(lockOnDetectionArea)
+        , successAvoidRollingParticle_(successAvoidRollingParticle)
     {
     }
 

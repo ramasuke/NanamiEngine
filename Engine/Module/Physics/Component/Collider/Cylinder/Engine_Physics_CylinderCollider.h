@@ -42,4 +42,4 @@ namespace NanamiEngine::Module::Component
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::CylinderCollider, 1)
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::CylinderCollider, 1);

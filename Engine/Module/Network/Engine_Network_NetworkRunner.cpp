@@ -6,6 +6,7 @@
 #include "../../Core/Application/Configuration/Network/ApplicationConfiguration_Network.h"
 #include "../Exception/Engine_Module_Exception.h"
 #include "../Log/NanamiEngine_Module_Log.h"
+#include "../Serialization/Engine_Module_SerializationRegistration.h"
 
 Network::NetworkRunnerBase* Network::NetworkRunnerBase::s_instance_ = nullptr;
 
@@ -43,17 +44,6 @@ namespace NanamiEngine::Module::Network
     void NetworkRunnerBase::StartClient(const Core::Network::HostEndpoint& host)
     {
         Start({ Core::Network::Mode::Client, host });
-    }
-
-    void NetworkRunnerBase::StartRelay(const std::string& sessionKey)
-    {
-        // Start() でも読み直すが、接続先はここで決めるので先に読む
-        Core::Application::Configuration::NetworkConfiguration::Load();
-        Core::Network::NetworkStartSettings settings;
-        settings.host       = Core::Application::Configuration::NetworkConfiguration::GetRelayServerEndpoint();
-        settings.transport  = Core::Network::Transport::RelayServer;
-        settings.sessionKey = sessionKey;
-        Start(settings);
     }
 
     void NetworkRunnerBase::Start(const Core::Network::NetworkStartSettings& settings)
@@ -220,3 +210,7 @@ namespace NanamiEngine::Module::Network
         defaultPacketDispatcher_->Spawn().DispatchSendPacket(prefabFile, position, rotation);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(Network::NetworkRunnerBase);
+#pragma endregion

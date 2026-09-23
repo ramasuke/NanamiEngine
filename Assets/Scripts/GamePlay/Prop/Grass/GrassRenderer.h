@@ -86,4 +86,4 @@ namespace GamePlay::Prop
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Prop::GrassRenderer, 0)
+CEREAL_CLASS_VERSION(GamePlay::Prop::GrassRenderer, 0);

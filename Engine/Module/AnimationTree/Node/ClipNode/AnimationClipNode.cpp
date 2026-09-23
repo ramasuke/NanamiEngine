@@ -5,6 +5,7 @@
 #include "DxLib.h"
 #include "../../../../Core/Application/Time/Time.h"
 #include "../../../../Core/Application/Window/Popup/Inspector/InspectorWindow.h"
+#include "../../../Serialization/Engine_Module_SerializationRegistration.h"
 
 AnimationTree::AnimationClipNode::AnimationClipNode(const glm::vec2 position)
     : position_(position)
@@ -135,3 +136,8 @@ void AnimationTree::AnimationClipNode::OnDrawGui()
         ImGui::Spacing();
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationClipNode);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::AnimationTree::IAnimationNode, NanamiEngine::Module::AnimationTree::AnimationClipNode);
+#pragma endregion

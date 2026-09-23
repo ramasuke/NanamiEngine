@@ -1,6 +1,7 @@
 ﻿#include "Main_SceneContextBase.h"
 
 #include "Engine/Module/GameObject/Transform/Transform.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Scene
 {
@@ -21,3 +22,7 @@ namespace GameCore::Scene
         ImGuiHelper::OnDrawInputField("playerAvatarFactory_", playerAvatarFactory_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GameCore::Scene::SceneContextBase);
+#pragma endregion

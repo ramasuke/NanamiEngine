@@ -1,6 +1,7 @@
 ﻿#include "Data_ItemData.h"
 
 #include "../../Scripts/Core/Game/PlayerAvatar/Item/Effect/ItemEffectFactory.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -23,6 +24,10 @@ namespace NanamiEngine::Module::Asset
         LibCore::ImGuiHelper::OnDrawInputField("displayName_", displayName_);
         LibCore::ImGuiHelper::OnDrawInputField("iconSprite_", iconSprite_);
         LibCore::ImGuiHelper::OnDrawInputField("useSound_", useSound_);
+        LibCore::ImGuiHelper::OnDrawInputField("useParticle_", useParticle_);
+        LibCore::ImGuiHelper::OnDrawEnumField("useMotion_", useMotion_, GameCore::PlayerAvatar::Item::ITEM_USE_MOTIONS, GameCore::PlayerAvatar::Item::ToString);
+        LibCore::ImGuiHelper::OnDrawInputField("useEffectTime_secs_", useEffectTime_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("useTotalDuration_secs_", useTotalDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("maxStack_", maxStack_);
         LibCore::ImGuiHelper::OnDrawInputField("effects_", effects_, [this]
         {
@@ -49,3 +54,9 @@ namespace NanamiEngine::Module::Asset
         });
     }
 }
+
+#pragma region SerializationMacro
+REGISTER_SCRIPTABLE_OBJECT(ItemData, ITEM_DATA_EXTENSION_LABEL, "Item")
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::ItemData);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::ItemData);
+#pragma endregion

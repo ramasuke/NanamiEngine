@@ -10,6 +10,7 @@
 #include "../../../Core/Game/Scene/Main/Content/MainIslandScene/MainIsLandScene.h"
 #include "../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
 #include "../AssetUpdate/Presenter/AssetUpdatePresenter.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
@@ -64,3 +65,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("assetUpdatePrefab_", assetUpdatePrefab_);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::Ui::SampleTitleScene);
+#pragma endregion

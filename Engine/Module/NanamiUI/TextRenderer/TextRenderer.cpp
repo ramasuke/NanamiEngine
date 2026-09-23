@@ -5,6 +5,7 @@
 #include <cmath>
 #include <sstream>
 #include <vector>
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
@@ -257,3 +258,7 @@ namespace NanamiEngine::Module::NanamiUi
             SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::NanamiUi::TextRenderer);
+#pragma endregion

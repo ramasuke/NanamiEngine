@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <utility>
 #include <vector>
 
 #include "cereal/types/vector.hpp"
@@ -39,6 +40,12 @@ namespace GameCore::PlayerAvatar
         void Cycle(int direction);
         /** @brief 選択中のアイテムの効果を target に掛けて1つ減らす @param user 使ったアバター @return 使ったアイテム。使えなかったら nullptr */
         std::shared_ptr<Asset::ItemData> UseSelected(Item::IItemEffectTarget& target, const std::shared_ptr<GameObject::IGameObject>& user);
+        /** @brief item の効果を target に掛けて1つ減らす。モーションの途中で選択が変わっても、決めたアイテムを使えるように item で指す @return 使えたか */
+        bool Use(const Asset::ItemData& item, Item::IItemEffectTarget& target, const std::shared_ptr<GameObject::IGameObject>& user);
+
+        /** @brief 使うモーションへ入る直前に、どのアイテムを使うかを預ける。受け取ったステートが TakePendingUse で取り出す */
+        void SetPendingUse(std::shared_ptr<Asset::ItemData> item) { pendingUse_ = std::move(item); }
+        [[nodiscard]] std::shared_ptr<Asset::ItemData> TakePendingUse() { return std::exchange(pendingUse_, nullptr); }
 
         [[nodiscard]] int CountOf(const Asset::ItemData& item) const;
         [[nodiscard]] int ReceivableCount(const Asset::ItemData& item) const;
@@ -50,6 +57,7 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] std::size_t FindSlotIndex(const Asset::ItemData& item) const;
 
         std::vector<Slot> slots_;
+        std::shared_ptr<Asset::ItemData> pendingUse_;
         std::size_t       selectedIndex_ = 0;
         std::uint32_t     revision_ = 0;
         bool              isSetUp_ = false;

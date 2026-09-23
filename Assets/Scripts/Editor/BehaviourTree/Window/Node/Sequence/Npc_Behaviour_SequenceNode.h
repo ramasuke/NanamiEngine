@@ -46,6 +46,4 @@ namespace Editor::Npc::Behaviour
 
 #pragma region SerializationMacro
 CEREAL_CLASS_VERSION(Editor::Npc::Behaviour::SequenceNode, 0);
-CEREAL_REGISTER_TYPE(Editor::Npc::Behaviour::SequenceNode);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Editor::Npc::Behaviour::NodeBase, Editor::Npc::Behaviour::SequenceNode);
 #pragma endregion

@@ -4,6 +4,7 @@
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "gtc/quaternion.hpp"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace
 {
@@ -117,3 +118,10 @@ namespace GameCore::Npc::Friendly::Behaviour
         ImGuiHelper::OnDrawInputField("turnRotateSpeed_", turnRotateSpeed_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::MoveForRoute)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(
+    GameCore::Npc::Friendly::Behaviour::ActionBase,
+    GameCore::Npc::Friendly::Behaviour::Action::MoveForRoute)
+#pragma endregion

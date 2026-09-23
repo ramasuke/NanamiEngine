@@ -12,7 +12,7 @@
 namespace GameCore::PlayerAvatar::MagicCaster
 {
     /**
-     * LT を押している間だけ A/B/X/Y が魔法の枠になり、走る・ジャンプ・会話は効かなくなる。
+     * LT を押している間だけ A/B/X/Y が魔法の枠になり、走る・ジャンプ・会話・回避は効かなくなる。
      * キーボードは 1〜4 を直接押し、右クリックを押しながらで2ページ目
      */
     class MagicCasterAvatarInputAction final : public PlayerAvatarInputActionBase
@@ -23,6 +23,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[nodiscard]] InputRef<void     >& Jump     () const { return *jump_;      }
         [[nodiscard]] InputRef<void     >& Cast     () const { return *cast_;      }
         [[nodiscard]] InputRef<void     >& Chat     () const { return *chat_;      }
+        [[nodiscard]] InputRef<void     >& AvoidRolling() const { return *avoidRolling_; }
         [[nodiscard]] InputRef<void     >& LockOn   () const { return *lockOn_;    }
         [[nodiscard]] InputRef<void     >& LockOnSwitchLeft () const { return *lockOnSwitchLeft_;  }
         [[nodiscard]] InputRef<void     >& LockOnSwitchRight() const { return *lockOnSwitchRight_; }
@@ -52,6 +53,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         Input<void     > jump_      = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_SPACE ) || (!IsPaletteTriggerHeld() && XInput().Buttons[XINPUT_BUTTON_B]); });
         Input<void     > cast_      = MakeInputAction([this] { return GetMouseInput() & MOUSE_INPUT_LEFT || XInput().RightTrigger; });
         Input<void     > chat_      = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_E     ) || (!IsPaletteTriggerHeld() && XInput().Buttons[XINPUT_BUTTON_Y]); });
+        // 剣士と同じ割り当て
+        Input<void     > avoidRolling_ = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_LCONTROL) || (!IsPaletteTriggerHeld() && XInput().Buttons[XINPUT_BUTTON_X]); });
         Input<void     > lockOn_    = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_Q     ) || XInput().Buttons[XINPUT_BUTTON_RIGHT_THUMB]; });
         Input<void     > lockOnSwitchLeft_  = MakeInputAction([this] { return MouseWheelDelta() > 0 || XInput().ThumbRX < -LOCK_ON_SWITCH_STICK_THRESHOLD; });
         Input<void     > lockOnSwitchRight_ = MakeInputAction([this] { return MouseWheelDelta() < 0 || XInput().ThumbRX >  LOCK_ON_SWITCH_STICK_THRESHOLD; });

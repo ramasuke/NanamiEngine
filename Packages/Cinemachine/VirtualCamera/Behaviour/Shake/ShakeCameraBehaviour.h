@@ -4,6 +4,7 @@
 #include "../../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
 #include "../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
+#include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 
 namespace NanamiEngine::CineMachine::Behaviour
 {
@@ -34,8 +35,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         // Shake()をブロードキャストする。各インスタンスのtrauma_はそれぞれ独立して減衰する。
         static std::vector<ShakeCameraBehaviour*> instances_;
 
-        float trauma_   = 0.0f;
-        float duration_ = 0.4f;
+        LibCore::Tween::TweenPlayer<float> trauma_;
         float sustain_        = 0.0f;
         float sustainRequest_ = 0.0f;
 
@@ -92,5 +92,4 @@ namespace NanamiEngine::CineMachine::Behaviour
     };
 }
 
-ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ShakeCameraBehaviour, 2)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::ShakeCameraBehaviour);
+CEREAL_CLASS_VERSION(CineMachine::Behaviour::ShakeCameraBehaviour, 2);

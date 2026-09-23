@@ -57,4 +57,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiUi::BillboardAnimation3D, 0)
+CEREAL_CLASS_VERSION(NanamiUi::BillboardAnimation3D, 0);

@@ -10,6 +10,8 @@ namespace GamePlay::Sound
                               public LifeCycleCallback::IUpdatable
     {
     public:
+        ~SoundPlayer() override;
+
         [[nodiscard]] static glm::vec3 Position();
         static void PlaySe(const Asset::SoundFile& sound, const glm::vec3& soundPosition);
         static void PlayBgm(const std::weak_ptr<Asset::SoundFile>& sound);
@@ -44,4 +46,4 @@ namespace GamePlay::Sound
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Sound::SoundPlayer, 0)
+CEREAL_CLASS_VERSION(GamePlay::Sound::SoundPlayer, 0);

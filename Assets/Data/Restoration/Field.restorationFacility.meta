@@ -1,0 +1,33 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::RestorationFacility",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Restoration/Field.restorationFacility",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "DDCCE8DE-FD4E-4956-8AA4-CE9E77008C1E"
+                    }
+                },
+                "facility_": 3,
+                "name_": "畑",
+                "descriptionLines_": [
+                    "小屋の裏を耕す。",
+                    "薬草が折々に採れる。"
+                ],
+                "cost_": 1800,
+                "requiredStoryFlag_": -1,
+                "requiredFacility_": 2,
+                "conditionText_": "狩人小屋が建ってから"
+            }
+        }
+    }
+}

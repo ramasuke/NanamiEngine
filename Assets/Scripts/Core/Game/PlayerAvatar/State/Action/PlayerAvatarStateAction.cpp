@@ -20,8 +20,17 @@ namespace GameCore::PlayerAvatar::State
     
     void PlayerAvatarStateAction::MoveForward(const glm::vec3& inputVelocity, const float rotateSpeed) const
     {
-        const glm::vec3 cameraForward = glm::normalize(glm::vec3(stateContext_->CameraGroup().CurrentCamera().Transform().GetWorldRot() * glm::vec3(0,0,-1)));
-        const glm::vec3 cameraRight   = glm::normalize(glm::vec3(stateContext_->CameraGroup().CurrentCamera().Transform().GetWorldRot() * glm::vec3(1,0, 0)));
+        const glm::quat cameraRot = stateContext_->CameraGroup().CurrentCamera().Transform().GetWorldRot();
+        glm::vec3 flatForward = cameraRot * glm::vec3(0, 0, -1);
+        flatForward.y = 0.0f;
+        if (glm::length2(flatForward) < 0.0001f)
+        {
+            // 真上・真下を向いているときは画面の上方向を前とみなす
+            flatForward = cameraRot * glm::vec3(0, 1, 0);
+            flatForward.y = 0.0f;
+        }
+        const glm::vec3 cameraForward = glm::normalize(flatForward);
+        const glm::vec3 cameraRight   = glm::cross(cameraForward, glm::vec3(0, 1, 0));
         const glm::vec3 xzVelocity = cameraForward * inputVelocity.z + cameraRight * inputVelocity.x;
         const glm::vec3 walkableVelocity = LimitToWalkableSlope(glm::vec3(xzVelocity.x, 0.0f, xzVelocity.z));
         glm::vec3 currentVelocity = stateContext_->PlayerAvatarRigidBody().LinearVelocity();

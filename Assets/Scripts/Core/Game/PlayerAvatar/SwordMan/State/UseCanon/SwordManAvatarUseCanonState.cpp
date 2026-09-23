@@ -14,36 +14,46 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoEn
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoFixedUpdate()
 {
     HoldHorizontalVelocity();
-    
+
     const auto& sceneContext = *Game::Instance().Scenes().CatchContext<Scene::FirstTouchDownMainIsLandSceneContext>();
     auto& cannon = sceneContext.PlayerControllabeCanon();
-    
-    if (Input().Move().ReadValue().x > 0.0f)
+
+    if (!cannon.IsLocked())
     {
-        cannon.RightRotate();
+        if (Input().Move().ReadValue().x > 0.0f)
+        {
+            cannon.RightRotate();
+        }
+        else if (Input().Move().ReadValue().x < 0.0f)
+        {
+            cannon.LeftRotate();
+        }
+        if (Input().CannonAttack().IsPressed())
+        {
+            cannon.Shoot();
+        }
     }
-    else if (Input().Move().ReadValue().x < 0.0f)
-    {
-        cannon.LeftRotate();
-    }
-    if (Input().CannonAttack().IsPressed())
-    {
-        cannon.Shoot();
-    }
+
+    UpdateTransitions();
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoUpdate()
 {
-    
+
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::DoExit()
 {
-
+    const auto& sceneContext = *Game::Instance().Scenes().CatchContext<Scene::FirstTouchDownMainIsLandSceneContext>();
+    sceneContext.PlayerControllabeCanon().Leave();
 }
 
 void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarUseCannonState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const
 {
-    visitor.Action(SwordManAvatarStateAction::CannonTurn, true);
-    visitor.Action(SwordManAvatarStateAction::CannonFire, true);
+    const auto& sceneContext = *Game::Instance().Scenes().CatchContext<Scene::FirstTouchDownMainIsLandSceneContext>();
+    const bool isLocked = sceneContext.PlayerControllabeCanon().IsLocked();
+
+    visitor.Automatic(SwordManAvatarStateType::Idle, isLocked);
+    visitor.Action(SwordManAvatarStateAction::CannonTurn, !isLocked);
+    visitor.Action(SwordManAvatarStateAction::CannonFire, !isLocked);
 }

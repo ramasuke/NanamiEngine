@@ -1,4 +1,5 @@
 ﻿#include "PlayerAvatar_OtherPlayer_StatusPresenter.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::PlayerAvatar::OtherPlayer
 {
@@ -16,3 +17,7 @@ namespace GamePlay::PlayerAvatar::OtherPlayer
         
     }
 }
+
+#pragma region SerializationMacro
+ENGINE_REGISTER_COMPONENT(GamePlay::PlayerAvatar::OtherPlayer::StatusPresenter);
+#pragma endregion

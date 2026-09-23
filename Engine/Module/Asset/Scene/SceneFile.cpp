@@ -4,6 +4,7 @@
 #include <filesystem>
 
 #include "../../../Core/Application/Window/Main/Game/GameWindow.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -56,3 +57,10 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("guid_", guid_);
     }   
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SceneFile);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::SceneFile);
+REGISTER_ASSET(SceneFile, SCENE_FILE_EXTENSION_LABEL)
+REGISTER_CREATABLE_ASSET_EXTENSION("Scene", SCENE_FILE_EXTENSION_LABEL, "Scene")
+#pragma endregion

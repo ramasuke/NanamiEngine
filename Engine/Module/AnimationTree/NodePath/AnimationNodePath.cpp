@@ -1,6 +1,7 @@
 ﻿#include "AnimationNodePath.h"
 
 #include "../../../Core/Application/Time/Time.h"
+#include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 void AnimationTree::AnimationNodePath::InitNodePath(
     const std::shared_ptr<BlackBoard::ParameterGroup>& additionParams,
@@ -132,3 +133,8 @@ void AnimationTree::AnimationNodePath::SubscribeUpdateNodeAnimationCallback()
             TryAddNextCurrentNodePath(context);
         }));
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationNodePath);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Object::IObject, NanamiEngine::Module::AnimationTree::AnimationNodePath);
+#pragma endregion

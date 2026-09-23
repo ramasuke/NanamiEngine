@@ -1,0 +1,100 @@
+{
+    "isActive_": true,
+    "name_": "ItemUsePlace",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "4DCDABB0-2A10-49C6-9220-EBB109A9480B"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 1,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::Module::Component::ParticleSystem",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "DB9261F3-FFBA-41D1-9366-E5CE83A1413D"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "particleFile_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "C00789B7-8332-4876-B441-CCB9AF03ADFF"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "playingDuration_secs_": 0.7699999809265137,
+                    "playMode_": 1
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 8.0,
+            "value1": 8.0,
+            "value2": 8.0
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 8.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 8.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 8.0,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 0
+    },
+    "mark_": 0,
+    "value0": 0
+}

@@ -1,6 +1,7 @@
 ﻿#include "Enemy_Behaviour_Action_ReadBlackBoardBool.h"
 
 #include "Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
+#include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GameCore::Npc::Enemy::Behaviour::Action
 {
@@ -21,3 +22,11 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         ImGuiHelper::OnDrawInputField("equalValue_", equalValue_);
     }
 }
+
+#pragma region SerializationMacro
+CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ReadBlackBoardBool)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(
+    GameCore::Npc::Enemy::Behaviour::ActionBase,
+    GameCore::Npc::Enemy::Behaviour::Action::ReadBlackBoardBool
+)
+#pragma endregion

@@ -9,6 +9,7 @@
 #include "../../Component/AudioSource/AudioSource.h"
 #include "../../Component/BlendImageRenderer/BlendImageRenderer.h"
 #include "../../Component/BoneSync/BoneSync.h"
+#include "../../Component/LookAtBone/LookAtBone.h"
 #include "../../Component/CircleGaugeRenderer/CircleGaugeRenderer.h"
 #include "../../Physics/Component/Collider/Box/Engine_Physics_BoxCollider.h"
 #include "../../Physics/Component/Collider/Capsule/Engine_Physics_CapsuleCollider.h"

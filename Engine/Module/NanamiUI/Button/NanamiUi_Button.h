@@ -33,7 +33,6 @@ namespace NanamiEngine::Module::NanamiUi
         void TryHover();
         void TryRelease();
 
-
         [[serialize(0)]] glm::vec2 eventAreaSize_{100.0f, 100.0f};
         [[serialize(1)]] FIELD(Asset::SpriteFile) onIdleSprite_;
         [[serialize(1)]] FIELD(Asset::SpriteFile) onHoverSprite_;
@@ -70,4 +69,4 @@ namespace NanamiEngine::Module::NanamiUi
     };
 }
 
-ENGINE_REGISTER_COMPONENT(NanamiUi::Button, 1)
+CEREAL_CLASS_VERSION(NanamiUi::Button, 1);

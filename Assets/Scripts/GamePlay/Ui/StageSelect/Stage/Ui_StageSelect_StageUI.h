@@ -78,4 +78,4 @@ namespace GamePlay::Ui
     };
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Ui::StageSelectStageUi, 3)
+CEREAL_CLASS_VERSION(GamePlay::Ui::StageSelectStageUi, 3);
