@@ -9,13 +9,9 @@ namespace GameCore
     Damage::Physics::Physics(
         GameObject::IGameObject& from,
         GameObject::IGameObject& to,
-        const PhysicsPower damageValue,
-        const std::weak_ptr<GameObject::IGameObject>& hitPart,
-        const bool isChargedAttack)
+        const PhysicsPower damageValue)
         : damageDirection_(from.Transform().GetWorldPos() - to.Transform().GetWorldPos())
         , damageValue_(damageValue)
-        , hitPart_(hitPart)
-        , isChargedAttack_(isChargedAttack)
     {
 
     }
@@ -23,16 +19,6 @@ namespace GameCore
     int Damage::Physics::DamageValue()
     {
         return damageValue_.Value();
-    }
-
-    std::weak_ptr<GameObject::IGameObject> Damage::Physics::HitPart() const
-    {
-        return hitPart_;
-    }
-
-    bool Damage::Physics::IsChargedAttack() const
-    {
-        return isChargedAttack_;
     }
 
     glm::vec3 Damage::Physics::DamageDirection() const

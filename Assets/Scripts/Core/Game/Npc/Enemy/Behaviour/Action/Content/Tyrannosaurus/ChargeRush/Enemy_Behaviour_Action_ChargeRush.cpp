@@ -35,7 +35,7 @@ namespace GameCore::Npc::Enemy::Behaviour
             return false;
         }
 
-        /** @brief 倒した柱から受けるダメージ。部位には当たらない */
+        /** @brief 倒した柱から受けるダメージ */
         class PillarCollapseDamage final : public GameCore::IDamage
         {
         public:
@@ -46,8 +46,6 @@ namespace GameCore::Npc::Enemy::Behaviour
 
             int DamageValue() override { return value_; }
             [[nodiscard]] glm::vec3 DamageDirection() const override { return direction_; }
-            [[nodiscard]] std::weak_ptr<GameObject::IGameObject> HitPart() const override { return {}; }
-            [[nodiscard]] bool IsChargedAttack() const override { return false; }
 
         private:
             int       value_;

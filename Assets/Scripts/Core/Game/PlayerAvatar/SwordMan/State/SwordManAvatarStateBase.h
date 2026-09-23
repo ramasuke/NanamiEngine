@@ -75,7 +75,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[nodiscard]] Damage::PhysicsPower BuffedAttackPower(Damage::PhysicsPower base) const;
         bool UpdateTransitions() const;
         void RotateTowardsAttackTarget(AttackTurn& turn, float smoothTime_secs, float maxRotateSpeed) const;
-        void DealDamageText(PlayerAttackArea& attackArea, Damage::PhysicsPower power, bool isChargedAttack) const;
+        void DealDamageText(PlayerAttackArea& attackArea, Damage::PhysicsPower power) const;
         void ShakeHitTargets(PlayerAttackArea& attackArea, const HitFeelParam& hitFeel) const;
         // 弾かれたら AttackedShocked へ遷移する
         bool TryBlockAttackByWall(PlayerAttackArea& attackArea) const;

@@ -24,7 +24,7 @@ namespace GamePlay::PlayerAvatar::Bullet
         for (auto& playerAttackable : owner->Components().Catches<GameCore::PlayerAvatar::ITakablePlayerAttack>())
         {
             auto damage = std::make_unique<GameCore::Damage::Physics>(
-                *Entity().lock(), *owner, physicsDamage_, other, false);
+                *Entity().lock(), *owner, physicsDamage_);
             playerAttackable.lock()->OnTakeDamage(std::move(damage));
         }
         Explosion();

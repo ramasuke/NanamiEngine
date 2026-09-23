@@ -1,4 +1,4 @@
-{
+﻿{
     "entryNode_": {
         "polymorphic_id": 1073741824,
         "ptr_wrapper": {
@@ -77,7 +77,7 @@
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {
-                                                                        "cereal_class_version": 5,
+                                                                        "cereal_class_version": 6,
                                                                         "value0": {
                                                                             "cereal_class_version": 0
                                                                         },
@@ -103,11 +103,7 @@
                                                                         },
                                                                         "value3": 24,
                                                                         "value4": false,
-                                                                        "value5": 0.0,
-                                                                        "value6": "StunState",
-                                                                        "value7": 1.5,
-                                                                        "value8": 1,
-                                                                        "value9": 2
+                                                                        "value5": 0.0
                                                                     }
                                                                 }
                                                             }
@@ -578,7 +574,7 @@
                                                                     "valid": 1,
                                                                     "data": {
                                                                         "value0": {},
-                                                                        "keyName_": "StunState",
+                                                                        "keyName_": "StuckState",
                                                                         "equalValue_": 1
                                                                     }
                                                                 }
@@ -594,59 +590,41 @@
                                                             "value0": {
                                                                 "value0": {},
                                                                 "guid_": {
-                                                                    "value_": "FCF2E1FF-58D6-4AE8-83B2-3432F42F95CF"
+                                                                    "value_": "0877B009-B0CC-48E3-906F-F1B9F2A012DE"
                                                                 },
                                                                 "position_": {
                                                                     "value0": 501.0,
                                                                     "value1": 280.0
                                                                 }
                                                             },
-                                                            "name_": "Open Head WeakPoint",
+                                                            "name_": "HeadStuck Animation",
                                                             "action_": {
-                                                                "polymorphic_id": 2147483660,
-                                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::OpenWeakPointWindow",
+                                                                "polymorphic_id": 6,
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {
-                                                                        "cereal_class_version": 0,
                                                                         "value0": {},
-                                                                        "weakPointObjectName_": "Head",
-                                                                        "duration_secs_": 0.30000001192092898
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                {
-                                                    "polymorphic_id": 2,
-                                                    "ptr_wrapper": {
-                                                        "id": 2147483672,
-                                                        "data": {
-                                                            "value0": {
-                                                                "value0": {},
-                                                                "guid_": {
-                                                                    "value_": "9B5813A4-493F-40A3-82E7-0E3CBAB5E86B"
-                                                                },
-                                                                "position_": {
-                                                                    "value0": 501.0,
-                                                                    "value1": 340.0
-                                                                }
-                                                            },
-                                                            "name_": "HeadStuck",
-                                                            "action_": {
-                                                                "polymorphic_id": 2147483661,
-                                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::Stun",
-                                                                "ptr_wrapper": {
-                                                                    "valid": 1,
-                                                                    "data": {
-                                                                        "cereal_class_version": 0,
-                                                                        "value0": {},
-                                                                        "stunStateKeyName_": "StunState",
-                                                                        "downAnimationNumber_": 42,
-                                                                        "getUpAnimationNumber_": 43,
-                                                                        "downDuration_secs_": 4.0,
-                                                                        "getUpDuration_secs_": 1.5
+                                                                        "animatorSetParamNumber_": 42,
+                                                                        "waitAnimationSound_secs_": {
+                                                                            "value0": {},
+                                                                            "waitSeconds_": 0.0
+                                                                        },
+                                                                        "animationSound_": {
+                                                                            "value0": {},
+                                                                            "sound_": {
+                                                                                "value0": {
+                                                                                    "polymorphic_id": 1073741824,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483672,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value_": "00000000-0000-0000-0000-000000000000"
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -661,72 +639,70 @@
                                                             "value0": {
                                                                 "value0": {},
                                                                 "guid_": {
-                                                                    "value_": "FB60A972-DAEB-435E-ABC9-DBA925AA06BF"
+                                                                    "value_": "F93D1AA3-38C0-4E0B-9E52-41BA91309599"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 501.0,
+                                                                    "value1": 340.0
+                                                                }
+                                                            },
+                                                            "name_": "Wait HeadStuck",
+                                                            "action_": {
+                                                                "polymorphic_id": 8,
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "value0": {},
+                                                                        "waitSeconds_": 4.0
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 2,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483674,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "D41F153B-DF8A-4CDB-B2A3-5778B806D8DC"
                                                                 },
                                                                 "position_": {
                                                                     "value0": 501.0,
                                                                     "value1": 400.0
                                                                 }
                                                             },
-                                                            "name_": "Act To Ready",
+                                                            "name_": "HeadStuckOut Animation",
                                                             "action_": {
-                                                                "polymorphic_id": 11,
+                                                                "polymorphic_id": 6,
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {
                                                                         "value0": {},
-                                                                        "keyName_": "Act",
-                                                                        "value_": 0
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    }
-                                },
-                                {
-                                    "polymorphic_id": 4,
-                                    "ptr_wrapper": {
-                                        "id": 2147483674,
-                                        "data": {
-                                            "value0": {
-                                                "value0": {},
-                                                "guid_": {
-                                                    "value_": "C05F2AF3-0F66-4860-9761-317C434DD278"
-                                                },
-                                                "position_": {
-                                                    "value0": 628.0,
-                                                    "value1": 160.0
-                                                }
-                                            },
-                                            "children_": [
-                                                {
-                                                    "polymorphic_id": 2,
-                                                    "ptr_wrapper": {
-                                                        "id": 2147483675,
-                                                        "data": {
-                                                            "value0": {
-                                                                "value0": {},
-                                                                "guid_": {
-                                                                    "value_": "1DCAD6E4-73DA-4753-9DCE-3E9C317122C4"
-                                                                },
-                                                                "position_": {
-                                                                    "value0": 628.0,
-                                                                    "value1": 220.0
-                                                                }
-                                                            },
-                                                            "name_": "Is LegBroken",
-                                                            "action_": {
-                                                                "polymorphic_id": 10,
-                                                                "ptr_wrapper": {
-                                                                    "valid": 1,
-                                                                    "data": {
-                                                                        "value0": {},
-                                                                        "keyName_": "StunState",
-                                                                        "equalValue_": 2
+                                                                        "animatorSetParamNumber_": 43,
+                                                                        "waitAnimationSound_secs_": {
+                                                                            "value0": {},
+                                                                            "waitSeconds_": 0.0
+                                                                        },
+                                                                        "animationSound_": {
+                                                                            "value0": {},
+                                                                            "sound_": {
+                                                                                "value0": {
+                                                                                    "polymorphic_id": 1073741824,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483675,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value_": "00000000-0000-0000-0000-000000000000"
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -741,28 +717,21 @@
                                                             "value0": {
                                                                 "value0": {},
                                                                 "guid_": {
-                                                                    "value_": "E256682E-8F76-4C7E-8EB2-120694C42218"
+                                                                    "value_": "F31AE2D4-0F82-445A-8B70-66B3CBFADC55"
                                                                 },
                                                                 "position_": {
-                                                                    "value0": 628.0,
-                                                                    "value1": 280.0
+                                                                    "value0": 501.0,
+                                                                    "value1": 460.0
                                                                 }
                                                             },
-                                                            "name_": "VelocityZero",
+                                                            "name_": "Wait HeadStuckOut",
                                                             "action_": {
-                                                                "polymorphic_id": 2147483662,
-                                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::SetLinearVelocity",
+                                                                "polymorphic_id": 8,
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {
-                                                                        "cereal_class_version": 1,
                                                                         "value0": {},
-                                                                        "velocity_": {
-                                                                            "value0": 0.0,
-                                                                            "value1": 0.0,
-                                                                            "value2": 0.0
-                                                                        },
-                                                                        "isGravity_": true
+                                                                        "waitSeconds_": 1.5
                                                                     }
                                                                 }
                                                             }
@@ -777,25 +746,22 @@
                                                             "value0": {
                                                                 "value0": {},
                                                                 "guid_": {
-                                                                    "value_": "18065274-663C-42E3-ABF6-87512FE9A3D0"
+                                                                    "value_": "52FEE2BD-F83D-418E-B684-93E6617CC90C"
                                                                 },
                                                                 "position_": {
-                                                                    "value0": 628.0,
-                                                                    "value1": 340.0
+                                                                    "value0": 501.0,
+                                                                    "value1": 520.0
                                                                 }
                                                             },
-                                                            "name_": "LegStun",
+                                                            "name_": "Clear StuckState",
                                                             "action_": {
-                                                                "polymorphic_id": 13,
+                                                                "polymorphic_id": 11,
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {
                                                                         "value0": {},
-                                                                        "stunStateKeyName_": "StunState",
-                                                                        "downAnimationNumber_": 61,
-                                                                        "getUpAnimationNumber_": 37,
-                                                                        "downDuration_secs_": 5.0,
-                                                                        "getUpDuration_secs_": 1.0
+                                                                        "keyName_": "StuckState",
+                                                                        "value_": 0
                                                                     }
                                                                 }
                                                             }
@@ -810,11 +776,11 @@
                                                             "value0": {
                                                                 "value0": {},
                                                                 "guid_": {
-                                                                    "value_": "E99ABD4D-FD66-4815-B49C-6DA1BFBD8E92"
+                                                                    "value_": "FB60A972-DAEB-435E-ABC9-DBA925AA06BF"
                                                                 },
                                                                 "position_": {
-                                                                    "value0": 628.0,
-                                                                    "value1": 400.0
+                                                                    "value0": 501.0,
+                                                                    "value1": 580.0
                                                                 }
                                                             },
                                                             "name_": "Act To Ready",
@@ -1163,7 +1129,7 @@
                                                             },
                                                             "name_": "Play FightBGM",
                                                             "action_": {
-                                                                "polymorphic_id": 2147483663,
+                                                                "polymorphic_id": 2147483660,
                                                                 "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::PlayBGM",
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
@@ -1316,10 +1282,12 @@
                                                             },
                                                             "name_": "VelocityZero",
                                                             "action_": {
-                                                                "polymorphic_id": 14,
+                                                                "polymorphic_id": 2147483661,
+                                                                "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::SetLinearVelocity",
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {
+                                                                        "cereal_class_version": 1,
                                                                         "value0": {},
                                                                         "velocity_": {
                                                                             "value0": 0.0,
@@ -1382,7 +1350,7 @@
                                                                                             },
                                                                                             "name_": "Player Near",
                                                                                             "action_": {
-                                                                                                "polymorphic_id": 2147483664,
+                                                                                                "polymorphic_id": 2147483662,
                                                                                                 "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance",
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
@@ -1551,7 +1519,7 @@
                                                             },
                                                             "name_": "VelocityZero",
                                                             "action_": {
-                                                                "polymorphic_id": 14,
+                                                                "polymorphic_id": 13,
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {
@@ -1647,7 +1615,7 @@
                                                                                             },
                                                                                             "name_": "Recover (Hold)",
                                                                                             "action_": {
-                                                                                                "polymorphic_id": 2147483665,
+                                                                                                "polymorphic_id": 2147483663,
                                                                                                 "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::RecoverFacingPlayer",
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
@@ -1674,7 +1642,7 @@
                                                                                     }
                                                                                 },
                                                                                 {
-                                                                                    "polymorphic_id": 2147483666,
+                                                                                    "polymorphic_id": 2147483664,
                                                                                     "polymorphic_name": "Editor::Npc::Behaviour::RandomSelectorNode",
                                                                                     "ptr_wrapper": {
                                                                                         "id": 2147483711,
@@ -1826,7 +1794,7 @@
                                                                                             },
                                                                                             "name_": "Recover Short",
                                                                                             "action_": {
-                                                                                                "polymorphic_id": 17,
+                                                                                                "polymorphic_id": 15,
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
                                                                                                     "data": {
@@ -1963,7 +1931,7 @@
                                                                                                             },
                                                                                                             "name_": "Player In AttackRange",
                                                                                                             "action_": {
-                                                                                                                "polymorphic_id": 2147483667,
+                                                                                                                "polymorphic_id": 2147483665,
                                                                                                                 "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::IsTargetInAttackArea",
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
@@ -1995,7 +1963,7 @@
                                                                                                             },
                                                                                                             "name_": "Stalk Around Player",
                                                                                                             "action_": {
-                                                                                                                "polymorphic_id": 2147483668,
+                                                                                                                "polymorphic_id": 2147483666,
                                                                                                                 "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::CircleAroundPlayer",
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
@@ -2070,7 +2038,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Player Left",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 2147483669,
+                                                                                                                                "polymorphic_id": 2147483667,
                                                                                                                                 "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerAngle",
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
@@ -2153,7 +2121,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Player Right",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 21,
+                                                                                                                                "polymorphic_id": 19,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -2302,7 +2270,7 @@
                                                                                             },
                                                                                             "name_": "Player Out Of AttackRange",
                                                                                             "action_": {
-                                                                                                "polymorphic_id": 19,
+                                                                                                "polymorphic_id": 17,
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
                                                                                                     "data": {
@@ -2332,7 +2300,7 @@
                                                                                             },
                                                                                             "name_": "ChasePlayer",
                                                                                             "action_": {
-                                                                                                "polymorphic_id": 2147483670,
+                                                                                                "polymorphic_id": 2147483668,
                                                                                                 "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::ChasePlayerForPathFinding",
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
@@ -2500,7 +2468,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Player Front",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 21,
+                                                                                                                                "polymorphic_id": 19,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -2581,7 +2549,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Player Left",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 21,
+                                                                                                                                "polymorphic_id": 19,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -2662,7 +2630,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Player Right",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 21,
+                                                                                                                                "polymorphic_id": 19,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -2795,7 +2763,7 @@
                                                                                     }
                                                                                 },
                                                                                 {
-                                                                                    "polymorphic_id": 18,
+                                                                                    "polymorphic_id": 16,
                                                                                     "ptr_wrapper": {
                                                                                         "id": 2147483751,
                                                                                         "data": {
@@ -2843,7 +2811,7 @@
                                                                                                                             },
                                                                                                                             "name_": "BiteCloseLeft",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 2147483671,
+                                                                                                                                "polymorphic_id": 2147483669,
                                                                                                                                 "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::PhysicsAttack",
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
@@ -2925,7 +2893,7 @@
                                                                                                                             },
                                                                                                                             "name_": "BiteCloseRight",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -3004,7 +2972,7 @@
                                                                                                                             },
                                                                                                                             "name_": "ChargeRush",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 2147483672,
+                                                                                                                                "polymorphic_id": 2147483670,
                                                                                                                                 "polymorphic_name": "GameCore::Npc::Enemy::Behaviour::Action::ChargeRush",
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
@@ -3031,7 +2999,7 @@
                                                                                                                                         "attackPower_": {
                                                                                                                                             "value_": 20
                                                                                                                                         },
-                                                                                                                                        "stuckStateKeyName_": "StunState",
+                                                                                                                                        "stuckStateKeyName_": "StuckState",
                                                                                                                                         "impactSound_": {
                                                                                                                                             "value0": {
                                                                                                                                                 "polymorphic_id": 1073741824,
@@ -3120,7 +3088,7 @@
                                                                                     }
                                                                                 },
                                                                                 {
-                                                                                    "polymorphic_id": 18,
+                                                                                    "polymorphic_id": 16,
                                                                                     "ptr_wrapper": {
                                                                                         "id": 2147483763,
                                                                                         "data": {
@@ -3168,7 +3136,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Bite90Left",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -3247,7 +3215,7 @@
                                                                                                                             },
                                                                                                                             "name_": "HeadButtLeft",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -3481,7 +3449,7 @@
                                                                                     }
                                                                                 },
                                                                                 {
-                                                                                    "polymorphic_id": 18,
+                                                                                    "polymorphic_id": 16,
                                                                                     "ptr_wrapper": {
                                                                                         "id": 2147483777,
                                                                                         "data": {
@@ -3529,7 +3497,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Bite90Right",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -3778,7 +3746,7 @@
                                                                                             },
                                                                                             "name_": "Walk Turn To Player",
                                                                                             "action_": {
-                                                                                                "polymorphic_id": 17,
+                                                                                                "polymorphic_id": 15,
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
                                                                                                     "data": {
@@ -3915,7 +3883,7 @@
                                                                                                             },
                                                                                                             "name_": "WalkLeftBite",
                                                                                                             "action_": {
-                                                                                                                "polymorphic_id": 23,
+                                                                                                                "polymorphic_id": 21,
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
                                                                                                                     "data": {
@@ -4044,7 +4012,7 @@
                                                                                                             },
                                                                                                             "name_": "WalkRightBite",
                                                                                                             "action_": {
-                                                                                                                "polymorphic_id": 23,
+                                                                                                                "polymorphic_id": 21,
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
                                                                                                                     "data": {
@@ -4173,7 +4141,7 @@
                                                                                                             },
                                                                                                             "name_": "ChaseBite",
                                                                                                             "action_": {
-                                                                                                                "polymorphic_id": 23,
+                                                                                                                "polymorphic_id": 21,
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
                                                                                                                     "data": {
@@ -4324,7 +4292,7 @@
                                                             },
                                                             "name_": "VelocityZero",
                                                             "action_": {
-                                                                "polymorphic_id": 14,
+                                                                "polymorphic_id": 13,
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {
@@ -4420,7 +4388,7 @@
                                                                                             },
                                                                                             "name_": "Recover (Hold)",
                                                                                             "action_": {
-                                                                                                "polymorphic_id": 17,
+                                                                                                "polymorphic_id": 15,
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
                                                                                                     "data": {
@@ -4445,7 +4413,7 @@
                                                                                     }
                                                                                 },
                                                                                 {
-                                                                                    "polymorphic_id": 18,
+                                                                                    "polymorphic_id": 16,
                                                                                     "ptr_wrapper": {
                                                                                         "id": 2147483813,
                                                                                         "data": {
@@ -4595,7 +4563,7 @@
                                                                                             },
                                                                                             "name_": "Recover Short",
                                                                                             "action_": {
-                                                                                                "polymorphic_id": 17,
+                                                                                                "polymorphic_id": 15,
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
                                                                                                     "data": {
@@ -4732,7 +4700,7 @@
                                                                                                             },
                                                                                                             "name_": "Player In AttackRange",
                                                                                                             "action_": {
-                                                                                                                "polymorphic_id": 19,
+                                                                                                                "polymorphic_id": 17,
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
                                                                                                                     "data": {
@@ -4762,7 +4730,7 @@
                                                                                                             },
                                                                                                             "name_": "Stalk Around Player",
                                                                                                             "action_": {
-                                                                                                                "polymorphic_id": 20,
+                                                                                                                "polymorphic_id": 18,
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
                                                                                                                     "data": {
@@ -4835,7 +4803,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Player Left",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 21,
+                                                                                                                                "polymorphic_id": 19,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -4916,7 +4884,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Player Right",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 21,
+                                                                                                                                "polymorphic_id": 19,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -5065,7 +5033,7 @@
                                                                                             },
                                                                                             "name_": "Player Out Of AttackRange",
                                                                                             "action_": {
-                                                                                                "polymorphic_id": 19,
+                                                                                                "polymorphic_id": 17,
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
                                                                                                     "data": {
@@ -5095,7 +5063,7 @@
                                                                                             },
                                                                                             "name_": "ChasePlayer",
                                                                                             "action_": {
-                                                                                                "polymorphic_id": 22,
+                                                                                                "polymorphic_id": 20,
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
                                                                                                     "data": {
@@ -5259,7 +5227,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Player Front",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 21,
+                                                                                                                                "polymorphic_id": 19,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -5340,7 +5308,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Player Left",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 21,
+                                                                                                                                "polymorphic_id": 19,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -5421,7 +5389,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Player Right",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 21,
+                                                                                                                                "polymorphic_id": 19,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -5554,7 +5522,7 @@
                                                                                     }
                                                                                 },
                                                                                 {
-                                                                                    "polymorphic_id": 18,
+                                                                                    "polymorphic_id": 16,
                                                                                     "ptr_wrapper": {
                                                                                         "id": 2147483853,
                                                                                         "data": {
@@ -5602,7 +5570,7 @@
                                                                                                                             },
                                                                                                                             "name_": "BiteCloseLeft",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -5681,7 +5649,7 @@
                                                                                                                             },
                                                                                                                             "name_": "BiteCloseRight",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -5760,7 +5728,7 @@
                                                                                                                             },
                                                                                                                             "name_": "ChaseBite",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -5839,7 +5807,7 @@
                                                                                                                             },
                                                                                                                             "name_": "ChaseBiteLeft",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -5918,7 +5886,7 @@
                                                                                                                             },
                                                                                                                             "name_": "ChaseBiteRight",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -5997,7 +5965,7 @@
                                                                                                                             },
                                                                                                                             "name_": "ChaseHeadButtLeft",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -6076,7 +6044,7 @@
                                                                                                                             },
                                                                                                                             "name_": "RunHeadButtRight",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -6283,7 +6251,7 @@
                                                                                                                             },
                                                                                                                             "name_": "ChargeRush",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 24,
+                                                                                                                                "polymorphic_id": 22,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -6308,7 +6276,7 @@
                                                                                                                                         "attackPower_": {
                                                                                                                                             "value_": 20
                                                                                                                                         },
-                                                                                                                                        "stuckStateKeyName_": "StunState",
+                                                                                                                                        "stuckStateKeyName_": "StuckState",
                                                                                                                                         "impactSound_": {
                                                                                                                                             "value0": {
                                                                                                                                                 "polymorphic_id": 1073741824,
@@ -6403,7 +6371,7 @@
                                                                                     }
                                                                                 },
                                                                                 {
-                                                                                    "polymorphic_id": 18,
+                                                                                    "polymorphic_id": 16,
                                                                                     "ptr_wrapper": {
                                                                                         "id": 2147483885,
                                                                                         "data": {
@@ -6451,7 +6419,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Bite90Left",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -6530,7 +6498,7 @@
                                                                                                                             },
                                                                                                                             "name_": "HeadButtLeft",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -6609,7 +6577,7 @@
                                                                                                                             },
                                                                                                                             "name_": "WalkLeftBite",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -6715,7 +6683,7 @@
                                                                                     }
                                                                                 },
                                                                                 {
-                                                                                    "polymorphic_id": 18,
+                                                                                    "polymorphic_id": 16,
                                                                                     "ptr_wrapper": {
                                                                                         "id": 2147483897,
                                                                                         "data": {
@@ -6763,7 +6731,7 @@
                                                                                                                             },
                                                                                                                             "name_": "Bite90Right",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -6842,7 +6810,7 @@
                                                                                                                             },
                                                                                                                             "name_": "WalkRightBite",
                                                                                                                             "action_": {
-                                                                                                                                "polymorphic_id": 23,
+                                                                                                                                "polymorphic_id": 21,
                                                                                                                                 "ptr_wrapper": {
                                                                                                                                     "valid": 1,
                                                                                                                                     "data": {
@@ -6963,7 +6931,7 @@
                                                                                             },
                                                                                             "name_": "Walk Turn To Player",
                                                                                             "action_": {
-                                                                                                "polymorphic_id": 17,
+                                                                                                "polymorphic_id": 15,
                                                                                                 "ptr_wrapper": {
                                                                                                     "valid": 1,
                                                                                                     "data": {
@@ -7100,7 +7068,7 @@
                                                                                                             },
                                                                                                             "name_": "WalkLeftBite",
                                                                                                             "action_": {
-                                                                                                                "polymorphic_id": 23,
+                                                                                                                "polymorphic_id": 21,
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
                                                                                                                     "data": {
@@ -7229,7 +7197,7 @@
                                                                                                             },
                                                                                                             "name_": "WalkRightBite",
                                                                                                             "action_": {
-                                                                                                                "polymorphic_id": 23,
+                                                                                                                "polymorphic_id": 21,
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
                                                                                                                     "data": {
@@ -7358,7 +7326,7 @@
                                                                                                             },
                                                                                                             "name_": "ChaseBite",
                                                                                                             "action_": {
-                                                                                                                "polymorphic_id": 23,
+                                                                                                                "polymorphic_id": 21,
                                                                                                                 "ptr_wrapper": {
                                                                                                                     "valid": 1,
                                                                                                                     "data": {
@@ -7459,7 +7427,7 @@
             "data": {
                 "value0": 4,
                 "value1": {
-                    "polymorphic_id": 2147483673,
+                    "polymorphic_id": 2147483671,
                     "polymorphic_name": "NanamiEngine::Module::AnimationTree::AnimationParameter<int>",
                     "ptr_wrapper": {
                         "id": 2147483924,
@@ -7474,7 +7442,7 @@
                     }
                 },
                 "value2": {
-                    "polymorphic_id": 25,
+                    "polymorphic_id": 23,
                     "ptr_wrapper": {
                         "id": 2147483925,
                         "data": {
@@ -7485,7 +7453,7 @@
                     }
                 },
                 "value3": {
-                    "polymorphic_id": 25,
+                    "polymorphic_id": 23,
                     "ptr_wrapper": {
                         "id": 2147483926,
                         "data": {
@@ -7496,12 +7464,12 @@
                     }
                 },
                 "value4": {
-                    "polymorphic_id": 25,
+                    "polymorphic_id": 23,
                     "ptr_wrapper": {
                         "id": 2147483927,
                         "data": {
                             "value0": {},
-                            "name_": "StunState",
+                            "name_": "StuckState",
                             "value_": 0
                         }
                     }

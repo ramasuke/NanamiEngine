@@ -2,6 +2,8 @@
 
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "../../../Core/Game/PlayerAvatar/Interactable/IPlayerInteractable.h"
+#include "../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
+#include "../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::PlayerAvatar
@@ -49,7 +51,10 @@ namespace GamePlay::PlayerAvatar
             return;
 
         playerInteractableTargets_.push_back(playerInteractable);
+        const auto owner = GameCore::PlayerAvatar::Owner();
+        isNotifyingOwner_ = owner && &owner->InteractableArea() == this;
         playerInteractable.lock()->OnInteractable();
+        isNotifyingOwner_ = false;
     }
     
     void InteractableArea::OnTriggerExit(const std::shared_ptr<GameObject::IGameObject>& gameObject)

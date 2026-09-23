@@ -15,6 +15,7 @@
 #include "../../../Core/Game/Magic/IMagicSpell.h"
 #include "../../../Core/Game/PlayerAvatar/Input/PlayerAvatarInput_void.h"
 #include "../../PlayerAvatar/MagicCaster/MagicCasterAvatar.h"
+#include "../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -293,6 +294,19 @@ namespace GamePlay::Ui
         const bool isPad = device_ == PlayerAvatarInputDevice::Gamepad;
         // キーボードは 1〜4 を直接押すので、右クリック（2ページ目）を押している間だけ開いた見た目にする
         const bool isOpen = isShown && (input.Palette().IsUpdatePressed() || (!isPad && input.PageShift().IsUpdatePressed()));
+
+        // NOTE: キーボードは右クリックで開くと同時に 2 頁目になるので、そのときは開く音だけ。離して戻るときは鳴らさない
+        const bool isSecondPage = input.IsSecondPage();
+        if (hasReadInput_)
+        {
+            if (isOpen && !wasOpen_)
+                Sound::UiSoundBank::Play(Sound::UiSe::HudPaletteOpen);
+            else if (isShown && isSecondPage != wasSecondPage_ && (isPad || isOpen))
+                Sound::UiSoundBank::Play(Sound::UiSe::HudPageShift);
+        }
+        wasOpen_       = isOpen;
+        wasSecondPage_ = isSecondPage;
+        hasReadInput_  = true;
 
         SpellPaletteFade(visibleFade_, isShown, deltaTime);
         SpellPaletteFade(openFade_, isOpen, deltaTime);

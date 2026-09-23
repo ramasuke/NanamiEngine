@@ -38,6 +38,7 @@ namespace NanamiEngine::CineMachine::Behaviour
 
         bool isLockMousePos_ = true;
         bool isImmediateApply_ = true;
+        bool isMouseDeltaStale_ = true;
 
         float yaw_              = 0.0f;
         float pitch_            = -0.3f;

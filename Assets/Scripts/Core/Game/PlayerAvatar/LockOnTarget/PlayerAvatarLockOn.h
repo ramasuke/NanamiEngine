@@ -38,7 +38,7 @@ namespace GameCore::PlayerAvatar::LockOn
     [[nodiscard]] std::shared_ptr<GameObject::IGameObject> FindNearestTarget(const GamePlay::PlayerAvatar::LockOnDetectionArea& detectionArea,
                                                                             const glm::vec3& playerPos);
     /**
-     * @brief 見えている本体と部位(ILockOnPart)を画面の左右順に並べ、今の狙いの隣へ移る
+     * @brief 見えている敵を画面の左右順に並べ、今の狙いの隣へ移る
      * @param direction -1 = 左、+1 = 右。端では反対側の端へ戻る
      */
     void SwitchTarget(PlayerAvatarCameraGroupBase& cameraGroup,

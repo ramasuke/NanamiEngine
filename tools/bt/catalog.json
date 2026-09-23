@@ -1,5 +1,5 @@
 {
-  "generated_from": "7d59e04c50caf66ce01b1d6d967d72e2e21a4577",
+  "generated_from": "fa5a636508bf62871abcbb922fe9d5aeec24fe9d",
   "actions": {
     "Basic::ChasePlayerForPathFinding": {
       "class": "ChasePlayerForPathFinding",
@@ -508,7 +508,7 @@
       "class": "OnDamage",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::OnDamage",
       "leaf": "OnDamage",
-      "version": 5,
+      "version": 6,
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/OnDamage/Enemy_Behaviour_Action_OnDamage.h",
       "params": [
         {
@@ -541,30 +541,6 @@
           "member": "knockbackForcePerDamage_",
           "named": false,
           "shape": "float"
-        },
-        {
-          "key": "value6",
-          "member": "stunStateKeyName_",
-          "named": false,
-          "shape": "string"
-        },
-        {
-          "key": "value7",
-          "member": "stunnedDamageScale_",
-          "named": false,
-          "shape": "float"
-        },
-        {
-          "key": "value8",
-          "member": "chargeCounterStunStateValue_",
-          "named": false,
-          "shape": "int"
-        },
-        {
-          "key": "value9",
-          "member": "breakStunStateValue_",
-          "named": false,
-          "shape": "int"
         }
       ]
     },
@@ -580,27 +556,6 @@
           "member": "animatorSetParam_",
           "named": false,
           "shape": "int"
-        }
-      ]
-    },
-    "EnemyStatus::OpenWeakPointWindow": {
-      "class": "OpenWeakPointWindow",
-      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::OpenWeakPointWindow",
-      "leaf": "OpenWeakPointWindow",
-      "version": 0,
-      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/OpenWeakPointWindow/Enemy_Behaviour_Action_OpenWeakPointWindow.h",
-      "params": [
-        {
-          "key": "weakPointObjectName_",
-          "member": "weakPointObjectName_",
-          "named": true,
-          "shape": "string"
-        },
-        {
-          "key": "duration_secs_",
-          "member": "duration_secs_",
-          "named": true,
-          "shape": "float"
         }
       ]
     },
@@ -720,45 +675,6 @@
           "named": true,
           "shape": "nested",
           "type": "PlaySE"
-        }
-      ]
-    },
-    "EnemyStatus::Stun": {
-      "class": "Stun",
-      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::Stun",
-      "leaf": "Stun",
-      "version": 0,
-      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/EnemyStatus/Stun/Enemy_Behaviour_Action_Stun.h",
-      "params": [
-        {
-          "key": "stunStateKeyName_",
-          "member": "stunStateKeyName_",
-          "named": true,
-          "shape": "string"
-        },
-        {
-          "key": "downAnimationNumber_",
-          "member": "downAnimationNumber_",
-          "named": true,
-          "shape": "int"
-        },
-        {
-          "key": "getUpAnimationNumber_",
-          "member": "getUpAnimationNumber_",
-          "named": true,
-          "shape": "int"
-        },
-        {
-          "key": "downDuration_secs_",
-          "member": "downDuration_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "getUpDuration_secs_",
-          "member": "getUpDuration_secs_",
-          "named": true,
-          "shape": "float"
         }
       ]
     },
@@ -1654,7 +1570,6 @@
     "GameCore::Npc::Enemy::Behaviour::Action::MoveToPlayerPos": "RigidBody::MoveToePlayerPos",
     "GameCore::Npc::Enemy::Behaviour::Action::OnDamage": "EnemyStatus::OnDamage",
     "GameCore::Npc::Enemy::Behaviour::Action::OnDeath": "EnemyStatus::OnDeath",
-    "GameCore::Npc::Enemy::Behaviour::Action::OpenWeakPointWindow": "EnemyStatus::OpenWeakPointWindow",
     "GameCore::Npc::Enemy::Behaviour::Action::PhysicsAttack": "EnemyStatus::PhysicsAttack",
     "GameCore::Npc::Enemy::Behaviour::Action::PlayAnimation": "EnemyStatus::PlayAnimation",
     "GameCore::Npc::Enemy::Behaviour::Action::PlayBGM": "Sound::PlayBGM",
@@ -1674,7 +1589,6 @@
     "GameCore::Npc::Enemy::Behaviour::Action::ShootDownAirShip": "RigidBody::Other::ShootDownAirShip",
     "GameCore::Npc::Enemy::Behaviour::Action::ShowBossHealthGauge": "Ui::ShowBossHealthGauge",
     "GameCore::Npc::Enemy::Behaviour::Action::StartChat": "Other::StartChat",
-    "GameCore::Npc::Enemy::Behaviour::Action::Stun": "EnemyStatus::Stun",
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerAngle": "Basic::ToPlayerAngle",
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance": "Basic::ToPlayerDistance",
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerRaycast": "Basic::ToPlayerRaycast",
@@ -1707,7 +1621,6 @@
     "MoveToPlayerPos": "RigidBody::MoveToePlayerPos",
     "OnDamage": "EnemyStatus::OnDamage",
     "OnDeath": "EnemyStatus::OnDeath",
-    "OpenWeakPointWindow": "EnemyStatus::OpenWeakPointWindow",
     "PhysicsAttack": "EnemyStatus::PhysicsAttack",
     "PlayAnimation": "EnemyStatus::PlayAnimation",
     "PlayBGM": "Sound::PlayBGM",
@@ -1727,7 +1640,6 @@
     "ShootDownAirShip": "RigidBody::Other::ShootDownAirShip",
     "ShowBossHealthGauge": "Ui::ShowBossHealthGauge",
     "StartChat": "Other::StartChat",
-    "Stun": "EnemyStatus::Stun",
     "ToPlayerAngle": "Basic::ToPlayerAngle",
     "ToPlayerDistance": "Basic::ToPlayerDistance",
     "ToPlayerRaycast": "Basic::ToPlayerRaycast",

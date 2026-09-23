@@ -66,7 +66,8 @@ namespace NanamiEngine::Module::Component
         if (modelDxLibHandle_ == -1)
             return;
 
-        const int listNum = MV1GetTriangleListNum(modelDxLibHandle_);
+        // WARNING: DxLib は無効なハンドルに -1 を返す。そのまま reserve すると size_t に化けて "vector too long" になる
+        const int listNum = (std::max)(MV1GetTriangleListNum(modelDxLibHandle_), 0);
         rigidTriangleList_.reserve(listNum);
         for (int i = 0; i < listNum; ++i)
         {
@@ -75,7 +76,7 @@ namespace NanamiEngine::Module::Component
             allRigid_ = allRigid_ && rigid;
         }
 
-        const int materialNum = MV1GetMaterialNum(modelDxLibHandle_);
+        const int materialNum = (std::max)(MV1GetMaterialNum(modelDxLibHandle_), 0);
         materialNames_        .reserve(materialNum);
         originalMaterialBlend_.reserve(materialNum);
         for (int i = 0; i < materialNum; ++i)
@@ -88,7 +89,7 @@ namespace NanamiEngine::Module::Component
 
         // トライアングルリストから材質を直接引く API が無いので、メッシュ経由で対応表を作る
         triangleListMaterialIndex_.assign(listNum, -1);
-        const int meshNum = MV1GetMeshNum(modelDxLibHandle_);
+        const int meshNum = (std::max)(MV1GetMeshNum(modelDxLibHandle_), 0);
         meshMaterialIndex_  .reserve(meshNum);
         meshOriginalCulling_.reserve(meshNum);
         for (int mesh = 0; mesh < meshNum; ++mesh)

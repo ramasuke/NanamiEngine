@@ -6,6 +6,7 @@
 
 #include "../UI_CharacterSelect.h"
 #include "../../../Prop/CharacterPodium/Prop_CharacterPodium.h"
+#include "../../../Sound/UiSoundBank.h"
 #include "../../../../Core/Game/Game.h"
 #include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
@@ -72,6 +73,7 @@ namespace GamePlay::Ui
             return;
         }
         isOpen_ = true;
+        Sound::UiSoundBank::Play(Sound::UiSe::Open);
 
         view_  = RequireComponent<CharacterSelectUi>();
         model_ = std::make_unique<CharacterSelectModel>(podium->Characters());
@@ -153,10 +155,14 @@ namespace GamePlay::Ui
             || xInput.Buttons[XINPUT_BUTTON_A];
         const bool isCancelPressed = CheckHitKey(KEY_INPUT_ESCAPE) || xInput.Buttons[XINPUT_BUTTON_B];
 
+        const size_t previousIndex = model_->SelectedIndex();
         if (isPrevPressed && !wasPrevPressed_)
             model_->MoveSelection(-1);
         if (isNextPressed && !wasNextPressed_)
             model_->MoveSelection(1);
+        // NOTE: 開いたときの初期選択でも OnSelectionChanged が来るので、音はキー操作でだけ鳴らす (マウスはホバーで鳴る)
+        if (model_->SelectedIndex() != previousIndex)
+            Sound::UiSoundBank::Play(Sound::UiSe::Cursor);
         if (isConfirmPressed && !wasConfirmPressed_)
             Confirm();
         else if (isCancelPressed && !wasCancelPressed_)
@@ -171,7 +177,10 @@ namespace GamePlay::Ui
     void CharacterSelectPresenter::Confirm()
     {
         if (!model_->CanConfirm())
+        {
+            Sound::UiSoundBank::Play(Sound::UiSe::Refuse);
             return;
+        }
 
         const auto character = model_->Selected();
         const auto owner = suspendedAvatar_.lock();
@@ -189,6 +198,7 @@ namespace GamePlay::Ui
             return;
         }
 
+        Sound::UiSoundBank::Play(Sound::UiSe::Stamp);
         scene->SwitchPlayerAvatar(character->AvatarType());
         Close(true);
     }
@@ -201,6 +211,7 @@ namespace GamePlay::Ui
 
         if (!didSwitch)
         {
+            Sound::UiSoundBank::Play(Sound::UiSe::Close);
             if (const auto owner = suspendedAvatar_.lock())
                 owner->EnableStateMachiine();
         }

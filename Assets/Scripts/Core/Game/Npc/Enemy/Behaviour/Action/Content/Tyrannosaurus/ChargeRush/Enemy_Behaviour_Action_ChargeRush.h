@@ -63,7 +63,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(0)]] float       wallMaxNormalY_        = 0.7f;
         [[serialize(0)]] std::string attackAreaName_        = "HeadButt";
         [[serialize(0)]] Damage::PhysicsPower attackPower_;
-        [[serialize(0)]] std::string stuckStateKeyName_     = "StunState";
+        [[serialize(0)]] std::string stuckStateKeyName_     = "StuckState";
         [[serialize(0)]] FIELD(Asset::SoundFile) impactSound_;
         [[serialize(0)]] WriteBlackBoard finishedWriteBlackBoard_ = WriteBlackBoard();
 

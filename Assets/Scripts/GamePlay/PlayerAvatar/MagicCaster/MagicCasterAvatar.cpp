@@ -21,7 +21,7 @@ namespace GamePlay::PlayerAvatar::MagicCaster
         const auto cameraGroup = AvatarCameraGroup().lock();
         if (!cameraGroup || !cameraGroup->IsLockedOn())
             return {};
-        return cameraGroup->LockOnAim();
+        return cameraGroup->LockOnTarget();
     }
 
     std::shared_ptr<Asset::PrefabGameObjectFile> MagicCasterAvatar::DealDamageTextPrefab() const

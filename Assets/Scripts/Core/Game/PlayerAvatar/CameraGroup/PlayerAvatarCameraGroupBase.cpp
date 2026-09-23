@@ -41,29 +41,17 @@ namespace GameCore::PlayerAvatar
         lockOnCamera_->OnDisable();
     }
 
-    void PlayerAvatarCameraGroupBase::EngageLockOn(const std::shared_ptr<GameObject::IGameObject>& target,
-                                                   const std::shared_ptr<GameObject::IGameObject>& part)
+    void PlayerAvatarCameraGroupBase::EngageLockOn(const std::shared_ptr<GameObject::IGameObject>& target)
     {
         if (!target || !lockOnCamera_)
             return;
 
-        lockOnCamera_->Components().Catch<CineMachine::Behaviour::LockOnCameraBehaviour>().lock()->SetLockOnTarget(target, part ? part : target);
+        lockOnCamera_->Components().Catch<CineMachine::Behaviour::LockOnCameraBehaviour>().lock()->SetLockOnTarget(target, target);
         // ロック中の切り替えではカメラはそのまま
         if (!isLockedOn_)
             ChangeCamera(LockOnCamera());
         lockOnTarget_ = target;
-        lockOnPart_ = part;
         isLockedOn_ = true;
-    }
-
-    std::shared_ptr<GameObject::IGameObject> PlayerAvatarCameraGroupBase::LockOnAim() const
-    {
-        auto target = lockOnTarget_.lock();
-        if (!target)
-            return nullptr;
-        if (auto part = lockOnPart_.lock())
-            return part;
-        return target;
     }
 
     void PlayerAvatarCameraGroupBase::ReleaseLockOn()
@@ -76,7 +64,6 @@ namespace GameCore::PlayerAvatar
 
         ChangeCamera(FollowFromBehind());
         lockOnTarget_.reset();
-        lockOnPart_.reset();
         isLockedOn_ = false;
     }
 

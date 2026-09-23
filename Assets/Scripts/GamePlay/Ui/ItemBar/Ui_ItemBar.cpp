@@ -11,6 +11,7 @@
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -241,8 +242,12 @@ namespace GamePlay::Ui
         auto& pouch = *pouchPtr;
         if (isContentDirty_ || pouch.Revision() != lastRevision_)
         {
-            if (!isContentDirty_ && pouch.SelectedIndex() != lastSelectedIndex_ && selectPulseDuration_secs_ > 0.0f)
-                selectPulse_.Play(tweeny::from(1.0f).to(0.0f).during(LibCore::Tween::Ms(selectPulseDuration_secs_)));
+            if (!isContentDirty_ && pouch.SelectedIndex() != lastSelectedIndex_)
+            {
+                Sound::UiSoundBank::Play(Sound::UiSe::HudSelect);
+                if (selectPulseDuration_secs_ > 0.0f)
+                    selectPulse_.Play(tweeny::from(1.0f).to(0.0f).during(LibCore::Tween::Ms(selectPulseDuration_secs_)));
+            }
 
             // 中身は即座に回るので、帯を前の位置へずらしておいて中央へ戻す
             if (const int step = isContentDirty_ ? 0 : SelectionStep(pouch); step != 0 && slideDuration_secs_ > 0.0f)

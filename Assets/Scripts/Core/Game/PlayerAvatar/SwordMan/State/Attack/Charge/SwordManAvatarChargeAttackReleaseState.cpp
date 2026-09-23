@@ -72,7 +72,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         const float yaw = glm::eulerAngles(Transform().GetWorldRot()).y;
         const glm::quat yRot = glm::angleAxis(yaw, glm::vec3(0.0f, 1.0f, 0.0f));
 
-        const bool isHit = NormalAttackArea().TryChargedPhysicsAttack(Player(), BuffedAttackPower(attackStatus.AttackPower()));
+        const bool isHit = NormalAttackArea().TryPhysicsAttack(Player(), BuffedAttackPower(attackStatus.AttackPower()));
         PlayAttackSe(isHit);
 
         // 壁に阻まれたなら叩きつけそのものが成立しないので、地面の岩も出さない
@@ -96,7 +96,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         const auto particle = NanamiEngine::Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), NormalAttackArea().Transform().GetWorldPos(), yRot);
         if (const auto particleObject = particle.lock())
             particleObject->Transform().SetLocalScale(glm::vec3(hitFeel.ParticleScale()));
-        DealDamageText(NormalAttackArea(), BuffedAttackPower(attackStatus.AttackPower()), true);
+        DealDamageText(NormalAttackArea(), BuffedAttackPower(attackStatus.AttackPower()));
         ShakeHitTargets(NormalAttackArea(), hitFeel);
     }
 

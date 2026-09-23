@@ -37,12 +37,6 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\GameOver\Presenter\GameOverPresenter.cpp">
       <Filter>Assets</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\BodyPart\GamePlay_Enemy_BodyPartWeakPoint.cpp">
-      <Filter>Assets</Filter>
-    </ClCompile>
-    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\BodyPart\GamePlay_Enemy_BodyPartWeakPoint.h">
-      <Filter>Assets</Filter>
-    </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\Loading\Ui_LoadingScreen.h">
       <Filter>Assets</Filter>
     </ClInclude>
@@ -535,27 +529,6 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Hyena\CallAllies\Enemy_Behaviour_Action_CallAllies.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Stun\Enemy_Behaviour_Action_Stun.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\OpenWeakPointWindow\Enemy_Behaviour_Action_OpenWeakPointWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Tyrannosaurus\ChargeRush\Enemy_Behaviour_Action_ChargeRush.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\RecoverFacingPlayer\Enemy_Behaviour_Action_RecoverFacingPlayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\CircleAroundPlayer\Enemy_Behaviour_Action_CircleAroundPlayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ToPlayerAngle\Enemy_Behaviour_Action_ToPlayerAngle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\LockPlayerCannon\Enemy_Behaviour_Action_LockPlayerCannon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\FallIsland\Enemy_Behaviour_Action_FallIsland.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -908,6 +881,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\SpawnSound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Sound\UiSoundBank.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.cpp">
@@ -1316,6 +1292,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\Quest\MagicCaster_QuestGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Tyrannosaurus\ChargeRush\Enemy_Behaviour_Action_ChargeRush.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\RecoverFacingPlayer\Enemy_Behaviour_Action_RecoverFacingPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\CircleAroundPlayer\Enemy_Behaviour_Action_CircleAroundPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ToPlayerAngle\Enemy_Behaviour_Action_ToPlayerAngle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\LockPlayerCannon\Enemy_Behaviour_Action_LockPlayerCannon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClInclude Include="Assets\Scripts\GamePlay\Network\Session\GamePlay_StageSessionMatchmaking.h">
@@ -1810,30 +1801,6 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Hyena\CallAllies\Enemy_Behaviour_Action_CallAllies.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Stun\Enemy_Behaviour_Action_Stun.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\OpenWeakPointWindow\Enemy_Behaviour_Action_OpenWeakPointWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Tyrannosaurus\ChargeRush\Enemy_Behaviour_Action_ChargeRush.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\RecoverFacingPlayer\Enemy_Behaviour_Action_RecoverFacingPlayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\Common\Enemy_Behaviour_FaceDirection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\CircleAroundPlayer\Enemy_Behaviour_Action_CircleAroundPlayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ToPlayerAngle\Enemy_Behaviour_Action_ToPlayerAngle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\LockPlayerCannon\Enemy_Behaviour_Action_LockPlayerCannon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\FallIsland\Enemy_Behaviour_Action_FallIsland.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2219,6 +2186,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SpawnSound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Sound\UiSoundBank.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.h">
@@ -2684,6 +2654,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\Status\Quest\MagicCaster_QuestGroup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Tyrannosaurus\ChargeRush\Enemy_Behaviour_Action_ChargeRush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\RecoverFacingPlayer\Enemy_Behaviour_Action_RecoverFacingPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\CircleAroundPlayer\Enemy_Behaviour_Action_CircleAroundPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ToPlayerAngle\Enemy_Behaviour_Action_ToPlayerAngle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\LockPlayerCannon\Enemy_Behaviour_Action_LockPlayerCannon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

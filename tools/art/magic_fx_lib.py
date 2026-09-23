@@ -141,8 +141,8 @@ def N(name, *, kind='sprite', tex=None, blend=ADD, life=30, count=1, interval=0,
       rot=None, rot_rand=None, spin=None, size=None, grow=None, grow_xyz=None,
       color=(255, 255, 255, 255), color_to=None, color_spread=None, ease=(0, 0),
       billboard=FACE, fade_in=None, fade_out=None, emit=None, gravity=None, attract=None,
-      uv_anim=None, uv_scroll=None, ring=None, children=None):
-    """One Effekseer node. ``kind`` is 'sprite' | 'ring' | 'group'."""
+      uv_anim=None, uv_scroll=None, ring=None, model=None, children=None):
+    """One Effekseer node. ``kind`` is 'sprite' | 'ring' | 'model' | 'group' (``model`` = the .efkmodel path)."""
     common = _common(count=count, interval=interval, delay=delay, life=life, infinite=infinite,
                      bind=bind, bind_rot=bind_rot, bind_scale=bind_scale)
     kw = dict(common=common, location=_location(at, at_rand, vel, acc, move), rotation=_rotation(rot, rot_rand, spin),
@@ -191,6 +191,10 @@ def N(name, *, kind='sprite', tex=None, blend=ADD, life=30, count=1, interval=0,
                        inner_color=P.color('InnerColor_Fixed', *c_inner))
         block.children.insert(0, Elem('Billboard', text=str(billboard)))
         return P.ring_node(name, ring_block=block, children=children, **kw)
+
+    if kind == 'model':
+        block = P.model(model_path=model, lighting=False, color_fixed=P.color('Color_Fixed', *color))
+        return P.model_node(name, model_block=block, children=children, **kw)
     raise ValueError(kind)
 
 

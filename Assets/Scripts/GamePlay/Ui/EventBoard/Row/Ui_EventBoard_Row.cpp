@@ -1,7 +1,7 @@
 ﻿#include "Ui_EventBoard_Row.h"
 
 #include "Engine/Module/GameObject/Transform/Transform.h"
-#include "../../../Sound/SoundPlayer.h"
+#include "../../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -22,8 +22,7 @@ namespace GamePlay::Ui
 
         selectButton_->OnHover().Subscribe([this](auto)
         {
-            if (const auto sound = hoverSound_.get())
-                Sound::SoundPlayer::PlaySe(*sound, Sound::SoundPlayer::Position());
+            Sound::UiSoundBank::Play(hoverSound_, Sound::UiSe::Cursor);
             isHovering_ = true;
             RefreshAppearance();
         }).AddTo(this);

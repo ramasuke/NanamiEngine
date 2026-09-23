@@ -18,12 +18,18 @@ namespace GamePlay::PlayerAvatar
     {
     public:
         [[nodiscard]] std::weak_ptr<IPlayerInteractable> CatchInteractTarget();
+        /**
+         * @brief OnInteractable を呼んでいる最中に、それが自分の (ローカルの) アバターから来たかどうか
+         * NOTE: 他のプレイヤーが近づいただけで UI の音を鳴らさないために使う
+         */
+        [[nodiscard]] static bool IsNotifyingOwner() { return isNotifyingOwner_; }
 
     private:
         void OnTriggerEnter(const Physics::Manifold& contactManifold, const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
         void OnTriggerExit (const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
         
         std::vector<std::weak_ptr<IPlayerInteractable>> playerInteractableTargets_;
+        static inline bool isNotifyingOwner_ = false;
 
 #pragma region Serialization Function
     public:

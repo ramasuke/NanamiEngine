@@ -15,14 +15,7 @@ namespace GamePlay::Ui
                                           public LifeCycleCallback::IUpdatable
     {
     public:
-        enum class Emphasis
-        {
-            Normal,
-            BreakablePart,
-            WeakPointStun,
-        };
-
-        void Play(int value, Emphasis emphasis);
+        void Play(int value);
 
     private:
         void OnAwake () override;
@@ -32,10 +25,6 @@ namespace GamePlay::Ui
         float fallTime_   = 0.3f;
         float riseAmount_ = 1.0f;
         float fallAmount_ = 0.8f;
-
-        Color32 breakablePartColor_ = Color32(255, 215, 0);
-        Color32 weakPointStunColor_ = Color32(255, 40, 40);
-        float   emphasisScaleRate_  = 1.5f;
 
         // ダメージ量で文字の大きさを変える。間は log で補間する
         int   minScaleDamage_ = 10;
@@ -70,9 +59,6 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(fallTime_));
             archive(CEREAL_NVP(riseAmount_));
             archive(CEREAL_NVP(fallAmount_));
-            archive(CEREAL_NVP(breakablePartColor_));
-            archive(CEREAL_NVP(weakPointStunColor_));
-            archive(CEREAL_NVP(emphasisScaleRate_));
             archive(CEREAL_NVP(minScaleDamage_));
             archive(CEREAL_NVP(maxScaleDamage_));
             archive(CEREAL_NVP(minScale_));
@@ -90,9 +76,16 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(fallTime_));
             if (version >= 0) archive(CEREAL_NVP(riseAmount_));
             if (version >= 0) archive(CEREAL_NVP(fallAmount_));
-            if (version >= 1) archive(CEREAL_NVP(breakablePartColor_));
-            if (version >= 1) archive(CEREAL_NVP(weakPointStunColor_));
-            if (version >= 1) archive(CEREAL_NVP(emphasisScaleRate_));
+            // NOTE: version 1, 2 は部位の強調表示(削除済み)の値が入っているので読み捨てる
+            if (version == 1 || version == 2)
+            {
+                Color32 breakablePartColor;
+                Color32 weakPointStunColor;
+                float   emphasisScaleRate = 0.0f;
+                archive(cereal::make_nvp("breakablePartColor_", breakablePartColor));
+                archive(cereal::make_nvp("weakPointStunColor_", weakPointStunColor));
+                archive(cereal::make_nvp("emphasisScaleRate_", emphasisScaleRate));
+            }
             if (version >= 2) archive(CEREAL_NVP(minScaleDamage_));
             if (version >= 2) archive(CEREAL_NVP(maxScaleDamage_));
             if (version >= 2) archive(CEREAL_NVP(minScale_));
@@ -105,13 +98,10 @@ namespace GamePlay::Ui
 #pragma endregion
     };
 
-    /** @brief 当たった部位から強調色を決めて、position にダメージ表記を出す */
+    /** @brief position にダメージ表記を出す */
     void SpawnDealDamageText(Asset::PrefabGameObjectFile& prefab,
                              const glm::vec3& position,
-                             int value,
-                             const std::shared_ptr<GameObject::IGameObject>& hitPart,
-                             GameObject::IGameObject& targetObject,
-                             bool isChargedAttack);
+                             int value);
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::DealDamageTextBillBoard, 2);
+CEREAL_CLASS_VERSION(GamePlay::Ui::DealDamageTextBillBoard, 3);

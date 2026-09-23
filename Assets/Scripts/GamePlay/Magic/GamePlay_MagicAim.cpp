@@ -113,7 +113,7 @@ namespace GamePlay::Magic
         for (const auto& weakTarget : owner->Components().Catches<GameCore::PlayerAvatar::ITakablePlayerAttack>())
         {
             if (const auto target = weakTarget.lock())
-                target->OnTakeDamage(std::make_unique<GameCore::Damage::Physics>(from, *owner, power, hitObject, false));
+                target->OnTakeDamage(std::make_unique<GameCore::Damage::Physics>(from, *owner, power));
         }
     }
 
@@ -131,7 +131,7 @@ namespace GamePlay::Magic
         if (!prefab)
             return;
 
-        Ui::SpawnDealDamageText(*prefab, position, power.Value(), hitObject, *owner, false);
+        Ui::SpawnDealDamageText(*prefab, position, power.Value());
     }
 
     bool ShakeOnSpellHit(const std::weak_ptr<GameObject::IGameObject>& caster,

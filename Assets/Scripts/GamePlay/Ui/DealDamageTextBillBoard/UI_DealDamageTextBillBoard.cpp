@@ -6,34 +6,20 @@
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
-#include "../../Npc/Enemy/BodyPart/GamePlay_Enemy_BodyPartWeakPoint.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
     void SpawnDealDamageText(Asset::PrefabGameObjectFile& prefab,
                              const glm::vec3& position,
-                             const int value,
-                             const std::shared_ptr<GameObject::IGameObject>& hitPart,
-                             GameObject::IGameObject& targetObject,
-                             const bool isChargedAttack)
+                             const int value)
     {
-        using Emphasis = DealDamageTextBillBoard::Emphasis;
-
-        const auto weakPoint = Npc::Enemy::BodyPartWeakPoint::FindFrom(hitPart, targetObject);
-
-        auto emphasis = Emphasis::Normal;
-        if (weakPoint && weakPoint->IsChargeCounter(isChargedAttack))
-            emphasis = Emphasis::WeakPointStun;
-        else if (weakPoint && !weakPoint->IsBroken())
-            emphasis = Emphasis::BreakablePart;
-
         const auto damageText = Scene::GameObject::Instantiate(prefab, position).lock();
         if (!damageText)
             return;
 
         if (const auto billBoard = damageText->Components().Catch<DealDamageTextBillBoard>().lock())
-            billBoard->Play(value, emphasis);
+            billBoard->Play(value);
     }
 
     float DealDamageTextBillBoard::ScaleForDamage(const int value) const
@@ -46,25 +32,17 @@ namespace GamePlay::Ui
         return glm::mix(minScale_, maxScale_, t);
     }
 
-    void DealDamageTextBillBoard::Play(const int value, const Emphasis emphasis)
+    void DealDamageTextBillBoard::Play(const int value)
     {
         const auto textRenderer = RequireComponent<NanamiUi::TextRenderer>();
         textRenderer->SetText(std::to_string(value));
 
         const bool isHeavy = value >= heavyDamage_;
 
-        float scale = ScaleForDamage(value);
-        if (emphasis != Emphasis::Normal)
-        {
-            textRenderer->SetTextColor(emphasis == Emphasis::WeakPointStun ? weakPointStunColor_ : breakablePartColor_);
-            scale *= emphasisScaleRate_;
-        }
-        else if (isHeavy)
-        {
+        if (isHeavy)
             textRenderer->SetTextColor(heavyColor_);
-        }
 
-        baseScale_ = Transform().GetLocalScale() * scale;
+        baseScale_ = Transform().GetLocalScale() * ScaleForDamage(value);
         Transform().SetLocalScale(baseScale_);
 
         if (isHeavy)
@@ -113,9 +91,6 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("fallTime_",   fallTime_);
         ImGuiHelper::OnDrawInputField("riseAmount_", riseAmount_);
         ImGuiHelper::OnDrawInputField("fallAmount_", fallAmount_);
-        ImGuiHelper::OnDrawInputField("breakablePartColor_", breakablePartColor_);
-        ImGuiHelper::OnDrawInputField("weakPointStunColor_", weakPointStunColor_);
-        ImGuiHelper::OnDrawInputField("emphasisScaleRate_",  emphasisScaleRate_);
         ImGuiHelper::OnDrawInputField("minScaleDamage_", minScaleDamage_);
         ImGuiHelper::OnDrawInputField("maxScaleDamage_", maxScaleDamage_);
         ImGuiHelper::OnDrawInputField("minScale_",       minScale_);

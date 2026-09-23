@@ -195,7 +195,7 @@ namespace NanamiEngine::Core::MainWindow
 
         ImGui::Checkbox("NameCheck", &nameCheck_);
         if (ImGui::IsItemHovered())
-            ImGui::SetTooltip("MV1AttachAnim NameCheck (AnimationClipNode attaches with OFF)");
+            ImGui::SetTooltip("MV1AttachAnim NameCheck (AnimationClipNode uses its nameCheck_, OFF by default)");
     }
 
     void AnimationViewWindow::DrawRootMotionGui(const int modelHandle)

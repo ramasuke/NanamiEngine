@@ -39,7 +39,7 @@ namespace GamePlay::Ui
         void OnUpdate() override;
         void UpdateOpened(GamePlay::PlayerAvatar::SwordMan::SwordManAvatar& avatar);
         void Open(GamePlay::PlayerAvatar::SwordMan::SwordManAvatar& avatar);
-        void Close();
+        void Close(bool withSound = true);
         void Confirm();
         [[nodiscard]] static Keys ReadKeys();
         [[nodiscard]] static bool IsOpenMenuDeclared(const GamePlay::PlayerAvatar::SwordMan::SwordManAvatar& avatar);

@@ -210,6 +210,14 @@ at `clipStartTime_` every time it is entered, loops back to it on reaching the e
 `--no-loop` — stops at the end and holds that pose. Defaults (`0` / `0` / loop) reproduce the
 pre-version-3 behaviour. Exit-time transitions use the range end.
 
+**Bone matching** (`nameCheck_`, class version 4, default `false`). `MV1AttachAnim` maps the clip's
+frames onto the model **by frame index** unless `nameCheck_` is on. A clip exported with a different
+frame layout than the model - e.g. a skeleton-only Mixamo export played on a model whose mesh frames
+come first (`Brute.mv1`: 10 mesh frames, then `mixamorig:Hips`) - then leaves every bone at the bind
+pose (T-pose). Turn `nameCheck_` on for such clips (`set-node-params <tree> --node <guid> nameCheck_=true`);
+don't flip it on clips that already play, since some (e.g. Brute's `Down *.mv1`) only work by index.
+The editor's Animation View has the same NameCheck checkbox to try a clip both ways.
+
 Transitions out of a node are only evaluated near the end of its clip
 (`AnimationNodePath::TryAddNextCurrentNodePath`: `GetAnimDuration_secs() - transitionDuration < during`).
 A `--no-loop` node held at its range end re-evaluates its transitions every frame, but to let a state

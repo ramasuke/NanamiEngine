@@ -95,7 +95,7 @@
                                                                                 "ptr_wrapper": {
                                                                                     "valid": 1,
                                                                                     "data": {
-                                                                                        "cereal_class_version": 5,
+                                                                                        "cereal_class_version": 6,
                                                                                         "value0": {
                                                                                             "cereal_class_version": 0
                                                                                         },
@@ -121,11 +121,7 @@
                                                                                         },
                                                                                         "value3": 0,
                                                                                         "value4": false,
-                                                                                        "value5": 0.4000000059604645,
-                                                                                        "value6": "",
-                                                                                        "value7": 1.0,
-                                                                                        "value8": 1,
-                                                                                        "value9": 1
+                                                                                        "value5": 0.4000000059604645
                                                                                     }
                                                                                 }
                                                                             }
@@ -761,7 +757,7 @@
                                                                                             "value0": {
                                                                                                 "value0": {},
                                                                                                 "guid_": {
-                                                                                                    "value_": "63F70C2F-8CE8-49E6-86F3-C51EA5172412"
+                                                                                                    "value_": "73FDA87B-6C95-427F-BC99-E61FB3174357"
                                                                                                 },
                                                                                                 "position_": {
                                                                                                     "value0": 247.0,
@@ -776,11 +772,72 @@
                                                                                                         "value0": {
                                                                                                             "value0": {},
                                                                                                             "guid_": {
-                                                                                                                "value_": "C12974E3-6C5D-4144-8190-A7B16DB043D6"
+                                                                                                                "value_": "A8DE4DF2-6A7E-459A-87FC-A583604E1A4A"
                                                                                                             },
                                                                                                             "position_": {
                                                                                                                 "value0": 247.0,
                                                                                                                 "value1": 1540.0
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "name_": "Enable Island Fall Camera",
+                                                                                                        "action_": {
+                                                                                                            "polymorphic_id": 9,
+                                                                                                            "ptr_wrapper": {
+                                                                                                                "valid": 1,
+                                                                                                                "data": {
+                                                                                                                    "value0": {},
+                                                                                                                    "purposeCamera_": {
+                                                                                                                        "value0": {
+                                                                                                                            "polymorphic_id": 1073741824,
+                                                                                                                            "ptr_wrapper": {
+                                                                                                                                "id": 2147483684,
+                                                                                                                                "data": {
+                                                                                                                                    "value0": {
+                                                                                                                                        "value_": "03EDFB8A-1E13-497F-8D75-E2FD0F502D80"
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    },
+                                                                                                                    "priority_": 110
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            },
+                                                                                            "state_": 0
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "polymorphic_id": 6,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483685,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "63F70C2F-8CE8-49E6-86F3-C51EA5172412"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 247.0,
+                                                                                                    "value1": 1600.0
+                                                                                                }
+                                                                                            },
+                                                                                            "child_": {
+                                                                                                "polymorphic_id": 3,
+                                                                                                "ptr_wrapper": {
+                                                                                                    "id": 2147483686,
+                                                                                                    "data": {
+                                                                                                        "value0": {
+                                                                                                            "value0": {},
+                                                                                                            "guid_": {
+                                                                                                                "value_": "C12974E3-6C5D-4144-8190-A7B16DB043D6"
+                                                                                                            },
+                                                                                                            "position_": {
+                                                                                                                "value0": 247.0,
+                                                                                                                "value1": 1660.0
                                                                                                             }
                                                                                                         },
                                                                                                         "name_": "Heart Claw Animation",
@@ -801,7 +858,7 @@
                                                                                                                             "value0": {
                                                                                                                                 "polymorphic_id": 1073741824,
                                                                                                                                 "ptr_wrapper": {
-                                                                                                                                    "id": 2147483684,
+                                                                                                                                    "id": 2147483687,
                                                                                                                                     "data": {
                                                                                                                                         "value0": {
                                                                                                                                             "value_": "00000000-0000-0000-0000-000000000000"
@@ -824,7 +881,7 @@
                                                                                 {
                                                                                     "polymorphic_id": 3,
                                                                                     "ptr_wrapper": {
-                                                                                        "id": 2147483685,
+                                                                                        "id": 2147483688,
                                                                                         "data": {
                                                                                             "value0": {
                                                                                                 "value0": {},
@@ -833,7 +890,7 @@
                                                                                                 },
                                                                                                 "position_": {
                                                                                                     "value0": 247.0,
-                                                                                                    "value1": 1600.0
+                                                                                                    "value1": 1720.0
                                                                                                 }
                                                                                             },
                                                                                             "name_": "Heart Claw Wait",
@@ -853,7 +910,7 @@
                                                                                 {
                                                                                     "polymorphic_id": 6,
                                                                                     "ptr_wrapper": {
-                                                                                        "id": 2147483686,
+                                                                                        "id": 2147483689,
                                                                                         "data": {
                                                                                             "value0": {
                                                                                                 "value0": {},
@@ -862,13 +919,13 @@
                                                                                                 },
                                                                                                 "position_": {
                                                                                                     "value0": 247.0,
-                                                                                                    "value1": 1660.0
+                                                                                                    "value1": 1780.0
                                                                                                 }
                                                                                             },
                                                                                             "child_": {
                                                                                                 "polymorphic_id": 2,
                                                                                                 "ptr_wrapper": {
-                                                                                                    "id": 2147483687,
+                                                                                                    "id": 2147483690,
                                                                                                     "data": {
                                                                                                         "value0": {
                                                                                                             "value0": {},
@@ -877,14 +934,14 @@
                                                                                                             },
                                                                                                             "position_": {
                                                                                                                 "value0": 247.0,
-                                                                                                                "value1": 1720.0
+                                                                                                                "value1": 1840.0
                                                                                                             }
                                                                                                         },
                                                                                                         "children_": [
                                                                                                             {
                                                                                                                 "polymorphic_id": 3,
                                                                                                                 "ptr_wrapper": {
-                                                                                                                    "id": 2147483688,
+                                                                                                                    "id": 2147483691,
                                                                                                                     "data": {
                                                                                                                         "value0": {
                                                                                                                             "value0": {},
@@ -893,7 +950,7 @@
                                                                                                                             },
                                                                                                                             "position_": {
                                                                                                                                 "value0": 247.0,
-                                                                                                                                "value1": 1780.0
+                                                                                                                                "value1": 1900.0
                                                                                                                             }
                                                                                                                         },
                                                                                                                         "name_": "Heart Break Particle",
@@ -914,7 +971,7 @@
                                                                                                                                         "value0": {
                                                                                                                                             "polymorphic_id": 1073741824,
                                                                                                                                             "ptr_wrapper": {
-                                                                                                                                                "id": 2147483689,
+                                                                                                                                                "id": 2147483692,
                                                                                                                                                 "data": {
                                                                                                                                                     "value0": {
                                                                                                                                                         "value_": "A729A62D-FA3E-4A00-BE1A-E21FF3CA0CEF"
@@ -932,7 +989,7 @@
                                                                                                             {
                                                                                                                 "polymorphic_id": 3,
                                                                                                                 "ptr_wrapper": {
-                                                                                                                    "id": 2147483690,
+                                                                                                                    "id": 2147483693,
                                                                                                                     "data": {
                                                                                                                         "value0": {
                                                                                                                             "value0": {},
@@ -941,7 +998,7 @@
                                                                                                                             },
                                                                                                                             "position_": {
                                                                                                                                 "value0": 247.0,
-                                                                                                                                "value1": 1840.0
+                                                                                                                                "value1": 1960.0
                                                                                                                             }
                                                                                                                         },
                                                                                                                         "name_": "Heart Break Quake Sound",
@@ -955,7 +1012,7 @@
                                                                                                                                         "value0": {
                                                                                                                                             "polymorphic_id": 1073741824,
                                                                                                                                             "ptr_wrapper": {
-                                                                                                                                                "id": 2147483691,
+                                                                                                                                                "id": 2147483694,
                                                                                                                                                 "data": {
                                                                                                                                                     "value0": {
                                                                                                                                                         "value_": "34A87A6E-0B3F-4C19-A47C-47BABACEA6E9"
@@ -973,7 +1030,7 @@
                                                                                                             {
                                                                                                                 "polymorphic_id": 3,
                                                                                                                 "ptr_wrapper": {
-                                                                                                                    "id": 2147483692,
+                                                                                                                    "id": 2147483695,
                                                                                                                     "data": {
                                                                                                                         "value0": {
                                                                                                                             "value0": {},
@@ -982,7 +1039,7 @@
                                                                                                                             },
                                                                                                                             "position_": {
                                                                                                                                 "value0": 247.0,
-                                                                                                                                "value1": 1900.0
+                                                                                                                                "value1": 2020.0
                                                                                                                             }
                                                                                                                         },
                                                                                                                         "name_": "Heart Break Crumble Sound",
@@ -996,7 +1053,7 @@
                                                                                                                                         "value0": {
                                                                                                                                             "polymorphic_id": 1073741824,
                                                                                                                                             "ptr_wrapper": {
-                                                                                                                                                "id": 2147483693,
+                                                                                                                                                "id": 2147483696,
                                                                                                                                                 "data": {
                                                                                                                                                     "value0": {
                                                                                                                                                         "value_": "915D7FB9-53F5-4715-BF7D-5AB69487DC7A"
@@ -1014,7 +1071,7 @@
                                                                                                             {
                                                                                                                 "polymorphic_id": 3,
                                                                                                                 "ptr_wrapper": {
-                                                                                                                    "id": 2147483694,
+                                                                                                                    "id": 2147483697,
                                                                                                                     "data": {
                                                                                                                         "value0": {
                                                                                                                             "value0": {},
@@ -1023,7 +1080,7 @@
                                                                                                                             },
                                                                                                                             "position_": {
                                                                                                                                 "value0": 247.0,
-                                                                                                                                "value1": 1960.0
+                                                                                                                                "value1": 2080.0
                                                                                                                             }
                                                                                                                         },
                                                                                                                         "name_": "Heart Edge Crumble West",
@@ -1044,7 +1101,7 @@
                                                                                                                                         "value0": {
                                                                                                                                             "polymorphic_id": 1073741824,
                                                                                                                                             "ptr_wrapper": {
-                                                                                                                                                "id": 2147483695,
+                                                                                                                                                "id": 2147483698,
                                                                                                                                                 "data": {
                                                                                                                                                     "value0": {
                                                                                                                                                         "value_": "44D6DD97-A03D-4623-8178-709F81EBAA71"
@@ -1062,7 +1119,7 @@
                                                                                                             {
                                                                                                                 "polymorphic_id": 3,
                                                                                                                 "ptr_wrapper": {
-                                                                                                                    "id": 2147483696,
+                                                                                                                    "id": 2147483699,
                                                                                                                     "data": {
                                                                                                                         "value0": {
                                                                                                                             "value0": {},
@@ -1071,7 +1128,7 @@
                                                                                                                             },
                                                                                                                             "position_": {
                                                                                                                                 "value0": 247.0,
-                                                                                                                                "value1": 2020.0
+                                                                                                                                "value1": 2140.0
                                                                                                                             }
                                                                                                                         },
                                                                                                                         "name_": "Heart Edge Crumble East",
@@ -1092,7 +1149,7 @@
                                                                                                                                         "value0": {
                                                                                                                                             "polymorphic_id": 1073741824,
                                                                                                                                             "ptr_wrapper": {
-                                                                                                                                                "id": 2147483697,
+                                                                                                                                                "id": 2147483700,
                                                                                                                                                 "data": {
                                                                                                                                                     "value0": {
                                                                                                                                                         "value_": "44D6DD97-A03D-4623-8178-709F81EBAA71"
@@ -1110,7 +1167,7 @@
                                                                                                             {
                                                                                                                 "polymorphic_id": 3,
                                                                                                                 "ptr_wrapper": {
-                                                                                                                    "id": 2147483698,
+                                                                                                                    "id": 2147483701,
                                                                                                                     "data": {
                                                                                                                         "value0": {
                                                                                                                             "value0": {},
@@ -1119,7 +1176,7 @@
                                                                                                                             },
                                                                                                                             "position_": {
                                                                                                                                 "value0": 247.0,
-                                                                                                                                "value1": 2080.0
+                                                                                                                                "value1": 2200.0
                                                                                                                             }
                                                                                                                         },
                                                                                                                         "name_": "Heart Edge Crumble South",
@@ -1140,7 +1197,7 @@
                                                                                                                                         "value0": {
                                                                                                                                             "polymorphic_id": 1073741824,
                                                                                                                                             "ptr_wrapper": {
-                                                                                                                                                "id": 2147483699,
+                                                                                                                                                "id": 2147483702,
                                                                                                                                                 "data": {
                                                                                                                                                     "value0": {
                                                                                                                                                         "value_": "44D6DD97-A03D-4623-8178-709F81EBAA71"
@@ -1158,7 +1215,7 @@
                                                                                                             {
                                                                                                                 "polymorphic_id": 3,
                                                                                                                 "ptr_wrapper": {
-                                                                                                                    "id": 2147483700,
+                                                                                                                    "id": 2147483703,
                                                                                                                     "data": {
                                                                                                                         "value0": {
                                                                                                                             "value0": {},
@@ -1167,7 +1224,7 @@
                                                                                                                             },
                                                                                                                             "position_": {
                                                                                                                                 "value0": 247.0,
-                                                                                                                                "value1": 2140.0
+                                                                                                                                "value1": 2260.0
                                                                                                                             }
                                                                                                                         },
                                                                                                                         "name_": "Heart Edge Crumble North",
@@ -1188,7 +1245,7 @@
                                                                                                                                         "value0": {
                                                                                                                                             "polymorphic_id": 1073741824,
                                                                                                                                             "ptr_wrapper": {
-                                                                                                                                                "id": 2147483701,
+                                                                                                                                                "id": 2147483704,
                                                                                                                                                 "data": {
                                                                                                                                                     "value0": {
                                                                                                                                                         "value_": "44D6DD97-A03D-4623-8178-709F81EBAA71"
@@ -1214,7 +1271,7 @@
                                                                                 {
                                                                                     "polymorphic_id": 6,
                                                                                     "ptr_wrapper": {
-                                                                                        "id": 2147483702,
+                                                                                        "id": 2147483705,
                                                                                         "data": {
                                                                                             "value0": {
                                                                                                 "value0": {},
@@ -1223,13 +1280,13 @@
                                                                                                 },
                                                                                                 "position_": {
                                                                                                     "value0": 247.0,
-                                                                                                    "value1": 2200.0
+                                                                                                    "value1": 2320.0
                                                                                                 }
                                                                                             },
                                                                                             "child_": {
                                                                                                 "polymorphic_id": 3,
                                                                                                 "ptr_wrapper": {
-                                                                                                    "id": 2147483703,
+                                                                                                    "id": 2147483706,
                                                                                                     "data": {
                                                                                                         "value0": {
                                                                                                             "value0": {},
@@ -1238,7 +1295,7 @@
                                                                                                             },
                                                                                                             "position_": {
                                                                                                                 "value0": 247.0,
-                                                                                                                "value1": 2260.0
+                                                                                                                "value1": 2380.0
                                                                                                             }
                                                                                                         },
                                                                                                         "name_": "Heart Shard Scatter",
@@ -1253,13 +1310,13 @@
                                                                                                                         "value1": 30.0,
                                                                                                                         "value2": 57.1
                                                                                                                     },
-                                                                                                                    "lifeTime_": 3.0,
+                                                                                                                    "lifeTime_": 3.3,
                                                                                                                     "isUseAbsolutePosition_": true,
                                                                                                                     "particlePrefab_": {
                                                                                                                         "value0": {
                                                                                                                             "polymorphic_id": 1073741824,
                                                                                                                             "ptr_wrapper": {
-                                                                                                                                "id": 2147483704,
+                                                                                                                                "id": 2147483707,
                                                                                                                                 "data": {
                                                                                                                                     "value0": {
                                                                                                                                         "value_": "128D83AC-51CC-4398-964E-15885320BFD1"
@@ -1281,7 +1338,7 @@
                                                                                 {
                                                                                     "polymorphic_id": 6,
                                                                                     "ptr_wrapper": {
-                                                                                        "id": 2147483705,
+                                                                                        "id": 2147483708,
                                                                                         "data": {
                                                                                             "value0": {
                                                                                                 "value0": {},
@@ -1290,13 +1347,13 @@
                                                                                                 },
                                                                                                 "position_": {
                                                                                                     "value0": 247.0,
-                                                                                                    "value1": 2320.0
+                                                                                                    "value1": 2440.0
                                                                                                 }
                                                                                             },
                                                                                             "child_": {
                                                                                                 "polymorphic_id": 3,
                                                                                                 "ptr_wrapper": {
-                                                                                                    "id": 2147483706,
+                                                                                                    "id": 2147483709,
                                                                                                     "data": {
                                                                                                         "value0": {
                                                                                                             "value0": {},
@@ -1305,7 +1362,7 @@
                                                                                                             },
                                                                                                             "position_": {
                                                                                                                 "value0": 247.0,
-                                                                                                                "value1": 2380.0
+                                                                                                                "value1": 2500.0
                                                                                                             }
                                                                                                         },
                                                                                                         "name_": "Heart Shatter Shake",
@@ -1332,7 +1389,7 @@
                                                                                 {
                                                                                     "polymorphic_id": 6,
                                                                                     "ptr_wrapper": {
-                                                                                        "id": 2147483707,
+                                                                                        "id": 2147483710,
                                                                                         "data": {
                                                                                             "value0": {
                                                                                                 "value0": {},
@@ -1341,13 +1398,13 @@
                                                                                                 },
                                                                                                 "position_": {
                                                                                                     "value0": 247.0,
-                                                                                                    "value1": 2440.0
+                                                                                                    "value1": 2560.0
                                                                                                 }
                                                                                             },
                                                                                             "child_": {
                                                                                                 "polymorphic_id": 2,
                                                                                                 "ptr_wrapper": {
-                                                                                                    "id": 2147483708,
+                                                                                                    "id": 2147483711,
                                                                                                     "data": {
                                                                                                         "value0": {
                                                                                                             "value0": {},
@@ -1356,14 +1413,14 @@
                                                                                                             },
                                                                                                             "position_": {
                                                                                                                 "value0": 247.0,
-                                                                                                                "value1": 2500.0
+                                                                                                                "value1": 2620.0
                                                                                                             }
                                                                                                         },
                                                                                                         "children_": [
                                                                                                             {
                                                                                                                 "polymorphic_id": 3,
                                                                                                                 "ptr_wrapper": {
-                                                                                                                    "id": 2147483709,
+                                                                                                                    "id": 2147483712,
                                                                                                                     "data": {
                                                                                                                         "value0": {
                                                                                                                             "value0": {},
@@ -1372,7 +1429,7 @@
                                                                                                                             },
                                                                                                                             "position_": {
                                                                                                                                 "value0": 247.0,
-                                                                                                                                "value1": 2560.0
+                                                                                                                                "value1": 2680.0
                                                                                                                             }
                                                                                                                         },
                                                                                                                         "name_": "Heart Collapse Delay",
@@ -1392,79 +1449,12 @@
                                                                                                             {
                                                                                                                 "polymorphic_id": 6,
                                                                                                                 "ptr_wrapper": {
-                                                                                                                    "id": 2147483710,
-                                                                                                                    "data": {
-                                                                                                                        "value0": {
-                                                                                                                            "value0": {},
-                                                                                                                            "guid_": {
-                                                                                                                                "value_": "BF584446-9E75-4FE3-BD9A-E1FB1A7F2384"
-                                                                                                                            },
-                                                                                                                            "position_": {
-                                                                                                                                "value0": 247.0,
-                                                                                                                                "value1": 2620.0
-                                                                                                                            }
-                                                                                                                        },
-                                                                                                                        "child_": {
-                                                                                                                            "polymorphic_id": 3,
-                                                                                                                            "ptr_wrapper": {
-                                                                                                                                "id": 2147483711,
-                                                                                                                                "data": {
-                                                                                                                                    "value0": {
-                                                                                                                                        "value0": {},
-                                                                                                                                        "guid_": {
-                                                                                                                                            "value_": "34C7DE2A-3DA3-47A6-9E8D-B3BA9C44140A"
-                                                                                                                                        },
-                                                                                                                                        "position_": {
-                                                                                                                                            "value0": 247.0,
-                                                                                                                                            "value1": 2680.0
-                                                                                                                                        }
-                                                                                                                                    },
-                                                                                                                                    "name_": "Heart Collapse Crumble Bottom",
-                                                                                                                                    "action_": {
-                                                                                                                                        "polymorphic_id": 10,
-                                                                                                                                        "ptr_wrapper": {
-                                                                                                                                            "valid": 1,
-                                                                                                                                            "data": {
-                                                                                                                                                "value0": {},
-                                                                                                                                                "offset_": {
-                                                                                                                                                    "value0": -18.8,
-                                                                                                                                                    "value1": -45.0,
-                                                                                                                                                    "value2": 57.1
-                                                                                                                                                },
-                                                                                                                                                "lifeTime_": 4.0,
-                                                                                                                                                "isUseAbsolutePosition_": true,
-                                                                                                                                                "particlePrefab_": {
-                                                                                                                                                    "value0": {
-                                                                                                                                                        "polymorphic_id": 1073741824,
-                                                                                                                                                        "ptr_wrapper": {
-                                                                                                                                                            "id": 2147483712,
-                                                                                                                                                            "data": {
-                                                                                                                                                                "value0": {
-                                                                                                                                                                    "value_": "44D6DD97-A03D-4623-8178-709F81EBAA71"
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        },
-                                                                                                                        "state_": 0
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            },
-                                                                                                            {
-                                                                                                                "polymorphic_id": 6,
-                                                                                                                "ptr_wrapper": {
                                                                                                                     "id": 2147483713,
                                                                                                                     "data": {
                                                                                                                         "value0": {
                                                                                                                             "value0": {},
                                                                                                                             "guid_": {
-                                                                                                                                "value_": "9257786F-992B-4A21-AC86-D5A6B127159A"
+                                                                                                                                "value_": "BF584446-9E75-4FE3-BD9A-E1FB1A7F2384"
                                                                                                                             },
                                                                                                                             "position_": {
                                                                                                                                 "value0": 247.0,
@@ -1479,14 +1469,14 @@
                                                                                                                                     "value0": {
                                                                                                                                         "value0": {},
                                                                                                                                         "guid_": {
-                                                                                                                                            "value_": "4806C274-D554-4358-9755-5A835FBE29AC"
+                                                                                                                                            "value_": "34C7DE2A-3DA3-47A6-9E8D-B3BA9C44140A"
                                                                                                                                         },
                                                                                                                                         "position_": {
                                                                                                                                             "value0": 247.0,
                                                                                                                                             "value1": 2800.0
                                                                                                                                         }
                                                                                                                                     },
-                                                                                                                                    "name_": "Heart Collapse Crumble SouthWest",
+                                                                                                                                    "name_": "Heart Collapse Crumble Bottom",
                                                                                                                                     "action_": {
                                                                                                                                         "polymorphic_id": 10,
                                                                                                                                         "ptr_wrapper": {
@@ -1494,9 +1484,9 @@
                                                                                                                                             "data": {
                                                                                                                                                 "value0": {},
                                                                                                                                                 "offset_": {
-                                                                                                                                                    "value0": -100.0,
-                                                                                                                                                    "value1": -10.0,
-                                                                                                                                                    "value2": 0.0
+                                                                                                                                                    "value0": -18.8,
+                                                                                                                                                    "value1": -45.0,
+                                                                                                                                                    "value2": 57.1
                                                                                                                                                 },
                                                                                                                                                 "lifeTime_": 4.0,
                                                                                                                                                 "isUseAbsolutePosition_": true,
@@ -1531,7 +1521,7 @@
                                                                                                                         "value0": {
                                                                                                                             "value0": {},
                                                                                                                             "guid_": {
-                                                                                                                                "value_": "8DDE2374-82F7-4FB1-8AFC-8394E19CF4C5"
+                                                                                                                                "value_": "9257786F-992B-4A21-AC86-D5A6B127159A"
                                                                                                                             },
                                                                                                                             "position_": {
                                                                                                                                 "value0": 247.0,
@@ -1546,14 +1536,14 @@
                                                                                                                                     "value0": {
                                                                                                                                         "value0": {},
                                                                                                                                         "guid_": {
-                                                                                                                                            "value_": "6D18B1B4-C2A9-42F9-B8CC-5170E6744584"
+                                                                                                                                            "value_": "4806C274-D554-4358-9755-5A835FBE29AC"
                                                                                                                                         },
                                                                                                                                         "position_": {
                                                                                                                                             "value0": 247.0,
                                                                                                                                             "value1": 2920.0
                                                                                                                                         }
                                                                                                                                     },
-                                                                                                                                    "name_": "Heart Collapse Crumble NorthEast",
+                                                                                                                                    "name_": "Heart Collapse Crumble SouthWest",
                                                                                                                                     "action_": {
                                                                                                                                         "polymorphic_id": 10,
                                                                                                                                         "ptr_wrapper": {
@@ -1561,9 +1551,9 @@
                                                                                                                                             "data": {
                                                                                                                                                 "value0": {},
                                                                                                                                                 "offset_": {
-                                                                                                                                                    "value0": 60.0,
+                                                                                                                                                    "value0": -100.0,
                                                                                                                                                     "value1": -10.0,
-                                                                                                                                                    "value2": 130.0
+                                                                                                                                                    "value2": 0.0
                                                                                                                                                 },
                                                                                                                                                 "lifeTime_": 4.0,
                                                                                                                                                 "isUseAbsolutePosition_": true,
@@ -1598,7 +1588,7 @@
                                                                                                                         "value0": {
                                                                                                                             "value0": {},
                                                                                                                             "guid_": {
-                                                                                                                                "value_": "2A18C5BB-FA1D-4F7A-BF8E-9AF32EB5CE6C"
+                                                                                                                                "value_": "8DDE2374-82F7-4FB1-8AFC-8394E19CF4C5"
                                                                                                                             },
                                                                                                                             "position_": {
                                                                                                                                 "value0": 247.0,
@@ -1613,11 +1603,78 @@
                                                                                                                                     "value0": {
                                                                                                                                         "value0": {},
                                                                                                                                         "guid_": {
-                                                                                                                                            "value_": "477D5439-8618-47F6-8F12-CC5F22817780"
+                                                                                                                                            "value_": "6D18B1B4-C2A9-42F9-B8CC-5170E6744584"
                                                                                                                                         },
                                                                                                                                         "position_": {
                                                                                                                                             "value0": 247.0,
                                                                                                                                             "value1": 3040.0
+                                                                                                                                        }
+                                                                                                                                    },
+                                                                                                                                    "name_": "Heart Collapse Crumble NorthEast",
+                                                                                                                                    "action_": {
+                                                                                                                                        "polymorphic_id": 10,
+                                                                                                                                        "ptr_wrapper": {
+                                                                                                                                            "valid": 1,
+                                                                                                                                            "data": {
+                                                                                                                                                "value0": {},
+                                                                                                                                                "offset_": {
+                                                                                                                                                    "value0": 60.0,
+                                                                                                                                                    "value1": -10.0,
+                                                                                                                                                    "value2": 130.0
+                                                                                                                                                },
+                                                                                                                                                "lifeTime_": 4.0,
+                                                                                                                                                "isUseAbsolutePosition_": true,
+                                                                                                                                                "particlePrefab_": {
+                                                                                                                                                    "value0": {
+                                                                                                                                                        "polymorphic_id": 1073741824,
+                                                                                                                                                        "ptr_wrapper": {
+                                                                                                                                                            "id": 2147483721,
+                                                                                                                                                            "data": {
+                                                                                                                                                                "value0": {
+                                                                                                                                                                    "value_": "44D6DD97-A03D-4623-8178-709F81EBAA71"
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        }
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        },
+                                                                                                                        "state_": 0
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "polymorphic_id": 6,
+                                                                                                                "ptr_wrapper": {
+                                                                                                                    "id": 2147483722,
+                                                                                                                    "data": {
+                                                                                                                        "value0": {
+                                                                                                                            "value0": {},
+                                                                                                                            "guid_": {
+                                                                                                                                "value_": "2A18C5BB-FA1D-4F7A-BF8E-9AF32EB5CE6C"
+                                                                                                                            },
+                                                                                                                            "position_": {
+                                                                                                                                "value0": 247.0,
+                                                                                                                                "value1": 3100.0
+                                                                                                                            }
+                                                                                                                        },
+                                                                                                                        "child_": {
+                                                                                                                            "polymorphic_id": 3,
+                                                                                                                            "ptr_wrapper": {
+                                                                                                                                "id": 2147483723,
+                                                                                                                                "data": {
+                                                                                                                                    "value0": {
+                                                                                                                                        "value0": {},
+                                                                                                                                        "guid_": {
+                                                                                                                                            "value_": "477D5439-8618-47F6-8F12-CC5F22817780"
+                                                                                                                                        },
+                                                                                                                                        "position_": {
+                                                                                                                                            "value0": 247.0,
+                                                                                                                                            "value1": 3160.0
                                                                                                                                         }
                                                                                                                                     },
                                                                                                                                     "name_": "Heart Collapse Sound",
@@ -1631,7 +1688,7 @@
                                                                                                                                                     "value0": {
                                                                                                                                                         "polymorphic_id": 1073741824,
                                                                                                                                                         "ptr_wrapper": {
-                                                                                                                                                            "id": 2147483721,
+                                                                                                                                                            "id": 2147483724,
                                                                                                                                                             "data": {
                                                                                                                                                                 "value0": {
                                                                                                                                                                     "value_": "915D7FB9-53F5-4715-BF7D-5AB69487DC7A"
@@ -1653,7 +1710,7 @@
                                                                                                             {
                                                                                                                 "polymorphic_id": 3,
                                                                                                                 "ptr_wrapper": {
-                                                                                                                    "id": 2147483722,
+                                                                                                                    "id": 2147483725,
                                                                                                                     "data": {
                                                                                                                         "value0": {
                                                                                                                             "value0": {},
@@ -1662,7 +1719,7 @@
                                                                                                                             },
                                                                                                                             "position_": {
                                                                                                                                 "value0": 247.0,
-                                                                                                                                "value1": 3100.0
+                                                                                                                                "value1": 3220.0
                                                                                                                             }
                                                                                                                         },
                                                                                                                         "name_": "Heart Collapse Beat",
@@ -1690,7 +1747,7 @@
                                                                                 {
                                                                                     "polymorphic_id": 6,
                                                                                     "ptr_wrapper": {
-                                                                                        "id": 2147483723,
+                                                                                        "id": 2147483726,
                                                                                         "data": {
                                                                                             "value0": {
                                                                                                 "value0": {},
@@ -1699,13 +1756,13 @@
                                                                                                 },
                                                                                                 "position_": {
                                                                                                     "value0": 247.0,
-                                                                                                    "value1": 3160.0
+                                                                                                    "value1": 3280.0
                                                                                                 }
                                                                                             },
                                                                                             "child_": {
                                                                                                 "polymorphic_id": 2,
                                                                                                 "ptr_wrapper": {
-                                                                                                    "id": 2147483724,
+                                                                                                    "id": 2147483727,
                                                                                                     "data": {
                                                                                                         "value0": {
                                                                                                             "value0": {},
@@ -1714,71 +1771,10 @@
                                                                                                             },
                                                                                                             "position_": {
                                                                                                                 "value0": 247.0,
-                                                                                                                "value1": 3220.0
+                                                                                                                "value1": 3340.0
                                                                                                             }
                                                                                                         },
                                                                                                         "children_": [
-                                                                                                            {
-                                                                                                                "polymorphic_id": 6,
-                                                                                                                "ptr_wrapper": {
-                                                                                                                    "id": 2147483725,
-                                                                                                                    "data": {
-                                                                                                                        "value0": {
-                                                                                                                            "value0": {},
-                                                                                                                            "guid_": {
-                                                                                                                                "value_": "73FDA87B-6C95-427F-BC99-E61FB3174357"
-                                                                                                                            },
-                                                                                                                            "position_": {
-                                                                                                                                "value0": 247.0,
-                                                                                                                                "value1": 3280.0
-                                                                                                                            }
-                                                                                                                        },
-                                                                                                                        "child_": {
-                                                                                                                            "polymorphic_id": 3,
-                                                                                                                            "ptr_wrapper": {
-                                                                                                                                "id": 2147483726,
-                                                                                                                                "data": {
-                                                                                                                                    "value0": {
-                                                                                                                                        "value0": {},
-                                                                                                                                        "guid_": {
-                                                                                                                                            "value_": "A8DE4DF2-6A7E-459A-87FC-A583604E1A4A"
-                                                                                                                                        },
-                                                                                                                                        "position_": {
-                                                                                                                                            "value0": 247.0,
-                                                                                                                                            "value1": 3340.0
-                                                                                                                                        }
-                                                                                                                                    },
-                                                                                                                                    "name_": "Enable Island Fall Camera",
-                                                                                                                                    "action_": {
-                                                                                                                                        "polymorphic_id": 9,
-                                                                                                                                        "ptr_wrapper": {
-                                                                                                                                            "valid": 1,
-                                                                                                                                            "data": {
-                                                                                                                                                "value0": {},
-                                                                                                                                                "purposeCamera_": {
-                                                                                                                                                    "value0": {
-                                                                                                                                                        "polymorphic_id": 1073741824,
-                                                                                                                                                        "ptr_wrapper": {
-                                                                                                                                                            "id": 2147483727,
-                                                                                                                                                            "data": {
-                                                                                                                                                                "value0": {
-                                                                                                                                                                    "value_": "03EDFB8A-1E13-497F-8D75-E2FD0F502D80"
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                        }
-                                                                                                                                                    }
-                                                                                                                                                },
-                                                                                                                                                "priority_": 110
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        },
-                                                                                                                        "state_": 0
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            },
                                                                                                             {
                                                                                                                 "polymorphic_id": 3,
                                                                                                                 "ptr_wrapper": {
@@ -7726,7 +7722,7 @@
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "attackAreaName_": "Attack1",
                                                                                                                                                                         "attackPower_": {
-                                                                                                                                                                            "value_": 12
+                                                                                                                                                                            "value_": 6
                                                                                                                                                                         },
                                                                                                                                                                         "normalAttackOccurrenceDuration_secs_": 1.7000000476837159,
                                                                                                                                                                         "normalAttackDuration_secs_": 3.8399999141693117,
@@ -7805,7 +7801,7 @@
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "attackAreaName_": "Attack2",
                                                                                                                                                                         "attackPower_": {
-                                                                                                                                                                            "value_": 12
+                                                                                                                                                                            "value_": 6
                                                                                                                                                                         },
                                                                                                                                                                         "normalAttackOccurrenceDuration_secs_": 1.7599999904632569,
                                                                                                                                                                         "normalAttackDuration_secs_": 3.9000000953674318,
@@ -7884,7 +7880,7 @@
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "attackAreaName_": "LandingTackle",
                                                                                                                                                                         "attackPower_": {
-                                                                                                                                                                            "value_": 12
+                                                                                                                                                                            "value_": 6
                                                                                                                                                                         },
                                                                                                                                                                         "normalAttackOccurrenceDuration_secs_": 1.0800000429153443,
                                                                                                                                                                         "normalAttackDuration_secs_": 1.8799999952316285,
@@ -7963,7 +7959,7 @@
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "attackAreaName_": "WeggingTail",
                                                                                                                                                                         "attackPower_": {
-                                                                                                                                                                            "value_": 25
+                                                                                                                                                                            "value_": 13
                                                                                                                                                                         },
                                                                                                                                                                         "normalAttackOccurrenceDuration_secs_": 1.2400000095367432,
                                                                                                                                                                         "normalAttackDuration_secs_": 1.940000057220459,
@@ -8416,7 +8412,7 @@
                                                                                                                                                                     "data": {
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "physicsDamage_": {
-                                                                                                                                                                            "value_": 20
+                                                                                                                                                                            "value_": 10
                                                                                                                                                                         },
                                                                                                                                                                         "spawnPosition_": {
                                                                                                                                                                             "offset_": {
@@ -8514,7 +8510,7 @@
                                                                                                                                                                     "data": {
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "physicsDamage_": {
-                                                                                                                                                                            "value_": 20
+                                                                                                                                                                            "value_": 10
                                                                                                                                                                         },
                                                                                                                                                                         "spawnPosition_": {
                                                                                                                                                                             "offset_": {
@@ -8612,7 +8608,7 @@
                                                                                                                                                                     "data": {
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "physicsDamage_": {
-                                                                                                                                                                            "value_": 20
+                                                                                                                                                                            "value_": 10
                                                                                                                                                                         },
                                                                                                                                                                         "spawnPosition_": {
                                                                                                                                                                             "offset_": {
@@ -8809,7 +8805,7 @@
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "attackAreaName_": "Attack1",
                                                                                                                                                                         "attackPower_": {
-                                                                                                                                                                            "value_": 12
+                                                                                                                                                                            "value_": 6
                                                                                                                                                                         },
                                                                                                                                                                         "normalAttackOccurrenceDuration_secs_": 1.7000000476837159,
                                                                                                                                                                         "normalAttackDuration_secs_": 3.8399999141693117,
@@ -8888,7 +8884,7 @@
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "attackAreaName_": "Attack2",
                                                                                                                                                                         "attackPower_": {
-                                                                                                                                                                            "value_": 12
+                                                                                                                                                                            "value_": 6
                                                                                                                                                                         },
                                                                                                                                                                         "normalAttackOccurrenceDuration_secs_": 1.7599999904632569,
                                                                                                                                                                         "normalAttackDuration_secs_": 3.9000000953674318,
@@ -8967,7 +8963,7 @@
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "attackAreaName_": "LandingTackle",
                                                                                                                                                                         "attackPower_": {
-                                                                                                                                                                            "value_": 12
+                                                                                                                                                                            "value_": 6
                                                                                                                                                                         },
                                                                                                                                                                         "normalAttackOccurrenceDuration_secs_": 1.0800000429153443,
                                                                                                                                                                         "normalAttackDuration_secs_": 1.8799999952316285,
@@ -9420,7 +9416,7 @@
                                                                                                                                                                     "data": {
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "physicsDamage_": {
-                                                                                                                                                                            "value_": 20
+                                                                                                                                                                            "value_": 10
                                                                                                                                                                         },
                                                                                                                                                                         "spawnPosition_": {
                                                                                                                                                                             "offset_": {
@@ -9518,7 +9514,7 @@
                                                                                                                                                                     "data": {
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "physicsDamage_": {
-                                                                                                                                                                            "value_": 20
+                                                                                                                                                                            "value_": 10
                                                                                                                                                                         },
                                                                                                                                                                         "spawnPosition_": {
                                                                                                                                                                             "offset_": {
@@ -9616,7 +9612,7 @@
                                                                                                                                                                     "data": {
                                                                                                                                                                         "value0": {},
                                                                                                                                                                         "physicsDamage_": {
-                                                                                                                                                                            "value_": 20
+                                                                                                                                                                            "value_": 10
                                                                                                                                                                         },
                                                                                                                                                                         "spawnPosition_": {
                                                                                                                                                                             "offset_": {

@@ -17,17 +17,12 @@ namespace GameCore::PlayerAvatar
         virtual void Init(const std::shared_ptr<GameObject::IGameObject>& playerAvatarObject);
         [[nodiscard]] CineMachine::CineMachineVirtualCamera& CurrentCamera() const { return *currentCamera_.lock(); }
 
-        // 敵をロックオンしてカメラを切り替える。target が nullptr なら何もしない。part が nullptr なら本体を狙う
-        void EngageLockOn(const std::shared_ptr<GameObject::IGameObject>& target, const std::shared_ptr<GameObject::IGameObject>& part);
+        // 敵をロックオンしてカメラを切り替える。target が nullptr なら何もしない
+        void EngageLockOn(const std::shared_ptr<GameObject::IGameObject>& target);
         // ロックオンを解除し、FollowFromBehind カメラへ戻す
         void ReleaseLockOn();
         [[nodiscard]] bool IsLockedOn() const { return isLockedOn_; }
-        // ロック中の本体。部位を狙っていても本体を返す
         [[nodiscard]] std::weak_ptr<GameObject::IGameObject> LockOnTarget() const { return lockOnTarget_; }
-        // 本体を狙っている間は空
-        [[nodiscard]] std::weak_ptr<GameObject::IGameObject> LockOnPart() const { return lockOnPart_; }
-        // 狙っている先。部位が残っていれば部位、それ以外は本体
-        [[nodiscard]] std::shared_ptr<GameObject::IGameObject> LockOnAim() const;
 
         void SetLockOnCandidate(const std::shared_ptr<GameObject::IGameObject>& candidate) { lockOnCandidate_ = candidate; }
         [[nodiscard]] std::weak_ptr<GameObject::IGameObject> LockOnCandidate() const { return lockOnCandidate_; }
@@ -39,7 +34,6 @@ namespace GameCore::PlayerAvatar
         std::weak_ptr<CineMachine::CineMachineVirtualCamera> currentCamera_;
 
         std::weak_ptr<GameObject::IGameObject> lockOnTarget_;
-        std::weak_ptr<GameObject::IGameObject> lockOnPart_;
         std::weak_ptr<GameObject::IGameObject> lockOnCandidate_;
         bool isLockedOn_ = false;
 

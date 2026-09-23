@@ -111,6 +111,10 @@ namespace GamePlay::Ui
         bool  isSpawned_      = false;
         bool  isSpellsDirty_  = true;
         bool  isDeviceDirty_  = true;
+        // 開いた瞬間・頁が変わった瞬間に音を鳴らすための前フレームの状態
+        bool  wasOpen_        = false;
+        bool  wasSecondPage_  = false;
+        bool  hasReadInput_   = false;
         GameCore::PlayerAvatar::PlayerAvatarInputDevice device_ = GameCore::PlayerAvatar::PlayerAvatarInputDevice::KeyboardMouse;
 
 #pragma region Serialization Function

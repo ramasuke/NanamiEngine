@@ -31,6 +31,8 @@ namespace NanamiEngine::Module::Component
         FIELD(Asset::ParticleFile) particleFile_;
         int   resourceEffectHandle_ = -1;
         int   playingEffectHandle_  = -1;
+        // NOTE: Loopで再生し直す前の再生。止めずに最後まで流し、新しい再生と重ねてつなぎ目を消す
+        int   fadingEffectHandle_   = -1;
         float playingDuration_secs_ = 0.0f;
         float playingDuring_secs_   = 0.0f;
 

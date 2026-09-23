@@ -128,7 +128,13 @@ Row/ Page/ ...   繰り返す部品。自分の prefab を持ち、Ui が表示�
   **開いた直後は押しっぱなしを拾わない**（`previousKeys_ = ReadKeys()` を OnStart で）。
 - 開いている間はプレイヤーの `DisableStateMachine()`。閉じるのは次のフレームにして、閉じた B をジャンプとして拾わせない。
 - 二重に開かないよう static の `isOpen_` で弾く（`ShopPresenter`）。
-- 効果音は `FIELD(Asset::SoundFile)`（`cursorSound_` / `acceptSound_` / `refuseSound_` …）。合成は `tools/art/*_sfx.py`。
+- 効果音は共通の `GamePlay::Sound::UiSoundBank::Play(UiSe::…)` で鳴らす（`GameManage.scene` の `UiSoundBank` が
+  音を持つ。DxLib で直接 2D 再生するので `SoundPlayer` の無いシーンでも鳴る）。画面固有の音が要るときだけ
+  `FIELD(Asset::SoundFile)` を足し、`UiSoundBank::Play(field, UiSe::Cursor)` のように共通音へフォールバックさせる。
+  共通音は `tools/art/ui_sfx.py` が作る。写実寄りのゲームなので電子音・ガラス音・鈴は使わず、系統 A は紙・木・鉄・石、
+  系統 B は革袋・布・鉄の留め具・低い空気のうなりの物音にする。高域は 2〜3 kHz で丸めて低く保ち、
+  カーソル・文字送りのように何度も鳴る音ほど小さく短く。個別の音の合成は `tools/art/*_sfx.py`。
+  `Physics/ButtonClick.mp3` は `.meta` の音量が 0 で鳴らないので UI に使わない。
 
 ## 9. 作る手順（既存 UI はすべてこの流れ）
 

@@ -10,20 +10,12 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     class OnDamage final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;
-        [[nodiscard]] bool IsStunned(const TickContext& context) const;
-        /** @brief このダメージで立てるスタンの値。立てないなら 0 */
-        [[nodiscard]] int ResolveStunStateValue(const TickContext& context, const IDamage& damage, int rawDamage) const;
 
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) damageEffectPrefab_;
         [[serialize(0)]] glm::vec3 damageEffectOffset_ = glm::vec3(0.0f);
         [[serialize(1)]] int animatorSetParam_ = 0;
         [[serialize(2)]] bool isOnDamagedReturnBehaviour_ = false;
         [[serialize(3)]] float knockbackForcePerDamage_ = 0.0f;
-        [[serialize(4)]] std::string stunStateKeyName_;
-        [[serialize(4)]] float stunnedDamageScale_ = 1.0f;
-        // NOTE: 黒板の値で溜めカウンターと部位破壊(脚など)のスタンを別の枝に振り分ける
-        [[serialize(5)]] int chargeCounterStunStateValue_ = 1;
-        [[serialize(5)]] int breakStunStateValue_ = 1;
 
 #pragma region Serialization Function
     public:
@@ -36,10 +28,6 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(animatorSetParam_);
             archive(isOnDamagedReturnBehaviour_);
             archive(knockbackForcePerDamage_);
-            archive(stunStateKeyName_);
-            archive(stunnedDamageScale_);
-            archive(chargeCounterStunStateValue_);
-            archive(breakStunStateValue_);
         }
 
         template<class Archive>
@@ -50,10 +38,21 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             if (version >= 1) archive(animatorSetParam_);
             if (version >= 2) archive(isOnDamagedReturnBehaviour_);
             if (version >= 3) archive(knockbackForcePerDamage_);
-            if (version >= 4) archive(stunStateKeyName_);
-            if (version >= 4) archive(stunnedDamageScale_);
-            if (version >= 5) archive(chargeCounterStunStateValue_);
-            if (version >= 5) archive(breakStunStateValue_);
+            // NOTE: version 4, 5 はスタン用の値(削除済み)が続くので読み捨てる
+            if (version == 4 || version == 5)
+            {
+                std::string stunStateKeyName;
+                float       stunnedDamageScale = 0.0f;
+                archive(stunStateKeyName);
+                archive(stunnedDamageScale);
+            }
+            if (version == 5)
+            {
+                int chargeCounterStunStateValue = 0;
+                int breakStunStateValue = 0;
+                archive(chargeCounterStunStateValue);
+                archive(breakStunStateValue);
+            }
         }
 #pragma endregion
     };
@@ -61,4 +60,4 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     REGISTER_ENEMY_ACTION_WITH_NAME(OnDamage, "EnemyStatus::OnDamage")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::OnDamage, 5)
+CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::OnDamage, 6)

@@ -10,6 +10,7 @@
 #include "../../../Core/Game/Scene/Main/Content/MainIslandScene/MainIsLandScene.h"
 #include "../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
 #include "../AssetUpdate/Presenter/AssetUpdatePresenter.h"
+#include "../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -23,6 +24,8 @@ namespace GamePlay::Ui
         gameExitButton_ ->OnClick().Subscribe([this](NanamiUi::MouseState)
         {
         }).AddTo(this);
+        gameStartButton_->OnHover().Subscribe([](auto) { Sound::UiSoundBank::Play(Sound::UiSe::Cursor); }).AddTo(this);
+        gameExitButton_ ->OnHover().Subscribe([](auto) { Sound::UiSoundBank::Play(Sound::UiSe::Cursor); }).AddTo(this);
 
         const auto prefab = assetUpdatePrefab_.get();
         if (!prefab)
@@ -42,6 +45,7 @@ namespace GamePlay::Ui
         if (const auto assetUpdate = assetUpdate_.lock(); assetUpdate && !assetUpdate->TryStartGame())
             return;
 
+        Sound::UiSoundBank::Play(Sound::UiSe::GameStart);
         switch (GameCore::LoadGameProgression())
         {
         case GameCore::GameProgresion::FirstTouchDownMainIsLand:

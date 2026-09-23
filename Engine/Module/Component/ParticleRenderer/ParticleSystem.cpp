@@ -54,11 +54,16 @@ void Component::ParticleSystem::OnRender()
     case Particle::PlayMode::Loop:
         if (playingDuring_secs_ >= playingDuration_secs_)
         {
-            firstUpdate_ = true;
-            TryStopPlaying();
+            // NOTE: 止めてから再生し直すと、残っていた粒が一斉に消えて途切れて見えるので、前の再生は最後まで流す
+            if (fadingEffectHandle_ != -1)
+                StopEffekseer3DEffect(fadingEffectHandle_);
+            fadingEffectHandle_  = playingEffectHandle_;
+            firstUpdate_         = true;
             playingEffectHandle_ = PlayEffekseer3DEffect(resourceEffectHandle_);
             playingDuring_secs_  = 0;
         }
+        if (fadingEffectHandle_ != -1 && IsEffekseer3DEffectPlaying(fadingEffectHandle_) != 0)
+            fadingEffectHandle_ = -1;
         break;
     case Particle::PlayMode::Destroy:
         if (playingDuring_secs_ >= playingDuration_secs_)
@@ -86,6 +91,8 @@ void Component::ParticleSystem::TryUpdateRenderPos()
     if (firstUpdate_ || pos != prevPos_)
     {
         SetPosPlayingEffekseer3DEffect(playingEffectHandle_, pos.x, pos.y, pos.z);
+        if (fadingEffectHandle_ != -1)
+            SetPosPlayingEffekseer3DEffect(fadingEffectHandle_, pos.x, pos.y, pos.z);
         prevPos_ = pos;
     }
 }
@@ -98,6 +105,8 @@ void Component::ParticleSystem::TryUpdateRenderRot()
     {
         const auto eulerAngle = glm::eulerAngles(rot);
         SetRotationPlayingEffekseer3DEffect(playingEffectHandle_, eulerAngle.x, eulerAngle.y, eulerAngle.z);
+        if (fadingEffectHandle_ != -1)
+            SetRotationPlayingEffekseer3DEffect(fadingEffectHandle_, eulerAngle.x, eulerAngle.y, eulerAngle.z);
         prevRot_ = rot;
     }
 }
@@ -109,6 +118,8 @@ void Component::ParticleSystem::TryUpdateRenderScale()
     if (firstUpdate_ || scale != prevScale_)
     {
         SetScalePlayingEffekseer3DEffect(playingEffectHandle_, scale.x, scale.y, scale.z);
+        if (fadingEffectHandle_ != -1)
+            SetScalePlayingEffekseer3DEffect(fadingEffectHandle_, scale.x, scale.y, scale.z);
         prevScale_ = scale;
     }
 }
@@ -126,6 +137,11 @@ void Component::ParticleSystem::TryStopPlaying()
         // 再生ハンドルは StopEffekseer3DEffect で止める（DeleteEffekseerEffect はリソースハンドル専用）
         StopEffekseer3DEffect(playingEffectHandle_);
         playingEffectHandle_ = -1;
+    }
+    if (fadingEffectHandle_ != -1)
+    {
+        StopEffekseer3DEffect(fadingEffectHandle_);
+        fadingEffectHandle_ = -1;
     }
 }
 

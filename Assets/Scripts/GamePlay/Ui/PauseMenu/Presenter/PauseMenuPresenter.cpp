@@ -8,6 +8,7 @@
 #include "../../../../Core/Game/PlayerAvatar/SwordMan/State/Transition/SwordManAvatarStateTransition.h"
 #include "../../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
 #include "../../../PlayerAvatar/SwordMan/SwordManAvatar.h"
+#include "../../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -79,7 +80,10 @@ namespace GamePlay::Ui
         if (keys.next && !previousKeys_.next)
             model_.MoveSelection(1);
         if (model_.SelectedIndex() != previousIndex)
+        {
+            Sound::UiSoundBank::Play(Sound::UiSe::Cursor);
             view_->HighlightRow(model_.SelectedIndex());
+        }
 
         if (isToggled || (keys.cancel && !previousKeys_.cancel))
             Close();
@@ -95,6 +99,7 @@ namespace GamePlay::Ui
     void PauseMenuPresenter::Open(GamePlay::PlayerAvatar::SwordMan::SwordManAvatar& avatar)
     {
         isOpen_ = true;
+        Sound::UiSoundBank::Play(Sound::UiSe::Open);
         // 開いた瞬間に押しっぱなしのキーを、決定や移動として拾わない
         previousKeys_ = ReadKeys();
         model_.Reset();
@@ -107,8 +112,10 @@ namespace GamePlay::Ui
         view_->Present(avatar.PlayerStatus());
     }
 
-    void PauseMenuPresenter::Close()
+    void PauseMenuPresenter::Close(const bool withSound)
     {
+        if (withSound)
+            Sound::UiSoundBank::Play(Sound::UiSe::Close);
         isOpen_ = false;
         isResumePending_ = true;
         view_->SetVisible(false);
@@ -122,7 +129,8 @@ namespace GamePlay::Ui
             Close();
             return;
         case PauseMenuEntry::ReturnToTitle:
-            Close();
+            Sound::UiSoundBank::Play(Sound::UiSe::Confirm);
+            Close(false);
             GameCore::Game::Instance().Scenes().RequestChangeScene(GameCore::Scene::Main::SceneType::Title);
             return;
         // 各項目の頁はまだ無いので、右の頁はステータスのまま
@@ -130,6 +138,7 @@ namespace GamePlay::Ui
         case PauseMenuEntry::Items:
         case PauseMenuEntry::Quests:
         case PauseMenuEntry::Controls:
+            Sound::UiSoundBank::Play(Sound::UiSe::Refuse);
             return;
         }
     }

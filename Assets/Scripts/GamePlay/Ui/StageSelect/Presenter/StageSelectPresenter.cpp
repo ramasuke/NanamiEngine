@@ -7,6 +7,7 @@
 #include "../UI_StageSelect.h"
 #include "../Room/Ui_StageSelect_RoomUi.h"
 #include "../../../Network/Session/GamePlay_StageSessionMatchmaking.h"
+#include "../../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -118,10 +119,13 @@ namespace GamePlay::Ui
         if (roomMode_ != Network::RelayRoom::Mode::Join)
             return;
 
+        const int previousCursor = cursor_;
         if (input.cursorLeft && !previousInput_.cursorLeft)
             MoveCursor(-1);
         if (input.cursorRight && !previousInput_.cursorRight)
             MoveCursor(1);
+        if (cursor_ != previousCursor)
+            Sound::UiSoundBank::Play(Sound::UiSe::Cursor);
         if (input.digitUp && !previousInput_.digitUp)
             SetDigit(cursor_ < static_cast<int>(roomCode_.size()) ? (roomCode_[cursor_] - '0' + 1) % 10 : 0);
         if (input.digitDown && !previousInput_.digitDown)
@@ -140,6 +144,7 @@ namespace GamePlay::Ui
         constexpr int MODE_COUNT = Network::RelayRoom::MODE_COUNT;
         const int next = (static_cast<int>(roomMode_) + delta + MODE_COUNT) % MODE_COUNT;
         roomMode_ = static_cast<Network::RelayRoom::Mode>(next);
+        Sound::UiSoundBank::Play(Sound::UiSe::Tab);
         roomCode_.clear();
         cursor_ = 0;
         ApplyRoomToView();
@@ -148,6 +153,7 @@ namespace GamePlay::Ui
     void StageSelectPresenter::SetDigit(const int digit)
     {
         const char c = static_cast<char>('0' + digit);
+        Sound::UiSoundBank::Play(Sound::UiSe::Digit);
         if (cursor_ < static_cast<int>(roomCode_.size()))
             roomCode_[cursor_] = c;
         else if (static_cast<int>(roomCode_.size()) < CodeLength())
@@ -175,6 +181,7 @@ namespace GamePlay::Ui
             return;
 
         roomCode_.pop_back();
+        Sound::UiSoundBank::Play(Sound::UiSe::Digit);
         cursor_ = static_cast<int>(roomCode_.size());
         ApplyRoomToView();
     }
@@ -194,15 +201,20 @@ namespace GamePlay::Ui
     void StageSelectPresenter::TryEnterWorld()
     {
         if (!model_ || !model_->HasSelection())
+        {
+            Sound::UiSoundBank::Play(Sound::UiSe::Refuse);
             return;
+        }
 
         // 番号が揃うまでは出発させない
         if (!IsRoomReady())
         {
+            Sound::UiSoundBank::Play(Sound::UiSe::Refuse);
             ApplyRoomToView();
             return;
         }
 
+        Sound::UiSoundBank::Play(Sound::UiSe::Stamp);
         Network::SetNextStageRoom({ roomMode_, roomCode_ });
         view_->EnterWorld(model_->SelectedSceneType());
     }

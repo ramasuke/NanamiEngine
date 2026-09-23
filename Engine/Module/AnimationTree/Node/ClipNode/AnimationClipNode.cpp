@@ -69,7 +69,7 @@ void AnimationTree::AnimationClipNode::OnUpdateAnimation(const int modelHandle, 
     {
         MV1DetachAnim(modelHandle, attachedAnimationIndex_);
     }
-    attachedAnimationIndex_ = MV1AttachAnim(modelHandle, modelAnimationIndex_, dxlibAnimationIndex_, false);
+    attachedAnimationIndex_ = MV1AttachAnim(modelHandle, modelAnimationIndex_, dxlibAnimationIndex_, nameCheck_ ? TRUE : FALSE);
 
     MV1SetAttachAnimTime(modelHandle, attachedAnimationIndex_, during_secs_);
     MV1SetAttachAnimBlendRate(modelHandle, attachedAnimationIndex_, blendRate_);
@@ -129,6 +129,7 @@ void AnimationTree::AnimationClipNode::OnDrawGui()
     LibCore::ImGuiHelper::OnDrawInputField("clipStartTime_", clipStartTime_);
     LibCore::ImGuiHelper::OnDrawInputField("clipEndTime_"  , clipEndTime_  );
     LibCore::ImGuiHelper::OnDrawInputField("isLoop_"       , isLoop_       );
+    LibCore::ImGuiHelper::OnDrawInputField("nameCheck_"    , nameCheck_    );
     if (ImGui::TreeNode("modelAnimationIndex_"))
     {
         LibCore::ImGuiHelper::OnDrawInputField("modelAnimationIndex_", modelAnimationIndex_);

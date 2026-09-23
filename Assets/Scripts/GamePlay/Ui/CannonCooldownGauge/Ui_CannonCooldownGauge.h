@@ -110,6 +110,8 @@ namespace GamePlay::Ui
         float total_secs_ = 1.0f;
         int lastCount_ = 0;
         bool isReady_ = false;
+        // 乗った瞬間の「最初から装填済み」では装填完了の音を鳴らさない
+        bool hasCountedDown_ = false;
         float readyElapsed_secs_ = 0.0f;
         float shootElapsed_secs_ = 1000.0f;
         float time_secs_ = 0.0f;

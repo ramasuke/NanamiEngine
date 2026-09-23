@@ -49,6 +49,8 @@ namespace NanamiEngine::Module::AnimationTree
         /** @brief 0 以下ならクリップ末尾 */
         float                 clipEndTime_            = 0.0f;
         bool                  isLoop_                 = true;
+        /** @brief MV1AttachAnim の NameCheck。OFF はフレーム番号で対応付けるので、フレーム構成が違うクリップ(スキン無しの書き出し等)は ON にする */
+        bool                  nameCheck_              = false;
 
         float                 blendRate_              = 1.0f;
         int                   attachedAnimationIndex_ = -1;
@@ -74,6 +76,7 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(CEREAL_NVP(clipStartTime_));
     archive(CEREAL_NVP(clipEndTime_));
     archive(CEREAL_NVP(isLoop_));
+    archive(CEREAL_NVP(nameCheck_));
 }
 
 template<class Archive>
@@ -89,11 +92,12 @@ void load(Archive& archive, const std::uint32_t version) {
     if (version >= 3) archive(CEREAL_NVP(clipStartTime_));
     if (version >= 3) archive(CEREAL_NVP(clipEndTime_));
     if (version >= 3) archive(CEREAL_NVP(isLoop_));
+    if (version >= 4) archive(CEREAL_NVP(nameCheck_));
 }
 #pragma endregion
 };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationClipNode, 3);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::AnimationTree::AnimationClipNode, 4);
 #pragma endregion

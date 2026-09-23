@@ -8,6 +8,7 @@
 #include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "../../../Core/Game/PlayerAvatar/CameraGroup/PlayerAvatarCameraGroupBase.h"
 #include "../../../Core/Game/PlayerAvatar/LockOnTarget/ILockOnTarget.h"
+#include "../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -58,20 +59,22 @@ namespace GamePlay::Ui
         const auto cameraGroup = CatchCameraGroup();
         const bool isLockedOn  = cameraGroup && cameraGroup->IsLockedOn();
 
-        // 対象が死亡して weak_ptr が切れた場合も、ロック解除と同じく解除演出にする。部位や別の敵へ切り替えたら確定演出をやり直す
-        const auto target     = isLockedOn ? cameraGroup->LockOnAim() : nullptr;
+        // 対象が死亡して weak_ptr が切れた場合も、ロック解除と同じく解除演出にする。別の敵へ切り替えたら確定演出をやり直す
+        const auto target     = isLockedOn ? cameraGroup->LockOnTarget().lock() : nullptr;
         const bool isEngaged  = target != nullptr;
         if (isEngaged && (!wasEngaged_ || target != lockedTarget_.lock()))
         {
             phase_        = Phase::Engaging;
             lockedTarget_ = target;
             PlayEngage();
+            Sound::UiSoundBank::Play(Sound::UiSe::HudLockOn);
         }
         else if (!isEngaged && wasEngaged_)
         {
             // lockedTarget_ は残し、生きていれば解除演出中も対象に追従させる
             phase_ = Phase::Releasing;
             PlayRelease();
+            Sound::UiSoundBank::Play(Sound::UiSe::HudLockOff);
         }
         wasEngaged_ = isEngaged;
 

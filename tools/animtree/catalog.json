@@ -1,11 +1,11 @@
 {
-  "generated_from": "200d819ee215b48087ade2c8f03838cfa22af709",
+  "generated_from": "fa5a636508bf62871abcbb922fe9d5aeec24fe9d",
   "node_types": {
     "NanamiEngine::Module::AnimationTree::AnimationClipNode": {
       "class": "AnimationClipNode",
       "fqn": "NanamiEngine::Module::AnimationTree::AnimationClipNode",
       "leaf": "AnimationClipNode",
-      "version": 3,
+      "version": 4,
       "singleton": false,
       "header": "Engine/Module/AnimationTree/Node/ClipNode/AnimationClipNode.h",
       "params": [
@@ -80,6 +80,14 @@
           "shape": "bool",
           "since": 3,
           "default": true
+        },
+        {
+          "key": "nameCheck_",
+          "member": "nameCheck_",
+          "named": true,
+          "shape": "bool",
+          "since": 4,
+          "default": false
         }
       ]
     },

@@ -260,7 +260,11 @@ namespace NanamiEngine::Core::MainWindow
             {
                 Stop();
             }
-            if (ImGui::IsKeyPressed(ImGuiKey_Escape))
+            ImGui::SetItemTooltip("Esc + Enter");
+            // NOTE: Esc 単体はゲーム内 UI を閉じるのに使うので、停止は Esc + Enter
+            const bool isStopChordDown = ImGui::IsKeyDown(ImGuiKey_Escape) && ImGui::IsKeyDown(ImGuiKey_Enter);
+            const bool isStopChordPressed = ImGui::IsKeyPressed(ImGuiKey_Escape, false) || ImGui::IsKeyPressed(ImGuiKey_Enter, false);
+            if (isStopChordDown && isStopChordPressed)
             {
                 Stop();
             }

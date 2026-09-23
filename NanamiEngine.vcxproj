@@ -97,8 +97,6 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Weather\SetStorm\Enemy_Behaviour_Action_SetStorm.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Weather\Lightning\Enemy_Behaviour_Action_Lightning.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Hyena\CallAllies\Enemy_Behaviour_Action_CallAllies.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Stun\Enemy_Behaviour_Action_Stun.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\OpenWeakPointWindow\Enemy_Behaviour_Action_OpenWeakPointWindow.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Tyrannosaurus\ChargeRush\Enemy_Behaviour_Action_ChargeRush.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\FieldGameObject\Enemy_Behaviour_Action_FieldGameObject.cpp" />
@@ -319,7 +317,6 @@
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\AttackAreaFire\Rpc_AttackAreaFire.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\EnemyDeath\Rpc_EnemyDeath.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Network\Session\GamePlay_StageSessionMatchmaking.cpp" />
-    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\BodyPart\GamePlay_Enemy_BodyPartWeakPoint.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\GamePlay_Enemy_Hyena.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\NetworkBehaviourTree\GamePlay_NetworkBehaviourTree.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Projectile\GamePlay_Enemy_IAttackProjectile.cpp" />
@@ -385,6 +382,7 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Sound\SpawnSound.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Sound\UiSoundBank.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Weather\WeatherService.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Weather\WindZone.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Spawn\GamePlay_PrefabSpawner.cpp" />
@@ -589,8 +587,6 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Weather\SetStorm\Enemy_Behaviour_Action_SetStorm.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Weather\Lightning\Enemy_Behaviour_Action_Lightning.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Hyena\CallAllies\Enemy_Behaviour_Action_CallAllies.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\Stun\Enemy_Behaviour_Action_Stun.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\EnemyStatus\OpenWeakPointWindow\Enemy_Behaviour_Action_OpenWeakPointWindow.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Tyrannosaurus\ChargeRush\Enemy_Behaviour_Action_ChargeRush.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Enemy_Behaviour_ActionBase.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\FieldGameObject\Enemy_Behaviour_Action_FieldGameObject.h" />
@@ -818,7 +814,6 @@
     <ClInclude Include="Assets\Scripts\Editor\Npc\Friendly\Behaviour\Window\RunningFriendlyBehaviourTreeWindow.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\AttackArea\AttackArea.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Network\Game_CustomNetworkRunner.h" />
-    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\BodyPart\GamePlay_Enemy_BodyPartWeakPoint.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\FirstEventDragon\GamePlay_Enemy_FirstEventDragon.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\GamePlay_Enemy_Hyena.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\NetworkBehaviourTree\GamePlay_NetworkBehaviourTree.h" />
@@ -855,6 +850,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\Sample\BgmPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SpawnSound.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Sound\UiSoundBank.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Spawn\GamePlay_PrefabSpawner.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_MoneyPickup.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_ItemPickup.h" />

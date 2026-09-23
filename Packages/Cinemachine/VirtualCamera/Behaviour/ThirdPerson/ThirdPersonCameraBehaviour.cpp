@@ -62,6 +62,13 @@ namespace NanamiEngine::CineMachine::Behaviour
         if (!target_)
             return;
 
+        // NOTE: Brain は有効/無効を見ずに呼ぶので、ここで止める。Follow/LookAt は最後の offset のまま追従する
+        if (!IsEnable())
+        {
+            isMouseDeltaStale_ = true;
+            return;
+        }
+
         UpdateMouseInput();
         UpdateGamepadInput();
 
@@ -87,6 +94,13 @@ namespace NanamiEngine::CineMachine::Behaviour
         {
             SetMousePoint(centerX, centerY);
             lastMousePinnedMs = GetNowCount();
+        }
+
+        // NOTE: 無効の間はカーソルが自由に動くので、戻った最初の差分は捨てる(カメラが跳ねる)
+        if (isMouseDeltaStale_)
+        {
+            isMouseDeltaStale_ = false;
+            return;
         }
 
         yaw_   += dx * mouseSensitivity_;

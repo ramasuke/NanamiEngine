@@ -8,6 +8,7 @@
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "../../../Sound/UiSoundBank.h"
 
 namespace
 {
@@ -477,6 +478,8 @@ namespace GamePlay::Ui
         if (isPressing != isStampPressing_)
         {
             isStampPressing_ = isPressing;
+            if (isPressing)
+                Sound::UiSoundBank::Play(Sound::UiSe::Stamp);
             ApplyElementVisibility();
         }
 

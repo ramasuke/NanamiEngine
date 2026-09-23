@@ -15,18 +15,12 @@ namespace GameCore::Damage
     {
         Physics(GameObject::IGameObject& from,
                 GameObject::IGameObject& to,
-                PhysicsPower damageValue,
-                const std::weak_ptr<GameObject::IGameObject>& hitPart,
-                bool isChargedAttack);
+                PhysicsPower damageValue);
         int DamageValue() override;
         [[nodiscard]] glm::vec3 DamageDirection() const override;
-        [[nodiscard]] std::weak_ptr<GameObject::IGameObject> HitPart() const override;
-        [[nodiscard]] bool IsChargedAttack() const override;
 
     private:
         glm::vec3 damageDirection_;
         PhysicsPower damageValue_;
-        std::weak_ptr<GameObject::IGameObject> hitPart_;
-        bool isChargedAttack_;
     };
 }

@@ -9,6 +9,7 @@
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Libs/LibCore/DxLib/ShiftJis.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
+#include "../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -79,6 +80,7 @@ namespace GamePlay::Ui
     void CannonCooldownGauge::Show()
     {
         isReady_            = false;
+        hasCountedDown_     = false;
         readyElapsed_secs_  = 0.0f;
         shootElapsed_secs_  = 1000.0f;
         Entity().lock()->SetEnable(true);
@@ -96,10 +98,17 @@ namespace GamePlay::Ui
 
         const bool isReady = remain_secs_ <= 0.0f;
         if (isReady && !isReady_)
+        {
             readyElapsed_secs_ = 0.0f;
+            if (hasCountedDown_)
+                Sound::UiSoundBank::Play(Sound::UiSe::HudReady);
+        }
         isReady_ = isReady;
         if (!isReady)
+        {
+            hasCountedDown_ = true;
             lastCount_ = static_cast<int>(std::ceil(remain_secs_));
+        }
     }
 
     void CannonCooldownGauge::PlayShoot()

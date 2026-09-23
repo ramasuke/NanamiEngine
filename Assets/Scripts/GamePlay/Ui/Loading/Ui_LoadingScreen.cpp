@@ -8,6 +8,7 @@
 #include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
+#include "../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 using GameCore::Scene::Main::SceneLoadStep;
@@ -259,6 +260,7 @@ namespace GamePlay::Ui
         case Phase::Visible:
             if (CanHide())
             {
+                Sound::UiSoundBank::Play(Sound::UiSe::LoadingDone);
                 phase_ = Phase::CoveringMap;
                 PlayCover(0.0f, 255.0f, fadeOutSecs_);
             }

@@ -5,7 +5,7 @@
 
 #include "DxLib.h"
 
-#include "../../../Sound/SoundPlayer.h"
+#include "../../../Sound/UiSoundBank.h"
 #include "../../../Prop/RestorationGate/Prop_RestorationGate.h"
 #include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
@@ -51,6 +51,7 @@ namespace GamePlay::Ui
             return;
         }
         isOpen_ = true;
+        Sound::UiSoundBank::Play(Sound::UiSe::Open);
 
         view_ = RequireComponent<EventBoardUi>();
         view_->Build();
@@ -133,10 +134,15 @@ namespace GamePlay::Ui
             }
         }
 
-        questModel_ ->Cursor().OnSelectionChanged().Subscribe([this](size_t) { Refresh(); }).AddTo(this);
-        eventModel_ ->Cursor().OnSelectionChanged().Subscribe([this](size_t) { Refresh(); }).AddTo(this);
-        noticeModel_->Cursor().OnSelectionChanged().Subscribe([this](size_t) { Refresh(); }).AddTo(this);
-        restorationModel_->Cursor().OnSelectionChanged().Subscribe([this](size_t) { Refresh(); }).AddTo(this);
+        const auto onSelectionChanged = [this](size_t)
+        {
+            Sound::UiSoundBank::Play(Sound::UiSe::Cursor);
+            Refresh();
+        };
+        questModel_ ->Cursor().OnSelectionChanged().Subscribe(onSelectionChanged).AddTo(this);
+        eventModel_ ->Cursor().OnSelectionChanged().Subscribe(onSelectionChanged).AddTo(this);
+        noticeModel_->Cursor().OnSelectionChanged().Subscribe(onSelectionChanged).AddTo(this);
+        restorationModel_->Cursor().OnSelectionChanged().Subscribe(onSelectionChanged).AddTo(this);
 
         // 調べたときの押しっぱなしを、開いた直後の入力として拾わない
         previousKeys_ = ReadKeys();
@@ -242,6 +248,7 @@ namespace GamePlay::Ui
             return;
 
         currentTab_ = type;
+        Sound::UiSoundBank::Play(Sound::UiSe::Tab);
         view_->ShowTab(currentTab_);
         Refresh();
     }
@@ -265,7 +272,11 @@ namespace GamePlay::Ui
     void EventBoardPresenter::AcceptQuest()
     {
         if (!CanAcceptSelected())
+        {
+            if (questModel_->Selected())
+                PlaySe(refuseSound_);
             return;
+        }
 
         const auto owner = suspendedAvatar_.lock();
         const auto quest = GameCore::PlayerAvatar::Quest::CloneQuest(questModel_->Selected()->quest->Quest());
@@ -300,8 +311,7 @@ namespace GamePlay::Ui
 
     void EventBoardPresenter::PlaySe(const FIELD(Asset::SoundFile)& sound) const
     {
-        if (const auto file = sound.get())
-            Sound::SoundPlayer::PlaySe(*file, Sound::SoundPlayer::Position());
+        Sound::UiSoundBank::Play(sound.get());
     }
 
     void EventBoardPresenter::Refresh()
@@ -368,6 +378,7 @@ namespace GamePlay::Ui
         if (isClosed_)
             return;
         isClosed_ = true;
+        Sound::UiSoundBank::Play(Sound::UiSe::Close);
         EndPreview();
 
         if (const auto owner = suspendedAvatar_.lock())

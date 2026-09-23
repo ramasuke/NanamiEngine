@@ -81,14 +81,15 @@ namespace NanamiEngine::Module::Asset
 
     int Mv1File::LoadDxLibHandle() const
     {
-        if (!isLoadAttempted_)
-        {
-            const int useASyncLoad = GetUseASyncLoadFlag();
-            SetUseASyncLoadFlag(FALSE);
-            RequestLoad();
-            SetUseASyncLoadFlag(useASyncLoad);
-        }
-        return MV1DuplicateModel(dxLibHandle_);
+        const int useASyncLoad = GetUseASyncLoadFlag();
+        SetUseASyncLoadFlag(FALSE);
+        RequestLoad();
+        // NOTE: IsLoadCompleted が先に非同期で読み始めていると元がまだロード中で、複製すると中身の無いハンドルになる
+        if (dxLibHandle_ != -1 && CheckHandleASyncLoad(dxLibHandle_) == TRUE)
+            WaitHandleASyncLoad(dxLibHandle_);
+        const int handle = dxLibHandle_ == -1 ? -1 : MV1DuplicateModel(dxLibHandle_);
+        SetUseASyncLoadFlag(useASyncLoad);
+        return handle;
     }
 
     const Guid& Mv1File::GetGuid        () const { return guid_; }

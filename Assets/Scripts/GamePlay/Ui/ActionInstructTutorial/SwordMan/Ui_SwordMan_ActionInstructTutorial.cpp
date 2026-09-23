@@ -10,6 +10,7 @@
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "../../../../Core/Game/PlayerAvatar/SwordMan/Status/ControlGuideFocus/SwordMan_IControlGuideFocusRequest.h"
+#include "../../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -88,6 +89,7 @@ namespace GamePlay::Ui
 
         if (const auto entity = Entity().lock())
             entity->SetEnable(true);
+        Sound::UiSoundBank::Play(Sound::UiSe::HudNotice);
 
         if (stepText_)  stepText_ ->SetText(StepLabel(stepIndex));
         if (titleText_) titleText_->SetText(steps_[stepIndex].Title());
@@ -105,6 +107,7 @@ namespace GamePlay::Ui
     Coroutine::Task<void> SwordManActionInstructTutorial::PlayClearedAsync()
     {
         isCleared_ = true;
+        Sound::UiSoundBank::Play(Sound::UiSe::HudClear);
         co_await Coroutine::WaitForSeconds(clearHoldDuration_secs_);
     }
 

@@ -2,7 +2,7 @@
 
 #include "../../../../Core/Game/Game.h"
 #include "../../../../Core/Game/Scene/Main/Group/Main_GameSceneGroup.h"
-#include "../../../Sound/SoundPlayer.h"
+#include "../../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -41,7 +41,7 @@ namespace GamePlay::Ui
 
         selectButton_->OnHover().Subscribe([this](auto)
         {
-            Sound::SoundPlayer::PlaySe(*selectButtonHoverSound_.get(), Sound::SoundPlayer::Position());
+            Sound::UiSoundBank::Play(selectButtonHoverSound_, Sound::UiSe::Cursor);
             isHovering_ = true;
             RefreshAppearance();
         }).AddTo(this);
@@ -52,7 +52,7 @@ namespace GamePlay::Ui
         }).AddTo(this);
         selectButton_->OnClick().Subscribe([this](NanamiUi::MouseState)
         {
-            Sound::SoundPlayer::PlaySe(*selectButtonClickSound_.get(), Sound::SoundPlayer::Position());
+            Sound::UiSoundBank::Play(selectButtonClickSound_, Sound::UiSe::Confirm);
         }).AddTo(this);
     }
 

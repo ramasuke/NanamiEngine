@@ -54,35 +54,35 @@ CHATS = {
     'FirstDragon Heart Shatter': [
         'やったか……！？\n――待て、奴の様子がおかしい！',
         '島の真ん中に爪を……！\nまずい、浮遊石が狙いか！',
-        '心臓が砕かれた……！\n島が傾くぞ、何かに掴まれ！',
+        '浮遊石が抜かれた……！\n島が傾くぞ、何かに掴まれ！',
     ],
 
     # --- 拠点の島 (MainIslandScene)
     'Instructor_RestorationStart': [
         '……目が覚めたか。\n丸二日、眠っていたぞ。',
         '奴は撃ち落とした。だが墜ちる間際、\n島の真ん中に爪を突き立てていった。',
-        'この島は、地の底の浮遊石……\n島の心臓の力で浮いている。',
-        '奴はそれを砕いた。欠片は光になって、\n下の狩り場へ散っていった。',
+        'この島は、地の底に埋まった\n三つの浮遊石の力で浮いている。',
+        '奴の爪で、石は三つとも抜け出し、\n下の狩り場へ飛んでいった。',
         'このままじゃ、島は少しずつ沈む。\n……俺の脚も、この有様だ。',
         '俺はもう前には出られん。だが、\n島を立て直す段取りなら付けられる。',
-        '欠片を取り戻せ。それと、金だ。\n島を直すには、とにかく金が要る。',
+        '浮遊石を取り戻せ。それと、金だ。\n島を直すには、とにかく金が要る。',
         '稼ぎ口は掲示板の依頼だ。\n酒場の仲介人に話を通してある。',
     ],
     'Instructor_PortalGuide': [
-        '一番近い欠片の光は、草原に落ちた。\nあの紫の台座から渡れる。',
-        '欠片の周りの魔物は気が立っている。\n……無理はするなよ。',
+        '一番近い緑の浮遊石は、草原に落ちた。\nあの紫の台座から渡れる。',
+        '浮遊石の周りの魔物は気が立っている。\n……無理はするなよ。',
     ],
     'Instructor_BeforeGrassLand': [
-        '草原へは、紫の台座から渡れる。\n欠片の周りの魔物には気をつけろ。',
+        '草原へは、紫の台座から渡れる。\n浮遊石の周りの魔物には気をつけろ。',
     ],
     'Instructor_GrassLandReport': [
-        '緑の欠片、確かに受け取った。\n島の揺れが、嘘みたいに収まった。',
+        '緑の浮遊石、確かに受け取った。\n島の揺れが、嘘みたいに収まった。',
         '草原の狩人たちも、こっちへ\n来てくれるそうだな。',
         '住む場所を用意せんとな。\n……やることは山積みだ。',
-        '残る欠片の行方は、今探らせている。\nそれまでは島の立て直しを頼む。',
+        '残る浮遊石の行方は、今探らせている。\nそれまでは島の立て直しを頼む。',
     ],
     'Instructor_AfterGrassLand': [
-        '残る欠片の行方は、まだ掴めん。\n今は島の立て直しを頼む。',
+        '残る浮遊石の行方は、まだ掴めん。\n今は島の立て直しを頼む。',
     ],
     'Merchant_First': [
         'いらっしゃい！……と言いたいが、\n店もこの有様でね。',
@@ -110,14 +110,14 @@ CHATS = {
     'IslandKunoichi_First': [
         '……生きてたんだ。\nあの竜を撃ち落とすなんて、やるじゃん。',
         'あの竜は、前にも見たことがある。\n……その話は、また今度ね。',
-        '砕けた欠片の光、私も見てた。\nひとつは草原の方へ落ちていったよ。',
+        '飛んでいく浮遊石、私も見てた。\nひとつは草原の方へ落ちていったよ。',
     ],
     'IslandKunoichi_Again': [
-        '欠片の光を追ってれば、\nいつかあの竜にも辿り着く。……たぶんね。',
+        '浮遊石の光を追ってれば、\nいつかあの竜にも辿り着く。……たぶんね。',
     ],
     'IslandKunoichi_Cleared': [
-        '草原の欠片、取り戻したんだって？\n島の風が、少し落ち着いた。',
-        '次の欠片の行方は、私も探ってみる。\n……借りを返すだけだから。',
+        '草原の浮遊石、取り戻したんだって？\n島の風が、少し落ち着いた。',
+        '次の浮遊石の行方は、私も探ってみる。\n……借りを返すだけだから。',
     ],
     'IslandKunoichi_ClearedAgain': [
         '竜の巣は、嵐の向こう。\n……いつか、案内するよ。',
@@ -641,8 +641,8 @@ DRAGON_CLAW_STATE, DRAGON_FLYING_IDLE_STATE = 10, 4    # FirstEventDragon.animTr
 
 
 def dragon():
-    """撃ち落とした後、巣へ帰る前に島の心臓を砕く (docs/Story.md 序章 5)。
-    島へ降りて爪を突き立て、欠片の光が三方へ散り、教官が叫ぶ。前に入れた Heart ノードは作り直す"""
+    """撃ち落とした後、巣へ帰る前に島の浮遊石を抜く (docs/Story.md 序章 5)。
+    島へ降りて爪を突き立て、3つの浮遊石が三方へ飛んでいき、教官が叫ぶ。前に入れた Heart ノードは作り直す"""
     write_chats(['FirstDragon Heart Shatter'])
     tree = reader.read_tree_file(REPO / DRAGON_TREE)
     nodes = list(walk(tree.entry))
@@ -668,7 +668,7 @@ def dragon():
         isOnceExecute_=True, isRotateToMoveDir_=True, rotateSpeedDeg_=180.0)
     add('Heart Claw Animation', 'PlayAnimation', animatorSetParamNumber_=DRAGON_CLAW_STATE)
     add('Heart Claw Wait', 'WaitSeconds', waitSeconds_=0.6)
-    add('Heart Shard Scatter', 'GenerateParticle', particlePrefab_=asset_guid(HEART_PARTICLE), lifeTime_=3.0)
+    add('Heart Shard Scatter', 'GenerateParticle', particlePrefab_=asset_guid(HEART_PARTICLE), lifeTime_=3.3)
     add('Heart Shatter Shake', 'ShakeCamera', intensity_=0.8, duration_=2.5)
     add('Heart Shatter Chat', 'Chat', displayName_='教官', chatData_=chat_guids['FirstDragon Heart Shatter'])
     add('Heart Camera Off', 'PurposeCamera', prefabPurposeCamera_=PRODUCTION_CAMERA, priority_=-1)

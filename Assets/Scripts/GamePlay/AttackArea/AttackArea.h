@@ -51,31 +51,6 @@ namespace GamePlay
             [[nodiscard]] GameObject::IGameObject& GameObject() const { return *gameObject_.lock(); }
             [[nodiscard]] AttackTargetT& Target() { return *target_.lock(); }
 
-            /**
-             * 範囲に入っている部位のうち fromPosition に最も近いものを「当たった部位」とする。
-             * 剣が腿と脛に同時に重なっていても1つに決まる。
-             */
-            [[nodiscard]] std::weak_ptr<GameObject::IGameObject> NearestPart(const glm::vec3& fromPosition) const
-            {
-                std::shared_ptr<GameObject::IGameObject> nearest;
-                float nearestSqrDistance = 0.0f;
-                for (const auto& part : parts_)
-                {
-                    const auto locked = part.lock();
-                    if (!locked)
-                        continue;
-
-                    const glm::vec3 delta = locked->Transform().GetWorldPos() - fromPosition;
-                    const float sqrDistance = delta.x * delta.x + delta.y * delta.y + delta.z * delta.z;
-                    if (nearest && sqrDistance >= nearestSqrDistance)
-                        continue;
-
-                    nearest             = locked;
-                    nearestSqrDistance  = sqrDistance;
-                }
-                return nearest;
-            }
-
             void AddPart(const std::shared_ptr<GameObject::IGameObject>& part)
             {
                 if (std::ranges::none_of(parts_, [&](const std::weak_ptr<GameObject::IGameObject>& p) { return p.lock() == part; }))
@@ -101,8 +76,6 @@ namespace GamePlay
         virtual ~AttackArea() = default;
         void PhysicsAttack   (GameObject::IGameObject& fromObject, GameCore::Damage::PhysicsPower damagePower);
         bool TryPhysicsAttack(GameObject::IGameObject& fromObject, GameCore::Damage::PhysicsPower damagePower);
-        /** @brief 溜め攻撃として当てる。露出中の弱点に入るとスタンを取れる */
-        bool TryChargedPhysicsAttack(GameObject::IGameObject& fromObject, GameCore::Damage::PhysicsPower damagePower);
         [[nodiscard]] const std::vector<AttackTarget>& Targets          () const;
         [[nodiscard]] int                              AttackTargetCount() const { return static_cast<int>(attackTargets_.size()); }
         [[nodiscard]] Core::Network::NetworkObjectId   NetworkObjectId  () const { return GetNetworkObjectId(); }
@@ -113,7 +86,7 @@ namespace GamePlay
         virtual void DoAttack(AttackTarget attackTarget, std::unique_ptr<GameCore::IDamage> context) = 0;
 
     private:
-        void ApplyPhysicsAttack(GameObject::IGameObject& fromObject, GameCore::Damage::PhysicsPower damagePower, bool isChargedAttack);
+        void ApplyPhysicsAttack(GameObject::IGameObject& fromObject, GameCore::Damage::PhysicsPower damagePower);
         void OnTriggerEnter(const Physics::Manifold&, const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
         void OnTriggerExit (const std::shared_ptr<GameObject::IGameObject>& gameObject) override;
 
@@ -141,11 +114,8 @@ namespace GamePlay
     template <typename AttackTargetT>
     void AttackArea<AttackTargetT>::ApplyPhysicsAttack(
         GameObject::IGameObject& fromObject,
-        const GameCore::Damage::PhysicsPower damagePower,
-        const bool isChargedAttack)
+        const GameCore::Damage::PhysicsPower damagePower)
     {
-        const glm::vec3 attackPosition = Transform().GetWorldPos();
-
         for (auto attackTarget : Targets())
         {
             // 被弾側判定: 自分が所有していない(他ピアの)アバターにはダメージを与えない
@@ -155,9 +125,7 @@ namespace GamePlay
             DoAttack(attackTarget, std::make_unique<GameCore::Damage::Physics>(
                 fromObject,
                 attackTarget.GameObject(),
-                damagePower,
-                attackTarget.NearestPart(attackPosition),
-                isChargedAttack));
+                damagePower));
         }
         // Components().Catch<Component::ColliderBase>().lock()->OnDebugDraw();
     }
@@ -167,7 +135,7 @@ namespace GamePlay
         GameObject::IGameObject& fromObject,
         const GameCore::Damage::PhysicsPower damagePower)
     {
-        ApplyPhysicsAttack(fromObject, damagePower, false);
+        ApplyPhysicsAttack(fromObject, damagePower);
     }
 
     template <typename AttackTargetT>
@@ -193,16 +161,7 @@ namespace GamePlay
         GameObject::IGameObject& fromObject,
         const GameCore::Damage::PhysicsPower damagePower)
     {
-        ApplyPhysicsAttack(fromObject, damagePower, false);
-        return !Targets().empty();
-    }
-
-    template <typename AttackTargetT>
-    bool AttackArea<AttackTargetT>::TryChargedPhysicsAttack(
-        GameObject::IGameObject& fromObject,
-        const GameCore::Damage::PhysicsPower damagePower)
-    {
-        ApplyPhysicsAttack(fromObject, damagePower, true);
+        ApplyPhysicsAttack(fromObject, damagePower);
         return !Targets().empty();
     }
 

@@ -5,7 +5,7 @@
 #include "DxLib.h"
 
 #include "../../../Prop/MerchantStall/Prop_MerchantStall.h"
-#include "../../../Sound/SoundPlayer.h"
+#include "../../../Sound/UiSoundBank.h"
 #include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
@@ -52,6 +52,7 @@ namespace GamePlay::Ui
             return;
         }
         isOpen_ = true;
+        Sound::UiSoundBank::Play(Sound::UiSe::Open);
 
         view_ = RequireComponent<ShopUi>();
 
@@ -225,8 +226,7 @@ namespace GamePlay::Ui
 
     void ShopPresenter::PlaySound(const FIELD(Asset::SoundFile)& sound) const
     {
-        if (const auto file = sound.get())
-            Sound::SoundPlayer::PlaySe(*file, Sound::SoundPlayer::Position());
+        Sound::UiSoundBank::Play(sound.get());
     }
 
     void ShopPresenter::Close()
@@ -234,6 +234,7 @@ namespace GamePlay::Ui
         if (isClosing_)
             return;
         isClosing_ = true;
+        Sound::UiSoundBank::Play(Sound::UiSe::Close);
 
         if (const auto stall = stall_.lock())
             stall->RestoreCamera();

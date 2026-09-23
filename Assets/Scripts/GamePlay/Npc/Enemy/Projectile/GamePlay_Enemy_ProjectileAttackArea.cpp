@@ -42,7 +42,7 @@ namespace GamePlay::Npc::Enemy
 
         hitObjects_.emplace_back(owner);
         target->OnTakeDamage(std::make_unique<GameCore::Damage::Physics>(
-            *self, *owner, power_, gameObject, false));
+            *self, *owner, power_));
     }
 
     void AttackProjectile::OnDrawGui()

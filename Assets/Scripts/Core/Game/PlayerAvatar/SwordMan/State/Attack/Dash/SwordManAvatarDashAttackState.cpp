@@ -69,7 +69,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             const auto particle = NanamiEngine::Scene::GameObject::Instantiate(Resources().NormalAttackParticlePrefab(), DashAttackArea().Transform().GetWorldPos());
             if (const auto particleObject = particle.lock())
                 particleObject->Transform().SetLocalScale(glm::vec3(hitFeel.ParticleScale()));
-            DealDamageText(DashAttackArea(), BuffedAttackPower(attackStatus.AttackPower()), false);
+            DealDamageText(DashAttackArea(), BuffedAttackPower(attackStatus.AttackPower()));
             ShakeHitTargets(DashAttackArea(), hitFeel);
         }
         else

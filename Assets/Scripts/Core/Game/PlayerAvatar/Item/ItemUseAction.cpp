@@ -12,8 +12,11 @@ namespace GameCore::PlayerAvatar::Item
         hasUsed_ = false;
     }
 
-    void ItemUseAction::Update(const float during_secs, ItemPouch& pouch, IItemEffectTarget& target,
-                               const std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject>& user)
+    void ItemUseAction::Update(
+        const float during_secs, 
+        ItemPouch& pouch,
+        IItemEffectTarget& target,
+        const std::shared_ptr<GameObject::IGameObject>& user)
     {
         if (!item_ || hasUsed_ || during_secs < item_->UseEffectTime_secs())
             return;

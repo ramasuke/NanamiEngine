@@ -6,6 +6,7 @@
 #include "../Ui_GameOverScreen.h"
 #include "../DeathCamera/GameOverDeathCamera.h"
 #include "../../../Sound/SoundPlayer.h"
+#include "../../../Sound/UiSoundBank.h"
 #include "../../../../Core/Game/Game.h"
 #include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
@@ -166,6 +167,8 @@ namespace GamePlay::Ui
 
     void GameOverPresenter::Select(const int index)
     {
+        if (index != selection_)
+            Sound::UiSoundBank::Play(Sound::UiSe::StoneCursor);
         selection_ = index;
         view_->SetSelection(index);
     }
@@ -173,6 +176,7 @@ namespace GamePlay::Ui
     void GameOverPresenter::Decide(const int index)
     {
         Select(index);
+        Sound::UiSoundBank::Play(Sound::UiSe::StoneConfirm);
         if (index == GameOverScreenUi::RETRY_INDEX)
             Retry();
         else

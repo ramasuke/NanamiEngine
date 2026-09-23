@@ -21,7 +21,6 @@ namespace GameCore::PlayerAvatar::LockOn
         struct AimCandidate
         {
             std::shared_ptr<GameObject::IGameObject> target;
-            std::shared_ptr<GameObject::IGameObject> part;
             float screenX;
         };
     }
@@ -53,7 +52,7 @@ namespace GameCore::PlayerAvatar::LockOn
         if (!nearestTarget)
             return false;
 
-        cameraGroup.EngageLockOn(nearestTarget, nullptr);
+        cameraGroup.EngageLockOn(nearestTarget);
         return true;
     }
 
@@ -101,9 +100,8 @@ namespace GameCore::PlayerAvatar::LockOn
                       const int direction)
     {
         const auto currentTarget = cameraGroup.LockOnTarget().lock();
-        const auto currentAim    = cameraGroup.LockOnAim();
         const auto* brain        = CineMachine::CinemachineCameraBrain::Instance();
-        if (!currentTarget || !currentAim || !brain || direction == 0)
+        if (!currentTarget || !brain || direction == 0)
             return;
 
         const glm::vec3 cameraPos = brain->Transform().GetWorldPos();
@@ -121,42 +119,22 @@ namespace GameCore::PlayerAvatar::LockOn
             return glm::dot(diff, right) / depth;
         };
 
-        const auto currentPart = cameraGroup.LockOnPart().lock();
         std::vector<AimCandidate> candidates;
-        const auto addCandidate = [&](const std::shared_ptr<GameObject::IGameObject>& target,
-                                      const std::shared_ptr<GameObject::IGameObject>& part,
-                                      const glm::vec3& point)
-        {
-            if (target == currentTarget && part == currentPart)
-                return;
-            if (const auto screenX = screenXOf(point))
-                candidates.push_back({ target, part, *screenX });
-        };
-
         for (const auto& weakCandidate : detectionArea.Candidates())
         {
             const auto target = weakCandidate.lock();
-            if (!target || !HasLineOfSight(target))
+            if (!target || target == currentTarget || !HasLineOfSight(target))
                 continue;
 
-            addCandidate(target, nullptr, LockOnPositionOf(*target));
-            for (const auto& child : target->Transform().GetAllChildren())
-            {
-                const auto part = child->Components().Catch<ILockOnPart>().lock();
-                if (!part)
-                    continue;
-
-                const glm::vec3 point = part->LockOnPosition();
-                if (HasLineOfSight(point, *target))
-                    addCandidate(target, child, point);
-            }
+            if (const auto screenX = screenXOf(LockOnPositionOf(*target)))
+                candidates.push_back({ target, *screenX });
         }
         if (candidates.empty())
             return;
 
         // 向かう側で一番近い点。無ければ(端にいる、今の点が画面外)反対側の端へ回る
         const AimCandidate* next = nullptr;
-        if (const auto currentX = screenXOf(LockOnPositionOf(*currentAim)))
+        if (const auto currentX = screenXOf(LockOnPositionOf(*currentTarget)))
         {
             for (const auto& candidate : candidates)
             {
@@ -173,7 +151,7 @@ namespace GameCore::PlayerAvatar::LockOn
                 : &*std::max_element(candidates.begin(), candidates.end(), byScreenX);
         }
 
-        cameraGroup.EngageLockOn(next->target, next->part);
+        cameraGroup.EngageLockOn(next->target);
     }
 
     bool HasLineOfSight(const std::shared_ptr<GameObject::IGameObject>& target)

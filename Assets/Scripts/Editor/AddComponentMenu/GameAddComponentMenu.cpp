@@ -12,7 +12,6 @@
 #include "../../Core/Game/Scene/Sub/Content/ChattingUI/Context/ChattingUISceneContext.h"
 #include "../../Core/Game/Scene/Sub/Content/OtherPlayerStatusUI/Context/OtherPlayerStatusUiSceneContext.h"
 #include "../../GamePlay/Network/Game_CustomNetworkRunner.h"
-#include "../../GamePlay/Npc/Enemy/BodyPart/GamePlay_Enemy_BodyPartWeakPoint.h"
 #include "../../GamePlay/Npc/Enemy/FirstEventDragon/GamePlay_Enemy_FirstEventDragon.h"
 #include "../../GamePlay/Npc/Enemy/Hyena/GamePlay_Enemy_Hyena.h"
 #include "../../GamePlay/Npc/Enemy/NetworkBehaviourTree/GamePlay_NetworkBehaviourTree.h"
@@ -44,6 +43,7 @@
 #include "../../GamePlay/Weather/WindZone.h"
 #include "../../GamePlay/Sound/SoundPlayer.h"
 #include "../../GamePlay/Sound/SpawnSound.h"
+#include "../../GamePlay/Sound/UiSoundBank.h"
 #include "../../GamePlay/Sound/Sample/BgmPlayer.h"
 #include "../../GamePlay/Ui/ActionInstructTutorial/SwordMan/Ui_SwordMan_ActionInstructTutorial.h"
 #include "../../GamePlay/Ui/BillBoardNpcChatIcon/BillBoardNpcChatIcon.h"
@@ -240,7 +240,6 @@ namespace Editor::AddComponentMenu
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::Hyena>(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::Tyrannosaurus>(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::NetworkBehaviourTree>(addComponent);
-                    AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::BodyPartWeakPoint>(addComponent);
                     if (ImGui::TreeNode("Attack"))
                     {
                         AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::AttackProjectile>(addComponent);
@@ -299,6 +298,7 @@ namespace Editor::AddComponentMenu
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Sound::SoundPlayer>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Sound::BgmPlayObject>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Sound::SpawnSound>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Sound::UiSoundBank>(addComponent);
                 ImGui::TreePop();
                 ImGui::Spacing();
             }

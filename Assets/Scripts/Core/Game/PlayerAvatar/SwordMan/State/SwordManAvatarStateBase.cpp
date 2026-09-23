@@ -173,21 +173,16 @@ namespace GameCore::PlayerAvatar::SwordMan
         Actions().MoveForward(StatusParameter::MoveSpeed(ramp.current) * glm::vec3(inputMove.x, 0.0f, inputMove.y), Status().GetMoveRotateSpeed());
     }
 
-    void SwordManAvatarStateBase::DealDamageText(PlayerAttackArea& attackArea, const Damage::PhysicsPower power, const bool isChargedAttack) const
+    void SwordManAvatarStateBase::DealDamageText(PlayerAttackArea& attackArea, const Damage::PhysicsPower power) const
     {
         Physics::LayerMask mask = Physics::CreateLayerMask();
         Physics::AddLayer(mask, Physics::Layer::Default);
-
-        const glm::vec3 attackPosition = attackArea.Transform().GetWorldPos();
 
         for (const auto& attackTarget : attackArea.Targets())
         {
             // 村人は驚くだけでダメージは受けない
             if (!attackTarget.GameObject().Components().Catch<GameCore::Npc::IFriendlyNpc>().expired())
                 continue;
-
-            // ダメージ側(AttackArea::ApplyPhysicsAttack)と同じ基準で当たった部位を決める
-            const auto hitPart = attackTarget.NearestPart(attackPosition).lock();
 
             const auto origin    = Transform().GetWorldPos();
             const auto targetPos = attackTarget.GameObject().Transform().GetWorldPos();
@@ -200,8 +195,7 @@ namespace GameCore::PlayerAvatar::SwordMan
                                             mask);
 
             const auto textPos = raycastHit.Hit() ? raycastHit.Position() : targetPos;
-            GamePlay::Ui::SpawnDealDamageText(Resources().DealDamageTextBillBoardPrefab(), textPos, power.Value(),
-                                              hitPart, attackTarget.GameObject(), isChargedAttack);
+            GamePlay::Ui::SpawnDealDamageText(Resources().DealDamageTextBillBoardPrefab(), textPos, power.Value());
         }
     }
 
@@ -375,7 +369,7 @@ namespace GameCore::PlayerAvatar::SwordMan
             return nullptr;
 
         if (CameraGroup().IsLockedOn())
-            return CameraGroup().LockOnAim();
+            return CameraGroup().LockOnTarget().lock();
 
         auto target = turn.autoAimTarget.lock();
         if (!target)

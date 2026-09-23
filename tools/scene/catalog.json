@@ -1,5 +1,5 @@
 {
-  "generated_from": "7d59e04c50caf66ce01b1d6d967d72e2e21a4577",
+  "generated_from": "fa5a636508bf62871abcbb922fe9d5aeec24fe9d",
   "components": {
     "CineMachine::Behaviour::NoiseCameraBehaviour": {
       "class": "NoiseCameraBehaviour",
@@ -725,49 +725,6 @@
       "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Npc/Enemy/Projectile/GamePlay_Enemy_ProjectileAttackArea.h",
       "params": []
-    },
-    "GamePlay::Npc::Enemy::BodyPartWeakPoint": {
-      "class": "BodyPartWeakPoint",
-      "fqn": "GamePlay::Npc::Enemy::BodyPartWeakPoint",
-      "leaf": "BodyPartWeakPoint",
-      "version": 2,
-      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
-      "immediate_base": "ComponentBase",
-      "bases": [
-        {
-          "leaf": "ComponentBase",
-          "key": "value0"
-        }
-      ],
-      "interleaved_bases": false,
-      "header": "Assets/Scripts/GamePlay/Npc/Enemy/BodyPart/GamePlay_Enemy_BodyPartWeakPoint.h",
-      "params": [
-        {
-          "key": "durability_",
-          "member": "durability_",
-          "named": true,
-          "shape": "int"
-        },
-        {
-          "key": "weakWindowHint_",
-          "member": "weakWindowHint_",
-          "named": true,
-          "shape": "field",
-          "type": "ParticleSystem"
-        },
-        {
-          "key": "hintRetrigger_secs_",
-          "member": "hintRetrigger_secs_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "isStunOnBreak_",
-          "member": "isStunOnBreak_",
-          "named": true,
-          "shape": "bool"
-        }
-      ]
     },
     "GamePlay::Npc::Friendly::FriendlyNpc": {
       "class": "FriendlyNpc",
@@ -2224,6 +2181,206 @@
         }
       ]
     },
+    "GamePlay::Sound::UiSoundBank": {
+      "class": "UiSoundBank",
+      "fqn": "GamePlay::Sound::UiSoundBank",
+      "leaf": "UiSoundBank",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Sound/UiSoundBank.h",
+      "params": [
+        {
+          "key": "cursor_",
+          "member": "cursor_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "confirm_",
+          "member": "confirm_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "cancel_",
+          "member": "cancel_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "open_",
+          "member": "open_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "close_",
+          "member": "close_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "tab_",
+          "member": "tab_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "stamp_",
+          "member": "stamp_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "refuse_",
+          "member": "refuse_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "digit_",
+          "member": "digit_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "gameStart_",
+          "member": "gameStart_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "stoneCursor_",
+          "member": "stoneCursor_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "stoneConfirm_",
+          "member": "stoneConfirm_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "hoofTick_",
+          "member": "hoofTick_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "loadingDone_",
+          "member": "loadingDone_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "hudSelect_",
+          "member": "hudSelect_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "hudPaletteOpen_",
+          "member": "hudPaletteOpen_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "hudPageShift_",
+          "member": "hudPageShift_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "hudLockOn_",
+          "member": "hudLockOn_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "hudLockOff_",
+          "member": "hudLockOff_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "hudReady_",
+          "member": "hudReady_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "hudNotice_",
+          "member": "hudNotice_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "hudClear_",
+          "member": "hudClear_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "hudBossAppear_",
+          "member": "hudBossAppear_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "hudInteract_",
+          "member": "hudInteract_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "chatOpen_",
+          "member": "chatOpen_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "chatBlip_",
+          "member": "chatBlip_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        }
+      ]
+    },
     "GamePlay::Ui::AssetUpdatePresenter": {
       "class": "AssetUpdatePresenter",
       "fqn": "GamePlay::Ui::AssetUpdatePresenter",
@@ -3442,7 +3599,7 @@
       "class": "DealDamageTextBillBoard",
       "fqn": "GamePlay::Ui::DealDamageTextBillBoard",
       "leaf": "DealDamageTextBillBoard",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -3475,24 +3632,6 @@
         {
           "key": "fallAmount_",
           "member": "fallAmount_",
-          "named": true,
-          "shape": "float"
-        },
-        {
-          "key": "breakablePartColor_",
-          "member": "breakablePartColor_",
-          "named": true,
-          "shape": "color32"
-        },
-        {
-          "key": "weakPointStunColor_",
-          "member": "weakPointStunColor_",
-          "named": true,
-          "shape": "color32"
-        },
-        {
-          "key": "emphasisScaleRate_",
-          "member": "emphasisScaleRate_",
           "named": true,
           "shape": "float"
         },
@@ -11051,9 +11190,6 @@
     "BlendImageRenderer": [
       "NanamiEngine::Module::NanamiUi::BlendImageRenderer"
     ],
-    "BodyPartWeakPoint": [
-      "GamePlay::Npc::Enemy::BodyPartWeakPoint"
-    ],
     "BoneSync": [
       "NanamiEngine::Module::Component::BoneSync"
     ],
@@ -11479,6 +11615,9 @@
     ],
     "TreeLeafSway": [
       "GamePlay::Prop::TreeLeafSway"
+    ],
+    "UiSoundBank": [
+      "GamePlay::Sound::UiSoundBank"
     ],
     "VerticalLayoutGroup": [
       "NanamiEngine::Module::NanamiUi::VerticalLayoutGroup"

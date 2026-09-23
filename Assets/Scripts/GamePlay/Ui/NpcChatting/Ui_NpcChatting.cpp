@@ -3,6 +3,7 @@
 #include "Engine/Core/Coroutine/Coroutine.h"
 #include "../../../../Data/NpcChatText/Data_NpcChat.h"
 #include "../../../Core/Game/Settings/GameSettings.h"
+#include "../../Sound/UiSoundBank.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitForSeconds/Coroutine_WaitForSeconds.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
@@ -17,6 +18,7 @@ namespace GamePlay::Ui
         
         isDisplaying_ = true;
         Entity().lock()->SetEnable(true);
+        Sound::UiSoundBank::Play(Sound::UiSe::ChatOpen);
 
         npcNameTextBox_->SetText(npcName);
         
@@ -34,10 +36,15 @@ namespace GamePlay::Ui
             const std::string& fullText = chat.Text();
             std::string currentText;
             currentText.reserve(fullText.size());
+            int visibleCharCount = 0;
 
             for (const char charCharText : fullText)
             {
                 currentText.push_back(charCharText);
+                // NOTE: 文字送りの音は UTF-8 の先頭バイトで数えて 2 文字に 1 回。空白と改行では鳴らさない
+                const bool isLeadByte = (static_cast<unsigned char>(charCharText) & 0xC0) != 0x80;
+                if (isLeadByte && charCharText != ' ' && charCharText != '\n' && visibleCharCount++ % 2 == 0)
+                    Sound::UiSoundBank::Play(Sound::UiSe::ChatBlip);
                 if (!textRenderer_)
                     break;
                 
