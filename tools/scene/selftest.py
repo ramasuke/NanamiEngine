@@ -1,34 +1,33 @@
-"""Self-test / correctness gate for tools.scene.
+"""tools.scene のセルフテスト / 正しさのゲート。
 
-Run:  python tools/scene/selftest.py         (from repo root)
-      python -m tools.scene selftest
+実行:  python tools/scene/selftest.py         （リポジトリのルートから）
+       python -m tools.scene selftest
 
-Exit 0 = all good, 1 = failure. No third-party dependencies.
+終了コード 0 = 問題なし、1 = 失敗。サードパーティ依存なし。
 
-Stages (added as the toolkit is built - mirrors tools/bt/selftest.py):
-  0. cereal_json duplicate-key fidelity (shared with tools.bt - re-checked here
-     since tools.scene is the consumer that actually depends on it).
-  1. cereal_json formatting fidelity: dumps(loads(text)) == text for every fixture.
-  2. Scene/Prefab model round-trip: read -> write -> byte-identical, including
-     the ordered polymorphic_id / ptr_wrapper.id / cereal_class_version
-     bookkeeping sequences AND Transform's repeated "child" key count.
-  3. catalog.json freshness (regen-catalog --check), plus the base-class slot
-     table: every base a component archives is known, and ImageRenderer's
-     layout is ComponentBase / IInitRenderable / IUserInterfaceRenderable.
-  4. GameObject/Component edit + inverse round-trip (add-then-remove restores
-     the original bytes exactly), including a brand-new component keeping its
-     empty mixin-base slots (value1/value2...) and a component whose base has
-     its own fields (ColliderBase/NetworkComponent) still being refused.
-  5. instantiate-prefab: two instantiations of the same prefab produce fresh,
-     non-colliding guids and are tagged CopiedPrefabGameObject; Guid references
-     into the copied tree (FirstEventDragon's BoneSync TransformSync targets)
-     are re-pointed at the copy.
-  6. GameObject mark_: setting a mark upgrades only that GameObject type to the
-     post-mark class version (every node of the type gets mark_), and a .prefab
-     root's unversioned mark_ lands between transform_ and the value0 tail.
-  7. The write path (cli_edit._commit) runs the cereal_class_version audit on the
-     rendered text, so an edit that moves a Field<T>'s first occurrence is
-     refused instead of being written and only caught by a later `validate`.
+ステージ（ツールキットの構築に合わせて追加。tools/bt/selftest.py と同じ構成）:
+  0. cereal_json の重複キー忠実性（tools.bt と共有。実際に依存しているのは
+     tools.scene なのでここでも再確認する）。
+  1. cereal_json の書式忠実性: 全フィクスチャで dumps(loads(text)) == text。
+  2. Scene/Prefab モデルの往復: read -> write がバイト単位で同一。順序付きの
+     polymorphic_id / ptr_wrapper.id / cereal_class_version の管理情報の並び、
+     および Transform の重複 "child" キーの数も含む。
+  3. catalog.json の鮮度（regen-catalog --check）と基底クラススロット表:
+     コンポーネントがアーカイブする基底はすべて既知で、ImageRenderer の
+     レイアウトが ComponentBase / IInitRenderable / IUserInterfaceRenderable であること。
+  4. GameObject/Component の編集と逆操作の往復（追加して削除すると元のバイトに
+     完全に戻る）。新規コンポーネントが空の mixin 基底スロット（value1/value2...）を
+     保つこと、基底が独自フィールドを持つコンポーネント（ColliderBase/NetworkComponent）が
+     引き続き拒否されることも含む。
+  5. instantiate-prefab: 同じプレハブを 2 回インスタンス化すると、衝突しない新しい
+     guid が振られ CopiedPrefabGameObject としてタグ付けされる。コピーしたツリー内への
+     Guid 参照（FirstEventDragon の BoneSync の TransformSync ターゲット）はコピー側を指し直す。
+  6. GameObject の mark_: mark を設定すると、その GameObject 型だけが mark 導入後の
+     クラスバージョンに上がり（その型の全ノードが mark_ を持つ）、.prefab ルートの
+     バージョンなし mark_ は transform_ と value0 の末尾部分の間に入る。
+  7. 書き込み経路（cli_edit._commit）は描画したテキストに cereal_class_version の
+     監査をかけるので、Field<T> の最初の出現を動かす編集は、書き込まれて後の `validate` で
+     初めて見つかるのではなく拒否される。
 """
 
 from __future__ import annotations
@@ -44,11 +43,11 @@ if str(_REPO) not in sys.path:
 
 from tools.common import cereal_json  # noqa: E402
 
-# (name, relative path) - a small, diverse set of real committed fixtures.
-# Hyena.prefab is load-bearing: it is the only fixture with a multi-child
-# Transform (childCount 3, three sibling "child" keys) and several components
-# with bare empty-body mixin members ("value1".."value4") that collide on
-# structural fingerprint - see reader._tag_value's literal_presence handling.
+# (name, relative path) - 実際にコミットされた、小さく多様なフィクスチャ群。
+# Hyena.prefab は欠かせない: 複数の子を持つ Transform（childCount 3、兄弟の
+# "child" キーが 3 つ）を含む唯一のフィクスチャで、構造フィンガープリントが衝突する
+# 本体が空の素の mixin メンバー（"value1".."value4"）を持つコンポーネントも複数ある。
+# reader._tag_value の literal_presence の扱い参照。
 SCENE_FIXTURES = [
     ("OtherPlayerStatusUiScene", "Assets/Scene/OtherPlayerStatusUiScene.scene"),
     ("StageLoadingScene", "Assets/Scene/StageLoadingScene.scene"),
@@ -59,10 +58,10 @@ PREFAB_FIXTURES = [
     ("DealDamageText3D", "Assets/Prefab/UI/DealDamageText3D.prefab"),
     ("Hyena", "Assets/Prefab/Npc/Enemy/Hyena.prefab"),
 ]
-# Assets/Prefab/UI/ChattingUI.prefab is deliberately excluded: it contains a
-# pre-existing, unrelated data bug (a UI string serialised as raw Shift-JIS
-# bytes inside an otherwise-UTF-8 file) that predates this toolkit - decoding
-# it as UTF-8 correctly raises, which is the desired "fail loud" behaviour.
+# Assets/Prefab/UI/ChattingUI.prefab は意図的に除外: このツールキット以前からある
+# 無関係なデータ不具合（UTF-8 のファイル中に UI 文字列が生の Shift-JIS バイトで
+# シリアライズされている）を含む。UTF-8 としてデコードすると正しく例外になり、
+# これは望ましい「大きな音で失敗する」挙動。
 
 
 class Reporter:
@@ -124,9 +123,9 @@ def stage_catalog(r: Reporter) -> None:
     else:
         r.fail("catalog.json fresh", msg)
 
-    # Base-class slots: every base some component archives must be in the
-    # bases table, and ImageRenderer's layout (the shape behind the
-    # add-component bug that dropped its mixin slots) must be recorded exactly.
+    # 基底クラススロット: いずれかのコンポーネントがアーカイブする基底はすべて
+    # 基底表に載っている必要があり、ImageRenderer のレイアウト（mixin スロットを
+    # 落としていた add-component のバグの元になった形）は正確に記録されている必要がある。
     try:
         cat = catalog.load()
         referenced = {b["leaf"] for e in cat.components.values() for b in e.get("bases", [])}
@@ -189,7 +188,7 @@ def stage_component_edits(r: Reporter) -> None:
         except Exception:  # noqa: BLE001
             r.fail(Path(rel).name, traceback.format_exc())
 
-    # component add/remove inverse, against a real fixture with at least one GameObject
+    # 少なくとも 1 つの GameObject を持つ実フィクスチャでのコンポーネント追加/削除の逆操作
     try:
         from tools.scene import catalog
         p = _REPO / "Assets/Prefab/SampleNetworkSpawnPrefab.prefab"
@@ -205,10 +204,9 @@ def stage_component_edits(r: Reporter) -> None:
     except Exception:  # noqa: BLE001
         r.fail("component add/remove inverse", traceback.format_exc())
 
-    # Mixin base slots on a brand-new component - regression test for the bug
-    # where add-component wrote only ComponentBase's value0 and dropped the
-    # empty IInitRenderable/IUserInterfaceRenderable slots (value1/value2), so
-    # the engine then read spriteFile_ positionally as a base class.
+    # 新規コンポーネントの mixin 基底スロット - add-component が ComponentBase の value0 だけを
+    # 書き、空の IInitRenderable/IUserInterfaceRenderable スロット（value1/value2）を
+    # 落としていたため、エンジンが spriteFile_ を位置で基底クラスとして読んでいたバグの回帰テスト。
     try:
         import re as _re
 
@@ -403,8 +401,8 @@ def stage_gameobject_mark(r: Reporter) -> None:
         r.ok("GrassLandScene: marking one root upgrades only its type and round-trips")
 
         prefab = reader.read_prefab_file(_REPO / "Assets/Prefab/Npc/Enemy/Hyena.prefab")
-        # Children may already carry mark_ (their own type was upgraded); marking
-        # the root must leave them exactly as they were, whatever that is.
+        # 子はすでに mark_ を持っている場合がある（子自身の型が上げられている）。
+        # ルートに mark を付けても、子はどんな状態であれそのまま残らなければならない。
         child_marks = [n.mark for n in _walk(prefab.root.transform.children)]
         prefab.root.mark = model.MARK_NAMES.index("DiamondBlue")
         text = writer.write_prefab(prefab)
@@ -425,7 +423,7 @@ def stage_model_roundtrip(r: Reporter) -> None:
     try:
         from tools.scene import reader, writer  # noqa: F401
     except Exception:  # noqa: BLE001
-        return  # not built yet
+        return  # まだビルドされていない
     r.section("stage 2: Scene/Prefab model round-trip")
     from tools.common.diffcheck import assert_bookkeeping_equal, assert_semantically_equal
 
@@ -465,8 +463,8 @@ def stage_write_path_audit(r: Reporter) -> None:
     except Exception:  # noqa: BLE001
         return
     r.section("stage 7: write-path cereal_class_version audit")
-    # StageLoadingScene has no component type the catalog misses, so the audit
-    # reports "missing" findings as hard failures rather than downgrading them.
+    # StageLoadingScene にはカタログが把握していないコンポーネント型がないので、
+    # 監査は "missing" の指摘を格下げせずハードな失敗として報告する。
     rel = "Assets/Scene/StageLoadingScene.scene"
     p = _REPO / rel
     cat = catalog.load()
@@ -483,9 +481,9 @@ def stage_write_path_audit(r: Reporter) -> None:
         return code, out.getvalue()
 
     try:
-        # ModelRenderer on the root puts a Field<Mv1File> - a type this file has
-        # never carried - ahead of everything else, which is the shape that broke
-        # GameManage.scene (a new FIELD landing before the keyed occurrence).
+        # ルートの ModelRenderer は、このファイルが一度も持ったことのない型 Field<Mv1File> を
+        # 他のすべてより前に置く。これは GameManage.scene を壊した形
+        # （新しい FIELD がキー付きの出現より前に来る）。
         code, out = commit("ModelRenderer")
         if code != 1 or "first occurrence of Field<Mv1File>" not in out:
             raise AssertionError(f"a first-occurrence Field<Mv1File> should be refused, got "

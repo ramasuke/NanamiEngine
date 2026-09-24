@@ -1,4 +1,4 @@
-"""Generate the shop (merchant stall) UI sprites, and previews composited on a real game screen.
+"""店 (露店) の UI スプライトと、実際のゲーム画面に合成したプレビューを生成する。
 
     python tools/art/shop.py --shot <screenshot.png> --out-dir <dir>   # 実画面に合成した完成イメージ
     python tools/art/shop.py --emit                                     # スプライトを Assets/Art/UI/Shop へ
@@ -12,7 +12,7 @@ LAYOUT の座標でこのスプライトと TextRenderer を並べる。--shot �
 チョークの文字は TextRenderer が描く。かすれは ChalkGrain (黒板と同じ色の斑点) を文字の上に重ねて出す。
 黒板の上に貼る紙片とアイコンは斑点より上に描くので、紙までかすれることはない。
 
-Requires Pillow + numpy.
+Pillow と numpy が必要。
 """
 import argparse
 import sys

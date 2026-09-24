@@ -32,17 +32,17 @@ TAU = 2 * math.pi
 SHARD_COUNT = 8
 ARC_DEG = 140.0
 SHARD_W_PX, SHARD_H_PX = 48, 96
-SHARD_BASE_U = 118.0      # pivot -> shard base, design units
-SHARD_LEN_U = 94.0        # base -> tip
-SHARD_WIDEST_U = 34.0     # base -> widest point
+SHARD_BASE_U = 118.0      # ピボット -> 欠片の根元 (デザイン単位)
+SHARD_LEN_U = 94.0        # 根元 -> 先端
+SHARD_WIDEST_U = 34.0     # 根元 -> 最も幅の広い点
 SHARD_HALF_W_U = 17.0
 SHARD_PAD_PX = (SHARD_H_PX - SHARD_LEN_U * PX_PER_UNIT) / 2
 
 CREST_W_PX, CREST_H_PX = 128, 152
-CREST_OFFSET_U = -44.0    # pivot -> crest centre
-SKULL_OFFSET_U = 2.0      # crest centre -> skull centre
-ROOT_TO_PIVOT_PX = 84.8   # BossHealthGaugeUI root -> pivot (Shards object)
-NAME_TOP_PX = 126.0       # BossHealthGaugeUI root -> BossName text top
+CREST_OFFSET_U = -44.0    # ピボット -> 紋章の中心
+SKULL_OFFSET_U = 2.0      # 紋章の中心 -> 髑髏の中心
+ROOT_TO_PIVOT_PX = 84.8   # BossHealthGaugeUI のルート -> ピボット (Shards オブジェクト)
+NAME_TOP_PX = 126.0       # BossHealthGaugeUI のルート -> BossName テキストの上端
 
 rng = np.random.default_rng(7)
 
@@ -58,7 +58,7 @@ NORMAL = [(0, '#5a0810'), (0.45, '#c8141e'), (0.8, '#ff5a3c'), (1, '#a0121a')]
 DANGER = [(0, '#2a0004'), (0.45, '#8a000c'), (0.8, '#ff7a2a'), (1, '#5a0008')]
 
 
-# ---------------------------------------------------------------- raster helpers
+# ---------------------------------------------------------------- ラスタ補助
 def grid(w_px, h_px):
     ys, xs = np.mgrid[0:h_px * S, 0:w_px * S].astype(np.float32)
     return (xs + 0.5) / S / PX_PER_UNIT, (ys + 0.5) / S / PX_PER_UNIT
@@ -98,7 +98,7 @@ def ramp(t, stops):
     return rgb
 
 
-# ---------------------------------------------------------------- SDF helpers
+# ---------------------------------------------------------------- SDF 補助
 def sd_polygon(x, y, verts):
     v = np.array(verts, dtype=np.float32)
     n = len(v)
@@ -141,7 +141,7 @@ def metal(X, Y, d_shape, top, bottom):
     return np.clip(rgb + (streak * 0.6 + rows)[..., None], 0, 1)
 
 
-# ---------------------------------------------------------------- crest + skull
+# ---------------------------------------------------------------- 紋章 + 髑髏
 def crest_sd(X, Y, cx, cy):
     w, h = 50.0, 64.0
     pts = [(cx, cy - h), (cx + w, cy - h * 0.55), (cx + w, cy + h * 0.45), (cx, cy + h),
@@ -204,7 +204,7 @@ def render_crest_glow():
     return resolve(img, CREST_W_PX, CREST_H_PX)
 
 
-# ---------------------------------------------------------------- shards
+# ---------------------------------------------------------------- 欠片
 def shard_frame():
     X, Y = grid(SHARD_W_PX, SHARD_H_PX)
     cx = SHARD_W_PX / PX_PER_UNIT / 2
@@ -245,7 +245,7 @@ def render_shard_empty():
     return resolve(img, SHARD_W_PX, SHARD_H_PX)
 
 
-# ---------------------------------------------------------------- output
+# ---------------------------------------------------------------- 出力
 SPRITES = {
     'BossHealthCrest': render_crest,
     'BossHealthCrestGlow': render_crest_glow,
@@ -278,7 +278,7 @@ def write_sprite(out_dir, name, image):
     return guid
 
 
-# ---------------------------------------------------------------- preview (mirrors the Crystal Sliders + crest renderers)
+# ---------------------------------------------------------------- プレビュー (Crystal の Slider と紋章のレンダラーを再現)
 def premul(im):
     a = np.asarray(im, np.float32) / 255
     a[..., :3] *= a[..., 3:]

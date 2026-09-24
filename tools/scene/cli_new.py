@@ -1,4 +1,4 @@
-"""``new-scene`` / ``new-prefab`` CLI subcommands."""
+"""``new-scene`` / ``new-prefab`` CLI サブコマンド。"""
 
 from __future__ import annotations
 

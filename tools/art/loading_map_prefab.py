@@ -1,5 +1,5 @@
-"""Build the 紙の航路図 loading screen (LoadingScreenUI.prefab + its copy in StageLoadingScene.scene)
-and the .loadingRoute assets from tools/art/loading_map.py's layout() / routes().
+"""紙の航路図 のロード画面 (LoadingScreenUI.prefab と StageLoadingScene.scene 内のそのコピー) と
+.loadingRoute アセットを tools/art/loading_map.py の layout() / routes() から組む。
 
     python tools/art/loading_map.py --emit        # 先にスプライトを書き出す
     python tools/art/loading_map_prefab.py        # 航路データ・prefab・StageLoadingScene を組み直す
@@ -133,7 +133,7 @@ def write_route(route):
     return guid
 
 
-# ---------------------------------------------------------------- prefab
+# ---------------------------------------------------------------- プレハブ
 class Builder(pm.PrefabBuilder):
     def image(self, parent, name, pos, sprite_guid, order, scale=1.0):
         node = self.node(parent, name, pos, scale)

@@ -32,13 +32,18 @@ namespace GamePlay::Ui
         float minScale_       = 0.8f;
         float maxScale_       = 2.0f;
 
-        // heavyDamage_ 以上は色を変え、一瞬大きく出してから縮める
+        // 色は minScaleDamage_ -> heavyDamage_ -> maxScaleDamage_ で lowColor_ -> heavyColor_ -> maxColor_ へ log で補間する
+        // heavyDamage_ 以上は一瞬大きく出してから縮める
         int     heavyDamage_   = 150;
+        Color32 lowColor_      = Color32(255, 255, 255);
         Color32 heavyColor_    = Color32(255, 140, 0);
+        Color32 maxColor_      = Color32(255, 40, 20);
         float   popScaleRate_  = 1.6f;
         float   popTime_secs_  = 0.15f;
 
-        [[nodiscard]] float ScaleForDamage(int value) const;
+        [[nodiscard]] static float LogRate(int value, int from, int to);
+        [[nodiscard]] float   ScaleForDamage(int value) const;
+        [[nodiscard]] Color32 ColorForDamage(int value) const;
 
         // startPos_ からの高さ。上がってから少し落ちる
         LibCore::Tween::TweenPlayer<float> heightTween_;
@@ -67,6 +72,8 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(heavyColor_));
             archive(CEREAL_NVP(popScaleRate_));
             archive(CEREAL_NVP(popTime_secs_));
+            archive(CEREAL_NVP(lowColor_));
+            archive(CEREAL_NVP(maxColor_));
         }
 
         template<class Archive>
@@ -94,6 +101,8 @@ namespace GamePlay::Ui
             if (version >= 2) archive(CEREAL_NVP(heavyColor_));
             if (version >= 2) archive(CEREAL_NVP(popScaleRate_));
             if (version >= 2) archive(CEREAL_NVP(popTime_secs_));
+            if (version >= 4) archive(CEREAL_NVP(lowColor_));
+            if (version >= 4) archive(CEREAL_NVP(maxColor_));
         }
 #pragma endregion
     };
@@ -104,4 +113,4 @@ namespace GamePlay::Ui
                              int value);
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::DealDamageTextBillBoard, 3);
+CEREAL_CLASS_VERSION(GamePlay::Ui::DealDamageTextBillBoard, 4);

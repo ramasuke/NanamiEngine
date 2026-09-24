@@ -1,16 +1,16 @@
-"""Wait until no other Claude Code session of this project is mid-turn, then take the build lock.
+"""このプロジェクトの他の Claude Code セッションがターン途中でなくなるまで待ち、ビルドロックを取る。
 
     python .claude/shared/wait_for_sessions.py [--self <session_id>] [--priority N] [--label build]
                                                                 [--timeout 3600] [--poll 10]
     python .claude/shared/wait_for_sessions.py [--self <session_id>] --release
     python .claude/shared/wait_for_sessions.py --status
 
---self defaults to $CLAUDE_CODE_SESSION_ID (set by Claude Code in its shells), then $CLAUDE_SESSION_ID.
+--self の既定値は $CLAUDE_CODE_SESSION_ID（Claude Code が自身のシェルで設定）、次に $CLAUDE_SESSION_ID。
 
-Exit 0 = lock taken (release it with --release; the Stop hook also does), 2 = timed out.
-Busy/idle comes from the markers written by .claude/hooks/session_state.py.
-Waiters (/build, /build-run, /commit-push with -w; see wait.md) share one lock and go in order of priority (higher first, negative
-allowed, default 0), then of when they started waiting.
+終了コード 0 = ロック取得（--release で解放する。Stop フックでも解放される）、2 = タイムアウト。
+busy/idle は .claude/hooks/session_state.py が書くマーカーから判定する。
+待機者（/build, /build-run, -w 付きの /commit-push。wait.md 参照）は 1 つのロックを共有し、優先度順（高い方が先、負値可、
+既定 0）、次に待ち始めた順に並ぶ。
 """
 import argparse
 import json
@@ -62,7 +62,7 @@ def title_of(session_id):
 
 
 def is_stale(session_id, stale_secs):
-    # NOTE: an Esc-interrupted turn or a crashed session never sends Stop, so fall back to log activity.
+    # NOTE: Esc で中断したターンやクラッシュしたセッションは Stop を送らないので、ログの動きで判定する。
     age = jsonl_age(session_id)
     return age is None or age > stale_secs
 
@@ -74,7 +74,7 @@ def busy_others(self_id, stale_secs):
 
 
 def live_waiters(poll):
-    # NOTE: a waiter rewrites its marker every poll; one that stopped doing so was killed.
+    # NOTE: 待機者はポーリングごとにマーカーを書き直す。書き直さなくなったものは kill されている。
     fresh = max(poll * 3, 60)
     now = time.time()
     return [m for m in read_markers()
@@ -144,7 +144,7 @@ def main():
     if args.status:
         status(stale_secs)
         return 0
-    # NOTE: an unexpanded "${CLAUDE_SESSION_ID}" or an empty --self falls back to the environment.
+    # NOTE: 展開されていない "${CLAUDE_SESSION_ID}" や空の --self は環境変数にフォールバックする。
     if not args.self_id or args.self_id.startswith("$"):
         args.self_id = os.environ.get("CLAUDE_CODE_SESSION_ID") or os.environ.get("CLAUDE_SESSION_ID")
     if not args.self_id:
@@ -157,7 +157,7 @@ def main():
     start = time.time()
     last_seen = None
     while True:
-        # NOTE: waiters never count as busy for each other; they only queue by priority for the lock.
+        # NOTE: 待機者同士は busy とみなさない。ロックを優先度順に待つだけ。
         ss.write_marker(args.self_id, "waiting",
                         extra={"priority": args.priority, "label": args.label, "wait_since": start})
         others = busy_others(args.self_id, stale_secs)

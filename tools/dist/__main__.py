@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 import tempfile
 from pathlib import Path
@@ -17,11 +18,23 @@ from tools.dist import upload as up  # noqa: E402
 from tools.dist.config import CONFIG_PATH, load_config  # noqa: E402
 
 DEFAULT_CACHE_NAME = ".manifest_hash_cache.json"
+#: Build Settings の Client Version (BuildConfiguration::ClientVersion)。ゲーム本体に同梱される
+CLIENT_VERSION_PATH = Path("ProjectConfig/Build/Runtime/ClientVersion.json")
+DEFAULT_CLIENT_VERSION = "1.0.0"
 _SAMPLE_LIMIT = 10
 
 
 def _repo_root(args: argparse.Namespace) -> Path:
     return Path(args.repo_root).resolve() if args.repo_root else _REPO
+
+
+def _client_version(repo_root: Path) -> str:
+    """Build Settings の Client Version。未保存ならエンジンの既定値と同じ 1.0.0"""
+    path = repo_root / CLIENT_VERSION_PATH
+    if not path.is_file():
+        return DEFAULT_CLIENT_VERSION
+    value = json.loads(path.read_text(encoding="utf-8-sig")).get("ClientVersion", "")
+    return value or DEFAULT_CLIENT_VERSION
 
 
 def _print_unshipped_refs(unshipped: list[refs.UnshippedRef]) -> None:
@@ -54,7 +67,10 @@ def _cmd_build(args: argparse.Namespace) -> int:
         _print_unshipped_refs(ref_report.unshipped)
         return 1
 
-    required = args.required_client_version or args.version
+    required = args.required_client_version or _client_version(repo_root)
+    if not up.VERSION_RE.match(required):
+        print(f"ERROR: requiredClientVersion {required!r} は版として使えません")
+        return 1
     base_url = args.base_url or load_config(CONFIG_PATH).files_base_url
     document = mf.build(result, args.version, required, base_url)
     mf.dump(document, out_path)
@@ -68,6 +84,7 @@ def _cmd_build(args: argparse.Namespace) -> int:
     print(f"  refs read   {cache.ref_misses:>5}  (cache hit {cache.ref_hits}, .efkefc / .mv1 の参照先)")
     print()
     print(f"manifest {args.version} -> {out_path}")
+    print(f"  requiredClientVersion {required}")
     print(f"  entries     {len(result.entries):>5}")
     print(f"  total       {mf.format_bytes(result.total_bytes):>9}")
     print(f"  baseUrl     {base_url or '(未設定: upload できません)'}")
@@ -267,7 +284,8 @@ def build_parser() -> argparse.ArgumentParser:
     sp = sub.add_parser("build", help="Assets/ を走査して manifest.json を書き出す")
     sp.add_argument("--version", required=True, help="このリリースのバージョン (例 1.1.0)")
     sp.add_argument("--required-client-version", default="",
-                    help="これ未満のクライアントを弾く。省略時は --version と同じ")
+                    help="これ未満のクライアントを弾く。省略時は Build Settings の Client Version "
+                         "(ProjectConfig/Build/Runtime/ClientVersion.json、無ければ 1.0.0)")
     sp.add_argument("--base-url", default="",
                     help="クライアントが baseUrl + <hash> で取りに来る URL。既定は dist_config.json の公開 URL + files/")
     sp.add_argument("--assets-root", default="Assets", help="走査するルート (既定 Assets)")

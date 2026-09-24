@@ -1,14 +1,14 @@
-""".animTree.meta`` sidecar files.
+"""``.animTree.meta`` サイドカーファイル。
 
-A ``.meta`` is a cereal-JSON ``std::shared_ptr<AssetBase>`` holding the
-``AnimationTreeFile`` thin-proxy asset: a stable asset ``guid_`` (what an
-``Animator`` component's ``animationTreeFile_`` field references) plus
-``contentPath_`` back to the ``.animTree`` data file. Written by
-``File::OnSave()`` in the engine; reproduced here so ``new-tree`` yields an
-asset the editor and prefabs can bind to immediately.
+``.meta`` は cereal-JSON の ``std::shared_ptr<AssetBase>`` で、
+``AnimationTreeFile`` の薄いプロキシアセットを保持する: 安定したアセット ``guid_``
+（``Animator`` コンポーネントの ``animationTreeFile_`` フィールドが参照するもの）と、
+``.animTree`` データファイルを指す ``contentPath_``。エンジンでは
+``File::OnSave()`` が書く。``new-tree`` で作ったアセットをエディタやプレハブから
+すぐ参照できるよう、ここで再現している。
 
-Thin binding of the generic :mod:`tools.common.meta_base` codec for the
-``AnimationTreeFile`` asset type - see that module for the format notes.
+``AnimationTreeFile`` アセット型向けに汎用コーデック :mod:`tools.common.meta_base` を
+薄くバインドしたもの。形式の詳細はそちらのモジュールを参照。
 """
 
 from __future__ import annotations
@@ -50,8 +50,8 @@ def read_meta(path: Path) -> dict:
     return _base.read_meta(_SPEC, path)
 
 
-# -- a second, private MetaSpec used only to resolve --clip <path> arguments
-# (a .mv1/.mv1.meta) to the referenced Mv1File asset's guid - see edits.resolve_clip_arg.
+# -- --clip <path> 引数（.mv1/.mv1.meta）を参照先 Mv1File アセットの guid に
+# 解決するためだけの非公開 MetaSpec - edits.resolve_clip_arg を参照。
 MV1_ASSET_FQN = "NanamiEngine::Module::Asset::Mv1File"
 MV1_DATA_EXT = ".mv1"
 MV1_META_EXT = ".mv1.meta"

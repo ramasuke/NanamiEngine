@@ -1,9 +1,9 @@
-"""Structural comparison helpers for round-trip self-tests.
+"""往復セルフテスト用の構造比較ヘルパー。
 
-Comparison walks ``OrderedObj.items()`` pairwise (not per-key lookup) so that
-objects with **repeated sibling keys** (e.g. Transform's ``"child"``, written
-once per child - see ``tools.common.cereal_json``) are compared entry-by-entry
-in file order, not just by their first occurrence.
+比較はキーごとの参照ではなく ``OrderedObj.items()`` をペアごとに走査する。
+そのため **兄弟キーが重複する** オブジェクト (例: 子ごとに1回書かれる Transform の
+``"child"`` - ``tools.common.cereal_json`` を参照) も、最初の出現だけでなく
+ファイル順にエントリ単位で比較される。
 """
 
 from __future__ import annotations
@@ -88,7 +88,7 @@ def assert_bookkeeping_equal(a: Any, b: Any) -> None:
     _collect(b, "$", cb)
     for kind in ("poly", "ptr", "ver"):
         if ca[kind] != cb[kind]:
-            # first divergence
+            # 最初の相違箇所
             for i, (x, y) in enumerate(zip(ca[kind], cb[kind])):
                 if x != y:
                     raise SemanticMismatch(

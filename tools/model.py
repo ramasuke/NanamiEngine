@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Shim so ``python tools/model.py ...`` works the same as ``python -m tools.model ...``."""
+"""``python tools/model.py ...`` を ``python -m tools.model ...`` と同じように動かすためのシム。"""
 
 import sys
 from pathlib import Path

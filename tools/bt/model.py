@@ -1,13 +1,14 @@
-"""In-memory model of an enemy BehaviourTree, decoupled from the cereal-JSON
-bookkeeping (polymorphic ids, ptr_wrapper ids, cereal_class_version).
+"""敵 BehaviourTree のメモリ上のモデル。cereal-JSON の管理情報
+（polymorphic id、ptr_wrapper id、cereal_class_version）から切り離されている。
 
-`reader.read_tree` builds a :class:`Tree`; `writer.write_tree` renders one back to
-cereal-JSON, regenerating every id / version from scratch.
+`reader.read_tree` が :class:`Tree` を構築し、`writer.write_tree` がそれを
+cereal-JSON に書き戻す。id / version はすべて一から生成し直す。
 
-Action parameters are kept as a *tagged blob* (:mod:`tools.bt.blob`) - a near-raw
-copy of the action ``data`` sub-object with pointer slots and versioned slots
-marked so the writer can rebuild their bookkeeping. This makes edits to unrelated
-fields lossless even for actions the catalog does not fully model.
+Action のパラメータは *タグ付き blob*（:mod:`tools.bt.blob`）として保持する。
+action の ``data`` サブオブジェクトをほぼそのまま写したもので、ポインタスロットと
+バージョン付きスロットに印を付けて writer が管理情報を再構築できるようにしている。
+これにより、カタログが完全にはモデル化していない action でも、無関係なフィールドの
+編集が無損失になる。
 """
 
 from __future__ import annotations
@@ -15,10 +16,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
-# fully-qualified C++ type names as they appear in `polymorphic_name`.
-# The six composite/control node types are shared verbatim between the Enemy
-# and FriendlyNpc BehaviourTree flavors; only the ActionNode leaf differs (each
-# flavor wraps its own ActionBase hierarchy) - see tools/bt/npc_kind.py.
+# `polymorphic_name` に現れる完全修飾 C++ 型名。
+# 6つの複合/制御ノード型は Enemy と FriendlyNpc の BehaviourTree 種別で
+# そのまま共有され、ActionNode リーフだけが異なる（各種別が独自の ActionBase
+# 階層をラップする）。tools/bt/npc_kind.py 参照。
 FQN_ENTRY = "Editor::Npc::Behaviour::EntryNode"
 FQN_SELECTOR = "Editor::Npc::Behaviour::SelectorNode"
 FQN_SEQUENCE = "Editor::Npc::Behaviour::SequenceNode"
@@ -28,14 +29,14 @@ FQN_ONCE_SUCCESS = "Editor::Npc::Behaviour::OnceSuccessNode"
 
 FQN_ACTION_NODE_ENEMY = "Editor::Npc::Enemy::Behaviour::ActionNode"
 FQN_ACTION_NODE_FRIENDLY = "Editor::Npc::Friendly::Behaviour::ActionNode"
-FQN_ACTION_NODE = FQN_ACTION_NODE_ENEMY  # backward-compat alias (enemy default)
+FQN_ACTION_NODE = FQN_ACTION_NODE_ENEMY  # 後方互換用エイリアス（enemy がデフォルト）
 
 ACTION_FQN_PREFIX_ENEMY = "GameCore::Npc::Enemy::Behaviour::Action::"
 ACTION_FQN_PREFIX_FRIENDLY = "GameCore::Npc::Friendly::Behaviour::Action::"
-ACTION_FQN_PREFIX = ACTION_FQN_PREFIX_ENEMY  # backward-compat alias (enemy default)
+ACTION_FQN_PREFIX = ACTION_FQN_PREFIX_ENEMY  # 後方互換用エイリアス（enemy がデフォルト）
 ACTION_FQN_PREFIXES = (ACTION_FQN_PREFIX_ENEMY, ACTION_FQN_PREFIX_FRIENDLY)
 
-# CEREAL_CLASS_VERSION of the editor node types (verified against source)
+# エディタのノード型の CEREAL_CLASS_VERSION（ソースと照合済み）
 NODE_CLASS_VERSION = {
     FQN_ENTRY: 0,
     FQN_SELECTOR: 0,
@@ -50,7 +51,7 @@ NODE_CLASS_VERSION = {
 
 @dataclass
 class Node:
-    """Base for every graph node: a GUID and an editor-canvas position."""
+    """全グラフノードの基底: GUID とエディタキャンバス上の位置。"""
 
     guid: str
     pos: tuple[float, float] = (0.0, 0.0)
@@ -90,13 +91,13 @@ class OnceSuccess(Node):
 
 @dataclass
 class Action(Node):
-    """An ActionNode: an editor label (`name`) wrapping one concrete ActionBase."""
+    """ActionNode: 具象 ActionBase を1つラップするエディタ上のラベル（`name`）。"""
 
     name: str = ""
     type_fqn: str = ""          # GameCore::Npc::Enemy::Behaviour::Action::<X>
-    action_version: int = 0     # CEREAL_CLASS_VERSION of the action class
-    #: tagged blob of the action's serialised members (blob.Ver / blob.Ptr / ...),
-    #: excluding the leading cereal_class_version and the ActionBase `value0` slot.
+    action_version: int = 0     # action クラスの CEREAL_CLASS_VERSION
+    #: action のシリアライズ済みメンバーのタグ付き blob（blob.Ver / blob.Ptr / ...）。
+    #: 先頭の cereal_class_version と ActionBase の `value0` スロットは除く。
     params: "object" = None     # blob.Obj
 
     @property
@@ -117,7 +118,7 @@ MULTI_CHILD = (Selector, Sequence, RandomSelector)
 
 @dataclass
 class BbParam:
-    """A blackboard parameter. v1 supports the int variant only."""
+    """ブラックボードのパラメータ。v1 は int 型のみ対応。"""
 
     name: str
     value: int
@@ -128,14 +129,14 @@ class BbParam:
 class Tree:
     entry: Entry
     params: list[BbParam] = field(default_factory=list)
-    #: which BehaviourTree flavor this file is - "enemy" | "friendly" (see
-    #: tools/bt/npc_kind.py). Selects which ActionNode FQN the writer wraps
-    #: every Action leaf in; irrelevant (and untested) for any other value.
+    #: このファイルの BehaviourTree 種別 - "enemy" | "friendly"
+    #: （tools/bt/npc_kind.py 参照）。writer が各 Action リーフをどの ActionNode FQN で
+    #: ラップするかを決める。それ以外の値は無関係（かつ未テスト）。
     kind: str = "enemy"
 
-    # -- navigation helpers ------------------------------------------------
+    # -- 探索ヘルパー ------------------------------------------------
     def walk(self):
-        """Yield (node, parent, container, index) depth-first (entry first)."""
+        """(node, parent, container, index) を深さ優先で返す（エントリーが先）。"""
         stack: list[tuple[AnyNode, object, object, int]] = []
         if self.entry.child is not None:
             stack.append((self.entry.child, self.entry, self.entry, 0))

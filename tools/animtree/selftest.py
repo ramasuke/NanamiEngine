@@ -1,26 +1,26 @@
-"""Self-test / correctness gate for tools.animtree.
+"""tools.animtree のセルフテスト / 正しさの検査。
 
-Run:  python tools/animtree/selftest.py         (from repo root)
-      python -m tools.animtree selftest
+実行:  python tools/animtree/selftest.py         (リポジトリのルートから)
+       python -m tools.animtree selftest
 
-Exit 0 = all good, 1 = failure. No third-party dependencies.
+終了コード 0 = すべて成功、1 = 失敗。サードパーティ依存なし。
 
-Stages:
-  0. OrderedObj duplicate-key fidelity.
-  1. cereal_json formatting fidelity: dumps(loads(text)) == text for every fixture.
-  2. tree model round-trip: read -> write -> byte-identical to the original,
-     including the ordered polymorphic_id / ptr_wrapper.id / cereal_class_version
-     bookkeeping sequences.
-  3. .meta round-trip.
-  4. new-tree shape sanity (no byte-exact empty-tree fixture exists - see docs).
-  5. catalog freshness (regen-catalog --check).
-  6. add-clip-node/remove-node and add-transition(+condition)/remove-*
-     inverse round trips == original bytes.
-  7. add-param/remove-param round-trip for all 3 kinds (bool/int/float).
-  8. validate() sanity: the known blendAnimationOffset_secs_ garbage note,
-     and a clean fixture validates with zero hard problems.
-  9. adding a latest-version clip node to a tree of older clip nodes upgrades the
-     older ones on write (cereal stores one class version per type per archive).
+段階:
+  0. OrderedObj の重複キーの忠実性。
+  1. cereal_json の書式の忠実性: 全フィクスチャで dumps(loads(text)) == text。
+  2. ツリーモデルの往復: 読み込み -> 書き出し -> 元とバイト一致。
+     polymorphic_id / ptr_wrapper.id / cereal_class_version の
+     管理情報の並びも含む。
+  3. .meta の往復。
+  4. new-tree の形の妥当性（空ツリーのバイト一致フィクスチャは無い - ドキュメント参照）。
+  5. カタログの鮮度（regen-catalog --check）。
+  6. add-clip-node/remove-node と add-transition(+condition)/remove-* の
+     逆操作による往復 == 元のバイト列。
+  7. 3 種（bool/int/float）すべての add-param/remove-param の往復。
+  8. validate() の妥当性: 既知の blendAnimationOffset_secs_ のゴミ値の note と、
+     きれいなフィクスチャで致命的な問題がゼロになること。
+  9. 古いクリップノードのツリーに最新バージョンのクリップノードを追加すると、書き出し時に
+     古いものが引き上げられる（cereal はアーカイブ内で型ごとに 1 つのクラスバージョンしか保存しない）。
 """
 
 from __future__ import annotations

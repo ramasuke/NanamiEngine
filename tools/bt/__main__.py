@@ -29,7 +29,7 @@ def build_parser() -> argparse.ArgumentParser:
     sp = sub.add_parser("selftest", help="run the correctness gate")
     sp.set_defaults(func=_cmd_selftest)
 
-    # further subcommands registered here as modules land:
+    # モジュールが揃い次第、以降のサブコマンドをここで登録する:
     try:
         from tools.bt import cli_tree
         cli_tree.register(sub)

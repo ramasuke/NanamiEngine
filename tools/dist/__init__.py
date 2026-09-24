@@ -1,1 +1,1 @@
-"""Asset distribution toolkit: build the manifest.json that Packages/AssetUpdater consumes."""
+"""アセット配信ツールキット: Packages/AssetUpdater が読む manifest.json をビルドする。"""

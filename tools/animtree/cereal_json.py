@@ -1,5 +1,5 @@
-"""Re-export shim: the cereal-JSON codec lives in :mod:`tools.common.cereal_json`
-(format-generic, not AnimationTree-specific).
+"""再エクスポート用シム: cereal-JSON コーデックは :mod:`tools.common.cereal_json` にある
+（形式非依存で AnimationTree 固有ではない）。
 """
 
 from __future__ import annotations

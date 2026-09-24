@@ -1,13 +1,13 @@
-"""Synthesize the MagicCaster spell sound effects and install them as SoundFile assets under Assets/Audio/Magic.
+"""MagicCaster の魔法の効果音を合成し、Assets/Audio/Magic に SoundFile アセットとして入れる。
 
     python tools/art/magic_sfx.py [--only NAME ...] [--preview PATH]
 
-Per spell: <Spell>_Charge (played by the Cast_<Motion> prefab from the start of the cast, as long as the wind-up),
-<Spell>_Release (MagicSpellData.castSound_, at the cast point on every client) and whatever the spell leaves behind
-(_Impact / _Sigil / _Burst / _Rise / _Crumble / _Hit, played by those effect prefabs through GamePlay::Sound::SpawnSound).
-Everything is generated here (numpy + scipy, mp3 via lameenc: MPEG-1 Layer III, 192 kbps, 48 kHz, stereo like the
-other SE), so there is no licence to track. Deterministic: every sound has its own seed. An existing .mp3.meta keeps
-its guid; volume_ is 255 (0 would be silent) and loudness is set by the waveform peak instead.
+魔法ごとに: <Spell>_Charge (Cast_<Motion> プレハブが詠唱開始から溜めの間鳴らす)、
+<Spell>_Release (MagicSpellData.castSound_、全クライアントで発動点で鳴る)、そして魔法が残すもの
+(_Impact / _Sigil / _Burst / _Rise / _Crumble / _Hit。各エフェクトプレハブが GamePlay::Sound::SpawnSound で鳴らす)。
+すべてここで生成する (numpy + scipy、mp3 は lameenc: 他の SE と同じ MPEG-1 Layer III, 192 kbps, 48 kHz, ステレオ)
+ので、管理すべきライセンスはない。音ごとに専用シードがあり結果は決定的。既存の .mp3.meta は guid を保つ。
+volume_ は 255 (0 だと無音) で、音量は代わりに波形のピークで決める。
 """
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ SR = 48000
 TAU = 2 * math.pi
 
 
-# ================================================================ primitives
+# ================================================================ プリミティブ
 def n_of(secs):
     return int(round(secs * SR))
 
@@ -41,7 +41,7 @@ def pad(x, n):
 
 
 def at(buf, x, start_secs, gain=1.0):
-    """Mix x into buf starting at start_secs (in place, clipped to buf)."""
+    """x を buf の start_secs 以降に加算する (その場で、buf の範囲に切り詰める)。"""
     i = n_of(start_secs)
     if i >= len(buf):
         return buf
@@ -51,7 +51,7 @@ def at(buf, x, start_secs, gain=1.0):
 
 
 def curve(secs, points, kind='lin'):
-    """Piecewise curve over [0, secs]: points = [(t, v), ...]; kind 'exp' interpolates in log space."""
+    """[0, secs] の区分曲線: points = [(t, v), ...]。kind 'exp' は対数空間で補間する。"""
     t = tt(secs)
     xs = [p[0] for p in points]
     vs = [p[1] for p in points]
@@ -109,7 +109,7 @@ def _biquad(kind, fc, q):
 
 
 def sweep(x, fc, q=2.0, kind='bp', block=96):
-    """Time-varying biquad; fc is an array as long as x (or a constant)."""
+    """時変 biquad。fc は x と同じ長さの配列 (または定数)。"""
     fc = np.broadcast_to(fc, x.shape)
     y = np.empty_like(x)
     zi = np.zeros(2)
@@ -120,7 +120,7 @@ def sweep(x, fc, q=2.0, kind='bp', block=96):
 
 
 def osc(freq, secs, shape='sine', harmonics=10):
-    """freq: constant or per-sample array (Hz)."""
+    """freq: 定数またはサンプルごとの配列 (Hz)。"""
     n = n_of(secs)
     f = np.broadcast_to(np.asarray(freq, dtype=float), (n,)) if np.ndim(freq) == 0 else pad(np.asarray(freq, float), n)
     ph = TAU * np.cumsum(f) / SR
@@ -159,7 +159,7 @@ def pings(secs, rng, count, f_lo, f_hi, tau, t_lo=0.0, t_hi=None, amp=(0.4, 1.0)
 
 
 def grains(secs, rng, times, lo, hi, dur=(0.004, 0.02), amp=(0.3, 1.0)):
-    """Short windowed band-passed noise bursts (crackle, gravel, debris)."""
+    """窓をかけた短い帯域通過ノイズのバースト (パチパチ音、砂利、破片)。"""
     buf = np.zeros(n_of(secs))
     for ts in times:
         d = dur[0] + (dur[1] - dur[0]) * rng.random()
@@ -169,7 +169,7 @@ def grains(secs, rng, times, lo, hi, dur=(0.004, 0.02), amp=(0.3, 1.0)):
 
 
 def poisson_times(secs, rng, rate_curve):
-    """Event times whose rate (per second) follows rate_curve(t)."""
+    """頻度 (毎秒) が rate_curve(t) に従うイベント時刻。"""
     times, t = [], 0.0
     while t < secs:
         r = max(1e-3, rate_curve(t))
@@ -180,8 +180,8 @@ def poisson_times(secs, rng, rate_curve):
 
 
 def reverb(x, rng, rt60=0.8, mix=0.25, predelay=0.012, bright=6000):
-    """Mono -> stereo with a decorrelated exponential-noise tail. The dry end gets a short fade so a layer that is
-    still sounding when the recipe's buffer ends does not click."""
+    """モノラル -> ステレオ。無相関な指数ノイズの残響を付ける。レシピのバッファ終端でまだ鳴っているレイヤーが
+    クリックしないよう、ドライ音の終わりに短いフェードをかける。"""
     x = x.copy()
     k = min(len(x), n_of(0.03))
     x[len(x) - k:] *= np.linspace(1, 0, k)
@@ -216,7 +216,7 @@ def finish(stereo, peak_db, fade_in=0.002, fade_out=0.05, tail_to=None):
 
 
 def trim_tail(stereo, floor_db=-50.0, keep=0.04):
-    """Cut the reverb tail once it has fallen below floor_db of the peak, with a short fade."""
+    """残響がピークから floor_db を下回ったら短いフェードで切る。"""
     level = np.abs(stereo).max(axis=0)
     loud = np.nonzero(level > level.max() * 10 ** (floor_db / 20))[0]
     end = min(stereo.shape[1], (loud[-1] if len(loud) else 0) + n_of(keep))
@@ -234,7 +234,7 @@ def norm(x):
     return x / (np.max(np.abs(x)) + 1e-9)
 
 
-# ================================================================ recipes (each returns a stereo array)
+# ================================================================ レシピ (どれもステレオ配列を返す)
 def magic_bolt_charge(rng):
     d = 0.42
     rise = curve(d, [(0, 0), (d * 0.85, 1), (d, 0.6)]) ** 1.5
@@ -625,7 +625,7 @@ SOUNDS = {
 }
 
 
-# ================================================================ output
+# ================================================================ 出力
 META = """{{
     "value0": {{
         "polymorphic_id": 2147483649,

@@ -1,16 +1,15 @@
-"""Registry describing the two BehaviourTree "flavors" this toolkit supports -
-``Enemy`` and ``FriendlyNpc`` - so the rest of ``tools/bt`` can be generic over
-which one a given file/command targets instead of hardcoding Enemy paths
-everywhere. Mirrors the engine's own ``BehaviourTreeType`` split
-(``Editor::BehaviourTreeType::EnemyNpc`` / ``FriendlyNpc``): both flavors share
-the same composite node types (Selector/Sequence/...), file-format shell and
-``.meta`` convention, but each has its own ``ActionNode`` C++ type, ``ActionBase``
-hierarchy, action factory/registration macro, and on-disk action tree.
+"""このツールキットが扱う2つの BehaviourTree「種別」- ``Enemy`` と ``FriendlyNpc`` -
+を記述するレジストリ。これにより ``tools/bt`` の他の部分は Enemy のパスを
+あちこちにハードコードせず、ファイル/コマンドがどちらを対象にしても汎用に書ける。
+エンジン自身の ``BehaviourTreeType`` の区分
+（``Editor::BehaviourTreeType::EnemyNpc`` / ``FriendlyNpc``）に対応する。両種別は
+同じ複合ノード型（Selector/Sequence/...）、ファイル形式の外枠、``.meta`` の規約を
+共有するが、``ActionNode`` の C++ 型、``ActionBase`` 階層、action のファクトリ/登録
+マクロ、ディスク上の action ツリーはそれぞれ独自に持つ。
 
-Every "which Enemy-or-Friendly thing" question in this package should route
-through :data:`ENEMY` / :data:`FRIENDLY` (or :func:`by_name`) rather than a new
-hardcoded path, so a third flavor - should one ever appear - only needs a new
-entry here.
+このパッケージ内の「Enemy か Friendly か」に関わる問いは、新たなパスを
+ハードコードせず :data:`ENEMY` / :data:`FRIENDLY`（または :func:`by_name`）を
+経由すること。そうすれば万一3つ目の種別が現れても、ここに1項目足すだけで済む。
 """
 
 from __future__ import annotations
@@ -27,7 +26,7 @@ _REPO = Path(__file__).resolve().parents[2]
 
 @dataclass(frozen=True)
 class NpcKind:
-    name: str                       # "enemy" | "friendly" - the --kind value
+    name: str                       # "enemy" | "friendly" - --kind の値
     cpp_namespace_segment: str      # "Enemy" | "Friendly" - GameCore::Npc::<X>::...
 
     action_node_fqn: str            # Editor::Npc::<X>::Behaviour::ActionNode
@@ -41,7 +40,7 @@ class NpcKind:
 
     action_dir_rel: str             # Assets/Scripts/Core/Game/Npc/<X>/Behaviour/Action
     headers_agg: Path                # .../Editor/Npc/<X>/Behaviour/Action/<X>_Behaviour_ActionHeaders.h
-    content_anchor: str              # vcxproj splice anchor, Windows-separated
+    content_anchor: str              # vcxproj の差し込み位置の目印（Windows 区切り）
     factory_rel_suffix: str          # Editor/Npc/<X>/Behaviour/Action/<X>_Behaviour_ActionFactory.h
     base_include_name: str          # <X>_Behaviour_ActionBase.h
     action_file_prefix: str         # <X>_Behaviour_Action_
@@ -51,7 +50,7 @@ class NpcKind:
     register_bare_re: re.Pattern
 
     catalog_path: Path
-    bind_hint: str                   # printed guidance for new-tree
+    bind_hint: str                   # new-tree で表示する案内
 
     @property
     def action_root(self) -> Path:
@@ -63,8 +62,8 @@ class NpcKind:
 
     @property
     def extra_struct_files(self) -> dict[str, Path]:
-        # Both flavors keep their embedded-struct headers (e.g. a standalone
-        # Position) directly under Action/, mirroring each other 1:1.
+        # どちらの種別も埋め込み構造体のヘッダー（例: 単独の Position）を
+        # Action/ 直下に置き、互いに 1:1 で対応している。
         return {
             "Position": self.action_root / f"Position/{self.action_file_prefix}Position.h",
         }
@@ -142,8 +141,8 @@ def by_name(name: str) -> NpcKind:
 
 
 def kind_for_path(path) -> Optional[NpcKind]:
-    """Best-effort kind detection from a file's name (checks the ``.meta``
-    suffix first since it is the longer/more specific match)."""
+    """ファイル名からベストエフォートで種別を判定する（より長く具体的に一致する
+    ``.meta`` 接尾辞を先に調べる）。"""
     s = str(path)
     for ext, k in BY_META_EXT.items():
         if s.endswith(ext):
@@ -155,14 +154,12 @@ def kind_for_path(path) -> Optional[NpcKind]:
 
 
 def resolve_tree_path(arg: str, repo: Path) -> Path:
-    """Resolve a CLI path argument to a tree data file, the way every edit
-    verb's ``file`` positional does: if ``arg`` already names a recognised
-    extension use it as-is, otherwise try appending each known kind's
-    ``data_ext`` in turn and return whichever candidate actually exists on
-    disk (checked both cwd-relative and repo-relative, matching how an
-    explicit path is resolved). Falls back to the Enemy extension (today's
-    long-standing default) when nothing on disk matches either kind, so the
-    caller's own "not found" error still names a sensible path.
+    """CLI のパス引数をツリーのデータファイルに解決する。各編集コマンドの ``file``
+    位置引数と同じ方法で: ``arg`` が既知の拡張子を持てばそのまま使い、そうでなければ
+    各種別の ``data_ext`` を順に付けて試し、実際にディスク上に存在する候補を返す
+    （明示パスの解決と同じく cwd 相対とリポジトリ相対の両方を調べる）。どちらの種別も
+    ディスク上で一致しなければ Enemy の拡張子（従来からのデフォルト）にフォールバック
+    するので、呼び出し側の "not found" エラーでも妥当なパスが示される。
     """
 
     def _existing(c: Path) -> Optional[Path]:

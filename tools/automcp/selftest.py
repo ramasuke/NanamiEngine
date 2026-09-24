@@ -1,14 +1,14 @@
-"""Correctness gate for tools/automcp. Needs no running engine.
+"""tools/automcp の正しさのゲート。起動中のエンジンは不要。
 
-Stages:
-  1. client   - EngineClient against an in-process fake engine: results, ok:false errors,
-                connection refused, reconnect after the engine drops the connection, timeouts.
-  2. patch    - set_component_params on real GameObjects taken from Assets/Scene/*.scene:
-                float/bool/base-class fields, vector list shorthand, and the error cases.
-  3. server   - the MCPServer tool list and a few tool calls routed to the fake engine
-                (skipped when the ``mcp`` package is not installed).
+ステージ:
+  1. client   - プロセス内の偽エンジンに対する EngineClient: 結果、ok:false のエラー、
+                接続拒否、エンジンが接続を切った後の再接続、タイムアウト。
+  2. patch    - Assets/Scene/*.scene から取った実際の GameObject での set_component_params:
+                float/bool/基底クラスのフィールド、ベクトルのリスト省略形、エラーケース。
+  3. server   - MCPServer のツール一覧と、偽エンジンに回すいくつかのツール呼び出し
+                (``mcp`` パッケージが無ければスキップ)。
 
-Run: ``python tools/automcp/selftest.py`` (or ``python -m tools.automcp selftest``).
+実行: ``python tools/automcp/selftest.py`` (または ``python -m tools.automcp selftest``)。
 """
 
 from __future__ import annotations
@@ -79,7 +79,7 @@ class Reporter:
 
 
 # ---------------------------------------------------------------------------
-# fake engine
+# 偽エンジン
 # ---------------------------------------------------------------------------
 def _tiny_png() -> bytes:
     def chunk(kind: bytes, data: bytes) -> bytes:
@@ -89,7 +89,7 @@ def _tiny_png() -> bytes:
 
 
 class FakeEngine:
-    """Speaks the engine's line protocol for a handful of commands."""
+    """いくつかのコマンドについてエンジンの行プロトコルを話す。"""
 
     def __init__(self, game_object_json: str, screenshot_dir: Path) -> None:
         self.game_object_json = game_object_json
@@ -97,14 +97,14 @@ class FakeEngine:
         self.received: list[dict] = []
         self.drop_next = False
         self.stall_next = False
-        # ModelView/AnimationView: the model loads, the animation source loads and the clip attaches after N polls
+        # ModelView/AnimationView: N 回のポーリング後にモデルが読み込まれ、アニメーションの読み込み元が読み込まれ、クリップが付く
         self.model_ready_after = 2
         self.source_ready_after = 2
         self.attach_after = 2
         self.view_polls = 0
         self.source_polls = 0
         self.attach_polls = 0
-        # assets.reload: status reports this many loading resources, one fewer per poll
+        # assets.reload: status はこの数の読み込み中リソースを報告し、ポーリングごとに 1 つ減る
         self.loading_after_reload = 2
         self.loading_left = 0
         self._listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -207,10 +207,10 @@ class FakeEngine:
 
 
 # ---------------------------------------------------------------------------
-# fixtures
+# フィクスチャ
 # ---------------------------------------------------------------------------
 def _game_object_documents():
-    """Yield ``(scene name, json text of {"gameObject": root})`` for every root in the committed scenes."""
+    """コミット済みシーンの全ルートについて ``(シーン名, {"gameObject": root} の json テキスト)`` を yield する。"""
     for scene in sorted(SCENE_DIR.glob("*.scene"), key=lambda p: p.stat().st_size):
         doc = cj.loads(cj.read_text(scene))
         count = doc.get("gameObjectCount")
@@ -221,7 +221,7 @@ def _game_object_documents():
 
 
 def _find_fixture():
-    """A component with a top-level float field, plus that GameObject's json."""
+    """トップレベルに float フィールドを持つコンポーネントと、その GameObject の json。"""
     for scene_name, text in _game_object_documents():
         doc = cj.loads(text)
         for _i, name, data in patch.iter_components(patch.game_object_data(doc)):
@@ -249,7 +249,7 @@ def _find_vector_fixture():
 
 
 # ---------------------------------------------------------------------------
-# stages
+# ステージ
 # ---------------------------------------------------------------------------
 def stage_client(r: Reporter, engine: FakeEngine) -> None:
     r.section("client")
@@ -427,7 +427,7 @@ def stage_server(r: Reporter, engine: FakeEngine) -> None:
         assert patch.find_component(cj.loads(sent["args"]["json"]), guid)[key] == cj.Num.of_float(7.25)
     r.check("component_set_params patches and sends set_json", params_tool)
 
-    # In-process call_tool raises ToolError; the stdio handler turns it into an is_error result.
+    # プロセス内の call_tool は ToolError を投げる。stdio ハンドラがそれを is_error の結果に変える。
     from mcp.server.mcpserver.exceptions import ToolError
 
     def expect_tool_error(target, name, arguments, needle):

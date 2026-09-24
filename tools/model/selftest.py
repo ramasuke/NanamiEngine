@@ -1,45 +1,42 @@
-"""Self-test / correctness gate for tools.model.
+"""tools.model のセルフテスト / 正しさのゲート。
 
-Run:  python tools/model/selftest.py         (from repo root)
-      python -m tools.model selftest
+実行:  python tools/model/selftest.py         (リポジトリルートから)
+       python -m tools.model selftest
 
-Exit 0 = all good, 1 = failure. No third-party dependencies for stages 1-8;
-stage 9 (GUI automation) is best-effort and skips cleanly when pywinauto,
-a DxLibModelViewer exe, and a test .fbx aren't all available.
+終了コード 0 = すべて OK、1 = 失敗。ステージ 1-8 はサードパーティ依存無し。
+ステージ 9 (GUI 自動化) はできる範囲で行い、pywinauto、DxLibModelViewer の exe、
+テスト用 .fbx が揃っていなければきれいにスキップする。
 
-Stages:
-  1. .meta round trip against real, already-shipped Mv1File assets (proves
-     the base_class_count=2 shape holds, same fix class as ParticleFile's in
-     tools/common/meta_base.py).
-  2. content_path_for() convention check against a real nested asset
-     (all-backslash contentPath_, matching tools/effect's ParticleFile
-     binding).
-  3. install() GUID-reuse behaviour, using a synthetic "MV11"-header byte
-     string (no real DxLibModelViewer output needed).
-  4. install --textures bulk-copy: copies recognized image files into
-     <dest-dir>/textures/, ignores non-image files, and errors on a missing
-     source directory. Plain filesystem copying - no third-party deps.
-  5. mv1.decode()/texture_paths() against real shipped .mv1 files: decoded
-     size matches the header, and the texture references match what's known
-     to be in them.
-  6. texture collection (convert/install --with-textures): a synthetic
-     literal-only .mv1 referencing textures under a sub-folder, a *.fbm
-     folder, an absolute path, and outside the destination - checks lookup
-     order, sub-folder preservation, and missing-texture reporting.
-  7. mv1.encode(): decode(encode(body)) == body for real shipped .mv1 files
-     (and the output stays within x1.25 of DxLib's size) plus synthetic edge
-     cases - empty body, keycode escapes, runs past the max match length,
-     distances needing a 3-byte index.
-  8. materials() on known models and every .mv1 under Assets/, and
-     set-emissive: only the targeted material's emissive RGB changes,
-     all/name/index specs apply in order, bad specs / unknown names /
-     animation-only files are rejected without writing, and convert rejects
-     --mode anim --emissive.
-  9. best-effort end-to-end convert() in every save mode (mesh/anim/full):
-     only runs if pywinauto, a DxLibModelViewer exe ($DXLIB_MODELVIEWER or
-     cli.DEFAULT_MODELVIEWER_PATH), and a test .fbx ($TOOLS_MODEL_TEST_FBX)
-     are all present. Skipped elsewhere - this toolkit has no committed .fbx
-     fixture (see tools/model/README.md).
+ステージ:
+  1. 配布済みの実 Mv1File アセットに対する .meta の往復 (base_class_count=2 の形が
+     成り立つことの証明。tools/common/meta_base.py の ParticleFile の修正と同じ種類)。
+  2. 実際のネストしたアセットに対する content_path_for() の規則チェック
+     (すべてバックスラッシュの contentPath_。tools/effect の ParticleFile
+     バインディングと同じ)。
+  3. install() の GUID 再利用の挙動。合成した "MV11" ヘッダのバイト列を使う
+     (本物の DxLibModelViewer の出力は不要)。
+  4. install --textures の一括コピー: 認識できる画像ファイルを
+     <dest-dir>/textures/ にコピーし、画像でないファイルは無視し、元ディレクトリが
+     無ければエラーにする。素朴なファイルシステムのコピー - サードパーティ依存無し。
+  5. 配布済みの実 .mv1 に対する mv1.decode()/texture_paths(): デコード後のサイズが
+     ヘッダと一致し、テクスチャ参照が中にあると分かっているものと一致する。
+  6. テクスチャ収集 (convert/install --with-textures): サブフォルダ、*.fbm フォルダ、
+     絶対パス、出力先の外にあるテクスチャを参照するリテラルのみの合成 .mv1 で、
+     探索順、サブフォルダの維持、欠けたテクスチャの報告を確認する。
+  7. mv1.encode(): 配布済みの実 .mv1 で decode(encode(body)) == body
+     (かつ出力が DxLib のサイズの x1.25 以内) と、合成したエッジケース -
+     空の本体、keycode のエスケープ、最大一致長を超える連続、3 バイトの
+     インデックスが要る距離。
+  8. 既知のモデルと Assets/ 以下の全 .mv1 での materials()、そして
+     set-emissive: 対象マテリアルの自己発光 RGB だけが変わること、
+     all/名前/インデックス指定が順に適用されること、不正な指定 / 未知の名前 /
+     アニメーションのみのファイルは書き込まずに拒否されること、convert が
+     --mode anim --emissive を拒否すること。
+  9. できる範囲で、全保存モード (mesh/anim/full) で convert() を最初から最後まで:
+     pywinauto、DxLibModelViewer の exe ($DXLIB_MODELVIEWER または
+     cli.DEFAULT_MODELVIEWER_PATH)、テスト用 .fbx ($TOOLS_MODEL_TEST_FBX) が
+     すべて揃っているときだけ実行する。それ以外ではスキップ - このツールキットには
+     コミット済みの .fbx フィクスチャが無い (tools/model/README.md 参照)。
 """
 
 from __future__ import annotations
@@ -72,17 +69,17 @@ _KEYCODE = 0xA3
 
 
 def synthetic_mv1(body: bytes) -> bytes:
-    """A valid ``.mv1`` whose compressed stream holds ``body`` as literals
-    only (every keycode byte escaped as keycode,keycode) - enough for
-    ``mv1.decode`` without needing a real LZ encoder."""
+    """圧縮ストリームが ``body`` をリテラルだけで持つ正しい ``.mv1`` (keycode の
+    バイトはすべて keycode,keycode とエスケープ) - 本物の LZ エンコーダ無しで
+    ``mv1.decode`` を通すにはこれで十分。"""
     payload = body.replace(bytes([_KEYCODE]), bytes([_KEYCODE, _KEYCODE]))
     return b"MV11" + struct.pack("<IIB", len(body), 9 + len(payload), _KEYCODE) + payload
 
 
-# header + padding past cli._MV1_MIN_SIZE, with one keycode byte to exercise the escape
+# ヘッダ + cli._MV1_MIN_SIZE を超えるパディング。エスケープを試すため keycode のバイトを 1 つ入れる
 _SYNTHETIC_MV1 = synthetic_mv1(b"\x00" * 150 + bytes([_KEYCODE]) + b"\x00" * 150)
 
-# Texture references known to be in real shipped assets (mv1.texture_paths output).
+# 配布済みの実アセットに入っていると分かっているテクスチャ参照 (mv1.texture_paths の出力)。
 REAL_TEXTURE_FIXTURES = {
     _REPO / "Assets" / "Art" / "Models" / "Fantasy" / "DirtyHouse" / "dirtyHouse.mv1": [
         "textures\\Wall_Roughness.png", "textures\\Roof_normal.png", "textures\\Wall_base.png",
@@ -225,7 +222,7 @@ def stage_texture_copy(r: Reporter) -> None:
             mv1_src.write_bytes(_SYNTHETIC_MV1)
             dest = Path(tmp) / "out" / "Test.mv1"
             ns = argparse.Namespace(mv1=str(mv1_src), source=None, textures=str(empty_dir), dest=str(dest), with_textures=False)
-            cli.cmd_install(ns)  # must not raise - zero images is a warning, not an error
+            cli.cmd_install(ns)  # 例外にならないこと - 画像ゼロは警告であってエラーではない
             textures_dest = dest.parent / "textures"
             if textures_dest.exists() and any(textures_dest.iterdir()):
                 raise AssertionError("an empty source directory should not have produced any output files")
@@ -295,13 +292,13 @@ def stage_mv1_decode(r: Reporter) -> None:
 def stage_texture_collection(r: Reporter) -> None:
     r.section("stage 6: --with-textures texture collection (synthetic .mv1)")
     refs = [
-        "textures\\Base.png",           # relative sub-folder, present as-is in the source dir
-        "Model.fbm\\Normal.png",        # .fbm name differs from what's on disk -> found via *.fbm glob
-        "C:\\Artist\\Machine\\Base.png",  # absolute, covered by the relative ref with the same name
-        "C:\\Artist\\Machine\\Solo.tga",  # absolute only -> placed directly in dest
-        "Loose.jpg",                    # bare name, present only as <src>/Loose.jpg
-        "..\\Outside.png",              # escapes dest -> reported missing
-        "textures\\Missing.png",        # nowhere -> reported missing
+        "textures\\Base.png",           # 相対のサブフォルダ。元ディレクトリにそのまま存在する
+        "Model.fbm\\Normal.png",        # .fbm 名がディスク上と違う -> *.fbm の glob で見つかる
+        "C:\\Artist\\Machine\\Base.png",  # 絶対パス。同名の相対参照でカバーされる
+        "C:\\Artist\\Machine\\Solo.tga",  # 絶対パスのみ -> 出力先の直下に置かれる
+        "Loose.jpg",                    # 素の名前。<src>/Loose.jpg にだけ存在する
+        "..\\Outside.png",              # 出力先の外に出る -> 見つからないと報告
+        "textures\\Missing.png",        # どこにも無い -> 見つからないと報告
     ]
     body = b"\x01\x02" + b"".join(r_.encode("utf-8") + b"\x00\x07" for r_ in refs) + b"\x00" * 64
     try:
@@ -356,7 +353,7 @@ def stage_texture_collection(r: Reporter) -> None:
             cli.cmd_install(ns)
             if (dest.parent / "textures" / "Base.png").read_bytes() != b"base":
                 raise AssertionError("textures/Base.png was not placed next to the installed .mv1")
-            cli.cmd_install(ns)  # re-install: texture already in place, must not fail
+            cli.cmd_install(ns)  # 再インストール: テクスチャは配置済み。失敗してはいけない
         r.ok("install --with-textures succeeds when every reference resolves (and on re-install)")
     except Exception:  # noqa: BLE001
         r.fail("--with-textures all-found", traceback.format_exc())
@@ -571,7 +568,7 @@ def stage_e2e_convert(r: Reporter) -> None:
         for mode in dxlib_modelviewer.SAVE_MODES:
             out = Path(tmp) / f"selftest_output_{mode}.mv1"
             try:
-                # Debug bundles live outside `tmp` so they survive for inspection.
+                # デバッグ一式は調査用に残るよう `tmp` の外に置く。
                 dxlib_modelviewer.convert(Path(fbx_env), out, exe, mode=mode, timeout=timeout,
                                            debug_dir=None)
                 problems = cli.looks_like_mv1(out)
@@ -585,7 +582,7 @@ def stage_e2e_convert(r: Reporter) -> None:
             except Exception:  # noqa: BLE001
                 r.fail(f"end-to-end convert() --mode {mode}", traceback.format_exc())
     if len(sizes) == len(dxlib_modelviewer.SAVE_MODES):
-        # Only meaningful for a test .fbx that has both a mesh and animations.
+        # メッシュとアニメーションの両方を持つテスト用 .fbx でのみ意味がある。
         if sizes["full"] > sizes["mesh"] and sizes["full"] > sizes["anim"]:
             r.ok("full output is larger than both mesh-only and anim-only outputs")
         else:

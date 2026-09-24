@@ -1,20 +1,18 @@
-"""In-memory model of an AnimationTree, decoupled from the cereal-JSON
-bookkeeping (polymorphic ids, ptr_wrapper ids, cereal_class_version).
+"""AnimationTree のメモリ上のモデル。cereal-JSON の管理情報
+（polymorphic id、ptr_wrapper id、cereal_class_version）から切り離してある。
 
-``reader.read_tree`` builds a :class:`Tree`; ``writer.write_tree`` renders one
-back to cereal-JSON, regenerating every id / version from scratch.
+``reader.read_tree`` が :class:`Tree` を構築し、``writer.write_tree`` がそれを
+cereal-JSON に書き戻す（id / バージョンはすべて一から振り直す）。
 
-Unlike an enemy BehaviourTree, an AnimationTree is a **graph**, not a tree:
-nodes reference each other only through :class:`Transition` endpoints (by
-GUID, never by cereal pointer identity), and there is no parent/child
-relation. Every node - including the two fixed singletons (``Entry`` and
-``AnyState``) - is described by the node-type catalog
-(:mod:`tools.animtree.catalog`) and stored as a generic :class:`Node` whose
-non-guid/non-position fields are kept as a *tagged blob*
-(:mod:`tools.common.blob`), the same way :class:`tools.bt.model.Action` wraps
-a catalog-described action. This keeps the format open to a future
-``IAnimationNode`` subclass without a model rewrite - only the catalog needs
-to grow.
+敵の BehaviourTree と違い AnimationTree は木ではなく **グラフ** である:
+ノード同士は :class:`Transition` の端点を通してのみ参照し合い（GUID による。
+cereal のポインタ同一性は使わない）、親子関係は無い。すべてのノード
+（固定シングルトン ``Entry`` と ``AnyState`` を含む）はノード型カタログ
+（:mod:`tools.animtree.catalog`）で記述され、汎用の :class:`Node` として保持される。
+guid/position 以外のフィールドは *タグ付き blob*（:mod:`tools.common.blob`）で持ち、
+:class:`tools.bt.model.Action` がカタログ記述のアクションを包むのと同じ方式。
+これにより今後 ``IAnimationNode`` サブクラスが増えてもモデルを書き直す必要がなく、
+カタログを増やすだけで済む。
 """
 
 from __future__ import annotations
@@ -26,26 +24,24 @@ from tools.common.cereal_json import Num
 
 
 def numval(x: Any) -> Any:
-    """Unwrap a raw :class:`~tools.common.cereal_json.Num` (as kept by
-    ``Node.pos``, ``Transition.duration_secs`` and int/float
-    ``Condition``/``Param`` values, to preserve their original numeric literal
-    text through a no-op round trip) to a plain Python number. Pass-through
-    for anything else (bool, already-plain float/int on a freshly-created
-    value)."""
+    """生の :class:`~tools.common.cereal_json.Num`（``Node.pos``、``Transition.duration_secs``、
+    int/float の ``Condition``/``Param`` の値が、無変更の往復で元の数値リテラル
+    表記を保つために保持しているもの）を素の Python 数値に戻す。
+    それ以外（bool、新規作成した値の素の float/int）はそのまま返す。"""
     return x.value if isinstance(x, Num) else x
 
-# fully-qualified C++ type names, as they appear in polymorphic_name (or, for
-# the two exact-typed singleton slots, never printed at all - see reader.py)
+# polymorphic_name に現れる完全修飾 C++ 型名（型が固定の
+# シングルトンスロット 2 つでは一切出力されない - reader.py 参照）
 FQN_ENTRY_NODE = "NanamiEngine::Module::AnimationTree::AnimatorEntryNode"
 FQN_ANYSTATE_NODE = "NanamiEngine::Module::AnimationTree::AnimationVisualAnyStateNode"
 FQN_CLIP_NODE = "NanamiEngine::Module::AnimationTree::AnimationClipNode"
 FQN_NODE_PATH = "NanamiEngine::Module::AnimationTree::AnimationNodePath"
 
-# CEREAL_CLASS_VERSION of every *structural* type (verified against source).
-# tools/animtree/catalog.json is the source of truth for the addable node
-# types themselves (AnimationClipNode, ...); these are the fixed constants for
-# types this toolkit always emits by hand (transitions, condition groups,
-# base-class stubs) - exactly how tools/bt hardcodes its own NODE_CLASS_VERSION.
+# 全 *構造* 型の CEREAL_CLASS_VERSION（ソースで確認済み）。
+# 追加可能なノード型そのもの（AnimationClipNode, ...）は tools/animtree/catalog.json が
+# 正本。ここはこのツールキットが常に手で出力する型（遷移、条件グループ、
+# 基底クラスのスタブ）の固定定数で、tools/bt が NODE_CLASS_VERSION を
+# ハードコードしているのと同じ。
 NODE_PATH_CLASS_VERSION = 1
 COND_GROUP_CLASS_VERSION = 0
 COND_CLASS_VERSION = 0
@@ -55,29 +51,29 @@ IOBJECT_CLASS_VERSION = 0
 ICONDITION_CLASS_VERSION = 0
 IPARAMETER_CLASS_VERSION = 0
 
-# the 3 explicit instantiations that exist today for both AnimationParameter<T>
-# and AnimationNodePathAdditionCondition<T>
+# AnimationParameter<T> と AnimationNodePathAdditionCondition<T> の両方について
+# 現在存在する 3 つの明示的実体化
 KINDS = ("bool", "int", "float")
 
 
 @dataclass
 class Node:
-    """One ``IAnimationNode`` instance: a singleton (Entry/AnyState) or an
-    addable node (``AnimationClipNode`` today - see
-    :meth:`tools.animtree.catalog.Catalog.addable_node_types`). ``guid``/``pos``
-    are hoisted out of the type's field blob for uniform addressing across the
-    toolkit (transitions, validate, the CLI); the writer re-inserts them at
-    the catalog-declared position in the type's own field order.
+    """1 つの ``IAnimationNode`` インスタンス: シングルトン（Entry/AnyState）か
+    追加可能なノード（現状は ``AnimationClipNode`` -
+    :meth:`tools.animtree.catalog.Catalog.addable_node_types` 参照）。``guid``/``pos``
+    はツールキット全体（遷移、validate、CLI）で一様に指定できるよう型のフィールド
+    blob から取り出してあり、writer が型自身のフィールド順のカタログ宣言位置に
+    戻す。
     """
 
     guid: str
     pos: tuple[float, float] = (0.0, 0.0)
     type_fqn: str = FQN_CLIP_NODE
     class_version: int = 0
-    #: tagged blob (blob.Ver / blob.Ptr / ...) of every field *except*
-    #: guid_/position_, in the type's save()-order (e.g. animationFile_,
-    #: name_, speed_, blendAnimationOffset_secs_, modelAnimationIndex_ for a
-    #: ClipNode; empty for AnyState; {speed_} for Entry).
+    #: guid_/position_ *以外* の全フィールドのタグ付き blob（blob.Ver / blob.Ptr / ...）を
+    #: 型の save() 順で持つ（例: ClipNode なら animationFile_, name_, speed_,
+    #: blendAnimationOffset_secs_, modelAnimationIndex_。AnyState は空、
+    #: Entry は {speed_}）。
     params: Any = None
 
     @property
@@ -87,36 +83,34 @@ class Node:
 
 @dataclass
 class Condition:
-    """One equality guard inside a transition's AND-group. ``Check()`` in the
-    engine is *always* equality - there is no ``<``/``>``/``!=`` operator."""
+    """遷移の AND グループ内の等値ガード 1 つ。エンジンの ``Check()`` は
+    *常に* 等値比較で、``<``/``>``/``!=`` 演算子は無い。"""
 
-    name: str            # additionParameters_ param name this checks
+    name: str            # 判定対象の additionParameters_ のパラメータ名
     kind: str             # "bool" | "int" | "float"
     value: Any
 
 
 @dataclass
 class Transition:
-    """One ``AnimationNodePath``. Has **no identity GUID of its own** -
-    ``AnimationNodePath::GetGuid()`` is a stub bug that always returns an
-    empty GUID - so a transition is addressed positionally (its index in
-    ``transitions``/``any_state_transitions``) or by its
-    ``(from_guid, next_guid)`` pair, never by a guid argument."""
+    """1 つの ``AnimationNodePath``。**自身の識別 GUID を持たない**
+    （``AnimationNodePath::GetGuid()`` は常に空の GUID を返すスタブのバグ）ので、
+    遷移は位置（``transitions``/``any_state_transitions`` 内のインデックス）か
+    ``(from_guid, next_guid)`` の組で指定し、guid 引数では指定しない。"""
 
     from_guid: str
     next_guid: str
-    visual_from_guid: str          # editor-only "drawn from" node; == from_guid for a freshly-authored transition
+    visual_from_guid: str          # エディタ専用の「描画元」ノード。新規作成した遷移では == from_guid
     duration_secs: float = 0.0
-    conditions: list[Condition] = field(default_factory=list)   # AND-group; [] == unconditional/"always"
+    conditions: list[Condition] = field(default_factory=list)   # AND グループ。[] == 無条件/「常に」
 
 
 @dataclass
 class Param:
-    """One ``additionParameters_`` entry (``ParameterGroup.conditionParameters_``).
-    Unlike ``tools.bt``'s blackboard (self-restricted to ``int`` as a stated v1
-    limitation, not an engine constraint), this supports bool/int/float from
-    day one - ``AnimationParameter<T>`` is identically instantiated for all
-    three in the engine."""
+    """``additionParameters_`` の 1 項目（``ParameterGroup.conditionParameters_``）。
+    ``tools.bt`` のブラックボード（エンジンの制約ではなく v1 の制限として ``int`` のみ）と
+    違い、最初から bool/int/float に対応する。エンジンでは ``AnimationParameter<T>`` が
+    3 つとも同じように実体化されている。"""
 
     name: str
     kind: str             # "bool" | "int" | "float"
@@ -125,8 +119,8 @@ class Param:
 
 @dataclass
 class Tree:
-    entry: Node                        # type_fqn == FQN_ENTRY_NODE, from "entryNode"
-    any_state: Node                     # type_fqn == FQN_ANYSTATE_NODE, from "visualAnyStateNode"
+    entry: Node                        # type_fqn == FQN_ENTRY_NODE、"entryNode" から
+    any_state: Node                     # type_fqn == FQN_ANYSTATE_NODE、"visualAnyStateNode" から
     nodes: list[Node] = field(default_factory=list)                         # "nodes_N"
     transitions: list[Transition] = field(default_factory=list)             # "fromNodeNodePath_N"
     any_state_transitions: list[Transition] = field(default_factory=list)   # "fromAnyStateNodeNodePath_N"

@@ -1,4 +1,4 @@
-"""Load/query ``tools/scene/catalog.json`` (see ``catalog_scan.py``)."""
+"""``tools/scene/catalog.json`` の読み込み/照会 (``catalog_scan.py`` を参照)。"""
 
 from __future__ import annotations
 
@@ -21,23 +21,22 @@ class Catalog:
         self.components: dict[str, dict] = data.get("components", {})
         self.by_leaf: dict[str, list[str]] = data.get("by_leaf", {})
         self.gameobject_shapes: dict[str, dict] = data.get("gameobject_shapes", {})
-        # base leaf -> {"fqn", "header", "version", "empty", ["ambiguous"]}
-        # (see catalog_scan._scan_bases); empty for a catalog predating it.
+        # 基底の leaf -> {"fqn", "header", "version", "empty", ["ambiguous"]}
+        # (catalog_scan._scan_bases を参照)。それ以前のカタログでは空。
         self.bases: dict[str, dict] = data.get("bases", {})
 
     def component_by_fqn(self, fqn: str) -> Optional[dict]:
         return self.components.get(fqn)
 
     def base_info(self, leaf: str) -> Optional[dict]:
-        """What the scanner recorded about a component base class (see
-        ``catalog_scan._scan_bases``), or ``None`` if it never found its
-        definition."""
+        """スキャナがコンポーネントの基底クラスについて記録した内容
+        (``catalog_scan._scan_bases`` を参照)。定義が見つからなかった場合は ``None``。"""
         return self.bases.get(leaf)
 
     def resolve_component(self, spec: str) -> dict:
-        """Resolve a component ``--type`` argument: an exact FQN, or a bare
-        leaf name when it names exactly one FQN. Fails closed (lists every
-        candidate) on ambiguity or when nothing matches."""
+        """コンポーネントの ``--type`` 引数を解決する: 完全な FQN、または FQN を1つだけ
+        指す素の leaf 名。曖昧なときや何も一致しないときは安全側に失敗する
+        (候補をすべて列挙する)。"""
         if spec in self.components:
             return self.components[spec]
         candidates = self.by_leaf.get(spec, [])

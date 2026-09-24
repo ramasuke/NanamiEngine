@@ -121,7 +121,7 @@ def behaviour(name, spec):
     return guid
 
 
-# ---------------------------------------------------------------- prefab
+# ---------------------------------------------------------------- プレハブ
 def scale_block(text, key, rate):
     """"key": {"value0": x, "value1": y, "value2": z} の3つの数を rate 倍にする"""
     def repl(m):
@@ -199,7 +199,7 @@ def wrap_boss(text, spec):
     return text[:j] + boss + text[k + 1:]
 
 
-# ---------------------------------------------------------------- factory
+# ---------------------------------------------------------------- ファクトリ
 def factory(prefabs):
     raw = FACTORY.read_bytes()
     crlf = b'\r\n' in raw[:200]

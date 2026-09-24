@@ -1,12 +1,11 @@
-""":mod:`tools.scene.model` (:class:`Scene` / :class:`Prefab`) -> cereal-JSON text.
+""":mod:`tools.scene.model`（:class:`Scene` / :class:`Prefab`）-> cereal-JSON テキスト。
 
-Regenerates every polymorphic id, ptr_wrapper id and cereal_class_version from
-global counters, in the exact depth-first order ``cereal::JSONOutputArchive``
-uses (mirrors ``tools.bt.writer``'s approach), so the output loads back
-identically. A ``.prefab`` root is written as a bare object (no polymorphic
-wrapper/version/base-chain - see :func:`write_prefab`); a ``.scene``'s root
-array and every nested GameObject/Component go through the normal
-``shared_ptr`` bookkeeping.
+ポリモーフィック id、ptr_wrapper id、cereal_class_version をすべてグローバルカウンタから
+``cereal::JSONOutputArchive`` と全く同じ深さ優先の順序で再生成する
+（``tools.bt.writer`` と同じ方針）ので、出力は同一に読み戻せる。``.prefab`` のルートは
+素のオブジェクトとして書く（ポリモーフィックラッパー/バージョン/基底チェーンなし。
+:func:`write_prefab` 参照）。``.scene`` のルート配列と、入れ子のすべての
+GameObject/Component は通常の ``shared_ptr`` 管理を通る。
 """
 
 from __future__ import annotations
@@ -23,9 +22,9 @@ FIRST_BIT = 0x80000000
 
 
 def _marked_gameobject_fqns(roots: list[Optional[model.GameObjectNode]]) -> set[str]:
-    """GameObject types (fqn) with at least one node carrying ``mark_`` anywhere in
-    the file. cereal only prints a type's class version on its first occurrence and
-    the engine applies it to every later one, so ``mark_`` is all-or-nothing per type."""
+    """ファイル内のどこかで ``mark_`` を持つノードが 1 つ以上ある GameObject 型（fqn）。
+    cereal は型のクラスバージョンを最初の出現でしか出力せず、エンジンはそれを以降の
+    すべての出現に適用するので、``mark_`` は型ごとに全部付けるか全く付けないかのどちらか。"""
     marked: set[str] = set()
     stack = [n for n in roots if n is not None]
     while stack:
@@ -44,7 +43,7 @@ class _W:
         self.emitted: set[tuple] = set()
         self.marked_fqns = marked_fqns
 
-    # -- bookkeeping counters ------------------------------------------------
+    # -- 管理用カウンタ ------------------------------------------------------
     def new_k(self) -> int:
         self.k += 1
         return FIRST_BIT | self.k
@@ -72,7 +71,7 @@ class _W:
             o["polymorphic_name"] = fqn
         return o
 
-    # -- tagged blob (component params) --------------------------------------
+    # -- タグ付き blob（コンポーネントのパラメータ）--------------------------
     def blob(self, n: Any) -> Any:
         if isinstance(n, Ptr):
             if n.null:
@@ -92,11 +91,11 @@ class _W:
                 self.emit_ver(n.key, n.version, o)
             elif n.literal_presence:
                 o.insert(0, "cereal_class_version", Num.of_int(int(n.version)))
-            # literal_presence is False: never emit for this occurrence.
+            # literal_presence が False: この出現では出力しない。
             for k, v in n.body.items():
-                # append, not o[k]=: a versioned struct can repeat a key
-                # (BoneSync writes one "sync" member per entry, like Transform
-                # does with "child"), and __setitem__ would collapse them.
+                # o[k]= ではなく append: バージョン付き構造体はキーを繰り返すことがあり
+                # （Transform が "child" でそうするように、BoneSync はエントリごとに "sync" メンバーを
+                # 1 つ書く）、__setitem__ だとそれらが 1 つにまとまってしまう。
                 o.append(k, self.blob(v))
             return o
         if isinstance(n, OrderedObj):
@@ -105,7 +104,7 @@ class _W:
             return [self.blob(x) for x in n]
         return n
 
-    # -- small fixed-shape leaves --------------------------------------------
+    # -- 小さな固定形状の葉 --------------------------------------------------
     def guid_obj(self, guid: str) -> OrderedObj:
         g = OrderedObj()
         self.emit_ver(("type", "Guid"), 0, g)
@@ -119,10 +118,9 @@ class _W:
         return OrderedObj([("value0", q.x), ("value1", q.y), ("value2", q.z), ("value3", q.w)])
 
     def base_chain_obj(self) -> OrderedObj:
-        """The IGameObject -> IObject base-class chain every GameObject kind
-        shares (``archive(cereal::base_class<IGameObject>(this))`` -> IGameObject's
-        own ``archive(cereal::base_class<IObject>(this))`` - both bodies are
-        otherwise empty)."""
+        """どの GameObject 種別にも共通の IGameObject -> IObject 基底クラスチェーン
+        （``archive(cereal::base_class<IGameObject>(this))`` -> IGameObject 自身の
+        ``archive(cereal::base_class<IObject>(this))``。どちらの本体もそれ以外は空）。"""
         io = OrderedObj()
         self.emit_ver(("type", "IObject"), 0, io)
         ig = OrderedObj()
@@ -150,9 +148,9 @@ class _W:
         self.emit_ver(("comp", c.fqn), int(c.class_version), data)
         src = c.data if isinstance(c.data, OrderedObj) else OrderedObj()
         for k, v in src.items():
-            # append, not data[k]=: a component can repeat a key (BoneSync
-            # writes one "sync" member per entry, like Transform does with
-            # "child"), and __setitem__ would collapse them.
+            # data[k]= ではなく append: コンポーネントはキーを繰り返すことがあり
+            # （Transform が "child" でそうするように、BoneSync はエントリごとに "sync" メンバーを
+            # 1 つ書く）、__setitem__ だとそれらが 1 つにまとまってしまう。
             data.append(k, self.blob(v))
         slot["ptr_wrapper"] = OrderedObj([("id", Num.of_int(kid)), ("data", data)])
         return slot
@@ -168,9 +166,8 @@ class _W:
     # -- GameObject -----------------------------------------------------
     def gameobject_body(self, node: model.GameObjectNode, write_mark: bool) -> OrderedObj:
         """``isActive_``/``name_``/``guid_``/``components_``/``transform_``
-        (+ ``mark_`` when ``write_mark``), unwrapped - used directly for a
-        ``.prefab`` root, and nested under a base-chain wrapper for a
-        ``gameObject_N``/``"child"`` polymorphic slot.
+        （``write_mark`` のときは + ``mark_``）を展開したもの。``.prefab`` のルートにはそのまま使い、
+        ``gameObject_N``/``"child"`` のポリモーフィックスロットでは基底チェーンのラッパーの下に入れる。
         """
         body = OrderedObj()
         body["isActive_"] = bool(node.is_active)
@@ -215,12 +212,11 @@ def write_scene_file(path, scene: model.Scene) -> None:
 
 
 def write_prefab(prefab: model.Prefab) -> str:
-    """A ``.prefab`` root is a bare object (see ``PrefabGameObject::OnSave()``):
-    no polymorphic wrapper, no outer class version, no IGameObject/IObject base
-    chain - just the five body fields (+ ``mark_`` if the root has one; with no
-    class version the engine detects it by key), then the ``copiedObjectGuidList_``
-    tail as a bare count (``value0``) followed by that many bare Guids
-    (``value1..N``)."""
+    """``.prefab`` のルートは素のオブジェクト（``PrefabGameObject::OnSave()`` 参照）:
+    ポリモーフィックラッパーも外側のクラスバージョンも IGameObject/IObject 基底チェーンもない。
+    本体の 5 フィールド（ルートが持っていれば + ``mark_``。クラスバージョンがないので
+    エンジンはキーの有無で判定する）の後に、``copiedObjectGuidList_`` の末尾部分が
+    素の個数（``value0``）とその数だけの素の Guid（``value1..N``）として続くだけ。"""
     w = _W(_marked_gameobject_fqns(prefab.root.transform.children))
     root = w.gameobject_body(prefab.root, prefab.root.mark is not None)
     root["value0"] = Num.of_int(len(prefab.copied_object_guids))

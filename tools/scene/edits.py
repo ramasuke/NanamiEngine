@@ -1,9 +1,9 @@
-"""Structural + Transform edit primitives on a :class:`tools.scene.model.Scene`
-or :class:`tools.scene.model.Prefab`, plus the batch :func:`apply` entry point.
+""":class:`tools.scene.model.Scene` または :class:`tools.scene.model.Prefab` に対する
+構造 + Transform 編集プリミティブと、一括適用の :func:`apply` エントリポイント。
 
-Mirrors ``tools.bt.edits``: every function mutates its target in place; a
-caller builds a model in memory, applies N edits, calls
-``tools.scene.validate`` once, and writes once (see the CLI in ``cli_edit.py``).
+``tools.bt.edits`` と同様: どの関数も対象をその場で変更する。呼び出し側は
+メモリ上にモデルを構築し、N 個の編集を適用し、``tools.scene.validate`` を1回呼び、
+1回書き込む (``cli_edit.py`` の CLI を参照)。
 """
 
 from __future__ import annotations
@@ -25,7 +25,7 @@ class EditError(RuntimeError):
 
 
 # ---------------------------------------------------------------------------
-# lookup
+# 検索
 # ---------------------------------------------------------------------------
 def _search(nodes: list[model.GameObjectNode], guid: str):
     for i, n in enumerate(nodes):
@@ -38,10 +38,9 @@ def _search(nodes: list[model.GameObjectNode], guid: str):
 
 
 def find_gameobject(target: Any, guid: str):
-    """``(node, container, index)`` such that ``container[index] is node``, or
-    ``(node, None, None)`` if ``guid`` is a Prefab's own root (it has no
-    containing list - most edits reject operating on it directly), or ``None``
-    if not found anywhere in ``target``."""
+    """``container[index] is node`` となる ``(node, container, index)``。``guid`` が
+    Prefab 自身のルートなら ``(node, None, None)`` (所属するリストがない - 大半の編集は
+    それを直接操作するのを拒否する)。``target`` のどこにも見つからなければ ``None``。"""
     if isinstance(target, model.Prefab):
         if target.root.guid == guid:
             return target.root, None, None
@@ -65,7 +64,7 @@ def _resolve_parent_guid(target: Any, parent: str) -> str:
 
 
 def _find_chain(target: Any, guid: str) -> Optional[list[model.GameObjectNode]]:
-    """Root-to-node path (inclusive) - used for world-transform composition."""
+    """ルートからノードまでのパス (両端含む) - ワールド変換の合成に使う。"""
     def _walk(nodes: list[model.GameObjectNode], trail: list[model.GameObjectNode]):
         for n in nodes:
             here = trail + [n]
@@ -85,7 +84,7 @@ def _find_chain(target: Any, guid: str) -> Optional[list[model.GameObjectNode]]:
 
 
 # ---------------------------------------------------------------------------
-# TRS <-> model conversions
+# TRS <-> モデルの変換
 # ---------------------------------------------------------------------------
 def _f(n: Any) -> float:
     return float(n.value) if isinstance(n, Num) else float(n)
@@ -122,9 +121,9 @@ def _world_trs_of_chain(chain: list[model.GameObjectNode]) -> mathutil.Trs:
 
 
 def identity_world_matrix_blob() -> OrderedObj:
-    """A freshly-constructed glm::mat4(1.0) identity, matching the shape a new
-    Transform's ``worldMatrix_`` is written with (the engine recomputes the
-    real value at load, but the field must hold *something* well-shaped)."""
+    """新規構築した glm::mat4(1.0) の単位行列。新しい Transform の ``worldMatrix_`` が
+    書かれる形に合わせる (エンジンはロード時に実際の値を再計算するが、フィールドには
+    正しい形の *何か* が入っている必要がある)。"""
     rows = [(1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0),
             (0.0, 0.0, 1.0, 0.0), (0.0, 0.0, 0.0, 1.0)]
     obj = OrderedObj()
@@ -136,7 +135,7 @@ def identity_world_matrix_blob() -> OrderedObj:
 
 
 # ---------------------------------------------------------------------------
-# structural edits
+# 構造編集
 # ---------------------------------------------------------------------------
 def new_gameobject(name: str, *, kind: str = model.KIND_SCENE,
                    pos: tuple[float, float, float] = (0.0, 0.0, 0.0),
@@ -215,7 +214,7 @@ def move_gameobject(target: Any, *, guid: str, new_parent: Optional[str],
     else:
         new_parent_chain = _find_chain(target, new_parent_guid)
         if new_parent_chain is None:
-            # put it back where it was before failing, so the edit is atomic
+            # 失敗する前に元の位置へ戻し、編集をアトミックにする
             container.insert(index, node)
             raise EditError(f"new parent not found: {new_parent}")
         new_parent_node = new_parent_chain[-1]
@@ -252,7 +251,7 @@ def rename_gameobject(target: Any, guid: str, new_name: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# component edits
+# コンポーネント編集
 # ---------------------------------------------------------------------------
 def _leaf_of(name: str) -> str:
     return name.split("<", 1)[0].rsplit("::", 1)[-1]
@@ -281,31 +280,26 @@ def _vec(n: int) -> OrderedObj:
 
 
 def field_blob(field_type_leaf: str, guid: str = EMPTY_GUID) -> Ver:
-    """A brand-new ``Field<T>`` param blob (mirrors ``tools.bt.edits._field_blob``
-    - same shape, since this is the generic cereal FieldContext<T> layout, not
-    anything Scene/BT-specific).
+    """新規の ``Field<T>`` パラメータ blob (``tools.bt.edits._field_blob`` と同じ
+    - これは Scene/BT 固有ではなく、汎用の cereal FieldContext<T> レイアウトなので同じ形)。
 
-    ``Field<T>``/``FieldContext<T>`` are real per-``T`` C++ template
-    instantiations, each independently version-tracked by cereal - but a
-    freshly-added field can land *anywhere* in the tree, while any real prior
-    occurrence of the exact same ``T`` elsewhere in the file (e.g. another
-    ``FIELD(Asset::SpriteFile)`` on a completely different component) reads
-    back tagged by structural fingerprint, not by this synthetic ``("type",
-    ...)`` key - so the writer's global once-per-key tracking can't tell the
-    two are the same real type and may wrongly treat this one as the first
-    occurrence, emitting a `cereal_class_version` cereal never expects there.
-    An unexpected extra version key here is not a harmless no-op: cereal's
-    JSON archive only *searches* for a named node when it doesn't already
-    know this type's version; on a real repeat occurrence it skips that
-    search entirely and reads the next value positionally, so a stray
-    version key silently shifts every following read - concretely, the very
-    next call in Field<T>::load() (an unnamed `archive(context_)`) ends up
-    treating an integer as an object, undefined behaviour in
-    rapidjson::GenericValue::MemberEnd(). Force `literal_presence=False`
-    (never emit) instead: on the rare case this genuinely is that type's
-    first appearance in the file, cereal fails loudly with a catchable
-    "NVP (cereal_class_version) not found" exception rather than silently
-    corrupting the load.
+    ``Field<T>``/``FieldContext<T>`` は ``T`` ごとの実際の C++ テンプレート
+    インスタンス化で、それぞれ cereal が独立にバージョン管理する - しかし新しく
+    追加したフィールドはツリーの *どこにでも* 置かれうる一方、ファイル内の別の場所に
+    ある同じ ``T`` の実際の先行出現 (例: まったく別のコンポーネント上の
+    ``FIELD(Asset::SpriteFile)``) は、この合成の ``("type", ...)`` キーではなく
+    構造 fingerprint でタグ付けされて読み戻される - そのためライターのグローバルな
+    キーごと1回の追跡では両者が同じ実型だと分からず、こちらを誤って最初の出現と
+    みなし、cereal がそこで期待しない `cereal_class_version` を出力してしまうことがある。
+    ここで余分なバージョンキーがあるのは無害ではない: cereal の JSON アーカイブが
+    名前付きノードを *検索* するのは、その型のバージョンをまだ知らないときだけで、
+    実際の2回目以降の出現ではその検索を丸ごと飛ばして次の値を位置で読む。そのため
+    迷い込んだバージョンキーは後続の読み込みをすべて黙ってずらす - 具体的には、
+    Field<T>::load() の直後の呼び出し (名前なしの `archive(context_)`) が整数を
+    オブジェクトとして扱い、rapidjson::GenericValue::MemberEnd() で未定義動作になる。
+    代わりに `literal_presence=False` (出力しない) を強制する: これが本当にその型の
+    ファイル内初出というまれなケースでは、cereal は黙ってロードを壊すのではなく、
+    捕捉可能な "NVP (cereal_class_version) not found" 例外で明示的に失敗する。
     """
     guid_ver = Ver(("type", "Guid"), 0, OrderedObj([("value_", guid)]))
     holder = Ver(("type", f"FieldHolder<{field_type_leaf}>"), 0,
@@ -316,14 +310,13 @@ def field_blob(field_type_leaf: str, guid: str = EMPTY_GUID) -> Ver:
 
 
 def color32_blob(r: int, g: int, b: int) -> Ver:
-    """A ``Color32`` param blob.
+    """``Color32`` パラメータ blob。
 
-    Unlike :func:`field_blob` this one always writes ``cereal_class_version``
-    (``literal_presence=True``). Color32::load starts with a *named* read
-    (``r_``), so cereal's name search skips a version key it does not need and a
-    stray one is harmless - whereas a missing key on the file's first Color32
-    is fatal. Field<T> has to make the opposite trade because its first read is
-    positional.
+    :func:`field_blob` と違い、こちらは常に ``cereal_class_version`` を書く
+    (``literal_presence=True``)。Color32::load は *名前付き* の読み込み (``r_``) から
+    始まるので、cereal の名前検索は不要なバージョンキーを読み飛ばし、迷い込んだキーは
+    無害 - 一方、ファイル内最初の Color32 でキーが欠けていると致命的。Field<T> は
+    最初の読み込みが位置によるので、逆のトレードオフを取らざるを得ない。
     """
     return Ver(("type", "Color32"), 0,
                OrderedObj([("r_", Num.of_int(r)), ("g_", Num.of_int(g)), ("b_", Num.of_int(b))]),
@@ -353,17 +346,16 @@ def _param_blob_inner(pinfo: dict) -> Any:
         return color32_blob(255, 255, 255)
     if shape == "vector":
         return []
-    # nested/unknown -> a harmless placeholder; validate() flags it, and a
-    # human finishes it in the editor (mirrors tools.bt's own limitation).
+    # ネスト/不明 -> 無害なプレースホルダー。validate() が指摘し、
+    # 人がエディタで仕上げる (tools.bt 自身の制限と同じ)。
     return Num.of_int(0)
 
 
 def _component_bases(entry: dict) -> list[dict]:
-    """The ordered ``base_class<>`` slots a brand-new instance must write
-    (``[{"leaf", "key"}]`` - see ``catalog_scan._parse_serializable``). A
-    catalog predating the ``bases`` field only knew the first base; fall back
-    to that so an old catalog degrades to the old single-slot behaviour rather
-    than crashing."""
+    """新規インスタンスが書くべき順序付きの ``base_class<>`` スロット
+    (``[{"leaf", "key"}]`` - ``catalog_scan._parse_serializable`` を参照)。``bases``
+    フィールド以前のカタログは最初の基底しか知らないので、それにフォールバックし、
+    古いカタログではクラッシュせず従来の単一スロットの動作に落ちるようにする。"""
     bases = entry.get("bases")
     if bases is None:
         return [{"leaf": entry.get("immediate_base") or "ComponentBase", "key": "value0"}]
@@ -371,9 +363,9 @@ def _component_bases(entry: dict) -> list[dict]:
 
 
 def _unmodeled_bases(entry: dict, cat: catalog_mod.Catalog) -> list[str]:
-    """Base leaves this toolkit cannot construct from scratch: anything other
-    than ``ComponentBase`` whose own ``save()`` body is not known to be empty
-    (``ColliderBase``, ``NetworkComponent``, an unknown/ambiguous leaf...)."""
+    """このツールキットがゼロから構築できない基底 leaf: ``ComponentBase`` 以外で、
+    自身の ``save()`` 本体が空だと分かっていないもの
+    (``ColliderBase``、``NetworkComponent``、不明/曖昧な leaf など)。"""
     out: list[str] = []
     for b in _component_bases(entry):
         leaf = b["leaf"]
@@ -386,38 +378,34 @@ def _unmodeled_bases(entry: dict, cat: catalog_mod.Catalog) -> list[str]:
 
 
 def _empty_base_blob(leaf: str, version: int) -> Ver:
-    """A brand-new slot for a field-less marker base (``IInitRenderable``,
-    ``IUserInterfaceRenderable``, ``IAwakable``...): an empty object that
-    *always* carries ``cereal_class_version``.
+    """フィールドを持たないマーカー基底 (``IInitRenderable``、
+    ``IUserInterfaceRenderable``、``IAwakable`` など) 用の新規スロット: *常に*
+    ``cereal_class_version`` を持つ空オブジェクト。
 
-    The engine writes that key only at the type's first occurrence in the file
-    and a bare ``{}`` afterwards, but this writer cannot tell whether an
-    earlier occurrence exists (the reader keeps existing slots keyed by
-    structural fingerprint, not by real type - the same blind spot
-    ``field_blob`` describes), so it must pick one form that loads correctly
-    either way. Unlike ``Field<T>``, always emitting it is safe here: at the
-    type's first occurrence cereal searches for and reads the key; at any later
-    one ``loadClassVersion`` is skipped, the base's ``load()`` body is empty so
-    nothing inside the node is ever read, and ``finishNode()`` just advances
-    the parent iterator past the whole object - the extra key is never
-    touched. (``Field<T>`` broke precisely because an *unnamed* positional
-    read followed the stray key; there is no read at all inside an empty
-    base.) Omitting the key instead would fail the first-occurrence case with
-    "NVP (cereal_class_version) not found". The engine re-normalises the file
-    on its next save.
+    エンジンはそのキーをファイル内でその型が最初に出現したときだけ書き、以降は
+    素の ``{}`` を書くが、このライターは先行する出現があるかどうかを判別できない
+    (リーダーは既存スロットを実型ではなく構造 fingerprint でキー付けする -
+    ``field_blob`` が述べているのと同じ盲点) ので、どちらの場合でも正しくロードされる
+    形を1つ選ぶ必要がある。``Field<T>`` と違い、ここでは常に出力しても安全: 型の
+    最初の出現では cereal がキーを探して読み、以降の出現では ``loadClassVersion`` が
+    飛ばされ、基底の ``load()`` 本体は空なのでノード内は何も読まれず、
+    ``finishNode()`` が親のイテレータをオブジェクト全体の先へ進めるだけ - 余分な
+    キーには一切触れない。(``Field<T>`` が壊れたのはまさに、迷い込んだキーの後に
+    *名前なし* の位置による読み込みが続いたから。空の基底の中では読み込み自体がない。)
+    逆にキーを省くと、最初の出現のケースで "NVP (cereal_class_version) not found" で
+    失敗する。エンジンは次の保存時にファイルを正規化し直す。
     """
     return Ver(("type", leaf), int(version), OrderedObj(), literal_presence=True)
 
 
 def component_body_blob(entry: dict, guid: str,
                         cat: Optional[catalog_mod.Catalog] = None) -> OrderedObj:
-    """A brand-new component's ``data`` blob (everything after its own class
-    version): one unnamed ``valueN`` slot per ``base_class<>`` the component
-    archives, in archive order - ComponentBase's (``guid_``/``isEnable_``) and
-    an empty object for each marker mixin - followed by each catalog param's
-    default value, in catalog order. cereal reads the base slots positionally,
-    so every one of them must be present: dropping the mixin slots made the
-    engine read ``spriteFile_`` as a base class."""
+    """新規コンポーネントの ``data`` blob (自身のクラスバージョンより後のすべて):
+    コンポーネントがアーカイブする ``base_class<>`` ごとに名前なしの ``valueN`` スロットを
+    アーカイブ順に1つ - ComponentBase のもの (``guid_``/``isEnable_``) と、各マーカー
+    mixin 用の空オブジェクト - その後に各カタログパラメータの既定値をカタログ順に並べる。
+    cereal は基底スロットを位置で読むので、すべて揃っている必要がある: mixin の
+    スロットを落としたら、エンジンが ``spriteFile_`` を基底クラスとして読んでしまった。"""
     cat = cat or catalog_mod.load()
     out = OrderedObj()
     for b in _component_bases(entry):
@@ -448,7 +436,7 @@ def new_component(entry: dict, *, guid: Optional[str] = None,
             f"editor."
         )
     if not any(b["leaf"] == "ComponentBase" for b in bases):
-        # Every modeled base is an empty mixin, yet nothing carries guid_/isEnable_.
+        # モデル化したどの基底も空の mixin なのに、guid_/isEnable_ を持つものがない。
         raise EditError(
             f"{entry['fqn']}: does not archive ComponentBase directly (bases: "
             f"{', '.join(b['leaf'] for b in bases) or 'none'}) - this toolkit cannot construct "
@@ -506,8 +494,8 @@ def _is_flag_combination(values: dict, number: int) -> bool:
 
 
 def _enum_value(pinfo: dict, raw: str) -> int:
-    """An enum param takes an enumerator name (``Hyena`` / ``EnemyKind::Hyena``)
-    or its integer; names are checked against the catalog's ``values``."""
+    """enum パラメータは列挙子名 (``Hyena`` / ``EnemyKind::Hyena``) またはその整数を
+    受け付ける。名前はカタログの ``values`` と照合する。"""
     values: Optional[dict] = pinfo.get("values")
     name = raw.strip().rsplit("::", 1)[-1]
     if values and name in values:
@@ -524,11 +512,10 @@ def _enum_value(pinfo: dict, raw: str) -> int:
 
 
 def _set_field_guid(node: Any, guid: str) -> None:
-    # cereal only emits `cereal_class_version` the first time a given type is
-    # serialised in an archive - so a Field<T>/FieldHolder<T> at the first
-    # occurrence round-trips as a Ver, but every later occurrence of the same
-    # type (the common case) has no version key and round-trips as a plain
-    # OrderedObj instead. Accept both at each level.
+    # cereal は `cereal_class_version` を、アーカイブ内でその型が最初にシリアライズ
+    # されたときだけ出力する - そのため最初の出現の Field<T>/FieldHolder<T> は Ver として
+    # 往復するが、同じ型のそれ以降の出現 (よくあるケース) はバージョンキーを持たず
+    # 素の OrderedObj として往復する。各階層で両方を受け付ける。
     if isinstance(node, Ver):
         ptr = node.body["value0"]
     elif isinstance(node, OrderedObj):
@@ -553,8 +540,8 @@ def _set_field_guid(node: Any, guid: str) -> None:
 
 
 def _set_color32(node: Any, rgb: list[int]) -> None:
-    # Mutate in place: the file's existing cereal_class_version placement is
-    # correct for where this blob sits, and replacing the node would rewrite it.
+    # その場で変更する: ファイル内の既存の cereal_class_version の配置は、この blob の
+    # 位置に対して正しく、ノードを置き換えるとそれを書き換えてしまう。
     body = node.body if isinstance(node, Ver) else node
     if not isinstance(body, OrderedObj) or not all(k in body for k in ("r_", "g_", "b_")):
         raise EditError("color32 param does not have the expected r_/g_/b_ shape")
@@ -634,8 +621,8 @@ def set_component_params(target: Any, guid: str, index: int, assignments: dict[s
 # instantiate-prefab
 # ---------------------------------------------------------------------------
 def _remint_guids(node: model.GameObjectNode, guid_remap: dict[str, str]) -> None:
-    """Mint a fresh GUID for ``node`` and everything under it, recording
-    ``old -> new`` in ``guid_remap``."""
+    """``node`` とその配下すべてに新しい GUID を割り当て、``old -> new`` を
+    ``guid_remap`` に記録する。"""
     new_guid = mint_guid()
     guid_remap[node.guid] = new_guid
     node.guid = new_guid
@@ -645,7 +632,7 @@ def _remint_guids(node: model.GameObjectNode, guid_remap: dict[str, str]) -> Non
             new_comp_guid = mint_guid()
             model.set_component_guid(comp, new_comp_guid)
         except ValueError:
-            continue  # component has no locatable ComponentBase body - leave it be
+            continue  # コンポーネントに特定可能な ComponentBase 本体がない - そのままにする
         if old_comp_guid is not None:
             guid_remap[old_comp_guid] = new_comp_guid
     for child in node.transform.children:
@@ -669,11 +656,10 @@ def _remap_guid_blob(blob: Any, guid_remap: dict[str, str]) -> None:
 
 
 def _remap_guid_references(node: model.GameObjectNode, guid_remap: dict[str, str]) -> None:
-    """Point Guid references (e.g. a ``FIELD(IGameObject)``) that target an
-    object inside the copied tree at the copy's object instead - mirroring the
-    engine's ``GuidRemap::FromCopiedHierarchy`` + ``OnUpdateCopiedFieldInittables`` on
-    Instantiate. Asset references and references outside the tree are not in
-    ``guid_remap`` and stay as they are."""
+    """コピーしたツリー内のオブジェクトを指す Guid 参照 (例: ``FIELD(IGameObject)``) を、
+    コピー側のオブジェクトを指すように付け替える - Instantiate 時のエンジンの
+    ``GuidRemap::FromCopiedHierarchy`` + ``OnUpdateCopiedFieldInittables`` と同じ。
+    アセット参照やツリー外への参照は ``guid_remap`` になく、そのまま残る。"""
     for comp in node.components:
         _remap_guid_blob(comp.data, guid_remap)
     for child in node.transform.children:
@@ -682,14 +668,12 @@ def _remap_guid_references(node: model.GameObjectNode, guid_remap: dict[str, str
 
 def instantiate_prefab(target: Any, prefab: model.Prefab, *,
                        parent: Optional[str] = None) -> model.GameObjectNode:
-    """Deep-copy ``prefab``'s tree into ``target`` (a Scene, or another
-    Prefab's tree), minting a fresh GUID for every GameObject/Component in the
-    copy (and re-pointing references between them at the copy) and re-tagging
-    the root as ``CopiedPrefabGameObject`` - mirroring the
-    engine's own ``Scene::OnDrawFileDropGui`` ->
-    ``PrefabGameObject::CopyForInstantiate()`` behaviour (a scene's copy of a
-    prefab is always a fully independent baked snapshot, never a live link
-    back to the source ``.prefab``)."""
+    """``prefab`` のツリーを ``target`` (Scene、または別の Prefab のツリー) にディープコピーする。
+    コピー内のすべての GameObject/Component に新しい GUID を割り当て (それらの間の参照も
+    コピー側に付け替える)、ルートを ``CopiedPrefabGameObject`` として付け直す - エンジン自身の
+    ``Scene::OnDrawFileDropGui`` -> ``PrefabGameObject::CopyForInstantiate()`` の動作と同じ
+    (シーン内のプレハブのコピーは常に完全に独立した焼き込み済みスナップショットで、
+    元の ``.prefab`` へのライブリンクには決してならない)。"""
     import copy as _copy
 
     new_root = _copy.deepcopy(prefab.root)
@@ -713,13 +697,12 @@ def instantiate_prefab(target: Any, prefab: model.Prefab, *,
 # copy-prefab
 # ---------------------------------------------------------------------------
 def copy_prefab(prefab: model.Prefab) -> model.Prefab:
-    """Deep-copy a whole ``Prefab`` for saving as a brand-new standalone
-    ``.prefab`` file: fresh GUID for every GameObject/Component in the tree
-    (same ``_remint_guids`` rule as ``instantiate_prefab``) and an empty
-    ``copied_object_guids`` list, since this new file has no scene instances
-    of its own yet. Unlike ``instantiate_prefab``, the root's ``kind`` stays
-    ``KIND_PREFAB_ROOT`` - the result is still a real prefab asset, not a
-    scene-embedded instance."""
+    """``Prefab`` 全体を、新しい独立した ``.prefab`` ファイルとして保存するために
+    ディープコピーする: ツリー内のすべての GameObject/Component に新しい GUID を割り当て
+    (``instantiate_prefab`` と同じ ``_remint_guids`` の規則)、``copied_object_guids`` は
+    空リストにする (この新しいファイルにはまだ自身のシーンインスタンスがないため)。
+    ``instantiate_prefab`` と違い、ルートの ``kind`` は ``KIND_PREFAB_ROOT`` のまま -
+    結果はシーンに埋め込まれたインスタンスではなく、本物のプレハブアセットである。"""
     import copy as _copy
 
     new_root = _copy.deepcopy(prefab.root)
@@ -730,12 +713,12 @@ def copy_prefab(prefab: model.Prefab) -> model.Prefab:
 
 
 # ---------------------------------------------------------------------------
-# batch apply - the primary agent-facing interface
+# 一括適用 - エージェント向けの主要インターフェース
 # ---------------------------------------------------------------------------
 def apply(target: Any, ops: list[dict]) -> list[str]:
-    """Apply a JSON-shaped list of ops in order; each is
-    ``{"op": "<name>", ...kwargs}``. Raises :class:`EditError` naming the
-    failing op's index on the first failure (nothing after it is applied)."""
+    """JSON 形式の操作リストを順に適用する。各要素は ``{"op": "<name>", ...kwargs}``。
+    最初の失敗で、失敗した操作のインデックスを示す :class:`EditError` を送出する
+    (それ以降は適用されない)。"""
     log: list[str] = []
     for i, op in enumerate(ops):
         kind = op.get("op")

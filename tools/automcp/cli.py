@@ -1,4 +1,4 @@
-"""Subcommands: ``serve`` (the MCP stdio server), ``call`` (send one raw command), ``check-env``."""
+"""サブコマンド: ``serve`` (MCP の stdio サーバー)、``call`` (生のコマンドを 1 つ送る)、``check-env``。"""
 
 from __future__ import annotations
 

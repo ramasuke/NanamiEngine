@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Shim so ``python tools/animtree.py ...`` works the same as ``python -m tools.animtree ...``."""
+"""``python tools/animtree.py ...`` を ``python -m tools.animtree ...`` と同じように動かすためのシム。"""
 
 import sys
 from pathlib import Path

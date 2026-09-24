@@ -1,4 +1,4 @@
-"""Build ClanHouse.prefab: the grassland hunter clan's home on the fountain island (Facility::ClanHouse).
+"""ClanHouse.prefab を組む: 噴水の島にある草原の狩人一族の家 (Facility::ClanHouse)。
 
     python tools/art/story_npcs.py --only clan     # 先に女狩人の BT と会話を作る
     python tools/art/clan_house.py                 # ClanHouse.prefab を組む

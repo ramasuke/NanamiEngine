@@ -301,7 +301,7 @@ def write_sprite(out_dir, name, image):
     return guid
 
 
-# ---------------------------------------------------------------- preview (mirrors ItemBar::PresentSlots)
+# ---------------------------------------------------------------- プレビュー (ItemBar::PresentSlots と同じ処理)
 def fade(im, alpha):
     a = np.asarray(im, np.float32)
     a[..., 3] *= alpha

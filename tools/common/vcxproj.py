@@ -1,15 +1,15 @@
-"""Byte-safe splices into ``NanamiEngine.vcxproj`` / ``.vcxproj.filters``.
+"""``EnviroHunter.vcxproj`` / ``.vcxproj.filters`` へのバイト安全な差し込み。
 
-These files are ~1 MB, UTF-8 **with BOM**, **CRLF**, hand-maintained, and use the
-default (unprefixed) MSBuild namespace. Round-tripping them through an XML library
-reflows every line and rewrites the namespace, so we edit them as text: locate a
-unique anchor, insert one element, re-add the BOM, keep CRLF. After writing we
-re-parse (parse only) and assert the element counts moved by exactly the expected
-delta; on any failure the original bytes are restored.
+これらのファイルは約 1 MB、UTF-8 **BOM 付き**、**CRLF**、手作業で保守され、既定の
+(プレフィックスなしの) MSBuild 名前空間を使う。XML ライブラリで往復させると
+全行が整形し直され名前空間も書き換わるため、テキストとして編集する: 一意の
+アンカーを探し、要素を1つ挿入し、BOM を付け直し、CRLF を保つ。書き込み後に
+再パース (パースのみ) し、要素数がちょうど期待した差分だけ変わったことを検証する。
+失敗時は元のバイト列を復元する。
 
-Format-generic - callers pass their own ``anchor`` (a substring of an existing
-``Include="..."`` path unique enough to anchor a regex search); nothing here
-knows about BehaviourTree actions, Components, or any other consumer's content.
+書式に対して汎用 - 呼び出し側が独自の ``anchor`` (正規表現検索のアンカーとして
+十分に一意な、既存の ``Include="..."`` パスの部分文字列) を渡す。ここでは
+BehaviourTree のアクションや Component など、利用側の内容については何も知らない。
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ class VcxprojError(RuntimeError):
 class Splice:
     kind: str            # "ClCompile" | "ClInclude"
     win_path: str        # Assets\Scripts\...\Foo.cpp
-    filter: str = ""     # for .filters only: "Source Files" / "Header Files"
+    filter: str = ""     # .filters 専用: "Source Files" / "Header Files"
 
 
 def _read(path: Path) -> tuple[bytes, str]:
@@ -43,8 +43,8 @@ def _write(path: Path, text: str) -> None:
 
 
 def _element_span(text: str, start: int) -> int:
-    """Given the index of a ``<Tag`` opener, return the index just past its end
-    (handles both ``<Tag ... />`` and ``<Tag ...>...</Tag>``)."""
+    """``<Tag`` の開始位置のインデックスを受け取り、その要素の終端直後のインデックスを返す
+    (``<Tag ... />`` と ``<Tag ...>...</Tag>`` の両方に対応)。"""
     gt = text.index(">", start)
     if text[gt - 1] == "/":
         return gt + 1
@@ -58,7 +58,7 @@ def _insert_after_last(text: str, opener_re: re.Pattern, snippet: str) -> str:
     if not matches:
         raise VcxprojError("anchor element not found")
     end = _element_span(text, matches[-1].start())
-    # keep indentation: copy the leading whitespace of the anchor line
+    # インデントを保つ: アンカー行の先頭空白をコピーする
     line_start = text.rfind("\n", 0, matches[-1].start()) + 1
     indent = text[line_start:matches[-1].start()]
     return text[:end] + "\r\n" + indent + snippet + text[end:]
@@ -70,11 +70,10 @@ def _count(text: str, tag: str) -> int:
 
 def apply_splices(vcxproj: Path, filters: Path | None, splices: list[Splice],
                   *, anchor: str, dry_run: bool = False) -> list[str]:
-    """Apply ClCompile/ClInclude splices to the project (and optionally filters).
+    """プロジェクト (および任意で filters) に ClCompile/ClInclude の差し込みを適用する。
 
-    ``anchor`` is a substring of an existing ``Include="..."`` path; the new
-    element is inserted right after the *last* element whose Include starts
-    with it.
+    ``anchor`` は既存の ``Include="..."`` パスの部分文字列。新しい要素は、
+    Include がそれで始まる *最後の* 要素の直後に挿入される。
     """
     log: list[str] = []
     raw, text = _read(vcxproj)
@@ -147,7 +146,7 @@ def _apply_filters(filters: Path, splices: list[Splice], *, anchor: str,
 
 def remove_splices(vcxproj: Path, filters: Path | None, win_paths: list[str],
                    *, dry_run: bool = False) -> list[str]:
-    """Remove ClCompile/ClInclude entries for the given paths (reverse of add)."""
+    """指定パスの ClCompile/ClInclude エントリを削除する (add の逆)。"""
     log: list[str] = []
     for path in (vcxproj, filters):
         if path is None:
@@ -155,7 +154,7 @@ def remove_splices(vcxproj: Path, filters: Path | None, win_paths: list[str],
         raw, text = _read(path)
         new = text
         for wp in win_paths:
-            # match a whole element line/block for this Include, plus its trailing CRLF
+            # この Include の要素行/ブロック全体と、その後ろの CRLF にマッチさせる
             pat = re.compile(
                 r"[ \t]*<(ClCompile|ClInclude) Include=\"" + re.escape(wp) + r"\""
                 r"(?: />|>.*?</(?:ClCompile|ClInclude)>)\r\n",

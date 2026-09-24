@@ -44,7 +44,7 @@ def a(rgb, alpha):
     return (*rgb, alpha)
 
 
-# ================================================================ effects
+# ================================================================ エフェクト
 MINT = (120, 255, 150)
 LEAF = (60, 220, 110)
 PALE = (225, 255, 230)
@@ -133,7 +133,7 @@ def place():
 EFFECTS = {'Heal': heal, 'Stamina': stamina, 'Place': place}
 
 
-# ================================================================ sounds
+# ================================================================ サウンド
 def heal_sound(rng):
     d = 1.3
     bells = np.zeros(m.n_of(d))
@@ -173,7 +173,7 @@ SOUNDS = {'Heal': heal_sound, 'Stamina': stamina_sound, 'Place': place_sound}
 ITEMS = {'Herb': 'Heal', 'HealPotion': 'Heal', 'RoastedMeat': 'Stamina', 'LargeBarrelBomb': 'Place'}
 
 
-# ================================================================ build
+# ================================================================ ビルド
 def run(cmd):
     res = subprocess.run([sys.executable, '-m', *cmd], cwd=REPO, capture_output=True, text=True)
     if res.returncode != 0:
@@ -203,7 +203,7 @@ def build_prefab(kind):
     prefab = new_prefab(name)
     set_scale(prefab.root, METRE)
     comp = Builder(prefab).component(prefab.root, 'ParticleSystem')
-    comp.data.pop('isRoop_', None)     # only version 0 archived it
+    comp.data.pop('isRoop_', None)     # アーカイブしていたのはバージョン 0 だけ
     set_field(comp, 'particleFile_', asset_guid(REPO / INSTALL_DIR / f'ItemUse_{kind}.efkefc.meta'))
     comp.data['playingDuration_secs_'] = Num.of_float(round(end_frame / 60.0 + 0.1, 2))
     comp.data['playMode_'] = Num.of_int(DESTROY)

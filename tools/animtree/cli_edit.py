@@ -1,6 +1,6 @@
-"""CLI edit verbs: add-clip-node, remove-node, set-node-params, move-node,
+"""CLI の編集コマンド: add-clip-node, remove-node, set-node-params, move-node,
 add-transition, remove-transition, set-transition-params, add-condition,
-remove-condition, add-param, remove-param, set-param, apply, validate."""
+remove-condition, add-param, remove-param, set-param, apply, validate。"""
 
 from __future__ import annotations
 

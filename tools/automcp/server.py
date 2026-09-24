@@ -1,9 +1,9 @@
-"""MCP server (stdio) that exposes the running NanamiEngine editor to Claude Code.
+"""起動中の NanamiEngine エディタを Claude Code に公開する MCP サーバー (stdio)。
 
-Started by ``.mcp.json`` as ``python -m tools.automcp serve``. The process stays up for
-the whole Claude Code session and connects to the engine lazily on every tool call, so
-the editor can be started, restarted, or have AutoMCP toggled at any time.
-Never print to stdout here: stdout is the MCP wire.
+``.mcp.json`` から ``python -m tools.automcp serve`` として起動される。プロセスは
+Claude Code のセッション中ずっと動き続け、ツール呼び出しのたびに遅延でエンジンに
+接続するので、エディタの起動・再起動や AutoMCP の切り替えはいつでもできる。
+ここでは決して stdout に出力しないこと: stdout は MCP の通信路。
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ from tools.automcp.client import EngineClient, EngineCommandError, EngineUnavail
 REPO = Path(__file__).resolve().parents[2]
 EXE_ENV = "NANAMI_ENGINE_EXE"
 CWD_ENV = "NANAMI_ENGINE_CWD"
-DEFAULT_EXE = REPO / "x64" / "Debug" / "NanamiEngine.exe"
+DEFAULT_EXE = REPO / "x64" / "Debug" / "EnviroHunter.exe"
 
 INSTRUCTIONS = """\
 Tools for the running NanamiEngine editor (C++ DxLib/ImGui game engine).
@@ -45,7 +45,7 @@ def _dump(value: Any) -> str:
 
 
 def build_server(client: EngineClient | None = None, poll_interval: float = 0.1):
-    """Create the MCPServer. Imports ``mcp`` lazily so the rest of the toolkit stays stdlib-only."""
+    """MCPServer を作る。``mcp`` は遅延 import するので、ツールキットの他の部分は標準ライブラリのみのまま。"""
     from mcp.server.mcpserver import Image, MCPServer
     from mcp.server.mcpserver.exceptions import ToolError
 
@@ -62,7 +62,7 @@ def build_server(client: EngineClient | None = None, poll_interval: float = 0.1)
         return mcp.tool(structured_output=False)(fn)
 
     def wait_for(cmd: str, args: dict[str, Any], ready, timeout_seconds: float, what: str) -> dict[str, Any]:
-        """Poll ``cmd`` until ``ready(state)``; the engine loads models and attaches clips over later frames."""
+        """``ready(state)`` になるまで ``cmd`` をポーリングする。エンジンはモデルの読み込みやクリップの付与を後のフレームで行う。"""
         deadline = time.monotonic() + timeout_seconds
         state = call(cmd, args)
         while not ready(state):
@@ -72,7 +72,7 @@ def build_server(client: EngineClient | None = None, poll_interval: float = 0.1)
             state = call(cmd, args)
         return state
 
-    # -- engine ---------------------------------------------------------------
+    # -- エンジン -------------------------------------------------------------
     @tool
     def engine_status() -> str:
         """Play state, time scale, FPS, screen size, current main window, main scene and working directory of the running editor."""
@@ -80,7 +80,7 @@ def build_server(client: EngineClient | None = None, poll_interval: float = 0.1)
 
     @tool
     def engine_launch(wait_seconds: float = 90.0) -> str:
-        """Start x64/Debug/NanamiEngine.exe (working directory = repo root) and wait until AutoMCP answers.
+        """Start x64/Debug/EnviroHunter.exe (working directory = repo root) and wait until AutoMCP answers.
         Does nothing if the editor already answers. The exe must already be built; the build is the user's call."""
         try:
             return _dump({"alreadyRunning": True, **engine.call("status", timeout=3.0)})
@@ -124,7 +124,7 @@ def build_server(client: EngineClient | None = None, poll_interval: float = 0.1)
                    f"(source {result.get('sourceWidth')}x{result.get('sourceHeight')}) {path}")
         return [Image(data=data, format=result.get("format", format)), caption]
 
-    # -- windows ----------------------------------------------------------------
+    # -- ウィンドウ -------------------------------------------------------------
     @tool
     def windows_list(include_hidden: bool = False) -> str:
         """Open popup windows (type + guid), openable popup types, main windows, and every ImGui window
@@ -153,7 +153,7 @@ def build_server(client: EngineClient | None = None, poll_interval: float = 0.1)
         """Switch the main window (GameWindow, ModelViewWindow, AnimationViewWindow, PrefabViewWindow, AnimatorWindow; see windows_list mainWindows)."""
         return _dump(call("mainwindow.switch", {"name": name}))
 
-    # -- scenes -----------------------------------------------------------------
+    # -- シーン -----------------------------------------------------------------
     @tool
     def scene_list() -> str:
         """Loaded scenes with name, guid, file path, whether it is the main scene, and root object count."""
@@ -252,7 +252,7 @@ def build_server(client: EngineClient | None = None, poll_interval: float = 0.1)
         """Destroy a GameObject and its children (applied next frame; not saved to disk)."""
         return _dump(call("gameobject.destroy", {"guid": guid}))
 
-    # -- play mode / time / camera / log ----------------------------------------
+    # -- プレイモード / 時間 / カメラ / ログ ----------------------------------------
     @tool
     def play() -> str:
         """Enter play mode (or resume after stop)."""
@@ -312,7 +312,7 @@ def build_server(client: EngineClient | None = None, poll_interval: float = 0.1)
         """The newest engine log records (the Console window's history, at most 2000 kept), oldest first."""
         return _dump(call("log.tail", {"count": count, "minLevel": min_level, "contains": contains}))
 
-    # -- assets / ModelView / AnimationView -----------------------------------------
+    # -- アセット / ModelView / AnimationView -----------------------------------------
     @tool
     def assets_find(query: str = "", extension: str = ".mv1", limit: int = 50) -> str:
         """Find assets by a case-insensitive path substring. extension filters by suffix (".mv1", ".prefab", ".scene", ...; "" for all).
@@ -326,7 +326,7 @@ def build_server(client: EngineClient | None = None, poll_interval: float = 0.1)
         asset instances, so call scene_reload afterwards. With wait, returns once the async loads have finished."""
         result = call("assets.reload", timeout=timeout_seconds)
         if wait:
-            # the engine starts loading the new assets on the frame after it answers, before it handles the next command
+            # エンジンは応答後のフレームで、次のコマンドを処理する前に新しいアセットの読み込みを始める
             state = wait_for("status", {}, lambda s: s.get("loadingResourceCount") == 0, timeout_seconds,
                              "the reloaded assets to finish loading")
             result["loadingResourceCount"] = state.get("loadingResourceCount")

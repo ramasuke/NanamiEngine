@@ -22,14 +22,33 @@ namespace GamePlay::Ui
             billBoard->Play(value);
     }
 
+    float DealDamageTextBillBoard::LogRate(const int value, const int from, const int to)
+    {
+        const int minDamage = (std::max)(from, 1);
+        if (to <= minDamage)
+            return value >= to ? 1.0f : 0.0f;
+
+        const float lo = std::log(static_cast<float>(minDamage));
+        const float hi = std::log(static_cast<float>(to));
+        return glm::clamp((std::log(static_cast<float>((std::max)(value, 1))) - lo) / (hi - lo), 0.0f, 1.0f);
+    }
+
     float DealDamageTextBillBoard::ScaleForDamage(const int value) const
     {
-        const int   minDamage = (std::max)(minScaleDamage_, 1);
-        const int   maxDamage = (std::max)(maxScaleDamage_, minDamage + 1);
-        const float lo = std::log(static_cast<float>(minDamage));
-        const float hi = std::log(static_cast<float>(maxDamage));
-        const float t  = glm::clamp((std::log(static_cast<float>((std::max)(value, 1))) - lo) / (hi - lo), 0.0f, 1.0f);
-        return glm::mix(minScale_, maxScale_, t);
+        const int maxDamage = (std::max)(maxScaleDamage_, (std::max)(minScaleDamage_, 1) + 1);
+        return glm::mix(minScale_, maxScale_, LogRate(value, minScaleDamage_, maxDamage));
+    }
+
+    Color32 DealDamageTextBillBoard::ColorForDamage(const int value) const
+    {
+        if (value < heavyDamage_)
+        {
+            const float t = LogRate(value, minScaleDamage_, heavyDamage_);
+            return Color32::FromVec3(glm::mix(lowColor_.ToVec3(), heavyColor_.ToVec3(), t));
+        }
+
+        const float t = LogRate(value, heavyDamage_, maxScaleDamage_);
+        return Color32::FromVec3(glm::mix(heavyColor_.ToVec3(), maxColor_.ToVec3(), t));
     }
 
     void DealDamageTextBillBoard::Play(const int value)
@@ -37,10 +56,9 @@ namespace GamePlay::Ui
         const auto textRenderer = RequireComponent<NanamiUi::TextRenderer>();
         textRenderer->SetText(std::to_string(value));
 
-        const bool isHeavy = value >= heavyDamage_;
+        textRenderer->SetTextColor(ColorForDamage(value));
 
-        if (isHeavy)
-            textRenderer->SetTextColor(heavyColor_);
+        const bool isHeavy = value >= heavyDamage_;
 
         baseScale_ = Transform().GetLocalScale() * ScaleForDamage(value);
         Transform().SetLocalScale(baseScale_);
@@ -96,7 +114,9 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("minScale_",       minScale_);
         ImGuiHelper::OnDrawInputField("maxScale_",       maxScale_);
         ImGuiHelper::OnDrawInputField("heavyDamage_",    heavyDamage_);
+        ImGuiHelper::OnDrawInputField("lowColor_",       lowColor_);
         ImGuiHelper::OnDrawInputField("heavyColor_",     heavyColor_);
+        ImGuiHelper::OnDrawInputField("maxColor_",       maxColor_);
         ImGuiHelper::OnDrawInputField("popScaleRate_",   popScaleRate_);
         ImGuiHelper::OnDrawInputField("popTime_secs_",   popTime_secs_);
     }

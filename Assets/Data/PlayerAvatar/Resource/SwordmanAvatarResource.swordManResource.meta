@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 22,
+                "cereal_class_version": 23,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -621,7 +621,7 @@
                         }
                     }
                 },
-                "groundCheckRadius_": 3.5,
+                "groundCheckRadius_": 40.0,
                 "groundCheckUpOffset_": 3.0,
                 "groundCheckDistance_": 8.300000190734864,
                 "chargeHoldParticlePrefab_": {
@@ -947,7 +947,8 @@
                             }
                         }
                     }
-                }
+                },
+                "jumpAttackGroundCheckRadius_": 3.5
             }
         }
     }

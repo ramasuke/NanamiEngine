@@ -1,4 +1,4 @@
-"""``regen-catalog`` CLI subcommand."""
+"""``regen-catalog`` CLI サブコマンド。"""
 
 from __future__ import annotations
 

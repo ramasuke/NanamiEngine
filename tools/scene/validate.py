@@ -1,12 +1,12 @@
-"""Static checks for a :class:`tools.scene.model.Scene` / :class:`Prefab`.
+""":class:`tools.scene.model.Scene` / :class:`Prefab` の静的チェック。
 
-Mirrors ``tools.bt.validate``'s spirit: problems are reported as plain strings;
-a ``note:``-prefixed line is informational (does not block a write), anything
-else is a hard failure. Nothing here mutates the model.
+``tools.bt.validate`` と同じ考え方: 問題は素の文字列として報告する。
+``note:`` で始まる行は情報（書き込みを妨げない）で、それ以外はハードな失敗。
+ここではモデルを変更しない。
 
-:func:`validate_source_bytes` and :func:`validate_class_versions` work on the
-file as it sits on disk rather than on the model, because the model has already
-normalised away the two things they check.
+:func:`validate_source_bytes` と :func:`validate_class_versions` はモデルではなく
+ディスク上のファイルそのものを対象にする。チェック対象の 2 点はモデルではすでに
+正規化されて消えているため。
 """
 
 from __future__ import annotations
@@ -23,8 +23,8 @@ _VER = "cereal_class_version"
 _MSB = 0x80000000
 _EXACT = 0x40000000
 
-#: Value types that carry a class version but are not components, keyed by the
-#: exact member-name set cereal writes for them.
+#: クラスバージョンを持つがコンポーネントではない値型。cereal が書き出す
+#: メンバー名の集合そのものをキーにする。
 _VALUE_TYPE_SIGNATURES = {
     frozenset({"r_", "g_", "b_"}): "Color32",
 }
@@ -68,15 +68,15 @@ def validate_prefab(prefab: model.Prefab) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# on-disk checks
+# ディスク上でのチェック
 # ---------------------------------------------------------------------------
 def validate_source_bytes(raw: bytes) -> list[str]:
-    """Checks that only hold on the exact bytes on disk.
+    """ディスク上の正確なバイト列でしか成り立たないチェック。
 
-    ``cereal_json.read_text`` strips a leading BOM, so a BOM'd file parses fine
-    here and still dies in the engine: rapidjson does not skip one, so the
-    document root never becomes an object and cereal reports
-    ``rapidjson internal assertion failure: IsObject()``.
+    ``cereal_json.read_text`` は先頭の BOM を取り除くので、BOM 付きファイルはここでは
+    問題なくパースできてもエンジンでは落ちる: rapidjson は BOM を読み飛ばさないため
+    ドキュメントのルートがオブジェクトにならず、cereal が
+    ``rapidjson internal assertion failure: IsObject()`` を報告する。
     """
     problems: list[str] = []
     body = raw
@@ -107,7 +107,7 @@ def _as_int(value: Any) -> Optional[int]:
 
 
 def _field_holder(block: Any) -> Optional[OrderedObj]:
-    """The referenced holder's ``ptr_wrapper.data`` inside a FIELD block."""
+    """FIELD ブロック内で参照されている保持元の ``ptr_wrapper.data``。"""
     slot = block.get("value0") if isinstance(block, OrderedObj) else None
     wrapper = slot.get("ptr_wrapper") if isinstance(slot, OrderedObj) else None
     data = wrapper.get("data") if isinstance(wrapper, OrderedObj) else None
@@ -115,21 +115,21 @@ def _field_holder(block: Any) -> Optional[OrderedObj]:
 
 
 class _ClassVersionAudit:
-    """Replays cereal's once-per-type ``cereal_class_version`` bookkeeping.
+    """cereal の型ごと 1 回の ``cereal_class_version`` 管理を再現する。
 
-    cereal writes the key on a type's FIRST occurrence in an archive (= one
-    file) and never again, caching the value for the rest of the read. Getting
-    that wrong is not cosmetic:
+    cereal はアーカイブ（= 1 ファイル）内で型が *最初に* 出現したときにこのキーを書き、
+    以降は二度と書かず、読み込みの残りではその値をキャッシュする。ここを誤るのは
+    見た目だけの問題ではない:
 
-    * missing on a first occurrence -> the named lookup fails outright with
-      ``provided NVP (cereal_class_version) not found``;
-    * present on a repeat -> cereal never consumes it, so the next *positional*
-      read (``base_class<>`` slots, ``Field<T>``'s context pointer) lands on
-      that number and rapidjson asserts ``IsObject()``.
+    * 最初の出現で欠けている -> 名前付きの検索がそのまま
+      ``provided NVP (cereal_class_version) not found`` で失敗する。
+    * 繰り返しの出現にある -> cereal はそれを消費しないため、次の *位置による*
+      読み込み（``base_class<>`` スロット、``Field<T>`` のコンテキストポインタ）がその数値に
+      当たり、rapidjson が ``IsObject()`` でアサートする。
 
-    Repeat occurrences of a component carry only a numeric ``polymorphic_id``,
-    so types are resolved through cereal's id table exactly as the engine does -
-    a name-only scan would skip every repeat, which is where these bugs hide.
+    コンポーネントの繰り返しの出現は数値の ``polymorphic_id`` しか持たないので、
+    型はエンジンと同じく cereal の id 表から解決する。名前だけで走査すると繰り返しを
+    すべて読み飛ばしてしまい、まさにそこにこうしたバグが潜む。
     """
 
     def __init__(self, cat: catalog_mod.Catalog) -> None:
@@ -142,11 +142,11 @@ class _ClassVersionAudit:
 
     @staticmethod
     def _first_read_is_positional(node: OrderedObj) -> bool:
-        """True when this type's first member read is an unnamed ``valueN`` slot.
+        """この型の最初のメンバー読み込みが名前なしの ``valueN`` スロットなら True。
 
-        Only then is a stray version key fatal: cereal skips the key (it already
-        knows the version) and the positional read lands on that number.
-        Types that start with a named read just leave the stray unvisited.
+        その場合に限り、余分なバージョンキーは致命的になる: cereal はそのキーを読み飛ばし
+        （バージョンはすでに分かっている）、位置による読み込みがその数値に当たる。
+        名前付きの読み込みから始まる型では、余分なキーが読まれずに残るだけ。
         """
         rest = [k for k in node.keys() if k != _VER]
         return bool(rest) and rest[0].startswith("value")
@@ -180,9 +180,9 @@ class _ClassVersionAudit:
     def _check_component(self, fqn: str, data: OrderedObj, where: str) -> None:
         self._check(fqn, data, where)
         if fqn in self._cat.gameobject_shapes:
-            # GameObjects are versioned polymorphic nodes like components, but
-            # their base chain (IGameObject -> IObject) appears nowhere else, so
-            # skipping it consistently costs no first-occurrence information.
+            # GameObject もコンポーネントと同様にバージョン付きのポリモーフィックノードだが、
+            # その基底チェーン（IGameObject -> IObject）は他のどこにも現れないので、
+            # 一貫して読み飛ばしても最初の出現に関する情報は失われない。
             return
         entry = self._cat.component_by_fqn(fqn)
         if entry is None:
@@ -197,7 +197,7 @@ class _ClassVersionAudit:
                 self._check_field(param.get("type") or "?", block,
                                   f"{where}.{param['key']}")
             elif isinstance(block, list):
-                # std::vector<FIELD(T)>: cereal reads each element as its own Field<T>, in order
+                # std::vector<FIELD(T)>: cereal は各要素をそれぞれ独立した Field<T> として順に読む
                 for i, element in enumerate(block):
                     if isinstance(element, OrderedObj):
                         self._check_field(param.get("type") or "?", element,
@@ -206,9 +206,9 @@ class _ClassVersionAudit:
     def _check_bases(self, entry: dict, data: OrderedObj, where: str) -> None:
         bases = entry.get("bases", [])
         present = [b for b in bases if b["key"] in data]
-        # Some components gate whole base_class<> slots on the version
-        # (ShakeCameraBehaviour), which shifts what each valueN slot holds.
-        # Only audit when every slot is present, so the leaf names line up.
+        # 一部のコンポーネントは base_class<> スロット全体をバージョンで切り替える
+        # （ShakeCameraBehaviour）ため、各 valueN スロットの中身がずれる。
+        # 葉の名前が揃うよう、全スロットがそろっているときだけ監査する。
         if len(present) != len(bases):
             return
         for base in bases:
@@ -217,8 +217,8 @@ class _ClassVersionAudit:
                 self._check_base(base["leaf"], node, f"{where}.{base['key']}")
 
     def _check_base(self, leaf: str, node: OrderedObj, where: str) -> None:
-        # Key on the leaf: several bases have no fqn in the catalog and would
-        # otherwise collapse into one type.
+        # 葉をキーにする: カタログに fqn のない基底がいくつかあり、
+        # そうしないと 1 つの型にまとまってしまう。
         info = self._cat.base_info(leaf)
         if info is None:
             return
@@ -275,14 +275,14 @@ class _ClassVersionAudit:
 
 
 def validate_class_versions(text: str, cat: catalog_mod.Catalog) -> list[str]:
-    """Audit ``cereal_class_version`` placement across a whole file."""
+    """ファイル全体で ``cereal_class_version`` の配置を監査する。"""
     audit = _ClassVersionAudit(cat)
     audit.run(loads(text), "")
     problems: list[str] = []
-    # A component the catalog does not model hides its bases, so an occurrence
-    # further down can look like the first one when it is not. Strays are still
-    # sound (they need a sighting to report), but "missing" findings become
-    # guesses, so report them as notes and say why.
+    # カタログがモデル化していないコンポーネントは基底を隠すので、後方の出現が
+    # 実際にはそうでないのに最初の出現に見えることがある。余分なキーの指摘は依然として
+    # 確か（報告には実際の出現が必要）だが、"missing" の指摘は推測になるので、
+    # 理由を添えて note として報告する。
     blind = bool(audit.unmodelled)
     for kind, message in audit.problems:
         if kind == "missing" and blind:

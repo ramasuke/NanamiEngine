@@ -1,52 +1,51 @@
-"""Drives ``DxLibModelViewer_64bit.exe``'s GUI via ``pywinauto`` to perform
-the ``.fbx`` -> ``.mv1`` conversion it has no CLI/CUI for.
+"""``DxLibModelViewer_64bit.exe`` の GUI を ``pywinauto`` で操作して、CLI/CUI の無い
+``.fbx`` -> ``.mv1`` 変換を行う。
 
-**Verified 2026-09-12 against DxLibModelViewer ver3.24d** (title bar reads
-``DxLibModelViewer [ DxLib ver3.24d ]``), two ways: round-tripping a real
-shipped ``.mv1`` (Open -> Save As mesh only -> re-verify ``MV11`` header), and
-converting a real ~36MB ``.fbx`` with embedded PBR textures end to end via
-``python -m tools.model convert`` (output: a plausible-sized ``MV11``-header
-``.mv1``). Re-verified 2026-09-13 in all three save modes (mesh / anim /
-full, see ``SAVE_MODES``) on the same textured, animated ``.fbx``: the outputs
-decode (``tools/model/mv1.py``) to mesh-only = texture refs and no clip names,
-anim-only = clip names and no texture refs, full = both. If a future
-DxLibModelViewer build changes menu command ids or
-dialog control ids, re-run the inspection this module was built from:
+**2026-09-12 に DxLibModelViewer ver3.24d で確認済み** (タイトルバーは
+``DxLibModelViewer [ DxLib ver3.24d ]``)。確認方法は 2 通り: 配布済みの実
+``.mv1`` の往復 (Open -> メッシュのみ名前を付けて保存 -> ``MV11`` ヘッダを再確認) と、
+PBR テクスチャ埋め込みの ~36MB の実 ``.fbx`` を ``python -m tools.model convert`` で
+最初から最後まで変換 (出力: 妥当なサイズの ``MV11`` ヘッダの ``.mv1``)。
+2026-09-13 に同じテクスチャ付き・アニメーション付きの ``.fbx`` で 3 つの保存モード
+すべて (mesh / anim / full、``SAVE_MODES`` 参照) を再確認: 出力をデコード
+(``tools/model/mv1.py``) すると、メッシュのみ = テクスチャ参照ありクリップ名なし、
+アニメのみ = クリップ名ありテクスチャ参照なし、full = 両方。将来の
+DxLibModelViewer のビルドでメニューのコマンド id やダイアログのコントロール id が
+変わったら、このモジュールの元になった調査をやり直すこと:
 
     from pywinauto import Application
     app = Application(backend="win32").start(r"...\\DxLibModelViewer_64bit.exe")
     dlg = app.window(title_re=".*DxLibModelViewer.*")
     dlg.menu().items()[0].sub_menu().items()  # File submenu: text()/item_id()/state()
 
-Findings this was built from:
-  - The app is a plain native Win32 dialog with a real ``HMENU`` menu bar -
-    fully driveable via pywinauto's **win32** backend's ``menu()`` API
-    (``backend="uia"`` can read the menu bar but its native popup does not
-    open on a ``uia``-level ``click_input()`` in this app - use ``win32``).
-  - File menu command ids (stable across a locale/text change, unlike a
-    positional index; full File menu dumped 2026-09-13): Open = 2, "Save As"
-    ("名前を付けて保存", mesh + animation) = 5, "Save As mesh only" ("名前を付けて
-    メッシュのみ保存") = 6, "Save As animation only" ("名前を付けてアニメーション
-    のみ保存") = 7. (3 = add-load animation, 4 = overwrite save, 8 = save mesh
-    merged with add-loaded animation, 1 = exit - unused here.) A
-    ``MenuItemWrapper.click()`` sends the command directly - no need to
-    actually show the popup, and works even while the item still reports a
-    stale disabled ``state()`` (see below).
-  - Open/Save As both go through the standard modern Windows common dialog
-    (class ``#32770``). Its Open/Save/OK button is always control_id **1**
-    (IDOK), Cancel is **2**. The filename edit's control_id, however,
-    **differs by dialog**: the plain "Open" dialog uses **1148**, but this
-    app's custom-titled Save As dialogs use **1001** - try both.
-  - All three Save As dialogs (ids 5/6/7) carry the same file-type combo,
-    items ``['MV1 File(*.MV1)', 'X File(*.x)']`` with MV1 preselected. It is
-    re-selected explicitly anyway (``_select_mv1_file_type``) so a future
-    build defaulting to ``.x`` can't silently produce the wrong format.
-  - "Load finished" is detected by the **main window's title changing** from
-    "DxLibModelViewer [ DxLib ver3.24d ]" to the loaded file's own name (e.g.
-    "Cube.mv1") - simple and reliable. The File submenu's item ``state()``
-    (grayed/enabled) is **not** a trustworthy signal on its own: it can read
-    stale until the popup has actually been shown at least once, so this
-    module doesn't gate on it.
+元にした調査結果:
+  - アプリは本物の ``HMENU`` メニューバーを持つ素のネイティブ Win32 ダイアログで、
+    pywinauto の **win32** バックエンドの ``menu()`` API で完全に操作できる
+    (``backend="uia"`` でもメニューバーは読めるが、このアプリでは ``uia`` レベルの
+    ``click_input()`` でネイティブのポップアップが開かない - ``win32`` を使うこと)。
+  - ファイルメニューのコマンド id (位置インデックスと違い、ロケール/テキストが
+    変わっても安定。2026-09-13 にファイルメニュー全体をダンプ): Open = 2、
+    「名前を付けて保存」(メッシュ + アニメーション) = 5、「名前を付けて
+    メッシュのみ保存」= 6、「名前を付けてアニメーション
+    のみ保存」= 7。(3 = アニメーションの追加読み込み、4 = 上書き保存、8 = 追加読み込み
+    したアニメーションと統合してメッシュを保存、1 = 終了 - ここでは未使用。)
+    ``MenuItemWrapper.click()`` はコマンドを直接送る - ポップアップを実際に表示する
+    必要は無く、項目が古い無効状態の ``state()`` を返していても動く (後述)。
+  - Open/名前を付けて保存 はどちらも標準のモダンな Windows コモンダイアログ
+    (クラス ``#32770``) を通る。Open/Save/OK ボタンは常に control_id **1**
+    (IDOK)、Cancel は **2**。ただしファイル名エディットの control_id は
+    **ダイアログによって違う**: 素の「開く」ダイアログは **1148** だが、このアプリの
+    独自タイトルの名前を付けて保存ダイアログは **1001** - 両方試す。
+  - 3 つの名前を付けて保存ダイアログ (id 5/6/7) はどれも同じファイル種別コンボを持ち、
+    項目は ``['MV1 File(*.MV1)', 'X File(*.x)']`` で MV1 が選択済み。それでも
+    明示的に選び直す (``_select_mv1_file_type``) ので、将来のビルドが ``.x`` を
+    既定にしても黙って間違った形式を出力することは無い。
+  - 「読み込み完了」は **メインウィンドウのタイトルが**
+    "DxLibModelViewer [ DxLib ver3.24d ]" から読み込んだファイル自身の名前 (例:
+    "Cube.mv1") に **変わること** で検出する - 単純で確実。ファイルサブメニューの項目の
+    ``state()`` (グレーアウト/有効) は単独では **信頼できない** シグナル: ポップアップを
+    少なくとも一度実際に表示するまで古い値を返すことがあるので、このモジュールは
+    それを条件にしない。
 """
 
 from __future__ import annotations
@@ -57,19 +56,19 @@ from pathlib import Path
 
 _POLL_INTERVAL = 0.5
 
-# Standard Windows common-dialog (class "#32770") control ids.
-_FILENAME_EDIT_IDS = (1148, 1001)  # Open dialog uses 1148; this app's Save As dialogs use 1001
-_OK_BUTTON_ID = 1                  # IDOK - "Open"/"Save" on every standard common dialog
-_OVERWRITE_YES_ID = 6              # IDYES on the standard overwrite-confirm dialog
-_FILENAME_SETTLE_SECS = 0.5        # the typed path must still read back after this long
+# 標準の Windows コモンダイアログ (クラス "#32770") のコントロール id。
+_FILENAME_EDIT_IDS = (1148, 1001)  # 開くダイアログは 1148、このアプリの名前を付けて保存ダイアログは 1001
+_OK_BUTTON_ID = 1                  # IDOK - どの標準コモンダイアログでも「開く」/「保存」
+_OVERWRITE_YES_ID = 6              # 標準の上書き確認ダイアログの IDYES
+_FILENAME_SETTLE_SECS = 0.5        # 入力したパスがこの時間の後もまだ読み返せること
 
-# DxLibModelViewer ver3.24d's File menu command ids - see module docstring.
+# DxLibModelViewer ver3.24d のファイルメニューのコマンド id - モジュール docstring 参照。
 _MENU_ID_OPEN = 2
 _MENU_ID_SAVE_AS = 5
 _MENU_ID_SAVE_MESH_ONLY = 6
 _MENU_ID_SAVE_ANIM_ONLY = 7
 
-# convert()'s ``mode`` -> (File menu command id, human-readable name for errors).
+# convert() の ``mode`` -> (ファイルメニューのコマンド id, エラー用の人が読める名前)。
 SAVE_MODES: dict[str, tuple[int, str]] = {
     "mesh": (_MENU_ID_SAVE_MESH_ONLY, "Save As mesh only"),
     "anim": (_MENU_ID_SAVE_ANIM_ONLY, "Save As animation only"),
@@ -112,12 +111,11 @@ def _dump_tree(ctrl, lines: list[str], depth: int = 0, max_depth: int = 6) -> No
 
 
 def _dump_debug(app, debug_dir: Path | None) -> Path | None:
-    """Best-effort failure capture: a screenshot of every top-level window
-    plus a control-tree text dump - this toolkit's substitute for a
-    subprocess's stdout/stderr, since a GUI-automation failure has no exit
-    code or captured output to show the user. ``print_control_identifiers()``
-    isn't available on the win32-backend wrappers this module uses, hence
-    the hand-rolled ``_dump_tree``."""
+    """できる範囲の失敗時の記録: 全トップレベルウィンドウのスクリーンショットと
+    コントロールツリーのテキストダンプ - GUI 自動化の失敗には見せられる終了コードや
+    キャプチャした出力が無いので、サブプロセスの stdout/stderr の代わりになる
+    このツールキットの手段。このモジュールが使う win32 バックエンドのラッパーには
+    ``print_control_identifiers()`` が無いので、自前の ``_dump_tree`` を使う。"""
     if debug_dir is None:
         debug_dir = Path(tempfile.mkdtemp(prefix="tools_model_debug_"))
     debug_dir.mkdir(parents=True, exist_ok=True)
@@ -145,9 +143,8 @@ def _dump_debug(app, debug_dir: Path | None) -> Path | None:
 
 
 def _find_menu_item(menu, target_id: int):
-    """Recursively search a win32 MenuWrapper tree for the item whose
-    ``item_id()`` matches - robust to reordering/relocalization, unlike a
-    positional index."""
+    """win32 の MenuWrapper ツリーを再帰的に探して ``item_id()`` が一致する項目を返す
+    - 位置インデックスと違い、並べ替えや再ローカライズに強い。"""
     for item in menu.items():
         if item.item_id() == target_id:
             return item
@@ -168,8 +165,8 @@ def _find_menu_item(menu, target_id: int):
 
 
 def _find_filename_edit(dlg):
-    """The dialog's filename Edit if it currently exists and is usable, else
-    ``None`` (see ``_FILENAME_EDIT_IDS`` for why several ids are tried)."""
+    """ダイアログのファイル名 Edit が今存在して使えるならそれ、無ければ
+    ``None`` (複数の id を試す理由は ``_FILENAME_EDIT_IDS`` 参照)。"""
     for cid in _FILENAME_EDIT_IDS:
         try:
             edit = dlg.child_window(control_id=cid, class_name="Edit")
@@ -188,19 +185,17 @@ def _filename_matches(edit, path: Path) -> bool:
 
 
 def _set_common_dialog_filename(dlg, path: Path, timeout: float) -> None:
-    """Type an absolute path directly into a standard Open/Save common
-    dialog's filename field, bypassing folder navigation entirely - the most
-    reliable way to drive it regardless of the last-used folder or view
-    mode. Polls every known filename-field id together until ``timeout``:
-    the shell dialog can take several seconds to populate its children
-    (observed 2026-09-13), longer than a fixed short per-id wait allowed.
+    """標準の開く/保存コモンダイアログのファイル名欄に絶対パスを直接入力し、
+    フォルダ移動を完全に省く - 最後に使ったフォルダや表示モードに関係なく操作できる
+    最も確実な方法。``timeout`` まで、既知のファイル名欄の id をまとめてポーリングする:
+    シェルのダイアログは子の生成に数秒かかることがあり (2026-09-13 に観測)、
+    id ごとに固定の短い待ち時間を取る方式では足りなかった。
 
-    Only returns once the field has read back ``path`` across a short settle
-    period: the dialog can finish initializing *after* the text is set and
-    reset the field to its default ("<loaded model>.mv1"), and confirming
-    then saves that default name into the dialog's last-used folder - which
-    is how a stray ``Assets/Art/Models/Basic/Hyena.mv1`` got written on
-    2026-09-13. ``_confirm_common_dialog`` re-checks before every click."""
+    欄が短い安定待ちの間ずっと ``path`` を読み返せてから初めて戻る: ダイアログは
+    テキスト設定の *後に* 初期化を終えて欄を既定値 ("<読み込んだモデル>.mv1") に
+    戻すことがあり、そのまま確定するとダイアログの最後に使ったフォルダにその既定名で
+    保存してしまう - 2026-09-13 に余計な ``Assets/Art/Models/Basic/Hyena.mv1`` が
+    書かれたのはこれが原因。``_confirm_common_dialog`` はクリックのたびに再確認する。"""
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         edit = _find_filename_edit(dlg)
@@ -219,9 +214,9 @@ def _set_common_dialog_filename(dlg, path: Path, timeout: float) -> None:
 
 
 def _select_mv1_file_type(dlg) -> None:
-    """Make sure the Save As dialog's file-type combo is on "MV1 File(*.MV1)"
-    rather than "X File(*.x)". The combo has no stable control id (reads 0),
-    so it's found by its item texts."""
+    """名前を付けて保存ダイアログのファイル種別コンボが "X File(*.x)" ではなく
+    "MV1 File(*.MV1)" になっていることを確実にする。コンボには安定した
+    コントロール id が無い (0 になる) ので、項目のテキストで探す。"""
     for combo in dlg.wrapper_object().descendants(class_name="ComboBox"):
         try:
             items = combo.item_texts()
@@ -237,21 +232,20 @@ def _select_mv1_file_type(dlg) -> None:
 
 
 def _confirm_common_dialog(dlg, path: Path, timeout: float) -> None:
-    """Press IDOK via a ``BM_CLICK`` message (``click()``), not a synthesized
-    mouse click (``click_input()``): the latter lands at screen coordinates,
-    so if any other window overlaps the dialog it silently clicks that window
-    instead - observed 2026-09-13 when a browser covered the Save dialog.
+    """合成したマウスクリック (``click_input()``) ではなく ``BM_CLICK`` メッセージ
+    (``click()``) で IDOK を押す: 前者は画面座標に落ちるので、他のウィンドウが
+    ダイアログに重なっていると黙ってそちらをクリックしてしまう - 2026-09-13 に
+    ブラウザが保存ダイアログを覆っていたときに観測。
 
-    A ``BM_CLICK`` sent while the shell dialog is still settling is sometimes
-    dropped (the Open dialog stayed up with its path filled in, 2026-09-13),
-    so keep re-sending until the dialog actually closes. Stop re-sending once
-    the dialog itself is disabled - that means it opened a modal message box
-    of its own (e.g. "folder does not exist"), which a later wait reports.
+    シェルのダイアログがまだ落ち着いていない間に送った ``BM_CLICK`` は捨てられる
+    ことがある (2026-09-13、開くダイアログがパスを入力したまま残った) ので、
+    ダイアログが実際に閉じるまで送り直す。ダイアログ自体が無効になったら送り直しを
+    やめる - それは独自のモーダルメッセージボックス (例: 「フォルダが存在しません」)
+    を開いたということで、後の待機がそれを報告する。
 
-    Every click is preceded by re-reading the filename field: if it no longer
-    holds ``path`` (see ``_set_common_dialog_filename``), it is re-typed and
-    re-verified first, and the click is skipped this round - never confirm a
-    dialog whose filename we haven't just seen."""
+    クリックの前には毎回ファイル名欄を読み直す: もう ``path`` を保持していなければ
+    (``_set_common_dialog_filename`` 参照)、まず入力し直して再確認し、その回の
+    クリックは飛ばす - 直前にファイル名を確認していないダイアログは決して確定しない。"""
     btn = dlg.child_window(control_id=_OK_BUTTON_ID, class_name="Button")
     btn.wait("exists enabled visible", timeout=10)
     deadline = time.monotonic() + timeout
@@ -278,26 +272,26 @@ def _confirm_common_dialog(dlg, path: Path, timeout: float) -> None:
 
 
 def _dismiss_overwrite_prompt_if_any(app, timeout: float = 2.0) -> None:
-    """The standard Windows "<file> already exists. Do you want to replace
-    it?" confirmation, if Save routes through it. Defense in depth only -
-    ``cli.py``'s ``cmd_convert`` deletes any existing output file up front
-    specifically so this is rarely reached."""
+    """保存がそこを通る場合の、標準の Windows の「<file> は既に存在します。
+    置き換えますか?」確認。念のための多重防御にすぎない - ``cli.py`` の
+    ``cmd_convert`` はまさにこれにほぼ当たらないよう、既存の出力ファイルを先に
+    削除している。"""
     try:
         popup = app.window(class_name="#32770", title_re=".*")
         popup.wait("exists", timeout=timeout)
         yes = popup.child_window(control_id=_OVERWRITE_YES_ID, class_name="Button")
         if yes.exists():
-            yes.click()  # BM_CLICK, see _confirm_common_dialog
+            yes.click()  # BM_CLICK。_confirm_common_dialog 参照
     except Exception:  # noqa: BLE001
         pass
 
 
 def _wait_for_new_dialog(app, known_handles: set[int], timeout: float):
-    """Poll for a new top-level ``#32770`` common-dialog window that wasn't
-    present in ``known_handles`` - used right after invoking Open/Save so we
-    don't care what its title is (locale-independent), only that it has one
-    and is visible: a just-created dialog that's still untitled/hidden is
-    still being constructed and has no filename field yet."""
+    """``known_handles`` に無かった新しいトップレベルの ``#32770`` コモンダイアログ
+    ウィンドウをポーリングで待つ - 開く/保存を呼んだ直後に使うので、タイトルが何かは
+    気にしない (ロケール非依存)。タイトルがあり表示されていることだけを見る:
+    作られたばかりでまだ無題/非表示のダイアログは構築中で、ファイル名欄も
+    まだ無い。"""
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         try:
@@ -316,10 +310,10 @@ def _wait_for_new_dialog(app, known_handles: set[int], timeout: float):
 
 
 def _wait_for_output_settled(app, mv1_path: Path, timeout: float, debug_dir: Path | None) -> None:
-    """Poll the filesystem rather than trusting any GUI state: wait for
-    ``mv1_path`` to exist, then for its size to stop changing across two
-    checks - the most trustworthy "write finished" signal available, since
-    the app could still be flushing to disk after its UI looks idle."""
+    """GUI の状態は信用せずファイルシステムをポーリングする: ``mv1_path`` が
+    存在するのを待ち、次にそのサイズが 2 回のチェックで変わらなくなるのを待つ -
+    UI が暇そうに見えてもアプリはまだディスクへ書き出し中かもしれないので、
+    手に入る中で最も信頼できる「書き込み完了」のシグナル。"""
     deadline = time.monotonic() + timeout
     last_size = -1
     while time.monotonic() < deadline:
@@ -338,25 +332,25 @@ def _wait_for_output_settled(app, mv1_path: Path, timeout: float, debug_dir: Pat
 
 def convert(fbx_path: Path, mv1_path: Path, exe_path: Path, *, mode: str,
             timeout: float = 60.0, debug_dir: Path | None = None) -> None:
-    """Launch DxLibModelViewer, load ``fbx_path``, and save it as ``mv1_path``
-    using the File menu entry selected by ``mode`` (a :data:`SAVE_MODES` key):
+    """DxLibModelViewer を起動して ``fbx_path`` を読み込み、``mode``
+    (:data:`SAVE_MODES` のキー) で選んだファイルメニューの項目で ``mv1_path`` として保存する:
 
-    * ``"mesh"`` - "Save As mesh only": geometry/materials, animations dropped.
-    * ``"anim"`` - "Save As animation only": animation clips, no mesh - for
-      clip files shared across models with the same skeleton.
-    * ``"full"`` - "Save As": mesh and animations together in one file.
+    * ``"mesh"`` - 「メッシュのみ名前を付けて保存」: 形状/マテリアル。アニメーションは捨てる。
+    * ``"anim"`` - 「アニメーションのみ名前を付けて保存」: アニメーションクリップのみで
+      メッシュ無し - 同じスケルトンのモデル間で共有するクリップファイル用。
+    * ``"full"`` - 「名前を付けて保存」: メッシュとアニメーションを 1 ファイルにまとめる。
 
-    Raises :class:`AutomationError` on any failure, with a best-effort debug
-    bundle (screenshots + control-tree dump of every window) saved under
-    ``debug_dir`` (default: a fresh temp directory, path always attached to
-    the error). A real window is created for the duration of the call - this
-    is not a headless operation, see ``tools/model/README.md``.
+    失敗時は :class:`AutomationError` を投げ、できる範囲のデバッグ一式
+    (全ウィンドウのスクリーンショット + コントロールツリーのダンプ) を ``debug_dir``
+    (既定: 新しい一時ディレクトリ。パスは常にエラーに付く) に保存する。呼び出しの間は
+    本物のウィンドウが作られる - ヘッドレスな処理ではない。``tools/model/README.md``
+    を参照。
     """
     if mode not in SAVE_MODES:
         raise ValueError(f"unknown save mode {mode!r}; expected one of {sorted(SAVE_MODES)}")
     save_menu_id, save_menu_name = SAVE_MODES[mode]
 
-    from pywinauto import Application  # lazy: only convert() needs pywinauto
+    from pywinauto import Application  # 遅延: pywinauto が要るのは convert() だけ
 
     app = None
     try:
@@ -374,7 +368,7 @@ def convert(fbx_path: Path, mv1_path: Path, exe_path: Path, *, mode: str,
         def by_handle():
             return app.window(handle=main_handle)
 
-        # --- Open ---
+        # --- 開く ---
         try:
             known = {w.handle for w in app.windows()}
             file_menu = by_handle().menu().items()[0].sub_menu()
@@ -393,7 +387,7 @@ def convert(fbx_path: Path, mv1_path: Path, exe_path: Path, *, mode: str,
         except Exception as e:  # noqa: BLE001
             raise AutomationError("open", str(e), _dump_debug(app, debug_dir)) from e
 
-        # --- wait for load (main window retitles to the loaded file's name) ---
+        # --- 読み込み待ち (メインウィンドウのタイトルが読み込んだファイル名に変わる) ---
         deadline = time.monotonic() + timeout
         loaded = False
         while time.monotonic() < deadline:
@@ -412,7 +406,7 @@ def convert(fbx_path: Path, mv1_path: Path, exe_path: Path, *, mode: str,
                 _dump_debug(app, debug_dir),
             )
 
-        # --- Save (menu entry chosen by mode) ---
+        # --- 保存 (メニュー項目は mode で選ぶ) ---
         try:
             known = {w.handle for w in app.windows()}
             file_menu = by_handle().menu().items()[0].sub_menu()

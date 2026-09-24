@@ -1,10 +1,10 @@
-"""Synthesize the SwordMan dash / jump attack sound effects and install them as SoundFile assets under Assets/Audio/Physics.
+"""SwordMan のダッシュ / ジャンプ攻撃の効果音を合成し、Assets/Audio/Physics に SoundFile アセットとして入れる。
 
     python tools/art/swordman_sfx.py [--only NAME ...] [--audition DIR] [--preview PATH]
 
---audition writes every candidate (<Name>_<Variant>.mp3) to DIR for listening and installs nothing. Without it the
-chosen variant of each sound (CHOSEN) is installed. Same pipeline as magic_sfx.py (numpy + scipy, lameenc 192 kbps,
-48 kHz stereo); an existing .mp3.meta keeps its guid.
+--audition は試聴用に全候補 (<Name>_<Variant>.mp3) を DIR に書き出し、何もインストールしない。指定しなければ
+各音の選ばれた候補 (CHOSEN) をインストールする。処理は magic_sfx.py と同じ (numpy + scipy, lameenc 192 kbps,
+48 kHz ステレオ)。既存の .mp3.meta は guid を保つ。
 """
 from __future__ import annotations
 
@@ -22,14 +22,14 @@ from magic_sfx import (SR, at, bp, curve, exp_decay, finish, hp, lp, norm, osc, 
 m.OUT_DIR = m.REPO / 'Assets/Audio/Physics'
 
 
-# ================================================================ layers
+# ================================================================ レイヤー
 def _swish(d, rng, f0, f_peak, f1, t_peak, q=2.5, attack=0.03):
     env = curve(d, [(0, 0), (attack, 1), (t_peak + 0.04, 0.8), (d, 0)]) ** 1.4
     return sweep(white(d, rng), curve(d, [(0, f0), (t_peak, f_peak), (d, f1)], 'exp'), q) * env
 
 
 def _shing(d, t0, freqs=(2900, 4350, 6100), tau=0.12):
-    """Metallic blade ring (partials slightly inharmonic)."""
+    """金属の刃の響き (部分音は少し非整数倍)。"""
     ring = sum(osc(f, d) * (0.7 ** i) for i, f in enumerate(freqs))
     env = np.zeros(len(ring))
     at(env, exp_decay(d, tau, 0.002), t0)

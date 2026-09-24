@@ -1,5 +1,5 @@
-"""Tree-level CLI subcommands: new-tree, show. Delegates the edit verbs
-(including validate/apply) to :mod:`tools.animtree.cli_edit`."""
+"""ツリー単位の CLI サブコマンド: new-tree, show。編集コマンド
+（validate/apply を含む）は :mod:`tools.animtree.cli_edit` に委譲する。"""
 
 from __future__ import annotations
 

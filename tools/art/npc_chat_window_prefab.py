@@ -1,4 +1,4 @@
-"""Rebuild the NPC chat window in ChattingUiScene.scene from npc_chat_window.py's LAYOUT (案3「黒い板」).
+"""ChattingUiScene.scene の NPC 会話ウィンドウを npc_chat_window.py の LAYOUT から組み直す (案3「黒い板」).
 
     python tools/art/npc_chat_window.py --emit       # 先にスプライトを書き出す
     python tools/art/npc_chat_window_prefab.py       # ChattingUiScene の NpcChatting の子を組み直す

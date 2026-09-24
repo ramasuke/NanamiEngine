@@ -1,4 +1,4 @@
-"""List what recent Claude Code sessions in this project changed.
+"""このプロジェクトで最近の Claude Code セッションが何を変更したかを一覧する。
 
     python .claude/skills/bugfix-recently-session/recent_sessions.py [--sessions N] [--include-current]
     python .claude/skills/bugfix-recently-session/recent_sessions.py --grep <text>
@@ -12,14 +12,14 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
-# NOTE: repo toolkits (tools.scene / tools.bt / ...) rewrite assets without going through Edit/Write.
+# NOTE: リポジトリのツールキット（tools.scene / tools.bt / ...）は Edit/Write を通さずにアセットを書き換える。
 TOOL_CMD = re.compile(r"python3? (?:-m tools\.|tools/)[^;&|\n]*")
 READ_ONLY_CMD = re.compile(r"--help|\b(?:show|validate|check-env|materials|diff)\b|selftest")
 EDIT_TOOLS = {"Edit", "Write", "MultiEdit", "NotebookEdit"}
 
 
 def project_log_dir():
-    # NOTE: Claude Code replaces every non-alphanumeric character of the cwd with '-'.
+    # NOTE: Claude Code は cwd の英数字以外の文字をすべて '-' に置き換える。
     slug = "".join(c if c.isascii() and c.isalnum() else "-" for c in str(REPO))
     return Path.home() / ".claude" / "projects" / slug
 

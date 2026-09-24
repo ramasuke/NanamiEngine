@@ -1,10 +1,9 @@
-"""Structural + parameter edits on a :class:`tools.animtree.model.Tree`.
+""":class:`tools.animtree.model.Tree` に対する構造・パラメータの編集。
 
-Every function mutates the tree in place and is designed so a change followed
-by its inverse restores the original bytes (see selftest). ``apply`` runs a
-batch of edit ops atomically (build -> apply all -> caller validates -> one
-write) - the primary agent-facing interface, mirroring ``tools.bt.edits``/
-``tools.scene.edits``.
+どの関数もツリーをその場で変更し、変更とその逆操作で元のバイト列に戻るように
+作ってある（selftest 参照）。``apply`` は編集操作の一括を原子的に実行する
+（構築 -> 全適用 -> 呼び出し側で検証 -> 1 回だけ書き込み）。``tools.bt.edits``/
+``tools.scene.edits`` と同じく、エージェント向けの主要インターフェース。
 """
 
 from __future__ import annotations
@@ -31,7 +30,7 @@ class EditError(RuntimeError):
 
 
 # ---------------------------------------------------------------------------
-# blob builders (from-scratch clip nodes)
+# blob ビルダー（クリップノードを一から作る）
 # ---------------------------------------------------------------------------
 def _leaf(name: str) -> str:
     return name.split("<", 1)[0].rsplit("::", 1)[-1]
@@ -54,21 +53,20 @@ def _default_scalar(shape: str, value: Any) -> Any:
         return Num.of_int(int(value) if value is not None else 0)
     if shape == "bool":
         return bool(value) if value is not None else False
-    # unknown/vector/... -> a harmless placeholder; validate() flags it, and a
-    # human finishes it in the editor (mirrors tools.bt/tools.scene's own
-    # limitation for shapes a param can't be constructed for from scratch).
+    # unknown/vector/... -> 無害なプレースホルダー。validate() が指摘し、
+    # 人がエディタで仕上げる（一から構築できない形状に対する
+    # tools.bt/tools.scene の制限と同じ）。
     return Num.of_int(0)
 
 
 def resolve_clip_arg(raw: str, repo_root: Path | None = None) -> str:
-    """Accept a raw ``Mv1File`` asset GUID, or a path to a ``.mv1``/``.mv1.meta``
-    file, resolved to that asset's guid via its ``.meta`` sidecar.
+    """生の ``Mv1File`` アセット GUID、または ``.mv1``/``.mv1.meta`` ファイルへのパスを受け付け、
+    パスは ``.meta`` を介してそのアセットの guid に解決する。
 
-    Neither ``tools.bt`` nor ``tools.scene`` resolve a path for a ``field``-shaped
-    CLI argument today - both just uppercase a raw GUID string - so there is no
-    existing helper to reuse beyond that baseline; this is a new convenience
-    specific to ``--clip``, built entirely from
-    :func:`tools.common.meta_base.read_meta` (via :func:`tools.animtree.meta.read_mv1_meta`).
+    ``tools.bt`` も ``tools.scene`` も今は ``field`` 形状の CLI 引数でパスを解決しない
+    （どちらも生の GUID 文字列を大文字化するだけ）ので、それ以上に再利用できる
+    既存ヘルパーは無い。これは ``--clip`` 専用の新しい便宜機能で、
+    :func:`tools.common.meta_base.read_meta` だけで作っている（:func:`tools.animtree.meta.read_mv1_meta` 経由）。
     """
     raw = raw.strip()
     if _GUID_RE.match(raw):
@@ -88,13 +86,12 @@ def resolve_clip_arg(raw: str, repo_root: Path | None = None) -> str:
 
 def default_node_params(entry: Optional[dict], overrides: Optional[dict] = None, *,
                         field_guid: Optional[str] = None) -> OrderedObj:
-    """A brand-new node's params blob: every non-guid/non-position catalog
-    param at its default (or ``overrides[member]``, if given), in catalog
-    order. Generic over *any* node type in the catalog - used both for
-    ``AnimationClipNode`` (:func:`add_clip_node`) and for the two fixed
-    singletons (:func:`new_singleton_node`, e.g. ``new-tree``'s freshly-minted
-    Entry/AnyState), so a future addable ``IAnimationNode`` subtype needs no
-    new construction code here, only a catalog entry.
+    """新規ノードのパラメータ blob: guid/position 以外のカタログパラメータを
+    すべて既定値（指定があれば ``overrides[member]``）でカタログ順に並べる。
+    カタログにある *任意の* ノード型に対して汎用で、``AnimationClipNode``
+    （:func:`add_clip_node`）にも固定シングルトン 2 つ（:func:`new_singleton_node`、
+    例: ``new-tree`` が新規作成する Entry/AnyState）にも使うので、今後追加可能な
+    ``IAnimationNode`` サブタイプが増えてもここに構築コードは要らず、カタログ項目だけで済む。
     """
     overrides = overrides or {}
     params = OrderedObj()
@@ -115,9 +112,9 @@ def default_node_params(entry: Optional[dict], overrides: Optional[dict] = None,
 def new_singleton_node(fqn: str, guid: str, pos: tuple[float, float],
                        overrides: Optional[dict] = None,
                        cat: catalog_mod.Catalog | None = None) -> model.Node:
-    """A freshly-minted Entry/AnyState node (``new-tree``'s two fixed
-    singletons) - not addable/removable via the CLI, but still needs a fully
-    catalog-shaped params blob to write correctly."""
+    """新規作成した Entry/AnyState ノード（``new-tree`` の固定シングルトン 2 つ）。
+    CLI で追加/削除はできないが、正しく書き出すにはカタログ通りの
+    パラメータ blob が必要。"""
     cat = cat or catalog_mod.load()
     entry = cat.node_by_fqn(fqn)
     if entry is None:
@@ -132,11 +129,11 @@ def add_clip_node(tree: model.Tree, *, name: str, clip_guid: str, speed: float =
                   clip_start_time: float, clip_end_time: float, is_loop: bool,
                   pos: Optional[tuple[float, float]] = None, guid: Optional[str] = None,
                   cat: catalog_mod.Catalog | None = None) -> model.Node:
-    """``clip_start_time``/``clip_end_time`` are in the clip's own animation-time
-    units (``MV1GetAnimTotalTime``); an end of ``0`` means "to the end of the clip".
-    ``is_loop=False`` plays the range once and holds its last pose. ``is_loop`` is
-    passed explicitly because the catalog's generic bool default is ``False``, which
-    would silently turn every new node into a non-looping one."""
+    """``clip_start_time``/``clip_end_time`` はクリップ自身のアニメーション時間単位
+    （``MV1GetAnimTotalTime``）。終了が ``0`` なら「クリップの最後まで」。
+    ``is_loop=False`` は範囲を 1 回再生して最後のポーズで止まる。カタログの bool の
+    汎用既定値は ``False`` で、そのままだと新規ノードがすべて非ループになってしまうため、
+    ``is_loop`` は明示的に渡す。"""
     cat = cat or catalog_mod.load()
     entry = cat.resolve_node_type(model.FQN_CLIP_NODE)
     if entry is None or entry.get("singleton"):
@@ -190,7 +187,7 @@ def move_node(tree: model.Tree, guid: str, pos: tuple[float, float]) -> model.No
 
 
 # ---------------------------------------------------------------------------
-# node parameter edits
+# ノードのパラメータ編集
 # ---------------------------------------------------------------------------
 def _leaf_param(cat: catalog_mod.Catalog, entry: Optional[dict], key: str) -> dict:
     for p in cat.params_of(entry):
@@ -273,7 +270,7 @@ def set_node_params(tree: model.Tree, guid: str, assignments: dict[str, str],
 
 
 # ---------------------------------------------------------------------------
-# transition addressing (no identity guid - positional or (from, next))
+# 遷移の指定（識別 guid は無い - 位置か (from, next) で指定）
 # ---------------------------------------------------------------------------
 def _transition_list(tree: model.Tree, any_state: bool) -> list[model.Transition]:
     return tree.any_state_transitions if any_state else tree.transitions
@@ -376,7 +373,7 @@ def remove_condition(tree: model.Tree, *, any_state: bool = False, index: Option
 
 
 # ---------------------------------------------------------------------------
-# additionParameters_ (bool/int/float, unlike tools.bt's int-only blackboard)
+# additionParameters_（tools.bt の int 専用ブラックボードと違い bool/int/float）
 # ---------------------------------------------------------------------------
 def add_param(tree: model.Tree, name: str, kind: str, value: Any) -> model.Param:
     if kind not in model.KINDS:
@@ -404,7 +401,7 @@ def set_param(tree: model.Tree, name: str, value: Any) -> model.Param:
 
 
 # ---------------------------------------------------------------------------
-# batch - the primary agent-facing interface
+# 一括処理 - エージェント向けの主要インターフェース
 # ---------------------------------------------------------------------------
 def apply(tree: model.Tree, ops: list[dict], cat: catalog_mod.Catalog | None = None) -> list[str]:
     cat = cat or catalog_mod.load()

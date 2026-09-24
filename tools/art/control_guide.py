@@ -34,7 +34,7 @@ GLYPH_FONT = r'C:/Windows/Fonts/segoeuib.ttf'
 LABEL_FONT = REPO_ROOT / 'Assets' / 'Art' / 'Font' / 'ipam.ttf'
 
 STRIP_W, STRIP_H = 300, 36
-STRIP_OPAQUE_RATE = 0.62  # the strip stays at STRIP_ALPHA under the labels, then fades out
+STRIP_OPAQUE_RATE = 0.62  # 帯はラベルの下では STRIP_ALPHA のまま、その先でフェードアウトする
 STRIP_ALPHA = 0.8
 GLOW_W = 64
 GLOW_BAR_X = 30
@@ -45,14 +45,14 @@ KEY_MARGIN = 2
 KEY_LETTER_RATE = 0.58
 KEY_WORD_RATE = 0.47
 
-# GEOMETRY of the prefab rows (screen px, x relative to the strip's left edge)
+# プレハブの行の GEOMETRY (画面 px、x は帯の左端から)
 CELL_H = 36
 CELL_SPACING = 4
 GLYPH_COLUMN_X = 18
 GLYPH_COLUMN_W = 56
 LABEL_X = 92
 LABEL_SIZE = 23
-LABEL_FONT_SIZE = 60  # ipam.ttf .meta size_
+LABEL_FONT_SIZE = 60  # ipam.ttf の .meta の size_
 LABEL_SHADOW_OFFSET = 1.5
 DIM_ALPHA = 110  # ControlGuide::dimAlpha_
 SLIDE_DISTANCE = 8  # ControlGuide::slideDistance_px_
@@ -73,7 +73,7 @@ GOLD = hexc('#ffce68')
 PAD_LETTER_COLOR = {'A': hexc('#7cd360'), 'B': hexc('#e9645c'), 'X': hexc('#60a6e9'), 'Y': hexc('#f0c85c')}
 
 
-# ---------------------------------------------------------------- raster helpers
+# ---------------------------------------------------------------- ラスタ補助
 class Canvas:
     def __init__(self, w, h):
         self.w, self.h = w, h
@@ -117,7 +117,7 @@ def sd_rbox(x, y, x0, y0, x1, y1, r):
     return np.hypot(np.maximum(qx, 0), np.maximum(qy, 0)) + np.minimum(np.maximum(qx, qy), 0) - r
 
 
-# ---------------------------------------------------------------- glyphs
+# ---------------------------------------------------------------- グリフ
 def key_letter_size(text):
     return KEY_H * (KEY_LETTER_RATE if len(text) == 1 else KEY_WORD_RATE)
 
@@ -229,7 +229,7 @@ def render_mouse_left():
     return c.resolve()
 
 
-# ---------------------------------------------------------------- row parts
+# ---------------------------------------------------------------- 行の部品
 def render_strip():
     c = Canvas(STRIP_W, STRIP_H)
     X, Y = c.X, c.Y
@@ -345,7 +345,7 @@ def write_sprite(out_dir, name, image):
     return guid
 
 
-# ---------------------------------------------------------------- preview (mirrors the prefab rows + ControlGuide::PresentRow)
+# ---------------------------------------------------------------- プレビュー (プレハブの行と ControlGuide::PresentRow を再現)
 GLYPH_OF = {'WASD': 'ControlGuide_Key_WASD', 'AD': 'ControlGuide_Key_AD', 'Q': 'ControlGuide_Key_Q',
             'E': 'ControlGuide_Key_E', 'Shift': 'ControlGuide_Key_Shift', 'Ctrl': 'ControlGuide_Key_Ctrl',
             'Space': 'ControlGuide_Key_Space', 'LMB': 'ControlGuide_Mouse_Left'}
@@ -358,7 +358,7 @@ def fade(im, alpha):
 
 
 def add_layer(canvas, im, pos, alpha):
-    """additive blend (DX_BLENDMODE_ADD) of a straight-alpha sprite"""
+    """ストレートアルファのスプライトの加算合成 (DX_BLENDMODE_ADD)"""
     layer = Image.new('RGBA', canvas.size, (0, 0, 0, 0))
     layer.paste(im, pos)
     src = np.asarray(layer, np.float32) / 255
@@ -373,7 +373,7 @@ def smoothstep(t):
 
 
 def row_centers(rates):
-    """VerticalLayoutGroup with stackUpward_ + centerOnOrigin_: y offsets from the origin, one per row (bottom first)"""
+    """stackUpward_ + centerOnOrigin_ の VerticalLayoutGroup: 原点からの y オフセットを行ごとに返す (下から順)"""
     pitch = CELL_H + CELL_SPACING
     along, filled = [], 0.0
     for r in rates:
@@ -384,8 +384,8 @@ def row_centers(rates):
 
 
 def draw_rows(canvas, sprites, rows, left, centre_y):
-    """rows: (glyph, label, visibility 0..1, usable 0..1, pulse 0..1) bottom to top.
-    A row with visibility > 0 takes smoothstep(visibility) of a slot (the layout group skips disabled rows)."""
+    """rows: (glyph, label, visibility 0..1, usable 0..1, pulse 0..1) を下から上へ。
+    visibility > 0 の行は枠の smoothstep(visibility) 分を占める (レイアウトグループは無効な行を飛ばす)。"""
     font = ImageFont.truetype(str(LABEL_FONT), LABEL_SIZE)
     rows = [r for r in rows if r[2] > 0]
     offsets = row_centers([smoothstep(r[2]) for r in rows])
@@ -418,7 +418,7 @@ def render_preview(sprites, path):
                ('Ctrl', '回避', 1, 0, 0), ('Q', 'ロックオン', 1, 1, 0)]
     cannon = [('AD', '旋回', 1, 1, 0), ('LMB', '発射', 1, 1, 0)]
     panels = [('待機', idle), ('ダッシュ中・スタミナ不足', run_low), ('大砲', cannon)]
-    # "会話" row appearing: visibility (and its slot) ramps over 0.2s, pulse decays over 0.45s
+    # "会話" の行が出てくるところ: visibility (と枠) は 0.2 秒で上がり、パルスは 0.45 秒で減衰する
     for t in (0.05, 0.1, 0.2, 0.35, 0.6):
         vis = min(1.0, t / 0.2)
         pulse = max(0.0, 1 - t / 0.45) if t > 0 else 0

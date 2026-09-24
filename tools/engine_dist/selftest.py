@@ -1,4 +1,4 @@
-"""Selftest for tools/engine_dist (no MSBuild): assemble a package from this repo into a temp dir."""
+"""tools/engine_dist のセルフテスト (MSBuild 無し): このリポジトリから一時ディレクトリにパッケージを組み立てる。"""
 
 from __future__ import annotations
 

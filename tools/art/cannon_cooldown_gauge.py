@@ -60,7 +60,7 @@ GOLD = [(0, '#b86a12'), (0.6, '#ffb23a'), (1, '#ffe7a0')]
 STEEL = [(0.0, '#c2cad3'), (0.16, '#88909a'), (0.5, '#4b515a'), (0.84, '#2c3036'), (1.0, '#1b1e22')]
 
 
-# ---------------------------------------------------------------- raster helpers
+# ---------------------------------------------------------------- ラスタ補助
 def grid(w_px, h_px):
     ys, xs = np.mgrid[0:h_px * S, 0:w_px * S].astype(np.float32)
     return (xs + 0.5) / S, (ys + 0.5) / S
@@ -108,7 +108,7 @@ def metal(Y, top, bottom):
     return ramp((Y - top) / (bottom - top), STEEL)
 
 
-# ---------------------------------------------------------------- SDF helpers
+# ---------------------------------------------------------------- SDF 補助
 def sd_circle(x, y, cx, cy, r):
     return np.hypot(x - cx, y - cy) - r
 
@@ -126,7 +126,7 @@ def sd_segment(x, y, ax, ay, bx, by, r):
     return np.hypot(pax - bax * h, pay - bay * h) - r
 
 
-# ---------------------------------------------------------------- medallion
+# ---------------------------------------------------------------- メダリオン
 def render_frame():
     X, Y = grid(FRAME_PX, FRAME_PX)
     img = canvas(FRAME_PX, FRAME_PX)
@@ -179,7 +179,7 @@ def render_shockwave():
     return resolve(img, SHOCK_PX, SHOCK_PX)
 
 
-# ---------------------------------------------------------------- bomb + spark
+# ---------------------------------------------------------------- 爆弾 + 火花
 def render_bomb():
     X, Y = grid(BOMB_W_PX, BOMB_H_PX)
     img = canvas(BOMB_W_PX, BOMB_H_PX)
@@ -218,7 +218,7 @@ def render_ember():
     return resolve(img, EMBER_PX, EMBER_PX)
 
 
-# ---------------------------------------------------------------- prompt
+# ---------------------------------------------------------------- 操作ヒント
 def pill_sd(X, Y):
     cx, cy = PILL_W_PX / 2, PILL_H_PX / 2
     return sd_rbox(X, Y, cx - 90, cy - 24, cx + 90, cy + 24, 24)
@@ -256,7 +256,7 @@ def render_mouse(lit):
     return resolve(img, MOUSE_W_PX, MOUSE_H_PX)
 
 
-# ---------------------------------------------------------------- output
+# ---------------------------------------------------------------- 出力
 SPRITES = {
     'CannonGaugeFrame': render_frame,
     'CannonGaugeFill_Teal': lambda: render_fill(TEAL),
@@ -300,7 +300,7 @@ def write_sprite(out_dir, name, image):
     return guid
 
 
-# ---------------------------------------------------------------- preview (mirrors CannonCooldownGauge::OnUserInterfaceRender)
+# ---------------------------------------------------------------- プレビュー (CannonCooldownGauge::OnUserInterfaceRender を再現)
 def premul(im):
     a = np.asarray(im, np.float32) / 255
     a[..., :3] *= a[..., 3:]

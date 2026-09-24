@@ -1,11 +1,11 @@
-"""Self-test / correctness gate for tools.dist.
+"""tools.dist のセルフテスト / 正しさのゲート。
 
-Run:  python tools/dist/selftest.py       (from repo root)
-      python -m tools.dist selftest
+実行:  python tools/dist/selftest.py       (リポジトリルートから)
+       python -m tools.dist selftest
 
-Exit 0 = all good, 1 = failure. No third-party dependencies.
+終了コード 0 = すべて OK、1 = 失敗。サードパーティ依存無し。
 
-Stages:
+ステージ:
   0. JSON の形が Packages/AssetUpdater の AssetManifest::TryParse と一致する
      (キー名がずれるとクライアントが黙って 0 件差分になる)。
   1. 除外ルール: 開発専用だけが落ち、随伴ファイル (.efkmodel / .fbm 内テクスチャ /
@@ -69,7 +69,7 @@ class Reporter:
         return 1 if self.failed else 0
 
 
-# The exact keys Packages/AssetUpdater/Manifest/AssetManifest.cpp reads.
+# Packages/AssetUpdater/Manifest/AssetManifest.cpp が読むキーそのもの。
 ROOT_KEYS = {"schema", "version", "requiredClientVersion", "baseUrl", "entries"}
 ENTRY_KEYS = {"guid", "path", "hash", "size", "metaHash", "metaSize"}
 

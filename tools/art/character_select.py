@@ -1,4 +1,4 @@
-"""Generate the character-select UI sprites and the design mocks composited on a real game screen.
+"""キャラ選択 UI のスプライトと、実際のゲーム画面に合成したデザインモックを生成する。
 
     python tools/art/character_select.py --shot <screenshot.png> --out-dir <dir>
 
@@ -12,7 +12,7 @@ Phase A では --shot に実際のゲーム画面を渡して、UI を合成し�
 合成時は「切り替え中は体力HUDを隠す」という決定に合わせて左上のHUDを消し、
 拠点には出ないボスゲージも消してから UI を載せる。
 
-Requires Pillow + numpy.
+Pillow と numpy が必要。
 """
 import argparse
 import sys

@@ -1,7 +1,7 @@
-"""tools.model - convert .fbx source models to NanamiEngine's Mv1File asset
-(.mv1, DxLib's model format) by driving the DxLibModelViewer GUI tool - the
-only tool that can actually load .fbx, since it has no documented CLI/CUI -
-and install the result the same way tools/effect does for ParticleFile.
+"""tools.model - DxLibModelViewer の GUI ツール (.fbx を実際に読み込める唯一の
+ツールだが、文書化された CLI/CUI が無い) を操作して .fbx の原本モデルを
+NanamiEngine の Mv1File アセット (.mv1、DxLib のモデル形式) に変換し、
+tools/effect が ParticleFile に対して行うのと同じ方法で結果をインストールする。
 
-See tools/model/README.md for the command reference and known limitations.
+コマンドリファレンスと既知の制限は tools/model/README.md を参照。
 """

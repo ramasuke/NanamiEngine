@@ -39,7 +39,7 @@ X = (xs + 0.5) / S
 Y = (ys + 0.5) / S
 
 
-# ---------------------------------------------------------------- SDF helpers
+# ---------------------------------------------------------------- SDF ヘルパー
 def sd_circle(x, y, cx, cy, r):
     return np.hypot(x - cx, y - cy) - r
 
@@ -87,7 +87,7 @@ def vgrad(c0, c1, y0, y1):
     return c0 * (1 - t) + c1 * t
 
 
-# ---------------------------------------------------------------- shapes
+# ---------------------------------------------------------------- 形状
 CREST = [(128, 14 + OY), (214, 70 + OY), (214, 170 + OY), (128, 276 + OY), (42, 170 + OY), (42, 70 + OY)]
 
 
@@ -119,7 +119,7 @@ def scaled(fn, k):
     return f
 
 
-# ---------------------------------------------------------------- render
+# ---------------------------------------------------------------- 描画
 ACCENTS = {
     'gold': dict(top=hexc('#FFE08A'), bot=hexc('#E8892B'), glow=hexc('#FFB347')),
     'silver': dict(top=hexc('#FFFFFF'), bot=hexc('#9FB6C4'), glow=hexc('#CFEFFF')),
@@ -164,13 +164,13 @@ def render(glyph_fn, accent):
 
 
 ICONS = (
-    ('SurpriseMark', glyph_exclaim, 'gold'),     # surpriseIcon_  : event / quest
-    ('ChattableIcon', glyph_chevrons, 'silver'),  # chattableIcon_ : talkable NPC beacon
-    ('ChatIcon', glyph_dots, 'silver'),           # chattingIcon_  : player in talk range
+    ('SurpriseMark', glyph_exclaim, 'gold'),     # surpriseIcon_  : イベント / クエスト
+    ('ChattableIcon', glyph_chevrons, 'silver'),  # chattableIcon_ : 話しかけられる NPC の目印
+    ('ChatIcon', glyph_dots, 'silver'),           # chattingIcon_  : プレイヤーが会話範囲内
 )
 
 
-# ---------------------------------------------------------------- rim sweep sheet
+# ---------------------------------------------------------------- 縁を走る光のシート
 RIM_SWEEP_NAME = 'SurpriseMarkRimSweep'
 RIM_SWEEP_FRAMES = 18
 RIM_SWEEP_COLUMNS = 6
@@ -179,7 +179,7 @@ RIM_SWEEP_WIDTH = 0.075
 
 
 def crest_perimeter_param():
-    """Per-pixel position along the crest outline: 0 at the top vertex, increasing clockwise."""
+    """紋章の輪郭に沿ったピクセルごとの位置: 上の頂点で 0、時計回りに増える。"""
     verts = [(float(a), float(b)) for a, b in CREST]
     n = len(verts)
     lens = [math.dist(verts[i], verts[(i + 1) % n]) for i in range(n)]
@@ -204,7 +204,7 @@ def render_rim_sweep_sheet():
     rim = cov(sil - 2) * (1 - cov(sil + 12))
     rim_profile = rim * (0.55 + 0.65 * np.exp(-((sil + 7) / 4) ** 2))
     s = crest_perimeter_param()
-    u = 2 * np.minimum(s, 1 - s)  # 0 top vertex .. 1 bottom tip
+    u = 2 * np.minimum(s, 1 - s)  # 0 上の頂点 .. 1 下の先端
 
     rows = math.ceil(RIM_SWEEP_FRAMES / RIM_SWEEP_COLUMNS)
     sheet = Image.new('RGBA', (W * RIM_SWEEP_COLUMNS, H * rows), (0, 0, 0, 0))

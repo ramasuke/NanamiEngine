@@ -1,21 +1,21 @@
-"""Self-test / correctness gate for tools.bt.
+"""tools.bt のセルフテスト / 正しさの検証ゲート。
 
-Run:  python tools/bt/selftest.py         (from repo root)
-      python -m tools.bt selftest
+実行:  python tools/bt/selftest.py         （リポジトリルートから）
+       python -m tools.bt selftest
 
-Exit 0 = all good, 1 = failure. No third-party dependencies.
+終了コード 0 = 問題なし、1 = 失敗。サードパーティ依存なし。
 
-Stages (added as the toolkit is built):
-  1. cereal_json formatting fidelity: dumps(loads(text)) == text for every fixture.
-  2. tree model round-trip: read -> write -> structural-equal to the original,
-     including the ordered polymorphic_id / ptr_wrapper.id / cereal_class_version
-     bookkeeping sequences.
-  3. .meta round-trip.
-  4. new-tree fidelity vs T-Rex.*.
-  5. catalog freshness (regen-catalog --check).
-  6. edit-then-inverse == original.
-  8. copy-node deep-copies independently, and a dotted-key set-params reaches
-     inside a shape='nested' param; both undo cleanly.
+ステージ（ツールキットの構築に合わせて追加）:
+  1. cereal_json の書式忠実度: すべてのフィクスチャで dumps(loads(text)) == text。
+  2. ツリーモデルのラウンドトリップ: 読み込み -> 書き出し -> 元と構造的に等しい。
+     polymorphic_id / ptr_wrapper.id / cereal_class_version の管理情報の
+     並び順も含む。
+  3. .meta のラウンドトリップ。
+  4. new-tree の忠実度（T-Rex.* と比較）。
+  5. カタログの鮮度（regen-catalog --check）。
+  6. 編集してから逆操作 == 元。
+  8. copy-node が独立したディープコピーを作り、ドット区切りキーの set-params が
+     shape='nested' パラメータの内側に届く。どちらもきれいに元に戻せる。
 """
 
 from __future__ import annotations
@@ -39,9 +39,9 @@ FRIENDLY_DIR = _REPO / "Assets" / "Data" / "FriendlyNpcBehviour"
 FRIENDLY_TREE_FIXTURES = ["ActionInstructure", "Adventure", "IdleActionInstructure", "SampleAppearDragon"]
 FRIENDLY_META_FIXTURES = list(FRIENDLY_TREE_FIXTURES)
 
-# Trees whose read-then-write may add exactly N cereal_class_version lines.
-# Keep this empty: a stray version key is NOT inert - Field<T>::load reads its
-# shared_ptr positionally, so the extra key makes the engine's load throw.
+# 読み込み→書き出しで cereal_class_version 行がちょうど N 行増えてよいツリー。
+# 空のままにすること: 余分なバージョンキーは無害ではない - Field<T>::load は
+# shared_ptr を位置で読むので、余分なキーがあるとエンジンのロードが例外を投げる。
 KNOWN_LIMITATION_EXTRA_LINES: dict[str, int] = {}
 
 
@@ -120,9 +120,9 @@ def stage_formatting(r: Reporter) -> None:
 
 
 def _strip_versions(node):
-    """Recursively drop every 'cereal_class_version' key - used only to
-    confirm the one documented ActionInstructure divergence really is
-    exactly that (see KNOWN_LIMITATION_EXTRA_LINES) and nothing else."""
+    """'cereal_class_version' キーを再帰的にすべて取り除く。文書化済みの
+    ActionInstructure の差異が本当にそれだけ（KNOWN_LIMITATION_EXTRA_LINES 参照）で
+    他に何もないことを確認するためだけに使う。"""
     if isinstance(node, cereal_json.OrderedObj):
         return cereal_json.OrderedObj(
             (k, _strip_versions(v)) for k, v in node.items() if k != "cereal_class_version"
@@ -163,7 +163,7 @@ def _check_tree_roundtrip(r: Reporter, dir_: Path, names: list[str], ext: str, k
                     f"exp {orig_text[max(0, i-40):i+40]!r} got {rt_text[max(0, i-40):i+40]!r}"
                 )
 
-            # listed divergence - confirm it is *exactly* extra version keys and nothing else.
+            # 登録済みの差異 - *厳密に* 余分なバージョンキーだけで他に何もないことを確認する。
             assert_semantically_equal(_strip_versions(orig), _strip_versions(rt))
             extra_lines = len(rt_text.splitlines()) - len(orig_text.splitlines())
             if extra_lines != expected_extra:
@@ -181,7 +181,7 @@ def stage_tree_roundtrip(r: Reporter) -> None:
     try:
         from tools.bt import model, reader, writer  # noqa: F401
     except Exception:  # noqa: BLE001
-        return  # not built yet
+        return  # 未構築
     r.section("stage 2: tree model round-trip")
     _check_tree_roundtrip(r, BT_DIR, TREE_FIXTURES, ".enemyBehaviourData", "enemy")
     _check_tree_roundtrip(r, FRIENDLY_DIR, FRIENDLY_TREE_FIXTURES, ".friendBehaviourData", "friendly")
@@ -273,7 +273,7 @@ def _check_add_remove_sequence(r: Reporter, dir_: Path, name: str, ext: str, kin
     try:
         base = cereal_json.read_text(p)
         tree = reader.read_tree(base, cat=cat, kind=kind)
-        # add a Sequence under entry's child, then remove it -> identical
+        # エントリーの子の下に Sequence を追加して削除 -> 同一
         target = tree.entry.child
         if target is None or not hasattr(target, "children"):
             r.ok(f"{p.name} (skipped: no composite root)")
@@ -317,13 +317,13 @@ def stage_scaffold(r: Reporter) -> None:
         missing = [n for n in need if n not in joined]
         if missing:
             raise AssertionError(f"dry-run log missing steps: {missing}\n{joined}")
-        # confirm nothing was actually written for THIS probe
+        # このプローブで実際には何も書き込まれていないことを確認する
         probe = (_REPO / "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action"
                  "/Content/Custom/Probe/SelftestProbeAction")
         if probe.exists():
             raise AssertionError("dry-run created files on disk")
-        if "SelftestProbeAction" in (_REPO / "NanamiEngine.vcxproj").read_text(encoding="utf-8-sig"):
-            raise AssertionError("dry-run touched NanamiEngine.vcxproj")
+        if "SelftestProbeAction" in (_REPO / "EnviroHunter.vcxproj").read_text(encoding="utf-8-sig"):
+            raise AssertionError("dry-run touched EnviroHunter.vcxproj")
         r.ok("add-action --dry-run plans 3 wiring points, writes nothing")
     except Exception:  # noqa: BLE001
         r.fail("add-action dry-run", traceback.format_exc())
@@ -342,8 +342,8 @@ def stage_scaffold(r: Reporter) -> None:
                  "/Content/Custom/Probe/SelftestProbeAction")
         if probe.exists():
             raise AssertionError("dry-run created files on disk")
-        if "SelftestProbeAction" in (_REPO / "NanamiEngine.vcxproj").read_text(encoding="utf-8-sig"):
-            raise AssertionError("dry-run touched NanamiEngine.vcxproj")
+        if "SelftestProbeAction" in (_REPO / "EnviroHunter.vcxproj").read_text(encoding="utf-8-sig"):
+            raise AssertionError("dry-run touched EnviroHunter.vcxproj")
         r.ok("add-action --npc-kind friendly --dry-run plans 3 wiring points, writes nothing")
     except Exception:  # noqa: BLE001
         r.fail("add-action dry-run (friendly)", traceback.format_exc())
@@ -366,10 +366,10 @@ def stage_copy_and_nested(r: Reporter) -> None:
                 r.ok(f"{p.name} (skipped: no composite root)")
                 continue
 
-            # add a PhysicsAttack action, reach its nested attackPower_.value_ and
-            # finishedAttackWriteBlackBoard_.keyName_/.value_ (shape='nested', not
-            # settable as a bare key) via a dotted key, deep-copy the whole node,
-            # confirm the clone is independent, then undo everything -> original bytes.
+            # PhysicsAttack action を追加し、ネストした attackPower_.value_ と
+            # finishedAttackWriteBlackBoard_.keyName_/.value_（shape='nested' で素のキーでは
+            # 設定できない）にドット区切りキーで届かせ、ノード全体をディープコピーして
+            # 複製が独立していることを確認し、すべて元に戻す -> 元のバイト列。
             action_guid = "00000000-0000-4000-8000-000000000002"
             edits.add_node(tree, parent_guid=target.guid, kind="action",
                            action_type="EnemyStatus::PhysicsAttack", node_guid=action_guid)
@@ -413,10 +413,10 @@ def stage_copy_and_nested(r: Reporter) -> None:
                 r.ok(f"{p.name} (skipped: no composite root)")
                 continue
 
-            # add a MoveForRoute action (a plain, non-nested float param -
-            # NpcStatus::RigidBody::MoveForRoute is a real Friendly action),
-            # deep-copy it, confirm the clone is independent, then undo
-            # everything -> original bytes.
+            # MoveForRoute action（ネストしない素の float パラメータ -
+            # NpcStatus::RigidBody::MoveForRoute は実在の Friendly action）を追加し、
+            # ディープコピーして複製が独立していることを確認し、すべて元に戻す
+            # -> 元のバイト列。
             action_guid = "00000000-0000-4000-8000-000000000003"
             edits.add_node(tree, parent_guid=target.guid, kind="action",
                            action_type="NpcStatus::RigidBody::MoveForRoute",

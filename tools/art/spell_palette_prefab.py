@@ -1,4 +1,4 @@
-"""Build the MagicCaster spell palette prefabs from tools/art/spell_palette.py's layout().
+"""MagicCaster の魔法パレットのプレハブを tools/art/spell_palette.py の layout() から組む。
 
     python tools/art/spell_palette.py              # 先にスプライトを書き出す
     python tools/art/spell_palette_prefab.py       # SpellSlot / SpellPaletteUI を組み直す

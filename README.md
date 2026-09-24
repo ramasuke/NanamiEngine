@@ -1,7 +1,7 @@
 # NanamiEngine
 
 DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲームエンジン＋ゲーム本体です。
-単一の Visual Studio プロジェクト `NanamiEngine.vcxproj`（toolset v143, C++20）で構成されており、
+`EnviroHunter.sln`（エンジン lib `NanamiEngine.vcxproj` ＋ ゲーム exe `EnviroHunter.vcxproj`、toolset v143, C++20）で構成されており、
 エディタもゲーム本体も同じ実行ファイルの中で動きます（ImGui によるインエディタ編集）。
 
 ビルドシステムに glob 機構はなく、ソースファイル一覧を `.vcxproj` / `.vcxproj.filters` に
@@ -46,7 +46,7 @@ DxLib / ImGui / Jolt Physics / cereal / enet をベースにした自作 C++ ゲ
 
 | パス | 内容 |
 |---|---|
-| `NanamiEngine.sln` / `NanamiEngine.vcxproj(.filters)` | 唯一のVisual Studioプロジェクト。ファイル一覧は手動管理 |
+| `EnviroHunter.sln` / `NanamiEngine.vcxproj` / `EnviroHunter.vcxproj(.filters)` | エンジン lib とゲーム exe のプロジェクト。ファイル一覧は手動管理 |
 | `Main.cpp` / `stdafx.h` / `stdafx.cpp` | エントリポイントとプリコンパイル済みヘッダ |
 | `ProjectConfig/` | `Application`（ウィンドウサイズ・固定更新レート・ライト・シャドウマップ・クラッシュ回復設定など）/ `DebugDraw`（Collider表示）/ `Network` / `Physics` の各種設定値をJSONで外出しした設定ツリー |
 | `Engine/` | エンジン本体 |
@@ -298,7 +298,7 @@ enet(UDP) 上に構築されたクライアント/サーバー型モデルです
 **（AIエージェント向け）ユーザーから明示的に指示されない限り、自発的にビルドを実行しないこと。**
 
 ```
-MSBuild.exe NanamiEngine.sln -p:Configuration=Debug -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12
+MSBuild.exe EnviroHunter.sln -p:Configuration=Debug -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12
 ```
 
 `-p:PreferredToolArchitecture=x64` は必須です。32bitコンパイラだと cereal の深いテンプレート

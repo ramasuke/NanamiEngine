@@ -309,7 +309,7 @@ This mirrors `tools/scene`'s existing precedent of not having an
    `CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::AnimationTree::IAnimationNode, <fqn>);`
    (never in the header — see CLAUDE.md).
    Copy `Node/ClipNode/AnimationClipNode.{h,cpp}` as a starting point.
-2. `NanamiEngine.vcxproj` (+ `.vcxproj.filters`) — add `<ClCompile>`/
+2. `EnviroHunter.vcxproj` (+ `.vcxproj.filters`) — add `<ClCompile>`/
    `<ClInclude>` entries by hand (no toolkit command does this yet for
    AnimationTree — `tools/animtree/vcxproj.py` is a re-export shim kept for
    structural symmetry, unused in v1).

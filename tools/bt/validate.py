@@ -1,4 +1,4 @@
-"""Static checks on a decoded :class:`tools.bt.model.Tree`."""
+"""デコード済みの :class:`tools.bt.model.Tree` に対する静的チェック。"""
 
 from __future__ import annotations
 
@@ -29,14 +29,14 @@ def validate(tree: model.Tree, cat: catalog_mod.Catalog | None = None) -> list[s
             if node.children and not any(w > 0 for w in node.weights):
                 err(f"RandomSelector {node.guid}: all weights are 0")
         if isinstance(node, (model.OnceExecute, model.OnceSuccess)):
-            pass  # single child enforced by the model
+            pass  # 子が1つであることはモデルが保証
         if isinstance(node, model.Action):
             _check_action(node, cat, err)
         for c in model.children_of(node):
             visit(c)
 
     if tree.entry.child is None:
-        # an empty tree is valid (matches T-Rex); note it though
+        # 空のツリーは有効（T-Rex と同じ）。ただし注記は出す
         problems.append("note: tree has no root node (entryNode_.nextNode_ is null)")
     else:
         visit(tree.entry.child)
@@ -63,12 +63,11 @@ def _check_action(node: model.Action, cat: catalog_mod.Catalog, err) -> None:
         err(f"action {node.guid} ({node.type_name}): param keys {got} != catalog {want}")
     for p in cat.params_of(entry):
         if p["shape"] == "unknown":
-            # Accepted v1 limitation (see docs/BehaviourTree.md), not an actionable
-            # defect: the param round-trips losslessly, it just can't be set via
-            # set-params. Must stay a "note:" - promoting it to a hard error would
-            # permanently block every CLI edit verb (add-node/set-params/apply all
-            # abort on any hard `validate` problem) for any file that happens to use
-            # such a param anywhere in its tree, with no way to resolve it via this
-            # tool.
+            # 既知の v1 の制限（docs/BehaviourTree.md 参照）で、対処すべき欠陥ではない:
+            # パラメータは無損失でラウンドトリップし、set-params で設定できないだけ。
+            # "note:" のままにすること - ハードエラーにすると、ツリー内のどこかでそのような
+            # パラメータを使うファイルでは、すべての CLI 編集コマンド（add-node/set-params/apply
+            # はいずれも `validate` のハードな問題で中断する）が恒久的に使えなくなり、
+            # このツールでは解決できなくなる。
             err(f"note: action {node.guid} ({node.type_name}): param {p['member']} has "
                 f"unknown shape (type {p.get('type')!r}); round-trips but not settable")

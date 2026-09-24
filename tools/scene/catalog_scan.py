@@ -1,43 +1,39 @@
-"""Build ``tools/scene/catalog.json`` by scraping registered Component headers.
+"""登録済み Component ヘッダを読み取って ``tools/scene/catalog.json`` を構築する。
 
-Regex/brace-matching scanner - no libclang - mirroring ``tools.bt.catalog_scan``'s
-approach. Anything it cannot classify is recorded with shape ``"unknown"``; this
-only affects whether ``add-component``/``set-component-params`` can touch that
-field by name - it never affects round-trip fidelity (``reader.py``/``writer.py``
-tag every component's data as an opaque blob independently of this catalog).
+正規表現/波括弧マッチングによるスキャナ - libclang なし - で、``tools.bt.catalog_scan``
+と同じ方式。分類できないものは shape ``"unknown"`` として記録する。これは
+``add-component``/``set-component-params`` がそのフィールドを名前で扱えるかどうかに
+影響するだけで、往復の忠実性には一切影響しない (``reader.py``/``writer.py`` は
+このカタログとは無関係に、全コンポーネントのデータを不透明な blob としてタグ付けする)。
 
-Scope (v1): only components registered via the ``ENGINE_REGISTER_COMPONENT``
-macro - a **direct** ``ComponentBase`` subclass - are catalogued as addable via
-``add-component`` (confirmed ~66 such headers, spanning ``Engine/Module/**``,
-``Packages/**``, and ``Assets/Scripts/**``). Components with an intermediate
-base (e.g. ``GamePlay::Npc::Enemy::Hyena : EnemyBase : ComponentBase``, which
-hand-registers the three cereal macros against ``EnemyBase`` directly rather
-than using the macro) still round-trip losslessly through the tagged-blob
-reader/writer - they are just not offered as an ``add-component --type``
-target, since these gameplay-script components are normally introduced by
-copying a whole prefab (``instantiate-prefab``), not attached bare to an
-arbitrary GameObject.
+対象範囲 (v1): ``ENGINE_REGISTER_COMPONENT`` マクロで登録されたコンポーネント -
+``ComponentBase`` の **直接の** サブクラス - だけが ``add-component`` で追加可能として
+カタログ化される (``Engine/Module/**``、``Packages/**``、``Assets/Scripts/**`` に
+またがる約66ヘッダで確認済み)。中間の基底を持つコンポーネント (例:
+``GamePlay::Npc::Enemy::Hyena : EnemyBase : ComponentBase``。マクロを使わず
+``EnemyBase`` に対して cereal の3つのマクロを手で登録している) も tagged-blob の
+reader/writer でロスなく往復するが、``add-component --type`` の対象には出さない。
+こうしたゲームプレイ用スクリプトのコンポーネントは通常、任意の GameObject に
+単体で付けるのではなく、プレハブ全体をコピーして (``instantiate-prefab``) 導入するため。
 
-Separately, ``ENGINE_REGISTER_COMPONENT``'s polymorphic *registration* always
-targets ``ComponentBase`` (that's hardcoded into the macro), but a component's
-``save()`` usually archives **several** base classes, each as one unnamed
-positional slot (``value0``, ``value1``, ...) ahead of its own fields - e.g.
-``ImageRenderer`` writes ``ComponentBase`` (``value0``), then the empty
-lifecycle mixins ``IInitRenderable`` (``value1``) and
-``IUserInterfaceRenderable`` (``value2``), then ``spriteFile_``. cereal reads
-those slots *positionally*, so a from-scratch instance must reproduce every one
-of them. Each entry's ``bases`` lists every ``cereal::base_class<X>(this)`` call
-in archive order with the ``valueN`` key it occupies (``immediate_base`` is kept
-as ``bases[0]`` for compatibility), and the top-level ``bases`` table records,
-per base leaf, whether its own ``save()`` body is empty (a pure marker mixin
-that ``edits.add_component`` can emit as an empty slot) and its
-``CEREAL_CLASS_VERSION``. Bases with real serialised fields of their own
-(every Collider via ``ColliderBase``, which owns ``mass_``/``isGravity_``/...,
-plus ``NetworkComponent``/``EnemyBase``) are not (yet) flattened into
-``params``: they round-trip but aren't individually settable, and
-``edits.add_component`` refuses to construct a brand-new instance of such a
-type from scratch, to avoid ever emitting a struct missing fields the engine
-requires.
+別の話として、``ENGINE_REGISTER_COMPONENT`` のポリモーフィック *登録* は常に
+``ComponentBase`` を対象とする (マクロにハードコードされている) が、コンポーネントの
+``save()`` は通常 **複数の** 基底クラスを、自身のフィールドより前にそれぞれ名前なしの
+位置スロット (``value0``, ``value1``, ...) としてアーカイブする - 例えば
+``ImageRenderer`` は ``ComponentBase`` (``value0``)、次に空のライフサイクル mixin
+``IInitRenderable`` (``value1``) と ``IUserInterfaceRenderable`` (``value2``)、
+その後 ``spriteFile_`` を書く。cereal はこれらのスロットを *位置で* 読むので、
+ゼロから作るインスタンスはそのすべてを再現しなければならない。各エントリの
+``bases`` はすべての ``cereal::base_class<X>(this)`` 呼び出しをアーカイブ順に、
+占める ``valueN`` キーとともに列挙する (``immediate_base`` は互換性のため
+``bases[0]`` として残す)。トップレベルの ``bases`` テーブルは基底の leaf ごとに、
+自身の ``save()`` 本体が空か (``edits.add_component`` が空スロットとして出力できる
+純粋なマーカー mixin か) と、その ``CEREAL_CLASS_VERSION`` を記録する。
+独自の実シリアライズフィールドを持つ基底 (``mass_``/``isGravity_``/... を持つ
+``ColliderBase`` 経由のすべての Collider、および ``NetworkComponent``/``EnemyBase``) は
+(まだ) ``params`` に平坦化されていない: 往復はするが個別には設定できず、
+エンジンが必要とするフィールドを欠いた構造体を出力しないよう、
+``edits.add_component`` はそのような型の新規インスタンスをゼロから構築することを拒否する。
 """
 
 from __future__ import annotations
@@ -53,25 +49,25 @@ CATALOG_PATH = Path(__file__).with_name("catalog.json")
 
 COMPONENT_BASE_FQN = "NanamiEngine::Module::Component::ComponentBase"
 
-# Broad scan roots - the macro-name pre-filter (see scan()) keeps this cheap and
-# naturally excludes vendored third-party headers (cereal, ImGui, DxLib, Jolt),
-# none of which reference this engine-specific macro.
+# 広めのスキャンルート - マクロ名による事前フィルタ (scan() を参照) で安く済み、
+# 同梱のサードパーティヘッダ (cereal, ImGui, DxLib, Jolt) はこのエンジン固有の
+# マクロを参照しないので自然に除外される。
 SCAN_ROOTS = ["Engine", "Packages", "Assets/Scripts"]
 
-# This file only *defines* the macro (`#define ENGINE_REGISTER_COMPONENT(TYPE,
-# VERSION)`) - its parameter list `(TYPE, VERSION)` would otherwise parse as a
-# spurious registration for a literal type named "TYPE".
+# このファイルはマクロを *定義* するだけ (`#define ENGINE_REGISTER_COMPONENT(TYPE,
+# VERSION)`) - その引数リスト `(TYPE, VERSION)` を放っておくと、"TYPE" という
+# 名前の型の偽の登録としてパースされてしまう。
 _DEFINITION_FILE = "Engine/Module/Component/ComponentBase.h"
 
-# The registration lives in the component's .cpp as `ENGINE_REGISTER_COMPONENT(T);`
-# while `CEREAL_CLASS_VERSION(T, V)` stays in its header (it has to be visible
-# wherever T is serialised). The legacy header form `(T, V)` is still accepted.
+# 登録はコンポーネントの .cpp に `ENGINE_REGISTER_COMPONENT(T);` として置かれ、
+# `CEREAL_CLASS_VERSION(T, V)` はヘッダに残る (T をシリアライズする場所すべてから
+# 見える必要があるため)。旧来のヘッダ形式 `(T, V)` も引き続き受け付ける。
 RE_ENGINE_REGISTER = re.compile(
     r"ENGINE_REGISTER_COMPONENT\s*\(\s*([\w:]+)\s*(?:,\s*(\d+)\s*)?\)"
 )
 RE_SAVE = re.compile(r"\bvoid\s+save\s*\(\s*Archive\s*&\s*\w+\s*,")
-# One archive(...) call: a base_class<X>(this) wrapper, a CEREAL_NVP(member), or
-# a bare (unnamed) member - all three matter for the positional "valueN" layout.
+# archive(...) 呼び出し1つ分: base_class<X>(this) ラッパー、CEREAL_NVP(member)、
+# または素の (名前なし) メンバー - 3つとも位置による "valueN" 配置に関係する。
 RE_ARCHIVE_CALL = re.compile(
     r"archive\s*\(\s*(?:"
     r"cereal::base_class\s*<\s*(?P<base>[\w:]+)\s*>\s*\(\s*this\s*\)"
@@ -115,7 +111,7 @@ def _read(path: Path) -> str:
 
 
 def _balanced_block(text: str, open_idx: int) -> str:
-    """Return the ``{...}`` block starting at/after ``open_idx`` (inclusive braces)."""
+    """``open_idx`` の位置 (またはその後) から始まる ``{...}`` ブロックを返す (波括弧を含む)。"""
     i = text.find("{", open_idx)
     if i < 0:
         return ""
@@ -138,11 +134,10 @@ def _strip_comments(text: str) -> str:
 
 
 def _find_class_body(text: str, leaf: str) -> str:
-    """The ``{...}`` body of ``class <leaf>``'s *definition* - a forward
-    declaration (``class X;`` / ``friend class X;``) has a ``;`` before any
-    ``{`` and is skipped, rather than grabbing whatever unrelated block follows
-    it (which is what a base-type scan would otherwise pick up from a header
-    that merely forward-declares ``ColliderBase``/``ComponentBase``)."""
+    """``class <leaf>`` の *定義* の ``{...}`` 本体。前方宣言 (``class X;`` /
+    ``friend class X;``) はどの ``{`` よりも前に ``;`` があるのでスキップする。
+    そうしないと後続の無関係なブロックを拾ってしまう (``ColliderBase``/``ComponentBase``
+    を前方宣言しているだけのヘッダで、基底型スキャンが拾うのがまさにそれ)。"""
     for m in re.finditer(r"\bclass\s+(\w+)\b", text):
         if m.group(1) != leaf:
             continue
@@ -156,8 +151,8 @@ def _find_class_body(text: str, leaf: str) -> str:
 
 
 def _enumerators(body: str) -> Optional[dict[str, int]]:
-    """``{name: value}`` of one enum body, or ``None`` if a value is anything
-    but literals / earlier enumerators combined with ``<< | + -``."""
+    """1つの enum 本体の ``{name: value}``。値がリテラル / 先行する列挙子を
+    ``<< | + -`` で組み合わせたもの以外なら ``None``。"""
     values: dict[str, int] = {}
     nxt = 0
     for item in _strip_comments(body).split(","):
@@ -182,11 +177,11 @@ def _enumerators(body: str) -> Optional[dict[str, int]]:
 
 
 def _scan_enums(headers: list[tuple[str, str]]) -> dict[str, Optional[dict[str, int]]]:
-    """Every enum leaf declared in the scanned headers -> its enumerators
-    (``None`` when unparsable, or when the leaf is declared more than once with
-    different values). cereal archives an enum as its underlying integer, so an
-    enum member is an ``int`` param. A leaf that is also a class/struct name
-    somewhere is left out - the member could be either."""
+    """スキャンしたヘッダで宣言された全 enum の leaf -> その列挙子
+    (パースできない場合、または同じ leaf が異なる値で複数回宣言されている場合は
+    ``None``)。cereal は enum を基底の整数としてアーカイブするので、enum メンバーは
+    ``int`` パラメータになる。どこかでクラス/構造体名でもある leaf は除外する
+    - メンバーがどちらともとれるため。"""
     enums: dict[str, Optional[dict[str, int]]] = {}
     records: set[str] = set()
     for _rel, text in headers:
@@ -248,24 +243,23 @@ def _classify_member(decl_type: str, known_types: set[str],
 def _parse_serializable(body: str, known_types: set[str],
                         enums: Optional[dict[str, Optional[dict[str, int]]]] = None
                         ) -> tuple[list[dict], list[dict], bool]:
-    """Return ``(params, bases, interleaved)`` from a class body's ``save()``.
+    """クラス本体の ``save()`` から ``(params, bases, interleaved)`` を返す。
 
-    ``bases`` is every ``archive(cereal::base_class<X>(this))`` call, in archive
-    order, as ``{"leaf": X, "key": "valueN"}``. cereal names each *unnamed* node
-    ``value<N>`` from a per-object counter that only unnamed nodes advance
-    (``JSONOutputArchive::writeName``), so the base slots occupy
-    ``value0..value{n-1}`` and a member archived without ``CEREAL_NVP`` continues
-    that same count after the last base - which is why ``params`` numbering
-    starts at ``len(bases)``, not at a hardcoded 1. ``interleaved`` is True if a
-    base_class call appears *after* a member (never the case today;
-    ``edits.new_component`` refuses such a type rather than guess the layout).
+    ``bases`` はすべての ``archive(cereal::base_class<X>(this))`` 呼び出しを
+    アーカイブ順に ``{"leaf": X, "key": "valueN"}`` として並べたもの。cereal は
+    *名前なし* ノードに、名前なしノードだけが進めるオブジェクトごとのカウンタから
+    ``value<N>`` と名付ける (``JSONOutputArchive::writeName``)。そのため基底スロットは
+    ``value0..value{n-1}`` を占め、``CEREAL_NVP`` なしでアーカイブされたメンバーは
+    最後の基底の後から同じカウントを続ける - これが ``params`` の番号が固定の 1 では
+    なく ``len(bases)`` から始まる理由。``interleaved`` は base_class 呼び出しが
+    メンバーの *後* に現れた場合に True (現状そういう例はない。
+    ``edits.new_component`` は配置を推測せずそのような型を拒否する)。
 
-    Only ``ComponentBase`` and bases whose own ``save()`` body is empty (see
-    :func:`_scan_bases`) can be constructed from scratch by
-    ``edits.add_component``; a base with real fields of its own (every Collider,
-    via ``ColliderBase``) still round-trips losslessly (``reader.py`` tags it as
-    an opaque nested blob) but is refused there rather than risk building a
-    struct the engine can't load.
+    ``ComponentBase`` と、自身の ``save()`` 本体が空の基底 (:func:`_scan_bases` を参照)
+    だけが ``edits.add_component`` でゼロから構築できる。独自の実フィールドを持つ基底
+    (``ColliderBase`` 経由のすべての Collider) もロスなく往復する (``reader.py`` が
+    不透明なネスト blob としてタグ付けする) が、エンジンが読めない構造体を作る危険を
+    冒さないよう、そこでは拒否される。
     """
     body = _strip_comments(body)
     m = RE_SAVE.search(body)
@@ -315,7 +309,7 @@ def _parse_serializable(body: str, known_types: set[str],
         return best
 
     params: list[dict] = []
-    positional = len(bases)  # the valueN counter continues after the base slots
+    positional = len(bases)  # valueN カウンタは基底スロットの後から続く
     for member, named in order:
         info = _classify_member(_decl_type(member), known_types, enums)
         if named:
@@ -328,15 +322,13 @@ def _parse_serializable(body: str, known_types: set[str],
 
 
 def _scan_bases(leaves: set[str], headers: list[tuple[str, str]]) -> dict[str, dict]:
-    """Locate the defining header of every base leaf some component archives
-    and record what ``edits.add_component`` needs to know to emit that slot
-    from scratch: whether the base's own ``save()`` body is **empty** (a pure
-    marker mixin such as ``IInitRenderable`` - safe to write as a bare
-    ``{"cereal_class_version": N}`` object) and its ``CEREAL_CLASS_VERSION``
-    (0 when the macro is absent - cereal's ``detail::Version<T>`` default).
-    ``fqn`` is only known when that macro names it. A leaf defined with
-    *different* ``save()`` bodies in more than one header is flagged
-    ``ambiguous`` so the editor fails closed on it.
+    """いずれかのコンポーネントがアーカイブする全基底 leaf の定義ヘッダを探し、
+    ``edits.add_component`` がそのスロットをゼロから出力するのに必要な情報を記録する:
+    基底自身の ``save()`` 本体が **空** か (``IInitRenderable`` のような純粋なマーカー
+    mixin - 素の ``{"cereal_class_version": N}`` オブジェクトとして書いて安全) と、その
+    ``CEREAL_CLASS_VERSION`` (マクロがなければ 0 - cereal の ``detail::Version<T>`` の既定値)。
+    ``fqn`` はそのマクロが名前を示している場合のみ分かる。*異なる* ``save()`` 本体で
+    複数のヘッダに定義された leaf は ``ambiguous`` とし、エディタが安全側に失敗するようにする。
     """
     out: dict[str, dict] = {}
     sigs: dict[str, str] = {}
@@ -362,11 +354,10 @@ def _scan_bases(leaves: set[str], headers: list[tuple[str, str]]) -> dict[str, d
                 if sigs[leaf] != signature:
                     out[leaf]["ambiguous"] = True
                 continue
-            # A non-empty base can archive base classes of its own
-            # (ColliderBase and NetworkComponent both start with
-            # base_class<ComponentBase>). Record that chain: whoever replays
-            # cereal's once-per-type version bookkeeping has to walk into it,
-            # or it mis-identifies which ComponentBase is the file's first.
+            # 空でない基底は自身の基底クラスをアーカイブしうる
+            # (ColliderBase も NetworkComponent も base_class<ComponentBase> から始まる)。
+            # その連鎖を記録する: cereal の型ごと1回のバージョン管理を再現する側は
+            # そこへ入り込まないと、どの ComponentBase がファイル内で最初かを取り違える。
             _own_params, own_bases, _own_interleaved = _parse_serializable(body, leaves)
             out[leaf] = {
                 "fqn": fqn,
@@ -390,17 +381,17 @@ def _iter_header_files() -> list[Path]:
 
 
 def scan() -> dict[str, Any]:
-    # Keyed by FQN (always unique) - unlike tools.bt's actions, components have
-    # no separate "editor display name" macro, and two real leaf names collide
-    # here (SceneContextBase, StatusPresenter each have two distinct FQNs), so
-    # bare leaf cannot be the primary key. `by_leaf` below maps a leaf to every
-    # FQN that uses it, for name resolution to fail closed on ambiguity.
+    # FQN (常に一意) をキーにする - tools.bt のアクションと違い、コンポーネントには
+    # 別の「エディタ表示名」マクロがなく、実際に2つの leaf 名が衝突する
+    # (SceneContextBase、StatusPresenter はそれぞれ異なる FQN を2つ持つ) ので、
+    # 素の leaf は主キーにできない。下の `by_leaf` は leaf をそれを使う全 FQN に
+    # 対応付け、名前解決が曖昧なときに安全側に失敗できるようにする。
     components: dict[str, dict] = {}
     by_leaf: dict[str, list[str]] = {}
     known_leaves: set[str] = set()
 
     matches: list[tuple[Path, str, str, str, int]] = []  # path, rel, text, fqn, version
-    all_headers: list[tuple[str, str]] = []  # rel, text - for the base-type scan
+    all_headers: list[tuple[str, str]] = []  # rel, text - 基底型スキャン用
     for path in _iter_header_files():
         rel = path.relative_to(_REPO).as_posix()
         text = _read(path)
@@ -446,9 +437,9 @@ def scan() -> dict[str, Any]:
         by_leaf.setdefault(leaf, []).append(fqn)
     bases_table = _scan_bases(base_leaves, all_headers)
 
-    # GameObject types are not ENGINE_REGISTER_COMPONENT'd, so read their
-    # CEREAL_CLASS_VERSION out of the headers rather than pinning it here -
-    # a stale version silently mis-describes every file's root object.
+    # GameObject 型は ENGINE_REGISTER_COMPONENT されないので、ここで固定せず
+    # ヘッダから CEREAL_CLASS_VERSION を読む - 古いバージョンだと全ファイルの
+    # ルートオブジェクトを黙って誤記述してしまう。
     declared_versions: dict[str, int] = {}
     for _rel, text in all_headers:
         for vm in RE_CLASS_VERSION.finditer(text):
@@ -482,8 +473,8 @@ def write_catalog(data: dict[str, Any], path: Path | None = None) -> Path:
 
 
 def _freshness_view(data: dict[str, Any]) -> str:
-    # Everything derived from the C++ headers (not `generated_from`, which is
-    # just the git HEAD the file was last written at).
+    # C++ ヘッダから導出したものすべて (`generated_from` は除く。これはファイルを
+    # 最後に書いた時点の git HEAD にすぎない)。
     return json.dumps({"components": data.get("components"), "bases": data.get("bases")},
                       sort_keys=True)
 

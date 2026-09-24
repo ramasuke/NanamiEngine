@@ -70,7 +70,7 @@ def material(key, asset):
     return mat
 
 
-# ---------------------------------------------------------------- scene helpers
+# ---------------------------------------------------------------- シーンヘルパー
 def reset():
     for obj in list(bpy.data.objects):
         bpy.data.objects.remove(obj, do_unlink=True)
@@ -146,10 +146,10 @@ def box(size, loc, rot=(0, 0, 0), mat='Wood', grain_axis=0, jitter=0.0, top_jag=
             verts.append([bm.verts.new((x, -sy / 2, 0)), bm.verts.new((x, sy / 2, 0)),
                           bm.verts.new((x, sy / 2, h)), bm.verts.new((x, -sy / 2, h))])
         for a, b in zip(verts, verts[1:]):
-            bm.faces.new((a[0], b[0], b[3], a[3]))  # front
-            bm.faces.new((b[1], a[1], a[2], b[2]))  # back
-            bm.faces.new((a[3], b[3], b[2], a[2]))  # top
-            bm.faces.new((a[1], b[1], b[0], a[0]))  # bottom
+            bm.faces.new((a[0], b[0], b[3], a[3]))  # 前
+            bm.faces.new((b[1], a[1], a[2], b[2]))  # 後
+            bm.faces.new((a[3], b[3], b[2], a[2]))  # 上
+            bm.faces.new((a[1], b[1], b[0], a[0]))  # 下
         bm.faces.new((verts[0][1], verts[0][0], verts[0][3], verts[0][2]))
         bm.faces.new((verts[-1][0], verts[-1][1], verts[-1][2], verts[-1][3]))
     else:
@@ -330,14 +330,14 @@ def ring_wall(radius, heights, thickness, loc, mat='Stone', segs=16):
     return _finish(bm, mat, loc, (0, 0, 0), 2)
 
 
-# ---------------------------------------------------------------- colliders
+# ---------------------------------------------------------------- コライダー
 def collider(center, size, rot=(0, 0, 0)):
     """Blender 座標の箱 (中心, 寸法 m, 回転 deg or Matrix)"""
     m = rot if isinstance(rot, Matrix) else Euler([math.radians(a) for a in rot], 'XYZ').to_matrix()
     COLLIDERS[CURRENT].append({'center': list(center), 'size': list(size), 'rot': [list(r) for r in m]})
 
 
-# ---------------------------------------------------------------- finalize / export
+# ---------------------------------------------------------------- 仕上げ / エクスポート
 def finalize(asset):
     bpy.ops.object.select_all(action='DESELECT')
     for p in PARTS:

@@ -1,11 +1,11 @@
-"""``.scene.meta`` / ``.prefab.meta`` sidecar bindings.
+"""``.scene.meta`` / ``.prefab.meta`` サイドカーのバインディング。
 
-Both ``SceneFile`` and ``PrefabGameObjectFile`` are the same "thin proxy, real
-data in a sibling content file" asset family as ``EnemyBehaviourFile`` (see
-``tools/bt/meta.py`` and ``tools/common/meta_base.py``) - confirmed against
-``Engine/Module/Asset/Scene/SceneFile.h`` (``cereal_class_version`` 0) and
+``SceneFile`` と ``PrefabGameObjectFile`` はどちらも ``EnemyBehaviourFile`` と同じ
+「薄いプロキシで、実データは隣のコンテンツファイル」系のアセット
+（``tools/bt/meta.py`` と ``tools/common/meta_base.py`` 参照）。
+``Engine/Module/Asset/Scene/SceneFile.h``（``cereal_class_version`` 0）と
 ``Engine/Module/GameObject/PrefabGameObject/PrefabGameObject.h``
-(``CEREAL_CLASS_VERSION(..., 1)``).
+（``CEREAL_CLASS_VERSION(..., 1)``）で確認済み。
 """
 
 from __future__ import annotations

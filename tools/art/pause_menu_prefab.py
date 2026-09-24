@@ -1,4 +1,4 @@
-"""Build the 冒険者の手帳 (＠メニュー) prefabs from tools/art/pause_menu.py's layout().
+"""冒険者の手帳 (＠メニュー) のプレハブを tools/art/pause_menu.py の layout() から組む。
 
     python tools/art/pause_menu.py --emit          # 先にスプライトを書き出す
     python tools/art/pause_menu_prefab.py          # PauseMenuUI / PauseMenuRow / PauseMenuItemCell を組み直す
@@ -39,7 +39,7 @@ ORDER_TEXT = 5030
 TEXT_ALIGN = {'left': 0, 'center': 1, 'right': 2}
 
 
-# ---------------------------------------------------------------- asset guids
+# ---------------------------------------------------------------- アセット guid
 def asset_guid(meta_path):
     text = Path(meta_path).read_text(encoding='utf-8-sig')
     m = re.search(r'"guid_"\s*:\s*\{[^{}]*?"value_"\s*:\s*"([0-9A-Fa-f-]{36})"', text)
@@ -59,7 +59,7 @@ PIP_FILLED = asset_guid(REPO / 'Assets/Art/UI/CharacterSelect/Pip_Filled.png.met
 PIP_EMPTY = asset_guid(REPO / 'Assets/Art/UI/CharacterSelect/Pip_Empty.png.meta')
 
 
-# ---------------------------------------------------------------- building blocks
+# ---------------------------------------------------------------- 部品
 class PrefabBuilder:
     def __init__(self, name):
         self.cat = catalog_mod.load()
@@ -121,7 +121,7 @@ def slider(builder, parent, name, spec, fill_sprite):
     return node, comp
 
 
-# ---------------------------------------------------------------- world matrices / class versions
+# ---------------------------------------------------------------- ワールド行列 / クラスバージョン
 def world_matrix_blob(scale, pos):
     cols = [(scale[0], 0.0, 0.0, 0.0), (0.0, scale[1], 0.0, 0.0), (0.0, 0.0, scale[2], 0.0),
             (pos[0], pos[1], pos[2], 1.0)]
@@ -198,7 +198,7 @@ def save_prefab(builder, name):
     return guid
 
 
-# ---------------------------------------------------------------- prefabs
+# ---------------------------------------------------------------- プレハブ
 def build_row(geo):
     b = PrefabBuilder('PauseMenuRow')
     row = geo['row']

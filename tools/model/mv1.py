@@ -1,61 +1,61 @@
-"""Access to DxLib ``.mv1`` model files.
+"""DxLib の ``.mv1`` モデルファイルへのアクセス。
 
-Only what ``tools.model`` needs: decompress/recompress the file body, pull out
-the texture file paths it references, and read/patch the material table's
-colors (``set-emissive``). There is no ``.mv1`` format spec available, so this
-is **not** a structural parser.
+``tools.model`` が必要とするものだけ: ファイル本体の展開/再圧縮、参照している
+テクスチャファイルのパスの抽出、マテリアルテーブルの色の読み取り/書き換え
+(``set-emissive``)。``.mv1`` 形式の仕様は手に入らないので、これは構造的な
+パーサーでは **ない**。
 
-File layout (empirically confirmed 2026-09-13 against real shipped assets -
-``Assets/Art/Models/Monster/Hyenas/Hyenas_A4_AllMotion.mv1``,
-``Assets/Art/Models/Fantasy/DirtyHouse/dirtyHouse.mv1``,
-``Assets/Art/Models/Basic/Cube.mv1`` - each decoded to exactly its declared
-size)::
+ファイルのレイアウト (2026-09-13 に配布済みの実アセットで経験的に確認 -
+``Assets/Art/Models/Monster/Hyenas/Hyenas_A4_AllMotion.mv1``、
+``Assets/Art/Models/Fantasy/DirtyHouse/dirtyHouse.mv1``、
+``Assets/Art/Models/Basic/Cube.mv1`` - どれも宣言どおりのサイズに正確に
+デコードできた)::
 
-    "MV11"                      4-byte magic
-    <dst_size u32 LE>           decompressed body size
-    <src_size u32 LE>           compressed size, counted from dst_size (so 9 + payload)
-    <keycode u8>                escape byte of the LZ stream below
-    <payload>                   DxLib's DXArchive LZ stream
+    "MV11"                      4 バイトのマジック
+    <dst_size u32 LE>           展開後の本体サイズ
+    <src_size u32 LE>           圧縮サイズ。dst_size から数える (つまり 9 + ペイロード)
+    <keycode u8>                下の LZ ストリームのエスケープバイト
+    <payload>                   DxLib の DXArchive LZ ストリーム
 
-Inside the decoded body, texture references are stored as plain NUL-terminated
-byte strings holding the path **relative to the .mv1** (e.g.
-``textures\\Wall_base.png``, ``Hyenas_A4_AllMotion_DxLib.fbm\\Hyenas_A4_Normal.png``)
-- one per texture, so diffuse/normal/roughness maps all survive conversion.
-Across all 132 ``.mv1`` files under ``Assets/`` the non-ASCII ones are UTF-8
-(e.g. ``道のテクスチャ\\road block.png``), but cp932 is kept as a fallback.
-Some models also carry the source FBX's absolute path next to the relative
-one (``C:\\Tarisland - Dragon\\X.png`` + ``X.png``).
+デコードした本体の中では、テクスチャ参照は **.mv1 からの相対** パスを持つ
+NUL 終端のバイト文字列として保存されている (例:
+``textures\\Wall_base.png``、``Hyenas_A4_AllMotion_DxLib.fbm\\Hyenas_A4_Normal.png``)
+- テクスチャごとに 1 つなので、ディフューズ/法線/ラフネスマップはすべて変換後も残る。
+``Assets/`` 以下の全 132 個の ``.mv1`` で非 ASCII のものは UTF-8
+(例: ``道のテクスチャ\\road block.png``) だが、cp932 もフォールバックとして残している。
+元の FBX の絶対パスを相対パスと並べて持つモデルもある
+(``C:\\Tarisland - Dragon\\X.png`` + ``X.png``)。
 
-Material table (empirically confirmed 2026-09-19: every one of the 99 ``.mv1``
-files under ``Assets/`` that has materials - 53 of them with several - has
-record ``i`` holding index ``i`` and a name that resolves to a NUL-delimited
-string, e.g. ``dirtyHouse.mv1`` = Wall / wood_1 / Roof)::
+マテリアルテーブル (2026-09-19 に経験的に確認: ``Assets/`` 以下でマテリアルを持つ
+99 個の ``.mv1`` ファイル - うち 53 個は複数 - のすべてで、レコード ``i`` が
+インデックス ``i`` と、NUL 区切りの文字列に解決できる名前を持っていた。例:
+``dirtyHouse.mv1`` = Wall / wood_1 / Roof)::
 
-    body+0x38  u32   material count (0 in an animation-only .mv1)
-    body+0x3c  u32   offset of the first record; records are 0x2d8 bytes apart
-    body+0xac  u32   string table start + 4 (material names are relative to it)
+    body+0x38  u32   マテリアル数 (アニメーションのみの .mv1 では 0)
+    body+0x3c  u32   最初のレコードのオフセット。レコードは 0x2d8 バイト間隔
+    body+0xac  u32   文字列テーブルの先頭 + 4 (マテリアル名はここからの相対)
 
-    record+0x04  u32       name offset into the string table
-    record+0x08  u32       index
+    record+0x04  u32       文字列テーブル内の名前のオフセット
+    record+0x08  u32       インデックス
     record+0x0c  COLOR_F   diffuse   (4 x f32, RGBA)
     record+0x1c  COLOR_F   ambient
     record+0x2c  COLOR_F   specular
-    record+0x3c  COLOR_F   emissive  (DxLibModelViewer's "自己発光")
+    record+0x3c  COLOR_F   emissive  (DxLibModelViewer の「自己発光」)
     record+0x4c  f32       power
 
-Mesh table (empirically confirmed 2026-09-23 by saving the same model through
-DxLib's ``MV1SaveModelToMV1File`` with ``MV1SetMeshBackCulling`` on and off -
-the only bytes that changed were one per mesh - and checked against every
-``.mv1`` under ``Assets/Art/Models/Fantasy``)::
+メッシュテーブル (2026-09-23 に、同じモデルを DxLib の ``MV1SaveModelToMV1File`` で
+``MV1SetMeshBackCulling`` のオン/オフで保存して経験的に確認 - 変わったバイトは
+メッシュごとに 1 つだけだった - さらに ``Assets/Art/Models/Fantasy`` 以下の全
+``.mv1`` と照合)::
 
-    body+0x48  u32   mesh count
-    body+0x4c  u32   offset of the first record; records are 0x6c bytes apart
+    body+0x48  u32   メッシュ数
+    body+0x4c  u32   最初のレコードのオフセット。レコードは 0x6c バイト間隔
 
-    record+0x35  u8   back-face culling (DX_CULLING_NONE 0 / LEFT 1 / RIGHT 2)
+    record+0x35  u8   背面カリング (DX_CULLING_NONE 0 / LEFT 1 / RIGHT 2)
 
-The LZ stream DxLib writes (checked on 40 shipped files) uses matches up to
-8195 bytes long, overlapping matches (distance < length), and 1-3 byte
-distances (index size 0-2, never 3); ``encode`` emits only those forms.
+DxLib が書く LZ ストリーム (配布済みの 40 ファイルで確認) は、最大 8195 バイトの
+一致、重なる一致 (距離 < 長さ)、1-3 バイトの距離 (インデックスサイズ 0-2、3 は無い)
+を使う。``encode`` はそれらの形だけを出力する。
 """
 
 from __future__ import annotations
@@ -69,8 +69,8 @@ from pathlib import Path
 MAGIC = b"MV11"
 _HEADER = struct.Struct("<IIB")
 _MIN_MATCH = 4
-_MAX_MATCH = _MIN_MATCH + (0x1F | 0xFF << 5)  # 5 bits in the code byte + one extension byte
-_MAX_DISTANCE = 1 << 24                          # 3-byte index
+_MAX_MATCH = _MIN_MATCH + (0x1F | 0xFF << 5)  # コードバイト中の 5 ビット + 拡張バイト 1 つ
+_MAX_DISTANCE = 1 << 24                          # 3 バイトのインデックス
 _HASH_CHAIN_DEPTH = 16
 
 _MATERIAL_COUNT = 0x38
@@ -94,8 +94,8 @@ _RGB = struct.Struct("<3f")
 _U32 = struct.Struct("<I")
 _F32 = struct.Struct("<f")
 
-# Matches the "textures/" sibling-folder convention already used by real
-# shipped assets (e.g. Assets/Art/Models/Fantasy/DirtyHouse/textures/).
+# 配布済みの実アセットがすでに使っている「textures/」兄弟フォルダの規則に合わせる
+# (例: Assets/Art/Models/Fantasy/DirtyHouse/textures/)。
 TEXTURE_EXTS = {".png", ".jpg", ".jpeg", ".bmp", ".tga", ".dds"}
 
 _TEXTURE_STRING_RE = re.compile(
@@ -107,10 +107,10 @@ _TEXTURE_STRING_RE = re.compile(
 
 
 def decode(data: bytes) -> bytes:
-    """Decompress a whole ``.mv1`` file's bytes (magic included) into its body.
+    """``.mv1`` ファイル全体のバイト列 (マジック込み) を本体に展開する。
 
-    Raises ``ValueError`` if the magic is wrong, the stream is truncated, or
-    the decoded size doesn't match the header's declared size."""
+    マジックが違う、ストリームが途中で切れている、デコード後のサイズがヘッダの
+    宣言と一致しない、のいずれかなら ``ValueError`` を投げる。"""
     if data[:4] != MAGIC:
         raise ValueError(f"header is {data[:4]!r}, expected {MAGIC!r}")
     body = data[4:]
@@ -166,8 +166,8 @@ def decode(data: bytes) -> bytes:
 
 
 def _match_length(data: bytes, earlier: int, pos: int, limit: int) -> int:
-    # Comparing against the input is valid for overlapping matches too: the
-    # decoder copies byte by byte from output that already equals the input.
+    # 重なる一致でも入力と比べてよい: デコーダは入力と同じになった出力から
+    # 1 バイトずつコピーするので。
     length = 0
     while length + 32 <= limit and data[earlier + length:earlier + length + 32] == data[pos + length:pos + length + 32]:
         length += 32
@@ -177,9 +177,9 @@ def _match_length(data: bytes, earlier: int, pos: int, limit: int) -> int:
 
 
 def encode(body: bytes) -> bytes:
-    """Compress ``body`` into a whole ``.mv1`` file (magic included) that
-    :func:`decode` - and DxLib - reads back as ``body``. Greedy LZ over a
-    4-byte hash chain; the output is not byte-identical to DxLib's own."""
+    """``body`` を圧縮して、:func:`decode` - と DxLib - が ``body`` として読み戻せる
+    ``.mv1`` ファイル全体 (マジック込み) にする。4 バイトのハッシュチェーンによる
+    貪欲な LZ。出力は DxLib 自身のものとバイト単位では一致しない。"""
     key = min(range(256), key=lambda v: body.count(bytes((v,))))
     n = len(body)
     out = bytearray()
@@ -253,13 +253,12 @@ def _decode_string(raw: bytes) -> str:
 
 
 def texture_paths(path: Path) -> list[str]:
-    """Texture file paths referenced by ``path``, in order of first appearance,
-    duplicates removed, exactly as stored (relative to the .mv1, backslashes).
+    """``path`` が参照するテクスチャファイルのパス。初出順、重複除去、保存されている
+    とおり (.mv1 からの相対、バックスラッシュ)。
 
-    Heuristic: scans the decoded body for NUL-terminated strings ending in a
-    known image extension (``TEXTURE_EXTS``) rather than walking the material
-    table, so an unrelated string that happens to end in ``.png`` would also
-    be reported."""
+    ヒューリスティック: マテリアルテーブルをたどるのではなく、デコードした本体から
+    既知の画像拡張子 (``TEXTURE_EXTS``) で終わる NUL 終端文字列を探すので、
+    たまたま ``.png`` で終わる無関係な文字列も報告される。"""
     body = decode(path.read_bytes())
     found: list[str] = []
     for m in _TEXTURE_STRING_RE.finditer(body):
@@ -281,14 +280,14 @@ class Material:
     specular: Color
     emissive: Color
     power: float
-    offset: int  # of the record, within the decoded body
+    offset: int  # レコードの、デコードした本体内での位置
 
 
 def materials(body: bytes) -> list[Material]:
-    """The material table of a decoded body (see the module docstring).
+    """デコードした本体のマテリアルテーブル (モジュール docstring 参照)。
 
-    Raises ``ValueError`` when the table doesn't look like the layout above -
-    callers must not patch a file that fails this."""
+    テーブルが上記のレイアウトに見えなければ ``ValueError`` を投げる -
+    呼び出し側はこれに失敗するファイルを書き換えてはいけない。"""
     if len(body) < _STRING_TABLE + _U32.size:
         raise ValueError(f"body is only {len(body)} byte(s), too short for the model header")
     count = _U32.unpack_from(body, _MATERIAL_COUNT)[0]
@@ -321,8 +320,8 @@ def materials(body: bytes) -> list[Material]:
 
 
 def with_emissive(body: bytes, colors: dict[int, tuple[float, float, float]]) -> bytes:
-    """``body`` with the emissive RGB of each material index in ``colors``
-    replaced; alpha and every other byte are left as they were."""
+    """``colors`` にある各マテリアルインデックスの自己発光 RGB を置き換えた ``body``。
+    アルファや他のバイトはすべてそのまま。"""
     table = materials(body)
     patched = bytearray(body)
     for index, rgb in colors.items():
@@ -333,7 +332,7 @@ def with_emissive(body: bytes, colors: dict[int, tuple[float, float, float]]) ->
 
 
 def mesh_culling(body: bytes) -> list[int]:
-    """Back-face culling mode of every mesh (see the module docstring)."""
+    """全メッシュの背面カリングモード (モジュール docstring 参照)。"""
     if len(body) < _MESH_TABLE + _U32.size:
         raise ValueError(f"body is only {len(body)} byte(s), too short for the model header")
     count = _U32.unpack_from(body, _MESH_COUNT)[0]
@@ -347,7 +346,7 @@ def mesh_culling(body: bytes) -> list[int]:
 
 
 def with_mesh_culling(body: bytes, mode: int) -> bytes:
-    """``body`` with every mesh's back-face culling set to ``mode``."""
+    """全メッシュの背面カリングを ``mode`` にした ``body``。"""
     count = len(mesh_culling(body))
     table = _U32.unpack_from(body, _MESH_TABLE)[0]
     patched = bytearray(body)

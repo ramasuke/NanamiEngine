@@ -1,7 +1,7 @@
-"""Structural/Transform edit CLI subcommands: add/remove/move-gameobject,
-set-transform, set-active, rename-gameobject, apply. Every mutating subcommand
-supports ``--dry-run`` (print a diff, write nothing) and validates before
-writing (see ``tools.scene.validate``)."""
+"""構造/Transform 編集の CLI サブコマンド: add/remove/move-gameobject、
+set-transform、set-active、rename-gameobject、apply。変更を伴うサブコマンドは
+すべて ``--dry-run`` (差分を表示し、何も書かない) に対応し、書き込み前に検証する
+(``tools.scene.validate`` を参照)。"""
 
 from __future__ import annotations
 
@@ -35,11 +35,11 @@ def _validate(target: Any, kind: str) -> list[str]:
 
 
 def _commit(path: Path, target: Any, kind: str, orig_text: str, *, dry_run: bool) -> int:
-    # The class-version audit replays cereal's once-per-type bookkeeping over the
-    # *rendered* file, so it only works on the text - and a new Field<T> blob
-    # deliberately carries no version key (see edits.field_blob), which is fatal
-    # when the edit happens to land on that T's first occurrence. Render first so
-    # the audit runs here rather than waiting for a separate `validate` run.
+    # クラスバージョン監査は *描画後の* ファイルに対して cereal の型ごと1回の管理を
+    # 再現するので、テキストでしか機能しない - そして新しい Field<T> blob は意図的に
+    # バージョンキーを持たない (edits.field_blob を参照) ため、編集がたまたまその T の
+    # 最初の出現に当たると致命的になる。先に描画して、別途 `validate` を実行するのを
+    # 待たずにここで監査する。
     new_text = _dump(target, kind)
     problems = (_validate(target, kind)
                 + validate.validate_class_versions(new_text, catalog_mod.load()))
@@ -78,7 +78,7 @@ def _parse_quat(s: str) -> tuple[float, float, float, float]:
 
 
 # ---------------------------------------------------------------------------
-# subcommands
+# サブコマンド
 # ---------------------------------------------------------------------------
 def cmd_add_gameobject(args: argparse.Namespace) -> int:
     path = Path(args.file)

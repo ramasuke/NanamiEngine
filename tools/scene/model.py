@@ -1,37 +1,33 @@
-"""In-memory model for ``.scene`` / ``.prefab`` files.
+"""``.scene`` / ``.prefab`` ファイルのインメモリモデル。
 
-Structure (confirmed against the engine source and real fixtures - see
-``docs/Scene.md``):
+構造（エンジンのソースと実際のフィクスチャで確認済み。``docs/Scene.md`` 参照）:
 
-* A ``.scene`` is a flat, indexed array of root :class:`GameObjectNode`
-  (``gameObjectCount`` / ``gameObject_0..N``) - only parentless objects are
-  listed; children live inside their parent's :class:`Transform`.
-* A ``.prefab`` is a single root :class:`GameObjectNode` of kind
-  ``"prefab_root"`` plus a trailing ``copied_object_guids`` list - the engine's
-  bookkeeping of which scene instances were copied from this prefab
-  (``PrefabGameObject::copiedObjectGuidList_``). Round-tripped losslessly;
-  no v1 CLI verb edits it.
-* Every :class:`GameObjectNode` (regardless of kind) carries the same fields
-  (``isActive_``/``name_``/``guid_``/``components_``/``transform_``, plus an
-  optional trailing ``mark_`` - see :data:`GAMEOBJECT_CLASS_VERSION_WITHOUT_MARK`) - a prefab's
-  *children* are always plain ``"scene"``-kind nodes, exactly like an ordinary
-  Scene's; only a prefab file's *root* is ``"prefab_root"``.
-* :class:`Transform`'s children are **not** an indexed array - the engine
-  writes the same JSON key ``"child"`` once per child, as repeated siblings
-  (see ``tools.common.cereal_json`` module docstring). The model exposes them
-  as an ordinary ordered Python list; bridging that repeated-key idiom is the
-  reader/writer's job.
-* A :class:`Component`'s own ``cereal_class_version`` and everything from its
-  ``value0`` base-class chain onward is kept as one opaque tagged blob
-  (``tools.common.blob.Ptr``/``Ver`` - see that module) rather than being
-  unwrapped into separate fields. This is deliberate: a component's immediate
-  base is *not* always ``ComponentBase`` directly (e.g. ``Hyena : EnemyBase :
-  ComponentBase``), so the base-chain depth varies per component type and
-  isn't safe to assume. ``guid``/``is_enabled`` are read/written by walking the
-  blob to find ComponentBase's own body (see :func:`find_component_guid` /
-  :func:`find_component_enabled` / :func:`set_component_enabled`) - which,
-  being the base of every component's base chain, is unambiguous regardless of
-  how deep that chain is.
+* ``.scene`` はルート :class:`GameObjectNode` のフラットな添字付き配列
+  （``gameObjectCount`` / ``gameObject_0..N``）。並ぶのは親を持たないオブジェクトだけで、
+  子は親の :class:`Transform` の中にある。
+* ``.prefab`` は種別 ``"prefab_root"`` の単一ルート :class:`GameObjectNode` と、
+  末尾の ``copied_object_guids`` リストからなる。後者はどのシーンインスタンスがこの
+  プレハブからコピーされたかというエンジン側の管理情報
+  （``PrefabGameObject::copiedObjectGuidList_``）。欠落なく往復するが、
+  v1 の CLI 動詞で編集するものはない。
+* どの :class:`GameObjectNode` も（種別に関係なく）同じフィールド
+  （``isActive_``/``name_``/``guid_``/``components_``/``transform_`` と、省略可能な末尾の
+  ``mark_``。:data:`GAMEOBJECT_CLASS_VERSION_WITHOUT_MARK` 参照）を持つ。プレハブの
+  *子* は常に普通のシーンと同じ ``"scene"`` 種別のノードで、``"prefab_root"`` なのは
+  プレハブファイルの *ルート* だけ。
+* :class:`Transform` の子は添字付き配列 **ではない**。エンジンは子ごとに同じ JSON キー
+  ``"child"`` を 1 回ずつ、兄弟として繰り返し書く（``tools.common.cereal_json`` の
+  モジュール docstring 参照）。モデルでは普通の順序付き Python リストとして公開し、
+  重複キーの慣習との橋渡しは reader/writer の仕事。
+* :class:`Component` 自身の ``cereal_class_version`` と、その ``value0`` 基底クラス
+  チェーン以降はすべて、個別フィールドに展開せず 1 つの不透明なタグ付き blob
+  （``tools.common.blob.Ptr``/``Ver``。同モジュール参照）として保持する。これは意図的で、
+  コンポーネントの直接の基底は常に ``ComponentBase`` とは限らない（例: ``Hyena : EnemyBase :
+  ComponentBase``）ため、基底チェーンの深さは型ごとに異なり決め打ちできない。
+  ``guid``/``is_enabled`` は blob をたどって ComponentBase 自身の本体を見つけて読み書き
+  する（:func:`find_component_guid` / :func:`find_component_enabled` /
+  :func:`set_component_enabled` 参照）。ComponentBase はどのコンポーネントの基底チェーンでも
+  最も根元にあるので、チェーンの深さに関係なく一意に定まる。
 """
 
 from __future__ import annotations
@@ -43,8 +39,8 @@ from tools.common.blob import Ver
 from tools.common.cereal_json import OrderedObj
 
 # ---------------------------------------------------------------------------
-# fixed structural FQNs / class versions (confirmed against engine source -
-# these are hardcoded C++ types, not scanned; see docs/Scene.md)
+# 固定の構造用 FQN / クラスバージョン（エンジンのソースで確認済み。
+# スキャンではなくハードコードされた C++ 型。docs/Scene.md 参照）
 # ---------------------------------------------------------------------------
 FQN_SCENE_GAMEOBJECT = "NanamiEngine::Scene::SceneGameObject"
 FQN_PREFAB_GAMEOBJECT = "NanamiEngine::Module::GameObject::PrefabGameObject"
@@ -56,8 +52,8 @@ FQN_COMPONENT_GROUP = "NanamiEngine::Module::GameObject::ComponentGroup"
 FQN_TRANSFORM = "NanamiEngine::Module::GameObject::Transform"
 FQN_COMPONENT_BASE = "NanamiEngine::Module::Component::ComponentBase"
 
-# kind <-> fqn for the three GameObject "root object" types that can appear in
-# a gameObject_N / "child" polymorphic slot.
+# gameObject_N / "child" のポリモーフィックスロットに現れうる
+# 3 種の GameObject「ルートオブジェクト」型の kind <-> fqn 対応。
 KIND_SCENE = "scene"
 KIND_PREFAB_ROOT = "prefab_root"
 KIND_COPIED_PREFAB = "copied_prefab"
@@ -74,17 +70,17 @@ GAMEOBJECT_CLASS_VERSION = {
     FQN_PREFAB_GAMEOBJECT: 2,
     FQN_COPIED_PREFAB_GO: 1,
 }
-# The version before ``mark_`` was appended after ``transform_``. The writer keeps
-# a GameObject type at this version (no ``mark_`` keys) while no node of that type
-# in the file carries a mark, so untouched pre-mark files round-trip byte-identically.
+# ``transform_`` の後に ``mark_`` が追加される前のバージョン。ファイル内でその型の
+# ノードがどれも mark を持たない間、writer はその GameObject 型をこのバージョン（``mark_``
+# キーなし）のままにするので、手を付けていない mark 導入前のファイルはバイト単位で同一に往復する。
 GAMEOBJECT_CLASS_VERSION_WITHOUT_MARK = {
     FQN_SCENE_GAMEOBJECT: 0,
     FQN_PREFAB_GAMEOBJECT: 1,
     FQN_COPIED_PREFAB_GO: 0,
 }
 
-# Mirrors ``GAMEOBJECT_MARK_NAMES`` in Engine/Module/GameObject/Mark/GameObjectMark.h
-# (index == the uint8_t value stored in ``mark_``).
+# Engine/Module/GameObject/Mark/GameObjectMark.h の ``GAMEOBJECT_MARK_NAMES`` と対応
+# （添字 == ``mark_`` に格納される uint8_t 値）。
 MARK_NAMES = [
     "None",
     "LabelGray", "LabelBlue", "LabelTeal", "LabelGreen", "LabelYellow", "LabelOrange", "LabelRed", "LabelPurple",
@@ -94,9 +90,9 @@ MARK_NAMES = [
 
 
 # ---------------------------------------------------------------------------
-# small numeric leaves - kept as tools.common.cereal_json.Num (not plain float)
-# so an untouched file round-trips its original literal text exactly; only an
-# edit synthesises a fresh Num via Num.of_float().
+# 小さな数値の葉 - 素の float ではなく tools.common.cereal_json.Num のまま保持し、
+# 手を付けていないファイルは元のリテラル文字列のまま往復させる。
+# 新しい Num を Num.of_float() で作るのは編集時だけ。
 # ---------------------------------------------------------------------------
 @dataclass
 class Vec3:
@@ -118,15 +114,15 @@ class Transform:
     local_pos: Vec3
     local_rot: Quat
     local_scale: Vec3
-    world_matrix: Any  # opaque blob (engine-recomputed at load; never edited by the CLI)
+    world_matrix: Any  # 不透明な blob（ロード時にエンジンが再計算する。CLI では編集しない）
     children: list["GameObjectNode"] = field(default_factory=list)
 
 
 @dataclass
 class Component:
     fqn: str
-    class_version: int  # always known, regardless of whether *this* occurrence printed it
-    data: Any  # tagged blob (Ptr/Ver/plain) of the component's `data` object, ccv stripped
+    class_version: int  # *この* 出現で出力されたかどうかに関係なく常に判明している
+    data: Any  # コンポーネントの `data` オブジェクトのタグ付き blob（Ptr/Ver/plain）、ccv は除去済み
 
 
 @dataclass
@@ -137,7 +133,7 @@ class GameObjectNode:
     is_active: bool
     components: list[Component]
     transform: Transform
-    # ``mark_`` (index into MARK_NAMES); None = the file predates the field.
+    # ``mark_``（MARK_NAMES への添字）。None = ファイルがこのフィールド導入前のもの。
     mark: Optional[int] = None
 
 
@@ -154,12 +150,12 @@ class Prefab:
 
 
 # ---------------------------------------------------------------------------
-# ComponentBase accessors - find/mutate guid_/isEnable_ inside the base-class
-# blob chain, regardless of how many intermediate bases sit above ComponentBase.
+# ComponentBase アクセサ - ComponentBase の上に中間基底がいくつあっても、
+# 基底クラス blob チェーン内の guid_/isEnable_ を探索・変更する。
 # ---------------------------------------------------------------------------
 def _unwrap(node: Any) -> Optional[OrderedObj]:
-    """The OrderedObj body of a blob node, whether Ver-wrapped (this occurrence
-    printed cereal_class_version) or plain (a later, un-versioned occurrence)."""
+    """blob ノードの OrderedObj 本体。Ver で包まれている（この出現で
+    cereal_class_version を出力した）場合も、素のまま（後続のバージョンなし出現）の場合も返す。"""
     if isinstance(node, Ver):
         return node.body
     if isinstance(node, OrderedObj):
@@ -168,11 +164,10 @@ def _unwrap(node: Any) -> Optional[OrderedObj]:
 
 
 def _find_component_base_body(comp: Component) -> Optional[OrderedObj]:
-    """Walk nested ``value0`` base-class wrappers to find the body holding
-    ComponentBase's own ``guid_``/``isEnable_`` - unambiguous since ComponentBase
-    is always the innermost base and always serialises exactly those two keys,
-    regardless of how many intermediate bases (``EnemyBase``, ``ColliderBase``,
-    ...) sit above it for a given component type.
+    """入れ子の ``value0`` 基底クラスラッパーをたどり、ComponentBase 自身の
+    ``guid_``/``isEnable_`` を持つ本体を見つける。ComponentBase は常に最も内側の基底で、
+    必ずこの 2 キーだけをシリアライズするので、コンポーネント型ごとに中間基底
+    （``EnemyBase``、``ColliderBase``、...）がいくつあっても一意に定まる。
     """
     node = comp.data.get("value0") if isinstance(comp.data, OrderedObj) else None
     while node is not None:

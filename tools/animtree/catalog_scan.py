@@ -1,20 +1,18 @@
-"""Build ``tools/animtree/catalog.json`` by scraping the ``IAnimationNode``
-subclass headers under ``Engine/Module/AnimationTree/Node/``.
+"""``Engine/Module/AnimationTree/Node/`` 以下の ``IAnimationNode`` サブクラスの
+ヘッダを抽出して ``tools/animtree/catalog.json`` を生成する。
 
-Regex/brace-matching scanner - no libclang - mirroring
-:mod:`tools.bt.catalog_scan`. Anything it cannot classify is recorded with
-shape ``"unknown"``; the reader then falls back to a structural fingerprint
-for that slot's version key and ``set-node-params`` refuses to touch it.
+:mod:`tools.bt.catalog_scan` と同じく正規表現と括弧対応によるスキャナ（libclang 不使用）。
+分類できないものは形状 ``"unknown"`` で記録し、reader はそのスロットのバージョンキーを
+構造的フィンガープリントで代用し、``set-node-params`` はそれに触れない。
 
-The condition-predicate and parameter kinds (``AnimationNodePathAdditionCondition<T>``
-/ ``AnimationParameter<T>``, T in bool/int/float) are **not** scanned - they are
-3 fixed explicit instantiations of one template each, in a single small file;
-there is no realistic "a 4th kind appears" path (it would require touching the
-engine's equality-only ``Check()``, the byte-buffer netcode plumbing, and a
-fixed 3-entry ImGui combo box), and nothing downstream would consume a scanned
-catalog for them anyway (no add-condition-type scaffold exists, mirroring
-tools/bt's own hand-written ``nodes`` dict for its fixed structural node
-types). They are written as a literal dict directly in :func:`scan`.
+条件述語とパラメータの種別（``AnimationNodePathAdditionCondition<T>``
+/ ``AnimationParameter<T>``、T は bool/int/float）はスキャン**しない**。どちらも
+1 つの小さなファイル内にある 1 テンプレートの明示的実体化 3 つで固定されており、
+「4 つ目の種別が増える」現実的な道筋がない（エンジンの等値比較のみの ``Check()``、
+バイトバッファのネットコード配管、3 項目固定の ImGui コンボボックスに手を入れる必要がある）うえ、
+下流にスキャン済みカタログを使うものもない（add-condition-type の雛形生成は無く、
+tools/bt が固定の構造ノード型を手書きの ``nodes`` 辞書にしているのと同じ）。
+:func:`scan` の中にリテラル辞書として直接書いている。
 """
 
 from __future__ import annotations
@@ -29,20 +27,20 @@ _REPO = Path(__file__).resolve().parents[2]
 NODE_ROOT = _REPO / "Engine" / "Module" / "AnimationTree" / "Node"
 CATALOG_PATH = Path(__file__).with_name("catalog.json")
 
-# these two leaves are dedicated named members on AnimationTree itself
-# (entryNode_/visualAnyStateNode_), not part of the polymorphic nodes_ map -
-# not recoverable from each node's own header, so hand-listed here exactly as
-# tools/bt/catalog_scan.py hardcodes its own fixed structural node-type dict.
+# この 2 つの葉は AnimationTree 自身の専用メンバー（entryNode_/visualAnyStateNode_）で、
+# ポリモーフィックな nodes_ マップの一部ではない。各ノードのヘッダからは
+# 復元できないので、tools/bt/catalog_scan.py が固定の構造ノード型辞書を
+# ハードコードしているのと同じくここに手で列挙する。
 SINGLETON_LEAVES = {"AnimatorEntryNode", "AnimationVisualAnyStateNode"}
 
-# -- regexes ------------------------------------------------------------------
+# -- 正規表現 ------------------------------------------------------------------
 RE_CLASS = re.compile(r"\bclass\s+(\w+)\s+final\s*:\s*public\s+IAnimationNode\b")
 RE_REGISTER_TYPE = re.compile(r"CEREAL_REGISTER_TYPE\s*\(\s*([\w:]+)\s*\)")
 RE_CLASS_VERSION = re.compile(r"CEREAL_CLASS_VERSION\s*\(\s*([\w:]+)\s*,\s*(\d+)\s*\)")
 RE_SAVE = re.compile(r"\bvoid\s+save\s*\(\s*Archive\s*&\s*\w+\s*,")
 RE_LOAD = re.compile(r"\bvoid\s+load\s*\(\s*Archive\s*&\s*\w+\s*,")
-# `if (version >= N) archive(CEREAL_NVP(member));` inside load() - the class
-# version a member was introduced at (recorded as the param's ``since``)
+# load() 内の `if (version >= N) archive(CEREAL_NVP(member));` - メンバーが
+# 追加されたクラスバージョン（パラメータの ``since`` として記録）
 RE_VERSION_GATE = re.compile(
     r"if\s*\(\s*version\s*>=\s*(\d+)\s*\)\s*archive\s*\(\s*CEREAL_NVP\s*\(\s*(\w+)\s*\)\s*\)"
 )
@@ -81,8 +79,8 @@ def _read(path: Path) -> str:
 
 
 def _search_register_type(path: Path, text: str):
-    """CEREAL_REGISTER_TYPE lives in the header's sibling .cpp (CEREAL_CLASS_VERSION
-    stays in the header); older headers still carry it themselves."""
+    """CEREAL_REGISTER_TYPE はヘッダと同名の .cpp にある（CEREAL_CLASS_VERSION は
+    ヘッダに残る）。古いヘッダはまだ自身に持っている。"""
     m = RE_REGISTER_TYPE.search(text)
     cpp = path.with_suffix(".cpp")
     if m is None and cpp.exists():
@@ -91,7 +89,7 @@ def _search_register_type(path: Path, text: str):
 
 
 def _balanced_block(text: str, open_idx: int) -> str:
-    """Return the ``{...}`` block starting at/after ``open_idx`` (inclusive braces)."""
+    """``open_idx`` 以降から始まる ``{...}`` ブロックを返す（括弧を含む）。"""
     i = text.find("{", open_idx)
     if i < 0:
         return ""
@@ -114,11 +112,11 @@ def _strip_comments(text: str) -> str:
 
 
 def _classify_member(decl_type: str, member: str) -> dict:
-    # name-based special case, checked before the type-based dispatch: this
-    # naming idiom (guid_/position_ as the node's identity/canvas-position
-    # fields) is consistent and load-bearing across every IAnimationNode
-    # subtype in the engine - a type-based rule (e.g. "any bare Guid-typed
-    # member") would be needless generalisation for a one-convention reality.
+    # 型による振り分けの前に確認する名前ベースの特例: この命名慣習
+    # （guid_/position_ をノードの識別子/キャンバス位置フィールドとする）は
+    # エンジンの全 IAnimationNode サブタイプで一貫しており重要な前提になっている。
+    # 型ベースの規則（例: 「Guid 型のメンバーすべて」）は、慣習が 1 つしかない
+    # 現状では不要な一般化になる。
     if member == "guid_":
         return {"shape": "self_guid"}
     if member == "position_":
@@ -151,7 +149,7 @@ def _classify_member(decl_type: str, member: str) -> dict:
 
 
 def _parse_serializable(body: str) -> list[dict]:
-    """Return the ordered param list from a class body's ``save()`` method."""
+    """クラス本体の ``save()`` メソッドから順序付きのパラメータ一覧を返す。"""
     body = _strip_comments(body)
 
     m = RE_SAVE.search(body)
@@ -159,7 +157,7 @@ def _parse_serializable(body: str) -> list[dict]:
         return []
     save_block = _balanced_block(body, m.end())
 
-    order: list[tuple[str, bool]] = []  # (member, named)
+    order: list[tuple[str, bool]] = []  # (メンバー, 名前付きか)
     for call in RE_ARCHIVE_CALL.finditer(save_block):
         named, bare = call.group(1), call.group(2)
         member = named or bare
@@ -225,13 +223,13 @@ def _parse_serializable(body: str) -> list[dict]:
             positional += 1
             key = f"value{positional}"
         param = {"key": key, "member": member, "named": named, **info}
-        # only recorded when > 0, so version-0 members (the common case) keep the
-        # catalog free of noise; absent == 0 == "present at every class version"
+        # > 0 のときだけ記録するので、よくあるバージョン 0 のメンバーでカタログが
+        # 散らからない。無い == 0 == 「どのクラスバージョンにも存在する」
         since = since_by_member.get(member, 0)
         if since > 0:
             param["since"] = since
-        # the in-class initializer, used to fill a member an older node lacks when it
-        # is upgraded to a newer class version (see tools/animtree/versions.py)
+        # クラス内初期化子。古いノードを新しいクラスバージョンへ上げるとき、
+        # 欠けているメンバーを埋めるのに使う（tools/animtree/versions.py 参照）
         default = _default_literal(member, info["shape"])
         if default is not None:
             param["default"] = default

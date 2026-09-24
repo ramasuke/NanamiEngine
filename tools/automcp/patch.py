@@ -1,8 +1,8 @@
-"""Edit component fields inside a ``gameobject.get_json`` document.
+"""``gameobject.get_json`` のドキュメント内でコンポーネントのフィールドを編集する。
 
-The engine has no runtime reflection, so parameter edits go through cereal JSON:
-``gameobject.get_json`` -> patch here -> ``gameobject.set_json`` (which rebuilds the
-GameObject). Layout of that document::
+エンジンには実行時リフレクションが無いので、パラメータの編集は cereal JSON を通す:
+``gameobject.get_json`` -> ここで書き換え -> ``gameobject.set_json`` (GameObject を
+作り直す)。そのドキュメントのレイアウト::
 
     {"gameObject": {"polymorphic_id": .., "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
                     "ptr_wrapper": {"id": .., "data": {
@@ -14,10 +14,10 @@ GameObject). Layout of that document::
                                                             "someField_": ..}}}},
                         "transform_": {...}}}}}
 
-Base classes are positional (``value0``, ``value1``...), so a component's guid lives in
-whichever base object holds both ``guid_`` and ``isEnable_`` (``ComponentBase``), and a
-field may belong to a base. glm vectors are objects keyed ``value0..valueN``; a JSON list
-of the same length is accepted as a shorthand for them.
+基底クラスは位置で決まる (``value0``、``value1``...) ので、コンポーネントの guid は
+``guid_`` と ``isEnable_`` の両方を持つ基底オブジェクト (``ComponentBase``) にあり、
+フィールドが基底に属することもある。glm のベクトルは ``value0..valueN`` をキーとする
+オブジェクトで、同じ長さの JSON リストも省略形として受け付ける。
 """
 
 from __future__ import annotations
@@ -29,7 +29,7 @@ from tools.common import cereal_json as cj
 
 _BASE_KEY = re.compile(r"value\d+$")
 _META_KEYS = {"cereal_class_version", "polymorphic_id", "polymorphic_name"}
-# ComponentBase::guid_ identifies the component for FIELD references and later edits
+# ComponentBase::guid_ は FIELD 参照や後の編集でコンポーネントを識別する
 _READ_ONLY_FIELDS = {"guid_"}
 
 
@@ -52,7 +52,7 @@ def game_object_data(doc: Any) -> cj.OrderedObj:
 
 
 def component_base_guid(data: cj.OrderedObj) -> str | None:
-    """Find ``ComponentBase::guid_`` by walking the positional base objects."""
+    """位置で決まる基底オブジェクトをたどって ``ComponentBase::guid_`` を探す。"""
     pending = [data]
     while pending:
         node = pending.pop(0)
@@ -64,7 +64,7 @@ def component_base_guid(data: cj.OrderedObj) -> str | None:
 
 
 def iter_components(data: cj.OrderedObj):
-    """Yield ``(index, polymorphic_name or None, component data)`` for a GameObject's own components."""
+    """GameObject 自身のコンポーネントごとに ``(index, polymorphic_name または None, コンポーネントのデータ)`` を yield する。"""
     group = _obj(data.get("components_"), "components_")
     count = group.get("componentCount")
     total = count.value if isinstance(count, cj.Num) else 0
@@ -171,7 +171,7 @@ def _coerce(existing: Any, new: Any, path: str) -> Any:
 
 
 def set_component_params(json_text: str, component_guid: str, params: dict[str, Any]) -> tuple[str, list[str]]:
-    """Return ``(patched json text, changed field names)``. Unknown fields and type mismatches raise."""
+    """``(書き換え後の json テキスト, 変更したフィールド名)`` を返す。未知のフィールドや型の不一致は例外を投げる。"""
     if not isinstance(params, dict) or not params:
         raise PatchError("params must be a non-empty object of field name -> value")
     doc = cj.loads(json_text)
@@ -189,5 +189,5 @@ def set_component_params(json_text: str, component_guid: str, params: dict[str, 
 
 
 def component_fields_json(json_text: str, component_guid: str) -> str:
-    """Pretty cereal JSON of one component's data object (its fields, bases included)."""
+    """1 つのコンポーネントのデータオブジェクト (フィールド、基底を含む) を整形した cereal JSON。"""
     return cj.dumps(find_component(cj.loads(json_text), component_guid))

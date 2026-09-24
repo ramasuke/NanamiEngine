@@ -1,4 +1,4 @@
-"""``show`` / ``validate`` CLI subcommands - read-only."""
+"""``show`` / ``validate`` CLI サブコマンド - 読み取り専用。"""
 
 from __future__ import annotations
 
@@ -78,8 +78,8 @@ def cmd_validate(args: argparse.Namespace) -> int:
     if path.suffix not in (".scene", ".prefab"):
         print(f"error: unrecognised extension {path.suffix!r} (expected .scene or .prefab)")
         return 1
-    # A BOM'd or malformed file cannot be read back at all, so report that alone
-    # rather than the parse errors it causes further down.
+    # BOM 付きや不正な形式のファイルはそもそも読み戻せないので、その後で起きる
+    # パースエラーではなく、それだけを報告する。
     byte_problems = validate.validate_source_bytes(path.read_bytes())
     if byte_problems:
         for problem in byte_problems:

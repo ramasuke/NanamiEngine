@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Shim so ``python tools/automcp.py ...`` works the same as ``python -m tools.automcp ...``."""
+"""``python tools/automcp.py ...`` を ``python -m tools.automcp ...`` と同じように動かすためのシム。"""
 import sys
 from pathlib import Path
 

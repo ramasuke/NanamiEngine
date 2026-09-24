@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Shim so ``python tools/engine_dist.py ...`` works the same as ``python -m tools.engine_dist ...``."""
+"""``python tools/engine_dist.py ...`` を ``python -m tools.engine_dist ...`` と同じように動かすためのシム。"""
 
 import sys
 from pathlib import Path

@@ -1,11 +1,11 @@
-"""Synthesize the cannon sound effects and install them as SoundFile assets under Assets/Audio/Physics.
+"""大砲の効果音を合成し、Assets/Audio/Physics に SoundFile アセットとして入れる。
 
     python tools/art/cannon_sfx.py
 
 CannonBall_Explosion: 大砲の玉が爆発したとき (ExplosionParticle.prefab の SpawnSound)。
                       火薬の鋭い破裂音 + 低い衝撃 + 飛び散る破片。魔法の爆発 (ExplosionBlast_Burst) より短く乾いた音
-The primitives, the mp3 encoder and the .meta template come from tools/art/magic_sfx.py, so the format matches the
-other SE (MPEG-1 Layer III, 192 kbps, 48 kHz, stereo; volume_ 255 and loudness set by the waveform peak).
+波形の部品・mp3 エンコーダ・.meta のひな形は tools/art/magic_sfx.py のものを使うので、形式は他の SE と揃う
+(MPEG-1 Layer III, 192 kbps, 48 kHz, stereo。volume_ 255、音量は波形のピークで決める)。
 """
 from __future__ import annotations
 

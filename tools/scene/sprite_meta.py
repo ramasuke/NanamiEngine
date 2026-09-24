@@ -1,14 +1,13 @@
-""".png.meta`` sidecar bindings for ``SpriteFile`` texture assets.
+""".png.meta`` - ``SpriteFile`` テクスチャアセット用のサイドカーバインディング。
 
-``SpriteFile`` is the same "thin proxy" asset family as ``SceneFile``/
-``PrefabGameObjectFile`` (see ``tools/common/meta_base.py``) - confirmed
-against ``Engine/Module/Asset/Sprite/SpriteFile.h`` (``base_class<AssetBase>()``
-+ ``base_class<IEnablableAsset>()`` -> two empty ``valueN`` wrappers before
-``contentPath_``/``guid_``) and real ``*.png.meta`` files already checked in
-under ``Assets/Art/``.
+``SpriteFile`` は ``SceneFile``/``PrefabGameObjectFile`` と同じ「薄いプロキシ」系の
+アセット（``tools/common/meta_base.py`` 参照）。
+``Engine/Module/Asset/Sprite/SpriteFile.h``（``base_class<AssetBase>()``
++ ``base_class<IEnablableAsset>()`` -> ``contentPath_``/``guid_`` の前に空の ``valueN``
+ラッパーが 2 つ）と、``Assets/Art/`` 以下にチェックイン済みの実際の ``*.png.meta`` で確認済み。
 
-See ``tools/effect/meta.py`` / ``tools/bt/meta.py`` / ``tools/scene/meta.py``
-for the same pattern applied to other asset types.
+同じパターンを他のアセット型に適用したものは ``tools/effect/meta.py`` /
+``tools/bt/meta.py`` / ``tools/scene/meta.py`` を参照。
 """
 
 from __future__ import annotations
@@ -31,14 +30,14 @@ mint_guid = _base.mint_guid
 
 
 def content_path_for(name: str, target_dir: Path, repo_root: Path) -> str:
-    """Match real ``*.png.meta`` files' ``contentPath_`` convention.
+    """実際の ``*.png.meta`` ファイルの ``contentPath_`` の規約に合わせる。
 
-    Every ``*.png.meta`` checked in this repo (e.g.
-    ``Assets/Art/UI/KnightStatusUI/StatusBarFrame.png.meta``) uses an
-    **all-backslash** path with no forward slash before the filename - unlike
-    the generic thin-proxy fallback in ``meta_base.content_path_for`` (which
-    inserts a forward slash there for ``bt``/``animtree`` data files). Mirrors
-    ``tools/effect/meta.py``'s override for the same reason.
+    このリポジトリにチェックインされている ``*.png.meta``（例:
+    ``Assets/Art/UI/KnightStatusUI/StatusBarFrame.png.meta``）はすべて、ファイル名の前に
+    スラッシュを含まない **すべてバックスラッシュ** のパスを使う。これは汎用の薄いプロキシ用
+    フォールバック ``meta_base.content_path_for``（``bt``/``animtree`` のデータファイル向けに
+    そこへスラッシュを入れる）とは異なる。同じ理由による ``tools/effect/meta.py`` の
+    オーバーライドと同様。
     """
     for sib in sorted(target_dir.glob("*" + SPRITE_SPEC.meta_ext)):
         try:

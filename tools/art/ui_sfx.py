@@ -1,6 +1,6 @@
-"""Synthesize the shared UI sound set (played through GamePlay::Sound::UiSoundBank) and install it as SoundFile assets under
-Assets/Audio/UI. The set is wired up in Assets/Data/UiSound/UiSoundBank.uiSoundBank (UiSoundBankData), which each UI
-component references through its `uiSounds_` field.
+"""共通の UI 効果音セット (GamePlay::Sound::UiSoundBank で鳴らす) を合成し、Assets/Audio/UI に SoundFile アセットとして
+入れる。セットは Assets/Data/UiSound/UiSoundBank.uiSoundBank (UiSoundBankData) に登録され、各 UI コンポーネントは
+`uiSounds_` フィールドからそれを参照する。
 
     python tools/art/ui_sfx.py [--only NAME ...] [--preview out.png]
 
@@ -20,8 +20,8 @@ Design (docs/UIDesign.md の2系統に合わせる。写実寄りの世界なの
   出来事 (判子・開始・ボス) -14 dB、操作の返事 (決定・戻る・頁・開閉) -17 dB、
   何度も鳴るもの (カーソル・袋の切替) -21 dB、戦闘・会話・チュートリアル中のもの -19〜-23 dB。ピークは -1 dBFS を超えないよう柔らかく抑える。
 
-The primitives, the mp3 encoder and the .meta template come from tools/art/magic_sfx.py (MPEG-1 Layer III,
-192 kbps, 48 kHz, stereo; volume_ 255). write_sound() keeps an existing .meta, so re-running keeps the GUIDs.
+プリミティブ・mp3 エンコーダ・.meta テンプレートは tools/art/magic_sfx.py のもの (MPEG-1 Layer III,
+192 kbps, 48 kHz, ステレオ。volume_ 255)。write_sound() は既存の .meta を残すので、再実行しても GUID は変わらない。
 """
 from __future__ import annotations
 
@@ -42,7 +42,7 @@ OUT_DIR = m.REPO / 'Assets/Audio/UI'
 D3, D4 = 146.83, 293.66
 
 
-# ================================================================ building blocks
+# ================================================================ 部品
 # NOTE: 正弦波をそのまま鳴らすと電子音に聞こえるので、音程のある成分は「柔らかい打撃 (雑音の短い塊) で共振器を
 #       叩く」モーダル合成で作る。共振の Q は減衰時間から決める (tau = Q / (pi f))。
 def excite(d, rng, soft=0.003, lp_hz=2500):

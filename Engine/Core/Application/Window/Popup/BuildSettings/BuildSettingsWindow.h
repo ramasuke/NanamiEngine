@@ -35,6 +35,7 @@ namespace NanamiEngine::Core::PopupWindow
         ::Guid    guid_;
         bool      focusRequested_ = true;
         TextField productName_;
+        TextField clientVersion_;
         TextField outputDirectory_;
         TextField msBuildPath_;
     };

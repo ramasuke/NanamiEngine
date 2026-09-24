@@ -1,8 +1,8 @@
-"""Static checks on a decoded :class:`tools.animtree.model.Tree`.
+"""復号済み :class:`tools.animtree.model.Tree` の静的チェック。
 
-A ``note:``-prefixed problem is informational (the CLI still writes the file);
-anything else is a hard failure that aborts the write with nothing changed -
-the same convention ``tools.bt``/``tools.scene`` use.
+``note:`` で始まる問題は情報のみ（CLI はファイルを書き出す）。
+それ以外は致命的な失敗で、何も変更せずに書き込みを中止する -
+``tools.bt``/``tools.scene`` と同じ規約。
 """
 
 from __future__ import annotations
@@ -10,11 +10,11 @@ from __future__ import annotations
 from . import catalog as catalog_mod
 from . import model
 
-# a real .animTree can accumulate a stray, absurdly large float in a member
-# like blendAnimationOffset_secs_ from editor drag/uninitialised-memory
-# artifacts (see Assets/Animations/SwordManAnimation.animTree's ComboAttack1
-# node, 111111112360531590000.0) - flag it, but only as a note: it round-trips
-# losslessly and isn't this toolkit's place to silently "fix".
+# 実際の .animTree には、エディタのドラッグや未初期化メモリの名残で
+# blendAnimationOffset_secs_ のようなメンバーに桁外れに大きい float が紛れ込むことがある
+# （Assets/Animations/SwordManAnimation.animTree の ComboAttack1 ノードの
+# 111111112360531590000.0 など）。指摘はするが note のみ: 劣化なく往復するし、
+# このツールキットが黙って「直す」ものではない。
 _SUSPICIOUS_ABS = 1e6
 
 
@@ -25,7 +25,7 @@ def validate(tree: model.Tree, cat: catalog_mod.Catalog | None = None) -> list[s
     def err(msg: str) -> None:
         problems.append(msg)
 
-    # -- node guids -----------------------------------------------------
+    # -- ノードの guid -----------------------------------------------------
     seen: set[str] = set()
     for node in (tree.entry, tree.any_state, *tree.nodes):
         if node.guid in seen:
@@ -35,7 +35,7 @@ def validate(tree: model.Tree, cat: catalog_mod.Catalog | None = None) -> list[s
 
     all_guids = seen
 
-    # -- transitions ------------------------------------------------------
+    # -- 遷移 ------------------------------------------------------
     for t in tree.transitions:
         _check_transition_endpoints(t, all_guids, err)
         if t.from_guid == tree.any_state.guid:
@@ -50,7 +50,7 @@ def validate(tree: model.Tree, cat: catalog_mod.Catalog | None = None) -> list[s
                 f"AnyState node's guid ({tree.any_state.guid})")
         _check_conditions(t, tree, err)
 
-    # -- params -------------------------------------------------------------
+    # -- パラメータ -------------------------------------------------------------
     for p in tree.params:
         if p.kind not in model.KINDS:
             err(f"parameter {p.name!r}: kind {p.kind!r} unsupported (want bool|int|float)")

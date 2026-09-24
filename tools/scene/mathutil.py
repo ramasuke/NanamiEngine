@@ -1,17 +1,15 @@
-"""Minimal TRS (translate/rotate/scale) math for computing world transforms.
+"""ワールド変換を求めるための最小限の TRS（平行移動/回転/スケール）演算。
 
-Used only by ``move_gameobject``'s world-transform-preserving reparent - the
-engine's own :class:`Transform` recomputes ``worldMatrix_`` at load time
-regardless, so this never needs to touch that opaque blob, only local
-pos/rot/scale. Quaternions are ``(x, y, z, w)`` tuples of plain floats.
+``move_gameobject`` のワールド変換を保つ付け替えでのみ使う。エンジン自身の
+:class:`Transform` はロード時に必ず ``worldMatrix_`` を再計算するので、この
+不透明な blob には触れず、ローカルの pos/rot/scale だけを扱えばよい。
+クォータニオンは素の float の ``(x, y, z, w)`` タプル。
 
-Known limitation (shared with most scene-graph engines, including Unity before
-it started warning about it): composing a rotation with a *non-uniform* scale
-is not, in general, decomposable back into a clean rotation + non-uniform
-scale after reparenting under another rotation - the componentwise scale
-composition here matches this engine's own apparent convention (see
-``Transform::UpdateMatrix``) rather than attempting a fully general polar
-decomposition.
+既知の制約（多くのシーングラフエンジンと共通。Unity も警告を出すまではそうだった）:
+回転と *非一様* スケールを合成したものを別の回転の下へ付け替えると、一般には
+きれいな回転 + 非一様スケールに分解し直せない。ここでのスケールの成分ごとの合成は、
+完全に一般的な極分解を試みるのではなく、このエンジン自身の見かけ上の規約
+（``Transform::UpdateMatrix`` 参照）に合わせている。
 """
 
 from __future__ import annotations
@@ -25,7 +23,7 @@ IDENTITY_SCALE: Vec3 = (1.0, 1.0, 1.0)
 
 
 def quat_mul(a: Quat, b: Quat) -> Quat:
-    """a (*) b - rotating a vector by the result applies b first, then a."""
+    """a (*) b - 結果でベクトルを回転すると、b が先、次に a が適用される。"""
     ax, ay, az, aw = a
     bx, by, bz, bw = b
     return (
@@ -44,7 +42,7 @@ def quat_conjugate(q: Quat) -> Quat:
 def quat_rotate_vec(q: Quat, v: Vec3) -> Vec3:
     x, y, z, w = q
     vx, vy, vz = v
-    # v' = q * (vx,vy,vz,0) * conj(q), expanded
+    # v' = q * (vx,vy,vz,0) * conj(q) を展開したもの
     uvx = y * vz - z * vy
     uvy = z * vx - x * vz
     uvz = x * vy - y * vx
@@ -83,7 +81,7 @@ class Trs:
         self.scale = scale
 
     def then(self, local: "Trs") -> "Trs":
-        """``self`` as parent, ``local`` as a child's local TRS -> child's world TRS."""
+        """``self`` を親、``local`` を子のローカル TRS として -> 子のワールド TRS。"""
         scaled = vec3_mul(self.scale, local.pos)
         rotated = quat_rotate_vec(self.rot, scaled)
         return Trs(
@@ -93,8 +91,8 @@ class Trs:
         )
 
     def local_of(self, world: "Trs") -> "Trs":
-        """Inverse of :meth:`then`: given ``world`` (some node's world TRS) and
-        ``self`` as the (new) parent's world TRS, return the node's new local TRS."""
+        """:meth:`then` の逆: ``world``（あるノードのワールド TRS）と
+        ``self``（新しい親のワールド TRS）から、そのノードの新しいローカル TRS を返す。"""
         inv_rot = quat_conjugate(self.rot)
         delta = vec3_sub(world.pos, self.pos)
         rotated = quat_rotate_vec(inv_rot, delta)

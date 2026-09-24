@@ -1,17 +1,17 @@
-"""Wire the MagicCaster spell effects (tools/art/magic_spell_effects.py) into prefabs.
+"""MagicCaster の魔法エフェクト (tools/art/magic_spell_effects.py) をプレハブに組み込む。
 
-    python tools/art/magic_spell_effects.py --build-dir <tmp> --install   # effects first
+    python tools/art/magic_spell_effects.py --build-dir <tmp> --install   # 先にエフェクト
     python tools/art/magic_spell_prefabs.py
 
-Writes (an existing .meta keeps its guid, so re-running never breaks references):
-* Assets/Prefab/Magic/Cast/Cast_<Motion>.prefab - the per-animation cast effect MagicSpellData.castEffectPrefab_ spawns;
-* Assets/Prefab/Magic/Effect/*.prefab           - impacts, bursts, buffs and channel hits (play once, then destroy);
-* sounds from tools/art/magic_sfx.py: <Spell>_Charge on the cast prefab, impact/burst/sigil/rise/hit sounds on those
-  prefabs (GamePlay::Sound::SpawnSound), <Spell>_Release as the spell's castSound_ (Assets/Data/Magic/*.magicSpell.meta);
-* the spell prefabs: projectiles get the new travel effect + impact, the area / trap prefabs get their sigil on a
-  child (their root used to carry scale 60 for the old placeholder effect, which also scaled the sensor sphere to
-  ~190 m), RockWall gets a rise effect and a crumble, and WindCutter / ArcaneRay / FrostBreath are new.
-Effects are authored in metres and played at scale 8 (the MagicCaster rig is 200 cm at 0.08).
+書き出すもの (既存の .meta は guid を保つので、再実行しても参照は切れない):
+* Assets/Prefab/Magic/Cast/Cast_<Motion>.prefab - MagicSpellData.castEffectPrefab_ が出すアニメごとの詠唱エフェクト
+* Assets/Prefab/Magic/Effect/*.prefab           - 着弾・爆発・バフ・チャネルのヒット (1回再生して破棄)
+* tools/art/magic_sfx.py の音: 詠唱プレハブに <Spell>_Charge、各プレハブに着弾/爆発/魔法陣/隆起/ヒット音
+  (GamePlay::Sound::SpawnSound)、魔法の castSound_ に <Spell>_Release (Assets/Data/Magic/*.magicSpell.meta)
+* 魔法プレハブ: 弾には新しい飛翔エフェクトと着弾、範囲 / 罠プレハブには子に魔法陣を付ける (以前は root が旧仮
+  エフェクト用にスケール 60 を持ち、センサー球も ~190 m に拡大されていた)。RockWall には隆起と崩壊のエフェクト、
+  WindCutter / ArcaneRay / FrostBreath は新規。
+エフェクトはメートル単位で作り、スケール 8 で再生する (MagicCaster のリグは 200 cm を 0.08 倍)。
 """
 import sys
 from pathlib import Path
@@ -35,9 +35,9 @@ EFFECT_SOURCE_DIR = REPO / 'Assets/Art/Effect/_Source/Magic'
 MAGIC_PREFAB_DIR = REPO / 'Assets/Prefab/Magic'
 CAST_DIR = MAGIC_PREFAB_DIR / 'Cast'
 FX_DIR = MAGIC_PREFAB_DIR / 'Effect'
-METRE = 8.0            # world units per effect unit
+METRE = 8.0            # エフェクト1単位あたりのワールド単位
 LOOP, DESTROY = 0, 1   # ParticleSystem PlayMode
-LOOP_SECS = 60.0       # a Loop effect only restarts after this; the object is destroyed long before
+LOOP_SECS = 60.0       # Loop エフェクトはこの後にしか再開しない。オブジェクトはそのずっと前に破棄される
 CAST_MOTIONS = ['OneHandThrust', 'OneHandSweep', 'OneHandUppercut', 'OneHandRaise', 'TwoHandRaise', 'TwoHandSlam',
                 'TwoHandBurst', 'TwoHandThrow', 'TwoHandSwingPush', 'TwoHandBeam', 'TwoHandPushHold', 'TwoHandPray']
 MOTION_SPELL = {'OneHandThrust': 'MagicBolt', 'OneHandSweep': 'WindCutter', 'OneHandUppercut': 'RockWall',
@@ -63,7 +63,7 @@ def sound(name):
     return asset_guid(SOUND_DIR / f'{name}.mp3.meta')
 
 
-# ---------------------------------------------------------------- helpers
+# ---------------------------------------------------------------- ヘルパー
 def find_child(node, name):
     return next((c for c in node.transform.children if c.name == name), None)
 
@@ -94,7 +94,7 @@ def set_sound(prefab, node, sound_name, delay=0.0):
 
 def add_particle(prefab, node, effect, mode, secs):
     comp = Builder(prefab).component(node, 'ParticleSystem')
-    comp.data.pop('isRoop_', None)     # only version 0 archived it
+    comp.data.pop('isRoop_', None)     # アーカイブしていたのはバージョン 0 だけ
     set_particle(comp, effect, mode, secs)
     return comp
 
@@ -117,7 +117,7 @@ def save(prefab, directory, name):
     return guid
 
 
-# ---------------------------------------------------------------- one-shot effect prefabs
+# ---------------------------------------------------------------- 単発エフェクトのプレハブ
 def particle_prefab(directory, name, effect, sound_name=None):
     prefab = new_prefab(name)
     set_scale(prefab.root, METRE)
@@ -127,10 +127,10 @@ def particle_prefab(directory, name, effect, sound_name=None):
     return save(prefab, directory, name)
 
 
-# ---------------------------------------------------------------- spell prefabs
+# ---------------------------------------------------------------- 魔法プレハブ
 def retarget_projectile(path, name, travel, impact_guid, impact_secs, *, source=None, radius=None):
-    """travel effect on the TravelEffect child, impact prefab on MagicProjectile. source: copy that prefab first.
-    radius: SphereCollider radius_ (scaled by the root's scale)."""
+    """飛翔エフェクトは子の TravelEffect に、着弾プレハブは MagicProjectile に付ける。source: 先にそのプレハブをコピーする。
+    radius: SphereCollider の radius_ (root のスケールが掛かる)。"""
     prefab = reader.read_prefab_file(source or path)
     if source:
         prefab = edits.copy_prefab(prefab)
@@ -148,7 +148,7 @@ def retarget_projectile(path, name, travel, impact_guid, impact_secs, *, source=
 
 
 def restructure_blast(path, name, sigil, radius, detonate_guid, detonate_secs, sigil_sound):
-    """Root at scale 1 with the sensor radius in world units; the sigil effect on a scale-8 child."""
+    """root はスケール 1 でセンサー半径をワールド単位で持つ。魔法陣エフェクトはスケール 8 の子に付ける。"""
     prefab = reader.read_prefab_file(path)
     root = prefab.root
     root.name = name
@@ -186,8 +186,8 @@ def rock_wall(path, crumble_guid, crumble_secs):
 
 
 def channel(template_path, out_name, root_name, effect, size, offset, hit_guid, hit_secs, visual_offset):
-    """From the restructured area prefab: SphereCollider -> BoxCollider reaching forward (-Z), MagicBlast ->
-    MagicChannel. The two collider types archive the same bases and differ only in the last member."""
+    """組み直した範囲プレハブから: SphereCollider -> 前方 (-Z) に伸びる BoxCollider、MagicBlast ->
+    MagicChannel。2つのコライダー型は同じ基底をアーカイブし、最後のメンバーだけが違う。"""
     prefab = edits.copy_prefab(reader.read_prefab_file(template_path))
     root = prefab.root
     root.name = root_name
@@ -212,15 +212,15 @@ def channel(template_path, out_name, root_name, effect, size, offset, hit_guid, 
 
     visual = find_child(root, 'Sigil')
     visual.name = 'Visual'
-    # CastPoint sits 0.3 m ahead of the chest; the clip holds the hands ~1.1 m ahead, so start the visual there
+    # CastPoint は胸の 0.3 m 前だが、クリップでは手が ~1.1 m 前にあるので見た目はそこから始める
     visual.transform.local_pos = model.Vec3(*(Num.of_float(v) for v in visual_offset))
-    visual.components = [c for c in visual.components if not c.fqn.endswith('::SpawnSound')]  # the sigil's
+    visual.components = [c for c in visual.components if not c.fqn.endswith('::SpawnSound')]  # 魔法陣のもの
     set_particle(find_comp(visual, 'ParticleSystem'), effect, LOOP, LOOP_SECS)
     return save(prefab, MAGIC_PREFAB_DIR, out_name)
 
 
 def wire_cast_sounds():
-    """castSound_ (the first Field<SoundFile> in the file, so it carries the version keys) -> <Spell>_Release."""
+    """castSound_ (ファイル内で最初の Field<SoundFile> なのでバージョンキーを持つ) -> <Spell>_Release。"""
     for spell in MOTION_SPELL.values():
         path = SPELL_DATA_DIR / f'{spell}.magicSpell.meta'
         text = path.read_bytes().decode('utf-8-sig')
@@ -248,7 +248,7 @@ def main():
         'ExplosionBlastBurst': 'ExplosionBlast_Burst', 'QuakeBlastBurst': 'QuakeBlast_Burst',
         'ThunderTrapStrike': 'ThunderTrap_Strike', 'RockWallCrumble': 'RockWall_Crumble',
         'ArcaneRayHit': 'ArcaneRay_Hit', 'FrostBreathHit': 'FrostBreath_Hit',
-    }   # HealBloom / MightSurge play with the spell's castSound_
+    }   # HealBloom / MightSurge は魔法の castSound_ で鳴らす
     fxp = {name: particle_prefab(FX_DIR, name, effect, one_shot_sounds.get(name)) for name, effect in one_shots.items()}
     secs = {name: fx_secs(effect) for name, effect in one_shots.items()}
 
@@ -259,7 +259,7 @@ def main():
     retarget_projectile(MAGIC_PREFAB_DIR / 'VioletFlameSpell.prefab', 'VioletFlame', 'VioletFlame_Travel',
                         fxp['VioletFlameImpact'], secs['VioletFlameImpact'])
     wind = MAGIC_PREFAB_DIR / 'WindCutterSpell.prefab'
-    # the blade is 2.6 m wide: a 0.75 m sphere (x0.12 root) still clears the ground from the 1.2 m cast point
+    # 刃の幅は 2.6 m: 0.75 m の球 (root x0.12) なら 1.2 m の発動点から撃っても地面に当たらない
     retarget_projectile(wind, 'WindCutter', 'WindCutter_Travel', fxp['WindCutterImpact'], secs['WindCutterImpact'],
                         source=None if wind.exists() else MAGIC_PREFAB_DIR / 'VioletFlameSpell.prefab', radius=50.0)
 
@@ -272,7 +272,7 @@ def main():
     rock_wall(MAGIC_PREFAB_DIR / 'RockWallSpell.prefab', fxp['RockWallCrumble'], secs['RockWallCrumble'])
 
     template = MAGIC_PREFAB_DIR / 'ExplosionBlastSpell.prefab'
-    # beam: 1.6 m thick, 20 m long; breath: a 4 m wide, 2.6 m tall, 7 m long box whose floor reaches the ground
+    # ビーム: 太さ 1.6 m、長さ 20 m。ブレス: 幅 4 m、高さ 2.6 m、長さ 7 m で底面が地面に届く箱
     channel(template, 'ArcaneRaySpell', 'ArcaneRay', 'ArcaneRay_Beam', (13.0, 13.0, 160.0), (0.0, 0.0, -80.0),
             fxp['ArcaneRayHit'], secs['ArcaneRayHit'], (0.0, 1.3, -6.4))
     channel(template, 'FrostBreathSpell', 'FrostBreath', 'FrostBreath_Cone', (32.0, 21.0, 56.0), (0.0, -2.5, -28.0),

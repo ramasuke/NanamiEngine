@@ -1,1 +1,1 @@
-"""Engine distribution toolkit: package NanamiEngine.lib + headers + project template for NanamiHub."""
+"""エンジン配布ツールキット: NanamiHub 向けに NanamiEngine.lib + ヘッダ + プロジェクトテンプレートをパッケージする。"""

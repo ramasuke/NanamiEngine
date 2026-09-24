@@ -1,8 +1,8 @@
-"""Build ``tools/bt/catalog.json`` by scraping the enemy behaviour Action headers.
+"""敵の behaviour Action ヘッダーを抽出して ``tools/bt/catalog.json`` を生成する。
 
-Regex line/blob scanner - no libclang. Anything it cannot classify is recorded
-with shape ``"unknown"``; the reader then falls back to a structural fingerprint
-for that slot's version key and ``set-params`` refuses to touch it.
+正規表現による行/blob スキャナで、libclang は使わない。分類できないものは
+shape ``"unknown"`` として記録され、reader はそのスロットのバージョンキーに
+構造フィンガープリントを代わりに使い、``set-params`` はそれに触れない。
 """
 
 from __future__ import annotations
@@ -18,21 +18,21 @@ from . import npc_kind
 _REPO = Path(__file__).resolve().parents[2]
 ACTION_ROOT = npc_kind.ENEMY.action_root
 CONTENT_ROOT = npc_kind.ENEMY.content_root
-CATALOG_PATH = npc_kind.ENEMY.catalog_path  # backward-compat alias
+CATALOG_PATH = npc_kind.ENEMY.catalog_path  # 後方互換用エイリアス
 
-# extra helper structs (not registered actions) that appear as action members.
-# Enemy has one of its own (damage's PhysicsPower) on top of the ones every
-# kind gets from NpcKind.extra_struct_files (e.g. Position).
+# action のメンバーとして現れる追加の補助構造体（登録された action ではない）。
+# Enemy は全種共通の NpcKind.extra_struct_files（例: Position）に加えて
+# 独自のもの（damage の PhysicsPower）を1つ持つ。
 ENEMY_EXTRA_STRUCT_FILES = {
     **npc_kind.ENEMY.extra_struct_files,
     "PhysicsPower": _REPO / "Assets/Scripts/Core/Game/Damage/Physics/Game_Damage_PhysicsPower.h",
 }
-EXTRA_STRUCT_FILES = ENEMY_EXTRA_STRUCT_FILES  # backward-compat alias
+EXTRA_STRUCT_FILES = ENEMY_EXTRA_STRUCT_FILES  # 後方互換用エイリアス
 
-# Friendly: polymorphic objects reached through an action's raw shared_ptr
-# (TrySwordManQuest.quest_). Without them their FIELD(...) members would be
-# opaque and couldn't share Field<T>'s once-per-type version slot, so a later
-# modeled FIELD of the same T would re-emit cereal_class_version and fail to load.
+# Friendly: action の生の shared_ptr 経由で到達する多相オブジェクト
+# （TrySwordManQuest.quest_）。これがないとその FIELD(...) メンバーは不透明になり、
+# Field<T> の型ごと1回のバージョンスロットを共有できないため、後で同じ T の
+# モデル化された FIELD が cereal_class_version を再出力してロードに失敗する。
 FRIENDLY_EXTRA_STRUCT_FILES = {
     **npc_kind.FRIENDLY.extra_struct_files,
     "ActionInstructTutorial": _REPO / "Assets/Scripts/Core/Game/PlayerAvatar/SwordMan/Status/Quest/Content/"
@@ -41,7 +41,7 @@ FRIENDLY_EXTRA_STRUCT_FILES = {
 
 _SKIP_DIRS = {"TickContext", "FieldGameObject", "Position"}
 
-# -- regexes --------------------------------------------------------------------
+# -- 正規表現 --------------------------------------------------------------------
 RE_CLASS = re.compile(r"\bclass\s+(\w+)\s+final\s*:\s*public\s+[\w:]*ActionBase\b")
 RE_STRUCT = re.compile(r"\b(?:class|struct)\s+(\w+)\s+final\b")
 RE_REGISTER_TYPE = re.compile(r"CEREAL_REGISTER_TYPE\s*\(\s*([\w:]+)\s*\)")
@@ -86,8 +86,8 @@ def _read(path: Path) -> str:
 
 
 def _search_register_type(path: Path, text: str):
-    """CEREAL_REGISTER_TYPE lives in the header's sibling .cpp (CEREAL_CLASS_VERSION
-    stays in the header); older headers still carry it themselves."""
+    """CEREAL_REGISTER_TYPE はヘッダーと同じ場所の .cpp にある（CEREAL_CLASS_VERSION
+    はヘッダーに残る）。古いヘッダーではまだヘッダー自身に書かれている。"""
     m = RE_REGISTER_TYPE.search(text)
     cpp = path.with_suffix(".cpp")
     if m is None and cpp.exists():
@@ -96,7 +96,7 @@ def _search_register_type(path: Path, text: str):
 
 
 def _balanced_block(text: str, open_idx: int) -> str:
-    """Return the ``{...}`` block starting at/after ``open_idx`` (inclusive braces)."""
+    """``open_idx`` 位置以降から始まる ``{...}`` ブロックを返す（波括弧を含む）。"""
     i = text.find("{", open_idx)
     if i < 0:
         return ""
@@ -151,14 +151,14 @@ def _classify_member(decl_type: str, enums: set[str], known_types: set[str]) -> 
 
 
 def _with_out_of_line_save(path: Path, cls: str, body: str) -> str:
-    """save() only declared in the header and defined in the sibling .cpp (e.g. TrySwordManQuest):
-    swap the declaration for that definition so _parse_serializable can read it."""
+    """save() がヘッダーで宣言のみされ、同じ場所の .cpp で定義されている場合（例: TrySwordManQuest）:
+    _parse_serializable が読めるよう、宣言をその定義に差し替える。"""
     decl = RE_SAVE.search(body)
     if not decl:
         return body
     brace, semi = body.find("{", decl.end()), body.find(";", decl.end())
     if brace != -1 and (semi == -1 or brace < semi):
-        return body  # defined in-class
+        return body  # クラス内で定義
     cpp = path.with_suffix(".cpp")
     if not cpp.exists():
         return body
@@ -171,7 +171,7 @@ def _with_out_of_line_save(path: Path, cls: str, body: str) -> str:
 
 
 def _parse_serializable(body: str, known_types: set[str]) -> tuple[list[dict], list[str]]:
-    """Return (params, member_names) from a class/struct body."""
+    """クラス/構造体の本体から (params, member_names) を返す。"""
     body = _strip_comments(body)
     enums = set(re.findall(r"enum\s+class\s+(\w+)", body))
 
@@ -186,12 +186,12 @@ def _parse_serializable(body: str, known_types: set[str]) -> tuple[list[dict], l
         member = named or bare
         if member in ("this",):
             continue
-        # skip base_class<...>(this)
+        # base_class<...>(this) は飛ばす
         seg = save_block[max(0, call.start() - 30):call.start()]
         if RE_BASE_CALL.search(save_block[call.start():call.end()]):
             continue
         order.append((member, bool(named)))
-    # also drop an initial base_class call captured as bare "archive(cereal::...)"
+    # 素の "archive(cereal::...)" として拾われた先頭の base_class 呼び出しも除く
     order = [(mm, nn) for (mm, nn) in order if mm and not mm.startswith("cereal")]
 
     _KEYWORDS = {"return", "const", "static", "virtual", "auto", "explicit",
@@ -250,7 +250,7 @@ def scan(kind: str = "enemy") -> dict[str, Any]:
     headers = [p for p in content_root.rglob("*.h")
                if not any(part in _SKIP_DIRS for part in p.relative_to(content_root).parts[:-1])]
 
-    # first pass: know every action class leaf name (needed to classify members)
+    # 1パス目: 全 action クラスのリーフ名を把握する（メンバーの分類に必要）
     raw: list[tuple[Path, str]] = [(p, _read(p)) for p in headers]
     known_leaves: set[str] = set(extra_struct_files)
     for _p, text in raw:

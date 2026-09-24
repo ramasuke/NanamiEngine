@@ -25,7 +25,7 @@ from grassland_nature_prefabs import box_collider, model_child, static_mesh_coll
 
 MODELS = REPO / 'Assets' / 'Art' / 'Models' / 'Desert'
 PREFAB_DIR = REPO / 'Assets' / 'Prefab' / 'Prop' / 'Desert'
-M = 8.0  # world / m
+M = 8.0  # ワールド単位 / m
 
 # 名前: (モデルのフォルダ, 当たり判定の簡略化の許容誤差 world)
 MESH_SOLID = {

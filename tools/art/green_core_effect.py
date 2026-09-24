@@ -205,7 +205,7 @@ def build_prefab(name: str):
     prefab = new_prefab(name)
     set_scale(prefab.root, METRE)
     comp = Builder(prefab).component(prefab.root, 'ParticleSystem')
-    comp.data.pop('isRoop_', None)     # only version 0 archived it
+    comp.data.pop('isRoop_', None)     # バージョン 0 だけが書き出していた
     set_field(comp, 'particleFile_', asset_guid(REPO / INSTALL_DIR / f'{name}.efkefc.meta'))
     comp.data['playingDuration_secs_'] = Num.of_float(round(secs, 2))
     comp.data['playMode_'] = Num.of_int(mode)

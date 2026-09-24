@@ -74,7 +74,7 @@ def voronoi_tile(size, count, seed):
     return d1, d2 - d1, idx
 
 
-# ------------------------------------------------------------ stone
+# ------------------------------------------------------------ 石
 def stone():
     d1, edge, idx = voronoi_tile(N, 70, 11)
     r = np.random.default_rng(12)
@@ -105,7 +105,7 @@ def stone():
     save('Settle_Stone', col)
 
 
-# ------------------------------------------------------------ wood
+# ------------------------------------------------------------ 木
 def plank_field(seed, planks=5, burnt=False):
     r = np.random.default_rng(seed)
     y = np.arange(N)
@@ -162,7 +162,7 @@ def bark():
     save('Settle_Bark', col)
 
 
-# ------------------------------------------------------------ thatch
+# ------------------------------------------------------------ 茅葺き
 def thatch():
     r = np.random.default_rng(31)
     X, Y = np.meshgrid(np.arange(N), np.arange(N))
@@ -195,7 +195,7 @@ def thatch():
     save('Settle_Thatch', col)
 
 
-# ------------------------------------------------------------ hide
+# ------------------------------------------------------------ 獣皮
 def hide():
     X, Y = np.meshgrid(np.arange(N), np.arange(N))
     n1 = tile_noise(N, 6, 51)

@@ -27,7 +27,7 @@ SWITCH_ANY_TIME = 100.0
 TRANSITION_SECS = 0.2
 BLEND_OUT_SECS = 0.1   # ステートはクリップの終わりより少し前に抜けて Idle へ混ぜる
 
-# name: (clip, start frame, end frame, speed (frames/sec), effect frame)
+# 名前: (クリップ, 開始フレーム, 終了フレーム, 速度 (フレーム/秒), 効果フレーム)
 MOTIONS = {
     'Drink': ('ItemDrink', 54, 180, 45.0, 120),
     'Eat':   ('ItemDrink', 56, 176, 60.0, 110),

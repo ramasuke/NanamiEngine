@@ -1,10 +1,10 @@
-"""CLI subcommands for tools.model: convert, install, materials, set-emissive, set-culling.
+"""tools.model の CLI サブコマンド: convert, install, materials, set-emissive, set-culling。
 
-Unlike ``tools/effect`` (which shells out to Effekseer's real, documented
-CUI), DxLib's ``DxLibModelViewer_64bit.exe`` has no CLI/CUI mode at all - it's
-a GUI-only tool. ``convert`` drives that GUI via ``pywinauto`` well enough to
-behave like a CLI (see ``dxlib_modelviewer.py``); this is inherently more
-fragile than a real subprocess call, see ``tools/model/README.md``.
+``tools/effect`` (Effekseer の本物の文書化された CUI を呼び出す) と違い、DxLib の
+``DxLibModelViewer_64bit.exe`` には CLI/CUI モードがまったく無い - GUI 専用の
+ツール。``convert`` は ``pywinauto`` でその GUI を操作して CLI のように振る舞わせる
+(``dxlib_modelviewer.py`` 参照)。本物のサブプロセス呼び出しより本質的に壊れやすい。
+``tools/model/README.md`` を参照。
 """
 
 from __future__ import annotations
@@ -21,24 +21,24 @@ from . import mv1 as mv1_mod
 
 _REPO = Path(__file__).resolve().parents[2]
 
-# Pinned: verified 2026-09-12 against DxLibModelViewer ver3.24d (title bar
-# "DxLibModelViewer [ DxLib ver3.24d ]") - round-tripped a real shipped .mv1
-# (Assets/Art/Models/Basic/Cube.mv1) through Open -> Save As mesh only, and
-# separately converted a real ~36MB textured .fbx end to end, both producing
-# a valid MV11 header. See tools/model/dxlib_modelviewer.py's module
-# docstring for details.
+# 固定値: 2026-09-12 に DxLibModelViewer ver3.24d (タイトルバー
+# "DxLibModelViewer [ DxLib ver3.24d ]") で確認済み - 配布済みの実 .mv1
+# (Assets/Art/Models/Basic/Cube.mv1) を Open -> メッシュのみ名前を付けて保存 で往復させ、
+# 別途 ~36MB のテクスチャ付き実 .fbx を最初から最後まで変換し、どちらも
+# 正しい MV11 ヘッダになった。詳しくは tools/model/dxlib_modelviewer.py の
+# モジュール docstring を参照。
 DEFAULT_MODELVIEWER_PATH: str | None = r"C:\DxLib_VC3_24d\DxLib_VC\Tool\DxLibModelViewer\DxLibModelViewer_64bit.exe"
 
-# Empirically observed on 4 real shipped .mv1 files (both animation-clip and
-# static/skinned-mesh) - not a documented DxLib format signature, so this is
-# a sanity check, not proof of a well-formed file.
+# 配布済みの実 .mv1 ファイル 4 つ (アニメーションクリップと静的/スキンメッシュの
+# 両方) で経験的に観測したもの - 文書化された DxLib の形式シグネチャではないので、
+# これは簡易チェックであって正しいファイルの証明ではない。
 _MV1_MAGIC = mv1_mod.MAGIC
 _MV1_MIN_SIZE = 256
 
 _TEXTURE_EXTS = mv1_mod.TEXTURE_EXTS
 
-# Keys of dxlib_modelviewer.SAVE_MODES, duplicated here so argparse can list
-# them without importing pywinauto (dxlib_modelviewer is imported lazily).
+# dxlib_modelviewer.SAVE_MODES のキー。argparse が pywinauto を import せずに
+# 一覧できるようここに複製している (dxlib_modelviewer は遅延 import)。
 _SAVE_MODES = ("mesh", "anim", "full")
 
 
@@ -56,11 +56,10 @@ def _resolve(arg: str) -> Path:
 
 
 def looks_like_mv1(path: Path) -> list[str]:
-    """Problems found (empty = looks OK). Not a structural validator - no
-    ``.mv1`` format spec is available, only a magic-bytes + size sanity
-    check plus "the compressed body decodes to its declared size" (see
-    ``mv1.decode``) - same epistemic status as ``tools/effect``'s
-    ``EFKE``/``INFO`` header check."""
+    """見つかった問題 (空 = 問題なさそう)。構造の検証ではない - ``.mv1`` 形式の
+    仕様は手に入らないので、マジックバイト + サイズの簡易チェックと「圧縮された本体が
+    宣言どおりのサイズにデコードできる」こと (``mv1.decode`` 参照) だけ -
+    ``tools/effect`` の ``EFKE``/``INFO`` ヘッダチェックと同程度の確からしさ。"""
     if not path.exists():
         return [f"{path} does not exist"]
     problems: list[str] = []
@@ -91,10 +90,10 @@ def _find_modelviewer_path(args: argparse.Namespace) -> Path:
 
 
 def _texture_candidates(ref: str, search_dirs: list[Path]) -> list[Path]:
-    """Where a texture referenced as ``ref`` might live on disk, most specific
-    first: the exact relative path under each search dir, then the bare file
-    name directly in it, then inside any ``*.fbm`` folder there (the FBX SDK
-    extracts embedded textures to ``<fbx stem>.fbm/`` next to the source)."""
+    """``ref`` として参照されるテクスチャがディスク上にありそうな場所を、具体的な
+    ものから順に: 各検索ディレクトリ以下の正確な相対パス、次にその直下の素の
+    ファイル名、次にそこにある任意の ``*.fbm`` フォルダの中 (FBX SDK は埋め込み
+    テクスチャを原本の隣の ``<fbx の stem>.fbm/`` に展開する)。"""
     rel = PureWindowsPath(ref)
     name = rel.name
     candidates: list[Path] = []
@@ -109,16 +108,15 @@ def _texture_candidates(ref: str, search_dirs: list[Path]) -> list[Path]:
 
 
 def _collect_textures(mv1_path: Path, search_dirs: list[Path], dest_dir: Path) -> tuple[list[Path], list[str]]:
-    """Copy every texture ``mv1_path`` references into ``dest_dir`` at the
-    relative path the ``.mv1`` stores, so DxLib resolves it when loading the
-    model from ``dest_dir``. Returns ``(copied_or_already_in_place, missing)``
-    - ``missing`` entries are human-readable reasons.
+    """``mv1_path`` が参照するテクスチャをすべて、``.mv1`` が保存している相対パスで
+    ``dest_dir`` にコピーし、``dest_dir`` からモデルを読み込んだときに DxLib が
+    解決できるようにする。``(コピー済みまたは配置済み, 見つからないもの)`` を返す
+    - ``missing`` の各要素は人が読める理由。
 
-    An absolute reference (the source FBX's original ``C:\\...`` path, stored
-    alongside a relative one in some files) can't be reproduced under
-    ``dest_dir``: it's skipped when a relative reference to the same file name
-    exists, otherwise the file is placed directly in ``dest_dir``. A relative
-    reference that escapes ``dest_dir`` (``..\\``) is reported as missing."""
+    絶対パスの参照 (元の FBX の ``C:\\...`` パス。一部のファイルでは相対パスと
+    並んで保存されている) は ``dest_dir`` 以下に再現できない: 同じファイル名への
+    相対参照があればスキップし、無ければファイルを ``dest_dir`` の直下に置く。
+    ``dest_dir`` の外に出る相対参照 (``..\\``) は見つからないものとして報告する。"""
     try:
         refs = mv1_mod.texture_paths(mv1_path)
     except ValueError as e:
@@ -169,8 +167,8 @@ Rgb = tuple[float, float, float]
 
 
 def _parse_emissive_specs(specs: list[str]) -> list[tuple[str | None, Rgb]]:
-    """``--emissive`` values as ``(material or None for all, rgb)``, in the
-    order given - later entries override earlier ones."""
+    """``--emissive`` の値を ``(マテリアル、全体なら None, rgb)`` として指定順に返す
+    - 後のものが前のものを上書きする。"""
     parsed: list[tuple[str | None, Rgb]] = []
     for spec in specs:
         target, sep, color = spec.rpartition("=")
@@ -219,8 +217,8 @@ def _read_materials(path: Path) -> tuple[bytes, list[mv1_mod.Material]]:
 
 
 def _apply_emissive(src: Path, dest: Path, specs: list[tuple[str | None, Rgb]]) -> None:
-    """Write ``src`` to ``dest`` (may be the same file) with its materials'
-    emissive color set per ``specs``."""
+    """``src`` を、マテリアルの自己発光色を ``specs`` どおりに設定して ``dest``
+    (同じファイルでもよい) に書き出す。"""
     body, materials = _read_materials(src)
     if not materials:
         raise CliError(f"{src.name} has no materials (an animation-only .mv1?), so there is no "
@@ -260,13 +258,13 @@ def cmd_convert(args: argparse.Namespace) -> int:
     if out_path.exists():
         if not args.force:
             raise CliError(f"{out_path} already exists (use --force to overwrite)")
-        # Delete up front so a failed run's leftover can't be mistaken for a
-        # fresh success, and so DxLibModelViewer's own overwrite-confirm
-        # dialog (if any) is never actually hit.
+        # 先に削除しておき、失敗した実行の残骸を新しい成功と取り違えないように、
+        # また DxLibModelViewer 自身の上書き確認ダイアログ (あれば) に
+        # 実際には当たらないようにする。
         out_path.unlink()
-    # The Save As dialog refuses a path in a folder that doesn't exist yet (it
-    # pops a message box instead of saving, which would surface only as a
-    # wait-for-output timeout).
+    # 名前を付けて保存ダイアログは、まだ存在しないフォルダのパスを拒否する
+    # (保存せずにメッセージボックスを出すので、出力待ちのタイムアウトとしてしか
+    # 表面化しない)。
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     exe_path = _find_modelviewer_path(args)
@@ -309,12 +307,11 @@ def cmd_convert(args: argparse.Namespace) -> int:
 
 
 def _copy_textures(src_dir: Path, dest_textures_dir: Path) -> int:
-    """Copy every recognized image file directly under ``src_dir`` (no
-    recursion) into ``dest_textures_dir``, overwriting existing files there.
-    Returns the count copied. Does **not** look at which textures the
-    ``.mv1`` actually references or where it expects them - that's
-    ``--with-textures`` (``_collect_textures``); this is the plain "copy
-    everything available into textures/" option."""
+    """``src_dir`` 直下 (再帰しない) の認識できる画像ファイルをすべて
+    ``dest_textures_dir`` にコピーし、既存のファイルは上書きする。コピーした数を
+    返す。``.mv1`` が実際にどのテクスチャを参照しどこに置くことを期待しているかは
+    **見ない** - それは ``--with-textures`` (``_collect_textures``) の役目で、こちらは
+    素朴な「使えるものを全部 textures/ にコピーする」オプション。"""
     if not src_dir.is_dir():
         raise CliError(f"--textures {src_dir} is not a directory")
     files = sorted(p for p in src_dir.iterdir() if p.is_file() and p.suffix.lower() in _TEXTURE_EXTS)
@@ -340,9 +337,9 @@ def cmd_install(args: argparse.Namespace) -> int:
               + "; ".join(problems), file=sys.stderr)
 
     if args.source:
-        # .mv1 assets have no single root (unlike .efkefc's one Assets/Art/Effect
-        # tree), so the .fbx source is kept next to its own .mv1 rather than in
-        # one global _Source/ tree.
+        # .mv1 アセットには (.efkefc の Assets/Art/Effect ツリーのような) 単一のルートが
+        # 無いので、.fbx の原本は 1 つの共通 _Source/ ツリーではなく、それぞれの .mv1 の
+        # 隣に置く。
         source_src = _resolve(args.source)
         source_dest = dest.parent / "_Source" / f"{dest.stem}.fbx"
         source_dest.parent.mkdir(parents=True, exist_ok=True)
@@ -350,9 +347,9 @@ def cmd_install(args: argparse.Namespace) -> int:
         print(f"copied source {source_dest}")
 
     if args.textures:
-        # Plain bulk copy, same "textures/" sibling-folder convention as real
-        # shipped assets - no attempt to figure out which files the .mv1
-        # references, see _copy_textures()'s docstring (and --with-textures).
+        # 素朴な一括コピー。配布済みの実アセットと同じ「textures/」兄弟フォルダの
+        # 規則 - .mv1 がどのファイルを参照するかは調べない。_copy_textures() の
+        # docstring (と --with-textures) を参照。
         textures_src = _resolve(args.textures)
         textures_dest = dest.parent / "textures"
         count = _copy_textures(textures_src, textures_dest)
@@ -362,9 +359,9 @@ def cmd_install(args: argparse.Namespace) -> int:
     name = dest.stem
     meta_path = dest.with_suffix(dest.suffix + ".meta")
     if meta_path.exists():
-        # Re-installing over an asset already wired into prefabs/components:
-        # keep its .meta (and so its GUID) untouched so every existing
-        # reference stays valid. Only a brand-new asset gets a fresh GUID.
+        # すでにプレハブ/コンポーネントから参照されているアセットへの再インストール:
+        # .meta (つまり GUID) には手を付けず、既存の参照をすべて有効なままにする。
+        # 新規アセットだけに新しい GUID を振る。
         guid = meta_mod.read_meta(meta_path)["guid"]
         print(f"installed {dest}")
         print(f"          {meta_path.name} (existing, kept)")
@@ -378,8 +375,8 @@ def cmd_install(args: argparse.Namespace) -> int:
         print(f"GUID:     {guid}")
 
     if args.with_textures:
-        # Done last so a missing texture still leaves a complete .mv1 + .meta
-        # behind; the non-zero exit only flags the incomplete texture set.
+        # 最後に行うので、テクスチャが欠けていても完全な .mv1 + .meta は
+        # 残る。0 以外の終了コードはテクスチャが揃っていないことだけを示す。
         placed, missing = _collect_textures(dest, [mv1_src.parent], dest.parent)
         _report_textures(dest, placed, missing, dest.parent)
     return 0

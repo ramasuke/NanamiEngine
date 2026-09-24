@@ -1,11 +1,11 @@
-"""Synthesize the shop (merchant stall) sound effects and install them as SoundFile assets under Assets/Audio/UI.
+"""店 (露店) の効果音を合成し、Assets/Audio/UI に SoundFile アセットとして入れる。
 
     python tools/art/shop_sfx.py
 
 Shop_Purchase: 買えたとき (ShopPresenter.purchaseSound_)。硬貨が数枚、革袋に落ちて鳴る
 Shop_Refuse:   お金が足りない / これ以上持てないとき (ShopPresenter.refuseSound_)。帳場の台を指で2回叩く鈍い音
-The primitives, the mp3 encoder and the .meta template come from tools/art/magic_sfx.py, so the format matches the
-other SE (MPEG-1 Layer III, 192 kbps, 48 kHz, stereo; volume_ 255 and loudness set by the waveform peak).
+プリミティブ・mp3 エンコーダ・.meta テンプレートは tools/art/magic_sfx.py のものを使うので、形式は他の SE と同じ
+(MPEG-1 Layer III, 192 kbps, 48 kHz, ステレオ。volume_ は 255、音量は波形のピークで決める)。
 """
 from __future__ import annotations
 

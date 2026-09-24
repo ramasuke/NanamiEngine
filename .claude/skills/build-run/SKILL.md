@@ -20,7 +20,7 @@ disable-model-invocation: true
 起動中の exe があるとリンクで `LNK1104` になるので、先に確認する。
 
 ```powershell
-Get-Process NanamiEngine -ErrorAction SilentlyContinue | Select-Object Id, Path, MainWindowTitle
+Get-Process EnviroHunter -ErrorAction SilentlyContinue | Select-Object Id, Path, MainWindowTitle
 ```
 
 今回ビルドする exe(下の表)と同じパスのプロセスがあれば、**勝手に終了させず** AskUserQuestion で
@@ -38,9 +38,9 @@ Get-Process NanamiEngine -ErrorAction SilentlyContinue | Select-Object Id, Path,
 
 | 引数 | exe |
 |---|---|
-| (なし) / `Debug` | `x64\Debug\NanamiEngine.exe` |
-| `Release` | `x64\Release\NanamiEngine.exe` |
-| `game` | `x64\Game\<Config>\NanamiEngine.exe` |
+| (なし) / `Debug` | `x64\Debug\EnviroHunter.exe` |
+| `Release` | `x64\Release\EnviroHunter.exe` |
+| `game` | `x64\Game\<Config>\EnviroHunter.exe` |
 
 PowerShell ツールで、切り離して起動する(完了を待たない):
 

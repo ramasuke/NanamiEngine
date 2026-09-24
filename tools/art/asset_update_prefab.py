@@ -1,4 +1,4 @@
-"""Build the title-screen asset update prefab ("早馬の荷札", 案A) from tools/art/asset_update.py's LAYOUT.
+"""tools/art/asset_update.py の LAYOUT からタイトル画面のアセット更新プレハブ ("早馬の荷札", 案A) を組む。
 
     python tools/art/asset_update.py --emit          # 先にスプライトを書き出す
     python tools/art/asset_update_prefab.py          # Assets/Prefab/UI/AssetUpdate/AssetUpdateUI.prefab を組み直す

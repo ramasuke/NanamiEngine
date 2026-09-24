@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Shim so ``python tools/bt.py ...`` works the same as ``python -m tools.bt ...``."""
+"""``python tools/bt.py ...`` を ``python -m tools.bt ...`` と同じように動かすためのシム。"""
 
 import sys
 from pathlib import Path

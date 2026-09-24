@@ -163,7 +163,7 @@ def plan(t):
     return out
 
 
-# ---------------------------------------------------------------- Nature / grass clean-up
+# ---------------------------------------------------------------- Nature / 草の整理
 def remove_overlapping_nature(scene, placements):
     nature = next((r for r in scene.roots if r.name == 'Nature'), None)
     if nature is None:
@@ -221,7 +221,7 @@ def clear_grass(placements):
     print(f'  grass: removed {removed} of {total} blades under houses / tents / fire')
 
 
-# ---------------------------------------------------------------- scene
+# ---------------------------------------------------------------- シーン
 def build_scene(placements):
     scene = reader.read_scene_file(SCENE)
     scene.roots = [r for r in scene.roots if r.name != ROOT_NAME]

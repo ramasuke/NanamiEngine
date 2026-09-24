@@ -1,7 +1,7 @@
-"""Re-export shim: the vcxproj/.filters text-splice editor moved to
-:mod:`tools.common.vcxproj` (format-generic, not BehaviourTree-specific). Only
-``CONTENT_ANCHOR`` - the BT Action content-directory anchor - stays here; callers
-in this package pass it explicitly to ``apply_splices``/``remove_splices``.
+"""再エクスポート用シム: vcxproj/.filters のテキスト差し込みエディタは
+:mod:`tools.common.vcxproj` に移動した（BehaviourTree 固有ではなく形式非依存）。
+BT Action のコンテンツディレクトリの目印である ``CONTENT_ANCHOR`` だけはここに残り、
+このパッケージの呼び出し側がそれを ``apply_splices``/``remove_splices`` に明示的に渡す。
 """
 
 from __future__ import annotations

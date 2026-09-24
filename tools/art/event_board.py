@@ -1,4 +1,4 @@
-"""Generate the event-board (イベント掲示板) UI design mocks composited on a real game screen.
+"""イベント掲示板の UI デザインモックを、実際のゲーム画面に合成して生成する。
 
     python tools/art/event_board.py --shot <screenshot.png> --out-dir <dir> [--banner-shot <grassland.png>]
 

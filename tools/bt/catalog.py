@@ -1,10 +1,10 @@
-"""Load and query ``tools/bt/catalog.json`` - the machine-readable description of
-every enemy behaviour Action (and the handful of helper structs used as action
-members), scraped from the C++ headers by :mod:`tools.bt.catalog_scan`.
+"""``tools/bt/catalog.json`` の読み込みと問い合わせ。これは敵の behaviour Action
+（と、action のメンバーとして使われる少数の補助構造体）すべてを機械可読に記述したもので、
+:mod:`tools.bt.catalog_scan` が C++ ヘッダーから抽出する。
 
-The catalog is committed and regenerable (``python -m tools.bt regen-catalog``).
-It drives: version-key resolution during round-trip, ``validate``, ``show`` and
-``set-params`` coercion, and ``add-action`` scaffolding hints.
+カタログはコミット対象で再生成可能（``python -m tools.bt regen-catalog``）。
+用途: ラウンドトリップ時のバージョンキー解決、``validate``、``show`` と
+``set-params`` の型変換、``add-action`` の雛形生成のヒント。
 """
 
 from __future__ import annotations
@@ -15,9 +15,9 @@ from typing import Any, Optional
 
 from . import npc_kind
 
-CATALOG_PATH = npc_kind.ENEMY.catalog_path  # backward-compat alias
+CATALOG_PATH = npc_kind.ENEMY.catalog_path  # 後方互換用エイリアス
 
-# param shapes that `set-params` can coerce a CLI string into
+# `set-params` が CLI 文字列から変換できるパラメータ形状
 SETTABLE_SHAPES = {"int", "float", "bool", "string", "enum", "vec2", "vec3", "field"}
 
 
@@ -31,7 +31,7 @@ class Catalog:
         self.nodes: dict[str, dict] = data.get("nodes", {})
         self.generated_from: str = data.get("generated_from", "")
 
-    # -- lookups ---------------------------------------------------------
+    # -- 検索 ---------------------------------------------------------
     def action_by_name(self, display_name: str) -> Optional[dict]:
         return self.actions.get(display_name)
 
@@ -44,27 +44,27 @@ class Catalog:
         return self.actions.get(name) if name else None
 
     def type_by_leaf(self, leaf: str) -> Optional[dict]:
-        """A struct/action param description addressable by its C++ leaf name."""
+        """C++ のリーフ名で引ける構造体/action のパラメータ記述。"""
         if leaf in self.structs:
             return self.structs[leaf]
         return self.action_by_leaf(leaf)
 
     def struct_by_fqn(self, fqn: str) -> Optional[tuple[str, dict]]:
-        """(leaf, entry) of a helper struct registered under this polymorphic fqn."""
+        """この多相 fqn で登録された補助構造体の (leaf, entry)。"""
         for leaf, entry in self.structs.items():
             if entry.get("fqn") == fqn:
                 return leaf, entry
         return None
 
     def resolve_action(self, spec: str) -> Optional[dict]:
-        """Accept a display name ('Basic::ToPlayerDistance'), an fqn, or a leaf."""
+        """表示名（'Basic::ToPlayerDistance'）、fqn、リーフ名のいずれも受け付ける。"""
         return (
             self.actions.get(spec)
             or self.action_by_fqn(spec)
             or self.action_by_leaf(spec)
         )
 
-    # -- helpers -------------------------------------------------------------
+    # -- ヘルパー -------------------------------------------------------------
     def params_of(self, entry: Optional[dict]) -> list[dict]:
         return list(entry.get("params", [])) if entry else []
 

@@ -1,12 +1,11 @@
-"""Load and query ``tools/animtree/catalog.json`` - the machine-readable
-description of every ``IAnimationNode`` subtype (scraped from the C++ headers
-by :mod:`tools.animtree.catalog_scan`), plus the fixed bool/int/float
-condition-predicate and parameter kinds (hand-written - see
-``catalog_scan.scan`` for why those two are not scanned).
+"""``tools/animtree/catalog.json`` の読み込みと問い合わせ。これは全 ``IAnimationNode``
+サブタイプの機械可読な記述（:mod:`tools.animtree.catalog_scan` が C++ ヘッダから抽出）と、
+固定の bool/int/float 条件述語・パラメータ種別（手書き。この 2 つをスキャンしない理由は
+``catalog_scan.scan`` を参照）から成る。
 
-The catalog is committed and regenerable (``python -m tools.animtree
-regen-catalog``). It drives: version-key resolution during round-trip,
-``validate``, ``show`` and ``set-node-params`` coercion.
+カタログはコミットされており再生成できる（``python -m tools.animtree
+regen-catalog``）。往復時のバージョンキー解決、``validate``、``show``、
+``set-node-params`` の型変換に使う。
 """
 
 from __future__ import annotations
@@ -17,7 +16,7 @@ from typing import Any, Optional
 
 CATALOG_PATH = Path(__file__).with_name("catalog.json")
 
-# param shapes that `set-node-params` can coerce a CLI string into
+# `set-node-params` が CLI 文字列から変換できるパラメータ形状
 SETTABLE_SHAPES = {"int", "float", "bool", "string", "field"}
 
 
@@ -34,7 +33,7 @@ class Catalog:
         self.params: dict[str, dict] = data.get("params", {})
         self.generated_from: str = data.get("generated_from", "")
 
-    # -- node-type lookups -------------------------------------------------
+    # -- ノード型の検索 -------------------------------------------------
     def node_by_fqn(self, fqn: str) -> Optional[dict]:
         return self.node_types.get(fqn)
 
@@ -43,21 +42,21 @@ class Catalog:
         return self.node_types.get(fqn) if fqn else None
 
     def resolve_node_type(self, spec: str) -> Optional[dict]:
-        """Accept an fqn or a bare leaf class name (e.g. ``AnimationClipNode``)."""
+        """fqn または修飾なしのクラス名（例: ``AnimationClipNode``）を受け付ける。"""
         return self.node_types.get(spec) or self.node_by_leaf(spec)
 
     def addable_node_types(self) -> dict[str, dict]:
-        """Node types a user can add via ``add-clip-node``-style verbs -
-        excludes the two fixed singletons (Entry/AnyState)."""
+        """``add-clip-node`` 系のコマンドで追加できるノード型 -
+        固定のシングルトン 2 つ（Entry/AnyState）は除く。"""
         return {fqn: e for fqn, e in self.node_types.items() if not e.get("singleton")}
 
     def params_of(self, entry: Optional[dict]) -> list[dict]:
         return list(entry.get("params", [])) if entry else []
 
     def params_for_version(self, entry: Optional[dict], class_version: int) -> list[dict]:
-        """The params a node stored at ``class_version`` actually carries: a member the
-        engine's ``load()`` gates behind ``if (version >= N)`` (catalog ``since``) is
-        absent from older blobs, and cereal skips it on load, so it must not be required."""
+        """``class_version`` で保存されたノードが実際に持つパラメータ。エンジンの
+        ``load()`` が ``if (version >= N)`` で読むメンバー（カタログの ``since``）は
+        古い blob には無く cereal も読み飛ばすので、必須にしてはならない。"""
         return [p for p in self.params_of(entry) if int(p.get("since", 0)) <= class_version]
 
     def param_by_key(self, entry: Optional[dict], json_key: str) -> Optional[dict]:
@@ -78,7 +77,7 @@ class Catalog:
                 return p["key"]
         return None
 
-    # -- condition / param kind lookups -------------------------------------
+    # -- 条件 / パラメータ種別の検索 -------------------------------------
     def condition_fqn(self, kind: str) -> str:
         e = self.conditions.get(kind)
         if e is None:

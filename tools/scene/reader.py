@@ -1,15 +1,14 @@
-"""cereal-JSON text -> :mod:`tools.scene.model` (:class:`Scene` / :class:`Prefab`).
+"""cereal-JSON テキスト -> :mod:`tools.scene.model`（:class:`Scene` / :class:`Prefab`）。
 
-Node/Component structure is decoded into the model; everything inside a
-Component's own ``data`` (after its outer ``cereal_class_version``) becomes a
-tagged :mod:`tools.common.blob` so the writer can rebuild bookkeeping from
-scratch without needing to understand every component type's internal shape
-(mirrors ``tools.bt.reader``'s approach to action parameters).
+Node/Component の構造はモデルにデコードする。Component 自身の ``data`` の中身
+（外側の ``cereal_class_version`` 以降）はすべてタグ付きの :mod:`tools.common.blob` にし、
+writer が各コンポーネント型の内部形状を理解しなくても管理情報を一から組み直せるようにする
+（``tools.bt.reader`` のアクションパラメータの扱いと同じ方針）。
 
-Only "pure tree" archives are supported (every ``ptr_wrapper`` writes fresh
-data - true of every real ``.scene``/``.prefab`` in this engine, since a scene's
-copy of a prefab is always a fully independent baked snapshot with fresh GUIDs,
-never a live shared reference); a back-reference raises :class:`PureTreeError`.
+対応するのは「純粋なツリー」のアーカイブだけ（どの ``ptr_wrapper`` も新しいデータを書く。
+このエンジンの実際の ``.scene``/``.prefab`` はすべてそうで、シーン内のプレハブのコピーは
+常に新しい GUID を持つ完全に独立した焼き込みスナップショットであり、共有参照ではない）。
+後方参照があれば :class:`PureTreeError` を送出する。
 """
 
 from __future__ import annotations
@@ -30,9 +29,9 @@ class PureTreeError(RuntimeError):
 
 
 class _Ctx:
-    """Per-parse state: the archive's polymorphic type table and per-type
-    class-version memory (learned from whichever occurrence first shows
-    ``cereal_class_version`` - see module docstring in ``model.py``)."""
+    """パースごとの状態: アーカイブのポリモーフィック型テーブルと、型ごとの
+    クラスバージョンの記憶（``cereal_class_version`` を最初に出力した出現から学習する。
+    ``model.py`` のモジュール docstring 参照）。"""
 
     def __init__(self) -> None:
         self.poly: dict[int, str] = {}
@@ -71,7 +70,7 @@ def _num(v: Any) -> Any:
 
 
 def _strip_ccv(obj: OrderedObj) -> tuple[Optional[int], OrderedObj]:
-    """Split a leading ``cereal_class_version`` off an object."""
+    """オブジェクト先頭の ``cereal_class_version`` を切り離す。"""
     if len(obj) and obj.keys()[0] == "cereal_class_version":
         v = _num(obj.values()[0])
         rest = OrderedObj(obj.items()[1:])
@@ -85,7 +84,7 @@ def _is_guid_obj(obj: OrderedObj) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# generic blob tagging (catalog-independent - see model.py docstring)
+# 汎用 blob タグ付け（カタログ非依存。model.py の docstring 参照）
 # ---------------------------------------------------------------------------
 def _tag_value(ctx: _Ctx, val: Any) -> Any:
     if isinstance(val, (Num, str, bool)) or val is None:
@@ -107,14 +106,12 @@ def _tag_value(ctx: _Ctx, val: Any) -> Any:
         v, body = _strip_ccv(val)
         if _is_guid_obj(val):
             return Ver(("type", "Guid"), v or 0, OrderedObj([("value_", body["value_"])]))
-        # Fallback for unmodeled versioned structs (no catalog to name the real
-        # C++ type here): key by structural fingerprint AND pin literal_presence
-        # so this occurrence's version is reproduced unconditionally. Without
-        # this, several genuinely-different, structurally-identical marker
-        # types (e.g. multiple empty mixin base classes serialised as bare
-        # sibling "value1"/"value2"/... members) would collide on the same
-        # synthetic key and wrongly suppress each other's version after the
-        # first - see tools.common.blob.Ver.literal_presence.
+        # モデル化されていないバージョン付き構造体のフォールバック（ここには実際の
+        # C++ 型名を与えるカタログがない）: 構造フィンガープリントをキーにし、さらに
+        # literal_presence を固定して、この出現のバージョンを無条件に再現する。
+        # こうしないと、本当は別物なのに構造が同一のマーカー型（例: 兄弟の "value1"/"value2"/...
+        # メンバーとしてシリアライズされる複数の空の mixin 基底クラス）が同じ合成キーで衝突し、
+        # 最初の 1 つ以降のバージョンを誤って抑制してしまう。tools.common.blob.Ver.literal_presence 参照。
         return Ver(("fp", fingerprint(val)), v or 0, _tag_plain(ctx, body), literal_presence=True)
 
     if _is_guid_obj(val):
@@ -139,11 +136,11 @@ def _read_quat(obj: OrderedObj) -> model.Quat:
 
 
 def _read_transform(ctx: _Ctx, obj: OrderedObj) -> model.Transform:
-    _v, obj = _strip_ccv(obj)  # Transform's own version (0) - re-derived by the writer
+    _v, obj = _strip_ccv(obj)  # Transform 自身のバージョン（0）- writer が再導出する
     local_pos = _read_vec3(obj["localPos_"])
     local_rot = _read_quat(obj["localRot_"])
     local_scale = _read_vec3(obj["localScale_"])
-    world_matrix = obj["worldMatrix_"]  # opaque - never edited, passed through untouched
+    world_matrix = obj["worldMatrix_"]  # 不透明 - 編集せずそのまま通す
     count = int(_num(obj["childCount"]))
     children = []
     for slot in obj.values_for("child"):
@@ -157,7 +154,7 @@ def _read_transform(ctx: _Ctx, obj: OrderedObj) -> model.Transform:
 
 
 # ---------------------------------------------------------------------------
-# Components
+# コンポーネント
 # ---------------------------------------------------------------------------
 def _read_component_slot(ctx: _Ctx, slot: OrderedObj) -> model.Component:
     s = ctx.ptr_slot(slot)
@@ -179,7 +176,7 @@ def _read_component_slot(ctx: _Ctx, slot: OrderedObj) -> model.Component:
 
 
 def _read_components(ctx: _Ctx, obj: OrderedObj) -> list[model.Component]:
-    _v, obj = _strip_ccv(obj)  # ComponentGroup's own version (0)
+    _v, obj = _strip_ccv(obj)  # ComponentGroup 自身のバージョン（0）
     count = int(_num(obj["componentCount"]))
     return [_read_component_slot(ctx, obj[f"component_{i}"]) for i in range(count)]
 
@@ -199,8 +196,8 @@ def _read_gameobject_body(ctx: _Ctx, kind: str, obj: OrderedObj) -> model.GameOb
 
 
 def _read_gameobject_slot(ctx: _Ctx, slot: OrderedObj) -> Optional[model.GameObjectNode]:
-    """Read a ``shared_ptr<IGameObject>`` slot (a ``gameObject_N`` entry, or a
-    Transform's repeated ``"child"`` entry)."""
+    """``shared_ptr<IGameObject>`` スロット（``gameObject_N`` エントリ、または
+    Transform の繰り返される ``"child"`` エントリ）を読む。"""
     s = ctx.ptr_slot(slot)
     if s["null"]:
         return None
@@ -208,11 +205,11 @@ def _read_gameobject_slot(ctx: _Ctx, slot: OrderedObj) -> Optional[model.GameObj
     kind = model.GAMEOBJECT_KIND_BY_FQN.get(fqn)
     if kind is None:
         raise ValueError(f"unknown GameObject type in slot: {fqn!r}")
-    _v, data = _strip_ccv(s["data"])  # the concrete type's own version (SceneGameObject=0, ...)
-    base = data["value0"]  # IGameObject -> IObject base chain: no fields to extract, just skip
+    _v, data = _strip_ccv(s["data"])  # 具象型自身のバージョン（SceneGameObject=0, ...）
+    base = data["value0"]  # IGameObject -> IObject の基底チェーン: 取り出すフィールドはないので読み飛ばす
     if not isinstance(base, OrderedObj):
         raise ValueError("GameObject base-class block (value0) has an unexpected shape")
-    body = OrderedObj(data.items()[1:])  # everything after value0: isActive_.. transform_
+    body = OrderedObj(data.items()[1:])  # value0 以降すべて: isActive_.. transform_
     return _read_gameobject_body(ctx, kind, body)
 
 
@@ -242,15 +239,14 @@ def read_scene_file(path) -> model.Scene:
 # Prefab
 # ---------------------------------------------------------------------------
 def read_prefab(text: str) -> model.Prefab:
-    """A ``.prefab`` root is written by hand-rolled ``archive(CEREAL_NVP(x))``
-    calls in ``PrefabGameObject::OnSave()`` - NOT through the class's own
-    ``save``/``load`` template (that pair only fires for the in-memory
-    portable-binary round-trip used by ``CopyForInstantiate``). So, unlike a
-    ``gameObject_N`` slot, the root here is a bare object: no polymorphic
-    wrapper, no outer ``cereal_class_version``, no IGameObject/IObject base
-    chain - just the five named fields, then the ``copiedObjectGuidList_`` tail
-    as a bare count (``value0``) followed by that many bare ``Guid``s
-    (``value1..N``).
+    """``.prefab`` のルートは ``PrefabGameObject::OnSave()`` 内で手書きの
+    ``archive(CEREAL_NVP(x))`` 呼び出しによって書かれる。クラス自身の ``save``/``load``
+    テンプレート経由ではない（そちらは ``CopyForInstantiate`` が使うメモリ上の
+    portable-binary 往復でのみ呼ばれる）。そのため ``gameObject_N`` スロットと違い、
+    ここのルートは素のオブジェクトで、ポリモーフィックラッパーも外側の ``cereal_class_version`` も
+    IGameObject/IObject 基底チェーンもない。名前付きの 5 フィールドの後に、
+    ``copiedObjectGuidList_`` の末尾部分が素の個数（``value0``）とその数だけの素の ``Guid``
+    （``value1..N``）として続くだけ。
     """
     ctx = _Ctx()
     root = loads(text)

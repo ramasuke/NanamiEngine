@@ -1,15 +1,15 @@
-"""cereal-JSON text  ->  :class:`tools.animtree.model.Tree`.
+"""cereal-JSON テキスト  ->  :class:`tools.animtree.model.Tree`。
 
-Tolerant of the archive bookkeeping (polymorphic ids, ptr_wrapper ids,
-cereal_class_version): node/transition/condition/param structure is decoded
-into the model, while a node's non-guid/non-position fields become a tagged
-:mod:`tools.common.blob` so the writer can rebuild their bookkeeping exactly.
+アーカイブの管理情報（polymorphic id、ptr_wrapper id、cereal_class_version）に
+寛容: ノード/遷移/条件/パラメータの構造はモデルに復号し、ノードの guid/position 以外の
+フィールドはタグ付きの :mod:`tools.common.blob` にして、writer が管理情報を正確に
+再構築できるようにする。
 
-Only "pure tree" archives are supported (every ``ptr_wrapper`` writes fresh
-data); a back-reference raises :class:`PureTreeError`. Every real ``.animTree``
-file the engine ever writes is one, since ``nodes_``/the transition lists are
-plain arrays of freshly-owned objects (transitions reference nodes by GUID
-*value*, never by cereal pointer identity - see model.py).
+「純粋な木」のアーカイブ（すべての ``ptr_wrapper`` が新しいデータを書く）のみ対応し、
+後方参照があれば :class:`PureTreeError` を送出する。``nodes_``/遷移リストは
+新規所有オブジェクトの単純な配列なので（遷移はノードを GUID の *値* で参照し、
+cereal のポインタ同一性は使わない - model.py 参照）、エンジンが書く実際の
+``.animTree`` はすべてこれに当てはまる。
 """
 
 from __future__ import annotations
@@ -31,13 +31,13 @@ class PureTreeError(RuntimeError):
 
 
 class _Ctx:
-    """Per-parse state: the archive's polymorphic type table."""
+    """パースごとの状態: アーカイブのポリモーフィック型テーブル。"""
 
     def __init__(self, cat: catalog_mod.Catalog) -> None:
         self.cat = cat
         self.poly: dict[int, str] = {}
-        # cereal writes a type's cereal_class_version only on its first occurrence
-        # in the archive; later instances of that type are stored at the same version
+        # cereal は型の cereal_class_version をアーカイブ内で最初に現れたときだけ書く。
+        # 以降の同じ型のインスタンスは同じバージョンで保存されている
         self.node_versions: dict[str, int] = {}
 
     def ptr_slot(self, slot: OrderedObj):
@@ -73,7 +73,7 @@ def _num(v: Any) -> int:
 
 
 def _strip_ccv(obj: OrderedObj) -> tuple[Optional[int], OrderedObj]:
-    """Split a leading ``cereal_class_version`` off an object."""
+    """オブジェクト先頭の ``cereal_class_version`` を切り離す。"""
     if len(obj) and obj.keys()[0] == "cereal_class_version":
         v = _num(obj.values()[0])
         rest = OrderedObj(obj.items()[1:])
@@ -92,19 +92,18 @@ def _guid_value(obj: OrderedObj) -> str:
 
 
 def _vec2(obj: OrderedObj) -> tuple[Any, Any]:
-    # kept as the raw Num objects loads() produced (not converted to plain
-    # Python float) so an unedited value round-trips through its *original*
-    # literal text - RapidJSON's Grisu2 float printer and Python's repr()
-    # occasionally disagree on the least-significant digit of the same double
-    # (see tools/common/cereal_json.py's module docstring), which would
-    # otherwise break byte-identical round-tripping of derived (non-integral)
-    # coordinates.
+    # loads() が作った生の Num オブジェクトのまま保持する（素の Python float に
+    # 変換しない）ので、未編集の値は *元の* リテラル表記のまま往復する。
+    # RapidJSON の Grisu2 浮動小数点出力と Python の repr() は同じ double の
+    # 最下位桁で食い違うことがあり（tools/common/cereal_json.py のモジュール
+    # docstring 参照）、そうしないと派生した（整数でない）座標の
+    # バイト一致の往復が壊れる。
     return (obj["value0"], obj["value1"])
 
 
 def _typed(kind: str, raw: Any) -> Any:
-    # int/float: `raw` is already the Num loads() produced - keep it as-is
-    # (see _vec2) rather than unwrapping to a plain Python number.
+    # int/float: `raw` はすでに loads() が作った Num なのでそのまま保持する
+    # （_vec2 参照）。素の Python 数値には戻さない。
     if kind == "bool":
         return bool(raw)
     if kind in ("int", "float"):
@@ -113,7 +112,7 @@ def _typed(kind: str, raw: Any) -> Any:
 
 
 # ---------------------------------------------------------------------------
-# generic value tagging (mirrors tools.bt.reader._tag_value / _tag_field)
+# 汎用の値タグ付け（tools.bt.reader._tag_value / _tag_field と同じ）
 # ---------------------------------------------------------------------------
 def _tag_value(ctx: _Ctx, val: Any, pinfo: Optional[dict]) -> Any:
     if isinstance(val, (Num, str, bool)) or val is None:
@@ -155,7 +154,7 @@ def _tag_plain(ctx: _Ctx, obj: OrderedObj) -> OrderedObj:
 
 def _tag_field(ctx: _Ctx, val: OrderedObj, ftype: str) -> Ver:
     outer_v, outer_body = _strip_ccv(val)
-    inner = outer_body["value0"]                       # ptr slot (exact) - FieldContext<T>
+    inner = outer_body["value0"]                       # ptr スロット（exact） - FieldContext<T>
     s = ctx.ptr_slot(inner)
     holder_data = s["data"]
     holder_v, holder_body = _strip_ccv(holder_data)
@@ -172,12 +171,12 @@ def _tag_field(ctx: _Ctx, val: OrderedObj, ftype: str) -> Ver:
 
 
 # ---------------------------------------------------------------------------
-# node
+# ノード
 # ---------------------------------------------------------------------------
 def _is_base_stub(key: str, val: Any) -> bool:
-    """The leading, unnamed ``archive(cereal::base_class<IAnimationNode>(this))``
-    call every node's ``save()`` makes - always key "value0", never a catalog
-    param, always either ``{}`` or ``{"cereal_class_version": N}``."""
+    """各ノードの ``save()`` が最初に行う名前なしの
+    ``archive(cereal::base_class<IAnimationNode>(this))`` 呼び出し。キーは常に "value0" で
+    カタログのパラメータではなく、中身は常に ``{}`` か ``{"cereal_class_version": N}``。"""
     return key == "value0" and isinstance(val, OrderedObj) and \
         all(kk == "cereal_class_version" for kk in val.keys())
 
@@ -221,10 +220,10 @@ def _read_node(ctx: _Ctx, slot: OrderedObj, *, expected_fqn: Optional[str] = Non
 
 
 # ---------------------------------------------------------------------------
-# conditions / transitions
+# 条件 / 遷移
 # ---------------------------------------------------------------------------
 def _read_conditions(ctx: _Ctx, slot: OrderedObj) -> list[model.Condition]:
-    data = slot["ptr_wrapper"]["data"]              # unique_ptr shape: {"valid":1, "data":...}
+    data = slot["ptr_wrapper"]["data"]              # unique_ptr の形: {"valid":1, "data":...}
     _v, data = _strip_ccv(data)
     count = int(_num(data["value0"]))
     out: list[model.Condition] = []
@@ -234,7 +233,7 @@ def _read_conditions(ctx: _Ctx, slot: OrderedObj) -> list[model.Condition]:
         if kind is None:
             raise ValueError(f"unknown condition type: {s['fqn']!r}")
         _v2, body = _strip_ccv(s["data"])
-        # body["value0"] is the IAnimationNodePathAdditionCondition base stub - skip
+        # body["value0"] は IAnimationNodePathAdditionCondition 基底のスタブなので読み飛ばす
         out.append(model.Condition(name=body["name_"], kind=kind, value=_typed(kind, body["equalValue_"])))
     return out
 
@@ -244,7 +243,7 @@ def _read_transition(ctx: _Ctx, slot: OrderedObj) -> model.Transition:
     data = s["data"]
     _v, data = _strip_ccv(data)
     conditions = _read_conditions(ctx, data["additionConditionGroup_"])
-    duration = data["transitionDuration_secs_"]  # raw Num - see _vec2
+    duration = data["transitionDuration_secs_"]  # 生の Num - _vec2 参照
     from_guid = _guid_value(data["fromNodeGuid_"])
     next_guid = _guid_value(data["nextNodeGuid_"])
     visual_from_guid = _guid_value(data["visualFromNodeGuid_"]) if "visualFromNodeGuid_" in data else from_guid
@@ -253,10 +252,10 @@ def _read_transition(ctx: _Ctx, slot: OrderedObj) -> model.Transition:
 
 
 def _read_params(ctx: _Ctx, slot: OrderedObj) -> list[model.Param]:
-    # ParameterGroup is not IObject-derived (no virtual base) - its save()/
-    # load() take no version arg, so there is no polymorphic_id wrapper and no
-    # cereal_class_version to strip at this level, unlike every other
-    # shared_ptr in this file.
+    # ParameterGroup は IObject 派生ではない（仮想基底なし）。save()/load() は
+    # バージョン引数を取らないので、このファイルの他の shared_ptr と違い、
+    # この階層には polymorphic_id のラッパーも取り除くべき
+    # cereal_class_version も無い。
     data = slot["ptr_wrapper"]["data"]
     count = int(_num(data["value0"]))
     out: list[model.Param] = []

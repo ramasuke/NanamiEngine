@@ -13,6 +13,7 @@
 namespace NanamiEngine::Core::Application::Configuration
 {
     constexpr auto BUILD_DEFAULT_PRODUCT_NAME     = "NanamiEngine";
+    constexpr auto BUILD_DEFAULT_CLIENT_VERSION   = "1.0.0";
     // NOTE: Scene の既定パスと揃える
     constexpr auto BUILD_DEFAULT_START_SCENE_PATH = "Assets/Scene/SampleScene.scene";
     // NOTE: 空なら vswhere で探す
@@ -21,6 +22,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr bool BUILD_DEFAULT_ASSET_UPDATES    = true;
 
     std::string              BuildConfiguration::productName_         = BUILD_DEFAULT_PRODUCT_NAME;
+    std::string              BuildConfiguration::clientVersion_       = BUILD_DEFAULT_CLIENT_VERSION;
     std::string              BuildConfiguration::startSceneGuid_;
     BuildTargetConfiguration BuildConfiguration::targetConfiguration_ = BuildTargetConfiguration::Release;
     std::string              BuildConfiguration::msBuildPath_         = BUILD_DEFAULT_MSBUILD_PATH;
@@ -31,6 +33,8 @@ namespace NanamiEngine::Core::Application::Configuration
     // RuntimeConfigDirectory() と揃える
     constexpr auto BUILD_RUNTIME_CONFIG_PATH  = "Build/Runtime/";
     constexpr auto BUILD_PRODUCT_NAME_KEY     = "ProductName";
+    // NOTE: tools/dist/__main__.py (CLIENT_VERSION_PATH) も読む
+    constexpr auto BUILD_CLIENT_VERSION_KEY   = "ClientVersion";
     constexpr auto BUILD_START_SCENE_GUID_KEY = "StartSceneGuid";
     constexpr auto BUILD_CONFIGURATION_KEY    = "Configuration";
     constexpr auto BUILD_MSBUILD_PATH_KEY     = "MsBuildPath";
@@ -115,6 +119,7 @@ namespace NanamiEngine::Core::Application::Configuration
     void BuildConfiguration::Load()
     {
         productName_     = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(BUILD_RUNTIME_CONFIG_PATH, BUILD_PRODUCT_NAME_KEY,     std::string(BUILD_DEFAULT_PRODUCT_NAME));
+        clientVersion_   = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(BUILD_RUNTIME_CONFIG_PATH, BUILD_CLIENT_VERSION_KEY,   std::string(BUILD_DEFAULT_CLIENT_VERSION));
         startSceneGuid_  = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(BUILD_RUNTIME_CONFIG_PATH, BUILD_START_SCENE_GUID_KEY, std::string());
         msBuildPath_     = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(BUILD_CONFIG_PATH,         BUILD_MSBUILD_PATH_KEY,     std::string(BUILD_DEFAULT_MSBUILD_PATH));
         outputDirectory_ = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(BUILD_CONFIG_PATH,         BUILD_OUTPUT_DIRECTORY_KEY, std::string(BUILD_DEFAULT_OUTPUT_DIRECTORY));
@@ -138,6 +143,7 @@ namespace NanamiEngine::Core::Application::Configuration
         try
         {
             Module::ProjectConfig::SaveWithPath<std::string>(BUILD_RUNTIME_CONFIG_PATH, BUILD_PRODUCT_NAME_KEY,     productName_);
+            Module::ProjectConfig::SaveWithPath<std::string>(BUILD_RUNTIME_CONFIG_PATH, BUILD_CLIENT_VERSION_KEY,   clientVersion_);
             Module::ProjectConfig::SaveWithPath<std::string>(BUILD_RUNTIME_CONFIG_PATH, BUILD_START_SCENE_GUID_KEY, startSceneGuid_);
             Module::ProjectConfig::SaveWithPath<std::string>(BUILD_CONFIG_PATH,         BUILD_CONFIGURATION_KEY,    BuildConfigTargetToString(targetConfiguration_));
             Module::ProjectConfig::SaveWithPath<std::string>(BUILD_CONFIG_PATH,         BUILD_MSBUILD_PATH_KEY,     msBuildPath_);
@@ -168,6 +174,24 @@ namespace NanamiEngine::Core::Application::Configuration
             return "Product name can't contain control characters";
         if (productName.back() == '.' || productName.back() == ' ')
             return "Product name can't end with '.' or a space";
+        return {};
+    }
+
+    void BuildConfiguration::SetClientVersion(const std::string& clientVersion)
+    {
+        if (clientVersion_ == clientVersion)
+            return;
+        clientVersion_ = clientVersion;
+        Save();
+    }
+
+    std::string BuildConfiguration::ValidateClientVersion(const std::string& clientVersion)
+    {
+        // NOTE: tools/dist/upload.py の VERSION_RE と揃える
+        if (clientVersion.empty())
+            return "Client version is empty";
+        if (!std::ranges::all_of(clientVersion, [](const char c) { return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == '-'; }))
+            return "Client version must be [0-9A-Za-z._-]+ (compared as dot-separated numbers, e.g. 1.2.0)";
         return {};
     }
 

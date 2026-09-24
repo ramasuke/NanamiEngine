@@ -12,6 +12,15 @@ python -m tools.dist diff <installed.json> <manifest.json>
 python tools/dist/selftest.py
 ```
 
+## 版番号
+
+- `--version`（Asset Dist の Version）は**配信するアセットの版**。`[0-9A-Za-z._-]+` で、リリースのたびに上げる
+  （`1.0.1`, `1.0.2`, …）。同じ版番号で別の内容は上げられない。
+- `requiredClientVersion` は**これ未満のゲーム本体には更新を当てない**という下限。ゲーム本体の版は
+  Build Settings の **Client Version**（`ProjectConfig/Build/Runtime/ClientVersion.json`、書き出したゲームに同梱）で、
+  `--required-client-version` を省略するとこの値が入る。上げるのは exe ごと新しい zip を配るときだけ。
+- 比較はドット区切りの数値（`1.9.0` < `1.10.0`、`1.0` = `1.0.0`、数字以外の文字は無視）。
+
 ## 配信先の設定
 
 `tools/dist/dist_config.json` に置き、コードにはハードコードしない。
@@ -61,6 +70,9 @@ python -m tools.dist build --version 1.1.0
 python -m tools.dist upload --dry-run      # 何が上がるかの表示と、中身の再検証だけ
 python -m tools.dist upload                # 差分ブロブ → manifest-1.1.0.json → manifest.json（最後）
 ```
+
+エディタのツールバーにある **Asset Dist** からも同じ 3 つを実行できる（`Packages/AssetUpdater/Editor/AssetDistributionToolbarWidget`）。
+Release は同じ版の Build Manifest がそのセッションで成功した後だけ押せて、押すと確認ダイアログが出る。出力はウィジェット内のログに表示される。
 
 `upload` がやること:
 
@@ -143,7 +155,8 @@ Windows に登録し、終了まで外さないので、実行中は置き換え
 
 そこで `upload` は、公開中の `manifest.json` と比べて、**既存のフォントが変更・削除されているのに
 `requiredClientVersion` が公開中のものより上がっていない**リリースを拒否する（dry-run でも）。
-フォントを変えるときは、新しい zip を配ったうえで `build --required-client-version <新しい版>` で作り直す。
+フォントを変えるときは、Build Settings の Client Version を上げた新しい zip を配ったうえで、
+`build --required-client-version <新しい版>` で作り直す。
 フォントの**追加**は問題にならない（プレイヤーの PC にまだ無いファイルは開かれていないので書ける）。
 
 ## 現状の規模（2026-09-18）

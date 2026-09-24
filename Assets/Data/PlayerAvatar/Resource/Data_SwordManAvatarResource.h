@@ -98,6 +98,8 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] float GroundCheckUpOffset() const { return groundCheckUpOffset_; }
         /** 接地判定SphereCastの下方向への探索距離 */
         [[nodiscard]] float GroundCheckDistance() const { return groundCheckDistance_; }
+        /** ジャンプ攻撃に入れるかの接地判定だけに使う SphereCast の半径。GroundCheckRadius だと踏み切り直後も接地扱いになり出せない */
+        [[nodiscard]] float JumpAttackGroundCheckRadius() const { return jumpAttackGroundCheckRadius_; }
         /** 歩き・走り・踏み込みで登れる斜面の最大角度。これより急な面へ向かう速度は消す */
         [[nodiscard]] float MaxWalkableSlope_deg() const { return maxWalkableSlope_deg_; }
         /** 斜面判定SphereCastの半径。カプセルの半径より少し小さくする */
@@ -159,6 +161,7 @@ namespace NanamiEngine::Module::Asset
         [[serialize(22)]] FIELD(SoundFile)              jumpAttackWhiffSound_;
         [[serialize(22)]] FIELD(SoundFile)              jumpAttackHitSound_;
         [[serialize(22)]] FIELD(SoundFile)              jumpAttackPlungeSound_;
+        [[serialize(23)]] float                         jumpAttackGroundCheckRadius_ = 3.5f;
 
         
 #pragma region Serialization Function
@@ -238,6 +241,7 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(jumpAttackWhiffSound_));
             archive(CEREAL_NVP(jumpAttackHitSound_));
             archive(CEREAL_NVP(jumpAttackPlungeSound_));
+            archive(CEREAL_NVP(jumpAttackGroundCheckRadius_));
         }
 
         template<class Archive>
@@ -382,11 +386,13 @@ namespace NanamiEngine::Module::Asset
                 archive(CEREAL_NVP(jumpAttackHitSound_));
                 archive(CEREAL_NVP(jumpAttackPlungeSound_));
             }
+
+            if (version >= 23) archive(CEREAL_NVP(jumpAttackGroundCheckRadius_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 22);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 23);
 #pragma endregion

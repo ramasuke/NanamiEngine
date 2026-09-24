@@ -1,4 +1,4 @@
-"""Build the island-restoration sites and place them in MainIslandScene.
+"""島の復興地点を組み、MainIslandScene に置く。
 
     python tools/art/restoration_sites.py            # 施設ごとの prefab を組み、MainIslandScene に置き直す
     python tools/art/restoration_sites.py --no-place # prefab だけ組む

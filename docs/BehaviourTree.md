@@ -243,7 +243,7 @@ equivalents, when `--npc-kind friendly`). `--param` supports `int|float|bool|str
 add `glm::vec3` / `FIELD(T)` members by hand afterwards. Then build:
 
 ```
-MSBuild.exe NanamiEngine.sln -p:Configuration=Debug -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12
+MSBuild.exe EnviroHunter.sln -p:Configuration=Debug -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12
 ```
 
 `remove-action --name FleeFromPlayer --category "Basic"` reverses everything (files
@@ -277,11 +277,11 @@ MSBuild.exe NanamiEngine.sln -p:Configuration=Debug -p:Platform=x64 -p:Preferred
 3. **Three wiring points** (no code-gen / globbing exists):
    * `Assets/Scripts/Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionHeaders.h`
      — add one `#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/<Category>/<Name>/Enemy_Behaviour_Action_<Name>.h"`.
-   * `NanamiEngine.vcxproj` — add `<ClCompile Include="Assets\Scripts\…\<Name>.cpp" />`
+   * `EnviroHunter.vcxproj` — add `<ClCompile Include="Assets\Scripts\…\<Name>.cpp" />`
      and `<ClInclude Include="Assets\Scripts\…\<Name>.h" />` (bare entries inherit the
      cereal include dirs + `/bigobj` + forced `stdafx.h` from the `Debug|x64`
      `ItemDefinitionGroup`). **Mandatory.**
-   * `NanamiEngine.vcxproj.filters` — mirror the two entries with `<Filter>Source Files</Filter>`
+   * `EnviroHunter.vcxproj.filters` — mirror the two entries with `<Filter>Source Files</Filter>`
      / `<Filter>Header Files</Filter>`. Optional (Solution Explorer only).
 
 `.h`/`.cpp` in this repo are **UTF-8 with a BOM** (see CLAUDE.md) - `add-action`

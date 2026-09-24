@@ -5,7 +5,7 @@ ImGui window operations, scene/GameObject/component inspection and edits, play m
 log. Two halves:
 
 ```
-Claude Code ──stdio (MCP)──> python -m tools.automcp serve ──TCP 127.0.0.1:47321 (JSON lines)──> NanamiEngine.exe
+Claude Code ──stdio (MCP)──> python -m tools.automcp serve ──TCP 127.0.0.1:47321 (JSON lines)──> EnviroHunter.exe
                               (.mcp.json, this package)                                          (Config > AutoMCP)
 ```
 
@@ -40,7 +40,7 @@ editor and check *Config > AutoMCP > Enable AutoMCP*. If you change the port the
 | Tool | Engine `cmd` | Notes |
 |---|---|---|
 | `engine_status` | `status` | play state, fps, screen, main window/scene, working directory |
-| `engine_launch` | – | starts `x64/Debug/NanamiEngine.exe` with cwd = repo root (`NANAMI_ENGINE_EXE` / `NANAMI_ENGINE_CWD` override) and waits for AutoMCP |
+| `engine_launch` | – | starts `x64/Debug/EnviroHunter.exe` with cwd = repo root (`NANAMI_ENGINE_EXE` / `NANAMI_ENGINE_CWD` override) and waits for AutoMCP |
 | `screenshot` | `screenshot` | `mode` `full` (with ImGui) / `game` (3D only); returns an image. Saved under `<cwd>/AutoMcp/Screenshots/` (last 20 kept) |
 | `windows_list`, `window_open`, `window_close`, `window_set`, `main_window_switch` | `windows.*`, `mainwindow.switch` | `window_set` takes the exact ImGui name incl. `##id` |
 | `scene_list`, `scene_load`, `scene_reload` | `scene.*` | |

@@ -1,4 +1,4 @@
-"""Tree-level CLI subcommands: new-tree, show, validate, and the edit verbs."""
+"""ツリー単位の CLI サブコマンド: new-tree, show, validate と編集コマンド。"""
 
 from __future__ import annotations
 
@@ -69,9 +69,9 @@ def cmd_show(args: argparse.Namespace) -> int:
 
 
 def _print_node(node, depth: int, cat, is_entry: bool = False) -> None:
-    # Full GUIDs, not truncated: every --node/--parent argument to the edit
-    # verbs needs the complete 36-char UUID, so a shortened id here would be
-    # unusable as copy-paste input for the very thing `show` is for.
+    # GUID は省略せず全桁で出す: 編集コマンドの --node/--parent 引数はすべて
+    # 36 文字の完全な UUID を要するため、ここで短縮すると `show` の本来の用途である
+    # コピペ入力に使えなくなる。
     pad = "  " * depth
     if is_entry:
         print(f"{pad}Entry  {node.guid}  pos={_p(node.pos)}")

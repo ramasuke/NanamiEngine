@@ -1,4 +1,4 @@
-"""Write the island-restoration facility assets and pin them on the main island's event board.
+"""島の復興施設アセットを書き出し、メイン島の掲示板に貼る。
 
     python tools/art/restoration_facilities.py
 

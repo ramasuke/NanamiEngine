@@ -49,7 +49,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         // アイテム欄は出したままにするが、この State では使えない。宣言しないと大砲と同じ扱いでアイテム欄ごと消えてしまう
         visitor.Action(SwordManAvatarStateAction::CycleItem, false);
         visitor.Action(SwordManAvatarStateAction::UseItem, false);
-        if (!Conditions().IsGround())
+        if (!Conditions().IsGround(Resources().JumpAttackGroundCheckRadius()))
         {
             visitor.OnInput(SwordManAvatarStateType::JumpAttackAir, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, true);
             return;

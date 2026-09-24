@@ -1,5 +1,5 @@
-"""Re-export shim: round-trip comparison helpers live in
-:mod:`tools.common.diffcheck` (format-generic, not AnimationTree-specific).
+"""再エクスポート用シム: 往復比較のヘルパーは
+:mod:`tools.common.diffcheck` にある（形式非依存で AnimationTree 固有ではない）。
 """
 
 from __future__ import annotations

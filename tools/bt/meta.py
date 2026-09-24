@@ -1,13 +1,13 @@
-"""``.enemyBehaviourData.meta`` sidecar files.
+"""``.enemyBehaviourData.meta`` サイドカーファイル。
 
-A ``.meta`` is a cereal-JSON ``std::shared_ptr<AssetBase>`` holding the
-``EnemyBehaviourFile`` ScriptableObject: a stable asset ``guid_`` (what an enemy
-prefab's ``behaviourData_`` field references) plus ``contentPath_`` back to the
-data file. Written by ``File::OnSave()`` in the engine; reproduced here so
-``new-tree`` yields an asset the editor and prefabs can bind to immediately.
+``.meta`` は ``EnemyBehaviourFile`` ScriptableObject を保持する cereal-JSON の
+``std::shared_ptr<AssetBase>`` で、安定したアセット ``guid_``（敵プレハブの
+``behaviourData_`` フィールドが参照するもの）と、データファイルへの ``contentPath_``
+を持つ。エンジンでは ``File::OnSave()`` が書き出す。ここでも再現しているので
+``new-tree`` で作ったアセットをエディタやプレハブからすぐ参照できる。
 
-Thin binding of the generic :mod:`tools.common.meta_base` codec for the
-``EnemyBehaviourFile`` asset type - see that module for the format notes.
+汎用の :mod:`tools.common.meta_base` コーデックを ``EnemyBehaviourFile`` アセット型に
+薄く結び付けたもの。形式の説明はそのモジュールを参照。
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ from tools.common.meta_base import MetaSpec
 
 from . import npc_kind
 
-# backward-compat module-level constants (enemy - the tool's original/default flavor)
+# 後方互換用のモジュールレベル定数（enemy - このツール本来の/デフォルトの種別）
 ASSET_FQN = npc_kind.ENEMY.asset_fqn
 DATA_EXT = npc_kind.ENEMY.data_ext
 META_EXT = npc_kind.ENEMY.meta_ext

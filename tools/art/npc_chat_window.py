@@ -234,7 +234,7 @@ def preview(base):
     return im
 
 
-# ---------------------------------------------------------------- main
+# ---------------------------------------------------------------- メイン
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--shot', default='')

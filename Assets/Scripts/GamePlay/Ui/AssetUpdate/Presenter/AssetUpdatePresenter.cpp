@@ -6,6 +6,7 @@
 
 #include "DxLib.h"
 #include "Engine/Core/Application/Configuration/ApplicationConfiguration.h"
+#include "Engine/Core/Application/Configuration/Build/ApplicationConfiguration_Build.h"
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "Packages/AssetUpdater/Http/HttpAssetUpdater.h"
@@ -19,7 +20,6 @@ namespace GamePlay::Ui
     {
         // exe に焼き込まれる。配信先を差し替えるときは tools/dist/dist_config.json と揃えて新しいビルドを出す
         constexpr const char* ASSET_UPDATE_MANIFEST_URL    = "https://pub-10484db77a4e4777b87c30443f6136c0.r2.dev/manifest.json";
-        constexpr const char* ASSET_UPDATE_CLIENT_VERSION  = "1.0.0";
         constexpr int         ASSET_UPDATE_HTTP_TIMEOUT_MS = 5000;
 
         // エディタの Preview で使う偽の荷
@@ -55,6 +55,7 @@ namespace GamePlay::Ui
     {
         using NanamiEngine::Core::Application::Configuration::APPLICATION_MODE;
         using NanamiEngine::Core::Application::Configuration::ApplicationMode;
+        using NanamiEngine::Core::Application::Configuration::BuildConfiguration;
 
         // エディタで動かすと、開発中の Assets/ が配信の中身で上書きされ、まだ上げていないファイルが消える
         if constexpr (APPLICATION_MODE == ApplicationMode::Game)
@@ -62,7 +63,7 @@ namespace GamePlay::Ui
             AssetUpdater::HttpAssetUpdaterSettings settings;
             settings.manifestUrl         = ASSET_UPDATE_MANIFEST_URL;
             settings.paths               = paths;
-            settings.clientVersion       = ASSET_UPDATE_CLIENT_VERSION;
+            settings.clientVersion       = BuildConfiguration::ClientVersion();
             settings.timeoutMilliSeconds = ASSET_UPDATE_HTTP_TIMEOUT_MS;
             return std::make_unique<AssetUpdater::HttpAssetUpdater>(settings);
         }

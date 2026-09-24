@@ -1,14 +1,13 @@
-"""``import-sprite`` - copy a .png into Assets/ and mint its SpriteFile .png.meta.
+"""``import-sprite`` - .png を Assets/ にコピーし、その SpriteFile の .png.meta を作る。
 
-There is no engine-side registration step for a new texture: ``.png`` -> the
-``SpriteFile`` asset type is already wired via ``REGISTER_ASSET(SpriteFile,
-".png")`` (``Engine/Module/Asset/Sprite/SpriteFile.h``), and the runtime asset
-scan discovers any file under ``Assets/`` on its own (no ``.vcxproj`` entry
-needed - that rule only applies to compiled ``.cpp``/``.h``). The only missing
-piece is minting a correctly-shaped ``.png.meta`` sidecar, which this command
-does via the generic thin-proxy codec in ``tools/common/meta_base.py`` (see
-``tools/scene/sprite_meta.py`` for the ``SpriteFile`` binding), mirroring
-``tools/effect/cli.py``'s ``install`` command for ``ParticleFile``.
+新しいテクスチャにエンジン側の登録手順はない: ``.png`` -> ``SpriteFile`` アセット型は
+``REGISTER_ASSET(SpriteFile, ".png")`` (``Engine/Module/Asset/Sprite/SpriteFile.h``)
+で既に結び付いており、実行時のアセットスキャンは ``Assets/`` 以下のファイルを
+自分で見つける (``.vcxproj`` エントリは不要 - その規則はコンパイルされる
+``.cpp``/``.h`` にだけ適用される)。足りないのは正しい形の ``.png.meta`` サイドカーを
+作ることだけで、このコマンドは ``tools/common/meta_base.py`` の汎用 thin proxy
+コーデックでそれを行う (``SpriteFile`` の結び付けは ``tools/scene/sprite_meta.py`` を
+参照)。``ParticleFile`` 用の ``tools/effect/cli.py`` の ``install`` コマンドと同様。
 """
 
 from __future__ import annotations

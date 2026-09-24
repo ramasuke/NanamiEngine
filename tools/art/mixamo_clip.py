@@ -1,19 +1,17 @@
-"""Put an animation clip onto a Mixamo character *inside the character's own FBX*, for DxLib.
+"""DxLib 用に、アニメーションクリップを Mixamo キャラクター *自身の FBX の中に* 書き込む。
 
-DxLib's MV1AttachAnim pairs frames by hierarchy position (AnimationClipNode attaches with NameCheck
-off), and it applies the *model's* FBX PreRotation at playback. Mixamo characters differ in both
-(bone count - eyes, hair, weapon - mesh-node layout, and per-bone PreRotation), so a clip exported on
-one character plays twisted or not at all on another. Writing the clip into the target character's
-FBX - its own "mixamo.com" stack, "Take 001" dropped - makes `tools.model convert --mode anim`
-produce a clip whose frames match the model exactly.
+DxLib の MV1AttachAnim はフレームを階層位置で対応付け (AnimationClipNode は NameCheck オフでアタッチする)、
+再生時に *モデル側の* FBX PreRotation を適用する。Mixamo のキャラクターはどちらも異なる (ボーン数 - 目・髪・
+武器 - メッシュノードの配置、ボーンごとの PreRotation) ので、あるキャラクターで書き出したクリップは別のキャラクター
+ではねじれるか全く動かない。対象キャラクターの FBX (その "mixamo.com" スタック、"Take 001" は削除) にクリップを
+書き込むと、`tools.model convert --mode anim` がモデルとフレームの完全に一致するクリップを作れる。
 
     python tools/art/mixamo_clip.py retarget <character.fbx> <clip.fbx> <out.fbx>
 
-retarget: world-space rotation delta of every bone from its rig's rest pose (Lcl Rotation 0 =
-PreRotation only; every Mixamo rig rests in a T-pose), applied to the target's rest pose; hips
-translation delta scaled by hip height. Middle/ring/pinky fingers missing from the clip (rigs with
-only thumb + index, e.g. Mixamo's "Peasant Man") follow the index finger; any other bone the clip
-lacks is an error. Extra clip bones are ignored.
+retarget: 各ボーンのリグのレストポーズからのワールド空間回転差分 (Lcl Rotation 0 = PreRotation のみ。
+Mixamo のリグはどれも T ポーズがレスト) を対象のレストポーズに適用する。hips の移動差分は腰の高さでスケールする。
+クリップにない中指/薬指/小指 (親指と人差し指だけのリグ。例: Mixamo の "Peasant Man") は人差し指に従う。
+それ以外のボーンがクリップに欠けていればエラー。クリップ側の余分なボーンは無視する。
 """
 from __future__ import annotations
 
@@ -51,8 +49,8 @@ class Scene:
         self.objs = self.doc.first('Objects')
         self.conns = self.doc.first('Connections')
         self.byid = {o.v(0): o for o in self.objs.children}
-        self.bones = {}      # name -> model node
-        self.parent = {}     # bone name -> parent bone name (None for root)
+        self.bones = {}      # 名前 -> モデルノード
+        self.parent = {}     # ボーン名 -> 親ボーン名 (ルートは None)
         self.order = []
         id2name = {}
         for m in self.objs.find('Model'):
@@ -70,7 +68,7 @@ class Scene:
                     self.parent[child] = None
         for n in self.bones:
             self.parent.setdefault(n, None)
-        # topological order (parents first)
+        # トポロジカル順 (親が先)
         done = set()
 
         def visit(n):
@@ -94,7 +92,7 @@ class Scene:
         return Rot.from_euler('xyz', self.props[n].get('Lcl Rotation', [0, 0, 0]), degrees=True)
 
     def curve_nodes(self, stack_name):
-        """{(bone, 'T'|'R'): {axis: curve_node}} for the stack's (single) layer."""
+        """スタックの (唯一の) レイヤーの {(bone, 'T'|'R'): {axis: curve_node}}。"""
         stack = next(st for st in self.objs.find('AnimationStack') if s(st.v(1)).endswith(stack_name))
         children = {}
         for c in self.conns.children:
@@ -128,7 +126,7 @@ def eval_curve(curve, t):
     vals = np.array(curve.first('KeyValueFloat').v(0), dtype=float)
     if len(times) == 1:
         return np.full_like(t, vals[0], dtype=float)
-    # cubic Hermite with auto (Catmull-Rom style) slopes
+    # 傾き自動 (Catmull-Rom 風) の3次エルミート
     tt = times.astype(float)
     slopes = np.zeros_like(vals)
     slopes[1:-1] = (vals[2:] - vals[:-2]) / (tt[2:] - tt[:-2])
@@ -213,7 +211,7 @@ def world_positions(scene, rot, trans, frame):
 
 
 def unwrap_euler(e):
-    """Keep each Euler channel continuous (pick the equivalent triple closest to the previous frame)."""
+    """各オイラーチャネルを連続に保つ (前フレームに最も近い等価な3つ組を選ぶ)。"""
     out = e.copy()
     for i in range(1, len(out)):
         prev = out[i - 1]
@@ -245,7 +243,7 @@ def set_curve(curve, times, values):
 
 
 def remove_stack(scene, stack_name):
-    """Drop a stack, its layers, curve nodes and curves, plus every connection touching them."""
+    """スタックとそのレイヤー・カーブノード・カーブ、およびそれらに触れる接続をすべて削除する。"""
     stack = next(st for st in scene.objs.find('AnimationStack') if s(st.v(1)).endswith(stack_name))
     kill = {stack.v(0)}
     changed = True
@@ -314,10 +312,10 @@ def main(target_path, source_path, out_path):
 
 
 def write_clip(tgt, tgt_rot, hips_t, nframes, out_path):
-    """Write per-frame local rotations (Rotation stacks, one per bone) and the hips translation
-    into the target FBX's own 'mixamo.com' stack, drop 'Take 001', and save."""
+    """フレームごとのローカル回転 (ボーンごとの Rotation スタック) と hips の移動を
+    対象 FBX 自身の 'mixamo.com' スタックに書き込み、'Take 001' を削除して保存する。"""
     hips = next(n for n in tgt.bones if n.endswith('Hips'))
-    # dangling connections (to curves that are not in the file) are replaced by real curves below
+    # 宙に浮いた接続 (ファイルにないカーブへの接続) は下で実際のカーブに置き換える
     live = {o.v(0) for o in tgt.objs.children}
     before = len(tgt.conns.children)
     tgt.conns.children = [c for c in tgt.conns.children if c.v(1) in live and (c.v(2) in live or c.v(2) == 0)]
@@ -339,7 +337,7 @@ def write_clip(tgt, tgt_rot, hips_t, nframes, out_path):
             tgt.conns.children.append(fbxio.Node('C', [('S', b'OP'), ('L', nid), ('L', cn.v(0)), ('S', key.encode())], []))
             cv[key] = node
 
-    # write into the target's own "mixamo.com" stack
+    # 対象自身の "mixamo.com" スタックに書き込む
     stack, layer, cns = tgt.curve_nodes('mixamo.com')
     times = np.arange(nframes, dtype=np.int64) * TICKS_PER_FRAME
     written = 0
@@ -386,7 +384,7 @@ def write_clip(tgt, tgt_rot, hips_t, nframes, out_path):
 
 
 def verify(src, src_rot, src_trans, out_path, nframes):
-    # --- verification: compare world-space limb directions (source vs retargeted) ---
+    # --- 検証: ワールド空間での手足の向きを比べる (元 vs リターゲット後) ---
     chk = Scene(out_path)
     hips = next(n for n in chk.bones if n.endswith('Hips'))
     rot2, trans2 = sample(chk, 'mixamo.com', nframes)
@@ -409,7 +407,7 @@ def verify(src, src_rot, src_trans, out_path, nframes):
     print('largest bone-direction differences (deg, frame, bone):')
     for r in report[:8]:
         print('  %.1f  f%d  %s' % r)
-    # rest-pose differences for context
+    # 参考としてレストポーズの差
     ps0 = world_positions(src, {n: Rot.identity(1) for n in src.bones}, {n: src.rest_t(n)[None] for n in src.bones}, 0)
     pt0 = world_positions(chk, {n: Rot.identity(1) for n in chk.bones}, {n: chk.rest_t(n)[None] for n in chk.bones}, 0)
     rest = []

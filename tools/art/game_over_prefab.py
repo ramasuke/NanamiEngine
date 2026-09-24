@@ -1,4 +1,4 @@
-"""Build the game-over prefabs / resident scene from tools/art/game_over.py's LAYOUT.
+"""tools/art/game_over.py の LAYOUT からゲームオーバーのプレハブ / 常駐シーンを組む。
 
     python tools/art/game_over.py --emit        # 先にスプライトを書き出す
     python tools/art/game_over_prefab.py        # GameOverButton / GameOverDeathCamera / GameOverUI と GameOverScene を組み直す
@@ -50,7 +50,7 @@ ALIGN_LEFT, ALIGN_CENTER = 0, 1
 DEATH_CAMERA_DISABLED_PRIORITY = -1
 
 
-# ---------------------------------------------------------------- asset guids
+# ---------------------------------------------------------------- アセット guid
 def asset_guid(meta_path):
     text = Path(meta_path).read_bytes().decode('utf-8-sig', errors='replace')
     m = re.search(r'"guid_"\s*:\s*\{[^{}]*?"value_"\s*:\s*"([0-9A-Fa-f-]{36})"', text)
@@ -71,7 +71,7 @@ STING_SOUND = asset_guid(REPO / 'Assets/Audio/Physics/Weather/ThunderFar1.mp3.me
 SLAB_LAND_SOUND = asset_guid(REPO / 'Assets/Audio/Physics/打撃2.mp3.meta')
 
 
-# ---------------------------------------------------------------- building blocks
+# ---------------------------------------------------------------- 部品
 class Builder:
     def __init__(self, target):
         self.cat = catalog_mod.load()
@@ -121,7 +121,7 @@ def disable_components(node):
             model.set_component_enabled(comp, False)
 
 
-# ---------------------------------------------------------------- world matrices / class versions
+# ---------------------------------------------------------------- ワールド行列 / クラスバージョン
 def world_matrix_blob(scale, pos):
     cols = [(scale[0], 0.0, 0.0, 0.0), (0.0, scale[1], 0.0, 0.0), (0.0, 0.0, scale[2], 0.0),
             (pos[0], pos[1], pos[2], 1.0)]
@@ -201,7 +201,7 @@ def new_prefab(name):
     return model.Prefab(root=edits.new_gameobject(name, kind=model.KIND_PREFAB_ROOT), copied_object_guids=[])
 
 
-# ---------------------------------------------------------------- prefabs
+# ---------------------------------------------------------------- プレハブ
 def populate_button(b, root, label_text):
     """鉄札1枚を root の下に組む。中心が札の中心"""
     _, ember = b.image(root, 'Ember', (0, 0), sprite_guid('GameOver_PlateEmber'), ORDER_EMBER, 0)

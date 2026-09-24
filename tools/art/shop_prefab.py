@@ -1,4 +1,4 @@
-"""Build the shop (merchant stall) UI prefabs from tools/art/shop.py's LAYOUT.
+"""店 (露店) の UI プレハブを tools/art/shop.py の LAYOUT から組む。
 
     python tools/art/shop.py --emit          # 先にスプライトを書き出す
     python tools/art/shop_prefab.py          # 店の UI プレハブ (ShopRow / ShopUI) を組み直す

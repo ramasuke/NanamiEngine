@@ -1,8 +1,7 @@
-""":class:`tools.bt.model.Tree`  ->  cereal-JSON text.
+""":class:`tools.bt.model.Tree`  ->  cereal-JSON テキスト。
 
-Regenerates every polymorphic id, ptr_wrapper id and cereal_class_version from
-global counters, in the exact depth-first order ``cereal::JSONOutputArchive``
-uses, so the output loads back identically.
+polymorphic id、ptr_wrapper id、cereal_class_version をすべてグローバルなカウンタから
+``cereal::JSONOutputArchive`` と全く同じ深さ優先順で生成し直すので、出力は同一に読み戻せる。
 """
 
 from __future__ import annotations
@@ -18,9 +17,9 @@ FIRST_BIT = 0x80000000
 
 ANIM_PARAM_INT_FQN = "NanamiEngine::Module::AnimationTree::AnimationParameter<int>"
 
-# Composite/control node dataclasses map to a single fixed fqn regardless of
-# tree flavor; model.Action does not - which ActionNode wrapper it gets
-# depends on Tree.kind (see _W.__init__ / node_slot).
+# 複合/制御ノードの dataclass はツリー種別に関係なく単一の固定 fqn に対応する。
+# model.Action はそうではなく、どの ActionNode ラッパーになるかは Tree.kind に
+# 依存する（_W.__init__ / node_slot 参照）。
 _FQN_BY_KIND = {
     model.Selector: model.FQN_SELECTOR,
     model.Sequence: model.FQN_SEQUENCE,
@@ -38,9 +37,9 @@ _LEAF = {
     model.FQN_RANDOM: "RandomSelectorNode",
     model.FQN_ONCE_EXEC: "OnceExecute",
     model.FQN_ONCE_SUCCESS: "OnceSuccessNode",
-    # both ActionNode flavors are literally named "ActionNode" in C++, and
-    # this key is purely our own bookkeeping label (never compared against
-    # the FQN), so one shared leaf name is correct for either.
+    # どちらの ActionNode 種別も C++ では文字どおり "ActionNode" という名前で、
+    # このキーは純粋にこちら側の管理用ラベル（FQN とは比較しない）なので、
+    # 共通のリーフ名1つでどちらにも正しい。
     model.FQN_ACTION_NODE_ENEMY: "ActionNode",
     model.FQN_ACTION_NODE_FRIENDLY: "ActionNode",
 }
@@ -70,7 +69,7 @@ class _W:
             self.emitted.add(key)
             obj.insert(0, "cereal_class_version", Num.of_int(int(version)))
 
-    # -- pointer slots -------------------------------------------------------
+    # -- ポインタスロット -------------------------------------------------------
     def poly_slot(self, fqn: str, exact: bool) -> OrderedObj:
         o = OrderedObj()
         if exact:
@@ -82,7 +81,7 @@ class _W:
             o["polymorphic_name"] = fqn
         return o
 
-    # -- node structure ---------------------------------------------------
+    # -- ノード構造 ---------------------------------------------------
     def nodebase_header(self, guid: str, pos: tuple[float, float]) -> OrderedObj:
         h = OrderedObj()
         self.emit_ver(("type", "NodeBase"), 0, h)
@@ -138,7 +137,7 @@ class _W:
         slot["ptr_wrapper"] = OrderedObj([("valid", Num.of_int(1)), ("data", data)])
         return slot
 
-    # -- tagged blob ----------------------------------------------------
+    # -- タグ付き blob ----------------------------------------------------
     def blob(self, n: Any) -> Any:
         if isinstance(n, Ptr):
             if n.null:
@@ -167,7 +166,7 @@ class _W:
             return [self.blob(x) for x in n]
         return n
 
-    # -- blackboard ----------------------------------------------------
+    # -- ブラックボード ----------------------------------------------------
     def params_block(self, params: list[model.BbParam]) -> OrderedObj:
         data = OrderedObj([("value0", Num.of_int(len(params)))])
         for i, p in enumerate(params, 1):
@@ -185,7 +184,7 @@ class _W:
         return OrderedObj([("ptr_wrapper",
                             OrderedObj([("valid", Num.of_int(1)), ("data", data)]))])
 
-    # -- entry -------------------------------------------------------------
+    # -- エントリー -------------------------------------------------------------
     def entry_slot(self, entry: model.Entry) -> OrderedObj:
         slot = OrderedObj([("polymorphic_id", Num.of_int(EXACT_PID))])
         kid = self.new_k()

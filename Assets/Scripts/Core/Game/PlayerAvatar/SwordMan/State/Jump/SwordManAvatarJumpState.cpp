@@ -27,7 +27,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarJumpState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const
     {
-        visitor.OnInput(SwordManAvatarStateType::JumpAttackAir, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, !Conditions().IsGround());
+        visitor.OnInput(SwordManAvatarStateType::JumpAttackAir, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, !Conditions().IsGround(Resources().JumpAttackGroundCheckRadius()));
     }
 
     void SwordManAvatarJumpState::DoExit()

@@ -21,11 +21,15 @@ namespace GameCore::PlayerAvatar::State
 
     bool PlayerAvatarStateCondition::IsGround() const
     {
+        return IsGround(stateContext_->GroundCheckRadius());
+    }
+
+    bool PlayerAvatarStateCondition::IsGround(const float radius) const
+    {
         Physics::LayerMask mask;
         Physics::AddLayer(mask, Physics::Layer::Default);
 
         //NOTE: Rayだと段差の縁や地形の隙間で抜けて Floating になるため球判定
-        const float radius = stateContext_->GroundCheckRadius();
         return Physics::SphereCast(stateContext_->PlayerAvatarFeatStepPos() + glm::vec3(0.0f, stateContext_->GroundCheckUpOffset() + radius, 0.0f),
                                    radius,
                                    glm::vec3(0, -1, 0), stateContext_->GroundCheckDistance(),

@@ -1,5 +1,5 @@
-"""``regen-catalog`` - rebuild ``catalog.json`` from the ``IAnimationNode``
-subclass headers."""
+"""``regen-catalog`` - ``IAnimationNode`` サブクラスのヘッダから
+``catalog.json`` を再生成する。"""
 
 from __future__ import annotations
 

@@ -124,7 +124,7 @@ def asset_guid(meta_path):
     return guid
 
 
-# ---------------------------------------------------------------- models
+# ---------------------------------------------------------------- モデル
 def shrink_textures(folder):
     for path in sorted(folder.glob('*')):
         if path.suffix.lower() not in ('.png', '.jpg', '.jpeg', '.tga'):
@@ -157,7 +157,7 @@ def models(roles):
             run('tools.model', 'install', clip_mv1, '--dest', (ANIM_DIR / r.key / f'{clip}.mv1').as_posix())
 
 
-# ---------------------------------------------------------------- data
+# ---------------------------------------------------------------- データ
 def recreate(kind_module, name, data_path, meta_path, *extra):
     """new-tree --force で作り直し、前の GUID があれば .meta に戻す (シーンや BT からの参照を切らない)"""
     old = asset_guid(meta_path) if meta_path.exists() else None
@@ -261,7 +261,7 @@ def data(roles):
         anim_tree(r)
 
 
-# ---------------------------------------------------------------- scene
+# ---------------------------------------------------------------- シーン
 class VersionFixer(validate._ClassVersionAudit):
     """別のファイルから写した NPC の版キーを、このシーンでの初出/2回目に合わせる。
     写し元で2回目以降だった型はここで初出になると版キーが足りず、prefab の初出の版キーは2回目では余る"""

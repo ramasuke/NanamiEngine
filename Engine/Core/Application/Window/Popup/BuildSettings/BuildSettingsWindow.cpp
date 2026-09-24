@@ -106,6 +106,16 @@ namespace NanamiEngine::Core::PopupWindow
             BuildSettingsErrorText(reason);
         }
 
+        BuildSettingsLabel("Client Version");
+        if (BuildSettingsEditText("##BuildSettingsClientVersion", clientVersion_.buffer, clientVersion_.active, BuildConfiguration::ClientVersion()))
+        {
+            BuildConfiguration::SetClientVersion(clientVersion_.buffer);
+        }
+        if (const std::string reason = BuildConfiguration::ValidateClientVersion(clientVersion_.buffer); !reason.empty())
+        {
+            BuildSettingsErrorText(reason);
+        }
+
         const std::string&                                     startSceneGuid = BuildConfiguration::StartSceneGuid();
         const std::vector<std::shared_ptr<Module::Asset::SceneFile>> sceneFiles = BuildConfiguration::CollectSceneFiles();
         std::shared_ptr<Module::Asset::SceneFile> startSceneFile;
@@ -180,12 +190,18 @@ namespace NanamiEngine::Core::PopupWindow
         ImGui::SetCursorPosX(BUILD_SETTINGS_LABEL_WIDTH);
         if (ImGui::Button("Open Output Folder"))
         {
+            // NOTE: 未ビルドでも開けるよう先に作る。フォルダの "open" 動詞は環境によって何も起きないので explorer.exe に渡す
             const std::filesystem::path outputDirectory = BuildConfiguration::OutputDirectory();
-            if (std::error_code ec; !std::filesystem::is_directory(outputDirectory, ec))
+            std::wstring                arguments       = outputDirectory.wstring();
+            // WARNING: 末尾の \ が閉じ引用符をエスケープしてしまう
+            while (arguments.size() > 3 && arguments.back() == L'\\')
+                arguments.pop_back();
+            arguments = L"\"" + arguments + L"\"";
+            if (std::error_code ec; !std::filesystem::create_directories(outputDirectory, ec) && ec)
             {
-                Module::LogWarning("BuildSettingsWindow: 出力先がまだありません: " + BuildSettingsPathToUtf8(outputDirectory));
+                Module::LogError("BuildSettingsWindow: 出力先を作れませんでした: " + BuildSettingsPathToUtf8(outputDirectory));
             }
-            else if (const HINSTANCE result = ShellExecuteW(nullptr, L"open", outputDirectory.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+            else if (const HINSTANCE result = ShellExecuteW(nullptr, L"open", L"explorer.exe", arguments.c_str(), nullptr, SW_SHOWNORMAL);
                      reinterpret_cast<INT_PTR>(result) <= 32)
             {
                 Module::LogError("BuildSettingsWindow: 出力先を開けませんでした: " + BuildSettingsPathToUtf8(outputDirectory));

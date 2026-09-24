@@ -1,4 +1,4 @@
-"""Generate the game-over sprites (案A 刻まれた石版) and a mock composited on a real game screen.
+"""ゲームオーバーのスプライト (案A 刻まれた石版) と、実際のゲーム画面に合成したモックを生成する。
 
     python tools/art/game_over.py --emit                          # Assets/Art/UI/GameOver へ書き出す
     python tools/art/game_over.py --shot <screenshot.png> --out-dir <dir>   # 書き出した絵で完成イメージを合成

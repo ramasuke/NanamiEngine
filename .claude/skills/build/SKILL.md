@@ -1,6 +1,6 @@
 ---
 name: build
-description: NanamiEngine.sln をビルドし、エラーが出たら修正して再ビルドを成功するまで繰り返す。ユーザーが /build と打ったときだけ使う。
+description: EnviroHunter.sln をビルドし、エラーが出たら修正して再ビルドを成功するまで繰り返す。ユーザーが /build と打ったときだけ使う。
 argument-hint: "[-w [priority]] [Debug|Release] [game]"
 disable-model-invocation: true
 ---
@@ -27,7 +27,7 @@ disable-model-invocation: true
 Bash ツールから、ログをスクラッチパッドに書き出して実行する(`timeout` は 600000)。
 
 ```
-"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe" NanamiEngine.sln \
+"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe" EnviroHunter.sln \
   -p:Configuration=<Config> -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12 \
   [-p:NanamiApplicationMode=Game] \
   -nologo -v:minimal -clp:ErrorsOnly \
@@ -62,8 +62,8 @@ Bash ツールから、ログをスクラッチパッドに書き出して実行
   削除、`static_assert` の削除、関数を空実装にする、などは不可。原因を直す。
 - 自分で書いたわけではない既存コードも直してよいが、変更は最小限に。無関係なリファクタはしない。
 - CLAUDE.md の規約を守る。特にビルドエラーと絡みやすいもの:
-  - `.cpp`/`.h` を新しく作ったら `NanamiEngineLib.vcxproj`(`Engine/` `Packages/` `Libs/`)か
-    `NanamiEngine.vcxproj`(`Assets/`)に手で追加する。`LNK2019`/`LNK2001` はまずこれを疑う。
+  - `.cpp`/`.h` を新しく作ったら `NanamiEngine.vcxproj`(`Engine/` `Packages/` `Libs/`)か
+    `EnviroHunter.vcxproj`(`Assets/`)に手で追加する。`LNK2019`/`LNK2001` はまずこれを疑う。
   - per-file `<ClCompile>` に構成依存の設定を書かない。`<AdditionalOptions>` には `/execution-charset:utf-8` を残す。
   - `CEREAL_REGISTER_TYPE` 等の登録マクロは `.cpp` 末尾、`CEREAL_CLASS_VERSION` はヘッダ。
   - `Engine/` `Packages/` から `Assets/` を include しない。エンジンヘッダに DxLib を出さない。

@@ -1,14 +1,14 @@
-"""Build the engine lib variants and assemble an installable engine folder.
+"""エンジン lib の各バリアントをビルドし、インストール可能なエンジンフォルダを組み立てる。
 
-Layout of a packaged engine (what NanamiHub installs under Engines/<version>/):
+パッケージしたエンジンのレイアウト (NanamiHub が Engines/<version>/ 以下にインストールするもの):
 
     engine.json                      {"name", "version", "builtAt"}
-    NanamiEngine.props               shared build settings (NanamiEngineDir = this folder)
-    NanamiEngine.Game.props          game exe settings (links lib/<Mode>/<Config>/NanamiEngine.lib)
-    stdafx.h / stdafx.cpp            precompiled header, compiled by each game project
-    Engine/ Packages/ Libs/          headers and third-party libs (no .c/.cpp)
+    NanamiEngine.props               共通のビルド設定 (NanamiEngineDir = このフォルダ)
+    NanamiEngine.Game.props          ゲーム exe の設定 (lib/<Mode>/<Config>/NanamiEngine.lib をリンク)
+    stdafx.h / stdafx.cpp            プリコンパイル済みヘッダ。各ゲームプロジェクトがコンパイルする
+    Engine/ Packages/ Libs/          ヘッダとサードパーティのライブラリ (.c/.cpp は含まない)
     lib/<Editor|Game>/<Debug|Release>/NanamiEngine.lib
-    Template/                        new-project template (tokens are filled in by NanamiHub)
+    Template/                        新規プロジェクトのテンプレート (トークンは NanamiHub が埋める)
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ ROOT_FILES = ("NanamiEngine.props", "NanamiEngine.Game.props", "stdafx.h", "stda
 EXCLUDED_SUFFIXES = {".c", ".cc", ".cpp", ".cxx", ".vcxproj", ".filters", ".user", ".obj", ".pdb", ".ilk", ".tlog"}
 EXCLUDED_NAMES = {"desktop.ini", "thumbs.db", ".ds_store"}
 TEMPLATE_DIR = Path(__file__).resolve().parent / "template"
-LIB_PROJECT = "NanamiEngineLib.vcxproj"
+LIB_PROJECT = "NanamiEngine.vcxproj"
 
 
 class PackageError(RuntimeError):

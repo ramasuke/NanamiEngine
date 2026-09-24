@@ -1,8 +1,8 @@
-""":class:`tools.animtree.model.Tree`  ->  cereal-JSON text.
+""":class:`tools.animtree.model.Tree`  ->  cereal-JSON テキスト。
 
-Regenerates every polymorphic id, ptr_wrapper id and cereal_class_version from
-global counters, in the exact depth-first order ``AnimationTree::OnSave()``
-uses, so the output loads back identically.
+polymorphic id、ptr_wrapper id、cereal_class_version をすべてグローバルカウンタから
+``AnimationTree::OnSave()`` と全く同じ深さ優先順で振り直すので、出力は
+同じ内容として読み戻せる。
 """
 
 from __future__ import annotations
@@ -44,7 +44,7 @@ class _W:
             self.emitted.add(key)
             obj.insert(0, "cereal_class_version", Num.of_int(int(version)))
 
-    # -- pointer slots -------------------------------------------------------
+    # -- ポインタスロット -------------------------------------------------------
     def poly_slot(self, fqn: str, exact: bool) -> OrderedObj:
         o = OrderedObj()
         if exact:
@@ -56,7 +56,7 @@ class _W:
             o["polymorphic_name"] = fqn
         return o
 
-    # -- shared leaf helpers -------------------------------------------------
+    # -- 共通の葉ヘルパー -------------------------------------------------
     def guid_obj(self, guid: str) -> OrderedObj:
         g = OrderedObj()
         self.emit_ver(("type", "Guid"), 0, g)
@@ -65,9 +65,9 @@ class _W:
 
     @staticmethod
     def _num_float(v: Any) -> Num:
-        # preserve an already-Num value's original literal text (see
-        # reader._vec2's docstring); only synthesise a fresh literal for a
-        # plain Python number (a value an edit just set).
+        # すでに Num の値は元のリテラル表記を保つ（reader._vec2 の docstring
+        # 参照）。新しいリテラルを作るのは素の Python 数値（編集で設定したばかりの値）
+        # のときだけ。
         return v if isinstance(v, Num) else Num.of_float(float(v))
 
     @staticmethod
@@ -88,7 +88,7 @@ class _W:
             return cls._num_float(value)
         raise ValueError(f"unknown kind {kind!r}")
 
-    # -- tagged blob (mirrors tools.bt.writer._W.blob) -----------------------
+    # -- タグ付き blob（tools.bt.writer._W.blob と同じ） -----------------------
     def blob(self, n: Any) -> Any:
         if isinstance(n, Ptr):
             if n.null:
@@ -112,10 +112,10 @@ class _W:
             return [self.blob(x) for x in n]
         return n
 
-    # -- node ------------------------------------------------------------
+    # -- ノード ------------------------------------------------------------
     def node_base_slot(self) -> OrderedObj:
-        # the leading, unnamed archive(cereal::base_class<IAnimationNode>(this))
-        # every node's save() makes - always {} or {"cereal_class_version": 0}
+        # 各ノードの save() が最初に行う名前なしの
+        # archive(cereal::base_class<IAnimationNode>(this)) - 常に {} か {"cereal_class_version": 0}
         base = OrderedObj()
         self.emit_ver(("type", "IAnimationNode"), 0, base)
         return base
@@ -147,7 +147,7 @@ class _W:
         slot["ptr_wrapper"] = OrderedObj([("id", Num.of_int(kid)), ("data", self.node_data(node))])
         return slot
 
-    # -- conditions / transitions ------------------------------------------
+    # -- 条件 / 遷移 ------------------------------------------
     def condition_slot(self, c: model.Condition) -> OrderedObj:
         fqn = self.cat.condition_fqn(c.kind)
         slot = self.poly_slot(fqn, exact=False)
@@ -193,9 +193,9 @@ class _W:
 
     # -- additionParameters_ ------------------------------------------------
     def params_block(self, params: list[model.Param]) -> OrderedObj:
-        # ParameterGroup is not IObject-derived and its save()/load() take no
-        # version arg - no polymorphic_id wrapper, no cereal_class_version at
-        # this level (unlike every other shared_ptr in the file).
+        # ParameterGroup は IObject 派生ではなく、save()/load() はバージョン引数を
+        # 取らない - このファイルの他の shared_ptr と違い、この階層には
+        # polymorphic_id のラッパーも cereal_class_version も無い。
         outer_kid = self.new_k()
         data = OrderedObj([("value0", Num.of_int(len(params)))])
         for i, p in enumerate(params, 1):

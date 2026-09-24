@@ -1,8 +1,8 @@
-"""Structural + parameter edits on a :class:`tools.bt.model.Tree`.
+""":class:`tools.bt.model.Tree` に対する構造編集とパラメータ編集。
 
-Every function mutates the tree in place and is designed so a change followed by
-its inverse restores the original bytes (see selftest stage 6). ``apply`` runs a
-batch of edit ops atomically (build -> apply all -> caller validates -> one write).
+どの関数もツリーをその場で変更し、変更の後にその逆操作を行うと元のバイト列に
+戻るように作られている（selftest ステージ 6 参照）。``apply`` は編集操作の一括を
+アトミックに実行する（構築 -> 全適用 -> 呼び出し側で検証 -> 1回書き込み）。
 """
 
 from __future__ import annotations
@@ -34,7 +34,7 @@ class EditError(RuntimeError):
 
 
 # ---------------------------------------------------------------------------
-# blob builders (from-scratch actions)
+# blob ビルダー（action を一から生成）
 # ---------------------------------------------------------------------------
 def _leaf(name: str) -> str:
     return name.split("<", 1)[0].rsplit("::", 1)[-1]
@@ -88,12 +88,12 @@ def _param_blob(cat: catalog_mod.Catalog, pinfo: dict) -> Any:
         leaf = _leaf(pinfo.get("type", "?"))
         sub = cat.type_by_leaf(leaf)
         body = OrderedObj()
-        if cat.action_by_leaf(leaf):  # nested type derives from ActionBase
+        if cat.action_by_leaf(leaf):  # ネストした型が ActionBase を継承
             body.append("value0", Ver(("type", "ActionBase"), 0, OrderedObj()))
         for sp in cat.params_of(sub):
             body.append(sp["key"], _param_blob(cat, sp))
         return Ver(("type", leaf), int((sub or {}).get("version", 0)), body)
-    # unknown -> emit a 0 so the file still loads; validate will flag it
+    # 不明 -> ファイルがロードできるよう 0 を出力する。validate が指摘する
     return Num.of_int(0)
 
 
@@ -106,10 +106,10 @@ def action_blob(cat: catalog_mod.Catalog, entry: dict) -> OrderedObj:
 
 
 # ---------------------------------------------------------------------------
-# navigation
+# 探索
 # ---------------------------------------------------------------------------
 def _find_parent(tree: model.Tree, guid: str):
-    """Return (parent_node, container_list_or_None, index) for the node `guid`."""
+    """ノード `guid` の (parent_node, container_list_or_None, index) を返す。"""
     if tree.entry.child is not None and tree.entry.child.guid == guid:
         return tree.entry, None, 0
     for node, parent, _c, _i in tree.walk():
@@ -130,7 +130,7 @@ def _resolve_parent(tree: model.Tree, guid: str):
 
 
 # ---------------------------------------------------------------------------
-# structural edits
+# 構造編集
 # ---------------------------------------------------------------------------
 def _make_node(kind: str, *, name: Optional[str], action_type: Optional[str],
                pos, node_guid: str, cat: catalog_mod.Catalog):
@@ -189,10 +189,9 @@ def add_node(tree: model.Tree, *, parent_guid: str, kind: str, name: str | None 
 
 
 def _clone_node(node, mint):
-    """Deep-copy a node subtree, minting a fresh guid at every level (the
-    "pure tree" format forbids two nodes sharing a guid) and deep-copying
-    each Action's param blob so editing the clone can never mutate the
-    original."""
+    """ノードのサブツリーをディープコピーし、各階層で新しい guid を発行する
+    （"pure tree" 形式では2つのノードが guid を共有できない）。各 Action の
+    パラメータ blob もディープコピーするので、複製を編集しても元は変わらない。"""
     if isinstance(node, model.Action):
         return model.Action(guid=mint(), pos=node.pos, name=node.name,
                             type_fqn=node.type_fqn, action_version=node.action_version,
@@ -215,12 +214,10 @@ def _clone_node(node, mint):
 
 def copy_node(tree: model.Tree, *, src_guid: str, parent_guid: str,
              index: int | None = None, weight: int = 100, pos=None):
-    """Deep-copy the subtree at ``src_guid`` and attach the copy under
-    ``parent_guid``. The two most common uses this unblocks: duplicating one
-    weighted branch of a `RandomSelector` with a couple of fields tweaked
-    (rather than rebuilding it node-by-node with `add-node`), and cloning a
-    whole alternate branch (e.g. an "enraged" attack pool) from an existing
-    one so only the diff needs hand-authoring afterwards.
+    """``src_guid`` のサブツリーをディープコピーし、複製を ``parent_guid`` の下に付ける。
+    主な用途は2つ: `RandomSelector` の重み付き分岐を1つ複製して一部フィールドだけ
+    変える（`add-node` でノードごとに作り直す代わりに）ことと、既存の分岐から
+    別の分岐（例: "enraged" 時の攻撃群）を丸ごと複製して、差分だけを後から手で書くこと。
     """
     src = tree.find(src_guid)
     if src is None:
@@ -237,7 +234,7 @@ def copy_node(tree: model.Tree, *, src_guid: str, parent_guid: str,
 
 def _detach(tree: model.Tree, guid: str):
     parent, kids, idx = _find_parent(tree, guid)
-    if kids is None:  # entry child
+    if kids is None:  # エントリーの子
         node = parent.child
         parent.child = None
         return node
@@ -262,7 +259,7 @@ def move_node(tree: model.Tree, *, guid: str, parent_guid: str,
 
 
 # ---------------------------------------------------------------------------
-# parameter edits
+# パラメータ編集
 # ---------------------------------------------------------------------------
 def _coerce(shape: str, raw: str):
     if shape in ("int", "enum"):
@@ -282,24 +279,23 @@ def _coerce(shape: str, raw: str):
 
 
 def _unwrap_nested(val):
-    """The writable field container of a shape='nested' param's current value,
-    whichever representation this occurrence happens to use: ``Ver``-wrapped
-    (this exact slot carries a literal ``cereal_class_version`` - always true
-    for a struct freshly scaffolded by :func:`add_node`) or a plain
-    ``OrderedObj`` (an existing occurrence of a struct type this particular
-    file never version-tracks - see ``_tag_value`` in reader.py). Both forms
-    round-trip identically; this just picks the dict to index into next.
+    """shape='nested' パラメータの現在値の、書き込み可能なフィールドコンテナ。
+    この出現がどちらの表現でも扱う: ``Ver`` でラップされた形（このスロット自体が
+    ``cereal_class_version`` を明示的に持つ。:func:`add_node` で新しく雛形生成した
+    構造体は常にこれ）か、素の ``OrderedObj``（このファイルでバージョン追跡されない
+    構造体型の既存の出現。reader.py の ``_tag_value`` 参照）。どちらも同一に
+    ラウンドトリップし、ここでは次に添字アクセスする dict を選ぶだけ。
     """
     return val.body if isinstance(val, Ver) else val
 
 
 def _set_field_guid(val, guid: str) -> None:
-    """Write a shape='field' param's guid, whichever representation this slot
-    ended up in: the fully ``Ver``-tagged form (``Ver -> Ptr -> Ver -> Ver``)
-    a top-level catalog-typed member gets, or the flattened Ptr-only form
-    (``Ptr -> OrderedObj -> OrderedObj``) a FIELD(T) buried two-or-more levels
-    inside a plain-tagged (pinfo-losing) existing struct falls back to - see
-    ``_tag_value``/``_tag_plain`` in reader.py for why the two forms exist.
+    """shape='field' パラメータの guid を、このスロットがどちらの表現でも書き込む:
+    トップレベルのカタログ型メンバーが持つ完全な ``Ver`` タグ付き形
+    （``Ver -> Ptr -> Ver -> Ver``）か、素のタグ付け（pinfo を失った）既存構造体の
+    2階層以上内側に埋もれた FIELD(T) が退避する、平坦化された Ptr のみの形
+    （``Ptr -> OrderedObj -> OrderedObj``）。2つの形がある理由は reader.py の
+    ``_tag_value``/``_tag_plain`` を参照。
     """
     outer = val.body if isinstance(val, Ver) else val
     holder = outer["value0"].data
@@ -319,10 +315,10 @@ def _leaf_param(cat: catalog_mod.Catalog, entry: Optional[dict], key: str) -> di
 
 def _set_nested_param(cat: catalog_mod.Catalog, node: model.Action, entry: Optional[dict],
                       dotted_key: str, raw: str) -> str:
-    """Resolve a dotted path (e.g. ``attackPower_.value_`` or
-    ``spawnPosition_.targetObject_``) through one or more shape='nested'
-    struct members and write the leaf, working for both freshly-added nodes
-    and existing ones (see :func:`_unwrap_nested` / :func:`_set_field_guid`).
+    """ドット区切りのパス（例: ``attackPower_.value_`` や
+    ``spawnPosition_.targetObject_``）を1つ以上の shape='nested' 構造体メンバー越しに
+    解決してリーフに書き込む。新規追加ノードと既存ノードの両方で動く
+    （:func:`_unwrap_nested` / :func:`_set_field_guid` 参照）。
     """
     parts = dotted_key.split(".")
     cur_entry = entry
@@ -353,21 +349,20 @@ def _set_nested_param(cat: catalog_mod.Catalog, node: model.Action, entry: Optio
         cur_entry = cat.type_by_leaf(pinfo.get("type", "?"))
         if cur_entry is None:
             raise EditError(f"unknown nested struct type {pinfo.get('type')!r}")
-    raise EditError("empty dotted key")  # unreachable: dotted_key.split always has >=1 part
+    raise EditError("empty dotted key")  # 到達不能: dotted_key.split は常に1要素以上
 
 
 def set_params(tree: model.Tree, guid: str, assignments: dict[str, str],
                cat: catalog_mod.Catalog | None = None) -> list[str]:
-    """Set one or more of an action's parameters.
+    """action のパラメータを1つ以上設定する。
 
-    A plain key (``rate_``) sets a top-level, directly-settable param, exactly
-    as before. A dotted key (``attackPower_.value_``,
-    ``spawnPosition_.targetObject_``, ``spawnPosition_.offset_``) reaches
-    inside shape='nested' struct members - e.g. the ``PhysicsPower``/
-    ``Position``/``WriteBlackBoard``/``WaitSeconds``/``PlaySE`` structs
-    embedded in ``PhysicsAttack``/``RadiateProjectile``/``PlayAnimation`` -
-    which a bare key cannot address (nested's own shape is never in
-    ``SETTABLE_SHAPES``).
+    素のキー（``rate_``）は従来どおり、直接設定可能なトップレベルのパラメータを設定する。
+    ドット区切りのキー（``attackPower_.value_``、``spawnPosition_.targetObject_``、
+    ``spawnPosition_.offset_``）は shape='nested' の構造体メンバーの内側に届く。
+    例えば ``PhysicsAttack``/``RadiateProjectile``/``PlayAnimation`` に埋め込まれた
+    ``PhysicsPower``/``Position``/``WriteBlackBoard``/``WaitSeconds``/``PlaySE``
+    構造体で、素のキーでは指定できない（nested 自体の shape は
+    ``SETTABLE_SHAPES`` に含まれない）。
     """
     cat = cat or catalog_mod.load()
     node = tree.find(guid)
@@ -427,7 +422,7 @@ def remove_bb_param(tree: model.Tree, name: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# batch
+# 一括処理
 # ---------------------------------------------------------------------------
 def apply(tree: model.Tree, ops: list[dict], cat: catalog_mod.Catalog | None = None) -> list[str]:
     cat = cat or catalog_mod.load()

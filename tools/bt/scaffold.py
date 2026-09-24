@@ -1,19 +1,17 @@
-"""Scaffold a new Enemy or FriendlyNpc behaviour Action (C++) and wire it into
-the build.
+"""新しい Enemy / FriendlyNpc の behaviour Action（C++）の雛形を作り、ビルドに組み込む。
 
-Creates ``<X>_Behaviour_Action_<Name>.{h,cpp}`` under
 ``Assets/Scripts/Core/Game/Npc/<X>/Behaviour/Action/Content/<category>/<Name>/``
-(``<X>`` = ``Enemy`` or ``Friendly``, per ``kind`` - see ``tools/bt/npc_kind.py``)
-and patches the three wiring points:
+の下に ``<X>_Behaviour_Action_<Name>.{h,cpp}`` を作成し
+（``<X>`` は ``kind`` に応じて ``Enemy`` か ``Friendly`` - ``tools/bt/npc_kind.py`` 参照）、
+3つの組み込み箇所を書き換える:
 
-  1. ``<X>_Behaviour_ActionHeaders.h``     (editor sees the new type)
-  2. ``NanamiEngine.vcxproj``              (the .cpp/.h get compiled)   [mandatory]
-  3. ``NanamiEngine.vcxproj.filters``      (Solution Explorer grouping) [optional]
+  1. ``<X>_Behaviour_ActionHeaders.h``     （エディタが新しい型を認識する）
+  2. ``EnviroHunter.vcxproj``              （.cpp/.h がコンパイルされる）   [必須]
+  3. ``EnviroHunter.vcxproj.filters``      （ソリューションエクスプローラーの分類） [任意]
 
-Generated C++ is ASCII-only and written as UTF-8 with a BOM by default - the
-repo's current source-encoding convention (see CLAUDE.md) - so it needs no
-post-processing; ``--encoding`` also accepts ``utf-8`` (no BOM) or the legacy
-``cp932`` for files that still predate that convention.
+生成する C++ は ASCII のみで、デフォルトでは BOM 付き UTF-8 で書き出す - リポジトリの
+現行のソースエンコーディング規約（CLAUDE.md 参照）- ので後処理は不要。``--encoding``
+には ``utf-8``（BOM なし）や、その規約より前のファイル向けに旧来の ``cp932`` も指定できる。
 """
 
 from __future__ import annotations
@@ -26,10 +24,10 @@ from pathlib import Path
 from . import npc_kind, vcxproj
 
 _REPO = Path(__file__).resolve().parents[2]
-VCXPROJ = _REPO / "NanamiEngine.vcxproj"
-FILTERS = _REPO / "NanamiEngine.vcxproj.filters"
-# Every .cpp that registers a polymorphic type includes this, so the type is bound
-# to every archive the engine uses (JSON + PortableBinary).
+VCXPROJ = _REPO / "EnviroHunter.vcxproj"
+FILTERS = _REPO / "EnviroHunter.vcxproj.filters"
+# 多相型を登録する .cpp はすべてこれをインクルードし、エンジンが使う全アーカイブ
+# （JSON + PortableBinary）に型を結び付ける。
 SERIALIZATION_REGISTRATION_HEADER = "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 _SCALAR = {
@@ -89,9 +87,9 @@ def _paths(kind: npc_kind.NpcKind, name: str, category: str, subdir: str | None)
     cat_path = (subdir or category.replace("::", "/")).strip("/")
     rel_dir = f"Content/{cat_path}/{name}"
     fs_dir = kind.content_root / Path(cat_path) / name
-    # depth from the header's directory up to .../Action/
+    # ヘッダーのディレクトリから .../Action/ までの深さ
     depth_to_action = len(Path(rel_dir).parts)          # Content/<...>/<name>
-    # depth from the header's directory up to Assets/Scripts/ (Core/Game/Npc/<X>/Behaviour/Action)
+    # ヘッダーのディレクトリから Assets/Scripts/ までの深さ（Core/Game/Npc/<X>/Behaviour/Action）
     depth_to_scripts = 6 + depth_to_action
     return fs_dir, rel_dir, depth_to_action, depth_to_scripts
 
@@ -145,8 +143,8 @@ def _render_h(kind: npc_kind.NpcKind, name: str, category: str, version: int, pa
     L.append(f'    {kind.register_macro}({name}, "{category}::{name}")')
     L.append("}")
     L.append("")
-    # CEREAL_CLASS_VERSION stays in the header (it must be visible wherever the
-    # type is serialised); the type/relation registration goes in the .cpp.
+    # CEREAL_CLASS_VERSION はヘッダーに残す（型がシリアライズされるすべての場所から
+    # 見える必要がある）。型/関係の登録は .cpp に置く。
     if version and version > 0:
         L.append(f"CEREAL_CLASS_VERSION({fqn}, {version})")
         L.append("")
@@ -222,7 +220,7 @@ def add_action(name: str, category: str, *, params: list[Param] | None = None,
           f"{rel_dir}/{kind.action_file_prefix}{name}.h")
     log += _patch_headers_agg(kind, inc, dry_run=dry_run)
 
-    # 2 + 3. vcxproj (+ filters)
+    # 2 + 3. vcxproj（+ filters）
     win_h = _win(f"{kind.action_dir_rel}/{rel_dir}/{kind.action_file_prefix}{name}.h")
     win_cpp = _win(f"{kind.action_dir_rel}/{rel_dir}/{kind.action_file_prefix}{name}.cpp")
     splices = [vcxproj.Splice("ClCompile", win_cpp), vcxproj.Splice("ClInclude", win_h)]

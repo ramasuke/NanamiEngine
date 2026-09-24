@@ -1,7 +1,7 @@
-"""Re-export shim: the cereal-JSON codec moved to :mod:`tools.common.cereal_json`
-(it was always format-generic, not BehaviourTree-specific - ``tools.scene`` needs
-it too). Every existing ``from .cereal_json import X`` / ``tools.bt.cereal_json.X``
-call site keeps working unchanged.
+"""再エクスポート用シム: cereal-JSON コーデックは :mod:`tools.common.cereal_json` に移動した
+（元々形式非依存で BehaviourTree 固有ではなく、``tools.scene`` でも必要なため）。
+既存の ``from .cereal_json import X`` / ``tools.bt.cereal_json.X``
+の呼び出し箇所はすべてそのまま動く。
 """
 
 from __future__ import annotations

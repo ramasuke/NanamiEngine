@@ -19,7 +19,7 @@ namespace NanamiEngine::Core::Application::Configuration
 
     /**
      * @brief Build Settings ウィンドウで Game 版をビルドするときの設定。
-     *        製品名と起動シーンはゲームも読むので ProjectConfig/Build/Runtime/ に置いて同梱し、残りはエディタ専用
+     *        製品名・起動シーン・クライアント版はゲームも読むので ProjectConfig/Build/Runtime/ に置いて同梱し、残りはエディタ専用
      */
     class BuildConfiguration final
     {
@@ -31,6 +31,12 @@ namespace NanamiEngine::Core::Application::Configuration
         static void SetProductName(const std::string& productName);
         /** @brief exe 名に使えない製品名なら理由を返す。使えるなら空文字 */
         [[nodiscard]] static std::string ValidateProductName(const std::string& productName);
+
+        /** @brief ゲーム本体の版。配信 manifest の requiredClientVersion と比べて、古い本体にはアセット更新を当てない */
+        [[nodiscard]] static const std::string& ClientVersion() { return clientVersion_; }
+        static void SetClientVersion(const std::string& clientVersion);
+        /** @brief 版として使えない文字列なら理由を返す。使えるなら空文字 */
+        [[nodiscard]] static std::string ValidateClientVersion(const std::string& clientVersion);
 
         /** @brief 空なら既定の起動シーンを使う */
         [[nodiscard]] static const std::string& StartSceneGuid() { return startSceneGuid_; }
@@ -66,6 +72,7 @@ namespace NanamiEngine::Core::Application::Configuration
 
     private:
         static std::string              productName_;
+        static std::string              clientVersion_;
         static std::string              startSceneGuid_;
         static BuildTargetConfiguration targetConfiguration_;
         static std::string              msBuildPath_;

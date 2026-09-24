@@ -1,11 +1,11 @@
-"""TCP client for the engine's AutoMCP listener.
+"""エンジンの AutoMCP リスナー用の TCP クライアント。
 
-Wire format (one JSON object per line, UTF-8):
-    request  ``{"id": 1, "cmd": "status", "args": {...}}``
-    response ``{"id": 1, "ok": true, "result": {...}}`` or ``{"id": 1, "ok": false, "error": "..."}``
+通信形式 (1 行に JSON オブジェクト 1 つ、UTF-8):
+    リクエスト  ``{"id": 1, "cmd": "status", "args": {...}}``
+    レスポンス  ``{"id": 1, "ok": true, "result": {...}}`` または ``{"id": 1, "ok": false, "error": "..."}``
 
-The engine polls the socket once per frame, so a call takes at least one frame;
-``screenshot`` takes two (it returns the next frame's image).
+エンジンはソケットを 1 フレームに 1 回ポーリングするので、呼び出しには最低 1 フレーム
+かかる。``screenshot`` は 2 フレームかかる (次のフレームの画像を返す)。
 """
 
 from __future__ import annotations
@@ -23,11 +23,11 @@ PORT_ENV = "NANAMI_AUTOMCP_PORT"
 
 
 class EngineUnavailable(RuntimeError):
-    """The engine is not reachable (not running, AutoMCP disabled, frozen, ...)."""
+    """エンジンに到達できない (起動していない、AutoMCP が無効、固まっている、...)。"""
 
 
 class EngineCommandError(RuntimeError):
-    """The engine answered ``ok: false``."""
+    """エンジンが ``ok: false`` を返した。"""
 
 
 def resolve_port(port: int | None = None) -> int:
@@ -43,7 +43,7 @@ def resolve_port(port: int | None = None) -> int:
 
 
 class EngineClient:
-    """A reusable, thread-safe connection. Reconnects transparently when the engine restarts."""
+    """再利用できるスレッドセーフな接続。エンジンが再起動しても透過的に再接続する。"""
 
     def __init__(self, host: str = DEFAULT_HOST, port: int | None = None,
                  connect_timeout: float = 2.0, request_timeout: float = 30.0) -> None:
@@ -56,7 +56,7 @@ class EngineClient:
         self._ids = itertools.count(1)
         self._lock = threading.Lock()
 
-    # -- connection -----------------------------------------------------------
+    # -- 接続 -----------------------------------------------------------------
     def close(self) -> None:
         if self._sock is not None:
             try:
@@ -89,12 +89,12 @@ class EngineClient:
         line, _, self._buffer = self._buffer.partition(b"\n")
         return line
 
-    # -- requests -------------------------------------------------------------
+    # -- リクエスト -----------------------------------------------------------
     def call(self, cmd: str, args: dict[str, Any] | None = None, timeout: float | None = None) -> dict[str, Any]:
-        """Send one command and return its ``result`` object.
+        """コマンドを 1 つ送り、その ``result`` オブジェクトを返す。
 
-        Raises :class:`EngineUnavailable` when the engine can't be reached or doesn't
-        answer in time, and :class:`EngineCommandError` when it rejects the command.
+        エンジンに到達できないか時間内に応答しなければ :class:`EngineUnavailable` を、
+        コマンドを拒否されたら :class:`EngineCommandError` を投げる。
         """
         wait = timeout if timeout is not None else self.request_timeout
         with self._lock:
@@ -116,7 +116,7 @@ class EngineClient:
                         "(frozen, loading, or paused in a debugger?)"
                     ) from None
                 except OSError as e:
-                    # A connection left over from a previous engine run fails on first use.
+                    # 前回のエンジン実行から残った接続は最初の使用で失敗する。
                     self.close()
                     if attempt == 0:
                         continue

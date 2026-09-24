@@ -1,11 +1,11 @@
-"""Keep every node of one type in a tree at a single cereal class version.
+"""ツリー内の同じ型のノードをすべて単一の cereal クラスバージョンに揃える。
 
-cereal writes a type's ``cereal_class_version`` only once per archive (on its first
-occurrence), so an older and a newer node of the same type cannot coexist in one
-``.animTree``: the engine would load the newer node at the older version and silently
-skip its newer members. When versions are mixed, the older nodes are upgraded to the
-newest version present, filling the members they lack with the engine's in-class
-initializer (catalog ``default``) - the same result as re-saving the tree in the editor.
+cereal は型の ``cereal_class_version`` をアーカイブごとに 1 回（最初に現れたとき）しか
+書かないので、同じ型の古いノードと新しいノードは 1 つの ``.animTree`` に共存できない。
+エンジンは新しいノードを古いバージョンで読み込み、新しいメンバーを黙って読み飛ばしてしまう。
+バージョンが混在する場合は、古いノードを存在する最新バージョンに引き上げ、欠けている
+メンバーをエンジンのクラス内初期化子（カタログの ``default``）で埋める。
+エディタでツリーを保存し直したのと同じ結果になる。
 """
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ def _scalar(shape: str, value: Any) -> Any:
 
 
 def unify_node_versions(tree: model.Tree, cat: catalog_mod.Catalog) -> list[str]:
-    """Upgrade in place; returns the guids of the nodes that were upgraded."""
+    """その場で引き上げ、引き上げたノードの guid を返す。"""
     newest: dict[str, int] = {}
     for node in tree.nodes:
         newest[node.type_fqn] = max(newest.get(node.type_fqn, node.class_version), node.class_version)

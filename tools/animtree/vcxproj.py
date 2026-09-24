@@ -1,12 +1,11 @@
-"""Re-export shim: the vcxproj/.filters text-splice editor lives in
-:mod:`tools.common.vcxproj` (format-generic, not AnimationTree-specific).
+"""再エクスポート用シム: vcxproj/.filters のテキスト差し込みエディタは
+:mod:`tools.common.vcxproj` にある（形式非依存で AnimationTree 固有ではない）。
 
-Not used by any ``tools.animtree`` command in v1 - there is no C++-scaffolding
-command yet (see docs/AnimationTree.md #4: adding a new ``IAnimationNode`` type
-is by-hand only, since the "add node" affordance is a hardcoded ImGui menu
-branch inside ``AnimationTree.cpp`` itself, not a peripheral generated-content
-file the way BehaviourTree Actions are). Kept for structural symmetry with
-``tools/bt`` and ``tools/scene`` in case a future scaffold command needs it.
+v1 の ``tools.animtree`` のコマンドはどれも使っていない。C++ の雛形生成コマンドが
+まだ無いため（docs/AnimationTree.md #4 参照: 新しい ``IAnimationNode`` 型の追加は
+手作業のみ。「ノード追加」の操作は ``AnimationTree.cpp`` 自体にハードコードされた
+ImGui メニューの分岐で、BehaviourTree の Action のような周辺の生成ファイルではない）。
+``tools/bt`` / ``tools/scene`` との構造上の対称性のため、将来の雛形生成コマンドに備えて残している。
 """
 
 from __future__ import annotations

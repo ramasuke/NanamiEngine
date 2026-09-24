@@ -1,7 +1,7 @@
-"""Hook: record whether each Claude Code session of this project is in the middle of a turn.
+"""フック: このプロジェクトの各 Claude Code セッションがターンの途中かどうかを記録する。
 
-UserPromptSubmit writes <state dir>/<session_id>.json ("busy"); Stop / SessionEnd removes it and releases the
-build lock the session holds. Read by .claude/shared/wait_for_sessions.py.
+UserPromptSubmit で <state dir>/<session_id>.json（"busy"）を書き、Stop / SessionEnd でそれを消して
+そのセッションが持つビルドロックを解放する。.claude/shared/wait_for_sessions.py が読む。
 """
 import json
 import sys
@@ -12,7 +12,7 @@ REPO = Path(__file__).resolve().parents[2]
 
 
 def project_log_dir():
-    # NOTE: Claude Code replaces every non-alphanumeric character of the cwd with '-'.
+    # NOTE: Claude Code は cwd の英数字以外の文字をすべて '-' に置き換える。
     slug = "".join(c if c.isascii() and c.isalnum() else "-" for c in str(REPO))
     return Path.home() / ".claude" / "projects" / slug
 
@@ -29,7 +29,7 @@ def marker_path(session_id):
     return state_dir() / f"{session_id}.json"
 
 
-# NOTE: queue fields of a waiter (see wait_for_sessions.py); None removes the key.
+# NOTE: 待機者のキュー項目（wait_for_sessions.py 参照）。None ならキーを削除する。
 CLEAR_WAIT = {"priority": None, "label": None, "wait_since": None}
 
 
@@ -85,6 +85,6 @@ if __name__ == "__main__":
     try:
         main()
     except Exception:
-        # WARNING: a failing hook must never block the session.
+        # WARNING: フックが失敗してもセッションを止めてはならない。
         pass
     sys.exit(0)

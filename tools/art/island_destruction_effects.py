@@ -167,7 +167,7 @@ def build_prefab(name: str, end_frame: int):
     prefab = new_prefab(name)
     set_scale(prefab.root, METRE)
     comp = Builder(prefab).component(prefab.root, 'ParticleSystem')
-    comp.data.pop('isRoop_', None)     # only version 0 archived it
+    comp.data.pop('isRoop_', None)     # アーカイブしていたのはバージョン 0 だけ
     set_field(comp, 'particleFile_', asset_guid(REPO / INSTALL_DIR / f'{name}.efkefc.meta'))
     mode = EFFECTS[name][1]
     secs = LOOP_SECS if mode == LOOP else round(end_frame / 60.0 + 0.1, 2)

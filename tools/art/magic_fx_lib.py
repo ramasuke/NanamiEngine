@@ -1,12 +1,11 @@
-"""Small node-building layer over tools.effect.presets for the MagicCaster spell effects.
+"""MagicCaster の魔法エフェクト用に tools.effect.presets の上に載せた小さなノード構築レイヤー。
 
-Conventions (see tools/art/magic_spell_effects.py):
-* 1 effect unit = 1 m. The prefabs play the effects at world scale 8 (the MagicCaster is 0.08 x a 200 cm rig).
-* Editor axes: +Y up, +Z = the caster's forward, -X = the caster's right. EffekseerForDXLib runs in LH and negates
-  Z of every location / velocity / generation position on load, so editor +Z ends up on DxLib's -Z, which is the
-  avatar's and the spells' forward. Only positions and velocities say "forward" here; shapes are kept symmetric
-  front-to-back so nothing depends on how a renderer lays out its own vertices.
-* Frames are Effekseer frames (60 fps). Velocities are per frame.
+約束事 (tools/art/magic_spell_effects.py 参照):
+* エフェクトの 1 単位 = 1 m。プレハブはワールドスケール 8 で再生する (MagicCaster は 200 cm リグの 0.08 倍)。
+* エディタの軸: +Y が上、+Z が術者の前方、-X が術者の右。EffekseerForDXLib は LH で動き、読み込み時に
+  位置 / 速度 / 生成位置の Z をすべて反転するので、エディタの +Z は DxLib の -Z (アバターと魔法の前方) になる。
+  「前方」を扱うのは位置と速度だけで、形は前後対称に保ち、レンダラーの頂点の並べ方に依存しないようにする。
+* フレームは Effekseer のフレーム (60 fps)。速度はフレームあたり。
 """
 from __future__ import annotations
 
@@ -17,11 +16,11 @@ LAYOUT = 'legacy'
 OPAQUE, BLEND, ADD = 0, 1, 2
 FACE, YAXIS, FIXED = 0, 1, 2          # Sprite/Ring Billboard
 NOBIND, ON_CREATE, ALWAYS = 0, 1, 2   # CommonValues Location/Rotation/ScaleEffectType
-LIVE_LONG = 1200                      # "as long as the effect is playing" for single-instance layers
+LIVE_LONG = 1200                      # 単一インスタンスのレイヤー用の「エフェクト再生中ずっと」
 
 
 def rng(v):
-    """number -> fixed PVA dict; (lo, hi) -> random range; dict passes through."""
+    """数値 -> 固定値の PVA dict、(lo, hi) -> ランダム範囲、dict はそのまま。"""
     if isinstance(v, dict):
         return v
     if isinstance(v, (tuple, list)):
@@ -106,7 +105,7 @@ def _scaling(size, grow, grow_xyz):
                                                        end=P.pva('End', **rng(end)), start_speed=s0, end_speed=s1))
     if size is not None:
         if isinstance(size, (tuple, list)) and len(size) == 2:
-            return P.scaling_values(single_pva=rng(size))          # one random uniform size per particle
+            return P.scaling_values(single_pva=rng(size))          # パーティクルごとにランダムな一様サイズを1つ
         if isinstance(size, (tuple, list)) and len(size) == 3:
             if any(isinstance(v, (tuple, list)) for v in size):
                 x, y, z = size
@@ -142,7 +141,7 @@ def N(name, *, kind='sprite', tex=None, blend=ADD, life=30, count=1, interval=0,
       color=(255, 255, 255, 255), color_to=None, color_spread=None, ease=(0, 0),
       billboard=FACE, fade_in=None, fade_out=None, emit=None, gravity=None, attract=None,
       uv_anim=None, uv_scroll=None, ring=None, model=None, children=None):
-    """One Effekseer node. ``kind`` is 'sprite' | 'ring' | 'model' | 'group' (``model`` = the .efkmodel path)."""
+    """Effekseer のノード1つ。``kind`` は 'sprite' | 'ring' | 'model' | 'group' (``model`` = .efkmodel のパス)。"""
     common = _common(count=count, interval=interval, delay=delay, life=life, infinite=infinite,
                      bind=bind, bind_rot=bind_rot, bind_scale=bind_scale)
     kw = dict(common=common, location=_location(at, at_rand, vel, acc, move), rotation=_rotation(rot, rot_rand, spin),

@@ -1,11 +1,11 @@
-"""Generate the white RGBA textures the MagicCaster spell effects (tools/art/magic_spell_effects.py) are tinted from.
+"""MagicCaster の魔法エフェクト (tools/art/magic_spell_effects.py) が色を付ける元の白い RGBA テクスチャを生成する。
 
     python tools/art/magic_fx_textures.py OUT_DIR [--preview PATH]
 
-Every texture is white with the shape in alpha, so one texture serves every element colour (the effect nodes tint it).
-lightning.png is a 4-frame horizontal flipbook (UVAnimation FrameCountX=4). Deterministic: a fixed seed per texture.
+どのテクスチャも白で形はアルファに持つので、1枚で全属性の色に使える (色はエフェクトノードが付ける)。
+lightning.png は横4コマのフリップブック (UVAnimation FrameCountX=4)。テクスチャごとに固定シードなので結果は決定的。
 
-Requires Pillow + numpy.
+Pillow と numpy が必要。
 """
 import argparse
 import math
@@ -65,7 +65,7 @@ def _blur(a, radius):
 
 
 def _lines(size, segments, width, supersample=4):
-    """Anti-aliased polylines -> alpha (0..1)."""
+    """アンチエイリアス付きポリライン -> アルファ (0..1)。"""
     s = size * supersample
     img = Image.new('L', (s, s), 0)
     d = ImageDraw.Draw(img)
@@ -74,7 +74,7 @@ def _lines(size, segments, width, supersample=4):
     return np.asarray(img.resize((size, size), Image.LANCZOS), np.float32) / 255
 
 
-# ------------------------------------------------------------------ textures
+# ------------------------------------------------------------------ テクスチャ
 def glow():
     x, y = _grid(128)
     r = np.hypot(x, y)
@@ -116,10 +116,10 @@ def smoke():
 
 
 def flame():
-    # tongue of flame: round bottom, pointed top, noisy edge
+    # 炎の舌: 下は丸く、上は尖り、縁はノイズで揺らす
     x, y = _grid(128)
     n = _fbm(128, 128, 23, octaves=4, base=3)
-    width = 0.62 * np.clip((y + 1.0) / 1.55, 0, 1) ** 0.75          # 0 at the tip (top), wide at the bottom
+    width = 0.62 * np.clip((y + 1.0) / 1.55, 0, 1) ** 0.75          # 先端 (上) で 0、下ほど広い
     bottom = _smooth(0.95, 0.55, y)
     edge = np.abs(x) / np.maximum(width, 1e-3) + (n - 0.5) * 0.7
     a = _smooth(1.0, 0.35, edge) * bottom * _smooth(-1.0, -0.72, y)
@@ -134,7 +134,7 @@ def rune_circle():
     def circle(r, n=180):
         return [(0.5 + r * math.cos(t), 0.5 + r * math.sin(t)) for t in np.linspace(0, TAU, n + 1)]
     segs += [(circle(0.47), 1.3), (circle(0.44), 0.7), (circle(0.34), 1.0), (circle(0.155), 0.8)]
-    # runes between 0.35 and 0.43
+    # 0.35 から 0.43 の間にルーン
     count = 24
     for i in range(count):
         t0 = TAU * (i + 0.15) / count
@@ -146,12 +146,12 @@ def rune_circle():
             r0, r1 = rng.choice(rr), rng.choice(rr)
             segs.append(([(0.5 + r0 * math.cos(a0), 0.5 + r0 * math.sin(a0)),
                           (0.5 + r1 * math.cos(a1), 0.5 + r1 * math.sin(a1))], 0.6))
-    # hexagram
+    # 六芒星
     for k in range(2):
         pts = [(0.5 + 0.34 * math.cos(TAU * j / 3 + k * math.pi + math.pi / 2),
                 0.5 + 0.34 * math.sin(TAU * j / 3 + k * math.pi + math.pi / 2)) for j in range(4)]
         segs.append((pts, 0.9))
-    # ticks on the outer band
+    # 外側の帯に目盛り
     for i in range(72):
         t = TAU * i / 72
         l = 0.02 if i % 3 else 0.035
@@ -199,16 +199,16 @@ def crescent():
     x, y = _grid(256)
     outer = np.hypot(x, y + 0.25) - 0.72
     inner = np.hypot(x, y + 0.58) - 0.78
-    d = np.maximum(outer, -inner)                 # moon: outer disc minus a disc pushed down
+    d = np.maximum(outer, -inner)                 # 月: 外側の円から下にずらした円を引く
     a = _smooth(0.03, -0.03, d)
     glow_ = _smooth(0.25, -0.02, d) * 0.45
-    tips = _smooth(0.9, 0.2, np.abs(x))           # fade toward the horns
-    edge = _smooth(0.12, 0.0, -outer)             # brighter along the leading (outer) edge
+    tips = _smooth(0.9, 0.2, np.abs(x))           # 角の先に向かってフェード
+    edge = _smooth(0.12, 0.0, -outer)             # 前縁 (外側) ほど明るい
     return _to_image(np.clip((a * (0.55 + 0.45 * edge) + glow_) * tips, 0, 1))
 
 
 def beam():
-    # v across the beam, u along it; tiles along u
+    # v はビームの横方向、u は沿う方向。u 方向にタイルする
     w, h = 256, 64
     y = (np.arange(h, dtype=np.float32) + 0.5) / h * 2 - 1
     n = _fbm(w, h, 31, octaves=3, base=4)
@@ -236,7 +236,7 @@ def shard():
 
 
 def spike():
-    # rock spike standing on its base: apex at the top, lit from the left
+    # 底面で立つ岩の棘: 頂点が上、左から照らす
     w, h = 64, 128
     img = Image.new('L', (w * 4, h * 4), 0)
     ImageDraw.Draw(img).polygon([(w * 2, 6), (w * 4 - 6, h * 4), (6, h * 4)], fill=255)
@@ -278,7 +278,7 @@ def snowflake():
 
 
 def rock():
-    # shaded chunk (RGB carries the shading, for Blend-mode debris)
+    # 陰影付きの塊 (陰影は RGB に持つ。Blend モードの破片用)
     size = 128
     rng = np.random.default_rng(41)
     pts = []

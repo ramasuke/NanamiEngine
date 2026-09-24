@@ -66,7 +66,7 @@ def pillar_tremble():
     ], END_FRAME)
 
 
-# ---------------------------------------------------------------- sound
+# ---------------------------------------------------------------- 音
 def pillar_tremble_sound(rng):
     s = magic_sfx
     d = 1.3
@@ -91,7 +91,7 @@ def write_sound():
     return stereo
 
 
-# ---------------------------------------------------------------- build
+# ---------------------------------------------------------------- 組み立て
 def run(cmd):
     res = subprocess.run([sys.executable, '-m', *cmd], cwd=REPO, capture_output=True, text=True)
     if res.returncode != 0:
@@ -114,7 +114,7 @@ def build_prefab():
     prefab = new_prefab(NAME)
     set_scale(prefab.root, METRE)
     comp = Builder(prefab).component(prefab.root, 'ParticleSystem')
-    comp.data.pop('isRoop_', None)     # only version 0 archived it
+    comp.data.pop('isRoop_', None)     # バージョン 0 だけが書き出していた
     set_field(comp, 'particleFile_', asset_guid(REPO / INSTALL_DIR / f'{NAME}.efkefc.meta'))
     comp.data['playingDuration_secs_'] = Num.of_float(round(END_FRAME / 60.0 + 0.1, 2))
     comp.data['playMode_'] = Num.of_int(DESTROY)

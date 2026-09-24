@@ -1,4 +1,4 @@
-"""Build the event-board UI prefabs from tools/art/event_board.py's LAYOUT / V2.
+"""tools/art/event_board.py の LAYOUT / V2 から掲示板の UI プレハブを組む。
 
     python tools/art/event_board.py --emit        # 先にスプライトを書き出す
     python tools/art/event_board_prefab.py        # 掲示板の UI プレハブ一式を組み直す
@@ -176,6 +176,7 @@ def build_quest_row():
     b.field(row, 'takingStampSprite_', sprite_guid('QuestStamp_Taking'))
     b.field(row, 'clearedStampSprite_', sprite_guid('QuestStamp_Cleared'))
     b.field(row, 'preparingStampSprite_', sprite_guid('QuestStamp_Preparing'))
+    b.field(row, 'lockedStampSprite_', sprite_guid('RestorationStamp_Locked'))
     ticket_fields(b, row, seal)
     return save_prefab(prefab, PREFAB_DIR, 'EventBoardQuestRow')
 
@@ -384,6 +385,7 @@ def build_quest_page(row_prefab_guid):
     b.field(page, 'takingSealSprite_', sprite_guid('QuestSeal_Taking'))
     b.field(page, 'clearedSealSprite_', sprite_guid('QuestSeal_Cleared'))
     b.field(page, 'preparingSealSprite_', sprite_guid('QuestSeal_Preparing'))
+    b.field(page, 'lockedSealSprite_', sprite_guid('RestorationSeal_Locked'))
     return save_prefab(prefab, PREFAB_DIR, 'EventBoardQuestPage')
 
 

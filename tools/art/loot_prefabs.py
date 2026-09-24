@@ -53,7 +53,7 @@ HERB = {
     'maxStack_': 10,
     'descriptionLines_': ['体力を少し回復する。', '草原のあちこちに生えている。'],
 }
-# (item guid, chance, count)
+# (アイテム guid, 確率, 個数)
 CHEST_ITEMS = [('HERB', 1.0, 2), (HEAL_POTION, 0.5, 1), (ROASTED_MEAT, 0.3, 1)]
 CHEST_MONEY, CHEST_COINS = 30, 6
 
@@ -150,7 +150,7 @@ def build_chest_drop_table(herb_guid):
     return guid
 
 
-# ---------------------------------------------------------------- prefabs
+# ---------------------------------------------------------------- プレハブ
 RIGIDBODY_KINEMATIC = 1
 
 

@@ -79,7 +79,7 @@ GROVES = [
 MEADOW_SEEDS = [(440.0, 1170.0), (820.0, 620.0), (420.0, 700.0), (1200.0, 930.0)]
 
 
-# ---------------------------------------------------------------- terrain
+# ---------------------------------------------------------------- 地形
 class Terrain:
     def __init__(self):
         data = np.load(HEIGHTS)
@@ -127,7 +127,7 @@ class Terrain:
         return min(ys)
 
 
-# ---------------------------------------------------------------- placement helpers
+# ---------------------------------------------------------------- 配置の補助
 def inside_play(x, z, margin=0.0):
     return PLAY_MIN + margin <= x <= PLAY_MAX - margin and PLAY_MIN + margin <= z <= PLAY_MAX - margin
 
@@ -199,7 +199,7 @@ class Placement:
         self.group, self.prefab, self.pos, self.rot, self.scale, self.radius = group, prefab, pos, rot, scale, radius
 
 
-# ---------------------------------------------------------------- the plan
+# ---------------------------------------------------------------- 配置計画
 def pick_tree(rng, y):
     if y < 110:
         kinds, weights = ['Oak', 'Birch', 'Pine'], [0.45, 0.4, 0.15]
@@ -462,7 +462,7 @@ def plan(rng, t):
     return out, meadows
 
 
-# ---------------------------------------------------------------- grass
+# ---------------------------------------------------------------- 草
 def value_noise(rng, x, z, wavelength):
     size = int(1500 / wavelength) + 3
     grid = rng.random((size, size))
@@ -574,7 +574,7 @@ def write_grass_field(records, chunk):
     return guid
 
 
-# ---------------------------------------------------------------- scene edits
+# ---------------------------------------------------------------- シーン編集
 LEGACY_COLLIDER_KEYS = ('mass_', 'isGravity_', 'emotionType_', 'constraints_')
 
 

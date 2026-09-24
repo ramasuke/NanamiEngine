@@ -1,4 +1,4 @@
-"""CLI: add-action / remove-action / regen-catalog."""
+"""CLI: add-action / remove-action / regen-catalog。"""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ def cmd_add_action(a: argparse.Namespace) -> int:
         print("  " + line)
     if not a.dry_run:
         print("\nnext: build with")
-        print("  MSBuild.exe NanamiEngine.sln -p:Configuration=Debug -p:Platform=x64 "
+        print("  MSBuild.exe EnviroHunter.sln -p:Configuration=Debug -p:Platform=x64 "
               "-p:PreferredToolArchitecture=x64 -m:12")
         print(f'then the editor shows the action at  {a.category} > {a.name}')
     return 0

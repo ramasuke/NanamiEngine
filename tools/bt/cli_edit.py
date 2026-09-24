@@ -1,5 +1,5 @@
-"""CLI edit verbs: add-node, remove-node, move-node, set-params, set-weight,
-add-bb-param, remove-bb-param, apply, validate."""
+"""CLI の編集コマンド: add-node, remove-node, move-node, set-params, set-weight,
+add-bb-param, remove-bb-param, apply, validate。"""
 
 from __future__ import annotations
 

@@ -1,5 +1,5 @@
-"""Re-export shim: the tagged-blob representation lives in
-:mod:`tools.common.blob` (format-generic, not AnimationTree-specific).
+"""再エクスポート用シム: タグ付き blob 表現は
+:mod:`tools.common.blob` にある（形式非依存で AnimationTree 固有ではない）。
 """
 
 from __future__ import annotations

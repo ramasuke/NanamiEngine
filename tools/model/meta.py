@@ -1,17 +1,17 @@
-""".mv1.meta`` sidecar files.
+""".mv1.meta`` サイドカーファイル。
 
-A ``.meta`` is a cereal-JSON ``std::shared_ptr<AssetBase>`` holding the
-``Mv1File`` asset: a stable ``guid_`` (what a component's model field
-references) plus ``contentPath_`` back to the ``.mv1`` binary. Written by
-``File::OnSave()`` in the engine; reproduced here so ``install`` yields an
-asset the editor/prefabs can bind to immediately.
+``.meta`` は ``Mv1File`` アセットを持つ cereal-JSON の ``std::shared_ptr<AssetBase>``:
+安定した ``guid_`` (コンポーネントのモデルのフィールドが参照するもの) と、
+``.mv1`` バイナリを指す ``contentPath_``。エンジンでは ``File::OnSave()`` が
+書き出す。ここで同じものを作るので、``install`` の結果はすぐにエディタ/プレハブから
+紐付けられるアセットになる。
 
-Thin binding of the generic :mod:`tools.common.meta_base` codec for the
-``Mv1File`` asset type - see that module for the format notes, and
-``tools/effect/meta.py`` for the same pattern applied to ``ParticleFile``
-(same ``base_class_count=2`` shape: ``Mv1File`` also ``base_class<>()``s both
-``AssetBase`` and ``LifeCycleCallback::IEnablableAsset`` before its own
-``contentPath_``/``guid_`` - see ``Engine/Module/Asset/MV1/MV1File.h``).
+汎用の :mod:`tools.common.meta_base` コーデックを ``Mv1File`` アセット型に薄く
+結び付けたもの - 形式の説明はそのモジュールを、同じパターンを ``ParticleFile`` に
+適用した例は ``tools/effect/meta.py`` を参照 (同じ ``base_class_count=2`` の形:
+``Mv1File`` も自身の ``contentPath_``/``guid_`` の前に ``AssetBase`` と
+``LifeCycleCallback::IEnablableAsset`` の両方を ``base_class<>()`` する -
+``Engine/Module/Asset/MV1/MV1File.h`` 参照)。
 """
 
 from __future__ import annotations
@@ -24,10 +24,10 @@ from tools.common.meta_base import MetaSpec
 ASSET_FQN = "NanamiEngine::Module::Asset::Mv1File"
 DATA_EXT = ".mv1"
 META_EXT = ".mv1.meta"
-# .mv1 assets have no single root the way .efkefc does (Assets/Art/Animation/**,
-# Assets/Art/Models/**, Assets/BruteAnimation, ...) - this is only the fallback
-# used when a target directory has no sibling .mv1.meta to copy the convention
-# from (see content_path_for below).
+# .mv1 アセットには .efkefc のような単一のルートが無い (Assets/Art/Animation/**、
+# Assets/Art/Models/**、Assets/BruteAnimation、...) - これは対象ディレクトリに
+# 規則を写せる兄弟の .mv1.meta が無いときにだけ使うフォールバック
+# (下の content_path_for 参照)。
 DEFAULT_DIR = "Assets/Art/Models"
 
 _SPEC = MetaSpec(
@@ -36,8 +36,8 @@ _SPEC = MetaSpec(
     meta_ext=META_EXT,
     default_dir=DEFAULT_DIR,
     outer_class_version=1,
-    # Mv1File::save/load base_class<>()s both AssetBase and
-    # LifeCycleCallback::IEnablableAsset -> two empty valueN wrappers, not one.
+    # Mv1File::save/load は AssetBase と LifeCycleCallback::IEnablableAsset の
+    # 両方を base_class<>() する -> 空の valueN ラッパーは 1 つではなく 2 つ。
     base_class_count=2,
 )
 
@@ -45,15 +45,14 @@ mint_guid = _base.mint_guid
 
 
 def content_path_for(name: str, target_dir: Path, repo_root: Path) -> str:
-    """Match real ``.mv1.meta``'s ``contentPath_`` convention.
+    """実際の ``.mv1.meta`` の ``contentPath_`` 規則に合わせる。
 
-    Unlike the other thin-proxy asset types (see ``meta_base.content_path_for``'s
-    "forward slash before the file" convention), every real ``.mv1.meta``
-    checked in this repo (``Assets/Art/Animation/Man/Death.mv1.meta``,
-    ``.../Jump.mv1.meta``, ``Assets/Art/Animation/Hyenas/...``) uses an
-    **all-backslash** path with no exception - matches ``tools/effect/meta.py``'s
-    ``ParticleFile`` binding for the same reason, so this binding doesn't
-    delegate to the generic fallback either.
+    他の薄いプロキシのアセット型 (``meta_base.content_path_for`` の「ファイル名の
+    直前はスラッシュ」規則) と違い、このリポジトリで確認した実際の ``.mv1.meta``
+    (``Assets/Art/Animation/Man/Death.mv1.meta``、``.../Jump.mv1.meta``、
+    ``Assets/Art/Animation/Hyenas/...``) は例外なく **すべてバックスラッシュ** の
+    パスを使っている - 同じ理由で ``tools/effect/meta.py`` の ``ParticleFile``
+    バインディングと揃えており、こちらも汎用のフォールバックに委ねない。
     """
     for sib in sorted(target_dir.glob("*" + META_EXT)):
         try:

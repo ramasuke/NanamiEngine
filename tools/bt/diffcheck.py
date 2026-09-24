@@ -1,5 +1,5 @@
-"""Re-export shim: structural comparison helpers moved to
-:mod:`tools.common.diffcheck` (format-generic, not BehaviourTree-specific).
+"""再エクスポート用シム: 構造比較ヘルパーは
+:mod:`tools.common.diffcheck` に移動した（BehaviourTree 固有ではなく形式非依存）。
 """
 
 from __future__ import annotations

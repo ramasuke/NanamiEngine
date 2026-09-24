@@ -1,24 +1,24 @@
-"""Assign non-overlapping editor-canvas positions to a tree.
+"""ツリーに重ならないエディタキャンバス上の位置を割り当てる。
 
-The engine's graph node is 120x60 (``NODE_SIZE`` in ``Npc_BehaviourNodeBase.cpp``).
-Layout mirrors how the trees are drawn by hand in the editor:
+エンジンのグラフノードは 120x60（``Npc_BehaviourNodeBase.cpp`` の ``NODE_SIZE``）。
+レイアウトはエディタで手作業で描かれるツリーの形に合わせる:
 
-* **Selector / RandomSelector** children fan out **horizontally** (siblings side by
-  side), and the parent is centred above them.
-* **Sequence / OnceExecute / OnceSuccess** children stack **vertically** straight
-  down from the parent, one per row.
+* **Selector / RandomSelector** の子は**横に**広がり（兄弟を横並び）、
+  親はその上の中央に置く。
+* **Sequence / OnceExecute / OnceSuccess** の子は親から真下へ**縦に**
+  1行に1つずつ積む。
 
-Each subtree reports its own footprint (width, height) so a wide branch pushes the
-next horizontal sibling right, and a tall branch pushes the next stacked sibling
-down. Deterministic, so add-node + remove-node still round-trips.
+各サブツリーは自身の占有範囲（幅, 高さ）を返すので、幅の広い分岐は次の横並びの
+兄弟を右へ、背の高い分岐は次の縦積みの兄弟を下へ押し出す。決定的なので
+add-node + remove-node もラウンドトリップする。
 """
 
 from __future__ import annotations
 
 from . import model
 
-DX = 127.0   # horizontal footprint of one leaf column   (node is 120 wide)
-DY = 60.0    # vertical step: parent -> child, and row-to-row inside a sequence
+DX = 127.0   # 葉1列分の横方向の占有幅   （ノード幅は 120）
+DY = 60.0    # 縦方向の間隔: 親 -> 子、およびシーケンス内の行間
 X0 = 120.0
 Y0 = 40.0
 
@@ -27,11 +27,11 @@ _HORIZONTAL = (model.Selector, model.RandomSelector)
 
 def auto_layout(tree: model.Tree, *, dx: float = DX, dy: float = DY,
                 x0: float = X0, y0: float = Y0) -> None:
-    """Reposition every node: selectors branch across, sequences stack down."""
+    """全ノードを配置し直す: セレクタは横に分岐し、シーケンスは下に積む。"""
     col_w, row_h = float(dx), float(dy)
 
     def place(node, x: float, y: float) -> tuple[float, float]:
-        """Place ``node`` at (x, y); return the (width, height) its subtree spans."""
+        """``node`` を (x, y) に置き、そのサブツリーが占める (width, height) を返す。"""
         kids = model.children_of(node)
         if not kids:
             node.pos = (float(round(x)), float(round(y)))
@@ -50,7 +50,7 @@ def auto_layout(tree: model.Tree, *, dx: float = DX, dy: float = DY,
             node.pos = (float(round(centre)), float(round(y)))
             return cx - x, row_h + below
 
-        # vertical stack (Sequence / OnceExecute / OnceSuccess)
+        # 縦積み（Sequence / OnceExecute / OnceSuccess）
         node.pos = (float(round(x)), float(round(y)))
         cy = child_y
         width = col_w

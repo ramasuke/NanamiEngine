@@ -1,12 +1,12 @@
 # NanamiEngine
 
-A custom C++ game engine + game (DxLib / ImGui / Jolt / cereal), toolset v143, C++20. `NanamiEngine.sln` has two
+A custom C++ game engine + game (DxLib / ImGui / Jolt / cereal), toolset v143, C++20. `EnviroHunter.sln` has two
 hand-maintained projects with explicit file lists — **there is no globbing**, so a new `.cpp`/`.h` must be added by hand
 (and, optionally, to the `.vcxproj.filters`):
 
-- `NanamiEngineLib.vcxproj` — static lib `lib/<Editor|Game>/<Debug|Release>/NanamiEngine.lib`: `Engine/`, `Packages/`,
+- `NanamiEngine.vcxproj` — static lib `lib/<Editor|Game>/<Debug|Release>/NanamiEngine.lib`: `Engine/`, `Packages/`,
   `Libs/`, `Main.cpp` (WinMain lives in the lib).
-- `NanamiEngine.vcxproj` — the game exe: `Assets/**` sources only; links the lib with `/WHOLEARCHIVE` (static
+- `EnviroHunter.vcxproj` — the game exe (`EnviroHunter.exe`): `Assets/**` sources only; links the lib with `/WHOLEARCHIVE` (static
   self-registration would otherwise be dropped by the linker).
 
 Shared compiler/linker settings live in `NanamiEngine.props` / `NanamiEngine.Game.props`, not in the vcxproj files.
@@ -20,15 +20,15 @@ edit, fixing code, or the user saying things like "動作確認して" is not by
 itself a request to build — ask first if it's unclear.
 
 ```
-MSBuild.exe NanamiEngine.sln -p:Configuration=Debug -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12
-MSBuild.exe NanamiEngine.sln -p:Configuration=Release -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12
+MSBuild.exe EnviroHunter.sln -p:Configuration=Debug -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12
+MSBuild.exe EnviroHunter.sln -p:Configuration=Release -p:Platform=x64 -p:PreferredToolArchitecture=x64 -m:12
 ```
 
 The solution only has `x64` configurations. `-p:NanamiApplicationMode=Game` builds the game (non-editor) variant into
 `x64/Game/<Configuration>/` (the lib into `lib/Game/...`); the editor's *Build Settings* window runs exactly that through
 `GameBuilder` on the project's own `.sln` (Release by default, Debug selectable; MSBuild is found with vswhere unless a
 path is set). Build Settings
-stores product name + start scene in `ProjectConfig/Build/Runtime/` (shipped with the game, read at startup) and the
+stores product name + start scene + client version in `ProjectConfig/Build/Runtime/` (shipped with the game, read at startup) and the
 editor-only MSBuild path / output dir / configuration in `ProjectConfig/Build/`. Per-file `<ClCompile>` blocks must not hardcode configuration-specific settings
 (`RuntimeLibrary`, `Optimization`, `PreprocessorDefinitions`, `ObjectFileName` under `x64\Debug\`, …) — Visual
 Studio writes them when you edit a single file's properties, and they then leak into every configuration.
@@ -91,6 +91,8 @@ registered type name (cereal stores the macro argument as `polymorphic_name` in 
 `Engine/` and `Packages/` must never `#include` anything under `Assets/` (they are compiled into the engine lib that
 other projects link). Game code plugs in through registration instead:
 Add Component menu entries via `AddComponent::RegisterMenu` (game menu: `Assets/Scripts/Editor/AddComponentMenu/`),
+editor toolbar buttons via `REGISTER_EDITOR_TOOLBAR_WIDGET(Type, order)` at the end of the widget's `.cpp`, inside its namespace
+(`Engine/Core/Application/Window/Toolbar/Widget/`; built-ins are ordered 100..600),
 lock-on framing by implementing `CineMachine::ILockOnCameraTarget` (game side: `ILockOnTarget`). Physics layers other than `Default` are
 per-project data (`ProjectConfig/Physics/LayerNames.json` + `LayerCollisionMasks.json`, edited in Config > Physics);
 look them up with `Physics::PhysicsLayers::NameToLayer("Enemy")`, never add enum values. The exe takes `-project <dir>` (sets the
@@ -316,6 +318,10 @@ python -m tools.dist diff <installed.json> <manifest.json>   # what clients woul
 python tools/dist/selftest.py             # run after touching tools/dist/{manifest,upload,config,refs}.py
 ```
 
+The editor toolbar's **Asset Dist** button (`Packages/AssetUpdater/Editor/`, shown only when `tools/dist/` exists) runs the
+same `build` / `upload --dry-run` / `upload` (Release needs a successful build of that version first, then a confirm);
+its Version / Python fields are stored in `ProjectConfig/Build/AssetDistribution/`.
+
 `manifest.json` lists every deliverable file under `Assets/` (2026-09-18: **1,812 entries / 1.76 GB**, 3,146
 unique blobs) and is what `Packages/AssetUpdater/` fetches at runtime. It is hosted on **Cloudflare R2**
 (bucket `nanami-assets`, uploaded through the rclone remote `r2`; the target and public URL live in
@@ -349,7 +355,7 @@ copies next to them). Fix the reference; don't loosen the check. References that
 `upload` **refuses** a release that changes or removes an existing font (`.ttf`/`.otf`/`.ttc`) relative to the live
 `manifest.json` unless `requiredClientVersion` is raised above the live one: the client applies updates on the title
 screen while the game runs, and `TtfFontFile` keeps fonts registered via `AddFontResourceEx` until exit, so every
-player's apply would fail. Ship font changes in a new zip. The client side (`Packages/AssetUpdater`: check ->
+player's apply would fail. Ship font changes in a new zip. `requiredClientVersion` defaults to Build Settings' *Client Version* (the game's own version, compared as dot-separated numbers). The client side (`Packages/AssetUpdater`: check ->
 confirm -> download to `.update/` -> transactional apply into `Assets/` -> relaunch) only ever runs when
 `APPLICATION_MODE == Game` **and** `installed.json` exists (`GameBuilder` writes it next to the exported exe - a
 hash list of the exported `Assets/` - unless Build Settings > *Asset Updates* is off); never let it run from the editor, where it would

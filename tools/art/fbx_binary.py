@@ -1,7 +1,7 @@
-"""Minimal binary FBX (7.x) reader/writer that round-trips a node tree with typed properties.
+"""型付きプロパティを持つノードツリーをそのまま読み書きできる、最小限のバイナリ FBX (7.x) リーダー/ライター。
 
-Used by tools/art/mixamo_clip.py to rewrite animation curves inside a Mixamo character FBX.
-Arrays are re-compressed on save, so the bytes differ from the input but the tree is identical.
+tools/art/mixamo_clip.py が Mixamo のキャラ FBX のアニメーションカーブを書き換えるのに使う。
+配列は保存時に圧縮し直すので、バイト列は入力と変わるがツリーは同一になる。
 """
 import struct, zlib
 
@@ -10,9 +10,9 @@ class Node:
 
     def __init__(self, name, props=None, children=None, block=False):
         self.name = name
-        self.props = props if props is not None else []   # list of (type_char, value)
+        self.props = props if props is not None else []   # (type_char, value) のリスト
         self.children = children if children is not None else []
-        # an empty `{ }` block (e.g. Mixamo's AnimationLayer); DxLib drops the animation without it
+        # 空の `{ }` ブロック (Mixamo の AnimationLayer など)。これが無いと DxLib はアニメーションを捨てる
         self.block = block
 
     def find(self, n):
@@ -148,7 +148,7 @@ def _write_node(node, offset, v64):
         body += b
         pos += len(b)
     if node.children or not node.props or node.block:
-        # null record terminates a child list (also written for nodes with no props and no children)
+        # null レコードで子リストを終える (プロパティも子も無いノードでも書く)
         body += b'\0' * (head + 1)
         pos += head + 1
     end = pos

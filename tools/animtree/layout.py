@@ -1,16 +1,15 @@
-"""Default editor-canvas placement for a freshly-added node.
+"""新規追加したノードのエディタキャンバス上の既定配置。
 
-Unlike ``tools.bt``'s recursive tree auto-layout (which fans a Selector's
-children out horizontally / stacks a Sequence's children vertically), an
-AnimationTree is a general directed graph - arbitrary node-to-node
-transitions, no parent/child relation, potentially cyclic via any-state edges
-- so there is no analogous structure to recurse over. Node position is purely
-cosmetic (``IAnimationNode::Position()`` only feeds ``OnDrawGraphEditorGui``
-rendering - zero gameplay effect), so a real graph-layout algorithm
-(force-directed / Sugiyama) is not worth the implementation cost here. This
-ships one trivial deterministic grid placement, used only as ``add-clip-node``'s
-default when ``--pos`` is omitted; there is no ``layout`` CLI verb that
-re-arranges an *existing* tree - use ``move-node --pos`` for manual control.
+``tools.bt`` の再帰的なツリー自動レイアウト（Selector の子を横に広げ、
+Sequence の子を縦に積む）と違い、AnimationTree は一般の有向グラフ
+（ノード間の任意の遷移、親子関係なし、any-state の辺で循環もありうる）なので、
+再帰でたどれる同様の構造が無い。ノード位置は見た目だけのもの
+（``IAnimationNode::Position()`` は ``OnDrawGraphEditorGui`` の描画にしか
+使われずゲームプレイに影響しない）なので、本格的なグラフレイアウト
+（力学モデル / Sugiyama）は実装コストに見合わない。ここでは単純で決定的な
+グリッド配置を 1 つだけ用意し、``add-clip-node`` で ``--pos`` を省略したときの
+既定値にのみ使う。*既存の* ツリーを並べ直す ``layout`` コマンドは無いので、
+手動で調整するには ``move-node --pos`` を使う。
 """
 
 from __future__ import annotations

@@ -1,4 +1,4 @@
-"""Add the stage select "部屋" row (案B) and the in-game room code HUD from room_code.py's LAYOUT.
+"""ステージ選択の「部屋」行 (案B) とゲーム内のルームコード HUD を room_code.py の LAYOUT から追加する。
 
     python tools/art/room_code.py --emit       # 先にスプライトを書き出す
     python tools/art/room_code_prefab.py       # StageSelectUI.prefab の RoomRow と

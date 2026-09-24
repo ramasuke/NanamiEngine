@@ -1,4 +1,4 @@
-"""``python -m tools.engine_dist <command>`` entry point."""
+"""``python -m tools.engine_dist <command>`` のエントリポイント。"""
 
 from __future__ import annotations
 

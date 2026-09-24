@@ -1,16 +1,16 @@
-"""Tagged representation of a cereal object sub-tree.
+"""cereal オブジェクトのサブツリーをタグ付きで表現する。
 
-The reader converts an action's ``data`` object into a blob: plain values pass
-through (``OrderedObj`` / ``list`` / :class:`~tools.bt.cereal_json.Num` / ``str`` /
-``bool`` / ``None``), while the two cereal bookkeeping constructs are wrapped:
+リーダーはアクションの ``data`` オブジェクトを blob に変換する。素の値
+(``OrderedObj`` / ``list`` / :class:`~tools.bt.cereal_json.Num` / ``str`` /
+``bool`` / ``None``) はそのまま通し、cereal の管理用の2つの構造だけをラップする:
 
-* :class:`Ptr`  - an object that carried ``polymorphic_id`` (a serialised pointer).
-* :class:`Ver`  - an object whose first key was ``cereal_class_version``
-                  (a serialised versioned type).
+* :class:`Ptr`  - ``polymorphic_id`` を持っていたオブジェクト (シリアライズされたポインタ)。
+* :class:`Ver`  - 先頭キーが ``cereal_class_version`` だったオブジェクト
+                  (シリアライズされたバージョン付き型)。
 
-The writer walks the blob and regenerates every ``polymorphic_id`` /
-``ptr_wrapper.id`` / ``cereal_class_version`` from its global counters, so blobs
-are position-independent and survive structural edits elsewhere in the tree.
+ライターは blob を走査し、すべての ``polymorphic_id`` / ``ptr_wrapper.id`` /
+``cereal_class_version`` をグローバルカウンタから再生成する。そのため blob は
+位置に依存せず、ツリーの他の場所での構造編集にも耐える。
 """
 
 from __future__ import annotations
@@ -20,27 +20,27 @@ from typing import Any, Optional
 
 from .cereal_json import Num, OrderedObj
 
-Obj = OrderedObj  # alias for readability in signatures
+Obj = OrderedObj  # シグネチャの可読性のための別名
 
 
 @dataclass
 class Ptr:
-    """A serialised pointer slot (had ``polymorphic_id``)."""
+    """シリアライズされたポインタのスロット (``polymorphic_id`` を持っていた)。"""
 
-    exact: bool                 # polymorphic_id == 0x40000000 (dynamic == static)
+    exact: bool                 # polymorphic_id == 0x40000000 (動的型 == 静的型)
     null: bool                  # polymorphic_id == 0
-    fqn: str | None             # from polymorphic_name / the archive type table
+    fqn: str | None             # polymorphic_name / アーカイブの型テーブルから取得
     wrapper: str                # "shared" (ptr_wrapper.id) | "unique" (valid) | ""
-    data: Any                   # blob of ptr_wrapper.data, or None when null
+    data: Any                   # ptr_wrapper.data の blob。null なら None
 
 
 @dataclass
 class Ver:
-    """A serialised versioned type (first key was ``cereal_class_version``)."""
+    """シリアライズされたバージョン付き型 (先頭キーが ``cereal_class_version``)。"""
 
-    key: tuple                  # stable type identity, e.g. ("type", "Guid")
+    key: tuple                  # 安定した型の識別子。例: ("type", "Guid")
     version: int
-    body: Obj                   # remaining fields (blob-tagged), original order
+    body: Obj                   # 残りのフィールド (blob タグ付き)、元の順序
     literal_presence: Optional[bool] = None
     """Opt out of the writer's global once-per-key ``cereal_class_version``
     tracking for this node and reproduce this *specific* occurrence's presence
@@ -59,10 +59,10 @@ class Ver:
 
 
 def fingerprint(node: Any) -> str:
-    """Structural signature of a raw parsed node, ignoring bookkeeping values.
+    """管理用の値を無視した、パース済み生ノードの構造シグネチャ。
 
-    Two serialised instances of the same C++ type share a fingerprint; it is the
-    fallback type identity for versioned structs the catalog does not model.
+    同じ C++ 型の2つのシリアライズ済みインスタンスは同じ fingerprint を持つ。
+    カタログがモデル化していないバージョン付き構造体の、代替の型識別子として使う。
     """
     if isinstance(node, OrderedObj):
         parts = []

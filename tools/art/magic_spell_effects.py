@@ -1,16 +1,16 @@
-"""Build the MagicCaster spell particle effects (Effekseer .efkproj -> .efkefc) and install them under Assets/Art/Effect/Magic.
+"""MagicCaster の魔法パーティクルエフェクト (Effekseer .efkproj -> .efkefc) を作り、Assets/Art/Effect/Magic に入れる。
 
     python tools/art/magic_spell_effects.py --build-dir DIR [--only NAME ...] [--install]
 
-Two families, both authored in metres (prefabs play them at scale 8, see tools/art/magic_fx_lib.py):
-* spell effects - projectile travel / impact, area sigils and bursts, buffs, beam, breath;
-* Cast_<Motion> - one per cast animation, spawned at the caster's feet when Cast State starts and choreographed to
-  that clip: the hand positions/frames below were measured in Blender from the Mixamo "Magic Spell Pack" clips
-  (Assets/Art/Animation/MagicCaster/Spell/_Source) and are converted with the playback speed each clip has in
-  MagicCasterAnimation.animTree (CAST_SPEED), so frame f of a clip lands at Effekseer frame 60 * (f - 1) / speed.
-  Positions are (x, y, z) with +z = the caster's forward and -x = the caster's right, from the caster's feet.
+2系統あり、どちらもメートル単位で作る (プレハブはスケール 8 で再生。tools/art/magic_fx_lib.py 参照):
+* 魔法エフェクト - 弾の飛翔 / 着弾、範囲の魔法陣と爆発、バフ、ビーム、ブレス
+* Cast_<Motion> - 詠唱アニメごとに1つ。Cast State 開始時に術者の足元に出し、そのクリップに合わせて振り付ける。
+  下の手の位置/フレームは Mixamo の "Magic Spell Pack" のクリップ (Assets/Art/Animation/MagicCaster/Spell/_Source)
+  から Blender で測り、MagicCasterAnimation.animTree での各クリップの再生速度 (CAST_SPEED) で換算する。
+  つまりクリップのフレーム f は Effekseer のフレーム 60 * (f - 1) / speed になる。
+  位置は術者の足元からの (x, y, z) で、+z が術者の前方、-x が術者の右。
 
-Requires Pillow + numpy (textures) and the Effekseer CUI configured in tools/effect/effect_config.json.
+Pillow + numpy (テクスチャ用) と、tools/effect/effect_config.json に設定した Effekseer CUI が必要。
 """
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ from tools.effect import xmlio  # noqa: E402
 
 INSTALL_DIR = 'Assets/Art/Effect/Magic'
 
-# clip playback speeds (MV1 frames per second) in MagicCasterAnimation.animTree
+# MagicCasterAnimation.animTree でのクリップ再生速度 (MV1 フレーム/秒)
 CAST_SPEED = {
     'OneHandThrust': 60, 'OneHandSweep': 40, 'OneHandUppercut': 40, 'OneHandRaise': 36, 'TwoHandRaise': 36,
     'TwoHandSlam': 38, 'TwoHandBurst': 40, 'TwoHandThrow': 40, 'TwoHandSwingPush': 40, 'TwoHandBeam': 36,
@@ -38,11 +38,11 @@ CAST_SPEED = {
 
 
 def ef(motion, clip_frame):
-    """Effekseer frame at which the cast clip (Blender numbering, first frame = 1) reaches clip_frame."""
+    """詠唱クリップ (Blender の番号付け、最初のフレーム = 1) が clip_frame に達する Effekseer フレーム。"""
     return round(60 * (clip_frame - 1) / CAST_SPEED[motion])
 
 
-# ---------------------------------------------------------------- palettes (RGB)
+# ---------------------------------------------------------------- パレット (RGB)
 BOLT = ((215, 240, 255), (90, 170, 255))
 FIRE = ((255, 236, 190), (255, 140, 40), (230, 70, 20))
 VIOLET = ((248, 228, 255), (190, 110, 255), (110, 50, 220))
@@ -62,7 +62,7 @@ def a(rgb, alpha):
     return (*rgb, alpha)
 
 
-# ================================================================ shared pieces
+# ================================================================ 共通部品
 def flash(name, rgb, size, *, at=(0, 0, 0), delay=0, life=10, alpha=255):
     return N(name, tex='glow_core', at=at, delay=delay, life=life, grow=(size * 0.35, size, 20, 0),
              color=a(rgb, alpha), fade_out=(max(2, life - 2), 0, -20))
@@ -86,7 +86,7 @@ def sparks(name, rgb, *, count, speed, at=(0, 0, 0), delay=0, interval=0, life=(
 
 
 def converge(name, rgb, *, at, radius, count, life, delay=0, interval=1, size=(0.08, 0.16), tex='glow', alpha=230):
-    """Particles born on a sphere shell around `at` that fly into it."""
+    """`at` を囲む球殻上に生まれ、そこへ飛び込むパーティクル。"""
     speed = radius / life
     return N(name, tex=tex, count=count, delay=delay, interval=interval, life=life, at=at,
              emit=emit_sphere(radius), vel=(0, -speed, 0), grow=(size, (size[0] * 1.6, size[1] * 1.6), 0, 20),
@@ -95,8 +95,8 @@ def converge(name, rgb, *, at, radius, count, life, delay=0, interval=1, size=(0
 
 def rune(name, rgb, radius, *, at=(0, 0.04, 0), delay=0, life=60, alpha=220, spin=1.5, fade_in=8, fade_out=16,
          grow=None, vertical=False):
-    """Flat (or, vertical=True, forward-facing) magic circle; the parent spins about the one axis the circle faces.
-    Easing runs over a particle's whole life, so only short-lived circles should pass `grow`."""
+    """水平 (vertical=True なら前向き) の魔法陣。親は魔法陣が向く軸まわりに回る。
+    イージングはパーティクルの寿命全体にかかるので、`grow` を渡すのは短命な魔法陣だけにする。"""
     size = radius / 0.47
     circle = dict(tex='rune_circle', billboard=FIXED, life=life, color=a(rgb, alpha), fade_in=fade_in,
                   fade_out=(fade_out, 0, -20))
@@ -117,7 +117,7 @@ def ground_glow(name, rgb, size, *, at=(0, 0.03, 0), delay=0, life=40, alpha=140
 
 
 def trail_segment(name, p0, p1, f0, f1, children):
-    """Invisible emitter moving p0 -> p1 between Effekseer frames f0 and f1; children spawn along its path."""
+    """Effekseer フレーム f0 から f1 の間に p0 -> p1 へ動く見えないエミッタ。子はその経路に沿って生まれる。"""
     return G(name, children, move=(p0, p1), delay=f0, life=max(1, f1 - f0))
 
 
@@ -131,7 +131,7 @@ def trail_glow(name, rgb, frames, *, size=(0.32, 0.5), life=14, alpha=210, tex='
 
 def orb(name, core, glow_rgb, *, life, size=None, at=None, move=None, delay=0, grow=None, alpha=235, flicker=True):
     kw = dict(at=at, move=move, delay=delay, life=life)
-    k = 1.35   # hand-sized orbs read too small next to a 2 m caster at the default 1.0
+    k = 1.35   # 既定の 1.0 だと手のひら大の玉は 2 m の術者の横で小さすぎる
     size = size * k if size else None
     grow = (grow[0] * k, grow[1] * k) if grow else None
     halo_grow = (grow[0] * 2.6, grow[1] * 2.6, 20, 0) if grow else None
@@ -170,7 +170,7 @@ def rocks(name, *, count, life, at=(0, 0, 0), delay=0, emit=None, at_rand=None, 
              size=(size, size, 1), color=a(rgb, 255), fade_out=(10, 0, -20))
 
 
-# ================================================================ projectiles
+# ================================================================ 弾
 def _travel(core, mid, dark, *, core_size, trail_size, flame_tex=None, smoke_rgb=None, embers=True):
     nodes = [
         N('Halo', tex='glow', life=LIVE_LONG, size=core_size * 2.4, color=a(mid, 150)),
@@ -289,7 +289,7 @@ def wind_cutter_impact():
     ], 50)
 
 
-# ================================================================ area / placement
+# ================================================================ 範囲 / 設置
 def explosion_blast_sigil():
     core, mid, dark = BLAST
     r = 3.5
@@ -338,8 +338,8 @@ def quake_blast_sigil():
 
 
 def _spikes(name, *, count, radius, height, width, delay, life, rise=7):
-    """Each parent instance is one spike (random spot and size); its children push it out of the ground in `rise`
-    frames and then keep it standing, since an easing would otherwise stretch over the spike's whole life."""
+    """親インスタンス1つが棘1本 (位置と大きさはランダム)。子が `rise` フレームで地面から押し出し、その後は立たせておく。
+    そうしないとイージングが棘の寿命全体に引き伸ばされるため。"""
     hot, sand, dust = EARTH
     return G(name, [
         N(name + 'Rise', tex='spike', blend=BLEND, billboard=YAXIS, life=rise,
@@ -462,7 +462,7 @@ def might_surge():
     ], 120)
 
 
-# ================================================================ channels
+# ================================================================ チャネル
 BEAM_LENGTH = 20.0
 BEAM_FRAMES = 111      # ChannelSpellEffect duration_secs_ 1.85
 
@@ -535,7 +535,7 @@ def frost_breath_hit():
     ], 40)
 
 
-# ================================================================ cast effects (choreographed to the clips)
+# ================================================================ 詠唱エフェクト (クリップに合わせて振り付け)
 def cast_one_hand_thrust():
     m = 'OneHandThrust'
     core, glow = BOLT
@@ -857,7 +857,7 @@ def effect_length_frames(proj) -> int:
     return int(proj.child('EndFrame').text)
 
 
-# ================================================================ build / install
+# ================================================================ ビルド / インストール
 def run(cmd):
     res = subprocess.run([sys.executable, '-m', *cmd], cwd=REPO_ROOT, capture_output=True, text=True)
     if res.returncode != 0:

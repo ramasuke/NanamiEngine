@@ -1,12 +1,11 @@
-"""cereal-JSON text  ->  :class:`tools.bt.model.Tree`.
+"""cereal-JSON テキスト  ->  :class:`tools.bt.model.Tree`。
 
-Tolerant of the archive bookkeeping (polymorphic ids, ptr_wrapper ids,
-cereal_class_version): node structure is decoded into the model, while each
-action's ``data`` becomes a tagged :mod:`tools.bt.blob` so the writer can rebuild
-its bookkeeping from scratch.
+アーカイブの管理情報（polymorphic id、ptr_wrapper id、cereal_class_version）に
+寛容で、ノード構造はモデルにデコードし、各 action の ``data`` はタグ付きの
+:mod:`tools.bt.blob` にして writer が管理情報を一から再構築できるようにする。
 
-Only "pure tree" archives are supported (every ``ptr_wrapper`` writes fresh data);
-a back-reference raises :class:`PureTreeError`.
+"pure tree" のアーカイブ（どの ``ptr_wrapper`` も新規データを書く）のみ対応。
+後方参照があると :class:`PureTreeError` を送出する。
 """
 
 from __future__ import annotations
@@ -40,7 +39,7 @@ _KIND_BY_FQN = {
     model.FQN_ACTION_NODE_FRIENDLY: model.Action,
 }
 
-# which Tree.kind an ActionNode wrapper FQN implies (see tools/bt/npc_kind.py)
+# ActionNode ラッパーの FQN が示す Tree.kind（tools/bt/npc_kind.py 参照）
 _TREE_KIND_BY_ACTION_NODE_FQN = {
     model.FQN_ACTION_NODE_ENEMY: "enemy",
     model.FQN_ACTION_NODE_FRIENDLY: "friendly",
@@ -50,16 +49,16 @@ ANIM_PARAM_INT_FQN = "NanamiEngine::Module::AnimationTree::AnimationParameter<in
 
 
 class _Ctx:
-    """Per-parse state: the archive polymorphic type table."""
+    """パースごとの状態: アーカイブの多相型テーブル。"""
 
     def __init__(self, cat: catalog_mod.Catalog) -> None:
         self.cat = cat
         self.poly: dict[int, str] = {}
-        #: Tree.kind, set the first time an ActionNode wrapper is seen (a
-        #: file mixes only one flavor - see _read_node).
+        #: Tree.kind。ActionNode ラッパーを最初に見たときに設定する（1ファイルに
+        #: 混在する種別は1つだけ - _read_node 参照）。
         self.tree_kind: Optional[str] = None
 
-    # -- pointer slot ---------------------------------------------------
+    # -- ポインタスロット ---------------------------------------------------
     def ptr_slot(self, slot: OrderedObj):
         pid = _num(slot["polymorphic_id"])
         if pid == 0:
@@ -93,7 +92,7 @@ def _num(v: Any) -> int:
 
 
 def _strip_ccv(obj: OrderedObj) -> tuple[Optional[int], OrderedObj]:
-    """Split a leading ``cereal_class_version`` off an object."""
+    """オブジェクトから先頭の ``cereal_class_version`` を切り離す。"""
     if len(obj) and obj.keys()[0] == "cereal_class_version":
         v = _num(obj.values()[0])
         rest = OrderedObj(obj.items()[1:])
@@ -109,7 +108,7 @@ def _nodebase(nb: OrderedObj) -> tuple[str, tuple[float, float]]:
 
 
 # ---------------------------------------------------------------------------
-# blob tagging for action parameters
+# action パラメータの blob タグ付け
 # ---------------------------------------------------------------------------
 def _is_guid_obj(obj: OrderedObj) -> bool:
     keys = [k for k in obj.keys() if k != "cereal_class_version"]
@@ -148,18 +147,17 @@ def _tag_value(ctx: _Ctx, val: Any, pinfo: Optional[dict]) -> Any:
             leaf = pinfo.get("type", "?")
             sub = ctx.cat.type_by_leaf(leaf)
             return Ver(("type", leaf), v or 0, _tag_struct_body(ctx, body, sub))
-        # Fallback: no catalog type info, so bucket by structural fingerprint.
-        # fingerprint() ignores field *values* (a Field<T> reference's GUID
-        # string, say), so two genuinely different C++ types that happen to
-        # serialise identically when opaque (any Field<T>/FieldHolder<T> looks
-        # the same regardless of T) would otherwise wrongly share one
-        # once-per-key version slot with each other's real occurrences -
-        # exactly the shape a FIELD(Asset::X) reference takes when it's
-        # embedded inside something outside any scanned catalog (e.g. a Quest
-        # object reached through a raw, un-modeled shared_ptr<ITakeable...>).
-        # literal_presence sidesteps that: reproduce whether *this* occurrence
-        # literally carried a cereal_class_version, instead of asking the
-        # writer's global "have I emitted this key before" tracking to decide.
+        # フォールバック: カタログに型情報がないので構造フィンガープリントで分類する。
+        # fingerprint() はフィールドの *値*（例えば Field<T> 参照の GUID 文字列）を
+        # 無視するため、不透明なときに同じ形にシリアライズされる本当は別の C++ 型
+        # （Field<T>/FieldHolder<T> は T に関係なく同じに見える）が、互いの実際の出現と
+        # キーごと1回のバージョンスロットを誤って共有してしまう。
+        # これはまさに、スキャン済みカタログの外にあるもの（例えば生のモデル化されて
+        # いない shared_ptr<ITakeable...> 経由で到達する Quest オブジェクト）に
+        # FIELD(Asset::X) 参照が埋め込まれたときの形。
+        # literal_presence はこれを回避する: writer の「このキーを出力済みか」という
+        # 全体追跡に判断を任せず、*この* 出現が実際に cereal_class_version を
+        # 持っていたかどうかを再現する。
         return Ver(("fp", fingerprint(val)), v or 0, _tag_plain(ctx, body),
                   literal_presence=(v is not None))
 
@@ -170,7 +168,7 @@ def _tag_value(ctx: _Ctx, val: Any, pinfo: Optional[dict]) -> Any:
 
 
 def _tag_pointee(ctx: _Ctx, data: Any, fqn: Optional[str]) -> Any:
-    """Tag a pointer's data, using the catalog when its dynamic type is a known struct."""
+    """ポインタのデータにタグを付ける。動的型が既知の構造体ならカタログを使う。"""
     found = ctx.cat.struct_by_fqn(fqn) if fqn else None
     if not (found and isinstance(data, OrderedObj) and data.keys()
             and data.keys()[0] == "cereal_class_version"):
@@ -182,7 +180,7 @@ def _tag_pointee(ctx: _Ctx, data: Any, fqn: Optional[str]) -> Any:
         pinfo = ctx.cat.param_by_key(entry, k)
         if pinfo is None and isinstance(val, OrderedObj) and \
                 all(kk == "cereal_class_version" for kk in val.keys()):
-            # base_class<...> slot: its type isn't ActionBase, so keep this occurrence as-is
+            # base_class<...> スロット: 型が ActionBase ではないので、この出現はそのまま残す
             bv, _ = _strip_ccv(val)
             out.append(k, Ver(("fp", fingerprint(val)), bv or 0, OrderedObj(),
                               literal_presence=(bv is not None)))
@@ -196,7 +194,7 @@ def _tag_plain(ctx: _Ctx, obj: OrderedObj) -> OrderedObj:
 
 
 def _tag_struct_body(ctx: _Ctx, body: OrderedObj, sub_entry: Optional[dict]) -> OrderedObj:
-    """Tag the members of a nested struct/action-typed member."""
+    """構造体/action 型のネストしたメンバーのメンバーにタグを付ける。"""
     out = OrderedObj()
     for k, v in body.items():
         if k == "value0" and isinstance(v, OrderedObj) and \
@@ -211,7 +209,7 @@ def _tag_struct_body(ctx: _Ctx, body: OrderedObj, sub_entry: Optional[dict]) -> 
 
 def _tag_field(ctx: _Ctx, val: OrderedObj, ftype: str) -> Ver:
     outer_v, outer_body = _strip_ccv(val)
-    inner = outer_body["value0"]                       # ptr slot (exact)
+    inner = outer_body["value0"]                       # ポインタスロット（完全一致）
     s = ctx.ptr_slot(inner)
     holder_data = s["data"]
     holder_v, holder_body = _strip_ccv(holder_data)
@@ -242,7 +240,7 @@ def _tag_action_data(ctx: _Ctx, adata: OrderedObj, cat_entry: Optional[dict]) ->
 
 
 # ---------------------------------------------------------------------------
-# node structure
+# ノード構造
 # ---------------------------------------------------------------------------
 def _read_node(ctx: _Ctx, slot: OrderedObj):
     s = ctx.ptr_slot(slot)
@@ -316,10 +314,10 @@ def _read_params(ctx: _Ctx, slot: OrderedObj) -> list[model.BbParam]:
 
 def read_tree(text: str, cat: catalog_mod.Catalog | None = None,
              kind: str | None = None) -> model.Tree:
-    """``kind`` (``"enemy"`` | ``"friendly"``), when given, is the caller's
-    expectation from the file's own extension - cross-checked against the
-    ActionNode flavor actually found in the data (see ``_read_node``) and
-    used as-is for a tree with no action nodes at all (nothing to detect)."""
+    """``kind``（``"enemy"`` | ``"friendly"``）が与えられた場合、それはファイル自身の
+    拡張子から呼び出し側が期待する値で、データ中に実際に見つかった ActionNode の種別
+    （``_read_node`` 参照）と照合される。action ノードが1つもない（判定材料がない）
+    ツリーではそのまま使われる。"""
     cat = cat or catalog_mod.load()
     ctx = _Ctx(cat)
     root = loads(text)

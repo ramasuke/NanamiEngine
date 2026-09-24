@@ -41,6 +41,7 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("groundCheckRadius_", groundCheckRadius_);
         ImGuiHelper::OnDrawInputField("groundCheckUpOffset_", groundCheckUpOffset_);
         ImGuiHelper::OnDrawInputField("groundCheckDistance_", groundCheckDistance_);
+        ImGuiHelper::OnDrawInputField("jumpAttackGroundCheckRadius_", jumpAttackGroundCheckRadius_);
         ImGuiHelper::OnDrawInputField("maxWalkableSlope_deg_", maxWalkableSlope_deg_);
         ImGuiHelper::OnDrawInputField("slopeCheckRadius_", slopeCheckRadius_);
         ImGuiHelper::OnDrawInputField("slopeCheckUpOffset_", slopeCheckUpOffset_);
