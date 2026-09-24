@@ -1,13 +1,19 @@
 ---
 name: build-run
 description: /build と同じ「ビルド→修正→再ビルド」ループを回し、成功したら exe を起動する。ユーザーが /build-run と打ったときだけ使う。
-argument-hint: "[Debug|Release] [game]"
+argument-hint: "[-w [priority]] [Debug|Release] [game]"
 disable-model-invocation: true
 ---
 
 # /build-run — ビルドが通るまで修正して、起動まで
 
 `/build-run` の実行そのものが、ビルドと起動の両方のユーザー指示にあたる。
+
+## 待機オプション `-w [priority]`
+
+引数に `-w` があれば `.claude/shared/wait.md` を Read し、その手順で他セッションの作業終了を待ってから
+以下を実行する(`-w` と priority は取り除いた残りを引数とする)。無ければ待たない。
+/build の SKILL.md を読むときは、`-w` を取り除いた後の引数で解釈する(二重に待たない)。
 
 ## 1. 起動中の exe を確認(ビルド前)
 

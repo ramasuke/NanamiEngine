@@ -14,9 +14,6 @@ namespace GameCore::Npc::Enemy::Behaviour
     {
         // 前回の Tick からこれ以上空いたら、途中で打ち切られたとみなして新しく始める
         constexpr float INTERRUPT_GAP_SECS = 0.2f;
-        // 実際の移動量が期待値のこの割合を下回った状態が STUCK_SECS 続いたら詰まりとみなす
-        constexpr float STUCK_PROGRESS_RATE = 0.2f;
-        constexpr float STUCK_SECS          = 0.3f;
     }
 
     TickStatus Action::CircleAroundPlayer::DoTick(const TickContext& context)
@@ -52,12 +49,12 @@ namespace GameCore::Npc::Enemy::Behaviour
             glm::vec3 moved = selfPos - lastPosition_;
             moved.y = 0.0f;
             const float expected = moveSpeed_ * delta;
-            if (expected > 0.0f && glm::length(moved) < expected * STUCK_PROGRESS_RATE)
+            if (expected > 0.0f && glm::length(moved) < expected * stuckProgressRate_)
                 stuck_secs_ += delta;
             else
                 stuck_secs_ = 0.0f;
 
-            if (stuck_secs_ >= STUCK_SECS)
+            if (stuck_secs_ >= stuckThreshold_secs_)
             {
                 if (hasFlipped_)
                 {
@@ -134,6 +131,8 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("animationNumber_", animationNumber_);
         ImGuiHelper::OnDrawInputField("radiusShrinkPerSec_", radiusShrinkPerSec_);
         ImGuiHelper::OnDrawInputField("minRadius_", minRadius_);
+        ImGuiHelper::OnDrawInputField("stuckProgressRate_", stuckProgressRate_);
+        ImGuiHelper::OnDrawInputField("stuckThreshold_secs_", stuckThreshold_secs_);
     }
 }
 

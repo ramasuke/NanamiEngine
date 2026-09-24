@@ -1,7 +1,7 @@
 """Hook: record whether each Claude Code session of this project is in the middle of a turn.
 
 UserPromptSubmit writes <state dir>/<session_id>.json ("busy"); Stop / SessionEnd removes it and releases the
-build lock the session holds. Read by .claude/skills/build-run-wait/wait_for_sessions.py.
+build lock the session holds. Read by .claude/shared/wait_for_sessions.py.
 """
 import json
 import sys
@@ -29,7 +29,11 @@ def marker_path(session_id):
     return state_dir() / f"{session_id}.json"
 
 
-def write_marker(session_id, state, prompt=None):
+# NOTE: queue fields of a waiter (see wait_for_sessions.py); None removes the key.
+CLEAR_WAIT = {"priority": None, "label": None, "wait_since": None}
+
+
+def write_marker(session_id, state, prompt=None, extra=None):
     d = state_dir()
     d.mkdir(parents=True, exist_ok=True)
     path = marker_path(session_id)
@@ -43,6 +47,11 @@ def write_marker(session_id, state, prompt=None):
     if prompt is not None:
         data["prompt"] = prompt.replace("\n", " ")[:100]
         data["since"] = time.time()
+    for k, v in (extra or {}).items():
+        if v is None:
+            data.pop(k, None)
+        else:
+            data[k] = v
     tmp = path.with_suffix(".tmp")
     tmp.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
     tmp.replace(path)

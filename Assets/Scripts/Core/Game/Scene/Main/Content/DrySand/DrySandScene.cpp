@@ -20,7 +20,6 @@
 #include "../../../../PlayerAvatar/Record/PlayerAvatar_RecordBook.h"
 #include "../../../../Story/Story_StageClear.h"
 #include "../../../../Story/Story_StoryProgress.h"
-#include "../../../../Story/FloatingStone/Story_FloatingStoneMovie.h"
 
 namespace GameCore::Scene::Main
 {
@@ -61,7 +60,7 @@ namespace GameCore::Scene::Main
 
         // NOTE: 浮遊石はもう拠点の島へ飛び去っている
         if (const auto stone = Context()->FloatingStone(); stone && Story::StoryProgress::Instance().IsSet(Story::StoryFlag::DesertCleared))
-            Story::FloatingStone::SetStoneVisible(*stone, false);
+            stone->SetVisible(false);
 
         // メインシーンが居ない間に Instantiate が走らないよう、ロード完了まで待ってから積む
         SubScene().Push(Sub::SceneType::ChattingUI);
@@ -124,20 +123,13 @@ namespace GameCore::Scene::Main
         if (!Story::StoryProgress::Instance().Set(flag) || !Context())
             return;
 
-        Coroutine::StartCoroutine(Story::FloatingStone::PlayDepartAsync(
-            Story::FloatingStone::StoneMovieCast{
-                playerAvatar_,
-                Context()->FloatingStone(),
-                Context()->FloatingStoneCamera(),
-                Context()->StoneFlightParticle(),
-                Context()->StoneLiftOffParticle() },
-            isStoneMovieCanceled_));
+        if (const auto stone = Context()->FloatingStone())
+            Coroutine::StartCoroutine(stone->PlayDepartAsync(playerAvatar_));
     }
 
     void DrySandScene::DoDispose()
     {
         stageClearSubscription_.Dispose();
-        *isStoneMovieCanceled_ = true;
 
         if (arrivalMovie_)
             arrivalMovie_->Cancel();

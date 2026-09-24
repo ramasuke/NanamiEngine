@@ -13,12 +13,6 @@
 
 namespace GamePlay::Pickup
 {
-    namespace
-    {
-        // 島の外へ落ちた拾い物を落とし続けないよう、出た高さからこれだけ落ちたら消す
-        constexpr float FALL_OUT_DEPTH = 500.0f;
-    }
-
     void PickupItemBase::Launch(const glm::vec3& sideDirection)
     {
         originHeight_ = Transform().GetWorldPos().y;
@@ -48,7 +42,7 @@ namespace GamePlay::Pickup
         const float height = Transform().GetWorldPos().y;
         if (!originHeight_)
             originHeight_ = height;
-        if (height < *originHeight_ - FALL_OUT_DEPTH)
+        if (height < *originHeight_ - fallOutDepth_)
             Remove();
     }
 
@@ -91,6 +85,7 @@ namespace GamePlay::Pickup
         ImGuiHelper::OnDrawInputField("pickupDelay_secs_", pickupDelay_secs_);
         ImGuiHelper::OnDrawInputField("pickupSound_", pickupSound_);
         ImGuiHelper::OnDrawInputField("pickupParticle_", pickupParticle_);
+        ImGuiHelper::OnDrawInputField("fallOutDepth_", fallOutDepth_);
         ImGui::Text("elapsed: %.2f  pickable: %s", elapsed_secs_, IsPickable() ? "true" : "false");
     }
 }

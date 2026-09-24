@@ -33,7 +33,5 @@ namespace GameCore::Scene::Main
         
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
         Asset::PlayerAvatarAttachments attachments_;
-        /** シーンを抜けたら立てて、浮遊石と島の演出を止める */
-        std::shared_ptr<bool> isStoneMovieCanceled_ = std::make_shared<bool>(false);
     };
 }

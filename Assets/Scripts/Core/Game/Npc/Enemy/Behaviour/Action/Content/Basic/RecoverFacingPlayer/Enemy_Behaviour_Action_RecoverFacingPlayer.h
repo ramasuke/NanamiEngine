@@ -35,6 +35,8 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(2)]] int   turnLeftAnimationNumber_  = -1;
         [[serialize(2)]] int   turnRightAnimationNumber_ = -1;
         [[serialize(2)]] float turnInPlaceAngle_         = 15.0f;
+        // NOTE: その場旋回アニメをやめる角度。faceToleranceDeg_ の方が大きければそちら
+        [[serialize(3)]] float turnInPlaceEndDeg_        = 2.0f;
 
         bool         isRunning_      = false;
         bool         isWalkTurning_  = false;
@@ -63,6 +65,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(CEREAL_NVP(turnLeftAnimationNumber_));
             archive(CEREAL_NVP(turnRightAnimationNumber_));
             archive(CEREAL_NVP(turnInPlaceAngle_));
+            archive(CEREAL_NVP(turnInPlaceEndDeg_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
@@ -81,10 +84,11 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             if (version >= 2) archive(CEREAL_NVP(turnLeftAnimationNumber_));
             if (version >= 2) archive(CEREAL_NVP(turnRightAnimationNumber_));
             if (version >= 2) archive(CEREAL_NVP(turnInPlaceAngle_));
+            if (version >= 3) archive(CEREAL_NVP(turnInPlaceEndDeg_));
         }
     };
 
     REGISTER_ENEMY_ACTION_WITH_NAME(RecoverFacingPlayer, "Basic::RecoverFacingPlayer")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::RecoverFacingPlayer, 2)
+CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::RecoverFacingPlayer, 3)

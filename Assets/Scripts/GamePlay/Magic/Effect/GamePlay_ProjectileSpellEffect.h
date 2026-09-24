@@ -24,6 +24,8 @@ namespace GamePlay::Magic
         [[serialize(0)]] float speed_ = 220.0f;
         /** @brief ロックオンしていない時に狙う距離。弾はこの距離を飛び切ったら弾ける */
         [[serialize(0)]] float range_ = 250.0f;
+        // NOTE: 狙った点を通り過ぎても少しは飛ばし、ロックオン対象の手前で消えないようにする
+        [[serialize(1)]] float lifetimeMargin_ = 1.2f;
 
 #pragma region Serialization Function
     public:
@@ -37,6 +39,7 @@ namespace GamePlay::Magic
             archive(CEREAL_NVP(power_));
             archive(CEREAL_NVP(speed_));
             archive(CEREAL_NVP(range_));
+            archive(CEREAL_NVP(lifetimeMargin_));
         }
 
         template<class Archive>
@@ -47,6 +50,7 @@ namespace GamePlay::Magic
             if (version >= 0) archive(CEREAL_NVP(power_));
             if (version >= 0) archive(CEREAL_NVP(speed_));
             if (version >= 0) archive(CEREAL_NVP(range_));
+            if (version >= 1) archive(CEREAL_NVP(lifetimeMargin_));
         }
 #pragma endregion
     };
@@ -55,5 +59,5 @@ namespace GamePlay::Magic
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GamePlay::Magic::ProjectileSpellEffect, 0);
+CEREAL_CLASS_VERSION(GamePlay::Magic::ProjectileSpellEffect, 1);
 #pragma endregion

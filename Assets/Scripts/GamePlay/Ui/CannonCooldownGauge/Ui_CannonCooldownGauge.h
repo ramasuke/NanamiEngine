@@ -107,6 +107,15 @@ namespace GamePlay::Ui
         [[serialize(0)]] glm::vec2 launchOffset_ = glm::vec2(26.0f, -58.0f);
         [[serialize(0)]] float recoilAmplitude_ = 0.1f;
         [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
+        [[serialize(2)]] float bombBrighten_secs_ = 0.2f;
+        [[serialize(2)]] float wobbleSettle_secs_ = 0.35f;
+        [[serialize(2)]] float countFadeOut_secs_ = 0.1f;
+        [[serialize(2)]] float countPopIn_secs_ = 0.18f;
+        [[serialize(2)]] float bombFadeIn_secs_ = 0.25f;
+        [[serialize(2)]] float launchShrinkRate_ = 0.6f;
+        [[serialize(2)]] float recoilFrequency_ = 26.0f;
+        [[serialize(2)]] float recoilDamping_ = 9.0f;
+        [[serialize(2)]] float emberStartAngle_deg_ = 20.0f;
 
         float remain_secs_ = 0.0f;
         float total_secs_ = 1.0f;
@@ -177,6 +186,15 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(launchOffset_));
             archive(CEREAL_NVP(recoilAmplitude_));
             archive(CEREAL_NVP(uiSounds_));
+            archive(CEREAL_NVP(bombBrighten_secs_));
+            archive(CEREAL_NVP(wobbleSettle_secs_));
+            archive(CEREAL_NVP(countFadeOut_secs_));
+            archive(CEREAL_NVP(countPopIn_secs_));
+            archive(CEREAL_NVP(bombFadeIn_secs_));
+            archive(CEREAL_NVP(launchShrinkRate_));
+            archive(CEREAL_NVP(recoilFrequency_));
+            archive(CEREAL_NVP(recoilDamping_));
+            archive(CEREAL_NVP(emberStartAngle_deg_));
         }
 
         template<class Archive>
@@ -234,9 +252,18 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(launchOffset_));
             if (version >= 0) archive(CEREAL_NVP(recoilAmplitude_));
             if (version >= 1) archive(CEREAL_NVP(uiSounds_));
+            if (version >= 2) archive(CEREAL_NVP(bombBrighten_secs_));
+            if (version >= 2) archive(CEREAL_NVP(wobbleSettle_secs_));
+            if (version >= 2) archive(CEREAL_NVP(countFadeOut_secs_));
+            if (version >= 2) archive(CEREAL_NVP(countPopIn_secs_));
+            if (version >= 2) archive(CEREAL_NVP(bombFadeIn_secs_));
+            if (version >= 2) archive(CEREAL_NVP(launchShrinkRate_));
+            if (version >= 2) archive(CEREAL_NVP(recoilFrequency_));
+            if (version >= 2) archive(CEREAL_NVP(recoilDamping_));
+            if (version >= 2) archive(CEREAL_NVP(emberStartAngle_deg_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::CannonCooldownGauge, 1);
+CEREAL_CLASS_VERSION(GamePlay::Ui::CannonCooldownGauge, 2);

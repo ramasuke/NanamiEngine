@@ -15,26 +15,17 @@ namespace GamePlay::Ui
 {
     namespace
     {
-        constexpr float PI = 3.14159265f;
-
-        constexpr float CANDIDATE_FADE_SECS          = 0.15f;
-        constexpr float CANDIDATE_PULSE_PERIOD_SECS  = 1.4f;
-        constexpr float LOCKED_BREATH_PERIOD_SECS    = 1.6f;
-        // 確定演出でブラケットが回りながらスナップしてくる角度
-        constexpr float ENGAGE_BRACKET_ANGLE         = PI * 0.25f;
-        constexpr float MIN_SCALE_RATE               = 0.001f;
-    }
-
-    LockOnReticle::LockOnReticle()
-    {
-        // 候補マーカーは一定速度で 0<->1 を往復する
-        candidateFade_.Set(tweeny::from(0.0f).to(1.0f)
-            .during(LibCore::Tween::Ms(CANDIDATE_FADE_SECS))
-            .via(LibCore::Tween::Ease(LibCore::EaseType::OutQuad)));
+        constexpr float PI             = 3.14159265f;
+        constexpr float MIN_SCALE_RATE = 0.001f;
     }
 
     void LockOnReticle::InitRenderer()
     {
+        // NOTE: candidateFade_secs_ をロード後の値で使うため、コンストラクタではなくここで組む
+        // 候補マーカーは一定速度で 0<->1 を往復する
+        candidateFade_.Set(tweeny::from(0.0f).to(1.0f)
+            .during(LibCore::Tween::Ms(candidateFade_secs_))
+            .via(LibCore::Tween::Ease(LibCore::EaseType::OutQuad)));
     }
 
     std::shared_ptr<GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase> LockOnReticle::CatchCameraGroup()
@@ -107,7 +98,7 @@ namespace GamePlay::Ui
             .during(duration).via(LibCore::Tween::Ease(LibCore::EaseType::OutBack)));
         alphaTween_.Play(tweeny::from(0.0f).to(1.0f)
             .during(duration).via(LibCore::Tween::Ease(LibCore::EaseType::OutQuad)));
-        bracketAngleTween_.Play(tweeny::from(ENGAGE_BRACKET_ANGLE).to(0.0f)
+        bracketAngleTween_.Play(tweeny::from(engageBracketAngle_rad_).to(0.0f)
             .during(duration).via(LibCore::Tween::Ease(LibCore::EaseType::OutBack)));
     }
 
@@ -131,7 +122,7 @@ namespace GamePlay::Ui
             if (const auto candidate = candidateTarget_.lock())
                 candidatePointWorld_ = GameCore::PlayerAvatar::LockOnPositionOf(*candidate);
 
-            const float pulse = 0.75f + 0.25f * std::sin(elapsed_secs_ * 2.0f * PI / CANDIDATE_PULSE_PERIOD_SECS);
+            const float pulse = 0.75f + 0.25f * std::sin(elapsed_secs_ * 2.0f * PI / (std::max)(candidatePulsePeriod_secs_, 0.001f));
             DrawSprite(
                 candidateSprite_.get(),
                 candidatePointWorld_,
@@ -158,7 +149,7 @@ namespace GamePlay::Ui
             bracketAngle = bracketAngleTween_.Value();
             break;
         case Phase::Locked:
-            breathRate = 1.0f + lockedBreathScale_ * (0.5f - 0.5f * std::cos(elapsed_secs_ * 2.0f * PI / LOCKED_BREATH_PERIOD_SECS));
+            breathRate = 1.0f + lockedBreathScale_ * (0.5f - 0.5f * std::cos(elapsed_secs_ * 2.0f * PI / (std::max)(lockedBreathPeriod_secs_, 0.001f)));
             break;
         case Phase::Releasing:
             scaleRate = scaleRateTween_.Value();
@@ -232,6 +223,10 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("minDistanceScale_",     minDistanceScale_);
         ImGuiHelper::OnDrawInputField("maxDistanceScale_",     maxDistanceScale_);
         ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
+        ImGuiHelper::OnDrawInputField("candidateFade_secs_", candidateFade_secs_);
+        ImGuiHelper::OnDrawInputField("candidatePulsePeriod_secs_", candidatePulsePeriod_secs_);
+        ImGuiHelper::OnDrawInputField("lockedBreathPeriod_secs_", lockedBreathPeriod_secs_);
+        ImGuiHelper::OnDrawInputField("engageBracketAngle_rad_", engageBracketAngle_rad_);
     }
 }
 

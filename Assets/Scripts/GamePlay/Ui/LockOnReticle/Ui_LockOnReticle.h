@@ -19,9 +19,6 @@ namespace GamePlay::Ui
                                 public LifeCycleCallback::IUserInterfaceRenderable,
                                 public LifeCycleCallback::IUpdatable
     {
-    public:
-        LockOnReticle();
-
     private:
         enum class Phase
         {
@@ -83,6 +80,11 @@ namespace GamePlay::Ui
         [[serialize(1)]] float minDistanceScale_      = 0.15f;
         [[serialize(1)]] float maxDistanceScale_      = 1.6f;
         [[serialize(2)]] FIELD(Asset::UiSoundBankData) uiSounds_;
+        [[serialize(3)]] float candidateFade_secs_         = 0.15f;
+        [[serialize(3)]] float candidatePulsePeriod_secs_  = 1.4f;
+        [[serialize(3)]] float lockedBreathPeriod_secs_    = 1.6f;
+        /** 確定演出でブラケットが回りながらスナップしてくる角度 */
+        [[serialize(3)]] float engageBracketAngle_rad_     = 3.14159265f * 0.25f;
 
 #pragma region Serialization Function
     public:
@@ -108,6 +110,10 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(minDistanceScale_));
             archive(CEREAL_NVP(maxDistanceScale_));
             archive(CEREAL_NVP(uiSounds_));
+            archive(CEREAL_NVP(candidateFade_secs_));
+            archive(CEREAL_NVP(candidatePulsePeriod_secs_));
+            archive(CEREAL_NVP(lockedBreathPeriod_secs_));
+            archive(CEREAL_NVP(engageBracketAngle_rad_));
         }
 
         template<class Archive>
@@ -130,9 +136,13 @@ namespace GamePlay::Ui
             if (version >= 1) archive(CEREAL_NVP(minDistanceScale_));
             if (version >= 1) archive(CEREAL_NVP(maxDistanceScale_));
             if (version >= 2) archive(CEREAL_NVP(uiSounds_));
+            if (version >= 3) archive(CEREAL_NVP(candidateFade_secs_));
+            if (version >= 3) archive(CEREAL_NVP(candidatePulsePeriod_secs_));
+            if (version >= 3) archive(CEREAL_NVP(lockedBreathPeriod_secs_));
+            if (version >= 3) archive(CEREAL_NVP(engageBracketAngle_rad_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::LockOnReticle, 2);
+CEREAL_CLASS_VERSION(GamePlay::Ui::LockOnReticle, 3);

@@ -43,6 +43,8 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Asset::SoundFile) heartbeatSound_;
         [[serialize(0)]] int   heartbeatMinVolume_   = 90;
         [[serialize(0)]] int   heartbeatMaxVolume_   = 200;
+        [[serialize(2)]] float pulseDecay_secs_     = 0.09f;
+        [[serialize(2)]] float dubPulseStrength_     = 0.6f;
 
         FIELD(NanamiUi::ScreenColorGradeRenderer) colorGrade_;
         NanamiEngine::R4::SerialDisposable                      subscription_;
@@ -81,6 +83,8 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(heartbeatSound_));
             archive(CEREAL_NVP(heartbeatMinVolume_));
             archive(CEREAL_NVP(heartbeatMaxVolume_));
+            archive(CEREAL_NVP(pulseDecay_secs_));
+            archive(CEREAL_NVP(dubPulseStrength_));
         }
 
         template<class Archive>
@@ -102,9 +106,11 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(heartbeatSound_));
             if (version >= 0) archive(CEREAL_NVP(heartbeatMinVolume_));
             if (version >= 0) archive(CEREAL_NVP(heartbeatMaxVolume_));
+            if (version >= 2) archive(CEREAL_NVP(pulseDecay_secs_));
+            if (version >= 2) archive(CEREAL_NVP(dubPulseStrength_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::LowHealthScreenEffect, 1);
+CEREAL_CLASS_VERSION(GamePlay::Ui::LowHealthScreenEffect, 2);

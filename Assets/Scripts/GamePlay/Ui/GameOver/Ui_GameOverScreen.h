@@ -100,6 +100,8 @@ namespace GamePlay::Ui
         [[serialize(0)]] float inputGuardSecs_ = 0.35f;
         [[serialize(0)]] float curtainCloseSecs_ = 0.45f;
         [[serialize(0)]] float curtainOpenSecs_ = 0.6f;
+        // 石版が浮き上がり切るまでの割合。残りで落ちて着地する
+        [[serialize(1)]] float slabPeakRate_ = 0.65f;
 
         Phase phase_ = Phase::Hidden;
         /** 効果音と入力受付の合図に使う時計 */
@@ -156,6 +158,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(inputGuardSecs_));
             archive(CEREAL_NVP(curtainCloseSecs_));
             archive(CEREAL_NVP(curtainOpenSecs_));
+            archive(CEREAL_NVP(slabPeakRate_));
         }
 
         template<class Archive>
@@ -189,9 +192,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(inputGuardSecs_));
             if (version >= 0) archive(CEREAL_NVP(curtainCloseSecs_));
             if (version >= 0) archive(CEREAL_NVP(curtainOpenSecs_));
+            if (version >= 1) archive(CEREAL_NVP(slabPeakRate_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::GameOverScreenUi, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::GameOverScreenUi, 1);

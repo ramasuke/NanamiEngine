@@ -86,6 +86,11 @@ namespace GamePlay::Npc::Friendly
         [[serialize(0)]] float hitShakeAmplitude_         = 0.6f;
         [[serialize(0)]] float bumpShakeAmplitude_        = 0.3f;
         [[serialize(0)]] float shakeDuration_secs_        = 0.2f;
+        // これ以上の水平速度で動いている間は歩いているとみなす
+        [[serialize(1)]] float movingSpeedThreshold_      = 3.0f;
+        // NOTE: クリップの終わり際で戻すと遷移のブレンドで最後まで見える
+        [[serialize(1)]] float clipEndNormalizedTime_     = 0.9f;
+        [[serialize(1)]] float minReaction_secs_          = 0.3f;
 
         std::optional<Reaction> reaction_;
         std::optional<int>      savedAnimatorState_;
@@ -116,6 +121,9 @@ namespace GamePlay::Npc::Friendly
             archive(CEREAL_NVP(hitShakeAmplitude_));
             archive(CEREAL_NVP(bumpShakeAmplitude_));
             archive(CEREAL_NVP(shakeDuration_secs_));
+            archive(CEREAL_NVP(movingSpeedThreshold_));
+            archive(CEREAL_NVP(clipEndNormalizedTime_));
+            archive(CEREAL_NVP(minReaction_secs_));
         }
 
         template<class Archive>
@@ -137,7 +145,12 @@ namespace GamePlay::Npc::Friendly
             archive(CEREAL_NVP(hitShakeAmplitude_));
             archive(CEREAL_NVP(bumpShakeAmplitude_));
             archive(CEREAL_NVP(shakeDuration_secs_));
+            if (version >= 1) archive(CEREAL_NVP(movingSpeedThreshold_));
+            if (version >= 1) archive(CEREAL_NVP(clipEndNormalizedTime_));
+            if (version >= 1) archive(CEREAL_NVP(minReaction_secs_));
         }
 #pragma endregion
     };
 }
+
+CEREAL_CLASS_VERSION(GamePlay::Npc::Friendly::FriendlyNpcReaction, 1);

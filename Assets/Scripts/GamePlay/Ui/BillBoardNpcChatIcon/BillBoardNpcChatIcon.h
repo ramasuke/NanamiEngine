@@ -49,11 +49,11 @@ namespace GamePlay::Ui
         void OnUpdate() override;
         // リアクション中は実際の表示ではなく、戻す時の表示状態を書き換える
         void SetIconEnable(GameObject::IGameObject* icon, bool& reactionSaved, bool enable) const;
-        static void UpdateIcon(
+        void UpdateIcon(
             const std::shared_ptr<GameObject::IGameObject>& object,
             const std::shared_ptr<NanamiUi::BillboardAnimation3D>& rimGlow,
             IconState& state,
-            IconMotion motion);
+            IconMotion motion) const;
 
         bool isShow_ = true;
         bool isReactionSurprise_ = false;
@@ -68,6 +68,19 @@ namespace GamePlay::Ui
         [[serialize(1)]] FIELD(GameObject::IGameObject) surpriseIcon_;
         [[serialize(2)]] FIELD(NanamiUi::BillboardAnimation3D) surpriseRimGlow_;
         [[serialize(3)]] FIELD(Asset::UiSoundBankData) uiSounds_;
+        // 表示された瞬間のポップ（拡大して少し行き過ぎて戻る + フェードイン）
+        [[serialize(4)]] float popDuration_secs_          = 0.25f;
+        [[serialize(4)]] float surpriseFloatAmplitude_    = 0.2f;
+        [[serialize(4)]] float surpriseFloatSpeed_        = 2.0f;
+        // 周期の先頭で枠を光が走り、周期の最後にコトッと傾く（傾いた直後に次の光が走る）
+        [[serialize(4)]] float surpriseCycle_secs_        = 3.0f;
+        [[serialize(4)]] float surpriseSweepDuration_secs_ = 0.6f;
+        [[serialize(4)]] float surpriseTiltDuration_secs_ = 0.5f;
+        [[serialize(4)]] float surpriseTiltAngle_         = 0.2f;
+        [[serialize(4)]] float chattableBounceAmplitude_  = 0.12f;
+        [[serialize(4)]] float chattableBounceSpeed_      = 4.0f;
+        [[serialize(4)]] float chattingBreathScale_       = 0.05f;
+        [[serialize(4)]] float chattingBreathPeriod_secs_ = 1.6f;
 
 #pragma region Serialization Function
     public:
@@ -81,6 +94,17 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(surpriseIcon_));
             archive(CEREAL_NVP(surpriseRimGlow_));
             archive(CEREAL_NVP(uiSounds_));
+            archive(CEREAL_NVP(popDuration_secs_));
+            archive(CEREAL_NVP(surpriseFloatAmplitude_));
+            archive(CEREAL_NVP(surpriseFloatSpeed_));
+            archive(CEREAL_NVP(surpriseCycle_secs_));
+            archive(CEREAL_NVP(surpriseSweepDuration_secs_));
+            archive(CEREAL_NVP(surpriseTiltDuration_secs_));
+            archive(CEREAL_NVP(surpriseTiltAngle_));
+            archive(CEREAL_NVP(chattableBounceAmplitude_));
+            archive(CEREAL_NVP(chattableBounceSpeed_));
+            archive(CEREAL_NVP(chattingBreathScale_));
+            archive(CEREAL_NVP(chattingBreathPeriod_secs_));
         }
 
         template<class Archive>
@@ -91,9 +115,20 @@ namespace GamePlay::Ui
             if (version >= 1) archive(CEREAL_NVP(surpriseIcon_));
             if (version >= 2) archive(CEREAL_NVP(surpriseRimGlow_));
             if (version >= 3) archive(CEREAL_NVP(uiSounds_));
+            if (version >= 4) archive(CEREAL_NVP(popDuration_secs_));
+            if (version >= 4) archive(CEREAL_NVP(surpriseFloatAmplitude_));
+            if (version >= 4) archive(CEREAL_NVP(surpriseFloatSpeed_));
+            if (version >= 4) archive(CEREAL_NVP(surpriseCycle_secs_));
+            if (version >= 4) archive(CEREAL_NVP(surpriseSweepDuration_secs_));
+            if (version >= 4) archive(CEREAL_NVP(surpriseTiltDuration_secs_));
+            if (version >= 4) archive(CEREAL_NVP(surpriseTiltAngle_));
+            if (version >= 4) archive(CEREAL_NVP(chattableBounceAmplitude_));
+            if (version >= 4) archive(CEREAL_NVP(chattableBounceSpeed_));
+            if (version >= 4) archive(CEREAL_NVP(chattingBreathScale_));
+            if (version >= 4) archive(CEREAL_NVP(chattingBreathPeriod_secs_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::BillBoardNpcChatIcon, 3);
+CEREAL_CLASS_VERSION(GamePlay::Ui::BillBoardNpcChatIcon, 4);

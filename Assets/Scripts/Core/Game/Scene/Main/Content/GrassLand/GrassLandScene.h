@@ -34,7 +34,5 @@ namespace GameCore::Scene::Main
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
         std::shared_ptr<GrassLand::StageArrivalMovie<GrassLandSceneContext>> arrivalMovie_;
         NanamiEngine::R4::Disposable stageClearSubscription_;
-        /** シーンを抜けたら立てて、浮遊石の演出を止める */
-        std::shared_ptr<bool> isStoneMovieCanceled_ = std::make_shared<bool>(false);
     };
 }

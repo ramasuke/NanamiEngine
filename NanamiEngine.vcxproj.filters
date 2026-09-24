@@ -88,7 +88,13 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Story\Story_StageClear.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\Core\Game\Story\FloatingStone\Story_FloatingStoneMovie.cpp">
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieParts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\ReturningIsland\Prop_ReturningIsland.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\RestorationGate\Prop_RestorationGate.cpp">
@@ -1369,7 +1375,16 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StageClear.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\Core\Game\Story\FloatingStone\Story_FloatingStoneMovie.h">
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStoneShot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieParts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\ReturningIsland\Prop_ReturningIsland.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\RestorationGate\Prop_RestorationGate.h">

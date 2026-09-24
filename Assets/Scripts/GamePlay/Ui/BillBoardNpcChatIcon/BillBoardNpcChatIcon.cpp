@@ -14,31 +14,15 @@ namespace GamePlay::Ui
     {
         constexpr float PI = 3.14159265f;
 
-        // 表示された瞬間のポップ（拡大して少し行き過ぎて戻る + フェードイン）
-        constexpr float POP_DURATION_SECS = 0.25f;
-        constexpr float MIN_SCALE_RATE    = 0.001f;
+        constexpr float MIN_SCALE_RATE = 0.001f;
 
-        constexpr float SURPRISE_FLOAT_AMPLITUDE     = 0.2f;
-        constexpr float SURPRISE_FLOAT_SPEED         = 2.0f;
-        // 周期の先頭で枠を光が走り、周期の最後にコトッと傾く（傾いた直後に次の光が走る）
-        constexpr float SURPRISE_CYCLE_SECS          = 3.0f;
-        constexpr float SURPRISE_SWEEP_DURATION_SECS = 0.6f;
-        constexpr float SURPRISE_TILT_DURATION_SECS  = 0.5f;
-        constexpr float SURPRISE_TILT_ANGLE          = 0.2f;
-
-        constexpr float CHATTABLE_BOUNCE_AMPLITUDE = 0.12f;
-        constexpr float CHATTABLE_BOUNCE_SPEED     = 4.0f;
-
-        constexpr float CHATTING_BREATH_SCALE       = 0.05f;
-        constexpr float CHATTING_BREATH_PERIOD_SECS = 1.6f;
-
-        void PlayPop(LibCore::Tween::TweenPlayer<float>& popScale, LibCore::Tween::TweenPlayer<float>& popAlpha)
+        void PlayPop(LibCore::Tween::TweenPlayer<float>& popScale, LibCore::Tween::TweenPlayer<float>& popAlpha, const float duration_secs)
         {
             popScale.Play(tweeny::from(0.0f).to(1.0f)
-                .during(LibCore::Tween::Ms(POP_DURATION_SECS))
+                .during(LibCore::Tween::Ms(duration_secs))
                 .via(LibCore::Tween::Ease(LibCore::EaseType::OutBack)));
             popAlpha.Play(tweeny::from(0.0f).to(1.0f)
-                .during(LibCore::Tween::Ms(POP_DURATION_SECS))
+                .during(LibCore::Tween::Ms(duration_secs))
                 .via(LibCore::Tween::Ease(LibCore::EaseType::OutQuad)));
         }
     }
@@ -132,7 +116,7 @@ namespace GamePlay::Ui
         const std::shared_ptr<GameObject::IGameObject>& object,
         const std::shared_ptr<NanamiUi::BillboardAnimation3D>& rimGlow,
         IconState& state,
-        const IconMotion motion)
+        const IconMotion motion) const
     {
         if (!object)
             return;
@@ -150,9 +134,9 @@ namespace GamePlay::Ui
             state.baseAngle      = billboard->GetAngle();
             state.wasEnabled     = billboard->IsEnable();
             // シーン読み込み時点で表示済みのアイコンはポップさせない
-            state.shownTime_secs = POP_DURATION_SECS;
+            state.shownTime_secs = popDuration_secs_;
             state.isCaptured     = true;
-            PlayPop(state.popScale, state.popAlpha);
+            PlayPop(state.popScale, state.popAlpha, popDuration_secs_);
             state.popScale.Complete();
             state.popAlpha.Complete();
         }
@@ -167,7 +151,7 @@ namespace GamePlay::Ui
         if (isEnabled && !state.wasEnabled)
         {
             state.shownTime_secs = 0.0f;
-            PlayPop(state.popScale, state.popAlpha);
+            PlayPop(state.popScale, state.popAlpha, popDuration_secs_);
         }
         state.wasEnabled = isEnabled;
 
@@ -196,28 +180,28 @@ namespace GamePlay::Ui
         {
         case IconMotion::Surprise:
         {
-            offset.y = std::sin(time * SURPRISE_FLOAT_SPEED) * SURPRISE_FLOAT_AMPLITUDE;
+            offset.y = std::sin(time * surpriseFloatSpeed_) * surpriseFloatAmplitude_;
 
-            const float cycleElapsed = std::fmod(time, SURPRISE_CYCLE_SECS);
-            if (cycleElapsed < SURPRISE_SWEEP_DURATION_SECS)
-                sweepT = cycleElapsed / SURPRISE_SWEEP_DURATION_SECS;
+            const float cycleElapsed = std::fmod(time, surpriseCycle_secs_);
+            if (cycleElapsed < surpriseSweepDuration_secs_)
+                sweepT = cycleElapsed / surpriseSweepDuration_secs_;
 
-            // 周期の最後の SURPRISE_TILT_DURATION_SECS 秒だけ、減衰しながら左右に傾く
-            const float tiltElapsed = cycleElapsed - (SURPRISE_CYCLE_SECS - SURPRISE_TILT_DURATION_SECS);
+            // 周期の最後の surpriseTiltDuration_secs_ 秒だけ、減衰しながら左右に傾く
+            const float tiltElapsed = cycleElapsed - (surpriseCycle_secs_ - surpriseTiltDuration_secs_);
             if (tiltElapsed > 0.0f)
             {
-                const float tiltT = tiltElapsed / SURPRISE_TILT_DURATION_SECS;
-                angle += std::sin(tiltT * 3.0f * PI) * (1.0f - tiltT) * SURPRISE_TILT_ANGLE;
+                const float tiltT = tiltElapsed / surpriseTiltDuration_secs_;
+                angle += std::sin(tiltT * 3.0f * PI) * (1.0f - tiltT) * surpriseTiltAngle_;
             }
             break;
         }
         case IconMotion::Chattable:
-            offset.y = -std::abs(std::sin(time * CHATTABLE_BOUNCE_SPEED)) * CHATTABLE_BOUNCE_AMPLITUDE;
+            offset.y = -std::abs(std::sin(time * chattableBounceSpeed_)) * chattableBounceAmplitude_;
             break;
         case IconMotion::Chatting:
         {
-            const float breath = 0.5f - 0.5f * std::cos(time * 2.0f * PI / CHATTING_BREATH_PERIOD_SECS);
-            scaleRate *= 1.0f + breath * CHATTING_BREATH_SCALE;
+            const float breath = 0.5f - 0.5f * std::cos(time * 2.0f * PI / chattingBreathPeriod_secs_);
+            scaleRate *= 1.0f + breath * chattingBreathScale_;
             break;
         }
         }
@@ -249,6 +233,17 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("surpriseIcon_", surpriseIcon_);
         ImGuiHelper::OnDrawInputField("surpriseRimGlow_", surpriseRimGlow_);
         ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
+        ImGuiHelper::OnDrawInputField("popDuration_secs_", popDuration_secs_);
+        ImGuiHelper::OnDrawInputField("surpriseFloatAmplitude_", surpriseFloatAmplitude_);
+        ImGuiHelper::OnDrawInputField("surpriseFloatSpeed_", surpriseFloatSpeed_);
+        ImGuiHelper::OnDrawInputField("surpriseCycle_secs_", surpriseCycle_secs_);
+        ImGuiHelper::OnDrawInputField("surpriseSweepDuration_secs_", surpriseSweepDuration_secs_);
+        ImGuiHelper::OnDrawInputField("surpriseTiltDuration_secs_", surpriseTiltDuration_secs_);
+        ImGuiHelper::OnDrawInputField("surpriseTiltAngle_", surpriseTiltAngle_);
+        ImGuiHelper::OnDrawInputField("chattableBounceAmplitude_", chattableBounceAmplitude_);
+        ImGuiHelper::OnDrawInputField("chattableBounceSpeed_", chattableBounceSpeed_);
+        ImGuiHelper::OnDrawInputField("chattingBreathScale_", chattingBreathScale_);
+        ImGuiHelper::OnDrawInputField("chattingBreathPeriod_secs_", chattingBreathPeriod_secs_);
     }
 }
 

@@ -18,9 +18,8 @@ namespace
         float fallAngleDeg;
         float fallDistance;
         float fallSecs;
+        float tiltSinkDistance;
     };
-
-    constexpr float TILT_SINK = 6.0f;   // 傾くあいだに沈む量
 
     Coroutine::Task<void> FallAsync(const std::weak_ptr<GameObject::IGameObject> target, const FallMotion motion)
     {
@@ -53,7 +52,7 @@ namespace
             const float u      = t / motion.tiltSecs;
             const float ease   = 0.5f - 0.5f * glm::cos(glm::pi<float>() * u);
             const float wobble = 0.3f * glm::sin(3.0f * glm::pi<float>() * u) * (1.0f - u);
-            if (!apply(motion.tiltAngleDeg * (ease + wobble), TILT_SINK * u))
+            if (!apply(motion.tiltAngleDeg * (ease + wobble), motion.tiltSinkDistance * u))
                 co_return;
 
             co_await Coroutine::WaitYield();
@@ -63,7 +62,7 @@ namespace
         for (float t = 0.0f; t < motion.fallSecs; t += Time::DeltaTime())
         {
             const float u = t / motion.fallSecs;
-            if (!apply(motion.tiltAngleDeg + motion.fallAngleDeg * glm::pow(u, 1.5f), TILT_SINK + motion.fallDistance * u * u))
+            if (!apply(motion.tiltAngleDeg + motion.fallAngleDeg * glm::pow(u, 1.5f), motion.tiltSinkDistance + motion.fallDistance * u * u))
                 co_return;
 
             co_await Coroutine::WaitYield();
@@ -84,7 +83,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         const glm::vec3 axis = glm::length(tiltAxis_) > 0.0001f ? glm::normalize(tiltAxis_) : glm::vec3(0.0f, 0.0f, 1.0f);
         const FallMotion motion
         {
-            pivot_, axis, tiltAngleDeg_, glm::max(tiltSecs_, 0.01f), fallAngleDeg_, fallDistance_, glm::max(fallSecs_, 0.01f)
+            pivot_, axis, tiltAngleDeg_, glm::max(tiltSecs_, 0.01f), fallAngleDeg_, fallDistance_, glm::max(fallSecs_, 0.01f), tiltSinkDistance_
         };
 
         // NOTE: 落下は同期しない。序章(シングルプレイ)の演出用
@@ -102,6 +101,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("fallAngleDeg_", fallAngleDeg_);
         ImGuiHelper::OnDrawInputField("fallDistance_", fallDistance_);
         ImGuiHelper::OnDrawInputField("fallSecs_", fallSecs_);
+        ImGuiHelper::OnDrawInputField("tiltSinkDistance_", tiltSinkDistance_);
     }
 }
 

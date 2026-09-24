@@ -18,16 +18,6 @@ namespace GamePlay::Ui
         constexpr float TAU = std::numbers::pi_v<float> * 2.0f;
         constexpr float DEG_TO_RAD = std::numbers::pi_v<float> / 180.0f;
 
-        constexpr float BOMB_BRIGHTEN_SECS = 0.2f;
-        constexpr float WOBBLE_SETTLE_SECS = 0.35f;
-        constexpr float COUNT_FADE_OUT_SECS = 0.1f;
-        constexpr float COUNT_POP_IN_SECS = 0.18f;
-        constexpr float BOMB_FADE_IN_SECS = 0.25f;
-        constexpr float LAUNCH_SHRINK_RATE = 0.6f;
-        constexpr float RECOIL_FREQUENCY = 26.0f;
-        constexpr float RECOIL_DAMPING = 9.0f;
-        constexpr float EMBER_START_ANGLE_DEG = 20.0f;
-
         constexpr LibCore::Tween::EaseFunctor EASE_OUT_CUBIC{ LibCore::EaseType::OutCubic };
         constexpr LibCore::Tween::EaseFunctor SPARK_POP_EASE{ LibCore::EaseType::OutBack, 1.9f };
 
@@ -131,7 +121,7 @@ namespace GamePlay::Ui
         {
             const float u      = readyElapsed_secs_;
             const float flash  = (1.0f - Rate(u, readyFlashDuration_secs_)) * (1.0f - Rate(u, readyFlashDuration_secs_));
-            const float settle = Rate(u, WOBBLE_SETTLE_SECS);
+            const float settle = Rate(u, wobbleSettle_secs_);
             const float flicker = 1.0f + 0.14f * std::sin(time_secs_ * 41.0f) + 0.08f * std::sin(time_secs_ * 23.0f);
 
             pose.gaugePercent  = 100.0f;
@@ -140,13 +130,13 @@ namespace GamePlay::Ui
             pose.scale         = 1.0f + readyPunchAmplitude_ * std::sin(u * readyPunchFrequency_) * std::exp(-u * readyPunchDamping_);
             pose.halo          = (0.5f + 0.22f * std::sin(TAU * haloPulseFrequency_hz_ * u)) * settle + 0.5f * flash;
             pose.shockwaveRate = u < shockwaveDuration_secs_ ? u / shockwaveDuration_secs_ : -1.0f;
-            pose.bombDim       = bombDimRate_ * (1.0f - Rate(u, BOMB_BRIGHTEN_SECS));
+            pose.bombDim       = bombDimRate_ * (1.0f - Rate(u, bombBrighten_secs_));
             pose.bombAngle     = wobbleAngle_deg_ * DEG_TO_RAD * std::sin(TAU * wobbleFrequency_hz_ * u) * settle;
             pose.spark         = SPARK_POP_EASE.Ease(Rate(u, sparkPopDuration_secs_)) * flicker;
             pose.isPromptLit   = true;
             pose.promptFlash   = flash;
 
-            const float countFade = Rate(u, COUNT_FADE_OUT_SECS);
+            const float countFade = Rate(u, countFadeOut_secs_);
             if (countFade < 1.0f)
             {
                 pose.count      = lastCount_;
@@ -161,7 +151,7 @@ namespace GamePlay::Ui
 
         pose.gaugePercent = coolingRate * 100.0f;
         pose.isTipVisible = true;
-        pose.scale        = 1.0f - recoilAmplitude_ * std::sin(u * RECOIL_FREQUENCY) * std::exp(-u * RECOIL_DAMPING);
+        pose.scale        = 1.0f - recoilAmplitude_ * std::sin(u * recoilFrequency_) * std::exp(-u * recoilDamping_);
         pose.bombDim      = bombDimRate_;
         pose.count        = lastCount_;
         pose.countAlpha   = 1.0f;
@@ -178,7 +168,7 @@ namespace GamePlay::Ui
         }
         else
         {
-            const float pop = Rate(u - drainDuration_secs_, COUNT_POP_IN_SECS);
+            const float pop = Rate(u - drainDuration_secs_, countPopIn_secs_);
             pose.countScale = 1.5f - 0.5f * EASE_OUT_CUBIC.Ease(pop);
             pose.countAlpha = pop;
         }
@@ -187,13 +177,13 @@ namespace GamePlay::Ui
         {
             const float launch = Rate(u, launchDuration_secs_);
             pose.bombDim    = 0.0f;
-            pose.bombScale  = 1.0f - LAUNCH_SHRINK_RATE * launch;
+            pose.bombScale  = 1.0f - launchShrinkRate_ * launch;
             pose.bombOffset = launchOffset_ * EASE_OUT_CUBIC.Ease(launch);
             pose.bombAlpha  = 1.0f - launch;
         }
         else
         {
-            pose.bombAlpha = Rate(u - launchDuration_secs_, BOMB_FADE_IN_SECS);
+            pose.bombAlpha = Rate(u - launchDuration_secs_, bombFadeIn_secs_);
         }
         return pose;
     }
@@ -296,7 +286,7 @@ namespace GamePlay::Ui
                 SetAlphaBlend(DX_BLENDMODE_ALPHA, fade);
                 for (int i = 0; i < emberCount_; ++i)
                 {
-                    const float angle = EMBER_START_ANGLE_DEG * DEG_TO_RAD + TAU * static_cast<float>(i) / static_cast<float>(std::max(emberCount_, 1));
+                    const float angle = emberStartAngle_deg_ * DEG_TO_RAD + TAU * static_cast<float>(i) / static_cast<float>(std::max(emberCount_, 1));
                     DrawRotaGraphF(sparkPos.x + std::cos(angle) * distance, sparkPos.y + std::sin(angle) * distance, emberScale, 0.0, emberSprite_->GetDxLibHandle(), TRUE);
                 }
             }
@@ -384,6 +374,15 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("recoilAmplitude_", recoilAmplitude_);
         emberCount_ = std::max(emberCount_, 0);
         ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
+        ImGuiHelper::OnDrawInputField("bombBrighten_secs_", bombBrighten_secs_);
+        ImGuiHelper::OnDrawInputField("wobbleSettle_secs_", wobbleSettle_secs_);
+        ImGuiHelper::OnDrawInputField("countFadeOut_secs_", countFadeOut_secs_);
+        ImGuiHelper::OnDrawInputField("countPopIn_secs_", countPopIn_secs_);
+        ImGuiHelper::OnDrawInputField("bombFadeIn_secs_", bombFadeIn_secs_);
+        ImGuiHelper::OnDrawInputField("launchShrinkRate_", launchShrinkRate_);
+        ImGuiHelper::OnDrawInputField("recoilFrequency_", recoilFrequency_);
+        ImGuiHelper::OnDrawInputField("recoilDamping_", recoilDamping_);
+        ImGuiHelper::OnDrawInputField("emberStartAngle_deg_", emberStartAngle_deg_);
     }
 }
 

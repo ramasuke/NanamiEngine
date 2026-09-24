@@ -9,6 +9,7 @@
 #include "../../../../../../../GamePlay/Network/Game_CustomNetworkRunner.h"
 #include "../../../../../Npc/Enemy/SpawnPoint/EnemySpawnPoint.h"
 #include "../../../../../Story/Story_StageClear.h"
+#include "../../../../../../../GamePlay/Prop/FloatingStone/Prop_FloatingStone.h"
 #include "../../../Context/Main_SceneContextBase.h"
 
 namespace GameCore::Scene
@@ -47,12 +48,8 @@ namespace GameCore::Scene
         /** このステージのクリア条件。どちらかが -1 なら無し */
         [[nodiscard]] std::optional<Story::StageClearCondition> StageClear() const;
 
-        /** 神殿前の広場に落ちている光の浮遊石(子にオーラ)。骸竜を倒すと飛び去り、それ以降は出さない */
-        [[nodiscard]] std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> FloatingStone() const { return floatingStone_.get(); }
-        /** 飛び去る石を LookAt で追うカメラ */
-        [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> FloatingStoneCamera() const { return floatingStoneCamera_.get(); }
-        [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> StoneLiftOffParticle() const { return stoneLiftOffParticle_.get(); }
-        [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> StoneFlightParticle () const { return stoneFlightParticle_ .get(); }
+        /** 神殿前の広場に落ちている光の浮遊石。骸竜を倒すと飛び去り、それ以降は出さない */
+        [[nodiscard]] std::shared_ptr<GamePlay::Prop::FloatingStone> FloatingStone() const { return floatingStone_.get(); }
 
     private:
         [[serialize(0)]] FIELD(Asset::SoundFile) bgm_;
@@ -76,10 +73,7 @@ namespace GameCore::Scene
         // NOTE: tools.scene で設定できるよう EnemyKind / Story::StoryFlag を int で持つ
         [[serialize(0)]] int       clearEnemyKind_                = -1;
         [[serialize(0)]] int       clearStoryFlag_                = -1;
-        [[serialize(0)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) floatingStone_;
-        [[serialize(0)]] FIELD(CineMachine::CineMachineVirtualCamera)         floatingStoneCamera_;
-        [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile)                   stoneLiftOffParticle_;
-        [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile)                   stoneFlightParticle_;
+        [[serialize(2)]] FIELD(GamePlay::Prop::FloatingStone) floatingStone_;
 
 #pragma region Serialization Function
     public:
@@ -109,9 +103,6 @@ namespace GameCore::Scene
             archive(CEREAL_NVP(clearEnemyKind_));
             archive(CEREAL_NVP(clearStoryFlag_));
             archive(CEREAL_NVP(floatingStone_));
-            archive(CEREAL_NVP(floatingStoneCamera_));
-            archive(CEREAL_NVP(stoneLiftOffParticle_));
-            archive(CEREAL_NVP(stoneFlightParticle_));
         }
 
         template<class Archive>
@@ -137,15 +128,29 @@ namespace GameCore::Scene
             archive(CEREAL_NVP(arrivalLookAtHeight_));
             archive(CEREAL_NVP(clearEnemyKind_));
             archive(CEREAL_NVP(clearStoryFlag_));
-            archive(CEREAL_NVP(floatingStone_));
-            archive(CEREAL_NVP(floatingStoneCamera_));
-            archive(CEREAL_NVP(stoneLiftOffParticle_));
-            archive(CEREAL_NVP(stoneFlightParticle_));
+            if (version <= 1)
+            {
+                // v0〜v1 は石・カメラ・パーティクルを別々に持っていた。今は石の FloatingStone が持つので読み捨てる
+                [[serialize(0)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) oldStone;
+                [[serialize(0)]] FIELD(CineMachine::CineMachineVirtualCamera)         oldStoneCamera;
+                [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile)                   oldLiftOffParticle;
+                [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile)                   oldFlightParticle;
+                archive(cereal::make_nvp("floatingStone_",        oldStone));
+                archive(cereal::make_nvp("floatingStoneCamera_",  oldStoneCamera));
+                archive(cereal::make_nvp("stoneLiftOffParticle_", oldLiftOffParticle));
+                archive(cereal::make_nvp("stoneFlightParticle_",  oldFlightParticle));
+            }
+            if (version == 1)
+            {
+                [[serialize(1)]] GamePlay::Prop::DepartShot oldDepartShot;
+                archive(cereal::make_nvp("stoneDepartShot_", oldDepartShot));
+            }
+            if (version >= 2) archive(CEREAL_NVP(floatingStone_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::DrySandSceneContext, 0);
+CEREAL_CLASS_VERSION(GameCore::Scene::DrySandSceneContext, 2);
 #pragma endregion

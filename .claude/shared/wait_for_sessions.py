@@ -1,11 +1,14 @@
 """Wait until no other Claude Code session of this project is mid-turn, then take the build lock.
 
-    python .claude/skills/build-run-wait/wait_for_sessions.py --self <session_id> [--timeout 3600] [--poll 10]
-    python .claude/skills/build-run-wait/wait_for_sessions.py --self <session_id> --release
-    python .claude/skills/build-run-wait/wait_for_sessions.py --status
+    python .claude/shared/wait_for_sessions.py --self <session_id> [--priority N] [--label build]
+                                                              [--timeout 3600] [--poll 10]
+    python .claude/shared/wait_for_sessions.py --self <session_id> --release
+    python .claude/shared/wait_for_sessions.py --status
 
 Exit 0 = lock taken (release it with --release; the Stop hook also does), 2 = timed out.
 Busy/idle comes from the markers written by .claude/hooks/session_state.py.
+Waiters (/build, /build-run, /commit-push with -w; see wait.md) share one lock and go in order of priority (higher first, negative
+allowed, default 0), then of when they started waiting.
 """
 import argparse
 import json
@@ -14,7 +17,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "hooks"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "hooks"))
 import session_state as ss  # noqa: E402
 
 
@@ -67,6 +70,18 @@ def busy_others(self_id, stale_secs):
             and not is_stale(m["session_id"], stale_secs)]
 
 
+def live_waiters(poll):
+    # NOTE: a waiter rewrites its marker every poll; one that stopped doing so was killed.
+    fresh = max(poll * 3, 60)
+    now = time.time()
+    return [m for m in read_markers()
+            if m.get("state") == "waiting" and now - m.get("updated", 0) <= fresh]
+
+
+def queue_key(m):
+    return (-m.get("priority", 0), m.get("wait_since", m.get("updated", 0)), m.get("session_id", ""))
+
+
 def lock_owner():
     try:
         return ss.lock_path().read_text(encoding="utf-8").strip() or None
@@ -90,6 +105,10 @@ def try_lock(self_id, stale_secs):
 
 
 def describe(m):
+    if m.get("state") == "waiting":
+        since = datetime.fromtimestamp(m.get("wait_since", m.get("updated", 0))).strftime("%H:%M")
+        return (f"{m['session_id'][:8]} ({m.get('label', '?')}, priority {m.get('priority', 0)}, since {since}) "
+                f"{title_of(m['session_id'])}")
     since = datetime.fromtimestamp(m.get("since", m.get("updated", 0))).strftime("%H:%M")
     return f"{m['session_id'][:8]} (since {since}) {title_of(m['session_id'])} > {m.get('prompt', '')}"
 
@@ -107,6 +126,8 @@ def status(stale_secs):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--self", dest="self_id", help="this session's id (${CLAUDE_SESSION_ID} in a skill)")
+    ap.add_argument("--priority", type=int, default=0, help="higher goes first among waiters; may be negative")
+    ap.add_argument("--label", default="build", help="the skill this waiter will run (shown to the others)")
     ap.add_argument("--timeout", type=float, default=3600)
     ap.add_argument("--poll", type=float, default=10)
     ap.add_argument("--stale-mins", type=float, default=45,
@@ -129,12 +150,22 @@ def main():
     start = time.time()
     last_seen = None
     while True:
-        # NOTE: "waiting" markers are ignored by other waiters, so two waiters never wait on each other.
-        ss.write_marker(args.self_id, "waiting")
+        # NOTE: waiters never count as busy for each other; they only queue by priority for the lock.
+        ss.write_marker(args.self_id, "waiting",
+                        extra={"priority": args.priority, "label": args.label, "wait_since": start})
         others = busy_others(args.self_id, stale_secs)
-        if not others:
+        ahead = [m for m in live_waiters(args.poll) if m["session_id"] != args.self_id
+                 and queue_key(m) < queue_key({"session_id": args.self_id, "priority": args.priority,
+                                               "wait_since": start})]
+        if not others and ahead:
+            seen = ("queue", tuple(sorted(m["session_id"] for m in ahead)))
+            if seen != last_seen:
+                print(f"waiting behind {len(ahead)} waiter(s) (priority {args.priority}):", flush=True)
+                for m in sorted(ahead, key=queue_key):
+                    print("  " + describe(m), flush=True)
+        elif not others:
             if try_lock(args.self_id, stale_secs):
-                ss.write_marker(args.self_id, "busy")
+                ss.write_marker(args.self_id, "busy", extra=ss.CLEAR_WAIT)
                 print(f"ready after {(time.time() - start) / 60:.1f} min; build lock taken")
                 return 0
             seen = ("lock", lock_owner())
@@ -149,7 +180,7 @@ def main():
         last_seen = seen
         if time.time() - start > args.timeout:
             print(f"timed out after {args.timeout / 60:.0f} min")
-            ss.write_marker(args.self_id, "busy")
+            ss.write_marker(args.self_id, "busy", extra=ss.CLEAR_WAIT)
             return 2
         time.sleep(args.poll)
 

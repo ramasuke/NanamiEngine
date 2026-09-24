@@ -116,6 +116,14 @@ namespace GamePlay::Ui
         /** 飛行船が潰れて裏返るまでの時間 */
         [[serialize(2)]] float shipFlip_secs_ = 0.3f;
         [[serialize(3)]] FIELD(Asset::UiSoundBankData) uiSounds_;
+        /** 飛行船の後ろに並べる煙の、進み具合でのずらし幅 */
+        [[serialize(4)]] float trailStep_ = 0.035f;
+        /** 揺れの片道の秒。周期が揃わないようにずらしてある */
+        [[serialize(4)]] float shipBobHalf_secs_ = 1.31f;
+        [[serialize(4)]] float zoomSwayHalf_secs_ = 3.49f;
+        [[serialize(4)]] float panSwayXHalf_secs_ = 4.49f;
+        [[serialize(4)]] float panSwayYHalf_secs_ = 2.86f;
+        [[serialize(4)]] glm::vec2 panSwayPx_ = glm::vec2(4.0f, 3.0f);
 
         std::vector<glm::vec2> routeSamples_;
         std::vector<float> routeLengths_;
@@ -199,6 +207,12 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(dashPop_secs_));
             archive(CEREAL_NVP(shipFlip_secs_));
             archive(CEREAL_NVP(uiSounds_));
+            archive(CEREAL_NVP(trailStep_));
+            archive(CEREAL_NVP(shipBobHalf_secs_));
+            archive(CEREAL_NVP(zoomSwayHalf_secs_));
+            archive(CEREAL_NVP(panSwayXHalf_secs_));
+            archive(CEREAL_NVP(panSwayYHalf_secs_));
+            archive(CEREAL_NVP(panSwayPx_));
         }
 
         template<class Archive>
@@ -243,9 +257,15 @@ namespace GamePlay::Ui
             if (version >= 2) archive(CEREAL_NVP(dashPop_secs_));
             if (version >= 2) archive(CEREAL_NVP(shipFlip_secs_));
             if (version >= 3) archive(CEREAL_NVP(uiSounds_));
+            if (version >= 4) archive(CEREAL_NVP(trailStep_));
+            if (version >= 4) archive(CEREAL_NVP(shipBobHalf_secs_));
+            if (version >= 4) archive(CEREAL_NVP(zoomSwayHalf_secs_));
+            if (version >= 4) archive(CEREAL_NVP(panSwayXHalf_secs_));
+            if (version >= 4) archive(CEREAL_NVP(panSwayYHalf_secs_));
+            if (version >= 4) archive(CEREAL_NVP(panSwayPx_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::LoadingRouteMap, 3);
+CEREAL_CLASS_VERSION(GamePlay::Ui::LoadingRouteMap, 4);

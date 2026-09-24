@@ -23,10 +23,6 @@ namespace
 {
     constexpr auto  ANIMATOR_PARAM_NAME        = "State";
     constexpr auto  PLAYER_HEAD_BONE_NAME      = "mixamorig:Head";
-    constexpr float MOVING_SPEED_THRESHOLD     = 3.0f;
-    // クリップの終わり際で戻すと遷移のブレンドで最後まで見える
-    constexpr float CLIP_END_NORMALIZED_TIME   = 0.9f;
-    constexpr float MIN_REACTION_SECS          = 0.3f;
 
     float HorizontalLength(const glm::vec3& v)
     {
@@ -137,14 +133,14 @@ namespace GamePlay::Npc::Friendly
         const float maxDuration = isHit ? hitMaxDuration_secs_ : bumpMaxDuration_secs_;
         bool isFinished = reaction_->elapsed_secs >= maxDuration;
 
-        if (!isFinished && reaction_->elapsed_secs >= MIN_REACTION_SECS)
+        if (!isFinished && reaction_->elapsed_secs >= minReaction_secs_)
         {
             const int reactionState = isHit ? hitAnimatorState_ : bumpAnimatorState_;
             const auto animator = ReadyAnimator();
             if (reactionState >= 0 && animator)
             {
                 const auto progress = animator->GetClipProgress(isHit ? hitClipName_ : bumpClipName_);
-                isFinished = progress && progress->normalizedTime >= CLIP_END_NORMALIZED_TIME;
+                isFinished = progress && progress->normalizedTime >= clipEndNormalizedTime_;
             }
         }
 
@@ -221,7 +217,7 @@ namespace GamePlay::Npc::Friendly
     bool FriendlyNpcReaction::IsMoving() const
     {
         const auto rigidBody = Components().Catch<Component::RigidBody>().lock();
-        return rigidBody && HorizontalLength(rigidBody->LinearVelocity()) > MOVING_SPEED_THRESHOLD;
+        return rigidBody && HorizontalLength(rigidBody->LinearVelocity()) > movingSpeedThreshold_;
     }
 
     bool FriendlyNpcReaction::IsChatting() const
@@ -283,6 +279,9 @@ namespace GamePlay::Npc::Friendly
         ImGuiHelper::OnDrawInputField("hitShakeAmplitude_"       , hitShakeAmplitude_);
         ImGuiHelper::OnDrawInputField("bumpShakeAmplitude_"      , bumpShakeAmplitude_);
         ImGuiHelper::OnDrawInputField("shakeDuration_secs_"      , shakeDuration_secs_);
+        ImGuiHelper::OnDrawInputField("movingSpeedThreshold_"    , movingSpeedThreshold_);
+        ImGuiHelper::OnDrawInputField("clipEndNormalizedTime_"   , clipEndNormalizedTime_);
+        ImGuiHelper::OnDrawInputField("minReaction_secs_"        , minReaction_secs_);
 
         ImGui::Text("reacting: %s", reaction_ ? (reaction_->kind == ReactionKind::Hit ? "Hit" : "Bump") : "none");
         if (ImGui::Button("Test Hit"))
@@ -293,4 +292,4 @@ namespace GamePlay::Npc::Friendly
     }
 }
 
-ENGINE_REGISTER_COMPONENT(GamePlay::Npc::Friendly::FriendlyNpcReaction, 0)
+ENGINE_REGISTER_COMPONENT(GamePlay::Npc::Friendly::FriendlyNpcReaction)

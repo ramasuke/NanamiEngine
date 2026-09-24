@@ -25,9 +25,6 @@ namespace GamePlay::Ui
         using LibCore::Tween::Ease;
         using LibCore::Tween::Ms;
 
-        // 降りるときに少し行き過ぎてから戻る量。吊るした札が紐の長さで止まって揺れ戻る感じ
-        constexpr float ASSET_UPDATE_DROP_OVERSHOOT = 1.4f;
-
         /** @brief UTF-8 の1文字の長さ。壊れた先頭バイトは1バイトとして進める */
         size_t AssetUpdateCharLength(const unsigned char lead)
         {
@@ -244,7 +241,7 @@ namespace GamePlay::Ui
         {
             phase_ = Phase::Entering;
             dropTween_.Play(tweeny::from(-dropDistance_px_).to(0.0f)
-                .during(Ms(dropDuration_secs_)).via(Ease(EaseType::OutBack, ASSET_UPDATE_DROP_OVERSHOOT)));
+                .during(Ms(dropDuration_secs_)).via(Ease(EaseType::OutBack, dropOvershoot_)));
             veilTween_.Play(tweeny::from(0.0f).to(1.0f).during(Ms(dropDuration_secs_)).via(Ease(EaseType::OutCubic)));
             UpdateMotion(0.0f);
         }
@@ -502,6 +499,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("errorLineUnits_", errorLineUnits_);
         ImGuiHelper::OnDrawInputField("errorMaxLines_", errorMaxLines_);
         ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
+        ImGuiHelper::OnDrawInputField("dropOvershoot_", dropOvershoot_);
     }
 }
 

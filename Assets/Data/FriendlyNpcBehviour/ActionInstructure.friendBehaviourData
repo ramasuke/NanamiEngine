@@ -267,7 +267,7 @@
                                                                     "data": {
                                                                         "cereal_class_version": 0,
                                                                         "value0": {},
-                                                                        "animatorSetParamNumber_": 0
+                                                                        "animatorSetParamNumber_": 4
                                                                     }
                                                                 }
                                                             }
@@ -415,6 +415,35 @@
                                                             "value0": {
                                                                 "value0": {},
                                                                 "guid_": {
+                                                                    "value_": "F24CB4CC-B7D4-4102-99A7-924D939F4618"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 49.0,
+                                                                    "value1": 870.0
+                                                                }
+                                                            },
+                                                            "name_": "Idle Animation",
+                                                            "action_": {
+                                                                "polymorphic_id": 8,
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "value0": {},
+                                                                        "animatorSetParamNumber_": 0
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483667,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
                                                                     "value_": "B8D74886-98BE-4091-8553-D138F3E44BC5"
                                                                 },
                                                                 "position_": {
@@ -446,7 +475,7 @@
                                 {
                                     "polymorphic_id": 2,
                                     "ptr_wrapper": {
-                                        "id": 2147483667,
+                                        "id": 2147483668,
                                         "data": {
                                             "value0": {
                                                 "value0": {},
@@ -462,7 +491,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483668,
+                                                        "id": 2147483669,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -492,7 +521,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483669,
+                                                        "id": 2147483670,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -521,7 +550,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483670,
+                                                        "id": 2147483671,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -552,7 +581,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483671,
+                                                        "id": 2147483672,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -571,14 +600,14 @@
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {
-                                                                        "cereal_class_version": 0,
+                                                                        "cereal_class_version": 1,
                                                                         "value0": {},
                                                                         "moveRoute_": {
                                                                             "cereal_class_version": 0,
                                                                             "value0": {
                                                                                 "polymorphic_id": 1073741824,
                                                                                 "ptr_wrapper": {
-                                                                                    "id": 2147483672,
+                                                                                    "id": 2147483673,
                                                                                     "data": {
                                                                                         "cereal_class_version": 0,
                                                                                         "value0": {
@@ -589,7 +618,8 @@
                                                                             }
                                                                         },
                                                                         "moveSpeed_": 30.0,
-                                                                        "turnRotateSpeed_": 7.0
+                                                                        "turnRotateSpeed_": 7.0,
+                                                                        "arriveDistance_": 10.0
                                                                     }
                                                                 }
                                                             }
@@ -599,7 +629,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483673,
+                                                        "id": 2147483674,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -634,7 +664,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483674,
+                                                        "id": 2147483675,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -663,7 +693,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483675,
+                                                        "id": 2147483676,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -697,7 +727,7 @@
                                 {
                                     "polymorphic_id": 2,
                                     "ptr_wrapper": {
-                                        "id": 2147483676,
+                                        "id": 2147483677,
                                         "data": {
                                             "value0": {
                                                 "value0": {},
@@ -713,7 +743,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483677,
+                                                        "id": 2147483678,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -743,7 +773,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483678,
+                                                        "id": 2147483679,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -773,7 +803,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483679,
+                                                        "id": 2147483680,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -805,7 +835,7 @@
                                                 {
                                                     "polymorphic_id": 1,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483680,
+                                                        "id": 2147483681,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -821,7 +851,7 @@
                                                                 {
                                                                     "polymorphic_id": 3,
                                                                     "ptr_wrapper": {
-                                                                        "id": 2147483681,
+                                                                        "id": 2147483682,
                                                                         "data": {
                                                                             "value0": {
                                                                                 "value0": {},
@@ -846,7 +876,7 @@
                                                                                             "polymorphic_id": 2147483664,
                                                                                             "polymorphic_name": "GameCore::PlayerAvatar::SwordMan::Quest::ActionInstructTutorial",
                                                                                             "ptr_wrapper": {
-                                                                                                "id": 2147483682,
+                                                                                                "id": 2147483683,
                                                                                                 "data": {
                                                                                                     "cereal_class_version": 0,
                                                                                                     "value0": {
@@ -861,7 +891,7 @@
                                                                                                         "value0": {
                                                                                                             "polymorphic_id": 1073741824,
                                                                                                             "ptr_wrapper": {
-                                                                                                                "id": 2147483683,
+                                                                                                                "id": 2147483684,
                                                                                                                 "data": {
                                                                                                                     "cereal_class_version": 0,
                                                                                                                     "value0": {
@@ -891,7 +921,7 @@
                                 {
                                     "polymorphic_id": 2,
                                     "ptr_wrapper": {
-                                        "id": 2147483684,
+                                        "id": 2147483685,
                                         "data": {
                                             "value0": {
                                                 "value0": {},
@@ -907,7 +937,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483685,
+                                                        "id": 2147483686,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -937,7 +967,7 @@
                                                 {
                                                     "polymorphic_id": 1,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483686,
+                                                        "id": 2147483687,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -953,7 +983,7 @@
                                                                 {
                                                                     "polymorphic_id": 2,
                                                                     "ptr_wrapper": {
-                                                                        "id": 2147483687,
+                                                                        "id": 2147483688,
                                                                         "data": {
                                                                             "value0": {
                                                                                 "value0": {},
@@ -969,7 +999,7 @@
                                                                                 {
                                                                                     "polymorphic_id": 3,
                                                                                     "ptr_wrapper": {
-                                                                                        "id": 2147483688,
+                                                                                        "id": 2147483689,
                                                                                         "data": {
                                                                                             "value0": {
                                                                                                 "value0": {},
@@ -998,7 +1028,7 @@
                                                                                 {
                                                                                     "polymorphic_id": 3,
                                                                                     "ptr_wrapper": {
-                                                                                        "id": 2147483689,
+                                                                                        "id": 2147483690,
                                                                                         "data": {
                                                                                             "value0": {
                                                                                                 "value0": {},
@@ -1039,7 +1069,7 @@
                                 {
                                     "polymorphic_id": 2,
                                     "ptr_wrapper": {
-                                        "id": 2147483690,
+                                        "id": 2147483691,
                                         "data": {
                                             "value0": {
                                                 "value0": {},
@@ -1055,7 +1085,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483691,
+                                                        "id": 2147483692,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1085,7 +1115,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483692,
+                                                        "id": 2147483693,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1114,7 +1144,36 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483693,
+                                                        "id": 2147483694,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "7990874B-0473-462E-A319-DDD0FB2B1D10"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 963.0,
+                                                                    "value1": 385.0
+                                                                }
+                                                            },
+                                                            "name_": "Play WalkAnimation",
+                                                            "action_": {
+                                                                "polymorphic_id": 8,
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "value0": {},
+                                                                        "animatorSetParamNumber_": 1
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483695,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1137,7 +1196,7 @@
                                                                             "value0": {
                                                                                 "polymorphic_id": 1073741824,
                                                                                 "ptr_wrapper": {
-                                                                                    "id": 2147483694,
+                                                                                    "id": 2147483696,
                                                                                     "data": {
                                                                                         "value0": {
                                                                                             "value_": "CE19C0D4-F482-4591-9D00-1FDD2DF9DE40"
@@ -1147,49 +1206,8 @@
                                                                             }
                                                                         },
                                                                         "moveSpeed_": 13.0,
-                                                                        "turnRotateSpeed_": 7.0
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                {
-                                                    "polymorphic_id": 3,
-                                                    "ptr_wrapper": {
-                                                        "id": 2147483695,
-                                                        "data": {
-                                                            "value0": {
-                                                                "value0": {},
-                                                                "guid_": {
-                                                                    "value_": "EA2FFFCB-7A76-4B79-B76C-B20F43D06B8C"
-                                                                },
-                                                                "position_": {
-                                                                    "value0": 964.0,
-                                                                    "value1": 484.0
-                                                                }
-                                                            },
-                                                            "name_": "Enable Dragon LookCamera",
-                                                            "action_": {
-                                                                "polymorphic_id": 9,
-                                                                "ptr_wrapper": {
-                                                                    "valid": 1,
-                                                                    "data": {
-                                                                        "value0": {},
-                                                                        "purposeCamera_": {
-                                                                            "value0": {
-                                                                                "polymorphic_id": 1073741824,
-                                                                                "ptr_wrapper": {
-                                                                                    "id": 2147483696,
-                                                                                    "data": {
-                                                                                        "value0": {
-                                                                                            "value_": "9FF9BE4D-375C-4630-B874-83EE1E5D9495"
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        },
-                                                                        "onPurposeCameraEnable_": true
+                                                                        "turnRotateSpeed_": 7.0,
+                                                                        "arriveDistance_": 10.0
                                                                     }
                                                                 }
                                                             }
@@ -1204,132 +1222,14 @@
                                                             "value0": {
                                                                 "value0": {},
                                                                 "guid_": {
-                                                                    "value_": "01568B4B-1029-4EC8-831A-5760E6919CFF"
-                                                                },
-                                                                "position_": {
-                                                                    "value0": 965.0,
-                                                                    "value1": 548.0
-                                                                }
-                                                            },
-                                                            "name_": "LookAt",
-                                                            "action_": {
-                                                                "polymorphic_id": 14,
-                                                                "ptr_wrapper": {
-                                                                    "valid": 1,
-                                                                    "data": {
-                                                                        "value0": {},
-                                                                        "lookAtDirection_": {
-                                                                            "value0": 0.0,
-                                                                            "value1": 0.0,
-                                                                            "value2": 0.0
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                {
-                                                    "polymorphic_id": 3,
-                                                    "ptr_wrapper": {
-                                                        "id": 2147483698,
-                                                        "data": {
-                                                            "value0": {
-                                                                "value0": {},
-                                                                "guid_": {
-                                                                    "value_": "51FE0506-A41E-4D10-A316-34209A0F1F18"
-                                                                },
-                                                                "position_": {
-                                                                    "value0": 965.0,
-                                                                    "value1": 614.0
-                                                                }
-                                                            },
-                                                            "name_": "Start DragonAppear Chat",
-                                                            "action_": {
-                                                                "polymorphic_id": 2147483665,
-                                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::ImplementChat",
-                                                                "ptr_wrapper": {
-                                                                    "valid": 1,
-                                                                    "data": {
-                                                                        "cereal_class_version": 0,
-                                                                        "value0": {},
-                                                                        "value1": {
-                                                                            "value0": {
-                                                                                "polymorphic_id": 1073741824,
-                                                                                "ptr_wrapper": {
-                                                                                    "id": 2147483699,
-                                                                                    "data": {
-                                                                                        "value0": {
-                                                                                            "value_": "17D487CE-5FAF-4095-A162-3393B348EDBD"
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                {
-                                                    "polymorphic_id": 3,
-                                                    "ptr_wrapper": {
-                                                        "id": 2147483700,
-                                                        "data": {
-                                                            "value0": {
-                                                                "value0": {},
-                                                                "guid_": {
-                                                                    "value_": "1C3CC525-88F1-48BB-94C4-5ABB3DFD55C7"
-                                                                },
-                                                                "position_": {
-                                                                    "value0": 964.0,
-                                                                    "value1": 681.0
-                                                                }
-                                                            },
-                                                            "name_": "Disable Dragon LookCamera",
-                                                            "action_": {
-                                                                "polymorphic_id": 9,
-                                                                "ptr_wrapper": {
-                                                                    "valid": 1,
-                                                                    "data": {
-                                                                        "value0": {},
-                                                                        "purposeCamera_": {
-                                                                            "value0": {
-                                                                                "polymorphic_id": 1073741824,
-                                                                                "ptr_wrapper": {
-                                                                                    "id": 2147483701,
-                                                                                    "data": {
-                                                                                        "value0": {
-                                                                                            "value_": "9FF9BE4D-375C-4630-B874-83EE1E5D9495"
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        },
-                                                                        "onPurposeCameraEnable_": false
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                {
-                                                    "polymorphic_id": 3,
-                                                    "ptr_wrapper": {
-                                                        "id": 2147483702,
-                                                        "data": {
-                                                            "value0": {
-                                                                "value0": {},
-                                                                "guid_": {
-                                                                    "value_": "4DE37957-C421-42B7-A913-C61284DE4C24"
+                                                                    "value_": "86B2C733-3B88-4717-93FD-FA7EAD9A9EE3"
                                                                 },
                                                                 "position_": {
                                                                     "value0": 963.0,
-                                                                    "value1": 746.0
+                                                                    "value1": 480.0
                                                                 }
                                                             },
-                                                            "name_": "State To 5",
+                                                            "name_": "State To 6",
                                                             "action_": {
                                                                 "polymorphic_id": 11,
                                                                 "ptr_wrapper": {
@@ -1337,7 +1237,7 @@
                                                                     "data": {
                                                                         "value0": {},
                                                                         "keyName_": "State",
-                                                                        "value_": 5
+                                                                        "value_": 6
                                                                     }
                                                                 }
                                                             }
@@ -1351,7 +1251,7 @@
                                 {
                                     "polymorphic_id": 2,
                                     "ptr_wrapper": {
-                                        "id": 2147483703,
+                                        "id": 2147483698,
                                         "data": {
                                             "value0": {
                                                 "value0": {},
@@ -1367,7 +1267,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483704,
+                                                        "id": 2147483699,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1397,7 +1297,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483705,
+                                                        "id": 2147483700,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1411,7 +1311,7 @@
                                                             },
                                                             "name_": "Check SwordmanActionInstruct",
                                                             "action_": {
-                                                                "polymorphic_id": 2147483666,
+                                                                "polymorphic_id": 2147483665,
                                                                 "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::CheckCompleteQuest",
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
@@ -1428,7 +1328,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483706,
+                                                        "id": 2147483701,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1460,7 +1360,36 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483707,
+                                                        "id": 2147483702,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "2B4B21AD-7575-4296-AB16-E00883928B34"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 1105.0,
+                                                                    "value1": 540.0
+                                                                }
+                                                            },
+                                                            "name_": "Talk Animation",
+                                                            "action_": {
+                                                                "polymorphic_id": 8,
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "value0": {},
+                                                                        "animatorSetParamNumber_": 4
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483703,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1474,16 +1403,18 @@
                                                             },
                                                             "name_": "Chat EndActionInstruct",
                                                             "action_": {
-                                                                "polymorphic_id": 17,
+                                                                "polymorphic_id": 2147483666,
+                                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::ImplementChat",
                                                                 "ptr_wrapper": {
                                                                     "valid": 1,
                                                                     "data": {
+                                                                        "cereal_class_version": 0,
                                                                         "value0": {},
                                                                         "value1": {
                                                                             "value0": {
                                                                                 "polymorphic_id": 1073741824,
                                                                                 "ptr_wrapper": {
-                                                                                    "id": 2147483708,
+                                                                                    "id": 2147483704,
                                                                                     "data": {
                                                                                         "value0": {
                                                                                             "value_": "AFFC2CF4-657F-4440-9DC1-285DEE2D4BC2"
@@ -1501,7 +1432,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483709,
+                                                        "id": 2147483705,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1532,7 +1463,7 @@
                                                                             "value0": {
                                                                                 "polymorphic_id": 1073741824,
                                                                                 "ptr_wrapper": {
-                                                                                    "id": 2147483710,
+                                                                                    "id": 2147483706,
                                                                                     "data": {
                                                                                         "cereal_class_version": 0,
                                                                                         "value0": {
@@ -1552,7 +1483,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483711,
+                                                        "id": 2147483707,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1586,7 +1517,7 @@
                                 {
                                     "polymorphic_id": 2,
                                     "ptr_wrapper": {
-                                        "id": 2147483712,
+                                        "id": 2147483708,
                                         "data": {
                                             "value0": {
                                                 "value0": {},
@@ -1602,7 +1533,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483713,
+                                                        "id": 2147483709,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1632,7 +1563,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483714,
+                                                        "id": 2147483710,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1665,43 +1596,169 @@
                                                     }
                                                 },
                                                 {
-                                                    "polymorphic_id": 3,
+                                                    "polymorphic_id": 1,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483715,
+                                                        "id": 2147483711,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
                                                                 "guid_": {
-                                                                    "value_": "BD6700C3-C3F6-4F78-8427-9BB77624C3FC"
+                                                                    "value_": "A556F1D9-4AA4-45AA-893B-A9A455BCD9D2"
                                                                 },
                                                                 "position_": {
                                                                     "value0": 1232.0,
-                                                                    "value1": 410.0
+                                                                    "value1": 470.0
                                                                 }
                                                             },
-                                                            "name_": "Chat ActionInstruct",
-                                                            "action_": {
-                                                                "polymorphic_id": 10,
-                                                                "ptr_wrapper": {
-                                                                    "valid": 1,
-                                                                    "data": {
-                                                                        "value0": {},
-                                                                        "value1": {
+                                                            "children_": [
+                                                                {
+                                                                    "polymorphic_id": 2,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483712,
+                                                                        "data": {
                                                                             "value0": {
-                                                                                "polymorphic_id": 1073741824,
-                                                                                "ptr_wrapper": {
-                                                                                    "id": 2147483716,
-                                                                                    "data": {
-                                                                                        "value0": {
-                                                                                            "value_": "FF821F71-B180-4A0B-8625-689C9A28F97E"
+                                                                                "value0": {},
+                                                                                "guid_": {
+                                                                                    "value_": "72232628-CF7F-4FA5-ADEF-2852CE8A59A9"
+                                                                                },
+                                                                                "position_": {
+                                                                                    "value0": 1232.0,
+                                                                                    "value1": 540.0
+                                                                                }
+                                                                            },
+                                                                            "children_": [
+                                                                                {
+                                                                                    "polymorphic_id": 3,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483713,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "36CC4FF2-5E69-4E46-A70C-AB7443220036"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 1232.0,
+                                                                                                    "value1": 610.0
+                                                                                                }
+                                                                                            },
+                                                                                            "name_": "IsChat",
+                                                                                            "action_": {
+                                                                                                "polymorphic_id": 7,
+                                                                                                "ptr_wrapper": {
+                                                                                                    "valid": 1,
+                                                                                                    "data": {
+                                                                                                        "value0": {}
+                                                                                                    }
+                                                                                                }
+                                                                                            }
                                                                                         }
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "polymorphic_id": 3,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483714,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "B2A96510-3968-4522-8F15-C2B7593B74F9"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 1232.0,
+                                                                                                    "value1": 680.0
+                                                                                                }
+                                                                                            },
+                                                                                            "name_": "Talk Animation",
+                                                                                            "action_": {
+                                                                                                "polymorphic_id": 8,
+                                                                                                "ptr_wrapper": {
+                                                                                                    "valid": 1,
+                                                                                                    "data": {
+                                                                                                        "value0": {},
+                                                                                                        "animatorSetParamNumber_": 4
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "polymorphic_id": 3,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483715,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "BD6700C3-C3F6-4F78-8427-9BB77624C3FC"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 1232.0,
+                                                                                                    "value1": 410.0
+                                                                                                }
+                                                                                            },
+                                                                                            "name_": "Chat ActionInstruct",
+                                                                                            "action_": {
+                                                                                                "polymorphic_id": 10,
+                                                                                                "ptr_wrapper": {
+                                                                                                    "valid": 1,
+                                                                                                    "data": {
+                                                                                                        "value0": {},
+                                                                                                        "value1": {
+                                                                                                            "value0": {
+                                                                                                                "polymorphic_id": 1073741824,
+                                                                                                                "ptr_wrapper": {
+                                                                                                                    "id": 2147483716,
+                                                                                                                    "data": {
+                                                                                                                        "value0": {
+                                                                                                                            "value_": "FF821F71-B180-4A0B-8625-689C9A28F97E"
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "polymorphic_id": 3,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483717,
+                                                                        "data": {
+                                                                            "value0": {
+                                                                                "value0": {},
+                                                                                "guid_": {
+                                                                                    "value_": "04DB8E55-CA13-4E96-A336-2F686F1B1903"
+                                                                                },
+                                                                                "position_": {
+                                                                                    "value0": 1360.0,
+                                                                                    "value1": 540.0
+                                                                                }
+                                                                            },
+                                                                            "name_": "Watch Animation",
+                                                                            "action_": {
+                                                                                "polymorphic_id": 8,
+                                                                                "ptr_wrapper": {
+                                                                                    "valid": 1,
+                                                                                    "data": {
+                                                                                        "value0": {},
+                                                                                        "animatorSetParamNumber_": 5
                                                                                     }
                                                                                 }
                                                                             }
                                                                         }
                                                                     }
                                                                 }
-                                                            }
+                                                            ]
                                                         }
                                                     }
                                                 }
@@ -1712,7 +1769,7 @@
                                 {
                                     "polymorphic_id": 2,
                                     "ptr_wrapper": {
-                                        "id": 2147483717,
+                                        "id": 2147483718,
                                         "data": {
                                             "value0": {
                                                 "value0": {},
@@ -1728,7 +1785,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483718,
+                                                        "id": 2147483719,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1758,7 +1815,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483719,
+                                                        "id": 2147483720,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1787,7 +1844,7 @@
                                                 {
                                                     "polymorphic_id": 3,
                                                     "ptr_wrapper": {
-                                                        "id": 2147483720,
+                                                        "id": 2147483721,
                                                         "data": {
                                                             "value0": {
                                                                 "value0": {},
@@ -1820,6 +1877,679 @@
                                             ]
                                         }
                                     }
+                                },
+                                {
+                                    "polymorphic_id": 2,
+                                    "ptr_wrapper": {
+                                        "id": 2147483722,
+                                        "data": {
+                                            "value0": {
+                                                "value0": {},
+                                                "guid_": {
+                                                    "value_": "39AE3D99-25A6-4374-984D-31C4DC0707E1"
+                                                },
+                                                "position_": {
+                                                    "value0": 1560.0,
+                                                    "value1": 216.0
+                                                }
+                                            },
+                                            "children_": [
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483723,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "E96515C5-0D27-4BDB-AF08-6A502BE7D775"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 1560.0,
+                                                                    "value1": 286.0
+                                                                }
+                                                            },
+                                                            "name_": "State 6",
+                                                            "action_": {
+                                                                "polymorphic_id": 4,
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "value0": {},
+                                                                        "keyName_": "State",
+                                                                        "equalValue_": 6
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483724,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "2F498B14-C2D6-4616-B9F6-9965335FC04D"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 1560.0,
+                                                                    "value1": 420.0
+                                                                }
+                                                            },
+                                                            "name_": "Freeze Pos",
+                                                            "action_": {
+                                                                "polymorphic_id": 12,
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "value0": {},
+                                                                        "constraints_": 61
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483725,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "EA2FFFCB-7A76-4B79-B76C-B20F43D06B8C"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 964.0,
+                                                                    "value1": 484.0
+                                                                }
+                                                            },
+                                                            "name_": "Enable Dragon LookCamera",
+                                                            "action_": {
+                                                                "polymorphic_id": 9,
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "value0": {},
+                                                                        "purposeCamera_": {
+                                                                            "value0": {
+                                                                                "polymorphic_id": 1073741824,
+                                                                                "ptr_wrapper": {
+                                                                                    "id": 2147483726,
+                                                                                    "data": {
+                                                                                        "value0": {
+                                                                                            "value_": "9FF9BE4D-375C-4630-B874-83EE1E5D9495"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        "onPurposeCameraEnable_": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483727,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "01568B4B-1029-4EC8-831A-5760E6919CFF"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 965.0,
+                                                                    "value1": 548.0
+                                                                }
+                                                            },
+                                                            "name_": "LookAt",
+                                                            "action_": {
+                                                                "polymorphic_id": 14,
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "value0": {},
+                                                                        "lookAtDirection_": {
+                                                                            "value0": 0.0,
+                                                                            "value1": 0.0,
+                                                                            "value2": 0.0
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483728,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "1266D2AC-98B0-4147-BA80-FFBC52C10277"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 1560.0,
+                                                                    "value1": 500.0
+                                                                }
+                                                            },
+                                                            "name_": "Talk Animation",
+                                                            "action_": {
+                                                                "polymorphic_id": 8,
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "value0": {},
+                                                                        "animatorSetParamNumber_": 4
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483729,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "51FE0506-A41E-4D10-A316-34209A0F1F18"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 965.0,
+                                                                    "value1": 614.0
+                                                                }
+                                                            },
+                                                            "name_": "Start DragonAppear Chat",
+                                                            "action_": {
+                                                                "polymorphic_id": 18,
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "value0": {},
+                                                                        "value1": {
+                                                                            "value0": {
+                                                                                "polymorphic_id": 1073741824,
+                                                                                "ptr_wrapper": {
+                                                                                    "id": 2147483730,
+                                                                                    "data": {
+                                                                                        "value0": {
+                                                                                            "value_": "17D487CE-5FAF-4095-A162-3393B348EDBD"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483731,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "1C3CC525-88F1-48BB-94C4-5ABB3DFD55C7"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 964.0,
+                                                                    "value1": 681.0
+                                                                }
+                                                            },
+                                                            "name_": "Disable Dragon LookCamera",
+                                                            "action_": {
+                                                                "polymorphic_id": 9,
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "value0": {},
+                                                                        "purposeCamera_": {
+                                                                            "value0": {
+                                                                                "polymorphic_id": 1073741824,
+                                                                                "ptr_wrapper": {
+                                                                                    "id": 2147483732,
+                                                                                    "data": {
+                                                                                        "value0": {
+                                                                                            "value_": "9FF9BE4D-375C-4630-B874-83EE1E5D9495"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        "onPurposeCameraEnable_": false
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483733,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "4DE37957-C421-42B7-A913-C61284DE4C24"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 963.0,
+                                                                    "value1": 746.0
+                                                                }
+                                                            },
+                                                            "name_": "State To 7",
+                                                            "action_": {
+                                                                "polymorphic_id": 11,
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "value0": {},
+                                                                        "keyName_": "State",
+                                                                        "value_": 7
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "polymorphic_id": 2,
+                                    "ptr_wrapper": {
+                                        "id": 2147483734,
+                                        "data": {
+                                            "value0": {
+                                                "value0": {},
+                                                "guid_": {
+                                                    "value_": "1AF90FB7-030A-4C95-8993-5948940A6C22"
+                                                },
+                                                "position_": {
+                                                    "value0": 1720.0,
+                                                    "value1": 216.0
+                                                }
+                                            },
+                                            "children_": [
+                                                {
+                                                    "polymorphic_id": 3,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483735,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "4A4143AF-D16B-4CBC-8850-59BC1677FC26"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 1720.0,
+                                                                    "value1": 286.0
+                                                                }
+                                                            },
+                                                            "name_": "State 7",
+                                                            "action_": {
+                                                                "polymorphic_id": 4,
+                                                                "ptr_wrapper": {
+                                                                    "valid": 1,
+                                                                    "data": {
+                                                                        "value0": {},
+                                                                        "keyName_": "State",
+                                                                        "equalValue_": 7
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "polymorphic_id": 1,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483736,
+                                                        "data": {
+                                                            "value0": {
+                                                                "value0": {},
+                                                                "guid_": {
+                                                                    "value_": "0702AC48-2253-4EC3-9CBC-9BA001CBC862"
+                                                                },
+                                                                "position_": {
+                                                                    "value0": 1720.0,
+                                                                    "value1": 352.0
+                                                                }
+                                                            },
+                                                            "children_": [
+                                                                {
+                                                                    "polymorphic_id": 2,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483737,
+                                                                        "data": {
+                                                                            "value0": {
+                                                                                "value0": {},
+                                                                                "guid_": {
+                                                                                    "value_": "5F41E637-87F8-44E6-854C-6107B3584F5E"
+                                                                                },
+                                                                                "position_": {
+                                                                                    "value0": 1720.0,
+                                                                                    "value1": 420.0
+                                                                                }
+                                                                            },
+                                                                            "children_": [
+                                                                                {
+                                                                                    "polymorphic_id": 3,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483738,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "39B85C39-D098-49CC-B61F-12C5CD888CE4"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 1720.0,
+                                                                                                    "value1": 490.0
+                                                                                                }
+                                                                                            },
+                                                                                            "name_": "Wave Time",
+                                                                                            "action_": {
+                                                                                                "polymorphic_id": 2147483669,
+                                                                                                "polymorphic_name": "GameCore::Npc::Friendly::Behaviour::Action::NodeTickTimer",
+                                                                                                "ptr_wrapper": {
+                                                                                                    "valid": 1,
+                                                                                                    "data": {
+                                                                                                        "cereal_class_version": 0,
+                                                                                                        "value0": {},
+                                                                                                        "duration_secs_": 2.5
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "polymorphic_id": 3,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483739,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "A1896FA2-668E-4CC9-BEB2-7856F306DC3E"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 1720.0,
+                                                                                                    "value1": 555.0
+                                                                                                }
+                                                                                            },
+                                                                                            "name_": "Freeze Rotation",
+                                                                                            "action_": {
+                                                                                                "polymorphic_id": 12,
+                                                                                                "ptr_wrapper": {
+                                                                                                    "valid": 1,
+                                                                                                    "data": {
+                                                                                                        "value0": {},
+                                                                                                        "constraints_": 56
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "polymorphic_id": 3,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483740,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "440F81CF-6E4E-4C32-99C0-92A84869D141"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 1720.0,
+                                                                                                    "value1": 620.0
+                                                                                                }
+                                                                                            },
+                                                                                            "name_": "Run Animation",
+                                                                                            "action_": {
+                                                                                                "polymorphic_id": 8,
+                                                                                                "ptr_wrapper": {
+                                                                                                    "valid": 1,
+                                                                                                    "data": {
+                                                                                                        "value0": {},
+                                                                                                        "animatorSetParamNumber_": 7
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "polymorphic_id": 3,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483741,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "6BB7FF53-3424-4108-984B-CCC9E8CAD583"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 1720.0,
+                                                                                                    "value1": 690.0
+                                                                                                }
+                                                                                            },
+                                                                                            "name_": "Evacuate",
+                                                                                            "action_": {
+                                                                                                "polymorphic_id": 13,
+                                                                                                "ptr_wrapper": {
+                                                                                                    "valid": 1,
+                                                                                                    "data": {
+                                                                                                        "value0": {},
+                                                                                                        "moveRoute_": {
+                                                                                                            "value0": {
+                                                                                                                "polymorphic_id": 1073741824,
+                                                                                                                "ptr_wrapper": {
+                                                                                                                    "id": 2147483742,
+                                                                                                                    "data": {
+                                                                                                                        "value0": {
+                                                                                                                            "value_": "F98F8342-CC0B-412C-8A0E-3465FDC6C158"
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "moveSpeed_": 30.0,
+                                                                                                        "turnRotateSpeed_": 10.0,
+                                                                                                        "arriveDistance_": 10.0
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "polymorphic_id": 3,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483743,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "F130D081-F1EF-486F-8E98-5CCC6F70BD75"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 1720.0,
+                                                                                                    "value1": 760.0
+                                                                                                }
+                                                                                            },
+                                                                                            "name_": "Hide Self",
+                                                                                            "action_": {
+                                                                                                "polymorphic_id": 6,
+                                                                                                "ptr_wrapper": {
+                                                                                                    "valid": 1,
+                                                                                                    "data": {
+                                                                                                        "value0": {},
+                                                                                                        "enableGameObject_": {
+                                                                                                            "value0": {
+                                                                                                                "polymorphic_id": 1073741824,
+                                                                                                                "ptr_wrapper": {
+                                                                                                                    "id": 2147483744,
+                                                                                                                    "data": {
+                                                                                                                        "value0": {
+                                                                                                                            "value_": "275F2AB2-1671-4B48-89D8-B8C2A8C7297D"
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "isEnable_": false
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "polymorphic_id": 3,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483745,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "1E54E3CB-A05D-41EC-8F13-C544B1C3E964"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 1720.0,
+                                                                                                    "value1": 830.0
+                                                                                                }
+                                                                                            },
+                                                                                            "name_": "State To 8",
+                                                                                            "action_": {
+                                                                                                "polymorphic_id": 11,
+                                                                                                "ptr_wrapper": {
+                                                                                                    "valid": 1,
+                                                                                                    "data": {
+                                                                                                        "value0": {},
+                                                                                                        "keyName_": "State",
+                                                                                                        "value_": 8
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "polymorphic_id": 2,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483746,
+                                                                        "data": {
+                                                                            "value0": {
+                                                                                "value0": {},
+                                                                                "guid_": {
+                                                                                    "value_": "8A817DBC-EBEA-4859-AB56-2901FE8C0269"
+                                                                                },
+                                                                                "position_": {
+                                                                                    "value0": 1880.0,
+                                                                                    "value1": 420.0
+                                                                                }
+                                                                            },
+                                                                            "children_": [
+                                                                                {
+                                                                                    "polymorphic_id": 3,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483747,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "720E1399-1BE6-4336-A8A2-63891B973969"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 1880.0,
+                                                                                                    "value1": 490.0
+                                                                                                }
+                                                                                            },
+                                                                                            "name_": "Set ZeroVelocity",
+                                                                                            "action_": {
+                                                                                                "polymorphic_id": 20,
+                                                                                                "ptr_wrapper": {
+                                                                                                    "valid": 1,
+                                                                                                    "data": {
+                                                                                                        "value0": {},
+                                                                                                        "setVelocity_": {
+                                                                                                            "value0": 0.0,
+                                                                                                            "value1": 0.0,
+                                                                                                            "value2": 0.0
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "polymorphic_id": 3,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 2147483748,
+                                                                                        "data": {
+                                                                                            "value0": {
+                                                                                                "value0": {},
+                                                                                                "guid_": {
+                                                                                                    "value_": "F6F0EE77-18F4-4DF3-AAA6-206513A1AA13"
+                                                                                                },
+                                                                                                "position_": {
+                                                                                                    "value0": 1880.0,
+                                                                                                    "value1": 560.0
+                                                                                                }
+                                                                                            },
+                                                                                            "name_": "Wave Animation",
+                                                                                            "action_": {
+                                                                                                "polymorphic_id": 8,
+                                                                                                "ptr_wrapper": {
+                                                                                                    "valid": 1,
+                                                                                                    "data": {
+                                                                                                        "value0": {},
+                                                                                                        "animatorSetParamNumber_": 6
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
                                 }
                             ]
                         }
@@ -1834,10 +2564,10 @@
             "data": {
                 "value0": 1,
                 "value1": {
-                    "polymorphic_id": 2147483669,
+                    "polymorphic_id": 2147483670,
                     "polymorphic_name": "NanamiEngine::Module::AnimationTree::AnimationParameter<int>",
                     "ptr_wrapper": {
-                        "id": 2147483721,
+                        "id": 2147483749,
                         "data": {
                             "cereal_class_version": 0,
                             "value0": {

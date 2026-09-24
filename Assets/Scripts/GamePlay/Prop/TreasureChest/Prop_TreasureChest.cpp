@@ -12,12 +12,6 @@
 
 namespace GamePlay::Prop
 {
-    namespace
-    {
-        /** 揺れで跳ねる高さ (ローカル) */
-        constexpr float SHAKE_HOP = 0.12f;
-    }
-
     void TreasureChest::OnStart()
     {
         if (const auto icon = chatIcon_.get())
@@ -61,7 +55,7 @@ namespace GamePlay::Prop
 
         // NOTE: 箱の底 (ルート原点) を中心に左右へ傾けるので、本体とフタを同じ回転で動かす
         const glm::quat tilt = glm::angleAxis(glm::radians(shakeAngle_deg_ * envelope * wave), glm::vec3(0.0f, 0.0f, 1.0f));
-        const glm::vec3 hop  = glm::vec3(0.0f, SHAKE_HOP * envelope * std::abs(wave), 0.0f);
+        const glm::vec3 hop  = glm::vec3(0.0f, shakeHop_ * envelope * std::abs(wave), 0.0f);
 
         const auto apply = [&](const std::shared_ptr<GameObject::IGameObject>& target, const std::optional<ClosedPose>& closed)
         {
@@ -162,6 +156,7 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("shakeDuration_secs_", shakeDuration_secs_);
         ImGuiHelper::OnDrawInputField("shakeAngle_deg_", shakeAngle_deg_);
         ImGuiHelper::OnDrawInputField("shakeFrequency_hz_", shakeFrequency_hz_);
+        ImGuiHelper::OnDrawInputField("shakeHop_", shakeHop_);
         ImGui::Text("opened: %s  spilled: %s", isOpened_ ? "true" : "false", isSpilled_ ? "true" : "false");
     }
 }

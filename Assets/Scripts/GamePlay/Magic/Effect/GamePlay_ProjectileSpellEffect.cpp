@@ -12,12 +12,6 @@
 
 namespace GamePlay::Magic
 {
-    namespace
-    {
-        /** 狙った点を通り過ぎても少しは飛ばし、ロックオン対象の手前で消えないようにする */
-        constexpr float PROJECTILE_SPELL_LIFETIME_MARGIN = 1.2f;
-    }
-
     GameCore::Magic::MagicCastTarget ProjectileSpellEffect::Aim(const GameCore::Magic::IMagicCaster& caster) const
     {
         GameCore::Magic::MagicCastTarget target;
@@ -46,7 +40,7 @@ namespace GamePlay::Magic
         magicProjectile->Launch(caster.CasterObject(),
                                 ScaledPower(power_, target.powerRate),
                                 direction * speed_,
-                                flightDistance / speed_ * PROJECTILE_SPELL_LIFETIME_MARGIN);
+                                flightDistance / speed_ * lifetimeMargin_);
     }
 
     void ProjectileSpellEffect::OnDrawGui()
@@ -55,6 +49,7 @@ namespace GamePlay::Magic
         ImGuiHelper::OnDrawInputField("power_", power_);
         ImGuiHelper::OnDrawInputField("speed_", speed_);
         ImGuiHelper::OnDrawInputField("range_", range_);
+        ImGuiHelper::OnDrawInputField("lifetimeMargin_", lifetimeMargin_);
     }
 }
 

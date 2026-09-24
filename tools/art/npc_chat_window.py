@@ -1,6 +1,11 @@
 """NPC 会話ウィンドウのデザイン案を実画面に合成する。
 
-    python tools/art/npc_chat_window.py --shot <screenshot.png> --out-dir <dir>
+    python tools/art/npc_chat_window.py --shot <screenshot.png> --out-dir <dir>              # 3案のモック
+    python tools/art/npc_chat_window.py --emit [--preview --shot <png> --out-dir <dir>]     # 案3 の書き出し
+    python tools/art/npc_chat_window_prefab.py                                              # ChattingUiScene を組み直す
+
+案3「黒い板」に決定 (2026-09-24)。--emit は Assets/Art/UI/NpcChat/ に板と名札を書き出し、
+--preview は prefab と同じ LAYOUT から描き直して実装とのずれを確かめる。
 
 いまの会話ウィンドウは「半透明の肌色パネル + 紫の発光枠」で、甲板や空が透けて文字が埋もれる。
 文字も細く小さく、名前と台詞の区別がない。3案とも次の点を直す:
@@ -23,8 +28,8 @@ from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from character_select import (  # noqa: E402
-    BODY_FONT, INK, INK_FADE, REPO_ROOT, SCREEN_H, SCREEN_W, STAMP_RED,
-    contact_sheet, drop_shadow, font, grid, nail, parchment, paste, paste_tilted, rgba, text, wood_board,
+    BODY_FONT, INK, INK_FADE, REPO_ROOT, SCREEN_H, SCREEN_W,
+    contact_sheet, drop_shadow, font, grid, nail, parchment, paste, paste_tilted, text, wood_board, write_sprite,
 )
 
 NAME_FONT = REPO_ROOT / 'Assets' / 'Art' / 'Font' / 'KaiseiDecol-Bold.ttf'
@@ -34,6 +39,26 @@ LINES = ['気をつけなよ。', '空から来るものは、待ってくれな
 PAGE, PAGES = 1, 3          # いま何番目の台詞か / 台詞の数
 
 OLD_REGION = (326, 722, 1510, 992)   # 旧ウィンドウ(枠の光まで含む)
+
+EMIT_DIR = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'NpcChat'
+NAIL_SPRITE = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'CharacterSelect' / 'Nail.png'
+
+# 案3 の配置 (1920x1080 の画面 px)。ImageRenderer は中心、TextRenderer は左上 (中央揃えなら上端の中央) が座標。
+# 台詞は最長で 4行 x 21字 (2026-09-24 の .npcChat 全件) なので、38px なら 4行でも板に収まる
+BOARD_W, BOARD_H = 1150, 216
+SLIP_W, SLIP_H = 300, 64       # 名前は 7字まで (32px x 7 = 224) を想定した固定幅
+SLIP_ANGLE = -2.0
+LAYOUT = {
+    'board': (920, 868),
+    'body': ((429, 798), 38),
+    'slip': (543, 756),
+    'name': ((543, 740), 32),
+    'nail': (407, 734),
+    'pages': ((1451, 932), 22),   # 右揃え
+}
+BODY_COLOR = (255, 255, 255)        # .npcChat の textColor_ (白) がそのまま使われる。モックの生成りの代わり
+NAME_COLOR = INK
+PAGE_COLOR = (226, 188, 118)
 
 
 # ---------------------------------------------------------------- 実画面の下ごしらえ
@@ -168,17 +193,70 @@ def mock_board(base):
     return im
 
 
+# ---------------------------------------------------------------- 書き出し (案3)
+def with_shadow(part, angle=0.0):
+    """影ごと 1 枚に焼く。ImageRenderer は中心で置くので、部品が画像の中心に来るようにする"""
+    sh = drop_shadow(part)
+    pad = (sh.width - part.width) // 2
+    out = Image.new('RGBA', sh.size, (0, 0, 0, 0))
+    out.alpha_composite(sh)
+    out.alpha_composite(part, (pad, pad))
+    return out.rotate(angle, resample=Image.BICUBIC, expand=True) if angle else out
+
+
+def emit_sprites():
+    EMIT_DIR.mkdir(parents=True, exist_ok=True)
+    print(f'emit -> {EMIT_DIR}')
+    write_sprite(EMIT_DIR, 'Chat_Board', with_shadow(dark_board(BOARD_W, BOARD_H)))
+    write_sprite(EMIT_DIR, 'Chat_NameSlip', with_shadow(parchment(SLIP_W, SLIP_H, 433, aged=0.18, ragged=7.0),
+                                                        SLIP_ANGLE))
+
+
+def preview(base):
+    """prefab と同じ LAYOUT で、書き出したスプライトとエンジンの文字の置き方を真似て描く"""
+    im = base.copy()
+
+    def put(sprite_path, center):
+        sp = Image.open(sprite_path).convert('RGBA')
+        paste(im, sp, center[0] - sp.width / 2, center[1] - sp.height / 2)
+
+    put(EMIT_DIR / 'Chat_Board.png', LAYOUT['board'])
+    put(EMIT_DIR / 'Chat_NameSlip.png', LAYOUT['slip'])
+    put(NAIL_SPRITE, LAYOUT['nail'])
+    (x, y), px = LAYOUT['body']
+    for i, line in enumerate(LINES):
+        text(im, (x, y + i * px), line, px, (*BODY_COLOR, 255), BODY_FONT)
+    (x, y), px = LAYOUT['name']
+    text(im, (x, y), NPC_NAME, px, (*NAME_COLOR, 255), BODY_FONT, anchor='ma')
+    (x, y), px = LAYOUT['pages']
+    marks = ''.join('●' if i < PAGE else '○' for i in range(PAGES))
+    text(im, (x, y), marks, px, (*PAGE_COLOR, 255), BODY_FONT, anchor='ra')
+    return im
+
+
 # ---------------------------------------------------------------- main
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--shot', required=True)
-    ap.add_argument('--out-dir', required=True)
+    ap.add_argument('--shot', default='')
+    ap.add_argument('--out-dir', default='')
+    ap.add_argument('--emit', action='store_true')
+    ap.add_argument('--preview', action='store_true')
     args = ap.parse_args()
+    if args.emit:
+        emit_sprites()
+        if not args.preview:
+            return
+    if not args.shot or not args.out_dir:
+        ap.error('--shot and --out-dir are required for mocks / --preview')
     out = Path(args.out_dir)
     out.mkdir(parents=True, exist_ok=True)
 
     shot = Image.open(args.shot).convert('RGBA').resize((SCREEN_W, SCREEN_H), Image.LANCZOS)
     clean = remove_old_window(shot)
+    if args.preview:
+        preview(clean).convert('RGB').save(out / 'chat_preview.png')
+        print(f'wrote {out / "chat_preview.png"}')
+        return
     mocks = [
         ('0_current', shot, '現状'),
         ('1_note', mock_note(clean), '案1  書付 — 羊皮紙の帯 + 木の名札'),

@@ -1,5 +1,5 @@
 {
-  "generated_from": "6b1f1d7a4b1b9cd0ef5301c1deeee7a53d1d0928",
+  "generated_from": "fc0faef33751e3c99df0b27e0d6fdad99ff0ae63",
   "actions": {
     "Camera::EnablePurposeCamera": {
       "class": "PurposeCamera",
@@ -171,7 +171,7 @@
       "class": "MoveForRoute",
       "fqn": "GameCore::Npc::Friendly::Behaviour::Action::MoveForRoute",
       "leaf": "MoveForRoute",
-      "version": 0,
+      "version": 1,
       "header": "Assets/Scripts/Core/Game/Npc/Friendly/Behaviour/Action/Content/NpcStatus/RigidBody/MoveForRoute/Friendly_Behaviour_Action_MoveForRoute.h",
       "params": [
         {
@@ -190,6 +190,12 @@
         {
           "key": "turnRotateSpeed_",
           "member": "turnRotateSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "arriveDistance_",
+          "member": "arriveDistance_",
           "named": true,
           "shape": "float"
         }

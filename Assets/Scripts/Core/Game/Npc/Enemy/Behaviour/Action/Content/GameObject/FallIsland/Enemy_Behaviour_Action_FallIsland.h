@@ -22,6 +22,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(0)]] float fallAngleDeg_ = 30.0f;               // 落ちながらさらに傾く角度
         [[serialize(0)]] float fallDistance_ = 900.0f;
         [[serialize(0)]] float fallSecs_     = 4.5f;
+        [[serialize(1)]] float tiltSinkDistance_ = 6.0f;            // 傾くあいだに沈む量
 
     public:
         template<class Archive>
@@ -36,6 +37,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(CEREAL_NVP(fallAngleDeg_));
             archive(CEREAL_NVP(fallDistance_));
             archive(CEREAL_NVP(fallSecs_));
+            archive(CEREAL_NVP(tiltSinkDistance_));
         }
 
         template<class Archive>
@@ -50,8 +52,11 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             if (version >= 0) archive(CEREAL_NVP(fallAngleDeg_));
             if (version >= 0) archive(CEREAL_NVP(fallDistance_));
             if (version >= 0) archive(CEREAL_NVP(fallSecs_));
+            if (version >= 1) archive(CEREAL_NVP(tiltSinkDistance_));
         }
     };
 
     REGISTER_ENEMY_ACTION_WITH_NAME(FallIsland, "GameObject::FallIsland")
 }
+
+CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::FallIsland, 1)

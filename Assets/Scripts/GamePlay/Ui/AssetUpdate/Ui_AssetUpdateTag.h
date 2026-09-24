@@ -146,6 +146,8 @@ namespace GamePlay::Ui
         [[serialize(0)]] int   errorLineUnits_       = 34;
         [[serialize(0)]] int   errorMaxLines_        = 3;
         [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
+        // 降りるときに行き過ぎてから戻る量 (OutBack)
+        [[serialize(2)]] float dropOvershoot_ = 1.4f;
 
         bool  isStarted_ = false;
         Phase phase_ = Phase::Hidden;
@@ -216,6 +218,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(errorLineUnits_));
             archive(CEREAL_NVP(errorMaxLines_));
             archive(CEREAL_NVP(uiSounds_));
+            archive(CEREAL_NVP(dropOvershoot_));
         }
 
         template<typename Archive>
@@ -263,9 +266,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(errorLineUnits_));
             if (version >= 0) archive(CEREAL_NVP(errorMaxLines_));
             if (version >= 1) archive(CEREAL_NVP(uiSounds_));
+            if (version >= 2) archive(CEREAL_NVP(dropOvershoot_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::AssetUpdateTagUi, 1);
+CEREAL_CLASS_VERSION(GamePlay::Ui::AssetUpdateTagUi, 2);

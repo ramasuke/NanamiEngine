@@ -15,8 +15,6 @@ namespace GameCore::Npc::Enemy::Behaviour
     {
         // 前回の Tick からこれ以上空いたら、途中で打ち切られたとみなして新しく始める
         constexpr float INTERRUPT_GAP_SECS = 0.2f;
-        // その場旋回アニメをやめる角度(faceToleranceDeg_ がこれより大きければそちら)
-        constexpr float TURN_IN_PLACE_END_DEG = 2.0f;
     }
 
     TickStatus Action::RecoverFacingPlayer::DoTick(const TickContext& context)
@@ -79,7 +77,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         rigidBody.SetLinearVelocity(velocity);
 
         // その場旋回も一度始めたらほぼ向き終わるまで同じ側を維持する
-        if (!hasAngle || isWalkTurning_ || absAngle <= (std::max)(faceToleranceDeg_, TURN_IN_PLACE_END_DEG))
+        if (!hasAngle || isWalkTurning_ || absAngle <= (std::max)(faceToleranceDeg_, turnInPlaceEndDeg_))
             turnInPlaceSign_ = 0;
         else if (turnInPlaceSign_ == 0 && absAngle > turnInPlaceAngle_)
             turnInPlaceSign_ = angle > 0.0f ? 1 : -1;
@@ -121,6 +119,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("turnLeftAnimationNumber_", turnLeftAnimationNumber_);
         ImGuiHelper::OnDrawInputField("turnRightAnimationNumber_", turnRightAnimationNumber_);
         ImGuiHelper::OnDrawInputField("turnInPlaceAngle_", turnInPlaceAngle_);
+        ImGuiHelper::OnDrawInputField("turnInPlaceEndDeg_", turnInPlaceEndDeg_);
     }
 }
 

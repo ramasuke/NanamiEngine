@@ -53,6 +53,8 @@ namespace GamePlay::Prop
         [[serialize(2)]] float shakeDuration_secs_ = 0.55f;
         [[serialize(2)]] float shakeAngle_deg_     = 5.0f;
         [[serialize(2)]] float shakeFrequency_hz_  = 9.0f;
+        // 揺れで跳ねる高さ (ローカル)
+        [[serialize(3)]] float shakeHop_           = 0.12f;
 
         struct ClosedPose
         {
@@ -88,6 +90,7 @@ namespace GamePlay::Prop
             archive(CEREAL_NVP(shakeDuration_secs_));
             archive(CEREAL_NVP(shakeAngle_deg_));
             archive(CEREAL_NVP(shakeFrequency_hz_));
+            archive(CEREAL_NVP(shakeHop_));
         }
 
         template<class Archive>
@@ -107,9 +110,10 @@ namespace GamePlay::Prop
             if (version >= 2) archive(CEREAL_NVP(shakeDuration_secs_));
             if (version >= 2) archive(CEREAL_NVP(shakeAngle_deg_));
             if (version >= 2) archive(CEREAL_NVP(shakeFrequency_hz_));
+            if (version >= 3) archive(CEREAL_NVP(shakeHop_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Prop::TreasureChest, 2);
+CEREAL_CLASS_VERSION(GamePlay::Prop::TreasureChest, 3);

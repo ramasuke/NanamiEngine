@@ -31,6 +31,9 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(0)]] int   animationNumber_ = -1;
         [[serialize(1)]] float radiusShrinkPerSec_ = 0.0f;
         [[serialize(1)]] float minRadius_          = 0.0f;
+        // NOTE: 実際の移動量が期待値のこの割合を下回った状態が stuck_secs_ 続いたら詰まりとみなす
+        [[serialize(2)]] float stuckProgressRate_  = 0.2f;
+        [[serialize(2)]] float stuckThreshold_secs_ = 0.3f;
 
         bool         isRunning_      = false;
         float        direction_      = 1.0f;
@@ -56,6 +59,8 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(CEREAL_NVP(animationNumber_));
             archive(CEREAL_NVP(radiusShrinkPerSec_));
             archive(CEREAL_NVP(minRadius_));
+            archive(CEREAL_NVP(stuckProgressRate_));
+            archive(CEREAL_NVP(stuckThreshold_secs_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
@@ -70,10 +75,12 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             if (version >= 0) archive(CEREAL_NVP(animationNumber_));
             if (version >= 1) archive(CEREAL_NVP(radiusShrinkPerSec_));
             if (version >= 1) archive(CEREAL_NVP(minRadius_));
+            if (version >= 2) archive(CEREAL_NVP(stuckProgressRate_));
+            if (version >= 2) archive(CEREAL_NVP(stuckThreshold_secs_));
         }
     };
 
     REGISTER_ENEMY_ACTION_WITH_NAME(CircleAroundPlayer, "Basic::CircleAroundPlayer")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::CircleAroundPlayer, 1)
+CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::CircleAroundPlayer, 2)

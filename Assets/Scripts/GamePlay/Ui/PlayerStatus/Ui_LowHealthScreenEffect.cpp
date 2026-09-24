@@ -11,8 +11,6 @@ namespace GamePlay::Ui
     namespace
     {
         constexpr float MIN_VISIBLE_DANGER = 0.01f;
-        constexpr float PULSE_DECAY_SECS   = 0.09f;
-        constexpr float DUB_PULSE_STRENGTH = 0.6f;
     }
 
     void LowHealthScreenEffect::Initialize(const GameCore::PlayerAvatar::IPlayerAvatarStatus& model)
@@ -127,9 +125,10 @@ namespace GamePlay::Ui
 
     float LowHealthScreenEffect::CalcPulse(const float sinceBeat_secs) const
     {
-        float pulse = std::exp(-sinceBeat_secs / PULSE_DECAY_SECS);
+        const float decay_secs = (std::max)(pulseDecay_secs_, 0.001f);
+        float pulse = std::exp(-sinceBeat_secs / decay_secs);
         if (sinceBeat_secs >= dubDelay_secs_)
-            pulse += DUB_PULSE_STRENGTH * std::exp(-(sinceBeat_secs - dubDelay_secs_) / PULSE_DECAY_SECS);
+            pulse += dubPulseStrength_ * std::exp(-(sinceBeat_secs - dubDelay_secs_) / decay_secs);
         return (std::min)(pulse, 1.0f);
     }
 
@@ -151,6 +150,8 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("heartbeatSound_",     heartbeatSound_);
         ImGuiHelper::OnDrawInputField("heartbeatMinVolume_", heartbeatMinVolume_);
         ImGuiHelper::OnDrawInputField("heartbeatMaxVolume_", heartbeatMaxVolume_);
+        ImGuiHelper::OnDrawInputField("pulseDecay_secs_",    pulseDecay_secs_);
+        ImGuiHelper::OnDrawInputField("dubPulseStrength_",   dubPulseStrength_);
 
         ImGui::Separator();
         ImGui::SliderFloat("debugOverrideHealthRate_ (-1 = off)", &debugOverrideHealthRate_, -1.0f, 1.0f);

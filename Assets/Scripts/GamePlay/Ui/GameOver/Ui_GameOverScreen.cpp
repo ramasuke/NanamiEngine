@@ -15,9 +15,6 @@ namespace GamePlay::Ui
         using LibCore::Tween::Ease;
         using LibCore::Tween::Ms;
 
-        // 石版が浮き上がり切るまでの割合。残りで落ちて着地する
-        constexpr float GAME_OVER_SLAB_PEAK_RATE = 0.65f;
-
         /** @brief delaySecs だけ 0 のまま待ってから、durationSecs で 1 まで一定の速さで上がる */
         tweeny::tween<float> GameOverDelayedRate(const float delaySecs, const float durationSecs)
         {
@@ -133,8 +130,8 @@ namespace GamePlay::Ui
 
         // 下から勢いよく持ち上がって少し浮き、加速しながら落ちて止まる
         slabOffsetTween_.Play(tweeny::from(slabRiseDistance_px_).to(slabRiseDistance_px_).during(Ms(slabDelaySecs_))
-            .to(-slabOvershoot_px_).during(Ms(slabRiseSecs_ * GAME_OVER_SLAB_PEAK_RATE)).via(Ease(EaseType::OutCubic))
-            .to(0.0f).during(Ms(slabRiseSecs_ * (1.0f - GAME_OVER_SLAB_PEAK_RATE))).via(Ease(EaseType::InQuad)));
+            .to(-slabOvershoot_px_).during(Ms(slabRiseSecs_ * slabPeakRate_)).via(Ease(EaseType::OutCubic))
+            .to(0.0f).during(Ms(slabRiseSecs_ * (1.0f - slabPeakRate_))).via(Ease(EaseType::InQuad)));
         slabAlphaTween_.Play(GameOverDelayedRate(slabDelaySecs_, slabRiseSecs_ / 3.0f));
         dirtAlphaTween_.Play(GameOverDelayedRate(slabDelaySecs_ + slabRiseSecs_, dirtFadeSecs_));
 
@@ -312,6 +309,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("inputGuardSecs_", inputGuardSecs_);
         ImGuiHelper::OnDrawInputField("curtainCloseSecs_", curtainCloseSecs_);
         ImGuiHelper::OnDrawInputField("curtainOpenSecs_", curtainOpenSecs_);
+        ImGuiHelper::OnDrawInputField("slabPeakRate_", slabPeakRate_);
 
         if (ImGui::Button("Show (preview)"))
             Show();

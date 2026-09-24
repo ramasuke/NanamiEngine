@@ -4,6 +4,8 @@
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "Packages/Cinemachine/VirtualCamera/CineMachineVirtualCamera.h"
 #include "../../../Context/Main_SceneContextBase.h"
+#include "../../../../../../../GamePlay/Prop/FloatingStone/Prop_FloatingStone.h"
+#include "../../../../../../../GamePlay/Prop/ReturningIsland/Prop_ReturningIsland.h"
 
 namespace GameCore::Scene
 {
@@ -14,32 +16,15 @@ namespace GameCore::Scene
 
         [[nodiscard]] const std::weak_ptr<Asset::SoundFile>& BGM() const { return bgm_.get(); }
 
-        /** 島の底に戻った緑の浮遊石(子にオーラ)。シーン上の位置がはまった位置 */
-        [[nodiscard]] std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> GreenStone() const { return greenStone_.get(); }
-        /** 戻ってくる石を LookAt で追うカメラ */
-        [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> StoneCamera() const { return stoneCamera_.get(); }
-        [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> StoneDockParticle  () const { return stoneDockParticle_  .get(); }
-        [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> StoneFlightParticle() const { return stoneFlightParticle_.get(); }
-
+        /** 島の底に戻った緑の浮遊石。シーン上の位置がはまった位置 */
+        [[nodiscard]] std::shared_ptr<GamePlay::Prop::FloatingStone> GreenStone() const { return greenStone_.get(); }
         /** 草原の後に戻ってくる噴水の島。シーン上の位置が戻った位置 */
-        [[nodiscard]] std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> FountainIsland() const { return fountainIsland_.get(); }
-        /** 噴水の島へ上る階段。子が1段ずつの足場 */
-        [[nodiscard]] std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> FountainStairs() const { return fountainStairs_.get(); }
-        /** 戻ってくる島を LookAt で追うカメラ */
-        [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> FountainCamera() const { return fountainCamera_.get(); }
-        /** カメラが見る島の子 */
-        [[nodiscard]] std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> FountainFocus() const { return fountainFocus_.get(); }
+        [[nodiscard]] std::shared_ptr<GamePlay::Prop::ReturningIsland> FountainIsland() const { return fountainIsland_.get(); }
         
     private:
         [[serialize(1)]] FIELD(Asset::SoundFile) bgm_;
-        [[serialize(2)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) greenStone_;
-        [[serialize(2)]] FIELD(CineMachine::CineMachineVirtualCamera)         stoneCamera_;
-        [[serialize(2)]] FIELD(Asset::PrefabGameObjectFile)                   stoneDockParticle_;
-        [[serialize(2)]] FIELD(Asset::PrefabGameObjectFile)                   stoneFlightParticle_;
-        [[serialize(3)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) fountainIsland_;
-        [[serialize(3)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) fountainStairs_;
-        [[serialize(3)]] FIELD(CineMachine::CineMachineVirtualCamera)         fountainCamera_;
-        [[serialize(3)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) fountainFocus_;
+        [[serialize(5)]] FIELD(GamePlay::Prop::FloatingStone)   greenStone_;
+        [[serialize(5)]] FIELD(GamePlay::Prop::ReturningIsland) fountainIsland_;
         
 #pragma region Serialization Function
 public:
@@ -50,32 +35,47 @@ void save(Archive& archive, const std::uint32_t version) const {
     archive(cereal::base_class<SceneContextBase>(this));
     archive(CEREAL_NVP(bgm_));
     archive(CEREAL_NVP(greenStone_));
-    archive(CEREAL_NVP(stoneCamera_));
-    archive(CEREAL_NVP(stoneDockParticle_));
-    archive(CEREAL_NVP(stoneFlightParticle_));
     archive(CEREAL_NVP(fountainIsland_));
-    archive(CEREAL_NVP(fountainStairs_));
-    archive(CEREAL_NVP(fountainCamera_));
-    archive(CEREAL_NVP(fountainFocus_));
 }
 
 template<class Archive>
 void load(Archive& archive, const std::uint32_t version) {
     archive(cereal::base_class<SceneContextBase>(this));
     if (version >= 1) archive(CEREAL_NVP(bgm_));
-    if (version >= 2)
+    // v2〜v4 は石・島・カメラ・パーティクル・尺を別々に持っていた。今は石の FloatingStone と島の ReturningIsland が持つので読み捨てる
+    if (version >= 2 && version <= 4)
+    {
+        [[serialize(2)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) oldStone;
+        [[serialize(2)]] FIELD(CineMachine::CineMachineVirtualCamera)         oldStoneCamera;
+        [[serialize(2)]] FIELD(Asset::PrefabGameObjectFile)                   oldDockParticle;
+        [[serialize(2)]] FIELD(Asset::PrefabGameObjectFile)                   oldFlightParticle;
+        archive(cereal::make_nvp("greenStone_",          oldStone));
+        archive(cereal::make_nvp("stoneCamera_",         oldStoneCamera));
+        archive(cereal::make_nvp("stoneDockParticle_",   oldDockParticle));
+        archive(cereal::make_nvp("stoneFlightParticle_", oldFlightParticle));
+    }
+    if (version >= 3 && version <= 4)
+    {
+        [[serialize(3)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) oldIsland;
+        [[serialize(3)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) oldStairs;
+        [[serialize(3)]] FIELD(CineMachine::CineMachineVirtualCamera)         oldIslandCamera;
+        [[serialize(3)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) oldFocus;
+        archive(cereal::make_nvp("fountainIsland_", oldIsland));
+        archive(cereal::make_nvp("fountainStairs_", oldStairs));
+        archive(cereal::make_nvp("fountainCamera_", oldIslandCamera));
+        archive(cereal::make_nvp("fountainFocus_",  oldFocus));
+    }
+    if (version == 4)
+    {
+        [[serialize(4)]] GamePlay::Prop::ReturnShot       oldStoneShot;
+        [[serialize(4)]] GamePlay::Prop::IslandReturnShot oldIslandShot;
+        archive(cereal::make_nvp("stoneReturnShot_",    oldStoneShot));
+        archive(cereal::make_nvp("fountainReturnShot_", oldIslandShot));
+    }
+    if (version >= 5)
     {
         archive(CEREAL_NVP(greenStone_));
-        archive(CEREAL_NVP(stoneCamera_));
-        archive(CEREAL_NVP(stoneDockParticle_));
-        archive(CEREAL_NVP(stoneFlightParticle_));
-    }
-    if (version >= 3)
-    {
         archive(CEREAL_NVP(fountainIsland_));
-        archive(CEREAL_NVP(fountainStairs_));
-        archive(CEREAL_NVP(fountainCamera_));
-        archive(CEREAL_NVP(fountainFocus_));
     }
 }
 #pragma endregion
@@ -83,5 +83,5 @@ void load(Archive& archive, const std::uint32_t version) {
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::MainIslandSceneContext, 3);
+CEREAL_CLASS_VERSION(GameCore::Scene::MainIslandSceneContext, 5);
 #pragma endregion

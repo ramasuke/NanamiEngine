@@ -43,6 +43,8 @@ namespace GamePlay::Pickup
         [[serialize(0)]] float pickupDelay_secs_   = 0.6f;
         [[serialize(0)]] FIELD(Asset::SoundFile) pickupSound_;
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) pickupParticle_;
+        // 島の外へ落ちた拾い物を落とし続けないよう、出た高さからこれだけ落ちたら消す
+        [[serialize(1)]] float fallOutDepth_ = 500.0f;
 
         std::optional<float> originHeight_;
         float elapsed_secs_ = 0.0f;
@@ -62,6 +64,7 @@ namespace GamePlay::Pickup
             archive(CEREAL_NVP(pickupDelay_secs_));
             archive(CEREAL_NVP(pickupSound_));
             archive(CEREAL_NVP(pickupParticle_));
+            archive(CEREAL_NVP(fallOutDepth_));
         }
 
         template<class Archive>
@@ -74,9 +77,10 @@ namespace GamePlay::Pickup
             if (version >= 0) archive(CEREAL_NVP(pickupDelay_secs_));
             if (version >= 0) archive(CEREAL_NVP(pickupSound_));
             if (version >= 0) archive(CEREAL_NVP(pickupParticle_));
+            if (version >= 1) archive(CEREAL_NVP(fallOutDepth_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Pickup::PickupItemBase, 0);
+CEREAL_CLASS_VERSION(GamePlay::Pickup::PickupItemBase, 1);

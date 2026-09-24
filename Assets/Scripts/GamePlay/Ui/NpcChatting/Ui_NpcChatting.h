@@ -30,8 +30,12 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) textRenderer_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) npcNameTextBox_;
         [[serialize(2)]] FIELD(Asset::UiSoundBankData) uiSounds_;
+        // 台詞がいくつ続くかの印 (●●○)。1つだけの会話では出さない
+        [[serialize(3)]] FIELD(NanamiUi::TextRenderer) pageText_;
 
         mutable bool isDisplaying_ = false;
+
+        void ShowPage(size_t index, size_t count) const;
 
 #pragma region Serialization Function
     public:
@@ -43,6 +47,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(textRenderer_));
             archive(CEREAL_NVP(npcNameTextBox_));
             archive(CEREAL_NVP(uiSounds_));
+            archive(CEREAL_NVP(pageText_));
         }
 
         template<class Archive>
@@ -51,9 +56,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(textRenderer_));
             if (version >= 1) archive(CEREAL_NVP(npcNameTextBox_));
             if (version >= 2) archive(CEREAL_NVP(uiSounds_));
+            if (version >= 3) archive(CEREAL_NVP(pageText_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::NpcChatting, 2);
+CEREAL_CLASS_VERSION(GamePlay::Ui::NpcChatting, 3);

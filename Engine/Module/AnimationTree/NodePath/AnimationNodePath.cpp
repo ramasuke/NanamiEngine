@@ -60,7 +60,8 @@ void AnimationTree::AnimationNodePath::TryAddNextCurrentNodePath(
     if (fromNode_.lock() == nextNode_.lock())
         return;
     
-    if (fromNode_.lock()->GetAnimDuration_secs() - transitionDuration_secs_ < context.during_secs_)
+    // NOTE: 非ループのクリップは during == duration でクランプされるので、< だと遷移時間 0 の遷移が永遠に起きない
+    if (fromNode_.lock()->GetAnimDuration_secs() - transitionDuration_secs_ <= context.during_secs_)
     {
         if (isFirstBlendingAnimation_)
         {

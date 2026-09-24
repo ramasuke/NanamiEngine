@@ -14,9 +14,8 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
         FIELD(Asset::NpcWalkingRoute) moveRoute_;
         float moveSpeed_                = 0.0f;
         float turnRotateSpeed_          = 0.0f;
+        [[serialize(1)]] float arriveDistance_ = 10.0f;   // 経由点にこの距離まで近づいたら次へ
         int   currentRouteIndex_        = 0;
-
-        static constexpr float ARRIVE_THRESHOLD = 10.0f;
 
 #pragma region Serialization Function
     public:
@@ -27,6 +26,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
             archive(CEREAL_NVP(moveRoute_));
             archive(CEREAL_NVP(moveSpeed_));
             archive(CEREAL_NVP(turnRotateSpeed_));
+            archive(CEREAL_NVP(arriveDistance_));
         }
 
         template<class Archive>
@@ -35,6 +35,7 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
             if (version >= 0) archive(CEREAL_NVP(moveRoute_));
             if (version >= 0) archive(CEREAL_NVP(moveSpeed_));
             if (version >= 0) archive(CEREAL_NVP(turnRotateSpeed_));
+            if (version >= 1) archive(CEREAL_NVP(arriveDistance_));
         }
 #pragma endregion
     };
@@ -42,4 +43,4 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
     REGISTER_FRIENDLY_ACTION_WITH_NAME(MoveForRoute, "NpcStatus::RigidBody::MoveForRoute")
 }
 
-CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::MoveForRoute, 0)
+CEREAL_CLASS_VERSION(GameCore::Npc::Friendly::Behaviour::Action::MoveForRoute, 1)

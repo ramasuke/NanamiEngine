@@ -1,5 +1,5 @@
 {
-  "generated_from": "9bb5f85965332105b9cc016fb9c031c08af309dd",
+  "generated_from": "fc0faef33751e3c99df0b27e0d6fdad99ff0ae63",
   "components": {
     "CineMachine::Behaviour::NoiseCameraBehaviour": {
       "class": "NoiseCameraBehaviour",
@@ -778,7 +778,7 @@
       "class": "FriendlyNpcReaction",
       "fqn": "GamePlay::Npc::Friendly::FriendlyNpcReaction",
       "leaf": "FriendlyNpcReaction",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -877,6 +877,24 @@
         {
           "key": "shakeDuration_secs_",
           "member": "shakeDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "movingSpeedThreshold_",
+          "member": "movingSpeedThreshold_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "clipEndNormalizedTime_",
+          "member": "clipEndNormalizedTime_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "minReaction_secs_",
+          "member": "minReaction_secs_",
           "named": true,
           "shape": "float"
         }
@@ -1136,7 +1154,7 @@
       "class": "PlayerHitShakeReceiver",
       "fqn": "GamePlay::PlayerAvatar::PlayerHitShakeReceiver",
       "leaf": "PlayerHitShakeReceiver",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1147,7 +1165,14 @@
       ],
       "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/PlayerAvatar/HitShakeReceiver/PlayerHitShakeReceiver.h",
-      "params": []
+      "params": [
+        {
+          "key": "shakeFrequency_hz_",
+          "member": "shakeFrequency_hz_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
     },
     "GamePlay::PlayerAvatar::StatusPresenterBase": {
       "class": "StatusPresenterBase",
@@ -1664,6 +1689,59 @@
         }
       ]
     },
+    "GamePlay::Prop::FloatingStone": {
+      "class": "FloatingStone",
+      "fqn": "GamePlay::Prop::FloatingStone",
+      "leaf": "FloatingStone",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Prop/FloatingStone/Prop_FloatingStone.h",
+      "params": [
+        {
+          "key": "camera_",
+          "member": "camera_",
+          "named": true,
+          "shape": "field",
+          "type": "CineMachineVirtualCamera"
+        },
+        {
+          "key": "flightParticle_",
+          "member": "flightParticle_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "burstParticle_",
+          "member": "burstParticle_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "departShot_",
+          "member": "departShot_",
+          "named": true,
+          "shape": "unknown",
+          "type": "DepartShot"
+        },
+        {
+          "key": "returnShot_",
+          "member": "returnShot_",
+          "named": true,
+          "shape": "unknown",
+          "type": "ReturnShot"
+        }
+      ]
+    },
     "GamePlay::Prop::GrassRenderer": {
       "class": "GrassRenderer",
       "fqn": "GamePlay::Prop::GrassRenderer",
@@ -1996,11 +2074,57 @@
         }
       ]
     },
+    "GamePlay::Prop::ReturningIsland": {
+      "class": "ReturningIsland",
+      "fqn": "GamePlay::Prop::ReturningIsland",
+      "leaf": "ReturningIsland",
+      "version": 0,
+      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
+      "immediate_base": "ComponentBase",
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Prop/ReturningIsland/Prop_ReturningIsland.h",
+      "params": [
+        {
+          "key": "stairs_",
+          "member": "stairs_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "camera_",
+          "member": "camera_",
+          "named": true,
+          "shape": "field",
+          "type": "CineMachineVirtualCamera"
+        },
+        {
+          "key": "focus_",
+          "member": "focus_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "shot_",
+          "member": "shot_",
+          "named": true,
+          "shape": "unknown",
+          "type": "IslandReturnShot"
+        }
+      ]
+    },
     "GamePlay::Prop::TreasureChest": {
       "class": "TreasureChest",
       "fqn": "GamePlay::Prop::TreasureChest",
       "leaf": "TreasureChest",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -2095,6 +2219,12 @@
         {
           "key": "shakeFrequency_hz_",
           "member": "shakeFrequency_hz_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "shakeHop_",
+          "member": "shakeHop_",
           "named": true,
           "shape": "float"
         }
@@ -2266,7 +2396,7 @@
       "class": "AssetUpdateTagUi",
       "fqn": "GamePlay::Ui::AssetUpdateTagUi",
       "leaf": "AssetUpdateTagUi",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -2553,6 +2683,12 @@
           "named": true,
           "shape": "field",
           "type": "UiSoundBankData"
+        },
+        {
+          "key": "dropOvershoot_",
+          "member": "dropOvershoot_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -2560,7 +2696,7 @@
       "class": "BillBoardNpcChatIcon",
       "fqn": "GamePlay::Ui::BillBoardNpcChatIcon",
       "leaf": "BillBoardNpcChatIcon",
-      "version": 3,
+      "version": 4,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -2606,6 +2742,72 @@
           "named": true,
           "shape": "field",
           "type": "UiSoundBankData"
+        },
+        {
+          "key": "popDuration_secs_",
+          "member": "popDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "surpriseFloatAmplitude_",
+          "member": "surpriseFloatAmplitude_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "surpriseFloatSpeed_",
+          "member": "surpriseFloatSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "surpriseCycle_secs_",
+          "member": "surpriseCycle_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "surpriseSweepDuration_secs_",
+          "member": "surpriseSweepDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "surpriseTiltDuration_secs_",
+          "member": "surpriseTiltDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "surpriseTiltAngle_",
+          "member": "surpriseTiltAngle_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "chattableBounceAmplitude_",
+          "member": "chattableBounceAmplitude_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "chattableBounceSpeed_",
+          "member": "chattableBounceSpeed_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "chattingBreathScale_",
+          "member": "chattingBreathScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "chattingBreathPeriod_secs_",
+          "member": "chattingBreathPeriod_secs_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -2715,7 +2917,7 @@
       "class": "CannonCooldownGauge",
       "fqn": "GamePlay::Ui::CannonCooldownGauge",
       "leaf": "CannonCooldownGauge",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -3054,6 +3256,60 @@
           "named": true,
           "shape": "field",
           "type": "UiSoundBankData"
+        },
+        {
+          "key": "bombBrighten_secs_",
+          "member": "bombBrighten_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "wobbleSettle_secs_",
+          "member": "wobbleSettle_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "countFadeOut_secs_",
+          "member": "countFadeOut_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "countPopIn_secs_",
+          "member": "countPopIn_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "bombFadeIn_secs_",
+          "member": "bombFadeIn_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "launchShrinkRate_",
+          "member": "launchShrinkRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "recoilFrequency_",
+          "member": "recoilFrequency_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "recoilDamping_",
+          "member": "recoilDamping_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "emberStartAngle_deg_",
+          "member": "emberStartAngle_deg_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -5179,7 +5435,7 @@
       "class": "GameOverScreenUi",
       "fqn": "GamePlay::Ui::GameOverScreenUi",
       "leaf": "GameOverScreenUi",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -5362,6 +5618,12 @@
         {
           "key": "curtainOpenSecs_",
           "member": "curtainOpenSecs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "slabPeakRate_",
+          "member": "slabPeakRate_",
           "named": true,
           "shape": "float"
         }
@@ -5900,7 +6162,7 @@
       "class": "LoadingRouteMap",
       "fqn": "GamePlay::Ui::LoadingRouteMap",
       "leaf": "LoadingRouteMap",
-      "version": 3,
+      "version": 4,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -6157,6 +6419,42 @@
           "named": true,
           "shape": "field",
           "type": "UiSoundBankData"
+        },
+        {
+          "key": "trailStep_",
+          "member": "trailStep_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "shipBobHalf_secs_",
+          "member": "shipBobHalf_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "zoomSwayHalf_secs_",
+          "member": "zoomSwayHalf_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "panSwayXHalf_secs_",
+          "member": "panSwayXHalf_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "panSwayYHalf_secs_",
+          "member": "panSwayYHalf_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "panSwayPx_",
+          "member": "panSwayPx_",
+          "named": true,
+          "shape": "vec2"
         }
       ]
     },
@@ -6281,7 +6579,7 @@
       "class": "LockOnReticle",
       "fqn": "GamePlay::Ui::LockOnReticle",
       "leaf": "LockOnReticle",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -6398,6 +6696,30 @@
           "named": true,
           "shape": "field",
           "type": "UiSoundBankData"
+        },
+        {
+          "key": "candidateFade_secs_",
+          "member": "candidateFade_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "candidatePulsePeriod_secs_",
+          "member": "candidatePulsePeriod_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "lockedBreathPeriod_secs_",
+          "member": "lockedBreathPeriod_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "engageBracketAngle_rad_",
+          "member": "engageBracketAngle_rad_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -6405,7 +6727,7 @@
       "class": "LowHealthScreenEffect",
       "fqn": "GamePlay::Ui::LowHealthScreenEffect",
       "leaf": "LowHealthScreenEffect",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -6514,6 +6836,18 @@
           "member": "heartbeatMaxVolume_",
           "named": true,
           "shape": "int"
+        },
+        {
+          "key": "pulseDecay_secs_",
+          "member": "pulseDecay_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "dubPulseStrength_",
+          "member": "dubPulseStrength_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -6672,7 +7006,7 @@
       "class": "NpcChatting",
       "fqn": "GamePlay::Ui::NpcChatting",
       "leaf": "NpcChatting",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -6704,6 +7038,13 @@
           "named": true,
           "shape": "field",
           "type": "UiSoundBankData"
+        },
+        {
+          "key": "pageText_",
+          "member": "pageText_",
+          "named": true,
+          "shape": "field",
+          "type": "TextRenderer"
         }
       ]
     },
@@ -7290,7 +7631,7 @@
       "class": "ShopReceipt",
       "fqn": "GamePlay::Ui::ShopReceipt",
       "leaf": "ShopReceipt",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -7414,6 +7755,18 @@
         {
           "key": "stampStartScale_",
           "member": "stampStartScale_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stampPressRate_",
+          "member": "stampPressRate_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "stampFadeRate_",
+          "member": "stampFadeRate_",
           "named": true,
           "shape": "float"
         }
@@ -11362,6 +11715,9 @@
     "EventNoticeBoard": [
       "GamePlay::Prop::EventNoticeBoard"
     ],
+    "FloatingStone": [
+      "GamePlay::Prop::FloatingStone"
+    ],
     "FriendlyNpc": [
       "GamePlay::Npc::Friendly::FriendlyNpc"
     ],
@@ -11544,6 +11900,9 @@
     ],
     "RestorationGate": [
       "GamePlay::Prop::RestorationGate"
+    ],
+    "ReturningIsland": [
+      "GamePlay::Prop::ReturningIsland"
     ],
     "RigidBody": [
       "NanamiEngine::Module::Component::RigidBody"
@@ -11807,7 +12166,7 @@
     "PickupItemBase": {
       "fqn": "GamePlay::Pickup::PickupItemBase",
       "header": "Assets/Scripts/GamePlay/Pickup/GamePlay_PickupItemBase.h",
-      "version": 0,
+      "version": 1,
       "empty": false,
       "bases": [
         {

@@ -20,14 +20,6 @@ namespace
     /** ロード画面の配置の基準にしている画面の大きさ */
     constexpr glm::vec2 LOADING_ROUTE_MAP_SCREEN_CENTER = glm::vec2(960.0f, 540.0f);
     constexpr int LOADING_ROUTE_MAP_SAMPLE_COUNT = 128;
-    /** 飛行船の後ろに並べる煙の、進み具合でのずらし幅 */
-    constexpr float LOADING_ROUTE_MAP_TRAIL_STEP = 0.035f;
-    /** 揺れの片道の秒。周期が揃わないようにずらしてある */
-    constexpr float LOADING_ROUTE_MAP_SHIP_BOB_SECS    = 1.31f;
-    constexpr float LOADING_ROUTE_MAP_ZOOM_SWAY_SECS   = 3.49f;
-    constexpr float LOADING_ROUTE_MAP_PAN_SWAY_X_SECS  = 4.49f;
-    constexpr float LOADING_ROUTE_MAP_PAN_SWAY_Y_SECS  = 2.86f;
-    constexpr glm::vec2 LOADING_ROUTE_MAP_PAN_SWAY_PX  = glm::vec2(4.0f, 3.0f);
 
     /** @brief -1..1 を行って戻ってを繰り返す */
     void LoadingRouteMapStartSway(TweenPlayer<float>& sway, const float halfSecs)
@@ -245,10 +237,10 @@ namespace GamePlay::Ui
 
     void LoadingRouteMap::StartSways()
     {
-        LoadingRouteMapStartSway(shipBobTween_, LOADING_ROUTE_MAP_SHIP_BOB_SECS);
-        LoadingRouteMapStartSway(cameraZoomSwayTween_, LOADING_ROUTE_MAP_ZOOM_SWAY_SECS);
-        LoadingRouteMapStartSway(cameraPanSwayXTween_, LOADING_ROUTE_MAP_PAN_SWAY_X_SECS);
-        LoadingRouteMapStartSway(cameraPanSwayYTween_, LOADING_ROUTE_MAP_PAN_SWAY_Y_SECS);
+        LoadingRouteMapStartSway(shipBobTween_, shipBobHalf_secs_);
+        LoadingRouteMapStartSway(cameraZoomSwayTween_, zoomSwayHalf_secs_);
+        LoadingRouteMapStartSway(cameraPanSwayXTween_, panSwayXHalf_secs_);
+        LoadingRouteMapStartSway(cameraPanSwayYTween_, panSwayYHalf_secs_);
     }
 
     void LoadingRouteMap::LayoutRouteDashes()
@@ -363,7 +355,7 @@ namespace GamePlay::Ui
             if (!puff)
                 continue;
 
-            const float offset = LOADING_ROUTE_MAP_TRAIL_STEP * static_cast<float>(i + 1);
+            const float offset = trailStep_ * static_cast<float>(i + 1);
             RoutePoint point;
             bool isVisible = true;
             if (isHover_)
@@ -400,7 +392,7 @@ namespace GamePlay::Ui
         const float zoom = cameraZoom_ + zoomSway * cameraZoomWobble_;
         glm::vec2 pan = -zoom * cameraFollow_ * (focus - LOADING_ROUTE_MAP_SCREEN_CENTER);
         pan = glm::clamp(pan, -cameraMaxPan_, cameraMaxPan_);
-        pan += panSway * LOADING_ROUTE_MAP_PAN_SWAY_PX;
+        pan += panSway * panSwayPx_;
 
         const glm::vec2 origin = LOADING_ROUTE_MAP_SCREEN_CENTER - zoom * LOADING_ROUTE_MAP_SCREEN_CENTER + pan;
         camera->Transform().SetLocalPos(glm::vec3(origin, 0.0f));
@@ -561,6 +553,12 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("dashPop_secs_", dashPop_secs_);
         ImGuiHelper::OnDrawInputField("shipFlip_secs_", shipFlip_secs_);
         ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
+        ImGuiHelper::OnDrawInputField("trailStep_", trailStep_);
+        ImGuiHelper::OnDrawInputField("shipBobHalf_secs_", shipBobHalf_secs_);
+        ImGuiHelper::OnDrawInputField("zoomSwayHalf_secs_", zoomSwayHalf_secs_);
+        ImGuiHelper::OnDrawInputField("panSwayXHalf_secs_", panSwayXHalf_secs_);
+        ImGuiHelper::OnDrawInputField("panSwayYHalf_secs_", panSwayYHalf_secs_);
+        ImGuiHelper::OnDrawInputField("panSwayPx_", panSwayPx_);
     }
 }
 

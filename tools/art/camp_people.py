@@ -54,7 +54,7 @@ MAX_TEXTURE = 2048
 CLIP_FPS = 30.0
 TRANSITION_SECS = 0.3
 SWITCH_ANY_TIME = 100000.0    # blendAnimationOffset_secs_。ドラゴン / ティラノ / ハイエナと同じ
-FONT_IPAM = 'C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC'   # ChattingUI と同じ ipam.ttf
+FONT_CHAT = '02951627-F120-4EDC-B4F7-C27985C7F643'   # 会話ウィンドウの本文 (ZenOldMincho-Bold.ttf)
 MAX_LINE_CHARS = 22
 
 CAMPFIRE = (978.0, 1160.0)
@@ -207,7 +207,7 @@ def write_npc_chat(name, pages):
         item = copy.deepcopy(first_item if i == 0 else other_item)
         wrapper = item['font_']['value0']['ptr_wrapper']
         wrapper['id'] = Num.of_int(2147483650 + i)
-        wrapper['data']['value0']['value_'] = FONT_IPAM
+        wrapper['data']['value0']['value_'] = FONT_CHAT
         item['text_'] = page
         items.append((f'item_{i}', item))
     rebuilt = OrderedObj([('cereal_class_version', data['cereal_class_version']), ('value0', data['value0']),

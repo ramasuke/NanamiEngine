@@ -1,13 +1,19 @@
 ---
 name: commit-push
 description: 最近の Claude Code セッション履歴と変更ファイルからコミットメッセージを作り、全変更をコミットして push する。ユーザーが /commit-push と打ったときだけ使う。
-argument-hint: "[メッセージのヒント / 対象を絞る指示(任意)]"
+argument-hint: "[-w [priority]] [メッセージのヒント / 対象を絞る指示(任意)]"
 disable-model-invocation: true
 ---
 
 # /commit-push — セッション履歴と変更を見てコミット & プッシュ
 
 追加の指示: `$ARGUMENTS`(空なら全変更を 1 コミットにまとめる。ヒントがあればメッセージに反映し、対象の指定があればそれだけをステージする)
+
+## 待機オプション `-w [priority]`
+
+引数に `-w` があれば `.claude/shared/wait.md` を Read し、その手順で他セッションの作業終了を待ってから
+以下を実行する(`-w` と priority は取り除いた残りを引数とする)。無ければ待たない。
+待つと、他セッションの編集が途中のままコミットに混ざらない。
 
 ## 1. 状況を集める(並列で)
 

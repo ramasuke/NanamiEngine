@@ -124,16 +124,17 @@
   石が去ったので、盆地に集まっていた獣も散っていく。
   → 実装済み: 村の跡（柱の輪の中）に着弾跡のクレーターと石（`Assets/Prefab/Prop/Story/GreenFloatingStone.prefab`、
   オーラは `GreenCoreAura`）。大顎を倒すと石が震え、`GreenStoneLiftOff` を出して抜け出し、光の尾（`GreenStoneFlight`）を
-  引いて空へ飛び去る（`Story::FloatingStone::PlayDepartAsync`。カメラはシーンの `GreenStoneCamera`）。クリア後に来るとクレーターだけ。
+  引いて空へ飛び去る（石に付けた `GamePlay::Prop::FloatingStone` の `PlayDepartAsync`。カメラはシーンの `GreenStoneCamera`）。クリア後に来るとクレーターだけ。
 - 島の変化: 緑の浮遊石を島の底へ戻すと島の沈下が止まる。埋め戻した石はもう獣を呼ばない。
   そして石の力で、序章で落ちた **噴水の島**（`SecondIsland`）が雲の下から浮かび上がってきて、拠点の島から上る
   **階段**（`To SecondIsland Bridge`）がひとりでに架かる【確定】。狩人の一族は噴水の島に住む【確定】。
   → 実装済み（石が戻るところまで。沈下が止まるのは見た目に出していない）: 草原クリア後に初めて拠点の島へ戻ると、石が遠くから飛んできて
   島の底の先端にはまる（`PlayReturnAsync`、`GreenStoneDock`）→ `StoryFlag::GreenStoneReturned`。以後は底に付いたまま。
-  石と演出の参照はシーンのコンテキスト（`GrassLandSceneContext::floatingStone_` など / `MainIslandSceneContext::greenStone_` など）。
+  カメラ・パーティクル・尺は石の `FloatingStone` コンポーネントが持ち、シーンのコンテキストはそれを参照するだけ
+  （`GrassLandSceneContext::floatingStone_` / `MainIslandSceneContext::greenStone_`）。
   エフェクトは `python tools/art/green_core_effect.py`。
   → 実装済み: 石がはまったあと、同じ入場で続けて、噴水の島が傾いたまま雲の下からせり上がって水平に戻り、
-  階段が手前から1段ずつ下から跳ね上がって架かる（`Story::FloatingStone::PlayIslandReturnAsync`。カメラはシーンの
+  階段が手前から1段ずつ下から跳ね上がって架かる（島に付けた `GamePlay::Prop::ReturningIsland` の `PlayReturnAsync`。カメラはシーンの
   `FountainIslandCamera` で、噴水（`MedievalFountainEmpty`）を LookAt で追う）→ `StoryFlag::FountainIslandReturned`。
   以後は最初から出ている。演出の途中でシーンを抜けたら、石と同じくその場で戻ったことにする（始まる前に抜けたら、次に来たときに流す）。
 - 噴水の島が戻ると、掲示板の「復興」で **一族の家**（`Facility::ClanHouse`）を建てられる。建てると女狩人が家の前に立ち、
@@ -269,14 +270,15 @@ A でその場でお金を払い、`StoryProgress::Restore` する（所持金�
 ### 草原のご褒美: 石と島が戻る（実装済み）
 
 `MainIslandScene::ApplyGrassLandReward`（`Assets/Scripts/Core/Game/Scene/Main/Content/MainIslandScene/`）が入場のたびに決める。
-使う物はシーンのコンテキスト `MainIslandSceneContext`（GameManage.scene）: `greenStone_` / `stoneCamera_` / `stone*Particle_` と、
-`fountainIsland_`（`SecondIsland`）/ `fountainStairs_`（`To SecondIsland Bridge`。子が1段ずつ）/ `fountainCamera_`（`FountainIslandCamera`）/
-`fountainFocus_`（`MedievalFountainEmpty`。カメラが見る所）。
+シーンのコンテキスト `MainIslandSceneContext`（GameManage.scene）は `greenStone_`（石の `FloatingStone`）と
+`fountainIsland_`（`SecondIsland` の `ReturningIsland`）だけを持つ。カメラ・パーティクル・尺はそれぞれのコンポーネントが持つ:
+`ReturningIsland` の `stairs_`（`To SecondIsland Bridge`。子が1段ずつ）/ `camera_`（`FountainIslandCamera`）/
+`focus_`（`MedievalFountainEmpty`。カメラが見る所）。
 
 - `FountainIslandReturned` が立っていれば島と階段を出す（シーンではコンポーネントを切って隠してある）。
-- 立っていなければ `SinkIsland` で隠し、島と階段を雲の下（y -3000）へ下ろしてコライダーを作り直す。
+- 立っていなければ `ReturningIsland::Sink` で隠し、島と階段を雲の下（y -3000）へ下ろしてコライダーを作り直す。
   **隠すだけではコライダーが当たり続ける**（物理は Component の有効・無効を見ない）ため、見えない階段を歩けてしまう。
-- `GrassLandCleared` の後、まだなら 石が戻る → 島が戻る の順に流す（`Story_FloatingStoneMovie.h`）。どちらも任意のボタンで飛ばせる。
+- `GrassLandCleared` の後、まだなら 石が戻る → 島が戻る の順に流す（`Prop_FloatingStone.h` / `Prop_ReturningIsland.h`）。演出は石・島が破棄される（シーンを抜ける）と止まる。どちらも任意のボタンで飛ばせる。
 - Static のコライダーは Transform に付いてこないので、動かした後は `BodyAssembler::MarkDirty` で作り直す（演出の最後に一度）。
 - カメラ `FountainIslandCamera` の位置 (60, 110, 200) は仮置き。エディタで見て直す。
 

@@ -1,16 +1,12 @@
 ﻿#include "PlayerHitShakeReceiver.h"
 
 #include <cmath>
+#include <numbers>
 
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/Component/ModelRenderer/ModelRenderer.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
-
-namespace
-{
-    constexpr float SHAKE_ANGULAR_FREQUENCY = 6.2831853f * 18.0f;
-}
 
 namespace GamePlay::PlayerAvatar
 {
@@ -54,11 +50,12 @@ namespace GamePlay::PlayerAvatar
 
         // 当たった瞬間に押し込まれ、減衰しながら振動して戻る
         const float elapsed_secs = envelope_.Progress() * duration_secs_;
-        modelRenderer->SetRenderOffset(direction_ * (envelope_.Value() * std::cos(elapsed_secs * SHAKE_ANGULAR_FREQUENCY)));
+        modelRenderer->SetRenderOffset(direction_ * (envelope_.Value() * std::cos(elapsed_secs * 2.0f * std::numbers::pi_v<float> * shakeFrequency_hz_)));
     }
 
     void PlayerHitShakeReceiver::OnDrawGui()
     {
+        ImGuiHelper::OnDrawInputField("shakeFrequency_hz_", shakeFrequency_hz_);
         ImGui::Text("isPlaying: %s", envelope_.IsPlaying() ? "true" : "false");
         ImGui::Text("elapsed / duration: %.3f / %.3f", envelope_.Progress() * duration_secs_, duration_secs_);
     }

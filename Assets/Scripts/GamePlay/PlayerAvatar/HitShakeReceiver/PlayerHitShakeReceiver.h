@@ -27,6 +27,8 @@ namespace GamePlay::PlayerAvatar
         // 振幅の減衰 amplitude * (1 - t)^2
         LibCore::Tween::TweenPlayer<float> envelope_;
 
+        [[serialize(1)]] float shakeFrequency_hz_ = 18.0f;
+
 #pragma region Serialization Function
     public:
         void OnDrawGui() override;
@@ -34,14 +36,16 @@ namespace GamePlay::PlayerAvatar
         template<class Archive>
         void save(Archive& archive, const std::uint32_t version) const {
             archive(cereal::base_class<ComponentBase>(this));
+            archive(CEREAL_NVP(shakeFrequency_hz_));
         }
 
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version) {
             archive(cereal::base_class<ComponentBase>(this));
+            if (version >= 1) archive(CEREAL_NVP(shakeFrequency_hz_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::PlayerHitShakeReceiver, 0);
+CEREAL_CLASS_VERSION(GamePlay::PlayerAvatar::PlayerHitShakeReceiver, 1);

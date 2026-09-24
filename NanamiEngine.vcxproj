@@ -55,7 +55,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\MainProgression\MainProgression.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Story\Story_StoryProgress.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Story\Story_StageClear.cpp" />
-    <ClCompile Include="Assets\Scripts\Core\Game\Story\FloatingStone\Story_FloatingStoneMovie.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStone.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieParts.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Prop\ReturningIsland\Prop_ReturningIsland.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\RestorationGate\Prop_RestorationGate.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\AttackArea\Enemy_AttackArea.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ChasePlayerForPathFinding\Enemy_Behaviour_Action_ChasePlayerForPathFinding.cpp" />
@@ -561,7 +563,10 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StoryFlag.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StoryProgress.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StageClear.h" />
-    <ClInclude Include="Assets\Scripts\Core\Game\Story\FloatingStone\Story_FloatingStoneMovie.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStone.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_FloatingStoneShot.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\FloatingStone\Prop_StoryMovieParts.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Prop\ReturningIsland\Prop_ReturningIsland.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\RestorationGate\Prop_RestorationGate.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\AttackArea\Enemy_AttackArea.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ChasePlayerForPathFinding\Enemy_Behaviour_Action_ChasePlayerForPathFinding.h" />

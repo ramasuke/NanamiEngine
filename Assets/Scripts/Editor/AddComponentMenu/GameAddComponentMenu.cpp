@@ -36,6 +36,8 @@
 #include "../../GamePlay/Prop/AirShip/Prop_AirShip.h"
 #include "../../GamePlay/Prop/ProximityReveal/ProximityReveal.h"
 #include "../../GamePlay/Prop/RestorationGate/Prop_RestorationGate.h"
+#include "../../GamePlay/Prop/FloatingStone/Prop_FloatingStone.h"
+#include "../../GamePlay/Prop/ReturningIsland/Prop_ReturningIsland.h"
 #include "../../GamePlay/Prop/Canon/Prop_Canon.h"
 #include "../../GamePlay/Prop/DestructibleObject/DestructibleObject.h"
 #include "../../GamePlay/Prop/Grass/Grassable.h"
@@ -271,6 +273,8 @@ namespace Editor::AddComponentMenu
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::EventNoticeBoard>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::HerbPatch>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::RestorationGate>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::FloatingStone>(addComponent);
+                AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::ReturningIsland>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::TreasureChest>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::DestructibleObject>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Prop::ChargeStuckObstacle>(addComponent);

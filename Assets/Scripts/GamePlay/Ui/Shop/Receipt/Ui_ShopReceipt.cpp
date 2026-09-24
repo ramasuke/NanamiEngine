@@ -12,10 +12,6 @@ namespace GamePlay::Ui
 {
     namespace
     {
-        // 判は押した直後の少しの間だけ大きく、そのあと残って最後に薄れる
-        constexpr float SHOP_STAMP_PRESS_RATE = 0.2f;
-        constexpr float SHOP_STAMP_FADE_RATE  = 0.7f;
-
         std::string ShopRefusalText(const ShopRefusal refusal)
         {
             switch (refusal)
@@ -83,8 +79,8 @@ namespace GamePlay::Ui
         // NOTE: 区間ごとに ms へ丸めると2本の合計がずれるので、境目の時刻から引き算で区間長を出す
         const float    duration   = std::max(stampDuration_secs_, 0.01f);
         const uint16_t totalMs    = LibCore::Tween::Ms(duration);
-        const uint16_t pressEndMs = LibCore::Tween::Ms(duration * SHOP_STAMP_PRESS_RATE);
-        const uint16_t fadeFromMs = LibCore::Tween::Ms(duration * SHOP_STAMP_FADE_RATE);
+        const uint16_t pressEndMs = LibCore::Tween::Ms(duration * stampPressRate_);
+        const uint16_t fadeFromMs = LibCore::Tween::Ms(duration * stampFadeRate_);
         stampScale_.Play(tweeny::from(stampStartScale_)
             .to(1.0f).during(pressEndMs)
             .to(1.0f).during(static_cast<uint16_t>(totalMs - pressEndMs)));
@@ -138,6 +134,8 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("markInactiveBlendRate_", markInactiveBlendRate_);
         ImGuiHelper::OnDrawInputField("stampDuration_secs_", stampDuration_secs_);
         ImGuiHelper::OnDrawInputField("stampStartScale_", stampStartScale_);
+        ImGuiHelper::OnDrawInputField("stampPressRate_", stampPressRate_);
+        ImGuiHelper::OnDrawInputField("stampFadeRate_", stampFadeRate_);
     }
 }
 

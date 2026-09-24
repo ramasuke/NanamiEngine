@@ -25,10 +25,14 @@ namespace GamePlay::Ui
         const float chatCharInterval_secs         = GameCore::GameSettings::GetInstance().GetChatTextCharInterval_secs();
         const float chatTextSentenceInterval_secs = GameCore::GameSettings::GetInstance().GetChatTextSentenceInterval_secs();
 
-        for (const auto& chat : npcChat.Get())
+        const auto& chats = npcChat.Get();
+        for (size_t page = 0; page < chats.size(); ++page)
         {
+            const auto& chat = chats[page];
             if (!textRenderer_)
                 break;
+
+            ShowPage(page, chats.size());
             
             textRenderer_->SetFont(chat.Font());
             textRenderer_->SetTextColor(chat.TextColor());
@@ -57,6 +61,20 @@ namespace GamePlay::Ui
         Entity().lock()->SetEnable(false);
     }
 
+    void NpcChatting::ShowPage(const size_t index, const size_t count) const
+    {
+        if (!pageText_)
+            return;
+
+        std::string marks;
+        if (count > 1)
+        {
+            for (size_t i = 0; i < count; ++i)
+                marks += i <= index ? "●" : "○";
+        }
+        pageText_->SetText(marks);
+    }
+
     void NpcChatting::OnDrawGui()
     {
         if (ImGui::Button("Enable"))
@@ -67,6 +85,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("textRenderer_", textRenderer_);
         ImGuiHelper::OnDrawInputField("npcNameTextBox_", npcNameTextBox_);
         ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
+        ImGuiHelper::OnDrawInputField("pageText_", pageText_);
     }
 }
 

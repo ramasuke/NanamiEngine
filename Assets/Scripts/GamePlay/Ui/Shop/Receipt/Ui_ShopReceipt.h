@@ -61,6 +61,9 @@ namespace GamePlay::Ui
         [[serialize(0)]] int markInactiveBlendRate_ = 70;
         [[serialize(0)]] float stampDuration_secs_ = 0.6f;
         [[serialize(0)]] float stampStartScale_ = 1.6f;
+        // 判は stampDuration_secs_ のこの割合まで大きく、stampFadeRate_ から薄れる
+        [[serialize(1)]] float stampPressRate_ = 0.2f;
+        [[serialize(1)]] float stampFadeRate_ = 0.7f;
 
         // 2本とも同じ長さ。終わりは stampAlpha_ で判定する
         LibCore::Tween::TweenPlayer<float> stampScale_;
@@ -92,6 +95,8 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(markInactiveBlendRate_));
             archive(CEREAL_NVP(stampDuration_secs_));
             archive(CEREAL_NVP(stampStartScale_));
+            archive(CEREAL_NVP(stampPressRate_));
+            archive(CEREAL_NVP(stampFadeRate_));
         }
 
         template<typename Archive>
@@ -115,9 +120,11 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(markInactiveBlendRate_));
             if (version >= 0) archive(CEREAL_NVP(stampDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(stampStartScale_));
+            if (version >= 1) archive(CEREAL_NVP(stampPressRate_));
+            if (version >= 1) archive(CEREAL_NVP(stampFadeRate_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::ShopReceipt, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::ShopReceipt, 1);
