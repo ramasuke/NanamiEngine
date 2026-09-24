@@ -1,9 +1,11 @@
 """Wait until no other Claude Code session of this project is mid-turn, then take the build lock.
 
-    python .claude/shared/wait_for_sessions.py --self <session_id> [--priority N] [--label build]
-                                                              [--timeout 3600] [--poll 10]
-    python .claude/shared/wait_for_sessions.py --self <session_id> --release
+    python .claude/shared/wait_for_sessions.py [--self <session_id>] [--priority N] [--label build]
+                                                                [--timeout 3600] [--poll 10]
+    python .claude/shared/wait_for_sessions.py [--self <session_id>] --release
     python .claude/shared/wait_for_sessions.py --status
+
+--self defaults to $CLAUDE_CODE_SESSION_ID (set by Claude Code in its shells), then $CLAUDE_SESSION_ID.
 
 Exit 0 = lock taken (release it with --release; the Stop hook also does), 2 = timed out.
 Busy/idle comes from the markers written by .claude/hooks/session_state.py.
@@ -12,6 +14,7 @@ allowed, default 0), then of when they started waiting.
 """
 import argparse
 import json
+import os
 import sys
 import time
 from datetime import datetime
@@ -125,7 +128,8 @@ def status(stale_secs):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--self", dest="self_id", help="this session's id (${CLAUDE_SESSION_ID} in a skill)")
+    ap.add_argument("--self", dest="self_id",
+                    help="this session's id (default: $CLAUDE_CODE_SESSION_ID, then $CLAUDE_SESSION_ID)")
     ap.add_argument("--priority", type=int, default=0, help="higher goes first among waiters; may be negative")
     ap.add_argument("--label", default="build", help="the skill this waiter will run (shown to the others)")
     ap.add_argument("--timeout", type=float, default=3600)
@@ -140,8 +144,11 @@ def main():
     if args.status:
         status(stale_secs)
         return 0
+    # NOTE: an unexpanded "${CLAUDE_SESSION_ID}" or an empty --self falls back to the environment.
     if not args.self_id or args.self_id.startswith("$"):
-        print("--self <session_id> is required", file=sys.stderr)
+        args.self_id = os.environ.get("CLAUDE_CODE_SESSION_ID") or os.environ.get("CLAUDE_SESSION_ID")
+    if not args.self_id:
+        print("no session id: pass --self <session_id> (the last folder of the scratchpad path)", file=sys.stderr)
         return 1
     if args.release:
         print("released" if ss.release_lock(args.self_id) else "lock not held by this session")

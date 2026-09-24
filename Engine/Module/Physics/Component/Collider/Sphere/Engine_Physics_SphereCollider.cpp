@@ -23,9 +23,9 @@ namespace NanamiEngine::Module::Component
 
         int layerIndex = Physics::ToIndex(layer_);
         if (ImGui::Combo("Layer", &layerIndex,
-            Physics::LayerNames(), Physics::LayerCount()))
+            Physics::PhysicsLayers::Names(), Physics::PhysicsLayers::Count()))
         {
-            layer_ = Physics::ToLayer(layerIndex);
+            layer_ = Physics::PhysicsLayers::ToLayer(layerIndex);
         }
 
         OnDebugDraw();

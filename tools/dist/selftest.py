@@ -12,7 +12,7 @@ Stages:
      .pso / .vso) は残る。
   2. 実在する .meta から guid を読める (痩せたプロキシと太った ScriptableObject の両方)。
   3. scan: アセット / 随伴ファイルの振り分けとハッシュ・サイズ。
-  4. diff: 新規 / 変更 / 削除 とダウンロード量が C++ の DiffManifest と同じ規則。
+  4. diff: 新規 / 変更 / 削除 とダウンロード量が C++ の ManifestDiff::Between と同じ規則。
   5. HashCache: 変更が無ければ再ハッシュしない / 中身が変われば無効化される。
   6. upload: 本体と .meta がそれぞれブロブになり、同じ中身は 1 つにまとまる。remote に無い
      ものだけを上げ、build 後に書き換わったファイルは上げない (rclone は呼ばない)。
@@ -281,7 +281,7 @@ def stage_scan(r: Reporter) -> None:
 
 
 def stage_diff(r: Reporter) -> None:
-    r.section("stage 4: diff matches the C++ DiffManifest rules")
+    r.section("stage 4: diff matches the C++ ManifestDiff::Between rules")
     try:
         def doc(entries: list[dict]) -> dict:
             return {"version": "x", "entries": entries}

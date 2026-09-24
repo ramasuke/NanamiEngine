@@ -1,26 +1,22 @@
 ﻿#include "Ui_EventBoard_NoticePage.h"
 
-#include "../Row/EventBoardRowPool.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
 {
     void EventBoardNoticePage::BuildRows(const size_t count)
     {
-        if (!rows_.empty())
-            return;
-
-        rows_ = InstantiateEventBoardRows<EventBoardNoticeRow>(rowPrefab_, rowsRoot_, count, rowSpacing_px_);
+        rows_.Build(rowPrefab_, rowsRoot_, count, rowSpacing_px_);
     }
 
     void EventBoardNoticePage::SubscribeOnClickRow(std::function<void(size_t)> onClick) const
     {
-        SubscribeOnClickEventBoardRows(rows_, std::move(onClick));
+        rows_.SubscribeOnClick(std::move(onClick));
     }
 
     void EventBoardNoticePage::Bind(const NoticeBoardModel& model) const
     {
-        BindEventBoardRows(rows_, model.Entries(), model.Cursor(), moreAboveMark_, moreBelowMark_);
+        rows_.Bind(model.Entries(), model.Cursor(), moreAboveMark_, moreBelowMark_);
         ShowDetail(model.Selected());
     }
 

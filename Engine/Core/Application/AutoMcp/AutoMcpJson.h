@@ -35,14 +35,27 @@ namespace NanamiEngine::Core::Application::AutoMcp
     [[nodiscard]] JsonValue MakeVec3(const glm::vec3& value, JsonAllocator& allocator);
     [[nodiscard]] JsonValue MakeQuat(const glm::quat& value, JsonAllocator& allocator);
 
-    [[nodiscard]] const JsonValue* FindMember(const JsonValue& object, const char* name);
-    [[nodiscard]] std::string RequireString(const JsonValue& args, const char* name);
-    [[nodiscard]] std::string OptionalString(const JsonValue& args, const char* name, const std::string& fallback);
-    [[nodiscard]] bool        RequireBool(const JsonValue& args, const char* name);
-    [[nodiscard]] bool        OptionalBool(const JsonValue& args, const char* name, bool fallback);
-    [[nodiscard]] double      RequireNumber(const JsonValue& args, const char* name);
-    [[nodiscard]] int         OptionalInt(const JsonValue& args, const char* name, int fallback);
-    [[nodiscard]] bool        TryGetVec3(const JsonValue& args, const char* name, glm::vec3& out);
-    /** @brief [x, y, z, w] の順で受け取る */
-    [[nodiscard]] bool        TryGetQuat(const JsonValue& args, const char* name, glm::quat& out);
+    /** @brief コマンド引数 (JSON オブジェクト) の読み取り。不正な型は AutoMcpError */
+    class JsonArgs final
+    {
+    public:
+        explicit JsonArgs(const JsonValue& object) : object_(object) {}
+
+        /** @brief オブジェクトでない・未指定・null なら nullptr */
+        [[nodiscard]] const JsonValue* FindMember(const char* name) const;
+        [[nodiscard]] std::string RequireString(const char* name) const;
+        [[nodiscard]] std::string OptionalString(const char* name, const std::string& fallback) const;
+        [[nodiscard]] bool        RequireBool(const char* name) const;
+        [[nodiscard]] bool        OptionalBool(const char* name, bool fallback) const;
+        [[nodiscard]] double      RequireNumber(const char* name) const;
+        [[nodiscard]] int         OptionalInt(const char* name, int fallback) const;
+        [[nodiscard]] bool        TryGetVec3(const char* name, glm::vec3& out) const;
+        /** @brief [x, y, z, w] の順で受け取る */
+        [[nodiscard]] bool        TryGetQuat(const char* name, glm::quat& out) const;
+
+    private:
+        [[nodiscard]] const JsonValue& RequireMember(const char* name) const;
+
+        const JsonValue& object_;
+    };
 }

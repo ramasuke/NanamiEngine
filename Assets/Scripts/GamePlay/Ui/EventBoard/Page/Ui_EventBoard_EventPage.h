@@ -13,6 +13,7 @@
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../Model/EventBoardModel.h"
 #include "../Row/Ui_EventBoard_Row.h"
+#include "../Row/EventBoardRowPool.h"
 
 namespace GamePlay::Ui
 {
@@ -51,7 +52,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] Color32 ongoingStatusColor_  = Color32(146, 38, 30);
         [[serialize(0)]] Color32 upcomingStatusColor_ = Color32(48, 30, 20);
 
-        std::vector<std::weak_ptr<EventBoardRow>> rows_;
+        EventBoardRowPool<EventBoardRow> rows_;
 
 #pragma region Serialization Function
     public:

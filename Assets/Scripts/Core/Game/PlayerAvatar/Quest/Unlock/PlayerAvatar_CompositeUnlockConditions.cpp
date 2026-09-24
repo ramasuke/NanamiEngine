@@ -22,7 +22,7 @@ namespace GameCore::PlayerAvatar::Quest::Unlock
 
     void AnyOfUnlockCondition::OnDrawGui()
     {
-        DrawQuestUnlockConditions("conditions_", conditions_);
+        QuestUnlockConditionList::DrawListGui("conditions_", conditions_);
     }
 
     bool NotUnlockCondition::IsSatisfied(const QuestUnlockContext& context) const
@@ -37,7 +37,7 @@ namespace GameCore::PlayerAvatar::Quest::Unlock
 
     void NotUnlockCondition::OnDrawGui()
     {
-        DrawQuestUnlockCondition("condition_", condition_);
+        QuestUnlockConditionList::DrawSingleGui("condition_", condition_);
     }
 
     REGISTER_QUEST_UNLOCK_CONDITION(AnyOfUnlockCondition)

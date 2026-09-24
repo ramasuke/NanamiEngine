@@ -15,6 +15,7 @@
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../Model/QuestBoardModel.h"
 #include "../Row/Ui_EventBoard_QuestRow.h"
+#include "../Row/EventBoardRowPool.h"
 
 namespace GamePlay::Ui
 {
@@ -73,7 +74,7 @@ namespace GamePlay::Ui
         /** @brief 写真枠の内側の大きさ。サムネイルはこれを覆う倍率に縮める */
         [[serialize(2)]] glm::vec2 detailPhotoSize_px_ = glm::vec2(400.0f, 240.0f);
 
-        std::vector<std::weak_ptr<EventBoardQuestRow>> rows_;
+        EventBoardRowPool<EventBoardQuestRow> rows_;
 
 #pragma region Serialization Function
     public:

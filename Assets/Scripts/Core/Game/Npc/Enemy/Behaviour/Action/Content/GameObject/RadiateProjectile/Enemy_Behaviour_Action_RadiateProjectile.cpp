@@ -21,7 +21,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         const auto projectile = GamePlay::Spawn::SpawnMovingPrefab(
             *projectilePrefab_.get(), spawnPos, finalRot, targetPos, moveSpeed_, isFinishedProjectileDestroy_);
 
-        GamePlay::Npc::Enemy::SetProjectileDamage(projectile, physicsDamage_);
+        GamePlay::Npc::Enemy::IAttackProjectile::TrySetDamage(projectile, physicsDamage_);
 
         // 権威側限定Tickなら、他ピアにも同じ軌道・ダメージで投射物を出させる(被弾判定は各ピアが自分の所有アバターに対して行う)。
         // targetPos は権威側の値で固定する(Position::TargetObject が各ピアのローカルプレイヤーを指すのを避ける)

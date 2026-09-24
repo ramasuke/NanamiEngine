@@ -237,7 +237,7 @@ enet(UDP) 上に構築されたクライアント/サーバー型モデルです
   役割は `IsServer()` で見ます。`Shutdown()` で止めてやり直せます。ディスパッチャーの `IsServer()` もこの実行時の役割に従います。
 - **LAN セッション探索**（`Engine/Core/Network/Discovery/`）: ホストは `LanSessionAdvertiser` が UDP 1235 で問い合わせを待ち、
   セッションキー（任意の文字列）が一致すれば待ち受けポートを返します。探す側は `LanSessionFinder` が 127.0.0.1・255.255.255.255・
-  各 IPv4 アダプタのサブネットブロードキャストへ問い合わせます。ゲーム側は `GamePlay::Network::JoinOrHostStageAsync` で、
+  各 IPv4 アダプタのサブネットブロードキャストへ問い合わせます。ゲーム側は `GamePlay::Network::StageMatchmaker::JoinOrHostAsync`（`Game::Instance().Matchmaker()`）で、
   ステージ名をキーに「同じステージのホストが居れば参加、居なければ自分がホスト」を決めています（`GrassLandScene`）。
   ゲームポート 1234 と探索ポート 1235 は固定なので、ホストは 1 台の PC に 1 つです。
 - **設定**（`ProjectConfig/Network/*.json`、ホスト時に使う）:

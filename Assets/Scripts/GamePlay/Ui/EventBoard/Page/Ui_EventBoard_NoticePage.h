@@ -13,6 +13,7 @@
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../Model/NoticeBoardModel.h"
 #include "../Row/Ui_EventBoard_NoticeRow.h"
+#include "../Row/EventBoardRowPool.h"
 
 namespace GamePlay::Ui
 {
@@ -48,7 +49,7 @@ namespace GamePlay::Ui
         /** AnnouncementKind の順 */
         [[serialize(0)]] std::vector<FIELD(Asset::SpriteFile)> kindHankoSprites_;
 
-        std::vector<std::weak_ptr<EventBoardNoticeRow>> rows_;
+        EventBoardRowPool<EventBoardNoticeRow> rows_;
 
 #pragma region Serialization Function
     public:

@@ -20,7 +20,7 @@ namespace NanamiEngine::Core::Application::Game
     void GameApplication::OnFrame()
     {
         std::string frameErrorMessage;
-        if (!Module::SafeExecute([this]()
+        if (!Module::SafeExecutor::Execute([this]()
             {
                 ApplicationLifeCycle_().OnUpdate();
                 GetMainWindow()->OnUpdate();

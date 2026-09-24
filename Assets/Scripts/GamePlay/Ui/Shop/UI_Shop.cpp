@@ -1,6 +1,5 @@
 ﻿#include "UI_Shop.h"
 
-#include "../EventBoard/Row/EventBoardRowPool.h"
 #include "../Format/Ui_MoneyFormat.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
@@ -9,26 +8,23 @@ namespace GamePlay::Ui
 {
     void ShopUi::BuildRows(const size_t count)
     {
-        if (!rows_.empty())
+        if (rows_.IsBuilt())
             return;
 
-        rows_ = InstantiateEventBoardRows<ShopRow>(rowPrefab_, rowsRoot_, count, rowSpacing_px_);
+        rows_.Build(rowPrefab_, rowsRoot_, count, rowSpacing_px_);
         if (const auto restock = restockText_.get())
             restockOffsetY_ = restock->Transform().GetLocalPos().y;
     }
 
     void ShopUi::SubscribeOnClickRow(const std::function<void(size_t)>& onClick) const
     {
-        for (size_t i = 0; i < rows_.size(); ++i)
+        rows_.ForEach([&onClick](ShopRow& row, const size_t i)
         {
-            if (const auto row = rows_[i].lock())
+            row.SubscribeOnClick([onClick, i]
             {
-                row->SubscribeOnClick([onClick, i]
-                {
-                    onClick(i);
-                });
-            }
-        }
+                onClick(i);
+            });
+        });
     }
 
     void ShopUi::SetTitle(const std::string& title) const
@@ -45,36 +41,16 @@ namespace GamePlay::Ui
 
     void ShopUi::Bind(const ShopModel& model) const
     {
-        const auto& entries = model.Entries();
-        const auto& cursor  = model.Cursor();
-        const size_t first  = cursor.FirstVisibleIndex();
-
-        size_t shownRows = 0;
-        for (size_t i = 0; i < rows_.size(); ++i)
-        {
-            const auto row = rows_[i].lock();
-            if (!row)
-                continue;
-
-            const size_t index = first + i;
-            if (index >= entries.size())
-                continue;
-
-            const auto& entry = entries[index];
-            row->Bind(ShopRowContent{
-                .item         = entry.item,
-                .price        = entry.price,
-                .owned        = model.Owned(entry),
-                .isAffordable = model.Refusal(entry) != ShopRefusal::NotEnoughMoney,
+        const size_t shownRows = rows_.Bind(model.Entries(), model.Cursor(), moreAboveMark_, moreBelowMark_,
+            [&model](ShopRow& row, const auto& entry)
+            {
+                row.Bind(ShopRowContent{
+                    .item         = entry.item,
+                    .price        = entry.price,
+                    .owned        = model.Owned(entry),
+                    .isAffordable = model.Refusal(entry) != ShopRefusal::NotEnoughMoney,
+                });
             });
-            row->SetHighlighted(index == cursor.SelectedIndex());
-            ++shownRows;
-        }
-
-        if (const auto mark = moreAboveMark_.get())
-            mark->SetEnable(first > 0);
-        if (const auto mark = moreBelowMark_.get())
-            mark->SetEnable(first + rows_.size() < entries.size());
 
         // 品が窓より少ないときだけ、最後の品の下に「入荷待ち」を書き足す
         if (const auto restock = restockText_.get())

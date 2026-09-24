@@ -18,7 +18,7 @@ Bash ツールで **`run_in_background: true`** にして実行し(10 分のツ�
 終了通知を待つ。ポーリングや sleep はしない。`<skill>` は `build` / `build-run` / `commit-push`。
 
 ```
-python .claude/shared/wait_for_sessions.py --self ${CLAUDE_SESSION_ID} --label <skill> --priority <priority>
+python .claude/shared/wait_for_sessions.py --label <skill> --priority <priority>
 ```
 
 - 各セッションの作業中/待機中は `.claude/hooks/session_state.py`(`UserPromptSubmit` / `Stop` / `SessionEnd` フック)が
@@ -26,7 +26,9 @@ python .claude/shared/wait_for_sessions.py --self ${CLAUDE_SESSION_ID} --label <
   順番に実行する(ロックは `-w` を付けたすべての skill で共通)。
 - exit 0: 待ち終わってロック取得。出力の「何分待ったか」と、途中で表示された待ち相手を控えておく。
 - exit 2: タイムアウト(既定 60 分)。待っていた相手を報告して終わる(本来の手順は実行しない)。
-- `--self` が `$` のまま展開されていないなどで失敗したら、`--status` で状況だけ報告して止まる。
+- 自分のセッション ID は環境変数 `CLAUDE_CODE_SESSION_ID`(Claude Code がシェルに渡す)から自動で取る。
+  それも無いと `no session id` で exit 1 になるので、スクラッチパッドのパスの最後のフォルダ名(= セッション ID)を
+  `--self <id>` で渡して実行し直す(`--release` も同じ ID で)。それでも失敗したら `--status` で状況だけ報告して止まる。
 - 状況確認だけなら `python .claude/shared/wait_for_sessions.py --status`。
 
 ## 2. ロック解放
@@ -34,7 +36,7 @@ python .claude/shared/wait_for_sessions.py --self ${CLAUDE_SESSION_ID} --label <
 成功・失敗・中止のどれでも最後に実行する(忘れても `Stop` フックが解放する):
 
 ```
-python .claude/shared/wait_for_sessions.py --self ${CLAUDE_SESSION_ID} --release
+python .claude/shared/wait_for_sessions.py --release
 ```
 
 ## 報告

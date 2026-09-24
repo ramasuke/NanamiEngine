@@ -31893,18 +31893,18 @@
                     "value0": {}
                 },
                 "isActive_": true,
-                "name_": "IslandFloatingStones",
+                "name_": "IslandHeartStones",
                 "guid_": {
-                    "value_": "D84DC466-4D25-4541-BB99-636D3811F81E"
+                    "value_": "F04B1C98-508D-492A-9146-C43F2F8DD8B9"
                 },
                 "components_": {
                     "componentCount": 0
                 },
                 "transform_": {
                     "localPos_": {
-                        "value0": 0.0,
-                        "value1": 0.0,
-                        "value2": 0.0
+                        "value0": -18.8,
+                        "value1": 20.0,
+                        "value2": 57.1
                     },
                     "localRot_": {
                         "value0": 0.0,
@@ -31937,13 +31937,13 @@
                             "value3": 0.0
                         },
                         "value3": {
-                            "value0": 0.0,
-                            "value1": 0.0,
-                            "value2": 0.0,
+                            "value0": -18.8,
+                            "value1": 20.0,
+                            "value2": 57.1,
                             "value3": 1.0
                         }
                     },
-                    "childCount": 5,
+                    "childCount": 2,
                     "child": {
                         "polymorphic_id": 1,
                         "ptr_wrapper": {
@@ -31953,18 +31953,59 @@
                                     "value0": {}
                                 },
                                 "isActive_": true,
-                                "name_": "SecondIslandStoneRoot",
+                                "name_": "GreenStone",
                                 "guid_": {
-                                    "value_": "B2908990-9972-4F05-B62E-046D55C07DFC"
+                                    "value_": "9640AFE8-53D6-42E1-BB1A-71A325FA50E7"
                                 },
                                 "components_": {
-                                    "componentCount": 0
+                                    "componentCount": 1,
+                                    "component_0": {
+                                        "polymorphic_id": 2,
+                                        "ptr_wrapper": {
+                                            "id": 2147484639,
+                                            "data": {
+                                                "value0": {
+                                                    "cereal_class_version": 0,
+                                                    "guid_": {
+                                                        "value_": "F8B4CD9D-66F7-41D0-9E63-7B933B0E8E1D"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {
+                                                    "cereal_class_version": 0
+                                                },
+                                                "value2": {
+                                                    "cereal_class_version": 0
+                                                },
+                                                "value3": {
+                                                    "cereal_class_version": 0
+                                                },
+                                                "value4": {
+                                                    "cereal_class_version": 0
+                                                },
+                                                "mv1File_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147484640,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "44486120-E4AB-4CA0-90F7-0DBD9313403D"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "useFixedInterpolation_": false
+                                            }
+                                        }
+                                    }
                                 },
                                 "transform_": {
                                     "localPos_": {
-                                        "value0": -273.795455055615,
-                                        "value1": -203.0,
-                                        "value2": 475.461105930984
+                                        "value0": 30.3,
+                                        "value1": -95.0,
+                                        "value2": 17.5
                                     },
                                     "localRot_": {
                                         "value0": 0.0,
@@ -31973,33 +32014,33 @@
                                         "value3": 1.0
                                     },
                                     "localScale_": {
-                                        "value0": 1.0,
-                                        "value1": 1.0,
-                                        "value2": 1.0
+                                        "value0": 4.0,
+                                        "value1": 4.0,
+                                        "value2": 4.0
                                     },
                                     "worldMatrix_": {
                                         "value0": {
-                                            "value0": 1.0,
+                                            "value0": 4.0,
                                             "value1": 0.0,
                                             "value2": 0.0,
                                             "value3": 0.0
                                         },
                                         "value1": {
                                             "value0": 0.0,
-                                            "value1": 1.0,
+                                            "value1": 4.0,
                                             "value2": 0.0,
                                             "value3": 0.0
                                         },
                                         "value2": {
                                             "value0": 0.0,
                                             "value1": 0.0,
-                                            "value2": 1.0,
+                                            "value2": 4.0,
                                             "value3": 0.0
                                         },
                                         "value3": {
-                                            "value0": -273.7954406738281,
-                                            "value1": -203.0,
-                                            "value2": 475.46112060546875,
+                                            "value0": 11.5,
+                                            "value1": -75.0,
+                                            "value2": 74.6,
                                             "value3": 1.0
                                         }
                                     },
@@ -32007,352 +32048,99 @@
                                     "child": {
                                         "polymorphic_id": 5,
                                         "ptr_wrapper": {
-                                            "id": 2147484639,
+                                            "id": 2147484641,
                                             "data": {
                                                 "value0": {
                                                     "value0": {}
                                                 },
                                                 "isActive_": true,
-                                                "name_": "SecondIslandStone",
+                                                "name_": "GreenStoneFlight",
                                                 "guid_": {
-                                                    "value_": "76703831-8144-43C7-89C3-7AFEB47173F1"
+                                                    "value_": "FE35BB2C-160E-480A-9AF9-5477EA239508"
                                                 },
                                                 "components_": {
-                                                    "componentCount": 0
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": -5.204544944385009,
-                                                        "value1": 0.0,
-                                                        "value2": 8.53889406901599
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.17364817766693033,
-                                                        "value2": 0.0,
-                                                        "value3": 0.984807753012208
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 2.0,
-                                                        "value1": 2.0,
-                                                        "value2": 2.0
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 1.879385232925415,
-                                                            "value1": 0.0,
-                                                            "value2": -0.6840403079986572,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 2.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.6840403079986572,
-                                                            "value1": 0.0,
-                                                            "value2": 1.879385232925415,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": -279.0,
-                                                            "value1": -203.0,
-                                                            "value2": 484.0,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 1,
-                                                    "child": {
-                                                        "polymorphic_id": 1,
+                                                    "componentCount": 1,
+                                                    "component_0": {
+                                                        "polymorphic_id": 21,
                                                         "ptr_wrapper": {
-                                                            "id": 2147484640,
+                                                            "id": 2147484642,
                                                             "data": {
                                                                 "value0": {
-                                                                    "value0": {}
+                                                                    "cereal_class_version": 0,
+                                                                    "guid_": {
+                                                                        "value_": "BE64DD83-C713-42D4-B800-4A8646D9837A"
+                                                                    },
+                                                                    "isEnable_": true
                                                                 },
-                                                                "isActive_": true,
-                                                                "name_": "Stone",
-                                                                "guid_": {
-                                                                    "value_": "4D37E917-FFDE-41B1-9B46-289EF0754630"
+                                                                "value1": {
+                                                                    "cereal_class_version": 0
                                                                 },
-                                                                "components_": {
-                                                                    "componentCount": 1,
-                                                                    "component_0": {
-                                                                        "polymorphic_id": 2,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484641,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "guid_": {
-                                                                                        "value_": "67E11258-E9E7-4AFA-81B4-F2D377C41D6A"
-                                                                                    },
-                                                                                    "isEnable_": true
-                                                                                },
-                                                                                "value1": {},
-                                                                                "value2": {},
-                                                                                "value3": {},
-                                                                                "value4": {},
-                                                                                "mv1File_": {
-                                                                                    "value0": {
-                                                                                        "polymorphic_id": 1073741824,
-                                                                                        "ptr_wrapper": {
-                                                                                            "id": 2147484642,
-                                                                                            "data": {
-                                                                                                "value0": {
-                                                                                                    "value_": "68291B85-4A48-4101-A379-B04708795AB4"
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                },
-                                                                                "useFixedInterpolation_": false
-                                                                            }
-                                                                        }
-                                                                    }
+                                                                "value2": {
+                                                                    "cereal_class_version": 0
                                                                 },
-                                                                "transform_": {
-                                                                    "localPos_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "localRot_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0,
-                                                                        "value3": 1.0
-                                                                    },
-                                                                    "localScale_": {
-                                                                        "value0": 1.0,
-                                                                        "value1": 1.0,
-                                                                        "value2": 1.0
-                                                                    },
-                                                                    "worldMatrix_": {
-                                                                        "value0": {
-                                                                            "value0": 1.879385232925415,
-                                                                            "value1": 0.0,
-                                                                            "value2": -0.6840403079986572,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value1": {
-                                                                            "value0": 0.0,
-                                                                            "value1": 2.0,
-                                                                            "value2": 0.0,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value2": {
-                                                                            "value0": 0.6840403079986572,
-                                                                            "value1": 0.0,
-                                                                            "value2": 1.879385232925415,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value3": {
-                                                                            "value0": -279.0,
-                                                                            "value1": -203.0,
-                                                                            "value2": 484.0,
-                                                                            "value3": 1.0
-                                                                        }
-                                                                    },
-                                                                    "childCount": 2,
-                                                                    "child": {
-                                                                        "polymorphic_id": 5,
+                                                                "particleFile_": {
+                                                                    "value0": {
+                                                                        "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
                                                                             "id": 2147484643,
                                                                             "data": {
                                                                                 "value0": {
-                                                                                    "value0": {}
-                                                                                },
-                                                                                "isActive_": true,
-                                                                                "name_": "GreenIslandAura",
-                                                                                "guid_": {
-                                                                                    "value_": "8A8BAC01-E213-44A8-A8C1-DE5D31905366"
-                                                                                },
-                                                                                "components_": {
-                                                                                    "componentCount": 1,
-                                                                                    "component_0": {
-                                                                                        "polymorphic_id": 21,
-                                                                                        "ptr_wrapper": {
-                                                                                            "id": 2147484644,
-                                                                                            "data": {
-                                                                                                "value0": {
-                                                                                                    "guid_": {
-                                                                                                        "value_": "97D0AAAB-3AF2-4B8C-8B2B-34726F32E364"
-                                                                                                    },
-                                                                                                    "isEnable_": true
-                                                                                                },
-                                                                                                "value1": {},
-                                                                                                "value2": {},
-                                                                                                "particleFile_": {
-                                                                                                    "value0": {
-                                                                                                        "polymorphic_id": 1073741824,
-                                                                                                        "ptr_wrapper": {
-                                                                                                            "id": 2147484645,
-                                                                                                            "data": {
-                                                                                                                "value0": {
-                                                                                                                    "value_": "89B73E85-FC00-4DC0-9D7E-7631E3C01937"
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                },
-                                                                                                "playingDuration_secs_": 6.0,
-                                                                                                "playMode_": 0
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                },
-                                                                                "transform_": {
-                                                                                    "localPos_": {
-                                                                                        "value0": 0.0,
-                                                                                        "value1": 0.0,
-                                                                                        "value2": 0.0
-                                                                                    },
-                                                                                    "localRot_": {
-                                                                                        "value0": 0.0,
-                                                                                        "value1": 0.0,
-                                                                                        "value2": 0.0,
-                                                                                        "value3": 1.0
-                                                                                    },
-                                                                                    "localScale_": {
-                                                                                        "value0": 8.0,
-                                                                                        "value1": 8.0,
-                                                                                        "value2": 8.0
-                                                                                    },
-                                                                                    "worldMatrix_": {
-                                                                                        "value0": {
-                                                                                            "value0": 15.03508186340332,
-                                                                                            "value1": 0.0,
-                                                                                            "value2": -5.472322463989258,
-                                                                                            "value3": 0.0
-                                                                                        },
-                                                                                        "value1": {
-                                                                                            "value0": 0.0,
-                                                                                            "value1": 16.0,
-                                                                                            "value2": 0.0,
-                                                                                            "value3": 0.0
-                                                                                        },
-                                                                                        "value2": {
-                                                                                            "value0": 5.472322463989258,
-                                                                                            "value1": 0.0,
-                                                                                            "value2": 15.03508186340332,
-                                                                                            "value3": 0.0
-                                                                                        },
-                                                                                        "value3": {
-                                                                                            "value0": -279.0,
-                                                                                            "value1": -203.0,
-                                                                                            "value2": 484.0,
-                                                                                            "value3": 1.0
-                                                                                        }
-                                                                                    },
-                                                                                    "childCount": 0
-                                                                                },
-                                                                                "mark_": 0
-                                                                            }
-                                                                        }
-                                                                    },
-                                                                    "child": {
-                                                                        "polymorphic_id": 5,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484646,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "value0": {}
-                                                                                },
-                                                                                "isActive_": true,
-                                                                                "name_": "GreenStoneFlight",
-                                                                                "guid_": {
-                                                                                    "value_": "3DF1C325-1116-45D7-BCF2-901B609026A4"
-                                                                                },
-                                                                                "components_": {
-                                                                                    "componentCount": 1,
-                                                                                    "component_0": {
-                                                                                        "polymorphic_id": 21,
-                                                                                        "ptr_wrapper": {
-                                                                                            "id": 2147484647,
-                                                                                            "data": {
-                                                                                                "value0": {
-                                                                                                    "guid_": {
-                                                                                                        "value_": "6F1C9807-F014-4DCB-9346-78B7AE5E9149"
-                                                                                                    },
-                                                                                                    "isEnable_": true
-                                                                                                },
-                                                                                                "value1": {},
-                                                                                                "value2": {},
-                                                                                                "particleFile_": {
-                                                                                                    "value0": {
-                                                                                                        "polymorphic_id": 1073741824,
-                                                                                                        "ptr_wrapper": {
-                                                                                                            "id": 2147484648,
-                                                                                                            "data": {
-                                                                                                                "value0": {
-                                                                                                                    "value_": "D9A3A29F-7E46-4DD8-B287-7D11F553CD73"
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                },
-                                                                                                "playingDuration_secs_": 20.0,
-                                                                                                "playMode_": 2
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                },
-                                                                                "transform_": {
-                                                                                    "localPos_": {
-                                                                                        "value0": 0.0,
-                                                                                        "value1": 0.0,
-                                                                                        "value2": 0.0
-                                                                                    },
-                                                                                    "localRot_": {
-                                                                                        "value0": 0.0,
-                                                                                        "value1": 0.0,
-                                                                                        "value2": 0.0,
-                                                                                        "value3": 1.0
-                                                                                    },
-                                                                                    "localScale_": {
-                                                                                        "value0": 8.0,
-                                                                                        "value1": 8.0,
-                                                                                        "value2": 8.0
-                                                                                    },
-                                                                                    "worldMatrix_": {
-                                                                                        "value0": {
-                                                                                            "value0": 15.03508186340332,
-                                                                                            "value1": 0.0,
-                                                                                            "value2": -5.472322463989258,
-                                                                                            "value3": 0.0
-                                                                                        },
-                                                                                        "value1": {
-                                                                                            "value0": 0.0,
-                                                                                            "value1": 16.0,
-                                                                                            "value2": 0.0,
-                                                                                            "value3": 0.0
-                                                                                        },
-                                                                                        "value2": {
-                                                                                            "value0": 5.472322463989258,
-                                                                                            "value1": 0.0,
-                                                                                            "value2": 15.03508186340332,
-                                                                                            "value3": 0.0
-                                                                                        },
-                                                                                        "value3": {
-                                                                                            "value0": -279.0,
-                                                                                            "value1": -203.0,
-                                                                                            "value2": 484.0,
-                                                                                            "value3": 1.0
-                                                                                        }
-                                                                                    },
-                                                                                    "childCount": 0
-                                                                                },
-                                                                                "mark_": 0
+                                                                                    "value_": "D9A3A29F-7E46-4DD8-B287-7D11F553CD73"
+                                                                                }
                                                                             }
                                                                         }
                                                                     }
                                                                 },
-                                                                "mark_": 0
+                                                                "playingDuration_secs_": 20.0,
+                                                                "playMode_": 2
                                                             }
                                                         }
                                                     }
+                                                },
+                                                "transform_": {
+                                                    "localPos_": {
+                                                        "value0": 0.0,
+                                                        "value1": 0.0,
+                                                        "value2": 0.0
+                                                    },
+                                                    "localRot_": {
+                                                        "value0": 0.0,
+                                                        "value1": 0.0,
+                                                        "value2": 0.0,
+                                                        "value3": 1.0
+                                                    },
+                                                    "localScale_": {
+                                                        "value0": 8.0,
+                                                        "value1": 8.0,
+                                                        "value2": 8.0
+                                                    },
+                                                    "worldMatrix_": {
+                                                        "value0": {
+                                                            "value0": 32.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0,
+                                                            "value3": 0.0
+                                                        },
+                                                        "value1": {
+                                                            "value0": 0.0,
+                                                            "value1": 32.0,
+                                                            "value2": 0.0,
+                                                            "value3": 0.0
+                                                        },
+                                                        "value2": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 32.0,
+                                                            "value3": 0.0
+                                                        },
+                                                        "value3": {
+                                                            "value0": 11.5,
+                                                            "value1": -75.0,
+                                                            "value2": 74.6,
+                                                            "value3": 1.0
+                                                        }
+                                                    },
+                                                    "childCount": 0
                                                 },
                                                 "mark_": 0
                                             }
@@ -32366,24 +32154,65 @@
                     "child": {
                         "polymorphic_id": 1,
                         "ptr_wrapper": {
-                            "id": 2147484649,
+                            "id": 2147484644,
                             "data": {
                                 "value0": {
                                     "value0": {}
                                 },
                                 "isActive_": true,
-                                "name_": "ThirdIslandStoneRoot",
+                                "name_": "LightStone",
                                 "guid_": {
-                                    "value_": "56373276-EDF2-4997-A32E-C3B401C19F89"
+                                    "value_": "F0EE1FC8-1290-4E43-A49A-B53896641F06"
                                 },
                                 "components_": {
-                                    "componentCount": 0
+                                    "componentCount": 1,
+                                    "component_0": {
+                                        "polymorphic_id": 2,
+                                        "ptr_wrapper": {
+                                            "id": 2147484645,
+                                            "data": {
+                                                "value0": {
+                                                    "cereal_class_version": 0,
+                                                    "guid_": {
+                                                        "value_": "346C7EE1-07E3-4065-819C-83B45B247D02"
+                                                    },
+                                                    "isEnable_": true
+                                                },
+                                                "value1": {
+                                                    "cereal_class_version": 0
+                                                },
+                                                "value2": {
+                                                    "cereal_class_version": 0
+                                                },
+                                                "value3": {
+                                                    "cereal_class_version": 0
+                                                },
+                                                "value4": {
+                                                    "cereal_class_version": 0
+                                                },
+                                                "mv1File_": {
+                                                    "value0": {
+                                                        "polymorphic_id": 1073741824,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147484646,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "value_": "A73F69B6-7731-4A5F-8877-9BC38ED78EB8"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "useFixedInterpolation_": false
+                                            }
+                                        }
+                                    }
                                 },
                                 "transform_": {
                                     "localPos_": {
-                                        "value0": 264.6568988191718,
-                                        "value1": -75.0,
-                                        "value2": 644.9923658970245
+                                        "value0": -30.3,
+                                        "value1": -95.0,
+                                        "value2": 17.5
                                     },
                                     "localRot_": {
                                         "value0": 0.0,
@@ -32392,33 +32221,33 @@
                                         "value3": 1.0
                                     },
                                     "localScale_": {
-                                        "value0": 1.0,
-                                        "value1": 1.0,
-                                        "value2": 1.0
+                                        "value0": 4.0,
+                                        "value1": 4.0,
+                                        "value2": 4.0
                                     },
                                     "worldMatrix_": {
                                         "value0": {
-                                            "value0": 1.0,
+                                            "value0": 4.0,
                                             "value1": 0.0,
                                             "value2": 0.0,
                                             "value3": 0.0
                                         },
                                         "value1": {
                                             "value0": 0.0,
-                                            "value1": 1.0,
+                                            "value1": 4.0,
                                             "value2": 0.0,
                                             "value3": 0.0
                                         },
                                         "value2": {
                                             "value0": 0.0,
                                             "value1": 0.0,
-                                            "value2": 1.0,
+                                            "value2": 4.0,
                                             "value3": 0.0
                                         },
                                         "value3": {
-                                            "value0": 264.6568908691406,
+                                            "value0": -49.1,
                                             "value1": -75.0,
-                                            "value2": 644.9923706054688,
+                                            "value2": 74.6,
                                             "value3": 1.0
                                         }
                                     },
@@ -32426,1126 +32255,99 @@
                                     "child": {
                                         "polymorphic_id": 5,
                                         "ptr_wrapper": {
-                                            "id": 2147484650,
+                                            "id": 2147484647,
                                             "data": {
                                                 "value0": {
                                                     "value0": {}
                                                 },
                                                 "isActive_": true,
-                                                "name_": "ThirdIslandStone",
+                                                "name_": "LightStoneFlight",
                                                 "guid_": {
-                                                    "value_": "C803EBC9-2EBE-4779-9FCC-A7EE50B337F8"
+                                                    "value_": "6889125F-8D6C-489B-8A27-D650D61A02FC"
                                                 },
                                                 "components_": {
-                                                    "componentCount": 0
+                                                    "componentCount": 1,
+                                                    "component_0": {
+                                                        "polymorphic_id": 21,
+                                                        "ptr_wrapper": {
+                                                            "id": 2147484648,
+                                                            "data": {
+                                                                "value0": {
+                                                                    "cereal_class_version": 0,
+                                                                    "guid_": {
+                                                                        "value_": "86E42010-5864-4BA2-9C00-7F55DCE1FD3F"
+                                                                    },
+                                                                    "isEnable_": true
+                                                                },
+                                                                "value1": {
+                                                                    "cereal_class_version": 0
+                                                                },
+                                                                "value2": {
+                                                                    "cereal_class_version": 0
+                                                                },
+                                                                "particleFile_": {
+                                                                    "value0": {
+                                                                        "polymorphic_id": 1073741824,
+                                                                        "ptr_wrapper": {
+                                                                            "id": 2147484649,
+                                                                            "data": {
+                                                                                "value0": {
+                                                                                    "value_": "6D5B6F41-50F1-4827-BB5C-8ED7BC22D749"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "playingDuration_secs_": 20.0,
+                                                                "playMode_": 2
+                                                            }
+                                                        }
+                                                    }
                                                 },
                                                 "transform_": {
                                                     "localPos_": {
-                                                        "value0": 4.343101180828227,
+                                                        "value0": 0.0,
                                                         "value1": 0.0,
-                                                        "value2": 9.007634102975569
+                                                        "value2": 0.0
                                                     },
                                                     "localRot_": {
                                                         "value0": 0.0,
-                                                        "value1": 0.6087614290087207,
+                                                        "value1": 0.0,
                                                         "value2": 0.0,
-                                                        "value3": 0.7933533402912352
+                                                        "value3": 1.0
                                                     },
                                                     "localScale_": {
-                                                        "value0": 1.7,
-                                                        "value1": 1.7,
-                                                        "value2": 1.7
+                                                        "value0": 8.0,
+                                                        "value1": 8.0,
+                                                        "value2": 8.0
                                                     },
                                                     "worldMatrix_": {
                                                         "value0": {
-                                                            "value0": 0.43999236822128296,
+                                                            "value0": 32.0,
                                                             "value1": 0.0,
-                                                            "value2": -1.6420738697052002,
+                                                            "value2": 0.0,
                                                             "value3": 0.0
                                                         },
                                                         "value1": {
                                                             "value0": 0.0,
-                                                            "value1": 1.7000000476837158,
+                                                            "value1": 32.0,
                                                             "value2": 0.0,
                                                             "value3": 0.0
                                                         },
                                                         "value2": {
-                                                            "value0": 1.6420738697052002,
+                                                            "value0": 0.0,
                                                             "value1": 0.0,
-                                                            "value2": 0.43999236822128296,
+                                                            "value2": 32.0,
                                                             "value3": 0.0
                                                         },
                                                         "value3": {
-                                                            "value0": 269.0,
+                                                            "value0": -49.1,
                                                             "value1": -75.0,
-                                                            "value2": 654.0,
+                                                            "value2": 74.6,
                                                             "value3": 1.0
                                                         }
                                                     },
-                                                    "childCount": 1,
-                                                    "child": {
-                                                        "polymorphic_id": 1,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484651,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "value0": {}
-                                                                },
-                                                                "isActive_": true,
-                                                                "name_": "Stone",
-                                                                "guid_": {
-                                                                    "value_": "DBA8A1D4-00FE-4DE6-A60E-86BF47792B16"
-                                                                },
-                                                                "components_": {
-                                                                    "componentCount": 1,
-                                                                    "component_0": {
-                                                                        "polymorphic_id": 2,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484652,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "guid_": {
-                                                                                        "value_": "298F17FE-26DD-49A8-A7DB-D3CFAB81FEF4"
-                                                                                    },
-                                                                                    "isEnable_": true
-                                                                                },
-                                                                                "value1": {},
-                                                                                "value2": {},
-                                                                                "value3": {},
-                                                                                "value4": {},
-                                                                                "mv1File_": {
-                                                                                    "value0": {
-                                                                                        "polymorphic_id": 1073741824,
-                                                                                        "ptr_wrapper": {
-                                                                                            "id": 2147484653,
-                                                                                            "data": {
-                                                                                                "value0": {
-                                                                                                    "value_": "B2DC5261-311A-4FF5-9DFF-7EEC388FE2D4"
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                },
-                                                                                "useFixedInterpolation_": false
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "transform_": {
-                                                                    "localPos_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "localRot_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0,
-                                                                        "value3": 1.0
-                                                                    },
-                                                                    "localScale_": {
-                                                                        "value0": 1.0,
-                                                                        "value1": 1.0,
-                                                                        "value2": 1.0
-                                                                    },
-                                                                    "worldMatrix_": {
-                                                                        "value0": {
-                                                                            "value0": 0.43999236822128296,
-                                                                            "value1": 0.0,
-                                                                            "value2": -1.6420738697052002,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value1": {
-                                                                            "value0": 0.0,
-                                                                            "value1": 1.7000000476837158,
-                                                                            "value2": 0.0,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value2": {
-                                                                            "value0": 1.6420738697052002,
-                                                                            "value1": 0.0,
-                                                                            "value2": 0.43999236822128296,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value3": {
-                                                                            "value0": 269.0,
-                                                                            "value1": -75.0,
-                                                                            "value2": 654.0,
-                                                                            "value3": 1.0
-                                                                        }
-                                                                    },
-                                                                    "childCount": 2,
-                                                                    "child": {
-                                                                        "polymorphic_id": 5,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484654,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "value0": {}
-                                                                                },
-                                                                                "isActive_": true,
-                                                                                "name_": "LightIslandAura",
-                                                                                "guid_": {
-                                                                                    "value_": "3705CAD0-E119-45BD-8720-0203F0E68888"
-                                                                                },
-                                                                                "components_": {
-                                                                                    "componentCount": 1,
-                                                                                    "component_0": {
-                                                                                        "polymorphic_id": 21,
-                                                                                        "ptr_wrapper": {
-                                                                                            "id": 2147484655,
-                                                                                            "data": {
-                                                                                                "value0": {
-                                                                                                    "guid_": {
-                                                                                                        "value_": "AEAC21D7-60C1-4A82-9624-D31DA2D3AD6D"
-                                                                                                    },
-                                                                                                    "isEnable_": true
-                                                                                                },
-                                                                                                "value1": {},
-                                                                                                "value2": {},
-                                                                                                "particleFile_": {
-                                                                                                    "value0": {
-                                                                                                        "polymorphic_id": 1073741824,
-                                                                                                        "ptr_wrapper": {
-                                                                                                            "id": 2147484656,
-                                                                                                            "data": {
-                                                                                                                "value0": {
-                                                                                                                    "value_": "639948F1-59F5-4911-97AE-A207050CC13F"
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                },
-                                                                                                "playingDuration_secs_": 6.0,
-                                                                                                "playMode_": 0
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                },
-                                                                                "transform_": {
-                                                                                    "localPos_": {
-                                                                                        "value0": 0.0,
-                                                                                        "value1": 0.0,
-                                                                                        "value2": 0.0
-                                                                                    },
-                                                                                    "localRot_": {
-                                                                                        "value0": 0.0,
-                                                                                        "value1": 0.0,
-                                                                                        "value2": 0.0,
-                                                                                        "value3": 1.0
-                                                                                    },
-                                                                                    "localScale_": {
-                                                                                        "value0": 8.0,
-                                                                                        "value1": 8.0,
-                                                                                        "value2": 8.0
-                                                                                    },
-                                                                                    "worldMatrix_": {
-                                                                                        "value0": {
-                                                                                            "value0": 3.5199389457702637,
-                                                                                            "value1": 0.0,
-                                                                                            "value2": -13.136590957641602,
-                                                                                            "value3": 0.0
-                                                                                        },
-                                                                                        "value1": {
-                                                                                            "value0": 0.0,
-                                                                                            "value1": 13.600000381469727,
-                                                                                            "value2": 0.0,
-                                                                                            "value3": 0.0
-                                                                                        },
-                                                                                        "value2": {
-                                                                                            "value0": 13.136590957641602,
-                                                                                            "value1": 0.0,
-                                                                                            "value2": 3.5199389457702637,
-                                                                                            "value3": 0.0
-                                                                                        },
-                                                                                        "value3": {
-                                                                                            "value0": 269.0,
-                                                                                            "value1": -75.0,
-                                                                                            "value2": 654.0,
-                                                                                            "value3": 1.0
-                                                                                        }
-                                                                                    },
-                                                                                    "childCount": 0
-                                                                                },
-                                                                                "mark_": 0
-                                                                            }
-                                                                        }
-                                                                    },
-                                                                    "child": {
-                                                                        "polymorphic_id": 5,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484657,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "value0": {}
-                                                                                },
-                                                                                "isActive_": true,
-                                                                                "name_": "LightStoneFlight",
-                                                                                "guid_": {
-                                                                                    "value_": "A5EB479A-7B81-4400-BF37-C5B043EEFDF2"
-                                                                                },
-                                                                                "components_": {
-                                                                                    "componentCount": 1,
-                                                                                    "component_0": {
-                                                                                        "polymorphic_id": 21,
-                                                                                        "ptr_wrapper": {
-                                                                                            "id": 2147484658,
-                                                                                            "data": {
-                                                                                                "value0": {
-                                                                                                    "guid_": {
-                                                                                                        "value_": "57EEA335-C5CE-41CD-A146-3405FB65188E"
-                                                                                                    },
-                                                                                                    "isEnable_": true
-                                                                                                },
-                                                                                                "value1": {},
-                                                                                                "value2": {},
-                                                                                                "particleFile_": {
-                                                                                                    "value0": {
-                                                                                                        "polymorphic_id": 1073741824,
-                                                                                                        "ptr_wrapper": {
-                                                                                                            "id": 2147484659,
-                                                                                                            "data": {
-                                                                                                                "value0": {
-                                                                                                                    "value_": "6D5B6F41-50F1-4827-BB5C-8ED7BC22D749"
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                },
-                                                                                                "playingDuration_secs_": 20.0,
-                                                                                                "playMode_": 2
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                },
-                                                                                "transform_": {
-                                                                                    "localPos_": {
-                                                                                        "value0": 0.0,
-                                                                                        "value1": 0.0,
-                                                                                        "value2": 0.0
-                                                                                    },
-                                                                                    "localRot_": {
-                                                                                        "value0": 0.0,
-                                                                                        "value1": 0.0,
-                                                                                        "value2": 0.0,
-                                                                                        "value3": 1.0
-                                                                                    },
-                                                                                    "localScale_": {
-                                                                                        "value0": 8.0,
-                                                                                        "value1": 8.0,
-                                                                                        "value2": 8.0
-                                                                                    },
-                                                                                    "worldMatrix_": {
-                                                                                        "value0": {
-                                                                                            "value0": 3.5199389457702637,
-                                                                                            "value1": 0.0,
-                                                                                            "value2": -13.136590957641602,
-                                                                                            "value3": 0.0
-                                                                                        },
-                                                                                        "value1": {
-                                                                                            "value0": 0.0,
-                                                                                            "value1": 13.600000381469727,
-                                                                                            "value2": 0.0,
-                                                                                            "value3": 0.0
-                                                                                        },
-                                                                                        "value2": {
-                                                                                            "value0": 13.136590957641602,
-                                                                                            "value1": 0.0,
-                                                                                            "value2": 3.5199389457702637,
-                                                                                            "value3": 0.0
-                                                                                        },
-                                                                                        "value3": {
-                                                                                            "value0": 269.0,
-                                                                                            "value1": -75.0,
-                                                                                            "value2": 654.0,
-                                                                                            "value3": 1.0
-                                                                                        }
-                                                                                    },
-                                                                                    "childCount": 0
-                                                                                },
-                                                                                "mark_": 0
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "mark_": 0
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    }
-                                },
-                                "mark_": 0
-                            }
-                        }
-                    },
-                    "child": {
-                        "polymorphic_id": 5,
-                        "ptr_wrapper": {
-                            "id": 2147484660,
-                            "data": {
-                                "value0": {
-                                    "value0": {}
-                                },
-                                "isActive_": true,
-                                "name_": "FirstIslandStone",
-                                "guid_": {
-                                    "value_": "90F29AD0-ADD6-4EC5-9290-E98C6E1F181A"
-                                },
-                                "components_": {
-                                    "componentCount": 0
-                                },
-                                "transform_": {
-                                    "localPos_": {
-                                        "value0": -20.0,
-                                        "value1": -150.0,
-                                        "value2": 60.0
-                                    },
-                                    "localRot_": {
-                                        "value0": 0.0,
-                                        "value1": 0.0,
-                                        "value2": 0.0,
-                                        "value3": 1.0
-                                    },
-                                    "localScale_": {
-                                        "value0": 2.2,
-                                        "value1": 2.2,
-                                        "value2": 2.2
-                                    },
-                                    "worldMatrix_": {
-                                        "value0": {
-                                            "value0": 2.200000047683716,
-                                            "value1": 0.0,
-                                            "value2": 0.0,
-                                            "value3": 0.0
-                                        },
-                                        "value1": {
-                                            "value0": 0.0,
-                                            "value1": 2.200000047683716,
-                                            "value2": 0.0,
-                                            "value3": 0.0
-                                        },
-                                        "value2": {
-                                            "value0": 0.0,
-                                            "value1": 0.0,
-                                            "value2": 2.200000047683716,
-                                            "value3": 0.0
-                                        },
-                                        "value3": {
-                                            "value0": -20.0,
-                                            "value1": -150.0,
-                                            "value2": 60.0,
-                                            "value3": 1.0
-                                        }
-                                    },
-                                    "childCount": 1,
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484661,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Stone",
-                                                "guid_": {
-                                                    "value_": "236DAA69-AA2F-4A07-9F54-B055AC3D60A7"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 2,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484662,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "guid_": {
-                                                                        "value_": "84B64FA8-DA05-4D61-95B6-D60DA0058040"
-                                                                    },
-                                                                    "isEnable_": true
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "value4": {},
-                                                                "mv1File_": {
-                                                                    "value0": {
-                                                                        "polymorphic_id": 1073741824,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484663,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "value_": "9B255BDE-1E6A-41C4-AA53-A6DCC1497A8A"
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "useFixedInterpolation_": false
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 1.0,
-                                                        "value1": 1.0,
-                                                        "value2": 1.0
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": 2.200000047683716,
-                                                            "value1": 0.0,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 2.200000047683716,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.0,
-                                                            "value1": 0.0,
-                                                            "value2": 2.200000047683716,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": -20.0,
-                                                            "value1": -150.0,
-                                                            "value2": 60.0,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 1,
-                                                    "child": {
-                                                        "polymorphic_id": 5,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484664,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "value0": {}
-                                                                },
-                                                                "isActive_": true,
-                                                                "name_": "RoseIslandAura",
-                                                                "guid_": {
-                                                                    "value_": "C3E8393C-93AB-4C32-B14E-A65F7D71E514"
-                                                                },
-                                                                "components_": {
-                                                                    "componentCount": 1,
-                                                                    "component_0": {
-                                                                        "polymorphic_id": 21,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484665,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "guid_": {
-                                                                                        "value_": "97F0C845-DC0F-4615-89CC-0F4437275C9A"
-                                                                                    },
-                                                                                    "isEnable_": true
-                                                                                },
-                                                                                "value1": {},
-                                                                                "value2": {},
-                                                                                "particleFile_": {
-                                                                                    "value0": {
-                                                                                        "polymorphic_id": 1073741824,
-                                                                                        "ptr_wrapper": {
-                                                                                            "id": 2147484666,
-                                                                                            "data": {
-                                                                                                "value0": {
-                                                                                                    "value_": "8BBFE391-73B9-41D3-BCFA-E70AB79F2F7E"
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                },
-                                                                                "playingDuration_secs_": 6.0,
-                                                                                "playMode_": 0
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "transform_": {
-                                                                    "localPos_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "localRot_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0,
-                                                                        "value3": 1.0
-                                                                    },
-                                                                    "localScale_": {
-                                                                        "value0": 8.0,
-                                                                        "value1": 8.0,
-                                                                        "value2": 8.0
-                                                                    },
-                                                                    "worldMatrix_": {
-                                                                        "value0": {
-                                                                            "value0": 17.600000381469727,
-                                                                            "value1": 0.0,
-                                                                            "value2": 0.0,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value1": {
-                                                                            "value0": 0.0,
-                                                                            "value1": 17.600000381469727,
-                                                                            "value2": 0.0,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value2": {
-                                                                            "value0": 0.0,
-                                                                            "value1": 0.0,
-                                                                            "value2": 17.600000381469727,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value3": {
-                                                                            "value0": -20.0,
-                                                                            "value1": -150.0,
-                                                                            "value2": 60.0,
-                                                                            "value3": 1.0
-                                                                        }
-                                                                    },
-                                                                    "childCount": 0
-                                                                },
-                                                                "mark_": 0
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    }
-                                },
-                                "mark_": 0
-                            }
-                        }
-                    },
-                    "child": {
-                        "polymorphic_id": 5,
-                        "ptr_wrapper": {
-                            "id": 2147484667,
-                            "data": {
-                                "value0": {
-                                    "value0": {}
-                                },
-                                "isActive_": true,
-                                "name_": "TrainingIslandStone",
-                                "guid_": {
-                                    "value_": "2904A3E2-C5CC-4B23-B013-74C735FA2EC0"
-                                },
-                                "components_": {
-                                    "componentCount": 0
-                                },
-                                "transform_": {
-                                    "localPos_": {
-                                        "value0": 156.0,
-                                        "value1": -162.0,
-                                        "value2": 281.0
-                                    },
-                                    "localRot_": {
-                                        "value0": 0.0,
-                                        "value1": 0.9396926207859083,
-                                        "value2": 0.0,
-                                        "value3": 0.3420201433256688
-                                    },
-                                    "localScale_": {
-                                        "value0": 1.4,
-                                        "value1": 1.4,
-                                        "value2": 1.4
-                                    },
-                                    "worldMatrix_": {
-                                        "value0": {
-                                            "value0": -1.0724622011184692,
-                                            "value1": 0.0,
-                                            "value2": -0.8999026417732239,
-                                            "value3": 0.0
-                                        },
-                                        "value1": {
-                                            "value0": 0.0,
-                                            "value1": 1.399999976158142,
-                                            "value2": 0.0,
-                                            "value3": 0.0
-                                        },
-                                        "value2": {
-                                            "value0": 0.8999026417732239,
-                                            "value1": 0.0,
-                                            "value2": -1.0724622011184692,
-                                            "value3": 0.0
-                                        },
-                                        "value3": {
-                                            "value0": 156.0,
-                                            "value1": -162.0,
-                                            "value2": 281.0,
-                                            "value3": 1.0
-                                        }
-                                    },
-                                    "childCount": 1,
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484668,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Stone",
-                                                "guid_": {
-                                                    "value_": "19318146-3803-4666-ACCE-BE0695CD8743"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 2,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484669,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "guid_": {
-                                                                        "value_": "8B4DC130-1795-4CAC-B2EB-6B7C38E671CA"
-                                                                    },
-                                                                    "isEnable_": true
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "value4": {},
-                                                                "mv1File_": {
-                                                                    "value0": {
-                                                                        "polymorphic_id": 1073741824,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484670,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "value_": "B1ECF6DA-1541-4893-B121-C93D7481ACBC"
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "useFixedInterpolation_": false
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 1.0,
-                                                        "value1": 1.0,
-                                                        "value2": 1.0
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": -1.0724622011184692,
-                                                            "value1": 0.0,
-                                                            "value2": -0.8999026417732239,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 1.399999976158142,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": 0.8999026417732239,
-                                                            "value1": 0.0,
-                                                            "value2": -1.0724622011184692,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": 156.0,
-                                                            "value1": -162.0,
-                                                            "value2": 281.0,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 1,
-                                                    "child": {
-                                                        "polymorphic_id": 5,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484671,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "value0": {}
-                                                                },
-                                                                "isActive_": true,
-                                                                "name_": "SkyIslandAura",
-                                                                "guid_": {
-                                                                    "value_": "40030A19-A8EC-4809-8DFE-790C522917C6"
-                                                                },
-                                                                "components_": {
-                                                                    "componentCount": 1,
-                                                                    "component_0": {
-                                                                        "polymorphic_id": 21,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484672,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "guid_": {
-                                                                                        "value_": "01BBDE94-C0C7-4C13-A0FE-8E75D308E29D"
-                                                                                    },
-                                                                                    "isEnable_": true
-                                                                                },
-                                                                                "value1": {},
-                                                                                "value2": {},
-                                                                                "particleFile_": {
-                                                                                    "value0": {
-                                                                                        "polymorphic_id": 1073741824,
-                                                                                        "ptr_wrapper": {
-                                                                                            "id": 2147484673,
-                                                                                            "data": {
-                                                                                                "value0": {
-                                                                                                    "value_": "110D52AF-56EA-4D06-B4AE-4EC155F37C53"
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                },
-                                                                                "playingDuration_secs_": 6.0,
-                                                                                "playMode_": 0
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "transform_": {
-                                                                    "localPos_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "localRot_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0,
-                                                                        "value3": 1.0
-                                                                    },
-                                                                    "localScale_": {
-                                                                        "value0": 8.0,
-                                                                        "value1": 8.0,
-                                                                        "value2": 8.0
-                                                                    },
-                                                                    "worldMatrix_": {
-                                                                        "value0": {
-                                                                            "value0": -8.579697608947754,
-                                                                            "value1": 0.0,
-                                                                            "value2": -7.199221134185791,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value1": {
-                                                                            "value0": 0.0,
-                                                                            "value1": 11.199999809265137,
-                                                                            "value2": 0.0,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value2": {
-                                                                            "value0": 7.199221134185791,
-                                                                            "value1": 0.0,
-                                                                            "value2": -8.579697608947754,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value3": {
-                                                                            "value0": 156.0,
-                                                                            "value1": -162.0,
-                                                                            "value2": 281.0,
-                                                                            "value3": 1.0
-                                                                        }
-                                                                    },
-                                                                    "childCount": 0
-                                                                },
-                                                                "mark_": 0
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "mark_": 0
-                                            }
-                                        }
-                                    }
-                                },
-                                "mark_": 0
-                            }
-                        }
-                    },
-                    "child": {
-                        "polymorphic_id": 5,
-                        "ptr_wrapper": {
-                            "id": 2147484674,
-                            "data": {
-                                "value0": {
-                                    "value0": {}
-                                },
-                                "isActive_": true,
-                                "name_": "ForthIslandStone",
-                                "guid_": {
-                                    "value_": "6289BD5E-A0EA-417C-B80B-F10107917222"
-                                },
-                                "components_": {
-                                    "componentCount": 0
-                                },
-                                "transform_": {
-                                    "localPos_": {
-                                        "value0": -64.0,
-                                        "value1": 97.0,
-                                        "value2": 340.0
-                                    },
-                                    "localRot_": {
-                                        "value0": 0.0,
-                                        "value1": 0.8191520442889917,
-                                        "value2": 0.0,
-                                        "value3": -0.5735764363510462
-                                    },
-                                    "localScale_": {
-                                        "value0": 1.3,
-                                        "value1": 1.3,
-                                        "value2": 1.3
-                                    },
-                                    "worldMatrix_": {
-                                        "value0": {
-                                            "value0": -0.44462618231773376,
-                                            "value1": 0.0,
-                                            "value2": 1.2216004133224487,
-                                            "value3": 0.0
-                                        },
-                                        "value1": {
-                                            "value0": 0.0,
-                                            "value1": 1.2999999523162842,
-                                            "value2": 0.0,
-                                            "value3": 0.0
-                                        },
-                                        "value2": {
-                                            "value0": -1.2216004133224487,
-                                            "value1": 0.0,
-                                            "value2": -0.44462618231773376,
-                                            "value3": 0.0
-                                        },
-                                        "value3": {
-                                            "value0": -64.0,
-                                            "value1": 97.0,
-                                            "value2": 340.0,
-                                            "value3": 1.0
-                                        }
-                                    },
-                                    "childCount": 1,
-                                    "child": {
-                                        "polymorphic_id": 1,
-                                        "ptr_wrapper": {
-                                            "id": 2147484675,
-                                            "data": {
-                                                "value0": {
-                                                    "value0": {}
-                                                },
-                                                "isActive_": true,
-                                                "name_": "Stone",
-                                                "guid_": {
-                                                    "value_": "B8A5C2D6-1208-4E4B-9E55-4A379A1ABC8D"
-                                                },
-                                                "components_": {
-                                                    "componentCount": 1,
-                                                    "component_0": {
-                                                        "polymorphic_id": 2,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484676,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "guid_": {
-                                                                        "value_": "6C8E7B53-25D6-4D69-8EE3-BE459AFDFD70"
-                                                                    },
-                                                                    "isEnable_": true
-                                                                },
-                                                                "value1": {},
-                                                                "value2": {},
-                                                                "value3": {},
-                                                                "value4": {},
-                                                                "mv1File_": {
-                                                                    "value0": {
-                                                                        "polymorphic_id": 1073741824,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484677,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "value_": "72B3B76E-88CA-4358-81EF-47C415787CE9"
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "useFixedInterpolation_": false
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                "transform_": {
-                                                    "localPos_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0
-                                                    },
-                                                    "localRot_": {
-                                                        "value0": 0.0,
-                                                        "value1": 0.0,
-                                                        "value2": 0.0,
-                                                        "value3": 1.0
-                                                    },
-                                                    "localScale_": {
-                                                        "value0": 1.0,
-                                                        "value1": 1.0,
-                                                        "value2": 1.0
-                                                    },
-                                                    "worldMatrix_": {
-                                                        "value0": {
-                                                            "value0": -0.44462618231773376,
-                                                            "value1": 0.0,
-                                                            "value2": 1.2216004133224487,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value1": {
-                                                            "value0": 0.0,
-                                                            "value1": 1.2999999523162842,
-                                                            "value2": 0.0,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value2": {
-                                                            "value0": -1.2216004133224487,
-                                                            "value1": 0.0,
-                                                            "value2": -0.44462618231773376,
-                                                            "value3": 0.0
-                                                        },
-                                                        "value3": {
-                                                            "value0": -64.0,
-                                                            "value1": 97.0,
-                                                            "value2": 340.0,
-                                                            "value3": 1.0
-                                                        }
-                                                    },
-                                                    "childCount": 1,
-                                                    "child": {
-                                                        "polymorphic_id": 5,
-                                                        "ptr_wrapper": {
-                                                            "id": 2147484678,
-                                                            "data": {
-                                                                "value0": {
-                                                                    "value0": {}
-                                                                },
-                                                                "isActive_": true,
-                                                                "name_": "PearlIslandAura",
-                                                                "guid_": {
-                                                                    "value_": "4AA16197-43AF-4296-9E90-8C1249EC8055"
-                                                                },
-                                                                "components_": {
-                                                                    "componentCount": 1,
-                                                                    "component_0": {
-                                                                        "polymorphic_id": 21,
-                                                                        "ptr_wrapper": {
-                                                                            "id": 2147484679,
-                                                                            "data": {
-                                                                                "value0": {
-                                                                                    "guid_": {
-                                                                                        "value_": "37DB5921-290E-41F6-89DA-BE324402694A"
-                                                                                    },
-                                                                                    "isEnable_": true
-                                                                                },
-                                                                                "value1": {},
-                                                                                "value2": {},
-                                                                                "particleFile_": {
-                                                                                    "value0": {
-                                                                                        "polymorphic_id": 1073741824,
-                                                                                        "ptr_wrapper": {
-                                                                                            "id": 2147484680,
-                                                                                            "data": {
-                                                                                                "value0": {
-                                                                                                    "value_": "0EF597F4-985D-4706-86FB-645911A7BC8D"
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                },
-                                                                                "playingDuration_secs_": 6.0,
-                                                                                "playMode_": 0
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "transform_": {
-                                                                    "localPos_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0
-                                                                    },
-                                                                    "localRot_": {
-                                                                        "value0": 0.0,
-                                                                        "value1": 0.0,
-                                                                        "value2": 0.0,
-                                                                        "value3": 1.0
-                                                                    },
-                                                                    "localScale_": {
-                                                                        "value0": 8.0,
-                                                                        "value1": 8.0,
-                                                                        "value2": 8.0
-                                                                    },
-                                                                    "worldMatrix_": {
-                                                                        "value0": {
-                                                                            "value0": -3.55700945854187,
-                                                                            "value1": 0.0,
-                                                                            "value2": 9.77280330657959,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value1": {
-                                                                            "value0": 0.0,
-                                                                            "value1": 10.399999618530273,
-                                                                            "value2": 0.0,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value2": {
-                                                                            "value0": -9.77280330657959,
-                                                                            "value1": 0.0,
-                                                                            "value2": -3.55700945854187,
-                                                                            "value3": 0.0
-                                                                        },
-                                                                        "value3": {
-                                                                            "value0": -64.0,
-                                                                            "value1": 97.0,
-                                                                            "value2": 340.0,
-                                                                            "value3": 1.0
-                                                                        }
-                                                                    },
-                                                                    "childCount": 0
-                                                                },
-                                                                "mark_": 0
-                                                            }
-                                                        }
-                                                    }
+                                                    "childCount": 0
                                                 },
                                                 "mark_": 0
                                             }

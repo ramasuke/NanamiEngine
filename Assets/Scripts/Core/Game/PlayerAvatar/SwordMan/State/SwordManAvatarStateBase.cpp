@@ -352,7 +352,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         }
 
         // 部位グループの Transform は本体の原点にあるので、狙う点へ向く
-        const glm::vec3 toTarget = LockOnPositionOf(*target) - Transform().GetWorldPos();
+        const glm::vec3 toTarget = ILockOnTarget::PositionOf(*target) - Transform().GetWorldPos();
         if (toTarget.x * toTarget.x + toTarget.z * toTarget.z < 0.0001f)
             return;
 
@@ -385,6 +385,6 @@ namespace GameCore::PlayerAvatar::SwordMan
 
     std::shared_ptr<GameObject::IGameObject> SwordManAvatarStateBase::FindNearestLockOnTarget() const
     {
-        return GameCore::PlayerAvatar::LockOn::FindNearestTarget(LockOnDetectionArea(), Transform().GetWorldPos());
+        return LockOnControl().FindNearestTarget(Transform().GetWorldPos());
     }
 }

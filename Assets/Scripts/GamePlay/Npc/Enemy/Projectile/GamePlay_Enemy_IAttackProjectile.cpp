@@ -6,7 +6,7 @@
 
 namespace GamePlay::Npc::Enemy
 {
-    void SetProjectileDamage(const std::weak_ptr<GameObject::IGameObject>& projectile, const GameCore::Damage::PhysicsPower power)
+    void IAttackProjectile::TrySetDamage(const std::weak_ptr<GameObject::IGameObject>& projectile, const GameCore::Damage::PhysicsPower power)
     {
         const auto projectileObject = projectile.lock();
         if (!projectileObject)

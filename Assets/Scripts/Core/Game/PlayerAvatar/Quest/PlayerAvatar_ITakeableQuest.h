@@ -27,6 +27,9 @@ namespace GameCore::PlayerAvatar::Quest
         /** @brief true なら達成のたびに報酬を出し、達成済みとして残さない(何度でも受けられる) */
         [[nodiscard]] virtual bool IsRepeatable() const { return false; }
 
+        /** @brief 受注のたびに別の実体を渡すための複製。中身の型ごと写す */
+        [[nodiscard]] std::shared_ptr<ITakeableQuest> Clone() const;
+
         /** @brief 達成時にプレイヤーへ入る額 */
         [[nodiscard]] const StatusParameter::Money& RewardMoney() const { return rewardMoney_; }
 
@@ -39,9 +42,6 @@ namespace GameCore::PlayerAvatar::Quest
     private:
         [[serialize(0)]] StatusParameter::Money rewardMoney_;
     };
-
-    /** @brief 受注のたびに別の実体を渡すための複製。中身の型ごと写す */
-    [[nodiscard]] std::shared_ptr<ITakeableQuest> CloneQuest(const std::shared_ptr<ITakeableQuest>& source);
 }
 
 CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::Quest::ITakeableQuest, 0)

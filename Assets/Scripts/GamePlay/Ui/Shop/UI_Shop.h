@@ -13,6 +13,7 @@
 #include "Model/ShopModel.h"
 #include "Receipt/Ui_ShopReceipt.h"
 #include "Row/Ui_ShopRow.h"
+#include "../EventBoard/Row/EventBoardRowPool.h"
 
 namespace GamePlay::Ui
 {
@@ -46,7 +47,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) moneyText_;
         [[serialize(0)]] FIELD(ShopReceipt) receipt_;
 
-        std::vector<std::weak_ptr<ShopRow>> rows_;
+        EventBoardRowPool<ShopRow> rows_;
         // 「入荷待ち」は prefab で置いた行内の位置を保ったまま、空いた行へずらす
         float restockOffsetY_ = 0.0f;
 

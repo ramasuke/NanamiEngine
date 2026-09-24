@@ -10,10 +10,16 @@ namespace NanamiEngine::AssetUpdater
         std::filesystem::path gameRoot;
         std::filesystem::path installedState;
         std::filesystem::path stagingDirectory;
-    };
 
-    [[nodiscard]] inline std::filesystem::path StagedBlobPath(const AssetUpdaterPaths& paths, const std::string& hash)
-    {
-        return paths.stagingDirectory / "files" / hash;
-    }
+        /** ダウンロードしたファイルを中身のハッシュ名で置くフォルダ */
+        [[nodiscard]] std::filesystem::path StagedBlobDirectory() const
+        {
+            return stagingDirectory / "files";
+        }
+
+        [[nodiscard]] std::filesystem::path StagedBlobPath(const std::string& hash) const
+        {
+            return StagedBlobDirectory() / hash;
+        }
+    };
 }

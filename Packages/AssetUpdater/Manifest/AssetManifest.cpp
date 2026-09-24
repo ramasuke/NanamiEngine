@@ -127,7 +127,7 @@ namespace NanamiEngine::AssetUpdater
         return added.size() + changed.size();
     }
 
-    ManifestDiff DiffManifest(const AssetManifest& installed, const AssetManifest& remote)
+    ManifestDiff ManifestDiff::Between(const AssetManifest& installed, const AssetManifest& remote)
     {
         std::unordered_map<std::string, const ManifestEntry*> installedByPath;
         installedByPath.reserve(installed.entries.size());
@@ -170,7 +170,7 @@ namespace NanamiEngine::AssetUpdater
         return diff;
     }
 
-    std::vector<ManifestBlob> BlobsToInstall(const ManifestDiff& diff)
+    std::vector<ManifestBlob> ManifestDiff::BlobsToInstall() const
     {
         std::vector<ManifestBlob> blobs;
         std::unordered_set<std::string> seen;
@@ -181,7 +181,7 @@ namespace NanamiEngine::AssetUpdater
             blobs.push_back({hash, size, path});
         };
 
-        for (const std::vector<ManifestEntry>* group : {&diff.added, &diff.changed})
+        for (const std::vector<ManifestEntry>* group : {&added, &changed})
         {
             for (const ManifestEntry& entry : *group)
             {

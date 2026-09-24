@@ -15,7 +15,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         TickStatus DoTick(const TickContext& context) override;
         void       DoDrawGui() override;
 
-        [[serialize(0)]] std::vector<Physics::Layer> layers_      = { Physics::NameToLayer("Enemy") };
+        [[serialize(0)]] std::vector<Physics::Layer> layers_      = { Physics::PhysicsLayers::NameToLayer("Enemy") };
         [[serialize(1)]] float                       maxDistance_ = 10.0f;
         [[serialize(2)]] float                       offsetY_     = 10.0f;
 

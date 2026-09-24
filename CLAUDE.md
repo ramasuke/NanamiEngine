@@ -93,7 +93,7 @@ other projects link). Game code plugs in through registration instead:
 Add Component menu entries via `AddComponent::RegisterMenu` (game menu: `Assets/Scripts/Editor/AddComponentMenu/`),
 lock-on framing via `CineMachine::Behaviour::SetLockOnPositionResolver`. Physics layers other than `Default` are
 per-project data (`ProjectConfig/Physics/LayerNames.json` + `LayerCollisionMasks.json`, edited in Config > Physics);
-look them up with `Physics::NameToLayer("Enemy")`, never add enum values. The exe takes `-project <dir>` (sets the
+look them up with `Physics::PhysicsLayers::NameToLayer("Enemy")`, never add enum values. The exe takes `-project <dir>` (sets the
 working directory), and the game exe is built with `-p:NanamiApplicationMode=Game` (defines `NANAMI_GAME_BUILD`).
 
 ## Engine headers must not expose DxLib
@@ -134,8 +134,8 @@ logic still runs on the host. The wire format is one header kept **identical in 
 (server accepts `MIN_PROTOCOL_VERSION`..`PROTOCOL_VERSION`) whenever the bytes change, and re-run the server's
 `relay_selftest` (`build_windows.bat`, then `relay_selftest.exe --port 34567` against a local `nanami-relay.exe`).
 
-A stage is entered through `JoinOrHostStageAsync` with the room the player picked in stage select
-(`SetNextStageRoom`, used once, then back to a public room):
+A stage is entered through `Game::Instance().Matchmaker().JoinOrHostAsync` (`StageMatchmaker`) with the room the player picked in stage select
+(`Matchmaker().SetNextRoom`, used once, then back to a public room):
 
 - **Public** (`RelayRoom::Mode::Public`) - share a room keyed by `(appId, stage)`; falls back to LAN discovery,
   then to hosting alone.

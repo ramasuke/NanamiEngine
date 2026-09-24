@@ -14,7 +14,7 @@ namespace GameCore::Npc::Friendly::Behaviour
         const TickContext& context)
     {
         // 依頼は何度でも受けられるので、ツリーが持つ原本ではなく毎回複製を渡す
-        GetPlayerAvatar()->PlayerStatus().Quest().Subscribe(PlayerAvatar::Quest::CloneQuest(quest_));
+        GetPlayerAvatar()->PlayerStatus().Quest().Subscribe(quest_ ? quest_->Clone() : nullptr);
         return TickStatus::Success;
     }
 

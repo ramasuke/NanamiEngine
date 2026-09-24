@@ -33,6 +33,6 @@ namespace GameCore::Scene::Main
         
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
         std::shared_ptr<GrassLand::StageArrivalMovie<GrassLandSceneContext>> arrivalMovie_;
-        NanamiEngine::R4::Disposable stageClearSubscription_;
+        Story::StageClearWatcher stageClearWatcher_;
     };
 }

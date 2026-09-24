@@ -1,22 +1,14 @@
 ﻿#pragma once
-#include "Libs/glm/vec3.hpp"
-
-namespace NanamiEngine::Module::GameObject
-{
-    class IGameObject;
-}
+#include "Packages/Cinemachine/VirtualCamera/Behaviour/IVirtualCameraTarget.h"
 
 namespace GameCore::PlayerAvatar
 {
     // このGameObjectがロックオン対象になり得ることを示すインターフェース
-    class ILockOnTarget
+    // NOTE: ロックオン位置は ILockOnCameraTarget::LockOnPosition() で渡す（ロックオンカメラもこれを使う）。
+    //       位置の取得は ILockOnTarget::PositionOf(target)。持たないオブジェクトは自身の位置を返す
+    class ILockOnTarget : public NanamiEngine::CineMachine::ILockOnCameraTarget
     {
     public:
-        virtual ~ILockOnTarget() = default;
-        // 照準を重ねたり視線を通したりする位置（ワールド座標）
-        [[nodiscard]] virtual glm::vec3 LockOnPosition() = 0;
+        ~ILockOnTarget() override = default;
     };
-
-    // ILockOnTarget を持たないオブジェクトは自身の位置を返す
-    [[nodiscard]] glm::vec3 LockOnPositionOf(NanamiEngine::Module::GameObject::IGameObject& target);
 }

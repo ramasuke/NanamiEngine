@@ -34,11 +34,6 @@
   地上には、魔物がうろつく **狩り場** がある。
 - 島は、底に埋まった **浮遊石** の力で浮いている。拠点の島には緑・光の **2つ** の浮遊石があり、
   2つそろって「島の心臓」と呼ばれる。石は砕けたのではなく、**丸ごと抜けて飛んでいった**（欠片・核片という設定はやめた。2026-09-24）。
-- どの島も尖った底に浮遊石が埋まっていて（底から結晶が突き出している）、それで浮いている。石の色は島ごとに違う:
-  拠点の島 = 紅、噴水の島 = 緑、家の島 = 光（黄）、訓練の島 = 蒼、ForthIsland = 白（2026-09-24。モデル `IslandFloatingStone_<色>.mv1`、
-  `<色>IslandStone.prefab`。置き場所は `tools/art/island_floating_stones.py`）。
-  序章で緑・光の石が抜かれて噴水の島と家の島が落ち、2つの石は草原・砂漠へ飛んでいく（2026-09-24 決定。
-  それまでは拠点の島の心臓の地中から抜ける演出だった）。
 - **浮遊石は獣や魔物を引き寄せる**（2026-09-24 追加）。石が落ちた狩り場には群れが集まり、強いものほど石の傍に居着く。
   だから石の在りかは「魔物の群れ」で見当がつき、石を持ち去ればその土地の獣は散っていく。
   - 【仮】島の底に埋まっている間は土に抑えられて静かで、むき出しになると呼び始める（拠点の島が魔物に囲まれていなかった理由。
@@ -87,17 +82,17 @@
 4. ドラゴンが空へ上がって島を壊し始める。山頂の大砲で撃ち落とす。（実装済み。BT の最後は `ChangeToMainIslandScene`）
    火球は噴水の島 → 家の島 → 拠点の島の順に落ち、着弾点で `IslandFireImpact`（爆発）・`IslandBurning`（燃え続ける炎と黒煙）・
    `IslandCrumble`（島の底が崩れ落ちる）を出す（BT の "DestroyIslandState 2..4"。`tools/art/island_destruction_effects.py`）。
-5. 墜ちたドラゴンが島の中心に爪を突き立て、噴水の島と家の島の底から **緑・光の浮遊石が抜け出して**二方の狩り場へ飛び、
-   2つの島が落ちていく。島がぐらりと傾いて暗転する。
+5. 墜ちたドラゴンが島の中心に爪を突き立て、**2つの浮遊石が地面から抜け出して**二方の狩り場へ飛んでいく。
+   島がぐらりと傾いて暗転する。
    → 実装済み（`FirstEventDragon` の BT の "Heart ..." ノード）: シーンの `Heart Dive Camera`（LookAt でドラゴンを追う）→
    教官の叫び（`StartChat` で待たずに流す。降下・爪・心臓が砕ける瞬間に3行が重なる）→ `ToIslandHeart` のルートで拠点の島の中心へ降下 →
    爪（`Attack1`。ここで島全体を上から映す `LookDestroyIslandCamera` に切り替え、地割れを見せる）→ `IslandHeartBreak`（光の柱・地割れ・突き出す岩）と島の縁の崩落 → `HeartShardScatter`（閃光と衝撃の輪。
-   `tools/art/heart_shatter_effect.py`。名前は昔の「欠片が散る」設定のまま）→ 揺れ → 島の底が崩れ落ちる →
+   `tools/art/heart_shatter_effect.py`。名前は昔の「欠片が散る」設定のまま）と同時に、緑・金の2つの浮遊石
+   （シーンの `IslandHeartStones` の子。心臓の真下の地中に埋めてある。モデルは `Assets/Art/Models/IslandHeart/`）が
+   地面を割ってせり上がり、少し浮いてから、それぞれの色の光の尾（`Green/LightStoneFlight`）を引いて二方の空へ飛んでいく
+   （BT アクション `Story::ScatterFloatingStones`。遠景のカメラでも見えるよう、石は高さ約 80）→ 揺れ → 島の底が崩れ落ちる →
    同じカメラのまま、噴水の島（`SecondIsland`）と家の島（`ThirdIsland`）が橋ごと傾いて雲の下へ落ちていく
-   （BT アクション `FallIsland`。燃えていた炎と煙は `AttachParticle` で島に付いたまま一緒に落ちる。それぞれの島が傾く前に、
-   底の浮遊石（噴水の島 = 緑、家の島 = 光）だけが `Green/LightStoneRipOut` とともに下へ抜け、同じ色の `Green/LightStoneFlight` の尾を
-   引いて二方の空へ飛んでいく = "<島> Stone Pull Out"（BT アクション `Story::ScatterFloatingStones`）。
-   `ScatterFloatingStones` の riseHeight_ を負にして使い、root は `IslandFloatingStones/<島>StoneRoot`）→ `Heart Dive Camera` のまま巣へ帰るのを見送る。
+   （BT アクション `FallIsland`。燃えていた炎と煙は `AttachParticle` で島に付いたまま一緒に落ちる）→ `Heart Dive Camera` のまま巣へ帰るのを見送る。
    NOTE: Sequence は毎フレーム子0から Tick し直すので、待ち（`WaitSeconds` / ルート / 会話）の手前に置く生成・再生・カメラ切替は
    1つずつ `OnceExecute` で包む（包まないと待っている間ずっと毎フレーム出る）。
    この2つの島と3本の橋は、`MainIslandScene` では隠してある（落ちた設定）。噴水の島とその階段だけは草原の後に戻ってくる（第1章）。
@@ -296,7 +291,7 @@ python tools/art/story_npcs.py --only camp     # prologue / dragon / island / ne
 - `Chat` はプレイヤーが話しかけたときにしか始まらない。続けて話させるときは、2つ目から `ImplementChat` にする。
 - ステージのクリア条件は、そのシーンのコンテキストが持つ（`GrassLandSceneContext::clearEnemyKind_` / `clearStoryFlag_`、
   GameManage.scene。草原は大顎 = `Tyrannosaurus` → `GrassLandCleared`）。`GrassLandScene` が `Init` で
-  `Story::WatchStageClear`（`Story_StageClear.h`、GameObject に依らない関数）を記録帳の `OnDefeat` に繋ぎ、`DoDispose` で外す。
+  `Story::StageClearWatcher`（`Story_StageClear.h`、GameObject に依らないクラス）で記録帳の `OnDefeat` を見張り、`DoDispose` で外す。
   記録帳と同じく、協力プレイでも各ピアで立つ。**ロジックで済むものはコンポーネントにしない。**
 - `EnemySpawnPoint::skipIfStoryFlag_`（-1 = 常に湧く）にフラグを入れると、そのフラグが立った後は湧かない。
   大顎のスポーン地点は `GrassLandCleared`（2）。敵を湧かせるのはホストなので、判断もホストの進み具合。

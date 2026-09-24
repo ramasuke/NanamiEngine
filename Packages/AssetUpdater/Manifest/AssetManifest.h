@@ -30,19 +30,6 @@ namespace NanamiEngine::AssetUpdater
         [[nodiscard]] static bool TryLoadFile(const std::filesystem::path& filePath, AssetManifest& outManifest, std::string& outError);
     };
 
-    struct ManifestDiff
-    {
-        std::vector<ManifestEntry> added;
-        std::vector<ManifestEntry> changed;
-        std::vector<std::string>   removedPaths;
-        std::uint64_t              downloadBytes = 0;
-
-        [[nodiscard]] bool        IsUpToDate()  const;
-        [[nodiscard]] std::size_t UpdateCount() const;
-    };
-
-    [[nodiscard]] ManifestDiff DiffManifest(const AssetManifest& installed, const AssetManifest& remote);
-
     struct ManifestBlob
     {
         std::string   hash;
@@ -51,6 +38,20 @@ namespace NanamiEngine::AssetUpdater
         std::string   path;
     };
 
-    /** 差分で必要になるファイル (本体と .meta)。中身が同じものは1つにまとめる */
-    [[nodiscard]] std::vector<ManifestBlob> BlobsToInstall(const ManifestDiff& diff);
+    struct ManifestDiff
+    {
+        std::vector<ManifestEntry> added;
+        std::vector<ManifestEntry> changed;
+        std::vector<std::string>   removedPaths;
+        std::uint64_t              downloadBytes = 0;
+
+        /** installed から remote にするための差分 */
+        [[nodiscard]] static ManifestDiff Between(const AssetManifest& installed, const AssetManifest& remote);
+
+        [[nodiscard]] bool        IsUpToDate()  const;
+        [[nodiscard]] std::size_t UpdateCount() const;
+
+        /** 差分で必要になるファイル (本体と .meta)。中身が同じものは1つにまとめる */
+        [[nodiscard]] std::vector<ManifestBlob> BlobsToInstall() const;
+    };
 }

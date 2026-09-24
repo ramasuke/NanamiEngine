@@ -6,6 +6,7 @@
 #include <thread>
 
 #include "../Install/AssetUpdaterPaths.h"
+#include "../Install/Installer.h"
 #include "../Interface/IAssetUpdater.h"
 
 namespace NanamiEngine::AssetUpdater
@@ -59,6 +60,7 @@ namespace NanamiEngine::AssetUpdater
 
         std::unique_ptr<IAssetUpdater> updater_;
         AssetUpdaterPaths              paths_;
+        Installer                      installer_;
         std::atomic<AssetUpdateState>  state_ {AssetUpdateState::Idle};
         UpdateCheckResult              checkResult_;
         std::string                    errorMessage_;

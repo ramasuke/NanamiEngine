@@ -100,7 +100,7 @@ namespace NanamiEngine::AssetUpdater
                 installed = AssetManifest();
         }
 
-        result.diff   = DiffManifest(installed, result.remote);
+        result.diff   = ManifestDiff::Between(installed, result.remote);
         result.status = result.diff.IsUpToDate() ? UpdateCheckStatus::UpToDate : UpdateCheckStatus::UpdateAvailable;
         return result;
     }
@@ -108,7 +108,7 @@ namespace NanamiEngine::AssetUpdater
     DownloadResult HttpAssetUpdater::Download(const UpdateCheckResult& update, DownloadProgress& progress, const std::stop_token& stopToken)
     {
         DownloadResult result;
-        const std::vector<ManifestBlob> blobs = BlobsToInstall(update.diff);
+        const std::vector<ManifestBlob> blobs = update.diff.BlobsToInstall();
 
         std::uint64_t totalBytes = 0;
         for (const ManifestBlob& blob : blobs)
@@ -118,7 +118,7 @@ namespace NanamiEngine::AssetUpdater
         progress.finishedFiles.store(0);
         progress.totalFiles.store(static_cast<std::uint32_t>(blobs.size()));
 
-        const std::filesystem::path filesDirectory = settings_.paths.stagingDirectory / "files";
+        const std::filesystem::path filesDirectory = settings_.paths.StagedBlobDirectory();
         std::error_code error;
         std::filesystem::create_directories(filesDirectory, error);
         if (error)
@@ -145,7 +145,7 @@ namespace NanamiEngine::AssetUpdater
             }
 
             // 前回途中で止まっていても、照合済みのものはそのまま使う
-            const std::filesystem::path staged = StagedBlobPath(settings_.paths, blob.hash);
+            const std::filesystem::path staged = settings_.paths.StagedBlobPath(blob.hash);
             if (Sha256OfFile(staged) != blob.hash)
             {
                 std::filesystem::path part = staged;

@@ -64,6 +64,8 @@ namespace NanamiEngine::Module::Physics
         void PullTransforms() const;
         // RigidBody に付いている Sensor を、自分の Transform の位置へ動かす
         void MoveSensor(const Component::ColliderBase& collider) const;
+        // NOTE: Body は Awake 時の姿勢で作られるので、Instantiate 後に動かした Transform へ root 以下の Body を合わせる
+        void SyncTransforms(GameObject::IGameObject& root) const;
 
         [[nodiscard]] std::optional<JPH::BodyID> BodyOf(const Component::RigidBody& rigidBody) const;
         [[nodiscard]] size_t AttachedColliderCount(const Component::RigidBody& rigidBody) const;

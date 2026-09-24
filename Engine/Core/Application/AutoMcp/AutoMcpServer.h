@@ -94,7 +94,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         void Flush(Client& client) const;
         void RemoveClosedClients();
         [[nodiscard]] Client* FindClient(std::uint64_t id) const;
-        [[nodiscard]] static const JsonValue& Args(const PendingRequest& request);
+        [[nodiscard]] static JsonArgs Args(const PendingRequest& request);
 
         std::uintptr_t                        listenSocket_;
         int                                   listeningPort_    = 0;

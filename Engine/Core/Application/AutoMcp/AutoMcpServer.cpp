@@ -268,10 +268,10 @@ namespace NanamiEngine::Core::Application::AutoMcp
             return;
         }
 
-        if (const JsonValue* id = FindMember(*request.document, "id"); id != nullptr && id->IsInt64())
+        if (const JsonValue* id = JsonArgs(*request.document).FindMember("id"); id != nullptr && id->IsInt64())
             request.requestId = id->GetInt64();
 
-        const JsonValue* command = FindMember(*request.document, "cmd");
+        const JsonValue* command = JsonArgs(*request.document).FindMember("cmd");
         if (command == nullptr || !command->IsString())
         {
             SendError(request, "request has no \"cmd\" string");
@@ -281,7 +281,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
         if (request.command == "screenshot")
         {
-            const JsonValue* mode = FindMember(Args(request), "mode");
+            const JsonValue* mode = Args(request).FindMember("mode");
             const std::string modeText = mode != nullptr && mode->IsString() ? mode->GetString() : "full";
             if (modeText != "full" && modeText != "game")
             {
@@ -321,7 +321,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         std::optional<std::string> exceptionMessage;
         std::string sehMessage;
 
-        const bool isSucceeded = Module::SafeExecute([&]
+        const bool isSucceeded = Module::SafeExecutor::Execute([&]
         {
             try
             {
@@ -382,10 +382,10 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
             if (FindClient(screenshot.request.clientId) != nullptr)
             {
-                const JsonValue& args = Args(screenshot.request);
-                const std::string format   = OptionalString(args, "format", "jpeg");
-                const int         maxWidth = OptionalInt(args, "maxWidth", Configuration::AutoMcpConfiguration::GetScreenshotMaxWidth());
-                const int         quality  = OptionalInt(args, "quality", 85);
+                const JsonArgs args = Args(screenshot.request);
+                const std::string format   = args.OptionalString("format", "jpeg");
+                const int         maxWidth = args.OptionalInt("maxWidth", Configuration::AutoMcpConfiguration::GetScreenshotMaxWidth());
+                const int         quality  = args.OptionalInt("quality", 85);
 
                 JsonDocument result(rapidjson::kObjectType);
                 std::optional<std::string> error;
@@ -487,10 +487,10 @@ namespace NanamiEngine::Core::Application::AutoMcp
         return nullptr;
     }
 
-    const JsonValue& AutoMcpServer::Args(const PendingRequest& request)
+    JsonArgs AutoMcpServer::Args(const PendingRequest& request)
     {
         static const JsonValue emptyObject(rapidjson::kObjectType);
-        const JsonValue* args = request.document ? FindMember(*request.document, "args") : nullptr;
-        return args != nullptr && args->IsObject() ? *args : emptyObject;
+        const JsonValue* args = request.document ? JsonArgs(*request.document).FindMember("args") : nullptr;
+        return JsonArgs(args != nullptr && args->IsObject() ? *args : emptyObject);
     }
 }

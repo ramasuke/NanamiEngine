@@ -15,6 +15,7 @@
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../Model/RestorationBoardModel.h"
 #include "../Row/Ui_EventBoard_RestorationRow.h"
+#include "../Row/EventBoardRowPool.h"
 
 namespace GamePlay::Ui
 {
@@ -63,7 +64,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] std::string notApplicableText_ = "―";
         [[serialize(0)]] std::string noConditionText_   = "なし";
 
-        std::vector<std::weak_ptr<EventBoardRestorationRow>> rows_;
+        EventBoardRowPool<EventBoardRestorationRow> rows_;
 
 #pragma region Serialization Function
     public:

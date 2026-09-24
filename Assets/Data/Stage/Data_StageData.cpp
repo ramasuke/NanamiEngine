@@ -10,7 +10,7 @@ namespace NanamiEngine::Module::Asset
 
     bool StageData::IsUnlocked(const GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockContext& context) const
     {
-        return GameCore::PlayerAvatar::Quest::Unlock::AreAllSatisfied(unlockConditions_, context);
+        return GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockConditionList::AreAllSatisfied(unlockConditions_, context);
     }
 
     void StageData::OnDrawGui()
@@ -30,7 +30,7 @@ namespace NanamiEngine::Module::Asset
                 descriptionLines_.emplace_back();
             }
         });
-        GameCore::PlayerAvatar::Quest::Unlock::DrawQuestUnlockConditions("unlockConditions_", unlockConditions_);
+        GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockConditionList::DrawListGui("unlockConditions_", unlockConditions_);
         LibCore::ImGuiHelper::OnDrawInputField("lockedDescriptionLines_", lockedDescriptionLines_, [this]
         {
             if (ImGui::Button("Add Locked Line"))

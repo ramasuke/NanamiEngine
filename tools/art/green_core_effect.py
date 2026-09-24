@@ -11,7 +11,6 @@ GreenStoneFlight    飛んでいる石に付ける。光の玉と、尾を引く
 Light/FireStoneFlight  同じものの光(黄)・火(赤)の石の色。序章で3つの石が散るときに使う
 GreenStoneDock      拠点の島の底に石がはまる瞬間。閃光・衝撃の輪・舞い散る光・落ちる土くれ
 LightCoreAura / LightStoneLiftOff  砂漠の光の浮遊石 (黄) の色違い
-<Color>IslandAura / <Color>StoneRipOut  島の底の浮遊石 (ISLAND_STONES の色)。RipOut は序章で落ちる島から石が抜けるときに使う
 モデルは Assets/Art/Models/IslandHeart/ (GreenCoreShard.mv1 は高さ 17 = 約 2.1 m、クレーターは半径 18 = 約 2.25 m)。
 単位は m (tools/art/magic_fx_lib.py と同じ。プレハブが scale 8 で再生する)。
 
@@ -52,16 +51,6 @@ LIGHT_PALE = (255, 245, 205)
 LIGHT_DEEP = (215, 150, 40)
 FIRE = (255, 110, 60)
 FIRE_PALE = (255, 215, 180)
-# 島の底の浮遊石 (Assets/Art/Models/IslandHeart/IslandFloatingStone_<Color>.mv1)。色 -> (光, 淡い光, 濃い光, 抜かれるか)
-# Green / Light は序章で落ちる島から抜かれて草原・砂漠へ飛んでいく物語の石 (飛ぶ尾は Green/LightStoneFlight を使う)
-ISLAND_STONES = {
-    'Green': (GREEN, PALE, DEEP, True),
-    'Light': (LIGHT, LIGHT_PALE, LIGHT_DEEP, True),
-    'Sky': ((110, 200, 255), (210, 240, 255), (50, 130, 220), False),
-    'Pearl': ((225, 230, 255), (250, 250, 255), (160, 170, 210), False),
-    'Rose': ((255, 110, 150), (255, 215, 225), (210, 50, 100), False),
-}
-ISLAND_CORE_Y = -3.0           # 島の底から突き出した結晶の中ほど
 CORE_Y = 1.0                   # 結晶の中ほど
 
 
@@ -107,22 +96,6 @@ def green_core_aura():
 
 def light_core_aura():
     return core_aura(LIGHT, LIGHT_PALE, LIGHT_DEEP)
-
-
-def island_core_aura(GLOW, PALE_GLOW, DEEP_GLOW):
-    # NOTE: 島の底から突き出した石なので、地面の輪や光の柱は無く、粒は下へこぼれる
-    return project([
-        N('Halo', tex='glow', at=(0, ISLAND_CORE_Y, 0), life=120, grow=(2.4, 4.2, 0, 10), color=a(GLOW, 110),
-          fade_in=40, fade_out=(60, 0, -20), **every(60)),
-        N('Heart', tex='glow_core', at=(0, ISLAND_CORE_Y, 0), life=90, size=1.6, color=a(PALE_GLOW, 120),
-          fade_in=30, fade_out=(40, 0, -20), **every(45)),
-        N('Motes', tex='spark', life=(100, 160), emit=emit_circle((0.3, 2.0)), at=(0, ISLAND_CORE_Y - 1.5, 0),
-          vel=((-0.004, 0.004), (-0.02, -0.008), (-0.004, 0.004)), grow=((0.14, 0.24), 0.04, 0, 0),
-          color=a(PALE_GLOW, 230), color_spread=(30, 0, 30, 0), fade_in=15, fade_out=(40, 0, -20), **every(4)),
-        N('Wisps', tex='glow', life=(120, 180), emit=emit_circle((0.2, 1.2)), at=(0, ISLAND_CORE_Y - 1.0, 0),
-          vel=((-0.002, 0.002), (-0.012, -0.006), (-0.002, 0.002)), grow=((0.5, 0.8), 0.1, 0, 0),
-          color=a(DEEP_GLOW, 90), fade_in=30, fade_out=(60, 0, -20), **every(15)),
-    ], END_FRAME)
 
 
 def stone_lift_off(GREEN, PALE):
@@ -178,10 +151,6 @@ def fire_stone_flight():
 
 
 def green_stone_dock():
-    return stone_burst(GREEN, PALE)
-
-
-def stone_burst(GREEN, PALE):
     return project([
         flash('Flash', PALE, 12.0, life=20),
         N('Bloom', tex='glow', life=90, grow=(4.0, 9.0, 20, 0), color=a(GREEN, 170), fade_out=(70, 0, -20)),
@@ -211,11 +180,6 @@ EFFECTS = {
     'LightCoreAura': (light_core_aura, LOOP, CYCLE / 60.0),
     'LightStoneLiftOff': (light_stone_lift_off, DESTROY, 150 / 60.0 + 0.1),
 }
-# 島の底の浮遊石。序章で落ちる島からは抜かれて飛んでいく (島の底から抜ける瞬間は、はまるときと同じく光と土くれが下へこぼれる)
-for _color, (_glow, _pale, _deep, _pulled) in ISLAND_STONES.items():
-    EFFECTS[f'{_color}IslandAura'] = (lambda g=_glow, p=_pale, d=_deep: island_core_aura(g, p, d), LOOP, CYCLE / 60.0)
-    if _pulled:
-        EFFECTS[f'{_color}StoneRipOut'] = (lambda g=_glow, p=_pale: stone_burst(g, p), DESTROY, 150 / 60.0 + 0.1)
 
 
 def run(cmd):

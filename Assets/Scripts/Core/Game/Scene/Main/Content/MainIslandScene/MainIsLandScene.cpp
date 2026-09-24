@@ -39,7 +39,7 @@ namespace GameCore::Scene::Main
         SubScene().Push(Sub::SceneType::ChattingUI);
         
         auto loaded = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatarWithAttachments(
-            PlayerAvatar::LoadType(),
+            PlayerAvatar::SelectedPlayerAvatarType::Load(),
             Context()->PlayerSpawnPoint(),
             nullptr,
             true,
@@ -129,7 +129,7 @@ namespace GameCore::Scene::Main
         playerAvatar_.reset();
         attachments_ = {};
 
-        PlayerAvatar::SaveType(type);
+        PlayerAvatar::SelectedPlayerAvatarType::Save(type);
 
         auto loaded = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatarWithAttachments(
             type,
@@ -151,7 +151,7 @@ namespace GameCore::Scene::Main
         // 読み込みの途中で抜けたときはアバターが居ない。そのときは進行も保存しない
         if (const auto avatar = playerAvatar_.lock())
         {
-            PlayerAvatar::SaveType(*avatar);
+            PlayerAvatar::SelectedPlayerAvatarType::Save(*avatar);
             avatar->SaveStatus();
             SaveGameProgression(GameProgresion::GrassLandStage);
         }

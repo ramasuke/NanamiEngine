@@ -13,7 +13,7 @@ void CineMachine::Behaviour::VirtualCameraFollowBehaviour::SetTarget(
 
 glm::vec3 CineMachine::Behaviour::VirtualCameraFollowBehaviour::MoveTargetPosition() const noexcept
 {
-    return CameraTargetPositionOf(*followTarget_.get()) + followOffset_;
+    return IVirtualCameraTarget::PositionOf(*followTarget_.get()) + followOffset_;
 }
 
 void CineMachine::Behaviour::VirtualCameraFollowBehaviour::OnCameraUpdate()

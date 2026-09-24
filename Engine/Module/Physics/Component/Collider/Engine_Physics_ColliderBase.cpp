@@ -120,7 +120,7 @@ namespace NanamiEngine::Module::Component
     {
         const auto rigidBodyObject = Core::Application::ApplicationBase::Physics().Bodies().FindRigidBodyObject(*this);
         ImGui::Text("RigidBody: %s", rigidBodyObject ? rigidBodyObject->Name().c_str() : "なし(Static)");
-        DrawChoiceLayerGui("layer_", layer_);
+        Physics::PhysicsLayers::DrawChoiceGui("layer_", layer_);
         ImGuiHelper::OnDrawInputField("friction_", friction_);
         ImGuiHelper::OnDrawInputField("offsetRotation_", offsetRotation_);
     }

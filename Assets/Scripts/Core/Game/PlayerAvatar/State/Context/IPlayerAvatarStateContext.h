@@ -10,6 +10,7 @@ namespace NanamiEngine::Module::GameObject
 namespace NanamiEngine::Module::Component
 {
     class RigidBody;
+    class Animator;
 }
 
 namespace GamePlay::Ui
@@ -45,5 +46,7 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] virtual float                                    SlopeCheckUpOffset       () const = 0;
         [[nodiscard]] virtual float                                    SlopeCheckDistance       () const = 0;
 
+        /** @brief PlayerAvatarObject に付いている Animator */
+        [[nodiscard]] Component::Animator& PlayerAvatarAnimator() const;
     };
 }

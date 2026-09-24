@@ -17,28 +17,29 @@ namespace GamePlay::Network
         // 同時に入った 2 人が揃ってホストにならないよう、探す長さを人ごとにずらす
         constexpr int STAGE_SESSION_SEARCH_JITTER_MSECS   = 500;
         constexpr int STAGE_SESSION_CONNECT_TIMEOUT_MSECS = 5000;
-
-        RelayRoom s_nextStageRoom;
-
-        /** 接続の結果が出た(runner が消えた・タイムアウトも含む)か */
-        bool IsConnectAttemptSettled(const std::weak_ptr<CustomNetworkRunner>& runner, const int startedMs)
-        {
-            const auto locked = runner.lock();
-            return !locked
-                || locked->GetConnectionState() != Core::Network::ConnectionState::Connecting
-                || GetNowCount() - startedMs >= STAGE_SESSION_CONNECT_TIMEOUT_MSECS;
-        }
     }
 
-    void SetNextStageRoom(RelayRoom room)
+    void StageMatchmaker::SetNextRoom(RelayRoom room)
     {
-        s_nextStageRoom = std::move(room);
+        nextRoom_ = std::move(room);
     }
 
-    Coroutine::Task<std::optional<std::string>> JoinOrHostStageAsync(const std::weak_ptr<CustomNetworkRunner> runner, const std::string stageKey)
+    Coroutine::Task<std::optional<std::string>> StageMatchmaker::JoinOrHostAsync(std::weak_ptr<CustomNetworkRunner> runner, std::string stageKey)
     {
-        const RelayRoom room = std::exchange(s_nextStageRoom, RelayRoom{});
+        return JoinOrHostAsync(std::move(runner), std::move(stageKey), std::exchange(nextRoom_, RelayRoom{}));
+    }
 
+    bool StageMatchmaker::IsConnectAttemptSettled(const std::weak_ptr<CustomNetworkRunner>& runner, const int startedMs)
+    {
+        const auto locked = runner.lock();
+        return !locked
+            || locked->GetConnectionState() != Core::Network::ConnectionState::Connecting
+            || GetNowCount() - startedMs >= STAGE_SESSION_CONNECT_TIMEOUT_MSECS;
+    }
+
+    Coroutine::Task<std::optional<std::string>> StageMatchmaker::JoinOrHostAsync(
+        const std::weak_ptr<CustomNetworkRunner> runner, const std::string stageKey, const RelayRoom room)
+    {
         // 中継サーバーが使えるなら、部屋への参加もホストになるのも中継サーバーに任せる。
         // 公開部屋はつながらなければ LAN で探す。非公開部屋は中継サーバーにしか無いので、そこで諦める
         const auto relay = RelayServerSettings::Load();

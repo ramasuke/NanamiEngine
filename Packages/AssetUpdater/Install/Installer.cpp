@@ -3,6 +3,7 @@
 #include <fstream>
 #include <optional>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include <windows.h>
@@ -83,11 +84,16 @@ namespace NanamiEngine::AssetUpdater
         }
     }
 
-    ApplyResult ApplyUpdate(const AssetUpdaterPaths& paths, const UpdateCheckResult& update)
+    Installer::Installer(AssetUpdaterPaths paths)
+        : paths_(std::move(paths))
+    {
+    }
+
+    ApplyResult Installer::Apply(const UpdateCheckResult& update) const
     {
         ApplyResult result;
         std::error_code error;
-        if (!std::filesystem::exists(paths.installedState, error))
+        if (!std::filesystem::exists(paths_.installedState, error))
         {
             result.error = "installed.json が無いので、配布版として扱えません";
             return result;
@@ -102,7 +108,7 @@ namespace NanamiEngine::AssetUpdater
         std::vector<InstallerFile> files;
         const auto addFile = [&](const std::string& manifestPath, const std::string& hash)
         {
-            const std::optional<std::filesystem::path> target = ResolveAssetPath(paths.gameRoot, manifestPath);
+            const std::optional<std::filesystem::path> target = ResolveAssetPath(paths_.gameRoot, manifestPath);
             if (!target)
                 return false;
             files.push_back({*target, hash, manifestPath});
@@ -127,7 +133,7 @@ namespace NanamiEngine::AssetUpdater
         {
             for (const std::string& candidate : {removedPath, removedPath + ".meta"})
             {
-                const std::optional<std::filesystem::path> target = ResolveAssetPath(paths.gameRoot, candidate);
+                const std::optional<std::filesystem::path> target = ResolveAssetPath(paths_.gameRoot, candidate);
                 if (!target)
                 {
                     result.error = "Assets/ の外を指すパスが含まれています: " + removedPath;
@@ -141,7 +147,7 @@ namespace NanamiEngine::AssetUpdater
         // 2. 一時置き場のファイルを照合する
         for (const InstallerFile& file : files)
         {
-            if (Sha256OfFile(StagedBlobPath(paths, file.hash)) != file.hash)
+            if (Sha256OfFile(paths_.StagedBlobPath(file.hash)) != file.hash)
             {
                 result.error = "ダウンロード済みのファイルが見つからないか、壊れています: " + file.manifestPath;
                 return result;
@@ -153,7 +159,7 @@ namespace NanamiEngine::AssetUpdater
         {
             std::filesystem::create_directories(file.target.parent_path(), error);
             const std::filesystem::path prepared = InstallerSuffixed(file.target, INSTALLER_NEW_SUFFIX);
-            if (error || !CopyFileW(StagedBlobPath(paths, file.hash).c_str(), prepared.c_str(), FALSE))
+            if (error || !CopyFileW(paths_.StagedBlobPath(file.hash).c_str(), prepared.c_str(), FALSE))
             {
                 InstallerDiscardPrepared(files);
                 result.error = "書き込めませんでした: " + file.manifestPath;
@@ -204,39 +210,39 @@ namespace NanamiEngine::AssetUpdater
         }
 
         // 5. 確定: installed.json を書き換えた時点で、この版が入ったことになる
-        const std::filesystem::path statePrepared = InstallerSuffixed(paths.installedState, INSTALLER_NEW_SUFFIX);
+        const std::filesystem::path statePrepared = InstallerSuffixed(paths_.installedState, INSTALLER_NEW_SUFFIX);
         if (!InstallerWriteFile(statePrepared, update.remoteJson)
-            || !InstallerMove(statePrepared, paths.installedState, MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
+            || !InstallerMove(statePrepared, paths_.installedState, MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
         {
             DeleteFileW(statePrepared.c_str());
             fail("installed.json を更新できませんでした");
             return result;
         }
 
-        // 6. 片付け。失敗しても結果は変わらず、残ったものは次回の RemoveInstallLeftovers が消す
+        // 6. 片付け。失敗しても結果は変わらず、残ったものは次回の RemoveLeftovers が消す
         for (const InstallerJournal& step : journal)
         {
             if (step.movedAway)
                 DeleteFileW(InstallerSuffixed(step.target, INSTALLER_OLD_SUFFIX).c_str());
         }
-        std::filesystem::remove_all(paths.stagingDirectory, error);
+        std::filesystem::remove_all(paths_.stagingDirectory, error);
 
         result.ok = true;
         return result;
     }
 
-    void RemoveInstallLeftovers(const AssetUpdaterPaths& paths)
+    void Installer::RemoveLeftovers() const
     {
         std::error_code error;
-        if (!std::filesystem::exists(paths.installedState, error))
+        if (!std::filesystem::exists(paths_.installedState, error))
             return;
 
-        DeleteFileW(InstallerSuffixed(paths.installedState, INSTALLER_NEW_SUFFIX).c_str());
+        DeleteFileW(InstallerSuffixed(paths_.installedState, INSTALLER_NEW_SUFFIX).c_str());
 
         const std::wstring_view newSuffix = INSTALLER_NEW_SUFFIX;
         const std::wstring_view oldSuffix = INSTALLER_OLD_SUFFIX;
         std::vector<std::filesystem::path> leftovers;
-        for (auto it = std::filesystem::recursive_directory_iterator(paths.gameRoot / L"Assets", error);
+        for (auto it = std::filesystem::recursive_directory_iterator(paths_.gameRoot / L"Assets", error);
              !error && it != std::filesystem::recursive_directory_iterator();
              it.increment(error))
         {

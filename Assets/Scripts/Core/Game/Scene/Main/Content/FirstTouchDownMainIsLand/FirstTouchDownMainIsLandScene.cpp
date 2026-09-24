@@ -75,7 +75,7 @@ namespace GameCore::Scene::Main
         // 読み込みの途中で抜けたときはアバターが居ない。そのときは進行も保存しない
         if (const auto avatar = playerAvatar_.lock())
         {
-            PlayerAvatar::SaveType(*avatar);
+            PlayerAvatar::SelectedPlayerAvatarType::Save(*avatar);
             avatar->SaveStatus();
             SaveGameProgression(GameProgresion::MainIsland);
             Story::StoryProgress::Instance().Set(Story::StoryFlag::PrologueCleared);

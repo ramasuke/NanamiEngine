@@ -15,15 +15,6 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
             return MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, text.data(), static_cast<int>(text.size()), nullptr, 0) > 0;
         }
-
-        const JsonValue& RequireMember(const JsonValue& args, const char* name)
-        {
-            const JsonValue* member = FindMember(args, name);
-            if (member == nullptr)
-                throw AutoMcpError(std::string("missing argument: ") + name);
-
-            return *member;
-        }
     }
 
     std::string ToUtf8(const std::string& text)
@@ -105,63 +96,72 @@ namespace NanamiEngine::Core::Application::AutoMcp
         return array;
     }
 
-    const JsonValue* FindMember(const JsonValue& object, const char* name)
+    const JsonValue* JsonArgs::FindMember(const char* name) const
     {
-        if (!object.IsObject())
+        if (!object_.IsObject())
             return nullptr;
 
-        const auto it = object.FindMember(name);
-        if (it == object.MemberEnd() || it->value.IsNull())
+        const auto it = object_.FindMember(name);
+        if (it == object_.MemberEnd() || it->value.IsNull())
             return nullptr;
 
         return &it->value;
     }
 
-    std::string RequireString(const JsonValue& args, const char* name)
+    const JsonValue& JsonArgs::RequireMember(const char* name) const
     {
-        const JsonValue& member = RequireMember(args, name);
+        const JsonValue* member = FindMember(name);
+        if (member == nullptr)
+            throw AutoMcpError(std::string("missing argument: ") + name);
+
+        return *member;
+    }
+
+    std::string JsonArgs::RequireString(const char* name) const
+    {
+        const JsonValue& member = RequireMember(name);
         if (!member.IsString())
             throw AutoMcpError(std::string("argument must be a string: ") + name);
 
         return std::string(member.GetString(), member.GetStringLength());
     }
 
-    std::string OptionalString(const JsonValue& args, const char* name, const std::string& fallback)
+    std::string JsonArgs::OptionalString(const char* name, const std::string& fallback) const
     {
-        return FindMember(args, name) ? RequireString(args, name) : fallback;
+        return FindMember(name) ? RequireString(name) : fallback;
     }
 
-    bool RequireBool(const JsonValue& args, const char* name)
+    bool JsonArgs::RequireBool(const char* name) const
     {
-        const JsonValue& member = RequireMember(args, name);
+        const JsonValue& member = RequireMember(name);
         if (!member.IsBool())
             throw AutoMcpError(std::string("argument must be a bool: ") + name);
 
         return member.GetBool();
     }
 
-    bool OptionalBool(const JsonValue& args, const char* name, const bool fallback)
+    bool JsonArgs::OptionalBool(const char* name, const bool fallback) const
     {
-        return FindMember(args, name) ? RequireBool(args, name) : fallback;
+        return FindMember(name) ? RequireBool(name) : fallback;
     }
 
-    double RequireNumber(const JsonValue& args, const char* name)
+    double JsonArgs::RequireNumber(const char* name) const
     {
-        const JsonValue& member = RequireMember(args, name);
+        const JsonValue& member = RequireMember(name);
         if (!member.IsNumber())
             throw AutoMcpError(std::string("argument must be a number: ") + name);
 
         return member.GetDouble();
     }
 
-    int OptionalInt(const JsonValue& args, const char* name, const int fallback)
+    int JsonArgs::OptionalInt(const char* name, const int fallback) const
     {
-        return FindMember(args, name) ? static_cast<int>(RequireNumber(args, name)) : fallback;
+        return FindMember(name) ? static_cast<int>(RequireNumber(name)) : fallback;
     }
 
-    bool TryGetVec3(const JsonValue& args, const char* name, glm::vec3& out)
+    bool JsonArgs::TryGetVec3(const char* name, glm::vec3& out) const
     {
-        const JsonValue* member = FindMember(args, name);
+        const JsonValue* member = FindMember(name);
         if (member == nullptr)
             return false;
 
@@ -172,9 +172,9 @@ namespace NanamiEngine::Core::Application::AutoMcp
         return true;
     }
 
-    bool TryGetQuat(const JsonValue& args, const char* name, glm::quat& out)
+    bool JsonArgs::TryGetQuat(const char* name, glm::quat& out) const
     {
-        const JsonValue* member = FindMember(args, name);
+        const JsonValue* member = FindMember(name);
         if (member == nullptr)
             return false;
 

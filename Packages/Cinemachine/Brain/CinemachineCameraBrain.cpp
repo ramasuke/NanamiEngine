@@ -272,7 +272,7 @@ void CineMachine::CinemachineCameraBrain::OnDrawGui()
     ImGuiHelper::OnDrawInputField("cameraFar_"               , cameraFar_                );
     ImGuiHelper::OnDrawInputField("minCameraNear_"           , minCameraNear_            );
     ImGuiHelper::OnDrawInputField("nearClipMargin_"          , nearClipMargin_           );
-    Module::Physics::DrawLayerMaskGui("nearClipLayerMask_", nearClipLayerMask_);
+    Module::Physics::PhysicsLayers::DrawMaskGui("nearClipLayerMask_", nearClipLayerMask_);
     ImGui::Text(("appliedNear: " + std::to_string(appliedNear_)).c_str());
     ImGui::Text(("appliedFov: "  + std::to_string(appliedFov_)).c_str());
 }

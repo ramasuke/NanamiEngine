@@ -33,28 +33,6 @@ namespace NanamiEngine::Module::Physics
         return static_cast<int>(layer);
     }
 
-    [[nodiscard]] int LayerCount();
-    // WARNING: 次の SetLayerNames で無効になる
-    [[nodiscard]] const char* const* LayerNames();
-
-    // NOTE: 範囲外は Default
-    [[nodiscard]] Layer ToLayer(int index);
-    [[nodiscard]] const char* ToName(Layer layer);
-    // NOTE: 見つからなければ Default
-    [[nodiscard]] Layer NameToLayer(std::string_view name);
-
-    // NOTE: 先頭は常に Default
-    void SetLayerNames(const std::vector<std::string>& names);
-
-    [[nodiscard]] LayerMask CollisionMaskOf(Layer layer);
-    void SetCollisionMaskOf(Layer layer, LayerMask mask);
-    void SetLayersCollide(Layer a, Layer b, bool collide);
-    [[nodiscard]] bool LayersCollide(Layer a, Layer b);
-
-    // 現在のLayerをGUIで選択
-    // 戻り値：変更されたかどうか
-    bool DrawChoiceLayerGui(const char* label, Layer& layer);
-
     constexpr bool HasLayer(const LayerMask mask, const Layer layer)
     {
         return mask & ToMask(layer);
@@ -70,10 +48,46 @@ namespace NanamiEngine::Module::Physics
         mask &= ~ToMask(layer);
     }
 
-    // LayerMask をチェックボックスで編集
-    // 戻り値：変更されたかどうか
-    bool DrawLayerMaskGui(const char* label, LayerMask& mask);
+    /** @brief ProjectConfig/Physics で定義されたレイヤー名と衝突マトリクス */
+    class PhysicsLayers final
+    {
+    public:
+        PhysicsLayers() = delete;
 
-    // 戻り値：変更されたかどうか
-    bool DrawCollisionMatrixGui();
+        [[nodiscard]] static int Count();
+        // WARNING: 次の SetNames で無効になる
+        [[nodiscard]] static const char* const* Names();
+
+        // NOTE: 範囲外は Default
+        [[nodiscard]] static Layer ToLayer(int index);
+        [[nodiscard]] static const char* ToName(Layer layer);
+        // NOTE: 見つからなければ Default
+        [[nodiscard]] static Layer NameToLayer(std::string_view name);
+
+        // NOTE: 先頭は常に Default
+        static void SetNames(const std::vector<std::string>& names);
+
+        [[nodiscard]] static LayerMask CollisionMaskOf(Layer layer);
+        static void SetCollisionMaskOf(Layer layer, LayerMask mask);
+        static void SetLayersCollide(Layer a, Layer b, bool collide);
+        [[nodiscard]] static bool LayersCollide(Layer a, Layer b);
+
+        // 現在のLayerをGUIで選択
+        // 戻り値：変更されたかどうか
+        static bool DrawChoiceGui(const char* label, Layer& layer);
+
+        // LayerMask をチェックボックスで編集
+        // 戻り値：変更されたかどうか
+        static bool DrawMaskGui(const char* label, LayerMask& mask);
+
+        // 戻り値：変更されたかどうか
+        static bool DrawCollisionMatrixGui();
+
+    private:
+        struct Table;
+
+        // NOTE: 静的初期化中 (既定値の NameToLayer 等) にも使えるよう関数内 static で持つ
+        [[nodiscard]] static Table& GetTable();
+        [[nodiscard]] static bool IsValidIndex(int index);
+    };
 }

@@ -42,7 +42,7 @@ namespace GameCore::Scene::Main
         // NOTE: 記録帳と同じく協力プレイでも各ピアで立つ(物語の進み具合は共有しない)
         if (const auto stageClear = Context()->StageClear())
         {
-            stageClearSubscription_ = Story::WatchStageClear(
+            stageClearWatcher_.Watch(
                 PlayerAvatar::Record::RecordBook::Instance().OnDefeat(),
                 *stageClear,
                 [this](const Story::StoryFlag flag) { OnStageClear(flag); });
@@ -67,7 +67,7 @@ namespace GameCore::Scene::Main
         SubScene().Push(Sub::SceneType::OtherPlayerStatus);
 
         LoadingScreen().SetStep(SceneLoadStep::Connecting);
-        const auto joinFailure = co_await GamePlay::Network::JoinOrHostStageAsync(
+        const auto joinFailure = co_await GameCore::Game::Instance().Matchmaker().JoinOrHostAsync(
             Context()->WeakNetworkRunner(), std::string(ToString(SceneType::Desert)));
         
         if (!IsCurrentEnter(generation))
@@ -83,7 +83,7 @@ namespace GameCore::Scene::Main
         LoadingScreen().SetStep(SceneLoadStep::Spawning);
         GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
         playerAvatar_ = networkRunner.SpawnPlayerAvatar(
-            PlayerAvatar::LoadType(),
+            PlayerAvatar::SelectedPlayerAvatarType::Load(),
             Context()->PlayerSpawnPoint(),
             glm::quat());
 
@@ -129,7 +129,7 @@ namespace GameCore::Scene::Main
 
     void DrySandScene::DoDispose()
     {
-        stageClearSubscription_.Dispose();
+        stageClearWatcher_.Dispose();
 
         if (arrivalMovie_)
             arrivalMovie_->Cancel();
@@ -137,7 +137,7 @@ namespace GameCore::Scene::Main
 
         if (const auto avatar = playerAvatar_.lock())
         {
-            PlayerAvatar::SaveType(*avatar);
+            PlayerAvatar::SelectedPlayerAvatarType::Save(*avatar);
             avatar->SaveStatus();
         }
         playerAvatar_.reset();

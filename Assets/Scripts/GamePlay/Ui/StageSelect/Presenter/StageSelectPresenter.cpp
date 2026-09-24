@@ -6,7 +6,7 @@
 #include "Engine/Core/Coroutine/Coroutine.h"
 #include "../UI_StageSelect.h"
 #include "../Room/Ui_StageSelect_RoomUi.h"
-#include "../../../Network/Session/GamePlay_StageSessionMatchmaking.h"
+#include "../../../../Core/Game/Game.h"
 #include "../../../Sound/UiSoundBank.h"
 #include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
@@ -239,7 +239,7 @@ namespace GamePlay::Ui
         }
 
         Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Stamp);
-        Network::SetNextStageRoom({ roomMode_, roomCode_ });
+        GameCore::Game::Instance().Matchmaker().SetNextRoom({ roomMode_, roomCode_ });
         view_->EnterWorld(model_->SelectedSceneType());
     }
 }

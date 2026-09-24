@@ -176,7 +176,7 @@ namespace GamePlay::Ui
             return;
         case AssetUpdateState::ReadyToRestart:
             Module::Log("[AssetUpdater] 更新が終わりました");
-            canRelaunch_ = AssetUpdater::ScheduleRelaunchOnExit();
+            canRelaunch_ = AssetUpdater::Relauncher::ScheduleOnExit();
             ShowPromptFor(state);
             return;
         case AssetUpdateState::Idle:

@@ -61,7 +61,7 @@ namespace GamePlay::Magic
             const auto collider = target->Components().Catch<Physics::ICollider>().lock();
             return collider
                 ? collider->CenterOfMassPosition().value_or(target->Transform().GetWorldPos())
-                : GameCore::PlayerAvatar::LockOnPositionOf(*target);
+                : GameCore::PlayerAvatar::ILockOnTarget::PositionOf(*target);
         }
         return caster.CastOrigin() + CasterForward(caster) * range;
     }

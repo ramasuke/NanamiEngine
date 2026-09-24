@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../../../Enemy_Behaviour_ActionBase.h"
+#include "Engine/Core/Coroutine/Task/Task.h"
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "../../../../../../../../../Editor/Npc/Enemy/Behaviour/Action/Enemy_Behaviour_ActionFactory.h"
@@ -11,12 +12,28 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     /**
      * @brief 序章で島の心臓が砕けたとき、地面に埋めた3つの浮遊石 (stonesRoot_ の子) をせり上がらせて三方へ飛ばす。
      *        動かすのはコルーチンなので、始めたらすぐ Success を返す。OnceExecute で包むこと
-     * @note riseHeight_ を負にすると下へ抜ける。落ちる島の底から石が抜かれる所にも使う
      */
     class ScatterFloatingStones final : public ActionBase
     {
         TickStatus DoTick(const TickContext& context) override;
         void       DoDrawGui() override;
+
+        struct ScatterShot
+        {
+            float riseHeight;
+            float rise_secs;
+            float hover_secs;
+            float fly_secs;
+            float flyDistance; ///< 水平に飛ぶ距離
+            float flyRise;     ///< 飛ぶあいだに上がる高さ
+        };
+
+        /**
+         * @brief stonesRoot の子(地面に埋めた浮遊石)をせり上がらせ、少し浮かせてから、根元から見た向きへそれぞれ飛ばす。
+         *        石の子の ParticleSystem (光の尾。PlayMode は Manual にしておく) は飛び立つときに出す。飛び終えた石は隠す
+         * @note BT より長生きしうるので static。値は DoTick で写して渡す
+         */
+        static Coroutine::Task<void> PlayScatterAsync(std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> stonesRoot, ScatterShot shot);
 
         [[serialize(0)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) stonesRoot_;
         [[serialize(0)]] float riseHeight_ = 130.0f;

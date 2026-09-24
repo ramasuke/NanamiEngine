@@ -39,8 +39,6 @@ namespace GameCore::PlayerAvatar
         std::function<void(StateTypeT)> onChangeState_;
     };
 
-    [[nodiscard]] Component::Animator& CatchPlayerAvatarAnimator(GameObject::IGameObject& playerAvatar);
-
     /**
      * @brief PlayerAvatar の State に共通する処理
      */
@@ -105,7 +103,7 @@ namespace GameCore::PlayerAvatar
         /** @note Playerの行動に必要なパラメータと行動を取得できる関数群 */
         [[nodiscard]] ContextT&                             Context      () const { return *context_; }
         [[nodiscard]] GameObject::IGameObject&              Player       () const { return *Context().PlayerAvatarObject(); }
-        [[nodiscard]] Component::Animator&                  Animator     () const { return CatchPlayerAvatarAnimator(Player()); }
+        [[nodiscard]] Component::Animator&                  Animator     () const { return Context().PlayerAvatarAnimator(); }
         [[nodiscard]] Component::RigidBody&                 RigidBody    () const { return Context().PlayerAvatarRigidBody(); }
         [[nodiscard]] GameObject::Transform&                Transform    () const { return Context().PlayerAvatarTransform(); }
         [[nodiscard]] auto&                                 Input        () const { return Context().Input(); }
@@ -116,6 +114,8 @@ namespace GameCore::PlayerAvatar
         [[nodiscard]] GamePlay::PlayerAvatar::InteractableArea& InteractableArea() const { return Context().InteractableArea(); }
         [[nodiscard]] State::PlayerAvatarStateCondition     Conditions   () const { return State::PlayerAvatarStateCondition(context_); }
         [[nodiscard]] State::PlayerAvatarStateAction        Actions      () const { return State::PlayerAvatarStateAction   (context_); }
+        /** @note カメラと索敵範囲が生きている時だけ呼ぶこと */
+        [[nodiscard]] LockOnController                      LockOnControl() const { return LockOnController(Context().Camera(), Context().LockOnDetectionArea()); }
 
         void ResetDuringTime() { stateDuring_secs_ = 0.0f; }
         //現在のStateの持続時間を返す
@@ -152,7 +152,7 @@ namespace GameCore::PlayerAvatar
 
             auto& input = Context().Input();
             const int switchDirection = static_cast<int>(input.LockOnSwitchRight().IsPressed()) - static_cast<int>(input.LockOnSwitchLeft().IsPressed());
-            if (LockOn::Update(Context().Camera(), Context().LockOnDetectionArea(), Transform().GetWorldPos(), input.LockOn().IsPressed(), switchDirection))
+            if (LockOnControl().Update(Transform().GetWorldPos(), input.LockOn().IsPressed(), switchDirection))
                 OnLockOnEngaged();
         }
 

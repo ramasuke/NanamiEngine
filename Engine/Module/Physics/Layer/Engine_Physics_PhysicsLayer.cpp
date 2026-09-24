@@ -12,65 +12,65 @@ namespace NanamiEngine::Module::Physics
     namespace
     {
         constexpr auto DEFAULT_LAYER_NAME = "Default";
+    }
 
-        struct LayerTable
+    struct PhysicsLayers::Table
+    {
+        std::array<std::string, MAX_LAYER_COUNT> names{ DEFAULT_LAYER_NAME };
+        std::array<const char*, MAX_LAYER_COUNT> namePointers{};
+        int count = 1;
+        // WARNING: Jolt のワーカースレッドから読まれる
+        std::array<std::atomic<LayerMask>, MAX_LAYER_COUNT> collisionMasks;
+
+        Table()
         {
-            std::array<std::string, MAX_LAYER_COUNT> names{ DEFAULT_LAYER_NAME };
-            std::array<const char*, MAX_LAYER_COUNT> namePointers{};
-            int count = 1;
-            // WARNING: Jolt のワーカースレッドから読まれる
-            std::array<std::atomic<LayerMask>, MAX_LAYER_COUNT> collisionMasks;
-
-            LayerTable()
-            {
-                for (auto& mask : collisionMasks)
-                    mask.store(ALL_LAYERS_MASK, std::memory_order_relaxed);
-                RefreshNamePointers();
-            }
-
-            void RefreshNamePointers()
-            {
-                for (int i = 0; i < MAX_LAYER_COUNT; ++i)
-                    namePointers[i] = names[i].c_str();
-            }
-        };
-
-        LayerTable& Table()
-        {
-            static LayerTable table;
-            return table;
+            for (auto& mask : collisionMasks)
+                mask.store(ALL_LAYERS_MASK, std::memory_order_relaxed);
+            RefreshNamePointers();
         }
 
-        bool IsValidIndex(const int index)
+        void RefreshNamePointers()
         {
-            return index >= 0 && index < Table().count;
+            for (int i = 0; i < MAX_LAYER_COUNT; ++i)
+                namePointers[i] = names[i].c_str();
         }
-    }
+    };
 
-    int LayerCount()
+    PhysicsLayers::Table& PhysicsLayers::GetTable()
     {
-        return Table().count;
+        static Table table;
+        return table;
     }
 
-    const char* const* LayerNames()
+    bool PhysicsLayers::IsValidIndex(const int index)
     {
-        return Table().namePointers.data();
+        return index >= 0 && index < GetTable().count;
     }
 
-    Layer ToLayer(const int index)
+    int PhysicsLayers::Count()
+    {
+        return GetTable().count;
+    }
+
+    const char* const* PhysicsLayers::Names()
+    {
+        return GetTable().namePointers.data();
+    }
+
+    Layer PhysicsLayers::ToLayer(const int index)
     {
         return IsValidIndex(index) ? static_cast<Layer>(index) : Layer::Default;
     }
 
-    const char* ToName(const Layer layer)
+    const char* PhysicsLayers::ToName(const Layer layer)
     {
         const int index = ToIndex(layer);
-        return IsValidIndex(index) ? Table().namePointers[index] : "(Invalid)";
+        return IsValidIndex(index) ? GetTable().namePointers[index] : "(Invalid)";
     }
 
-    Layer NameToLayer(const std::string_view name)
+    Layer PhysicsLayers::NameToLayer(const std::string_view name)
     {
-        const auto& table = Table();
+        const auto& table = GetTable();
         for (int i = 0; i < table.count; ++i)
         {
             if (table.names[i] == name)
@@ -80,9 +80,9 @@ namespace NanamiEngine::Module::Physics
         return Layer::Default;
     }
 
-    void SetLayerNames(const std::vector<std::string>& names)
+    void PhysicsLayers::SetNames(const std::vector<std::string>& names)
     {
-        auto& table = Table();
+        auto& table = GetTable();
         table.count = std::clamp(static_cast<int>(names.size()), 1, MAX_LAYER_COUNT);
         for (int i = 0; i < MAX_LAYER_COUNT; ++i)
             table.names[i] = i < table.count && i < static_cast<int>(names.size()) ? names[i] : std::string();
@@ -91,23 +91,23 @@ namespace NanamiEngine::Module::Physics
         table.RefreshNamePointers();
     }
 
-    LayerMask CollisionMaskOf(const Layer layer)
+    LayerMask PhysicsLayers::CollisionMaskOf(const Layer layer)
     {
         const int index = ToIndex(layer);
         if (index < 0 || index >= MAX_LAYER_COUNT)
             return 0;
-        return Table().collisionMasks[index].load(std::memory_order_relaxed);
+        return GetTable().collisionMasks[index].load(std::memory_order_relaxed);
     }
 
-    void SetCollisionMaskOf(const Layer layer, const LayerMask mask)
+    void PhysicsLayers::SetCollisionMaskOf(const Layer layer, const LayerMask mask)
     {
         const int index = ToIndex(layer);
         if (index < 0 || index >= MAX_LAYER_COUNT)
             return;
-        Table().collisionMasks[index].store(mask, std::memory_order_relaxed);
+        GetTable().collisionMasks[index].store(mask, std::memory_order_relaxed);
     }
 
-    void SetLayersCollide(const Layer a, const Layer b, const bool collide)
+    void PhysicsLayers::SetLayersCollide(const Layer a, const Layer b, const bool collide)
     {
         auto update = [collide](const Layer self, const Layer other)
         {
@@ -122,18 +122,18 @@ namespace NanamiEngine::Module::Physics
         update(b, a);
     }
 
-    bool LayersCollide(const Layer a, const Layer b)
+    bool PhysicsLayers::LayersCollide(const Layer a, const Layer b)
     {
         // NOTE: 非対称なマスクでも片側が拒否すれば当たらない
         return HasLayer(CollisionMaskOf(a), b) && HasLayer(CollisionMaskOf(b), a);
     }
 
-    bool DrawChoiceLayerGui(const char* label, Layer& layer)
+    bool PhysicsLayers::DrawChoiceGui(const char* label, Layer& layer)
     {
         int current = ToIndex(layer);
         bool changed = false;
 
-        if (ImGui::Combo(label, &current, LayerNames(), LayerCount()))
+        if (ImGui::Combo(label, &current, Names(), Count()))
         {
             layer = ToLayer(current);
             changed = true;
@@ -142,13 +142,13 @@ namespace NanamiEngine::Module::Physics
         return changed;
     }
 
-    bool DrawLayerMaskGui(const char* label, LayerMask& mask)
+    bool PhysicsLayers::DrawMaskGui(const char* label, LayerMask& mask)
     {
         bool changed = false;
 
         ImGui::TextUnformatted(label);
         ImGui::PushID(label);
-        for (int i = 0; i < LayerCount(); ++i)
+        for (int i = 0; i < Count(); ++i)
         {
             const Layer layer = ToLayer(i);
 
@@ -168,10 +168,10 @@ namespace NanamiEngine::Module::Physics
         return changed;
     }
 
-    bool DrawCollisionMatrixGui()
+    bool PhysicsLayers::DrawCollisionMatrixGui()
     {
         bool changed = false;
-        const int count = LayerCount();
+        const int count = Count();
 
         ImGui::PushID("LayerCollisionMatrix");
         for (int row = 0; row < count; ++row)

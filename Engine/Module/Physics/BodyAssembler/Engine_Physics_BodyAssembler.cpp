@@ -629,6 +629,48 @@ namespace NanamiEngine::Module::Physics
         physics_.GetPhysicsSystem().GetBodyInterface().MoveKinematic(it->second.bodyId, position, rotation, Time::FixedDeltaTime());
     }
 
+    void BodyAssembler::SyncTransforms(GameObject::IGameObject& root) const
+    {
+        auto& bodyInterface = physics_.GetPhysicsSystem().GetBodyInterface();
+
+        for (const auto& weak : root.Components().Catches<Component::RigidBody>())
+        {
+            const auto rigidBody = weak.lock();
+            if (!rigidBody)
+                continue;
+
+            const auto it = rigidBodies_.find(rigidBody.get());
+            if (it == rigidBodies_.end() || it->second.bodyId.IsInvalid())
+                continue;
+
+            const auto [position, rotation] = BodyAssemblerWorldOrigin(rigidBody->Transform());
+            if (BodyAssemblerWarnNonFiniteTransform(position, rotation, *rigidBody, it->second.warnedNonFiniteTransform))
+                continue;
+
+            bodyInterface.SetPositionAndRotation(it->second.bodyId, position, rotation, JPH::EActivation::Activate);
+        }
+
+        for (const auto& weak : root.Components().Catches<Component::ColliderBase>())
+        {
+            const auto collider = weak.lock();
+            if (!collider)
+                continue;
+
+            const auto it = colliders_.find(collider.get());
+            if (it == colliders_.end() || it->second.bodyId.IsInvalid())
+                continue;
+
+            const auto [position, rotation] = ColliderBodyAccess::WorldTransform(*collider);
+            if (BodyAssemblerWarnNonFiniteTransform(position, rotation, *collider, it->second.warnedNonFiniteTransform))
+                continue;
+
+            bodyInterface.SetPositionAndRotation(it->second.bodyId, position, rotation, JPH::EActivation::Activate);
+        }
+
+        for (const auto& child : root.Transform().GetChildren())
+            SyncTransforms(*child);
+    }
+
     std::optional<JPH::BodyID> BodyAssembler::BodyOf(const Component::RigidBody& rigidBody) const
     {
         const auto it = rigidBodies_.find(&rigidBody);

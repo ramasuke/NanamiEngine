@@ -100,7 +100,7 @@ namespace NanamiEngine::Core::Application
             {
                 T* rawPtr = sp.get();
                 std::string errorMessage;
-                if (!Module::SafeExecute([&func, rawPtr]() { func(*rawPtr); }, errorMessage))
+                if (!Module::SafeExecutor::Execute([&func, rawPtr]() { func(*rawPtr); }, errorMessage))
                 {
                     const std::string_view fullName = typeid(*rawPtr).name();
                     const size_t lastColon = fullName.rfind("::");

@@ -37,7 +37,7 @@ void Core::Application::EditorApplication::OnFrame()
     AutoMcp::AutoMcpServer::Instance().OnFrameBegin();
     
     std::string frameErrorMessage;
-    if (!Module::SafeExecute([this]()
+    if (!Module::SafeExecutor::Execute([this]()
         {
             ApplicationLifeCycle_().OnUpdate();
             GetMainWindow()->OnUpdate();

@@ -20,18 +20,6 @@ namespace NanamiEngine::Module
         // このコードのときは中身がC++例外なので、ここでは触らず外側のtry/catchへ素通りさせる。
         constexpr unsigned long kCxxExceptionCode = 0xE06D7363;
 
-        std::atomic<bool>& CrashRecoveryEnabledFlag()
-        {
-            static std::atomic enabled{false};
-            return enabled;
-        }
-
-        std::atomic<bool>& DebuggerFailFastEnabledFlag()
-        {
-            static std::atomic enabled{true}; // デフォルトON
-            return enabled;
-        }
-
         std::string DescribeSehCode(const unsigned long code)
         {
             switch (code)
@@ -145,8 +133,8 @@ namespace NanamiEngine::Module
                 return true;
             }
             __except (GetExceptionCode() == kCxxExceptionCode
-                       || !CrashRecoveryEnabledFlag().load(std::memory_order_relaxed)
-                       || (DebuggerFailFastEnabledFlag().load(std::memory_order_relaxed) && IsDebuggerPresent())
+                       || !SafeExecutor::IsCrashRecoveryEnabled()
+                       || (SafeExecutor::IsDebuggerFailFastEnabled() && IsDebuggerPresent())
                        ? EXCEPTION_CONTINUE_SEARCH // C++例外、トグルOFF、またはデバッガアタッチ中なら素通り(=fail-fast)
                        : (outSehCode = GetExceptionCode(),
                           AppendStackTrace(*GetExceptionInformation()->ContextRecord, outStackTrace),
@@ -157,27 +145,30 @@ namespace NanamiEngine::Module
         }
     }
 
-    bool IsCrashRecoveryEnabled()
+    std::atomic<bool> SafeExecutor::crashRecoveryEnabled_{false};
+    std::atomic<bool> SafeExecutor::debuggerFailFastEnabled_{true}; // デフォルトON
+
+    bool SafeExecutor::IsCrashRecoveryEnabled()
     {
-        return CrashRecoveryEnabledFlag().load(std::memory_order_relaxed);
+        return crashRecoveryEnabled_.load(std::memory_order_relaxed);
     }
 
-    void SetCrashRecoveryEnabled(const bool enabled)
+    void SafeExecutor::SetCrashRecoveryEnabled(const bool enabled)
     {
-        CrashRecoveryEnabledFlag().store(enabled, std::memory_order_relaxed);
+        crashRecoveryEnabled_.store(enabled, std::memory_order_relaxed);
     }
 
-    bool IsDebuggerFailFastEnabled()
+    bool SafeExecutor::IsDebuggerFailFastEnabled()
     {
-        return DebuggerFailFastEnabledFlag().load(std::memory_order_relaxed);
+        return debuggerFailFastEnabled_.load(std::memory_order_relaxed);
     }
 
-    void SetDebuggerFailFastEnabled(const bool enabled)
+    void SafeExecutor::SetDebuggerFailFastEnabled(const bool enabled)
     {
-        DebuggerFailFastEnabledFlag().store(enabled, std::memory_order_relaxed);
+        debuggerFailFastEnabled_.store(enabled, std::memory_order_relaxed);
     }
 
-    bool SafeExecute(const std::function<void()>& func, std::string& outErrorMessage)
+    bool SafeExecutor::Execute(const std::function<void()>& func, std::string& outErrorMessage)
     {
         unsigned long sehCode = 0;
         std::string stackTrace;

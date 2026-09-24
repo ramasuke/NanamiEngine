@@ -5,6 +5,8 @@
 #include "../../../../Core/Application/Window/Main/Game/GameWindow.h"
 #include "../SceneGameObject/SceneGameObject.h"
 #include "../../../Log/NanamiEngine_Module_Log.h"
+#include "../../../../Core/Physics/Physics.h"
+#include "../../../Physics/BodyAssembler/Engine_Physics_BodyAssembler.h"
 
 namespace
 {
@@ -22,6 +24,12 @@ namespace
         auto copied = source.CopyForInstantiate();
         copied->SetName(copied->Name() + "(Clone)");
         return copied;
+    }
+
+    // NOTE: Body は複製の Awake 時(prefab の元の位置)に作られるので、Transform を決めた後で合わせる
+    void SyncPhysicsBodiesForInstantiate(GameObject::IGameObject& instantiated)
+    {
+        Core::Application::ApplicationBase::Physics().Bodies().SyncTransforms(instantiated);
     }
 }
 
@@ -44,6 +52,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(Asset::Pre
     auto copiedPrefab = CopyAsCloneForInstantiate(*content);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
     copiedPrefab->Transform().SetParent(parent);
+    SyncPhysicsBodiesForInstantiate(*copiedPrefab);
     return copiedPrefab;
 }
 
@@ -57,6 +66,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(Asset::Pre
     auto copiedPrefab = CopyAsCloneForInstantiate(*content);
     copiedPrefab->Transform().SetWorldPos(position);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
+    SyncPhysicsBodiesForInstantiate(*copiedPrefab);
     return copiedPrefab;
 }
 
@@ -69,6 +79,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(std::share
     auto copiedPrefab = CopyAsCloneForInstantiate(*content);
     copiedPrefab->Transform().SetWorldPos(position);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
+    SyncPhysicsBodiesForInstantiate(*copiedPrefab);
     return copiedPrefab;
 }
 
@@ -78,6 +89,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     auto copiedPrefab = CopyAsCloneForInstantiate(*gameObject);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
     copiedPrefab->Transform().SetWorldPos(position);
+    SyncPhysicsBodiesForInstantiate(*copiedPrefab);
     return copiedPrefab;
 }
 
@@ -87,6 +99,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     auto copiedPrefab = CopyAsCloneForInstantiate(gameObject);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
     copiedPrefab->Transform().SetParent(parent);
+    SyncPhysicsBodiesForInstantiate(*copiedPrefab);
     return copiedPrefab;
 }
 
@@ -96,6 +109,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     auto copiedPrefab = CopyAsCloneForInstantiate(gameObject);
     copiedPrefab->Transform().SetWorldPos(position);
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
+    SyncPhysicsBodiesForInstantiate(*copiedPrefab);
     return copiedPrefab;
 }
 
@@ -111,6 +125,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     copiedPrefab->Transform().SetWorldRot(rotation);
 
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
+    SyncPhysicsBodiesForInstantiate(*copiedPrefab);
     return copiedPrefab;
 }
 
@@ -128,6 +143,7 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     copiedPrefab->Transform().SetWorldRot(rotation);
 
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
+    SyncPhysicsBodiesForInstantiate(*copiedPrefab);
     return copiedPrefab;
 }
 
@@ -139,7 +155,8 @@ std::weak_ptr<GameObject::IGameObject> Scene::GameObject::Instantiate(
     copiedPrefab->Transform().SetWorldRot(rotation);
 
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
-    return copiedPrefab;   
+    SyncPhysicsBodiesForInstantiate(*copiedPrefab);
+    return copiedPrefab;
 }
 
 std::weak_ptr<Module::GameObject::IGameObject> Instantiate(
@@ -152,5 +169,6 @@ std::weak_ptr<Module::GameObject::IGameObject> Instantiate(
     copiedPrefab->Transform().SetWorldRot(rotation);
 
     Core::Application::ApplicationBase::GameWindow()->MainScene().AddGameObject(copiedPrefab);
+    SyncPhysicsBodiesForInstantiate(*copiedPrefab);
     return copiedPrefab;
 }

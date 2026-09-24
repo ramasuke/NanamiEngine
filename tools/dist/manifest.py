@@ -336,7 +336,7 @@ class Diff:
 
 
 def diff(installed: dict, remote: dict) -> Diff:
-    """Packages/AssetUpdater の ``DiffManifest`` と同じ規則で差分を出す。"""
+    """Packages/AssetUpdater の ``ManifestDiff::Between`` と同じ規則で差分を出す。"""
     installed_by_path = {e.path: e for e in entries_of(installed)}
     remote_entries = entries_of(remote)
     remote_paths = {e.path for e in remote_entries}

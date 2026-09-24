@@ -16,8 +16,8 @@ namespace GamePlay::Npc::Enemy
     public:
         virtual ~IAttackProjectile() = default;
         virtual void SetDamage(GameCore::Damage::PhysicsPower power) = 0;
-    };
 
-    /** 生成済みの投射物が IAttackProjectile を持っていればダメージを設定する */
-    void SetProjectileDamage(const std::weak_ptr<GameObject::IGameObject>& projectile, GameCore::Damage::PhysicsPower power);
+        /** 生成済みの投射物が IAttackProjectile を持っていればダメージを設定する */
+        static void TrySetDamage(const std::weak_ptr<GameObject::IGameObject>& projectile, GameCore::Damage::PhysicsPower power);
+    };
 }

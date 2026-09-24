@@ -120,7 +120,7 @@ namespace GamePlay::Ui
         if (candidateFade_.Value() > 0.0f)
         {
             if (const auto candidate = candidateTarget_.lock())
-                candidatePointWorld_ = GameCore::PlayerAvatar::LockOnPositionOf(*candidate);
+                candidatePointWorld_ = GameCore::PlayerAvatar::ILockOnTarget::PositionOf(*candidate);
 
             const float pulse = 0.75f + 0.25f * std::sin(elapsed_secs_ * 2.0f * PI / (std::max)(candidatePulsePeriod_secs_, 0.001f));
             DrawSprite(
@@ -135,7 +135,7 @@ namespace GamePlay::Ui
             return;
 
         if (const auto target = lockedTarget_.lock())
-            lockOnPointWorld_ = GameCore::PlayerAvatar::LockOnPositionOf(*target);
+            lockOnPointWorld_ = GameCore::PlayerAvatar::ILockOnTarget::PositionOf(*target);
 
         float scaleRate    = 1.0f;
         float alpha        = 1.0f;

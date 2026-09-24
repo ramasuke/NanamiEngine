@@ -279,7 +279,8 @@ namespace GamePlay::Ui
         }
 
         const auto owner = suspendedAvatar_.lock();
-        const auto quest = GameCore::PlayerAvatar::Quest::CloneQuest(questModel_->Selected()->quest->Quest());
+        const auto& source = questModel_->Selected()->quest->Quest();
+        const auto quest = source ? source->Clone() : nullptr;
         if (!owner || !quest)
             return;
 

@@ -41,7 +41,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         {
             const std::string label    = "layers_[" + std::to_string(i) + "]";
             const std::string removeId = "-##layers_" + std::to_string(i);
-            Physics::DrawChoiceLayerGui(label.c_str(), layers_[i]);
+            Physics::PhysicsLayers::DrawChoiceGui(label.c_str(), layers_[i]);
             ImGui::SameLine();
             if (ImGui::Button(removeId.c_str()))
             {

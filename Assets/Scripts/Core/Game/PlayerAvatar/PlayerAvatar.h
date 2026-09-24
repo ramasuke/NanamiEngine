@@ -13,9 +13,6 @@ namespace GameCore
 
 namespace GameCore::PlayerAvatar
 {
-    constexpr auto PLAYER_AVATAR_TYPE_FILE_PATH = "PlayerAvatar/Type";
-    constexpr auto PLAYER_AVATAR_TYPE_FILE_KEY  = "Info";
-    
     template <class T>
     concept PlayerAvatarT = std::is_base_of_v<IPlayerAvatar, std::remove_cv_t<std::remove_reference_t<T>>>;
 
@@ -28,7 +25,19 @@ namespace GameCore::PlayerAvatar
         return std::dynamic_pointer_cast<PlayerAvatarT>(playerAvatar);
     }
 
-    void SaveType(const IPlayerAvatar& playerAvatar);
-    void SaveType(PlayerAvatarType type);
-    PlayerAvatarType LoadType();
+    /** @brief 選んでいるアバターの種類。LocalPrefs に保存・読込する */
+    class SelectedPlayerAvatarType final
+    {
+    public:
+        SelectedPlayerAvatarType() = delete;
+
+        static void Save(const IPlayerAvatar& playerAvatar);
+        static void Save(PlayerAvatarType type);
+        // NOTE: 既定値を持たないので、保存前に読むと失敗する
+        [[nodiscard]] static PlayerAvatarType Load();
+
+    private:
+        static constexpr auto FILE_PATH = "PlayerAvatar/Type";
+        static constexpr auto FILE_KEY  = "Info";
+    };
 }

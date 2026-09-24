@@ -90,9 +90,9 @@ namespace NanamiEngine::Core::Application::Configuration
         particleMax_         = Module::ProjectConfig::LoadOrDefaultWithPath<int>        (APP_CONFIG_PATH, APP_CONFIG_PARTICLE_MAX_KEY,    DEFAULT_PARTICLE_MAX);
         assetsDirectoryPath_ = Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(APP_CONFIG_PATH, APP_CONFIG_ASSETS_DIR_PATH_KEY, std::string(DEFAULT_ASSETS_DIRECTORY_PATH));
 
-        Module::SetCrashRecoveryEnabled(
+        Module::SafeExecutor::SetCrashRecoveryEnabled(
             Module::ProjectConfig::LoadOrDefaultWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_CRASH_RECOVERY_KEY, false));
-        Module::SetDebuggerFailFastEnabled(
+        Module::SafeExecutor::SetDebuggerFailFastEnabled(
             Module::ProjectConfig::LoadOrDefaultWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_DEBUGGER_FAILFAST_KEY, true));
         Module::SetBreakOnLogErrorEnabled(
             Module::ProjectConfig::LoadOrDefaultWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_BREAK_ON_LOG_ERROR_KEY, false));
@@ -118,8 +118,8 @@ namespace NanamiEngine::Core::Application::Configuration
         Module::ProjectConfig::SaveWithPath<int>        (APP_CONFIG_PATH, APP_CONFIG_PARTICLE_MAX_KEY,    particleMax_);
         Module::ProjectConfig::SaveWithPath<std::string>(APP_CONFIG_PATH, APP_CONFIG_ASSETS_DIR_PATH_KEY, assetsDirectoryPath_);
 
-        Module::ProjectConfig::SaveWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_CRASH_RECOVERY_KEY, Module::IsCrashRecoveryEnabled());
-        Module::ProjectConfig::SaveWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_DEBUGGER_FAILFAST_KEY, Module::IsDebuggerFailFastEnabled());
+        Module::ProjectConfig::SaveWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_CRASH_RECOVERY_KEY, Module::SafeExecutor::IsCrashRecoveryEnabled());
+        Module::ProjectConfig::SaveWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_DEBUGGER_FAILFAST_KEY, Module::SafeExecutor::IsDebuggerFailFastEnabled());
         Module::ProjectConfig::SaveWithPath<bool>(APP_CONFIG_PATH, APP_CONFIG_BREAK_ON_LOG_ERROR_KEY, Module::IsBreakOnLogErrorEnabled());
     }
 
@@ -318,10 +318,10 @@ namespace NanamiEngine::Core::Application::Configuration
         ImGui::Text("Error Handling");
         ImGui::Separator();
 
-        bool crashRecoveryEnabled = Module::IsCrashRecoveryEnabled();
+        bool crashRecoveryEnabled = Module::SafeExecutor::IsCrashRecoveryEnabled();
         if (ImGui::Checkbox("Crash Recovery (experimental)", &crashRecoveryEnabled))
         {
-            Module::SetCrashRecoveryEnabled(crashRecoveryEnabled);
+            Module::SafeExecutor::SetCrashRecoveryEnabled(crashRecoveryEnabled);
             Save();
         }
         if (ImGui::IsItemHovered())
@@ -332,10 +332,10 @@ namespace NanamiEngine::Core::Application::Configuration
                                "動き続けるリスクを避けたい場合はOFFのままにしてください)。");
         }
 
-        bool debuggerFailFastEnabled = Module::IsDebuggerFailFastEnabled();
+        bool debuggerFailFastEnabled = Module::SafeExecutor::IsDebuggerFailFastEnabled();
         if (ImGui::Checkbox("Fail-Fast When Debugger Attached", &debuggerFailFastEnabled))
         {
-            Module::SetDebuggerFailFastEnabled(debuggerFailFastEnabled);
+            Module::SafeExecutor::SetDebuggerFailFastEnabled(debuggerFailFastEnabled);
             Save();
         }
         if (ImGui::IsItemHovered())

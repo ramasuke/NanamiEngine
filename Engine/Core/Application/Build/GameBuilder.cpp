@@ -377,8 +377,8 @@ namespace NanamiEngine::Core::Application::Build
             return StepResult::Succeeded;
         }
 
-        const AssetUpdater::InstalledStateResult result = AssetUpdater::WriteInstalledState(
-            paths.outputRoot, installedState, [this] { return cancelRequested_.load(); });
+        const AssetUpdater::InstalledStateResult result = AssetUpdater::InstalledStateWriter(paths.outputRoot, installedState)
+            .Write([this] { return cancelRequested_.load(); });
         if (result.canceled)
             return StepResult::Canceled;
         if (!result.ok)

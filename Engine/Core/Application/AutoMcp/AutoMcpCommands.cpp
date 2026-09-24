@@ -119,9 +119,9 @@ namespace NanamiEngine::Core::Application::AutoMcp
             return roots;
         }
 
-        bool TryGetVec2(const JsonValue& args, const char* name, ImVec2& out)
+        bool TryGetVec2(const JsonArgs& args, const char* name, ImVec2& out)
         {
-            const JsonValue* member = FindMember(args, name);
+            const JsonValue* member = args.FindMember(name);
             if (member == nullptr)
                 return false;
 
@@ -312,19 +312,19 @@ namespace NanamiEngine::Core::Application::AutoMcp
             throw AutoMcpError(requestedPath + " matches several .mv1 assets; pass a longer path:" + candidates);
         }
 
-        Mv1FilePtr ResolveMv1(const JsonValue& args, const char* guidKey, const char* pathKey)
+        Mv1FilePtr ResolveMv1(const JsonArgs& args, const char* guidKey, const char* pathKey)
         {
-            if (FindMember(args, guidKey) != nullptr)
+            if (args.FindMember(guidKey) != nullptr)
             {
-                const std::string guid = RequireString(args, guidKey);
+                const std::string guid = args.RequireString(guidKey);
                 if (auto file = ApplicationBase::ObjectRegistry().Catch<NanamiEngine::Module::Asset::Mv1File>(::Guid(guid)).lock())
                     return file;
 
                 throw AutoMcpError("no .mv1 asset with guid " + guid);
             }
 
-            if (FindMember(args, pathKey) != nullptr)
-                return FindMv1ByPath(RequireString(args, pathKey));
+            if (args.FindMember(pathKey) != nullptr)
+                return FindMv1ByPath(args.RequireString(pathKey));
 
             throw AutoMcpError(std::string("pass ") + pathKey + " or " + guidKey);
         }
@@ -398,9 +398,9 @@ namespace NanamiEngine::Core::Application::AutoMcp
             throw AutoMcpError("GameObject not found in the loaded scenes: " + guidText);
         }
 
-        static FoundGameObject RequireGameObject(const JsonValue& args)
+        static FoundGameObject RequireGameObject(const JsonArgs& args)
         {
-            return FindGameObject(RequireString(args, "guid"));
+            return FindGameObject(args.RequireString("guid"));
         }
 
         static JsonValue DescribeScene(const ScenePtr& scene, const ScenePtr& mainScene, JsonAllocator& allocator)
@@ -459,13 +459,13 @@ namespace NanamiEngine::Core::Application::AutoMcp
                 inspector->TryAddDisplayObject(replacement);
         }
 
-        static void CommandPing(const JsonValue&, JsonValue& result, JsonAllocator& allocator)
+        static void CommandPing(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
         {
             result.AddMember("engine",   MakeString("NanamiEngine", allocator), allocator);
             result.AddMember("protocol", 1, allocator);
         }
 
-        static void CommandStatus(const JsonValue&, JsonValue& result, JsonAllocator& allocator)
+        static void CommandStatus(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
         {
             const auto gameWindow = RequireGameWindow();
             AddPlayState(result, *gameWindow, allocator);
@@ -496,9 +496,9 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("workingDirectory", MakeString(std::string(workingDirectory.begin(), workingDirectory.end()), allocator), allocator);
         }
 
-        static void CommandWindowsList(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandWindowsList(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            const bool includeHidden = OptionalBool(args, "includeHidden", false);
+            const bool includeHidden = args.OptionalBool("includeHidden", false);
 
             JsonValue popups(rapidjson::kArrayType);
             AutoMcpEngineAccess::ForEachPopupWindow(ApplicationBase::PopupWindows(), [&popups, &allocator](const ::Guid& guid, PopupWindow::IPopupWindow& window)
@@ -537,9 +537,9 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("imguiWindows", imguiWindows, allocator);
         }
 
-        static void CommandWindowsOpen(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandWindowsOpen(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            const std::string type = RequireString(args, "type");
+            const std::string type = args.RequireString("type");
             const auto& factories = PopupWindow::PopupWindowFactory::Instance().GetAll();
             const auto it = factories.find(type);
             if (it == factories.end())
@@ -553,18 +553,18 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("guid", MakeString(guid, allocator), allocator);
         }
 
-        static void CommandWindowsClose(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandWindowsClose(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            const std::string guid = RequireString(args, "guid");
+            const std::string guid = args.RequireString("guid");
             if (!AutoMcpEngineAccess::ClosePopupWindow(ApplicationBase::PopupWindows(), ::Guid(guid)))
                 throw AutoMcpError("popup window not found: " + guid);
 
             result.AddMember("closed", MakeString(guid, allocator), allocator);
         }
 
-        static void CommandWindowsSet(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandWindowsSet(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            const std::string name = RequireString(args, "name");
+            const std::string name = args.RequireString("name");
             if (ImGui::FindWindowByName(name.c_str()) == nullptr)
                 throw AutoMcpError("ImGui window not found: " + name + " (use the exact name from windows.list, including ##id)");
 
@@ -573,17 +573,17 @@ namespace NanamiEngine::Core::Application::AutoMcp
                 ImGui::SetWindowPos(name.c_str(), vector, ImGuiCond_Always);
             if (TryGetVec2(args, "size", vector))
                 ImGui::SetWindowSize(name.c_str(), vector, ImGuiCond_Always);
-            if (FindMember(args, "collapsed") != nullptr)
-                ImGui::SetWindowCollapsed(name.c_str(), RequireBool(args, "collapsed"), ImGuiCond_Always);
-            if (OptionalBool(args, "focus", false))
+            if (args.FindMember("collapsed") != nullptr)
+                ImGui::SetWindowCollapsed(name.c_str(), args.RequireBool("collapsed"), ImGuiCond_Always);
+            if (args.OptionalBool("focus", false))
                 ImGui::SetWindowFocus(name.c_str());
 
             result.AddMember("name", MakeString(name, allocator), allocator);
         }
 
-        static void CommandMainWindowSwitch(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandMainWindowSwitch(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            const std::string name = RequireString(args, "name");
+            const std::string name = args.RequireString("name");
             const auto& loaders = MainWindow::MainWindowFactory::Instance().GetLoaders();
             const auto it = loaders.find(name);
             if (it == loaders.end())
@@ -593,7 +593,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("currentMainWindow", MakeString(name, allocator), allocator);
         }
 
-        static void CommandSceneList(const JsonValue&, JsonValue& result, JsonAllocator& allocator)
+        static void CommandSceneList(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
         {
             const auto gameWindow = RequireGameWindow();
             const auto mainScene  = AutoMcpEngineAccess::MainScene(*gameWindow);
@@ -605,10 +605,10 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("scenes", scenes, allocator);
         }
 
-        static void CommandSceneLoad(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandSceneLoad(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            const std::string path     = RequireString(args, "path");
-            const bool        makeMain = OptionalBool(args, "makeMain", true);
+            const std::string path     = args.RequireString("path");
+            const bool        makeMain = args.OptionalBool("makeMain", true);
 
             const std::filesystem::path filePath(std::u8string(path.begin(), path.end()));
             std::error_code error;
@@ -624,11 +624,11 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("scene", DescribeScene(scene, AutoMcpEngineAccess::MainScene(*gameWindow), allocator), allocator);
         }
 
-        static void CommandSceneReload(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandSceneReload(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const auto gameWindow = RequireGameWindow();
             const auto mainScene  = AutoMcpEngineAccess::MainScene(*gameWindow);
-            const std::string guid = OptionalString(args, "guid", mainScene ? mainScene->GetGuid().Value() : std::string());
+            const std::string guid = args.OptionalString("guid", mainScene ? mainScene->GetGuid().Value() : std::string());
             if (guid.empty())
                 throw AutoMcpError("no main scene; pass guid");
 
@@ -640,11 +640,11 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("scene", DescribeScene(scene, AutoMcpEngineAccess::MainScene(*gameWindow), allocator), allocator);
         }
 
-        static void CommandHierarchy(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandHierarchy(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            const std::string sceneGuid         = OptionalString(args, "sceneGuid", std::string());
-            const int         maxDepth          = OptionalInt(args, "maxDepth", -1);
-            const bool        includeComponents = OptionalBool(args, "includeComponents", true);
+            const std::string sceneGuid         = args.OptionalString("sceneGuid", std::string());
+            const int         maxDepth          = args.OptionalInt("maxDepth", -1);
+            const bool        includeComponents = args.OptionalBool("includeComponents", true);
 
             const auto gameWindow = RequireGameWindow();
             const auto mainScene  = AutoMcpEngineAccess::MainScene(*gameWindow);
@@ -670,11 +670,11 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("scenes", scenes, allocator);
         }
 
-        static void CommandGameObjectFind(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandGameObjectFind(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            const std::string query      = RequireString(args, "name");
-            const bool        exact      = OptionalBool(args, "exact", false);
-            const int         limit      = (std::max)(1, OptionalInt(args, "limit", 50));
+            const std::string query      = args.RequireString("name");
+            const bool        exact      = args.OptionalBool("exact", false);
+            const int         limit      = (std::max)(1, args.OptionalInt("limit", 50));
             const std::string lowerQuery = ToLowerAscii(query);
 
             JsonValue matches(rapidjson::kArrayType);
@@ -709,7 +709,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("truncated", isTruncated, allocator);
         }
 
-        static void CommandGameObjectGet(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandGameObjectGet(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const FoundGameObject found = RequireGameObject(args);
             IGameObject& gameObject = *found.gameObject;
@@ -740,7 +740,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("children", children, allocator);
         }
 
-        static void CommandGameObjectGetJson(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandGameObjectGetJson(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const FoundGameObject found = RequireGameObject(args);
 
@@ -755,10 +755,10 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("json", MakeString(stream.str(), allocator), allocator);
         }
 
-        static void CommandGameObjectSetJson(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandGameObjectSetJson(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const FoundGameObject found    = RequireGameObject(args);
-            const std::string     jsonText = RequireString(args, "json");
+            const std::string     jsonText = args.RequireString("json");
 
             GameObjectPtr replacement;
             {
@@ -780,45 +780,45 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("components", DescribeComponents(*replacement, allocator), allocator);
         }
 
-        static void CommandGameObjectSetTransform(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandGameObjectSetTransform(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const FoundGameObject found = RequireGameObject(args);
             auto& transform = found.gameObject->Transform();
 
             glm::vec3 vector;
             glm::quat rotation;
-            if (TryGetVec3(args, "localScale", vector))
+            if (args.TryGetVec3("localScale", vector))
                 transform.SetLocalScale(vector);
-            if (TryGetQuat(args, "localRotation", rotation))
+            if (args.TryGetQuat("localRotation", rotation))
                 transform.SetLocalRot(rotation);
-            if (TryGetVec3(args, "localEulerDegrees", vector))
+            if (args.TryGetVec3("localEulerDegrees", vector))
                 transform.SetLocalRot(glm::quat(glm::radians(vector)));
-            if (TryGetVec3(args, "localPosition", vector))
+            if (args.TryGetVec3("localPosition", vector))
                 transform.SetLocalPos(vector);
-            if (TryGetVec3(args, "worldEulerDegrees", vector))
+            if (args.TryGetVec3("worldEulerDegrees", vector))
                 transform.SetWorldRot(glm::quat(glm::radians(vector)));
-            if (TryGetVec3(args, "worldPosition", vector))
+            if (args.TryGetVec3("worldPosition", vector))
                 transform.SetWorldPos(vector);
 
             result.AddMember("transform", DescribeTransform(transform, allocator), allocator);
         }
 
-        static void CommandGameObjectSetEnable(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandGameObjectSetEnable(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const FoundGameObject found = RequireGameObject(args);
-            found.gameObject->SetEnable(RequireBool(args, "enable"));
+            found.gameObject->SetEnable(args.RequireBool("enable"));
             result.AddMember("components", DescribeComponents(*found.gameObject, allocator), allocator);
         }
 
-        static void CommandComponentSetEnable(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandComponentSetEnable(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const FoundGameObject found = RequireGameObject(args);
-            const ComponentPtr component = FindComponent(*found.gameObject, RequireString(args, "componentGuid"));
-            component->SetEnable(RequireBool(args, "enable"));
+            const ComponentPtr component = FindComponent(*found.gameObject, args.RequireString("componentGuid"));
+            component->SetEnable(args.RequireBool("enable"));
             result.AddMember("component", DescribeComponent(*component, allocator), allocator);
         }
 
-        static void CommandGameObjectSelect(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandGameObjectSelect(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const FoundGameObject found = RequireGameObject(args);
 
@@ -831,37 +831,37 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("inspectorCount", inspectorCount, allocator);
         }
 
-        static void CommandGameObjectDestroy(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandGameObjectDestroy(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const FoundGameObject found = RequireGameObject(args);
             RequireGameWindow()->RemoveGameObject(found.gameObject);
             result.AddMember("destroyed", MakeString(found.gameObject->GetGuid().Value(), allocator), allocator);
         }
 
-        static void CommandPlay(const JsonValue&, JsonValue& result, JsonAllocator& allocator)
+        static void CommandPlay(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
         {
             const auto gameWindow = RequireGameWindow();
             AutoMcpEngineAccess::Play(*gameWindow);
             AddPlayState(result, *gameWindow, allocator);
         }
 
-        static void CommandStop(const JsonValue&, JsonValue& result, JsonAllocator& allocator)
+        static void CommandStop(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
         {
             const auto gameWindow = RequireGameWindow();
             AutoMcpEngineAccess::Stop(*gameWindow);
             AddPlayState(result, *gameWindow, allocator);
         }
 
-        static void CommandEnd(const JsonValue&, JsonValue& result, JsonAllocator& allocator)
+        static void CommandEnd(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
         {
             const auto gameWindow = ActivateGameWindow(result, allocator);
             AutoMcpEngineAccess::End(*gameWindow);
             AddPlayState(result, *gameWindow, allocator);
         }
 
-        static void CommandTimeSetScale(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandTimeSetScale(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            const double scale = RequireNumber(args, "scale");
+            const double scale = args.RequireNumber("scale");
             if (scale < 0.0)
                 throw AutoMcpError("scale must be >= 0");
 
@@ -869,7 +869,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("timeScale", static_cast<double>(NanamiEngine::Time::GetTimeScale()), allocator);
         }
 
-        static void CommandCameraGet(const JsonValue&, JsonValue& result, JsonAllocator& allocator)
+        static void CommandCameraGet(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
         {
             const auto gameWindow = RequireGameWindow();
             result.AddMember("controller", MakeString(gameWindow->IsPlayMode() ? "cinemachine" : "editor", allocator), allocator);
@@ -890,7 +890,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("renderedCamera", rendered, allocator);
         }
 
-        static void CommandCameraSet(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandCameraSet(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const auto gameWindow = RequireGameWindow();
             if (gameWindow->IsPlayMode())
@@ -899,16 +899,16 @@ namespace NanamiEngine::Core::Application::AutoMcp
             glm::vec3 position = gameWindow->GetCameraPosition();
             glm::vec3 vector;
             glm::quat rotation;
-            if (TryGetVec3(args, "position", vector))
+            if (args.TryGetVec3("position", vector))
             {
                 position = vector;
                 gameWindow->SetCameraPosition(position);
             }
-            if (TryGetQuat(args, "rotation", rotation))
+            if (args.TryGetQuat("rotation", rotation))
                 gameWindow->SetCameraRotation(rotation);
-            if (TryGetVec3(args, "eulerDegrees", vector))
+            if (args.TryGetVec3("eulerDegrees", vector))
                 gameWindow->SetCameraRotation(glm::quat(glm::radians(vector)));
-            if (TryGetVec3(args, "lookAt", vector))
+            if (args.TryGetVec3("lookAt", vector))
             {
                 const glm::vec3 offset = vector - position;
                 if (glm::length(offset) < 1.0e-4f)
@@ -927,7 +927,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
         static std::span<const char* const> PhysicsLayerNames()
         {
-            return { NanamiEngine::Module::Physics::LayerNames(), static_cast<std::size_t>(NanamiEngine::Module::Physics::LayerCount()) };
+            return { NanamiEngine::Module::Physics::PhysicsLayers::Names(), static_cast<std::size_t>(NanamiEngine::Module::Physics::PhysicsLayers::Count()) };
         }
 
         template <typename EnumT>
@@ -949,17 +949,17 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("virtualCameraFrustums", AutoMcpEngineAccess::DebugDrawVirtualCameraFrustums(), allocator);
         }
 
-        static void CollectDebugDrawFlag(const JsonValue& args, const char* key, bool& flag, DebugDrawChanges& changes)
+        static void CollectDebugDrawFlag(const JsonArgs& args, const char* key, bool& flag, DebugDrawChanges& changes)
         {
-            if (FindMember(args, key) != nullptr)
-                changes.emplace_back(&flag, RequireBool(args, key));
+            if (args.FindMember(key) != nullptr)
+                changes.emplace_back(&flag, args.RequireBool(key));
         }
 
         /** @brief true/false なら全部、{"名前": bool} なら名前ごと (大文字小文字は区別しない) に切り替える */
         template <typename EnumT>
-        static void CollectDebugDrawFlags(const JsonValue& args, const char* key, const std::span<const char* const> names, bool& (*flag)(EnumT), DebugDrawChanges& changes)
+        static void CollectDebugDrawFlags(const JsonArgs& args, const char* key, const std::span<const char* const> names, bool& (*flag)(EnumT), DebugDrawChanges& changes)
         {
-            const JsonValue* member = FindMember(args, key);
+            const JsonValue* member = args.FindMember(key);
             if (member == nullptr)
                 return;
 
@@ -990,13 +990,13 @@ namespace NanamiEngine::Core::Application::AutoMcp
             }
         }
 
-        static void CommandDebugDrawGet(const JsonValue&, JsonValue& result, JsonAllocator& allocator)
+        static void CommandDebugDrawGet(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
         {
             DescribeDebugDraw(result, allocator);
         }
 
         /** @brief 既定では ProjectConfig/DebugDraw に保存しない (git 管理下なので)。save で Config 画面の変更と同じく保存する */
-        static void CommandDebugDrawSet(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandDebugDrawSet(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             // 途中の引数が不正でも一部だけ反映されないよう、全部読んでから書き込む
             DebugDrawChanges changes;
@@ -1006,7 +1006,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             CollectDebugDrawFlag (args, "triggers",  AutoMcpEngineAccess::DebugDrawTriggerColliders(), changes);
             CollectDebugDrawFlag (args, "mainCameraFrustum",     AutoMcpEngineAccess::DebugDrawMainCameraFrustum(), changes);
             CollectDebugDrawFlag (args, "virtualCameraFrustums", AutoMcpEngineAccess::DebugDrawVirtualCameraFrustums(), changes);
-            const bool save = OptionalBool(args, "save", false);
+            const bool save = args.OptionalBool("save", false);
 
             for (const auto& [flag, value] : changes)
                 *flag = value;
@@ -1028,11 +1028,11 @@ namespace NanamiEngine::Core::Application::AutoMcp
             }
         }
 
-        static void CommandLogTail(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandLogTail(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            const std::size_t count    = static_cast<std::size_t>(std::clamp(OptionalInt(args, "count", 50), 1, 2000));
-            const std::string minLevel = OptionalString(args, "minLevel", "info");
-            const std::string contains = OptionalString(args, "contains", std::string());
+            const std::size_t count    = static_cast<std::size_t>(std::clamp(args.OptionalInt("count", 50), 1, 2000));
+            const std::string minLevel = args.OptionalString("minLevel", "info");
+            const std::string contains = args.OptionalString("contains", std::string());
 
             NanamiEngine::Module::LogLevel threshold = NanamiEngine::Module::LogLevel::Info;
             if (minLevel == "warning")
@@ -1174,11 +1174,11 @@ namespace NanamiEngine::Core::Application::AutoMcp
             AddPreviewCamera(stage, result, allocator);
         }
 
-        static void CommandAssetsFind(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandAssetsFind(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            const std::string query     = NormalizeAssetPath(OptionalString(args, "query", std::string()));
-            const std::string extension = ToLowerAscii(OptionalString(args, "extension", std::string()));
-            const int         limit     = std::clamp(OptionalInt(args, "limit", 50), 1, 1000);
+            const std::string query     = NormalizeAssetPath(args.OptionalString("query", std::string()));
+            const std::string extension = ToLowerAscii(args.OptionalString("extension", std::string()));
+            const int         limit     = std::clamp(args.OptionalInt("limit", 50), 1, 1000);
 
             JsonValue assets(rapidjson::kArrayType);
             bool isTruncated = false;
@@ -1203,7 +1203,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         }
 
         /** @brief 再読み込みしたアセットの非同期ロードは次フレームの OnEnableAsset から始まるので、ここでは loadingResourceCount を返さない */
-        static void CommandAssetsReload(const JsonValue&, JsonValue& result, JsonAllocator& allocator)
+        static void CommandAssetsReload(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
         {
             const int previousAssetCount = static_cast<int>(AllAssets().size());
             ApplicationBase::ResetAssetsDirectory();
@@ -1212,7 +1212,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("assetCount",         static_cast<int>(AllAssets().size()), allocator);
         }
 
-        static void CommandModelViewOpen(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandModelViewOpen(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const Mv1FilePtr file   = ResolveMv1(args, "guid", "path");
             const auto       window = ApplicationBase::MainWindows().Catch<MainWindow::ModelViewWindow>();
@@ -1222,12 +1222,12 @@ namespace NanamiEngine::Core::Application::AutoMcp
             DescribeModelViewState(*window, result, allocator);
         }
 
-        static void CommandModelViewState(const JsonValue&, JsonValue& result, JsonAllocator& allocator)
+        static void CommandModelViewState(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
         {
             DescribeModelViewState(*ApplicationBase::MainWindows().Catch<MainWindow::ModelViewWindow>(), result, allocator);
         }
 
-        static void CommandModelViewSelect(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandModelViewSelect(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const Mv1FilePtr file   = ResolveMv1(args, "guid", "path");
             const auto       window = ApplicationBase::MainWindows().Catch<MainWindow::ModelViewWindow>();
@@ -1239,9 +1239,9 @@ namespace NanamiEngine::Core::Application::AutoMcp
             DescribeModelViewState(*window, result, allocator);
         }
 
-        static void CommandModelViewClose(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandModelViewClose(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            const std::string guid   = RequireString(args, "guid");
+            const std::string guid   = args.RequireString("guid");
             const auto        window = ApplicationBase::MainWindows().Catch<MainWindow::ModelViewWindow>();
             const auto        models = AutoMcpEngineAccess::ModelViewContents(*window);
             if (std::ranges::none_of(models, [&guid](const Mv1FilePtr& model) { return model->GetGuid() == ::Guid(guid); }))
@@ -1251,7 +1251,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             DescribeModelViewState(*window, result, allocator);
         }
 
-        static void CommandAnimationViewOpen(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandAnimationViewOpen(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const Mv1FilePtr file   = ResolveMv1(args, "modelGuid", "modelPath");
             const auto       window = ApplicationBase::MainWindows().Catch<MainWindow::AnimationViewWindow>();
@@ -1260,29 +1260,29 @@ namespace NanamiEngine::Core::Application::AutoMcp
             DescribeAnimationViewState(*window, false, result, allocator);
         }
 
-        static void CommandAnimationViewState(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandAnimationViewState(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
-            DescribeAnimationViewState(*ApplicationBase::MainWindows().Catch<MainWindow::AnimationViewWindow>(), OptionalBool(args, "includeClips", false), result, allocator);
+            DescribeAnimationViewState(*ApplicationBase::MainWindows().Catch<MainWindow::AnimationViewWindow>(), args.OptionalBool("includeClips", false), result, allocator);
         }
 
-        static void CommandAnimationViewSet(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandAnimationViewSet(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const auto window = ApplicationBase::MainWindows().Catch<MainWindow::AnimationViewWindow>();
 
-            if (FindMember(args, "playing") != nullptr)
-                AutoMcpEngineAccess::AnimationViewPlaying(*window) = RequireBool(args, "playing");
-            if (FindMember(args, "useBlend") != nullptr)
-                AutoMcpEngineAccess::AnimationViewUseBlend(*window) = RequireBool(args, "useBlend");
-            if (FindMember(args, "blendWeight") != nullptr)
-                AutoMcpEngineAccess::AnimationViewBlendWeight(*window) = std::clamp(static_cast<float>(RequireNumber(args, "blendWeight")), 0.0f, 1.0f);
-            if (FindMember(args, "nameCheck") != nullptr)
-                AutoMcpEngineAccess::AnimationViewNameCheck(*window) = RequireBool(args, "nameCheck");
-            if (FindMember(args, "lockRootMotion") != nullptr)
-                AutoMcpEngineAccess::AnimationViewLockRootMotion(*window) = RequireBool(args, "lockRootMotion");
-            if (FindMember(args, "rootFrameIndex") != nullptr)
+            if (args.FindMember("playing") != nullptr)
+                AutoMcpEngineAccess::AnimationViewPlaying(*window) = args.RequireBool("playing");
+            if (args.FindMember("useBlend") != nullptr)
+                AutoMcpEngineAccess::AnimationViewUseBlend(*window) = args.RequireBool("useBlend");
+            if (args.FindMember("blendWeight") != nullptr)
+                AutoMcpEngineAccess::AnimationViewBlendWeight(*window) = std::clamp(static_cast<float>(args.RequireNumber("blendWeight")), 0.0f, 1.0f);
+            if (args.FindMember("nameCheck") != nullptr)
+                AutoMcpEngineAccess::AnimationViewNameCheck(*window) = args.RequireBool("nameCheck");
+            if (args.FindMember("lockRootMotion") != nullptr)
+                AutoMcpEngineAccess::AnimationViewLockRootMotion(*window) = args.RequireBool("lockRootMotion");
+            if (args.FindMember("rootFrameIndex") != nullptr)
             {
                 const int modelHandle = AutoMcpEngineAccess::AnimationViewStage(*window).ModelHandle();
-                const int frameIndex  = OptionalInt(args, "rootFrameIndex", -1);
+                const int frameIndex  = args.OptionalInt("rootFrameIndex", -1);
                 if (!IsDxHandleReady(modelHandle) || frameIndex < 0 || frameIndex >= MV1GetFrameNum(modelHandle))
                     throw AutoMcpError("rootFrameIndex is out of range or the model is not loaded yet");
 
@@ -1292,7 +1292,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             DescribeAnimationViewState(*window, false, result, allocator);
         }
 
-        static void CommandAnimationViewBones(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandAnimationViewBones(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const auto window      = ApplicationBase::MainWindows().Catch<MainWindow::AnimationViewWindow>();
             const int  modelHandle = AutoMcpEngineAccess::AnimationViewStage(*window).ModelHandle();
@@ -1300,7 +1300,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
                 throw AutoMcpError("the AnimationView model is not loaded yet");
 
             // NOTE: 部分一致(大文字小文字無視)。空なら全フレーム
-            const std::string filter = ToLowerAscii(OptionalString(args, "nameContains", std::string()));
+            const std::string filter = ToLowerAscii(args.OptionalString("nameContains", std::string()));
 
             const auto rowOf = [&](const MATRIX& matrix, const int row)
             {
@@ -1338,37 +1338,37 @@ namespace NanamiEngine::Core::Application::AutoMcp
             result.AddMember("frames",      frames, allocator);
         }
 
-        static void CommandAnimationViewSetClip(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandAnimationViewSetClip(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const auto        window   = ApplicationBase::MainWindows().Catch<MainWindow::AnimationViewWindow>();
-            const std::string slotName = OptionalString(args, "slot", "A");
+            const std::string slotName = args.OptionalString("slot", "A");
             if (slotName != "A" && slotName != "a" && slotName != "B" && slotName != "b")
                 throw AutoMcpError("slot must be \"A\" or \"B\"");
 
             auto& slot = AutoMcpEngineAccess::AnimationViewSlot(*window, slotName == "B" || slotName == "b");
 
-            if (OptionalBool(args, "useModelClips", false))
+            if (args.OptionalBool("useModelClips", false))
                 AutoMcpEngineAccess::SetSlotAnimationFile(slot, nullptr);
-            else if (FindMember(args, "animationGuid") != nullptr || FindMember(args, "animationPath") != nullptr)
+            else if (args.FindMember("animationGuid") != nullptr || args.FindMember("animationPath") != nullptr)
                 AutoMcpEngineAccess::SetSlotAnimationFile(slot, ResolveMv1(args, "animationGuid", "animationPath"));
 
             // クリップを選ぶと再生区間と時間がリセットされるので、区間・時間より先に選ぶ
-            if (FindMember(args, "clipName") != nullptr || FindMember(args, "clipIndex") != nullptr)
+            if (args.FindMember("clipName") != nullptr || args.FindMember("clipIndex") != nullptr)
             {
                 const int modelHandle = AutoMcpEngineAccess::AnimationViewStage(*window).ModelHandle();
                 const bool isSourceReady = IsDxHandleReady(modelHandle) && AutoMcpEngineAccess::IsSlotSourceReady(slot);
                 const int sourceHandle = isSourceReady ? AutoMcpEngineAccess::SlotClipSourceHandle(slot, modelHandle) : -1;
 
-                if (FindMember(args, "clipName") != nullptr)
+                if (args.FindMember("clipName") != nullptr)
                 {
                     if (sourceHandle == -1)
                         throw AutoMcpError("clips are not loaded yet (model or animation source still loading); retry when animationview.state shows sourceReady");
 
-                    AutoMcpEngineAccess::SelectSlotClip(slot, FindClipIndex(sourceHandle, RequireString(args, "clipName")));
+                    AutoMcpEngineAccess::SelectSlotClip(slot, FindClipIndex(sourceHandle, args.RequireString("clipName")));
                 }
                 else
                 {
-                    const int clipIndex = OptionalInt(args, "clipIndex", 0);
+                    const int clipIndex = args.OptionalInt("clipIndex", 0);
                     if (clipIndex < 0 || (sourceHandle != -1 && clipIndex >= MV1GetAnimNum(sourceHandle)))
                         throw AutoMcpError("clipIndex is out of range");
 
@@ -1376,16 +1376,16 @@ namespace NanamiEngine::Core::Application::AutoMcp
                 }
             }
 
-            if (FindMember(args, "speed") != nullptr)
-                AutoMcpEngineAccess::SlotSpeed(slot) = static_cast<float>(RequireNumber(args, "speed"));
-            if (FindMember(args, "loop") != nullptr)
-                AutoMcpEngineAccess::SlotLoop(slot) = RequireBool(args, "loop");
-            if (FindMember(args, "start") != nullptr)
-                AutoMcpEngineAccess::SlotStartTime(slot) = (std::max)(0.0f, static_cast<float>(RequireNumber(args, "start")));
-            if (FindMember(args, "end") != nullptr)
-                AutoMcpEngineAccess::SlotEndTime(slot) = (std::max)(0.0f, static_cast<float>(RequireNumber(args, "end")));
-            if (FindMember(args, "time") != nullptr)
-                AutoMcpEngineAccess::SetSlotTime(slot, (std::max)(0.0f, static_cast<float>(RequireNumber(args, "time"))));
+            if (args.FindMember("speed") != nullptr)
+                AutoMcpEngineAccess::SlotSpeed(slot) = static_cast<float>(args.RequireNumber("speed"));
+            if (args.FindMember("loop") != nullptr)
+                AutoMcpEngineAccess::SlotLoop(slot) = args.RequireBool("loop");
+            if (args.FindMember("start") != nullptr)
+                AutoMcpEngineAccess::SlotStartTime(slot) = (std::max)(0.0f, static_cast<float>(args.RequireNumber("start")));
+            if (args.FindMember("end") != nullptr)
+                AutoMcpEngineAccess::SlotEndTime(slot) = (std::max)(0.0f, static_cast<float>(args.RequireNumber("end")));
+            if (args.FindMember("time") != nullptr)
+                AutoMcpEngineAccess::SetSlotTime(slot, (std::max)(0.0f, static_cast<float>(args.RequireNumber("time"))));
 
             DescribeAnimationViewState(*window, false, result, allocator);
         }
@@ -1401,16 +1401,16 @@ namespace NanamiEngine::Core::Application::AutoMcp
             throw AutoMcpError("preview.camera needs ModelViewWindow or AnimationViewWindow as the current main window (modelview.open / animationview.open)");
         }
 
-        static void CommandPreviewCamera(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)
+        static void CommandPreviewCamera(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             auto& stage = CurrentPreviewStage();
 
             glm::vec3 position;
             glm::vec3 lookAt;
-            const bool hasPosition = TryGetVec3(args, "position", position);
-            const bool hasLookAt   = TryGetVec3(args, "lookAt", lookAt);
-            const bool hasYaw      = FindMember(args, "yawDegrees") != nullptr;
-            const bool hasPitch    = FindMember(args, "pitchDegrees") != nullptr;
+            const bool hasPosition = args.TryGetVec3("position", position);
+            const bool hasLookAt   = args.TryGetVec3("lookAt", lookAt);
+            const bool hasYaw      = args.FindMember("yawDegrees") != nullptr;
+            const bool hasPitch    = args.FindMember("pitchDegrees") != nullptr;
 
             if (hasPosition || hasLookAt)
             {
@@ -1424,12 +1424,12 @@ namespace NanamiEngine::Core::Application::AutoMcp
             }
             else if (hasYaw || hasPitch)
             {
-                const float yaw   = hasYaw   ? static_cast<float>(RequireNumber(args, "yawDegrees"))   : 0.0f;
-                const float pitch = hasPitch ? static_cast<float>(RequireNumber(args, "pitchDegrees")) : 20.0f;
+                const float yaw   = hasYaw   ? static_cast<float>(args.RequireNumber("yawDegrees"))   : 0.0f;
+                const float pitch = hasPitch ? static_cast<float>(args.RequireNumber("pitchDegrees")) : 20.0f;
                 AutoMcpEngineAccess::PreviewFrame(stage, ViewDirectionFromAngles(yaw, pitch));
                 result.AddMember("appliedNextFrame", true, allocator);
             }
-            else if (OptionalBool(args, "frame", false))
+            else if (args.OptionalBool("frame", false))
             {
                 stage.RequestFrame();
                 result.AddMember("appliedNextFrame", true, allocator);

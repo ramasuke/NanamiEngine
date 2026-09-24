@@ -240,9 +240,9 @@ namespace NanamiEngine::Module::Component
         ImGuiHelper::OnDrawInputField("scale_", scale_);
         ImGuiHelper::OnDrawInputField("offsetRotation_", offsetRotation_);
         int layerIndex = Physics::ToIndex(layer_);
-        if (ImGui::Combo("Layer", &layerIndex, Physics::LayerNames(), Physics::LayerCount()))
+        if (ImGui::Combo("Layer", &layerIndex, Physics::PhysicsLayers::Names(), Physics::PhysicsLayers::Count()))
         {
-            layer_ = Physics::ToLayer(layerIndex);
+            layer_ = Physics::PhysicsLayers::ToLayer(layerIndex);
         }
         ImGuiHelper::OnDrawInputField("collisionMv1File_", collisionMv1File_);
         ImGuiHelper::OnDrawInputField("simplifyEnabled_", simplifyEnabled_);

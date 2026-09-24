@@ -18,6 +18,15 @@ namespace NanamiEngine::AssetUpdater
      * gameRoot/Assets/ の中身を実際にハッシュして、それを表す installed.json を書く。
      * 書き出したゲームは、これで配信中の manifest.json との差分だけを更新する
      */
-    [[nodiscard]] InstalledStateResult WriteInstalledState(const std::filesystem::path& gameRoot, const std::filesystem::path& installedState,
-                                                           const std::function<bool()>& isCanceled);
+    class InstalledStateWriter final
+    {
+    public:
+        InstalledStateWriter(std::filesystem::path gameRoot, std::filesystem::path installedState);
+
+        [[nodiscard]] InstalledStateResult Write(const std::function<bool()>& isCanceled) const;
+
+    private:
+        std::filesystem::path gameRoot_;
+        std::filesystem::path installedState_;
+    };
 }

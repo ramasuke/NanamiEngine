@@ -59,14 +59,14 @@ namespace NanamiEngine::Core::Application::Configuration
             namespace Physics = Module::Physics;
             const auto names = Module::ProjectConfig::LoadOrDefaultWithPath<std::vector<std::string>>(
                 PHYSICS_CONFIG_PATH, PHYSICS_LAYER_NAMES_KEY, { "Default" });
-            Physics::SetLayerNames(names);
+            Physics::PhysicsLayers::SetNames(names);
 
             const auto masks = Module::ProjectConfig::LoadOrDefaultWithPath<std::vector<Physics::LayerMask>>(
                 PHYSICS_CONFIG_PATH, PHYSICS_LAYER_COLLISION_MASKS_KEY, {});
             for (int i = 0; i < Physics::MAX_LAYER_COUNT; ++i)
             {
                 const auto mask = i < static_cast<int>(masks.size()) ? masks[i] : Physics::ALL_LAYERS_MASK;
-                Physics::SetCollisionMaskOf(static_cast<Physics::Layer>(i), mask);
+                Physics::PhysicsLayers::SetCollisionMaskOf(static_cast<Physics::Layer>(i), mask);
             }
         }
 
@@ -75,10 +75,10 @@ namespace NanamiEngine::Core::Application::Configuration
             namespace Physics = Module::Physics;
             std::vector<std::string>        names;
             std::vector<Physics::LayerMask> masks;
-            for (int i = 0; i < Physics::LayerCount(); ++i)
+            for (int i = 0; i < Physics::PhysicsLayers::Count(); ++i)
             {
-                names.emplace_back(Physics::LayerNames()[i]);
-                masks.push_back(Physics::CollisionMaskOf(static_cast<Physics::Layer>(i)));
+                names.emplace_back(Physics::PhysicsLayers::Names()[i]);
+                masks.push_back(Physics::PhysicsLayers::CollisionMaskOf(static_cast<Physics::Layer>(i)));
             }
             Module::ProjectConfig::SaveWithPath(PHYSICS_CONFIG_PATH, PHYSICS_LAYER_NAMES_KEY,           names);
             Module::ProjectConfig::SaveWithPath(PHYSICS_CONFIG_PATH, PHYSICS_LAYER_COLLISION_MASKS_KEY, masks);
@@ -96,8 +96,8 @@ namespace NanamiEngine::Core::Application::Configuration
             ImGui::TextDisabled("* Layer は番号で保存されるため末尾のみ追加/削除できる");
 
             std::vector<std::string> names;
-            for (int i = 0; i < Physics::LayerCount(); ++i)
-                names.emplace_back(Physics::LayerNames()[i]);
+            for (int i = 0; i < Physics::PhysicsLayers::Count(); ++i)
+                names.emplace_back(Physics::PhysicsLayers::Names()[i]);
 
             for (int i = 0; i < static_cast<int>(names.size()); ++i)
             {
@@ -130,11 +130,11 @@ namespace NanamiEngine::Core::Application::Configuration
                 }
             }
             if (changed)
-                Physics::SetLayerNames(names);
+                Physics::PhysicsLayers::SetNames(names);
 
             ImGui::Spacing();
             ImGui::Text("Layer Collision Matrix");
-            if (Physics::DrawCollisionMatrixGui())
+            if (Physics::PhysicsLayers::DrawCollisionMatrixGui())
                 changed = true;
 
             return changed;

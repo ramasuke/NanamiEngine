@@ -4,6 +4,7 @@
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/Asset/Scene/SceneFile.h"
 #include "../../GamePlay/Ui/Loading/Ui_LoadingScreen.h"
+#include "../../GamePlay/Network/Session/GamePlay_StageSessionMatchmaking.h"
 #include "Packages/DebugSheet/DebugSheetConfig.h"
 #if NANAMI_DEBUG_SHEET_ENABLED
 #include "Engine/Module/LifeCycleCallback/UserInterfaceRenderable/IUserInterfaceRenderable.h"
@@ -50,6 +51,8 @@ namespace GameCore
         [[nodiscard]] Scene::Main::GameSceneGroup& Scenes() const { return *sceneGroup_; }
         [[nodiscard]] Scene::Sub:: GameSceneGroup& SubScenes() const;
         [[nodiscard]] GamePlay::Ui::LoadingScreenUi& LoadingScreen() const { return *loadingScreen_; }
+        /** @brief ステージ選択で決めた部屋を、シーンを跨いでステージの入室まで持つ */
+        [[nodiscard]] GamePlay::Network::StageMatchmaker& Matchmaker() { return matchmaker_; }
 
     private:
         void InitMainSceneGroup();
@@ -77,6 +80,7 @@ namespace GameCore
         std::shared_ptr<GameProgresion> mainScenarioProgression_;
         std::weak_ptr<NanamiEngine::Scene::Scene> stageLoadingScene_;
         std::shared_ptr<GamePlay::Ui::LoadingScreenUi> loadingScreen_;
+        GamePlay::Network::StageMatchmaker matchmaker_;
         static Game* instance_;
         
 #pragma region Serialization Function

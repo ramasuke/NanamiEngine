@@ -36,6 +36,9 @@ namespace NanamiEngine::CineMachine::Behaviour
         // Playerからカメラへrayを飛ばし、障害物にめり込まない位置までオフセットを縮める
         [[nodiscard]] glm::vec3 ResolveCameraCollision(const glm::vec3& desiredOffset) const;
 
+        // NOTE: マウスカーソルは1つなので、どのインスタンスが固定したかは問わず全体で共有する(IsMousePinned 用)
+        static int lastMousePinnedMs_;
+
         bool isLockMousePos_ = true;
         bool isImmediateApply_ = true;
         bool isMouseDeltaStale_ = true;

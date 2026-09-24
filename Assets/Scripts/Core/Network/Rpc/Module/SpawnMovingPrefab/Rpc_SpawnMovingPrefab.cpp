@@ -26,7 +26,7 @@ namespace
                         return;
                     }
                     const auto projectile = GamePlay::Spawn::SpawnMovingPrefab(*prefab, spawnPos, rotation, targetPos, moveSpeed, destroyOnFinish);
-                    GamePlay::Npc::Enemy::SetProjectileDamage(projectile, power);
+                    GamePlay::Npc::Enemy::IAttackProjectile::TrySetDamage(projectile, power);
                 },
                 NanamiEngine::Module::Network::RpcOwnershipFilter::SkipIfOwner);
         }

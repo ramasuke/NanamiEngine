@@ -5,6 +5,7 @@
 #include <cwctype>
 #include <fstream>
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include <windows.h>
@@ -76,11 +77,16 @@ namespace NanamiEngine::AssetUpdater
         }
     }
 
-    InstalledStateResult WriteInstalledState(const std::filesystem::path& gameRoot, const std::filesystem::path& installedState,
-                                             const std::function<bool()>& isCanceled)
+    InstalledStateWriter::InstalledStateWriter(std::filesystem::path gameRoot, std::filesystem::path installedState)
+        : gameRoot_      (std::move(gameRoot))
+        , installedState_(std::move(installedState))
+    {
+    }
+
+    InstalledStateResult InstalledStateWriter::Write(const std::function<bool()>& isCanceled) const
     {
         InstalledStateResult result;
-        const std::filesystem::path assetsDirectory = gameRoot / L"Assets";
+        const std::filesystem::path assetsDirectory = gameRoot_ / L"Assets";
 
         std::error_code error;
         if (!std::filesystem::is_directory(assetsDirectory, error))
@@ -115,7 +121,7 @@ namespace NanamiEngine::AssetUpdater
             }
 
             InstalledStateEntry entry;
-            entry.path = WideToUtf8(file.lexically_relative(gameRoot).generic_wstring());
+            entry.path = WideToUtf8(file.lexically_relative(gameRoot_).generic_wstring());
 
             const std::optional<std::string> hash = Sha256OfFile(file);
             if (!hash)
@@ -144,7 +150,7 @@ namespace NanamiEngine::AssetUpdater
         std::ranges::sort(entries, {}, &InstalledStateEntry::path);
 
         // 途中で失敗しても、前の installed.json を壊さない
-        std::filesystem::path temporary = installedState;
+        std::filesystem::path temporary = installedState_;
         temporary += INSTALLED_STATE_TEMP_SUFFIX;
         {
             const std::string json = InstalledStateSerialize(entries);
@@ -158,10 +164,10 @@ namespace NanamiEngine::AssetUpdater
                 return result;
             }
         }
-        if (!MoveFileExW(temporary.c_str(), installedState.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
+        if (!MoveFileExW(temporary.c_str(), installedState_.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
         {
             DeleteFileW(temporary.c_str());
-            result.error = "置き換えられませんでした: " + WideToUtf8(installedState.wstring());
+            result.error = "置き換えられませんでした: " + WideToUtf8(installedState_.wstring());
             return result;
         }
 

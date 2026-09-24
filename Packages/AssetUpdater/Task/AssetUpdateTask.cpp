@@ -3,13 +3,13 @@
 #include <filesystem>
 #include <utility>
 
-#include "../Install/Installer.h"
 
 namespace NanamiEngine::AssetUpdater
 {
     AssetUpdateTask::AssetUpdateTask(std::unique_ptr<IAssetUpdater> updater, AssetUpdaterPaths paths)
         : updater_(std::move(updater))
         , paths_(std::move(paths))
+        , installer_(paths_)
     {
     }
 
@@ -70,7 +70,7 @@ namespace NanamiEngine::AssetUpdater
             return;
         }
 
-        RemoveInstallLeftovers(paths_);
+        installer_.RemoveLeftovers();
         checkResult_  = updater_->CheckForUpdates();
         errorMessage_ = checkResult_.error;
 
@@ -101,7 +101,7 @@ namespace NanamiEngine::AssetUpdater
         }
 
         state_.store(AssetUpdateState::Applying, std::memory_order_release);
-        const ApplyResult applied = ApplyUpdate(paths_, checkResult_);
+        const ApplyResult applied = installer_.Apply(checkResult_);
         if (!applied.ok)
         {
             errorMessage_ = applied.error;

@@ -21,7 +21,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
     struct AutoMcpCommand
     {
         AutoMcpPhase phase;
-        std::function<void(const JsonValue& args, JsonValue& result, JsonAllocator& allocator)> handler;
+        std::function<void(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)> handler;
     };
 
     /** @brief "screenshot" 以外の全コマンドの表。screenshot は描画タイミングに依存するので AutoMcpServer が直接扱う */

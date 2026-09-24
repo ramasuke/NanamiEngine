@@ -16,13 +16,13 @@ namespace
     constexpr int   STICK_DEAD_ZONE = 8000;
     // NOTE: カメラが止まったら数フレームで固定が外れた扱いにする
     constexpr int   MOUSE_PIN_HOLD_MS = 100;
-
-    // NOTE: 初回の差分が大きくても固定していない扱いになるよう、十分昔にしておく
-    int lastMousePinnedMs = -MOUSE_PIN_HOLD_MS * 100;
 }
 
 namespace NanamiEngine::CineMachine::Behaviour
 {
+    // NOTE: 初回の差分が大きくても固定していない扱いになるよう、十分昔にしておく
+    int ThirdPersonCameraBehaviour::lastMousePinnedMs_ = -MOUSE_PIN_HOLD_MS * 100;
+
     void ThirdPersonCameraBehaviour::SetTarget(const std::shared_ptr<GameObject::IGameObject>& target)
     {
         target_ = target;
@@ -48,7 +48,7 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     bool ThirdPersonCameraBehaviour::IsMousePinned()
     {
-        return GetNowCount() - lastMousePinnedMs < MOUSE_PIN_HOLD_MS;
+        return GetNowCount() - lastMousePinnedMs_ < MOUSE_PIN_HOLD_MS;
     }
 
     void ThirdPersonCameraBehaviour::OnAwake()
@@ -93,7 +93,7 @@ namespace NanamiEngine::CineMachine::Behaviour
         if (isLockMousePos_)
         {
             SetMousePoint(centerX, centerY);
-            lastMousePinnedMs = GetNowCount();
+            lastMousePinnedMs_ = GetNowCount();
         }
 
         // NOTE: 無効の間はカーソルが自由に動くので、戻った最初の差分は捨てる(カメラが跳ねる)
@@ -129,7 +129,7 @@ namespace NanamiEngine::CineMachine::Behaviour
 
     void ThirdPersonCameraBehaviour::UpdateFollowTargetBehaviour() const
     {
-        const glm::vec3 targetPos = CameraTargetPositionOf(*target_.get());
+        const glm::vec3 targetPos = IVirtualCameraTarget::PositionOf(*target_.get());
         const glm::vec3 lookAtPos = targetPos + lookAtOffsetPos_;
 
         const glm::mat4 rotY = glm::rotate(glm::mat4(1.0f), yaw_,   glm::vec3(0,1,0));
@@ -152,7 +152,7 @@ namespace NanamiEngine::CineMachine::Behaviour
             return desiredOffset;
 
         // 追従対象の注視点を起点に、カメラの理想位置へ向けてrayを飛ばす
-        const glm::vec3 origin    = CameraTargetPositionOf(*target_.get()) + lookAtOffsetPos_;
+        const glm::vec3 origin    = IVirtualCameraTarget::PositionOf(*target_.get()) + lookAtOffsetPos_;
         const glm::vec3 direction = desiredOffset / distance;
 
         Module::Physics::LayerMask mask = Module::Physics::CreateLayerMask();

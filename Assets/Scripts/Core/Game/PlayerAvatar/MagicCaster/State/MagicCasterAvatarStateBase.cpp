@@ -149,7 +149,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
             return;
 
         // 部位は真上にあることもあるので、高さを消してから渡す(RotateTowards の長さ判定をすり抜けて水平成分 0 を正規化しないように)
-        glm::vec3 toAim = LockOnPositionOf(*target) - Transform().GetWorldPos();
+        glm::vec3 toAim = ILockOnTarget::PositionOf(*target) - Transform().GetWorldPos();
         toAim.y = 0.0f;
         Actions().RotateTowards(toAim, Status().GetAimRotateSpeed());
     }

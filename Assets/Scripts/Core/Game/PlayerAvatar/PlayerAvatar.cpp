@@ -15,18 +15,18 @@ namespace GameCore::PlayerAvatar
         return nullptr;
     }
 
-    void SaveType(const IPlayerAvatar& playerAvatar)
+    void SelectedPlayerAvatarType::Save(const IPlayerAvatar& playerAvatar)
     {
-        LocalPrefs::SaveWithPath(PLAYER_AVATAR_TYPE_FILE_PATH, PLAYER_AVATAR_TYPE_FILE_KEY, playerAvatar.Type());
+        Save(playerAvatar.Type());
     }
 
-    void SaveType(const PlayerAvatarType type)
+    void SelectedPlayerAvatarType::Save(const PlayerAvatarType type)
     {
-        LocalPrefs::SaveWithPath(PLAYER_AVATAR_TYPE_FILE_PATH, PLAYER_AVATAR_TYPE_FILE_KEY, type);
+        LocalPrefs::SaveWithPath(FILE_PATH, FILE_KEY, type);
     }
 
-    PlayerAvatarType LoadType()
+    PlayerAvatarType SelectedPlayerAvatarType::Load()
     {
-        return LocalPrefs::LoadWithPath<PlayerAvatarType>(PLAYER_AVATAR_TYPE_FILE_PATH, PLAYER_AVATAR_TYPE_FILE_KEY);
+        return LocalPrefs::LoadWithPath<PlayerAvatarType>(FILE_PATH, FILE_KEY);
     }
 }

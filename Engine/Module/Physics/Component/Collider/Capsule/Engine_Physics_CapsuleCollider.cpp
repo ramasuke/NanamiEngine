@@ -52,7 +52,7 @@ namespace NanamiEngine::Module::Component
 
         {
             Physics::Layer currentLayer = layer_;
-            if (Physics::DrawChoiceLayerGui("Layer", currentLayer))
+            if (Physics::PhysicsLayers::DrawChoiceGui("Layer", currentLayer))
                 SetLayer(currentLayer);
         }
 

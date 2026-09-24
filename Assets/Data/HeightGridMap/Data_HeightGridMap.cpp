@@ -171,7 +171,7 @@ namespace NanamiEngine::Module::Asset
         ImGui::DragFloat("Cast Distance", &rayDistance_, 0.1f, 0.01f, 100000.0f);
         ImGui::SliderFloat("Box Scale", &boxScale_, 0.01f, 1.0f);
 
-        Physics::DrawLayerMaskGui("Layer Mask", layerMask_);
+        Physics::PhysicsLayers::DrawMaskGui("Layer Mask", layerMask_);
 
         ImGui::SliderInt("Display Divisions", &displayDivisions, 1, 1000);
 
