@@ -1,5 +1,7 @@
 ﻿#include "MagicCasterAvatarStateBase.h"
 
+#include <utility>
+
 #include "Engine/Module/Component/BoneSync/BoneSync.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../../Data/PlayerAvatar/Resource/Data_MagicCasterAvatarResource.h"
@@ -26,8 +28,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
             return;
 
         const auto& boneNames = Resources().FootstepBoneNames();
-        if (latch.boneAirborne.size() != boneNames.size())
-            latch.boneAirborne.assign(boneNames.size(), false);
+        if (latch.bones.size() != boneNames.size())
+            latch.bones.assign(boneNames.size(), {});
 
         const glm::vec3 featStepPos   = Context().PlayerAvatarFeatStepPos();
         const float     contactHeight = Resources().FootstepContactHeight();
@@ -38,17 +40,19 @@ namespace GameCore::PlayerAvatar::MagicCaster
             if (!bonePose)
                 continue;
 
+            auto& bone = latch.bones[boneIndex];
             const float height = bonePose->Position().y - featStepPos.y;
+            const std::optional<float> prevHeight = std::exchange(bone.prevHeight, height);
             if (height > contactHeight)
             {
-                latch.boneAirborne[boneIndex] = true;
+                bone.armed = true;
                 continue;
             }
-            // 浮いてから降りてきた最初のフレームだけ出す。接地したまま閾値付近で揺れても繰り返さない
-            if (!latch.boneAirborne[boneIndex])
+            // NOTE: 閾値を跨いだ瞬間ではなく、浮いてから降りてきて下降が止まったフレーム(最下点)で出す
+            if (!bone.armed || !prevHeight || height < *prevHeight)
                 continue;
 
-            latch.boneAirborne[boneIndex] = false;
+            bone.armed = false;
 
             const glm::vec3 stepPos(bonePose->Position().x, featStepPos.y, bonePose->Position().z);
             Scene::GameObject::Instantiate(Resources().FootstepParticlePrefab(), stepPos);
@@ -164,15 +168,15 @@ namespace GameCore::PlayerAvatar::MagicCaster
     bool MagicCasterAvatarStateBase::UseSelectedPouchItem() const
     {
         auto& pouch = Status().Pouch();
-        const auto selected = pouch.Selected();
-        if (!pouch.CanUseSelected() || !selected->item || !selected->item->HasEffect())
+        const auto item = pouch.SelectedUsableItem();
+        if (!item)
             return false;
 
-        switch (selected->item->UseMotion())
+        switch (item->UseMotion())
         {
-        case Item::ItemUseMotion::Drink: pouch.SetPendingUse(selected->item); OnChangeState(MagicCasterAvatarStateType::UseItemDrink); return true;
-        case Item::ItemUseMotion::Eat:   pouch.SetPendingUse(selected->item); OnChangeState(MagicCasterAvatarStateType::UseItemEat);   return true;
-        case Item::ItemUseMotion::Place: pouch.SetPendingUse(selected->item); OnChangeState(MagicCasterAvatarStateType::UseItemPlace); return true;
+        case Item::ItemUseMotion::Drink: pouch.SetPendingUse(item); OnChangeState(MagicCasterAvatarStateType::UseItemDrink); return true;
+        case Item::ItemUseMotion::Eat:   pouch.SetPendingUse(item); OnChangeState(MagicCasterAvatarStateType::UseItemEat);   return true;
+        case Item::ItemUseMotion::Place: pouch.SetPendingUse(item); OnChangeState(MagicCasterAvatarStateType::UseItemPlace); return true;
         case Item::ItemUseMotion::Instant:
             break;
         }

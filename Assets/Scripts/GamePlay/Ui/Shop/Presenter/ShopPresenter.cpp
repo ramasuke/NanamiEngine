@@ -5,7 +5,6 @@
 #include "DxLib.h"
 
 #include "../../../Prop/MerchantStall/Prop_MerchantStall.h"
-#include "../../../Sound/UiSoundBank.h"
 #include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
@@ -52,7 +51,7 @@ namespace GamePlay::Ui
             return;
         }
         isOpen_ = true;
-        Sound::UiSoundBank::Play(Sound::UiSe::Open);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Open);
 
         view_ = RequireComponent<ShopUi>();
 
@@ -234,7 +233,7 @@ namespace GamePlay::Ui
         if (isClosing_)
             return;
         isClosing_ = true;
-        Sound::UiSoundBank::Play(Sound::UiSe::Close);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Close);
 
         if (const auto stall = stall_.lock())
             stall->RestoreCamera();
@@ -253,6 +252,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("cursorSound_", cursorSound_);
         ImGuiHelper::OnDrawInputField("quantityRepeatDelay_secs_", quantityRepeatDelay_secs_);
         ImGuiHelper::OnDrawInputField("quantityRepeatInterval_secs_", quantityRepeatInterval_secs_);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

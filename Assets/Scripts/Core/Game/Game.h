@@ -4,6 +4,10 @@
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/Asset/Scene/SceneFile.h"
 #include "../../GamePlay/Ui/Loading/Ui_LoadingScreen.h"
+#include "Packages/DebugSheet/DebugSheetConfig.h"
+#if NANAMI_DEBUG_SHEET_ENABLED
+#include "Engine/Module/LifeCycleCallback/UserInterfaceRenderable/IUserInterfaceRenderable.h"
+#endif
 
 namespace GameCore::Scene::Sub
 {
@@ -30,6 +34,9 @@ namespace GameCore
     class Game final : public Component::ComponentBase,
                        public LifeCycleCallback::IAwakable,
                        public LifeCycleCallback::IUpdatable
+#if NANAMI_DEBUG_SHEET_ENABLED
+                     , public LifeCycleCallback::IUserInterfaceRenderable
+#endif
     {
     public:
         Game();
@@ -54,6 +61,11 @@ namespace GameCore
         void OnAwake () override;
         void OnUpdate() override;
         void OnDestroy() override;
+#if NANAMI_DEBUG_SHEET_ENABLED
+        /** @brief DebugSheet を最前面に描く */
+        void OnUserInterfaceRender() override;
+        [[nodiscard]] int GetRenderOrder() const override;
+#endif
         
         std::unique_ptr<Scene::Main::GameSceneGroup> sceneGroup_;
         [[serialize(0)]] FIELD(GameObject::IGameObject) sceneContexts_;

@@ -10,7 +10,10 @@ namespace GameCore::Npc::Enemy
         NormalBoss = 0,
         Normal = 1,
         Hyena = 2,
-        Tyrannosaurus = 3
+        Tyrannosaurus = 3,
+        DesertScorpion = 4,
+        SandWorm = 5,
+        SkeletonDragon = 6,
     };
 
     constexpr std::array ENEMY_KINDS
@@ -19,6 +22,9 @@ namespace GameCore::Npc::Enemy
         EnemyKind::Normal,
         EnemyKind::Hyena,
         EnemyKind::Tyrannosaurus,
+        EnemyKind::DesertScorpion,
+        EnemyKind::SandWorm,
+        EnemyKind::SkeletonDragon,
     };
 
     constexpr std::string_view ToString(const EnemyKind kind)
@@ -29,6 +35,9 @@ namespace GameCore::Npc::Enemy
         case EnemyKind::Normal: return "Normal";
         case EnemyKind::Hyena: return "Hyena";
         case EnemyKind::Tyrannosaurus: return "Tyrannosaurus";
+        case EnemyKind::DesertScorpion: return "DesertScorpion";
+        case EnemyKind::SandWorm: return "SandWorm";
+        case EnemyKind::SkeletonDragon: return "SkeletonDragon";
         }
 
         return "Unknown";

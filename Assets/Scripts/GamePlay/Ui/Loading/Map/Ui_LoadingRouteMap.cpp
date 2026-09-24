@@ -479,7 +479,7 @@ namespace GamePlay::Ui
         {
             isStampPressing_ = isPressing;
             if (isPressing)
-                Sound::UiSoundBank::Play(Sound::UiSe::Stamp);
+                Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Stamp);
             ApplyElementVisibility();
         }
 
@@ -560,6 +560,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("dashPopScale_", dashPopScale_);
         ImGuiHelper::OnDrawInputField("dashPop_secs_", dashPop_secs_);
         ImGuiHelper::OnDrawInputField("shipFlip_secs_", shipFlip_secs_);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

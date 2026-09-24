@@ -70,16 +70,17 @@
 
 ## 4. フォント
 
-`Assets/Art/Font/` の3つ（アセットの `size_` はどれも 60。見た目の大きさは Transform の scale で決める）。
+`Assets/Art/Font/` の4つ（アセットの `size_` はどれも 60。見た目の大きさは Transform の scale で決める）。
 
 | フォント | guid | 使い方 |
 | --- | --- | --- |
 | **Zen Old Mincho Bold** (`ZenOldMincho-Bold.ttf`) | `02951627-F120-4EDC-B4F7-C27985C7F643` | 系統 A の **本文・ラベル・操作ヒント**。一番多い |
-| **怨霊** (`onryou.ttf`、縁取り 3px `#06141a`) | `30487603-1A70-4739-978D-5CF0105A60D9` | **手書き風の見出し・名前・数値**（「冒 険 者 の 手 帳」「剣士」、HP の数字、ダメージ数値、ロード画面） |
+| **Kaisei Decol Bold** (`KaiseiDecol-Bold.ttf`、縁取り 3px `#06141a`) | `956ED4F0-FCBF-4709-B98E-64F17B0DD2AF` | **見出し・名前・数値**（「冒 険 者 の 手 帳」「剣士」、HP の数字、ダメージ数値、ロード画面） |
+| 怨霊 (`onryou.ttf`) | `30487603-1A70-4739-978D-5CF0105A60D9` | **テキスト描画には使わない**（縮めると潰れて読めない）。PNG に焼き込み済みの文字（ゲームオーバー、キャラ選択の札、ゲージ）だけ |
 | IPA明朝 (`ipam.ttf`) | `C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC` | 手帳の本文、ゲームオーバー、系統 B の HUD、古い画面 |
 
 - 見出しは **全角スペースで字間を空ける**（「冒 険 者 の 手 帳」「目 次」「期 間」「体 力」）。
-- モックを描く `text()` は `BODY_FONT` = Zen Old Mincho、`BRUSH_FONT` = 怨霊。
+- モックを描く `text()` は `BODY_FONT` = Zen Old Mincho、`BRUSH_FONT` = 怨霊（焼き込み PNG 用。実機のテキストは Kaisei Decol なので、モックの見出しも Kaisei Decol で描く）。
 
 ## 5. 操作ヒント
 
@@ -128,12 +129,15 @@ Row/ Page/ ...   繰り返す部品。自分の prefab を持ち、Ui が表示�
   **開いた直後は押しっぱなしを拾わない**（`previousKeys_ = ReadKeys()` を OnStart で）。
 - 開いている間はプレイヤーの `DisableStateMachine()`。閉じるのは次のフレームにして、閉じた B をジャンプとして拾わせない。
 - 二重に開かないよう static の `isOpen_` で弾く（`ShopPresenter`）。
-- 効果音は共通の `GamePlay::Sound::UiSoundBank::Play(UiSe::…)` で鳴らす（`GameManage.scene` の `UiSoundBank` が
-  音を持つ。DxLib で直接 2D 再生するので `SoundPlayer` の無いシーンでも鳴る）。画面固有の音が要るときだけ
-  `FIELD(Asset::SoundFile)` を足し、`UiSoundBank::Play(field, UiSe::Cursor)` のように共通音へフォールバックさせる。
+- 効果音は共通の `GamePlay::Sound::UiSoundBank::Play(uiSounds_, UiSe::…)` で鳴らす（音は ScriptableObject
+  `Assets/Data/UiSound/UiSoundBank.uiSoundBank`（`UiSoundBankData`）が持つ。鳴らすコンポーネントは
+  `FIELD(Asset::UiSoundBankData) uiSounds_` を持ち、prefab でその bank を指す。新しい共通音は `UiSe` と `UiSoundBankData` の両方に足す。DxLib で直接 2D 再生するので `SoundPlayer` の無いシーンでも鳴る）。画面固有の音が要るときだけ
+  `FIELD(Asset::SoundFile)` を足し、`UiSoundBank::Play(uiSounds_, field, UiSe::Cursor)` のように共通音へフォールバックさせる。
   共通音は `tools/art/ui_sfx.py` が作る。写実寄りのゲームなので電子音・ガラス音・鈴は使わず、系統 A は紙・木・鉄・石、
   系統 B は革袋・布・鉄の留め具・低い空気のうなりの物音にする。高域は 2〜3 kHz で丸めて低く保ち、
-  カーソル・文字送りのように何度も鳴る音ほど小さく短く。個別の音の合成は `tools/art/*_sfx.py`。
+  何度も鳴る音ほど小さく。「軽いクリック」にならないよう、打撃は共振器を叩くモーダル合成で胴鳴りと部屋の響きを付ける。
+  **絶えず起きる出来事には音を付けない**（会話の文字送り、NPC に近づいたとき、ロックオン解除。チュートリアル札は
+  出てくるときだけ）。RPG 的なピコピコ・達成ファンファーレに聞こえる。個別の音の合成は `tools/art/*_sfx.py`。
   `Physics/ButtonClick.mp3` は `.meta` の音量が 0 で鳴らないので UI に使わない。
 
 ## 9. 作る手順（既存 UI はすべてこの流れ）

@@ -12,6 +12,7 @@ Settlement の prefab を入れて、建てた時(と下見中)だけ生成す�
 建った姿のモデルは仮 (既存の Settlement の prefab を借りている)。
 """
 import argparse
+import math
 import sys
 from pathlib import Path
 
@@ -24,23 +25,26 @@ from tools.scene import edits, reader, validate, writer  # noqa: E402
 
 from event_board_prefab import (  # noqa: E402
     MAIN_ISLAND_SCENE, bake_rotated_world_matrices, first_versions, strip_repeat_versions, to_collider_base_v5)
-from game_over_prefab import Builder, asset_guid, check, guid_of, new_prefab, prepare  # noqa: E402
+from game_over_prefab import Builder, asset_guid, check, guid_of, let_writer_place_versions, new_prefab  # noqa: E402
 from tools.scene import meta as scene_meta  # noqa: E402
+from grassland_nature_scatter import quat_axis  # noqa: E402
 
 SITE_DIR = REPO / 'Assets' / 'Prefab' / 'Prop' / 'Restoration'
 SETTLEMENT_DIR = REPO / 'Assets' / 'Prefab' / 'Prop' / 'Settlement'
 DISABLE_PRIORITY = -1
+# 噴水の島の芝生 (エディタで高さを見て決めた)
+CLAN_HOUSE_POS = (-205.0, 87.0, 432.0)
+CLAN_HOUSE_YAW = -20.0
 # 草地の高さ (AutoMCP で測った拠点の島の芝。docs 参照は memory の MainIsland heights)
 GRASS_Y = 22.3
 
 # facility は GameCore::Story::Facility の値。pos は MainIslandScene のワールド座標(島の上から見て +z が台座の側)
+# NOTE: 仮置きだった4つ (船着き場・雑貨屋・狩人小屋・畑) は 2026-09-24 に削除した。
+#   restored = Settlement の prefab 名、restored_prefab = それ以外の prefab。yaw は root の向き (度。家の正面 -z がどちらを向くか)
 SITES = [
-    dict(name='Dock', facility=0, pos=(-78.0, GRASS_Y, 125.0), restored='Lookout',
-         camera=(50.0, 40.0, -20.0)),
-    dict(name='GeneralStore', facility=1, pos=(28.0, GRASS_Y, 68.0), restored='LeanTo'),
-    dict(name='HunterLodge', facility=2, pos=(-39.0, GRASS_Y, 54.0), restored='HideTent'),
-    dict(name='Field', facility=3, pos=(45.0, GRASS_Y, 125.0), restored='DryingRack',
-         camera=(35.0, 35.0, 35.0)),
+    # 一族の家: 噴水の島の芝生、階段を上がった先。入口は階段の方を向く (clan_house.py)
+    dict(name='ClanHouse', facility=4, pos=CLAN_HOUSE_POS, yaw=CLAN_HOUSE_YAW,
+         restored_prefab=SITE_DIR / 'ClanHouse.prefab', camera=(10.0, 30.0, -70.0)),
 ]
 # 下見のカメラは広場の側(-z)から見下ろす。手前の建物が写り込まないよう高めから寄る(site の camera で向きを変えられる)
 CAMERA_OFFSET = (0.0, 40.0, -50.0)
@@ -67,7 +71,8 @@ def build_site(site):
     b.field(look_at, 'target_', target.guid)
 
     gate = b.component(root, 'RestorationGate', facility_=site['facility'])
-    b.field(gate, 'restoredPrefab_', asset_guid(Path(str(SETTLEMENT_DIR / f"{site['restored']}.prefab") + '.meta')))
+    restored = site.get('restored_prefab') or SETTLEMENT_DIR / f"{site['restored']}.prefab"
+    b.field(gate, 'restoredPrefab_', asset_guid(Path(str(restored) + '.meta')))
     b.field(gate, 'previewCamera_', guid_of(camera))
     return save_site_prefab(prefab, f"RestorationSite_{site['name']}")
 
@@ -76,7 +81,11 @@ def save_site_prefab(prefab, name):
     """game_over_prefab.save_prefab と同じだが、既存の prefab を複製して入れたので版の重なりを確かめてから書く"""
     SITE_DIR.mkdir(parents=True, exist_ok=True)
     path = SITE_DIR / f'{name}.prefab'
-    prepare([prefab.root])
+    # NOTE: prepare の bake は回転を見ないので、置き物を回す一族の家のために回転込みで焼く
+    for node in all_nodes(prefab.root):
+        for comp in node.components:
+            let_writer_place_versions(comp.data)
+    bake_rotated_world_matrices(prefab.root)
     text = writer.write_prefab(prefab)
     check(text, validate.validate_prefab(prefab), path.name)
     path.write_bytes(to_file_bytes(text))
@@ -107,6 +116,7 @@ def place_in_main_island(site_paths):
             for child in all_nodes(node):
                 to_collider_base_v5(child)
         node.transform.local_pos = edits._vec3_from_floats(site['pos'])
+        node.transform.local_rot = edits._quat_from_floats(quat_axis((0.0, 1.0, 0.0), math.radians(site.get('yaw', 0.0))))
         bake_rotated_world_matrices(node)
 
     text = writer.write_scene(scene)

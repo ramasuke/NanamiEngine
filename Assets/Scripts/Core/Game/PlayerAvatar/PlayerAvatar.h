@@ -19,15 +19,9 @@ namespace GameCore::PlayerAvatar
     template <class T>
     concept PlayerAvatarT = std::is_base_of_v<IPlayerAvatar, std::remove_cv_t<std::remove_reference_t<T>>>;
 
+    /** @brief この PC で操作しているアバター。いなければ nullptr */
     [[nodiscard]] std::shared_ptr<IPlayerAvatar> Owner();
 
-    template<PlayerAvatarT T>
-    std::shared_ptr<IPlayerAvatar> Owner()
-    {
-        //TODO: Network上の自身が操作しているPlayerを取得するように変更必須
-        return IPlayerAvatar::PlayerAvatars().at(0).lock();
-    }
-    
     template<PlayerAvatarT PlayerAvatarT>
     std::shared_ptr<PlayerAvatarT> TryWhetherPlayerT(const std::shared_ptr<IPlayerAvatar>& playerAvatar)
     {

@@ -20,6 +20,7 @@
 #include "../../../../PlayerAvatar/Record/PlayerAvatar_RecordBook.h"
 #include "../../../../Story/Story_StageClear.h"
 #include "../../../../Story/Story_StoryProgress.h"
+#include "../../../../Story/FloatingStone/Story_FloatingStoneMovie.h"
 
 namespace GameCore::Scene::Main
 {
@@ -45,7 +46,7 @@ namespace GameCore::Scene::Main
             stageClearSubscription_ = Story::WatchStageClear(
                 PlayerAvatar::Record::RecordBook::Instance().OnDefeat(),
                 *stageClear,
-                [](const Story::StoryFlag flag) { Story::StoryProgress::Instance().Set(flag); });
+                [this](const Story::StoryFlag flag) { OnStageClear(flag); });
         }
 
         Coroutine::StartCoroutine(OnEnterAsync(BeginEnter()));
@@ -59,6 +60,10 @@ namespace GameCore::Scene::Main
         // Context の FIELD は読み込んだシーン内の GameObject を指すので、
         // AddContent による解決が済むこのタイミングより前には触れない
         Context()->Init();
+
+        // NOTE: 浮遊石はもう拠点の島へ飛び去っている
+        if (const auto stone = Context()->FloatingStone(); stone && Story::StoryProgress::Instance().IsSet(Story::StoryFlag::GrassLandCleared))
+            Story::FloatingStone::SetStoneVisible(*stone, false);
 
         // メインシーンが居ない間に Instantiate が走らないよう、ロード完了まで待ってから積む
         SubScene().Push(Sub::SceneType::ChattingUI);
@@ -101,12 +106,12 @@ namespace GameCore::Scene::Main
         }
 
         // カバーが明ける前に画を作っておく
-        arrivalMovie_ = std::make_shared<GrassLand::GrassLandArrivalMovie>(playerAvatar_, Context());
+        arrivalMovie_ = std::make_shared<GrassLand::StageArrivalMovie<GrassLandSceneContext>>(playerAvatar_, Context());
         arrivalMovie_->Begin();
 
         CompleteEnter(generation);
 
-        Coroutine::StartCoroutine(GrassLand::GrassLandArrivalMovie::PlayAsync(arrivalMovie_));
+        Coroutine::StartCoroutine(GrassLand::StageArrivalMovie<GrassLandSceneContext>::PlayAsync(arrivalMovie_));
     }
 
     void GrassLandScene::Enter()
@@ -114,9 +119,26 @@ namespace GameCore::Scene::Main
 
     }
 
+    void GrassLandScene::OnStageClear(const Story::StoryFlag flag)
+    {
+        // 初めて立てたときだけ。倒し直しでは石はもう無い
+        if (!Story::StoryProgress::Instance().Set(flag) || !Context())
+            return;
+
+        Coroutine::StartCoroutine(Story::FloatingStone::PlayDepartAsync(
+            Story::FloatingStone::StoneMovieCast{
+                playerAvatar_,
+                Context()->FloatingStone(),
+                Context()->FloatingStoneCamera(),
+                Context()->StoneFlightParticle(),
+                Context()->StoneLiftOffParticle() },
+            isStoneMovieCanceled_));
+    }
+
     void GrassLandScene::DoDispose()
     {
         stageClearSubscription_.Dispose();
+        *isStoneMovieCanceled_ = true;
 
         if (arrivalMovie_)
             arrivalMovie_->Cancel();

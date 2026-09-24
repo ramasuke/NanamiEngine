@@ -13,6 +13,10 @@ void GameCore::Scene::GrassLandSceneContext::Init()
     arrivalCamera_.Init();
     cameraBrain_.Init();
     arrivalPortalPrefab_.Init();
+    floatingStone_.Init();
+    floatingStoneCamera_.Init();
+    stoneLiftOffParticle_.Init();
+    stoneFlightParticle_.Init();
 }
 
 std::vector<std::shared_ptr<GameCore::Npc::Enemy::EnemySpawnPoint>>
@@ -73,6 +77,10 @@ void GameCore::Scene::GrassLandSceneContext::OnDrawGui()
     ImGuiHelper::OnDrawInputField("arrivalCameraStart_", arrivalCameraStart_);
     ImGuiHelper::OnDrawInputField("arrivalCameraEnd_", arrivalCameraEnd_);
     ImGuiHelper::OnDrawInputField("arrivalLookAtHeight_", arrivalLookAtHeight_);
+    ImGuiHelper::OnDrawInputField("floatingStone_", floatingStone_);
+    ImGuiHelper::OnDrawInputField("floatingStoneCamera_", floatingStoneCamera_);
+    ImGuiHelper::OnDrawInputField("stoneLiftOffParticle_", stoneLiftOffParticle_);
+    ImGuiHelper::OnDrawInputField("stoneFlightParticle_", stoneFlightParticle_);
 }
 
 #pragma region SerializationMacro

@@ -11,6 +11,11 @@ namespace GameCore::Npc::Enemy::Behaviour
     TickStatus Action::ChangeToMainIslandScene::DoTick(
         const TickContext& context)
     {
+        // NOTE: 何度も要求するとロード画面が毎フレーム出し直され、読み込み中にシーンの切り替えが重なる
+        if (isRequested_)
+            return TickStatus::Abort;
+        isRequested_ = true;
+
         // 権威側限定Tickなら、他ピアも同じシーンへ遷移させる(自分の遷移要求より先に送っておく)
         if (context.IsNetworkAuthority())
         {

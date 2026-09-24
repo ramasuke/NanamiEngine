@@ -14,6 +14,7 @@
 #include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 #include "../../../Core/Game/PlayerAvatar/InputAction/PlayerAvatarInputDevice.h"
 #include "../../../Core/Game/PlayerAvatar/MagicCaster/Spell/MagicCasterSpellSlot.h"
+#include "../../Sound/UiSoundBank.h"
 
 namespace GamePlay::PlayerAvatar::MagicCaster
 {
@@ -101,6 +102,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] float fadeDuration_secs_ = 0.2f;
         [[serialize(0)]] float pageSwapDuration_secs_ = 0.15f;
         [[serialize(0)]] Color32 manaValueColor_ = Color32(248, 246, 255);
+        [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         std::weak_ptr<GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar> avatar_;
         std::array<std::weak_ptr<SpellSlot>, GameCore::PlayerAvatar::MagicCaster::SPELL_LOADOUT_SLOT_COUNT> slotViews_;
@@ -170,6 +172,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(fadeDuration_secs_));
             archive(CEREAL_NVP(pageSwapDuration_secs_));
             archive(CEREAL_NVP(manaValueColor_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<class Archive>
@@ -221,9 +224,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(fadeDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(pageSwapDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(manaValueColor_));
+            if (version >= 1) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::SpellPalette, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::SpellPalette, 1);

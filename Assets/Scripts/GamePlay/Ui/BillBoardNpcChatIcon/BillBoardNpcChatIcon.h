@@ -4,6 +4,7 @@
 #include "Engine/Module/NanamiUI/BillBoard3D/BillboardAnimation3D.h"
 #include "Engine/Module/NanamiUI/BillBoard3D/DrawBillboard3D.h"
 #include "Libs/LibCore/Tween/Player/TweenPlayer.h"
+#include "../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
@@ -66,6 +67,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(GameObject::IGameObject) chattingIcon_;
         [[serialize(1)]] FIELD(GameObject::IGameObject) surpriseIcon_;
         [[serialize(2)]] FIELD(NanamiUi::BillboardAnimation3D) surpriseRimGlow_;
+        [[serialize(3)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
 #pragma region Serialization Function
     public:
@@ -78,6 +80,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(chattingIcon_));
             archive(CEREAL_NVP(surpriseIcon_));
             archive(CEREAL_NVP(surpriseRimGlow_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<class Archive>
@@ -87,9 +90,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(chattingIcon_));
             if (version >= 1) archive(CEREAL_NVP(surpriseIcon_));
             if (version >= 2) archive(CEREAL_NVP(surpriseRimGlow_));
+            if (version >= 3) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::BillBoardNpcChatIcon, 2);
+CEREAL_CLASS_VERSION(GamePlay::Ui::BillBoardNpcChatIcon, 3);

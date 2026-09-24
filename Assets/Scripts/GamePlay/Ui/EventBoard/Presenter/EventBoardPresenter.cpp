@@ -51,7 +51,7 @@ namespace GamePlay::Ui
             return;
         }
         isOpen_ = true;
-        Sound::UiSoundBank::Play(Sound::UiSe::Open);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Open);
 
         view_ = RequireComponent<EventBoardUi>();
         view_->Build();
@@ -136,7 +136,7 @@ namespace GamePlay::Ui
 
         const auto onSelectionChanged = [this](size_t)
         {
-            Sound::UiSoundBank::Play(Sound::UiSe::Cursor);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Cursor);
             Refresh();
         };
         questModel_ ->Cursor().OnSelectionChanged().Subscribe(onSelectionChanged).AddTo(this);
@@ -248,7 +248,7 @@ namespace GamePlay::Ui
             return;
 
         currentTab_ = type;
-        Sound::UiSoundBank::Play(Sound::UiSe::Tab);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Tab);
         view_->ShowTab(currentTab_);
         Refresh();
     }
@@ -319,6 +319,8 @@ namespace GamePlay::Ui
         switch (currentTab_)
         {
         case EventBoardTabType::Quest:
+            // 依頼の頁が出た時点で、並んでいるメインストーリーの依頼は見たとみなす
+            questModel_->MarkMainStoryRead(questReadLog_);
             if (const auto page = view_->QuestPage())
                 page->Bind(*questModel_);
             break;
@@ -349,7 +351,9 @@ namespace GamePlay::Ui
         std::optional<GameCore::Story::Facility> wanted;
         if (!isClosed_ && currentTab_ == EventBoardTabType::Restoration)
         {
-            if (const auto entry = restorationModel_->Selected())
+            // NOTE: 前提がまだの施設は建つ場所が無いことがある(噴水の島が戻る前など)ので下見しない
+            const auto entry = restorationModel_->Selected();
+            if (entry && entry->state != RestorationBoardState::Locked)
                 wanted = entry->facility->Facility();
         }
         if (wanted == previewFacility_)
@@ -378,7 +382,7 @@ namespace GamePlay::Ui
         if (isClosed_)
             return;
         isClosed_ = true;
-        Sound::UiSoundBank::Play(Sound::UiSe::Close);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Close);
         EndPreview();
 
         if (const auto owner = suspendedAvatar_.lock())
@@ -399,6 +403,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("acceptSound_", acceptSound_);
         ImGuiHelper::OnDrawInputField("restoreSound_", restoreSound_);
         ImGuiHelper::OnDrawInputField("refuseSound_", refuseSound_);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

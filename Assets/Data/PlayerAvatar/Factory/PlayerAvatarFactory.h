@@ -159,7 +159,8 @@ namespace NanamiEngine::Module::Asset
             status,
             std::move(stateMachine),
             inputAction,
-            cameraGroup);
+            cameraGroup,
+            enableInputAction);
         // 他のプレイヤーのアバターは相手のステータスを写しただけなので、こちらのクエストには触れさせない
         if (enableInputAction)
             playerAvatar->BindQuestJournal();

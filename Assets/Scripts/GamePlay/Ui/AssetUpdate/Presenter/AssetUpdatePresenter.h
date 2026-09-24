@@ -10,6 +10,7 @@
 #include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 #include "Packages/AssetUpdater/Task/AssetUpdateTask.h"
 #include "../Ui_AssetUpdateTag.h"
+#include "../../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
@@ -71,6 +72,7 @@ namespace GamePlay::Ui
 
         [[serialize(0)]] FIELD(Asset::SoundFile) stampSound_;
         [[serialize(0)]] FIELD(Asset::SoundFile) confirmSound_;
+        [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         std::shared_ptr<AssetUpdateTagUi> view_;
         std::unique_ptr<AssetUpdater::AssetUpdateTask> task_;
@@ -92,6 +94,7 @@ namespace GamePlay::Ui
             archive(cereal::base_class<Component::ComponentBase>(this));
             archive(CEREAL_NVP(stampSound_));
             archive(CEREAL_NVP(confirmSound_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<typename Archive>
@@ -100,9 +103,10 @@ namespace GamePlay::Ui
             archive(cereal::base_class<Component::ComponentBase>(this));
             if (version >= 0) archive(CEREAL_NVP(stampSound_));
             if (version >= 0) archive(CEREAL_NVP(confirmSound_));
+            if (version >= 1) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::AssetUpdatePresenter, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::AssetUpdatePresenter, 1);

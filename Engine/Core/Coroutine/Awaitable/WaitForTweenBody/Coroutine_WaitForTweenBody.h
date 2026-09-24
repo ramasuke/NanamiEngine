@@ -64,8 +64,8 @@ namespace Coroutine
         {
             parentHandle_ = parentHandle;
 
-            if (!IsDynamic())
-                NanamiEngine::Module::LogWarning("WaitForTweenBody: RigidBody が Dynamic ではないため、Transform に直接書きます(衝突は効きません)");
+            if (rigidBodyRef_.MotionType() == NanamiEngine::Module::Physics::MotionType::Static)
+                NanamiEngine::Module::LogWarning("WaitForTweenBody: RigidBody が Static のため、Transform に直接書きます(衝突は効きません)");
 
             // 物理と同じ固定ステップで進める(毎フレームの Tick だと1フレーム遅れ、サブステップ数ともずれる)
             Core::Application::ApplicationBase::GameWindow()

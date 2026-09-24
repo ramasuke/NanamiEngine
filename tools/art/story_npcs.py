@@ -1,13 +1,13 @@
 """docs/Story.md の筋に沿って、NPC の会話 (.npcChat) と BT を作り直す。台詞の正はこのファイル。
 
     python tools/art/story_npcs.py                # 全部
-    python tools/art/story_npcs.py --only camp    # camp / island / newcomers / prologue / dragon のどれか
+    python tools/art/story_npcs.py --only camp    # camp / island / newcomers / clan / prologue / dragon / desert のどれか
 
 - 会話は camp_people.write_npc_chat で書く (本体は 0 バイト、中身は .meta。GUID は保つ)。
   1ページ2行・1行 22 字まで・CP932 に無い字は不可 (write_npc_chat が弾く)。
 - BT は new-tree --force で作り直し、前の GUID を .meta に戻す (シーンからの参照を切らない)。
   シーン内の物 (驚きアイコン・カメラ・屋台・台座) の参照は、作り直す前の BT から読んで引き継ぐ。
-- 物語の分岐は Story::IsStoryFlag / IsRestored / SetStoryFlag。その場限りの「もう話した」は blackboard。
+- 物語の分岐は Story::IsStoryFlag / SetStoryFlag (施設なら IsRestored)。その場限りの「もう話した」は blackboard。
 - Chat はプレイヤーが話しかけたときにしか始まらず、終わると会話中を下ろすので、続けて話させるときは
   2つ目から ImplementChat にする。IsChat で始まる Sequence の中だと次のフレームで IsChat が落ちて
   打ち切られるので、続きは blackboard で IsChat の外の枝に渡す。
@@ -29,9 +29,14 @@ from camp_people import BT_DIR, apply_ops, asset_guid, recreate, run, write_npc_
 
 # Story_StoryFlag.h / Story_Facility.h の値 (末尾に足す約束なので固定でよい)
 PROLOGUE_CLEARED, RESTORATION_STARTED, GRASSLAND_CLEARED = 0, 1, 2
+DESERT_CLEARED, DESERT_GUARD_RESCUED = 5, 6
 FLAG_NAMES = {PROLOGUE_CLEARED: 'PrologueCleared', RESTORATION_STARTED: 'RestorationStarted',
-              GRASSLAND_CLEARED: 'GrassLandCleared'}
-FACILITY_GENERAL_STORE = 1
+              GRASSLAND_CLEARED: 'GrassLandCleared', DESERT_CLEARED: 'DesertCleared',
+              DESERT_GUARD_RESCUED: 'DesertGuardRescued'}
+FACILITY_CLAN_HOUSE = 4
+
+# キャラ選択の画面と、MainIslandScene の展示台 (一族の家の前に置いてある)
+CHARACTER_SELECT_UI = REPO / 'Assets' / 'Prefab' / 'UI' / 'CharacterSelect' / 'CharacterSelectUI.prefab.meta'
 
 # SetEnableShowChatIcon の (表示, 話しかけられる, 会話中, 驚き)
 ICON_CHATTABLE = (True, True, False, False)
@@ -61,8 +66,8 @@ CHATS = {
     'Instructor_RestorationStart': [
         '……目が覚めたか。\n丸二日、眠っていたぞ。',
         '奴は撃ち落とした。だが墜ちる間際、\n島の真ん中に爪を突き立てていった。',
-        'この島は、地の底に埋まった\n三つの浮遊石の力で浮いている。',
-        '奴の爪で、石は三つとも抜け出し、\n下の狩り場へ飛んでいった。',
+        'この島は、地の底に埋まった\n二つの浮遊石の力で浮いている。',
+        '奴の爪で、石は二つとも抜け出し、\n下の狩り場へ飛んでいった。',
         'このままじゃ、島は少しずつ沈む。\n……俺の脚も、この有様だ。',
         '俺はもう前には出られん。だが、\n島を立て直す段取りなら付けられる。',
         '浮遊石を取り戻せ。それと、金だ。\n島を直すには、とにかく金が要る。',
@@ -70,19 +75,22 @@ CHATS = {
     ],
     'Instructor_PortalGuide': [
         '一番近い緑の浮遊石は、草原に落ちた。\nあの紫の台座から渡れる。',
-        '浮遊石の周りの魔物は気が立っている。\n……無理はするなよ。',
+        'むき出しの浮遊石は、獣も魔物も\n引き寄せる。今ごろ石の周りは群れだらけだ。',
+        '強い奴ほど、石の傍に居座る。\n……無理はするなよ。',
     ],
     'Instructor_BeforeGrassLand': [
-        '草原へは、紫の台座から渡れる。\n浮遊石の周りの魔物には気をつけろ。',
+        '草原へは、紫の台座から渡れる。\n石に寄ってきた魔物には気をつけろ。',
     ],
     'Instructor_GrassLandReport': [
         '緑の浮遊石、確かに受け取った。\n島の揺れが、嘘みたいに収まった。',
-        '草原の狩人たちも、こっちへ\n来てくれるそうだな。',
-        '住む場所を用意せんとな。\n……やることは山積みだ。',
-        '残る浮遊石の行方は、今探らせている。\nそれまでは島の立て直しを頼む。',
+        '見たか。石の力で、落ちた噴水の島まで\n浮かび上がってきた。',
+        '階段もひとりでに架かった。\nあれで向こうへ渡れる。',
+        '草原の狩人たちには、\nあの島に住んでもらうつもりだ。',
+        '一族の家を建ててやってくれ。\n掲示板の「復興」から頼める。',
+        '残る浮遊石は、あとひとつ。\n行方は今、探らせている。',
     ],
     'Instructor_AfterGrassLand': [
-        '残る浮遊石の行方は、まだ掴めん。\n今は島の立て直しを頼む。',
+        '最後の浮遊石は、砂漠の城塞跡に落ちた。\n掲示板に依頼を出しておいたぞ。',
     ],
     'Merchant_First': [
         'いらっしゃい！……と言いたいが、\n店もこの有様でね。',
@@ -92,18 +100,28 @@ CHATS = {
     'Merchant': [
         'いらっしゃい！\n旅の支度なら、うちで揃えていきな。',
     ],
-    'Merchant_Restored': [
-        '見てくれよ、この店構え！\nあんたのおかげで元通りだ。',
-        '品も増やしといたよ。\n遠慮なく見ていきな！',
-    ],
     'CharacterBroker_First': [
         'よう、新入り。ドラゴンを撃ち落とした\nってのは、あんたか。',
-        'あの騒ぎで逃げ出した連中もいるが、\n残った腕利きは本物だ。',
+        'あの騒ぎで、腕利きはみんな\n島を逃げ出しちまった。',
         '依頼を受けるなら、そこの掲示板だ。\n稼ぎは島の立て直しに回るからな。',
-        '腕の立つ仲間が要るなら、\nうちから好きなのを連れていきな。',
+        '仲間が欲しけりゃ、まずはこの島に\n人が住めるようにすることだ。',
     ],
     'CharacterBroker': [
-        'うちは腕利きを何人か抱えててな。\n好きなのを連れていきな。',
+        '今は紹介できる奴がいなくてな。\n人が戻るまでは、掲示板で稼ぎな。',
+    ],
+    'CharacterBroker_ClanHouse': [
+        '仲間なら、噴水の島の一族を訪ねな。\n腕の立つのが揃ってるぞ。',
+    ],
+
+    # 一族の家 (Facility::ClanHouse) を建てると、噴水の島に女狩人が住み、仲間を出してくれる
+    'ClanHuntress_First': [
+        '家を建ててくれたのね。\n……一族みんなで喜んでる。',
+        '住む場所をもらった恩は、\n狩りの腕で返すつもりよ。',
+        '私たちの一族に、島の復興を\n手伝いたいという者たちがいるの。',
+        '腕は確かよ。狩りに出るなら、\n好きな者を連れていって。',
+    ],
+    'ClanHuntress': [
+        '一緒に行く者を選んで。\n一族の誰でも、力になるわ。',
     ],
 
     # 序章の船に乗っていた2人。墜落の後は拠点の島にいる (StoryNpcs)
@@ -111,9 +129,10 @@ CHATS = {
         '……生きてたんだ。\nあの竜を撃ち落とすなんて、やるじゃん。',
         'あの竜は、前にも見たことがある。\n……その話は、また今度ね。',
         '飛んでいく浮遊石、私も見てた。\nひとつは草原の方へ落ちていったよ。',
+        '石が落ちた所には、獣が集まる。\n……私の故郷でも、そうだった。',
     ],
     'IslandKunoichi_Again': [
-        '浮遊石の光を追ってれば、\nいつかあの竜にも辿り着く。……たぶんね。',
+        '浮遊石は獣を呼ぶ。竜も、きっと同じ。\n石を追えば、あいつに辿り着く。',
     ],
     'IslandKunoichi_Cleared': [
         '草原の浮遊石、取り戻したんだって？\n島の風が、少し落ち着いた。',
@@ -144,8 +163,8 @@ CHATS = {
         '……よそ者か。\nこんな山の上まで、よく来たな。',
         'わしらは下の盆地に村を構えていた\n狩人の一族じゃ。',
         '数日前の晩、空から緑に光る石が\n村の真ん中に落ちてきてな。',
-        'その夜じゃ。地鳴りと共に大顎が現れ、\n家も柵も踏み潰していった。',
-        'あやつは今も、あの石の傍を離れん。\n食い物も矢も、そう長くはもたん。',
+        'それからじゃ。獣という獣が村へ寄り、\n最後に大顎が来て、家も柵も潰した。',
+        'あやつは今も、あの石の傍を離れん。\n石に呼ばれて、居着いておるのじゃ。',
         '腕の立つハンターと見込んで頼む。\nどうか、あやつを村から追い払ってくれ。',
     ],
     'CampPeopleElder_Again': [
@@ -153,7 +172,7 @@ CHATS = {
     ],
     'CampPeopleElder_Cleared': [
         '……終わったのか。\n本当に、あの大顎を。',
-        'あの光る石……あんたが探しておった\nものじゃな。持っていくがいい。',
+        'あの光る石、あんたの島のものじゃな。\n持っていけ。石が去れば獣も散る。',
         '村を建て直すには時がかかる。\nその間、若い者を何人か預けたい。',
         '島を追われる辛さは、\nわしらが一番知っておる。',
         'あんたの島の立て直し、手伝わせてくれ。\n受けた恩は、狩人の流儀で返す。',
@@ -164,23 +183,24 @@ CHATS = {
     'CampPeopleLookout_First': [
         'しっ、静かに。……盆地の真ん中、\nあの影が見えるか？',
         'あれが村を潰した大顎だ。\n昼も夜も、ずっとあそこにいる。',
-        'まるで、村に落ちた光る石を\n守ってるみたいにな。',
-        '近づかなければ、なぜか動かない。\nでも踏み込んだら最後、吠えて突っ込んでくる。',
+        '村に光る石が落ちてから、獣が\n寄ってくるようになった。あいつもだ。',
+        '石から離れたくないんだろうな。\n踏み込んだら最後、吠えて突っ込んでくる。',
         '突進は正面に立つな、横へ跳べ。\n……ここから見てるからな。',
     ],
     'CampPeopleLookout_Again': [
-        '大顎は相変わらずだ。\n村の跡から一歩も動かない。',
+        '大顎は相変わらずだ。\n石の傍から一歩も動かない。',
     ],
     'CampPeopleLookout_Cleared': [
         '見てたぞ！\n大顎が倒れるところ！',
         '……村に、帰れるんだな。\n本当に、ありがとう。',
     ],
     'CampPeopleLookout_ClearedAgain': [
-        '盆地が静かだ。\nこんな夜は久しぶりだよ。',
+        '石が無くなって、獣も散っていった。\n盆地が静かだ。こんな夜は久しぶりだよ。',
     ],
     'CampPeopleHuntress_First': [
         '肉を干してるところ。\n狩り場を追われて、これが最後の蓄えなの。',
-        '西の林にはハイエナの群れがいる。\n三頭ひと組で動くから、囲まれないで。',
+        '石が落ちてから、西の林には\nハイエナの群れが集まってきてる。',
+        '三頭ひと組で動くから、\n囲まれないで。',
         '遠吠えには気をつけて。仲間を呼ぶ合図よ。\n放っておくと、周りの群れまで集まってくる。',
     ],
     'CampPeopleHuntress_Again': [
@@ -189,7 +209,7 @@ CHATS = {
     'CampPeopleHuntress_Cleared': [
         '大顎を倒したのね。\n……ありがとう。',
         '長から聞いたわ。\nあなたの島へ行くのは、私たち。',
-        '向こうに着いたら小屋を建てる。\n狩りの腕なら、役に立てるから。',
+        '向こうの島に住まわせてもらうの。\n狩りの腕なら、役に立てるから。',
     ],
     'CampPeopleHuntress_ClearedAgain': [
         '干し肉の作り方くらいは教えてあげる。\n……向こうに着いたらね。',
@@ -210,10 +230,94 @@ CHATS = {
     'CampPeopleWounded_ClearedAgain': [
         'ありがとう、ハンターさん。\nこの恩は、きっと忘れない。',
     ],
+
+    # --- 砂漠 (DrySandScene) のオアシスの隊商と、竜の骨の前のクノイチ (docs/Story.md 第2章)
+    'CaravanMaster_First': [
+        'おう、ハンターか！\nこんな砂の果てまで、よく来たな。',
+        'うちは島から島へ荷を運ぶ隊商だ。\nこの泉で、足止めを食らってる。',
+        '数日前、金色に光る石が\n北の城塞跡に落ちてきてな。',
+        'それから泉は日に日に細るし、\nサソリどもが水場まで出やがる。',
+        '砂嵐で荷車も二台なくした。\n……頼む、力を貸してくれ。',
+    ],
+    'CaravanMaster_Again': [
+        'サソリの群れを散らしてくれ。\nそれと、砂に埋もれた荷もな。',
+    ],
+    'CaravanMaster_Cleared': [
+        '泉の水が……戻ってきた！\nあんたがやってくれたんだな。',
+        'あの光る石、あんたの島のもの\nだったのか。道理で、ただ事じゃねえ。',
+        '拾った荷の中身は、飛行船の部品だ。\n島に要るなら、持っていきな。',
+        '隊商は恩を忘れねえ。\nあんたの島にも、荷を回すぜ。',
+    ],
+    'CaravanMaster_ClearedAgain': [
+        '泉が戻りゃ、商いも戻る。\n島に寄ったら、よろしくな。',
+    ],
+    'CaravanKeeper_First': [
+        'ようこそ、泉へ。……と言っても、\nもう水はほとんど残っていません。',
+        '泉は北の城塞の下から\n湧いているんです。',
+        '光る石が落ちてから、地の底が\n熱を帯びたみたいで……。',
+        'このままでは、あと幾日も\nもちません。どうか、急いで。',
+    ],
+    'CaravanKeeper_Again': [
+        'サソリは尾を振り上げてから刺します。\n尾が上がったら、下がって。',
+    ],
+    'CaravanKeeper_Cleared': [
+        '見てください、泉が……！\n水の音が、戻ってきました。',
+        '本当に、ありがとうございます。\nこの水は、あなたのおかげです。',
+    ],
+    'CaravanKeeper_ClearedAgain': [
+        '泉の水、少し飲んでいきますか？\n……冷たくて、おいしいですよ。',
+    ],
+    'CaravanBoy_First': [
+        'わっ、ハンターだ！\nねえねえ、どこから来たの？',
+        '空の島から？すげえ！\nおれ、駱駝の世話係なんだ。',
+        'この砂漠、砂の下に何かいるんだよ。\n西の砂丘で、砂が盛り上がるの。',
+        '砂が動いたら、すぐ離れて！\n下から、でっかい口が出てくるから。',
+    ],
+    'CaravanBoy_Again': [
+        '東の砂丘には、でっかい竜の骨が\nあるんだ。見に行ってみなよ！',
+    ],
+    'CaravanBoy_Cleared': [
+        'やったー！泉が戻ってきた！\n駱駝たちも、よろこんでるよ！',
+        'おれも大きくなったら、\nハンターになるんだ！',
+    ],
+    'CaravanBoy_ClearedAgain': [
+        'また来てね！\n次は駱駝に乗せてあげる！',
+    ],
+    'CaravanGuard_Lost': [
+        '……っ、誰だ。\nハンター……か。助かった。',
+        '自分は隊商の護衛だ。荷車を追って、\nここまで来て……しくじった。',
+        '城塞の奥に、骨の竜がいる。\n光る石の傍から、動こうとしない。',
+        '崩れた壁の割れ目から、\n中へ入れる。……気をつけろ。',
+        '少し休んだら、泉へ戻る。\n頭に、無事だと伝えてくれ。',
+    ],
+    'CaravanGuard_Back': [
+        '借りができたな。\n……骨の竜の翼には、気をつけろ。',
+    ],
+    'CaravanGuard_Cleared': [
+        '骨の竜を倒したのか……！\n自分には、到底できなかった。',
+    ],
+    'DesertKunoichi_First': [
+        '……来たんだ。\nこの骨、見せたかったんだよね。',
+        '昔、ある島を守ってた竜だよ。\n北の城塞が、その島。私の故郷。',
+        'あの古竜に心臓を喰われて、島ごと\n空から落ちた。守り竜も、ここで。',
+        'でも見て。頭と胸の骨が無い。\n……砂の跡が、城塞へ続いてる。',
+        '光る石が、守り竜を起こしたんだ。\n……眠らせてあげて。お願い。',
+    ],
+    'DesertKunoichi_Again': [
+        '守り竜は、最後まで島を守った。\n……もう、休ませてあげたいんだ。',
+    ],
+    'DesertKunoichi_Cleared': [
+        '……眠れたんだね、守り竜。\nありがとう。あんたに頼んでよかった。',
+        '私があの古竜を追うのは、仇だから。\n……でも、それだけじゃなくなった。',
+        'あんたの島を、この城塞みたいには\nさせない。……私も、手を貸すよ。',
+    ],
+    'DesertKunoichi_ClearedAgain': [
+        '古竜の巣は、嵐の向こう。\n……その時は、私も行く。',
+    ],
 }
 
 # どの BT にも使われなくなった会話。作り直したら消す
-RETIRED_CHATS = ['Idle ActionInstructure']
+RETIRED_CHATS = ['Idle ActionInstructure', 'Merchant_Restored']
 
 
 # ---------------------------------------------------------------- BT の部品
@@ -310,7 +414,6 @@ def refs(tree_name, *action_names):
 # 作り直した後の BT でも同じ名前のアクションを残すので、2回目以降もここから拾える
 INSTRUCTOR_REFS = ('Enable SurpriseIcon', 'Enable PortalGuideCamera')
 MERCHANT_REFS = ('Open Shop',)
-BROKER_REFS = ('Open Character Select',)
 
 
 # ---------------------------------------------------------------- 拠点の島
@@ -378,7 +481,6 @@ def merchant():
 
     def build(o):
         o.bb('Talked')
-        o.bb('RestoredTalked')
         root = o.node('entry', 'sequence')
         o.once_icon(root)
         select = o.node(root, 'selector')
@@ -387,16 +489,7 @@ def merchant():
         o.action(talk, 'Talk Animation', 'PlayAnimation', animatorSetParamNumber_=1)
         pick = o.node(talk, 'selector')
 
-        restored = o.node(pick, 'sequence')
-        o.action(restored, 'GeneralStore Restored', 'IsRestored', facility_=FACILITY_GENERAL_STORE,
-                 expected_=True)
-        o.read_bb(restored, 'RestoredTalked')
-        o.chat(restored, 'Restored', 'Merchant_Restored')
-        o.write_bb(restored, 'RestoredTalked')
-
         first = o.node(pick, 'sequence')
-        o.action(first, 'GeneralStore Not Restored', 'IsRestored', facility_=FACILITY_GENERAL_STORE,
-                 expected_=False)
         o.read_bb(first, 'Talked')
         o.chat(first, 'First', 'Merchant_First')
         o.write_bb(first, 'Talked')
@@ -410,7 +503,7 @@ def merchant():
 
 
 def broker():
-    prefab, podium = refs('CharacterBroker', *BROKER_REFS)['Open Character Select']
+    """キャラ選択は一族の家の女狩人に移した。仲介人は一族の家へ案内するだけ"""
 
     def build(o):
         o.bb('Talked')
@@ -425,9 +518,11 @@ def broker():
         o.read_bb(first, 'Talked')
         o.chat(first, 'First', 'CharacterBroker_First')
         o.write_bb(first, 'Talked')
+        clan = o.node(pick, 'sequence')
+        o.action(clan, 'ClanHouse Restored', 'IsRestored', facility_=FACILITY_CLAN_HOUSE, expected_=True)
+        o.chat(clan, 'ClanHouse', 'CharacterBroker_ClanHouse')
         o.chat(pick, 'Greet', 'CharacterBroker')
         o.action(talk, 'Idle Animation', 'PlayAnimation', animatorSetParamNumber_=0)
-        o.action(talk, 'Open Character Select', 'OpenCharacterSelect', prefab_=prefab, podium_=podium)
         o.action(select, 'Idle Animation', 'PlayAnimation', animatorSetParamNumber_=0)
 
     rebuild('CharacterBroker', build)
@@ -436,8 +531,8 @@ def broker():
 def island():
     write_chats(['Instructor_RestorationStart', 'Instructor_PortalGuide', 'Instructor_BeforeGrassLand',
                  'Instructor_GrassLandReport', 'Instructor_AfterGrassLand',
-                 'Merchant_First', 'Merchant', 'Merchant_Restored',
-                 'CharacterBroker_First', 'CharacterBroker'])
+                 'Merchant_First', 'Merchant',
+                 'CharacterBroker_First', 'CharacterBroker', 'CharacterBroker_ClanHouse'])
     instructor()
     merchant()
     broker()
@@ -452,8 +547,8 @@ def island():
 CAMP_ROLES = ['Elder', 'Lookout', 'Huntress', 'Wounded']
 
 
-def talker(name):
-    """話しかけると、草原を解決する前は <name>_First (1回) → _Again、後は _Cleared (1回) → _ClearedAgain"""
+def talker(name, cleared_flag=GRASSLAND_CLEARED):
+    """話しかけると、cleared_flag (既定は草原) が立つ前は <name>_First (1回) → _Again、後は _Cleared (1回) → _ClearedAgain"""
 
     def build(o):
         o.bb('Talked')
@@ -467,13 +562,13 @@ def talker(name):
         pick = o.node(talk, 'selector')
 
         cleared = o.node(pick, 'sequence')
-        o.flag(cleared, GRASSLAND_CLEARED)
+        o.flag(cleared, cleared_flag)
         o.read_bb(cleared, 'ClearedTalked')
         o.chat(cleared, 'Cleared', f'{name}_Cleared')
         o.write_bb(cleared, 'ClearedTalked')
 
         cleared_again = o.node(pick, 'sequence')
-        o.flag(cleared_again, GRASSLAND_CLEARED)
+        o.flag(cleared_again, cleared_flag)
         o.chat(cleared_again, 'Cleared Again', f'{name}_ClearedAgain')
 
         first = o.node(pick, 'sequence')
@@ -625,6 +720,89 @@ def newcomers():
     place_newcomers(bt_guids)
 
 
+# ---------------------------------------------------------------- 一族の家
+def podium_component_guid():
+    """MainIslandScene の展示台 (CharacterPodium コンポーネント) の GUID"""
+    from game_over_prefab import guid_of
+    from grassland_nature_scatter import walk as scene_walk
+    from tools.scene import reader as scene_reader
+
+    scene = scene_reader.read_scene_file(MAIN_ISLAND)
+    for root in scene.roots:
+        for node in scene_walk(root):
+            for comp in node.components:
+                if comp.fqn.endswith('::CharacterPodium'):
+                    return guid_of(comp)
+    raise SystemExit('CharacterPodium not found in MainIslandScene')
+
+
+def clan():
+    """一族の家 (ClanHouse.prefab) に立つ女狩人。話しかけると仲間を選ばせる。prefab は clan_house.py"""
+    write_chats(['ClanHuntress_First', 'ClanHuntress'])
+    prefab = asset_guid(CHARACTER_SELECT_UI)
+    podium = podium_component_guid()
+
+    def build(o):
+        o.bb('Talked')
+        root = o.node('entry', 'sequence')
+        o.once_icon(root)
+        select = o.node(root, 'selector')
+        talk = o.node(select, 'sequence')
+        o.action(talk, 'IsChat', 'IsChat')
+        o.action(talk, 'Talk Animation', 'PlayAnimation', animatorSetParamNumber_=1)
+        pick = o.node(talk, 'selector')
+        first = o.node(pick, 'sequence')
+        o.read_bb(first, 'Talked')
+        o.chat(first, 'First', 'ClanHuntress_First')
+        o.write_bb(first, 'Talked')
+        o.chat(pick, 'Greet', 'ClanHuntress')
+        o.action(talk, 'Idle Animation', 'PlayAnimation', animatorSetParamNumber_=0)
+        o.action(talk, 'Open Character Select', 'OpenCharacterSelect', prefab_=prefab, podium_=podium)
+        o.action(select, 'Idle Animation', 'PlayAnimation', animatorSetParamNumber_=0)
+
+    rebuild('ClanHuntress', build)
+
+
+# ---------------------------------------------------------------- 砂漠のオアシスの隊商と、竜の骨の前のクノイチ
+CARAVAN_TALKERS = ['CaravanMaster', 'CaravanKeeper', 'CaravanBoy', 'DesertKunoichi']
+
+
+def caravan_guard():
+    """城塞の東の割れ目の外で座り込んでいる護衛。最初に話すと抜け道を教えて DesertGuardRescued を立てる。
+    その後は _Back、骸竜を倒した後は _Cleared"""
+    write_chats(['CaravanGuard_Lost', 'CaravanGuard_Back', 'CaravanGuard_Cleared'])
+
+    def build(o):
+        root = o.node('entry', 'sequence')
+        o.once_icon(root)
+        select = o.node(root, 'selector')
+        talk = o.node(select, 'sequence')
+        o.action(talk, 'IsChat', 'IsChat')
+        o.action(talk, 'Talk Animation', 'PlayAnimation', animatorSetParamNumber_=1)
+        pick = o.node(talk, 'selector')
+        cleared = o.node(pick, 'sequence')
+        o.flag(cleared, DESERT_CLEARED)
+        o.chat(cleared, 'Cleared', 'CaravanGuard_Cleared')
+        back = o.node(pick, 'sequence')
+        o.flag(back, DESERT_GUARD_RESCUED)
+        o.chat(back, 'Back', 'CaravanGuard_Back')
+        lost = o.node(pick, 'sequence')
+        o.chat(lost, 'Lost', 'CaravanGuard_Lost')
+        o.action(lost, 'Set DesertGuardRescued', 'SetStoryFlag', flag_=DESERT_GUARD_RESCUED)
+        o.action(talk, 'Idle Animation', 'PlayAnimation', animatorSetParamNumber_=0)
+        o.action(select, 'Idle Animation', 'PlayAnimation', animatorSetParamNumber_=0)
+
+    rebuild('CaravanGuard', build)
+
+
+def desert():
+    """会話と BT だけ作る。砂漠のシーンへの配置は tools/art/desert_caravan.py place"""
+    for name in CARAVAN_TALKERS:
+        write_chats([f'{name}_{s}' for s in TALK_STATES])
+        talker(name, DESERT_CLEARED)
+    caravan_guard()
+
+
 # ---------------------------------------------------------------- 序章
 def prologue():
     # 船上の2人と教官の訓練は BT をそのまま使い、台詞だけ差し替える
@@ -642,7 +820,7 @@ DRAGON_CLAW_STATE, DRAGON_FLYING_IDLE_STATE = 10, 4    # FirstEventDragon.animTr
 
 def dragon():
     """撃ち落とした後、巣へ帰る前に島の浮遊石を抜く (docs/Story.md 序章 5)。
-    島へ降りて爪を突き立て、3つの浮遊石が三方へ飛んでいき、教官が叫ぶ。前に入れた Heart ノードは作り直す"""
+    島へ降りて爪を突き立て、2つの浮遊石が二方へ飛んでいき、教官が叫ぶ。前に入れた Heart ノードは作り直す"""
     write_chats(['FirstDragon Heart Shatter'])
     tree = reader.read_tree_file(REPO / DRAGON_TREE)
     nodes = list(walk(tree.entry))
@@ -677,7 +855,8 @@ def dragon():
     run('tools.bt', 'validate', DRAGON_TREE)
 
 
-STEPS = {'prologue': prologue, 'dragon': dragon, 'island': island, 'newcomers': newcomers, 'camp': camp}
+STEPS = {'prologue': prologue, 'dragon': dragon, 'island': island, 'newcomers': newcomers, 'camp': camp,
+         'clan': clan, 'desert': desert}
 
 
 def main():

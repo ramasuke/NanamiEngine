@@ -17,5 +17,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         ItemDrink = 10,
         ItemEat   = 11,
         ItemPlace = 12,
+        InjuredWalk = 13,
+        InjuredRun  = 14,
     };
 }

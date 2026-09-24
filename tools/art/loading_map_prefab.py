@@ -3,6 +3,7 @@ and the .loadingRoute assets from tools/art/loading_map.py's layout() / routes()
 
     python tools/art/loading_map.py --emit        # 先にスプライトを書き出す
     python tools/art/loading_map_prefab.py        # 航路データ・prefab・StageLoadingScene を組み直す
+    python tools/art/loading_map_prefab.py --routes-only   # 航路データを書き、prefab / scene の routes_ に無いものだけ足す
 
 prefab / scene / .loadingRoute の asset guid は既存の .meta を保つので、Game の stageLoadingSceneFile_ などの
 外からの参照は切れない(中の GameObject / Component の guid は毎回新しくなる)。
@@ -31,9 +32,9 @@ PREFAB_DIR = REPO / 'Assets' / 'Prefab' / 'UI'
 SCENE_PATH = REPO / 'Assets' / 'Scene' / 'StageLoadingScene.scene'
 ROUTE_DIR = REPO / 'Assets' / 'Data' / 'LoadingRoute'
 
-FONT_PX = 60  # onryou.ttf / ZenOldMincho-Bold.ttf の TtfFontFile はどちらも 60px。TextRenderer は scale で縮める
+FONT_PX = 60  # KaiseiDecol-Bold.ttf / ZenOldMincho-Bold.ttf の TtfFontFile はどちらも 60px。TextRenderer は scale で縮める
 FONT_BODY = pm.asset_guid(REPO / 'Assets/Art/Font/ZenOldMincho-Bold.ttf.meta')
-FONT_BRUSH = pm.asset_guid(REPO / 'Assets/Art/Font/onryou.ttf.meta')
+FONT_BRUSH = pm.asset_guid(REPO / 'Assets/Art/Font/KaiseiDecol-Bold.ttf.meta')
 BLACK_MASK = pm.asset_guid(REPO / 'Assets/Art/UI/BlackMask.png.meta')
 CLEARED_SEAL = pm.asset_guid(REPO / 'Assets/Art/UI/EventBoard/QuestSeal_Cleared.png.meta')
 KEY_GLYPH = pm.asset_guid(REPO / 'Assets/Art/UI/ControlGuide/ControlGuide_Key_Shift.png.meta')
@@ -285,9 +286,48 @@ def rebuild_scene():
     print(f'wrote {SCENE_PATH.relative_to(REPO)}')
 
 
+def append_routes(path, route_guids):
+    """組み直さずに、routes_ の配列の末尾へ無い航路だけを足す (手で直した prefab / scene の中身を保つ)"""
+    import re
+    text = path.read_bytes().decode('utf-8')
+    start = text.index('"routes_": [')
+    depth, i = 0, text.index('[', start)
+    while True:
+        if text[i] == '[':
+            depth += 1
+        elif text[i] == ']':
+            depth -= 1
+            if depth == 0:
+                break
+        i += 1
+    body = text[start:i]
+    missing = [g for g in route_guids if g not in body]
+    if not missing:
+        return 0
+    nl = '\r\n' if '\r\n' in body else '\n'
+    indent = re.search(r'\[\r?\n( *)\{', body).group(1)
+    next_id = max(int(x) for x in re.findall(r'"id": (\d+)', text)) + 1
+    items = []
+    for g in missing:
+        lines = ('{', '    "value0": {', '        "polymorphic_id": 1073741824,', '        "ptr_wrapper": {',
+                 f'            "id": {next_id},', '            "data": {', '                "value0": {',
+                 f'                    "value_": "{g}"', '                }', '            }', '        }', '    }', '}')
+        items.append(nl.join(indent + line for line in lines))
+        next_id += 1
+    # 最後の要素の閉じ括弧の直後に足す
+    insert_at = start + len(body.rstrip())
+    text = text[:insert_at] + ',' + nl + (',' + nl).join(items) + text[insert_at:]
+    path.write_bytes(text.encode('utf-8'))
+    return len(missing)
+
+
 def main():
     print('routes:')
     route_guids = [write_route(r) for r in art.routes()]
+    if '--routes-only' in sys.argv:
+        for path in (PREFAB_DIR / 'LoadingScreenUI.prefab', SCENE_PATH):
+            print(f'  {path.name}: +{append_routes(path, route_guids)} route(s)')
+        return
     build_prefab(route_guids)
     rebuild_scene()
 

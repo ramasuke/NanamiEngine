@@ -67,14 +67,13 @@ namespace GamePlay::Ui
             phase_        = Phase::Engaging;
             lockedTarget_ = target;
             PlayEngage();
-            Sound::UiSoundBank::Play(Sound::UiSe::HudLockOn);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::HudLockOn);
         }
         else if (!isEngaged && wasEngaged_)
         {
             // lockedTarget_ は残し、生きていれば解除演出中も対象に追従させる
             phase_ = Phase::Releasing;
             PlayRelease();
-            Sound::UiSoundBank::Play(Sound::UiSe::HudLockOff);
         }
         wasEngaged_ = isEngaged;
 
@@ -232,6 +231,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("referenceDistance_",    referenceDistance_);
         ImGuiHelper::OnDrawInputField("minDistanceScale_",     minDistanceScale_);
         ImGuiHelper::OnDrawInputField("maxDistanceScale_",     maxDistanceScale_);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

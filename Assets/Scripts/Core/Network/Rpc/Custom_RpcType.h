@@ -44,6 +44,7 @@ namespace GameCore::Network
 
         /** 汎用演出RPC (後から足したもの。途中に挟むと既存の番号がずれるので末尾に置く) */
         SpawnFollowingPrefab,
+        ChargePillarTremble,
     };
 
     using WakeUpPlayerRpc    = Module::Network::RpcDef<ERpcType::WakeUpPlayer>;
@@ -73,4 +74,6 @@ namespace GameCore::Network
     // NOTE: シーンに置かれた設置物は NetworkObjectId を持たないので、送り手の NetworkObjectId 宛てに送って位置で特定する
     /** 倒れた柱の位置と倒れる向き */
     using ChargePillarCollapseRpc = Module::Network::RpcDef<ERpcType::ChargePillarCollapse, glm::vec3, glm::vec3>;
+    /** 揺らす中心と半径 */
+    using ChargePillarTrembleRpc  = Module::Network::RpcDef<ERpcType::ChargePillarTremble, glm::vec3, float>;
 }

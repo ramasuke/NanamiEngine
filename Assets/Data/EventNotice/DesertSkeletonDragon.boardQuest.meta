@@ -1,0 +1,101 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::BoardQuest",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\EventNotice/DesertSkeletonDragon.boardQuest",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "F99DF14B-8DC9-4CD1-9933-49B504DCDD53"
+                    }
+                },
+                "title_": "砂漠の骸竜",
+                "clientName_": "教官",
+                "rank_": 4,
+                "goalText_": "城塞の広場に居着く骸竜を倒す",
+                "descriptionLines_": [
+                    "光の浮遊石は、砂に沈んだ城塞に落ちている。",
+                    "傍に居着く骸竜を倒し、石を島へ取り戻せ。"
+                ],
+                "stage_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "17FD88B4-4757-4B84-9AD5-F1D4E03FBDA6"
+                                }
+                            }
+                        }
+                    }
+                },
+                "event_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                }
+                            }
+                        }
+                    }
+                },
+                "quest_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GameCore::PlayerAvatar::Quest::MainStory::DefeatMainStoryQuest",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "rewardMoney_": {
+                                        "cereal_class_version": 0,
+                                        "value_": 5000
+                                    }
+                                }
+                            },
+                            "questType_": 8,
+                            "enemyKind_": 6,
+                            "clearedFlag_": 5
+                        }
+                    }
+                },
+                "unlockConditions_": [
+                    {
+                        "polymorphic_id": 2147483651,
+                        "polymorphic_name": "GameCore::PlayerAvatar::Quest::Unlock::StoryFlagUnlockCondition",
+                        "ptr_wrapper": {
+                            "id": 2147483653,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0
+                                },
+                                "storyFlag_": 3
+                            }
+                        }
+                    }
+                ],
+                "lockedText_": "緑の浮遊石を島へ戻してから"
+            }
+        }
+    }
+}

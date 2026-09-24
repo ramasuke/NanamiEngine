@@ -14,6 +14,7 @@
 #include "Libs/LibCore/Tween/Player/TweenPlayer.h"
 #include "../../../Core/Game/PlayerAvatar/InputAction/PlayerAvatarInputDevice.h"
 #include "../../../Core/Game/PlayerAvatar/Item/ItemPouch.h"
+#include "../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
@@ -73,6 +74,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] int   selectGlowMaxAlpha_ = 210;
         [[serialize(1)]] float slideDuration_secs_ = 0.18f;
         [[serialize(1)]] float selectPopRate_ = 0.12f;
+        [[serialize(2)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         std::shared_ptr<IItemBarSource> source_;
         std::vector<std::weak_ptr<ItemSlot>> slotViews_;
@@ -121,6 +123,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(selectGlowMaxAlpha_));
             archive(CEREAL_NVP(slideDuration_secs_));
             archive(CEREAL_NVP(selectPopRate_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<class Archive>
@@ -150,9 +153,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(selectGlowMaxAlpha_));
             if (version >= 1) archive(CEREAL_NVP(slideDuration_secs_));
             if (version >= 1) archive(CEREAL_NVP(selectPopRate_));
+            if (version >= 2) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::ItemBar, 1);
+CEREAL_CLASS_VERSION(GamePlay::Ui::ItemBar, 2);

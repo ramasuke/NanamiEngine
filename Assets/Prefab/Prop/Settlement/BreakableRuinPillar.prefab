@@ -31,7 +31,7 @@
             "ptr_wrapper": {
                 "id": 2147483650,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "guid_": {
                             "value_": "E3949F2E-449F-40CF-B366-E3F59D360ACC"
@@ -137,7 +137,36 @@
                     },
                     "collapseDamage_": 150,
                     "fallAngle_deg_": 84.0,
-                    "fallDuration_secs_": 1.100000023841858
+                    "fallDuration_secs_": 1.100000023841858,
+                    "isIntroTarget_": false,
+                    "trembleParticle_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483658,
+                                "data": {
+                                    "value0": {
+                                        "value_": "E9840A70-21C6-4D3C-AD77-377CEE3CEB49"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "trembleSound_": {
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483659,
+                                "data": {
+                                    "value0": {
+                                        "value_": "864D788A-92A2-4FEB-86B7-30C9E3E3B0EE"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "trembleAngle_deg_": 2.5,
+                    "tremble_secs_": 0.9
                 }
             }
         }
@@ -191,7 +220,7 @@
             "polymorphic_id": 2147483651,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483658,
+                "id": 2147483660,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -211,7 +240,7 @@
                             "polymorphic_id": 2147483652,
                             "polymorphic_name": "NanamiEngine::Module::Component::BoxCollider",
                             "ptr_wrapper": {
-                                "id": 2147483659,
+                                "id": 2147483661,
                                 "data": {
                                     "cereal_class_version": 6,
                                     "value0": {
@@ -306,7 +335,7 @@
         "child": {
             "polymorphic_id": 3,
             "ptr_wrapper": {
-                "id": 2147483660,
+                "id": 2147483662,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -321,7 +350,7 @@
                         "component_0": {
                             "polymorphic_id": 4,
                             "ptr_wrapper": {
-                                "id": 2147483661,
+                                "id": 2147483663,
                                 "data": {
                                     "value0": {
                                         "value0": {
@@ -408,7 +437,7 @@
         "child": {
             "polymorphic_id": 3,
             "ptr_wrapper": {
-                "id": 2147483662,
+                "id": 2147483664,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -424,7 +453,7 @@
                             "polymorphic_id": 2147483653,
                             "polymorphic_name": "NanamiEngine::Module::Component::ModelRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483663,
+                                "id": 2147483665,
                                 "data": {
                                     "cereal_class_version": 5,
                                     "value0": {
@@ -448,7 +477,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483664,
+                                                "id": 2147483666,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -515,7 +544,7 @@
         "child": {
             "polymorphic_id": 3,
             "ptr_wrapper": {
-                "id": 2147483665,
+                "id": 2147483667,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -530,7 +559,7 @@
                         "component_0": {
                             "polymorphic_id": 5,
                             "ptr_wrapper": {
-                                "id": 2147483666,
+                                "id": 2147483668,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -546,7 +575,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483667,
+                                                "id": 2147483669,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "083E30B7-EB01-4178-9914-0ACD0A6AC508"
@@ -612,7 +641,7 @@
         "child": {
             "polymorphic_id": 3,
             "ptr_wrapper": {
-                "id": 2147483668,
+                "id": 2147483670,
                 "data": {
                     "value0": {
                         "value0": {}

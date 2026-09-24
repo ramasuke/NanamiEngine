@@ -14,7 +14,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
@@ -516,6 +516,21 @@
                         "r_": 248,
                         "g_": 246,
                         "b_": 255
+                    },
+                    "uiSounds_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483686,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "20661C82-DE24-445D-BF6D-27D24E5D0577"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -570,7 +585,7 @@
             "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483686,
+                "id": 2147483687,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -590,7 +605,7 @@
                             "polymorphic_id": 2147483651,
                             "polymorphic_name": "NanamiEngine::Module::NanamiUi::BlendImageRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483687,
+                                "id": 2147483688,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -611,7 +626,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483688,
+                                                "id": 2147483689,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "4B102ABC-5168-4AB9-B204-6B19A99B1774"
@@ -677,7 +692,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483689,
+                "id": 2147483690,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -692,7 +707,7 @@
                         "component_0": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483690,
+                                "id": 2147483691,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -708,7 +723,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483691,
+                                                "id": 2147483692,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "C0BB8FD1-0FF3-407F-B1B3-7E6733D7449D"
@@ -774,7 +789,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483692,
+                "id": 2147483693,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -789,7 +804,7 @@
                         "component_0": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483693,
+                                "id": 2147483694,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -805,7 +820,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483694,
+                                                "id": 2147483695,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "F9B16EE6-753C-437F-AA5E-85F1992D9FFA"
@@ -871,7 +886,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483695,
+                "id": 2147483696,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -887,7 +902,7 @@
                             "polymorphic_id": 2147483652,
                             "polymorphic_name": "NanamiEngine::Module::NanamiUi::CircleGaugeRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483696,
+                                "id": 2147483697,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -904,7 +919,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483697,
+                                                "id": 2147483698,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "3E02EE78-9B4E-4FE8-8FB7-B74692823871"
@@ -973,7 +988,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483698,
+                "id": 2147483699,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -988,7 +1003,7 @@
                         "component_0": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483699,
+                                "id": 2147483700,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -1004,7 +1019,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483700,
+                                                "id": 2147483701,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "9ABE9967-65CF-48D2-B9E8-B5D7CAD02EF0"
@@ -1070,7 +1085,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483701,
+                "id": 2147483702,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -1135,7 +1150,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483702,
+                "id": 2147483703,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -1195,7 +1210,7 @@
                         "child": {
                             "polymorphic_id": 2,
                             "ptr_wrapper": {
-                                "id": 2147483703,
+                                "id": 2147483704,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1260,7 +1275,7 @@
                         "child": {
                             "polymorphic_id": 2,
                             "ptr_wrapper": {
-                                "id": 2147483704,
+                                "id": 2147483705,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1325,7 +1340,7 @@
                         "child": {
                             "polymorphic_id": 2,
                             "ptr_wrapper": {
-                                "id": 2147483705,
+                                "id": 2147483706,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1390,7 +1405,7 @@
                         "child": {
                             "polymorphic_id": 2,
                             "ptr_wrapper": {
-                                "id": 2147483706,
+                                "id": 2147483707,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1455,7 +1470,7 @@
                         "child": {
                             "polymorphic_id": 2,
                             "ptr_wrapper": {
-                                "id": 2147483707,
+                                "id": 2147483708,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1520,7 +1535,7 @@
                         "child": {
                             "polymorphic_id": 2,
                             "ptr_wrapper": {
-                                "id": 2147483708,
+                                "id": 2147483709,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1585,7 +1600,7 @@
                         "child": {
                             "polymorphic_id": 2,
                             "ptr_wrapper": {
-                                "id": 2147483709,
+                                "id": 2147483710,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1650,7 +1665,7 @@
                         "child": {
                             "polymorphic_id": 2,
                             "ptr_wrapper": {
-                                "id": 2147483710,
+                                "id": 2147483711,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1720,7 +1735,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483711,
+                "id": 2147483712,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -1735,7 +1750,7 @@
                         "component_0": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483712,
+                                "id": 2147483713,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -1751,7 +1766,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483713,
+                                                "id": 2147483714,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "0EA3DBD0-E022-417B-8897-033F92075623"
@@ -1817,7 +1832,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483714,
+                "id": 2147483715,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -1833,7 +1848,7 @@
                             "polymorphic_id": 2147483653,
                             "polymorphic_name": "NanamiEngine::Module::NanamiUi::TextRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483715,
+                                "id": 2147483716,
                                 "data": {
                                     "cereal_class_version": 4,
                                     "value0": {
@@ -1848,11 +1863,11 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483716,
+                                                "id": 2147483717,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
-                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                        "value_": "956ED4F0-FCBF-4709-B98E-64F17B0DD2AF"
                                                     }
                                                 }
                                             }
@@ -1923,7 +1938,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483717,
+                "id": 2147483718,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -1938,7 +1953,7 @@
                         "component_0": {
                             "polymorphic_id": 5,
                             "ptr_wrapper": {
-                                "id": 2147483718,
+                                "id": 2147483719,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -1951,10 +1966,10 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483719,
+                                                "id": 2147483720,
                                                 "data": {
                                                     "value0": {
-                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                        "value_": "956ED4F0-FCBF-4709-B98E-64F17B0DD2AF"
                                                     }
                                                 }
                                             }
@@ -2025,7 +2040,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483720,
+                "id": 2147483721,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -2040,7 +2055,7 @@
                         "component_0": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483721,
+                                "id": 2147483722,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -2056,7 +2071,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483722,
+                                                "id": 2147483723,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "9B1E0011-2DA6-49C2-9B7C-BC69A6CE25D8"
@@ -2122,7 +2137,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483723,
+                "id": 2147483724,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -2137,7 +2152,7 @@
                         "component_0": {
                             "polymorphic_id": 5,
                             "ptr_wrapper": {
-                                "id": 2147483724,
+                                "id": 2147483725,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -2150,10 +2165,10 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483725,
+                                                "id": 2147483726,
                                                 "data": {
                                                     "value0": {
-                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                        "value_": "956ED4F0-FCBF-4709-B98E-64F17B0DD2AF"
                                                     }
                                                 }
                                             }
@@ -2224,7 +2239,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483726,
+                "id": 2147483727,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -2239,7 +2254,7 @@
                         "component_0": {
                             "polymorphic_id": 5,
                             "ptr_wrapper": {
-                                "id": 2147483727,
+                                "id": 2147483728,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -2252,10 +2267,10 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483728,
+                                                "id": 2147483729,
                                                 "data": {
                                                     "value0": {
-                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                        "value_": "956ED4F0-FCBF-4709-B98E-64F17B0DD2AF"
                                                     }
                                                 }
                                             }
@@ -2326,7 +2341,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483729,
+                "id": 2147483730,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -2341,7 +2356,7 @@
                         "component_0": {
                             "polymorphic_id": 5,
                             "ptr_wrapper": {
-                                "id": 2147483730,
+                                "id": 2147483731,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -2354,10 +2369,10 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483731,
+                                                "id": 2147483732,
                                                 "data": {
                                                     "value0": {
-                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                        "value_": "956ED4F0-FCBF-4709-B98E-64F17B0DD2AF"
                                                     }
                                                 }
                                             }
@@ -2428,7 +2443,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483732,
+                "id": 2147483733,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -2443,7 +2458,7 @@
                         "component_0": {
                             "polymorphic_id": 5,
                             "ptr_wrapper": {
-                                "id": 2147483733,
+                                "id": 2147483734,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -2456,10 +2471,10 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483734,
+                                                "id": 2147483735,
                                                 "data": {
                                                     "value0": {
-                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                        "value_": "956ED4F0-FCBF-4709-B98E-64F17B0DD2AF"
                                                     }
                                                 }
                                             }
@@ -2530,7 +2545,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483735,
+                "id": 2147483736,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -2545,7 +2560,7 @@
                         "component_0": {
                             "polymorphic_id": 5,
                             "ptr_wrapper": {
-                                "id": 2147483736,
+                                "id": 2147483737,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -2558,10 +2573,10 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483737,
+                                                "id": 2147483738,
                                                 "data": {
                                                     "value0": {
-                                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                                        "value_": "956ED4F0-FCBF-4709-B98E-64F17B0DD2AF"
                                                     }
                                                 }
                                             }

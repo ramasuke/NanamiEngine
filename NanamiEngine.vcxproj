@@ -44,6 +44,7 @@
     <ClCompile Include="Assets\Data\Restoration\Data_RestorationFacility.cpp" />
     <ClCompile Include="Assets\Data\Item\Data_ItemData.cpp" />
     <ClCompile Include="Assets\Data\Shop\Data_ShopData.cpp" />
+    <ClCompile Include="Assets\Data\UiSound\Data_UiSoundBankData.cpp" />
     <ClCompile Include="Assets\Data\Drop\Data_DropTable.cpp" />
     <ClCompile Include="Assets\Data\Enemy\Factory\EnemyFactory.cpp" />
     <ClCompile Include="Assets\Data\Magic\Data_MagicSpellData.cpp" />
@@ -54,6 +55,7 @@
     <ClCompile Include="Assets\Scripts\Core\Game\MainProgression\MainProgression.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Story\Story_StoryProgress.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Story\Story_StageClear.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Story\FloatingStone\Story_FloatingStoneMovie.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\RestorationGate\Prop_RestorationGate.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\AttackArea\Enemy_AttackArea.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ChasePlayerForPathFinding\Enemy_Behaviour_Action_ChasePlayerForPathFinding.cpp" />
@@ -172,6 +174,7 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_IComplteQuestGroup.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_TakeableQuestFactory.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_MainStoryQuestBase.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\MainStory\PlayerAvatar_DefeatMainStoryQuest.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_IQuestGroup.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestType.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_ITakeableQuest.cpp" />
@@ -322,6 +325,9 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Projectile\GamePlay_Enemy_IAttackProjectile.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Projectile\GamePlay_Enemy_ProjectileAttackArea.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Tyrannosaurus\GamePlay_Enemy_Tyrannosaurus.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Desert\GamePlay_Enemy_DesertScorpion.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Desert\GamePlay_Enemy_SandWorm.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Desert\GamePlay_Enemy_SkeletonDragon.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\LatticeBarrier\LatticeBarrierEffect.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\Cloud\CloudEffect.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\ProximityReveal\ProximityReveal.cpp" />
@@ -433,6 +439,7 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\QuestBoardModel.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\NoticeBoardModel.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\AnnouncementReadLog.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\QuestReadLog.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_QuestRow.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_NoticeRow.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Page\Ui_EventBoard_EventPage.cpp" />
@@ -484,6 +491,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\FallIsland\Enemy_Behaviour_Action_FallIsland.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Particle\AttachParticle\Enemy_Behaviour_Action_AttachParticle.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\StartChat\Enemy_Behaviour_Action_StartChat.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Story\ScatterFloatingStones\Enemy_Behaviour_Action_ScatterFloatingStones.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Tyrannosaurus\TremblePillars\Enemy_Behaviour_Action_TremblePillars.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\SwapModel\Enemy_Behaviour_Action_SwapModel.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestJournal.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\AvoidRolling\MagicCasterAvatarAvoidRollingState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemUseAction.cpp" />
@@ -500,6 +510,12 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\RoomCode\Ui_RoomCodeHud.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\GameCursor\Ui_GameCursor.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\StageSelect\Room\Ui_StageSelect_RoomUi.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SaveDataReset.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SaveDataDebugPage.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\StoryDebugPage.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\QuestReadDebugPage.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SceneDebugPage.cpp" />
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\CheatDebugPage.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
       <IncludeInUnityFile>false</IncludeInUnityFile>
@@ -531,6 +547,7 @@
     <ClInclude Include="Assets\Data\Item\Data_ItemStack.h" />
     <ClInclude Include="Assets\Data\Shop\Data_ShopEntry.h" />
     <ClInclude Include="Assets\Data\Shop\Data_ShopData.h" />
+    <ClInclude Include="Assets\Data\UiSound\Data_UiSoundBankData.h" />
     <ClInclude Include="Assets\Data\Drop\Data_DropTable.h" />
     <ClInclude Include="Assets\Data\Drop\Data_ItemDrop.h" />
     <ClInclude Include="Assets\Data\Enemy\Factory\EnemyFactory.h" />
@@ -544,6 +561,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StoryFlag.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StoryProgress.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StageClear.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Story\FloatingStone\Story_FloatingStoneMovie.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\RestorationGate\Prop_RestorationGate.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\AttackArea\Enemy_AttackArea.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Basic\ChasePlayerForPathFinding\Enemy_Behaviour_Action_ChasePlayerForPathFinding.h" />
@@ -657,6 +675,7 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\Completed\PlayerAvatar_IComplteQuestGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_TakeableQuestFactory.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_MainStoryQuestBase.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\MainStory\PlayerAvatar_DefeatMainStoryQuest.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_IQuestGroup.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestType.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestList.h" />
@@ -821,6 +840,9 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\Projectile\GamePlay_Enemy_ProjectileAttackArea.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\TrainingDummy\TrainingDummy.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\Tyrannosaurus\GamePlay_Enemy_Tyrannosaurus.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\Desert\GamePlay_Enemy_DesertScorpion.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\Desert\GamePlay_Enemy_SandWorm.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Npc\Enemy\Desert\GamePlay_Enemy_SkeletonDragon.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Npc\Friendly\FriendlyNpc.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\Bullet\PlayerAvatar_Bullet_CannonBullet.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\PlayerAvatar\InteractableArea\InteractableArea.h" />
@@ -851,6 +873,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SoundPlayer.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\SpawnSound.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\UiSoundBank.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Sound\UiSe.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Spawn\GamePlay_PrefabSpawner.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_MoneyPickup.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Pickup\GamePlay_ItemPickup.h" />
@@ -936,6 +959,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\QuestBoardModel.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\NoticeBoardModel.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\AnnouncementReadLog.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\QuestReadLog.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_QuestRow.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_NoticeRow.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Page\Ui_EventBoard_EventPage.h" />
@@ -1003,6 +1027,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\FallIsland\Enemy_Behaviour_Action_FallIsland.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Particle\AttachParticle\Enemy_Behaviour_Action_AttachParticle.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Other\StartChat\Enemy_Behaviour_Action_StartChat.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Story\ScatterFloatingStones\Enemy_Behaviour_Action_ScatterFloatingStones.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Tyrannosaurus\TremblePillars\Enemy_Behaviour_Action_TremblePillars.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\SwapModel\Enemy_Behaviour_Action_SwapModel.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestJournal.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemUseAction.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\UseItem\MagicCasterAvatarUseItemState.h" />
@@ -1011,6 +1038,7 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Network\Relay\RelayServerSettings.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Npc\Friendly\Reaction\FriendlyNpcReaction.h" />
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\ChargeBreakPillar\GamePlay_ChargeBreakPillar.h" />
+    <ClInclude Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SaveDataReset.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Animations\" />

@@ -7,7 +7,8 @@
 
 namespace GameCore::Scene::GrassLand
 {
-    class GrassLandArrivalMovie;
+    template<class TContext>
+    class StageArrivalMovie;
 }
 
 namespace GameCore::Scene::Main
@@ -27,9 +28,13 @@ namespace GameCore::Scene::Main
         void Enter    () override;
         void DoDispose() override;
         void OnDrawGui() override;
+        /** @brief 大顎を倒したら、村の跡の浮遊石が空へ飛び去る */
+        void OnStageClear(Story::StoryFlag flag);
         
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
-        std::shared_ptr<GrassLand::GrassLandArrivalMovie> arrivalMovie_;
+        std::shared_ptr<GrassLand::StageArrivalMovie<GrassLandSceneContext>> arrivalMovie_;
         NanamiEngine::R4::Disposable stageClearSubscription_;
+        /** シーンを抜けたら立てて、浮遊石の演出を止める */
+        std::shared_ptr<bool> isStoneMovieCanceled_ = std::make_shared<bool>(false);
     };
 }

@@ -73,7 +73,23 @@ namespace GameCore::Npc::Enemy::Behaviour
             if (windUpAnimationNumber_ >= 0)
                 context.EnemyAnimator().Param<int>(ANIMATOR_PARAM_NAME).Set(windUpAnimationNumber_);
 
-            RotateToPlayer(context);
+            if (aimAtIntroPillar_)
+            {
+                // NOTE: 標的の柱がもう倒れていれば、突進せずに終える
+                if (introPillar_.expired())
+                    introPillar_ = GamePlay::Prop::ChargeBreakPillar::FindIntroTarget(context.EnemyTransform().GetWorldPos());
+                const auto pillar = introPillar_.lock();
+                if (!pillar || pillar->IsCollapsed())
+                {
+                    DoReset();
+                    return TickStatus::Success;
+                }
+                RotateTowards(context, pillar->Transform().GetWorldPos());
+            }
+            else
+            {
+                RotateToPlayer(context);
+            }
             if (during_secs_ < windUp_secs_)
                 return TickStatus::Running;
 
@@ -85,7 +101,8 @@ namespace GameCore::Npc::Enemy::Behaviour
         case Phase::Rush:
         {
             context.EnemyAnimator().Param<int>(ANIMATOR_PARAM_NAME).Set(rushAnimationNumber_);
-            TryHitPlayer(context);
+            if (!aimAtIntroPillar_)
+                TryHitPlayer(context);
 
             const CastResult result = CastForward(context);
             if (result == CastResult::None && during_secs_ < maxRush_secs_)
@@ -145,7 +162,16 @@ namespace GameCore::Npc::Enemy::Behaviour
             nearestSq = distSq;
             toTarget  = to;
         }
-        if (!hasTarget)
+        if (hasTarget)
+            RotateTowards(context, selfPos + toTarget);
+    }
+
+    void Action::ChargeRush::RotateTowards(const TickContext& context, const glm::vec3& targetPos) const
+    {
+        auto& transform = context.EnemyTransform();
+        glm::vec3 toTarget = targetPos - transform.GetWorldPos();
+        toTarget.y = 0.0f;
+        if (glm::length2(toTarget) <= 1e-6f)
             return;
 
         toTarget = glm::normalize(toTarget);
@@ -251,6 +277,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         isAttacked_  = false;
         isStuck_     = false;
         stuckPillar_.reset();
+        introPillar_.reset();
     }
 
     void Action::ChargeRush::DoDrawGui()
@@ -272,6 +299,7 @@ namespace GameCore::Npc::Enemy::Behaviour
         ImGuiHelper::OnDrawInputField("stuckStateKeyName_", stuckStateKeyName_);
         ImGuiHelper::OnDrawInputField("impactSound_", impactSound_);
         ImGuiHelper::OnDrawInputField("finishedWriteBlackBoard_", finishedWriteBlackBoard_);
+        ImGuiHelper::OnDrawInputField("aimAtIntroPillar_", aimAtIntroPillar_);
     }
 }
 

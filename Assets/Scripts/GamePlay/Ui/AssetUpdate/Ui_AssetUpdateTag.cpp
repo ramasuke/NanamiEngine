@@ -7,7 +7,6 @@
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
-#include "../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -405,7 +404,7 @@ namespace GamePlay::Ui
         }
         // 一度に何個灯っても蹄の音は 1 回
         if (lit > litHoofCount_)
-            Sound::UiSoundBank::Play(Sound::UiSe::HoofTick);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::HoofTick);
         litHoofCount_ = std::max(litHoofCount_, lit);
     }
 
@@ -502,6 +501,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("progressFollowRate_", progressFollowRate_);
         ImGuiHelper::OnDrawInputField("errorLineUnits_", errorLineUnits_);
         ImGuiHelper::OnDrawInputField("errorMaxLines_", errorMaxLines_);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

@@ -12,6 +12,8 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 
         
         [[serialize(0)]] FIELD(Asset::SceneFile) sceneFile_;
+        /** 前のノードが毎 Tick Success を返すので、遷移の要求は一度だけにする */
+        bool isRequested_ = false;
         
 #pragma region Serialization Function
     public:

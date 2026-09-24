@@ -118,6 +118,14 @@ void ImGuiWrapper::UpdateNewFrame()
 {
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
+
+	// NOTE: ウィンドウは拡大縮小されるので、クライアント領域ではなく描画画面のサイズに合わせる (マウス座標も描画画面基準)
+	int screenWidth = 0;
+	int screenHeight = 0;
+	int colorBitDepth = 0;
+	GetScreenState(&screenWidth, &screenHeight, &colorBitDepth);
+	ImGui::GetIO().DisplaySize = ImVec2(static_cast<float>(screenWidth), static_cast<float>(screenHeight));
+
 	ImGui::NewFrame();
 }
 

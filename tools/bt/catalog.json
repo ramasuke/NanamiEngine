@@ -1,5 +1,5 @@
 {
-  "generated_from": "fa5a636508bf62871abcbb922fe9d5aeec24fe9d",
+  "generated_from": "9bb5f85965332105b9cc016fb9c031c08af309dd",
   "actions": {
     "Basic::ChasePlayerForPathFinding": {
       "class": "ChasePlayerForPathFinding",
@@ -785,6 +785,29 @@
         }
       ]
     },
+    "GameObject::SwapModel": {
+      "class": "SwapModel",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::SwapModel",
+      "leaf": "SwapModel",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/GameObject/SwapModel/Enemy_Behaviour_Action_SwapModel.h",
+      "params": [
+        {
+          "key": "target_",
+          "member": "target_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "model_",
+          "member": "model_",
+          "named": true,
+          "shape": "field",
+          "type": "Mv1File"
+        }
+      ]
+    },
     "Hyena::CallAllies": {
       "class": "CallAllies",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::CallAllies",
@@ -1278,6 +1301,58 @@
         }
       ]
     },
+    "Story::ScatterFloatingStones": {
+      "class": "ScatterFloatingStones",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ScatterFloatingStones",
+      "leaf": "ScatterFloatingStones",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Story/ScatterFloatingStones/Enemy_Behaviour_Action_ScatterFloatingStones.h",
+      "params": [
+        {
+          "key": "stonesRoot_",
+          "member": "stonesRoot_",
+          "named": true,
+          "shape": "field",
+          "type": "IGameObject"
+        },
+        {
+          "key": "riseHeight_",
+          "member": "riseHeight_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "riseSeconds_",
+          "member": "riseSeconds_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "hoverSeconds_",
+          "member": "hoverSeconds_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "flySeconds_",
+          "member": "flySeconds_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "flyDistance_",
+          "member": "flyDistance_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "flyRise_",
+          "member": "flyRise_",
+          "named": true,
+          "shape": "float"
+        }
+      ]
+    },
     "Transform::Rotation::AddRotation": {
       "class": "AddRotation",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::AddRotation",
@@ -1324,7 +1399,7 @@
       "class": "ChargeRush",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::ChargeRush",
       "leaf": "ChargeRush",
-      "version": 0,
+      "version": 1,
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Tyrannosaurus/ChargeRush/Enemy_Behaviour_Action_ChargeRush.h",
       "params": [
         {
@@ -1431,6 +1506,27 @@
           "named": true,
           "shape": "nested",
           "type": "WriteBlackBoard"
+        },
+        {
+          "key": "aimAtIntroPillar_",
+          "member": "aimAtIntroPillar_",
+          "named": true,
+          "shape": "bool"
+        }
+      ]
+    },
+    "Tyrannosaurus::TremblePillars": {
+      "class": "TremblePillars",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::TremblePillars",
+      "leaf": "TremblePillars",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Tyrannosaurus/TremblePillars/Enemy_Behaviour_Action_TremblePillars.h",
+      "params": [
+        {
+          "key": "radius_",
+          "member": "radius_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -1582,6 +1678,7 @@
     "GameCore::Npc::Enemy::Behaviour::Action::RecoverFacingPlayer": "Basic::RecoverFacingPlayer",
     "GameCore::Npc::Enemy::Behaviour::Action::RotateOnPlayer": "Transform::Rotation::RotateOnPlayer",
     "GameCore::Npc::Enemy::Behaviour::Action::SampleMoveFront": "Other::Sample::MoveFront",
+    "GameCore::Npc::Enemy::Behaviour::Action::ScatterFloatingStones": "Story::ScatterFloatingStones",
     "GameCore::Npc::Enemy::Behaviour::Action::ScenePurposeCamera": "Camera::ScenePurposeCamera",
     "GameCore::Npc::Enemy::Behaviour::Action::SetLinearVelocity": "RigidBody::SetLinearVelocity",
     "GameCore::Npc::Enemy::Behaviour::Action::SetStorm": "Weather::SetStorm",
@@ -1589,9 +1686,11 @@
     "GameCore::Npc::Enemy::Behaviour::Action::ShootDownAirShip": "RigidBody::Other::ShootDownAirShip",
     "GameCore::Npc::Enemy::Behaviour::Action::ShowBossHealthGauge": "Ui::ShowBossHealthGauge",
     "GameCore::Npc::Enemy::Behaviour::Action::StartChat": "Other::StartChat",
+    "GameCore::Npc::Enemy::Behaviour::Action::SwapModel": "GameObject::SwapModel",
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerAngle": "Basic::ToPlayerAngle",
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerDistance": "Basic::ToPlayerDistance",
     "GameCore::Npc::Enemy::Behaviour::Action::ToPlayerRaycast": "Basic::ToPlayerRaycast",
+    "GameCore::Npc::Enemy::Behaviour::Action::TremblePillars": "Tyrannosaurus::TremblePillars",
     "GameCore::Npc::Enemy::Behaviour::Action::WaitSeconds": "Wait::Seconds::WaitSeconds",
     "GameCore::Npc::Enemy::Behaviour::Action::WanderMove": "Basic::WanderMove",
     "GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoard": "Other::WriteBlackBoard<Int>",
@@ -1633,6 +1732,7 @@
     "RecoverFacingPlayer": "Basic::RecoverFacingPlayer",
     "RotateOnPlayer": "Transform::Rotation::RotateOnPlayer",
     "SampleMoveFront": "Other::Sample::MoveFront",
+    "ScatterFloatingStones": "Story::ScatterFloatingStones",
     "ScenePurposeCamera": "Camera::ScenePurposeCamera",
     "SetLinearVelocity": "RigidBody::SetLinearVelocity",
     "SetStorm": "Weather::SetStorm",
@@ -1640,9 +1740,11 @@
     "ShootDownAirShip": "RigidBody::Other::ShootDownAirShip",
     "ShowBossHealthGauge": "Ui::ShowBossHealthGauge",
     "StartChat": "Other::StartChat",
+    "SwapModel": "GameObject::SwapModel",
     "ToPlayerAngle": "Basic::ToPlayerAngle",
     "ToPlayerDistance": "Basic::ToPlayerDistance",
     "ToPlayerRaycast": "Basic::ToPlayerRaycast",
+    "TremblePillars": "Tyrannosaurus::TremblePillars",
     "WaitSeconds": "Wait::Seconds::WaitSeconds",
     "WanderMove": "Basic::WanderMove",
     "WriteBlackBoard": "Other::WriteBlackBoard<Int>",

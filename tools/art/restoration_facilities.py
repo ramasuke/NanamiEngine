@@ -21,26 +21,23 @@ from tools.common.cereal_json import Num, OrderedObj, dumps, loads, read_text, t
 DATA_DIR = REPO / 'Assets' / 'Data' / 'Restoration'
 BOARD_META = REPO / 'Assets' / 'Data' / 'EventNotice' / 'MainIslandEventBoard.eventBoard.meta'
 # FIELD(...) の並びをこのファイルから借りる(stage_ が最初の FIELD)
-FIELD_TEMPLATE = REPO / 'Assets' / 'Data' / 'EventNotice' / 'GrasslandHyenaCull.boardQuest.meta'
+FIELD_TEMPLATE = REPO / 'Assets' / 'Data' / 'EventNotice' / 'GrassLandTyrant.boardQuest.meta'
 FQN = 'NanamiEngine::Module::Asset::RestorationFacility'
 FIRST_ID = 2147483649
 NONE = -1
 
 # GameCore::Story::Facility / StoryFlag の値 (Story_Facility.h / Story_StoryFlag.h)
-DOCK, GENERAL_STORE, HUNTER_LODGE, FIELD = range(4)
-GRASS_LAND_CLEARED = 2
+CLAN_HOUSE = 4
+GRASS_LAND_CLEARED, FOUNTAIN_ISLAND_RETURNED = 2, 4
 
+# NOTE: 仮置きだった4つ (船着き場・雑貨屋・狩人小屋・畑) は 2026-09-24 に削除した。施設を決めたらここに足す。
+#   dict(asset='Name', facility=<Facility の値>, name='表示名', cost=500, lines=['説明1', '説明2'],
+#        flag=GRASS_LAND_CLEARED, condition='前提の文言', required=<前提の Facility>)
 FACILITIES = [
-    dict(asset='Dock', facility=DOCK, name='船着き場', cost=500,
-         lines=['桟橋を架け直す。', '定期船がまた寄れるようになる。']),
-    dict(asset='GeneralStore', facility=GENERAL_STORE, name='雑貨屋の修繕', cost=1200,
-         lines=['屋根と棚を直す。', '商人の品揃えが一段増える。']),
-    dict(asset='HunterLodge', facility=HUNTER_LODGE, name='狩人小屋', cost=2500,
-         flag=GRASS_LAND_CLEARED, condition='草原の大顎を倒してから',
-         lines=['狩人の一族が住む小屋。', '食料と薬を扱う店が開く。']),
-    dict(asset='Field', facility=FIELD, name='畑', cost=1800,
-         required=HUNTER_LODGE, condition='狩人小屋が建ってから',
-         lines=['小屋の裏を耕す。', '薬草が折々に採れる。']),
+    # 建てると、女狩人が仲間 (キャラ選択) を出してくれる。草原の報酬 (3000) で建てられる額
+    dict(asset='ClanHouse', facility=CLAN_HOUSE, name='一族の家', cost=2000,
+         flag=FOUNTAIN_ISLAND_RETURNED, condition='噴水の島が戻ってから',
+         lines=['草原の狩人の一族が住む家。', '復興を手伝う仲間が集まる。']),
 ]
 
 

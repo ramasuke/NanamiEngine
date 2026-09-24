@@ -1,0 +1,780 @@
+{
+    "additionParameters_": {
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "value0": 1,
+                "value1": {
+                    "polymorphic_id": 2147483649,
+                    "polymorphic_name": "NanamiEngine::Module::AnimationTree::AnimationParameter<int>",
+                    "ptr_wrapper": {
+                        "id": 2147483650,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0
+                            },
+                            "name_": "State",
+                            "value_": 11111
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "entryNode": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483651,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0
+                },
+                "position_": {
+                    "value0": 120.0,
+                    "value1": 40.0
+                },
+                "guid_": {
+                    "cereal_class_version": 0,
+                    "value_": "1F3F93CA-65F1-48A7-9DE0-38F50E036C73"
+                },
+                "speed_": 1.0
+            }
+        }
+    },
+    "visualAnyStateNode": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483652,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {},
+                "position_": {
+                    "value0": 120.0,
+                    "value1": 160.0
+                },
+                "guid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                }
+            }
+        }
+    },
+    "nodesCount": 9,
+    "nodes_0": {
+        "polymorphic_id": 2147483650,
+        "polymorphic_name": "NanamiEngine::Module::AnimationTree::AnimationClipNode",
+        "ptr_wrapper": {
+            "id": 2147483653,
+            "data": {
+                "cereal_class_version": 4,
+                "value0": {},
+                "animationFile_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483654,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "5730098B-440B-4744-BD61-41AB3B712A01"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Walk",
+                "position_": {
+                    "value0": 340.0,
+                    "value1": 120.0
+                },
+                "guid_": {
+                    "value_": "0DCFF53A-FFE3-4836-B096-A3B8A0BD5873"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000.0,
+                "modelAnimationIndex_": 4,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true,
+                "nameCheck_": false
+            }
+        }
+    },
+    "nodes_1": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483655,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483656,
+                            "data": {
+                                "value0": {
+                                    "value_": "5730098B-440B-4744-BD61-41AB3B712A01"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Idle",
+                "position_": {
+                    "value0": 340.0,
+                    "value1": 210.0
+                },
+                "guid_": {
+                    "value_": "CDA8B2D3-D38D-4DE9-9F10-91CCBA5761BB"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000.0,
+                "modelAnimationIndex_": 3,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true,
+                "nameCheck_": false
+            }
+        }
+    },
+    "nodes_2": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483657,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483658,
+                            "data": {
+                                "value0": {
+                                    "value_": "5730098B-440B-4744-BD61-41AB3B712A01"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Sniff",
+                "position_": {
+                    "value0": 340.0,
+                    "value1": 300.0
+                },
+                "guid_": {
+                    "value_": "91918E7B-C3DB-4DCB-A62B-06DB42881A1F"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000.0,
+                "modelAnimationIndex_": 3,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true,
+                "nameCheck_": false
+            }
+        }
+    },
+    "nodes_3": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483659,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483660,
+                            "data": {
+                                "value0": {
+                                    "value_": "5730098B-440B-4744-BD61-41AB3B712A01"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Rest",
+                "position_": {
+                    "value0": 340.0,
+                    "value1": 390.0
+                },
+                "guid_": {
+                    "value_": "8D5981CA-2120-4821-9D38-89751D92306F"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000.0,
+                "modelAnimationIndex_": 2,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": true,
+                "nameCheck_": false
+            }
+        }
+    },
+    "nodes_4": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483661,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483662,
+                            "data": {
+                                "value0": {
+                                    "value_": "5730098B-440B-4744-BD61-41AB3B712A01"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Threat",
+                "position_": {
+                    "value0": 340.0,
+                    "value1": 480.0
+                },
+                "guid_": {
+                    "value_": "0A9C8357-3479-418F-9A05-1A4BFF56FA9B"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000.0,
+                "modelAnimationIndex_": 2,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": false,
+                "nameCheck_": false
+            }
+        }
+    },
+    "nodes_5": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483663,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483664,
+                            "data": {
+                                "value0": {
+                                    "value_": "5730098B-440B-4744-BD61-41AB3B712A01"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Die",
+                "position_": {
+                    "value0": 540.0,
+                    "value1": 120.0
+                },
+                "guid_": {
+                    "value_": "81940BBA-6DD0-4FA6-BFBB-23AFC24FAEF8"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000.0,
+                "modelAnimationIndex_": 1,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": false,
+                "nameCheck_": false
+            }
+        }
+    },
+    "nodes_6": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483665,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483666,
+                            "data": {
+                                "value0": {
+                                    "value_": "5730098B-440B-4744-BD61-41AB3B712A01"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Sting1",
+                "position_": {
+                    "value0": 540.0,
+                    "value1": 210.0
+                },
+                "guid_": {
+                    "value_": "174B295F-B849-456E-9D7D-CF42FDF3A00E"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000.0,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": false,
+                "nameCheck_": false
+            }
+        }
+    },
+    "nodes_7": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483667,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483668,
+                            "data": {
+                                "value0": {
+                                    "value_": "5730098B-440B-4744-BD61-41AB3B712A01"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Sting2",
+                "position_": {
+                    "value0": 540.0,
+                    "value1": 300.0
+                },
+                "guid_": {
+                    "value_": "F6AA35C6-FF2A-46BB-BD05-963BDFE82B0B"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000.0,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": false,
+                "nameCheck_": false
+            }
+        }
+    },
+    "nodes_8": {
+        "polymorphic_id": 2,
+        "ptr_wrapper": {
+            "id": 2147483669,
+            "data": {
+                "value0": {},
+                "animationFile_": {
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483670,
+                            "data": {
+                                "value0": {
+                                    "value_": "5730098B-440B-4744-BD61-41AB3B712A01"
+                                }
+                            }
+                        }
+                    }
+                },
+                "name_": "Sting3",
+                "position_": {
+                    "value0": 540.0,
+                    "value1": 390.0
+                },
+                "guid_": {
+                    "value_": "581A5E54-C4C6-4172-975E-32187D73D0B7"
+                },
+                "speed_": 30.0,
+                "blendAnimationOffset_secs_": 100000.0,
+                "modelAnimationIndex_": 0,
+                "clipStartTime_": 0.0,
+                "clipEndTime_": 0.0,
+                "isLoop_": false,
+                "nameCheck_": false
+            }
+        }
+    },
+    "fromNodeNodePathCount": 1,
+    "fromNodeNodePath_0": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483671,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0
+                },
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": 0
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.0,
+                "fromNodeGuid_": {
+                    "value_": "1F3F93CA-65F1-48A7-9DE0-38F50E036C73"
+                },
+                "nextNodeGuid_": {
+                    "value_": "CDA8B2D3-D38D-4DE9-9F10-91CCBA5761BB"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "1F3F93CA-65F1-48A7-9DE0-38F50E036C73"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePathCount": 9,
+    "fromAnyStateNodeNodePath_0": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483672,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 2147483651,
+                                "polymorphic_name": "NanamiEngine::Module::AnimationTree::AnimationNodePathAdditionCondition<int>",
+                                "ptr_wrapper": {
+                                    "id": 2147483673,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "cereal_class_version": 0
+                                        },
+                                        "name_": "State",
+                                        "equalValue_": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.15,
+                "fromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                },
+                "nextNodeGuid_": {
+                    "value_": "0DCFF53A-FFE3-4836-B096-A3B8A0BD5873"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePath_1": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483674,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483675,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 11111
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.15,
+                "fromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                },
+                "nextNodeGuid_": {
+                    "value_": "CDA8B2D3-D38D-4DE9-9F10-91CCBA5761BB"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePath_2": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483676,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483677,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 7
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.15,
+                "fromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                },
+                "nextNodeGuid_": {
+                    "value_": "91918E7B-C3DB-4DCB-A62B-06DB42881A1F"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePath_3": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483678,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483679,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 8
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.15,
+                "fromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                },
+                "nextNodeGuid_": {
+                    "value_": "8D5981CA-2120-4821-9D38-89751D92306F"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePath_4": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483680,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483681,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 15
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.15,
+                "fromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                },
+                "nextNodeGuid_": {
+                    "value_": "0A9C8357-3479-418F-9A05-1A4BFF56FA9B"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePath_5": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483682,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483683,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 20
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.15,
+                "fromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                },
+                "nextNodeGuid_": {
+                    "value_": "81940BBA-6DD0-4FA6-BFBB-23AFC24FAEF8"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePath_6": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483684,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483685,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 23
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.1,
+                "fromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                },
+                "nextNodeGuid_": {
+                    "value_": "174B295F-B849-456E-9D7D-CF42FDF3A00E"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePath_7": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483686,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483687,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 24
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.1,
+                "fromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                },
+                "nextNodeGuid_": {
+                    "value_": "F6AA35C6-FF2A-46BB-BD05-963BDFE82B0B"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                }
+            }
+        }
+    },
+    "fromAnyStateNodeNodePath_8": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483688,
+            "data": {
+                "value0": {},
+                "additionConditionGroup_": {
+                    "ptr_wrapper": {
+                        "valid": 1,
+                        "data": {
+                            "value0": 1,
+                            "value1": {
+                                "polymorphic_id": 3,
+                                "ptr_wrapper": {
+                                    "id": 2147483689,
+                                    "data": {
+                                        "value0": {},
+                                        "name_": "State",
+                                        "equalValue_": 25
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "transitionDuration_secs_": 0.1,
+                "fromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                },
+                "nextNodeGuid_": {
+                    "value_": "581A5E54-C4C6-4172-975E-32187D73D0B7"
+                },
+                "visualFromNodeGuid_": {
+                    "value_": "01345D1E-A496-4E3F-98D5-44BAE004E6EB"
+                }
+            }
+        }
+    }
+}

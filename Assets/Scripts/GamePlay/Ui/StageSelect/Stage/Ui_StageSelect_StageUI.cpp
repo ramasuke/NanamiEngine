@@ -21,11 +21,28 @@ namespace GamePlay::Ui
         RefreshAppearance();
     }
 
+    void StageSelectStageUi::SetLocked(const bool isLocked)
+    {
+        isLocked_ = isLocked;
+        nameText_->SetText(isLocked ? "？？？" : stageData_->DisplayName());
+        elementIcon_->SetSprite(isLocked ? lockedElementSprite_.get() : stageData_->ElementSprite());
+        if (const auto entity = difficultyPips_->Entity().lock())
+        {
+            entity->SetEnable(!isLocked);
+        }
+        // NOTE: OnAwake より先に呼ばれたときは、見た目は OnAwake で合わせる
+        if (imageRenderer_)
+            RefreshAppearance();
+    }
+
     void StageSelectStageUi::RefreshAppearance()
     {
         // 選択中の行は枠グローが出るので、枠入りのホバー用スプライトは重ねない
         const bool showHoverSprite = isHovering_ && !isHighlighted_;
-        imageRenderer_->SetSprite(showHoverSprite ? selectedRowSprite_.get() : unselectedRowSprite_.get());
+        const auto sprite = isLocked_
+            ? lockedRowSprite_.get()
+            : (showHoverSprite ? selectedRowSprite_.get() : unselectedRowSprite_.get());
+        imageRenderer_->SetSprite(sprite);
         glowAnimation_->SetEnable(isHighlighted_);
     }
 
@@ -34,14 +51,13 @@ namespace GamePlay::Ui
         selectButton_   = RequireComponent<NanamiUi::Button>();
         imageRenderer_  = RequireComponent<Component::ImageRenderer>();
         glowAnimation_  = RequireComponent<NanamiUi::ImageAnimationRenderer>();
-        nameText_->SetText(stageData_->DisplayName());
-        elementIcon_->SetSprite(stageData_->ElementSprite());
         difficultyPips_->SetDifficulty(stageData_->Difficulty());
+        SetLocked(isLocked_);
         SetHighlighted(false);
 
         selectButton_->OnHover().Subscribe([this](auto)
         {
-            Sound::UiSoundBank::Play(selectButtonHoverSound_, Sound::UiSe::Cursor);
+            Sound::UiSoundBank::Play(uiSounds_, selectButtonHoverSound_, Sound::UiSe::Cursor);
             isHovering_ = true;
             RefreshAppearance();
         }).AddTo(this);
@@ -52,7 +68,7 @@ namespace GamePlay::Ui
         }).AddTo(this);
         selectButton_->OnClick().Subscribe([this](NanamiUi::MouseState)
         {
-            Sound::UiSoundBank::Play(selectButtonClickSound_, Sound::UiSe::Confirm);
+            Sound::UiSoundBank::Play(uiSounds_, selectButtonClickSound_, Sound::UiSe::Confirm);
         }).AddTo(this);
     }
 
@@ -66,6 +82,9 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("unselectedRowSprite_", unselectedRowSprite_);
         ImGuiHelper::OnDrawInputField("elementIcon_", elementIcon_);
         ImGuiHelper::OnDrawInputField("difficultyPips_", difficultyPips_);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
+        ImGuiHelper::OnDrawInputField("lockedRowSprite_", lockedRowSprite_);
+        ImGuiHelper::OnDrawInputField("lockedElementSprite_", lockedElementSprite_);
     }
 }
 

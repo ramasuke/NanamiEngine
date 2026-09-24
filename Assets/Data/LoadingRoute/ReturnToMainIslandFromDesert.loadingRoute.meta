@@ -1,0 +1,77 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::LoadingRouteData",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\LoadingRoute/ReturnToMainIslandFromDesert.loadingRoute",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "93C3EB1F-B07F-4BA4-9061-907A5DA078CD"
+                    }
+                },
+                "isFromAnywhere_": false,
+                "fromScene_": 4,
+                "toScene_": 2,
+                "isHover_": false,
+                "hoverCenter_": {
+                    "value0": 495.0,
+                    "value1": 600.0
+                },
+                "hoverRadius_": {
+                    "value0": 120.0,
+                    "value1": 60.0
+                },
+                "hoverLapSecs_": 7.0,
+                "p0_": {
+                    "value0": 1000.0,
+                    "value1": 760.0
+                },
+                "p1_": {
+                    "value0": 900.0,
+                    "value1": 640.0
+                },
+                "p2_": {
+                    "value0": 720.0,
+                    "value1": 930.0
+                },
+                "p3_": {
+                    "value0": 600.0,
+                    "value1": 668.0
+                },
+                "kickerText_": "帰 還",
+                "titleText_": "拠点へ帰還",
+                "statusText_": "帰還中…",
+                "fromCaption_": "出 発 地",
+                "fromCaptionPosition_": {
+                    "value0": 1080.0,
+                    "value1": 924.0
+                },
+                "toCaption_": "目 的 地",
+                "toCaptionPosition_": {
+                    "value0": 495.0,
+                    "value1": 903.0
+                },
+                "hasDestCircle_": true,
+                "destCirclePosition_": {
+                    "value0": 495.0,
+                    "value1": 637.0
+                },
+                "destCircleScale_": 1.12,
+                "stampPosition_": {
+                    "value0": 1272.0,
+                    "value1": 312.0
+                },
+                "cloudDirection_": 1.0,
+                "hasNetworkStep_": false
+            }
+        }
+    }
+}

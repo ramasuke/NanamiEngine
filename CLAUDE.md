@@ -37,6 +37,16 @@ Studio writes them when you edit a single file's properties, and they then leak 
 of heap on the deep cereal template instantiations (`error C1060`). MSBuild lives at
 `C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe`.
 
+## Window display mode
+
+`Display::WindowDisplayModeController` (`Engine/Core/Application/Display/`) switches between Windowed / Borderless /
+Fullscreen. The draw resolution (`AppConfiguration::GetWindowWidth/Height`, `SetGraphMode`) stays the same in every
+mode; DxLib scales the window. So code that reads those sizes (or `GetMousePoint`) needs no changes, and ImGui's
+`DisplaySize` is overridden to the graph size in `ImGuiWrapper`. Switching is deferred to after `ScreenFlip`
+(`Request` / Alt+Enter). The player's choice goes in `LocalPrefs/Display/WindowMode.json`. If there isn't one, the
+game uses `ProjectConfig/Application/DefaultWindowMode` (shipped, default Borderless) and the editor uses Windowed.
+Both are edited in Config > Application.
+
 ## Engine packages & NanamiHub
 
 `python -m tools.engine_dist build --version <v> [--zip]` builds the lib in all 4 configurations and assembles
@@ -104,6 +114,16 @@ rxcpp is wrapped by **`Packages/R4`** (`NanamiEngine::R4`, R3-style): `R4::Subje
 `[[nodiscard]]` `Disposable`: in a Component write `.Subscribe(...).AddTo(this)` (released by
 `DestroyCancellationToken()`, which `ComponentGroup::OnDestroy` cancels after `OnDestroy()`); elsewhere keep it in a
 `Disposable` / `SerialDisposable` member and dispose it yourself. See **`Packages/R4/README.md`**.
+
+## Debug menu (DebugSheet)
+
+In-game debug features (cheats, save reset, scene jumps, …) are pages in **`Packages/DebugSheet`** (F1, editor + Debug
+game build only; `NANAMI_DEBUG_SHEET_ENABLED`). The engine never calls it - `GameCore::Game::OnUserInterfaceRender`
+drives it. Add a page with `REGISTER_DEBUG_SHEET_PAGE` in a game `.cpp` wrapped in `#if NANAMI_DEBUG_SHEET_ENABLED`
+(`Assets/Scripts/GamePlay/Debug/DebugSheet/`), built from `DebugSheet::Widgets`. See **`Packages/DebugSheet/README.md`**.
+**Don't change game code for debug features.** Use existing public APIs from the debug files (e.g. write the LocalPrefs
+file and call `Reload()`). When a hook is unavoidable, put every added line - include, base class, member, definition,
+call - inside `#if NANAMI_DEBUG_SHEET_ENABLED` (`Game`'s `OnUserInterfaceRender`, `RecordBook::Reload`).
 
 ## Multiplayer: relay server & room codes
 

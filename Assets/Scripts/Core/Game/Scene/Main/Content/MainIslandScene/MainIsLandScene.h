@@ -25,8 +25,15 @@ namespace GameCore::Scene::Main
         void OnDrawGui() override;
         /** @brief 拠点が読めなければタイトルへ戻す */
         [[nodiscard]] std::optional<SceneType> FallbackSceneOnFailure() const override { return SceneType::Title; }
+        /**
+         * @brief 草原のご褒美を出す。緑の浮遊石は島の底に、噴水の島と階段は拠点の島の横に。
+         *        初めて戻ったときは、石が飛んできてはまる → 島がせり上がって階段が架かる、の演出から
+         */
+        void ApplyGrassLandReward();
         
         std::weak_ptr<IPlayerAvatar> playerAvatar_;
         Asset::PlayerAvatarAttachments attachments_;
+        /** シーンを抜けたら立てて、浮遊石と島の演出を止める */
+        std::shared_ptr<bool> isStoneMovieCanceled_ = std::make_shared<bool>(false);
     };
 }

@@ -7,14 +7,13 @@ namespace GameCore::Story
     // NOTE: セーブとシーンの RestorationGate に int で残るので、新しい値は必ず末尾に足す。一覧は docs/Story.md
     enum class Facility : int
     {
-        // 船着き場。最初に直す施設(チュートリアル)
+        // WARNING: Dock..Field は仮置きで、施設データ・建つ場所はもう無い(2026-09-24 に削除)。番号は再利用しない
         Dock = 0,
-        // 雑貨屋の修繕。商店の品揃えが増える
         GeneralStore,
-        // 狩人小屋。草原クリア後、狩人の一族が移り住む
         HunterLodge,
-        // 畑。狩人小屋の後
         Field,
+        // 一族の家。噴水の島に草原の狩人の一族が住み、仲間(キャラ選択)を出してくれる
+        ClanHouse,
     };
 
     constexpr std::string_view ToString(const Facility facility)
@@ -25,14 +24,13 @@ namespace GameCore::Story
         case Facility::GeneralStore: return "GeneralStore";
         case Facility::HunterLodge:  return "HunterLodge";
         case Facility::Field:        return "Field";
+        case Facility::ClanHouse:    return "ClanHouse";
         }
         return "UnknownFacility";
     }
 
+    // NOTE: エディタで選べる施設。削除済みの番号は出さない
     constexpr std::array FACILITIES{
-        Facility::Dock,
-        Facility::GeneralStore,
-        Facility::HunterLodge,
-        Facility::Field,
+        Facility::ClanHouse,
     };
 }

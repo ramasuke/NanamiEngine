@@ -6,8 +6,6 @@
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
-#include "../../PlayerAvatar/InteractableArea/InteractableArea.h"
-#include "../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -70,9 +68,6 @@ namespace GamePlay::Ui
     {
         if (!isShow_)
             return;
-
-        if (GamePlay::PlayerAvatar::InteractableArea::IsNotifyingOwner())
-            Sound::UiSoundBank::Play(Sound::UiSe::HudInteract);
 
         SetIconEnable(chattableIcon_.get().get(), savedChattable_, false);
         SetIconEnable(chattingIcon_ .get().get(), savedChatting_ , true);
@@ -253,6 +248,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("chattingIcon_", chattingIcon_);
         ImGuiHelper::OnDrawInputField("surpriseIcon_", surpriseIcon_);
         ImGuiHelper::OnDrawInputField("surpriseRimGlow_", surpriseRimGlow_);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

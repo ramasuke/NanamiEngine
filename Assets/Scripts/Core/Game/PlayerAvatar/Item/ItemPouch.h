@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -33,6 +34,8 @@ namespace GameCore::PlayerAvatar
         /** @brief 選択中の枠。ポーチが空なら nullptr */
         [[nodiscard]] const Slot*              Selected     () const;
         [[nodiscard]] bool                     CanUseSelected() const;
+        /** @brief 選択中の枠に残りがあり効果も持つならそのアイテム。使えなければ nullptr */
+        [[nodiscard]] std::shared_ptr<Asset::ItemData> SelectedUsableItem() const;
         /** @brief 中身の入れ替わりを1つの数で表す。UIはこれが変わったときだけ絵を作り直す */
         [[nodiscard]] std::uint32_t            Revision     () const { return revision_; }
 
@@ -53,8 +56,7 @@ namespace GameCore::PlayerAvatar
         int Add(const std::shared_ptr<Asset::ItemData>& item, int count);
 
     private:
-        /** @return 見つからなければ slots_.size() */
-        [[nodiscard]] std::size_t FindSlotIndex(const Asset::ItemData& item) const;
+        [[nodiscard]] std::optional<std::size_t> FindSlotIndex(const Asset::ItemData& item) const;
 
         std::vector<Slot> slots_;
         std::shared_ptr<Asset::ItemData> pendingUse_;

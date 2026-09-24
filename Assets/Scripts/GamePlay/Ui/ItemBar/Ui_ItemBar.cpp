@@ -244,7 +244,7 @@ namespace GamePlay::Ui
         {
             if (!isContentDirty_ && pouch.SelectedIndex() != lastSelectedIndex_)
             {
-                Sound::UiSoundBank::Play(Sound::UiSe::HudSelect);
+                Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::HudSelect);
                 if (selectPulseDuration_secs_ > 0.0f)
                     selectPulse_.Play(tweeny::from(1.0f).to(0.0f).during(LibCore::Tween::Ms(selectPulseDuration_secs_)));
             }
@@ -298,6 +298,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("fadeDuration_secs_", fadeDuration_secs_);
         ImGuiHelper::OnDrawInputField("selectPulseDuration_secs_", selectPulseDuration_secs_);
         ImGuiHelper::OnDrawInputField("selectGlowMaxAlpha_", selectGlowMaxAlpha_);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

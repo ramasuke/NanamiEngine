@@ -24,6 +24,7 @@
     <ClCompile Include="Engine\Core\Application\Configuration\DebugDraw\ApplicationConfiguration_DebugDraw.cpp" />
     <ClCompile Include="Engine\Core\Application\Configuration\GameWindow\ApplicationConfiguration_GameWindow.cpp" />
     <ClCompile Include="Engine\Core\Application\Configuration\CodeEditor\ApplicationConfiguration_CodeEditor.cpp" />
+    <ClCompile Include="Engine\Core\Application\Display\WindowDisplayMode.cpp" />
     <ClCompile Include="Engine\Core\Application\Configuration\Build\ApplicationConfiguration_Build.cpp" />
     <ClCompile Include="Engine\Core\Application\Build\GameBuilder.cpp" />
     <ClCompile Include="Engine\Core\Application\Window\Popup\BuildSettings\BuildSettingsWindow.cpp" />
@@ -1149,6 +1150,9 @@
     <ClCompile Include="Packages\AssetUpdater\System\Relaunch.cpp" />
     <ClCompile Include="Packages\AssetUpdater\Task\AssetUpdateTask.cpp" />
     <ClCompile Include="Packages\AssetUpdater\Text\Utf8.cpp" />
+    <ClCompile Include="Packages\DebugSheet\Core\DebugSheet.cpp" />
+    <ClCompile Include="Packages\DebugSheet\Core\DebugSheetStyle.cpp" />
+    <ClCompile Include="Packages\DebugSheet\Core\DebugSheetWidgets.cpp" />
     <ClCompile Include="Engine\Module\SafeExecute\Engine_Module_SafeExecute.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -1167,6 +1171,7 @@
     <ClInclude Include="Engine\Core\Application\Configuration\DebugDraw\ApplicationConfiguration_DebugDraw.h" />
     <ClInclude Include="Engine\Core\Application\Configuration\GameWindow\ApplicationConfiguration_GameWindow.h" />
     <ClInclude Include="Engine\Core\Application\Configuration\CodeEditor\ApplicationConfiguration_CodeEditor.h" />
+    <ClInclude Include="Engine\Core\Application\Display\WindowDisplayMode.h" />
     <ClInclude Include="Engine\Core\Application\Configuration\Build\ApplicationConfiguration_Build.h" />
     <ClInclude Include="Engine\Core\Application\Build\GameBuilder.h" />
     <ClInclude Include="Engine\Core\Application\Window\Popup\BuildSettings\BuildSettingsWindow.h" />

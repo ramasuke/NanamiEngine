@@ -1,5 +1,8 @@
 ﻿#include "Ui_EventBoard_QuestPage.h"
 
+#include <algorithm>
+
+#include "DxLib.h"
 #include "../Row/EventBoardRowPool.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
@@ -24,6 +27,18 @@ namespace GamePlay::Ui
         ShowDetail(model.Selected());
     }
 
+    void EventBoardQuestPage::FitPhotoToFrame(const int photoHandle) const
+    {
+        int width = 0, height = 0;
+        if (GetGraphSize(photoHandle, &width, &height) != 0 || width <= 0 || height <= 0)
+            return;
+
+        // NOTE: 枠からはみ出す分は枠の縁 (10px) が隠すので、隙間が出ないよう大きい方の倍率で覆う
+        const float scale = std::max(detailPhotoSize_px_.x / static_cast<float>(width),
+                                     detailPhotoSize_px_.y / static_cast<float>(height));
+        detailPhoto_->Transform().SetLocalScale(glm::vec3(scale, scale, 1.0f));
+    }
+
     void EventBoardQuestPage::ShowDetail(const QuestBoardEntry* entry) const
     {
         if (const auto root = detailRoot_.get())
@@ -39,7 +54,10 @@ namespace GamePlay::Ui
         if (const auto photoRoot = detailPhotoRoot_.get())
             photoRoot->SetEnable(photo != nullptr);
         if (photo)
+        {
             detailPhoto_->SetSprite(photo);
+            FitPhotoToFrame(photo->GetDxLibHandle());
+        }
 
         const auto event = quest.Event();
         detailEventChip_->SetEnable(event != nullptr);
@@ -118,6 +136,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("clearedSealSprite_", clearedSealSprite_);
         ImGuiHelper::OnDrawInputField("preparingSealSprite_", preparingSealSprite_);
         ImGuiHelper::OnDrawInputField("lockedSealSprite_", lockedSealSprite_);
+        ImGui::InputFloat2("detailPhotoSize_px_", &detailPhotoSize_px_.x);
         ImGuiHelper::OnDrawInputField("takingStateColor_", takingStateColor_);
         ImGuiHelper::OnDrawInputField("defaultStateColor_", defaultStateColor_);
     }

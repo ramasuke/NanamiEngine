@@ -18,6 +18,8 @@ namespace NanamiEngine::Module::NanamiUi
         void SetWorldMode(bool isWorld);
         void SetTextAlign(TextAlign align);
         void SetBlendRate(int blendRate);
+        /// Transform の拡大率を掛ける前の、最も長い行の幅(px)。フォントが無ければ 0
+        [[nodiscard]] float MeasureTextWidth() const;
 
     private:
         void OnUserInterfaceRender() override;

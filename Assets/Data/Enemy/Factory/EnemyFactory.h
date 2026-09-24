@@ -49,6 +49,9 @@ namespace NanamiEngine::Module::Asset
         [[serialize(0)]] FIELD(PrefabGameObjectFile) normalPrefab_;
         [[serialize(0)]] FIELD(PrefabGameObjectFile) hyenaPrefab_;
         [[serialize(1)]] FIELD(PrefabGameObjectFile) tyrannosaurusPrefab_;
+        [[serialize(2)]] FIELD(PrefabGameObjectFile) desertScorpionPrefab_;
+        [[serialize(2)]] FIELD(PrefabGameObjectFile) sandWormPrefab_;
+        [[serialize(2)]] FIELD(PrefabGameObjectFile) skeletonDragonPrefab_;
         /** 全ボス共通のHPゲージUIと、その購読を受け持つ Presenter */
         [[serialize(0)]] FIELD(PrefabGameObjectFile) bossHealthGaugeUiPrefab_;
         [[serialize(0)]] FIELD(PrefabGameObjectFile) bossHealthGaugePresenterPrefab_;
@@ -69,6 +72,9 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(bossHealthGaugeUiPrefab_));
             archive(CEREAL_NVP(bossHealthGaugePresenterPrefab_));
             archive(CEREAL_NVP(tyrannosaurusPrefab_));
+            archive(CEREAL_NVP(desertScorpionPrefab_));
+            archive(CEREAL_NVP(sandWormPrefab_));
+            archive(CEREAL_NVP(skeletonDragonPrefab_));
         }
 
         template<class Archive>
@@ -81,11 +87,17 @@ namespace NanamiEngine::Module::Asset
             if (version >= 0) archive(CEREAL_NVP(bossHealthGaugeUiPrefab_));
             if (version >= 0) archive(CEREAL_NVP(bossHealthGaugePresenterPrefab_));
             if (version >= 1) archive(CEREAL_NVP(tyrannosaurusPrefab_));
+            if (version >= 2)
+            {
+                archive(CEREAL_NVP(desertScorpionPrefab_));
+                archive(CEREAL_NVP(sandWormPrefab_));
+                archive(CEREAL_NVP(skeletonDragonPrefab_));
+            }
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::EnemyFactory, 1);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::EnemyFactory, 2);
 #pragma endregion

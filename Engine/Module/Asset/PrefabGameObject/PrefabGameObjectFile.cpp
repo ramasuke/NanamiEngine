@@ -43,7 +43,10 @@ namespace NanamiEngine::Module::Asset
     void PrefabGameObjectFile::OnDoubleClick()
     {
         if (!content_)
+        {
+            NanamiEngine::Module::LogError("PrefabGameObjectFile: 読み込みに失敗しているため開けません: " + contentPath_);
             return;
+        }
     
         const auto prefabWindow = Core::Application::ApplicationBase::MainWindows().Catch<Core::MainWindow::PrefabViewWindow>();
         Core::Application::ApplicationBase::OnChangeWindow(prefabWindow);

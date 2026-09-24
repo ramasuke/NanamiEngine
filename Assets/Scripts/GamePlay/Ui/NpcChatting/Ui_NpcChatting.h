@@ -3,6 +3,7 @@
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
+#include "../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Data
 {
@@ -28,6 +29,7 @@ namespace GamePlay::Ui
     private:
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) textRenderer_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) npcNameTextBox_;
+        [[serialize(2)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         mutable bool isDisplaying_ = false;
 
@@ -40,6 +42,7 @@ namespace GamePlay::Ui
             archive(cereal::base_class<ComponentBase>(this));
             archive(CEREAL_NVP(textRenderer_));
             archive(CEREAL_NVP(npcNameTextBox_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<class Archive>
@@ -47,9 +50,10 @@ namespace GamePlay::Ui
             archive(cereal::base_class<ComponentBase>(this));
             if (version >= 0) archive(CEREAL_NVP(textRenderer_));
             if (version >= 1) archive(CEREAL_NVP(npcNameTextBox_));
+            if (version >= 2) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::NpcChatting, 1);
+CEREAL_CLASS_VERSION(GamePlay::Ui::NpcChatting, 2);

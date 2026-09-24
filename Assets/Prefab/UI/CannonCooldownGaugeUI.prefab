@@ -14,7 +14,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 0,
+                    "cereal_class_version": 1,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
@@ -216,7 +216,7 @@
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
-                                        "value_": "30487603-1A70-4739-978D-5CF0105A60D9"
+                                        "value_": "956ED4F0-FCBF-4709-B98E-64F17B0DD2AF"
                                     }
                                 }
                             }
@@ -293,7 +293,22 @@
                         "value0": 26.0,
                         "value1": -58.0
                     },
-                    "recoilAmplitude_": 0.10000000149011612
+                    "recoilAmplitude_": 0.10000000149011612,
+                    "uiSounds_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483665,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "20661C82-DE24-445D-BF6D-27D24E5D0577"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

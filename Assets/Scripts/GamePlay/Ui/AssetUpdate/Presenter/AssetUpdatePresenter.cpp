@@ -11,7 +11,6 @@
 #include "Packages/AssetUpdater/Http/HttpAssetUpdater.h"
 #include "Packages/AssetUpdater/Null/NullAssetUpdater.h"
 #include "Packages/AssetUpdater/System/Relaunch.h"
-#include "../../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -193,7 +192,7 @@ namespace GamePlay::Ui
         {
         case AssetUpdateState::UpdateAvailable:
             view_->ShowOffer(Parcel());
-            Sound::UiSoundBank::Play(Sound::UiSe::Open);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Open);
             return;
         case AssetUpdateState::Failed:
             view_->ShowUndelivered(task_->ErrorMessage());
@@ -267,7 +266,7 @@ namespace GamePlay::Ui
         if (!view_->IsShown() || !view_->HasCancel())
             return;
 
-        Sound::UiSoundBank::Play(Sound::UiSe::Cancel);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Cancel);
         preview_ = Preview::None;
         view_->Hide();
     }
@@ -334,7 +333,7 @@ namespace GamePlay::Ui
             show();
         };
         if (ImGui::Button("Offer"))
-            preview(Preview::Offer, [this] { view_->ShowOffer(Parcel()); Sound::UiSoundBank::Play(Sound::UiSe::Open); });
+            preview(Preview::Offer, [this] { view_->ShowOffer(Parcel()); Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Open); });
         ImGui::SameLine();
         if (ImGui::Button("Receiving"))
             preview(Preview::Receiving, [this] { view_->ShowReceiving(); });
@@ -353,6 +352,7 @@ namespace GamePlay::Ui
         ImGui::SameLine();
         if (ImGui::Button("Hide"))
             preview(Preview::None, [this] { view_->Hide(); });
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

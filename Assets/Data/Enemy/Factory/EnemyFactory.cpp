@@ -37,6 +37,7 @@ namespace NanamiEngine::Module::Asset
         {
         case GameCore::Npc::Enemy::EnemyKind::NormalBoss:
         case GameCore::Npc::Enemy::EnemyKind::Tyrannosaurus:
+        case GameCore::Npc::Enemy::EnemyKind::SkeletonDragon:
             {
                 if (const auto boss = enemyObject->Components().Catch<GameCore::Npc::BossEnemyBase>().lock())
                     AttachBossHealthGauge(*boss);
@@ -50,6 +51,8 @@ namespace NanamiEngine::Module::Asset
             }
 
         case GameCore::Npc::Enemy::EnemyKind::Normal:
+        case GameCore::Npc::Enemy::EnemyKind::DesertScorpion:
+        case GameCore::Npc::Enemy::EnemyKind::SandWorm:
             {
                 break;
             }
@@ -66,6 +69,9 @@ namespace NanamiEngine::Module::Asset
         case GameCore::Npc::Enemy::EnemyKind::Normal:     return normalPrefab_    .get();
         case GameCore::Npc::Enemy::EnemyKind::Hyena:      return hyenaPrefab_     .get();
         case GameCore::Npc::Enemy::EnemyKind::Tyrannosaurus: return tyrannosaurusPrefab_.get();
+        case GameCore::Npc::Enemy::EnemyKind::DesertScorpion: return desertScorpionPrefab_.get();
+        case GameCore::Npc::Enemy::EnemyKind::SandWorm:       return sandWormPrefab_      .get();
+        case GameCore::Npc::Enemy::EnemyKind::SkeletonDragon: return skeletonDragonPrefab_.get();
         }
 
         return nullptr;
@@ -105,6 +111,9 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("normalPrefab_", normalPrefab_);
         ImGuiHelper::OnDrawInputField("hyenaPrefab_", hyenaPrefab_);
         ImGuiHelper::OnDrawInputField("tyrannosaurusPrefab_", tyrannosaurusPrefab_);
+        ImGuiHelper::OnDrawInputField("desertScorpionPrefab_", desertScorpionPrefab_);
+        ImGuiHelper::OnDrawInputField("sandWormPrefab_", sandWormPrefab_);
+        ImGuiHelper::OnDrawInputField("skeletonDragonPrefab_", skeletonDragonPrefab_);
         ImGuiHelper::OnDrawInputField("bossHealthGaugeUiPrefab_", bossHealthGaugeUiPrefab_);
         ImGuiHelper::OnDrawInputField("bossHealthGaugePresenterPrefab_", bossHealthGaugePresenterPrefab_);
     }

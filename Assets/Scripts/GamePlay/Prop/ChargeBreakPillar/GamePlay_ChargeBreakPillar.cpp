@@ -1,6 +1,7 @@
 ﻿#include "GamePlay_ChargeBreakPillar.h"
 
 #include <algorithm>
+#include <cmath>
 
 #include "Engine/Core/Application/ApplicationBase.h"
 #include "Engine/Core/Application/Time/Time.h"
@@ -48,11 +49,50 @@ namespace GamePlay::Prop
         return nearest;
     }
 
+    std::shared_ptr<ChargeBreakPillar> ChargeBreakPillar::FindIntroTarget(const glm::vec3& position)
+    {
+        std::shared_ptr<ChargeBreakPillar> nearest;
+        float nearestSq = 0.0f;
+        NanamiEngine::Core::Application::ApplicationBase::GameWindow()->MainScene().ForEachGameObject(
+            [&nearest, &nearestSq, &position](const std::shared_ptr<GameObject::IGameObject>& gameObject)
+            {
+                const auto pillar = gameObject->Components().Catch<ChargeBreakPillar>().lock();
+                if (!pillar || !pillar->isIntroTarget_ || pillar->isCollapsed_)
+                    return;
+
+                const glm::vec3 delta  = pillar->Transform().GetWorldPos() - position;
+                const float     distSq = glm::dot(delta, delta);
+                if (nearest && distSq >= nearestSq)
+                    return;
+
+                nearest   = pillar;
+                nearestSq = distSq;
+            });
+        return nearest;
+    }
+
+    void ChargeBreakPillar::TrembleAll(const glm::vec3& center, const float radius)
+    {
+        NanamiEngine::Core::Application::ApplicationBase::GameWindow()->MainScene().ForEachGameObject(
+            [&center, radius](const std::shared_ptr<GameObject::IGameObject>& gameObject)
+            {
+                const auto pillar = gameObject->Components().Catch<ChargeBreakPillar>().lock();
+                if (!pillar)
+                    return;
+
+                glm::vec3 delta = pillar->Transform().GetWorldPos() - center;
+                delta.y = 0.0f;
+                if (glm::dot(delta, delta) <= radius * radius)
+                    pillar->Tremble();
+            });
+    }
+
     bool ChargeBreakPillar::Collapse(const glm::vec3& fallDirection)
     {
         if (isCollapsed_)
             return false;
         isCollapsed_ = true;
+        isTrembling_ = false;
 
         if (const auto obstacle = Components().Catch<ChargeStuckObstacle>().lock())
             obstacle->SetEnable(false);
@@ -64,7 +104,9 @@ namespace GamePlay::Prop
 
         if (const auto top = top_.get())
         {
-            topStandingRot_ = top->Transform().GetLocalRot();
+            // NOTE: 揺れている途中なら、揺れる前の向きから倒す
+            if (!topStandingRot_)
+                topStandingRot_ = top->Transform().GetLocalRot();
 
             // NOTE: 上向きを direction へ傾ける軸を、top の親の空間へ持っていく
             glm::quat parentRot(1.0f, 0.0f, 0.0f, 0.0f);
@@ -81,11 +123,61 @@ namespace GamePlay::Prop
         return true;
     }
 
-    void ChargeBreakPillar::OnUpdate()
+    void ChargeBreakPillar::Tremble()
     {
-        if (!isCollapsed_ || isLanded_)
+        if (isCollapsed_)
             return;
 
+        const auto top = top_.get();
+        if (!top)
+            return;
+
+        if (!topStandingRot_)
+            topStandingRot_ = top->Transform().GetLocalRot();
+
+        // NOTE: 柱ごとに揺れる向きを変える。位置から決めるので全ピアで同じになる
+        const glm::vec3 position = Transform().GetWorldPos();
+        const float     angle    = std::fmod(position.x * 0.37f + position.z * 0.61f, glm::two_pi<float>());
+        trembleAxis_         = glm::vec3(std::cos(angle), 0.0f, std::sin(angle));
+        trembleElapsed_secs_ = 0.0f;
+        isTrembling_         = true;
+
+        const glm::vec3 dustPosition = DustPosition();
+        if (trembleParticle_)
+            Scene::GameObject::Instantiate(trembleParticle_.get(), dustPosition);
+        if (trembleSound_)
+            Sound::SoundPlayer::PlaySe(*trembleSound_.get(), dustPosition);
+    }
+
+    void ChargeBreakPillar::OnUpdate()
+    {
+        if (isTrembling_)
+            UpdateTremble();
+        if (isCollapsed_ && !isLanded_)
+            UpdateFall();
+    }
+
+    void ChargeBreakPillar::UpdateTremble()
+    {
+        const auto top = top_.get();
+        if (!top || !topStandingRot_)
+        {
+            isTrembling_ = false;
+            return;
+        }
+
+        trembleElapsed_secs_ += Time::DeltaTime();
+        const float t = tremble_secs_ > 0.0f ? std::clamp(trembleElapsed_secs_ / tremble_secs_, 0.0f, 1.0f) : 1.0f;
+        // NOTE: 小刻みに往復させながら収める
+        const float angle = trembleAngle_deg_ * (1.0f - t) * std::sin(trembleElapsed_secs_ * 38.0f);
+        top->Transform().SetLocalRot(glm::angleAxis(glm::radians(angle), trembleAxis_) * *topStandingRot_);
+
+        if (t >= 1.0f)
+            isTrembling_ = false;
+    }
+
+    void ChargeBreakPillar::UpdateFall()
+    {
         const auto top = top_.get();
         if (!top || !topStandingRot_)
         {
@@ -127,11 +219,19 @@ namespace GamePlay::Prop
         ImGuiHelper::OnDrawInputField("collapseDamage_", collapseDamage_);
         ImGuiHelper::OnDrawInputField("fallAngle_deg_", fallAngle_deg_);
         ImGuiHelper::OnDrawInputField("fallDuration_secs_", fallDuration_secs_);
+        ImGuiHelper::OnDrawInputField("isIntroTarget_", isIntroTarget_);
+        ImGuiHelper::OnDrawInputField("trembleParticle_", trembleParticle_);
+        ImGuiHelper::OnDrawInputField("trembleSound_", trembleSound_);
+        ImGuiHelper::OnDrawInputField("trembleAngle_deg_", trembleAngle_deg_);
+        ImGuiHelper::OnDrawInputField("tremble_secs_", tremble_secs_);
         ImGui::Text("collapsed: %s  landed: %s", isCollapsed_ ? "true" : "false", isLanded_ ? "true" : "false");
 
         // NOTE: 配置の確認用。カメラの奥へ倒す
         if (!isCollapsed_ && ImGui::Button("Collapse (preview)"))
             Collapse(glm::vec3(0.0f, 0.0f, -1.0f));
+        ImGui::SameLine();
+        if (!isCollapsed_ && ImGui::Button("Tremble (preview)"))
+            Tremble();
     }
 }
 

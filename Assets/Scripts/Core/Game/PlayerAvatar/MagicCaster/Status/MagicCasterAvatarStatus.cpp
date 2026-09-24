@@ -13,6 +13,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
 {
     MagicCasterAvatarStatus::MagicCasterAvatarStatus()
         : maxHealth_(80)
+        , currentHealth_(SyncParamFactory::Create<StatusParameter::Health>(this, maxHealth_))
         , maxStamina_(StatusParameter::Stamina(100.0f))
         , stamina_(StatusParameter::Stamina(100.0f))
         , staminaDrainPerSecond_(10.0f)
@@ -21,7 +22,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         , walkSpeed_(20.0f)
         , runSpeed_(55.0f)
         , moveRotateSpeed_(4.65f)
-        , jumpPower_(90.0f)
+        , jumpPower_(65.0f)
         , jumpStateDuration_secs_(0.45f)
         , jumpCooldown_secs_(0.5f)
         , jumpStaminaCost_(15.0f)
@@ -103,6 +104,20 @@ namespace GameCore::PlayerAvatar::MagicCaster
             break;
         }
         }
+
+        const bool currentlyInjured = IsInjured();
+        if (currentlyInjured && !wasInjured_)
+            onBecomeInjured_.OnNext(NanamiEngine::R4::Unit{});
+        else if (!currentlyInjured && wasInjured_)
+            onRecoverFromInjured_.OnNext(NanamiEngine::R4::Unit{});
+        wasInjured_ = currentlyInjured;
+    }
+
+    bool MagicCasterAvatarStatus::IsInjured() const
+    {
+        const auto maxVal = static_cast<float>(maxHealth_.Value());
+        if (maxVal <= 0.0f) return false;
+        return static_cast<float>(currentHealth_->Get().Value()) / maxVal <= injuredHealthRatio_;
     }
 
     bool MagicCasterAvatarStatus::IsDamaged() const
@@ -241,6 +256,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
         LibCore::ImGuiHelper::OnDrawInputField("invincibleDuration_secs_", invincibleDuration_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("invincibleRemaining_secs_", invincibleRemaining_secs_);
         LibCore::ImGuiHelper::OnDrawInputField("deathStateDuration_secs_", deathStateDuration_secs_);
+        LibCore::ImGuiHelper::OnDrawInputField("injuredHealthRatio_", injuredHealthRatio_);
         LibCore::ImGuiHelper::OnDrawInputField("maxMana_", maxMana_);
         LibCore::ImGuiHelper::OnDrawInputField("mana_", mana_);
         LibCore::ImGuiHelper::OnDrawInputField("manaRegenPerSecond_", manaRegenPerSecond_);

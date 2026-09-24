@@ -24,17 +24,25 @@ namespace GamePlay::Prop
         [[nodiscard]] static std::shared_ptr<ChargeBreakPillar> FindFrom(GameObject::IGameObject& hitObject);
         /** @brief position に一番近い柱。RPC の受信側が同じ柱を特定するのに使う */
         [[nodiscard]] static std::shared_ptr<ChargeBreakPillar> FindNear(const glm::vec3& position);
+        /** @brief position に一番近い、まだ立っている登場演出用の柱 */
+        [[nodiscard]] static std::shared_ptr<ChargeBreakPillar> FindIntroTarget(const glm::vec3& position);
+        /** @brief center から radius 以内の立っている柱を揺らす */
+        static void TrembleAll(const glm::vec3& center, float radius);
 
         /**
          * @brief fallDirection へ倒す。2回目以降は何もしない
          * @return 今回倒れたなら true
          */
         bool Collapse(const glm::vec3& fallDirection);
+        /** @brief 上半分をぐらつかせ、小石と砂ぼこりを落とす。倒れた後は何もしない */
+        void Tremble();
         [[nodiscard]] bool IsCollapsed() const { return isCollapsed_; }
         [[nodiscard]] int  CollapseDamage() const { return collapseDamage_; }
 
     private:
         void OnUpdate() override;
+        void UpdateFall();
+        void UpdateTremble();
         [[nodiscard]] glm::vec3 DustPosition() const;
 
         /** 折れる位置が原点の上半分。倒れる向きに回す */
@@ -50,12 +58,21 @@ namespace GamePlay::Prop
         [[serialize(0)]] int   collapseDamage_    = 30;
         [[serialize(0)]] float fallAngle_deg_     = 84.0f;
         [[serialize(0)]] float fallDuration_secs_ = 1.1f;
+        /** 敵の登場演出で最初に突進される柱 */
+        [[serialize(1)]] bool  isIntroTarget_     = false;
+        [[serialize(1)]] FIELD(Asset::PrefabGameObjectFile) trembleParticle_;
+        [[serialize(1)]] FIELD(Asset::SoundFile) trembleSound_;
+        [[serialize(1)]] float trembleAngle_deg_  = 2.5f;
+        [[serialize(1)]] float tremble_secs_      = 0.9f;
 
         std::optional<glm::quat> topStandingRot_;
         glm::vec3 fallAxis_          = glm::vec3(1.0f, 0.0f, 0.0f);
         float     fallElapsed_secs_  = 0.0f;
         bool      isCollapsed_       = false;
         bool      isLanded_          = false;
+        glm::vec3 trembleAxis_         = glm::vec3(1.0f, 0.0f, 0.0f);
+        float     trembleElapsed_secs_ = 0.0f;
+        bool      isTrembling_         = false;
 
 #pragma region Serialization Function
     public:
@@ -75,6 +92,11 @@ namespace GamePlay::Prop
             archive(CEREAL_NVP(collapseDamage_));
             archive(CEREAL_NVP(fallAngle_deg_));
             archive(CEREAL_NVP(fallDuration_secs_));
+            archive(CEREAL_NVP(isIntroTarget_));
+            archive(CEREAL_NVP(trembleParticle_));
+            archive(CEREAL_NVP(trembleSound_));
+            archive(CEREAL_NVP(trembleAngle_deg_));
+            archive(CEREAL_NVP(tremble_secs_));
         }
 
         template<class Archive>
@@ -91,9 +113,14 @@ namespace GamePlay::Prop
             if (version >= 0) archive(CEREAL_NVP(collapseDamage_));
             if (version >= 0) archive(CEREAL_NVP(fallAngle_deg_));
             if (version >= 0) archive(CEREAL_NVP(fallDuration_secs_));
+            if (version >= 1) archive(CEREAL_NVP(isIntroTarget_));
+            if (version >= 1) archive(CEREAL_NVP(trembleParticle_));
+            if (version >= 1) archive(CEREAL_NVP(trembleSound_));
+            if (version >= 1) archive(CEREAL_NVP(trembleAngle_deg_));
+            if (version >= 1) archive(CEREAL_NVP(tremble_secs_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Prop::ChargeBreakPillar, 0);
+CEREAL_CLASS_VERSION(GamePlay::Prop::ChargeBreakPillar, 1);

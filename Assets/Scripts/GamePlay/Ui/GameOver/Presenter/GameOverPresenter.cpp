@@ -168,7 +168,7 @@ namespace GamePlay::Ui
     void GameOverPresenter::Select(const int index)
     {
         if (index != selection_)
-            Sound::UiSoundBank::Play(Sound::UiSe::StoneCursor);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::StoneCursor);
         selection_ = index;
         view_->SetSelection(index);
     }
@@ -176,7 +176,7 @@ namespace GamePlay::Ui
     void GameOverPresenter::Decide(const int index)
     {
         Select(index);
-        Sound::UiSoundBank::Play(Sound::UiSe::StoneConfirm);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::StoneConfirm);
         if (index == GameOverScreenUi::RETRY_INDEX)
             Retry();
         else
@@ -245,6 +245,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("fallenConfirmSecs_", fallenConfirmSecs_);
         ImGuiHelper::OnDrawInputField("curtainHoldSecs_", curtainHoldSecs_);
         ImGui::Text("phase: %d  fallen: %.2f  selection: %d", static_cast<int>(phase_), fallenSecs_, selection_);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

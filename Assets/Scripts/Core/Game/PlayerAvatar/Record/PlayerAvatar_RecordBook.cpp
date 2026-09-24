@@ -9,6 +9,13 @@ namespace GameCore::PlayerAvatar::Record
     {
     }
 
+#if NANAMI_DEBUG_SHEET_ENABLED
+    void RecordBook::Reload()
+    {
+        data_ = NanamiEngine::Module::LocalPrefs::LoadOrDefault<RecordBookData>(RECORD_BOOK_SAVE_KEY, RecordBookData());
+    }
+#endif
+
     void RecordBook::RecordDefeat(const Npc::Enemy::EnemyKind kind)
     {
         ++data_.defeated_[kind];

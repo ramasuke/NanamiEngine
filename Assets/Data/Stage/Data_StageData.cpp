@@ -1,4 +1,4 @@
-#include "Data_StageData.h"
+﻿#include "Data_StageData.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace NanamiEngine::Module::Asset
@@ -6,6 +6,11 @@ namespace NanamiEngine::Module::Asset
     StageData::StageData(const std::string& contentPath)
         : ScriptableObject(contentPath)
     {
+    }
+
+    bool StageData::IsUnlocked(const GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockContext& context) const
+    {
+        return GameCore::PlayerAvatar::Quest::Unlock::AreAllSatisfied(unlockConditions_, context);
     }
 
     void StageData::OnDrawGui()
@@ -23,6 +28,14 @@ namespace NanamiEngine::Module::Asset
             if (ImGui::Button("Add"))
             {
                 descriptionLines_.emplace_back();
+            }
+        });
+        GameCore::PlayerAvatar::Quest::Unlock::DrawQuestUnlockConditions("unlockConditions_", unlockConditions_);
+        LibCore::ImGuiHelper::OnDrawInputField("lockedDescriptionLines_", lockedDescriptionLines_, [this]
+        {
+            if (ImGui::Button("Add Locked Line"))
+            {
+                lockedDescriptionLines_.emplace_back();
             }
         });
     }

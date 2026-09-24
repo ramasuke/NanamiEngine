@@ -5,6 +5,7 @@
 #include "EventBoardFormat.h"
 #include "../../Format/Ui_MoneyFormat.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_IQuestGroup.h"
+#include "../../../../Core/Game/PlayerAvatar/Quest/PlayerAvatar_MainStoryQuestBase.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/Completed/PlayerAvatar_IComplteQuestGroup.h"
 #include "../../../../Core/Game/PlayerAvatar/Quest/Unlock/PlayerAvatar_QuestUnlockContext.h"
 
@@ -12,6 +13,12 @@ namespace GamePlay::Ui
 {
     namespace
     {
+        bool IsOpenMainStory(const QuestBoardEntry& entry)
+        {
+            return entry.state == QuestBoardState::Open
+                && dynamic_cast<const GameCore::PlayerAvatar::MainStoryQuestBase*>(entry.quest->Quest().get()) != nullptr;
+        }
+
         QuestBoardState ResolveQuestBoardState(
             const Asset::BoardQuest& quest,
             const GameCore::PlayerAvatar::IQuestGroup* takingQuests,
@@ -126,5 +133,22 @@ namespace GamePlay::Ui
 
         entry.state     = QuestBoardState::Taking;
         entry.stateText = ToQuestBoardStateText(entry.state);
+    }
+
+    bool QuestBoardModel::HasUnreadMainStory(const QuestReadLog& readLog) const
+    {
+        return std::ranges::any_of(entries_, [&readLog](const QuestBoardEntry& entry)
+        {
+            return IsOpenMainStory(entry) && !readLog.IsRead(entry.quest->GetGuid().Value());
+        });
+    }
+
+    void QuestBoardModel::MarkMainStoryRead(QuestReadLog& readLog) const
+    {
+        for (const auto& entry : entries_)
+        {
+            if (IsOpenMainStory(entry))
+                readLog.MarkRead(entry.quest->GetGuid().Value());
+        }
     }
 }

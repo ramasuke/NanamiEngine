@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <functional>
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "MagicCasterAvatarStateType.h"
@@ -28,7 +29,12 @@ namespace GameCore::PlayerAvatar::MagicCaster
     protected:
         struct FootstepLatch
         {
-            std::vector<bool> boneAirborne;
+            struct Bone
+            {
+                bool                 armed = false;
+                std::optional<float> prevHeight;
+            };
+            std::vector<Bone> bones;
         };
 
         /** ---- 以下サンドボックスパターン ---- */

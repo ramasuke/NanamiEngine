@@ -6,7 +6,6 @@
 
 #include "../UI_CharacterSelect.h"
 #include "../../../Prop/CharacterPodium/Prop_CharacterPodium.h"
-#include "../../../Sound/UiSoundBank.h"
 #include "../../../../Core/Game/Game.h"
 #include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
@@ -73,7 +72,7 @@ namespace GamePlay::Ui
             return;
         }
         isOpen_ = true;
-        Sound::UiSoundBank::Play(Sound::UiSe::Open);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Open);
 
         view_  = RequireComponent<CharacterSelectUi>();
         model_ = std::make_unique<CharacterSelectModel>(podium->Characters());
@@ -162,7 +161,7 @@ namespace GamePlay::Ui
             model_->MoveSelection(1);
         // NOTE: 開いたときの初期選択でも OnSelectionChanged が来るので、音はキー操作でだけ鳴らす (マウスはホバーで鳴る)
         if (model_->SelectedIndex() != previousIndex)
-            Sound::UiSoundBank::Play(Sound::UiSe::Cursor);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Cursor);
         if (isConfirmPressed && !wasConfirmPressed_)
             Confirm();
         else if (isCancelPressed && !wasCancelPressed_)
@@ -178,7 +177,7 @@ namespace GamePlay::Ui
     {
         if (!model_->CanConfirm())
         {
-            Sound::UiSoundBank::Play(Sound::UiSe::Refuse);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Refuse);
             return;
         }
 
@@ -198,7 +197,7 @@ namespace GamePlay::Ui
             return;
         }
 
-        Sound::UiSoundBank::Play(Sound::UiSe::Stamp);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Stamp);
         scene->SwitchPlayerAvatar(character->AvatarType());
         Close(true);
     }
@@ -211,7 +210,7 @@ namespace GamePlay::Ui
 
         if (!didSwitch)
         {
-            Sound::UiSoundBank::Play(Sound::UiSe::Close);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Close);
             if (const auto owner = suspendedAvatar_.lock())
                 owner->EnableStateMachiine();
         }
@@ -234,6 +233,11 @@ namespace GamePlay::Ui
     void CharacterSelectPresenter::OnDestroy()
     {
         isOpen_ = false;
+    }
+
+    void CharacterSelectPresenter::OnDrawGui()
+    {
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

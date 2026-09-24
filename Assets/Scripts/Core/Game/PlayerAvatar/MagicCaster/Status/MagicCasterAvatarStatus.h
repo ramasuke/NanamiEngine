@@ -59,6 +59,9 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[nodiscard]] NanamiEngine::R4::Observable<StatusParameter::Health> OnChangeHealth() const override { return onChangeHealth_.AsObservable(); }
         [[nodiscard]] StatusParameter::Health                            Health() const override { return currentHealth_->Get(); }
         [[nodiscard]] bool                                               IsDeath() const override { return minHealth_ >= currentHealth_->Get(); }
+        [[nodiscard]] bool                                               IsInjured() const override;
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit> OnBecomeInjured     () const override { return onBecomeInjured_     .AsObservable(); }
+        [[nodiscard]] NanamiEngine::R4::Observable<NanamiEngine::R4::Unit> OnRecoverFromInjured() const override { return onRecoverFromInjured_.AsObservable(); }
 
         [[nodiscard]] const StatusParameter::Stamina&                                MaxStamina() const override { return maxStamina_; }
         [[nodiscard]] NanamiEngine::R4::ReadOnlyReactiveProperty<StatusParameter::Stamina> Stamina   () const override { return stamina_.AsReadOnly(); }
@@ -149,6 +152,11 @@ namespace GameCore::PlayerAvatar::MagicCaster
         [[serialize(0)]] float damageStateDuration_secs_;
         [[serialize(0)]] float deathStateDuration_secs_;
 
+        [[serialize(6)]] float injuredHealthRatio_ = 0.3f;
+        bool wasInjured_ = false;
+        NanamiEngine::R4::Subject<NanamiEngine::R4::Unit> onBecomeInjured_;
+        NanamiEngine::R4::Subject<NanamiEngine::R4::Unit> onRecoverFromInjured_;
+
         [[serialize(2)]] StatusParameter::Mana maxMana_;
         [[serialize(2)]] NanamiEngine::R4::SerializableReactiveProperty<StatusParameter::Mana> mana_;
         [[serialize(2)]] float manaRegenPerSecond_;
@@ -199,6 +207,7 @@ namespace GameCore::PlayerAvatar::MagicCaster
             archive(CEREAL_NVP(pouch_));
             archive(CEREAL_NVP(avoidRollingStateDuration_secs_));
             archive(CEREAL_NVP(avoidRollingStaminaCost_));
+            archive(CEREAL_NVP(injuredHealthRatio_));
         }
 
         template <class Archive>
@@ -240,11 +249,12 @@ namespace GameCore::PlayerAvatar::MagicCaster
             if (version >= 4) archive(CEREAL_NVP(pouch_));
             if (version >= 5) archive(CEREAL_NVP(avoidRollingStateDuration_secs_));
             if (version >= 5) archive(CEREAL_NVP(avoidRollingStaminaCost_));
+            if (version >= 6) archive(CEREAL_NVP(injuredHealthRatio_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus, 5);
+CEREAL_CLASS_VERSION(GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus, 6);
 #pragma endregion

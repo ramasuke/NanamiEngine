@@ -7,6 +7,7 @@
 #include "Engine/Module/LifeCycleCallback/Start/IStartable.h"
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "../../../../Core/Game/Scene/Main/Type/MainSceneType.h"
+#include "../../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
@@ -57,6 +58,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) deathCameraPrefab_;
         [[serialize(0)]] float fallenConfirmSecs_ = 0.6f;
         [[serialize(0)]] float curtainHoldSecs_ = 0.35f;
+        [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         std::shared_ptr<GameOverScreenUi> view_;
         Phase phase_ = Phase::Watching;
@@ -79,6 +81,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(deathCameraPrefab_));
             archive(CEREAL_NVP(fallenConfirmSecs_));
             archive(CEREAL_NVP(curtainHoldSecs_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<class Archive>
@@ -88,9 +91,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(deathCameraPrefab_));
             if (version >= 0) archive(CEREAL_NVP(fallenConfirmSecs_));
             if (version >= 0) archive(CEREAL_NVP(curtainHoldSecs_));
+            if (version >= 1) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::GameOverPresenter, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::GameOverPresenter, 1);

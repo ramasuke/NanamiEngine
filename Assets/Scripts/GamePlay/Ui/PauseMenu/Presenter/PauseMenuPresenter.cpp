@@ -81,7 +81,7 @@ namespace GamePlay::Ui
             model_.MoveSelection(1);
         if (model_.SelectedIndex() != previousIndex)
         {
-            Sound::UiSoundBank::Play(Sound::UiSe::Cursor);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Cursor);
             view_->HighlightRow(model_.SelectedIndex());
         }
 
@@ -99,7 +99,7 @@ namespace GamePlay::Ui
     void PauseMenuPresenter::Open(GamePlay::PlayerAvatar::SwordMan::SwordManAvatar& avatar)
     {
         isOpen_ = true;
-        Sound::UiSoundBank::Play(Sound::UiSe::Open);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Open);
         // 開いた瞬間に押しっぱなしのキーを、決定や移動として拾わない
         previousKeys_ = ReadKeys();
         model_.Reset();
@@ -115,7 +115,7 @@ namespace GamePlay::Ui
     void PauseMenuPresenter::Close(const bool withSound)
     {
         if (withSound)
-            Sound::UiSoundBank::Play(Sound::UiSe::Close);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Close);
         isOpen_ = false;
         isResumePending_ = true;
         view_->SetVisible(false);
@@ -129,7 +129,7 @@ namespace GamePlay::Ui
             Close();
             return;
         case PauseMenuEntry::ReturnToTitle:
-            Sound::UiSoundBank::Play(Sound::UiSe::Confirm);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Confirm);
             Close(false);
             GameCore::Game::Instance().Scenes().RequestChangeScene(GameCore::Scene::Main::SceneType::Title);
             return;
@@ -138,7 +138,7 @@ namespace GamePlay::Ui
         case PauseMenuEntry::Items:
         case PauseMenuEntry::Quests:
         case PauseMenuEntry::Controls:
-            Sound::UiSoundBank::Play(Sound::UiSe::Refuse);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Refuse);
             return;
         }
     }
@@ -167,6 +167,11 @@ namespace GamePlay::Ui
         OpenMenuDeclaration declaration;
         state->VisitTransitions(declaration);
         return declaration.IsDeclared();
+    }
+
+    void PauseMenuPresenter::OnDrawGui()
+    {
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

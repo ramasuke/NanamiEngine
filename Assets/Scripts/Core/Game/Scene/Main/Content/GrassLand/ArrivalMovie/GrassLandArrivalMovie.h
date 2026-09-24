@@ -9,11 +9,6 @@ namespace GameCore
     class IPlayerAvatar;
 }
 
-namespace GameCore::Scene
-{
-    class GrassLandSceneContext;
-}
-
 namespace NanamiEngine::Module::GameObject
 {
     class IGameObject;
@@ -27,12 +22,18 @@ namespace NanamiEngine::CineMachine::Behaviour
 
 namespace GameCore::Scene::GrassLand
 {
-    class GrassLandArrivalMovie final
+    /**
+     * @brief 狩り場に着いたときの、ポータルから歩いて出てくる演出
+     * @tparam TContext 到着演出の設定 (ArrivalCamera / ArrivalPortalPrefab / Arrival*_msecs など) を持つシーンのコンテキスト。
+     *                  草原と砂漠で使うので、.cpp で両方を明示的に実体化している
+     */
+    template<class TContext>
+    class StageArrivalMovie final
     {
     public:
-        explicit GrassLandArrivalMovie(
+        explicit StageArrivalMovie(
               const std::weak_ptr<IPlayerAvatar>& playerAvatar
-            , const std::shared_ptr<GrassLandSceneContext>& context);
+            , const std::shared_ptr<TContext>& context);
         
         void Begin();
         void Cancel() { isCanceled_ = true; }
@@ -41,7 +42,7 @@ namespace GameCore::Scene::GrassLand
          * @brief ポータルを開き、プレイヤーを歩かせてカメラで見上げ、終わったら三人称へ返す
          * @param self コルーチンが走っている間の生存を保証するための自分自身
          */
-        static Coroutine::Task<void> PlayAsync(std::shared_ptr<GrassLandArrivalMovie> self);
+        static Coroutine::Task<void> PlayAsync(std::shared_ptr<StageArrivalMovie> self);
 
     private:
         /** @param rate 0で膜の奥の歩き出す位置、1で立ち止まる位置 */
@@ -53,7 +54,7 @@ namespace GameCore::Scene::GrassLand
         void Finish();
 
         std::weak_ptr<IPlayerAvatar>         playerAvatar_;
-        std::weak_ptr<GrassLandSceneContext> context_;
+        std::weak_ptr<TContext>              context_;
         std::weak_ptr<NanamiEngine::Module::GameObject::IGameObject> portal_;
         std::weak_ptr<NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour> cameraFollow_;
         std::weak_ptr<NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour> cameraLookAt_;

@@ -8,6 +8,7 @@
 #include "cereal/types/map.hpp"
 #include "cereal/types/unordered_map.hpp"
 #include "Libs/Singleton/LibCore_SingletonBase.h"
+#include "Packages/DebugSheet/DebugSheetConfig.h"
 
 namespace GameCore::PlayerAvatar::Record
 {
@@ -44,6 +45,11 @@ namespace GameCore::PlayerAvatar::Record
     {
     public:
         RecordBook();
+
+#if NANAMI_DEBUG_SHEET_ENABLED
+        /** @brief DebugSheet のセーブ初期化用。保存されている内容で上書きする */
+        void Reload();
+#endif
 
         void RecordDefeat (Npc::Enemy::EnemyKind kind);
         /** @brief 0以下は無視する */

@@ -3,7 +3,6 @@
 #include "Ui_BossHealthGauge.h"
 #include "Engine/Module/GameObject/Interface/IGameObject.h"
 #include "../../../Core/Game/Npc/Enemy/Boss/BossEnemyBase.h"
-#include "../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -44,7 +43,7 @@ namespace GamePlay::Ui
             return;
 
         gauge->Show(bossName_);
-        Sound::UiSoundBank::Play(Sound::UiSe::HudBossAppear);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::HudBossAppear);
     }
 
     void BossHealthGaugePresenter::DestroyPresentation()
@@ -62,6 +61,7 @@ namespace GamePlay::Ui
 
     void BossHealthGaugePresenter::OnDrawGui()
     {
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

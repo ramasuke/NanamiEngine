@@ -9,7 +9,6 @@
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Libs/LibCore/DxLib/ShiftJis.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
-#include "../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -101,7 +100,7 @@ namespace GamePlay::Ui
         {
             readyElapsed_secs_ = 0.0f;
             if (hasCountedDown_)
-                Sound::UiSoundBank::Play(Sound::UiSe::HudReady);
+                Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::HudReady);
         }
         isReady_ = isReady;
         if (!isReady)
@@ -384,6 +383,7 @@ namespace GamePlay::Ui
         ImGui::InputFloat2("launchOffset_", &launchOffset_.x);
         ImGuiHelper::OnDrawInputField("recoilAmplitude_", recoilAmplitude_);
         emberCount_ = std::max(emberCount_, 0);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

@@ -57,6 +57,27 @@ namespace NanamiEngine::Module::NanamiUi
         blendRate_ = std::clamp(blendRate, 0, 255);
     }
 
+    float TextRenderer::MeasureTextWidth() const
+    {
+        const auto font = fontFile_.get();
+        if (!font || text_.empty())
+            return 0.0f;
+        const int fontHandle = font->HandleForPixelSize(std::max(1, font->Size()));
+        if (fontHandle == -1)
+            return 0.0f;
+
+        std::istringstream ss(Utf8ToShiftJis(text_));
+        std::string line;
+        int maxWidth = 0;
+        while (std::getline(ss, line))
+        {
+            if (!line.empty() && line.back() == '\r')
+                line.pop_back();
+            maxWidth = std::max(maxWidth, GetDrawStringWidthToHandle(line.c_str(), static_cast<int>(line.size()), fontHandle));
+        }
+        return static_cast<float>(maxWidth);
+    }
+
     void TextRenderer::UpdateTextTexture()
     {
         if (!isDirty_ || !fontFile_)

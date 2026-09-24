@@ -1,0 +1,33 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::RestorationFacility",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 0,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\Restoration/ClanHouse.restorationFacility",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "EC2EC1EC-7F30-4D4B-A7BA-F09EE629E488"
+                    }
+                },
+                "facility_": 4,
+                "name_": "一族の家",
+                "descriptionLines_": [
+                    "草原の狩人の一族が住む家。",
+                    "復興を手伝う仲間が集まる。"
+                ],
+                "cost_": 2000,
+                "requiredStoryFlag_": 4,
+                "requiredFacility_": -1,
+                "conditionText_": "噴水の島が戻ってから"
+            }
+        }
+    }
+}

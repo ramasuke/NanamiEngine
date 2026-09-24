@@ -18,6 +18,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     /**
      * @brief プレイヤーへ向き直ってから一直線に突進し、ChargeStuckObstacle に当たったら頭が刺さったことを黒板に書く
      * @note 刺さった先が ChargeBreakPillar なら柱を倒し、柱のダメージを自分に入れる
+     * @note aimAtIntroPillar_ ならプレイヤーではなく登場演出用の柱へ向き直り、プレイヤーには当てない
      */
     class ChargeRush final : public ActionBase
     {
@@ -40,6 +41,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         void       DoReset() override;
 
         void RotateToPlayer(const TickContext& context) const;
+        void RotateTowards (const TickContext& context, const glm::vec3& targetPos) const;
         void TryHitPlayer  (const TickContext& context);
         // NOTE: 自分の体と地面(上向きの面)は当たっていないものとして扱う
         // NOTE: 刺さった先が倒せる柱なら stuckPillar_ に残す
@@ -66,6 +68,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         [[serialize(0)]] std::string stuckStateKeyName_     = "StuckState";
         [[serialize(0)]] FIELD(Asset::SoundFile) impactSound_;
         [[serialize(0)]] WriteBlackBoard finishedWriteBlackBoard_ = WriteBlackBoard();
+        [[serialize(1)]] bool        aimAtIntroPillar_      = false;
 
         Phase     phase_         = Phase::WindUp;
         float     during_secs_   = 0.0f;
@@ -73,6 +76,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
         bool      isAttacked_    = false;
         bool      isStuck_       = false;
         std::weak_ptr<GamePlay::Prop::ChargeBreakPillar> stuckPillar_;
+        std::weak_ptr<GamePlay::Prop::ChargeBreakPillar> introPillar_;
 
     public:
         template<class Archive>
@@ -96,6 +100,7 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             archive(CEREAL_NVP(stuckStateKeyName_));
             archive(CEREAL_NVP(impactSound_));
             archive(CEREAL_NVP(finishedWriteBlackBoard_));
+            archive(CEREAL_NVP(aimAtIntroPillar_));
         }
         template<class Archive>
         void load(Archive& archive, const std::uint32_t version)
@@ -118,8 +123,11 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
             if (version >= 0) archive(CEREAL_NVP(stuckStateKeyName_));
             if (version >= 0) archive(CEREAL_NVP(impactSound_));
             if (version >= 0) archive(CEREAL_NVP(finishedWriteBlackBoard_));
+            if (version >= 1) archive(CEREAL_NVP(aimAtIntroPillar_));
         }
     };
 
     REGISTER_ENEMY_ACTION_WITH_NAME(ChargeRush, "Tyrannosaurus::ChargeRush")
 }
+
+CEREAL_CLASS_VERSION(GameCore::Npc::Enemy::Behaviour::Action::ChargeRush, 1);

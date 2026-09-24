@@ -5,7 +5,7 @@
         "ptr_wrapper": {
             "id": 2147483649,
             "data": {
-                "cereal_class_version": 2,
+                "cereal_class_version": 3,
                 "value0": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -18,7 +18,7 @@
                     }
                 },
                 "displayName_": "砂漠地帯",
-                "sceneType_": 0,
+                "sceneType_": 4,
                 "mapMarkerPosition_": {
                     "value0": 960.0,
                     "value1": 540.0
@@ -55,8 +55,28 @@
                 "difficulty_": 2,
                 "tagText_": "中級 ・ 光属性",
                 "descriptionLines_": [
-                    "灼熱の砂丘がどこまでも続く、",
-                    "渇きとの戦いになるステージ。"
+                    "泉の涸れかけた砂の海と、",
+                    "砂に沈んだ城塞が待つ地。"
+                ],
+                "unlockConditions_": [
+                    {
+                        "polymorphic_id": 2147483650,
+                        "polymorphic_name": "GameCore::PlayerAvatar::Quest::Unlock::StoryFlagUnlockCondition",
+                        "ptr_wrapper": {
+                            "id": 2147483652,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0
+                                },
+                                "storyFlag_": 3
+                            }
+                        }
+                    }
+                ],
+                "lockedDescriptionLines_": [
+                    "緑の浮遊石が島に戻れば、",
+                    "この地への航路が開ける。"
                 ]
             }
         }

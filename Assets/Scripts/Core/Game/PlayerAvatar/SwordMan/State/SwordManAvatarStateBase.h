@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -35,7 +36,12 @@ namespace GameCore::PlayerAvatar::SwordMan
         };
         struct FootstepLatch
         {
-            std::vector<bool> boneAirborne;
+            struct Bone
+            {
+                bool                 armed = false;
+                std::optional<float> prevHeight;
+            };
+            std::vector<Bone> bones;
         };
         struct AttackTurn
         {

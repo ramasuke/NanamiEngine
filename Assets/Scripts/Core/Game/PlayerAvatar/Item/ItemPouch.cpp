@@ -32,6 +32,18 @@ namespace GameCore::PlayerAvatar
         return selected != nullptr && selected->count > 0;
     }
 
+    std::shared_ptr<Asset::ItemData> ItemPouch::SelectedUsableItem() const
+    {
+        if (!CanUseSelected())
+            return nullptr;
+
+        const auto& item = slots_[selectedIndex_].item;
+        // 効果がまだ無いアイテムは使えない扱い
+        if (!item || !item->HasEffect())
+            return nullptr;
+        return item;
+    }
+
     void ItemPouch::Cycle(const int direction)
     {
         if (slots_.size() <= 1 || direction == 0)
@@ -45,42 +57,40 @@ namespace GameCore::PlayerAvatar
 
     std::shared_ptr<Asset::ItemData> ItemPouch::UseSelected(Item::IItemEffectTarget& target, const std::shared_ptr<GameObject::IGameObject>& user)
     {
-        if (!CanUseSelected())
+        auto item = SelectedUsableItem();
+        if (!item)
             return nullptr;
 
-        auto& slot = slots_[selectedIndex_];
-        // 効果がまだ無いアイテムは減らさない
-        if (!slot.item || !slot.item->HasEffect())
-            return nullptr;
-
-        slot.item->ApplyEffects(target, user);
-        --slot.count;
+        item->ApplyEffects(target, user);
+        --slots_[selectedIndex_].count;
         ++revision_;
-        return slot.item;
+        return item;
     }
 
     bool ItemPouch::Use(const Asset::ItemData& item, Item::IItemEffectTarget& target, const std::shared_ptr<GameObject::IGameObject>& user)
     {
-        const std::size_t index = FindSlotIndex(item);
-        if (index >= slots_.size() || slots_[index].count <= 0 || !item.HasEffect())
+        const auto index = FindSlotIndex(item);
+        if (!index || slots_[*index].count <= 0 || !item.HasEffect())
             return false;
 
         item.ApplyEffects(target, user);
-        --slots_[index].count;
+        --slots_[*index].count;
         ++revision_;
         return true;
     }
 
-    std::size_t ItemPouch::FindSlotIndex(const Asset::ItemData& item) const
+    std::optional<std::size_t> ItemPouch::FindSlotIndex(const Asset::ItemData& item) const
     {
         const auto it = std::ranges::find_if(slots_, [&](const Slot& slot) { return slot.item.get() == &item; });
+        if (it == slots_.end())
+            return std::nullopt;
         return static_cast<std::size_t>(it - slots_.begin());
     }
 
     int ItemPouch::CountOf(const Asset::ItemData& item) const
     {
-        const std::size_t index = FindSlotIndex(item);
-        return index < slots_.size() ? slots_[index].count : 0;
+        const auto index = FindSlotIndex(item);
+        return index ? slots_[*index].count : 0;
     }
 
     int ItemPouch::ReceivableCount(const Asset::ItemData& item) const
@@ -97,9 +107,9 @@ namespace GameCore::PlayerAvatar
         if (added <= 0)
             return 0;
 
-        const std::size_t index = FindSlotIndex(*item);
-        if (index < slots_.size())
-            slots_[index].count += added;
+        const auto index = FindSlotIndex(*item);
+        if (index)
+            slots_[*index].count += added;
         else
             slots_.push_back(Slot{ item, added });
 

@@ -58,6 +58,13 @@ namespace GameCore::Scene
         /** このステージのクリア条件。どちらかが -1 なら無し */
         [[nodiscard]] std::optional<Story::StageClearCondition> StageClear() const;
 
+        /** 村の跡に落ちている緑の浮遊石(子にオーラ)。大顎を倒すと飛び去り、それ以降は出さない */
+        [[nodiscard]] std::shared_ptr<NanamiEngine::Module::GameObject::IGameObject> FloatingStone() const { return floatingStone_.get(); }
+        /** 飛び去る石を LookAt で追うカメラ */
+        [[nodiscard]] std::shared_ptr<CineMachine::CineMachineVirtualCamera> FloatingStoneCamera() const { return floatingStoneCamera_.get(); }
+        [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> StoneLiftOffParticle() const { return stoneLiftOffParticle_.get(); }
+        [[nodiscard]] std::shared_ptr<Asset::PrefabGameObjectFile> StoneFlightParticle () const { return stoneFlightParticle_ .get(); }
+
     private:
         [[serialize(1)]] FIELD(Asset::SoundFile) bgm_;
         [[serialize(2)]] FIELD(GamePlay::Network::CustomNetworkRunner) networkRunner_;
@@ -80,6 +87,10 @@ namespace GameCore::Scene
         // NOTE: tools.scene で設定できるよう EnemyKind / Story::StoryFlag を int で持つ
         [[serialize(11)]] int      clearEnemyKind_                = -1;
         [[serialize(11)]] int      clearStoryFlag_                = -1;
+        [[serialize(12)]] FIELD(NanamiEngine::Module::GameObject::IGameObject) floatingStone_;
+        [[serialize(12)]] FIELD(CineMachine::CineMachineVirtualCamera)         floatingStoneCamera_;
+        [[serialize(12)]] FIELD(Asset::PrefabGameObjectFile)                   stoneLiftOffParticle_;
+        [[serialize(12)]] FIELD(Asset::PrefabGameObjectFile)                   stoneFlightParticle_;
 
 #pragma region Serialization Function
     public:
@@ -108,6 +119,10 @@ namespace GameCore::Scene
             archive(CEREAL_NVP(arrivalLookAtHeight_));
             archive(CEREAL_NVP(clearEnemyKind_));
             archive(CEREAL_NVP(clearStoryFlag_));
+            archive(CEREAL_NVP(floatingStone_));
+            archive(CEREAL_NVP(floatingStoneCamera_));
+            archive(CEREAL_NVP(stoneLiftOffParticle_));
+            archive(CEREAL_NVP(stoneFlightParticle_));
         }
 
         template<class Archive>
@@ -162,11 +177,18 @@ namespace GameCore::Scene
                 archive(CEREAL_NVP(clearEnemyKind_));
                 archive(CEREAL_NVP(clearStoryFlag_));
             }
+            if (version >= 12)
+            {
+                archive(CEREAL_NVP(floatingStone_));
+                archive(CEREAL_NVP(floatingStoneCamera_));
+                archive(CEREAL_NVP(stoneLiftOffParticle_));
+                archive(CEREAL_NVP(stoneFlightParticle_));
+            }
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(GameCore::Scene::GrassLandSceneContext, 11);
+CEREAL_CLASS_VERSION(GameCore::Scene::GrassLandSceneContext, 12);
 #pragma endregion

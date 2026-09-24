@@ -8,6 +8,10 @@
 #include "../Room/Ui_StageSelect_RoomUi.h"
 #include "../../../Network/Session/GamePlay_StageSessionMatchmaking.h"
 #include "../../../Sound/UiSoundBank.h"
+#include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
+#include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
+#include "../../../../Core/Game/PlayerAvatar/Status/IPlayerAvatarStatus.h"
+#include "../../../../Core/Game/Story/Story_StoryProgress.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -25,11 +29,17 @@ namespace GamePlay::Ui
         view_  = RequireComponent<StageSelectUi>();
         model_ = std::make_unique<StageSelectModel>(view_->Stages());
 
+        const auto owner = GameCore::PlayerAvatar::Owner();
+        const GameCore::PlayerAvatar::Quest::Unlock::QuestUnlockContext unlockContext{
+            &GameCore::Story::StoryProgress::Instance(),
+            owner ? &owner->PlayerStatus().CompletedQuest() : nullptr };
+
         const auto& stages = model_->Stages();
         for (size_t i = 0; i < stages.size(); ++i)
         {
             if (const auto stage = stages[i].lock())
             {
+                stage->SetLocked(!stage->Data()->IsUnlocked(unlockContext));
                 stage->SubscribeOnClickSelectButton([this, i]
                 {
                     model_->SelectStage(i);
@@ -40,13 +50,21 @@ namespace GamePlay::Ui
         model_->OnSelectionChanged().Subscribe([this](const size_t index)
         {
             view_->HighlightSelectedStage(index);
-            view_->SetWorldEnterButtonEnabled(true);
 
-            if (const auto stage = model_->Stages()[index].lock())
+            const auto stage = model_->Stages()[index].lock();
+            if (!stage)
+                return;
+
+            view_->SetWorldEnterButtonEnabled(!stage->IsLocked());
+            if (stage->IsLocked())
             {
-                view_->ShowMapMarker(stage->MapMarkerPosition(), stage->IsCleared());
-                view_->ShowStageDetail(*stage->Data());
+                view_->HideMapMarker();
+                view_->ShowLockedStageDetail(*stage->Data());
+                return;
             }
+
+            view_->ShowMapMarker(stage->MapMarkerPosition(), stage->IsCleared());
+            view_->ShowStageDetail(*stage->Data());
         }).AddTo(this);
 
         view_->SetWorldEnterButtonEnabled(false);
@@ -125,7 +143,7 @@ namespace GamePlay::Ui
         if (input.cursorRight && !previousInput_.cursorRight)
             MoveCursor(1);
         if (cursor_ != previousCursor)
-            Sound::UiSoundBank::Play(Sound::UiSe::Cursor);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Cursor);
         if (input.digitUp && !previousInput_.digitUp)
             SetDigit(cursor_ < static_cast<int>(roomCode_.size()) ? (roomCode_[cursor_] - '0' + 1) % 10 : 0);
         if (input.digitDown && !previousInput_.digitDown)
@@ -144,7 +162,7 @@ namespace GamePlay::Ui
         constexpr int MODE_COUNT = Network::RelayRoom::MODE_COUNT;
         const int next = (static_cast<int>(roomMode_) + delta + MODE_COUNT) % MODE_COUNT;
         roomMode_ = static_cast<Network::RelayRoom::Mode>(next);
-        Sound::UiSoundBank::Play(Sound::UiSe::Tab);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Tab);
         roomCode_.clear();
         cursor_ = 0;
         ApplyRoomToView();
@@ -153,7 +171,7 @@ namespace GamePlay::Ui
     void StageSelectPresenter::SetDigit(const int digit)
     {
         const char c = static_cast<char>('0' + digit);
-        Sound::UiSoundBank::Play(Sound::UiSe::Digit);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Digit);
         if (cursor_ < static_cast<int>(roomCode_.size()))
             roomCode_[cursor_] = c;
         else if (static_cast<int>(roomCode_.size()) < CodeLength())
@@ -181,7 +199,7 @@ namespace GamePlay::Ui
             return;
 
         roomCode_.pop_back();
-        Sound::UiSoundBank::Play(Sound::UiSe::Digit);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Digit);
         cursor_ = static_cast<int>(roomCode_.size());
         ApplyRoomToView();
     }
@@ -198,23 +216,29 @@ namespace GamePlay::Ui
             || static_cast<int>(roomCode_.size()) == CodeLength();
     }
 
+    bool StageSelectPresenter::IsSelectedStageLocked() const
+    {
+        const auto stage = model_->Stages()[model_->SelectedIndex()].lock();
+        return !stage || stage->IsLocked();
+    }
+
     void StageSelectPresenter::TryEnterWorld()
     {
-        if (!model_ || !model_->HasSelection())
+        if (!model_ || !model_->HasSelection() || IsSelectedStageLocked())
         {
-            Sound::UiSoundBank::Play(Sound::UiSe::Refuse);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Refuse);
             return;
         }
 
         // 番号が揃うまでは出発させない
         if (!IsRoomReady())
         {
-            Sound::UiSoundBank::Play(Sound::UiSe::Refuse);
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Refuse);
             ApplyRoomToView();
             return;
         }
 
-        Sound::UiSoundBank::Play(Sound::UiSe::Stamp);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Stamp);
         Network::SetNextStageRoom({ roomMode_, roomCode_ });
         view_->EnterWorld(model_->SelectedSceneType());
     }

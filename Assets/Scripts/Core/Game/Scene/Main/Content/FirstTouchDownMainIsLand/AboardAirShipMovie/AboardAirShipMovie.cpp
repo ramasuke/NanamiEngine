@@ -4,9 +4,11 @@
 #include "Engine/Core/Coroutine/Awaitable/WaitForObservable/Coroutine_WaitForObservable.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitForSubscription/Coroutine_WaitForSubscription.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitForTween/Coroutine_WaitForTween.h"
+#include "Engine/Core/Coroutine/Awaitable/WaitForTweenBody/Coroutine_WaitForTweenBody.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
 #include "Engine/Core/Coroutine/Awaitable/Yield/Coroutine_WaitYield.h"
 #include "Engine/Module/NanamiUI/BlendAnimationRenderer/BlendAnmiationRenderer.h"
+#include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "Packages/Cinemachine/VirtualCamera/Behaviour/Follow/VirtualCameraFollowBehaviour.h"
@@ -61,7 +63,12 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
                                     .during(Context()->AirShipFirstMoveDuring_msecs())
                                     .via(Tween::Ease(EaseType::Linear));
         
-        co_await Coroutine::WaitForTween(Context()->AirShip()->Transform(), firstMoveTween);
+        // NOTE: 物理と同じ固定ステップで動かす。毎フレーム動かすと、固定ステップで補間されるプレイヤー(カメラ)とずれてカクつく
+        const auto airShipBody = Context()->AirShip()->Components().Catch<NanamiEngine::Module::Component::RigidBody>().lock();
+        if (airShipBody)
+            co_await Coroutine::WaitForTweenBody(*airShipBody, Context()->AirShip()->Transform(), firstMoveTween);
+        else
+            co_await Coroutine::WaitForTween(Context()->AirShip()->Transform(), firstMoveTween);
         if (ShouldStop())
             co_return;
     
@@ -76,7 +83,10 @@ namespace GameCore::Scene::FirstTouchDownMainIsLand
              .during(Context()->AirShipSecondMoveDuring_msecs())
              .via(Tween::Ease(EaseType::OutQuad), Tween::Ease(EaseType::OutQuad));
         
-        co_await Coroutine::WaitForTween(Context()->AirShip()->Transform(), secondMoveTween);
+        if (airShipBody)
+            co_await Coroutine::WaitForTweenBody(*airShipBody, Context()->AirShip()->Transform(), secondMoveTween);
+        else
+            co_await Coroutine::WaitForTween(Context()->AirShip()->Transform(), secondMoveTween);
         if (ShouldStop())
             co_return;
         

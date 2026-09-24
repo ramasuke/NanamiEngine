@@ -9,6 +9,8 @@
 #include "../../../../PlayerAvatar/Status/NullPlayerAvatarStatus.h"
 #include "../../../Sub/Group/Sub_IGameSceneGroup.h"
 #include "../../../Sub/Type/SubSceneType.h"
+#include "../../../../Story/Story_StoryProgress.h"
+#include "../../../../Story/FloatingStone/Story_FloatingStoneMovie.h"
 
 namespace GameCore::Scene::Main
 {
@@ -47,7 +49,82 @@ namespace GameCore::Scene::Main
         attachments_  = loaded.attachments;
 
         GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
+        ApplyGrassLandReward();
         CompleteEnter(generation);
+    }
+
+    namespace
+    {
+        Coroutine::Task<void> PlayGrassLandRewardAsync(
+            Story::FloatingStone::StoneMovieCast stoneCast,
+            Story::FloatingStone::IslandReturnCast islandCast,
+            const bool playsStone,
+            const bool playsIsland,
+            std::shared_ptr<bool> isCanceled,
+            std::function<bool()> canStart)
+        {
+            if (playsStone)
+            {
+                co_await Story::FloatingStone::PlayReturnAsync(
+                    stoneCast, isCanceled, canStart,
+                    [] { Story::StoryProgress::Instance().Set(Story::StoryFlag::GreenStoneReturned); });
+            }
+            if (!playsIsland)
+                co_return;
+
+            // NOTE: シーンを抜けたら島は次に来たときに改めて戻す
+            if (*isCanceled)
+                co_return;
+            co_await Story::FloatingStone::PlayIslandReturnAsync(
+                islandCast, isCanceled, canStart,
+                [] { Story::StoryProgress::Instance().Set(Story::StoryFlag::FountainIslandReturned); });
+        }
+    }
+
+    void MainIslandScene::ApplyGrassLandReward()
+    {
+        const auto& story = Story::StoryProgress::Instance();
+        const Story::FloatingStone::IslandReturnCast islandCast{
+            playerAvatar_,
+            Context()->FountainIsland(),
+            Context()->FountainStairs(),
+            Context()->FountainCamera(),
+            Context()->FountainFocus() };
+
+        const bool isIslandReturned = story.IsSet(Story::StoryFlag::FountainIslandReturned);
+        if (isIslandReturned)
+            Story::FloatingStone::ShowIsland(islandCast);
+        else
+            Story::FloatingStone::SinkIsland(islandCast);
+
+        const auto stone = Context()->GreenStone();
+        if (!story.IsSet(Story::StoryFlag::GrassLandCleared))
+        {
+            if (stone)
+                Story::FloatingStone::SetStoneVisible(*stone, false);
+            return;
+        }
+
+        const bool playsStone = stone && !story.IsSet(Story::StoryFlag::GreenStoneReturned);
+        if (!playsStone && isIslandReturned)
+            return;
+
+        // NOTE: 演出が石を出す。飛んでくるまでは島の底に見えないよう先に隠す
+        if (playsStone)
+            Story::FloatingStone::SetStoneVisible(*stone, false);
+        Coroutine::StartCoroutine(PlayGrassLandRewardAsync(
+            Story::FloatingStone::StoneMovieCast{
+                playerAvatar_,
+                stone,
+                Context()->StoneCamera(),
+                Context()->StoneFlightParticle(),
+                Context()->StoneDockParticle() },
+            islandCast,
+            playsStone,
+            !isIslandReturned,
+            isStoneMovieCanceled_,
+            // NOTE: 呼ばれるのはシーンが残っている間だけ(抜けたら isStoneMovieCanceled_ で先に止まる)
+            [this] { return !LoadingScreen().IsShown(); }));
     }
 
     void MainIslandScene::SwitchPlayerAvatar(const PlayerAvatar::PlayerAvatarType type)
@@ -83,6 +160,8 @@ namespace GameCore::Scene::Main
 
     void MainIslandScene::DoDispose()
     {
+        *isStoneMovieCanceled_ = true;
+
         // 読み込みの途中で抜けたときはアバターが居ない。そのときは進行も保存しない
         if (const auto avatar = playerAvatar_.lock())
         {

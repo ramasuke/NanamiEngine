@@ -1,0 +1,104 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::BoardQuest",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\EventNotice/DesertScorpionCull.boardQuest",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "2BF2BB7F-71A5-46CE-8DDB-C582D7EE8D50"
+                    }
+                },
+                "title_": "水場のサソリ退治",
+                "clientName_": "隊商頭",
+                "rank_": 3,
+                "goalText_": "オアシスに出る大サソリを6匹倒す",
+                "descriptionLines_": [
+                    "泉の水場まで、大サソリが出るようになった。",
+                    "隊商が水を汲めるよう、群れを減らしてくれ。"
+                ],
+                "stage_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "17FD88B4-4757-4B84-9AD5-F1D4E03FBDA6"
+                                }
+                            }
+                        }
+                    }
+                },
+                "event_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                }
+                            }
+                        }
+                    }
+                },
+                "quest_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GameCore::PlayerAvatar::Quest::Request::DefeatRequestQuest",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "rewardMoney_": {
+                                        "cereal_class_version": 0,
+                                        "value_": 600
+                                    }
+                                },
+                                "questType_": 9,
+                                "requiredCount_": 6,
+                                "startRecord_": {
+                                    "nullopt": true
+                                }
+                            },
+                            "enemyKind_": 4
+                        }
+                    }
+                },
+                "unlockConditions_": [
+                    {
+                        "polymorphic_id": 2147483651,
+                        "polymorphic_name": "GameCore::PlayerAvatar::Quest::Unlock::StoryFlagUnlockCondition",
+                        "ptr_wrapper": {
+                            "id": 2147483653,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0
+                                },
+                                "storyFlag_": 2
+                            }
+                        }
+                    }
+                ],
+                "lockedText_": "草原の大顎を倒してから"
+            }
+        }
+    }
+}

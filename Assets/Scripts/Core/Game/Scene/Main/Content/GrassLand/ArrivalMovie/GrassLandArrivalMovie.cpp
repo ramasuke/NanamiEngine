@@ -22,6 +22,7 @@
 #include "../../../../../PlayerAvatar/IPlayerAvatar.h"
 #include "../../../../../PlayerAvatar/StateMachine/EventScene/PlayerAvatarEventSceneStateType.h"
 #include "../Context/GrassLandSceneContext.h"
+#include "../../DrySand/Context/DrySandSceneContext.h"
 
 namespace GameCore::Scene::GrassLand
 {
@@ -73,15 +74,17 @@ namespace GameCore::Scene::GrassLand
         }
     }
 
-    GrassLandArrivalMovie::GrassLandArrivalMovie(
+    template<class TContext>
+    StageArrivalMovie<TContext>::StageArrivalMovie(
           const std::weak_ptr<IPlayerAvatar>& playerAvatar
-        , const std::shared_ptr<GrassLandSceneContext>& context)
+        , const std::shared_ptr<TContext>& context)
         : playerAvatar_(playerAvatar)
         , context_     (context     )
     {
     }
 
-    void GrassLandArrivalMovie::Begin()
+    template<class TContext>
+    void StageArrivalMovie<TContext>::Begin()
     {
         const auto context = context_.lock();
         const auto avatar  = playerAvatar_.lock();
@@ -150,7 +153,8 @@ namespace GameCore::Scene::GrassLand
         isBegun_ = true;
     }
 
-    Coroutine::Task<void> GrassLandArrivalMovie::PlayAsync(std::shared_ptr<GrassLandArrivalMovie> self)
+    template<class TContext>
+    Coroutine::Task<void> StageArrivalMovie<TContext>::PlayAsync(std::shared_ptr<StageArrivalMovie> self)
     {
         // ChangeMainSceneがSkipNextFrameを60回積んでいる間はDeltaTimeが0で、コルーチンごと凍る
         co_await Coroutine::WaitUntil([] { return Time::DeltaTime() > 0.0f; });
@@ -260,7 +264,8 @@ namespace GameCore::Scene::GrassLand
         self->Finish();
     }
 
-    glm::vec3 GrassLandArrivalMovie::WalkPos(const float rate) const
+    template<class TContext>
+    glm::vec3 StageArrivalMovie<TContext>::WalkPos(const float rate) const
     {
         const auto context = context_.lock();
         if (!context)
@@ -271,20 +276,23 @@ namespace GameCore::Scene::GrassLand
         return pos;
     }
 
-    glm::vec3 GrassLandArrivalMovie::PortalCenter() const
+    template<class TContext>
+    glm::vec3 StageArrivalMovie<TContext>::PortalCenter() const
     {
         const auto context = context_.lock();
         return groundPos_ + glm::vec3(0.0f, context ? context->ArrivalPortalHeight() : 0.0f, 0.0f);
     }
 
-    void GrassLandArrivalMovie::DestroyPortal()
+    template<class TContext>
+    void StageArrivalMovie<TContext>::DestroyPortal()
     {
         if (const auto portal = portal_.lock())
             portal->OnDestroy();
         portal_.reset();
     }
 
-    void GrassLandArrivalMovie::SetAvatarVisible(const bool isVisible) const
+    template<class TContext>
+    void StageArrivalMovie<TContext>::SetAvatarVisible(const bool isVisible) const
     {
         const auto avatar = playerAvatar_.lock();
         if (!avatar)
@@ -298,7 +306,8 @@ namespace GameCore::Scene::GrassLand
             renderer->SetEnable(isVisible);
     }
 
-    void GrassLandArrivalMovie::Finish()
+    template<class TContext>
+    void StageArrivalMovie<TContext>::Finish()
     {
         if (isFinished_)
             return;
@@ -325,4 +334,7 @@ namespace GameCore::Scene::GrassLand
             avatar->GetEventSceneStateMachine().OnChangeState(PlayerAvatar::EventSceneStateType::Idle);
         }
     }
+
+    template class StageArrivalMovie<GrassLandSceneContext>;
+    template class StageArrivalMovie<DrySandSceneContext>;
 }

@@ -13,6 +13,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto DEFAULT_WINDOW_WIDTH_SIZE  = 1920;
     constexpr auto DEFAULT_WINDOW_HEIGHT_SIZE = 1080;
     constexpr auto DEFAULT_WINDOW_COLOR_SCALE = 16;
+    constexpr auto DEFAULT_WINDOW_MODE        = Display::WindowDisplayMode::Borderless;
     constexpr auto DEFAULT_Z_BUFFER_BIT_DEPTH = 24;
     constexpr auto DEFAULT_ALWAYS_RUN         = true;
     constexpr auto DEFAULT_SHADOW_MAP_WIDTH   = 1024;
@@ -30,6 +31,7 @@ namespace NanamiEngine::Core::Application::Configuration
     int   AppConfiguration::windowWidth_      = DEFAULT_WINDOW_WIDTH_SIZE;
     int   AppConfiguration::windowHeight_     = DEFAULT_WINDOW_HEIGHT_SIZE;
     int   AppConfiguration::windowColorScale_ = DEFAULT_WINDOW_COLOR_SCALE;
+    Display::WindowDisplayMode AppConfiguration::defaultWindowMode_ = DEFAULT_WINDOW_MODE;
     int   AppConfiguration::zBufferBitDepth_  = DEFAULT_Z_BUFFER_BIT_DEPTH;
     bool  AppConfiguration::alwaysRun_        = DEFAULT_ALWAYS_RUN;
     int   AppConfiguration::shadowMapWidth_   = DEFAULT_SHADOW_MAP_WIDTH;
@@ -48,6 +50,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto APP_CONFIG_WIDTH_KEY       = "WindowWidth";
     constexpr auto APP_CONFIG_HEIGHT_KEY      = "WindowHeight";
     constexpr auto APP_CONFIG_SCALE_KEY       = "WindowColorScale";
+    constexpr auto APP_CONFIG_WINDOW_MODE_KEY = "DefaultWindowMode";
     constexpr auto APP_CONFIG_Z_BUFFER_KEY    = "ZBufferBitDepth";
     constexpr auto APP_CONFIG_ALWAYS_RUN_KEY  = "AlwaysRun";
     constexpr auto APP_CONFIG_SHADOW_W_KEY    = "ShadowMapWidth";
@@ -70,6 +73,9 @@ namespace NanamiEngine::Core::Application::Configuration
         windowWidth_      = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_WIDTH_KEY,      DEFAULT_WINDOW_WIDTH_SIZE);
         windowHeight_     = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_HEIGHT_KEY,     DEFAULT_WINDOW_HEIGHT_SIZE);
         windowColorScale_ = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SCALE_KEY,      DEFAULT_WINDOW_COLOR_SCALE);
+        defaultWindowMode_ = Display::WindowDisplayModeFromString(
+            Module::ProjectConfig::LoadOrDefaultWithPath<std::string>(APP_CONFIG_PATH, APP_CONFIG_WINDOW_MODE_KEY, std::string(Display::ToString(DEFAULT_WINDOW_MODE))),
+            DEFAULT_WINDOW_MODE);
         zBufferBitDepth_  = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_Z_BUFFER_KEY,   DEFAULT_Z_BUFFER_BIT_DEPTH);
         alwaysRun_        = Module::ProjectConfig::LoadOrDefaultWithPath<bool> (APP_CONFIG_PATH, APP_CONFIG_ALWAYS_RUN_KEY, DEFAULT_ALWAYS_RUN);
         shadowMapWidth_   = Module::ProjectConfig::LoadOrDefaultWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_W_KEY,   DEFAULT_SHADOW_MAP_WIDTH);
@@ -97,6 +103,7 @@ namespace NanamiEngine::Core::Application::Configuration
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_WIDTH_KEY,      windowWidth_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_HEIGHT_KEY,     windowHeight_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SCALE_KEY,      windowColorScale_);
+        Module::ProjectConfig::SaveWithPath<std::string>(APP_CONFIG_PATH, APP_CONFIG_WINDOW_MODE_KEY, std::string(Display::ToString(defaultWindowMode_)));
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_Z_BUFFER_KEY,   zBufferBitDepth_);
         Module::ProjectConfig::SaveWithPath<bool> (APP_CONFIG_PATH, APP_CONFIG_ALWAYS_RUN_KEY, alwaysRun_);
         Module::ProjectConfig::SaveWithPath<int>  (APP_CONFIG_PATH, APP_CONFIG_SHADOW_W_KEY,   shadowMapWidth_);
@@ -122,6 +129,9 @@ namespace NanamiEngine::Core::Application::Configuration
     void  AppConfiguration::SetWindowWidth(int w)   { windowWidth_      = w; }
     void  AppConfiguration::SetWindowHeight(int h)  { windowHeight_     = h; }
     void  AppConfiguration::SetWindowColorScale(int s) { windowColorScale_ = s; }
+
+    Display::WindowDisplayMode AppConfiguration::GetDefaultWindowMode()                                { return defaultWindowMode_; }
+    void                       AppConfiguration::SetDefaultWindowMode(const Display::WindowDisplayMode mode) { defaultWindowMode_ = mode; }
 
     int   AppConfiguration::GetZBufferBitDepth()          { return zBufferBitDepth_; }
     void  AppConfiguration::SetZBufferBitDepth(int depth) { zBufferBitDepth_ = depth; }
@@ -177,6 +187,22 @@ namespace NanamiEngine::Core::Application::Configuration
             SetWindowWidth(w);
             SetWindowHeight(h);
             SetWindowColorScale(s);
+            Save();
+        }
+
+        constexpr auto windowModeItems = "Windowed\0" "Borderless\0" "Fullscreen\0";
+        int windowMode = static_cast<int>(Display::WindowDisplayModeController::Current());
+        ImGui::SetNextItemWidth(120);
+        if (ImGui::Combo("Window Mode", &windowMode, windowModeItems))
+            Display::WindowDisplayModeController::Request(static_cast<Display::WindowDisplayMode>(windowMode));
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip("Alt+Enter toggles Windowed and the last fullscreen mode. Saved to LocalPrefs/Display/WindowMode.json");
+
+        int defaultWindowMode = static_cast<int>(GetDefaultWindowMode());
+        ImGui::SetNextItemWidth(120);
+        if (ImGui::Combo("Default Window Mode (Game)", &defaultWindowMode, windowModeItems))
+        {
+            SetDefaultWindowMode(static_cast<Display::WindowDisplayMode>(defaultWindowMode));
             Save();
         }
 

@@ -676,7 +676,7 @@
                             "ptr_wrapper": {
                                 "id": 2147483676,
                                 "data": {
-                                    "cereal_class_version": 1,
+                                    "cereal_class_version": 2,
                                     "value0": {
                                         "guid_": {
                                             "value_": "69633E59-B462-455B-A7D1-8E52177DC84F"
@@ -736,7 +736,22 @@
                                     "releaseEndScaleRate_": 1.5,
                                     "referenceDistance_": 60.0,
                                     "minDistanceScale_": 0.15000000596046448,
-                                    "maxDistanceScale_": 1.600000023841858
+                                    "maxDistanceScale_": 1.600000023841858,
+                                    "uiSounds_": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483680,
+                                                "data": {
+                                                    "cereal_class_version": 0,
+                                                    "value0": {
+                                                        "value_": "20661C82-DE24-445D-BF6D-27D24E5D0577"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

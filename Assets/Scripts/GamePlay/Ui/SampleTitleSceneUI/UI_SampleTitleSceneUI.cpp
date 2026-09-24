@@ -24,8 +24,8 @@ namespace GamePlay::Ui
         gameExitButton_ ->OnClick().Subscribe([this](NanamiUi::MouseState)
         {
         }).AddTo(this);
-        gameStartButton_->OnHover().Subscribe([](auto) { Sound::UiSoundBank::Play(Sound::UiSe::Cursor); }).AddTo(this);
-        gameExitButton_ ->OnHover().Subscribe([](auto) { Sound::UiSoundBank::Play(Sound::UiSe::Cursor); }).AddTo(this);
+        gameStartButton_->OnHover().Subscribe([this](auto) { Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Cursor); }).AddTo(this);
+        gameExitButton_ ->OnHover().Subscribe([this](auto) { Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Cursor); }).AddTo(this);
 
         const auto prefab = assetUpdatePrefab_.get();
         if (!prefab)
@@ -45,7 +45,7 @@ namespace GamePlay::Ui
         if (const auto assetUpdate = assetUpdate_.lock(); assetUpdate && !assetUpdate->TryStartGame())
             return;
 
-        Sound::UiSoundBank::Play(Sound::UiSe::GameStart);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::GameStart);
         switch (GameCore::LoadGameProgression())
         {
         case GameCore::GameProgresion::FirstTouchDownMainIsLand:
@@ -67,6 +67,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("gameStartButton_", gameStartButton_);
         ImGuiHelper::OnDrawInputField("gameExitButton_" , gameExitButton_);
         ImGuiHelper::OnDrawInputField("assetUpdatePrefab_", assetUpdatePrefab_);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

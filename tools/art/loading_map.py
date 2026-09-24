@@ -37,13 +37,16 @@ DESK_W, DESK_H = 2600, 1500
 
 BASE_ISLAND = (495, 630)
 GRASS_ISLAND = (1395, 372)
-ROCKY_ISLAND = (1080, 787)
+# 砂漠地帯 (docs/Story.md 第2章)。もとは岩石地帯の場所で、岩石地帯はやめた
+DESERT_ISLAND = (1080, 787)
 UNKNOWN_ISLAND = (960, 225)
 COMPASS = (1662, 198)
 
 DEPART_ROUTE = [(600, 592), (810, 300), (1140, 645), (1290, 412)]
 PROLOGUE_ROUTE = [(165, 918), (300, 960), (402, 858), (474, 750)]
 CONTINUE_GRASS_ROUTE = [(1830, 120), (1760, 150), (1600, 250), (1480, 320)]
+DEPART_DESERT_ROUTE = [(600, 668), (720, 930), (900, 640), (1000, 760)]
+CONTINUE_DESERT_ROUTE = [(1830, 1000), (1600, 960), (1330, 900), (1170, 820)]
 
 
 def layout():
@@ -78,6 +81,8 @@ def routes():
     grass_caption = (1395, 603)
     base_circle = ((495, 637), 1.12)
     grass_circle = ((1395, 372), 1.0)
+    desert_caption = (1080, 924)
+    desert_circle = ((1080, 787), 1.0)
     return [
         dict(name='DepartToGrassLand', frm='MainIsland', to='GrassLand', pts=DEPART_ROUTE,
              kicker='出 航', title='草原地帯へ', status='航行中…',
@@ -101,6 +106,21 @@ def routes():
              circle=grass_circle, network=True, cloud=1.0),
         dict(name='RetryGrassLand', frm='GrassLand', to='GrassLand', hover=((1395, 330), (140, 52)),
              kicker='再 挑 戦', title='草原地帯へ', status='態勢を立て直し中…',
+             from_caption=None, to_caption=None, circle=None, network=True, cloud=-1.0),
+        dict(name='DepartToDesert', frm='MainIsland', to='Desert', pts=DEPART_DESERT_ROUTE,
+             kicker='出 航', title='砂漠地帯へ', status='航行中…',
+             from_caption=('出 発 地', base_caption), to_caption=('目 的 地', desert_caption),
+             circle=desert_circle, network=True, cloud=-1.0),
+        dict(name='ReturnToMainIslandFromDesert', frm='Desert', to='MainIsland', pts=list(reversed(DEPART_DESERT_ROUTE)),
+             kicker='帰 還', title='拠点へ帰還', status='帰還中…',
+             from_caption=('出 発 地', desert_caption), to_caption=('目 的 地', base_caption),
+             circle=base_circle, network=False, cloud=1.0),
+        dict(name='ContinueToDesert', frm=None, to='Desert', pts=CONTINUE_DESERT_ROUTE,
+             kicker='続 き', title='砂漠地帯へ', status='航行中…',
+             from_caption=None, to_caption=('目 的 地', desert_caption),
+             circle=desert_circle, network=True, cloud=1.0),
+        dict(name='RetryDesert', frm='Desert', to='Desert', hover=((1080, 745), (140, 52)),
+             kicker='再 挑 戦', title='砂漠地帯へ', status='態勢を立て直し中…',
              from_caption=None, to_caption=None, circle=None, network=True, cloud=-1.0),
         dict(name='HoverToTitle', frm=None, to='Title', hover=((495, 560), (150, 58)),
              kicker='休 息', title='タイトルへ', status='帰り支度中…',
@@ -193,6 +213,16 @@ def draw_mountains(d, cx, cy, alpha=1.0):
                width=lw(2.4), joint='curve')
 
 
+def draw_dunes(d, cx, cy, alpha=1.0):
+    """砂丘の稜線を三つと、城塞の塔をひとつ"""
+    for dx, dy, w in ((-58, 6, 34), (-8, -10, 40), (44, 8, 30)):
+        x, y = cx + dx, cy + dy
+        d.arc([s(x - w), s(y - 14), s(x + w), s(y + 14)], 200, 340, fill=ink(alpha), width=lw(2.4))
+    tx, ty = cx + 20, cy - 22
+    d.rectangle([s(tx - 5), s(ty - 22), s(tx + 5), s(ty)], outline=ink(alpha), width=lw(2))
+    d.line([tuple(s((tx - 8, ty - 22))), tuple(s((tx + 8, ty - 22)))], fill=ink(alpha), width=lw(2))
+
+
 def draw_curl(d, x, y, alpha=0.45, long=True):
     """雲海の渦。小さな弧を二つ繋げる"""
     d.arc([s(x), s(y - 9), s(x + 27), s(y + 9)], 180, 360, fill=ink(alpha, INK_FADE), width=lw(2))
@@ -230,9 +260,9 @@ def paper_sprite():
     gx, gy = to_paper(GRASS_ISLAND)
     draw_island(d, gx, gy, 123, 72, seed=23)
     draw_trees(d, gx, gy - 6)
-    rx, ry = to_paper(ROCKY_ISLAND)
-    draw_island(d, rx, ry, 90, 57, seed=37, alpha=0.4)
-    draw_mountains(d, rx, ry + 6, alpha=0.4)
+    rx, ry = to_paper(DESERT_ISLAND)
+    draw_island(d, rx, ry, 105, 63, seed=37)
+    draw_dunes(d, rx, ry + 4)
     ux, uy = to_paper(UNKNOWN_ISLAND)
     for k in range(24):
         if k % 2:
@@ -249,7 +279,7 @@ def paper_sprite():
     # 地名。場所が変わらないので絵に焼く
     text(base, to_paper((495, 885)), '拠 点', 45, INK, path=BRUSH_FONT, anchor='ms')
     text(base, to_paper((1395, 585)), '草 原 地 帯', 45, INK, path=BRUSH_FONT, anchor='ms')
-    text(base, to_paper((1080, 906)), '未 開 放', 30, (*INK, 110), path=BRUSH_FONT, anchor='ms')
+    text(base, to_paper((1080, 906)), '砂 漠 地 帯', 45, INK, path=BRUSH_FONT, anchor='ms')
     text(base, to_paper((960, 240)), '？', 42, (*INK, 110), path=BRUSH_FONT, anchor='ms')
     text(base, to_paper((960, 318)), '未 踏', 27, (*INK, 110), path=BRUSH_FONT, anchor='ms')
     text(base, to_paper((1662, 105)), '北', 27, INK, path=BRUSH_FONT, anchor='ms')

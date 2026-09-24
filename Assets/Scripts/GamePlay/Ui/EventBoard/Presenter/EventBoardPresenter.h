@@ -13,6 +13,7 @@
 #include "../Model/QuestBoardModel.h"
 #include "../Model/RestorationBoardModel.h"
 #include "../UI_EventBoard.h"
+#include "../../../Sound/UiSoundBank.h"
 
 namespace GameCore
 {
@@ -69,12 +70,14 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Asset::SoundFile) acceptSound_;
         [[serialize(1)]] FIELD(Asset::SoundFile) restoreSound_;
         [[serialize(1)]] FIELD(Asset::SoundFile) refuseSound_;
+        [[serialize(2)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         std::shared_ptr<EventBoardUi> view_;
         std::unique_ptr<QuestBoardModel>  questModel_;
         std::unique_ptr<EventBoardModel>  eventModel_;
         std::unique_ptr<NoticeBoardModel> noticeModel_;
         std::unique_ptr<RestorationBoardModel> restorationModel_;
+        QuestReadLog questReadLog_;
         EventBoardTabType currentTab_ = EventBoardTabType::Quest;
         std::weak_ptr<GameCore::IPlayerAvatar> suspendedAvatar_;
         std::optional<GameCore::Story::Facility> previewFacility_;
@@ -96,6 +99,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(acceptSound_));
             archive(CEREAL_NVP(restoreSound_));
             archive(CEREAL_NVP(refuseSound_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<typename Archive>
@@ -106,9 +110,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(acceptSound_));
             if (version >= 1) archive(CEREAL_NVP(restoreSound_));
             if (version >= 1) archive(CEREAL_NVP(refuseSound_));
+            if (version >= 2) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardPresenter, 1);
+CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardPresenter, 2);

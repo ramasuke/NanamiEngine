@@ -89,7 +89,9 @@ namespace GamePlay::Ui
 
         if (const auto entity = Entity().lock())
             entity->SetEnable(true);
-        Sound::UiSoundBank::Play(Sound::UiSe::HudNotice);
+        // NOTE: 課題が次々に切り替わるので、札が出てくるときだけ鳴らす
+        if (wasHidden)
+            Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::HudNotice);
 
         if (stepText_)  stepText_ ->SetText(StepLabel(stepIndex));
         if (titleText_) titleText_->SetText(steps_[stepIndex].Title());
@@ -107,7 +109,7 @@ namespace GamePlay::Ui
     Coroutine::Task<void> SwordManActionInstructTutorial::PlayClearedAsync()
     {
         isCleared_ = true;
-        Sound::UiSoundBank::Play(Sound::UiSe::HudClear);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::HudClear);
         co_await Coroutine::WaitForSeconds(clearHoldDuration_secs_);
     }
 
@@ -214,6 +216,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("clearHoldDuration_secs_", clearHoldDuration_secs_);
         ImGuiHelper::OnDrawInputField("clearMarkPopScale_", clearMarkPopScale_);
         ImGuiHelper::OnDrawInputField("bodyAlphaRate_", bodyAlphaRate_);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

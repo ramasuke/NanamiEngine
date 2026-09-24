@@ -6,6 +6,7 @@
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "../Model/StageSelectModel.h"
 #include "../../../Network/Relay/RelayRoom.h"
+#include "../../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
@@ -48,6 +49,7 @@ namespace GamePlay::Ui
         [[nodiscard]] int CodeLength() const;
         [[nodiscard]] RoomInput ReadRoomInput() const;
         [[nodiscard]] bool IsRoomReady() const;
+        [[nodiscard]] bool IsSelectedStageLocked() const;
 
         std::shared_ptr<StageSelectUi> view_;
         std::unique_ptr<StageSelectModel> model_;
@@ -60,12 +62,14 @@ namespace GamePlay::Ui
 
         // スティックを倒したと見なす傾き(XInput の -32768〜32767)
         [[serialize(1)]] int stickThreshold_ = 12000;
+        [[serialize(2)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
 #pragma region Serialization Function
     public:
         void OnDrawGui() override
         {
             ImGuiHelper::OnDrawInputField("stickThreshold_", stickThreshold_);
+            ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
         }
 
         template<typename Archive>
@@ -73,6 +77,7 @@ namespace GamePlay::Ui
         {
             archive(cereal::base_class<Component::ComponentBase>(this));
             archive(CEREAL_NVP(stickThreshold_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<typename Archive>
@@ -80,9 +85,10 @@ namespace GamePlay::Ui
         {
             archive(cereal::base_class<Component::ComponentBase>(this));
             if (version >= 1) archive(CEREAL_NVP(stickThreshold_));
+            if (version >= 2) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::StageSelectPresenter, 1);
+CEREAL_CLASS_VERSION(GamePlay::Ui::StageSelectPresenter, 2);

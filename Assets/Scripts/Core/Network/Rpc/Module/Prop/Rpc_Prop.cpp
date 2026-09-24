@@ -27,6 +27,13 @@ namespace
                         pillar->Collapse(fallDirection);
                 },
                 NanamiEngine::Module::Network::RpcOwnershipFilter::SkipIfOwner);
+
+            GameCore::Network::ChargePillarTrembleRpc::OnTargeted<NanamiEngine::Module::Network::NetworkGameObject>(
+                [](NanamiEngine::Module::Network::NetworkGameObject&, glm::vec3 center, float radius)
+                {
+                    GamePlay::Prop::ChargeBreakPillar::TrembleAll(center, radius);
+                },
+                NanamiEngine::Module::Network::RpcOwnershipFilter::SkipIfOwner);
         }
     };
     static PropRpcRegistration s_propRpcRegistration;

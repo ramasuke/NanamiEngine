@@ -11,6 +11,7 @@
 #include "Engine/Module/NanamiUI/Button/NanamiUi_Button.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../Model/EventBoardModel.h"
+#include "../../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
@@ -43,6 +44,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] float selectedScale_ = 1.05f;
         [[serialize(0)]] Color32 ongoingStatusColor_  = Color32(146, 38, 30);
         [[serialize(0)]] Color32 upcomingStatusColor_ = Color32(104, 78, 54);
+        [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         glm::vec3 baseScale_ = glm::vec3(1.0f);
         bool isHighlighted_ = false;
@@ -66,6 +68,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(selectedScale_));
             archive(CEREAL_NVP(ongoingStatusColor_));
             archive(CEREAL_NVP(upcomingStatusColor_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<typename Archive>
@@ -82,9 +85,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(selectedScale_));
             if (version >= 0) archive(CEREAL_NVP(ongoingStatusColor_));
             if (version >= 0) archive(CEREAL_NVP(upcomingStatusColor_));
+            if (version >= 1) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardRow, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardRow, 1);

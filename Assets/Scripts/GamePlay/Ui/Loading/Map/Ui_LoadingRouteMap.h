@@ -15,6 +15,7 @@
 #include "../../../../../Data/LoadingRoute/Data_LoadingRouteData.h"
 #include "Libs/LibCore/cereal/glm/GlmHelper.h"
 #include "Libs/LibCore/Tween/Player/TweenPlayer.h"
+#include "../../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
@@ -114,6 +115,7 @@ namespace GamePlay::Ui
         [[serialize(2)]] float dashPop_secs_ = 0.25f;
         /** 飛行船が潰れて裏返るまでの時間 */
         [[serialize(2)]] float shipFlip_secs_ = 0.3f;
+        [[serialize(3)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         std::vector<glm::vec2> routeSamples_;
         std::vector<float> routeLengths_;
@@ -196,6 +198,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(dashPopScale_));
             archive(CEREAL_NVP(dashPop_secs_));
             archive(CEREAL_NVP(shipFlip_secs_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<class Archive>
@@ -239,9 +242,10 @@ namespace GamePlay::Ui
             if (version >= 2) archive(CEREAL_NVP(dashPopScale_));
             if (version >= 2) archive(CEREAL_NVP(dashPop_secs_));
             if (version >= 2) archive(CEREAL_NVP(shipFlip_secs_));
+            if (version >= 3) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::LoadingRouteMap, 2);
+CEREAL_CLASS_VERSION(GamePlay::Ui::LoadingRouteMap, 3);

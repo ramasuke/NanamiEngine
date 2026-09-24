@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "cereal/types/vector.hpp"
+#include "Libs/LibCore/cereal/glm/GlmHelper.h"
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Asset/PrefabGameObject/PrefabGameObjectFile.h"
 #include "Engine/Module/Asset/Sprite/SpriteFile.h"
@@ -33,6 +34,8 @@ namespace GamePlay::Ui
     private:
         /** @param entry nullptr なら「依頼なし」を出す */
         void ShowDetail(const QuestBoardEntry* entry) const;
+        /** @brief ステージのサムネイル (大きさはまちまち) を写真枠いっぱいに縮める */
+        void FitPhotoToFrame(int photoHandle) const;
 
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) rowPrefab_;
         [[serialize(0)]] FIELD(GameObject::IGameObject) rowsRoot_;
@@ -67,6 +70,8 @@ namespace GamePlay::Ui
         [[serialize(0)]] Color32 takingStateColor_  = Color32(146, 38, 30);
         [[serialize(0)]] Color32 defaultStateColor_ = Color32(48, 30, 20);
         [[serialize(1)]] FIELD(Asset::SpriteFile) lockedSealSprite_;
+        /** @brief 写真枠の内側の大きさ。サムネイルはこれを覆う倍率に縮める */
+        [[serialize(2)]] glm::vec2 detailPhotoSize_px_ = glm::vec2(400.0f, 240.0f);
 
         std::vector<std::weak_ptr<EventBoardQuestRow>> rows_;
 
@@ -109,6 +114,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(takingStateColor_));
             archive(CEREAL_NVP(defaultStateColor_));
             archive(CEREAL_NVP(lockedSealSprite_));
+            archive(CEREAL_NVP(detailPhotoSize_px_));
         }
 
         template<typename Archive>
@@ -146,9 +152,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(takingStateColor_));
             if (version >= 0) archive(CEREAL_NVP(defaultStateColor_));
             if (version >= 1) archive(CEREAL_NVP(lockedSealSprite_));
+            if (version >= 2) archive(CEREAL_NVP(detailPhotoSize_px_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardQuestPage, 1);
+CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardQuestPage, 2);

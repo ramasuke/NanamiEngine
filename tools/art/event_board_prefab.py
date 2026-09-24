@@ -31,7 +31,7 @@ from game_over_prefab import (  # noqa: E402
 
 PREFAB_DIR = REPO / 'Assets' / 'Prefab' / 'UI' / 'EventBoard'
 FONT_BODY = asset_guid(REPO / 'Assets/Art/Font/ZenOldMincho-Bold.ttf.meta')
-FONT_BRUSH = asset_guid(REPO / 'Assets/Art/Font/onryou.ttf.meta')
+FONT_BRUSH = asset_guid(REPO / 'Assets/Art/Font/KaiseiDecol-Bold.ttf.meta')
 BOARD_DATA = asset_guid(REPO / 'Assets/Data/EventNotice/MainIslandEventBoard.eventBoard.meta')
 HINT_CANCEL = asset_guid(str(art.HINT_CANCEL_SPRITE) + '.meta')
 HINT_CONFIRM = asset_guid(str(art.HINT_CONFIRM_SPRITE) + '.meta')

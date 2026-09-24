@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <string>
 
+#include "../Display/WindowDisplayMode.h"
+
 namespace NanamiEngine::Core::Application::Configuration
 {
     enum class ApplicationMode
@@ -27,6 +29,10 @@ namespace NanamiEngine::Core::Application::Configuration
         static void                SetWindowWidth(int width);
         static void                SetWindowHeight(int height);
         static void                SetWindowColorScale(int scale);
+
+        /** ゲーム起動時の表示モード (プレイヤーが選んだものが LocalPrefs にあればそちらが優先) */
+        [[nodiscard]] static Display::WindowDisplayMode GetDefaultWindowMode();
+        static void                                     SetDefaultWindowMode(Display::WindowDisplayMode mode);
 
         [[nodiscard]] static int   GetZBufferBitDepth();
         static void                SetZBufferBitDepth(int bitDepth);
@@ -67,6 +73,7 @@ namespace NanamiEngine::Core::Application::Configuration
         static int windowWidth_;
         static int windowHeight_;
         static int windowColorScale_;
+        static Display::WindowDisplayMode defaultWindowMode_;
 
         static int zBufferBitDepth_;
 

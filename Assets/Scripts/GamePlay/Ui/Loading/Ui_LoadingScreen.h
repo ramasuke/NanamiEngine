@@ -22,6 +22,7 @@
 #include "../../../Core/Game/Scene/Main/Type/MainSceneType.h"
 #include "Hint/Ui_LoadingHintCard.h"
 #include "Map/Ui_LoadingRouteMap.h"
+#include "../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
@@ -109,6 +110,7 @@ namespace GamePlay::Ui
         /** ロード画面が出ている間ループさせる */
         [[serialize(2)]] FIELD(Asset::SoundFile) bgm_;
         [[serialize(2)]] int bgmVolume_ = 200;
+        [[serialize(3)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         Phase phase_ = Phase::Hidden;
         GameCore::Scene::Main::SceneLoadStep step_ = GameCore::Scene::Main::SceneLoadStep::Idle;
@@ -149,6 +151,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(finishSecs_));
             archive(CEREAL_NVP(bgm_));
             archive(CEREAL_NVP(bgmVolume_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<class Archive>
@@ -176,9 +179,10 @@ namespace GamePlay::Ui
                 archive(CEREAL_NVP(bgm_));
                 archive(CEREAL_NVP(bgmVolume_));
             }
+            if (version >= 3) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::LoadingScreenUi, 2);
+CEREAL_CLASS_VERSION(GamePlay::Ui::LoadingScreenUi, 3);

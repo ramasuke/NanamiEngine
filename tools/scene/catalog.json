@@ -1,5 +1,5 @@
 {
-  "generated_from": "fa5a636508bf62871abcbb922fe9d5aeec24fe9d",
+  "generated_from": "9bb5f85965332105b9cc016fb9c031c08af309dd",
   "components": {
     "CineMachine::Behaviour::NoiseCameraBehaviour": {
       "class": "NoiseCameraBehaviour",
@@ -357,7 +357,10 @@
             "NormalBoss": 0,
             "Normal": 1,
             "Hyena": 2,
-            "Tyrannosaurus": 3
+            "Tyrannosaurus": 3,
+            "DesertScorpion": 4,
+            "SandWorm": 5,
+            "SkeletonDragon": 6
           }
         },
         {
@@ -1385,7 +1388,7 @@
       "class": "ChargeBreakPillar",
       "fqn": "GamePlay::Prop::ChargeBreakPillar",
       "leaf": "ChargeBreakPillar",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1461,6 +1464,38 @@
         {
           "key": "fallDuration_secs_",
           "member": "fallDuration_secs_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "isIntroTarget_",
+          "member": "isIntroTarget_",
+          "named": true,
+          "shape": "bool"
+        },
+        {
+          "key": "trembleParticle_",
+          "member": "trembleParticle_",
+          "named": true,
+          "shape": "field",
+          "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "trembleSound_",
+          "member": "trembleSound_",
+          "named": true,
+          "shape": "field",
+          "type": "SoundFile"
+        },
+        {
+          "key": "trembleAngle_deg_",
+          "member": "trembleAngle_deg_",
+          "named": true,
+          "shape": "float"
+        },
+        {
+          "key": "tremble_secs_",
+          "member": "tremble_secs_",
           "named": true,
           "shape": "float"
         }
@@ -1594,7 +1629,7 @@
       "class": "EventNoticeBoard",
       "fqn": "GamePlay::Prop::EventNoticeBoard",
       "leaf": "EventNoticeBoard",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -1619,6 +1654,13 @@
           "named": true,
           "shape": "field",
           "type": "BillBoardNpcChatIcon"
+        },
+        {
+          "key": "board_",
+          "member": "board_",
+          "named": true,
+          "shape": "field",
+          "type": "EventBoardData"
         }
       ]
     },
@@ -2181,211 +2223,11 @@
         }
       ]
     },
-    "GamePlay::Sound::UiSoundBank": {
-      "class": "UiSoundBank",
-      "fqn": "GamePlay::Sound::UiSoundBank",
-      "leaf": "UiSoundBank",
-      "version": 0,
-      "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
-      "immediate_base": "ComponentBase",
-      "bases": [
-        {
-          "leaf": "ComponentBase",
-          "key": "value0"
-        }
-      ],
-      "interleaved_bases": false,
-      "header": "Assets/Scripts/GamePlay/Sound/UiSoundBank.h",
-      "params": [
-        {
-          "key": "cursor_",
-          "member": "cursor_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "confirm_",
-          "member": "confirm_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "cancel_",
-          "member": "cancel_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "open_",
-          "member": "open_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "close_",
-          "member": "close_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "tab_",
-          "member": "tab_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "stamp_",
-          "member": "stamp_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "refuse_",
-          "member": "refuse_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "digit_",
-          "member": "digit_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "gameStart_",
-          "member": "gameStart_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "stoneCursor_",
-          "member": "stoneCursor_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "stoneConfirm_",
-          "member": "stoneConfirm_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "hoofTick_",
-          "member": "hoofTick_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "loadingDone_",
-          "member": "loadingDone_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "hudSelect_",
-          "member": "hudSelect_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "hudPaletteOpen_",
-          "member": "hudPaletteOpen_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "hudPageShift_",
-          "member": "hudPageShift_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "hudLockOn_",
-          "member": "hudLockOn_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "hudLockOff_",
-          "member": "hudLockOff_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "hudReady_",
-          "member": "hudReady_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "hudNotice_",
-          "member": "hudNotice_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "hudClear_",
-          "member": "hudClear_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "hudBossAppear_",
-          "member": "hudBossAppear_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "hudInteract_",
-          "member": "hudInteract_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "chatOpen_",
-          "member": "chatOpen_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        },
-        {
-          "key": "chatBlip_",
-          "member": "chatBlip_",
-          "named": true,
-          "shape": "field",
-          "type": "SoundFile"
-        }
-      ]
-    },
     "GamePlay::Ui::AssetUpdatePresenter": {
       "class": "AssetUpdatePresenter",
       "fqn": "GamePlay::Ui::AssetUpdatePresenter",
       "leaf": "AssetUpdatePresenter",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -2410,6 +2252,13 @@
           "named": true,
           "shape": "field",
           "type": "SoundFile"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -2417,7 +2266,7 @@
       "class": "AssetUpdateTagUi",
       "fqn": "GamePlay::Ui::AssetUpdateTagUi",
       "leaf": "AssetUpdateTagUi",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -2697,6 +2546,13 @@
           "member": "errorMaxLines_",
           "named": true,
           "shape": "int"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -2704,7 +2560,7 @@
       "class": "BillBoardNpcChatIcon",
       "fqn": "GamePlay::Ui::BillBoardNpcChatIcon",
       "leaf": "BillBoardNpcChatIcon",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -2743,6 +2599,13 @@
           "named": true,
           "shape": "field",
           "type": "BillboardAnimation3D"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -2827,7 +2690,7 @@
       "class": "BossHealthGaugePresenter",
       "fqn": "GamePlay::Ui::BossHealthGaugePresenter",
       "leaf": "BossHealthGaugePresenter",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -2838,13 +2701,21 @@
       ],
       "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/BossHealthGauge/Ui_BossHealthGaugePresenter.h",
-      "params": []
+      "params": [
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
+        }
+      ]
     },
     "GamePlay::Ui::CannonCooldownGauge": {
       "class": "CannonCooldownGauge",
       "fqn": "GamePlay::Ui::CannonCooldownGauge",
       "leaf": "CannonCooldownGauge",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -3176,6 +3047,13 @@
           "member": "recoilAmplitude_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -3183,7 +3061,7 @@
       "class": "CharacterSelectPresenter",
       "fqn": "GamePlay::Ui::CharacterSelectPresenter",
       "leaf": "CharacterSelectPresenter",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -3194,13 +3072,21 @@
       ],
       "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/CharacterSelect/Presenter/CharacterSelectPresenter.h",
-      "params": []
+      "params": [
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
+        }
+      ]
     },
     "GamePlay::Ui::CharacterSelectRow": {
       "class": "CharacterSelectRow",
       "fqn": "GamePlay::Ui::CharacterSelectRow",
       "leaf": "CharacterSelectRow",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -3280,6 +3166,13 @@
           "member": "selectedScale_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -3463,7 +3356,7 @@
       "class": "ControlGuideRow",
       "fqn": "GamePlay::Ui::ControlGuideRow",
       "leaf": "ControlGuideRow",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -3556,6 +3449,12 @@
           "member": "focusLabelColor_",
           "named": true,
           "shape": "color32"
+        },
+        {
+          "key": "labelMaxWidth_px_",
+          "member": "labelMaxWidth_px_",
+          "named": true,
+          "shape": "float"
         }
       ]
     },
@@ -3929,7 +3828,7 @@
       "class": "EventBoardNoticeRow",
       "fqn": "GamePlay::Ui::EventBoardNoticeRow",
       "leaf": "EventBoardNoticeRow",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -4009,6 +3908,13 @@
           "member": "selectedScale_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -4016,7 +3922,7 @@
       "class": "EventBoardPresenter",
       "fqn": "GamePlay::Ui::EventBoardPresenter",
       "leaf": "EventBoardPresenter",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -4055,6 +3961,13 @@
           "named": true,
           "shape": "field",
           "type": "SoundFile"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -4062,7 +3975,7 @@
       "class": "EventBoardQuestPage",
       "fqn": "GamePlay::Ui::EventBoardQuestPage",
       "leaf": "EventBoardQuestPage",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -4286,6 +4199,12 @@
           "named": true,
           "shape": "field",
           "type": "SpriteFile"
+        },
+        {
+          "key": "detailPhotoSize_px_",
+          "member": "detailPhotoSize_px_",
+          "named": true,
+          "shape": "vec2"
         }
       ]
     },
@@ -4293,7 +4212,7 @@
       "class": "EventBoardQuestRow",
       "fqn": "GamePlay::Ui::EventBoardQuestRow",
       "leaf": "EventBoardQuestRow",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -4422,6 +4341,13 @@
           "named": true,
           "shape": "field",
           "type": "SpriteFile"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -4614,7 +4540,7 @@
       "class": "EventBoardRestorationRow",
       "fqn": "GamePlay::Ui::EventBoardRestorationRow",
       "leaf": "EventBoardRestorationRow",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -4713,6 +4639,13 @@
           "member": "refusedNoteColor_",
           "named": true,
           "shape": "color32"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -4720,7 +4653,7 @@
       "class": "EventBoardRow",
       "fqn": "GamePlay::Ui::EventBoardRow",
       "leaf": "EventBoardRow",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -4798,6 +4731,13 @@
           "member": "upcomingStatusColor_",
           "named": true,
           "shape": "color32"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -5195,7 +5135,7 @@
       "class": "GameOverPresenter",
       "fqn": "GamePlay::Ui::GameOverPresenter",
       "leaf": "GameOverPresenter",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -5225,6 +5165,13 @@
           "member": "curtainHoldSecs_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -5634,7 +5581,7 @@
       "class": "ItemBar",
       "fqn": "GamePlay::Ui::ItemBar",
       "leaf": "ItemBar",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -5801,6 +5748,13 @@
           "member": "selectPopRate_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -5946,7 +5900,7 @@
       "class": "LoadingRouteMap",
       "fqn": "GamePlay::Ui::LoadingRouteMap",
       "leaf": "LoadingRouteMap",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -6196,6 +6150,13 @@
           "member": "shipFlip_secs_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -6203,7 +6164,7 @@
       "class": "LoadingScreenUi",
       "fqn": "GamePlay::Ui::LoadingScreenUi",
       "leaf": "LoadingScreenUi",
-      "version": 2,
+      "version": 3,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -6306,6 +6267,13 @@
           "member": "bgmVolume_",
           "named": true,
           "shape": "int"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -6313,7 +6281,7 @@
       "class": "LockOnReticle",
       "fqn": "GamePlay::Ui::LockOnReticle",
       "leaf": "LockOnReticle",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -6423,6 +6391,13 @@
           "member": "maxDistanceScale_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -6697,7 +6672,7 @@
       "class": "NpcChatting",
       "fqn": "GamePlay::Ui::NpcChatting",
       "leaf": "NpcChatting",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -6722,6 +6697,13 @@
           "named": true,
           "shape": "field",
           "type": "TextRenderer"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -6785,7 +6767,7 @@
       "class": "PauseMenuPresenter",
       "fqn": "GamePlay::Ui::PauseMenuPresenter",
       "leaf": "PauseMenuPresenter",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -6796,7 +6778,15 @@
       ],
       "interleaved_bases": false,
       "header": "Assets/Scripts/GamePlay/Ui/PauseMenu/Presenter/PauseMenuPresenter.h",
-      "params": []
+      "params": [
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
+        }
+      ]
     },
     "GamePlay::Ui::PauseMenuRow": {
       "class": "PauseMenuRow",
@@ -7189,7 +7179,7 @@
       "class": "SampleTitleScene",
       "fqn": "GamePlay::Ui::SampleTitleScene",
       "leaf": "SampleTitleScene",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -7221,6 +7211,13 @@
           "named": true,
           "shape": "field",
           "type": "PrefabGameObjectFile"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -7228,7 +7225,7 @@
       "class": "ShopPresenter",
       "fqn": "GamePlay::Ui::ShopPresenter",
       "leaf": "ShopPresenter",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -7279,6 +7276,13 @@
           "member": "quantityRepeatInterval_secs_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -7577,7 +7581,7 @@
       "class": "SpellPalette",
       "fqn": "GamePlay::Ui::SpellPalette",
       "leaf": "SpellPalette",
-      "version": 0,
+      "version": 1,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -7900,6 +7904,13 @@
           "member": "manaValueColor_",
           "named": true,
           "shape": "color32"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -8089,7 +8100,7 @@
       "class": "StageSelectPresenter",
       "fqn": "GamePlay::Ui::StageSelectPresenter",
       "leaf": "StageSelectPresenter",
-      "version": 1,
+      "version": 2,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -8106,6 +8117,13 @@
           "member": "stickThreshold_",
           "named": true,
           "shape": "int"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -8231,7 +8249,7 @@
       "class": "StageSelectStageUi",
       "fqn": "GamePlay::Ui::StageSelectStageUi",
       "leaf": "StageSelectStageUi",
-      "version": 3,
+      "version": 5,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -8298,6 +8316,27 @@
           "named": true,
           "shape": "field",
           "type": "StageDifficultyPips"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
+        },
+        {
+          "key": "lockedRowSprite_",
+          "member": "lockedRowSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
+        },
+        {
+          "key": "lockedElementSprite_",
+          "member": "lockedElementSprite_",
+          "named": true,
+          "shape": "field",
+          "type": "SpriteFile"
         }
       ]
     },
@@ -8474,7 +8513,7 @@
       "class": "SwordManActionInstructTutorial",
       "fqn": "GamePlay::Ui::SwordManActionInstructTutorial",
       "leaf": "SwordManActionInstructTutorial",
-      "version": 5,
+      "version": 6,
       "base_fqn": "NanamiEngine::Module::Component::ComponentBase",
       "immediate_base": "ComponentBase",
       "bases": [
@@ -8627,6 +8666,13 @@
           "member": "bodyAlphaRate_",
           "named": true,
           "shape": "float"
+        },
+        {
+          "key": "uiSounds_",
+          "member": "uiSounds_",
+          "named": true,
+          "shape": "field",
+          "type": "UiSoundBankData"
         }
       ]
     },
@@ -11615,9 +11661,6 @@
     ],
     "TreeLeafSway": [
       "GamePlay::Prop::TreeLeafSway"
-    ],
-    "UiSoundBank": [
-      "GamePlay::Sound::UiSoundBank"
     ],
     "VerticalLayoutGroup": [
       "NanamiEngine::Module::NanamiUi::VerticalLayoutGroup"

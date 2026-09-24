@@ -19,6 +19,22 @@ namespace GamePlay::Ui
             contentBasePos_ = content_->Transform().GetLocalPos();
         if (focusArrow_)
             focusArrowBasePos_ = focusArrow_->Transform().GetLocalPos();
+        if (label_)
+            labelBaseScale_ = label_->Transform().GetLocalScale();
+        if (labelShadow_)
+            labelShadowBaseScale_ = labelShadow_->Transform().GetLocalScale();
+    }
+
+    void ControlGuideRow::FitLabelWidth()
+    {
+        if (!label_)
+            return;
+
+        const float width = label_->MeasureTextWidth() * labelBaseScale_.x;
+        const float squeeze = (width > labelMaxWidth_px_ && labelMaxWidth_px_ > 0.0f) ? labelMaxWidth_px_ / width : 1.0f;
+        label_->Transform().SetLocalScale(glm::vec3(labelBaseScale_.x * squeeze, labelBaseScale_.y, labelBaseScale_.z));
+        if (labelShadow_)
+            labelShadow_->Transform().SetLocalScale(glm::vec3(labelShadowBaseScale_.x * squeeze, labelShadowBaseScale_.y, labelShadowBaseScale_.z));
     }
 
     void ControlGuideRow::SetContent(const std::weak_ptr<Asset::SpriteFile>& glyph, const std::string& label)
@@ -29,6 +45,7 @@ namespace GamePlay::Ui
         if (glyphFlash_)  glyphFlash_ ->SetSprite(glyph);
         if (labelShadow_) labelShadow_->SetText(label);
         if (label_)       label_      ->SetText(label);
+        FitLabelWidth();
     }
 
     void ControlGuideRow::SetFocused(const bool isFocused)
@@ -75,6 +92,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("focusCheck_", focusCheck_);
         labelColor_.OnDrawGui();
         focusLabelColor_.OnDrawGui();
+        ImGuiHelper::OnDrawInputField("labelMaxWidth_px_", labelMaxWidth_px_);
     }
 }
 

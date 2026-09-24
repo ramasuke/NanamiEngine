@@ -9,6 +9,7 @@
 #include "../../../../../Data/Shop/Data_ShopData.h"
 #include "../Model/ShopModel.h"
 #include "../UI_Shop.h"
+#include "../../../Sound/UiSoundBank.h"
 
 namespace GameCore
 {
@@ -65,6 +66,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(Asset::SoundFile) cursorSound_;
         [[serialize(0)]] float quantityRepeatDelay_secs_    = 0.35f;
         [[serialize(0)]] float quantityRepeatInterval_secs_ = 0.08f;
+        [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         std::shared_ptr<ShopUi> view_;
         std::unique_ptr<ShopModel> model_;
@@ -94,6 +96,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(cursorSound_));
             archive(CEREAL_NVP(quantityRepeatDelay_secs_));
             archive(CEREAL_NVP(quantityRepeatInterval_secs_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<typename Archive>
@@ -106,9 +109,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(cursorSound_));
             if (version >= 0) archive(CEREAL_NVP(quantityRepeatDelay_secs_));
             if (version >= 0) archive(CEREAL_NVP(quantityRepeatInterval_secs_));
+            if (version >= 1) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::ShopPresenter, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::ShopPresenter, 1);

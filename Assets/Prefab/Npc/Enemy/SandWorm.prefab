@@ -1,0 +1,958 @@
+{
+    "isActive_": true,
+    "name_": "SandWorm",
+    "guid_": {
+        "cereal_class_version": 0,
+        "value_": "ADDD3390-62E2-433F-BE93-2E0A0BB150E7"
+    },
+    "components_": {
+        "cereal_class_version": 0,
+        "componentCount": 8,
+        "component_0": {
+            "polymorphic_id": 2147483649,
+            "polymorphic_name": "NanamiEngine::Module::Component::ModelRenderer",
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "cereal_class_version": 5,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "guid_": {
+                            "value_": "A402BD10-29F8-4DD0-9F3F-6CBB3D34E37B"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "value3": {
+                        "cereal_class_version": 0
+                    },
+                    "value4": {
+                        "cereal_class_version": 0
+                    },
+                    "mv1File_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "EB456F4C-78DE-485F-BEAD-47BB1E7BB7ED"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "useFixedInterpolation_": false
+                }
+            }
+        },
+        "component_1": {
+            "polymorphic_id": 2147483650,
+            "polymorphic_name": "NanamiEngine::Module::Component::CapsuleCollider",
+            "ptr_wrapper": {
+                "id": 2147483651,
+                "data": {
+                    "cereal_class_version": 3,
+                    "value0": {
+                        "cereal_class_version": 6,
+                        "value0": {
+                            "guid_": {
+                                "value_": "B13A9F75-6331-41E1-9616-3207436F5AC4"
+                            },
+                            "isEnable_": true
+                        },
+                        "offset_": {
+                            "value0": 0.0,
+                            "value1": 119.26800384521485,
+                            "value2": 0.0
+                        },
+                        "offsetRotation_": {
+                            "value0": 90.0,
+                            "value1": 0.0,
+                            "value2": 0.0
+                        },
+                        "layer_": 2,
+                        "isSensor_": false,
+                        "friction_": 0.5
+                    },
+                    "value1": {
+                        "cereal_class_version": 0
+                    },
+                    "value2": {
+                        "cereal_class_version": 0
+                    },
+                    "value3": {},
+                    "radius_": 120.11400604248047,
+                    "height_": 360.0
+                }
+            }
+        },
+        "component_2": {
+            "polymorphic_id": 2147483651,
+            "polymorphic_name": "NanamiEngine::Module::Component::Animator",
+            "ptr_wrapper": {
+                "id": 2147483652,
+                "data": {
+                    "cereal_class_version": 5,
+                    "value0": {
+                        "guid_": {
+                            "value_": "2EFEBDC0-A681-49F0-9747-7786451C3078"
+                        },
+                        "isEnable_": true
+                    },
+                    "value1": {},
+                    "animationTreeFile_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483653,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "8C23586A-AFB4-43EC-BAF5-6B02E3EEF58B"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "timeScale_": 1.0
+                }
+            }
+        },
+        "component_3": {
+            "polymorphic_id": 2147483652,
+            "polymorphic_name": "GamePlay::Npc::Enemy::SandWorm",
+            "ptr_wrapper": {
+                "id": 2147483654,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 5,
+                        "value0": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "guid_": {
+                                    "value_": "A567B69F-AFC3-4687-AAC7-A57F59CB1F69"
+                                },
+                                "isEnable_": true
+                            }
+                        },
+                        "behaviourData_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483655,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "AC638FB8-4A95-42DC-A67A-4B051A89E55F"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "currentStatus_": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483656,
+                                "data": {
+                                    "value0": {
+                                        "cereal_class_version": 3,
+                                        "maxHealth_": {
+                                            "cereal_class_version": 0,
+                                            "value_": 140
+                                        },
+                                        "currentHealth_": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2147483657,
+                                                "data": {
+                                                    "value0": {
+                                                        "value_": 140
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "isNetworkSyncStatus_": true,
+                        "lockOnPoint_": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "polymorphic_id": 1073741824,
+                                "ptr_wrapper": {
+                                    "id": 2147483658,
+                                    "data": {
+                                        "cereal_class_version": 0,
+                                        "value0": {
+                                            "value_": "2D84E207-1D00-47D0-91E9-382D06F1944C"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "component_4": {
+            "polymorphic_id": 2147483653,
+            "polymorphic_name": "Network::NetworkTransform",
+            "ptr_wrapper": {
+                "id": 2147483659,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "value0": {
+                            "guid_": {
+                                "value_": "27067394-7293-44FA-BEF9-B2BF4A8FBE3D"
+                            },
+                            "isEnable_": true
+                        }
+                    }
+                }
+            }
+        },
+        "component_5": {
+            "polymorphic_id": 2147483654,
+            "polymorphic_name": "GamePlay::Npc::Enemy::NetworkBehaviourTree",
+            "ptr_wrapper": {
+                "id": 2147483660,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "value0": {
+                            "guid_": {
+                                "value_": "7C843AC6-1742-42B2-9306-7159B1AE1891"
+                            },
+                            "isEnable_": true
+                        }
+                    }
+                }
+            }
+        },
+        "component_6": {
+            "polymorphic_id": 2147483655,
+            "polymorphic_name": "Network::NetworkGameObject",
+            "ptr_wrapper": {
+                "id": 2147483661,
+                "data": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "guid_": {
+                            "value_": "3A65AF7B-0CDF-4A9B-9A8E-DDFF2DE27F80"
+                        },
+                        "isEnable_": true
+                    }
+                }
+            }
+        },
+        "component_7": {
+            "polymorphic_id": 2147483656,
+            "polymorphic_name": "NanamiEngine::Module::Component::RigidBody",
+            "ptr_wrapper": {
+                "id": 2147483662,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "guid_": {
+                            "value_": "BE8A4D10-EC32-4D41-BB14-72C38CA97860"
+                        },
+                        "isEnable_": true
+                    },
+                    "motionType_": 2,
+                    "mass_": 10.0,
+                    "isGravity_": true,
+                    "constraints_": 56,
+                    "isPartOfParent_": false
+                }
+            }
+        }
+    },
+    "transform_": {
+        "cereal_class_version": 0,
+        "localPos_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        },
+        "localRot_": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0,
+            "value3": 1.0
+        },
+        "localScale_": {
+            "value0": 0.07999999821186066,
+            "value1": 0.07999999821186066,
+            "value2": 0.07999999821186066
+        },
+        "worldMatrix_": {
+            "value0": {
+                "value0": 0.07999999821186066,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value1": {
+                "value0": 0.0,
+                "value1": 0.07999999821186066,
+                "value2": 0.0,
+                "value3": 0.0
+            },
+            "value2": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.07999999821186066,
+                "value3": 0.0
+            },
+            "value3": {
+                "value0": 0.0,
+                "value1": 0.0,
+                "value2": 0.0,
+                "value3": 1.0
+            }
+        },
+        "childCount": 2,
+        "child": {
+            "polymorphic_id": 2147483657,
+            "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
+            "ptr_wrapper": {
+                "id": 2147483663,
+                "data": {
+                    "cereal_class_version": 1,
+                    "value0": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "cereal_class_version": 0
+                        }
+                    },
+                    "isActive_": false,
+                    "name_": "AttackArea",
+                    "guid_": {
+                        "value_": "243785C4-9088-4FBB-9B14-BE2F3FA01A78"
+                    },
+                    "components_": {
+                        "componentCount": 0
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 180.0,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 0.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.07999999821186066,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.07999999821186066,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.07999999821186066,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 14.399999618530273,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 4,
+                        "child": {
+                            "polymorphic_id": 9,
+                            "ptr_wrapper": {
+                                "id": 2147483664,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": false,
+                                    "name_": "Attack1Area",
+                                    "guid_": {
+                                        "value_": "3F709FDF-61F0-4FB9-BF5D-FECA6C322EDB"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 2147483658,
+                                            "polymorphic_name": "NanamiEngine::Module::Component::BoxCollider",
+                                            "ptr_wrapper": {
+                                                "id": 2147483665,
+                                                "data": {
+                                                    "cereal_class_version": 6,
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "08D5A936-2E64-408E-A980-F63EC0095349"
+                                                            },
+                                                            "isEnable_": true
+                                                        },
+                                                        "offset_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "layer_": 0,
+                                                        "isSensor_": true,
+                                                        "friction_": 0.20000000298023225
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "size_": {
+                                                        "value0": 18.0,
+                                                        "value1": 18.0,
+                                                        "value2": 18.0
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 2147483659,
+                                            "polymorphic_name": "GameCore::Npc::Enemy::AttackArea",
+                                            "ptr_wrapper": {
+                                                "id": 2147483666,
+                                                "data": {
+                                                    "cereal_class_version": 2,
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "3E561D1B-41C6-4907-B9E9-230688ACA3B9"
+                                                            },
+                                                            "isEnable_": true
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 0.0,
+                                            "value1": -36.0,
+                                            "value2": -72.0
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 10.0,
+                                            "value1": 15.0,
+                                            "value2": 27.809999465942384
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 0.7999999523162842,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.1999999284744263,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 2.224799871444702,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 11.519999504089355,
+                                                "value2": -5.759999752044678,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 9,
+                            "ptr_wrapper": {
+                                "id": 2147483667,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": false,
+                                    "name_": "Attack2Area",
+                                    "guid_": {
+                                        "value_": "F2647F98-3E12-48EC-B52B-37E14513E682"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 10,
+                                            "ptr_wrapper": {
+                                                "id": 2147483668,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "746B162C-40A4-4DFB-B3BD-E2DED78DEFF6"
+                                                            },
+                                                            "isEnable_": true
+                                                        },
+                                                        "offset_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "layer_": 0,
+                                                        "isSensor_": true,
+                                                        "friction_": 0.20000000298023225
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "size_": {
+                                                        "value0": 18.0,
+                                                        "value1": 18.0,
+                                                        "value2": 18.0
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 11,
+                                            "ptr_wrapper": {
+                                                "id": 2147483669,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "C709BB5B-8F17-4129-BDD5-997F53B9503D"
+                                                            },
+                                                            "isEnable_": true
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 0.0,
+                                            "value1": -36.0,
+                                            "value2": -230.2019989013672
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 10.0,
+                                            "value1": 15.0,
+                                            "value2": 27.809999465942384
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 0.7999999523162842,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.1999999284744263,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 2.224799871444702,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 11.519999504089355,
+                                                "value2": -18.41615867614746,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 9,
+                            "ptr_wrapper": {
+                                "id": 2147483670,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": false,
+                                    "name_": "Attack3Area",
+                                    "guid_": {
+                                        "value_": "8EDA75EA-1064-40F5-AB3F-331E305C5466"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 10,
+                                            "ptr_wrapper": {
+                                                "id": 2147483671,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "68A54C6A-0C94-48E9-8D48-CCA7782D06EE"
+                                                            },
+                                                            "isEnable_": true
+                                                        },
+                                                        "offset_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "layer_": 0,
+                                                        "isSensor_": true,
+                                                        "friction_": 0.20000000298023225
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "size_": {
+                                                        "value0": 18.0,
+                                                        "value1": 18.0,
+                                                        "value2": 18.0
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 11,
+                                            "ptr_wrapper": {
+                                                "id": 2147483672,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "A0E41E34-7000-47F9-ACF5-ADA90EAB81B6"
+                                                            },
+                                                            "isEnable_": true
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 0.0,
+                                            "value1": -36.0,
+                                            "value2": -332.20799560546874
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 10.0,
+                                            "value1": 15.0,
+                                            "value2": 16.559999465942384
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 0.7999999523162842,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 1.1999999284744263,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 1.32479989528656,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 11.519999504089355,
+                                                "value2": -26.57663917541504,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        },
+                        "child": {
+                            "polymorphic_id": 9,
+                            "ptr_wrapper": {
+                                "id": 2147483673,
+                                "data": {
+                                    "value0": {
+                                        "value0": {}
+                                    },
+                                    "isActive_": false,
+                                    "name_": "AttackRange",
+                                    "guid_": {
+                                        "value_": "573AAC0E-1089-46CC-803E-F5BC7F21E377"
+                                    },
+                                    "components_": {
+                                        "componentCount": 2,
+                                        "component_0": {
+                                            "polymorphic_id": 10,
+                                            "ptr_wrapper": {
+                                                "id": 2147483674,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "6DCDB001-CD11-47E6-BB39-3BBF4046DD03"
+                                                            },
+                                                            "isEnable_": true
+                                                        },
+                                                        "offset_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "offsetRotation_": {
+                                                            "value0": 0.0,
+                                                            "value1": 0.0,
+                                                            "value2": 0.0
+                                                        },
+                                                        "layer_": 0,
+                                                        "isSensor_": true,
+                                                        "friction_": 0.20000000298023225
+                                                    },
+                                                    "value1": {},
+                                                    "value2": {},
+                                                    "value3": {},
+                                                    "size_": {
+                                                        "value0": 225.0,
+                                                        "value1": 270.0,
+                                                        "value2": 585.0
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "component_1": {
+                                            "polymorphic_id": 11,
+                                            "ptr_wrapper": {
+                                                "id": 2147483675,
+                                                "data": {
+                                                    "value0": {
+                                                        "value0": {
+                                                            "guid_": {
+                                                                "value_": "83DDDC21-2B10-483C-8060-76E483F44BBD"
+                                                            },
+                                                            "isEnable_": true
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transform_": {
+                                        "localPos_": {
+                                            "value0": 0.0,
+                                            "value1": -36.0,
+                                            "value2": -112.5
+                                        },
+                                        "localRot_": {
+                                            "value0": 0.0,
+                                            "value1": 0.0,
+                                            "value2": 0.0,
+                                            "value3": 1.0
+                                        },
+                                        "localScale_": {
+                                            "value0": 1.0,
+                                            "value1": 1.0,
+                                            "value2": 1.0
+                                        },
+                                        "worldMatrix_": {
+                                            "value0": {
+                                                "value0": 0.07999999821186066,
+                                                "value1": 0.0,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value1": {
+                                                "value0": 0.0,
+                                                "value1": 0.07999999821186066,
+                                                "value2": 0.0,
+                                                "value3": 0.0
+                                            },
+                                            "value2": {
+                                                "value0": 0.0,
+                                                "value1": 0.0,
+                                                "value2": 0.07999999821186066,
+                                                "value3": 0.0
+                                            },
+                                            "value3": {
+                                                "value0": 0.0,
+                                                "value1": 11.519999504089355,
+                                                "value2": -9.0,
+                                                "value3": 1.0
+                                            }
+                                        },
+                                        "childCount": 0
+                                    },
+                                    "mark_": 0
+                                }
+                            }
+                        }
+                    },
+                    "mark_": 0
+                }
+            }
+        },
+        "child": {
+            "polymorphic_id": 9,
+            "ptr_wrapper": {
+                "id": 2147483676,
+                "data": {
+                    "value0": {
+                        "value0": {}
+                    },
+                    "isActive_": true,
+                    "name_": "LockOnPoint",
+                    "guid_": {
+                        "value_": "82F80EE4-ADF0-483C-8129-68F08BBF6E60"
+                    },
+                    "components_": {
+                        "componentCount": 1,
+                        "component_0": {
+                            "polymorphic_id": 2147483660,
+                            "polymorphic_name": "GameCore::PlayerAvatar::LockOnPoint",
+                            "ptr_wrapper": {
+                                "id": 2147483677,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "guid_": {
+                                            "value_": "2D84E207-1D00-47D0-91E9-382D06F1944C"
+                                        },
+                                        "isEnable_": true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "transform_": {
+                        "localPos_": {
+                            "value0": 0.0,
+                            "value1": 118.8,
+                            "value2": 0.0
+                        },
+                        "localRot_": {
+                            "value0": 0.0,
+                            "value1": 0.0,
+                            "value2": 0.0,
+                            "value3": 1.0
+                        },
+                        "localScale_": {
+                            "value0": 1.0,
+                            "value1": 1.0,
+                            "value2": 1.0
+                        },
+                        "worldMatrix_": {
+                            "value0": {
+                                "value0": 0.07999999821186066,
+                                "value1": 0.0,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value1": {
+                                "value0": 0.0,
+                                "value1": 0.07999999821186066,
+                                "value2": 0.0,
+                                "value3": 0.0
+                            },
+                            "value2": {
+                                "value0": 0.0,
+                                "value1": 0.0,
+                                "value2": 0.07999999821186066,
+                                "value3": 0.0
+                            },
+                            "value3": {
+                                "value0": 0.0,
+                                "value1": 9.503999710083008,
+                                "value2": 0.0,
+                                "value3": 1.0
+                            }
+                        },
+                        "childCount": 0
+                    },
+                    "mark_": 0
+                }
+            }
+        }
+    },
+    "mark_": 0,
+    "value0": 0
+}

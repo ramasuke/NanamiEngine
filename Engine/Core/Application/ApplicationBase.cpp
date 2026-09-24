@@ -21,6 +21,7 @@
 #include "Configuration/GameWindow/ApplicationConfiguration_GameWindow.h"
 #include "Configuration/Network/ApplicationConfiguration_Network.h"
 #include "Configuration/Physics/ApplicationConfiguration_Physics.h"
+#include "Display/WindowDisplayMode.h"
 #include "Time/Time.h"
 #include "../Physics/Physics.h"
 #include "LifeCycle/ApplicationLifeCycle.h"
@@ -75,7 +76,7 @@ namespace NanamiEngine::Core::Application
             SetMainWindowText(LibCore::Dxlib::Utf8ToShiftJis(Configuration::BuildConfiguration::ProductName()).c_str());
         }
         SetDoubleStartValidFlag(true          );
-        ChangeWindowMode       (true          );
+        Display::WindowDisplayModeController::ApplyBeforeInit();
         SetGraphMode           (Configuration::AppConfiguration::GetWindowWidth(), Configuration::AppConfiguration::GetWindowHeight(), Configuration::AppConfiguration::GetWindowColorScale());
         SetUseDirect3DVersion  (DX_DIRECT3D_11);
         SetZBufferBitDepth     (Configuration::AppConfiguration::GetZBufferBitDepth());
@@ -86,6 +87,7 @@ namespace NanamiEngine::Core::Application
         SetAlwaysRunFlag       (Configuration::AppConfiguration::GetAlwaysRun() ? TRUE : FALSE);
         SetASyncLoadThreadNum  (ApplicationBaseAsyncLoadThreadNum());
         DxLib_Init             (              );
+        Display::WindowDisplayModeController::ApplyAfterInit();
 
         /** リソースの初期化 */
         SetUseASyncLoadFlag(true);
@@ -118,6 +120,7 @@ namespace NanamiEngine::Core::Application
             Time::Update();
             OnFrame();
             ScreenFlip();
+            Display::WindowDisplayModeController::OnFrameEnd();
         }
     }
     

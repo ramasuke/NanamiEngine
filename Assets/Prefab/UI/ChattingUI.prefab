@@ -14,7 +14,7 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "cereal_class_version": 5,
+                    "cereal_class_version": 6,
                     "value0": {
                         "cereal_class_version": 0,
                         "guid_": {
@@ -176,7 +176,22 @@
                     "clearPopDuration_secs_": 0.44999998807907107,
                     "clearHoldDuration_secs_": 0.8999999761581421,
                     "clearMarkPopScale_": 1.0,
-                    "bodyAlphaRate_": 0.8600000143051148
+                    "bodyAlphaRate_": 0.8600000143051148,
+                    "uiSounds_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483660,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "20661C82-DE24-445D-BF6D-27D24E5D0577"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -230,7 +245,7 @@
             "polymorphic_id": 2147483650,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483660,
+                "id": 2147483661,
                 "data": {
                     "cereal_class_version": 1,
                     "value0": {
@@ -250,7 +265,7 @@
                             "polymorphic_id": 2147483651,
                             "polymorphic_name": "NanamiEngine::Module::Component::ImageRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483661,
+                                "id": 2147483662,
                                 "data": {
                                     "cereal_class_version": 2,
                                     "value0": {
@@ -270,7 +285,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483662,
+                                                "id": 2147483663,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -337,7 +352,7 @@
         "child": {
             "polymorphic_id": 2,
             "ptr_wrapper": {
-                "id": 2147483663,
+                "id": 2147483664,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -353,7 +368,7 @@
                             "polymorphic_id": 2147483652,
                             "polymorphic_name": "NanamiEngine::Module::NanamiUi::TextRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483664,
+                                "id": 2147483665,
                                 "data": {
                                     "cereal_class_version": 4,
                                     "value0": {
@@ -368,7 +383,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483665,
+                                                "id": 2147483666,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {

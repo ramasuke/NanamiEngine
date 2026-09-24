@@ -179,7 +179,7 @@
             "ptr_wrapper": {
                 "id": 2147483661,
                 "data": {
-                    "cereal_class_version": 1,
+                    "cereal_class_version": 2,
                     "value0": {
                         "guid_": {
                             "value_": "DF6B856E-DFC6-44CE-8FC8-199D16B036D5"
@@ -241,6 +241,21 @@
                                 }
                             }
                         }
+                    },
+                    "uiSounds_": {
+                        "cereal_class_version": 0,
+                        "value0": {
+                            "polymorphic_id": 1073741824,
+                            "ptr_wrapper": {
+                                "id": 2147483666,
+                                "data": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "value_": "20661C82-DE24-445D-BF6D-27D24E5D0577"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -295,7 +310,7 @@
             "polymorphic_id": 2147483651,
             "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
             "ptr_wrapper": {
-                "id": 2147483666,
+                "id": 2147483667,
                 "data": {
                     "cereal_class_version": 0,
                     "value0": {
@@ -315,7 +330,7 @@
                             "polymorphic_id": 2147483652,
                             "polymorphic_name": "NanamiEngine::Module::NanamiUi::BlendImageRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483667,
+                                "id": 2147483668,
                                 "data": {
                                     "cereal_class_version": 0,
                                     "value0": {
@@ -337,7 +352,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483668,
+                                                "id": 2147483669,
                                                 "data": {
                                                     "cereal_class_version": 0,
                                                     "value0": {
@@ -403,7 +418,7 @@
         "child": {
             "polymorphic_id": 3,
             "ptr_wrapper": {
-                "id": 2147483669,
+                "id": 2147483670,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -419,7 +434,7 @@
                             "polymorphic_id": 2147483653,
                             "polymorphic_name": "NanamiEngine::Module::Component::ImageRenderer",
                             "ptr_wrapper": {
-                                "id": 2147483670,
+                                "id": 2147483671,
                                 "data": {
                                     "cereal_class_version": 2,
                                     "value0": {
@@ -438,7 +453,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483671,
+                                                "id": 2147483672,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "BCBBE1EE-4214-4926-B31A-1FA06275D269"
@@ -503,7 +518,7 @@
         "child": {
             "polymorphic_id": 3,
             "ptr_wrapper": {
-                "id": 2147483672,
+                "id": 2147483673,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -518,7 +533,7 @@
                         "component_0": {
                             "polymorphic_id": 5,
                             "ptr_wrapper": {
-                                "id": 2147483673,
+                                "id": 2147483674,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -536,7 +551,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483674,
+                                                "id": 2147483675,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "AA1028EF-D83A-4694-96D0-B26069682225"
@@ -601,7 +616,7 @@
         "child": {
             "polymorphic_id": 3,
             "ptr_wrapper": {
-                "id": 2147483675,
+                "id": 2147483676,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -616,7 +631,7 @@
                         "component_0": {
                             "polymorphic_id": 5,
                             "ptr_wrapper": {
-                                "id": 2147483676,
+                                "id": 2147483677,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -634,7 +649,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483677,
+                                                "id": 2147483678,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "4875F6A6-F139-4BEA-913D-FB6377F04FC6"
@@ -699,7 +714,7 @@
         "child": {
             "polymorphic_id": 3,
             "ptr_wrapper": {
-                "id": 2147483678,
+                "id": 2147483679,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -714,7 +729,7 @@
                         "component_0": {
                             "polymorphic_id": 5,
                             "ptr_wrapper": {
-                                "id": 2147483679,
+                                "id": 2147483680,
                                 "data": {
                                     "value0": {
                                         "guid_": {
@@ -732,7 +747,7 @@
                                         "value0": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 2147483680,
+                                                "id": 2147483681,
                                                 "data": {
                                                     "value0": {
                                                         "value_": "24D8CD85-0471-4884-8C29-811A4166186B"
@@ -797,7 +812,7 @@
         "child": {
             "polymorphic_id": 3,
             "ptr_wrapper": {
-                "id": 2147483681,
+                "id": 2147483682,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -861,7 +876,7 @@
         "child": {
             "polymorphic_id": 3,
             "ptr_wrapper": {
-                "id": 2147483682,
+                "id": 2147483683,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -925,7 +940,7 @@
         "child": {
             "polymorphic_id": 3,
             "ptr_wrapper": {
-                "id": 2147483683,
+                "id": 2147483684,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -985,7 +1000,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483684,
+                                "id": 2147483685,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1001,7 +1016,7 @@
                                             "polymorphic_id": 2147483654,
                                             "polymorphic_name": "NanamiEngine::Module::NanamiUi::TextRenderer",
                                             "ptr_wrapper": {
-                                                "id": 2147483685,
+                                                "id": 2147483686,
                                                 "data": {
                                                     "cereal_class_version": 4,
                                                     "value0": {
@@ -1018,7 +1033,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483686,
+                                                                "id": 2147483687,
                                                                 "data": {
                                                                     "cereal_class_version": 0,
                                                                     "value0": {
@@ -1093,7 +1108,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483687,
+                                "id": 2147483688,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1108,7 +1123,7 @@
                                         "component_0": {
                                             "polymorphic_id": 5,
                                             "ptr_wrapper": {
-                                                "id": 2147483688,
+                                                "id": 2147483689,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -1126,7 +1141,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483689,
+                                                                "id": 2147483690,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "90D6A1FD-CB3F-42A7-85C3-FA374959EA93"
@@ -1191,7 +1206,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483690,
+                                "id": 2147483691,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1206,7 +1221,7 @@
                                         "component_0": {
                                             "polymorphic_id": 6,
                                             "ptr_wrapper": {
-                                                "id": 2147483691,
+                                                "id": 2147483692,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -1221,7 +1236,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483692,
+                                                                "id": 2147483693,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "02951627-F120-4EDC-B4F7-C27985C7F643"
@@ -1294,7 +1309,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483693,
+                                "id": 2147483694,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1309,7 +1324,7 @@
                                         "component_0": {
                                             "polymorphic_id": 5,
                                             "ptr_wrapper": {
-                                                "id": 2147483694,
+                                                "id": 2147483695,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -1327,7 +1342,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483695,
+                                                                "id": 2147483696,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "38665F19-3F53-4F70-94F8-3F901AECB53A"
@@ -1392,7 +1407,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483696,
+                                "id": 2147483697,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1407,7 +1422,7 @@
                                         "component_0": {
                                             "polymorphic_id": 6,
                                             "ptr_wrapper": {
-                                                "id": 2147483697,
+                                                "id": 2147483698,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -1422,7 +1437,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483698,
+                                                                "id": 2147483699,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "02951627-F120-4EDC-B4F7-C27985C7F643"
@@ -1495,7 +1510,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483699,
+                                "id": 2147483700,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1510,7 +1525,7 @@
                                         "component_0": {
                                             "polymorphic_id": 5,
                                             "ptr_wrapper": {
-                                                "id": 2147483700,
+                                                "id": 2147483701,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -1528,7 +1543,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483701,
+                                                                "id": 2147483702,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "B19A9FFA-7B76-4A3A-844D-08E651FB1C94"
@@ -1593,7 +1608,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483702,
+                                "id": 2147483703,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1608,7 +1623,7 @@
                                         "component_0": {
                                             "polymorphic_id": 6,
                                             "ptr_wrapper": {
-                                                "id": 2147483703,
+                                                "id": 2147483704,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -1623,7 +1638,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483704,
+                                                                "id": 2147483705,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "02951627-F120-4EDC-B4F7-C27985C7F643"
@@ -1696,7 +1711,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483705,
+                                "id": 2147483706,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1711,7 +1726,7 @@
                                         "component_0": {
                                             "polymorphic_id": 5,
                                             "ptr_wrapper": {
-                                                "id": 2147483706,
+                                                "id": 2147483707,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -1729,7 +1744,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483707,
+                                                                "id": 2147483708,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "80A26648-E0CC-4AAA-B3ED-44FF13B119DE"
@@ -1798,7 +1813,7 @@
         "child": {
             "polymorphic_id": 3,
             "ptr_wrapper": {
-                "id": 2147483708,
+                "id": 2147483709,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -1858,7 +1873,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483709,
+                                "id": 2147483710,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1873,7 +1888,7 @@
                                         "component_0": {
                                             "polymorphic_id": 6,
                                             "ptr_wrapper": {
-                                                "id": 2147483710,
+                                                "id": 2147483711,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -1888,7 +1903,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483711,
+                                                                "id": 2147483712,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "02951627-F120-4EDC-B4F7-C27985C7F643"
@@ -1961,7 +1976,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483712,
+                                "id": 2147483713,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -1976,7 +1991,7 @@
                                         "component_0": {
                                             "polymorphic_id": 5,
                                             "ptr_wrapper": {
-                                                "id": 2147483713,
+                                                "id": 2147483714,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -1994,7 +2009,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483714,
+                                                                "id": 2147483715,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "90D6A1FD-CB3F-42A7-85C3-FA374959EA93"
@@ -2059,7 +2074,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483715,
+                                "id": 2147483716,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -2074,7 +2089,7 @@
                                         "component_0": {
                                             "polymorphic_id": 6,
                                             "ptr_wrapper": {
-                                                "id": 2147483716,
+                                                "id": 2147483717,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -2089,7 +2104,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483717,
+                                                                "id": 2147483718,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "02951627-F120-4EDC-B4F7-C27985C7F643"
@@ -2162,7 +2177,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483718,
+                                "id": 2147483719,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -2177,7 +2192,7 @@
                                         "component_0": {
                                             "polymorphic_id": 5,
                                             "ptr_wrapper": {
-                                                "id": 2147483719,
+                                                "id": 2147483720,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -2195,7 +2210,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483720,
+                                                                "id": 2147483721,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "B19A9FFA-7B76-4A3A-844D-08E651FB1C94"
@@ -2260,7 +2275,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483721,
+                                "id": 2147483722,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -2275,7 +2290,7 @@
                                         "component_0": {
                                             "polymorphic_id": 6,
                                             "ptr_wrapper": {
-                                                "id": 2147483722,
+                                                "id": 2147483723,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -2290,7 +2305,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483723,
+                                                                "id": 2147483724,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "02951627-F120-4EDC-B4F7-C27985C7F643"
@@ -2363,7 +2378,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483724,
+                                "id": 2147483725,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -2378,7 +2393,7 @@
                                         "component_0": {
                                             "polymorphic_id": 5,
                                             "ptr_wrapper": {
-                                                "id": 2147483725,
+                                                "id": 2147483726,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -2396,7 +2411,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483726,
+                                                                "id": 2147483727,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "80A26648-E0CC-4AAA-B3ED-44FF13B119DE"
@@ -2465,7 +2480,7 @@
         "child": {
             "polymorphic_id": 3,
             "ptr_wrapper": {
-                "id": 2147483727,
+                "id": 2147483728,
                 "data": {
                     "value0": {
                         "value0": {}
@@ -2525,7 +2540,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483728,
+                                "id": 2147483729,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -2540,7 +2555,7 @@
                                         "component_0": {
                                             "polymorphic_id": 6,
                                             "ptr_wrapper": {
-                                                "id": 2147483729,
+                                                "id": 2147483730,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -2555,7 +2570,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483730,
+                                                                "id": 2147483731,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "02951627-F120-4EDC-B4F7-C27985C7F643"
@@ -2628,7 +2643,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483731,
+                                "id": 2147483732,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -2643,7 +2658,7 @@
                                         "component_0": {
                                             "polymorphic_id": 5,
                                             "ptr_wrapper": {
-                                                "id": 2147483732,
+                                                "id": 2147483733,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -2661,7 +2676,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483733,
+                                                                "id": 2147483734,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "90D6A1FD-CB3F-42A7-85C3-FA374959EA93"
@@ -2726,7 +2741,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483734,
+                                "id": 2147483735,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -2741,7 +2756,7 @@
                                         "component_0": {
                                             "polymorphic_id": 6,
                                             "ptr_wrapper": {
-                                                "id": 2147483735,
+                                                "id": 2147483736,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -2756,7 +2771,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483736,
+                                                                "id": 2147483737,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "02951627-F120-4EDC-B4F7-C27985C7F643"
@@ -2829,7 +2844,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483737,
+                                "id": 2147483738,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -2844,7 +2859,7 @@
                                         "component_0": {
                                             "polymorphic_id": 5,
                                             "ptr_wrapper": {
-                                                "id": 2147483738,
+                                                "id": 2147483739,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -2862,7 +2877,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483739,
+                                                                "id": 2147483740,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "38665F19-3F53-4F70-94F8-3F901AECB53A"
@@ -2927,7 +2942,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483740,
+                                "id": 2147483741,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -2942,7 +2957,7 @@
                                         "component_0": {
                                             "polymorphic_id": 6,
                                             "ptr_wrapper": {
-                                                "id": 2147483741,
+                                                "id": 2147483742,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -2957,7 +2972,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483742,
+                                                                "id": 2147483743,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "02951627-F120-4EDC-B4F7-C27985C7F643"
@@ -3030,7 +3045,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483743,
+                                "id": 2147483744,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -3045,7 +3060,7 @@
                                         "component_0": {
                                             "polymorphic_id": 5,
                                             "ptr_wrapper": {
-                                                "id": 2147483744,
+                                                "id": 2147483745,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -3063,7 +3078,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483745,
+                                                                "id": 2147483746,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "B19A9FFA-7B76-4A3A-844D-08E651FB1C94"
@@ -3128,7 +3143,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483746,
+                                "id": 2147483747,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -3143,7 +3158,7 @@
                                         "component_0": {
                                             "polymorphic_id": 6,
                                             "ptr_wrapper": {
-                                                "id": 2147483747,
+                                                "id": 2147483748,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -3158,7 +3173,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483748,
+                                                                "id": 2147483749,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "02951627-F120-4EDC-B4F7-C27985C7F643"
@@ -3231,7 +3246,7 @@
                         "child": {
                             "polymorphic_id": 3,
                             "ptr_wrapper": {
-                                "id": 2147483749,
+                                "id": 2147483750,
                                 "data": {
                                     "value0": {
                                         "value0": {}
@@ -3246,7 +3261,7 @@
                                         "component_0": {
                                             "polymorphic_id": 5,
                                             "ptr_wrapper": {
-                                                "id": 2147483750,
+                                                "id": 2147483751,
                                                 "data": {
                                                     "value0": {
                                                         "guid_": {
@@ -3264,7 +3279,7 @@
                                                         "value0": {
                                                             "polymorphic_id": 1073741824,
                                                             "ptr_wrapper": {
-                                                                "id": 2147483751,
+                                                                "id": 2147483752,
                                                                 "data": {
                                                                     "value0": {
                                                                         "value_": "80A26648-E0CC-4AAA-B3ED-44FF13B119DE"

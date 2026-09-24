@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "BoardListCursor.h"
+#include "QuestReadLog.h"
 #include "Engine/Module/Namespace/EngineNamespace.h"
 #include "../../../../../Data/EventNotice/Data_BoardQuest.h"
 
@@ -75,6 +76,11 @@ namespace GamePlay::Ui
 
         /** @brief 選んでいる依頼を受けたことにする。受付中でなければ何もしない */
         void MarkSelectedTaking();
+
+        /** @brief 受付中のメインストーリーの依頼に、まだ掲示板で見ていないものがあるか */
+        [[nodiscard]] bool HasUnreadMainStory(const QuestReadLog& readLog) const;
+        /** @brief 受付中のメインストーリーの依頼をすべて見たことにする */
+        void MarkMainStoryRead(QuestReadLog& readLog) const;
 
     private:
         std::vector<QuestBoardEntry> entries_;

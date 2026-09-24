@@ -721,6 +721,9 @@
     <ClCompile Include="Engine\Core\Application\Configuration\CodeEditor\ApplicationConfiguration_CodeEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Application\Display\WindowDisplayMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Core\Application\Configuration\Build\ApplicationConfiguration_Build.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1169,6 +1172,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Packages\AssetUpdater\Text\Utf8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\DebugSheet\Core\DebugSheet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\DebugSheet\Core\DebugSheetStyle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packages\DebugSheet\Core\DebugSheetWidgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Core\Network\Discovery\LanSessionMessage.cpp">
@@ -4725,6 +4737,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Application\Configuration\CodeEditor\ApplicationConfiguration_CodeEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Application\Display\WindowDisplayMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Application\Configuration\Build\ApplicationConfiguration_Build.h">

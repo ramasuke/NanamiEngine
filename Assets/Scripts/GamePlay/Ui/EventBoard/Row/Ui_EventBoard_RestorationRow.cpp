@@ -22,7 +22,7 @@ namespace GamePlay::Ui
 
         selectButton_->OnHover().Subscribe([this](auto)
         {
-            Sound::UiSoundBank::Play(hoverSound_, Sound::UiSe::Cursor);
+            Sound::UiSoundBank::Play(uiSounds_, hoverSound_, Sound::UiSe::Cursor);
             isHovering_ = true;
             RefreshAppearance();
         }).AddTo(this);
@@ -88,6 +88,7 @@ namespace GamePlay::Ui
         ImGuiHelper::OnDrawInputField("selectedScale_", selectedScale_);
         ImGuiHelper::OnDrawInputField("defaultNoteColor_", defaultNoteColor_);
         ImGuiHelper::OnDrawInputField("refusedNoteColor_", refusedNoteColor_);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

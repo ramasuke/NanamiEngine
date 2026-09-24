@@ -49,8 +49,10 @@ namespace GamePlay::PlayerAvatar
         void Init(std::shared_ptr<Status      > status      ,
                   std::unique_ptr<StateMachine> stateMachine,
                   std::shared_ptr<InputAction > inputAction ,
-                  const std::weak_ptr<CameraGroup>& cameraGroup);
-        
+                  const std::weak_ptr<CameraGroup>& cameraGroup,
+                  bool isOwner);
+
+        [[nodiscard]] bool IsOwner() const override { return isOwner_; }
         [[nodiscard]] IPlayerAvatarEventSceneStateMachine& GetEventSceneStateMachine() const override { return *stateMachine_; }
         [[nodiscard]] const StateMachine& GetStateMachine() const { return *stateMachine_; }
         [[nodiscard]] const InputAction& GetInputAction() const { return *inputAction_; }
@@ -102,10 +104,12 @@ namespace GamePlay::PlayerAvatar
 
         std::unique_ptr<Animator          > animator_     = nullptr;
         std::unique_ptr<StateMachine      > stateMachine_ = nullptr;
+        std::shared_ptr<State             > animatedState_ = nullptr;
         std::shared_ptr<Status            > status_       = nullptr;
         std::shared_ptr<InputAction       > inputAction_  = nullptr;
         std::weak_ptr  <CameraGroup       > cameraGroup_;
         std::weak_ptr  <Component::RigidBody> rigidBody_  ;
+        bool isOwner_ = false;
         [[serialize(0)]] FIELD(Ui::NpcChatting) chattingUi_;
         [[serialize(3)]] FIELD(GameObject::IGameObject) featStep_;
         [[serialize(4)]] FIELD(PlayerAvatar::InteractableArea) interactableArea_;
@@ -151,8 +155,10 @@ namespace GamePlay::PlayerAvatar
         std::shared_ptr<Status      > status,
         std::unique_ptr<StateMachine> stateMachine,
         std::shared_ptr<InputAction > inputAction,
-        const std::weak_ptr<CameraGroup>& cameraGroup)
+        const std::weak_ptr<CameraGroup>& cameraGroup,
+        const bool isOwner)
     {
+        isOwner_       = isOwner;
         modelRenderer_ = RequireComponent<Component::ModelRenderer>();
         PlayerAvatars_().push_back(Components().Catch<IPlayerAvatar>());
         
@@ -218,8 +224,18 @@ namespace GamePlay::PlayerAvatar
         stateMachine_->CurrentState()
             .Subscribe([this](const std::shared_ptr<State>& state)
             {
+                animatedState_ = state;
                 animator_->ChangeAnimation(state->AnimationType());
             }).AddTo(this);
+
+        // NOTE: 負傷で見た目だけ変わるStateがあるので、State が変わらなくても貼り直す
+        const auto reapply = [this](NanamiEngine::R4::Unit)
+        {
+            if (animatedState_)
+                animator_->ChangeAnimation(animatedState_->AnimationType());
+        };
+        status_->OnBecomeInjured     ().Subscribe(reapply).AddTo(this);
+        status_->OnRecoverFromInjured().Subscribe(reapply).AddTo(this);
     }
 
     template <RequireType::Traits TraitsT>

@@ -1,17 +1,24 @@
-"""Synthesize the shared UI sound set (GamePlay::Sound::UiSoundBank) and install it as SoundFile assets under
-Assets/Audio/UI.
+"""Synthesize the shared UI sound set (played through GamePlay::Sound::UiSoundBank) and install it as SoundFile assets under
+Assets/Audio/UI. The set is wired up in Assets/Data/UiSound/UiSoundBank.uiSoundBank (UiSoundBankData), which each UI
+component references through its `uiSounds_` field.
 
     python tools/art/ui_sfx.py [--only NAME ...] [--preview out.png]
 
-Design (docs/UIDesign.md の2系統に合わせる。写実寄りのゲームなので「ゲームっぽい電子音」にしない):
+Design (docs/UIDesign.md の2系統に合わせる。写実寄りの世界なので「ゲームっぽい電子音」「軽いクリック音」にしない):
 
-- 系統 A「手で触れる物」(掲示板・店・手帳・貼り紙・石版): 紙・木・鉄・石の物音。
-- 系統 B「HUD」(アイテム袋・魔法陣・ロックオン・大砲・チュートリアル札): 革袋・布・鉄の留め具・低い空気のうなり。
-  音階の付いたガラス音や鈴は使わない。目立たせたい出来事 (達成・開始) だけ低い青銅の鐘や太鼓にする。
+- 系統 A「手で触れる物」(掲示板・店・手帳・貼り紙・石版): 厚い羊皮紙・木の卓・鉄・石が酒場で鳴る物音。
+- 系統 B「HUD」(アイテム袋・魔法陣・ロックオン・大砲・チュートリアル札): 革袋・革のきしみ・鉄の歯止め・風のうなり。
+  音階の付いたガラス音・鈴・ピコピコは使わない。出来事 (開始・ボス) だけ遠くの鐘や大太鼓にする。
+- 重さ: 正弦波を直接鳴らさず、柔らかい打撃で共振器を叩くモーダル合成 (knock / iron / stone / drum) にし、
+  胴鳴りと長めの減衰、部屋の初期反射 (tavern) を付けて「その場で物が鳴った」音にする。
+- 何度も鳴る所には鳴らさない: 会話の文字送り・NPC に近づいたとき・ロックオン解除は無音。
+  チュートリアル札は出てくるときだけ鳴らし、課題の達成は羽根ペンの控えめな音にする。
 - 高さ: 基音は 45〜500 Hz、高域は 1.6〜3.2 kHz で丸める (スペクトル重心がおおむね 1.5 kHz 以下)。
   紙の擦れも 250〜2500 Hz の帯域だけを使い、シャリシャリさせない。
-- 音量の段: 何度も鳴るもの (カーソル・文字送り・袋の切替) は小さく短く (-24〜-18 dB / <150 ms)、
-  操作の返事 (決定・戻る・頁) は中 (-17〜-10 dB)、出来事 (判子・開始・ボス・達成) は大きめ (-8〜-3 dB)。
+- 音量は波形のピークではなく聞こえ方 (A 特性・50 ms 窓の最大 RMS) で揃える。低い音はピークで揃えると
+  ほとんど聞こえなくなるため。基準は店の購入音 Shop_Purchase (-14 dB)。LOUDNESS の段:
+  出来事 (判子・開始・ボス) -14 dB、操作の返事 (決定・戻る・頁・開閉) -17 dB、
+  何度も鳴るもの (カーソル・袋の切替) -21 dB、戦闘・会話・チュートリアル中のもの -19〜-23 dB。ピークは -1 dBFS を超えないよう柔らかく抑える。
 
 The primitives, the mp3 encoder and the .meta template come from tools/art/magic_sfx.py (MPEG-1 Layer III,
 192 kbps, 48 kHz, stereo; volume_ 255). write_sound() keeps an existing .meta, so re-running keeps the GUIDs.
@@ -24,6 +31,7 @@ import uuid
 from pathlib import Path
 
 import numpy as np
+from scipy.signal import lfilter
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import magic_sfx as m  # noqa: E402
@@ -35,55 +43,81 @@ D3, D4 = 146.83, 293.66
 
 
 # ================================================================ building blocks
-def paper(d, rng, lo=400, hi=2500, tau=0.02):
-    """紙や布が擦れる短いノイズ (高域は入れない)"""
-    return m.bp(m.white(d, rng), lo, hi) * m.exp_decay(d, tau, 0.0015)
+# NOTE: 正弦波をそのまま鳴らすと電子音に聞こえるので、音程のある成分は「柔らかい打撃 (雑音の短い塊) で共振器を
+#       叩く」モーダル合成で作る。共振の Q は減衰時間から決める (tau = Q / (pi f))。
+def excite(d, rng, soft=0.003, lp_hz=2500):
+    """指の腹・拳・木槌で叩いたときの励起。soft が長いほど柔らかい (高域が出ない)"""
+    n = max(8, m.n_of(soft))
+    burst = rng.standard_normal(n) * np.hanning(n)
+    return m.lp(m.pad(burst, m.n_of(d)), lp_hz)
 
 
-def wood(f, d, tau=0.035, rng=None, click=0.35):
-    """木を叩いた音: 低めの共鳴 2 本 + 叩いた瞬間の擦れ"""
-    x = m.osc(f, d) * m.exp_decay(d, tau, 0.0008)
-    x += 0.45 * m.osc(f * 2.31, d) * m.exp_decay(d, tau * 0.45, 0.0008)
-    if rng is not None:
-        x += click * m.bp(m.white(d, rng), f * 1.5, min(f * 7, 3000)) * m.exp_decay(d, tau * 0.25, 0.0005)
-    return x
+def resonate(exc, modes):
+    """modes = [(周波数, 減衰秒, 音量), ...] の共振器を並べて exc で鳴らす"""
+    out = np.zeros_like(exc)
+    for f, tau, g in modes:
+        b, a = m._biquad('bp', f, max(0.7, np.pi * f * tau))
+        out += lfilter(b, a, exc) * g
+    return out
 
 
-def iron(f, d, tau=0.05, rng=None):
-    """鉄の金具・留め具が当たる音: 重く短く減衰する非整数倍音 + 当たりの擦れ"""
-    partials = [(1.0, 1.0), (2.14, 0.5), (3.47, 0.25)]
-    x = sum(m.osc(f * r, d) * g * m.exp_decay(d, tau / r, 0.0005) for r, g in partials)
-    if rng is not None:
-        x += 0.5 * m.bp(m.white(d, rng), 600, 2800) * m.exp_decay(d, 0.006, 0.0003)
-    return x
+def knock(d, rng, f=120, tau=0.1, soft=0.003, body=0.5):
+    """厚い木の台を拳や指で叩く音: 板の非整数倍の共振 + 台の胴鳴り"""
+    modes = [(f, tau, 1.0), (f * 2.3, tau * 0.6, 0.55), (f * 3.8, tau * 0.35, 0.3), (f * 5.6, tau * 0.2, 0.15)]
+    x = m.norm(resonate(excite(d, rng, soft), modes))
+    thump = m.norm(resonate(excite(d, rng, soft * 2, 400), [(f * 0.55, tau * 0.7, 1.0)]))
+    return x + body * thump
 
 
-def bronze_bell(f, d, tau=1.2):
-    """低い青銅の鐘: hum (0.5) / prime / 短三度 / 五度 / オクターブの教会鐘の部分音"""
-    partials = [(0.5, 0.55, 1.6), (1.0, 1.0, 1.0), (1.19, 0.45, 0.7), (1.5, 0.3, 0.5), (2.0, 0.35, 0.4), (2.61, 0.12, 0.25)]
-    x = sum(m.osc(f * r, d) * g * m.exp_decay(d, tau * k, 0.002) for r, g, k in partials)
-    return m.lp(x, 2200)
+def iron(d, rng, f=260, tau=0.06, soft=0.0012):
+    """鉄の金具・留め具: 重く短い非整数倍音 (高域は丸める)"""
+    modes = [(f, tau, 1.0), (f * 2.14, tau * 0.7, 0.6), (f * 3.47, tau * 0.5, 0.35), (f * 5.2, tau * 0.3, 0.2)]
+    return m.lp(resonate(excite(d, rng, soft, 3500), modes), 3200)
 
 
-def drum(f, d, rng, tau=0.18):
-    """皮を張った低い太鼓: 音程の落ちる胴鳴り + 皮の擦れ"""
-    body = m.osc(m.curve(d, [(0, f * 1.6), (0.06, f)], 'exp'), d) * m.exp_decay(d, tau, 0.002)
-    skin = m.lp(m.white(d, rng), 900) * m.exp_decay(d, 0.02, 0.001)
-    return body + 0.35 * skin
+def bronze_bell(d, rng, f=D3, tau=1.4):
+    """遠くの青銅の鐘: 教会鐘の部分音 (hum / prime / 短三度 / 五度 / オクターブ)"""
+    modes = [(f * 0.5, tau * 1.6, 0.6), (f, tau, 1.0), (f * 1.19, tau * 0.7, 0.45), (f * 1.5, tau * 0.5, 0.3),
+             (f * 2.0, tau * 0.4, 0.3), (f * 2.61, tau * 0.25, 0.12)]
+    return m.lp(resonate(excite(d, rng, 0.004, 2000), modes), 1800)
 
 
-def leather(d, rng, lo=250, hi=1600, rate=180):
-    """革袋・外套の擦れ (ざらつきを細かい粒で出す)"""
+def drum(d, rng, f=60, tau=0.3):
+    """皮を張った低い太鼓: 皮の共振 + 胴の空気 + 皮の擦れ"""
+    modes = [(f, tau, 1.0), (f * 1.59, tau * 0.6, 0.5), (f * 2.14, tau * 0.4, 0.3)]
+    x = m.norm(resonate(excite(d, rng, 0.006, 600), modes))
+    skin = m.lp(m.white(d, rng), 700) * m.exp_decay(d, 0.03, 0.002)
+    return x + 0.25 * m.norm(skin)
+
+
+def parchment(d, rng, rate=90, lo=250, hi=1500):
+    """厚い羊皮紙・帳面が擦れる音: ゆっくりした粗い粒 + 空気が動く低い「ふわっ」"""
     times = m.poisson_times(d, rng, lambda t: rate)
-    x = m.grains(d, rng, times, lo, hi, (0.004, 0.015), (0.3, 1.0))
-    return x * m.curve(d, [(0, 0), (d * 0.25, 1), (d, 0)])
+    crinkle = m.grains(d, rng, times, lo, hi, (0.006, 0.025), (0.2, 1.0))
+    whump = m.lp(m.white(d, rng), 260)
+    env = m.curve(d, [(0, 0), (d * 0.3, 1), (d, 0)])
+    return (m.norm(crinkle) * 0.8 + m.norm(whump) * 0.5) * env
 
 
-def stone(d, rng, f=140, tau=0.06):
+def brush(d, rng, lo=300, hi=1400):
+    """指先で紙の表面をなでる/紙を滑らせる音"""
+    fc = m.curve(d, [(0, lo), (d * 0.4, hi), (d, lo)], 'exp')
+    x = m.sweep(m.white(d, rng), fc, q=0.9)
+    return x * m.curve(d, [(0, 0), (d * 0.35, 1), (d, 0)])
+
+
+def leather(d, rng, lo=200, hi=1200, rate=140):
+    """革袋・外套・籠手の擦れ"""
+    times = m.poisson_times(d, rng, lambda t: rate)
+    x = m.grains(d, rng, times, lo, hi, (0.006, 0.02), (0.3, 1.0))
+    return x * m.curve(d, [(0, 0), (d * 0.3, 1), (d, 0)])
+
+
+def stone(d, rng, f=110, tau=0.08, grit=0.5):
     """石の板が当たる鈍い音"""
-    body = m.osc(m.curve(d, [(0, f * 1.3), (0.03, f)], 'exp'), d) * m.exp_decay(d, tau, 0.001)
-    grit = m.bp(m.white(d, rng), 300, 1800) * m.exp_decay(d, tau * 0.5, 0.0008)
-    return body + 0.55 * grit
+    modes = [(f, tau, 1.0), (f * 2.7, tau * 0.5, 0.5), (f * 4.9, tau * 0.3, 0.25)]
+    x = m.norm(resonate(excite(d, rng, 0.002, 2000), modes))
+    return x + grit * m.norm(m.bp(m.white(d, rng), 300, 1500) * m.exp_decay(d, tau * 0.4, 0.001))
 
 
 def muffle(x, f=2800):
@@ -91,263 +125,291 @@ def muffle(x, f=2800):
     return m.lp(x, f, 4)
 
 
-def room(x, rng, rt60=0.28, mix=0.12, bright=5000):
-    return m.reverb(x, rng, rt60=rt60, mix=mix, predelay=0.005, bright=bright)
+def tavern(x, rng, rt60=0.55, mix=0.2, bright=2200):
+    """木造の酒場くらいの部屋: 初期反射 (壁・卓) + 残響。乾いた音を「その場で鳴った」音にする"""
+    y = x.copy()
+    for delay, gain in ((0.007, 0.35), (0.013, 0.25), (0.021, 0.18), (0.034, 0.12)):
+        m.at(y, m.lp(x, 2500) * gain, delay)
+    return m.reverb(y, rng, rt60=rt60, mix=mix, predelay=0.01, bright=bright)
 
 
-def air(x, rng, rt60=0.6, mix=0.18, bright=2500):
-    return m.reverb(x, rng, rt60=rt60, mix=mix, predelay=0.012, bright=bright)
+def open_air(x, rng, rt60=1.2, mix=0.25, bright=1600):
+    """屋外で遠くまで響く音 (鐘・太鼓・地鳴り)"""
+    return m.reverb(x, rng, rt60=rt60, mix=mix, predelay=0.03, bright=bright)
+
+
+def mix_at(d, parts):
+    """parts = [(信号, 開始秒, 音量)] を 1 本にまとめる (各信号は正規化してから重ねる)"""
+    buf = np.zeros(m.n_of(d))
+    for x, start, gain in parts:
+        m.at(buf, m.norm(x), start, gain)
+    return buf
 
 
 # ================================================================ 系統 A
 def ui_cursor(rng):
-    """カーソル移動・ホバー: 指先で木の札に触れる小さく鈍い「トッ」"""
-    d = 0.08
-    x = wood(240, d, 0.014, rng, 0.25) + 0.3 * paper(d, rng, 500, 1800, 0.008)
-    return m.finish(room(muffle(x, 2200), rng, 0.18, 0.06, 2500), -20.0, fade_out=0.02)
+    """カーソル移動・ホバー: 指先で厚い紙をなで、下の卓にかすかに触れる"""
+    d = 0.16
+    x = mix_at(d, [(brush(0.1, rng, 300, 1200), 0.0, 0.7), (knock(0.12, rng, 170, 0.04, 0.004, 0.2), 0.03, 0.5)])
+    return m.finish(tavern(muffle(x, 2000), rng, 0.4, 0.14), -20.0, fade_out=0.03)
 
 
 def ui_confirm(rng):
-    """決定: 拳の腹で木の台を「ゴッ」と叩く (低い胴鳴り + 短い当たり)"""
-    d = 0.3
-    buf = np.zeros(m.n_of(d))
-    m.at(buf, m.norm(wood(165, 0.25, 0.05, rng, 0.3)), 0.0, 1.0)
-    m.at(buf, m.norm(m.osc(82, 0.2) * m.exp_decay(0.2, 0.05, 0.002)), 0.0, 0.45)
-    return m.finish(room(muffle(buf, 2600), rng, 0.3, 0.12, 2500), -10.0)
+    """決定: 拳の腹で厚い卓を「ゴン」と 1 回叩く"""
+    d = 0.35
+    x = knock(d, rng, 118, 0.12, 0.003, 0.6)
+    return m.finish(tavern(muffle(x, 2600), rng), -10.0)
 
 
 def ui_cancel(rng):
-    """戻る: 紙を手前へ引き戻す擦れ + こもった軽い叩き"""
-    d = 0.26
-    buf = np.zeros(m.n_of(d))
-    slide = m.sweep(m.white(0.15, rng), m.curve(0.15, [(0, 1600), (0.15, 450)], 'exp'), q=1.0)
-    slide *= m.curve(0.15, [(0, 0), (0.03, 1), (0.15, 0)])
-    m.at(buf, m.norm(slide), 0.0, 0.5)
-    m.at(buf, m.norm(wood(130, 0.14, 0.035, rng, 0.15)), 0.07, 0.8)
-    return m.finish(room(muffle(buf, 2200), rng, 0.25, 0.1, 2200), -13.0)
+    """戻る: 紙を手前へ引き戻し、指で軽く押さえる"""
+    d = 0.35
+    x = mix_at(d, [(brush(0.2, rng, 700, 250), 0.0, 0.7), (knock(0.2, rng, 100, 0.07, 0.005, 0.4), 0.13, 0.6)])
+    return m.finish(tavern(muffle(x, 2000), rng), -13.0)
 
 
 def ui_open(rng):
-    """画面を開く: 厚い羊皮紙を広げる「ばさっ」+ 木の台に置く重い音"""
-    d = 0.55
-    buf = np.zeros(m.n_of(d))
-    rustle_d = 0.28
-    times = m.poisson_times(rustle_d, rng, lambda t: 220 * (1 - t / rustle_d) + 40)
-    rustle = m.grains(rustle_d, rng, times, 400, 2200, (0.004, 0.015), (0.2, 1.0))
-    rustle += 0.6 * m.bp(m.white(rustle_d, rng), 250, 1200) * m.curve(rustle_d, [(0, 0), (0.06, 1), (rustle_d, 0)])
-    m.at(buf, m.norm(rustle), 0.0, 0.6)
-    m.at(buf, m.norm(wood(110, 0.25, 0.06, rng, 0.2)), 0.22, 0.85)
-    return m.finish(room(muffle(buf, 2600), rng, 0.32, 0.12, 2500), -11.0)
+    """画面を開く: 厚い羊皮紙を広げ、卓に置く「ばさり…トン」"""
+    d = 0.6
+    x = mix_at(d, [(parchment(0.35, rng, 90), 0.0, 0.75), (knock(0.3, rng, 92, 0.1, 0.006, 0.7), 0.3, 0.7)])
+    return m.finish(tavern(muffle(x, 2400), rng), -11.0)
 
 
 def ui_close(rng):
-    """画面を閉じる: 紙を畳む短い擦れ + 小さな置き音 (開くより軽い)"""
-    d = 0.3
-    buf = np.zeros(m.n_of(d))
-    fold = m.bp(m.white(0.16, rng), 350, 1800) * m.curve(0.16, [(0, 0), (0.02, 1), (0.08, 0.5), (0.16, 0)])
-    m.at(buf, m.norm(fold), 0.0, 0.6)
-    m.at(buf, m.norm(wood(140, 0.15, 0.03, rng, 0.15)), 0.12, 0.6)
-    return m.finish(room(muffle(buf, 2200), rng, 0.25, 0.1, 2200), -14.0)
+    """画面を閉じる: 羊皮紙を畳んで脇へ置く"""
+    d = 0.45
+    x = mix_at(d, [(parchment(0.22, rng, 80, 250, 1300), 0.0, 0.7), (knock(0.25, rng, 105, 0.08, 0.006, 0.6), 0.18, 0.55)])
+    return m.finish(tavern(muffle(x, 2200), rng), -14.0)
 
 
 def ui_tab(rng):
-    """タブ・頁の切り替え: 厚い帳面を 1 枚めくる (低い帯域の擦れ)"""
-    d = 0.24
-    fc = m.curve(d, [(0, 500), (0.08, 1500), (d, 700)], 'exp')
-    flip = m.sweep(m.white(d, rng), fc, q=1.2) * m.curve(d, [(0, 0), (0.025, 0.6), (0.07, 1), (0.14, 0.3), (d, 0)])
-    buf = m.norm(flip)
-    m.at(buf, m.norm(paper(0.05, rng, 600, 2000, 0.008)) * 0.35, 0.12)
-    return m.finish(room(muffle(buf, 2400), rng, 0.22, 0.08, 2200), -14.0)
+    """タブ・頁の切り替え: 厚い帳面を 1 枚めくって置く"""
+    d = 0.42
+    flip = brush(0.3, rng, 250, 1300) + 0.4 * m.lp(m.white(0.3, rng), 250) * m.curve(0.3, [(0, 0), (0.15, 1), (0.3, 0)])
+    x = mix_at(d, [(flip, 0.0, 0.8), (parchment(0.08, rng, 120, 300, 1200), 0.24, 0.35)])
+    return m.finish(tavern(muffle(x, 2200), rng, 0.45, 0.16), -14.0)
 
 
 def ui_stamp(rng):
-    """判子を押す: 判子を紙越しに厚い板へ「ドン」(受注・雇用・出発・地図の到達印)"""
-    d = 0.5
-    buf = np.zeros(m.n_of(d))
-    body = m.osc(m.curve(0.35, [(0, 120), (0.05, 68)], 'exp'), 0.35) * m.exp_decay(0.35, 0.08, 0.0015)
-    thwack = m.lp(m.white(0.08, rng), 1100) * m.exp_decay(0.08, 0.012, 0.0005)
-    m.at(buf, m.norm(body), 0.0, 1.0)
-    m.at(buf, m.norm(thwack), 0.0, 0.5)
-    m.at(buf, m.norm(wood(180, 0.12, 0.025)), 0.004, 0.3)
-    m.at(buf, m.norm(paper(0.05, rng, 400, 1500, 0.012)), 0.2, 0.15)
-    return m.finish(room(buf, rng, 0.3, 0.12, 2000), -5.0)
+    """判子を押す: 重い木の判子を紙越しに卓へ「ドン」と押し付け、少しねじって離す"""
+    d = 0.6
+    body = knock(0.45, rng, 72, 0.14, 0.004, 0.9)
+    crush = m.lp(m.white(0.1, rng), 700) * m.exp_decay(0.1, 0.02, 0.001)
+    x = mix_at(d, [(body, 0.0, 1.0), (crush, 0.0, 0.45), (brush(0.1, rng, 300, 900), 0.28, 0.2)])
+    return m.finish(tavern(x, rng, 0.6, 0.22, 1800), -5.0)
 
 
 def ui_refuse(rng):
-    """断り: 帳場の台を指で 2 回叩く鈍い音"""
-    d = 0.3
-    buf = np.zeros(m.n_of(d))
-    for start, gain in ((0.0, 1.0), (0.1, 0.75)):
-        knock = m.osc(120, 0.1) * m.exp_decay(0.1, 0.03, 0.001) * 0.7
-        knock += m.bp(m.white(0.1, rng), 120, 700) * m.exp_decay(0.1, 0.018, 0.001)
-        m.at(buf, m.norm(knock), start, gain)
-    return m.finish(room(buf, rng, 0.22, 0.08, 1800), -11.0)
+    """断り: 帳場の台を指の関節で 2 回、低く叩く"""
+    d = 0.4
+    x = mix_at(d, [(knock(0.18, rng, 98, 0.06, 0.003, 0.5), 0.0, 1.0), (knock(0.18, rng, 96, 0.06, 0.003, 0.5), 0.12, 0.75)])
+    return m.finish(tavern(muffle(x, 1800), rng), -11.0)
 
 
 def ui_digit(rng):
-    """ルームコードの数字: 鉄のダイヤル錠が 1 目盛り回る鈍い「カチ」"""
-    d = 0.1
-    x = iron(430, d, 0.025, rng)
-    return m.finish(room(muffle(x, 2800), rng, 0.15, 0.05, 2500), -19.0, fade_out=0.02)
+    """ルームコードの数字: 鉄のダイヤル錠が 1 目盛り重く回る「ゴリッ」"""
+    d = 0.14
+    x = mix_at(d, [(iron(0.12, rng, 300, 0.03), 0.0, 0.8), (m.bp(m.white(0.03, rng), 300, 1500), 0.0, 0.3)])
+    return m.finish(tavern(muffle(x, 2600), rng, 0.3, 0.1), -19.0, fade_out=0.02)
 
 
 def ui_game_start(rng):
-    """タイトルで開始: 重い扉の鉄の閂が外れる音 + 遠くで鳴る低い青銅の鐘 1 打"""
-    d = 3.0
-    buf = np.zeros(m.n_of(d))
-    m.at(buf, m.norm(iron(160, 0.3, 0.08, rng)), 0.0, 0.6)
-    m.at(buf, m.norm(wood(75, 0.5, 0.12, rng, 0.2)), 0.02, 0.7)
-    m.at(buf, m.norm(bronze_bell(D3, 2.8, 1.1)), 0.12, 0.9)
-    return m.finish(m.reverb(buf, rng, rt60=1.8, mix=0.28, predelay=0.02, bright=1800), -5.0, fade_out=0.6)
+    """タイトルで開始: 重い扉の鉄の閂を外し、扉が開く。遠くで青銅の鐘が 1 つ"""
+    d = 3.4
+    latch = iron(0.4, rng, 150, 0.12, 0.002)
+    door = knock(0.6, rng, 62, 0.2, 0.008, 1.0)
+    creak = m.sweep(m.white(0.6, rng), m.curve(0.6, [(0, 180), (0.6, 320)], 'exp'), q=6.0) * m.curve(0.6, [(0, 0), (0.2, 1), (0.6, 0)])
+    near = tavern(mix_at(1.0, [(latch, 0.0, 0.8), (door, 0.12, 0.9), (creak, 0.18, 0.35)]), rng, 0.8, 0.25, 1800)
+    bell = open_air(bronze_bell(3.0, rng, D3, 1.2), rng, 1.8, 0.35, 1400)
+    out = np.zeros((2, m.n_of(d) + near.shape[1]))
+    out[:, :near.shape[1]] += near / (np.max(np.abs(near)) + 1e-9)
+    b = bell[:, : out.shape[1] - m.n_of(0.45)]
+    out[:, m.n_of(0.45):m.n_of(0.45) + b.shape[1]] += 0.55 * b / (np.max(np.abs(bell)) + 1e-9)
+    return m.finish(out, -5.0, fade_out=0.6)
 
 
 def ui_stone_cursor(rng):
     """ゲームオーバーの石版上のカーソル: 小石が石に触れる低い「コツ」"""
-    d = 0.1
-    x = stone(d, rng, 260, 0.014)
-    return m.finish(m.reverb(muffle(x, 1800), rng, rt60=0.5, mix=0.12, predelay=0.01, bright=1800), -18.0, fade_out=0.02)
+    d = 0.14
+    x = stone(d, rng, 240, 0.03, 0.3)
+    return m.finish(open_air(muffle(x, 1800), rng, 0.8, 0.14, 1600), -18.0, fade_out=0.02)
 
 
 def ui_stone_confirm(rng):
     """ゲームオーバーの決定: 石版を押し込む重い擦れ + 低い「ゴン」"""
-    d = 0.9
-    buf = np.zeros(m.n_of(d))
-    grind = m.bp(m.brown(0.25, rng) + 0.3 * m.white(0.25, rng), 120, 900)
-    grind *= m.curve(0.25, [(0, 0), (0.05, 1), (0.25, 0)])
-    m.at(buf, m.norm(grind), 0.0, 0.5)
-    m.at(buf, m.norm(stone(0.6, rng, 70, 0.14)), 0.16, 1.0)
-    return m.finish(m.reverb(buf, rng, rt60=1.0, mix=0.2, predelay=0.012, bright=1500), -7.0, fade_out=0.15)
+    d = 1.0
+    grind = m.bp(m.brown(0.3, rng) + 0.3 * m.white(0.3, rng), 100, 800) * m.curve(0.3, [(0, 0), (0.06, 1), (0.3, 0)])
+    x = mix_at(d, [(grind, 0.0, 0.5), (stone(0.7, rng, 62, 0.2, 0.4), 0.18, 1.0)])
+    return m.finish(open_air(x, rng, 1.1, 0.22, 1400), -7.0, fade_out=0.15)
 
 
 def ui_hoof_tick(rng):
     """アセット更新の進み: 早馬の蹄が土を踏む「ドッ」"""
-    d = 0.12
-    x = wood(190, d, 0.02, rng, 0.3) + 0.5 * m.lp(m.white(d, rng), 700) * m.exp_decay(d, 0.015, 0.001)
-    return m.finish(room(muffle(x, 1600), rng, 0.2, 0.06, 1800), -19.0, fade_out=0.02)
+    d = 0.16
+    x = knock(d, rng, 150, 0.03, 0.004, 0.6) + 0.5 * m.norm(m.lp(m.white(d, rng), 600) * m.exp_decay(d, 0.02, 0.001))
+    return m.finish(open_air(muffle(x, 1500), rng, 0.5, 0.1, 1500), -19.0, fade_out=0.02)
 
 
 def ui_loading_done(rng):
     """ロード完了: 木箱の蓋を閉め、鉄の留め金を掛ける「ドッ・カチャ」"""
     d = 0.6
-    buf = np.zeros(m.n_of(d))
-    m.at(buf, m.norm(wood(95, 0.3, 0.07, rng, 0.25)), 0.0, 1.0)
-    m.at(buf, m.norm(iron(380, 0.15, 0.03, rng)), 0.14, 0.45)
-    return m.finish(room(muffle(buf, 2600), rng, 0.35, 0.14, 2200), -12.0, fade_out=0.1)
+    x = mix_at(d, [(knock(0.35, rng, 82, 0.12, 0.006, 0.8), 0.0, 1.0), (iron(0.2, rng, 330, 0.04), 0.16, 0.45)])
+    return m.finish(tavern(muffle(x, 2400), rng), -12.0, fade_out=0.1)
 
 
 # ================================================================ 系統 B (HUD)
 def hud_select(rng):
-    """アイテム袋の切り替え: 腰の革袋の中で瓶や道具が軽く当たる"""
-    d = 0.14
-    buf = np.zeros(m.n_of(d))
-    m.at(buf, m.norm(leather(0.1, rng, 250, 1400, 220)), 0.0, 0.5)
-    m.at(buf, m.norm(wood(290, 0.08, 0.015)), 0.02, 0.7)
-    return m.finish(room(muffle(buf, 2200), rng, 0.15, 0.05, 2200), -20.0, fade_out=0.03)
+    """アイテム袋の切り替え: 腰の革袋の中で瓶と道具が鈍く当たる"""
+    d = 0.2
+    x = mix_at(d, [(leather(0.14, rng, 200, 1100, 160), 0.0, 0.6), (knock(0.12, rng, 210, 0.035, 0.003, 0.2), 0.03, 0.6)])
+    return m.finish(tavern(muffle(x, 2000), rng, 0.3, 0.08), -20.0, fade_out=0.03)
 
 
 def hud_palette_open(rng):
-    """魔法陣パレットを開く: 手元に魔力が集まる低いうなり (空気の渦 + 地を這う低音)"""
-    d = 0.6
-    buf = np.zeros(m.n_of(d))
-    swirl = m.sweep(m.white(d, rng), m.curve(d, [(0, 180), (0.3, 700), (d, 350)], 'exp'), q=2.0)
-    swirl *= m.curve(d, [(0, 0), (0.22, 1), (d, 0)])
-    hum = m.osc(73.4, d) * m.curve(d, [(0, 0), (0.2, 1), (d, 0)])
-    m.at(buf, m.norm(swirl), 0.0, 0.8)
-    m.at(buf, m.norm(hum), 0.0, 0.35)
-    return m.finish(air(muffle(buf, 1800), rng, 0.5, 0.15, 1800), -15.0, fade_out=0.1)
+    """魔法陣パレットを開く: 手元に風が巻いて集まる低いうなり"""
+    d = 0.7
+    swirl = m.sweep(m.white(d, rng), m.curve(d, [(0, 150), (0.35, 600), (d, 280)], 'exp'), q=1.6)
+    swirl *= m.curve(d, [(0, 0), (0.28, 1), (d, 0)])
+    rumble = m.lp(m.brown(d, rng), 160) * m.curve(d, [(0, 0), (0.25, 1), (d, 0)])
+    x = m.norm(swirl) + 0.5 * m.norm(rumble)
+    return m.finish(open_air(muffle(x, 1600), rng, 0.8, 0.2, 1400), -15.0, fade_out=0.1)
 
 
 def hud_page_shift(rng):
-    """魔法陣パレットの頁送り: 魔法陣が回る短い低い風切り"""
-    d = 0.26
-    swish = m.sweep(m.white(d, rng), m.curve(d, [(0, 300), (0.1, 900), (d, 250)], 'exp'), q=1.8)
-    swish *= m.curve(d, [(0, 0), (0.08, 1), (d, 0)])
-    return m.finish(air(muffle(swish, 1600), rng, 0.35, 0.12, 1600), -17.0, fade_out=0.05)
+    """魔法陣パレットの頁送り: 陣が回る短く低い風切り"""
+    d = 0.3
+    swish = m.sweep(m.white(d, rng), m.curve(d, [(0, 250), (0.12, 750), (d, 220)], 'exp'), q=1.5)
+    swish *= m.curve(d, [(0, 0), (0.1, 1), (d, 0)])
+    return m.finish(open_air(muffle(swish, 1400), rng, 0.5, 0.15, 1400), -17.0, fade_out=0.05)
 
 
 def hud_lock_on(rng):
-    """ロックオン: 構え直す布擦れ + 剣の鍔や籠手の金具が鳴る短い「チャッ」"""
-    d = 0.3
-    buf = np.zeros(m.n_of(d))
-    m.at(buf, m.norm(leather(0.08, rng, 300, 1500, 250)), 0.0, 0.35)
-    m.at(buf, m.norm(iron(520, 0.2, 0.035, rng)), 0.03, 0.9)
-    m.at(buf, m.norm(wood(150, 0.1, 0.02)), 0.03, 0.35)
-    return m.finish(room(muffle(buf, 3200), rng, 0.25, 0.08, 2600), -15.0, fade_out=0.04)
+    """ロックオン: 柄を握り直す革のきしみ (金属音は鳴らさず、控えめに)"""
+    d = 0.2
+    creak = m.sweep(m.white(0.12, rng), 420, q=5.0) * m.curve(0.12, [(0, 0), (0.04, 1), (0.12, 0)])
+    x = mix_at(d, [(leather(0.12, rng, 200, 1000, 180), 0.0, 0.6), (creak, 0.02, 0.5)])
+    return m.finish(tavern(muffle(x, 1600), rng, 0.25, 0.06), -20.0, fade_out=0.04)
 
 
 def hud_lock_off(rng):
-    """ロックオン解除: 構えを解く布擦れ (金具は鳴らさない)"""
-    x = leather(0.16, rng, 250, 1200, 200)
-    return m.finish(room(muffle(x, 1800), rng, 0.2, 0.06, 2000), -20.0, fade_out=0.04)
+    """(今は鳴らしていない) ロックオン解除: 構えを解く布擦れ"""
+    x = leather(0.16, rng, 200, 1000, 140)
+    return m.finish(tavern(muffle(x, 1600), rng, 0.25, 0.06), -20.0, fade_out=0.04)
 
 
 def hud_ready(rng):
-    """大砲の装填完了: 鉄の歯止めが 2 段「ガチッ、ガチャン」と噛み合う"""
-    d = 0.5
-    buf = np.zeros(m.n_of(d))
-    m.at(buf, m.norm(iron(210, 0.15, 0.035, rng)), 0.0, 0.6)
-    m.at(buf, m.norm(iron(170, 0.3, 0.06, rng) + 0.6 * wood(85, 0.3, 0.06)), 0.11, 1.0)
-    return m.finish(room(muffle(buf, 2800), rng, 0.3, 0.12, 2200), -11.0, fade_out=0.08)
+    """大砲の装填完了: 鉄の歯止めが 2 段「ガチッ、ガチャン」と噛み合い、砲架の木が鳴る"""
+    d = 0.6
+    x = mix_at(d, [(iron(0.2, rng, 190, 0.05), 0.0, 0.6), (iron(0.35, rng, 150, 0.09), 0.12, 1.0),
+                   (knock(0.35, rng, 70, 0.12, 0.006, 0.8), 0.12, 0.7)])
+    return m.finish(open_air(muffle(x, 2600), rng, 0.7, 0.16, 1800), -11.0, fade_out=0.08)
 
 
 def hud_notice(rng):
     """チュートリアル札が出る: 札を板に差し込む紙の擦れ + 軽い木の音"""
-    d = 0.3
-    buf = np.zeros(m.n_of(d))
-    slide = m.bp(m.white(0.14, rng), 350, 1600) * m.curve(0.14, [(0, 0), (0.04, 1), (0.14, 0)])
-    m.at(buf, m.norm(slide), 0.0, 0.55)
-    m.at(buf, m.norm(wood(200, 0.12, 0.03, rng, 0.2)), 0.1, 0.75)
-    return m.finish(room(muffle(buf, 2200), rng, 0.25, 0.08, 2200), -15.0, fade_out=0.05)
+    d = 0.4
+    x = mix_at(d, [(brush(0.18, rng, 250, 1100), 0.0, 0.6), (knock(0.2, rng, 140, 0.06, 0.004, 0.4), 0.14, 0.6)])
+    return m.finish(tavern(muffle(x, 2000), rng, 0.4, 0.12), -15.0, fade_out=0.05)
 
 
 def hud_clear(rng):
-    """チュートリアルの課題を達成: 低い太鼓 1 打 + 青銅の鐘 (短め)"""
-    d = 1.6
-    buf = np.zeros(m.n_of(d))
-    m.at(buf, m.norm(drum(70, 0.6, rng, 0.2)), 0.0, 0.8)
-    m.at(buf, m.norm(bronze_bell(D4, 1.5, 0.55)), 0.02, 0.6)
-    return m.finish(m.reverb(buf, rng, rt60=1.1, mix=0.22, predelay=0.015, bright=1800), -8.0, fade_out=0.3)
+    """チュートリアルの課題を達成: 羽根ペンで札にさっと印を付ける (次々に鳴るので控えめに)"""
+    d = 0.3
+    stroke1 = m.bp(m.white(0.06, rng), 500, 2000) * m.curve(0.06, [(0, 0), (0.01, 1), (0.06, 0)])
+    stroke2 = m.bp(m.white(0.1, rng), 450, 1800) * m.curve(0.1, [(0, 0), (0.015, 1), (0.1, 0)])
+    x = mix_at(d, [(stroke1, 0.0, 0.7), (stroke2, 0.07, 1.0), (knock(0.1, rng, 180, 0.03, 0.004, 0.2), 0.0, 0.25)])
+    return m.finish(tavern(muffle(x, 2200), rng, 0.3, 0.08), -18.0, fade_out=0.04)
 
 
 def hud_boss_appear(rng):
-    """ボスのゲージが出る: 地の底から膨らむ低音 + 大太鼓 2 打"""
-    d = 2.6
-    buf = np.zeros(m.n_of(d))
-    drone = m.osc(D3 / 4, d, 'saw', 12) + 0.6 * m.osc(D3 / 4 * 1.5, d, 'saw', 12)
-    drone = m.lp(drone, 320) * m.curve(d, [(0, 0), (1.2, 1), (1.9, 0.7), (d, 0)])
-    rumble = m.lp(m.brown(d, rng), 200) * m.curve(d, [(0, 0), (1.0, 1), (d, 0)])
-    m.at(buf, m.norm(drone), 0.0, 0.6)
-    m.at(buf, m.norm(rumble), 0.0, 0.5)
-    m.at(buf, m.norm(drum(48, 1.0, rng, 0.35)), 0.0, 1.0)
-    m.at(buf, m.norm(drum(44, 1.0, rng, 0.4)), 0.55, 0.85)
-    return m.finish(m.reverb(buf, rng, rt60=1.6, mix=0.25, predelay=0.02, bright=1200), -3.0, fade_out=0.5)
+    """ボスのゲージが出る: 地の底から膨らむ地鳴り + 遠くの大太鼓 2 打"""
+    d = 2.8
+    rumble = m.lp(m.brown(d, rng), 140) * m.curve(d, [(0, 0), (1.2, 1), (1.9, 0.7), (d, 0)])
+    growl = m.sweep(m.brown(d, rng), m.curve(d, [(0, 60), (1.3, 110), (d, 70)], 'exp'), q=3.0) * m.curve(d, [(0, 0), (1.3, 1), (d, 0)])
+    x = mix_at(d, [(rumble, 0.0, 0.7), (growl, 0.0, 0.45), (drum(1.2, rng, 52, 0.4), 0.0, 1.0), (drum(1.2, rng, 47, 0.45), 0.6, 0.85)])
+    return m.finish(open_air(x, rng, 1.8, 0.28, 1000), -3.0, fade_out=0.5)
 
 
 def hud_interact(rng):
-    """話しかけられる印が出る: 外套が擦れる気配 + こもった木の「トッ」(電子音にせず、低く控えめに)"""
-    d = 0.2
-    buf = np.zeros(m.n_of(d))
-    cloth = m.bp(m.white(0.07, rng), 500, 2200) * m.curve(0.07, [(0, 0), (0.025, 1), (0.07, 0)])
-    m.at(buf, m.norm(cloth), 0.0, 0.3)
-    m.at(buf, m.norm(wood(D4, 0.16, 0.028, rng, 0.2)), 0.03, 0.8)
-    return m.finish(room(m.lp(buf, 2400), rng, 0.22, 0.07), -17.0, fade_out=0.04)
+    """(今は鳴らしていない) 話しかけられる印が出る: 外套が擦れる気配"""
+    x = leather(0.16, rng, 200, 1000, 120)
+    return m.finish(tavern(muffle(x, 1600), rng, 0.25, 0.06), -20.0, fade_out=0.04)
 
 
 # ================================================================ 会話
 def chat_open(rng):
-    """会話の吹き出しが開く: 紙を軽く広げる擦れ + 柔らかい木の音 (系統 A の open より小さく短い)"""
-    d = 0.24
-    buf = np.zeros(m.n_of(d))
-    m.at(buf, m.norm(m.bp(m.white(0.12, rng), 400, 1800) * m.curve(0.12, [(0, 0), (0.03, 1), (0.12, 0)])), 0.0, 0.5)
-    m.at(buf, m.norm(wood(210, 0.12, 0.03)), 0.05, 0.7)
-    return m.finish(room(muffle(buf, 2200), rng, 0.2, 0.08, 2000), -17.0)
+    """会話が始まる: 手紙を開くような紙の擦れ (話し声の邪魔をしないよう小さく)"""
+    d = 0.3
+    x = parchment(0.22, rng, 70, 250, 1200)
+    return m.finish(tavern(muffle(x, 1800), rng, 0.35, 0.1), -17.0, fade_out=0.05)
 
 
 def chat_blip(rng):
-    """文字送り: 羽根ペンが紙を擦る極小の音 (何十回も鳴るので最も小さく、低く丸めた)"""
-    d = 0.05
-    x = wood(380, d, 0.008) + 0.5 * paper(d, rng, 500, 1800, 0.005)
-    return m.finish(muffle(x, 2000), -24.0, fade_in=0.001, fade_out=0.012)
+    """(今は鳴らしていない) 文字送り: 羽根ペンが紙を擦る極小の音"""
+    d = 0.06
+    x = m.bp(m.white(d, rng), 500, 1600) * m.curve(d, [(0, 0), (0.01, 1), (d, 0)])
+    return m.finish(muffle(x, 1800), -24.0, fade_in=0.001, fade_out=0.012)
+
+
+# 聞こえ方の目標 (dB, A 特性)。ここに無い音は LOUD_RESPONSE
+LOUD_EVENT, LOUD_RESPONSE, LOUD_FREQUENT = -14.0, -17.0, -21.0
+LOUDNESS = {
+    'Ui_Stamp': LOUD_EVENT,
+    'Ui_GameStart': LOUD_EVENT,
+    'Ui_StoneConfirm': LOUD_EVENT,
+    'Hud_BossAppear': LOUD_EVENT,
+    'Ui_Cursor': LOUD_FREQUENT,
+    'Ui_Digit': LOUD_FREQUENT,
+    'Ui_StoneCursor': LOUD_FREQUENT,
+    'Ui_HoofTick': LOUD_FREQUENT,
+    'Hud_Select': LOUD_FREQUENT,
+    'Hud_LockOff': LOUD_FREQUENT,
+    'Hud_Interact': LOUD_FREQUENT,
+    'Chat_Blip': LOUD_FREQUENT,
+    # 戦闘中や会話・チュートリアルの間に何度も鳴るので、さらに一段控える
+    'Hud_LockOn': -23.0,
+    'Hud_Clear': -22.0,
+    'Chat_Open': -21.0,
+    'Hud_Notice': -19.0,
+}
+PEAK_CEILING = 10 ** (-1.0 / 20)
+
+
+def a_weighted_level(stereo):
+    """A 特性をかけた 50 ms 窓 RMS の最大値 (dBFS)"""
+    x = stereo.mean(axis=0)
+    f = np.fft.rfftfreq(len(x), 1 / m.SR)
+    f2 = f * f
+    ra = (12194.0 ** 2 * f2 ** 2) / ((f2 + 20.6 ** 2) * np.sqrt((f2 + 107.7 ** 2) * (f2 + 737.9 ** 2)) * (f2 + 12194.0 ** 2))
+    y = np.fft.irfft(np.fft.rfft(x) * ra * 10 ** (2.0 / 20), len(x))
+    win = min(len(y), m.n_of(0.05))
+    rms = np.sqrt(np.convolve(y * y, np.ones(win) / win, 'valid')).max()
+    return 20 * np.log10(rms + 1e-12)
+
+
+def headroom_over(stereo, target_db):
+    """target_db まで上げたとき、ピークが天井を何 dB 超えるか"""
+    gain = target_db - a_weighted_level(stereo)
+    return 20 * np.log10(np.max(np.abs(stereo)) / PEAK_CEILING) + gain
+
+
+def match_loudness(stereo, target_db, max_squash_db=3.0):
+    """聞こえ方を target_db に合わせる。ピークが天井を超える分は tanh で柔らかく潰す
+    NOTE: 潰しすぎると歪むので、先に聞こえにくい超低音 (ピークを食うだけの成分) を必要な分だけ削る"""
+    for cutoff in (50, 70, 90, 110, 140):
+        if headroom_over(stereo, target_db) <= max_squash_db:
+            break
+        stereo = np.stack([m.hp(ch, cutoff, 2) for ch in stereo])
+    # NOTE: それでも潰れすぎる長い音 (鐘・低いうなり) は目標の方を下げる。持続音は短い音より大きく聞こえる
+    target_db -= max(0.0, headroom_over(stereo, target_db) - max_squash_db)
+    for _ in range(4):
+        stereo = stereo * 10 ** ((target_db - a_weighted_level(stereo)) / 20)
+        peak = np.max(np.abs(stereo))
+        if peak > PEAK_CEILING:
+            stereo = PEAK_CEILING * np.tanh(stereo / PEAK_CEILING)
+        if abs(a_weighted_level(stereo) - target_db) < 0.3:
+            break
+    return stereo
 
 
 SOUNDS = {
@@ -401,9 +463,11 @@ def main():
     for name in args.only or SOUNDS:
         rng = np.random.default_rng(3000 + list(SOUNDS).index(name))
         stereo = m.trim_tail(SOUNDS[name](rng))
+        stereo = match_loudness(stereo, LOUDNESS.get(name, LOUD_RESPONSE))
         rendered[name] = stereo
         path = write_sound(name, stereo)
-        print(f'{name:18s} {stereo.shape[1] / m.SR:5.2f}s  {path.stat().st_size // 1024:3d} KB')
+        print(f'{name:18s} {stereo.shape[1] / m.SR:5.2f}s  {path.stat().st_size // 1024:3d} KB  '
+              f'A {a_weighted_level(stereo):6.1f} dB  peak {20 * np.log10(np.max(np.abs(stereo))):5.1f} dBFS')
     if args.preview:
         m.render_preview(rendered, args.preview)
 

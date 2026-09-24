@@ -37,6 +37,8 @@ namespace GamePlay::Ui
 
     private:
         void CatchParts();
+        /// 長いラベルが強調の矢印に重ならないよう、収まらない分だけ横に詰める
+        void FitLabelWidth();
 
         [[serialize(1)]] FIELD(GameObject::IGameObject) content_;
         [[serialize(1)]] FIELD(NanamiUi::BlendImageRenderer) strip_;
@@ -50,11 +52,14 @@ namespace GamePlay::Ui
         [[serialize(2)]] FIELD(NanamiUi::BlendImageRenderer) focusCheck_;
         [[serialize(2)]] Color32 labelColor_ = Color32(255, 255, 247);
         [[serialize(2)]] Color32 focusLabelColor_ = Color32(255, 206, 104);
+        [[serialize(3)]] float labelMaxWidth_px_ = 160.0f;
 
         bool isPartsCaught_ = false;
         std::weak_ptr<NanamiUi::LayoutElement> layoutElement_;
         glm::vec3 contentBasePos_ = glm::vec3(0.0f);
         glm::vec3 focusArrowBasePos_ = glm::vec3(0.0f);
+        glm::vec3 labelBaseScale_ = glm::vec3(1.0f);
+        glm::vec3 labelShadowBaseScale_ = glm::vec3(1.0f);
 
 #pragma region Serialization Function
     public:
@@ -75,6 +80,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(focusCheck_));
             archive(CEREAL_NVP(labelColor_));
             archive(CEREAL_NVP(focusLabelColor_));
+            archive(CEREAL_NVP(labelMaxWidth_px_));
         }
 
         template<class Archive>
@@ -93,9 +99,10 @@ namespace GamePlay::Ui
             if (version >= 2) archive(CEREAL_NVP(focusCheck_));
             if (version >= 2) archive(CEREAL_NVP(labelColor_));
             if (version >= 2) archive(CEREAL_NVP(focusLabelColor_));
+            if (version >= 3) archive(CEREAL_NVP(labelMaxWidth_px_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::ControlGuideRow, 2);
+CEREAL_CLASS_VERSION(GamePlay::Ui::ControlGuideRow, 3);

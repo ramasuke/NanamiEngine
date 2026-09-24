@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Engine/Core/Object/Field/Field.h"
 #include "Engine/Module/Asset/Scene/SceneFile.h"
 #include "Engine/Module/Asset/Sound/SoundFile.h"
@@ -10,6 +10,7 @@
 #include "../../../../Core/Game/Scene/Main/Type/MainSceneType.h"
 #include "../../../../../../Assets/Data/Stage/Data_StageData.h"
 #include "../Difficulty/StageDifficultyPips.h"
+#include "../../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
@@ -24,7 +25,11 @@ namespace GamePlay::Ui
         [[nodiscard]] bool                              IsCleared        () const { return stageData_->IsCleared();          }
         [[nodiscard]] std::shared_ptr<Asset::StageData> Data             () const { return stageData_.get();                 }
 
+        [[nodiscard]] bool                              IsLocked         () const { return isLocked_;                        }
+
         void SetHighlighted(bool isHighlighted);
+        /** @brief ロック中は名前を伏せ、属性アイコンを錠前にして難易度を隠す */
+        void SetLocked(bool isLocked);
 
     private:
         void OnAwake() override;
@@ -42,7 +47,11 @@ namespace GamePlay::Ui
         [[serialize(1)]] FIELD(Asset::StageData) stageData_;
         [[serialize(1)]] FIELD(Asset::SpriteFile) selectedRowSprite_;
         [[serialize(1)]] FIELD(Asset::SpriteFile) unselectedRowSprite_;
+        [[serialize(4)]] FIELD(Asset::UiSoundBankData) uiSounds_;
+        [[serialize(5)]] FIELD(Asset::SpriteFile) lockedRowSprite_;
+        [[serialize(5)]] FIELD(Asset::SpriteFile) lockedElementSprite_;
         bool isHighlighted_ = false;
+        bool isLocked_ = false;
         bool isHovering_ = false;
 
 #pragma region Serialization Function
@@ -60,6 +69,9 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(unselectedRowSprite_));
             archive(CEREAL_NVP(elementIcon_));
             archive(CEREAL_NVP(difficultyPips_));
+            archive(CEREAL_NVP(uiSounds_));
+            archive(CEREAL_NVP(lockedRowSprite_));
+            archive(CEREAL_NVP(lockedElementSprite_));
         }
 
         template<typename Archive>
@@ -73,9 +85,12 @@ namespace GamePlay::Ui
             if (version >= 1) archive(CEREAL_NVP(unselectedRowSprite_));
             if (version >= 3) archive(CEREAL_NVP(elementIcon_));
             if (version >= 3) archive(CEREAL_NVP(difficultyPips_));
+            if (version >= 4) archive(CEREAL_NVP(uiSounds_));
+            if (version >= 5) archive(CEREAL_NVP(lockedRowSprite_));
+            if (version >= 5) archive(CEREAL_NVP(lockedElementSprite_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::StageSelectStageUi, 3);
+CEREAL_CLASS_VERSION(GamePlay::Ui::StageSelectStageUi, 5);

@@ -18,6 +18,7 @@
 #include "Engine/Module/NanamiUI/Button/NanamiUi_Button.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "Libs/LibCore/Tween/Player/TweenPlayer.h"
+#include "../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
@@ -144,6 +145,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] float progressFollowRate_   = 6.0f;
         [[serialize(0)]] int   errorLineUnits_       = 34;
         [[serialize(0)]] int   errorMaxLines_        = 3;
+        [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         bool  isStarted_ = false;
         Phase phase_ = Phase::Hidden;
@@ -213,6 +215,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(progressFollowRate_));
             archive(CEREAL_NVP(errorLineUnits_));
             archive(CEREAL_NVP(errorMaxLines_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<typename Archive>
@@ -259,9 +262,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(progressFollowRate_));
             if (version >= 0) archive(CEREAL_NVP(errorLineUnits_));
             if (version >= 0) archive(CEREAL_NVP(errorMaxLines_));
+            if (version >= 1) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::AssetUpdateTagUi, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::AssetUpdateTagUi, 1);

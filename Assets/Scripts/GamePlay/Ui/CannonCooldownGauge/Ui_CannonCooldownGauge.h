@@ -5,6 +5,7 @@
 #include "Engine/Module/Asset/Sprite/SpriteFile.h"
 #include "Engine/Module/Color/Color32.h"
 #include "Engine/Module/Component/ComponentBase.h"
+#include "../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
@@ -105,6 +106,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] float launchDuration_secs_ = 0.28f;
         [[serialize(0)]] glm::vec2 launchOffset_ = glm::vec2(26.0f, -58.0f);
         [[serialize(0)]] float recoilAmplitude_ = 0.1f;
+        [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         float remain_secs_ = 0.0f;
         float total_secs_ = 1.0f;
@@ -174,6 +176,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(launchDuration_secs_));
             archive(CEREAL_NVP(launchOffset_));
             archive(CEREAL_NVP(recoilAmplitude_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<class Archive>
@@ -230,9 +233,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(launchDuration_secs_));
             if (version >= 0) archive(CEREAL_NVP(launchOffset_));
             if (version >= 0) archive(CEREAL_NVP(recoilAmplitude_));
+            if (version >= 1) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::CannonCooldownGauge, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::CannonCooldownGauge, 1);

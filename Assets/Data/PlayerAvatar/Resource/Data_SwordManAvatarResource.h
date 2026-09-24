@@ -61,7 +61,7 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] bool HasFootstepParticlePrefab() const { return static_cast<bool>(footstepParticlePrefab_); }
         /** 接地を見る足ボーンの名前。左右それぞれ1本ずつ入れる想定 */
         [[nodiscard]] const std::vector<std::string>& FootstepBoneNames() const { return footstepBoneNames_; }
-        /** 足ボーンが足元(FeatStep)からこの高さまで降りてきたら接地扱いにする。一度この高さを超えるまで次は鳴らない */
+        /** 足ボーンが足元(FeatStep)からこの高さ以下で下降が止まったら接地扱いにする。一度この高さを超えるまで次は鳴らない */
         [[nodiscard]] float FootstepContactHeight() const { return footstepContactHeight_; }
         /** 歩き系クリップの足音候補。鳴らすときに配列からランダムで1つ選択する */
         [[nodiscard]] const std::vector<FIELD(SoundFile)>& WalkFootstepSounds() const { return walkFootstepSounds_; }

@@ -4,6 +4,7 @@
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Engine/Module/LifeCycleCallback/Update/IUpdatable.h"
 #include "../Model/PauseMenuModel.h"
+#include "../../../Sound/UiSoundBank.h"
 
 namespace GamePlay::PlayerAvatar::SwordMan
 {
@@ -52,23 +53,27 @@ namespace GamePlay::Ui
         // 閉じたキー(B=ジャンプなど)を同じフレームで State に拾わせないよう、戻すのは次のフレーム
         bool isResumePending_ = false;
 
+        [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
+
 #pragma region Serialization Function
     public:
-        void OnDrawGui() override {}
+        void OnDrawGui() override;
 
         template<typename Archive>
         void save(Archive& archive, const std::uint32_t version) const
         {
             archive(cereal::base_class<Component::ComponentBase>(this));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<typename Archive>
         void load(Archive& archive, const std::uint32_t version)
         {
             archive(cereal::base_class<Component::ComponentBase>(this));
+            if (version >= 1) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::PauseMenuPresenter, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::PauseMenuPresenter, 1);

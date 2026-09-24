@@ -7,6 +7,7 @@
 #include "../../Core/Game/PlayerAvatar/MagicCaster/Status/Presenter/PlayerAvatar_MagicCaster_StatusPresenter.h"
 #include "../../Core/Game/Scene/Main/Content/FirstTouchDownMainIsLand/Context/FirstTouchDownMainIsLandSceneContext.h"
 #include "../../Core/Game/Scene/Main/Content/GrassLand/Context/GrassLandSceneContext.h"
+#include "../../Core/Game/Scene/Main/Content/DrySand/Context/DrySandSceneContext.h"
 #include "../../Core/Game/Scene/Main/Content/MainIslandScene/Context/MainIsLandSceneContext.h"
 #include "../../Core/Game/Scene/Main/Content/Title/Context/TitleSceneContext.h"
 #include "../../Core/Game/Scene/Sub/Content/ChattingUI/Context/ChattingUISceneContext.h"
@@ -18,6 +19,9 @@
 #include "../../GamePlay/Npc/Enemy/Projectile/GamePlay_Enemy_ProjectileAttackArea.h"
 #include "../../GamePlay/Npc/Enemy/TrainingDummy/TrainingDummy.h"
 #include "../../GamePlay/Npc/Enemy/Tyrannosaurus/GamePlay_Enemy_Tyrannosaurus.h"
+#include "../../GamePlay/Npc/Enemy/Desert/GamePlay_Enemy_DesertScorpion.h"
+#include "../../GamePlay/Npc/Enemy/Desert/GamePlay_Enemy_SandWorm.h"
+#include "../../GamePlay/Npc/Enemy/Desert/GamePlay_Enemy_SkeletonDragon.h"
 #include "../../GamePlay/Npc/Friendly/FriendlyNpc.h"
 #include "../../GamePlay/Npc/Friendly/Reaction/FriendlyNpcReaction.h"
 #include "../../GamePlay/Magic/Component/GamePlay_MagicBlast.h"
@@ -43,7 +47,6 @@
 #include "../../GamePlay/Weather/WindZone.h"
 #include "../../GamePlay/Sound/SoundPlayer.h"
 #include "../../GamePlay/Sound/SpawnSound.h"
-#include "../../GamePlay/Sound/UiSoundBank.h"
 #include "../../GamePlay/Sound/Sample/BgmPlayer.h"
 #include "../../GamePlay/Ui/ActionInstructTutorial/SwordMan/Ui_SwordMan_ActionInstructTutorial.h"
 #include "../../GamePlay/Ui/BillBoardNpcChatIcon/BillBoardNpcChatIcon.h"
@@ -107,6 +110,7 @@ namespace Editor::AddComponentMenu
                     AddComponent::OnDrawTryAddComponentGui<GameCore::Scene::FirstTouchDownMainIsLandSceneContext>(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GameCore::Scene::MainIslandSceneContext>(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GameCore::Scene::GrassLandSceneContext>(addComponent);
+                    AddComponent::OnDrawTryAddComponentGui<GameCore::Scene::DrySandSceneContext>(addComponent);
                     ImGui::TreePop();
                     ImGui::Spacing();
                 }
@@ -239,6 +243,9 @@ namespace Editor::AddComponentMenu
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::FirstEventDragon>(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::Hyena>(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::Tyrannosaurus>(addComponent);
+                    AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::DesertScorpion>(addComponent);
+                    AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::SandWorm>(addComponent);
+                    AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::SkeletonDragon>(addComponent);
                     AddComponent::OnDrawTryAddComponentGui<GamePlay::Npc::Enemy::NetworkBehaviourTree>(addComponent);
                     if (ImGui::TreeNode("Attack"))
                     {
@@ -298,7 +305,6 @@ namespace Editor::AddComponentMenu
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Sound::SoundPlayer>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Sound::BgmPlayObject>(addComponent);
                 AddComponent::OnDrawTryAddComponentGui<GamePlay::Sound::SpawnSound>(addComponent);
-                AddComponent::OnDrawTryAddComponentGui<GamePlay::Sound::UiSoundBank>(addComponent);
                 ImGui::TreePop();
                 ImGui::Spacing();
             }

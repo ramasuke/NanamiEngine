@@ -3,6 +3,7 @@
 #include "Engine/Module/Asset/Sprite/SpriteFile.h"
 #include "Engine/Module/Component/ComponentBase.h"
 #include "Libs/LibCore/Tween/Player/TweenPlayer.h"
+#include "../../Sound/UiSoundBank.h"
 
 namespace GameCore::PlayerAvatar
 {
@@ -81,6 +82,7 @@ namespace GamePlay::Ui
         [[serialize(1)]] float referenceDistance_     = 60.0f;
         [[serialize(1)]] float minDistanceScale_      = 0.15f;
         [[serialize(1)]] float maxDistanceScale_      = 1.6f;
+        [[serialize(2)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
 #pragma region Serialization Function
     public:
@@ -105,6 +107,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(referenceDistance_));
             archive(CEREAL_NVP(minDistanceScale_));
             archive(CEREAL_NVP(maxDistanceScale_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<class Archive>
@@ -126,9 +129,10 @@ namespace GamePlay::Ui
             if (version >= 1) archive(CEREAL_NVP(referenceDistance_));
             if (version >= 1) archive(CEREAL_NVP(minDistanceScale_));
             if (version >= 1) archive(CEREAL_NVP(maxDistanceScale_));
+            if (version >= 2) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::LockOnReticle, 1);
+CEREAL_CLASS_VERSION(GamePlay::Ui::LockOnReticle, 2);

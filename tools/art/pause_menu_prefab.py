@@ -31,7 +31,7 @@ import pause_menu as art  # noqa: E402
 PREFAB_DIR = REPO / 'Assets' / 'Prefab' / 'UI' / 'PauseMenu'
 STATUS_PRESENTER_PREFAB = REPO / 'Assets' / 'Prefab' / 'PlayerAvatar' / 'Swordman' / 'SwordManStatusPresenter.prefab'
 
-FONT_PX = 60  # ipam.ttf / onryou.ttf の TtfFontFile はどちらも 60px。TextRenderer は scale で縮める
+FONT_PX = 60  # ipam.ttf / KaiseiDecol-Bold.ttf の TtfFontFile はどちらも 60px。TextRenderer は scale で縮める
 ORDER_BACKDROP = 5000
 ORDER_BOOK = 5010
 ORDER_PARTS = 5020
@@ -53,7 +53,7 @@ def sprite_guid(name):
 
 
 FONT_BODY = asset_guid(REPO / 'Assets/Art/Font/ipam.ttf.meta')
-FONT_BRUSH = asset_guid(REPO / 'Assets/Art/Font/onryou.ttf.meta')
+FONT_BRUSH = asset_guid(REPO / 'Assets/Art/Font/KaiseiDecol-Bold.ttf.meta')
 CHARACTER = asset_guid(REPO / 'Assets/Data/Character/SwordManCharacter.characterData.meta')
 PIP_FILLED = asset_guid(REPO / 'Assets/Art/UI/CharacterSelect/Pip_Filled.png.meta')
 PIP_EMPTY = asset_guid(REPO / 'Assets/Art/UI/CharacterSelect/Pip_Empty.png.meta')

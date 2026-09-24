@@ -260,7 +260,7 @@ namespace GamePlay::Ui
         case Phase::Visible:
             if (CanHide())
             {
-                Sound::UiSoundBank::Play(Sound::UiSe::LoadingDone);
+                Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::LoadingDone);
                 phase_ = Phase::CoveringMap;
                 PlayCover(0.0f, 255.0f, fadeOutSecs_);
             }
@@ -430,6 +430,7 @@ namespace GamePlay::Ui
         ImGui::SliderInt("bgmVolume_", &bgmVolume_, 0, 255);
         ImGui::Text("progress: %.3f", displayedProgress_);
         ImGui::Text("step: %d  phase: %d", static_cast<int>(step_), static_cast<int>(phase_));
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

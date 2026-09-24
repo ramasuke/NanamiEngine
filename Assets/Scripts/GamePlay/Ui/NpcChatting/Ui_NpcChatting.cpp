@@ -18,7 +18,7 @@ namespace GamePlay::Ui
         
         isDisplaying_ = true;
         Entity().lock()->SetEnable(true);
-        Sound::UiSoundBank::Play(Sound::UiSe::ChatOpen);
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::ChatOpen);
 
         npcNameTextBox_->SetText(npcName);
         
@@ -36,15 +36,10 @@ namespace GamePlay::Ui
             const std::string& fullText = chat.Text();
             std::string currentText;
             currentText.reserve(fullText.size());
-            int visibleCharCount = 0;
 
             for (const char charCharText : fullText)
             {
                 currentText.push_back(charCharText);
-                // NOTE: 文字送りの音は UTF-8 の先頭バイトで数えて 2 文字に 1 回。空白と改行では鳴らさない
-                const bool isLeadByte = (static_cast<unsigned char>(charCharText) & 0xC0) != 0x80;
-                if (isLeadByte && charCharText != ' ' && charCharText != '\n' && visibleCharCount++ % 2 == 0)
-                    Sound::UiSoundBank::Play(Sound::UiSe::ChatBlip);
                 if (!textRenderer_)
                     break;
                 
@@ -71,6 +66,7 @@ namespace GamePlay::Ui
         
         ImGuiHelper::OnDrawInputField("textRenderer_", textRenderer_);
         ImGuiHelper::OnDrawInputField("npcNameTextBox_", npcNameTextBox_);
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

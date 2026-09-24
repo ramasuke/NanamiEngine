@@ -227,7 +227,7 @@
                         "ptr_wrapper": {
                             "id": 2147483663,
                             "data": {
-                                "cereal_class_version": 0,
+                                "cereal_class_version": 1,
                                 "value0": {
                                     "guid_": {
                                         "value_": "96290CAD-D89B-420E-A0FD-4D79192B351E"
@@ -250,7 +250,22 @@
                                     }
                                 },
                                 "fallenConfirmSecs_": 0.6,
-                                "curtainHoldSecs_": 0.35
+                                "curtainHoldSecs_": 0.35,
+                                "uiSounds_": {
+                                    "cereal_class_version": 0,
+                                    "value0": {
+                                        "polymorphic_id": 1073741824,
+                                        "ptr_wrapper": {
+                                            "id": 2147483665,
+                                            "data": {
+                                                "cereal_class_version": 0,
+                                                "value0": {
+                                                    "value_": "20661C82-DE24-445D-BF6D-27D24E5D0577"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -304,7 +319,7 @@
                         "polymorphic_id": 2147483652,
                         "polymorphic_name": "NanamiEngine::Scene::SceneGameObject",
                         "ptr_wrapper": {
-                            "id": 2147483665,
+                            "id": 2147483666,
                             "data": {
                                 "cereal_class_version": 0,
                                 "value0": {
@@ -365,7 +380,7 @@
                                     "child": {
                                         "polymorphic_id": 4,
                                         "ptr_wrapper": {
-                                            "id": 2147483666,
+                                            "id": 2147483667,
                                             "data": {
                                                 "value0": {
                                                     "value0": {}
@@ -381,7 +396,7 @@
                                                         "polymorphic_id": 2147483653,
                                                         "polymorphic_name": "NanamiEngine::Module::NanamiUi::BlendImageRenderer",
                                                         "ptr_wrapper": {
-                                                            "id": 2147483667,
+                                                            "id": 2147483668,
                                                             "data": {
                                                                 "cereal_class_version": 0,
                                                                 "value0": {
@@ -403,7 +418,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483668,
+                                                                            "id": 2147483669,
                                                                             "data": {
                                                                                 "cereal_class_version": 0,
                                                                                 "value0": {
@@ -469,7 +484,7 @@
                                     "child": {
                                         "polymorphic_id": 4,
                                         "ptr_wrapper": {
-                                            "id": 2147483669,
+                                            "id": 2147483670,
                                             "data": {
                                                 "value0": {
                                                     "value0": {}
@@ -484,7 +499,7 @@
                                                     "component_0": {
                                                         "polymorphic_id": 5,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483670,
+                                                            "id": 2147483671,
                                                             "data": {
                                                                 "value0": {
                                                                     "guid_": {
@@ -504,7 +519,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483671,
+                                                                            "id": 2147483672,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "ABD6D799-33E2-4C84-BD7B-D55E2D96B28A"
@@ -569,7 +584,7 @@
                                     "child": {
                                         "polymorphic_id": 4,
                                         "ptr_wrapper": {
-                                            "id": 2147483672,
+                                            "id": 2147483673,
                                             "data": {
                                                 "value0": {
                                                     "value0": {}
@@ -584,7 +599,7 @@
                                                     "component_0": {
                                                         "polymorphic_id": 5,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483673,
+                                                            "id": 2147483674,
                                                             "data": {
                                                                 "value0": {
                                                                     "guid_": {
@@ -604,7 +619,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483674,
+                                                                            "id": 2147483675,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "0258497E-9739-434D-89AA-5384526F94B0"
@@ -669,7 +684,7 @@
                                     "child": {
                                         "polymorphic_id": 1,
                                         "ptr_wrapper": {
-                                            "id": 2147483675,
+                                            "id": 2147483676,
                                             "data": {
                                                 "value0": {
                                                     "value0": {}
@@ -685,7 +700,7 @@
                                                         "polymorphic_id": 2147483654,
                                                         "polymorphic_name": "GamePlay::Ui::GameOverButton",
                                                         "ptr_wrapper": {
-                                                            "id": 2147483676,
+                                                            "id": 2147483677,
                                                             "data": {
                                                                 "cereal_class_version": 0,
                                                                 "value0": {
@@ -698,7 +713,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483677,
+                                                                            "id": 2147483678,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "CA18827C-2A4F-4B2E-9774-6EDC6FF89485"
@@ -711,7 +726,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483678,
+                                                                            "id": 2147483679,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "11F0CA2B-0A14-49AD-BF78-425E2698CCC2"
@@ -724,7 +739,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483679,
+                                                                            "id": 2147483680,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "EAEE6881-7812-49DA-8DA8-9EE03383F9E6"
@@ -737,7 +752,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483680,
+                                                                            "id": 2147483681,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "7A79675F-F671-4451-8D06-CDDFE8F30E68"
@@ -750,7 +765,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483681,
+                                                                            "id": 2147483682,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "3A69783A-F921-4AD0-AB97-4CFA091039D0"
@@ -781,7 +796,7 @@
                                                         "polymorphic_id": 2147483655,
                                                         "polymorphic_name": "NanamiUi::Button",
                                                         "ptr_wrapper": {
-                                                            "id": 2147483682,
+                                                            "id": 2147483683,
                                                             "data": {
                                                                 "cereal_class_version": 1,
                                                                 "value0": {
@@ -798,7 +813,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483683,
+                                                                            "id": 2147483684,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "00000000-0000-0000-0000-000000000000"
@@ -811,7 +826,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483684,
+                                                                            "id": 2147483685,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "00000000-0000-0000-0000-000000000000"
@@ -871,7 +886,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483685,
+                                                            "id": 2147483686,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -886,7 +901,7 @@
                                                                     "component_0": {
                                                                         "polymorphic_id": 5,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483686,
+                                                                            "id": 2147483687,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "guid_": {
@@ -906,7 +921,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483687,
+                                                                                            "id": 2147483688,
                                                                                             "data": {
                                                                                                 "value0": {
                                                                                                     "value_": "50C7CFEC-A34B-4813-9DE0-CA9469CE43A3"
@@ -971,7 +986,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483688,
+                                                            "id": 2147483689,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -986,7 +1001,7 @@
                                                                     "component_0": {
                                                                         "polymorphic_id": 5,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483689,
+                                                                            "id": 2147483690,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "guid_": {
@@ -1006,7 +1021,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483690,
+                                                                                            "id": 2147483691,
                                                                                             "data": {
                                                                                                 "value0": {
                                                                                                     "value_": "30B99640-13EA-40C0-8E66-C2360A091DC7"
@@ -1071,7 +1086,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483691,
+                                                            "id": 2147483692,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -1086,7 +1101,7 @@
                                                                     "component_0": {
                                                                         "polymorphic_id": 5,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483692,
+                                                                            "id": 2147483693,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "guid_": {
@@ -1106,7 +1121,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483693,
+                                                                                            "id": 2147483694,
                                                                                             "data": {
                                                                                                 "value0": {
                                                                                                     "value_": "A0CB4813-F970-4F21-888B-EED8A34C9995"
@@ -1171,7 +1186,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483694,
+                                                            "id": 2147483695,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -1187,7 +1202,7 @@
                                                                         "polymorphic_id": 2147483656,
                                                                         "polymorphic_name": "NanamiEngine::Module::NanamiUi::TextRenderer",
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483695,
+                                                                            "id": 2147483696,
                                                                             "data": {
                                                                                 "cereal_class_version": 4,
                                                                                 "value0": {
@@ -1204,7 +1219,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483696,
+                                                                                            "id": 2147483697,
                                                                                             "data": {
                                                                                                 "cereal_class_version": 0,
                                                                                                 "value0": {
@@ -1278,7 +1293,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483697,
+                                                            "id": 2147483698,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -1293,7 +1308,7 @@
                                                                     "component_0": {
                                                                         "polymorphic_id": 8,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483698,
+                                                                            "id": 2147483699,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "guid_": {
@@ -1308,7 +1323,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483699,
+                                                                                            "id": 2147483700,
                                                                                             "data": {
                                                                                                 "value0": {
                                                                                                     "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
@@ -1385,7 +1400,7 @@
                                     "child": {
                                         "polymorphic_id": 1,
                                         "ptr_wrapper": {
-                                            "id": 2147483700,
+                                            "id": 2147483701,
                                             "data": {
                                                 "value0": {
                                                     "value0": {}
@@ -1400,7 +1415,7 @@
                                                     "component_0": {
                                                         "polymorphic_id": 6,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483701,
+                                                            "id": 2147483702,
                                                             "data": {
                                                                 "value0": {
                                                                     "guid_": {
@@ -1412,7 +1427,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483702,
+                                                                            "id": 2147483703,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "798B8AC4-C428-4B38-B2A1-CC14DEA00892"
@@ -1425,7 +1440,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483703,
+                                                                            "id": 2147483704,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "08DD7303-EAF0-429A-A60B-93AC9C8FB7BB"
@@ -1438,7 +1453,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483704,
+                                                                            "id": 2147483705,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "B726B70F-B8D0-4004-9FF1-0C747B432628"
@@ -1451,7 +1466,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483705,
+                                                                            "id": 2147483706,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "5BC724C5-3152-4531-8AEB-B887215BF6E7"
@@ -1464,7 +1479,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483706,
+                                                                            "id": 2147483707,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "FB8C3E9A-4A59-4662-8CE8-DD7B6996AA3A"
@@ -1493,7 +1508,7 @@
                                                     "component_1": {
                                                         "polymorphic_id": 7,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483707,
+                                                            "id": 2147483708,
                                                             "data": {
                                                                 "value0": {
                                                                     "guid_": {
@@ -1509,7 +1524,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483708,
+                                                                            "id": 2147483709,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "00000000-0000-0000-0000-000000000000"
@@ -1522,7 +1537,7 @@
                                                                     "value0": {
                                                                         "polymorphic_id": 1073741824,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483709,
+                                                                            "id": 2147483710,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "value_": "00000000-0000-0000-0000-000000000000"
@@ -1582,7 +1597,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483710,
+                                                            "id": 2147483711,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -1597,7 +1612,7 @@
                                                                     "component_0": {
                                                                         "polymorphic_id": 5,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483711,
+                                                                            "id": 2147483712,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "guid_": {
@@ -1617,7 +1632,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483712,
+                                                                                            "id": 2147483713,
                                                                                             "data": {
                                                                                                 "value0": {
                                                                                                     "value_": "50C7CFEC-A34B-4813-9DE0-CA9469CE43A3"
@@ -1682,7 +1697,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483713,
+                                                            "id": 2147483714,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -1697,7 +1712,7 @@
                                                                     "component_0": {
                                                                         "polymorphic_id": 5,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483714,
+                                                                            "id": 2147483715,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "guid_": {
@@ -1717,7 +1732,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483715,
+                                                                                            "id": 2147483716,
                                                                                             "data": {
                                                                                                 "value0": {
                                                                                                     "value_": "30B99640-13EA-40C0-8E66-C2360A091DC7"
@@ -1782,7 +1797,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483716,
+                                                            "id": 2147483717,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -1797,7 +1812,7 @@
                                                                     "component_0": {
                                                                         "polymorphic_id": 5,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483717,
+                                                                            "id": 2147483718,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "guid_": {
@@ -1817,7 +1832,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483718,
+                                                                                            "id": 2147483719,
                                                                                             "data": {
                                                                                                 "value0": {
                                                                                                     "value_": "A0CB4813-F970-4F21-888B-EED8A34C9995"
@@ -1882,7 +1897,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483719,
+                                                            "id": 2147483720,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -1897,7 +1912,7 @@
                                                                     "component_0": {
                                                                         "polymorphic_id": 8,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483720,
+                                                                            "id": 2147483721,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "guid_": {
@@ -1912,7 +1927,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483721,
+                                                                                            "id": 2147483722,
                                                                                             "data": {
                                                                                                 "value0": {
                                                                                                     "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
@@ -1985,7 +2000,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483722,
+                                                            "id": 2147483723,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -2000,7 +2015,7 @@
                                                                     "component_0": {
                                                                         "polymorphic_id": 8,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483723,
+                                                                            "id": 2147483724,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "guid_": {
@@ -2015,7 +2030,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483724,
+                                                                                            "id": 2147483725,
                                                                                             "data": {
                                                                                                 "value0": {
                                                                                                     "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
@@ -2092,7 +2107,7 @@
                                     "child": {
                                         "polymorphic_id": 4,
                                         "ptr_wrapper": {
-                                            "id": 2147483725,
+                                            "id": 2147483726,
                                             "data": {
                                                 "value0": {
                                                     "value0": {}
@@ -2152,7 +2167,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483726,
+                                                            "id": 2147483727,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -2167,7 +2182,7 @@
                                                                     "component_0": {
                                                                         "polymorphic_id": 5,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483727,
+                                                                            "id": 2147483728,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "guid_": {
@@ -2187,7 +2202,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483728,
+                                                                                            "id": 2147483729,
                                                                                             "data": {
                                                                                                 "value0": {
                                                                                                     "value_": "42577CE7-12FD-4A9D-B518-55290FF19090"
@@ -2252,7 +2267,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483729,
+                                                            "id": 2147483730,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -2267,7 +2282,7 @@
                                                                     "component_0": {
                                                                         "polymorphic_id": 8,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483730,
+                                                                            "id": 2147483731,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "guid_": {
@@ -2282,7 +2297,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483731,
+                                                                                            "id": 2147483732,
                                                                                             "data": {
                                                                                                 "value0": {
                                                                                                     "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"
@@ -2355,7 +2370,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483732,
+                                                            "id": 2147483733,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -2370,7 +2385,7 @@
                                                                     "component_0": {
                                                                         "polymorphic_id": 5,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483733,
+                                                                            "id": 2147483734,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "guid_": {
@@ -2390,7 +2405,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483734,
+                                                                                            "id": 2147483735,
                                                                                             "data": {
                                                                                                 "value0": {
                                                                                                     "value_": "38665F19-3F53-4F70-94F8-3F901AECB53A"
@@ -2455,7 +2470,7 @@
                                                     "child": {
                                                         "polymorphic_id": 4,
                                                         "ptr_wrapper": {
-                                                            "id": 2147483735,
+                                                            "id": 2147483736,
                                                             "data": {
                                                                 "value0": {
                                                                     "value0": {}
@@ -2470,7 +2485,7 @@
                                                                     "component_0": {
                                                                         "polymorphic_id": 8,
                                                                         "ptr_wrapper": {
-                                                                            "id": 2147483736,
+                                                                            "id": 2147483737,
                                                                             "data": {
                                                                                 "value0": {
                                                                                     "guid_": {
@@ -2485,7 +2500,7 @@
                                                                                     "value0": {
                                                                                         "polymorphic_id": 1073741824,
                                                                                         "ptr_wrapper": {
-                                                                                            "id": 2147483737,
+                                                                                            "id": 2147483738,
                                                                                             "data": {
                                                                                                 "value0": {
                                                                                                     "value_": "C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC"

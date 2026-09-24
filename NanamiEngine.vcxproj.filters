@@ -88,6 +88,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Story\Story_StageClear.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Story\FloatingStone\Story_FloatingStoneMovie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Prop\RestorationGate\Prop_RestorationGate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -667,6 +670,9 @@
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_MainStoryQuestBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\MainStory\PlayerAvatar_DefeatMainStoryQuest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_IQuestGroup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -919,6 +925,9 @@
     <ClCompile Include="Assets\Data\Shop\Data_ShopData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Data\UiSound\Data_UiSoundBankData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Data\Drop\Data_DropTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1150,6 +1159,9 @@
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\AnnouncementReadLog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\QuestReadLog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_QuestRow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1309,6 +1321,33 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\LockPlayerCannon\Enemy_Behaviour_Action_LockPlayerCannon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Story\ScatterFloatingStones\Enemy_Behaviour_Action_ScatterFloatingStones.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Tyrannosaurus\TremblePillars\Enemy_Behaviour_Action_TremblePillars.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\SwapModel\Enemy_Behaviour_Action_SwapModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SaveDataReset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SaveDataDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\StoryDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\QuestReadDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SceneDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\GamePlay\Debug\DebugSheet\CheatDebugPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClInclude Include="Assets\Scripts\GamePlay\Network\Session\GamePlay_StageSessionMatchmaking.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1328,6 +1367,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Story\Story_StageClear.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Story\FloatingStone\Story_FloatingStoneMovie.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Prop\RestorationGate\Prop_RestorationGate.h">
@@ -1936,6 +1978,9 @@
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_MainStoryQuestBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\MainStory\PlayerAvatar_DefeatMainStoryQuest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_IQuestGroup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2191,6 +2236,9 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Sound\UiSoundBank.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Sound\UiSe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\ActionInstructTutorial\SwordMan\Ui_SwordMan_ActionInstructTutorial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2228,6 +2276,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Data\Shop\Data_ShopData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Data\UiSound\Data_UiSoundBankData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Data\Drop\Data_DropTable.h">
@@ -2494,6 +2545,9 @@
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\AnnouncementReadLog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Model\QuestReadLog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Assets\Scripts\GamePlay\Ui\EventBoard\Row\Ui_EventBoard_QuestRow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2669,6 +2723,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\LockPlayerCannon\Enemy_Behaviour_Action_LockPlayerCannon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Story\ScatterFloatingStones\Enemy_Behaviour_Action_ScatterFloatingStones.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Tyrannosaurus\TremblePillars\Enemy_Behaviour_Action_TremblePillars.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\GameObject\SwapModel\Enemy_Behaviour_Action_SwapModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\GamePlay\Debug\DebugSheet\SaveDataReset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

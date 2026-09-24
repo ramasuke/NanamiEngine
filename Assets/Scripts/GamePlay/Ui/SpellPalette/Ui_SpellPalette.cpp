@@ -15,7 +15,6 @@
 #include "../../../Core/Game/Magic/IMagicSpell.h"
 #include "../../../Core/Game/PlayerAvatar/Input/PlayerAvatarInput_void.h"
 #include "../../PlayerAvatar/MagicCaster/MagicCasterAvatar.h"
-#include "../../Sound/UiSoundBank.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -300,9 +299,9 @@ namespace GamePlay::Ui
         if (hasReadInput_)
         {
             if (isOpen && !wasOpen_)
-                Sound::UiSoundBank::Play(Sound::UiSe::HudPaletteOpen);
+                Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::HudPaletteOpen);
             else if (isShown && isSecondPage != wasSecondPage_ && (isPad || isOpen))
-                Sound::UiSoundBank::Play(Sound::UiSe::HudPageShift);
+                Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::HudPageShift);
         }
         wasOpen_       = isOpen;
         wasSecondPage_ = isSecondPage;
@@ -383,6 +382,7 @@ namespace GamePlay::Ui
         manaValueColor_.OnDrawGui();
         if (ImGui::Button("Refresh Spells"))
             isSpellsDirty_ = true;
+        ImGuiHelper::OnDrawInputField("uiSounds_", uiSounds_);
     }
 }
 

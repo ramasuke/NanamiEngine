@@ -11,6 +11,12 @@
 #include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
+#if NANAMI_DEBUG_SHEET_ENABLED
+#include <limits>
+
+#include "Packages/DebugSheet/DebugSheet.h"
+#include "../../GamePlay/Debug/DebugSheet/SaveDataReset.h"
+#endif
 
 namespace GameCore
 {
@@ -96,8 +102,26 @@ namespace GameCore
     {
         sceneGroup_   ->Update();
         subSceneGroup_->Update();
+#if NANAMI_DEBUG_SHEET_ENABLED
+        GamePlay::Debug::SaveDataReset::Update();
+#endif
     }
-    
+
+#if NANAMI_DEBUG_SHEET_ENABLED
+    void Game::OnUserInterfaceRender()
+    {
+        // NOTE: UI 描画はエディタの非プレイ中も回るので、開閉もここで見る
+        auto& debugSheet = NanamiEngine::DebugSheet::Sheet::Instance();
+        debugSheet.Update();
+        debugSheet.Render();
+    }
+
+    int Game::GetRenderOrder() const
+    {
+        return std::numeric_limits<int>::max();
+    }
+#endif
+
     void Game::OnDestroy()
     {
         if (instance_ == this)

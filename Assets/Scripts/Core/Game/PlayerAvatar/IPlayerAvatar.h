@@ -66,6 +66,8 @@ namespace GameCore
         [[nodiscard]] virtual NanamiEngine::Module::GameObject::Transform      & PlayerTransform () const = 0;
         [[nodiscard]] virtual PlayerAvatar::IPlayerAvatarStatus                & PlayerStatus    () const = 0;
         [[nodiscard]] virtual PlayerAvatar::PlayerAvatarType                     Type            () const = 0;
+        /** @brief この PC で操作しているアバターか */
+        [[nodiscard]] virtual bool                                               IsOwner         () const = 0;
         virtual void SaveStatus() = 0;
         static const std::vector<std::weak_ptr<IPlayerAvatar>>& PlayerAvatars();
         virtual void EnableStateMachiine() = 0;

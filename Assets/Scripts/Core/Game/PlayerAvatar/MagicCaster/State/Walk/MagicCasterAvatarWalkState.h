@@ -13,7 +13,7 @@ namespace GameCore::PlayerAvatar::MagicCaster::State
         void DoUpdate     () override;
         void DoFixedUpdate() override;
         void DoExit       () override;
-        [[nodiscard]] MagicCaster::AnimationType AnimationType() const override { return AnimationType::Walk; }
+        [[nodiscard]] MagicCaster::AnimationType AnimationType() const override { return Status().IsInjured() ? AnimationType::InjuredWalk : AnimationType::Walk; }
         [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Accept; }
         void VisitTransitions(IMagicCasterAvatarTransitionVisitor& visitor) const override;
 

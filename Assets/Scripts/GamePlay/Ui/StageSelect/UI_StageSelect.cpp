@@ -57,6 +57,14 @@ namespace GamePlay::Ui
         mapMarker_->SetCleared(isCleared);
     }
 
+    void StageSelectUi::HideMapMarker()
+    {
+        if (const auto entity = mapMarker_->Entity().lock())
+        {
+            entity->SetEnable(false);
+        }
+    }
+
     void StageSelectUi::ShowStageDetail(const Asset::StageData& stage)
     {
         detailPreview_->SetSprite(stage.ThumbnailSprite());
@@ -70,6 +78,22 @@ namespace GamePlay::Ui
         SetDetailDifficultyVisible(true);
 
         const auto& lines = stage.DescriptionLines();
+        for (size_t i = 0; i < detailDescriptionLines_.size(); ++i)
+        {
+            detailDescriptionLines_[i]->SetText(i < lines.size() ? lines[i] : "");
+        }
+    }
+
+    void StageSelectUi::ShowLockedStageDetail(const Asset::StageData& stage)
+    {
+        detailPreview_->SetEnable(false);
+        detailElement_->SetEnable(false);
+        detailLabel_->SetEnable(false);
+        detailTitle_->SetText("？？？");
+        detailTag_->SetText("");
+        SetDetailDifficultyVisible(false);
+
+        const auto& lines = stage.LockedDescriptionLines();
         for (size_t i = 0; i < detailDescriptionLines_.size(); ++i)
         {
             detailDescriptionLines_[i]->SetText(i < lines.size() ? lines[i] : "");

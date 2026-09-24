@@ -1,0 +1,101 @@
+{
+    "value0": {
+        "polymorphic_id": 2147483649,
+        "polymorphic_name": "NanamiEngine::Module::Asset::BoardQuest",
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "cereal_class_version": 1,
+                "value0": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "cereal_class_version": 0
+                    },
+                    "contentPath_": "Assets\\Data\\EventNotice/GrassLandTyrant.boardQuest",
+                    "guid_": {
+                        "cereal_class_version": 0,
+                        "value_": "AA55E47D-2E6E-47B8-8A4F-D4D7866F3DDE"
+                    }
+                },
+                "title_": "草原の大顎",
+                "clientName_": "教官",
+                "rank_": 3,
+                "goalText_": "草原の村の跡に居座る大顎を倒す",
+                "descriptionLines_": [
+                    "草原の浮遊石は、大顎が村の跡で抱え込んでいる。",
+                    "あいつを倒して、石を島へ取り戻してくれ。"
+                ],
+                "stage_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "A369FA3C-6941-4FE4-834C-0CDD861837F9"
+                                }
+                            }
+                        }
+                    }
+                },
+                "event_": {
+                    "cereal_class_version": 0,
+                    "value0": {
+                        "polymorphic_id": 1073741824,
+                        "ptr_wrapper": {
+                            "id": 2147483651,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "value_": "00000000-0000-0000-0000-000000000000"
+                                }
+                            }
+                        }
+                    }
+                },
+                "quest_": {
+                    "polymorphic_id": 2147483650,
+                    "polymorphic_name": "GameCore::PlayerAvatar::Quest::MainStory::DefeatMainStoryQuest",
+                    "ptr_wrapper": {
+                        "id": 2147483652,
+                        "data": {
+                            "cereal_class_version": 0,
+                            "value0": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0,
+                                    "rewardMoney_": {
+                                        "cereal_class_version": 0,
+                                        "value_": 3000
+                                    }
+                                }
+                            },
+                            "questType_": 7,
+                            "enemyKind_": 3,
+                            "clearedFlag_": 2
+                        }
+                    }
+                },
+                "unlockConditions_": [
+                    {
+                        "polymorphic_id": 2147483651,
+                        "polymorphic_name": "GameCore::PlayerAvatar::Quest::Unlock::StoryFlagUnlockCondition",
+                        "ptr_wrapper": {
+                            "id": 2147483653,
+                            "data": {
+                                "cereal_class_version": 0,
+                                "value0": {
+                                    "cereal_class_version": 0
+                                },
+                                "storyFlag_": 1
+                            }
+                        }
+                    }
+                ],
+                "lockedText_": "教官の話を聞いてから"
+            }
+        }
+    }
+}

@@ -18,6 +18,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         , quests_(std::make_unique<QuestGroup>())
         , wallet_(std::make_shared<PlayerAvatar::Wallet>())
         , maxHealth_(150)
+        , currentHealth_(SyncParamFactory::Create<StatusParameter::Health>(this, maxHealth_))
         , maxStamina_(StatusParameter::Stamina(100.0f))
         , stamina_(StatusParameter::Stamina(100.0f))
         , staminaDrainPerSecond_(10.0f)
@@ -32,9 +33,9 @@ namespace GameCore::PlayerAvatar::SwordMan
         , dashAttack_                    (Damage::PhysicsPower(15), EnhancePower(10), 0.5303030303f, 0.6060606061f)
         , dashAttackLungeSpeed_secs_          (55.0f)
         , comboHitFeel_ {
-            HitFeelParam(0.3f, 0.1090909091f, 5.0f , 0.5f, 0.12f, 5.0f),
-            HitFeelParam(0.5f, 0.1090909091f, 5.75f, 0.7f, 0.14f, 3.5f),
-            HitFeelParam(0.8f, 0.1090909091f, 6.75f, 1.0f , 0.18f, 6.5f)}
+            HitFeelParam(0.3f, 0.1090909091f, 5.0f , 0.5f, 0.12f, 30.0f),
+            HitFeelParam(0.5f, 0.1090909091f, 5.75f, 0.7f, 0.14f, 28.0f),
+            HitFeelParam(0.8f, 0.1090909091f, 6.75f, 1.0f , 0.18f, 40.0f)}
         , dashHitFeel_                   (0.9f, 0.1272727273f, 1.0f, 0.6f, 0.2f)
         , comboInputBufferWindow_secs_   (0.1181818182f)
         , chargeAttackHoldThreshold_secs_(0.2f)
@@ -46,7 +47,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         , chargeAttackLungeSpeed_        (28.0f)
         , chargeAttackStaminaCost_       (30.0f)
         , jumpAttack_                    (Damage::PhysicsPower(22), EnhancePower(12), 0.1f, 0.6666666667f)
-        , jumpAttackHitFeel_             (1.5f, 0.15f, 6.5f, 0.8f, 0.22f)
+        , jumpAttackHitFeel_             (1.0f, 0.15f, 6.5f, 0.8f, 0.22f)
         , jumpAttackWindup_secs_         (0.3f)
         , jumpAttackPlungeSpeed_         (120.0f)
         , walkSpeed_                    (24.0f)
@@ -171,6 +172,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         case SwordManAvatarStateType::Jump:
         case SwordManAvatarStateType::Floating:
         case SwordManAvatarStateType::JumpAttackAir:
+        case SwordManAvatarStateType::JumpAttackLand:
             break;
         default:
         {

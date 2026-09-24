@@ -17,6 +17,13 @@ namespace GameCore::PlayerAvatar
         HyenaHuntWeek1,
         RockyTyrant,
         DesertLostCargo,
+
+        // メインストーリー
+        GrassLandTyrant,
+
+        // 砂漠 (docs/Story.md 第2章)
+        DesertSkeletonDragon,
+        DesertScorpionCull,
     };
 
     constexpr std::string_view ToString(const QuestType type)
@@ -30,6 +37,9 @@ namespace GameCore::PlayerAvatar
         case QuestType::HyenaHuntWeek1: return "HyenaHuntWeek1";
         case QuestType::RockyTyrant: return "RockyTyrant";
         case QuestType::DesertLostCargo: return "DesertLostCargo";
+        case QuestType::GrassLandTyrant: return "GrassLandTyrant";
+        case QuestType::DesertSkeletonDragon: return "DesertSkeletonDragon";
+        case QuestType::DesertScorpionCull: return "DesertScorpionCull";
         }
         return "UnknownQuestType";
     }
@@ -42,5 +52,8 @@ namespace GameCore::PlayerAvatar
         QuestType::HyenaHuntWeek1,
         QuestType::RockyTyrant,
         QuestType::DesertLostCargo,
+        QuestType::GrassLandTyrant,
+        QuestType::DesertSkeletonDragon,
+        QuestType::DesertScorpionCull,
     };
 }

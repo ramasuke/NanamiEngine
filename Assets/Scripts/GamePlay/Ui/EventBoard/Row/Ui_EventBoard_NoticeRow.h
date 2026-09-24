@@ -13,6 +13,7 @@
 #include "Engine/Module/NanamiUI/Button/NanamiUi_Button.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "../Model/NoticeBoardModel.h"
+#include "../../../Sound/UiSoundBank.h"
 
 namespace GamePlay::Ui
 {
@@ -53,6 +54,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] std::vector<FIELD(Asset::SpriteFile)> kindChipSprites_;
         [[serialize(0)]] FIELD(Asset::SoundFile) hoverSound_;
         [[serialize(0)]] float selectedScale_ = 1.05f;
+        [[serialize(1)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         glm::vec3 baseScale_ = glm::vec3(1.0f);
         bool isHighlighted_ = false;
@@ -76,6 +78,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(kindChipSprites_));
             archive(CEREAL_NVP(hoverSound_));
             archive(CEREAL_NVP(selectedScale_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<typename Archive>
@@ -92,9 +95,10 @@ namespace GamePlay::Ui
             if (version >= 0) archive(CEREAL_NVP(kindChipSprites_));
             if (version >= 0) archive(CEREAL_NVP(hoverSound_));
             if (version >= 0) archive(CEREAL_NVP(selectedScale_));
+            if (version >= 1) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardNoticeRow, 0);
+CEREAL_CLASS_VERSION(GamePlay::Ui::EventBoardNoticeRow, 1);

@@ -10,6 +10,7 @@
 #include "Engine/Module/Component/BlendImageRenderer/BlendImageRenderer.h"
 #include "Engine/Module/NanamiUI/TextRenderer/TextRenderer.h"
 #include "Libs/LibCore/Tween/Player/TweenPlayer.h"
+#include "../../../Sound/UiSoundBank.h"
 
 namespace GameCore::PlayerAvatar::SwordMan
 {
@@ -63,6 +64,7 @@ namespace GamePlay::Ui
         [[serialize(5)]] float clearHoldDuration_secs_ = 0.9f;
         [[serialize(5)]] float clearMarkPopScale_ = 1.0f;
         [[serialize(5)]] float bodyAlphaRate_ = 0.86f;
+        [[serialize(6)]] FIELD(Asset::UiSoundBankData) uiSounds_;
 
         GameCore::PlayerAvatar::SwordMan::IControlGuideFocusRequest* guideFocus_ = nullptr;
         bool isPartsCaught_ = false;
@@ -110,6 +112,7 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(clearHoldDuration_secs_));
             archive(CEREAL_NVP(clearMarkPopScale_));
             archive(CEREAL_NVP(bodyAlphaRate_));
+            archive(CEREAL_NVP(uiSounds_));
         }
 
         template<class Archive>
@@ -144,9 +147,10 @@ namespace GamePlay::Ui
             archive(CEREAL_NVP(clearHoldDuration_secs_));
             archive(CEREAL_NVP(clearMarkPopScale_));
             archive(CEREAL_NVP(bodyAlphaRate_));
+            if (version >= 6) archive(CEREAL_NVP(uiSounds_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Ui::SwordManActionInstructTutorial, 5);
+CEREAL_CLASS_VERSION(GamePlay::Ui::SwordManActionInstructTutorial, 6);
