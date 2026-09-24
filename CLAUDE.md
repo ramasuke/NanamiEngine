@@ -91,7 +91,7 @@ registered type name (cereal stores the macro argument as `polymorphic_name` in 
 `Engine/` and `Packages/` must never `#include` anything under `Assets/` (they are compiled into the engine lib that
 other projects link). Game code plugs in through registration instead:
 Add Component menu entries via `AddComponent::RegisterMenu` (game menu: `Assets/Scripts/Editor/AddComponentMenu/`),
-lock-on framing via `CineMachine::Behaviour::SetLockOnPositionResolver`. Physics layers other than `Default` are
+lock-on framing by implementing `CineMachine::ILockOnCameraTarget` (game side: `ILockOnTarget`). Physics layers other than `Default` are
 per-project data (`ProjectConfig/Physics/LayerNames.json` + `LayerCollisionMasks.json`, edited in Config > Physics);
 look them up with `Physics::PhysicsLayers::NameToLayer("Enemy")`, never add enum values. The exe takes `-project <dir>` (sets the
 working directory), and the game exe is built with `-p:NanamiApplicationMode=Game` (defines `NANAMI_GAME_BUILD`).
