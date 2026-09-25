@@ -216,13 +216,14 @@ Game.dll 由来のコードやオブジェクトへの参照が 1 つでも残�
 
 ```
 ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd と同じ位置)
+  0. 開いているシーンをメモリに保存、開いているゲーム製 Window の名前を記録 (§12.1, §12.4)
   1. GameWindow: 全シーン破棄, コルーチン AllClear, sceneLoader Cancel, ResetPhysics
-  2. ResetAssetsDirectory, ObjectRegistry の期限切れ purge, LifeCycle の残りを flush
-  3. ゲーム製 Main/Popup ウィンドウを破棄
-  4. UnregisterModule(gameModuleId) : §4 のレジストリ + §3.2 の cereal map 差分
-  5. FreeLibrary
+  2. ResetAssetsDirectory, ObjectRegistry / PrefabObjectRegistry の期限切れ purge, LifeCycle の残りを flush (§12.3)
+  3. ゲーム製 Main/Popup ウィンドウを破棄 (表示中なら GameWindow に切り替え、未保存の編集は保存か確認) (§12.4)
+  4. UnregisterModule(gameModuleId) : §4 のレジストリ + cereal の map から SerializationTypeRegistry の記録分を削除 (§3.2 の 2)
+  5. FreeLibrary、cereal の Versions::mapping を clear (§3.2 の 3)
   6. Game_<n>.dll / .pdb をコピーして LoadLibrary (リンカが元ファイルを上書きできるように一意名で)
-  7. Reload Assets (ScriptableObject を新しい型で読み直す), 初期シーン再ロード
+  7. Reload Assets (ScriptableObject を新しい型で読み直す), 0 で保存したシーンを復元, Window を開き直す
 ```
 
 ビルドの起動は `GameBuilder` (`Engine/Core/Application/Build/GameBuilder.h`) が既に MSBuild を `AsyncProcess` で回しているので流用できる。
@@ -300,7 +301,7 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
 | 段階 | 内容 | 主な作業 | 単独で得られる価値 |
 |---|---|---|---|
 | **A (済)** | 多相登録の入口を統一し、登録元モジュールを記録 (§3.4) | 登録 211 箇所の置き換え、`SerializationTypeRegistry` | 登録の一覧がエンジンから見える。保存形式は不変 |
-| **PoC** | §3.2 の cereal 共有スロットパッチを、最小の Host exe + Engine.dll + Game.dll で検証 | `static_object.hpp` 改変、スナップショット差分の削除、ロード -> シーン復元 -> アンロード -> 再ロードの 1 サイクル | 実現可否の最終確認 |
+| **PoC** | §3.2 の cereal 共有スロットパッチを、最小の Host exe + Engine.dll + Game.dll で検証 | `static_object.hpp` 改変、`SerializationTypeRegistry` の記録による cereal map からの削除、ロード -> シーン復元 -> アンロード -> 再ロードの 1 サイクル | 実現可否の最終確認 |
 | 0 | /MD 化 | props 変更、Effekseer 8 lib の /MD 再ビルド、4 構成の動作確認 | なし (前提) |
 | 1 | ゲームコードから DxLib を排除 | 34 ファイル、約 150 箇所をエンジンラッパーへ (入力・時間・2D 描画・サウンド・座標変換のラッパー整備を含む)。enet 1 ファイル | エンジン / ゲームの境界が明確になる |
 | 2 | エンジン DLL 化 (Game は exe のまま) | Host exe へ WinMain 移動、`NANAMI_API` 付与 (382 クラス)、`SingletonBase` 7 クラスの `.cpp` 化、`IMGUI_API`、cereal パッチ適用、engine_dist 更新 | ビルド時間短縮、配布物のバイナリ互換 |
