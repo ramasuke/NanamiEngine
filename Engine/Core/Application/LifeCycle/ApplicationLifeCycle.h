@@ -23,6 +23,8 @@ namespace NanamiEngine::Core::Application
         static std::vector<std::weak_ptr<Object::IFieldContext>>* FieldInitStaging();
         /** @brief 貯めておいた FIELD の初期化待ちを共有キューへ移す */
         void AddStagedFieldInittables(const std::vector<std::weak_ptr<Object::IFieldContext>>& staged);
+        /** @brief 呼び出し待ちを全部捨てる (ゲーム DLL を外す前。weak_ptr の制御ブロックが DLL のコードを指しているため) */
+        void Clear();
 
     private:
         LifeCycleOnceCallbackGroup<Object::IFieldContext> fieldInitableCallbacks_;

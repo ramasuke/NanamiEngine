@@ -3,13 +3,12 @@
 
 #include "../../Core/Api/NanamiApi.h"
 
-// ゲーム DLL をアンロードする前に、その DLL が cereal に登録した多相型を表から消す (docs/HotReload.md §3.2 の記録方式)。
-// 消す対象は SerializationTypeRegistry の記録 (name / type / base) から引き、保険として caster の vtable が
-// その DLL にあるものも掃く。手順:
-//   1. 型のインスタンスをすべて破棄する (シーン、アセット、ウィンドウ ...)
-//   2. Unregister(module)            <- FreeLibrary の前
+// ゲーム DLL をアンロードする前に、その DLL が cereal に登録した多相型を表から消す
+// 消す対象は SerializationTypeRegistry の記録から引き削除する。
+//   1. 型のインスタンスをすべて破棄する
+//   2. Unregister(module)
 //   3. FreeLibrary
-//   4. ClearClassVersions()          <- 次の LoadLibrary の前 (cereal の Versions は emplace なので古い番号が残る)
+//   4. ClearClassVersions()
 namespace NanamiEngine::Module::Serialization
 {
     struct NANAMI_API ModuleUnloadReport
@@ -27,7 +26,9 @@ namespace NanamiEngine::Module::Serialization
     public:
         static ModuleUnloadReport Unregister(const void* module);
         static void               ClearClassVersions();
-        /** @brief PolymorphicCasters に vtable が module にある caster が残っているか (Debug の取り残し assert 用) */
+        /** @brief PolymorphicCasters に vtable が module にある caster が残っているか 
+         * Debugの取り残しassert用
+         * */
         [[nodiscard]] static std::size_t CountLeftoverCasters(const void* module);
     };
 }

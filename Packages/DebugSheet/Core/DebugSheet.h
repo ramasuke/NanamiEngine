@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
+#include "Engine/Core/Api/NanamiModule.h"
 #include <functional>
 #include <memory>
 #include <string>
@@ -26,6 +27,10 @@ namespace NanamiEngine::DebugSheet
         using DrawPage = std::function<void()>;
 
         void RegisterPage(const std::string& path, DrawPage draw, int order = 0);
+        /** @param module 登録元のモジュール (REGISTER_DEBUG_SHEET_PAGE が NANAMI_CURRENT_MODULE() を渡す) */
+        void RegisterPage(const std::string& path, DrawPage draw, int order, void* module);
+        /** @brief module が登録したページを消す。空になったカテゴリも消す。戻り値は消したページ数 */
+        std::size_t UnregisterModule(const void* module);
 
         /** @brief F1 で開閉する */
         void Update();
@@ -47,8 +52,12 @@ namespace NanamiEngine::DebugSheet
             std::string                        name;
             int                                order = 0;
             DrawPage                           draw;
+            /** ページ (draw があるノード) の登録元モジュール */
+            void*                              module = nullptr;
             std::vector<std::unique_ptr<Node>> children;
         };
+
+        static std::size_t RemovePagesOfModule(Node& node, const void* module);
 
         Sheet();
 

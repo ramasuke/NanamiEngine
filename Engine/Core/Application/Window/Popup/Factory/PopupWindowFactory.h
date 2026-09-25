@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
+#include "Engine/Core/Api/NanamiModule.h"
 #include <string>
 #include <unordered_map>
 #include <functional>
@@ -29,13 +30,34 @@ namespace NanamiEngine::Core::PopupWindow
                 return std::make_unique<T>();
             };
             categories_[name] = category;
+            modules_   [name] = NANAMI_CURRENT_MODULE();
         }
         [[nodiscard]] const std::unordered_map<std::string, FactoryFunc>& GetAll() const { return factories_; }
         [[nodiscard]] const std::unordered_map<std::string, std::string>& GetCategories() const { return categories_; }
 
+        /** @brief module が登録したウィンドウ種別を消す。戻り値は消した数 */
+        std::size_t UnregisterModule(const void* module)
+        {
+            std::size_t count = 0;
+            for (auto it = modules_.begin(); it != modules_.end();)
+            {
+                if (it->second != module)
+                {
+                    ++it;
+                    continue;
+                }
+                factories_ .erase(it->first);
+                categories_.erase(it->first);
+                it = modules_.erase(it);
+                ++count;
+            }
+            return count;
+        }
+
     private:
         std::unordered_map<std::string, FactoryFunc> factories_;
         std::unordered_map<std::string, std::string> categories_;
+        std::unordered_map<std::string, void*>       modules_;
     };
 }
 

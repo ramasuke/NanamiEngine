@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
+#include "Engine/Core/Api/NanamiModule.h"
 
 #include <string>
 #include <vector>
@@ -67,12 +68,16 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
             // ファイルから値をロードし、ImGui ウィジェットで編集・保存できるUIを描画する
             // 初回呼び出し時にファイルから値を読み込み、以降は内部 state を保持する
             std::function<void()> drawEditGui;
+            // 登録元のモジュール
+            void* module = nullptr;
         };
 
         // シングルトンインスタンスの取得
         static LocalPrefsRegistry& GetInstance();
         // マクロの初期化ロジックから呼び出される登録関数
         void Register(PrefInfo info);
+        // module が登録した項目を消す。戻り値は消した数
+        std::size_t UnregisterModule(const void* module);
         // エディタ側で「登録された項目をループで列挙する」ためのゲッター
         [[nodiscard]] const std::vector<PrefInfo>& GetPrefsList() const;
 
@@ -86,7 +91,8 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
 
 
 /**
- * 内部実装用マクロ（直接呼ばないでください）
+ * WARNING: 直接読んではだまです。
+ * 内部実装用マクロ
  *
  * UniqueID を受け取るのは、同じ KeyName が複数の翻訳単位に現れたとき
  * 構造体名が衝突しないよう行番号をサフィックスに使うため。
@@ -104,6 +110,7 @@ struct AutoRegister_##UniqueID {                                                
         info.key      = KeyName;                                                             \
         info.typeName = #Type;                                                               \
         info.subPath  = SubPath;                                                             \
+        info.module   = NANAMI_CURRENT_MODULE();                                             \
         info.saveDefault = []() {                                                            \
             ::NanamiEngine::Module::LocalPrefs::SaveWithPath<Type>(SubPath, KeyName, DefaultValue); \
         };                                                                                   \
@@ -145,6 +152,7 @@ struct AutoRegister_##UniqueID {                                                
         info.key      = KeyName;                                                             \
         info.typeName = #Type;                                                               \
         info.subPath  = "";                                                                  \
+        info.module   = NANAMI_CURRENT_MODULE();                                             \
         info.saveDefault = []() {                                                            \
             ::NanamiEngine::Module::LocalPrefs::Save<Type>(KeyName, DefaultValue);           \
         };                                                                                   \
@@ -179,7 +187,7 @@ inline static AutoRegister_##UniqueID global_autoregister_##UniqueID;           
 
 
 /**
- * --- ユーザーが実際に使用する静的登録用マクロ ---
+ * 実際に使用する静的登録用マクロ
  *
  * NOTE: マクロを2段階に分けている理由
  *   __LINE__ はマクロ展開時点の行番号に置換される。

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <ranges>
+#include <sstream>
 
 #include "ImGuiHelper.h"
 #include "../../../../../Module/Asset/Asset.h"
@@ -149,6 +150,78 @@ namespace NanamiEngine::Core::MainWindow
             Module::LogError("GameWindow: 初期シーンの再読み込みに失敗しました: " + std::string(exception.what()));
         }
         Application::ApplicationBase::ResetPhysics();
+    }
+
+    std::vector<GameWindow::SceneSnapshot> GameWindow::TakeSceneSnapshots() const
+    {
+        std::vector<SceneSnapshot> snapshots;
+        const auto mainScene = mainScene_.lock();
+        for (const auto& scene : contents_ | std::views::values)
+        {
+            if (!scene)
+                continue;
+            try
+            {
+                std::ostringstream stream;
+                scene->SaveTo(stream);
+                snapshots.push_back({ scene->FilePath(), stream.str(), scene == mainScene });
+            }
+            catch (const std::exception& exception)
+            {
+                Module::LogError("GameWindow: シーンの写しを取れませんでした (" + scene->FilePath() + "): " + exception.what());
+            }
+        }
+        return snapshots;
+    }
+
+    void GameWindow::UnloadAllScenes()
+    {
+        isPlayMode_ = false;
+        isPlaying_  = false;
+        sceneLoader_.Cancel();
+        LifeCycle().Coroutine()->AllClear();
+        for (const auto& content : contents_ | std::views::values)
+        {
+            content->RemoveImplementAllGameObject();
+        }
+        contents_.clear();
+        mainScene_.reset();
+        lastAsyncLoadedScene_.reset();
+        removeGameObjectQueue_ = {};
+        Application::ApplicationBase::ResetPhysics();
+    }
+
+    void GameWindow::RestoreScenes(const std::vector<SceneSnapshot>& snapshots)
+    {
+        for (const auto& snapshot : snapshots)
+        {
+            try
+            {
+                Scene::Scene::DeserializedContent content;
+                std::istringstream stream(snapshot.json);
+                Scene::Scene::Deserialize(stream, snapshot.filePath, content, nullptr);
+                const auto scene = std::make_shared<Scene::Scene>(snapshot.filePath, std::move(content));
+                AddContent(scene);
+                if (snapshot.isMain || mainScene_.expired())
+                    ChangeMainScene(scene);
+            }
+            catch (const Module::Exception::NanamiException& exception)
+            {
+                Module::LogError("GameWindow: シーンを戻せませんでした (" + snapshot.filePath + "): " + std::string(exception.what()));
+            }
+        }
+        if (!contents_.empty())
+            return;
+        try
+        {
+            const auto initScene = std::make_shared<Scene::Scene>(Application::Configuration::BuildConfiguration::StartScenePath());
+            AddContent(initScene);
+            ChangeMainScene(initScene);
+        }
+        catch (const Module::Exception::NanamiException& exception)
+        {
+            Module::LogError("GameWindow: 初期シーンの再読み込みに失敗しました: " + std::string(exception.what()));
+        }
     }
 
     std::shared_ptr<Scene::Scene> GameWindow::CatchScene(

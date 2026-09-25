@@ -24,4 +24,9 @@ namespace NanamiEngine::Core::Network
 
         return {};
     }
+
+    std::size_t PrefabObjectRegistry::PurgeExpired()
+    {
+        return std::erase_if(assets_, [](const auto& pair) { return pair.second.expired(); });
+    }
 }

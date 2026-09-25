@@ -10,8 +10,9 @@
     <OutDir>$(ProjectDir)x64\Game\$(Configuration)\</OutDir>
     <IntDir>x64\Game\$(Configuration)\obj\</IntDir>
   </PropertyGroup>
-  <ItemGroup>
-    <!-- WinMain と NvOptimusEnablement は exe に無いといけない (docs/HotReload.md §8)。エンジン lib / DLL ではなくゲーム exe がコンパイルする -->
+  <ItemGroup Condition="'$(NanamiEngineShared)'!='true'">
+    <!-- WinMain と NvOptimusEnablement は exe に無いといけない (docs/HotReload.md §8)。静的 lib 構成ではゲーム exe がコンパイルする。
+         DLL 構成では NanamiHost.exe (NanamiHost.vcxproj) が持つ -->
     <ClCompile Include="$(NanamiEngineDir)Main.cpp" />
   </ItemGroup>
   <!-- 静的 lib 構成 (Game モード、または NanamiEngineShared=false) -->
@@ -33,13 +34,16 @@
       <AdditionalDependencies>$(NanamiEngineLib);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <!-- DLL 構成では NanamiEngine.dll (+ .pdb) を exe の隣に置く -->
+  <!-- DLL 構成では NanamiEngine.dll (+ .pdb) と Host exe をゲーム DLL の隣に置く。Host は $(TargetName).exe の名前にする
+       (起動コマンドや GameBuilder の手順が静的 lib のときと変わらない)。起動中の exe / DLL は SkipUnchangedFiles で触らない -->
   <Target Name="NanamiCopyEngineDll" AfterTargets="Build" Condition="'$(NanamiEngineShared)'=='true'">
     <ItemGroup>
       <NanamiEngineDllFile Include="$(NanamiEngineLibDir)NanamiEngine.dll" Condition="Exists('$(NanamiEngineLibDir)NanamiEngine.dll')" />
       <NanamiEngineDllFile Include="$(NanamiEngineLibDir)NanamiEngine.pdb" Condition="Exists('$(NanamiEngineLibDir)NanamiEngine.pdb')" />
+      <NanamiEngineDllFile Include="$(NanamiEngineLibDir)NanamiHost.pdb" Condition="Exists('$(NanamiEngineLibDir)NanamiHost.pdb')" />
     </ItemGroup>
     <Copy SourceFiles="@(NanamiEngineDllFile)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(NanamiEngineLibDir)NanamiHost.exe" DestinationFiles="$(OutDir)$(TargetName).exe" SkipUnchangedFiles="true" Condition="Exists('$(NanamiEngineLibDir)NanamiHost.exe')" />
   </Target>
   <!-- /MD のゲーム版 (Release) は VC++ ランタイム DLL が要る。出力先に同梱し、GameBuilder が exe と一緒にコピーする
        (Debug の CRT は再配布不可なので開発機の System32 に任せる) -->

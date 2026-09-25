@@ -59,6 +59,20 @@ namespace NanamiEngine::Core::MainWindow
         /** @brief BeginLoadSceneAsync で最後に読み込んだシーン */
         [[nodiscard]] std::weak_ptr<Scene::Scene> LastAsyncLoadedScene() const { return lastAsyncLoadedScene_; }
 
+        /** @brief 開いているシーンのメモリ上の写し (ゲーム DLL の差し替えをまたいで戻すため) */
+        struct NANAMI_API SceneSnapshot
+        {
+            std::string filePath;
+            std::string json;
+            bool        isMain = false;
+        };
+        /** @brief 開いている全シーンを JSON にして返す。失敗したシーンは飛ばす */
+        [[nodiscard]] std::vector<SceneSnapshot> TakeSceneSnapshots() const;
+        /** @brief プレイを止め、全シーンを破棄する (End と違って初期シーンは読み直さない) */
+        void UnloadAllScenes();
+        /** @brief TakeSceneSnapshots の写しからシーンを作り直す。1 つも戻せなければ初期シーンを読む */
+        void RestoreScenes(const std::vector<SceneSnapshot>& snapshots);
+
     private:
         [[nodiscard]] std::vector<std::shared_ptr<Scene::Scene>> Scenes() const;
         void Play();

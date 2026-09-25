@@ -14,6 +14,7 @@ Host exe (WinMain のみ)  ->  NanamiEngine.dll  <-  Game.dll (Assets/Scripts)
 改訂履歴
 - 2026-09-25: 初版 (実現可能性調査)。
 - 2026-09-25: 段階 0 完了 (Effekseer /MD 再ビルド、`NanamiUseDynamicCrt` 既定 `true`)。段階 1 (ゲームコードの DxLib 排除) 実装、Windows 4 構成ビルド済み。
+- 2026-09-25: 段階 3 (Game.dll 化 + ホットリロード) 実装。Editor Debug で差し替えを確認。
 - 2026-09-25: 段階 2 (エンジン DLL 化) 実装。Editor モードは exe + NanamiEngine.dll、Game モードは静的 lib のまま。
 - 2026-09-25: PoC を Windows (MSVC) で実行、Debug / Release とも 50 サイクル PASS。
 - 2026-09-25: 段階 A 実装 (MSVC ビルド・エディタ確認済み)。PoC を `tools/hotreload_poc/` に実装、Linux (g++ + dlopen) で 10 サイクル PASS。
@@ -382,7 +383,37 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
 | 0 | /MD 化 | props 変更、Effekseer 8 lib の /MD 再ビルド | 4 構成 (Editor/Game × Debug/Release) が動く | **完了** (2026-09-25)。Effekseer 170e + EffekseerForDXLib 17x@796064f1 を /MD で再ビルドして `*_vs2019_x64_MD(d).lib` を同梱 (`tools/effekseer_md/`)。`-p:NanamiUseDynamicCrt=true` で 4 構成がビルドでき、エディタ起動を確認。`NanamiUseDynamicCrt` の既定を `true` に変更 (`false` で /MT に戻る)。CRT ランタイム DLL は `$(VCToolsRedistInstallDir)` からコピー (MSBuild 単体では `$(VCToolsRedistDir)` が空) |
 | 1 | ゲームコードから DxLib を排除 | 42 ファイル、302 箇所 (再棚卸しで判明。当初の 34 / 150 は入力系だけの数) をエンジンのファサードへ: `Engine/Core/Platform/{Input,Draw2D,Render,AsyncLoad}` (新規 7 組)、`Time::NowMilliseconds`、`SoundFile` の再生 API、`Render3D::Shapes::DrawLine3D`、`ApplicationBase::RequestClose`。enet 1 ファイルは段階 2 で扱う | `python tools/dxlib_guard/check_game_dxlib.py` が 0 (`DX_LIB_NOT_DEFAULTPATH` によるリンク検出は Game.dll 化後) | **実装済み** (2026-09-25)。guard 0 件。MSVC ビルド (Editor Debug / Release、/MD) は通り、エディタ起動とタイトル画面の描画・ログにエラー無しを確認 (`XInput()` の呼び残し 2 ヘッダを `Gamepad().thumbRX` に修正)。エディタで追加確認 (2026-09-25、Editor Debug): GrassLandScene の草 (`GrassRenderer`、頂点 / 定数バッファ経由) と木 (`TreeLeafSway`) のシェーダー描画、MainIslandScene の読み込み、ログに警告・エラー無し。`Key` の全 88 値が DxLib の `KEY_INPUT_*` と一致することをスクリプトで照合 (`Input.cpp` の `static_assert` に加えて)。雲 / 格子バリア / 天候フォグ / ロード画面の BGM / ゲームオーバー / 各 UI プレゼンターは差分が 1:1 の置き換え (`Map` = `GetBufferShaderConstantBuffer` 等) であることをレビューで確認。**プレイヤー操作 (キーボード / パッド)、ショップ・イベントボード・ポーズ・キャラ選択・ステージ選択の部屋番号、大砲ゲージ演出、雲・格子バリアの実描画、天候フォグ、ロード画面の BGM フェードは Play 中の入力が要るため手動確認待ち** (エディタの Play は必ずタイトルから始まり、AutoMCP に入力注入は無い)。挙動が変わる箇所: `StageSelectPresenter` の部屋番号入力 (`KEY_INPUT_0 + digit` は DirectInput のキーコードが連番でないため上段 1〜9 とテンキーが効いていなかった。`Keyboard::IsDigitDown` で両方効く) |
 | 2 | エンジン DLL 化 (Game は exe のまま) | WinMain を exe 側へ、`NANAMI_API` 付与、`SingletonBase` 7 クラスの `.cpp` 化、`IMGUI_API`、cereal パッチ適用、engine_dist 更新 | 4 構成が動き、Game モードの成果物と `GameBuilder` の手順が変わらない | **実装済み** (2026-09-25)。Editor モードは `NanamiEngine.vcxproj` が `DynamicLibrary` (`lib/Editor/<Config>/NanamiEngine.dll` + import lib)、Game モードは静的 lib のまま (`NanamiEngineShared`、既定は Mode で決まる)。`NANAMI_API` はスクリプト (`tools/engine_api/add_nanami_api.py`) で 520 箇所 (クラス 362、名前空間スコープ関数 158) に付与。DLL の export は 9,112 個。Editor Debug / Release をビルドし、exe の依存が `NanamiEngine.dll` + CRT だけになること、エディタ起動・タイトル・GrassLandScene の草 / 木・ゲーム製 ImGui ウィンドウ (`EnemyNpcBehaviourWindow`) の描画、ログにエラー無しを確認。Game モード Debug / Release (静的 lib) もビルドでき、exe が起動する (DLL 無し、CRT DLL の同梱も従来どおり)。**完了** |
-| 3 | Game.dll 化 + ホットリロード | `ConfigurationType` 切替、§4 のモジュール ID 付き Unregister、`PurgeExpired`、ウィンドウ群の削除関数、§5 の差し替え手順と保険モード、ビルド起動 UI | エディタ上で Game.dll を差し替え、開いていたシーンとウィンドウが戻る | 未着手 |
+| 3 | Game.dll 化 + ホットリロード | `ConfigurationType` 切替、§4 のモジュール ID 付き Unregister、`PurgeExpired`、ウィンドウ群の削除関数、§5 の差し替え手順と保険モード、ビルド起動 UI | エディタ上で Game.dll を差し替え、開いていたシーンとウィンドウが戻る | **実装済み** (2026-09-25)。Editor モードは `NanamiHost.exe` (新規 `NanamiHost.vcxproj`、`$(TargetName).exe` の名前でコピー) → `NanamiEngine.dll` ← `EnviroHunter.dll` (`EnviroHunter.vcxproj` が `DynamicLibrary`)。差し替えは `Engine/Core/Application/HotReload/GameModule` (`ApplicationBase::Run` の `ScreenFlip` 後)、UI はツールバーの `HotReloadToolbarWidget` (Build & Reload / Reload / Keep old DLL)、AutoMCP に `hotreload_status` / `hotreload_reload`。Editor Debug で確認: 編集中に GrassLandScene の未保存の移動を保持したまま差し替え (世代 2: 登録解除 145、cereal in/out 532、caster 368 + 保険 1、共有 StaticObject 1,637、シーン 2)、新しい DLL のコード (追加したログ) が動く、`FreeLibrary` する側 (世代 3、取り残し 0) も落ちない、Play 中の差し替え (世代 4) はスタートシーンに戻る、差し替え後の Play も可 |
+
+### 段階 3 の実装メモ
+
+- **モジュール構成 (Editor)**: `NanamiHost.vcxproj` (Application、`Main.cpp` だけ、`NANAMI_HOST_LOADS_GAME_MODULE`) → `lib/Editor/<Config>/NanamiHost.exe`。
+  `NanamiEngine.Game.props` がビルド後に `$(OutDir)$(TargetName).exe` の名前でコピーするので、起動コマンド (`x64/Debug/EnviroHunter.exe -project ...`)、
+  AutoMCP の `engine_launch`、`/build-run` は変わらない。`EnviroHunter.vcxproj` は `NanamiEngineShared` で `DynamicLibrary` になり `EnviroHunter.dll` を出す
+  (export は無し。静的初期化子は obj を直接リンクするので `/WHOLEARCHIVE` 相当は不要)。Game モードでは Host は `Utility` (何も作らない)、ゲームは exe のまま。
+- **Host の起動**: `Main.cpp` の `LoadGameModule()` が `-game <dll>` か `<exe 名>.dll` を `GameModule::LoadInitial` に渡す。`Run` より前 = 静的 lib のときと同じ順序で
+  静的初期化 (登録) が走る。DLL は `HotReload/<世代>/<名前>.dll` + 同名 `.pdb` にコピーしてから `LoadLibraryExW(LOAD_WITH_ALTERED_SEARCH_PATH)` する
+  (同じファイル名なので PDB の紐付けが保たれる。起動時に前回の世代フォルダを消す)。
+- **登録の記録**: `Engine/Core/Api/NanamiModule.h` の `NANAMI_CURRENT_MODULE()` (呼び出し側の翻訳単位で実体化されるラムダ内 static のアドレスから
+  `GetModuleHandleExW(FROM_ADDRESS)`) と `ModuleOfVTable()`。`AssetFactory` / `MainWindowFactory` / `PopupWindowFactory` / `LocalPrefsRegistry` /
+  `AddComponent` / `EditorToolbarWidgetRegistry` / `DebugSheet::Sheet` / `RpcHandlerRegistry` が登録元を持ち `UnregisterModule(module)` を出す。
+  `RpcHandlerRegistry` は当初対象外だったが、再登録で `assert(duplicate RpcId)` に当たったので追加 (`Rpc<>::OnTargeted` のテンプレートが渡す)。
+  `PacketTypeNameRegistry` は上書きなので不要。
+- **差し替え手順** (`GameModule::Reload`): Play 中なら状態を捨て、編集中なら `GameWindow::TakeSceneSnapshots` (JSON 文字列) → `UnloadAllScenes`
+  (シーン破棄・コルーチン・非同期ロード・物理) → `ReleaseAssetsDirectory` → `MainWindowGroup` / `PopupWindowGroup::RemoveWindowsOfModule`
+  (ゲーム製ウィンドウが表示中なら先に `GameWindow` へ) → `ApplicationLifeCycle::Clear` → `ObjectRegistry` / `PrefabObjectRegistry::PurgeExpired` →
+  各 `UnregisterModule` → `SerializationModuleUnloader::Unregister` → 取り残し確認 (`ObjectRegistry::CountAliveOfModule`、`CountLeftoverCasters`、
+  `SharedStaticObjects::CountOwnedBy`。残っていれば FreeLibrary しない) → `FreeLibrary` (保険モードでは残す) → `ClearClassVersions` →
+  次の世代を `LoadLibrary` → `ResetAssetsDirectory` → `RestoreScenes` (戻せなければスタートシーン)。結果は `LastReport()` と Console に出る。
+- **保険モード** (`Keep old DLL`、`LocalPrefs/HotReload/KeepOldModules.json`、既定 ON): 古い DLL を `FreeLibrary` しない。
+  掃除漏れ (例: ゲーム製 Component を指す期限切れ `weak_ptr` の制御ブロック) があっても落ちない。OFF での差し替えも Debug で確認済み。
+- **Build & Reload**: `HotReloadToolbarWidget` が `AsyncProcess` で MSBuild (実行中の Configuration、Editor モード、`Logs/HotReload/` にログ) を回し、
+  exit 0 なら `RequestReload`。エンジンのソースを変えていた場合はエンジン DLL が再リンクされ、ロード中の `NanamiEngine.dll` へのコピーで
+  `MSB3021` になる = エンジンの変更はエディタ再起動が要る (§8 のとおり)。ゲームだけの変更なら ~30 秒。
+- **AutoMCP**: `hotreload.status` / `hotreload.reload` (`keepOldModules` 任意)。差し替えはコマンドと同じフレームの末尾で行われ、その間 (数秒〜十数秒)
+  エンジンは応答しない。`log_tail` と `hotreload_status` の `lastReport` で結果を読む。
+- **注意**: `Instance()` 系のシングルトンと同じく、`SerializationTypeRegistry` の caster の保険掃除 (`sweptCasters`) が毎回 1 件出る =
+  記録に無い関係が 1 つある (ゲーム側の `NANAMI_REGISTER_POLYMORPHIC_RELATION` 以外の経路)。動作には影響しないが、段階 4 で正体を調べる。
 
 ### 段階 2 の実装メモ
 
@@ -451,4 +482,8 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
 5. `IMGUI_API` dllimport で `ImGuiHelper.h` (LibCore) と ImGuizmo が問題なく動くこと。
    → 段階 2 で成立 (エディタの ImGui とゲーム製 `EnemyNpcBehaviourWindow` が描ける)。ImGuizmo を使う `Data_GrassField.cpp` の実操作は未確認。
 6. VS デバッガをアタッチしたまま Game.dll を差し替えてブレークポイントが効くこと (PDB コピー運用)。
+   → 未確認 (世代フォルダに同名の `.pdb` を置く形にはしてある)。
 7. 開いているシーンのメモリ上スナップショットが、Component のメンバ追加 (`CEREAL_CLASS_VERSION` を上げた場合) をまたいで復元できること。
+   → 未確認 (メンバを変えない差し替えで未保存の Transform が戻ることまで確認)。
+8. 保険モード OFF (`FreeLibrary`) で長時間・多数回の差し替えを繰り返してもリークや dangling が無いこと。
+   → Debug で 1 回だけ確認。Inspector の選択など `weak_ptr` を長く持つ箇所の棚卸しは未実施。

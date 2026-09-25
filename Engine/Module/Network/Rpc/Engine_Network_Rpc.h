@@ -6,6 +6,7 @@
 #include <type_traits>
 
 #include "Engine_Network_RpcHandlerRegistry.h"
+#include "Engine/Core/Api/NanamiModule.h"
 #include "../Engine_Network_NetworkRunner.h"
 #include "../../GameObject/Interface/IGameObject.h"
 #include "../../GameObject/ComponentGroup/ComponentGroup.h"
@@ -97,7 +98,7 @@ namespace NanamiEngine::Module::Network
                     std::apply(
                         [&](auto&&... unpacked) { handler(*component, unpacked...); },
                         buffer.ReadAll<Args...>(offset));
-                });
+                }, NANAMI_CURRENT_MODULE());
         }
 
         // 事前シリアライズ済み/長さプレフィックス無しの生バイト列をそのまま渡す
@@ -131,7 +132,7 @@ namespace NanamiEngine::Module::Network
                     if (!component)
                         return;
                     handler(*component, buffer, offset);
-                });
+                }, NANAMI_CURRENT_MODULE());
         }
     };
 

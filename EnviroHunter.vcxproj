@@ -1089,6 +1089,11 @@
       <Project>{45124e05-9ecb-57e5-833f-7290987cf51c}</Project>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
+    <!-- Host exe を先に組む (NanamiEngine.Game.props がビルド後にコピーする) -->
+    <ProjectReference Include="NanamiHost.vcxproj" Condition="'$(NanamiEngineShared)'=='true'">
+      <Project>{7d3c2f6a-5b1e-4c8a-9e2f-3a6b1c4d5e7f}</Project>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -1097,16 +1102,24 @@
     <RootNamespace>EnviroHunter</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- Editor モード (エンジンが DLL) ではゲームも DLL になり、NanamiHost.exe が読む (docs/HotReload.md 段階 3)。Game モードは exe のまま。
+         ConfigurationType は Microsoft.Cpp.props より前に決まるので NanamiEngine.props と同じ既定をここで計算する -->
+    <NanamiEngineShared Condition="'$(NanamiEngineShared)'=='' and '$(NanamiApplicationMode)'!='Game'">true</NanamiEngineShared>
+    <NanamiEngineShared Condition="'$(NanamiEngineShared)'==''">false</NanamiEngineShared>
+    <NanamiGameConfigurationType Condition="'$(NanamiEngineShared)'=='true'">DynamicLibrary</NanamiGameConfigurationType>
+    <NanamiGameConfigurationType Condition="'$(NanamiEngineShared)'!='true'">Application</NanamiGameConfigurationType>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>$(NanamiGameConfigurationType)</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>$(NanamiGameConfigurationType)</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>

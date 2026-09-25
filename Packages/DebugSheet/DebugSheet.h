@@ -17,7 +17,7 @@
     namespace {                                                                           \
         struct DebugSheetPageRegistrar_##ID {                                             \
             DebugSheetPageRegistrar_##ID() {                                              \
-                ::NanamiEngine::DebugSheet::Sheet::Instance().RegisterPage(PATH, DRAW, ORDER); \
+                ::NanamiEngine::DebugSheet::Sheet::Instance().RegisterPage(PATH, DRAW, ORDER, NANAMI_CURRENT_MODULE()); \
             }                                                                             \
         };                                                                                \
         const DebugSheetPageRegistrar_##ID debugSheetPageRegistrar_##ID;                  \

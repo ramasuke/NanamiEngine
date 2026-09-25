@@ -25,6 +25,11 @@ namespace NanamiEngine::Core::Toolbar
         });
         entries_.insert(position, std::move(entry));
     }
+
+    std::size_t EditorToolbarWidgetRegistry::UnregisterModule(const void* module)
+    {
+        return std::erase_if(entries_, [module](const Entry& entry) { return entry.module == module; });
+    }
 }
 
 NanamiEngine::Core::Toolbar::EditorToolbarWidgetRegistry& NanamiEngine::Core::Toolbar::EditorToolbarWidgetRegistry::Instance()

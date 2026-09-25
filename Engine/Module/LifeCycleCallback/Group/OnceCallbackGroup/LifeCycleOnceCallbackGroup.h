@@ -20,10 +20,10 @@ namespace NanamiEngine::Core::Application
         void AddedContentPop();
         void Invoke(const std::function<void(T&)>& func);
         void OnUpdatePushedContents();
+        void Clear();
 
     private:
-        // addContentStack_ はデシリアライズ中のワーカースレッドからも積まれる。
-        // contents_ 側はメインスレッド専用なので保護しない
+        // デシリアライズ中のワーカースレッドからも積まれる。
         std::stack<std::weak_ptr<T>> addContentStack_;
         std::mutex addContentMutex_;
         std::stack<std::weak_ptr<T>> contents_;
@@ -44,6 +44,14 @@ namespace NanamiEngine::Core::Application
         {
             addContentStack_.pop();
         }
+    }
+
+    template <typename T>
+    void LifeCycleOnceCallbackGroup<T>::Clear()
+    {
+        std::lock_guard lock(addContentMutex_);
+        addContentStack_ = {};
+        contents_        = {};
     }
 
     template <typename T>

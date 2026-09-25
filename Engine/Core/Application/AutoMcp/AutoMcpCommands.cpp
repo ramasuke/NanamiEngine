@@ -13,6 +13,7 @@
 
 #include "DxLib.h"
 #include "imgui_internal.h"
+#include "../HotReload/GameModule.h"
 #include "AutoMcpEngineAccess.h"
 #include "../ApplicationBase.h"
 #include "../Configuration/DebugDraw/ApplicationConfiguration_DebugDraw.h"
@@ -859,6 +860,39 @@ namespace NanamiEngine::Core::Application::AutoMcp
             AddPlayState(result, *gameWindow, allocator);
         }
 
+        static void AddHotReloadState(JsonValue& result, JsonAllocator& allocator)
+        {
+            const auto& gameModule = HotReload::GameModule::Instance();
+            result.AddMember("loaded",         gameModule.IsLoaded(),       allocator);
+            result.AddMember("generation",     gameModule.Generation(),     allocator);
+            result.AddMember("keepOldModules", gameModule.KeepOldModules(), allocator);
+            const std::u8string source = gameModule.SourcePath().u8string();
+            result.AddMember("source",         MakeString(std::string(source.begin(), source.end()), allocator), allocator);
+            result.AddMember("lastReport",     MakeString(gameModule.LastReport(), allocator), allocator);
+        }
+
+        static void CommandHotReloadStatus(const JsonArgs&, JsonValue& result, JsonAllocator& allocator)
+        {
+            AddHotReloadState(result, allocator);
+        }
+
+        // NOTE: 差し替え自体は ApplicationBase::Run の ScreenFlip 後
+        static void CommandHotReloadReload(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
+        {
+            auto& gameModule = HotReload::GameModule::Instance();
+            if (!gameModule.IsLoaded())
+            {
+                throw AutoMcpError("game module is not loaded (static build?)");
+            }
+            if (args.FindMember("keepOldModules") != nullptr)
+            {
+                gameModule.SetKeepOldModules(args.RequireBool("keepOldModules"));
+            }
+            gameModule.RequestReload();
+            result.AddMember("requested", true, allocator);
+            AddHotReloadState(result, allocator);
+        }
+
         static void CommandTimeSetScale(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)
         {
             const double scale = args.RequireNumber("scale");
@@ -1470,6 +1504,8 @@ namespace NanamiEngine::Core::Application::AutoMcp
             {"stop",                    {AutoMcpPhase::FrameEnd,   CommandStop}},
             {"end",                     {AutoMcpPhase::FrameEnd,   CommandEnd}},
             {"time.set_scale",          {AutoMcpPhase::FrameEnd,   CommandTimeSetScale}},
+            {"hotreload.status",        {AutoMcpPhase::FrameEnd,   CommandHotReloadStatus}},
+            {"hotreload.reload",        {AutoMcpPhase::FrameEnd,   CommandHotReloadReload}},
             {"camera.get",              {AutoMcpPhase::FrameEnd,   CommandCameraGet}},
             {"camera.set",              {AutoMcpPhase::FrameEnd,   CommandCameraSet}},
             {"debugdraw.get",           {AutoMcpPhase::FrameEnd,   CommandDebugDrawGet}},

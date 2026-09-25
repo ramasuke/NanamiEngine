@@ -10,6 +10,7 @@
     Engine/ Packages/ Libs/          ヘッダとサードパーティのライブラリ (.c/.cpp は含まない)
     lib/Game/<Debug|Release>/NanamiEngine.lib                      出荷用の静的 lib
     lib/Editor/<Debug|Release>/NanamiEngine.{lib,dll,pdb}          エディタ用の DLL と import lib (docs/HotReload.md 段階 2)
+    lib/Editor/<Debug|Release>/NanamiHost.{exe,pdb}                ゲーム DLL を読む Host exe (段階 3)。props が <Project>.exe の名前でコピーする
     Template/                        新規プロジェクトのテンプレート (トークンは NanamiHub が埋める)
 """
 
@@ -28,7 +29,7 @@ SOURCE_DIRECTORIES = ("Engine", "Packages", "Libs")
 ROOT_FILES = ("NanamiEngine.props", "NanamiEngine.Game.props", "stdafx.h", "stdafx.cpp", "Main.cpp")
 # Editor モードはエンジンが DLL (import lib + dll + pdb)。Game モードは静的 lib だけ
 SHARED_MODES = ("Editor",)
-SHARED_ARTIFACTS = ("NanamiEngine.dll", "NanamiEngine.pdb")
+SHARED_ARTIFACTS = ("NanamiEngine.dll", "NanamiEngine.pdb", "NanamiHost.exe", "NanamiHost.pdb")
 # NOTE: lib に焼き込まれるので配らない
 EXCLUDED_SUFFIXES = {".c", ".cc", ".cpp", ".cxx", ".vcxproj", ".filters", ".user", ".obj", ".pdb", ".ilk", ".tlog"}
 EXCLUDED_NAMES = {"desktop.ini", "thumbs.db", ".ds_store"}

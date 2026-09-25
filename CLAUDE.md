@@ -1,17 +1,27 @@
 # NanamiEngine
 
-A custom C++ game engine + game (DxLib / ImGui / Jolt / cereal), toolset v143, C++20. `EnviroHunter.sln` has two
-hand-maintained projects with explicit file lists — **there is no globbing**, so a new `.cpp`/`.h` must be added by hand
-(and, optionally, to the `.vcxproj.filters`):
+A custom C++ game engine + game (DxLib / ImGui / Jolt / cereal), toolset v143, C++20. `EnviroHunter.sln` has three
+hand-maintained projects (engine, game, and the tiny `NanamiHost.vcxproj` host exe) with explicit file lists — **there is no
+globbing**, so a new `.cpp`/`.h` must be added by hand (and, optionally, to the `.vcxproj.filters`):
 
 - `NanamiEngine.vcxproj` — the engine: `Engine/`, `Packages/`, `Libs/`. In **Editor** mode it is a DLL
   (`lib/Editor/<Config>/NanamiEngine.dll` + import lib `NanamiEngine.lib`, HotReload stage 2, `docs/HotReload.md`); in
   **Game** mode (shipping, `-p:NanamiApplicationMode=Game`) it stays a static lib `lib/Game/<Config>/NanamiEngine.lib`.
   `-p:NanamiEngineShared=false` builds the Editor variant as a static lib again.
-- `EnviroHunter.vcxproj` — the game exe (`EnviroHunter.exe`): `Assets/**` sources plus `Main.cpp` (WinMain +
-  `NvOptimusEnablement`, added by `NanamiEngine.Game.props`). Against the DLL it links only the import lib and
-  `NanamiEngine.Game.props` copies the DLL next to the exe; against the static lib it links with `/WHOLEARCHIVE` (static
-  self-registration would otherwise be dropped by the linker).
+- `EnviroHunter.vcxproj` — the game: `Assets/**` sources. In **Editor** mode it is `EnviroHunter.dll` (HotReload stage 3),
+  loaded by the host `NanamiHost.vcxproj` (`Main.cpp` = WinMain + `NvOptimusEnablement`; copied to `x64/<Config>/EnviroHunter.exe`
+  by `NanamiEngine.Game.props`, so launch commands don't change). It links only the engine import lib, and the props copy
+  `NanamiEngine.dll` next to it. In **Game** mode it is the exe as before: it compiles `Main.cpp` itself and links the static lib
+  with `/WHOLEARCHIVE` (static self-registration would otherwise be dropped by the linker).
+
+**Hot reload** (Editor only, `docs/HotReload.md` §5): the toolbar's *Build & Reload* rebuilds the game DLL with MSBuild and
+`Engine/Core/Application/HotReload/GameModule` swaps it at the end of the frame (open scenes are snapshotted as JSON and
+restored, play mode is ended first). The DLL is loaded from a copy in `x64/<Config>/HotReload/<n>/`, so the linker can always
+overwrite the original. *Keep old DLL* (default on, `LocalPrefs/HotReload/`) skips `FreeLibrary`. Anything game code registers
+into the engine must go through a registry that records the module (`NANAMI_CURRENT_MODULE()` in `Engine/Core/Api/NanamiModule.h`)
+and has `UnregisterModule`; a new registry needs both plus a call in `GameModule::Reload`. AutoMCP exposes it as
+`hotreload_status` / `hotreload_reload`. Changing engine sources still needs an editor restart (the loaded `NanamiEngine.dll`
+can't be replaced; the build then fails with `MSB3021`).
 
 Shared compiler/linker settings live in `NanamiEngine.props` / `NanamiEngine.Game.props`, not in the vcxproj files.
 Game code includes engine headers root-relative (`#include "Engine/..."`, `"Packages/..."`, `"Libs/..."`).

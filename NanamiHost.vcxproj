@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Host exe (docs/HotReload.md 段階 3): WinMain だけを持ち、NanamiEngine.dll を import して、ゲーム DLL (<exe 名>.dll) を LoadLibrary する。
+     Editor モード (NanamiEngineShared=true) でだけ意味がある。ゲームプロジェクトは NanamiEngine.Game.props で
+     lib/Editor/<Config>/NanamiHost.exe を $(OutDir)$(TargetName).exe にコピーする。Game モードでは何もビルドしない -->
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup>
+    <NanamiEngineShared Condition="'$(NanamiEngineShared)'=='' and '$(NanamiApplicationMode)'!='Game'">true</NanamiEngineShared>
+    <NanamiEngineShared Condition="'$(NanamiEngineShared)'==''">false</NanamiEngineShared>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(NanamiEngineShared)'=='true'">
+    <ClCompile Include="Main.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles></ForcedIncludeFiles>
+      <IncludeInUnityFile>false</IncludeInUnityFile>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="NanamiEngine.vcxproj">
+      <Project>{45124e05-9ecb-57e5-833f-7290987cf51c}</Project>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{7d3c2f6a-5b1e-4c8a-9e2f-3a6b1c4d5e7f}</ProjectGuid>
+    <RootNamespace>NanamiHost</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup>
+    <!-- Game モード (静的 lib) では Host は要らないので、何も出力しない Utility にする -->
+    <NanamiHostConfigurationType Condition="'$(NanamiEngineShared)'=='true'">Application</NanamiHostConfigurationType>
+    <NanamiHostConfigurationType Condition="'$(NanamiEngineShared)'!='true'">Utility</NanamiHostConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>$(NanamiHostConfigurationType)</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>$(NanamiHostConfigurationType)</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="NanamiEngine.props" />
+  </ImportGroup>
+  <PropertyGroup>
+    <OutDir>$(NanamiEngineLibDir)</OutDir>
+    <IntDir>$(NanamiEngineDir)obj\Host\$(Configuration)\</IntDir>
+    <TargetName>NanamiHost</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <!-- NANAMI_ENGINE_USE_DLL: エンジンの import。NANAMI_HOST_LOADS_GAME_MODULE: Main.cpp がゲーム DLL を読む側になる -->
+      <PreprocessorDefinitions>NANAMI_ENGINE_USE_DLL;NANAMI_HOST_LOADS_GAME_MODULE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(NanamiEngineLib);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

@@ -11,8 +11,7 @@
 namespace NanamiEngine::Module::Network
 {
     /**
-     * RpcIdごとに登録されたハンドラを呼び出すレジストリ(PacketTypeNameRegistryと同じ自己登録パターン)。
-     * EnetUDPNetworkSystemのポーリングはメインスレッド単一実行のため排他制御は行わない。
+     * RpcIdごとに登録されたハンドラを呼び出すレジストリ
      */
     class NANAMI_API RpcHandlerRegistry final : public SingletonBase<RpcHandlerRegistry>
     {
@@ -22,10 +21,18 @@ namespace NanamiEngine::Module::Network
     public:
         using Handler = std::function<void(const Core::Network::ByteBuffer&, size_t&)>;
 
-        void Register(Core::Network::RpcId id, Handler handler);
+        /** @param module 登録元のモジュール (Rpc<> のテンプレートが NANAMI_CURRENT_MODULE() を渡す) */
+        void Register(Core::Network::RpcId id, Handler handler, void* module = nullptr);
         void Invoke(Core::Network::RpcId id, const Core::Network::ByteBuffer& buffer, size_t& offset) const;
+        /** @brief module が登録したハンドラを消す。戻り値は消した数 */
+        std::size_t UnregisterModule(const void* module);
 
     private:
-        std::unordered_map<uint32_t, Handler> handlers_;
+        struct Entry
+        {
+            Handler handler;
+            void*   module;
+        };
+        std::unordered_map<uint32_t, Entry> handlers_;
     };
 }

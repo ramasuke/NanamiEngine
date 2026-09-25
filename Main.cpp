@@ -13,6 +13,10 @@
 #include "Engine/Core/Application/Game/GameApplication.h"
 #include "Engine/Module/Exception/Engine_Module_Exception.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
+#ifdef NANAMI_HOST_LOADS_GAME_MODULE
+#include <filesystem>
+#include "Engine/Core/Application/HotReload/GameModule.h"
+#endif
 
 extern "C" __declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
 
@@ -50,6 +54,37 @@ bool ApplyProjectArgument()
 	return succeeded;
 }
 
+#ifdef NANAMI_HOST_LOADS_GAME_MODULE
+// -game <dll> があればそれを、無ければ exe と同じフォルダの <exe 名>.dll をゲーム DLL として読む (docs/HotReload.md 段階 3)
+bool LoadGameModule()
+{
+	std::filesystem::path dllPath;
+	int argc = 0;
+	if (LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc); argv != nullptr)
+	{
+		for (int i = 1; i + 1 < argc; ++i)
+		{
+			if (std::wstring_view(argv[i]) == L"-game" || std::wstring_view(argv[i]) == L"--game")
+				dllPath = argv[i + 1];
+		}
+		LocalFree(argv);
+	}
+	if (dllPath.empty())
+	{
+		wchar_t exePath[MAX_PATH] = {};
+		GetModuleFileNameW(nullptr, exePath, MAX_PATH);
+		dllPath = std::filesystem::path(exePath).replace_extension(L".dll");
+	}
+
+	std::string error;
+	if (NanamiEngine::Core::Application::HotReload::GameModule::Instance().LoadInitial(dllPath, error))
+		return true;
+	
+	MessageBoxA(nullptr, error.c_str(), "NanamiEngine - Game DLL", MB_OK | MB_ICONERROR);
+	return false;
+}
+#endif
+
 void StartApplicationAsync()
 {
 	std::unique_ptr<NanamiEngine::Core::Application::ApplicationBase> application = nullptr;
@@ -70,6 +105,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// WARNING: ログや設定を読む前に呼ぶこと
 	if (!ApplyProjectArgument())
 		return 1;
+	
+#ifdef NANAMI_HOST_LOADS_GAME_MODULE
+	// ゲーム DLL の静的初期化は Run より前に済ませる。静的 lib のときと同じ順序
+	if (!LoadGameModule())
+		return 1;
+#endif
 
 	//起動時の Scene 破損など回復できないエラーはダイアログを出して終了する
 	try

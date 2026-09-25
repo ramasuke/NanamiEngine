@@ -64,6 +64,10 @@ namespace NanamiEngine::Scene
         void OnDrawGui() override { }
         void OnDrawFileDropGui(Core::FileSystem::EditorDraggingHand& fileDraggingHand);
         void OnSave();
+        /** @brief .scene と同じ JSON を stream に書く (OnSave はこれをファイルへ) */
+        void SaveTo(std::ostream& stream);
+        /** @brief .scene と同じ JSON を stream から読む。label は例外メッセージ用 */
+        static void Deserialize(std::istream& stream, const std::string& label, DeserializedContent& outContent, DeserializeProgress* progress);
         [[nodiscard]] std::shared_ptr<Module::GameObject::IGameObject> CatchGameObject(const Guid& id) const;
         /** @brief 子孫も含めた全 GameObject に action を 1 回ずつ呼ぶ */
         void ForEachGameObject(const std::function<void(const std::shared_ptr<Module::GameObject::IGameObject>&)>& action) const;

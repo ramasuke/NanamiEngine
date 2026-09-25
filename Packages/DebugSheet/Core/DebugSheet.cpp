@@ -27,7 +27,7 @@ namespace NanamiEngine::DebugSheet
         stack_.push_back(&root_);
     }
 
-    void Sheet::RegisterPage(const std::string& path, DrawPage draw, const int order)
+    void Sheet::RegisterPage(const std::string& path, DrawPage draw, const int order, void* module)
     {
         Node* node = &root_;
         std::string_view rest = path;
@@ -56,7 +56,40 @@ namespace NanamiEngine::DebugSheet
 
         node->draw   = std::move(draw);
         node->order  = order;
+        node->module = module;
         isSortDirty_ = true;
+    }
+
+    void Sheet::RegisterPage(const std::string& path, DrawPage draw, const int order)
+    {
+        RegisterPage(path, std::move(draw), order, nullptr);
+    }
+
+    std::size_t Sheet::UnregisterModule(const void* module)
+    {
+        const std::size_t removed = RemovePagesOfModule(root_, module);
+        if (removed > 0)
+        {
+            // 消したページを開いていたかもしれないので、ページスタックはルートに戻す
+            stack_.clear();
+            stack_.push_back(&root_);
+            isSortDirty_ = true;
+        }
+        return removed;
+    }
+
+    std::size_t Sheet::RemovePagesOfModule(Node& node, const void* module)
+    {
+        std::size_t removed = 0;
+        for (auto& child : node.children)
+            removed += RemovePagesOfModule(*child, module);
+        removed += std::erase_if(node.children, [module](const std::unique_ptr<Node>& child)
+        {
+            const bool isPageOfModule = child->draw && child->module == module;
+            const bool isEmptyCategory = !child->draw && child->children.empty();
+            return isPageOfModule || isEmptyCategory;
+        });
+        return removed;
     }
 
     void Sheet::Update()

@@ -14,8 +14,6 @@
 
 namespace
 {
-    using namespace NanamiEngine::Module::Serialization;
-
     template <class Archive>
     std::size_t EraseInputBinding(const std::string& name)
     {
@@ -34,7 +32,7 @@ namespace
     bool IsCasterOf(const cereal::detail::PolymorphicCaster* caster, const void* module)
     {
         const void* const vtable = *reinterpret_cast<const void* const*>(caster);
-        return SerializationTypeRegistry::ModuleOf(vtable) == module;
+        return NanamiEngine::Module::Serialization::SerializationTypeRegistry::ModuleOf(vtable) == module;
     }
 
     void EraseReverse(cereal::detail::PolymorphicCasters& casters, const std::type_index derived, const std::type_index base)
@@ -55,11 +53,12 @@ namespace NanamiEngine::Module::Serialization
         auto& casters = cereal::detail::StaticObject<cereal::detail::PolymorphicCasters>::getInstance();
         const auto records = SerializationTypeRegistry::Instance().RecordsOfModule(module);
 
-        // 1. 記録から: 保存・復元の関数 (name / type で引く)
+        // 1. 記録から: 保存・復元の関数
         for (const auto& record : records)
         {
             if (record.name.empty())
                 continue;
+            
             report.inputBindings  += EraseInputBinding <cereal::JSONInputArchive>           (record.name);
             report.inputBindings  += EraseInputBinding <cereal::PortableBinaryInputArchive> (record.name);
             report.outputBindings += EraseOutputBinding<cereal::JSONOutputArchive>          (record.type);

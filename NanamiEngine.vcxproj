@@ -1128,6 +1128,9 @@
       <ForcedIncludeFiles></ForcedIncludeFiles>
       <IncludeInUnityFile>false</IncludeInUnityFile>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Api\NanamiModule.cpp" />
+    <ClCompile Include="Engine\Core\Application\HotReload\GameModule.cpp" />
+    <ClCompile Include="Engine\Core\Application\Window\Toolbar\Widget\Builtin\HotReloadToolbarWidget.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
       <IncludeInUnityFile>false</IncludeInUnityFile>
@@ -2496,6 +2499,9 @@
     <ClInclude Include="Packages\AssetUpdater\System\Relaunch.h" />
     <ClInclude Include="Packages\AssetUpdater\Task\AssetUpdateTask.h" />
     <ClInclude Include="Packages\AssetUpdater\Text\Utf8.h" />
+    <ClInclude Include="Engine\Core\Api\NanamiModule.h" />
+    <ClInclude Include="Engine\Core\Application\HotReload\GameModule.h" />
+    <ClInclude Include="Engine\Core\Application\Window\Toolbar\Widget\Builtin\HotReloadToolbarWidget.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Engine\Module\SafeExecute\Engine_Module_SafeExecute.h" />
   </ItemGroup>

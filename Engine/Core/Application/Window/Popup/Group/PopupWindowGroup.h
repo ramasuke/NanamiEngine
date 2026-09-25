@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
+#include "Engine/Core/Api/NanamiModule.h"
 #include <memory>
 #include <ranges>
 #include <unordered_map>
@@ -36,6 +37,15 @@ namespace NanamiEngine::Core::PopupWindow
         template <PopupWindowType WindowT>
         [[nodiscard]] std::vector<WindowT*> Catch();
         void OnDraw(FileSystem::EditorDraggingHand& draggingHand);
+
+        /** @brief クラスが module にあるウィンドウを閉じて捨てる (ゲーム DLL を外す前)。戻り値は捨てた数 */
+        std::size_t RemoveWindowsOfModule(const void* module)
+        {
+            return std::erase_if(popupWindows_, [module](const auto& pair)
+            {
+                return pair.second && ModuleOfVTable(pair.second.get()) == module;
+            });
+        }
 
     private:
         std::unordered_map<Guid, std::unique_ptr<IPopupWindow>, GuidHash> popupWindows_;
