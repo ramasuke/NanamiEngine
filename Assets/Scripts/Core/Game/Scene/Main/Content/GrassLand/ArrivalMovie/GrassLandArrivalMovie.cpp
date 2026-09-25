@@ -4,7 +4,7 @@
 #include <cmath>
 #include <cstdint>
 
-#include "DxLib.h"
+#include "Engine/Core/Platform/Input/Input.h"
 
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
@@ -55,19 +55,19 @@ namespace GameCore::Scene::GrassLand
 
         bool ArrivalIsSkipInputDown()
         {
-            if (CheckHitKeyAll(DX_CHECKINPUT_KEY) != 0)
+            if (NanamiEngine::Platform::Input::Keyboard::IsAnyDown())
                 return true;
 
-            XINPUT_STATE xInput = {};
-            if (GetJoypadXInputState(DX_INPUT_PAD1, &xInput) != 0)
+            const auto xInput = NanamiEngine::Platform::Input::Gamepad::Get();
+            if (!xInput.connected)
                 return false;
 
-            if (xInput.LeftTrigger > ARRIVAL_SKIP_TRIGGER_DEAD_ZONE || xInput.RightTrigger > ARRIVAL_SKIP_TRIGGER_DEAD_ZONE)
+            if (xInput.leftTrigger > ARRIVAL_SKIP_TRIGGER_DEAD_ZONE || xInput.rightTrigger > ARRIVAL_SKIP_TRIGGER_DEAD_ZONE)
                 return true;
 
-            for (const auto button : xInput.Buttons)
+            for (const bool button : xInput.buttons)
             {
-                if (button != 0)
+                if (button)
                     return true;
             }
             return false;

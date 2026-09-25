@@ -41,6 +41,5 @@ namespace GamePlay::PlayerAvatar::MagicCaster
 
 #pragma region SerializationMacro
 REGISTER_PLAYER_AVATAR_BASE(MagicCaster::MagicCasterAvatarTraits)
-CEREAL_REGISTER_TYPE(GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarTraits>, GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar);
+NANAMI_REGISTER_TYPE(GamePlay::PlayerAvatar::MagicCaster::MagicCasterAvatar, GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarTraits>);
 #pragma endregion

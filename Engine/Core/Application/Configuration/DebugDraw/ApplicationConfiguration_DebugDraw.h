@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <array>
 
 #include "../../../../Module/Physics/Component/Collider/Engine_Physics_ColliderShapeKind.h"
@@ -12,7 +13,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 namespace NanamiEngine::Core::Application::Configuration
 {
     /** @brief エディタでシーン全体のコライダーを描画するかの設定。StaticMesh 等は重いので種類・レイヤー・Trigger で絞り込める */
-    class DebugDrawConfiguration final
+    class NANAMI_API DebugDrawConfiguration final
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
 

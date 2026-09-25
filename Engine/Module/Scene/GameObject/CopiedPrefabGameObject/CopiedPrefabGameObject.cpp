@@ -263,6 +263,5 @@ void Scene::CopiedPrefabGameObject::OnDrawTreeGui(const bool drawChildren)
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Scene::CopiedPrefabGameObject);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::GameObject::IGameObject, NanamiEngine::Scene::CopiedPrefabGameObject);
+NANAMI_REGISTER_TYPE(NanamiEngine::Scene::CopiedPrefabGameObject, NanamiEngine::Module::GameObject::IGameObject);
 #pragma endregion

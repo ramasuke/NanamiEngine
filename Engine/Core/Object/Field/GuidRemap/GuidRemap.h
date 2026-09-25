@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <optional>
 #include <unordered_map>
 #include "../../../../Module/Guid/Guid.h"
@@ -11,7 +12,7 @@ namespace NanamiEngine::Module::GameObject
 namespace NanamiEngine::Core::Object
 {
     //NOTE: 値オブジェクト
-    struct GuidRemap final
+    struct NANAMI_API GuidRemap final
     {
         explicit GuidRemap(std::unordered_map<Guid, Guid, GuidHash> copiedGuids);
         /** @brief 複製元と複製先のヒエラルキーを同じ順番でたどり、GameObject / Component の元の GUID を複製先の GUID に対応付ける */

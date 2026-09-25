@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../Interface/IPopupWindow.h"
 #include "../Factory/PopupWindowFactory.h"
 #include "../../../../../Module/Network/Engine_Network_PacketLog.h"
 
 namespace NanamiEngine::Core::PopupWindow
 {
-    class NetworkLoggerWindow final : public IPopupWindow
+    class NANAMI_API NetworkLoggerWindow final : public IPopupWindow
     {
     public:
         NetworkLoggerWindow();

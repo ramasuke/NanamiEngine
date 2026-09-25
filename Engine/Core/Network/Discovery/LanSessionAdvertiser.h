@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include <string>
 
@@ -9,7 +10,7 @@
 namespace NanamiEngine::Core::Network
 {
     /** ホスト側: LAN から届いた探索の問い合わせに、セッションキーが一致すれば待ち受けポートを答える */
-    class LanSessionAdvertiser final
+    class NANAMI_API LanSessionAdvertiser final
     {
     public:
         LanSessionAdvertiser(std::string sessionKey, std::uint16_t sessionPort);

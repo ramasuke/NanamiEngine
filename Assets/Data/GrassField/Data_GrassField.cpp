@@ -6,7 +6,9 @@
 #include <random>
 #include <ranges>
 
-#include "DxLib.h"
+#include "gtc/constants.hpp"
+#include "Engine/Core/Platform/Input/Input.h"
+#include "Engine/Core/Platform/Render/Camera.h"
 #include "glm.hpp"
 #include "ImGuizmo.h"
 #include "cereal/external/base64.hpp"
@@ -114,7 +116,7 @@ namespace NanamiEngine::Module::Asset
         hash = GrassHash32(hash ^ (static_cast<std::uint32_t>(blade.qx) | static_cast<std::uint32_t>(blade.qz) << 16));
 
         Data::GrassField::BladeVariation variation;
-        variation.yaw      = GrassHashTo01(hash) * DX_TWO_PI_F;
+        variation.yaw      = GrassHashTo01(hash) * glm::two_pi<float>();
         hash               = GrassHash32(hash);
         variation.height01 = GrassHashTo01(hash);
         hash               = GrassHash32(hash);
@@ -169,12 +171,12 @@ namespace NanamiEngine::Module::Asset
         Physics::LayerMask mask = Physics::CreateLayerMask();
         Physics::AddLayer(mask, Physics::Layer::Default);
 
-        const float minNormalY = std::cos(maxSlopeDeg_ * DX_PI_F / 180.0f);
+        const float minNormalY = std::cos(maxSlopeDeg_ * glm::pi<float>() / 180.0f);
 
         int placed = 0;
         for (int i = 0; i < bladesPerClick_; ++i)
         {
-            const float angle  = unit(engine) * DX_TWO_PI_F;
+            const float angle  = unit(engine) * glm::two_pi<float>();
             const float radius = brushRadius_ * std::sqrt(unit(engine));
             const glm::vec3 origin(center.x + std::cos(angle) * radius,
                                    center.y + rayHeight_,
@@ -205,14 +207,9 @@ namespace NanamiEngine::Module::Asset
         if (ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow) || ImGuizmo::IsOver())
             return;
 
-        int mouseX = 0;
-        int mouseY = 0;
-        GetMousePoint(&mouseX, &mouseY);
-
-        const VECTOR nearPos = ConvScreenPosToWorldPos(VGet(static_cast<float>(mouseX), static_cast<float>(mouseY), 0.0f));
-        const VECTOR farPos  = ConvScreenPosToWorldPos(VGet(static_cast<float>(mouseX), static_cast<float>(mouseY), 1.0f));
-        const glm::vec3 origin(nearPos.x, nearPos.y, nearPos.z);
-        const glm::vec3 toFar = glm::vec3(farPos.x, farPos.y, farPos.z) - origin;
+        const glm::ivec2 mouse  = Platform::Input::Mouse::Position();
+        const glm::vec3  origin = Platform::Render::Camera::ScreenToWorld(glm::vec3(static_cast<float>(mouse.x), static_cast<float>(mouse.y), 0.0f));
+        const glm::vec3  toFar  = Platform::Render::Camera::ScreenToWorld(glm::vec3(static_cast<float>(mouse.x), static_cast<float>(mouse.y), 1.0f)) - origin;
         const float     distance = glm::length(toFar);
         if (distance <= 0.0f)
             return;
@@ -367,6 +364,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(GrassField, GRASS_FIELD_EXTENSION_LABEL, "Stage")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::GrassField);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::GrassField);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::GrassField, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

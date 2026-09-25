@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include <string>
 #include <string_view>
@@ -49,7 +50,7 @@ namespace NanamiEngine::Module::Physics
     }
 
     /** @brief ProjectConfig/Physics で定義されたレイヤー名と衝突マトリクス */
-    class PhysicsLayers final
+    class NANAMI_API PhysicsLayers final
     {
     public:
         PhysicsLayers() = delete;

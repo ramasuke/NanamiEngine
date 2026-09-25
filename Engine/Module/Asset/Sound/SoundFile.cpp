@@ -26,6 +26,42 @@ std::string NanamiEngine::Module::Asset::SoundFile::GetContentPath() const
     return contentPath_;
 }
 
+void NanamiEngine::Module::Asset::SoundFile::Play(const bool loop, const bool restart) const
+{
+    if (dxLibHandle_ == -1)
+        return;
+    PlaySoundMem(dxLibHandle_, loop ? DX_PLAYTYPE_LOOP : DX_PLAYTYPE_BACK, restart ? TRUE : FALSE);
+}
+
+void NanamiEngine::Module::Asset::SoundFile::Stop() const
+{
+    if (dxLibHandle_ != -1)
+        StopSoundMem(dxLibHandle_);
+}
+
+bool NanamiEngine::Module::Asset::SoundFile::IsPlaying() const
+{
+    return dxLibHandle_ != -1 && CheckSoundMem(dxLibHandle_) == 1;
+}
+
+void NanamiEngine::Module::Asset::SoundFile::SetVolume(const int volume) const
+{
+    if (dxLibHandle_ != -1)
+        ChangeVolumeSoundMem(volume, dxLibHandle_);
+}
+
+void NanamiEngine::Module::Asset::SoundFile::SetNextPlayVolume(const int volume) const
+{
+    if (dxLibHandle_ != -1)
+        ChangeNextPlayVolumeSoundMem(volume, dxLibHandle_);
+}
+
+void NanamiEngine::Module::Asset::SoundFile::Set3DPosition(const glm::vec3& position) const
+{
+    if (dxLibHandle_ != -1)
+        Set3DPositionSoundMem({ position.x, position.y, position.z }, dxLibHandle_);
+}
+
 void NanamiEngine::Module::Asset::SoundFile::OnDrawGui()
 {
     LibCore::ImGuiHelper::OnDrawInputField("contentPath_", contentPath_);
@@ -40,7 +76,6 @@ void NanamiEngine::Module::Asset::SoundFile::OnDrawGui()
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SoundFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::SoundFile);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::SoundFile, NanamiEngine::Module::Asset::AssetBase);
 REGISTER_ASSET(SoundFile, ".mp3")
 #pragma endregion

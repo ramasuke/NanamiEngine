@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
 #include "../../CineMachineVirtualCamera.h"
@@ -7,7 +8,7 @@
 
 namespace NanamiEngine::CineMachine::Behaviour
 {
-    class LockOnCameraBehaviour final
+    class NANAMI_API LockOnCameraBehaviour final
         : public Component::ComponentBase
         , public LifeCycleCallback::IAwakable
         , public IVirtualCameraBehaviour

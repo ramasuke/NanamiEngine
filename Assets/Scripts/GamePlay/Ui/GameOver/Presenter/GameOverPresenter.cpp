@@ -2,7 +2,8 @@
 
 #include <algorithm>
 
-#include "DxLib.h"
+#include "Assets/Scripts/Core/Input/InputAliases.h"
+#include "Engine/Core/Application/Time/Time.h"
 #include "../Ui_GameOverScreen.h"
 #include "../DeathCamera/GameOverDeathCamera.h"
 #include "../../../Sound/SoundPlayer.h"
@@ -27,7 +28,7 @@ namespace GamePlay::Ui
     void GameOverPresenter::OnStart()
     {
         view_ = RequireComponent<GameOverScreenUi>();
-        lastTickMs_ = GetNowCount();
+        lastTickMs_ = Time::NowMilliseconds();
 
         for (const int index : {GameOverScreenUi::RETRY_INDEX, GameOverScreenUi::TITLE_INDEX})
         {
@@ -92,7 +93,7 @@ namespace GamePlay::Ui
 
     float GameOverPresenter::TickWallClockSeconds()
     {
-        const int nowMs = GetNowCount();
+        const int nowMs = Time::NowMilliseconds();
         const float deltaSecs = static_cast<float>(nowMs - lastTickMs_) / 1000.0f;
         lastTickMs_ = nowMs;
         return std::clamp(deltaSecs, 0.0f, 0.25f);
@@ -107,17 +108,16 @@ namespace GamePlay::Ui
 
     void GameOverPresenter::UpdateInput()
     {
-        XINPUT_STATE xInput{};
-        GetJoypadXInputState(DX_INPUT_PAD1, &xInput);
+        const auto xInput = Gamepad::Get();
 
-        const bool isPrevPressed = CheckHitKey(KEY_INPUT_LEFT) || CheckHitKey(KEY_INPUT_A)
-            || xInput.Buttons[XINPUT_BUTTON_DPAD_LEFT]
-            || xInput.ThumbLX < -GAME_OVER_STICK_DEADZONE;
-        const bool isNextPressed = CheckHitKey(KEY_INPUT_RIGHT) || CheckHitKey(KEY_INPUT_D)
-            || xInput.Buttons[XINPUT_BUTTON_DPAD_RIGHT]
-            || xInput.ThumbLX > GAME_OVER_STICK_DEADZONE;
-        const bool isConfirmPressed = CheckHitKey(KEY_INPUT_RETURN) || CheckHitKey(KEY_INPUT_SPACE)
-            || xInput.Buttons[XINPUT_BUTTON_A];
+        const bool isPrevPressed = Keyboard::IsDown(Key::Left) || Keyboard::IsDown(Key::A)
+            || xInput.IsDown(GamepadButton::DPadLeft)
+            || xInput.thumbLX < -GAME_OVER_STICK_DEADZONE;
+        const bool isNextPressed = Keyboard::IsDown(Key::Right) || Keyboard::IsDown(Key::D)
+            || xInput.IsDown(GamepadButton::DPadRight)
+            || xInput.thumbLX > GAME_OVER_STICK_DEADZONE;
+        const bool isConfirmPressed = Keyboard::IsDown(Key::Return) || Keyboard::IsDown(Key::Space)
+            || xInput.IsDown(GamepadButton::A);
 
         // 石版が出切るまでは押下の記録だけ取る。倒れる直前から押しっぱなしのキーで決定させない
         if (view_->IsInputReady())

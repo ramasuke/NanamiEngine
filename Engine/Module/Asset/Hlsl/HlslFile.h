@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
 #include "../AssetBase.h"
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::Module::Asset
 {
-    class HlslFile final : public AssetBase
+    class NANAMI_API HlslFile final : public AssetBase
     {
     public:
         explicit HlslFile(std::string contentPath = "");

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include <compare>
 
@@ -13,7 +14,7 @@ namespace NanamiEngine::Core::Network
      * NOTE: 上位バイトは各ピアが独立に採番しても衝突しないようにするためだけのもので、それ以上の意味は持たない。
      *       所有者(権威)は INetworkObjectInstanceRegistry::OwnerOf() / NetworkRunnerBase::IsLocallyOwned() で判定する
      */
-    struct NetworkObjectId final
+    struct NANAMI_API NetworkObjectId final
     {
         explicit NetworkObjectId(uint32_t networkObjectId = 0);
         static NetworkObjectId Invalid();

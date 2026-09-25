@@ -120,6 +120,6 @@ void Component::SkyDome3D::OnDrawGui()
 
 #pragma region SerializationMacro
 ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::SkyDome3D);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IInitRenderable, NanamiEngine::Module::Component::SkyDome3D);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IRenderable, NanamiEngine::Module::Component::SkyDome3D);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IInitRenderable, NanamiEngine::Module::Component::SkyDome3D);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IRenderable, NanamiEngine::Module::Component::SkyDome3D);
 #pragma endregion

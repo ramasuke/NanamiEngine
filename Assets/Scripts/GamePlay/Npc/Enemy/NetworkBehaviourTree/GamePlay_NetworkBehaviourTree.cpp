@@ -14,6 +14,5 @@ namespace GamePlay::Npc::Enemy
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GamePlay::Npc::Enemy::NetworkBehaviourTree);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Network::NetworkComponent, GamePlay::Npc::Enemy::NetworkBehaviourTree);
+NANAMI_REGISTER_TYPE(GamePlay::Npc::Enemy::NetworkBehaviourTree, Network::NetworkComponent);
 #pragma endregion

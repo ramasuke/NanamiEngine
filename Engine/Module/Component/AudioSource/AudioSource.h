@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../ComponentBase.h"
 
 namespace NanamiEngine::Module::Asset
@@ -8,7 +9,7 @@ namespace NanamiEngine::Module::Asset
 
 namespace NanamiEngine::Module::Component
 {
-    class AudioSource final : public ComponentBase,
+    class NANAMI_API AudioSource final : public ComponentBase,
                               public LifeCycleCallback::IAwakable,
                               public LifeCycleCallback::IUpdatable
     {

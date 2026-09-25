@@ -89,6 +89,5 @@ namespace Editor::Npc::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(Editor::Npc::Behaviour::EntryNode);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Editor::Npc::Behaviour::NodeBase, Editor::Npc::Behaviour::EntryNode);
+NANAMI_REGISTER_TYPE(Editor::Npc::Behaviour::EntryNode, Editor::Npc::Behaviour::NodeBase);
 #pragma endregion

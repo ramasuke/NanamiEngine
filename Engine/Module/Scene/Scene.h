@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <atomic>
 #include <queue>
 #include <unordered_map>
@@ -17,13 +18,13 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
 namespace NanamiEngine::Scene
 {
-    class Scene final : public Module::Object::IObject
+    class NANAMI_API Scene final : public Module::Object::IObject
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
 
     public:
         /** @brief .scene をデシリアライズした中間結果。InitGameObject はまだ呼ばれていない */
-        struct DeserializedContent
+        struct NANAMI_API DeserializedContent
         {
             std::string name = "Scene";
             std::vector<std::shared_ptr<Module::GameObject::IGameObject>> gameObjects;
@@ -31,7 +32,7 @@ namespace NanamiEngine::Scene
         };
 
         /** @brief デシリアライズ済みのルート GameObject 数。ワーカーが書き、メインスレッドが読む */
-        struct DeserializeProgress
+        struct NANAMI_API DeserializeProgress
         {
             std::atomic<int> total{0};
             std::atomic<int> done {0};
@@ -63,6 +64,10 @@ namespace NanamiEngine::Scene
         void OnDrawGui() override { }
         void OnDrawFileDropGui(Core::FileSystem::EditorDraggingHand& fileDraggingHand);
         void OnSave();
+        /** @brief .scene と同じ JSON を stream に書く (OnSave はこれをファイルへ) */
+        void SaveTo(std::ostream& stream);
+        /** @brief .scene と同じ JSON を stream から読む。label は例外メッセージ用 */
+        static void Deserialize(std::istream& stream, const std::string& label, DeserializedContent& outContent, DeserializeProgress* progress);
         [[nodiscard]] std::shared_ptr<Module::GameObject::IGameObject> CatchGameObject(const Guid& id) const;
         /** @brief 子孫も含めた全 GameObject に action を 1 回ずつ呼ぶ */
         void ForEachGameObject(const std::function<void(const std::shared_ptr<Module::GameObject::IGameObject>&)>& action) const;

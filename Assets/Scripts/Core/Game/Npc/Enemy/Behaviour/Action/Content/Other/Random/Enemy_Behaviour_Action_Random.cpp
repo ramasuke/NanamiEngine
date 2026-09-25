@@ -23,9 +23,5 @@ namespace GameCore::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::Random)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    GameCore::Npc::Enemy::Behaviour::ActionBase,
-    GameCore::Npc::Enemy::Behaviour::Action::Random
-)
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::Random, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

@@ -3,7 +3,11 @@
 #include <cmath>
 #include <limits>
 
-#include "DxLib.h"
+#include "Engine/Core/Platform/Render/Shader.h"
+#include "Engine/Core/Platform/AsyncLoad/AsyncLoad.h"
+#include "Engine/Core/Platform/Draw2D/Draw2D.h"
+#include "Engine/Core/Platform/Render/Camera.h"
+#include "Engine/Core/Platform/Render/Environment.h"
 #include "glm.hpp"
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/Log/NanamiEngine_Module_Log.h"
@@ -22,21 +26,18 @@ namespace GamePlay::Prop
 
         // spos.xyz に根元の位置、w に揺れの位相を入れて、葉全体が同じ位相で揺れるようにする。
         // u は根元からの高さ比率、v は葉の高さ(揺れで伸びて見えない補正に使う)
-        VERTEX3DSHADER MakeGrassVertex(const glm::vec3& position, const glm::vec3& root, const glm::vec3& normal,
-                                       const COLOR_U8& color, const float heightRatio, const float bladeHeight,
+        Platform::Render::ShaderVertex3D MakeGrassVertex(const glm::vec3& position, const glm::vec3& root, const glm::vec3& normal,
+                                                         const Platform::Render::VertexColor8& color, const float heightRatio, const float bladeHeight,
                                        const float phase01)
         {
-            VERTEX3DSHADER vertex{};
-            vertex.pos    = VGet(position.x, position.y, position.z);
-            vertex.spos.x = root.x;
-            vertex.spos.y = root.y;
-            vertex.spos.z = root.z;
-            vertex.spos.w = phase01;
-            vertex.norm   = VGet(normal.x, normal.y, normal.z);
-            vertex.tan    = VGet(0.0f, 0.0f, 0.0f);
-            vertex.binorm = VGet(0.0f, 0.0f, 0.0f);
-            vertex.dif    = color;
-            vertex.spc    = color;
+            Platform::Render::ShaderVertex3D vertex{};
+            vertex.position       = position;
+            vertex.shaderPosition = glm::vec4(root, phase01);
+            vertex.normal         = normal;
+            vertex.tangent        = glm::vec3(0.0f);
+            vertex.binormal       = glm::vec3(0.0f);
+            vertex.diffuse        = color;
+            vertex.specular       = color;
             vertex.u      = heightRatio;
             vertex.v      = bladeHeight;
             vertex.su     = 0.0f;
@@ -73,10 +74,7 @@ namespace GamePlay::Prop
 
         if (cbHandle_ == -1)
         {
-            const int useASyncLoad = GetUseASyncLoadFlag();
-            SetUseASyncLoadFlag(FALSE);
-            cbHandle_ = CreateShaderConstantBuffer(Component::CUSTOM_SHADER_CB_SIZE);
-            SetUseASyncLoadFlag(useASyncLoad);
+            cbHandle_ = Platform::Render::ConstantBuffer::Create(Component::CUSTOM_SHADER_CB_SIZE);
         }
 
         return cbHandle_;
@@ -87,9 +85,9 @@ namespace GamePlay::Prop
         for (const auto& buffer : chunkBuffers_)
         {
             if (buffer.vertexBuffer != -1)
-                DeleteVertexBuffer(buffer.vertexBuffer);
+                Platform::Render::VertexBuffer::Delete(buffer.vertexBuffer);
             if (buffer.indexBuffer != -1)
-                DeleteIndexBuffer(buffer.indexBuffer);
+                Platform::Render::IndexBuffer::Delete(buffer.indexBuffer);
         }
         chunkBuffers_.clear();
     }
@@ -99,7 +97,7 @@ namespace GamePlay::Prop
         if (cbHandle_ == -1)
             return;
 
-        DeleteShaderConstantBuffer(cbHandle_);
+        Platform::Render::ConstantBuffer::Delete(cbHandle_);
         cbHandle_ = -1;
     }
 
@@ -109,11 +107,10 @@ namespace GamePlay::Prop
 
         const glm::vec3 up(0.0f, 1.0f, 0.0f);
 
-        // 読み込み中のハンドルになると Set*BufferData で完了待ちに入るので同期で作る
-        const int useASyncLoad = GetUseASyncLoadFlag();
-        SetUseASyncLoadFlag(FALSE);
+        // 読み込み中のハンドルになると SetData で完了待ちに入るので同期で作る
+        const Platform::AsyncLoad::SyncLoadScope syncLoad;
 
-        std::vector<VERTEX3DSHADER> vertices;
+        std::vector<Platform::Render::ShaderVertex3D> vertices;
         std::vector<std::uint32_t>  indices;
         for (const auto& [key, chunk] : field.Chunks())
         {
@@ -142,7 +139,7 @@ namespace GamePlay::Prop
                 const glm::vec3 normal = glm::normalize(forward + up * 0.6f);
 
                 const auto     shade = static_cast<unsigned char>(255.0f * (1.0f - field.ColorVariation() * variation.color01));
-                const COLOR_U8 color = GetColorU8(shade, shade, shade, 255);
+                const Platform::Render::VertexColor8 color = Platform::Render::VertexColor8::Gray(shade);
 
                 const float     halfWidth    = width * 0.5f;
                 const float     midHalfWidth = halfWidth * GRASS_MID_WIDTH_RATIO;
@@ -164,8 +161,8 @@ namespace GamePlay::Prop
             }
 
             ChunkBuffer buffer;
-            buffer.vertexBuffer = CreateVertexBuffer(static_cast<int>(vertices.size()), DX_VERTEX_TYPE_SHADER_3D);
-            buffer.indexBuffer  = CreateIndexBuffer (static_cast<int>(indices.size()),  DX_INDEX_TYPE_32BIT);
+            buffer.vertexBuffer = Platform::Render::VertexBuffer::Create(static_cast<int>(vertices.size()));
+            buffer.indexBuffer  = Platform::Render::IndexBuffer ::Create(static_cast<int>(indices.size()));
             buffer.rootMin      = rootMin;
             buffer.rootMax      = rootMax;
             chunkBuffers_.push_back(buffer);
@@ -175,24 +172,23 @@ namespace GamePlay::Prop
                 Module::LogError("GrassRenderer: 頂点バッファの作成に失敗しました");
                 continue;
             }
-            SetVertexBufferData(0, vertices.data(), static_cast<int>(vertices.size()), buffer.vertexBuffer);
-            SetIndexBufferData (0, indices.data(),  static_cast<int>(indices.size()),  buffer.indexBuffer);
+            Platform::Render::VertexBuffer::SetData(buffer.vertexBuffer, vertices.data(), static_cast<int>(vertices.size()));
+            Platform::Render::IndexBuffer ::SetData(buffer.indexBuffer,  indices.data(),  static_cast<int>(indices.size()));
         }
 
-        SetUseASyncLoadFlag(useASyncLoad);
     }
 
     void GrassRenderer::WriteConstantBuffer(const Asset::GrassField& field, const int cbHandle) const
     {
-        auto* cb = static_cast<GrassCB*>(GetBufferShaderConstantBuffer(cbHandle));
+        auto* cb = static_cast<GrassCB*>(Platform::Render::ConstantBuffer::Map(cbHandle));
         if (!cb)
             return;
 
         const glm::vec2 windDirection  = Weather::WindZone::GetDirection();
         const glm::vec3 baseColor      = field.BaseColor();
         const glm::vec3 tipColor       = field.TipColor();
-        const VECTOR    lightDirection = GetLightDirection();
-        const COLOR_F   lightColor     = GetLightDifColor();
+        const glm::vec3 lightDirection = Platform::Render::Environment::GetLightDirection();
+        const glm::vec3 lightColor     = Platform::Render::Environment::GetLightDiffuseColor();
 
         SetGrassFloat4(cb->wind,           Time::CurrentTime(),
                                            field.WindStrength() * Weather::WindZone::GetStrength01(),
@@ -204,7 +200,7 @@ namespace GamePlay::Prop
         SetGrassFloat4(cb->lightDirection, lightDirection.x, lightDirection.y, lightDirection.z, 0.0f);
         SetGrassFloat4(cb->lightColor,     lightColor.r, lightColor.g, lightColor.b, field.Ambient());
 
-        UpdateShaderConstantBuffer(cbHandle);
+        Platform::Render::ConstantBuffer::Update(cbHandle);
     }
 
     void GrassRenderer::OnRender()
@@ -234,22 +230,20 @@ namespace GamePlay::Prop
         // 編集モードでは OnUpdate が回らないので、描画のたびに書き込んで編集中も揺らす
         WriteConstantBuffer(*field, cbHandle);
 
-        const MATRIX identity = MGetIdent();
-        SetTransformToWorld(&identity);
+        Platform::Render::RenderState::ResetWorldTransform();
 
-        SetUseVertexShader(vsFile_->GetVsHandle());
-        SetUsePixelShader (psFile_->GetPsHandle());
-        SetShaderConstantBuffer(cbHandle, DX_SHADERTYPE_VERTEX, Component::CUSTOM_SHADER_CB_SLOT);
-        SetShaderConstantBuffer(cbHandle, DX_SHADERTYPE_PIXEL,  Component::CUSTOM_SHADER_CB_SLOT);
+        Platform::Render::SetVertexShader(vsFile_->GetVsHandle());
+        Platform::Render::SetPixelShader (psFile_->GetPsHandle());
+        Platform::Render::ConstantBuffer::Bind(cbHandle, Platform::Render::ShaderStage::Vertex, Component::CUSTOM_SHADER_CB_SLOT);
+        Platform::Render::ConstantBuffer::Bind(cbHandle, Platform::Render::ShaderStage::Pixel,  Component::CUSTOM_SHADER_CB_SLOT);
 
-        const int backCulling = GetUseBackCulling();
-        SetUseBackCulling(FALSE);
-        SetDrawBlendMode (DX_BLENDMODE_NOBLEND, 0);
-        SetUseZBuffer3D  (TRUE);
-        SetWriteZBuffer3D(TRUE);
+        const bool backCulling = Platform::Render::RenderState::GetBackCulling();
+        Platform::Render::RenderState::SetBackCulling(false);
+        Platform::Draw2D::SetBlendMode(LibCore::Dxlib::BlendMode::NoBlend, 0);
+        Platform::Render::RenderState::SetZBufferEnabled(true);
+        Platform::Render::RenderState::SetZBufferWrite(true);
 
-        const VECTOR    cameraPosition = GetCameraPosition();
-        const glm::vec3 camera(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+        const glm::vec3 camera = Platform::Render::Camera::Position();
         const float     padding     = field->HeightMax() * (1.0f + field->BendAmount()) + field->WindStrength() * 1.25f;
         const float     maxDistance = field->MaxDrawDistance();
 
@@ -262,17 +256,16 @@ namespace GamePlay::Prop
             const glm::vec3 boundsMax = buffer.rootMax + glm::vec3(padding);
             if (maxDistance > 0.0f && glm::distance(camera, glm::clamp(camera, boundsMin, boundsMax)) > maxDistance)
                 continue;
-            if (CheckCameraViewClip_Box(VGet(boundsMin.x, boundsMin.y, boundsMin.z),
-                                        VGet(boundsMax.x, boundsMax.y, boundsMax.z)) == TRUE)
+            if (Platform::Render::Camera::IsBoxOutsideView(boundsMin, boundsMax))
                 continue;
 
-            DrawPrimitiveIndexed3DToShader_UseVertexBuffer(buffer.vertexBuffer, buffer.indexBuffer, DX_PRIMTYPE_TRIANGLELIST);
+            Platform::Render::DrawIndexedTriangles(buffer.vertexBuffer, buffer.indexBuffer);
             ++drawnChunkCount_;
         }
 
-        SetUseBackCulling(backCulling);
-        SetUseVertexShader(-1);
-        SetUsePixelShader (-1);
+        Platform::Render::RenderState::SetBackCulling(backCulling);
+        Platform::Render::SetVertexShader(-1);
+        Platform::Render::SetPixelShader(-1);
     }
 
     void GrassRenderer::OnDestroy()

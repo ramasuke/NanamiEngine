@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <coroutine>
 
 #include "../Engine_Coroutine_IEventWaitable.h"
@@ -6,7 +7,7 @@
 
 namespace Coroutine
 {
-    struct WaitForSubscription final : IEventWaitable
+    struct NANAMI_API WaitForSubscription final : IEventWaitable
     {
         //NOTE: token がキャンセルされるまで待つ
         explicit WaitForSubscription(NanamiEngine::R4::CancellationToken token);

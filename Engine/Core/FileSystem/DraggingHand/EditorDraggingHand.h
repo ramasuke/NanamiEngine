@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <optional>
 #include "../File/File.h"
 
@@ -6,7 +7,7 @@ namespace NanamiEngine::Core::FileSystem
 {
     constexpr auto EDITOR_DRAGGING_ITEM_PAYLOAD_TYPE = "EDITOR_DRAGGING_ITEM";
     
-    class EditorDraggingHand final
+    class NANAMI_API EditorDraggingHand final
     {
     public:
         void SetDraggingItem(const Guid& dragging);

@@ -4,7 +4,8 @@
 #include <filesystem>
 #include <string>
 
-#include "DxLib.h"
+#include "Assets/Scripts/Core/Input/InputAliases.h"
+#include "Engine/Core/Application/ApplicationBase.h"
 #include "Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "Engine/Core/Application/Configuration/Build/ApplicationConfiguration_Build.h"
 #include "Engine/Core/Application/Time/Time.h"
@@ -130,12 +131,11 @@ namespace GamePlay::Ui
 
     AssetUpdatePresenter::Keys AssetUpdatePresenter::ReadKeys()
     {
-        XINPUT_STATE xInput{};
-        GetJoypadXInputState(DX_INPUT_PAD1, &xInput);
+        const auto xInput = Gamepad::Get();
 
         return Keys{
-            .confirm = CheckHitKey(KEY_INPUT_RETURN) || xInput.Buttons[XINPUT_BUTTON_A],
-            .cancel  = CheckHitKey(KEY_INPUT_ESCAPE) || xInput.Buttons[XINPUT_BUTTON_B],
+            .confirm = Keyboard::IsDown(Key::Return) || xInput.IsDown(GamepadButton::A),
+            .cancel  = Keyboard::IsDown(Key::Escape) || xInput.IsDown(GamepadButton::B),
         };
     }
 
@@ -276,7 +276,7 @@ namespace GamePlay::Ui
     {
         // 再起動の予約は ReadyToRestart に入ったときに済ませてある (できなかったら札で起動し直しを頼んでいる)。
         // 読み込み済みのアセットは古いままなので、このまま遊ばせずに終了する
-        PostMessageW(GetMainWindowHandle(), WM_CLOSE, 0, 0);
+        Core::Application::ApplicationBase::RequestClose();
     }
 
     AssetUpdateParcel AssetUpdatePresenter::Parcel() const

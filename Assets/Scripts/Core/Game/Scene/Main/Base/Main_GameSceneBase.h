@@ -5,7 +5,7 @@
 #include <utility>
 #include <vector>
 
-#include "DxLib.h"
+#include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/Scene/GameObject/Helper/GameObject.h"
 #include "../../../../../GamePlay/PlayerAvatar/PlayerAvatarBase.h"
 #include "../../../../../GamePlay/Ui/Loading/Ui_LoadingScreen.h"
@@ -194,8 +194,8 @@ namespace GameCore::Scene::Main
     Coroutine::Task<void> GameMainSceneBase<ContextT>::FallbackAfterFailureAsync(const NanamiEngine::R4::CancellationToken token, const SceneType fallback)
     {
         // ロード中は DeltaTime が止まるので、壁時計で待つ
-        const int startedMs = GetNowCount();
-        co_await Coroutine::WaitUntil([startedMs] { return GetNowCount() - startedMs >= 2000; });
+        const int startedMs = Time::NowMilliseconds();
+        co_await Coroutine::WaitUntil([startedMs] { return Time::NowMilliseconds() - startedMs >= 2000; });
         if (token.IsCancellationRequested())
             co_return;
 

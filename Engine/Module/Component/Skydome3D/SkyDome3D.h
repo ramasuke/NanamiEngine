@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <vector>
 #include "../ComponentBase.h"
 #include "../../../../Packages/Cinemachine/Brain/CinemachineCameraBrain.h"
@@ -7,7 +8,7 @@
 
 namespace NanamiEngine::Module::Component
 {
-    class SkyDome3D final : public ComponentBase,
+    class NANAMI_API SkyDome3D final : public ComponentBase,
                             public LifeCycleCallback::IInitRenderable,
                             public LifeCycleCallback::IRenderable,
                             public LifeCycleCallback::IDebugRenderable,

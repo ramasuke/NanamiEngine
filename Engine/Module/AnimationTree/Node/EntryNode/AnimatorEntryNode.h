@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "vec2.hpp"
 #include "../../../Asset/MV1/MV1File.h"
 #include "../../../../Core/Object/Field/Field.h"
@@ -10,7 +11,7 @@ namespace NanamiEngine::Module::AnimationTree
 {
     constexpr auto ENTRY_NODE_SIZE = glm::vec2(120.0f, 60.0f);
     
-    class AnimatorEntryNode final : public IAnimationNode
+    class NANAMI_API AnimatorEntryNode final : public IAnimationNode
     {
     public:
         void InitForGamePlay(int modelHandle) override;

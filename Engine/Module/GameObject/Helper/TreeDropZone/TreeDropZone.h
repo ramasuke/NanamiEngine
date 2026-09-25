@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <cstddef>
 
@@ -13,5 +14,5 @@ namespace NanamiEngine::Module::GameObject
     // parent: 挿入先の親（parent->Transform() の children_ に挿入される）
     // insertIndex: 挿入位置（ドロップ時点、ドラッグ中オブジェクト除去前の parent の子リストに
     //              おけるインデックス。0=先頭、children.size()=末尾）
-    void DrawSiblingInsertionDropZone(const std::shared_ptr<IGameObject>& parent, std::size_t insertIndex);
+    NANAMI_API void DrawSiblingInsertionDropZone(const std::shared_ptr<IGameObject>& parent, std::size_t insertIndex);
 }

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../cereal/include/cereal/cereal.hpp"
 #include "../../../Core/Object/IObject.h"
 
@@ -12,7 +13,7 @@ namespace NanamiEngine::Module::LifeCycleCallback
      * - IAwakableインスタンスの生成
      * - 次フレームの開始時にIAwakable::OnAwake()の呼び出し（1回だけ）
      */
-    class IAwakable : public virtual Object::IObject
+    class NANAMI_API IAwakable : public virtual Object::IObject
     {
     public:
         virtual ~IAwakable() = default;

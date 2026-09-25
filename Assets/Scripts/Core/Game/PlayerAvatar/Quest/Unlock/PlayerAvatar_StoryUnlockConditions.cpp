@@ -41,7 +41,5 @@ namespace GameCore::PlayerAvatar::Quest::Unlock
     REGISTER_QUEST_UNLOCK_CONDITION(FacilityRestoredUnlockCondition)
 }
 
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::Quest::Unlock::StoryFlagUnlockCondition)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::Quest::Unlock::IQuestUnlockCondition, GameCore::PlayerAvatar::Quest::Unlock::StoryFlagUnlockCondition)
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::Quest::Unlock::FacilityRestoredUnlockCondition)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::Quest::Unlock::IQuestUnlockCondition, GameCore::PlayerAvatar::Quest::Unlock::FacilityRestoredUnlockCondition)
+NANAMI_REGISTER_TYPE(GameCore::PlayerAvatar::Quest::Unlock::StoryFlagUnlockCondition, GameCore::PlayerAvatar::Quest::Unlock::IQuestUnlockCondition);
+NANAMI_REGISTER_TYPE(GameCore::PlayerAvatar::Quest::Unlock::FacilityRestoredUnlockCondition, GameCore::PlayerAvatar::Quest::Unlock::IQuestUnlockCondition);

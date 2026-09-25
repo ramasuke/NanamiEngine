@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <mutex>
 #include <vector>
 #include "../ContactedData/Engine_Physics_ContactedData.h"
@@ -10,7 +11,7 @@ namespace JPH
 
 namespace NanamiEngine::Module::Physics
 {
-    class SensorExitGroup final
+    class NANAMI_API SensorExitGroup final
     {
     public:
         explicit SensorExitGroup(const JPH::PhysicsSystem& physicsSystem);

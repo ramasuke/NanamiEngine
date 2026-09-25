@@ -22,6 +22,7 @@
 #include "Configuration/Network/ApplicationConfiguration_Network.h"
 #include "Configuration/Physics/ApplicationConfiguration_Physics.h"
 #include "Display/WindowDisplayMode.h"
+#include "HotReload/GameModule.h"
 #include "Time/Time.h"
 #include "../Physics/Physics.h"
 #include "LifeCycle/ApplicationLifeCycle.h"
@@ -29,13 +30,13 @@
 
 namespace
 {
-    /** DxLib の非同期ロードスレッド数。未設定だと 1 本で直列デコードになる */
+    /** DxLib の非同期ロードスレッド数。*/
     int ApplicationBaseAsyncLoadThreadNum()
     {
         constexpr unsigned int minThreadNum = 2;
-        /** SetASyncLoadThreadNum が受け付ける上限 */
         constexpr unsigned int maxThreadNum = 32;
         const unsigned int hardwareThreadNum = std::thread::hardware_concurrency();
+        
         return static_cast<int>(std::clamp(hardwareThreadNum / 2, minThreadNum, maxThreadNum));
     }
 
@@ -121,9 +122,32 @@ namespace NanamiEngine::Core::Application
             OnFrame();
             ScreenFlip();
             Display::WindowDisplayModeController::OnFrameEnd();
+            // NOTE: ゲーム DLL の差し替えは、どのシーン・ウィンドウも触っていないフレームの切れ目で行う (docs/HotReload.md §5)
+            if constexpr (Configuration::APPLICATION_MODE == Configuration::ApplicationMode::Editor)
+                HotReload::GameModule::Instance().OnFrameEnd();
+        }
+    }
+
+    void ApplicationBase::ReleaseAssetsDirectory()
+    {
+        std::vector<::Guid> oldAssetGuids;
+        if (assetsDirectory_)
+        {
+            CollectAssetGuids(assetsDirectory_.value(), oldAssetGuids);
+        }
+        
+        assetsDirectory_.reset();
+        for (const auto& guid : oldAssetGuids)
+        {
+            ObjectRegistry_().RemoveIfExpired(guid);
         }
     }
     
+    void ApplicationBase::RequestClose()
+    {
+        PostMessageW(GetMainWindowHandle(), WM_CLOSE, 0, 0);
+    }
+
     void ApplicationBase::OnChangeWindow(const std::shared_ptr<MainWindow::IMainWindow>& window)
     {
         CurrentMainWindow() = window;

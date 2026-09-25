@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "Engine_Network_INetworkSystem.h"
 #include "Object/Registry/NetworkObjectInstanceRegistry.h"
 
 namespace NanamiEngine::Core::Network
 {
     /** 通信しない INetworkSystem。何も送らず、何も受け取らない */
-    class NullNetworkSystem final : public INetworkSystem
+    class NANAMI_API NullNetworkSystem final : public INetworkSystem
     {
     public:
         void Update() override {}

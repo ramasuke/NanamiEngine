@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 
 namespace NanamiEngine::DebugSheet
 {
     /** @brief シート専用の配色。エディタの ImGui と見分けがつくよう濃紺 + オレンジにする */
     namespace Palette
     {
-        struct Rgba { float r, g, b, a; };
+        struct NANAMI_API Rgba { float r, g, b, a; };
 
         constexpr Rgba BACKGROUND   { 0.06f, 0.08f, 0.13f, 0.95f };
         constexpr Rgba CELL         { 0.12f, 0.15f, 0.22f, 1.00f };
@@ -27,7 +28,7 @@ namespace NanamiEngine::DebugSheet
     }
 
     /** @brief 生存中だけシートのスタイルを積む。エディタ側のスタイルは壊さない */
-    class ScopedStyle final
+    class NANAMI_API ScopedStyle final
     {
     public:
         ScopedStyle();

@@ -1,5 +1,6 @@
 ﻿#include "AddComponent.h"
 #include "../ComponentHeaders.h"
+#include "Engine/Core/Api/NanamiModule.h"
 
 namespace
 {
@@ -7,6 +8,7 @@ namespace
     {
         NanamiEngine::Module::GameObject::AddComponent::DrawMenuFunc draw;
         int order;
+        NanamiEngine::Core::ModuleHandle module;
     };
 
     // NOTE: static 初期化順に依存しないよう関数内 static
@@ -22,8 +24,13 @@ bool GameObject::AddComponent::RegisterMenu(const DrawMenuFunc draw, const int o
     auto& menus = RegisteredMenus();
     const auto it = std::upper_bound(menus.begin(), menus.end(), order,
         [](const int value, const RegisteredMenu& menu) { return value < menu.order; });
-    menus.insert(it, RegisteredMenu{ draw, order });
+    menus.insert(it, RegisteredMenu{ draw, order, ::NanamiEngine::Core::ModuleOf(reinterpret_cast<const void*>(draw)) });
     return true;
+}
+
+std::size_t GameObject::AddComponent::UnregisterModule(const NanamiEngine::Core::ModuleHandle module)
+{
+    return std::erase_if(RegisteredMenus(), [module](const RegisteredMenu& menu) { return menu.module == module; });
 }
 
 std::shared_ptr<Component::ComponentBase> GameObject::AddComponent::OnDrawGui()

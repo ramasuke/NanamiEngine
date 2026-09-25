@@ -78,6 +78,5 @@ void GameCore::Scene::GrassLandSceneContext::OnDrawGui()
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Scene::GrassLandSceneContext);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::SceneContextBase, GameCore::Scene::GrassLandSceneContext);
+NANAMI_REGISTER_TYPE(GameCore::Scene::GrassLandSceneContext, GameCore::Scene::SceneContextBase);
 #pragma endregion

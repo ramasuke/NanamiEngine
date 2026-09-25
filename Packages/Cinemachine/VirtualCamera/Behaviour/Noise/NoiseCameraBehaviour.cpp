@@ -94,5 +94,5 @@ namespace NanamiEngine::CineMachine::Behaviour
 
 #pragma region SerializationMacro
 ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::NoiseCameraBehaviour);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::NoiseCameraBehaviour);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::NoiseCameraBehaviour);
 #pragma endregion

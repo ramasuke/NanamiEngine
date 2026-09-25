@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "Engine_Physics_ICollider.h"
 #include "../../../Component/ComponentBase.h"
 #include "../JoltPhysics/Jolt/Jolt.h"
@@ -23,7 +24,7 @@ namespace NanamiEngine::Module::Physics
 
 namespace NanamiEngine::Module::Component
 {
-    class ColliderBase : public ComponentBase,
+    class NANAMI_API ColliderBase : public ComponentBase,
                          public LifeCycleCallback::IAwakable,
                          public LifeCycleCallback::IBeginPhysics,
                          public LifeCycleCallback::IEndPhysics,

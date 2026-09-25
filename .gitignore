@@ -39,3 +39,11 @@ EngineLog.txt
 /manifest-*.json
 /installed.json
 /.manifest_hash_cache.json
+
+# HotReload PoC の出力 (tools/hotreload_poc/README.md)
+tools/hotreload_poc/x64/
+tools/hotreload_poc/linux_out/
+# HotReload (Build & Reload) の MSBuild ログ
+/Logs/HotReload/
+# HotReload の保険モード設定 (開発者ごと)
+/LocalPrefs/HotReload/

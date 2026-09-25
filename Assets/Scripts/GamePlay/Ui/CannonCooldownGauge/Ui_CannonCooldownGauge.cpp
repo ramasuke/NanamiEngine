@@ -4,10 +4,9 @@
 #include <cmath>
 #include <numbers>
 
-#include "DxLib.h"
+#include "Engine/Core/Platform/Draw2D/Draw2D.h"
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
-#include "Libs/LibCore/DxLib/ShiftJis.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
@@ -21,41 +20,17 @@ namespace GamePlay::Ui
         constexpr LibCore::Tween::EaseFunctor EASE_OUT_CUBIC{ LibCore::EaseType::OutCubic };
         constexpr LibCore::Tween::EaseFunctor SPARK_POP_EASE{ LibCore::EaseType::OutBack, 1.9f };
 
-        class ScopedDrawState final
-        {
-        public:
-            ScopedDrawState()
-                : drawMode_(GetDrawMode())
-            {
-                GetDrawBlendMode(&blendMode_, &blendParam_);
-                GetDrawBright(&brightR_, &brightG_, &brightB_);
-            }
-            ~ScopedDrawState()
-            {
-                SetDrawMode(drawMode_);
-                SetDrawBlendMode(blendMode_, blendParam_);
-                SetDrawBright(brightR_, brightG_, brightB_);
-            }
-            ScopedDrawState(const ScopedDrawState&) = delete;
-            ScopedDrawState& operator=(const ScopedDrawState&) = delete;
-
-        private:
-            int drawMode_   = DX_DRAWMODE_NEAREST;
-            int blendMode_  = DX_BLENDMODE_NOBLEND;
-            int blendParam_ = 0;
-            int brightR_    = 255;
-            int brightG_    = 255;
-            int brightB_    = 255;
-        };
+        using LibCore::Dxlib::BlendMode;
+        using ScopedDrawState = Platform::Draw2D::ScopedDrawState;
 
         float Rate(const float elapsed, const float duration)
         {
             return duration > 0.0f ? std::clamp(elapsed / duration, 0.0f, 1.0f) : 1.0f;
         }
 
-        void SetAlphaBlend(const int blendMode, const float alpha)
+        void SetAlphaBlend(const BlendMode blendMode, const float alpha)
         {
-            SetDrawBlendMode(blendMode, static_cast<int>(std::clamp(alpha, 0.0f, 1.0f) * 255.0f));
+            Platform::Draw2D::SetBlendModeAlpha(blendMode, alpha);
         }
 
         glm::vec2 Rotate(const glm::vec2& v, const float angle)
@@ -191,20 +166,11 @@ namespace GamePlay::Ui
     void CannonCooldownGauge::DrawCenteredText(const std::string& utf8Text, const glm::vec2& centre, const float scale, const Color32& color, const float alpha) const
     {
         const int fontHandle = font_->DxLibHandle();
-        const std::string sjis = LibCore::Dxlib::Utf8ToShiftJis(utf8Text);
-        const float width  = static_cast<float>(GetDrawExtendStringWidthToHandle(scale, sjis.c_str(), static_cast<int>(sjis.size()), fontHandle));
-        const float height = static_cast<float>(GetFontSizeToHandle(fontHandle)) * scale;
+        const float width  = static_cast<float>(Platform::Draw2D::StringWidth(scale, utf8Text, fontHandle));
+        const float height = static_cast<float>(Platform::Draw2D::FontSize(fontHandle)) * scale;
 
-        SetAlphaBlend(DX_BLENDMODE_ALPHA, alpha);
-        DrawExtendStringFToHandle(
-            centre.x - width * 0.5f,
-            centre.y - height * 0.5f,
-            scale,
-            scale,
-            sjis.c_str(),
-            color.ToDxColor(),
-            fontHandle,
-            font_->EdgeColor().ToDxColor());
+        SetAlphaBlend(BlendMode::Alpha, alpha);
+        Platform::Draw2D::DrawString(glm::vec2(centre.x - width * 0.5f, centre.y - height * 0.5f), glm::vec2(scale, scale), utf8Text, color, fontHandle, font_->EdgeColor());
     }
 
     void CannonCooldownGauge::OnUserInterfaceRender()
@@ -213,52 +179,52 @@ namespace GamePlay::Ui
             return;
 
         const ScopedDrawState drawState;
-        SetDrawMode(DX_DRAWMODE_BILINEAR);
+        Platform::Draw2D::SetFilterMode(Platform::Draw2D::FilterMode::Bilinear);
 
         const Pose pose = EvaluatePose();
         const auto worldPos = Transform().GetWorldPos();
         const glm::vec2 root = glm::vec2(worldPos.x, worldPos.y);
         const double scale = pose.scale;
 
-        SetAlphaBlend(DX_BLENDMODE_ALPHA, 1.0f);
-        DrawRotaGraphF(root.x + pillOffset_.x, root.y + pillOffset_.y, 1.0, 0.0, promptPillSprite_->GetDxLibHandle(), TRUE);
+        SetAlphaBlend(BlendMode::Alpha, 1.0f);
+        Platform::Draw2D::DrawRotaGraph(glm::vec2(root.x + pillOffset_.x, root.y + pillOffset_.y), 1.0, 0.0, promptPillSprite_->GetDxLibHandle());
         if (promptPillGlowSprite_ && pose.promptFlash > 0.0f)
         {
-            SetAlphaBlend(DX_BLENDMODE_ALPHA, pose.promptFlash);
-            DrawRotaGraphF(root.x + pillOffset_.x, root.y + pillOffset_.y, 1.0, 0.0, promptPillGlowSprite_->GetDxLibHandle(), TRUE);
+            SetAlphaBlend(BlendMode::Alpha, pose.promptFlash);
+            Platform::Draw2D::DrawRotaGraph(glm::vec2(root.x + pillOffset_.x, root.y + pillOffset_.y), 1.0, 0.0, promptPillGlowSprite_->GetDxLibHandle());
         }
         const auto& mouseSprite = pose.isPromptLit && promptMouseLitSprite_ ? promptMouseLitSprite_ : promptMouseSprite_;
-        SetAlphaBlend(DX_BLENDMODE_ALPHA, 1.0f);
-        DrawRotaGraphF(root.x + mouseOffset_.x, root.y + mouseOffset_.y, 1.0, 0.0, mouseSprite->GetDxLibHandle(), TRUE);
+        SetAlphaBlend(BlendMode::Alpha, 1.0f);
+        Platform::Draw2D::DrawRotaGraph(glm::vec2(root.x + mouseOffset_.x, root.y + mouseOffset_.y), 1.0, 0.0, mouseSprite->GetDxLibHandle());
 
         if (haloSprite_ && pose.halo > 0.0f)
         {
-            SetAlphaBlend(DX_BLENDMODE_ALPHA, pose.halo);
-            DrawRotaGraphF(root.x, root.y, scale, 0.0, haloSprite_->GetDxLibHandle(), TRUE);
+            SetAlphaBlend(BlendMode::Alpha, pose.halo);
+            Platform::Draw2D::DrawRotaGraph(glm::vec2(root.x, root.y), scale, 0.0, haloSprite_->GetDxLibHandle());
         }
         if (shockwaveSprite_ && pose.shockwaveRate >= 0.0f && shockwaveSpriteRadius_ > 0.0f)
         {
             const float radius = shockwaveStartRadius_ + (shockwaveEndRadius_ - shockwaveStartRadius_) * EASE_OUT_CUBIC.Ease(pose.shockwaveRate);
-            SetAlphaBlend(DX_BLENDMODE_ADD, std::pow(1.0f - pose.shockwaveRate, 1.5f));
-            DrawRotaGraphF(root.x, root.y, radius / shockwaveSpriteRadius_, 0.0, shockwaveSprite_->GetDxLibHandle(), TRUE);
+            SetAlphaBlend(BlendMode::Add, std::pow(1.0f - pose.shockwaveRate, 1.5f));
+            Platform::Draw2D::DrawRotaGraph(glm::vec2(root.x, root.y), radius / shockwaveSpriteRadius_, 0.0, shockwaveSprite_->GetDxLibHandle());
         }
 
-        SetAlphaBlend(DX_BLENDMODE_ALPHA, 1.0f);
-        DrawRotaGraphF(root.x, root.y, scale, 0.0, frameSprite_->GetDxLibHandle(), TRUE);
+        SetAlphaBlend(BlendMode::Alpha, 1.0f);
+        Platform::Draw2D::DrawRotaGraph(glm::vec2(root.x, root.y), scale, 0.0, frameSprite_->GetDxLibHandle());
 
         const auto& fillSprite = pose.isGold ? fillGoldSprite_ : fillTealSprite_;
-        DrawCircleGaugeF(root.x, root.y, pose.gaugePercent, fillSprite->GetDxLibHandle(), 0.0, scale, FALSE, FALSE);
+        Platform::Draw2D::DrawCircleGauge(glm::vec2(root.x, root.y), pose.gaugePercent, fillSprite->GetDxLibHandle(), 0.0, scale);
         if (fillFlashSprite_ && pose.flash > 0.0f)
         {
-            SetAlphaBlend(DX_BLENDMODE_ALPHA, pose.flash);
-            DrawCircleGaugeF(root.x, root.y, pose.gaugePercent, fillFlashSprite_->GetDxLibHandle(), 0.0, scale, FALSE, FALSE);
+            SetAlphaBlend(BlendMode::Alpha, pose.flash);
+            Platform::Draw2D::DrawCircleGauge(glm::vec2(root.x, root.y), pose.gaugePercent, fillFlashSprite_->GetDxLibHandle(), 0.0, scale);
         }
         if (tipSprite_ && pose.isTipVisible && pose.gaugePercent > 1.0f)
         {
             const float angle = pose.gaugePercent / 100.0f * TAU;
             const float radius = gaugeRadius_ * pose.scale;
-            SetAlphaBlend(DX_BLENDMODE_ALPHA, 1.0f);
-            DrawRotaGraphF(root.x + std::sin(angle) * radius, root.y - std::cos(angle) * radius, 1.0, 0.0, tipSprite_->GetDxLibHandle(), TRUE);
+            SetAlphaBlend(BlendMode::Alpha, 1.0f);
+            Platform::Draw2D::DrawRotaGraph(glm::vec2(root.x + std::sin(angle) * radius, root.y - std::cos(angle) * radius), 1.0, 0.0, tipSprite_->GetDxLibHandle());
         }
 
         const glm::vec2 bombPivot = root + (bombPivotOffset_ + pose.bombOffset) * pose.scale;
@@ -266,28 +232,28 @@ namespace GamePlay::Ui
         if (pose.bombAlpha > 0.0f)
         {
             const int bright = static_cast<int>((1.0f - std::clamp(pose.bombDim, 0.0f, 1.0f)) * 255.0f);
-            SetDrawBright(bright, bright, bright);
-            SetAlphaBlend(DX_BLENDMODE_ALPHA, pose.bombAlpha);
-            DrawRotaGraph2F(bombPivot.x, bombPivot.y, bombPivotInSprite_.x, bombPivotInSprite_.y, bombScale, pose.bombAngle, bombSprite_->GetDxLibHandle(), TRUE);
-            SetDrawBright(255, 255, 255);
+            Platform::Draw2D::SetBright(bright, bright, bright);
+            SetAlphaBlend(BlendMode::Alpha, pose.bombAlpha);
+            Platform::Draw2D::DrawRotaGraph2(glm::vec2(bombPivot.x, bombPivot.y), glm::vec2(bombPivotInSprite_.x, bombPivotInSprite_.y), bombScale, pose.bombAngle, bombSprite_->GetDxLibHandle());
+            Platform::Draw2D::SetBright(255, 255, 255);
         }
 
         if (sparkSprite_ && pose.spark > 0.0f)
         {
             const glm::vec2 sparkPos = bombPivot + Rotate(sparkOffsetFromBombPivot_, pose.bombAngle) * bombScale;
-            SetAlphaBlend(DX_BLENDMODE_ALPHA, 1.0f);
-            DrawRotaGraphF(sparkPos.x, sparkPos.y, pose.spark * bombScale, time_secs_ * 3.0f, sparkSprite_->GetDxLibHandle(), TRUE);
+            SetAlphaBlend(BlendMode::Alpha, 1.0f);
+            Platform::Draw2D::DrawRotaGraph(glm::vec2(sparkPos.x, sparkPos.y), pose.spark * bombScale, time_secs_ * 3.0f, sparkSprite_->GetDxLibHandle());
 
             if (emberSprite_ && pose.shockwaveRate >= 0.0f && emberSpriteRadius_ > 0.0f)
             {
                 const float distance = emberDistance_ * EASE_OUT_CUBIC.Ease(pose.shockwaveRate);
                 const float fade = 1.0f - pose.shockwaveRate;
                 const float emberScale = (3.2f * fade + 0.4f) / emberSpriteRadius_;
-                SetAlphaBlend(DX_BLENDMODE_ALPHA, fade);
+                SetAlphaBlend(BlendMode::Alpha, fade);
                 for (int i = 0; i < emberCount_; ++i)
                 {
                     const float angle = emberStartAngle_deg_ * DEG_TO_RAD + TAU * static_cast<float>(i) / static_cast<float>(std::max(emberCount_, 1));
-                    DrawRotaGraphF(sparkPos.x + std::cos(angle) * distance, sparkPos.y + std::sin(angle) * distance, emberScale, 0.0, emberSprite_->GetDxLibHandle(), TRUE);
+                    Platform::Draw2D::DrawRotaGraph(glm::vec2(sparkPos.x + std::cos(angle) * distance, sparkPos.y + std::sin(angle) * distance), emberScale, 0.0, emberSprite_->GetDxLibHandle());
                 }
             }
         }

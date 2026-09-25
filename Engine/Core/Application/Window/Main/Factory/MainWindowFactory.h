@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
+#include "Engine/Core/Api/NanamiModule.h"
 #include <string>
 #include <unordered_map>
 #include <functional>
@@ -12,8 +14,11 @@
 
 namespace NanamiEngine::Core::MainWindow
 {
-    class MainWindowFactory final : public SingletonBase<MainWindowFactory>
+    class NANAMI_API MainWindowFactory final : public SingletonBase<MainWindowFactory>
     {
+    public:
+        static MainWindowFactory& Instance();
+
     public:
         /** @param category ツールバーのメニューでの入れ子 ("A::B") */
         template <typename T>
@@ -31,6 +36,27 @@ namespace NanamiEngine::Core::MainWindow
             };
 
             categories_[name] = category;
+            modules_   [name] = NANAMI_CURRENT_MODULE();
+        }
+
+        /** @brief module が登録したウィンドウ種別を消す。戻り値は消した数 */
+        std::size_t UnregisterModule(const ModuleHandle module)
+        {
+            std::size_t count = 0;
+            for (auto it = modules_.begin(); it != modules_.end();)
+            {
+                if (it->second != module)
+                {
+                    ++it;
+                    continue;
+                }
+                factories_ .erase(it->first);
+                loaders_   .erase(it->first);
+                categories_.erase(it->first);
+                it = modules_.erase(it);
+                ++count;
+            }
+            return count;
         }
 
         std::shared_ptr<IMainWindow> Load(const std::string& name)
@@ -64,6 +90,7 @@ namespace NanamiEngine::Core::MainWindow
         std::unordered_map<std::string, std::function<std::shared_ptr<IMainWindow>()>> factories_;
         std::unordered_map<std::string, std::function<std::shared_ptr<IMainWindow>()>> loaders_;
         std::unordered_map<std::string, std::string>                                    categories_;
+        std::unordered_map<std::string, ModuleHandle>                                   modules_;
     };
 }
 

@@ -271,13 +271,47 @@ void Scene::Scene::OnDrawFileDropGui(Core::FileSystem::EditorDraggingHand& fileD
     }
 }
 
+void Scene::Scene::Deserialize(
+    std::istream& stream,
+    const std::string& label,
+    DeserializedContent& outContent,
+    DeserializeProgress* progress)
+{
+    const Core::Application::FieldInitStagingScope stagingScope(outContent.pendingFieldContexts);
+    NanamiEngine::Module::Serialization::Detail::ReadWith<cereal::JSONInputArchive>(stream, label, [&outContent, progress](cereal::JSONInputArchive& archive)
+    {
+        archive(cereal::make_nvp("name", outContent.name));
+
+        std::size_t count = 0;
+        archive(cereal::make_nvp("gameObjectCount", count));
+        if (progress)
+            progress->total.store(static_cast<int>(count), std::memory_order_release);
+
+        outContent.gameObjects.reserve(count);
+        for (std::size_t i = 0; i < count; ++i)
+        {
+            std::shared_ptr<Module::GameObject::IGameObject> gameObject;
+            archive(cereal::make_nvp("gameObject_" + std::to_string(i), gameObject));
+            if (gameObject)
+                outContent.gameObjects.push_back(std::move(gameObject));
+
+            if (progress)
+                progress->done.store(static_cast<int>(i) + 1, std::memory_order_release);
+        }
+    });
+}
+
 void Scene::Scene::OnSave()
 {
     std::ofstream ofStream(filePath_);
     if (!ofStream.is_open())
         return;
+    SaveTo(ofStream);
+}
 
-    cereal::JSONOutputArchive archive(ofStream);
+void Scene::Scene::SaveTo(std::ostream& stream)
+{
+    cereal::JSONOutputArchive archive(stream);
     archive(cereal::make_nvp("name", name_));
 
     std::vector<std::shared_ptr<Module::GameObject::IGameObject>> rootObjects;

@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "Network_INetworkSyncParameter.h"
 #include "Id/Network_SyncParameter_Id.h"
 #include "../../Packet/ByteBuffer/Packet_ByteBuffer.h"
@@ -7,9 +8,9 @@
 
 namespace NanamiEngine::Core::Network
 {
-    void RegisterSyncParam(INetworkSyncParameter& assignParam, ParameterId id);
-    void DeRegisterParamId(ParameterId id);
-    void SyncSendParam(const INetworkSyncParameter& param);
+    NANAMI_API void RegisterSyncParam(INetworkSyncParameter& assignParam, ParameterId id);
+    NANAMI_API void DeRegisterParamId(ParameterId id);
+    NANAMI_API void SyncSendParam(const INetworkSyncParameter& param);
 
     /**
      * ネットワーク上で同期させるT型を作成する型

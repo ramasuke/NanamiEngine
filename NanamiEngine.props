@@ -6,7 +6,15 @@
     <NanamiEngineDir Condition="!HasTrailingSlash('$(NanamiEngineDir)')">$(NanamiEngineDir)\</NanamiEngineDir>
     <!-- Editor | Game -->
     <NanamiApplicationMode Condition="'$(NanamiApplicationMode)'==''">Editor</NanamiApplicationMode>
+    <!-- CRT: true で /MD (DLL 化の前提, docs/HotReload.md §1)。Effekseer 系 lib の MD 版は tools/effekseer_md で作って同梱済み。
+         false にすると従来の /MT (MT 版の lib を使う) に戻る -->
+    <NanamiUseDynamicCrt Condition="'$(NanamiUseDynamicCrt)'==''">true</NanamiUseDynamicCrt>
+    <!-- エンジンを DLL にするか (docs/HotReload.md §9, 段階 2)。Editor モードは exe + NanamiEngine.dll、Game モード (出荷) は静的 lib のまま。
+         -p:NanamiEngineShared=false で Editor モードも従来の静的 lib に戻せる。NanamiEngine.vcxproj の ConfigurationType も同じ既定で決める -->
+    <NanamiEngineShared Condition="'$(NanamiEngineShared)'=='' and '$(NanamiApplicationMode)'!='Game'">true</NanamiEngineShared>
+    <NanamiEngineShared Condition="'$(NanamiEngineShared)'==''">false</NanamiEngineShared>
     <NanamiEngineLibDir>$(NanamiEngineDir)lib\$(NanamiApplicationMode)\$(Configuration)\</NanamiEngineLibDir>
+    <!-- 静的 lib、または DLL の import lib (同じパス) -->
     <NanamiEngineLib>$(NanamiEngineLibDir)NanamiEngine.lib</NanamiEngineLib>
     <NanamiEngineIncludeDirs>$(NanamiEngineDir);$(NanamiEngineDir)Libs\glm;$(NanamiEngineDir)Libs\プロジェクトに追加すべきファイル_VC用;$(NanamiEngineDir)Libs\cereal\include;$(NanamiEngineDir)Libs\ImGui;$(NanamiEngineDir)Libs\ImGuizmo;$(NanamiEngineDir)Libs\rxcpp;$(NanamiEngineDir)Libs\JoltPhysics;$(NanamiEngineDir)Libs\tweeny;$(NanamiEngineDir)Libs\enet\include</NanamiEngineIncludeDirs>
     <NanamiEngineLibraryDirs>$(NanamiEngineDir)Libs\ImGui;$(NanamiEngineDir)Libs\glm;$(NanamiEngineDir)Libs\プロジェクトに追加すべきファイル_VC用;$(NanamiEngineDir)Libs\ImGuizmo;$(NanamiEngineDir)Libs\JoltPhysics;$(NanamiEngineDir)Libs\tweeny</NanamiEngineLibraryDirs>
@@ -41,13 +49,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(NanamiUseDynamicCrt)'!='true'">MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(NanamiUseDynamicCrt)'=='true'">MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(NanamiUseDynamicCrt)'!='true'">MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(NanamiUseDynamicCrt)'=='true'">MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalOptions>/Z7 %(AdditionalOptions)</AdditionalOptions>
@@ -60,6 +70,16 @@
   <ItemDefinitionGroup Condition="'$(NanamiApplicationMode)'=='Game'">
     <ClCompile>
       <PreprocessorDefinitions>NANAMI_GAME_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <!-- DLL 構成でエンジン・ゲームの両方に要る定義 (docs/HotReload.md §2, §3.2)。
+       CEREAL_NANAMI_SHARED_STATIC_OBJECT: cereal の多相登録表を全モジュールで 1 つにする (Libs/cereal の static_object.hpp パッチ)
+       ENET_DLL: enet はエンジン DLL が export する (ゲーム側は dllimport)
+       C4251 / C4275: dll-interface の無い std:: 型のメンバ・基底に対する警告。全モジュールが同じコンパイラ・CRT (/MD) なので問題ない -->
+  <ItemDefinitionGroup Condition="'$(NanamiEngineShared)'=='true'">
+    <ClCompile>
+      <PreprocessorDefinitions>CEREAL_NANAMI_SHARED_STATIC_OBJECT;ENET_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4251;4275;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
 </Project>

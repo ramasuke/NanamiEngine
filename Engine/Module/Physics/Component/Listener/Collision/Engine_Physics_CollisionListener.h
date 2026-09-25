@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <unordered_map>
 #include <memory>
 
@@ -11,7 +12,7 @@
 
 namespace NanamiEngine::Module::Component
 {
-    class CollisionListener final : public ComponentBase,
+    class NANAMI_API CollisionListener final : public ComponentBase,
                                     public Physics::Callback::ICollisionEnterable,
                                     public Physics::Callback::ICollisionExitable,
                                     public Physics::Callback::ISensorEnterable,

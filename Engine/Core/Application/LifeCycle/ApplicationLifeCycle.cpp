@@ -31,6 +31,12 @@ namespace NanamiEngine::Core::Application
         enableAssetCallbacks_  .Invoke([](auto& callback) { callback.OnEnableAsset();  });
     }
 
+    void ApplicationLifeCycle::Clear()
+    {
+        fieldInitableCallbacks_.Clear();
+        enableAssetCallbacks_  .Clear();
+    }
+
     void ApplicationLifeCycle::OnUpdateFieldInittables()
     {
         fieldInitableCallbacks_.OnUpdatePushedContents();

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <optional>
 
 #include "../ComponentBase.h"
@@ -8,7 +9,7 @@
 
 namespace NanamiEngine::Module::Component
 {
-    class Animator final : public ComponentBase,
+    class NANAMI_API Animator final : public ComponentBase,
                            public LifeCycleCallback::IAwakable,
                            public LifeCycleCallback::IUpdatable,
                            public LifeCycleCallback::IStartable,

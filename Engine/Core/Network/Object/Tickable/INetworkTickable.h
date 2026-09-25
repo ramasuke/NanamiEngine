@@ -1,8 +1,9 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 
 namespace NanamiEngine::Core::Network
 {
-    class INetworkTickable
+    class NANAMI_API INetworkTickable
     {
     public:
         virtual ~INetworkTickable() = default;

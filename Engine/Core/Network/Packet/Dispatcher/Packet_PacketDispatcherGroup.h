@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "Module/AssignPlayerId/Packet_Dispatch_AssignPlayerId.h"
 #include "Module/SpawnNetworkObject/Packet_Dispatch_SpawnNetworkObject.h"
 #include "Module/SyncTransform/Packet_Dispatch_SyncTransform.h"
@@ -10,7 +11,7 @@
 
 namespace NanamiEngine::Core::Network
 {
-    class DefaultPacketDispatcher final
+    class NANAMI_API DefaultPacketDispatcher final
     {
     public:
         explicit DefaultPacketDispatcher(

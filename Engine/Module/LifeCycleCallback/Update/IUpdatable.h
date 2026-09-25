@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Core/Object/IObject.h"
 #include "../cereal/include/cereal/cereal.hpp"
 
 namespace NanamiEngine::Module::LifeCycleCallback
 {
-    class IUpdatable : public virtual Object::IObject
+    class NANAMI_API IUpdatable : public virtual Object::IObject
     {
     public:
         virtual ~IUpdatable() = default;
@@ -19,7 +20,7 @@ namespace NanamiEngine::Module::LifeCycleCallback
     namespace Detail
     {
         // DiscardUpdatableBase が旧データのノードを読むためだけの器
-        class DiscardedUpdatable final : public IUpdatable
+        class NANAMI_API DiscardedUpdatable final : public IUpdatable
         {
         public:
             void OnUpdate() override { }

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
 #include "../../Guid/Guid.h"
@@ -9,7 +10,7 @@
 
 namespace NanamiEngine::Module::Asset
 {
-    class SpriteFile final : public AssetBase,
+    class NANAMI_API SpriteFile final : public AssetBase,
                              public LifeCycleCallback::IEnablableAsset,
                              public IPreloadableAsset
     {

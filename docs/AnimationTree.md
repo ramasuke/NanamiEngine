@@ -305,8 +305,9 @@ This mirrors `tools/scene`'s existing precedent of not having an
    `self_pos`), not their type, to find the node's identity/canvas-position
    fields. After the class, at file scope: `CEREAL_CLASS_VERSION`. The `.cpp`
    includes `Engine/Module/Serialization/Engine_Module_SerializationRegistration.h` and ends, at
-   file scope, with `CEREAL_REGISTER_TYPE(<fqn>);` and
-   `CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::AnimationTree::IAnimationNode, <fqn>);`
+   file scope, with `NANAMI_REGISTER_TYPE(<fqn>, NanamiEngine::Module::AnimationTree::IAnimationNode);`
+   (the engine's wrapper around `CEREAL_REGISTER_TYPE` + `CEREAL_REGISTER_POLYMORPHIC_RELATION`;
+   never call the cereal macros directly)
    (never in the header — see CLAUDE.md).
    Copy `Node/ClipNode/AnimationClipNode.{h,cpp}` as a starting point.
 2. `EnviroHunter.vcxproj` (+ `.vcxproj.filters`) — add `<ClCompile>`/

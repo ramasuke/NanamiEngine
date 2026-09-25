@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 
 #include "../../Core/Network/Engine_Network_INetworkSystem.h"
@@ -17,7 +18,7 @@ namespace NanamiEngine::Core::Network
 namespace NanamiEngine::Module::Network
 {
     /** Game実装側から呼ばれるAPIが実装されています。 */
-    class NetworkRunnerBase : public Component::ComponentBase,
+    class NANAMI_API NetworkRunnerBase : public Component::ComponentBase,
                               public LifeCycleCallback::IUpdatable
     {
     public:

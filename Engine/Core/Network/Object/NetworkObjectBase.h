@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <type_traits>
 #include <vector>
@@ -11,7 +12,7 @@ using namespace NanamiEngine::Core::Network;
 namespace NanamiEngine::Core::Network
 {
     /** ネットワーク上で共通の値を持つ可能性のあるオブジェクトに継承させるclass */
-    class NetworkObjectBase : public INetworkObject
+    class NANAMI_API NetworkObjectBase : public INetworkObject
     {
     public:
         friend class SyncParamFactory;

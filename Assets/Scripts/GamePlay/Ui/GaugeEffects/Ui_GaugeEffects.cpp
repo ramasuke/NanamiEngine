@@ -4,7 +4,7 @@
 #include <cmath>
 #include <numbers>
 
-#include "DxLib.h"
+#include "Engine/Core/Platform/Draw2D/Draw2D.h"
 #include "Engine/Core/Application/Time/Time.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
@@ -19,33 +19,14 @@ namespace
     {
     public:
         explicit ScopedDrawState(const bool isBilinear)
-            : drawMode_(GetDrawMode())
+            : state_(true)
         {
-            GetDrawBlendMode(&blendMode_, &blendParam_);
-            GetDrawBright(&brightR_, &brightG_, &brightB_);
             if (isBilinear)
-                SetDrawMode(DX_DRAWMODE_BILINEAR);
+                Platform::Draw2D::SetFilterMode(Platform::Draw2D::FilterMode::Bilinear);
         }
-        ~ScopedDrawState()
-        {
-            int screenW = 0;
-            int screenH = 0;
-            GetDrawScreenSize(&screenW, &screenH);
-            SetDrawArea(0, 0, screenW, screenH);
-            SetDrawMode(drawMode_);
-            SetDrawBlendMode(blendMode_, blendParam_);
-            SetDrawBright(brightR_, brightG_, brightB_);
-        }
-        ScopedDrawState(const ScopedDrawState&) = delete;
-        ScopedDrawState& operator=(const ScopedDrawState&) = delete;
 
     private:
-        int drawMode_   = DX_DRAWMODE_NEAREST;
-        int blendMode_  = DX_BLENDMODE_NOBLEND;
-        int blendParam_ = 0;
-        int brightR_    = 255;
-        int brightG_    = 255;
-        int brightB_    = 255;
+        Platform::Draw2D::ScopedDrawState state_;
     };
 }
 
@@ -172,7 +153,7 @@ namespace GamePlay::Ui
             pulseTime_secs_ += deltaTime;
     }
 
-    void GaugeEffects::DrawBand(const NanamiUi::Slider& slider, const float alongMin, const float alongMax, const float acrossMin, const float acrossMax, const unsigned int color) const
+    void GaugeEffects::DrawBand(const NanamiUi::Slider& slider, const float alongMin, const float alongMax, const float acrossMin, const float acrossMax, const Color32& color) const
     {
         const glm::vec2 p1 = slider.FillToScreen(alongMin, acrossMin);
         const glm::vec2 p2 = slider.FillToScreen(alongMax, acrossMin);
@@ -182,17 +163,17 @@ namespace GamePlay::Ui
         {
             const glm::vec2 min = glm::min(p1, p3);
             const glm::vec2 max = glm::max(p1, p3);
-            DrawBox(
+            Platform::Draw2D::DrawBox(
                 static_cast<int>(std::round(min.x)),
                 static_cast<int>(std::round(min.y)),
                 static_cast<int>(std::round(max.x)),
                 static_cast<int>(std::round(max.y)),
                 color,
-                TRUE);
+                true);
             return;
         }
 
-        DrawQuadrangleAA(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y, color, TRUE);
+        Platform::Draw2D::DrawQuadrangleAA(p1, p2, p3, p4, color, true);
     }
 
     void GaugeEffects::DrawTicks(const NanamiUi::Slider& slider) const
@@ -212,10 +193,10 @@ namespace GamePlay::Ui
         for (int i = 1; i < tickCount_; ++i)
         {
             const float along = startInset + innerLength * static_cast<float>(i) / static_cast<float>(tickCount_);
-            SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::clamp(tickShadowAlpha_, 0, 255));
-            DrawBand(slider, along, along + 1.0f, acrossMin, acrossMax, GetColor(0, 0, 0));
-            SetDrawBlendMode(DX_BLENDMODE_ALPHA, std::clamp(tickHighlightAlpha_, 0, 255));
-            DrawBand(slider, along + 1.0f, along + 2.0f, acrossMin, acrossMax, GetColor(255, 255, 255));
+            Platform::Draw2D::SetBlendMode(LibCore::Dxlib::BlendMode::Alpha, std::clamp(tickShadowAlpha_, 0, 255));
+            DrawBand(slider, along, along + 1.0f, acrossMin, acrossMax, Color32(0, 0, 0));
+            Platform::Draw2D::SetBlendMode(LibCore::Dxlib::BlendMode::Alpha, std::clamp(tickHighlightAlpha_, 0, 255));
+            DrawBand(slider, along + 1.0f, along + 2.0f, acrossMin, acrossMax, Color32(255, 255, 255));
         }
     }
 
@@ -225,11 +206,11 @@ namespace GamePlay::Ui
             return;
 
         const int tipHandle = tipSprite_->GetDxLibHandle();
-        int imageW = 0;
-        int imageH = 0;
-        GetGraphSize(tipHandle, &imageW, &imageH);
-        if (imageW <= 0 || imageH <= 0)
+        const auto tipSize = Platform::Draw2D::GraphSize(tipHandle);
+        if (!tipSize || tipSize->x <= 0 || tipSize->y <= 0)
             return;
+        const int imageW = tipSize->x;
+        const int imageH = tipSize->y;
 
         // 始端からはみ出す分は画像の頭を切り落とす
         const float alongMax = slider.CalcFillLength(value);
@@ -248,12 +229,8 @@ namespace GamePlay::Ui
         const glm::vec2 p4 = slider.FillToScreen(alongMin, acrossMax);
 
         slider.ClipToDrawSize();
-        SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
-        DrawRectModiGraphF(
-            p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y,
-            srcLeft, 0, imageW - srcLeft, imageH,
-            tipHandle,
-            TRUE);
+        Platform::Draw2D::SetBlendMode(LibCore::Dxlib::BlendMode::Add, 255);
+        Platform::Draw2D::DrawRectModiGraph(p1, p2, p3, p4, srcLeft, 0, imageW - srcLeft, imageH, tipHandle);
     }
 
     void GaugeEffects::DrawHealTrail(const NanamiUi::Slider& slider, const float value) const
@@ -270,10 +247,10 @@ namespace GamePlay::Ui
         const ScopedDrawState drawState(false);
 
         // ゲージ画像そのものを色付きで加算して、模様を残したまま光らせる
-        SetDrawBright(healTrailColor_.R(), healTrailColor_.G(), healTrailColor_.B());
-        SetDrawBlendMode(DX_BLENDMODE_ADD, static_cast<int>(static_cast<float>(std::clamp(healTrailAlpha_, 0, 255)) * fade));
+        Platform::Draw2D::SetBright(healTrailColor_.R(), healTrailColor_.G(), healTrailColor_.B());
+        Platform::Draw2D::SetBlendMode(LibCore::Dxlib::BlendMode::Add, static_cast<int>(static_cast<float>(std::clamp(healTrailAlpha_, 0, 255)) * fade));
         slider.DrawFillRange(slider.GetGaugeSprite()->GetDxLibHandle(), lower, value);
-        SetDrawBright(255, 255, 255);
+        Platform::Draw2D::SetBright(255, 255, 255);
 
         // 伸びた先端に細い光の線
         if (healEdgeWidth_ > 0.0f && value < 1.0f)
@@ -282,8 +259,8 @@ namespace GamePlay::Ui
             const float acrossMin = bandInsetY_;
             const float acrossMax = slider.AcrossLength() - bandInsetY_;
             slider.ClipToDrawSize();
-            SetDrawBlendMode(DX_BLENDMODE_ADD, static_cast<int>(255.0f * fade));
-            DrawBand(slider, std::max(0.0f, edge - healEdgeWidth_), edge, acrossMin, acrossMax, healTrailColor_.ToDxColor());
+            Platform::Draw2D::SetBlendMode(LibCore::Dxlib::BlendMode::Add, static_cast<int>(255.0f * fade));
+            DrawBand(slider, std::max(0.0f, edge - healEdgeWidth_), edge, acrossMin, acrossMax, healTrailColor_);
         }
     }
 
@@ -300,10 +277,10 @@ namespace GamePlay::Ui
         if (fullFlashAlpha_ > 0 && fullFlashDuration_secs_ > 0.0f && elapsed < fullFlashDuration_secs_)
         {
             const float fade = 1.0f - elapsed / fullFlashDuration_secs_;
-            SetDrawBright(fullFlashColor_.R(), fullFlashColor_.G(), fullFlashColor_.B());
-            SetDrawBlendMode(DX_BLENDMODE_ADD, static_cast<int>(static_cast<float>(std::clamp(fullFlashAlpha_, 0, 255)) * fade * fade));
+            Platform::Draw2D::SetBright(fullFlashColor_.R(), fullFlashColor_.G(), fullFlashColor_.B());
+            Platform::Draw2D::SetBlendMode(LibCore::Dxlib::BlendMode::Add, static_cast<int>(static_cast<float>(std::clamp(fullFlashAlpha_, 0, 255)) * fade * fade));
             slider.DrawFillRange(slider.GetGaugeSprite()->GetDxLibHandle(), 0.0f, 1.0f);
-            SetDrawBright(255, 255, 255);
+            Platform::Draw2D::SetBright(255, 255, 255);
         }
 
         // 始端から終端へ、中央が明るい光の筋を流す
@@ -332,8 +309,8 @@ namespace GamePlay::Ui
                 // 山なりの濃さ（中央 1、両端 0）
                 const float offset = (static_cast<float>(i) + 0.5f) / static_cast<float>(sliceCount) * 2.0f - 1.0f;
                 const float weight = 1.0f - offset * offset;
-                SetDrawBlendMode(DX_BLENDMODE_ADD, static_cast<int>(static_cast<float>(std::clamp(fullShineAlpha_, 0, 255)) * weight));
-                DrawBand(slider, alongMin, alongMax, acrossMin, acrossMax, fullFlashColor_.ToDxColor());
+                Platform::Draw2D::SetBlendMode(LibCore::Dxlib::BlendMode::Add, static_cast<int>(static_cast<float>(std::clamp(fullShineAlpha_, 0, 255)) * weight));
+                DrawBand(slider, alongMin, alongMax, acrossMin, acrossMax, fullFlashColor_);
             }
         }
     }
@@ -356,7 +333,7 @@ namespace GamePlay::Ui
             {
                 const ScopedDrawState drawState(false);
                 const float fadeOutRate = 1.0f - std::clamp(gaugeFadeTween_.Value(), 0.0f, 1.0f);
-                SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255.0f * fadeOutRate));
+                Platform::Draw2D::SetBlendMode(LibCore::Dxlib::BlendMode::Alpha, static_cast<int>(255.0f * fadeOutRate));
                 slider->DrawFillRange(fadingOutGaugeSprite_->GetDxLibHandle(), 0.0f, value);
             }
 
@@ -364,7 +341,7 @@ namespace GamePlay::Ui
             {
                 const ScopedDrawState drawState(false);
                 const float wave = 0.5f + 0.5f * std::sin(pulseTime_secs_ * pulseFrequency_hz_ * 2.0f * std::numbers::pi_v<float>);
-                SetDrawBlendMode(DX_BLENDMODE_ADD, static_cast<int>(static_cast<float>(pulseMaxAlpha_) * wave));
+                Platform::Draw2D::SetBlendMode(LibCore::Dxlib::BlendMode::Add, static_cast<int>(static_cast<float>(pulseMaxAlpha_) * wave));
                 slider->DrawFillRange(slider->GetGaugeSprite()->GetDxLibHandle(), 0.0f, value);
             }
         }

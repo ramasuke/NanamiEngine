@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/Font/Ttf/TtfFontFile.h"
 #include "../../Color/Color32.h"
@@ -7,7 +8,7 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    class TextRenderer final : public Component::ComponentBase,
+    class NANAMI_API TextRenderer final : public Component::ComponentBase,
                                public LifeCycleCallback::IUserInterfaceRenderable
     {
     public:

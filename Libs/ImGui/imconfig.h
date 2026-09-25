@@ -25,6 +25,13 @@
 // for each static/DLL boundary you are calling from. Read "Context and Memory Allocators" section of imgui.cpp for more details.
 //#define IMGUI_API __declspec( dllexport )
 //#define IMGUI_API __declspec( dllimport )
+// NanamiEngine: エンジンを DLL にするとき ImGui の実体 (GImGui、imgui*.cpp) はエンジン DLL に 1 つだけ置き、
+// ゲーム側は import する (docs/HotReload.md §2)。静的 lib 構成ではどちらも定義されず、従来どおり空
+#if defined(NANAMI_ENGINE_BUILD_DLL)
+#define IMGUI_API __declspec( dllexport )
+#elif defined(NANAMI_ENGINE_USE_DLL)
+#define IMGUI_API __declspec( dllimport )
+#endif
 
 //---- Don't define obsolete functions/enums/behaviors. Consider enabling from time to time after updating to clean your code of obsolete function/names.
 //#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS

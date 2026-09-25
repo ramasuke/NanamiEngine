@@ -1,10 +1,8 @@
 ﻿#include "SoundPlayer.h"
 
-#include "DxLib.h"
 #include "Engine/Module/Asset/Sound/SoundFile.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
-#include "Libs/LibCore/DxLib/DxMath.h"
 
 namespace GamePlay::Sound
 {
@@ -74,7 +72,7 @@ namespace GamePlay::Sound
         if (!soundTarget)
             return;
 
-        StopSoundMem(soundTarget->GetDxLibHandle());
+        soundTarget->Stop();
 
         // 管理リストから削除
         auto& list = instance_->bgmSounds_;
@@ -100,7 +98,7 @@ namespace GamePlay::Sound
         for (const auto& bgmSound : bgmSounds_)
         {
             if (const auto bgmSoundFile = bgmSound.lock())
-                Set3DPositionSoundMem(LibCore::Dxlib::ToDxVector(Transform().GetWorldPos()), bgmSoundFile->GetDxLibHandle());
+                bgmSoundFile->Set3DPosition(Transform().GetWorldPos());
         }
     }
 

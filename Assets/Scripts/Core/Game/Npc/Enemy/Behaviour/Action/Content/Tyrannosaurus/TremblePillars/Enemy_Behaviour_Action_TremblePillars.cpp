@@ -25,6 +25,5 @@ namespace GameCore::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::TremblePillars);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::TremblePillars);
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::TremblePillars, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

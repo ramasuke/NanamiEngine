@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../Guid/Guid.h"
 #include "../cereal/include/cereal/types/polymorphic.hpp""
 
 namespace NanamiEngine::Module::LifeCycleCallback
 {
-    class IEnablableAsset
+    class NANAMI_API IEnablableAsset
     {
     public:
         virtual ~IEnablableAsset() = default;

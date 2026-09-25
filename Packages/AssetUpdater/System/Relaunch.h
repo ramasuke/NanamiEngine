@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstddef>
 
 namespace NanamiEngine::AssetUpdater
@@ -6,7 +7,7 @@ namespace NanamiEngine::AssetUpdater
     /**
      * このプロセスが終わったあとで、同じ exe を同じ作業ディレクトリから起動し直す。
      */
-    class Relauncher final
+    class NANAMI_API Relauncher final
     {
     public:
         Relauncher() = delete;

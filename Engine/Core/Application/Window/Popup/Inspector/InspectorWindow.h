@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../../../Module/GameObject/Interface/IGameObject.h"
 #include "../Interface/IPopupWindow.h"
 #include "../Factory/PopupWindowFactory.h"
 
 namespace NanamiEngine::Core::PopupWindow
 {
-    class InspectorWindow final : public IPopupWindow
+    class NANAMI_API InspectorWindow final : public IPopupWindow
     {
     public:
         InspectorWindow();

@@ -1,9 +1,10 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../../FileSystem/DraggingHand/EditorDraggingHand.h"
 
 namespace NanamiEngine::Core::PopupWindow
 {
-    struct PopupWindowDrawGuiContext final
+    struct NANAMI_API PopupWindowDrawGuiContext final
     {
     public:
         explicit PopupWindowDrawGuiContext(FileSystem::EditorDraggingHand& fileDraggingHand);

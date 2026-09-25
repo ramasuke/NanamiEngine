@@ -139,6 +139,5 @@ void AnimationTree::AnimationClipNode::OnDrawGui()
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationClipNode);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::AnimationTree::IAnimationNode, NanamiEngine::Module::AnimationTree::AnimationClipNode);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationClipNode, NanamiEngine::Module::AnimationTree::IAnimationNode);
 #pragma endregion

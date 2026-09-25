@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 
 namespace NanamiEngine::Module::Physics
@@ -30,5 +31,5 @@ namespace NanamiEngine::Module::Physics
         return (static_cast<uint8_t>(flags) & static_cast<uint8_t>(target)) != 0;
     }
     
-    void DrawConstraintCheckBoxsGui(Constraints& constraints);
+    NANAMI_API void DrawConstraintCheckBoxsGui(Constraints& constraints);
 }

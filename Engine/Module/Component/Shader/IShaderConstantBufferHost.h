@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../cereal/include/cereal/cereal.hpp"
 
 namespace NanamiEngine::Module::Component
 {
     // カスタム頂点/ピクセルシェーダーとb4定数バッファを保持できるレンダラーの共通インターフェース。
-    class IShaderConstantBufferHost
+    class NANAMI_API IShaderConstantBufferHost
     {
     public:
         virtual ~IShaderConstantBufferHost() = default;

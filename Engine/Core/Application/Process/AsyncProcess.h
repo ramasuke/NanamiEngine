@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <atomic>
 #include <chrono>
 #include <cstddef>
@@ -12,7 +13,7 @@
 namespace NanamiEngine::Core::Application::Process
 {
     /** @brief 外部プロセスをワーカースレッドで動かし、stdout / stderr を行ごとに溜める。出力は UTF-8 前提 */
-    class AsyncProcess final
+    class NANAMI_API AsyncProcess final
     {
     public:
         AsyncProcess() = default;

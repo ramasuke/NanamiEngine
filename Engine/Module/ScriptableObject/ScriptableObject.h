@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../Asset/AssetBase.h"
 #include "../Asset/Factory/AssetFactory.h"
 #include "../LifeCycleCallback/EnableAsset/IEnablableAsset.h"
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::Module
 {
-    class ScriptableObject : public Asset::AssetBase,
+    class NANAMI_API ScriptableObject : public Asset::AssetBase,
                              public LifeCycleCallback::IEnablableAsset
     {
     public:

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include <compare>
 
@@ -9,7 +10,7 @@ namespace NanamiEngine::Core::Network
     /**
      * 接続しているクライアント番号
      */
-    struct PlayerId final
+    struct NANAMI_API PlayerId final
     {
         explicit PlayerId(int playerId = -1);
         static PlayerId Invalid();

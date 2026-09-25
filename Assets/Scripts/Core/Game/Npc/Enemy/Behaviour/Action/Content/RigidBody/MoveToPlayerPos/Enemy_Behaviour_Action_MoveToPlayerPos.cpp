@@ -37,9 +37,5 @@ namespace GameCore::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::MoveToPlayerPos)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    GameCore::Npc::Enemy::Behaviour::ActionBase,
-    GameCore::Npc::Enemy::Behaviour::Action::MoveToPlayerPos
-)
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::MoveToPlayerPos, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

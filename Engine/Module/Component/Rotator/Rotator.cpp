@@ -21,5 +21,5 @@ void Component::Rotator::OnDrawGui()
 
 #pragma region SerializationMacro
 ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::Rotator);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IUpdatable, NanamiEngine::Module::Component::Rotator);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IUpdatable, NanamiEngine::Module::Component::Rotator);
 #pragma endregion

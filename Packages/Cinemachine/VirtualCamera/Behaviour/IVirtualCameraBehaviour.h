@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../glm/fwd.hpp"
 
 namespace NanamiEngine::CineMachine
@@ -13,7 +14,7 @@ namespace NanamiEngine::CineMachine
         Aim,
     };
 
-    class IVirtualCameraBehaviour
+    class NANAMI_API IVirtualCameraBehaviour
     {
     public:
         virtual ~IVirtualCameraBehaviour() = default;

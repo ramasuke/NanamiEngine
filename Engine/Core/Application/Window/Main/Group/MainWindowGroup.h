@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
+#include "Engine/Core/Api/NanamiModule.h"
 #include <ranges>
 #include <memory>
 #include <typeindex>
@@ -8,7 +10,7 @@
 
 namespace NanamiEngine::Core::MainWindow
 {
-    class MainWindowGroup final
+    class NANAMI_API MainWindowGroup final
     {
     public:
         template <MainWindowType WindowT>
@@ -17,6 +19,11 @@ namespace NanamiEngine::Core::MainWindow
 
         template <MainWindowType WindowT>
         [[nodiscard]] std::shared_ptr<WindowT> Catch() const;
+
+        /** @brief クラスが module にあるウィンドウの実体を捨てる (ゲーム DLL を外す前)。戻り値は捨てた数 */
+        std::size_t RemoveWindowsOfModule(ModuleHandle module);
+        /** @brief window のクラスが module にあるか */
+        [[nodiscard]] static bool IsWindowOfModule(const IMainWindow* window, ModuleHandle module);
 
     private:
         std::unordered_map<std::type_index, std::shared_ptr<IMainWindow>> mainWindows_;
@@ -28,6 +35,16 @@ namespace NanamiEngine::Core::MainWindow
         {
             window->OnSave();
         }
+    }
+
+    inline std::size_t MainWindowGroup::RemoveWindowsOfModule(const ModuleHandle module)
+    {
+        return std::erase_if(mainWindows_, [module](const auto& pair) { return IsWindowOfModule(pair.second.get(), module); });
+    }
+
+    inline bool MainWindowGroup::IsWindowOfModule(const IMainWindow* window, const ModuleHandle module)
+    {
+        return window != nullptr && ModuleOfVTable(window) == module;
     }
 
     template <MainWindowType WindowT>

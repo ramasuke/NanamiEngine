@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <filesystem>
 #include <string>
 
 namespace NanamiEngine::AssetUpdater
 {
-    struct AssetUpdaterPaths
+    struct NANAMI_API AssetUpdaterPaths
     {
         /** Assets/ があるフォルダ。エンジンの作業ディレクトリと同じ */
         std::filesystem::path gameRoot;

@@ -212,6 +212,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(PlayerAvatarFactory, PLAYER_AVATAR_FACTORY_EXTENSION_LABEL, "Player")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::PlayerAvatarFactory);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::PlayerAvatarFactory);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::PlayerAvatarFactory, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

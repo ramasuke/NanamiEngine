@@ -266,6 +266,5 @@ namespace GameCore::PlayerAvatar::MagicCaster
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::IPlayerAvatarStatus, GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus);
+NANAMI_REGISTER_TYPE(GameCore::PlayerAvatar::MagicCaster::MagicCasterAvatarStatus, GameCore::PlayerAvatar::IPlayerAvatarStatus);
 #pragma endregion

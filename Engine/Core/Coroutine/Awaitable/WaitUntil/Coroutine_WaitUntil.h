@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <coroutine>
 #include <functional>
 
@@ -6,7 +7,7 @@
 
 namespace Coroutine
 {
-    class WaitUntil final : public ITickableWaitable
+    class NANAMI_API WaitUntil final : public ITickableWaitable
     {
     public:
         explicit WaitUntil(std::function<bool()> condition);

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <../JoltPhysics/Jolt/Jolt.h>
 
 #include "../JoltPhysics/Jolt/Physics/Body/BodyID.h"
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::Module::Physics
 {
-    struct AddContacted final
+    struct NANAMI_API AddContacted final
     {
         AddContacted(
             JPH::BodyID inBody1,

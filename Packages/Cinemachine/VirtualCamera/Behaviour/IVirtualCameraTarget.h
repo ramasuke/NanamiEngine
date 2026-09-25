@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../../Engine/Module/GameObject/Transform/Transform.h"
 
@@ -9,7 +10,7 @@ namespace NanamiEngine::CineMachine
      * @details 対象のGameObjectにこれを実装したコンポーネントがあれば、カメラはTransformの代わりにこの位置を使う。
      *          描画だけ補間しているオブジェクトなど、Transformと見た目の位置がずれるものが実装する
      */
-    class IVirtualCameraTarget
+    class NANAMI_API IVirtualCameraTarget
     {
     public:
         virtual ~IVirtualCameraTarget() = default;
@@ -28,7 +29,7 @@ namespace NanamiEngine::CineMachine
      * @brief ロックオンされる側が、照準を重ねたい位置を渡すためのインターフェース
      * @details LockOnCameraBehaviour はこの位置も画角に収める。ゲーム側のロックオン対象が実装する
      */
-    class ILockOnCameraTarget
+    class NANAMI_API ILockOnCameraTarget
     {
     public:
         virtual ~ILockOnCameraTarget() = default;

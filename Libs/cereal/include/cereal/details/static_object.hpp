@@ -34,6 +34,31 @@
 #include <mutex>
 #endif
 
+// NanamiEngine patch: CEREAL_NANAMI_SHARED_STATIC_OBJECT が定義されていると、StaticObject<T> の実体を
+// モジュール (exe / dll) ごとに持たず、エンジン DLL が export する 1 つの表 (Engine/Module/Serialization/
+// Engine_Module_SharedStaticObject.cpp) から取る。多相登録の表 (InputBindingMap など) を全モジュールで共有するため。
+// 定義されていなければ元の cereal と同じ (モジュールごとの関数ローカル static)。docs/HotReload.md §3.2
+#ifdef CEREAL_NANAMI_SHARED_STATIC_OBJECT
+#include <typeinfo>
+#ifndef CEREAL_NANAMI_SHARED_STATIC_OBJECT_API
+#  if defined(NANAMI_ENGINE_BUILD_DLL)
+#    define CEREAL_NANAMI_SHARED_STATIC_OBJECT_API __declspec(dllexport)
+#  elif defined(NANAMI_ENGINE_USE_DLL)
+#    define CEREAL_NANAMI_SHARED_STATIC_OBJECT_API __declspec(dllimport)
+#  else
+#    define CEREAL_NANAMI_SHARED_STATIC_OBJECT_API
+#  endif
+#endif
+namespace cereal
+{
+  namespace detail
+  {
+    //! key (typeid(T).name()) の実体を返す。無ければ create() で作って登録する。destroy は所有モジュールの解放時に使う
+    CEREAL_NANAMI_SHARED_STATIC_OBJECT_API void * nanami_shared_static_object( char const * key, void * (*create)(), void (*destroy)( void * ) );
+  }
+}
+#endif // CEREAL_NANAMI_SHARED_STATIC_OBJECT
+
 //! Prevent link optimization from removing non-referenced static objects
 /*! Especially for polymorphic support, we create static objects which
     may not ever be explicitly referenced.  Most linkers will detect this
@@ -70,10 +95,20 @@ namespace cereal
 
         static T & create()
         {
+          #ifdef CEREAL_NANAMI_SHARED_STATIC_OBJECT
+          // NanamiEngine patch: 実体はエンジンの共有表にあり、全モジュールで 1 つ (最初に触ったモジュールが所有する)
+          static T * const shared = static_cast<T *>( nanami_shared_static_object(
+            typeid( T ).name(),
+            []() -> void * { return new T(); },
+            []( void * p ) { delete static_cast<T *>( p ); } ) );
+          (void)instance;
+          return *shared;
+          #else
           static T t;
           //! Forces instantiation at pre-execution time
           (void)instance;
           return t;
+          #endif
         }
 
         StaticObject( StaticObject const & /*other*/ ) {}

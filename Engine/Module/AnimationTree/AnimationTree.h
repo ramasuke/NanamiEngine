@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <optional>
 
 #include "../../Core/Object/IObject.h"
@@ -17,7 +18,7 @@ namespace NanamiEngine::Module::AnimationTree
 {
     class AnimationTreeGraphDelegate;
 
-    struct AnimationStateSnapshot final
+    struct NANAMI_API AnimationStateSnapshot final
     {
         Guid  primaryGuid;
         float primaryDuringSecs  = 0.f;
@@ -35,7 +36,7 @@ namespace NanamiEngine::Module::AnimationTree
         }
     };
 
-    class AnimationTree final : public Object::IObject
+    class NANAMI_API AnimationTree final : public Object::IObject
     {
     public:
         explicit AnimationTree(std::string filePath = "");

@@ -1,9 +1,9 @@
 ﻿#include "EventBoardPresenter.h"
+#include "Assets/Scripts/Core/Input/InputAliases.h"
 
 #include <algorithm>
 #include <chrono>
 
-#include "DxLib.h"
 
 #include "../../../Sound/UiSoundBank.h"
 #include "../../../Prop/RestorationGate/Prop_RestorationGate.h"
@@ -178,20 +178,19 @@ namespace GamePlay::Ui
 
     EventBoardPresenter::Keys EventBoardPresenter::ReadKeys()
     {
-        XINPUT_STATE xInput{};
-        GetJoypadXInputState(DX_INPUT_PAD1, &xInput);
+        const auto xInput = Gamepad::Get();
 
         return Keys{
-            .prev    = CheckHitKey(KEY_INPUT_UP) || CheckHitKey(KEY_INPUT_W)
-                       || xInput.Buttons[XINPUT_BUTTON_DPAD_UP] || xInput.ThumbLY > EVENT_BOARD_STICK_DEADZONE,
-            .next    = CheckHitKey(KEY_INPUT_DOWN) || CheckHitKey(KEY_INPUT_S)
-                       || xInput.Buttons[XINPUT_BUTTON_DPAD_DOWN] || xInput.ThumbLY < -EVENT_BOARD_STICK_DEADZONE,
-            .tabPrev = CheckHitKey(KEY_INPUT_LEFT) || CheckHitKey(KEY_INPUT_A)
-                       || xInput.Buttons[XINPUT_BUTTON_LEFT_SHOULDER] || xInput.Buttons[XINPUT_BUTTON_DPAD_LEFT],
-            .tabNext = CheckHitKey(KEY_INPUT_RIGHT) || CheckHitKey(KEY_INPUT_D)
-                       || xInput.Buttons[XINPUT_BUTTON_RIGHT_SHOULDER] || xInput.Buttons[XINPUT_BUTTON_DPAD_RIGHT],
-            .confirm = CheckHitKey(KEY_INPUT_RETURN) || xInput.Buttons[XINPUT_BUTTON_A],
-            .cancel  = CheckHitKey(KEY_INPUT_ESCAPE) || xInput.Buttons[XINPUT_BUTTON_B],
+            .prev    = Keyboard::IsDown(Key::Up) || Keyboard::IsDown(Key::W)
+                       || xInput.IsDown(GamepadButton::DPadUp) || xInput.thumbLY > EVENT_BOARD_STICK_DEADZONE,
+            .next    = Keyboard::IsDown(Key::Down) || Keyboard::IsDown(Key::S)
+                       || xInput.IsDown(GamepadButton::DPadDown) || xInput.thumbLY < -EVENT_BOARD_STICK_DEADZONE,
+            .tabPrev = Keyboard::IsDown(Key::Left) || Keyboard::IsDown(Key::A)
+                       || xInput.IsDown(GamepadButton::LeftShoulder) || xInput.IsDown(GamepadButton::DPadLeft),
+            .tabNext = Keyboard::IsDown(Key::Right) || Keyboard::IsDown(Key::D)
+                       || xInput.IsDown(GamepadButton::RightShoulder) || xInput.IsDown(GamepadButton::DPadRight),
+            .confirm = Keyboard::IsDown(Key::Return) || xInput.IsDown(GamepadButton::A),
+            .cancel  = Keyboard::IsDown(Key::Escape) || xInput.IsDown(GamepadButton::B),
         };
     }
 

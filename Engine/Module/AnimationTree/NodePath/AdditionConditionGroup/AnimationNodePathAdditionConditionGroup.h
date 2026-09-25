@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <vector>
 #include <memory>
 #include <cstdint>
@@ -9,7 +10,7 @@
 
 namespace NanamiEngine::Module::AnimationTree
 {
-    class AnimationNodePathAdditionConditionGroup final
+    class NANAMI_API AnimationNodePathAdditionConditionGroup final
     {
     public:
         void OnDrawGui();

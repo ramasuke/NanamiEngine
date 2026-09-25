@@ -47,5 +47,4 @@ namespace GameCore::PlayerAvatar::Item
     REGISTER_ITEM_EFFECT(PlaceBombEffect)
 }
 
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::Item::PlaceBombEffect)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::Item::IItemEffect, GameCore::PlayerAvatar::Item::PlaceBombEffect)
+NANAMI_REGISTER_TYPE(GameCore::PlayerAvatar::Item::PlaceBombEffect, GameCore::PlayerAvatar::Item::IItemEffect);

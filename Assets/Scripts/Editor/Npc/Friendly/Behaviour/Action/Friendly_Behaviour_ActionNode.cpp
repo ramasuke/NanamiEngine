@@ -110,6 +110,5 @@ namespace Editor::Npc::Friendly::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(Editor::Npc::Friendly::Behaviour::ActionNode);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Editor::Npc::Behaviour::NodeBase, Editor::Npc::Friendly::Behaviour::ActionNode);
+NANAMI_REGISTER_TYPE(Editor::Npc::Friendly::Behaviour::ActionNode, Editor::Npc::Behaviour::NodeBase);
 #pragma endregion

@@ -1,9 +1,10 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../Core/Object/IObject.h"
 
 namespace NanamiEngine::Module::Asset
 {
-    class AssetBase : public Object::IObject
+    class NANAMI_API AssetBase : public Object::IObject
     {
     public:
         ~AssetBase() override = default;

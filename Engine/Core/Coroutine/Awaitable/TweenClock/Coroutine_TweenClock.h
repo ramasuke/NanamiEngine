@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cmath>
 #include <cstdint>
 
 namespace Coroutine
 {
-    class TweenClock final
+    class NANAMI_API TweenClock final
     {
     public:
         [[nodiscard]] int32_t Advance(const float seconds)

@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
+#include "Engine/Core/Api/NanamiModule.h"
 #include <string>
 #include <unordered_map>
 #include <functional>
@@ -12,11 +14,13 @@ namespace NanamiEngine::Core::PopupWindow
 {
     using FactoryFunc = std::function<std::unique_ptr<IPopupWindow>()>;
 
-    class PopupWindowFactory final : public SingletonBase<PopupWindowFactory>
+    class NANAMI_API PopupWindowFactory final : public SingletonBase<PopupWindowFactory>
     {
     public:
-        /** @param category ツールバーのメニューでの入れ子 ("A::B") */
-        template <typename T>
+        static PopupWindowFactory& Instance();
+
+    public:
+      template <typename T>
         void Register(const std::string& name, const std::string& category)
         {
             static_assert(std::is_base_of_v<IPopupWindow, T>, "T must inherit from IPopupWindow");
@@ -26,13 +30,34 @@ namespace NanamiEngine::Core::PopupWindow
                 return std::make_unique<T>();
             };
             categories_[name] = category;
+            modules_   [name] = NANAMI_CURRENT_MODULE();
         }
         [[nodiscard]] const std::unordered_map<std::string, FactoryFunc>& GetAll() const { return factories_; }
         [[nodiscard]] const std::unordered_map<std::string, std::string>& GetCategories() const { return categories_; }
 
+        /** @brief module が登録したウィンドウ種別を消す。戻り値は消した数 */
+        std::size_t UnregisterModule(const ModuleHandle module)
+        {
+            std::size_t count = 0;
+            for (auto it = modules_.begin(); it != modules_.end();)
+            {
+                if (it->second != module)
+                {
+                    ++it;
+                    continue;
+                }
+                factories_ .erase(it->first);
+                categories_.erase(it->first);
+                it = modules_.erase(it);
+                ++count;
+            }
+            return count;
+        }
+
     private:
-        std::unordered_map<std::string, FactoryFunc> factories_;
-        std::unordered_map<std::string, std::string> categories_;
+        std::unordered_map<std::string, FactoryFunc>  factories_;
+        std::unordered_map<std::string, std::string>  categories_;
+        std::unordered_map<std::string, ModuleHandle> modules_;
     };
 }
 

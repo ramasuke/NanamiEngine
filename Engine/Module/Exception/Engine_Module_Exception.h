@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -12,7 +13,7 @@
 namespace NanamiEngine::Module::Exception
 {
     /** エンジンが投げる全例外の基底 */
-    class NanamiException : public std::runtime_error
+    class NANAMI_API NanamiException : public std::runtime_error
     {
     public:
         explicit NanamiException(const std::string& message)
@@ -21,7 +22,7 @@ namespace NanamiEngine::Module::Exception
         }
     };
     
-    class SerializationException : public NanamiException
+    class NANAMI_API SerializationException : public NanamiException
     {
     public:
         SerializationException(std::string filePath, const std::string& message)
@@ -37,7 +38,7 @@ namespace NanamiEngine::Module::Exception
     };
 
     /** ファイルを開けなかった */
-    class FileNotFoundException final : public SerializationException
+    class NANAMI_API FileNotFoundException final : public SerializationException
     {
     public:
         explicit FileNotFoundException(const std::string& filePath)
@@ -47,7 +48,7 @@ namespace NanamiEngine::Module::Exception
     };
 
     /** ファイルは開けたが cereal が読み込みに失敗した */
-    class DeserializeException final : public SerializationException
+    class NANAMI_API DeserializeException final : public SerializationException
     {
     public:
         DeserializeException(const std::string& filePath, std::string innerMessage)
@@ -63,7 +64,7 @@ namespace NanamiEngine::Module::Exception
     };
 
     /** 書き込みに失敗した（出力ファイルを開けない・rename 失敗・cereal 失敗） */
-    class SerializeException final : public SerializationException
+    class NANAMI_API SerializeException final : public SerializationException
     {
     public:
         SerializeException(const std::string& filePath, std::string innerMessage)
@@ -79,7 +80,7 @@ namespace NanamiEngine::Module::Exception
     };
 
     /** ネットワークパケットのデシリアライズ失敗 */
-    class PacketDeserializeException final : public NanamiException
+    class NANAMI_API PacketDeserializeException final : public NanamiException
     {
     public:
         explicit PacketDeserializeException(const std::string& message)

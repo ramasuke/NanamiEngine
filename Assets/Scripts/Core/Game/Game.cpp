@@ -160,5 +160,5 @@ namespace GameCore
 
 #pragma region SerializationMacro
 ENGINE_REGISTER_COMPONENT(GameCore::Game);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, GameCore::Game);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, GameCore::Game);
 #pragma endregion

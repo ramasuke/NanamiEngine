@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "DxLib.h"
+#include "Engine/Module/3DRender/Shapes/Shapes.h"
 #include "Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
@@ -124,18 +124,18 @@ namespace NanamiEngine::Module::Asset
             return h == std::numeric_limits<float>::lowest() ? samplingHeight_ : h;
         };
 
-        const auto pointAt = [&](int gx, int gz) -> VECTOR
+        const auto pointAt = [&](int gx, int gz) -> glm::vec3
         {
             const float u = static_cast<float>(gx) / static_cast<float>(displayDivisions);
             const float w = static_cast<float>(gz) / static_cast<float>(displayDivisions);
             const float worldX = areaMin_.x + (areaMax_.x - areaMin_.x) * u;
             const float worldZ = areaMin_.y + (areaMax_.y - areaMin_.y) * w;
 
-            return VGet(worldX, sampleHeight(worldX, worldZ), worldZ);
+            return glm::vec3(worldX, sampleHeight(worldX, worldZ), worldZ);
         };
 
         // ベイク済みは床高さに沿った格子をシアン、未ベイクは samplingHeight_ 平面を白で描画
-        const int color = baked ? GetColor(0, 255, 255) : GetColor(255, 255, 255);
+        const Color32 color = baked ? Color32(0, 255, 255) : Color32(255, 255, 255);
 
         // 縦横の格子線を描画
         for (int gz = 0; gz <= displayDivisions; ++gz)
@@ -143,9 +143,9 @@ namespace NanamiEngine::Module::Asset
             for (int gx = 0; gx <= displayDivisions; ++gx)
             {
                 if (gx < displayDivisions)
-                    DrawLine3D(pointAt(gx, gz), pointAt(gx + 1, gz), color);
+                    Render3D::Shapes::DrawLine3D(pointAt(gx, gz), pointAt(gx + 1, gz), color);
                 if (gz < displayDivisions)
-                    DrawLine3D(pointAt(gx, gz), pointAt(gx, gz + 1), color);
+                    Render3D::Shapes::DrawLine3D(pointAt(gx, gz), pointAt(gx, gz + 1), color);
             }
         }
     }
@@ -186,6 +186,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(HeightGridMap, HEIGHT_GRID_MAP_EXTENSION_LABEL, "Stage")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::HeightGridMap);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::HeightGridMap);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::HeightGridMap, NanamiEngine::Module::Asset::AssetBase);
 #pragma endregion

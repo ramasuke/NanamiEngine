@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <functional>
 
 #include "rx.hpp"
@@ -7,7 +8,7 @@ namespace NanamiEngine::R4
 {
     ///NOTE: キャンセルされたかを見る/キャンセル時の処理を積むだけの側。キャンセルするのは CancellationTokenSource
     ///      コピーしても同じトークンを指す
-    class CancellationToken final
+    class NANAMI_API CancellationToken final
     {
     public:
         CancellationToken() = default;
@@ -29,7 +30,7 @@ namespace NanamiEngine::R4
     };
 
     ///NOTE: 持ち主ごとに別のトークンを持つよう、コピー/ムーブ先は新しいソースから始まる
-    class CancellationTokenSource final
+    class NANAMI_API CancellationTokenSource final
     {
     public:
         CancellationTokenSource() = default;

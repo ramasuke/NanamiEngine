@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Core/Object/IObject.h"
 #include "../Mark/GameObjectMark.h"
 
@@ -14,7 +15,7 @@ namespace NanamiEngine::Module::GameObject
 
 namespace NanamiEngine::Module::GameObject
 {
-    class IGameObject : public Object::IObject
+    class NANAMI_API IGameObject : public Object::IObject
     {
     public:
         template <class Archive>

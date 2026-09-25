@@ -1,8 +1,8 @@
 ﻿#include "StageSelectPresenter.h"
+#include "Assets/Scripts/Core/Input/InputAliases.h"
 
 #include <algorithm>
 
-#include "DxLib.h"
 #include "Engine/Core/Coroutine/Coroutine.h"
 #include "../UI_StageSelect.h"
 #include "../Room/Ui_StageSelect_RoomUi.h"
@@ -18,9 +18,9 @@ namespace GamePlay::Ui
 {
     namespace
     {
-        bool IsPadButton(const XINPUT_STATE& pad, const int button)
+        bool IsPadButton(const GamepadState& pad, const GamepadButton button)
         {
-            return pad.Buttons[button] != 0;
+            return pad.IsDown(button);
         }
     }
 
@@ -88,9 +88,8 @@ namespace GamePlay::Ui
 
     void StageSelectPresenter::OnUpdate()
     {
-        XINPUT_STATE xInput{};
-        GetJoypadXInputState(DX_INPUT_PAD1, &xInput);
-        const bool isConfirmPressed = CheckHitKey(KEY_INPUT_RETURN) || CheckHitKey(KEY_INPUT_SPACE) || IsPadButton(xInput, XINPUT_BUTTON_A);
+        const auto xInput = Gamepad::Get();
+        const bool isConfirmPressed = Keyboard::IsDown(Key::Return) || Keyboard::IsDown(Key::Space) || IsPadButton(xInput, GamepadButton::A);
 
         if (isConfirmPressed && !wasConfirmPressed_)
             TryEnterWorld();
@@ -104,21 +103,20 @@ namespace GamePlay::Ui
 
     StageSelectPresenter::RoomInput StageSelectPresenter::ReadRoomInput() const
     {
-        XINPUT_STATE pad{};
-        GetJoypadXInputState(DX_INPUT_PAD1, &pad);
+        const auto pad = Gamepad::Get();
 
         RoomInput input;
-        input.previousMode = CheckHitKey(KEY_INPUT_LEFT) != 0 || IsPadButton(pad, XINPUT_BUTTON_LEFT_SHOULDER);
-        input.nextMode     = CheckHitKey(KEY_INPUT_RIGHT) != 0 || IsPadButton(pad, XINPUT_BUTTON_RIGHT_SHOULDER);
-        input.cursorLeft   = IsPadButton(pad, XINPUT_BUTTON_DPAD_LEFT) || pad.ThumbLX < -stickThreshold_;
-        input.cursorRight  = IsPadButton(pad, XINPUT_BUTTON_DPAD_RIGHT) || pad.ThumbLX > stickThreshold_;
-        input.digitUp      = IsPadButton(pad, XINPUT_BUTTON_DPAD_UP) || pad.ThumbLY > stickThreshold_;
-        input.digitDown    = IsPadButton(pad, XINPUT_BUTTON_DPAD_DOWN) || pad.ThumbLY < -stickThreshold_;
-        input.erase        = CheckHitKey(KEY_INPUT_BACK) != 0 || IsPadButton(pad, XINPUT_BUTTON_X);
+        input.previousMode = Keyboard::IsDown(Key::Left) || IsPadButton(pad, GamepadButton::LeftShoulder);
+        input.nextMode     = Keyboard::IsDown(Key::Right) || IsPadButton(pad, GamepadButton::RightShoulder);
+        input.cursorLeft   = IsPadButton(pad, GamepadButton::DPadLeft) || pad.thumbLX < -stickThreshold_;
+        input.cursorRight  = IsPadButton(pad, GamepadButton::DPadRight) || pad.thumbLX > stickThreshold_;
+        input.digitUp      = IsPadButton(pad, GamepadButton::DPadUp) || pad.thumbLY > stickThreshold_;
+        input.digitDown    = IsPadButton(pad, GamepadButton::DPadDown) || pad.thumbLY < -stickThreshold_;
+        input.erase        = Keyboard::IsDown(Key::Back) || IsPadButton(pad, GamepadButton::X);
 
         for (int digit = 0; digit <= 9; ++digit)
         {
-            if (CheckHitKey(KEY_INPUT_0 + digit) || CheckHitKey(KEY_INPUT_NUMPAD0 + digit))
+            if (Keyboard::IsDigitDown(digit))
             {
                 input.typedDigit = digit;
                 break;

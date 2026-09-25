@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 
 namespace NanamiEngine::Module::Asset
@@ -8,7 +9,7 @@ namespace NanamiEngine::Module::Asset
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    class IInteractivableRenderer
+    class NANAMI_API IInteractivableRenderer
     {
     public:
         virtual ~IInteractivableRenderer() = default;

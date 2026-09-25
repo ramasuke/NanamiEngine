@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <functional>
 #include <string>
 #include <unordered_map>
@@ -18,14 +19,14 @@ namespace NanamiEngine::Core::Application::AutoMcp
         FrameEnd,
     };
 
-    struct AutoMcpCommand
+    struct NANAMI_API AutoMcpCommand
     {
         AutoMcpPhase phase;
         std::function<void(const JsonArgs& args, JsonValue& result, JsonAllocator& allocator)> handler;
     };
 
     /** @brief "screenshot" 以外の全コマンドの表。screenshot は描画タイミングに依存するので AutoMcpServer が直接扱う */
-    class AutoMcpCommandTable final
+    class NANAMI_API AutoMcpCommandTable final
     {
         friend class AutoMcpServer;
 

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../Packet_Dispatch_PacketDispatcherBase.h"
 #include "../../../../../../../Packages/R4/R4.h"
 
@@ -9,7 +10,7 @@ namespace NanamiEngine::Core::Network
 
 namespace NanamiEngine::Core::Network
 {
-    class ReceivedAssignPlayerId final : public PacketDispatcherBase
+    class NANAMI_API ReceivedAssignPlayerId final : public PacketDispatcherBase
     {
     public:
         explicit ReceivedAssignPlayerId(INetworkSystem& networkSystem);

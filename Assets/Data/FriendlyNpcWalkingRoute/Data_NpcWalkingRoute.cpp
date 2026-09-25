@@ -1,5 +1,7 @@
 ﻿#include "Data_NpcWalkingRoute.h"
 
+#include "Engine/Module/3DRender/Shapes/Shapes.h"
+
 #include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
@@ -14,18 +16,14 @@ namespace NanamiEngine::Module::Asset
     {
         if (walkingRoute_.size() >= 2)
         {
-            const int yellow = GetColor(255, 255, 0);
+            const Color32 yellow(255, 255, 0);
 
             for (size_t i = 0; i + 1 < walkingRoute_.size(); ++i)
             {
                 const glm::vec3& a = walkingRoute_[i];
                 const glm::vec3& b = walkingRoute_[i + 1];
 
-                DrawLine3D(
-                    VGet(a.x, a.y, a.z),
-                    VGet(b.x, b.y, b.z),
-                    yellow
-                );
+                Render3D::Shapes::DrawLine3D(a, b, yellow);
             }
         }
     }
@@ -74,6 +72,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(NpcWalkingRoute, FRIENDLY_NPC_WALKING_ROUTE_EXTENSION_LABEL, "Npc::Friendly")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::NpcWalkingRoute);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::NpcWalkingRoute);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::NpcWalkingRoute, NanamiEngine::Module::Asset::AssetBase);
 #pragma endregion

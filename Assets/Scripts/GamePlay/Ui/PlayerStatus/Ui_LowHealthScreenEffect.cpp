@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include "DxLib.h"
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
@@ -110,8 +109,8 @@ namespace GamePlay::Ui
             return;
 
         const float volume = std::lerp(static_cast<float>(heartbeatMinVolume_), static_cast<float>(heartbeatMaxVolume_), std::clamp(danger, 0.0f, 1.0f));
-        ChangeNextPlayVolumeSoundMem(std::clamp(static_cast<int>(volume), 0, 255), handle);
-        PlaySoundMem(handle, DX_PLAYTYPE_BACK, TRUE);
+        heartbeatSound_->SetNextPlayVolume(std::clamp(static_cast<int>(volume), 0, 255));
+        heartbeatSound_->Play(false, true);
     }
 
     float LowHealthScreenEffect::CalcDanger(const float healthRate) const

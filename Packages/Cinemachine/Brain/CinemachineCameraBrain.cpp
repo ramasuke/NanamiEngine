@@ -360,5 +360,5 @@ void CineMachine::CinemachineCameraBrain::UnSubscribeVirtualCamera(
 
 #pragma region SerializationMacro
 ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::CinemachineCameraBrain);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::ILateUpdatable, NanamiEngine::CineMachine::CinemachineCameraBrain);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::ILateUpdatable, NanamiEngine::CineMachine::CinemachineCameraBrain);
 #pragma endregion

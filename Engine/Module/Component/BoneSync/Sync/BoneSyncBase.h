@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 #include <vector>
 #include "cereal/cereal.hpp"
@@ -7,7 +8,7 @@ namespace NanamiEngine::Module::Bone
 {
     struct BonePose;
 
-    class BoneSyncBase
+    class NANAMI_API BoneSyncBase
     {
     public:
         virtual ~BoneSyncBase() = default;

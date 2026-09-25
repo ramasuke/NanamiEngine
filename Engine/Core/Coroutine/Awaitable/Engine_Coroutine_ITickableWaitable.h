@@ -1,9 +1,10 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <coroutine>
 
 namespace Coroutine
 {
-    class ITickableWaitable
+    class NANAMI_API ITickableWaitable
     {
     public:
         virtual ~ITickableWaitable() = default;

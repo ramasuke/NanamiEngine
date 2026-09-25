@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../cereal/include/cereal/cereal.hpp"
 #include "../../../Core/Object/IObject.h"
 
@@ -13,7 +14,7 @@ namespace NanamiEngine::Module::LifeCycleCallback
     * 使用目的:
     * - Awake 後の初期化処理
     */
-    class IStartable : public virtual Object::IObject
+    class NANAMI_API IStartable : public virtual Object::IObject
     {
     public:
         virtual ~IStartable() = default;

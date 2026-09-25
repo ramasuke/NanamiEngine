@@ -1,6 +1,7 @@
 ﻿#include "TreeLeafSway.h"
 
-#include <DxLib.h>
+#include "Engine/Core/Platform/Render/Shader.h"
+#include "Engine/Core/Platform/Render/Environment.h"
 
 #include "Engine/Core/Application/Time/Time.h"
 #include "../../Weather/WindZone.h"
@@ -29,10 +30,7 @@ namespace GamePlay::Prop
         if (cbHandle_ == -1)
         {
             // 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、GetBuffer/Set で完了待ちに入って固まるので同期で作る
-            const int useASyncLoad = GetUseASyncLoadFlag();
-            SetUseASyncLoadFlag(FALSE);
-            cbHandle_ = CreateShaderConstantBuffer(Component::CUSTOM_SHADER_CB_SIZE);
-            SetUseASyncLoadFlag(useASyncLoad);
+            cbHandle_ = Platform::Render::ConstantBuffer::Create(Component::CUSTOM_SHADER_CB_SIZE);
         }
 
         return cbHandle_;
@@ -40,13 +38,13 @@ namespace GamePlay::Prop
 
     void TreeLeafSway::WriteConstantBuffer(const int cbHandle) const
     {
-        auto* cb = static_cast<TreeWindCB*>(GetBufferShaderConstantBuffer(cbHandle));
+        auto* cb = static_cast<TreeWindCB*>(Platform::Render::ConstantBuffer::Map(cbHandle));
         if (!cb)
             return;
 
         const glm::vec2 windDirection  = Weather::WindZone::GetDirection();
-        const VECTOR    lightDirection = GetLightDirection();
-        const COLOR_F   lightColor     = GetLightDifColor();
+        const glm::vec3 lightDirection = Platform::Render::Environment::GetLightDirection();
+        const glm::vec3 lightColor     = Platform::Render::Environment::GetLightDiffuseColor();
 
         SetTreeFloat4(cb->wind,           Time::CurrentTime(),
                                           swayAmplitude_ * Weather::WindZone::GetStrength01(),
@@ -56,7 +54,7 @@ namespace GamePlay::Prop
         SetTreeFloat4(cb->lightDirection, lightDirection.x, lightDirection.y, lightDirection.z, 0.0f);
         SetTreeFloat4(cb->lightColor,     lightColor.r, lightColor.g, lightColor.b, ambient_);
 
-        UpdateShaderConstantBuffer(cbHandle);
+        Platform::Render::ConstantBuffer::Update(cbHandle);
     }
 
     bool TreeLeafSway::IsLeafMaterial(const std::string& materialName) const
@@ -93,7 +91,7 @@ namespace GamePlay::Prop
     void TreeLeafSway::OnDestroy()
     {
         if (cbHandle_ != -1)
-            DeleteShaderConstantBuffer(cbHandle_);
+            Platform::Render::ConstantBuffer::Delete(cbHandle_);
     }
 
     void TreeLeafSway::OnDrawGui()

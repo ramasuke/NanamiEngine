@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <string>
 
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::Core::FileSystem
 {
-    class File final
+    class NANAMI_API File final
     {
     public:
         [[nodiscard]] static File LoadFileForMeta(const std::string& filePath, std::string fileName);

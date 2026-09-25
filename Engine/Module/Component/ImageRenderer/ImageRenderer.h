@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../ComponentBase.h"
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/Sprite/SpriteFile.h"
@@ -8,7 +9,7 @@
 
 namespace NanamiEngine::Module::Component
 {
-    class ImageRenderer final : public ComponentBase,
+    class NANAMI_API ImageRenderer final : public ComponentBase,
                                 public LifeCycleCallback::IInitRenderable,
                                 public LifeCycleCallback::IUserInterfaceRenderable,
                                 public NanamiUi::IInteractivableRenderer

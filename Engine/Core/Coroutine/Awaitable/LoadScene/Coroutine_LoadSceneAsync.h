@@ -17,7 +17,7 @@ namespace Coroutine
     };
 
     /** @note 既定値は Failed。コルーチン内の例外で既定値が返っても成功扱いにならない */
-    struct SceneLoadResult final
+    struct NANAMI_API SceneLoadResult final
     {
         SceneLoadStatus status = SceneLoadStatus::Failed;
         std::shared_ptr<NanamiEngine::Scene::Scene> scene;

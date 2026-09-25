@@ -1,4 +1,5 @@
 ﻿#include "ProximityReveal.h"
+#include "Engine/Core/Platform/Render/Shader.h"
 #include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
@@ -15,10 +16,7 @@ namespace GamePlay::Prop
         if (cbHandle_ == -1)
         {
             // 非同期読み込みが有効なまま作ると読み込み中のハンドルになり、GetBuffer/Set で完了待ちに入って固まるので同期で作る
-            const int useASyncLoad = GetUseASyncLoadFlag();
-            SetUseASyncLoadFlag(FALSE);
-            cbHandle_ = CreateShaderConstantBuffer(Component::CUSTOM_SHADER_CB_SIZE);
-            SetUseASyncLoadFlag(useASyncLoad);
+            cbHandle_ = Platform::Render::ConstantBuffer::Create(Component::CUSTOM_SHADER_CB_SIZE);
         }
 
         return cbHandle_;
@@ -30,7 +28,7 @@ namespace GamePlay::Prop
         if (!player)
             return;
 
-        auto* cb = static_cast<ProximityCB*>(GetBufferShaderConstantBuffer(cbHandle));
+        auto* cb = static_cast<ProximityCB*>(Platform::Render::ConstantBuffer::Map(cbHandle));
         if (!cb)
             return;
 
@@ -41,7 +39,7 @@ namespace GamePlay::Prop
         cb->playerPos[2]    = pp.z;
         cb->revealRadius    = revealRadius_;
         cb->transitionWidth = transitionWidth_;
-        UpdateShaderConstantBuffer(cbHandle);
+        Platform::Render::ConstantBuffer::Update(cbHandle);
     }
 
     // 材質は問わずモデル全体に掛ける演出なので、materialName は見ない
@@ -70,7 +68,7 @@ namespace GamePlay::Prop
     void ProximityReveal::OnDestroy()
     {
         if (cbHandle_ != -1)
-            DeleteShaderConstantBuffer(cbHandle_);
+            Platform::Render::ConstantBuffer::Delete(cbHandle_);
     }
 
     void ProximityReveal::OnDrawGui()

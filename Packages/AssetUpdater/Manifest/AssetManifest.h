@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include <filesystem>
 #include <string>
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::AssetUpdater
 {
-    struct ManifestEntry
+    struct NANAMI_API ManifestEntry
     {
         std::string   guid;
         std::string   path;
@@ -18,7 +19,7 @@ namespace NanamiEngine::AssetUpdater
         [[nodiscard]] std::uint64_t TotalSize() const { return size + metaSize; }
     };
 
-    struct AssetManifest
+    struct NANAMI_API AssetManifest
     {
         int                        schema = 0;
         std::string                version;
@@ -30,7 +31,7 @@ namespace NanamiEngine::AssetUpdater
         [[nodiscard]] static bool TryLoadFile(const std::filesystem::path& filePath, AssetManifest& outManifest, std::string& outError);
     };
 
-    struct ManifestBlob
+    struct NANAMI_API ManifestBlob
     {
         std::string   hash;
         std::uint64_t size = 0;
@@ -38,7 +39,7 @@ namespace NanamiEngine::AssetUpdater
         std::string   path;
     };
 
-    struct ManifestDiff
+    struct NANAMI_API ManifestDiff
     {
         std::vector<ManifestEntry> added;
         std::vector<ManifestEntry> changed;

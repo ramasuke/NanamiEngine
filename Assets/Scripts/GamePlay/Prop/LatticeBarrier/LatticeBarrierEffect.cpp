@@ -1,4 +1,5 @@
 ﻿#include "LatticeBarrierEffect.h"
+#include "Engine/Core/Platform/Render/Shader.h"
 #include "Engine/Core/Application/Time/Time.h"
 #include "../../../../../Assets/Scripts/Core/Game/PlayerAvatar/PlayerAvatar.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
@@ -27,7 +28,7 @@ namespace GamePlay::Prop
 
         time_ += Time::DeltaTime();
 
-        auto* cb = static_cast<LatticeBarrierCB*>(GetBufferShaderConstantBuffer(cbHandle));
+        auto* cb = static_cast<LatticeBarrierCB*>(Platform::Render::ConstantBuffer::Map(cbHandle));
         if (!cb)
             return;
 
@@ -61,7 +62,7 @@ namespace GamePlay::Prop
         cb->visibleRadius = visibleRadius_;
         cb->fadeWidth     = fadeWidth_;
 
-        UpdateShaderConstantBuffer(cbHandle);
+        Platform::Render::ConstantBuffer::Update(cbHandle);
     }
 
     void LatticeBarrierEffect::OnDrawGui()

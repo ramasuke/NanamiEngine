@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../Component/ComponentBase.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
     // 親の LayoutGroup の並び方向に、この子が占める枠の割合(0..1)。
     // 行の出入りに合わせて割合を補間すると、周りの子が跳ねずに詰まる
-    class LayoutElement final : public Component::ComponentBase
+    class NANAMI_API LayoutElement final : public Component::ComponentBase
     {
     public:
         void SetMainAxisRate(float mainAxisRate);

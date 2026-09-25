@@ -78,6 +78,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(EventBoardData, EVENT_BOARD_EXTENSION_LABEL, "EventBoard")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::EventBoardData);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::EventBoardData);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::EventBoardData, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

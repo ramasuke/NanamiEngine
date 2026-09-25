@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "enet/types.h"
 
 struct _ENetHost;
@@ -15,7 +16,7 @@ namespace NanamiEngine::Core::Network
     constexpr int MAX_PLAYER_ID = 127;
 
     /** 届かなくてよいパケットを UnreliableSendRate(Hz) まで間引く。毎フレーム Tick() する */
-    class UnreliableSendThrottle final
+    class NANAMI_API UnreliableSendThrottle final
     {
     public:
         void Tick();
@@ -27,5 +28,5 @@ namespace NanamiEngine::Core::Network
     };
 
     /** 接続中の peer へ切断を通知し、届くまで GRACEFUL_DISCONNECT_WAIT_MS だけ host を回す */
-    void DisconnectGracefully(_ENetHost* host, _ENetPeer* peer);
+    NANAMI_API void DisconnectGracefully(_ENetHost* host, _ENetPeer* peer);
 }

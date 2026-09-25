@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <optional>
 #include <utility>
 #include "vec3.hpp"
 
 namespace NanamiEngine::Module::Physics
 {
-    class ICollider
+    class NANAMI_API ICollider
     {
     public:
         virtual ~ICollider() = default;

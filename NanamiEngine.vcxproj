@@ -1129,7 +1129,10 @@
       <ForcedIncludeFiles></ForcedIncludeFiles>
       <IncludeInUnityFile>false</IncludeInUnityFile>
     </ClCompile>
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Engine\Core\Api\NanamiModule.cpp" />
+    <ClCompile Include="Engine\Core\Application\HotReload\GameModule.cpp" />
+    <ClCompile Include="Engine\Core\Application\Launch\ApplicationLauncher.cpp" />
+    <ClCompile Include="Engine\Core\Application\Window\Toolbar\Widget\Builtin\HotReloadToolbarWidget.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
       <IncludeInUnityFile>false</IncludeInUnityFile>
@@ -1164,6 +1167,16 @@
     <ClCompile Include="Packages\DebugSheet\Core\DebugSheetStyle.cpp" />
     <ClCompile Include="Packages\DebugSheet\Core\DebugSheetWidgets.cpp" />
     <ClCompile Include="Engine\Module\SafeExecute\Engine_Module_SafeExecute.cpp" />
+    <ClCompile Include="Engine\Module\Serialization\Engine_Module_SerializationTypeRegistry.cpp" />
+    <ClCompile Include="Engine\Module\Serialization\Engine_Module_SharedStaticObject.cpp" />
+    <ClCompile Include="Engine\Module\Serialization\Engine_Module_SerializationModuleUnloader.cpp" />
+    <ClCompile Include="Engine\Core\Platform\Input\Input.cpp" />
+    <ClCompile Include="Engine\Core\Platform\Draw2D\Draw2D.cpp" />
+    <ClCompile Include="Engine\Core\Platform\Render\Camera.cpp" />
+    <ClCompile Include="Engine\Core\Platform\Render\Environment.cpp" />
+    <ClCompile Include="Engine\Core\Platform\Render\Shader.cpp" />
+    <ClCompile Include="Engine\Core\Platform\Render\Model.cpp" />
+    <ClCompile Include="Engine\Core\Platform\AsyncLoad\AsyncLoad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Module\Component\BoneSync\Sync\BoneSyncBase.h" />
@@ -1396,6 +1409,17 @@
     <ClInclude Include="Engine\Module\Log\NanamiEngine_Module_Log.h" />
     <ClInclude Include="Engine\Module\Exception\Engine_Module_Exception.h" />
     <ClInclude Include="Engine\Module\Serialization\Engine_Module_Serialization.h" />
+    <ClInclude Include="Engine\Module\Serialization\Engine_Module_SerializationTypeRegistry.h" />
+    <ClInclude Include="Engine\Module\Serialization\Engine_Module_SharedStaticObject.h" />
+    <ClInclude Include="Engine\Module\Serialization\Engine_Module_SerializationModuleUnloader.h" />
+    <ClInclude Include="Engine\Core\Api\NanamiApi.h" />
+    <ClInclude Include="Engine\Core\Platform\Input\Input.h" />
+    <ClInclude Include="Engine\Core\Platform\Draw2D\Draw2D.h" />
+    <ClInclude Include="Engine\Core\Platform\Render\Camera.h" />
+    <ClInclude Include="Engine\Core\Platform\Render\Environment.h" />
+    <ClInclude Include="Engine\Core\Platform\Render\Shader.h" />
+    <ClInclude Include="Engine\Core\Platform\Render\Model.h" />
+    <ClInclude Include="Engine\Core\Platform\AsyncLoad\AsyncLoad.h" />
     <ClInclude Include="Engine\Module\Namespace\EngineNamespace.h" />
     <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.h" />
     <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\BillboardAnimation3D.h" />
@@ -2478,6 +2502,10 @@
     <ClInclude Include="Packages\AssetUpdater\System\Relaunch.h" />
     <ClInclude Include="Packages\AssetUpdater\Task\AssetUpdateTask.h" />
     <ClInclude Include="Packages\AssetUpdater\Text\Utf8.h" />
+    <ClInclude Include="Engine\Core\Api\NanamiModule.h" />
+    <ClInclude Include="Engine\Core\Application\HotReload\GameModule.h" />
+    <ClInclude Include="Engine\Core\Application\Launch\ApplicationLauncher.h" />
+    <ClInclude Include="Engine\Core\Application\Window\Toolbar\Widget\Builtin\HotReloadToolbarWidget.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Engine\Module\SafeExecute\Engine_Module_SafeExecute.h" />
   </ItemGroup>
@@ -2743,16 +2771,24 @@
     <RootNamespace>NanamiEngine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- Editor モードは DLL、Game モード (出荷) は静的 lib (docs/HotReload.md §9)。ConfigurationType は Microsoft.Cpp.props より前に決まるので
+         NanamiEngine.props (後で import) と同じ既定をここでも計算する。-p:NanamiEngineShared=false で Editor モードも静的 lib -->
+    <NanamiEngineShared Condition="'$(NanamiEngineShared)'=='' and '$(NanamiApplicationMode)'!='Game'">true</NanamiEngineShared>
+    <NanamiEngineShared Condition="'$(NanamiEngineShared)'==''">false</NanamiEngineShared>
+    <NanamiConfigurationType Condition="'$(NanamiEngineShared)'=='true'">DynamicLibrary</NanamiConfigurationType>
+    <NanamiConfigurationType Condition="'$(NanamiEngineShared)'!='true'">StaticLibrary</NanamiConfigurationType>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>$(NanamiConfigurationType)</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>$(NanamiConfigurationType)</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
@@ -2773,6 +2809,13 @@
     <IntDir>$(NanamiEngineDir)obj\$(NanamiApplicationMode)\$(Configuration)\</IntDir>
     <TargetName>NanamiEngine</TargetName>
   </PropertyGroup>
+  <!-- DLL 構成 (docs/HotReload.md 段階 2): NANAMI_API / IMGUI_API / cereal の共有スロット API が dllexport になる。
+       ENET_BUILDING_LIB: enet の宣言も dllexport にする (.c 側は自分で定義している。C++ 側の宣言が dllimport になると LNK4217 になるため) -->
+  <ItemDefinitionGroup Condition="'$(NanamiEngineShared)'=='true'">
+    <ClCompile>
+      <PreprocessorDefinitions>NANAMI_ENGINE_BUILD_DLL;ENET_BUILDING_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

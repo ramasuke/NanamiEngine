@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include "DxLib.h"
+#include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Core/Application/ApplicationBase.h"
 #include "Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
@@ -102,7 +102,7 @@ namespace GamePlay::Ui
         switch (phase_)
         {
         case Phase::Hidden:
-            lastTickMs_ = GetNowCount();
+            lastTickMs_ = Time::NowMilliseconds();
             PlayCover(0.0f, 255.0f, fadeInSecs_);
             phase_ = Phase::CoveringGame;
             break;
@@ -125,10 +125,10 @@ namespace GamePlay::Ui
         ApplyCoverBlendRate();
         UpdateStatusText();
 
-        if (const auto bgm = bgm_.get(); bgm && CheckSoundMem(bgm->GetDxLibHandle()) != 1)
+        if (const auto bgm = bgm_.get(); bgm && !bgm->IsPlaying())
         {
-            ChangeVolumeSoundMem(0, bgm->GetDxLibHandle());
-            PlaySoundMem(bgm->GetDxLibHandle(), DX_PLAYTYPE_LOOP, TRUE);
+            bgm->SetVolume(0);
+            bgm->Play(true, true);
         }
         UpdateBgm();
     }
@@ -182,7 +182,7 @@ namespace GamePlay::Ui
     {
         // 起動直後から出ていないように、常駐しているぶんを自分で畳んでおく。
         // 起動時のタイトルの読み込みは OnStart より先に Show するので、そのときは触らない
-        lastTickMs_ = GetNowCount();
+        lastTickMs_ = Time::NowMilliseconds();
         if (phase_ != Phase::Hidden)
             return;
 
@@ -209,7 +209,7 @@ namespace GamePlay::Ui
 
     float LoadingScreenUi::TickWallClockSeconds()
     {
-        const int nowMs = GetNowCount();
+        const int nowMs = Time::NowMilliseconds();
         const float deltaSecs = static_cast<float>(nowMs - lastTickMs_) / 1000.0f;
         lastTickMs_ = nowMs;
 
@@ -378,12 +378,11 @@ namespace GamePlay::Ui
         case Phase::RevealingGame:
         case Phase::Hidden:
             // NOTE: 地図を消した時点で次のシーンの BGM に明け渡す
-            StopSoundMem(bgm->GetDxLibHandle());
+            bgm->Stop();
             return;
         }
 
-        ChangeVolumeSoundMem(static_cast<int>(static_cast<float>(bgmVolume_) * std::clamp(volume01, 0.0f, 1.0f)),
-                             bgm->GetDxLibHandle());
+        bgm->SetVolume(static_cast<int>(static_cast<float>(bgmVolume_) * std::clamp(volume01, 0.0f, 1.0f)));
     }
 
     float LoadingScreenUi::CalcRawProgress() const

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <coroutine>
 #include <mutex>
 #include <vector>
@@ -9,7 +10,7 @@ namespace Coroutine
     class ITickableWaitable;
     class IEventWaitable;
 
-    class CoroutineScheduler
+    class NANAMI_API CoroutineScheduler
     {
     public:
         void Invoke();

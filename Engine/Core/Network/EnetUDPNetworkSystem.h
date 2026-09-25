@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <map>
 #include <vector>
 #include <queue>
@@ -20,7 +21,7 @@ namespace NanamiEngine::Core::Network
 {
     constexpr auto PORT_ADDRESS = 1234;
 
-    class EnetUDPNetworkSystem final : public INetworkSystem
+    class NANAMI_API EnetUDPNetworkSystem final : public INetworkSystem
     {
     public:
         explicit EnetUDPNetworkSystem(const NetworkStartSettings& settings);

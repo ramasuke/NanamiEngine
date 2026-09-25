@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
 #include "../Display/WindowDisplayMode.h"
@@ -17,7 +18,7 @@ namespace NanamiEngine::Core::Application::Configuration
     constexpr auto APPLICATION_MODE = ApplicationMode::Editor;
 #endif
     
-    class AppConfiguration final
+    class NANAMI_API AppConfiguration final
     {
     public:
         static void Load();

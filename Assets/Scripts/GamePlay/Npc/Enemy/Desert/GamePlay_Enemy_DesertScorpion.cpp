@@ -2,6 +2,5 @@
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GamePlay::Npc::Enemy::DesertScorpion);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::EnemyBase, GamePlay::Npc::Enemy::DesertScorpion);
+NANAMI_REGISTER_TYPE(GamePlay::Npc::Enemy::DesertScorpion, GameCore::Npc::EnemyBase);
 #pragma endregion

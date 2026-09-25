@@ -1,9 +1,10 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../ComponentBase.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    class ScreenColorGradeRenderer final : public Component::ComponentBase,
+    class NANAMI_API ScreenColorGradeRenderer final : public Component::ComponentBase,
                                            public LifeCycleCallback::IUserInterfaceRenderable
     {
     public:

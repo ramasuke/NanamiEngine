@@ -269,8 +269,10 @@ MSBuild.exe EnviroHunter.sln -p:Configuration=Debug -p:Platform=x64 -p:Preferred
    `DoTick` / `DoDrawGui` in `namespace GameCore::Npc::Enemy::Behaviour` with an
    `Action::` qualifier. `stdafx.h` is force-included by the project — no PCH line needed.
    Also `#include` `Engine/Module/Serialization/Engine_Module_SerializationRegistration.h`
-   (relative path) and end the file, at global scope, with `CEREAL_REGISTER_TYPE(<fqn>);` and
-   `CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, <fqn>);`.
+   (relative path) and end the file, at global scope, with
+   `NANAMI_REGISTER_TYPE(<fqn>, GameCore::Npc::Enemy::Behaviour::ActionBase);` (the engine's wrapper
+   around `CEREAL_REGISTER_TYPE` + `CEREAL_REGISTER_POLYMORPHIC_RELATION`; it also records the
+   registering module for hot reload — never call the cereal macros directly).
    Registering in the header would re-instantiate the type's serialisers in every file that
    includes it, which is what used to dominate the build time.
 

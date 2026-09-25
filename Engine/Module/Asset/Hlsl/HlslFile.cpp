@@ -21,7 +21,6 @@ namespace NanamiEngine::Module::Asset
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::HlslFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::HlslFile);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::HlslFile, NanamiEngine::Module::Asset::AssetBase);
 REGISTER_ASSET(HlslFile, ".hlsl")
 #pragma endregion

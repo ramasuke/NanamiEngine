@@ -1,4 +1,5 @@
 ﻿#include "CloudEffect.h"
+#include "Engine/Core/Platform/Render/Shader.h"
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
@@ -25,7 +26,7 @@ namespace GamePlay::Prop
 
         time_ += Time::DeltaTime();
 
-        auto* cb = static_cast<CloudCB*>(GetBufferShaderConstantBuffer(cbHandle));
+        auto* cb = static_cast<CloudCB*>(Platform::Render::ConstantBuffer::Map(cbHandle));
         if (!cb)
             return;
 
@@ -40,7 +41,7 @@ namespace GamePlay::Prop
 
         cb->cloudColor[0] = 0.95f; cb->cloudColor[1] = 0.95f; cb->cloudColor[2] = 1.0f; cb->cloudColor[3] = 0.9f;
 
-        UpdateShaderConstantBuffer(cbHandle);
+        Platform::Render::ConstantBuffer::Update(cbHandle);
     }
 
     void CloudEffect::OnDrawGui()

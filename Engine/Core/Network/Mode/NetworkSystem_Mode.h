@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include <string>
 
@@ -24,13 +25,13 @@ namespace NanamiEngine::Core::Network
         Disconnected  // 接続できた後にホストを失った
     };
 
-    struct HostEndpoint
+    struct NANAMI_API HostEndpoint
     {
         std::string   address;
         std::uint16_t port = 0;
     };
 
-    struct NetworkStartSettings
+    struct NANAMI_API NetworkStartSettings
     {
         Mode         mode = Mode::Client;
         HostEndpoint host; // Client のときだけ使う

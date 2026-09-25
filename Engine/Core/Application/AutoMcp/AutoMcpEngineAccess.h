@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include <functional>
 #include <memory>
@@ -49,7 +50,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
      * @brief AutoMCP のコマンド実装だけが、エンジン側クラスの非公開部分のうち必要なものに触れるための窓口 (Attorney-Client)。
      * エンジン側クラスはこのクラスだけを friend にし、MCP のために public を増やさない。
      */
-    class AutoMcpEngineAccess final
+    class NANAMI_API AutoMcpEngineAccess final
     {
         friend class AutoMcpCommandHandlers;
 

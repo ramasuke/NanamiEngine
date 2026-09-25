@@ -1,8 +1,9 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 
 namespace NanamiEngine::Core::Application::Configuration
 {
-    class PhysicsConfiguration final
+    class NANAMI_API PhysicsConfiguration final
     {
     public:
         static void Load();

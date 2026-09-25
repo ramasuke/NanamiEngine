@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 #include <vector>
 
@@ -7,7 +8,7 @@
 
 namespace NanamiEngine::Core::FileSystem
 {
-    class Directory final
+    class NANAMI_API Directory final
     {
     public:
         explicit Directory(const std::string& ownPath);

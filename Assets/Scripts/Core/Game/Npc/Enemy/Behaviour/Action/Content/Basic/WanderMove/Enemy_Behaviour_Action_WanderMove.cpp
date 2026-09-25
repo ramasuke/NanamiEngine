@@ -148,9 +148,5 @@ namespace GameCore::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::WanderMove)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    GameCore::Npc::Enemy::Behaviour::ActionBase,
-    GameCore::Npc::Enemy::Behaviour::Action::WanderMove
-)
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::WanderMove, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

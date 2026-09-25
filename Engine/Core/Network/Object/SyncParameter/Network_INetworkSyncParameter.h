@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "Id/Network_SyncParameter_Id.h"
 
 namespace NanamiEngine::Core::Network { class ByteBuffer; }
 
 namespace NanamiEngine::Core::Network
 {
-    class INetworkSyncParameter
+    class NANAMI_API INetworkSyncParameter
     {
     public:
         virtual ~INetworkSyncParameter() = default;

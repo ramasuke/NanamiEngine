@@ -50,6 +50,7 @@ editor and check *Config > AutoMCP > Enable AutoMCP*. If you change the port the
 | `gameobject_set_transform`, `gameobject_set_enable`, `component_set_enable` | `gameobject.*`, `component.set_enable` | direct setters, fine while playing |
 | `gameobject_select`, `gameobject_destroy` | `gameobject.select` / `destroy` | |
 | `play`, `stop`, `end_play`, `time_set_scale` | `play`, `stop`, `end`, `time.set_scale` | |
+| `hotreload_status`, `hotreload_reload` | `hotreload.status`, `hotreload.reload` | game DLL hot reload (`docs/HotReload.md`): generation / safe mode / last report; `reload` swaps the DLL at the end of the frame (build it first, e.g. with MSBuild), optional `keep_old_modules` |
 | `camera_get`, `camera_set` | `camera.get` / `set` | `camera_set` is edit-mode only |
 | `debug_draw_get`, `debug_draw_set` | `debugdraw.get` / `set` | *Config > DebugDraw*: `colliders` master switch, `shapes`/`layers` (true/false for all or `{"Name": bool}`), `triggers`, main/virtual camera frustums. Memory only unless `save` (writes the git-tracked `ProjectConfig/DebugDraw/`) |
 | `log_tail` | `log.tail` | Console history (2000 records kept) |

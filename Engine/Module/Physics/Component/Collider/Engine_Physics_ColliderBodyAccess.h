@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "Engine_Physics_ColliderBase.h"
 
 namespace NanamiEngine::Module::Physics
 {
     // BodyAssembler だけが Collider の非公開データを読むための Attorney
-    class ColliderBodyAccess final
+    class NANAMI_API ColliderBodyAccess final
     {
         friend class BodyAssembler;
 

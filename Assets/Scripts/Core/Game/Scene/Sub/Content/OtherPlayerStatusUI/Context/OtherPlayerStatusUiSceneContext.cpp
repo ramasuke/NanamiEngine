@@ -15,6 +15,5 @@ namespace GameCore::Scene::Sub
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Scene::Sub::OtherPlayerStatusUiSceneContext);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::Sub::SceneContextBase, GameCore::Scene::Sub::OtherPlayerStatusUiSceneContext);
+NANAMI_REGISTER_TYPE(GameCore::Scene::Sub::OtherPlayerStatusUiSceneContext, GameCore::Scene::Sub::SceneContextBase);
 #pragma endregion

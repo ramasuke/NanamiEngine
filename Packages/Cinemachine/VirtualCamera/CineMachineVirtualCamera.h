@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Engine/Module/Component/ComponentBase.h"
 #include "../../R4/R4.h"
 #include "Behaviour/IVirtualCameraBehaviour.h"
@@ -8,7 +9,7 @@ namespace NanamiEngine::CineMachine
     constexpr auto SAMPLE_CAMERA_FOV = 90.0f;
     constexpr auto DISABLE_PRIORITY = -1;
     
-    class CineMachineVirtualCamera final : public Component::ComponentBase,
+    class NANAMI_API CineMachineVirtualCamera final : public Component::ComponentBase,
                                            public LifeCycleCallback::IAwakable,
                                            public LifeCycleCallback::IStartable,
                                            public LifeCycleCallback::IDebugRenderable

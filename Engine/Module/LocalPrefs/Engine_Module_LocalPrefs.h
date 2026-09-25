@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 #include <fstream>
 #include <filesystem>
@@ -28,10 +29,10 @@ namespace NanamiEngine::Module::LocalPrefs
     constexpr auto LOCAL_PREFS_DATA_FILE_EXTENSION_LABEL = ".json";
 
     // NOTE: "LocalPrefs/[addPath][key].json" の形式でフルパスを組み立てる
-    std::string BuildPath(const std::string& addPath, const std::string& key);
+    NANAMI_API std::string BuildPath(const std::string& addPath, const std::string& key);
     
     // NOTE: ファイルパスの親ディレクトリが存在しない場合、再帰的に作成する
-    void EnsureDirectory(const std::string& path);
+    NANAMI_API void EnsureDirectory(const std::string& path);
 
     // Save/Load の公開APIが共通で使う内部実装
     // NOTE: 直接呼び出しは非推奨

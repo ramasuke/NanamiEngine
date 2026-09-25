@@ -1,9 +1,10 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../ApplicationBase.h"
 
 namespace NanamiEngine::Core::Application
 {
-    class EditorApplication final : public ApplicationBase
+    class NANAMI_API EditorApplication final : public ApplicationBase
     {
     public:
         ///初期設定

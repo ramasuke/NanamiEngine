@@ -11,6 +11,5 @@ namespace GameCore::Npc::Enemy
 
 #pragma region SerializationMacro
 REGISTER_ATTACK_AREA_TYPE(GameCore::Npc::Enemy::ITakableEnemyAttack)
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::AttackArea);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GamePlay::AttackArea<GameCore::Npc::Enemy::ITakableEnemyAttack>, GameCore::Npc::Enemy::AttackArea);
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::AttackArea, GamePlay::AttackArea<GameCore::Npc::Enemy::ITakableEnemyAttack>);
 #pragma endregion

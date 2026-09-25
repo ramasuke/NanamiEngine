@@ -1,13 +1,16 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 
 namespace NanamiEngine
 {
-    class Time final
+    class NANAMI_API Time final
     {
     public:
         static void Update();
         static float DeltaTime();
         static float CurrentTime();
+        /** @brief 起動からの経過ミリ秒 (壁時計。DeltaTime が止まるロード中の待ちに使う)。int なのでいつか折り返す */
+        static int   NowMilliseconds();
         static void SetTimeScale(float scale);
         static void SkipNextFrame();
         static float GetTimeScale();

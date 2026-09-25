@@ -1,16 +1,41 @@
 # NanamiEngine
 
-A custom C++ game engine + game (DxLib / ImGui / Jolt / cereal), toolset v143, C++20. `EnviroHunter.sln` has two
-hand-maintained projects with explicit file lists — **there is no globbing**, so a new `.cpp`/`.h` must be added by hand
-(and, optionally, to the `.vcxproj.filters`):
+A custom C++ game engine + game (DxLib / ImGui / Jolt / cereal), toolset v143, C++20. `EnviroHunter.sln` has three
+hand-maintained projects (engine, game, and the tiny `NanamiHost.vcxproj` host exe) with explicit file lists — **there is no
+globbing**, so a new `.cpp`/`.h` must be added by hand (and, optionally, to the `.vcxproj.filters`):
 
-- `NanamiEngine.vcxproj` — static lib `lib/<Editor|Game>/<Debug|Release>/NanamiEngine.lib`: `Engine/`, `Packages/`,
-  `Libs/`, `Main.cpp` (WinMain lives in the lib).
-- `EnviroHunter.vcxproj` — the game exe (`EnviroHunter.exe`): `Assets/**` sources only; links the lib with `/WHOLEARCHIVE` (static
-  self-registration would otherwise be dropped by the linker).
+- `NanamiEngine.vcxproj` — the engine: `Engine/`, `Packages/`, `Libs/`. In **Editor** mode it is a DLL
+  (`lib/Editor/<Config>/NanamiEngine.dll` + import lib `NanamiEngine.lib`, HotReload stage 2, `docs/HotReload.md`); in
+  **Game** mode (shipping, `-p:NanamiApplicationMode=Game`) it stays a static lib `lib/Game/<Config>/NanamiEngine.lib`.
+  `-p:NanamiEngineShared=false` builds the Editor variant as a static lib again.
+- `EnviroHunter.vcxproj` — the game: `Assets/**` sources. In **Editor** mode it is `EnviroHunter.dll` (HotReload stage 3),
+  loaded by the host `NanamiHost.vcxproj` (`Main.cpp` = WinMain + `NvOptimusEnablement`; copied to `x64/<Config>/EnviroHunter.exe`
+  by `NanamiEngine.Game.props`, so launch commands don't change). It links only the engine import lib, and the props copy
+  `NanamiEngine.dll` next to it. In **Game** mode it is the exe as before: it compiles `Main.cpp` itself and links the static lib
+  with `/WHOLEARCHIVE` (static self-registration would otherwise be dropped by the linker).
+
+**Hot reload** (Editor only, `docs/HotReload.md` §5): the toolbar's *Build & Reload* rebuilds the game DLL with MSBuild and
+`Engine/Core/Application/HotReload/GameModule` swaps it at the end of the frame (open scenes are snapshotted as JSON and
+restored, play mode is ended first). The DLL is loaded from a copy in `x64/<Config>/HotReload/<n>/`, so the linker can always
+overwrite the original. *Keep old DLL* (default on, `LocalPrefs/HotReload/`) skips `FreeLibrary`. Anything game code registers
+into the engine must go through a registry that records the module (`NANAMI_CURRENT_MODULE()` in `Engine/Core/Api/NanamiModule.h`)
+and has `UnregisterModule`; a new registry needs both plus a call in `GameModule::Reload`. AutoMCP exposes it as
+`hotreload_status` / `hotreload_reload`. *Build & Reload* builds only the game `.vcxproj` (`-p:BuildProjectReferences=false
+-p:NanamiHotReloadBuild=true`); changing engine sources still needs an editor restart (the loaded `NanamiEngine.dll` can't be
+replaced, and the props' `NanamiCheckEngineUnchanged` reports an engine rebuilt after launch as an error).
 
 Shared compiler/linker settings live in `NanamiEngine.props` / `NanamiEngine.Game.props`, not in the vcxproj files.
 Game code includes engine headers root-relative (`#include "Engine/..."`, `"Packages/..."`, `"Libs/..."`).
+
+**Engine symbols used by game code must be exported**: every non-template `class` / `struct` in an engine header and every
+namespace-scope function declaration carries `NANAMI_API` (`Engine/Core/Api/NanamiApi.h`: dllexport in the engine DLL,
+dllimport in the game, empty in the static lib). After adding an engine class or free function run
+`python tools/engine_api/add_nanami_api.py` (idempotent; `--check` lists what is missing). It skips templates and anything
+marked `NANAMI_NO_API` (empty macro for aggregates holding containers of `unique_ptr`, because dllexport instantiates the
+implicit copy / destructor). Classes with such members must delete their copy operations explicitly, and a `unique_ptr<T>`
+member needs `T` complete in the header. `SingletonBase<T>::Instance()` is per module, so engine singletons define their own
+`Instance()` in the `.cpp`. ImGui / ImGuizmo / enet live in the engine DLL only (`IMGUI_API` from `imconfig.h`, `ENET_DLL`);
+game code never compiles their sources.
 
 ## Building from the CLI
 
@@ -32,6 +57,12 @@ stores product name + start scene + client version in `ProjectConfig/Build/Runti
 editor-only MSBuild path / output dir / configuration in `ProjectConfig/Build/`. Per-file `<ClCompile>` blocks must not hardcode configuration-specific settings
 (`RuntimeLibrary`, `Optimization`, `PreprocessorDefinitions`, `ObjectFileName` under `x64\Debug\`, …) — Visual
 Studio writes them when you edit a single file's properties, and they then leak into every configuration.
+
+The CRT is /MD (`MultiThreadedDLL`) by default since HotReload stage 0 (`docs/HotReload.md` §1): every module must share one
+CRT before the engine becomes a DLL. `-p:NanamiUseDynamicCrt=false` goes back to /MT. DxLib picks its `_MD` libs from `_DLL`,
+and the Effekseer libs come in both flavours (`Effekseer*_vs2019_x64_MD(d).lib` were rebuilt with `tools/effekseer_md/`;
+mixing an `LIBCMT` lib into an /MD link fails with `LNK2038`). A /MD Game build needs the VC++ runtime DLLs next to the
+exe: `NanamiEngine.Game.props` (`NanamiCopyCrtRedist`, Game x Release) copies them and `GameBuilder` ships them.
 
 `-p:PreferredToolArchitecture=x64` is **required** — the 32-bit compiler runs out
 of heap on the deep cereal template instantiations (`error C1060`). MSBuild lives at
@@ -72,10 +103,17 @@ through `LibCore::Dxlib::Utf8ToShiftJis`. The flag lives in every `<AdditionalOp
 
 ## cereal registration goes in the .cpp
 
-`CEREAL_REGISTER_TYPE` / `CEREAL_REGISTER_POLYMORPHIC_RELATION` / `ENGINE_REGISTER_COMPONENT(T)` /
+Polymorphic types are registered with the engine's wrappers, never with cereal's macros directly:
+`NANAMI_REGISTER_TYPE(T, Base)` (= `CEREAL_REGISTER_TYPE(T)` + `CEREAL_REGISTER_POLYMORPHIC_RELATION(Base, T)`) and
+`NANAMI_REGISTER_POLYMORPHIC_RELATION(Base, T)` for every further base (`IUpdatable`, an intermediate base, ...).
+Both also record type / base / `polymorphic_name` / registering module in `Serialization::SerializationTypeRegistry`
+so a hot-reloaded Game.dll can be unregistered (`docs/HotReload.md` §3.2). A trailing `;` is optional.
+`NANAMI_REGISTER_TYPE` / `NANAMI_REGISTER_POLYMORPHIC_RELATION` / `ENGINE_REGISTER_COMPONENT(T)` /
 `REGISTER_ATTACK_AREA_TYPE` / `REGISTER_PLAYER_AVATAR_BASE` belong at the end of the type's `.cpp`
 (global scope), which must `#include` `Engine/Module/Serialization/Engine_Module_SerializationRegistration.h`
-so the type is bound to both archives (JSON + PortableBinary). Those are the only archives polymorphic types are
+so the type is bound to both archives (JSON + PortableBinary) and the wrappers are defined.
+`python tools/serialization/migrate_register_macros.py` rewrites leftover `CEREAL_REGISTER_*` calls (e.g. in a project
+created from an older engine). Those are the only archives polymorphic types are
 bound to - don't serialise polymorphic pointers through `cereal::BinaryArchive` (use PortableBinary).
 `REGISTER_ASSET` / `REGISTER_SCRIPTABLE_OBJECT` / `REGISTER_CREATABLE_ASSET_EXTENSION` go in the `.cpp` too: in a
 header they define a `static` registrar per including file (the factory's vectors got one entry per file) and
@@ -106,6 +144,20 @@ DxLib types (`VECTOR`, `MATRIX`, `DX_*`, …) in their declarations - public API
 exception is the bridge folder `Libs/LibCore/DxLib/` (`DxMath.h`: `ToDxVector`/`ToDxMatrix`/`FromDxMatrix`, `ShiftJis.h`),
 which is included **only from `.cpp` files**. Converting at the call site looks like
 `MV1SetMatrix(handle, LibCore::Dxlib::ToDxMatrix(Transform().GetWorldMatrix()))`.
+
+## Game code must not call DxLib
+
+`Assets/**` never includes `DxLib.h` or calls DxLib functions / uses its types and constants (`VECTOR`, `XINPUT_STATE`,
+`KEY_INPUT_*`, `DX_*`, `VGet`, ...). A Game.dll that linked DxLib would get its own handle tables (`docs/HotReload.md` §2), and
+`python tools/dxlib_guard/check_game_dxlib.py` (exit 0 = clean) is the gate. Use the DxLib-free engine entry points instead:
+`Engine/Core/Platform/Input/Input.h` (`Platform::Input::Keyboard::IsDown(Key::A)`, `Mouse`, `Gamepad::Get()`, `IsWindowActive`;
+game code includes `Assets/Scripts/Core/Input/InputAliases.h` for the short spelling), `Platform/Draw2D/Draw2D.h` (blend / bright /
+filter state, `ScopedDrawState`, `DrawRotaGraph`, `DrawBox`, `DrawString` with UTF-8, `ScreenSize`, `GraphSize`),
+`Platform/Render/{Camera,Environment,Shader,Model}.h` (camera queries, fog / light, constant + vertex / index buffers with
+`ShaderVertex3D`, MV1 frame queries), `Platform/AsyncLoad/AsyncLoad.h` (`SyncLoadScope`, `IsHandleLoading`),
+`Time::NowMilliseconds()`, `SoundFile::Play/Stop/IsPlaying/SetVolume/SetNextPlayVolume/Set3DPosition`,
+`Render3D::Shapes::DrawLine3D`, `ApplicationBase::RequestClose()`. Add a wrapper there (the `.cpp` may include `DxLib.h`) rather
+than calling DxLib from game code.
 
 ## Reactive code goes through R4 (not rxcpp)
 

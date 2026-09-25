@@ -1,8 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
+#include "Engine/Core/Api/NanamiModule.h"
 
 #include <string>
 #include <vector>
 #include <functional>
+#include <optional>
 #include "../Engine_Module_LocalPrefs.h"
 
 #include "../LibCore/ImGui/Helper/ImGuiHelper.h"
@@ -51,11 +54,11 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
         }
     }
     
-    class LocalPrefsRegistry final
+    class NANAMI_API LocalPrefsRegistry final
     {
     public:
         // 列挙時にエディタ側が受け取る、各設定項目のメタデータ
-        struct PrefInfo final
+        struct NANAMI_API PrefInfo final
         {
             std::string key;
             std::string typeName;
@@ -66,12 +69,16 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
             // ファイルから値をロードし、ImGui ウィジェットで編集・保存できるUIを描画する
             // 初回呼び出し時にファイルから値を読み込み、以降は内部 state を保持する
             std::function<void()> drawEditGui;
+            // 登録元のモジュール
+            Core::ModuleHandle module;
         };
 
         // シングルトンインスタンスの取得
         static LocalPrefsRegistry& GetInstance();
         // マクロの初期化ロジックから呼び出される登録関数
         void Register(PrefInfo info);
+        // module が登録した項目を消す。戻り値は消した数
+        std::size_t UnregisterModule(Core::ModuleHandle module);
         // エディタ側で「登録された項目をループで列挙する」ためのゲッター
         [[nodiscard]] const std::vector<PrefInfo>& GetPrefsList() const;
 
@@ -80,114 +87,59 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
         std::vector<PrefInfo> m_prefsList;
     };
 
+    // REGISTER_LOCAL_PREF_WITH_PATH の本体。makeDefault はデフォルト値が必要になったときに呼ぶ
+    template<typename T, typename MakeDefault>
+    bool RegisterLocalPref(std::string key, std::string subPath, std::string typeName,
+                           MakeDefault makeDefault, Core::ModuleHandle module)
+    {
+        LocalPrefsRegistry::PrefInfo info;
+        info.key      = key;
+        info.typeName = std::move(typeName);
+        info.subPath  = subPath;
+        info.module   = module;
+        info.saveDefault = [key, subPath, makeDefault]()
+        {
+            SaveWithPath<T>(subPath, key, makeDefault());
+        };
+        info.drawEditGui = [key, subPath, makeDefault, state = std::optional<T>{}]() mutable
+        {
+            if (!state.has_value())
+                state = LoadOrDefaultWithPath<T>(subPath, key, makeDefault());
+            T& value = state.value();
+
+            ImGui::PushID(key.c_str());
+            DrawLocalPrefWidget(key, value);
+            ImGui::Spacing();
+            if (ImGui::SmallButton("Save"))
+                SaveWithPath<T>(subPath, key, value);
+            ImGui::SameLine();
+            if (ImGui::SmallButton("Reset"))
+            {
+                value = makeDefault();
+                SaveWithPath<T>(subPath, key, value);
+            }
+            ImGui::SameLine();
+            if (ImGui::SmallButton("Reload"))
+                state.reset();
+            ImGui::PopID();
+        };
+        LocalPrefsRegistry::GetInstance().Register(std::move(info));
+        return true;
+    }
 }
 
-
+#define NANAMI_LOCAL_PREF_CONCAT_(a, b) a##b
+#define NANAMI_LOCAL_PREF_CONCAT(a, b)  NANAMI_LOCAL_PREF_CONCAT_(a, b)
 
 /**
- * 内部実装用マクロ（直接呼ばないでください）
- *
- * UniqueID を受け取るのは、同じ KeyName が複数の翻訳単位に現れたとき
- * 構造体名が衝突しないよう行番号をサフィックスに使うため。
- * inline static メンバにすることでヘッダインクルード時に静的初期化が走り、
- * main() より前にレジストリへ登録が完了する。
- *
- * drawEditGui ラムダは shared_ptr<optional<T>> で値を遅延ロードして保持する。
- * 初回描画時にファイルから読み込み、以降は in-memory で編集・保存できる。
+ * LocalPrefs の項目をエディタのツールバーへ静的登録する。
+ * NOTE: .cpp のグローバル / namespace スコープに書く (末尾の ; は不要)
+ * NOTE: 登録元モジュールを記録するので、HotReload でゲーム DLL を差し替えると UnregisterModule で消える
  */
-#define REGISTER_LOCAL_PREF_WITH_PATH_IMPL(Type, KeyName, DefaultValue, SubPath, UniqueID)  \
-namespace NanamiEngine::Module::LocalPrefs::Internal {                                       \
-struct AutoRegister_##UniqueID {                                                             \
-    AutoRegister_##UniqueID() {                                                              \
-        ::NanamiEngine::Module::LocalPrefs::Editor::LocalPrefsRegistry::PrefInfo info;       \
-        info.key      = KeyName;                                                             \
-        info.typeName = #Type;                                                               \
-        info.subPath  = SubPath;                                                             \
-        info.saveDefault = []() {                                                            \
-            ::NanamiEngine::Module::LocalPrefs::SaveWithPath<Type>(SubPath, KeyName, DefaultValue); \
-        };                                                                                   \
-        info.drawEditGui = [                                                                 \
-            statePtr = std::make_shared<std::optional<Type>>(),                             \
-            _key     = std::string{KeyName},                                                \
-            _subPath = std::string{SubPath}                                                 \
-        ]() mutable {                                                                       \
-            if (!statePtr->has_value())                                                     \
-                *statePtr = ::NanamiEngine::Module::LocalPrefs::LoadOrDefaultWithPath<Type>(\
-                    _subPath, _key, DefaultValue);                                          \
-            Type& _val = statePtr->value();                                                 \
-            ::ImGui::PushID(_key.c_str());                                                  \
-            ::NanamiEngine::Module::LocalPrefs::Editor::DrawLocalPrefWidget(_key, _val);    \
-            ::ImGui::Spacing();                                                             \
-            if (::ImGui::SmallButton(("Save##" + _key).c_str()))                           \
-                ::NanamiEngine::Module::LocalPrefs::SaveWithPath<Type>(_subPath, _key, _val); \
-            ::ImGui::SameLine();                                                            \
-            if (::ImGui::SmallButton(("Reset##" + _key).c_str())) {                        \
-                _val = DefaultValue;                                                        \
-                ::NanamiEngine::Module::LocalPrefs::SaveWithPath<Type>(_subPath, _key, _val); \
-            }                                                                               \
-            ::ImGui::SameLine();                                                            \
-            if (::ImGui::SmallButton(("Reload##" + _key).c_str()))                         \
-                statePtr->reset();                                                          \
-            ::ImGui::PopID();                                                               \
-        };                                                                                  \
-        ::NanamiEngine::Module::LocalPrefs::Editor::LocalPrefsRegistry::GetInstance().Register(std::move(info)); \
-    }                                                                                       \
-};                                                                                          \
-inline static AutoRegister_##UniqueID global_autoregister_##UniqueID;                       \
-}
-
-#define REGISTER_LOCAL_PREF_IMPL(Type, KeyName, DefaultValue, UniqueID)                     \
-namespace NanamiEngine::Module::LocalPrefs::Internal {                                       \
-struct AutoRegister_##UniqueID {                                                             \
-    AutoRegister_##UniqueID() {                                                              \
-        ::NanamiEngine::Module::LocalPrefs::Editor::LocalPrefsRegistry::PrefInfo info;       \
-        info.key      = KeyName;                                                             \
-        info.typeName = #Type;                                                               \
-        info.subPath  = "";                                                                  \
-        info.saveDefault = []() {                                                            \
-            ::NanamiEngine::Module::LocalPrefs::Save<Type>(KeyName, DefaultValue);           \
-        };                                                                                   \
-        info.drawEditGui = [                                                                 \
-            statePtr = std::make_shared<std::optional<Type>>(),                             \
-            _key     = std::string{KeyName}                                                 \
-        ]() mutable {                                                                       \
-            if (!statePtr->has_value())                                                     \
-                *statePtr = ::NanamiEngine::Module::LocalPrefs::LoadOrDefault<Type>(        \
-                    _key, DefaultValue);                                                    \
-            Type& _val = statePtr->value();                                                 \
-            ::ImGui::PushID(_key.c_str());                                                  \
-            ::NanamiEngine::Module::LocalPrefs::Editor::DrawLocalPrefWidget(_key, _val);    \
-            ::ImGui::Spacing();                                                             \
-            if (::ImGui::SmallButton(("Save##" + _key).c_str()))                           \
-                ::NanamiEngine::Module::LocalPrefs::Save<Type>(_key, _val);                 \
-            ::ImGui::SameLine();                                                            \
-            if (::ImGui::SmallButton(("Reset##" + _key).c_str())) {                        \
-                _val = DefaultValue;                                                        \
-                ::NanamiEngine::Module::LocalPrefs::Save<Type>(_key, _val);                 \
-            }                                                                               \
-            ::ImGui::SameLine();                                                            \
-            if (::ImGui::SmallButton(("Reload##" + _key).c_str()))                         \
-                statePtr->reset();                                                          \
-            ::ImGui::PopID();                                                               \
-        };                                                                                  \
-        ::NanamiEngine::Module::LocalPrefs::Editor::LocalPrefsRegistry::GetInstance().Register(std::move(info)); \
-    }                                                                                       \
-};                                                                                          \
-inline static AutoRegister_##UniqueID global_autoregister_##UniqueID;                       \
-}
-
-
-/**
- * --- ユーザーが実際に使用する静的登録用マクロ ---
- *
- * NOTE: マクロを2段階に分けている理由
- *   __LINE__ はマクロ展開時点の行番号に置換される。
- *   直接 _IMPL に __LINE__ を渡すと、_IMPL 内の ## 展開より先に __LINE__ が評価されず
- *   文字列 "__LINE__" がそのまま構造体名に入ってしまう。
- *   一段ラップして引数として渡すことで、__LINE__ を確実に数値に展開してから結合できる。
- */
-#define REGISTER_LOCAL_PREF_WITH_PATH(Type, KeyName, DefaultValue, SubPath) \
-    REGISTER_LOCAL_PREF_WITH_PATH_IMPL(Type, KeyName, DefaultValue, SubPath, KeyName##_##__LINE__)
+#define REGISTER_LOCAL_PREF_WITH_PATH(Type, KeyName, DefaultValue, SubPath)                    \
+    static const bool NANAMI_LOCAL_PREF_CONCAT(nanamiLocalPrefRegistered_, __COUNTER__) =      \
+        ::NanamiEngine::Module::LocalPrefs::Editor::RegisterLocalPref<Type>(                   \
+            KeyName, SubPath, #Type, []() -> Type { return DefaultValue; }, NANAMI_CURRENT_MODULE());
 
 #define REGISTER_LOCAL_PREF(Type, KeyName, DefaultValue) \
-    REGISTER_LOCAL_PREF_IMPL(Type, KeyName, DefaultValue, KeyName##_##__LINE__)
+    REGISTER_LOCAL_PREF_WITH_PATH(Type, KeyName, DefaultValue, "")

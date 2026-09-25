@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
 #include "../../LifeCycleCallback/EnableAsset/IEnablableAsset.h"
@@ -7,7 +8,7 @@
 
 namespace NanamiEngine::Module::Asset
 {
-    class HlslPsFile final : public AssetBase,
+    class NANAMI_API HlslPsFile final : public AssetBase,
                              public LifeCycleCallback::IEnablableAsset
     {
     public:

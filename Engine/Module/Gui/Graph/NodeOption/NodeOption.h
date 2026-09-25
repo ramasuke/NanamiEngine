@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
 #include "../ImGui/ImGuiHelper.h"
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::Module::Gui::Graph
 {
-    struct NodeOption final
+    struct NANAMI_API NodeOption final
     {
         explicit NodeOption(NodeVisualStyle style,
                             std::string name,

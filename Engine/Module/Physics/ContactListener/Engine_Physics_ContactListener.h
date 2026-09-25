@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <../JoltPhysics/Jolt/Jolt.h>
 #include <../JoltPhysics/Jolt/Physics/Collision/ContactListener.h>
 
@@ -15,7 +16,7 @@ namespace JPH
 
 namespace NanamiEngine::Module::Physics
 {
-    class EngineContactListener final : public JPH::ContactListener
+    class NANAMI_API EngineContactListener final : public JPH::ContactListener
     {
     public:
         explicit EngineContactListener(const JPH::PhysicsSystem& physicsSystem);

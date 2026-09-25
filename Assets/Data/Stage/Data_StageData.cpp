@@ -43,6 +43,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(StageData, STAGE_DATA_EXTENSION_LABEL, "Stage")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::StageData);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::StageData);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::StageData, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

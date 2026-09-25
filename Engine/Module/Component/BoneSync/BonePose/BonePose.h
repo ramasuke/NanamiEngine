@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../../../Libs/glm/glm.hpp"
 #include "../../../../../Libs/glm/gtc/quaternion.hpp"
 
 namespace NanamiEngine::Module::Bone
 {
     //NOTE: 値オブジェクト
-    struct BonePose final
+    struct NANAMI_API BonePose final
     {
         BonePose(const glm::vec3& position, const glm::quat& rotation, const glm::vec3& scale);
         /** @brief TRS 行列を位置・回転・スケールに分解する。回転はスケールを除いてから抽出する */

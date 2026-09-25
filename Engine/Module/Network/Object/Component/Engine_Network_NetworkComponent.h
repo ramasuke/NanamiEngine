@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <type_traits>
 #include <vector>
@@ -14,7 +15,7 @@ namespace NanamiEngine::Module::Network
     class NetworkRunnerBase;
 
     /** ネットワーク上で共通の動作を持たせたい、もしくはネットワーク上で同期させたい処理がある場合に継承するコンポーネントクラス */
-    class NetworkComponent : public Component::ComponentBase,
+    class NANAMI_API NetworkComponent : public Component::ComponentBase,
                              public INetworkAwakable,
                              public INetworkTickable
     {

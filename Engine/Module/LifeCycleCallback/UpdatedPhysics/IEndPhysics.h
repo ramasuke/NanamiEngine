@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../cereal/include/cereal/cereal.hpp"
 #include "../../../Core/Object/IObject.h"
 
 namespace NanamiEngine::Module::LifeCycleCallback
 {
-    class IEndPhysics : public virtual Object::IObject
+    class NANAMI_API IEndPhysics : public virtual Object::IObject
     {
     public:
         template <class Archive>

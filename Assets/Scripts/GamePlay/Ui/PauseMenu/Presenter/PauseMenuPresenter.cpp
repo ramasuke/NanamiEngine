@@ -1,6 +1,6 @@
 ﻿#include "PauseMenuPresenter.h"
+#include "Assets/Scripts/Core/Input/InputAliases.h"
 
-#include "DxLib.h"
 
 #include "../Ui_PauseMenu.h"
 #include "../../../../Core/Game/Game.h"
@@ -145,16 +145,15 @@ namespace GamePlay::Ui
 
     PauseMenuPresenter::Keys PauseMenuPresenter::ReadKeys()
     {
-        XINPUT_STATE xInput{};
-        GetJoypadXInputState(DX_INPUT_PAD1, &xInput);
+        const auto xInput = Gamepad::Get();
 
         return Keys{
-            .prev    = CheckHitKey(KEY_INPUT_UP) || CheckHitKey(KEY_INPUT_W)
-                       || xInput.Buttons[XINPUT_BUTTON_DPAD_UP] || xInput.ThumbLY > PAUSE_MENU_STICK_DEADZONE,
-            .next    = CheckHitKey(KEY_INPUT_DOWN) || CheckHitKey(KEY_INPUT_S)
-                       || xInput.Buttons[XINPUT_BUTTON_DPAD_DOWN] || xInput.ThumbLY < -PAUSE_MENU_STICK_DEADZONE,
-            .confirm = CheckHitKey(KEY_INPUT_RETURN) || xInput.Buttons[XINPUT_BUTTON_A],
-            .cancel  = CheckHitKey(KEY_INPUT_ESCAPE) || xInput.Buttons[XINPUT_BUTTON_B],
+            .prev    = Keyboard::IsDown(Key::Up) || Keyboard::IsDown(Key::W)
+                       || xInput.IsDown(GamepadButton::DPadUp) || xInput.thumbLY > PAUSE_MENU_STICK_DEADZONE,
+            .next    = Keyboard::IsDown(Key::Down) || Keyboard::IsDown(Key::S)
+                       || xInput.IsDown(GamepadButton::DPadDown) || xInput.thumbLY < -PAUSE_MENU_STICK_DEADZONE,
+            .confirm = Keyboard::IsDown(Key::Return) || xInput.IsDown(GamepadButton::A),
+            .cancel  = Keyboard::IsDown(Key::Escape) || xInput.IsDown(GamepadButton::B),
         };
     }
 

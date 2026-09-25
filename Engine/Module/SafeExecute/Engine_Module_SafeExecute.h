@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <atomic>
 #include <functional>
 #include <string>
@@ -6,7 +7,7 @@
 namespace NanamiEngine::Module
 {
     /** @brief C++例外・SEH例外(nullptr参照、0除算等)から保護して関数を実行する */
-    class SafeExecutor final
+    class NANAMI_API SafeExecutor final
     {
     public:
         SafeExecutor() = delete;

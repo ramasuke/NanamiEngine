@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "vec2.hpp"
 #include "../../../Asset/MV1/MV1File.h"
 #include "../../../../Core/Object/Field/Field.h"
@@ -8,7 +9,7 @@
 
 namespace NanamiEngine::Module::AnimationTree
 {
-    class AnimationClipNode final : public IAnimationNode
+    class NANAMI_API AnimationClipNode final : public IAnimationNode
     {
     public:
         explicit AnimationClipNode(glm::vec2 position = glm::vec2(0, 0));

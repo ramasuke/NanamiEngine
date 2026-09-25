@@ -1,11 +1,12 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../Engine_Physics_ColliderBase.h"
 #include "../Engine_Physics_Constraints.h"
 #include "../../../../Component/ComponentBase.h"
 
 namespace NanamiEngine::Module::Component
 {
-    class CylinderCollider final : public ColliderBase
+    class NANAMI_API CylinderCollider final : public ColliderBase
     {
     private:
         void OnDrawGui  () override;

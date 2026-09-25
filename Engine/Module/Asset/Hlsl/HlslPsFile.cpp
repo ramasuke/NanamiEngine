@@ -38,8 +38,7 @@ namespace NanamiEngine::Module::Asset
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::HlslPsFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::HlslPsFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::HlslPsFile);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::HlslPsFile, NanamiEngine::Module::Asset::AssetBase);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::HlslPsFile);
 REGISTER_ASSET(HlslPsFile, ".pso")
 #pragma endregion

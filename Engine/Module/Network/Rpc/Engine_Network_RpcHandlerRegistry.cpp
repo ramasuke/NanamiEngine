@@ -7,9 +7,9 @@
 
 namespace NanamiEngine::Module::Network
 {
-    void RpcHandlerRegistry::Register(const Core::Network::RpcId id, Handler handler)
+    void RpcHandlerRegistry::Register(const Core::Network::RpcId id, Handler handler, const Core::ModuleHandle module)
     {
-        if (const auto [it, inserted] = handlers_.try_emplace(id.Value(), std::move(handler)); !inserted)
+        if (const auto [it, inserted] = handlers_.try_emplace(id.Value(), Entry{ std::move(handler), module }); !inserted)
         {
             LogWarning("RpcHandlerRegistry: 同じRpcIdが二重登録されました id=" + std::to_string(id.Value()));
             assert(false && "RpcHandlerRegistry: duplicate RpcId registration");
@@ -25,6 +25,17 @@ namespace NanamiEngine::Module::Network
             LogWarning("RpcHandlerRegistry: 未登録のRpcIdを受信しました id=" + std::to_string(id.Value()));
             return;
         }
-        it->second(buffer, offset);
+        it->second.handler(buffer, offset);
     }
+
+    std::size_t RpcHandlerRegistry::UnregisterModule(const Core::ModuleHandle module)
+    {
+        return std::erase_if(handlers_, [module](const auto& pair) { return pair.second.module == module; });
+    }
+}
+
+NanamiEngine::Module::Network::RpcHandlerRegistry& NanamiEngine::Module::Network::RpcHandlerRegistry::Instance()
+{
+    static RpcHandlerRegistry instance;
+    return instance;
 }

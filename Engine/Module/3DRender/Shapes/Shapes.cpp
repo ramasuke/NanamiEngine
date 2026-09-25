@@ -3,6 +3,12 @@
 #include "DxLib.h"
 #include "gtc/constants.hpp"
 #include "gtx/quaternion.hpp"
+#include "../../../../Libs/LibCore/DxLib/DxMath.h"
+
+void NanamiEngine::Module::Render3D::Shapes::DrawLine3D(const glm::vec3& from, const glm::vec3& to, const Color32& color)
+{
+    DxLib::DrawLine3D(LibCore::Dxlib::ToDxVector(from), LibCore::Dxlib::ToDxVector(to), static_cast<unsigned int>(color.ToDxColor()));
+}
 
 void NanamiEngine::Module::Render3D::Shapes::DrawCube3DFromVertices(const std::array<glm::vec3, 8>& vertices,
                                                                     const int& edgeColor)
@@ -18,7 +24,7 @@ void NanamiEngine::Module::Render3D::Shapes::DrawCube3DFromVertices(const std::a
     {
         const glm::vec3& p1 = vertices[e[0]];
         const glm::vec3& p2 = vertices[e[1]];
-        DrawLine3D({p1.x, p1.y, p1.z}, {p2.x, p2.y, p2.z}, edgeColor);
+        DxLib::DrawLine3D({p1.x, p1.y, p1.z}, {p2.x, p2.y, p2.z}, edgeColor);
     }
 }
 
@@ -57,13 +63,13 @@ void NanamiEngine::Module::Render3D::Shapes::DrawCapsule3D(
     {
         int n = (i + 1) % segment;
 
-        DrawLine3D(VGet(bottom[i].x, bottom[i].y, bottom[i].z),
+        DxLib::DrawLine3D(VGet(bottom[i].x, bottom[i].y, bottom[i].z),
                    VGet(bottom[n].x, bottom[n].y, bottom[n].z), color);
 
-        DrawLine3D(VGet(top[i].x, top[i].y, top[i].z),
+        DxLib::DrawLine3D(VGet(top[i].x, top[i].y, top[i].z),
                    VGet(top[n].x, top[n].y, top[n].z), color);
 
-        DrawLine3D(VGet(bottom[i].x, bottom[i].y, bottom[i].z),
+        DxLib::DrawLine3D(VGet(bottom[i].x, bottom[i].y, bottom[i].z),
                    VGet(top[i].x, top[i].y, top[i].z), color);
     }
 
@@ -93,7 +99,7 @@ void NanamiEngine::Module::Render3D::Shapes::DrawCapsule3D(
                 p0 = RotatePoint(p0, rotation) + center;
                 p1 = RotatePoint(p1, rotation) + center;
 
-                DrawLine3D(VGet(p0.x, p0.y, p0.z),
+                DxLib::DrawLine3D(VGet(p0.x, p0.y, p0.z),
                            VGet(p1.x, p1.y, p1.z), color);
             }
 
@@ -110,7 +116,7 @@ void NanamiEngine::Module::Render3D::Shapes::DrawCapsule3D(
                 p0 = RotatePoint(p0, rotation) + center;
                 p1 = RotatePoint(p1, rotation) + center;
 
-                DrawLine3D(VGet(p0.x, p0.y, p0.z), VGet(p1.x, p1.y, p1.z), color);
+                DxLib::DrawLine3D(VGet(p0.x, p0.y, p0.z), VGet(p1.x, p1.y, p1.z), color);
             }
         }
     }
@@ -141,13 +147,13 @@ void NanamiEngine::Module::Render3D::Shapes::DrawCylinder3D(
     {
         int n = (i + 1) % segment;
 
-        DrawLine3D(VGet(bottom[i].x, bottom[i].y, bottom[i].z),
+        DxLib::DrawLine3D(VGet(bottom[i].x, bottom[i].y, bottom[i].z),
                    VGet(bottom[n].x, bottom[n].y, bottom[n].z), color);
 
-        DrawLine3D(VGet(top[i].x, top[i].y, top[i].z),
+        DxLib::DrawLine3D(VGet(top[i].x, top[i].y, top[i].z),
                    VGet(top[n].x, top[n].y, top[n].z), color);
 
-        DrawLine3D(VGet(bottom[i].x, bottom[i].y, bottom[i].z),
+        DxLib::DrawLine3D(VGet(bottom[i].x, bottom[i].y, bottom[i].z),
                    VGet(top[i].x, top[i].y, top[i].z), color);
     }
 }
@@ -169,13 +175,13 @@ void NanamiEngine::Module::Render3D::Shapes::DrawSphere3D(
         const float c1 = std::cos(t1), s1 = std::sin(t1);
 
         // XY平面
-        DrawLine3D(VGet(center.x + radius * c0, center.y + radius * s0, center.z),
+        DxLib::DrawLine3D(VGet(center.x + radius * c0, center.y + radius * s0, center.z),
                    VGet(center.x + radius * c1, center.y + radius * s1, center.z), color);
         // XZ平面
-        DrawLine3D(VGet(center.x + radius * c0, center.y, center.z + radius * s0),
+        DxLib::DrawLine3D(VGet(center.x + radius * c0, center.y, center.z + radius * s0),
                    VGet(center.x + radius * c1, center.y, center.z + radius * s1), color);
         // YZ平面
-        DrawLine3D(VGet(center.x, center.y + radius * c0, center.z + radius * s0),
+        DxLib::DrawLine3D(VGet(center.x, center.y + radius * c0, center.z + radius * s0),
                    VGet(center.x, center.y + radius * c1, center.z + radius * s1), color);
     }
 }
@@ -214,13 +220,13 @@ void NanamiEngine::Module::Render3D::Shapes::DrawMeshWireFrame3D(
         glm::vec3 p1 = transformPoint(vertices[i1]);
         glm::vec3 p2 = transformPoint(vertices[i2]);
 
-        DrawLine3D(VGet(p0.x, p0.y, p0.z),
+        DxLib::DrawLine3D(VGet(p0.x, p0.y, p0.z),
                    VGet(p1.x, p1.y, p1.z), color);
 
-        DrawLine3D(VGet(p1.x, p1.y, p1.z),
+        DxLib::DrawLine3D(VGet(p1.x, p1.y, p1.z),
                    VGet(p2.x, p2.y, p2.z), color);
 
-        DrawLine3D(VGet(p2.x, p2.y, p2.z),
+        DxLib::DrawLine3D(VGet(p2.x, p2.y, p2.z),
                    VGet(p0.x, p0.y, p0.z), color);
     }
 }

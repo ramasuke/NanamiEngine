@@ -20,6 +20,5 @@ namespace GameCore::Scene
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Scene::MainIslandSceneContext);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::SceneContextBase, GameCore::Scene::MainIslandSceneContext);
+NANAMI_REGISTER_TYPE(GameCore::Scene::MainIslandSceneContext, GameCore::Scene::SceneContextBase);
 #pragma endregion

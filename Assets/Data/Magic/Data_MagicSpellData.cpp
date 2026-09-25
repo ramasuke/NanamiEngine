@@ -60,6 +60,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(MagicSpellData, MAGIC_SPELL_DATA_EXTENSION_LABEL, "Player::MagicCaster")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::MagicSpellData);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::MagicSpellData);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::MagicSpellData, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

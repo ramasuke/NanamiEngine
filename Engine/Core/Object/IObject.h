@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../Module/Guid/Guid.h"
 #include "../cereal/include/cereal/types/polymorphic.hpp"
 
 namespace NanamiEngine::Module::Object
 {
     //TODO: これIObjectじゃなくてObjectBaseにした方が良い
-    class IObject
+    class NANAMI_API IObject
     {
     public:
         virtual ~IObject() = default;

@@ -1,11 +1,12 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../ComponentBase.h"
 
 #include "../../Color/Color32.h"
 
 namespace NanamiEngine::Module::Component
 {
-	class SphereRenderer final : public ComponentBase,
+	class NANAMI_API SphereRenderer final : public ComponentBase,
 								 public LifeCycleCallback::IRenderable
 	{
 	private:

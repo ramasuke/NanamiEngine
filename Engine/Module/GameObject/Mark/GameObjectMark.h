@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 
 struct ImDrawList;
@@ -74,11 +75,11 @@ namespace NanamiEngine::Module::GameObject
     }
 
     /** @brief center を中心にマークを描く。Label のときは label を文字として載せる */
-    void DrawMark(ImDrawList& drawList, const ImVec2& center, GameObjectMark mark, const char* label);
+    NANAMI_API void DrawMark(ImDrawList& drawList, const ImVec2& center, GameObjectMark mark, const char* label);
 
     /** @brief 現在の ImGui 行にマークの小さなプレビューを 1 アイテムとして置く */
-    void DrawMarkPreviewGui(GameObjectMark mark);
+    NANAMI_API void DrawMarkPreviewGui(GameObjectMark mark);
 
     // 戻り値：変更されたかどうか
-    bool DrawChoiceMarkGui(const char* label, GameObjectMark& mark);
+    NANAMI_API bool DrawChoiceMarkGui(const char* label, GameObjectMark& mark);
 }

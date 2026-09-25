@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <atomic>
 #include <memory>
 #include <stop_token>
@@ -35,7 +36,7 @@ namespace NanamiEngine::AssetUpdater
      * 確認・ダウンロード・適用を別スレッドで進める。呼び出し側は毎フレーム State() を見る。
      * CheckResult() / ErrorMessage() は Checking / Downloading / Applying の間は読まないこと
      */
-    class AssetUpdateTask final
+    class NANAMI_API AssetUpdateTask final
     {
     public:
         AssetUpdateTask(std::unique_ptr<IAssetUpdater> updater, AssetUpdaterPaths paths);

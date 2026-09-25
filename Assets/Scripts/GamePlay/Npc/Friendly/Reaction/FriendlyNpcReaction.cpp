@@ -7,6 +7,8 @@
 #include "../glm/gtx/norm.hpp"
 #include "../glm/gtx/quaternion.hpp"
 #include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Platform/AsyncLoad/AsyncLoad.h"
+#include "Engine/Core/Platform/Render/Model.h"
 #include "Engine/Module/Component/Animator/Animator.h"
 #include "Engine/Module/Component/LookAtBone/LookAtBone.h"
 #include "Engine/Module/Component/ModelRenderer/ModelRenderer.h"
@@ -14,7 +16,6 @@
 #include "Engine/Module/Physics/Engine_Physics_Physics.h"
 #include "Engine/Module/Physics/Component/RigidBody/Engine_Physics_RigidBody.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
-#include "Libs/LibCore/DxLib/DxMath.h"
 #include "../FriendlyNpc.h"
 #include "../../../PlayerAvatar/HitShakeReceiver/PlayerHitShakeReceiver.h"
 #include "../../../../Core/Game/PlayerAvatar/PlayerAvatar.h"
@@ -234,18 +235,18 @@ namespace GamePlay::Npc::Friendly
         const auto* playerComponent = dynamic_cast<const Component::ComponentBase*>(&player);
         const auto  modelRenderer   = playerComponent ? playerComponent->Components().Catch<Component::ModelRenderer>().lock() : nullptr;
         const int   modelHandle     = modelRenderer ? modelRenderer->modelDxLibHandle_ : -1;
-        if (modelHandle != -1 && CheckHandleASyncLoad(modelHandle) == FALSE)
+        if (modelHandle != -1 && !Platform::AsyncLoad::IsHandleLoading(modelHandle))
         {
             if (playerHeadBoneModelHandle_ != modelHandle)
             {
                 playerHeadBoneModelHandle_ = modelHandle;
-                playerHeadBoneIndex_       = MV1SearchFrame(modelHandle, PLAYER_HEAD_BONE_NAME);
+                playerHeadBoneIndex_       = Platform::Render::Model::SearchFrame(modelHandle, PLAYER_HEAD_BONE_NAME);
             }
 
             if (playerHeadBoneIndex_ >= 0)
             {
-                const glm::mat4 renderMatrix = LibCore::Dxlib::FromDxMatrix(MV1GetMatrix(modelHandle));
-                const glm::mat4 headMatrix   = LibCore::Dxlib::FromDxMatrix(MV1GetFrameLocalWorldMatrix(modelHandle, playerHeadBoneIndex_));
+                const glm::mat4 renderMatrix = Platform::Render::Model::GetMatrix(modelHandle);
+                const glm::mat4 headMatrix   = Platform::Render::Model::GetFrameLocalWorldMatrix(modelHandle, playerHeadBoneIndex_);
                 return glm::vec3(player.PlayerTransform().GetWorldMatrix() * glm::inverse(renderMatrix) * headMatrix[3]);
             }
         }

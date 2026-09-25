@@ -14,6 +14,18 @@
 
 #if _MSC_VER >= 1920
 
+// NanamiEngine patch: /MD (_DLL) のときは tools/effekseer_md で再ビルドした MD 版を使う (docs/HotReload.md §1)
+#ifdef _DLL
+#if _DEBUG
+#pragma comment(lib, "Effekseer_vs2019_x64_MDd.lib")
+#pragma comment(lib, "EffekseerRendererDX9_vs2019_x64_MDd.lib")
+#pragma comment(lib, "EffekseerRendererDX11_vs2019_x64_MDd.lib")
+#else
+#pragma comment(lib, "Effekseer_vs2019_x64_MD.lib")
+#pragma comment(lib, "EffekseerRendererDX9_vs2019_x64_MD.lib")
+#pragma comment(lib, "EffekseerRendererDX11_vs2019_x64_MD.lib")
+#endif
+#else
 #if _DEBUG
 #pragma comment(lib, "Effekseer_vs2019_x64_d.lib")
 #pragma comment(lib, "EffekseerRendererDX9_vs2019_x64_d.lib")
@@ -22,6 +34,7 @@
 #pragma comment(lib, "Effekseer_vs2019_x64.lib")
 #pragma comment(lib, "EffekseerRendererDX9_vs2019_x64.lib")
 #pragma comment(lib, "EffekseerRendererDX11_vs2019_x64.lib")
+#endif
 #endif
 
 #elif _MSC_VER >= 1910
@@ -98,10 +111,18 @@
 #ifdef _WIN64
 
 #if _MSC_VER >= 1920
+#ifdef _DLL
+#if _DEBUG
+#pragma comment(lib, "EffekseerForDXLib_vs2019_x64_MDd.lib")
+#else
+#pragma comment(lib, "EffekseerForDXLib_vs2019_x64_MD.lib")
+#endif
+#else
 #if _DEBUG
 #pragma comment(lib, "EffekseerForDXLib_vs2019_x64_d.lib")
 #else
 #pragma comment(lib, "EffekseerForDXLib_vs2019_x64.lib")
+#endif
 #endif
 #elif _MSC_VER >= 1910
 #if _DEBUG

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 
 #include "GraphEditor.h"
@@ -12,7 +13,7 @@ namespace NanamiEngine::Module::Gui::Graph
      *        ノードの中身は GraphEditor::Delegate 側が提供する。ViewState はセッション中だけ保持し、保存しない。
      *        操作: 中ボタンドラッグ = パン / ホイール = ズーム / 左ドラッグ = 範囲選択 / F = 全体表示
      */
-    class GraphEditorHost final
+    class NANAMI_API GraphEditorHost final
     {
     public:
         GraphEditorHost();
@@ -46,8 +47,8 @@ namespace NanamiEngine::Module::Gui::Graph
     };
 
     /** @brief ノードの見た目テンプレートを作る（入出力スロット名は持たない） */
-    [[nodiscard]] GraphEditor::Template MakeNodeTemplate(ImU32 headerColor, ImU8 inputCount, ImU8 outputCount);
+    [[nodiscard]] NANAMI_API GraphEditor::Template MakeNodeTemplate(ImU32 headerColor, ImU8 inputCount, ImU8 outputCount);
 
     /** @brief 開いている全 InspectorWindow に対象を表示させる */
-    void ShowInInspector(const std::weak_ptr<Object::IObject>& object);
+    NANAMI_API void ShowInInspector(const std::weak_ptr<Object::IObject>& object);
 }

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <filesystem>
 #include <memory>
 #include <string>
@@ -21,7 +22,7 @@ namespace NanamiEngine::Core::Application::Configuration
      * @brief Build Settings ウィンドウで Game 版をビルドするときの設定。
      *        製品名・起動シーン・クライアント版はゲームも読むので ProjectConfig/Build/Runtime/ に置いて同梱し、残りはエディタ専用
      */
-    class BuildConfiguration final
+    class NANAMI_API BuildConfiguration final
     {
     public:
         static void Load();

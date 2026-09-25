@@ -54,8 +54,7 @@ void Asset::AnimationTreeFile::OnDrawGui()
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::AnimationTreeFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::AnimationTreeFile);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::AnimationTreeFile, NanamiEngine::Module::Asset::AssetBase);
 REGISTER_ASSET(AnimationTreeFile, ANIMATION_TREE_FILE_EXTENSION_LABEL)
 REGISTER_CREATABLE_ASSET_EXTENSION("AnimationTree", ANIMATION_TREE_FILE_EXTENSION_LABEL, "Animation")
 #pragma endregion

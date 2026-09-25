@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Effekseer / EffekseerForDXLib を /MD で再ビルドするための強制設定 (tools/effekseer_md/README.md)。
+     build_effekseer_md.ps1 が作業フォルダの直下に置く。MSBuild はプロジェクトの親フォルダをたどってこのファイルを
+     最後に読むので、CMake が生成した .vcxproj や Dev/*.vcxproj に直接書かれた RuntimeLibrary より優先される -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'!='Debug'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
+</Project>

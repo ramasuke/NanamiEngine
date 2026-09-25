@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include "../../../../../Module/Component/ComponentBase.h"
 #include "../../../../../Module/LifeCycleCallback/Update/IUpdatable.h"
@@ -7,7 +8,7 @@
 
 namespace NanamiEngine::Module::Component
 {
-    class Editor3DCamera final
+    class NANAMI_API Editor3DCamera final
     {
     public:
         Editor3DCamera();

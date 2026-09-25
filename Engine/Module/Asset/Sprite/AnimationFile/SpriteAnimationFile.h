@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../SpriteFile.h"
 #include "../../../../Core/Object/Field/Field.h"
 
@@ -6,7 +7,7 @@ namespace NanamiEngine::Module::Asset
 {
     constexpr auto SPRITE_ANIMATION_FILE_EXTENSION_LABEL = ".spriteAnimation";
     
-    class SpriteAnimationFile final : public AssetBase,
+    class NANAMI_API SpriteAnimationFile final : public AssetBase,
                                       public LifeCycleCallback::IEnablableAsset
     {
     public:

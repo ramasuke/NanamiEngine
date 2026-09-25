@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "fwd.hpp"
 #include "../ComponentBase.h"
 #include "../../../Core/Object/Field/Field.h"
@@ -8,7 +9,7 @@
 
 namespace NanamiEngine::Module::Component
 {
-    class ParticleSystem final : public ComponentBase,
+    class NANAMI_API ParticleSystem final : public ComponentBase,
                                  public LifeCycleCallback::IUpdatable,
                                  public LifeCycleCallback::IInitRenderable,
                                  public LifeCycleCallback::IRenderable

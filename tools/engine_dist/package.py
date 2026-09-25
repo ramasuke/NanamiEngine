@@ -4,10 +4,13 @@
 
     engine.json                      {"name", "version", "builtAt"}
     NanamiEngine.props               共通のビルド設定 (NanamiEngineDir = このフォルダ)
-    NanamiEngine.Game.props          ゲーム exe の設定 (lib/<Mode>/<Config>/NanamiEngine.lib をリンク)
+    NanamiEngine.Game.props          ゲーム exe の設定 (lib/<Mode>/<Config>/NanamiEngine.lib をリンク、Editor では DLL を exe の隣へコピー)
     stdafx.h / stdafx.cpp            プリコンパイル済みヘッダ。各ゲームプロジェクトがコンパイルする
+    Main.cpp                         WinMain / NvOptimusEnablement。各ゲームプロジェクトがコンパイルする (NanamiEngine.Game.props 経由)
     Engine/ Packages/ Libs/          ヘッダとサードパーティのライブラリ (.c/.cpp は含まない)
-    lib/<Editor|Game>/<Debug|Release>/NanamiEngine.lib
+    lib/Game/<Debug|Release>/NanamiEngine.lib                      出荷用の静的 lib
+    lib/Editor/<Debug|Release>/NanamiEngine.{lib,dll,pdb}          エディタ用の DLL と import lib (docs/HotReload.md 段階 2)
+    lib/Editor/<Debug|Release>/NanamiHost.{exe,pdb}                ゲーム DLL を読む Host exe (段階 3)。props が <Project>.exe の名前でコピーする
     Template/                        新規プロジェクトのテンプレート (トークンは NanamiHub が埋める)
 """
 
@@ -23,7 +26,10 @@ from pathlib import Path
 MODES = ("Editor", "Game")
 CONFIGURATIONS = ("Debug", "Release")
 SOURCE_DIRECTORIES = ("Engine", "Packages", "Libs")
-ROOT_FILES = ("NanamiEngine.props", "NanamiEngine.Game.props", "stdafx.h", "stdafx.cpp")
+ROOT_FILES = ("NanamiEngine.props", "NanamiEngine.Game.props", "stdafx.h", "stdafx.cpp", "Main.cpp")
+# Editor モードはエンジンが DLL (import lib + dll + pdb)。Game モードは静的 lib だけ
+SHARED_MODES = ("Editor",)
+SHARED_ARTIFACTS = ("NanamiEngine.dll", "NanamiEngine.pdb", "NanamiHost.exe", "NanamiHost.pdb")
 # NOTE: lib に焼き込まれるので配らない
 EXCLUDED_SUFFIXES = {".c", ".cc", ".cpp", ".cxx", ".vcxproj", ".filters", ".user", ".obj", ".pdb", ".ilk", ".tlog"}
 EXCLUDED_NAMES = {"desktop.ini", "thumbs.db", ".ds_store"}
@@ -65,6 +71,14 @@ def lib_path(root: Path, mode: str, configuration: str) -> Path:
     return root / "lib" / mode / configuration / "NanamiEngine.lib"
 
 
+def lib_artifacts(root: Path, mode: str, configuration: str) -> list[Path]:
+    """その構成で配るもの: 静的 lib / import lib と、DLL 構成なら dll + pdb"""
+    paths = [lib_path(root, mode, configuration)]
+    if mode in SHARED_MODES:
+        paths += [lib_path(root, mode, configuration).with_name(name) for name in SHARED_ARTIFACTS]
+    return paths
+
+
 def build_libs(repo: Path, msbuild: Path, modes=MODES, configurations=CONFIGURATIONS) -> None:
     for mode in modes:
         for configuration in configurations:
@@ -95,7 +109,8 @@ def _copy_tree(source: Path, destination: Path) -> int:
 
 
 def assemble(repo: Path, out_dir: Path, version: str, *, allow_missing_libs: bool = False) -> PackageResult:
-    missing = [f"{m}|{c}" for m in MODES for c in CONFIGURATIONS if not lib_path(repo, m, c).is_file()]
+    missing = [f"{m}|{c}" for m in MODES for c in CONFIGURATIONS
+               if not all(p.is_file() for p in lib_artifacts(repo, m, c) if p.suffix != ".pdb")]
     if missing and not allow_missing_libs:
         raise PackageError("ビルドされていない lib があります: " + ", ".join(missing))
     if out_dir.exists():
@@ -110,9 +125,10 @@ def assemble(repo: Path, out_dir: Path, version: str, *, allow_missing_libs: boo
         count += 1
     for mode in MODES:
         for configuration in CONFIGURATIONS:
-            source = lib_path(repo, mode, configuration)
-            if source.is_file():
-                target = lib_path(out_dir, mode, configuration)
+            for source in lib_artifacts(repo, mode, configuration):
+                if not source.is_file():
+                    continue
+                target = out_dir / source.relative_to(repo)
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source, target)
                 count += 1

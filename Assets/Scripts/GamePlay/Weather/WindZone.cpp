@@ -1,6 +1,6 @@
 ﻿#include "WindZone.h"
 #include <cmath>
-#include <DxLib.h>
+#include "gtc/constants.hpp"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Weather
@@ -15,7 +15,7 @@ namespace GamePlay::Weather
 
         glm::vec2 ToDirection(const float degree)
         {
-            const float radian = degree * DX_PI_F / 180.0f;
+            const float radian = degree * glm::pi<float>() / 180.0f;
             return {std::cos(radian), std::sin(radian)};
         }
     }

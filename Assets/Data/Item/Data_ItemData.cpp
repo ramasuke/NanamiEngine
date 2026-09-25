@@ -57,6 +57,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(ItemData, ITEM_DATA_EXTENSION_LABEL, "Item")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::ItemData);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::ItemData);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::ItemData, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

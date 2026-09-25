@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <../JoltPhysics/Jolt/Jolt.h>
 #include <../JoltPhysics/Jolt/Physics/Body/BodyID.h>
 
@@ -16,7 +17,7 @@ namespace NanamiEngine::Module::GameObject
 
 namespace NanamiEngine::Module::Physics
 {
-    struct ContactKey final
+    struct NANAMI_API ContactKey final
     {
         JPH::BodyID a_;
         JPH::BodyID b_;
@@ -24,23 +25,23 @@ namespace NanamiEngine::Module::Physics
         bool operator==(const ContactKey& rhs) const;
     };
 
-    struct ContactKeyHash final
+    struct NANAMI_API ContactKeyHash final
     {
         size_t operator()(const ContactKey& k) const;
     };
     
-    struct CachedContact final
+    struct NANAMI_API CachedContact final
     {
         void* sensorUserData_;
         void* otherUserData_ ;
     };
 
-    struct PendingExit final 
+    struct NANAMI_API PendingExit final 
     {
         ContactKey key_;
     };
     
-    struct PendingEnter final
+    struct NANAMI_API PendingEnter final
     {
         ContactKey key_;
         Manifold maniFold_;

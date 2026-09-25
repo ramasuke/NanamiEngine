@@ -4,6 +4,8 @@
 #include <cmath>
 
 #include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Core/Platform/Draw2D/Draw2D.h"
+#include "Engine/Core/Platform/Render/Camera.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "../../../Core/Game/PlayerAvatar/CameraGroup/PlayerAvatarCameraGroupBase.h"
@@ -169,15 +171,13 @@ namespace GamePlay::Ui
         // NOTE: GetCameraPosition との距離ではなく、画面位置と同じ ConvWorldPosToScreenPos で
         //       「1ユニットが何ピクセルに映るか」を測り、referenceDistance_ 先でのそれとの比にする
         const float maxRate = std::max(minDistanceScale_, maxDistanceScale_);
-        const float tanHalfFov = std::tan(GetCameraFov() * 0.5f);
-        int screenWidth = 0, screenHeight = 0;
-        GetDrawScreenSize(&screenWidth, &screenHeight);
+        const float tanHalfFov = std::tan(Platform::Render::Camera::Fov() * 0.5f);
+        const int screenHeight = Platform::Draw2D::ScreenSize().y;
         if (referenceDistance_ <= 0.0f || tanHalfFov <= 0.0f || screenHeight <= 0)
             return maxRate;
 
-        const VECTOR pos     = VGet(worldPos.x, worldPos.y, worldPos.z);
-        const VECTOR a       = ConvWorldPosToScreenPos(pos);
-        const VECTOR b       = ConvWorldPosToScreenPos(VAdd(pos, GetCameraUpVector()));
+        const glm::vec3 a    = Platform::Render::Camera::WorldToScreen(worldPos);
+        const glm::vec3 b    = Platform::Render::Camera::WorldToScreen(worldPos + Platform::Render::Camera::UpVector());
         const float  current = std::hypot(b.x - a.x, b.y - a.y);
         const float  reference = static_cast<float>(screenHeight) * 0.5f / (tanHalfFov * referenceDistance_);
 
@@ -194,14 +194,14 @@ namespace GamePlay::Ui
         if (!sprite || alpha <= 0.0f || scale <= 0.0f)
             return;
 
-        const VECTOR screenPos = ConvWorldPosToScreenPos(VGet(worldPos.x, worldPos.y, worldPos.z));
+        const glm::vec3 screenPos = Platform::Render::Camera::WorldToScreen(worldPos);
         // z が 0..1 の外ならカメラの視界外（背後など）
         if (screenPos.z < 0.0f || screenPos.z > 1.0f)
             return;
 
-        SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(std::clamp(alpha, 0.0f, 1.0f) * 255.0f));
-        DrawRotaGraphF(screenPos.x, screenPos.y, scale * DistanceScaleRate(worldPos), angle, sprite->GetDxLibHandle(), TRUE);
-        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+        Platform::Draw2D::SetBlendModeAlpha(LibCore::Dxlib::BlendMode::Alpha, alpha);
+        Platform::Draw2D::DrawRotaGraph(glm::vec2(screenPos.x, screenPos.y), scale * DistanceScaleRate(worldPos), angle, sprite->GetDxLibHandle());
+        Platform::Draw2D::SetBlendMode(LibCore::Dxlib::BlendMode::NoBlend, 255);
     }
 
     void LockOnReticle::OnDrawGui()

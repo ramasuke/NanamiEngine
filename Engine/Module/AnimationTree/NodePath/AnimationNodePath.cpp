@@ -136,6 +136,5 @@ void AnimationTree::AnimationNodePath::SubscribeUpdateNodeAnimationCallback()
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationNodePath);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Object::IObject, NanamiEngine::Module::AnimationTree::AnimationNodePath);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationNodePath, NanamiEngine::Module::Object::IObject);
 #pragma endregion

@@ -43,6 +43,5 @@ void Asset::NpcChat::OnDrawGui()
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(NpcChat, FRIENDLY_NPC_CHAT_EXTENSION_LABEL, "Npc::Friendly")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::NpcChat);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::NpcChat);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::NpcChat, NanamiEngine::Module::Asset::AssetBase);
 #pragma endregion

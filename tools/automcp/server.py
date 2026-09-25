@@ -274,6 +274,18 @@ def build_server(client: EngineClient | None = None, poll_interval: float = 0.1)
         return _dump(call("time.set_scale", {"scale": scale}))
 
     @tool
+    def hotreload_status() -> str:
+        """Game DLL hot-reload state: loaded, generation, keepOldModules (safe mode), source path and the last reload report."""
+        return _dump(call("hotreload.status"))
+
+    @tool
+    def hotreload_reload(keep_old_modules: bool | None = None) -> str:
+        """Swap the game DLL at the end of this frame (the toolbar's Reload; build the DLL first). keep_old_modules
+        optionally sets the safe mode (old DLL is not FreeLibrary'd) before reloading. Read the outcome with hotreload_status / log_tail."""
+        args = {} if keep_old_modules is None else {"keepOldModules": keep_old_modules}
+        return _dump(call("hotreload.reload", args))
+
+    @tool
     def camera_get() -> str:
         """Editor free-camera pose and the camera DxLib actually rendered with (Cinemachine while playing)."""
         return _dump(call("camera.get"))

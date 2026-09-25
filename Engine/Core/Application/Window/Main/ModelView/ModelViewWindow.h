@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <optional>
 
@@ -21,7 +22,7 @@ namespace NanamiEngine::Core::MainWindow
      *  PrefabViewWindow と同じくバックバッファへ 3D 描画し、ImGui の "ModelView" パネルを上に重ねる。
      *  プレビュー用 GameObject は ModelPreviewStage が 1 つだけ持ち、一覧で選択したモデルを差し替える。
      */
-    class ModelViewWindow final : public MainWindowBase<Module::Asset::Mv1File>
+    class NANAMI_API ModelViewWindow final : public MainWindowBase<Module::Asset::Mv1File>
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
 

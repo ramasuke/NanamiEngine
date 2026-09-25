@@ -1,8 +1,8 @@
 ﻿#include "ShopPresenter.h"
+#include "Assets/Scripts/Core/Input/InputAliases.h"
 
 #include <algorithm>
 
-#include "DxLib.h"
 
 #include "../../../Prop/MerchantStall/Prop_MerchantStall.h"
 #include "../../../../Core/Game/PlayerAvatar/IPlayerAvatar.h"
@@ -144,20 +144,19 @@ namespace GamePlay::Ui
 
     ShopPresenter::Keys ShopPresenter::ReadKeys()
     {
-        XINPUT_STATE xInput{};
-        GetJoypadXInputState(DX_INPUT_PAD1, &xInput);
+        const auto xInput = Gamepad::Get();
 
         return Keys{
-            .prev    = CheckHitKey(KEY_INPUT_UP) || CheckHitKey(KEY_INPUT_W)
-                       || xInput.Buttons[XINPUT_BUTTON_DPAD_UP] || xInput.ThumbLY > SHOP_STICK_DEADZONE,
-            .next    = CheckHitKey(KEY_INPUT_DOWN) || CheckHitKey(KEY_INPUT_S)
-                       || xInput.Buttons[XINPUT_BUTTON_DPAD_DOWN] || xInput.ThumbLY < -SHOP_STICK_DEADZONE,
-            .less    = CheckHitKey(KEY_INPUT_LEFT) || CheckHitKey(KEY_INPUT_A)
-                       || xInput.Buttons[XINPUT_BUTTON_DPAD_LEFT] || xInput.ThumbLX < -SHOP_STICK_DEADZONE,
-            .more    = CheckHitKey(KEY_INPUT_RIGHT) || CheckHitKey(KEY_INPUT_D)
-                       || xInput.Buttons[XINPUT_BUTTON_DPAD_RIGHT] || xInput.ThumbLX > SHOP_STICK_DEADZONE,
-            .confirm = CheckHitKey(KEY_INPUT_RETURN) || xInput.Buttons[XINPUT_BUTTON_A],
-            .cancel  = CheckHitKey(KEY_INPUT_ESCAPE) || xInput.Buttons[XINPUT_BUTTON_B],
+            .prev    = Keyboard::IsDown(Key::Up) || Keyboard::IsDown(Key::W)
+                       || xInput.IsDown(GamepadButton::DPadUp) || xInput.thumbLY > SHOP_STICK_DEADZONE,
+            .next    = Keyboard::IsDown(Key::Down) || Keyboard::IsDown(Key::S)
+                       || xInput.IsDown(GamepadButton::DPadDown) || xInput.thumbLY < -SHOP_STICK_DEADZONE,
+            .less    = Keyboard::IsDown(Key::Left) || Keyboard::IsDown(Key::A)
+                       || xInput.IsDown(GamepadButton::DPadLeft) || xInput.thumbLX < -SHOP_STICK_DEADZONE,
+            .more    = Keyboard::IsDown(Key::Right) || Keyboard::IsDown(Key::D)
+                       || xInput.IsDown(GamepadButton::DPadRight) || xInput.thumbLX > SHOP_STICK_DEADZONE,
+            .confirm = Keyboard::IsDown(Key::Return) || xInput.IsDown(GamepadButton::A),
+            .cancel  = Keyboard::IsDown(Key::Escape) || xInput.IsDown(GamepadButton::B),
         };
     }
 

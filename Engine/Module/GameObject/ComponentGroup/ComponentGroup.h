@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <vector>
 
@@ -17,7 +18,7 @@ namespace NanamiEngine::Module::GameObject
 
 namespace NanamiEngine::Module::GameObject
 {
-    class ComponentGroup final
+    class NANAMI_API ComponentGroup final
     {
     public:
         template <class Archive>

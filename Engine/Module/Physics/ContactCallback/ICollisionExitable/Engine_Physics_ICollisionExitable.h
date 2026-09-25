@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 
 #include "../../../GameObject/Interface/IGameObject.h"
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::Module::Physics::Callback
 {
-    class ICollisionExitable
+    class NANAMI_API ICollisionExitable
     {
     public:
         virtual ~ICollisionExitable() = default;

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -13,7 +14,7 @@ namespace NanamiEngine::Module::Network
         Receive,
     };
 
-    struct PacketLogRecord
+    struct NANAMI_API PacketLogRecord
     {
         PacketDirection direction;
         Core::Network::PacketType rawType;
@@ -27,11 +28,11 @@ namespace NanamiEngine::Module::Network
     // 取っているためスレッドセーフ。ネットワークスレッドから呼んでも良い。
 
     /** @brief パケットの送受信を記録し、同じ内容をEngineLog（Module::Log）にも流す */
-    void LogPacket(PacketDirection direction, Core::Network::PacketType rawType,
+    NANAMI_API void LogPacket(PacketDirection direction, Core::Network::PacketType rawType,
                    Core::Network::DeliveryMode delivery, std::size_t byteSize);
 
     /** @brief NetworkLoggerWindow等が使用するスレッドセーフなログ履歴のスナップショットを返す */
-    std::vector<PacketLogRecord> PacketLogHistory();
+    NANAMI_API std::vector<PacketLogRecord> PacketLogHistory();
     /** @brief 保持しているパケットログ履歴をクリアする */
-    void ClearPacketLogHistory();
+    NANAMI_API void ClearPacketLogHistory();
 }

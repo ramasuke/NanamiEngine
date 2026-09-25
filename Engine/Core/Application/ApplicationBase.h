@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <optional>
 #include "Window/Main/Group/MainWindowGroup.h"
@@ -40,12 +41,12 @@ namespace NanamiEngine::Core::FileSystem
 
 namespace NanamiEngine::Core::Application
 {
-    class ApplicationBase
+    class NANAMI_API ApplicationBase
     {
     public:
         ApplicationBase();
         virtual ~ApplicationBase() = default;
-        /** メインループ。フレーム共通処理を行い、アプリ固有処理は OnFrame に委ねる */
+        /** メインループ。フレーム共通処理を行う */
         void Run();
         virtual void OnExit() = 0;
         template <MainWindow::MainWindowType T>
@@ -61,11 +62,14 @@ namespace NanamiEngine::Core::Application
         static Physics                                       & Physics             ();
         static void                                            ResetPhysics        ();
         static void                                            ResetAssetsDirectory();
+        static void                                            ReleaseAssetsDirectory();
         static std::shared_ptr<MainWindow::GameWindow>         GameWindow          ();
         static Network::PrefabObjectRegistry                 & NetworkPrefabObjectRegistry();
+        /** @brief メインウィンドウに WM_CLOSE を送って終了する */
+        static void                                            RequestClose();
         
     protected:
-        /** 1フレーム分のアプリ固有処理。ClearDrawScreen / Time::Update の後、ScreenFlip の前に呼ばれる */
+        /** 1フレーム分のアプリ固有処理 */
         virtual void OnFrame() = 0;
 
         static std::shared_ptr<MainWindow::IMainWindow>& CurrentMainWindow    ();

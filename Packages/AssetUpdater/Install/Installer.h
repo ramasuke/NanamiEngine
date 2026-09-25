@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
 #include "AssetUpdaterPaths.h"
@@ -6,14 +7,14 @@
 
 namespace NanamiEngine::AssetUpdater
 {
-    struct ApplyResult
+    struct NANAMI_API ApplyResult
     {
         bool        ok = false;
         std::string error;
     };
 
     /** paths の Assets/ へ、一時置き場に落としたファイルを入れる */
-    class Installer final
+    class NANAMI_API Installer final
     {
     public:
         explicit Installer(AssetUpdaterPaths paths);

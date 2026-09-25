@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
 #include "AutoMcpJson.h"
 
 namespace NanamiEngine::Core::Application::AutoMcp
 {
-    struct AutoMcpCapture
+    struct NANAMI_API AutoMcpCapture
     {
         int sourceHandle = -1;
         int width        = 0;
@@ -14,7 +15,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
     class AutoMcpServer;
 
-    class AutoMcpScreenshot final
+    class NANAMI_API AutoMcpScreenshot final
     {
         friend class AutoMcpServer;
 

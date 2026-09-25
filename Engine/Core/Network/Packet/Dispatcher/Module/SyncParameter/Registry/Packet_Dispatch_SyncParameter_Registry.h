@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../../../Object/SyncParameter/Id/Network_SyncParameter_Id.h"
 
 namespace NanamiEngine::Core::Network
@@ -8,7 +9,7 @@ namespace NanamiEngine::Core::Network
 
 namespace NanamiEngine::Core::Network
 {
-    class SyncParameterRegistry final
+    class NANAMI_API SyncParameterRegistry final
     {
     public:
         SyncParameterRegistry() = default;

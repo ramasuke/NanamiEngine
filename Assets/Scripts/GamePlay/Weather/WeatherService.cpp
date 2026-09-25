@@ -2,7 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
-#include "DxLib.h"
+#include "Engine/Core/Platform/Render/Environment.h"
 #include "../Sound/SoundPlayer.h"
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Core/Application/Configuration/ApplicationConfiguration.h"
@@ -174,13 +174,13 @@ namespace GamePlay::Weather
     {
         if (stormIntensity_ <= 0.0f)
         {
-            SetFogEnable(FALSE);
+            Platform::Render::Environment::SetFogEnabled(false);
             return;
         }
 
-        SetFogEnable(TRUE);
-        SetFogColor(stormFogColor_.R(), stormFogColor_.G(), stormFogColor_.B());
-        SetFogStartEnd(
+        Platform::Render::Environment::SetFogEnabled(true);
+        Platform::Render::Environment::SetFogColor(stormFogColor_);
+        Platform::Render::Environment::SetFogStartEnd(
             Lerp(clearFogStart_, stormFogStart_, stormIntensity_),
             Lerp(clearFogEnd_,   stormFogEnd_,   stormIntensity_));
     }
@@ -189,7 +189,7 @@ namespace GamePlay::Weather
     {
         const glm::vec3 base = Lerp(clearLightColor_, stormLightColor_.ToVec3(), stormIntensity_);
         const glm::vec3 lit  = Lerp(base, clearLightColor_ * lightningLightBoost_, LightningBrightness());
-        SetLightDifColor(GetColorF(lit.r, lit.g, lit.b, 1.0f));
+        Platform::Render::Environment::SetLightDiffuseColor(lit);
 
         if (flashRenderer_)
             flashRenderer_->SetBlendRate(static_cast<int>(LightningBrightness() * flashMaxBlendRate_));
@@ -219,8 +219,8 @@ namespace GamePlay::Weather
 
     void WeatherService::RestoreClearWeather() const
     {
-        SetFogEnable(FALSE);
-        SetLightDifColor(GetColorF(clearLightColor_.r, clearLightColor_.g, clearLightColor_.b, 1.0f));
+        Platform::Render::Environment::SetFogEnabled(false);
+        Platform::Render::Environment::SetLightDiffuseColor(clearLightColor_);
         if (skyDomeUpper_) skyDomeUpper_->SetTint(clearSkyTint_.ToVec3());
         if (skyDomeLower_) skyDomeLower_->SetTint(clearSkyTint_.ToVec3());
         if (flashRenderer_) flashRenderer_->SetBlendRate(0);

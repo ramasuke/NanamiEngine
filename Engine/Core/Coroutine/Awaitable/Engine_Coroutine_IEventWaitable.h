@@ -1,9 +1,10 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <coroutine>
 
 namespace Coroutine
 {
-    class IEventWaitable
+    class NANAMI_API IEventWaitable
     {
     public:
         virtual ~IEventWaitable() = default;

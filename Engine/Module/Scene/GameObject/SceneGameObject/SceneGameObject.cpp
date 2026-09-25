@@ -277,6 +277,5 @@ void Scene::SceneGameObject::OnDrawTreeGui(const bool drawChildren)
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Scene::SceneGameObject);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::GameObject::IGameObject, NanamiEngine::Scene::SceneGameObject);
+NANAMI_REGISTER_TYPE(NanamiEngine::Scene::SceneGameObject, NanamiEngine::Module::GameObject::IGameObject);
 #pragma endregion

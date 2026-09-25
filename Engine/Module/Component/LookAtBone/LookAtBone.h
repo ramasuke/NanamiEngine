@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <optional>
 #include <string>
 #include <vector>
@@ -15,11 +16,11 @@ namespace NanamiEngine::Module::Component
      * @brief Animator がアニメーションを適用した後に首・頭のボーンを回し、ターゲットの方を見させる
      * @note  bones_ は親から子の順に並べる。回転量は weight の比で各ボーンに配分する
      */
-    class LookAtBone final : public ComponentBase,
+    class NANAMI_API LookAtBone final : public ComponentBase,
                              public IAnimationPoseModifier
     {
     public:
-        struct BoneWeight
+        struct NANAMI_API BoneWeight
         {
             std::string boneName;
             float       weight = 0.5f;

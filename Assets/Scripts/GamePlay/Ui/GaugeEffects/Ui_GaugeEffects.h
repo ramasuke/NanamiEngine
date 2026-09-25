@@ -34,7 +34,7 @@ namespace GamePlay::Ui
         void StartFullEffect();
         void DrawHealTrail(const NanamiUi::Slider& slider, float value) const;
         void DrawFullEffect(const NanamiUi::Slider& slider, float value) const;
-        void DrawBand(const NanamiUi::Slider& slider, float alongMin, float alongMax, float acrossMin, float acrossMax, unsigned int color) const;
+        void DrawBand(const NanamiUi::Slider& slider, float alongMin, float alongMax, float acrossMin, float acrossMax, const Color32& color) const;
         void DrawTicks(const NanamiUi::Slider& slider) const;
         void DrawTip(const NanamiUi::Slider& slider, float value) const;
 

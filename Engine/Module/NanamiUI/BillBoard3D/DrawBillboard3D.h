@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/Sprite/SpriteFile.h"
 #include "../../Component/ComponentBase.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    class Billboard3D final : public Component::ComponentBase,
+    class NANAMI_API Billboard3D final : public Component::ComponentBase,
                               public LifeCycleCallback::IInitRenderable,
                               public LifeCycleCallback::IUserInterfaceRenderable
     {

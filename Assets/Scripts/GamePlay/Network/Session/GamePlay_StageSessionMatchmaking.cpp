@@ -1,7 +1,8 @@
 ﻿#include "GamePlay_StageSessionMatchmaking.h"
 
+#include <random>
 #include <utility>
-#include "DxLib.h"
+#include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Core/Coroutine/Awaitable/WaitUntil/Coroutine_WaitUntil.h"
 #include "Engine/Core/Coroutine/Awaitable/Yield/Coroutine_WaitYield.h"
 #include "Engine/Core/Network/Discovery/LanSessionFinder.h"
@@ -34,7 +35,7 @@ namespace GamePlay::Network
         const auto locked = runner.lock();
         return !locked
             || locked->GetConnectionState() != Core::Network::ConnectionState::Connecting
-            || GetNowCount() - startedMs >= STAGE_SESSION_CONNECT_TIMEOUT_MSECS;
+            || Time::NowMilliseconds() - startedMs >= STAGE_SESSION_CONNECT_TIMEOUT_MSECS;
     }
 
     Coroutine::Task<std::optional<std::string>> StageMatchmaker::JoinOrHostAsync(
@@ -55,7 +56,7 @@ namespace GamePlay::Network
                 locked->StartRelay(stageKey, relay, room);
             }
 
-            const int relayStartedMs = GetNowCount();
+            const int relayStartedMs = Time::NowMilliseconds();
             co_await Coroutine::WaitUntil([runner, relayStartedMs] { return IsConnectAttemptSettled(runner, relayStartedMs); });
 
             const auto locked = runner.lock();
@@ -79,12 +80,13 @@ namespace GamePlay::Network
         std::optional<Core::Network::HostEndpoint> host;
         {
             Core::Network::LanSessionFinder finder(stageKey);
-            const int searchMsecs = STAGE_SESSION_SEARCH_MSECS + GetRand(STAGE_SESSION_SEARCH_JITTER_MSECS);
-            const int startedMs   = GetNowCount();
+            static std::mt19937 jitterEngine{ std::random_device{}() };
+            const int searchMsecs = STAGE_SESSION_SEARCH_MSECS + std::uniform_int_distribution<int>(0, STAGE_SESSION_SEARCH_JITTER_MSECS)(jitterEngine);
+            const int startedMs   = Time::NowMilliseconds();
             while (true)
             {
                 finder.Update();
-                if (finder.Found() || GetNowCount() - startedMs >= searchMsecs)
+                if (finder.Found() || Time::NowMilliseconds() - startedMs >= searchMsecs)
                     break;
                 co_await Coroutine::WaitYield();
             }
@@ -100,7 +102,7 @@ namespace GamePlay::Network
                 locked->StartClient(*host);
             }
 
-            const int connectStartedMs = GetNowCount();
+            const int connectStartedMs = Time::NowMilliseconds();
             co_await Coroutine::WaitUntil([runner, connectStartedMs] { return IsConnectAttemptSettled(runner, connectStartedMs); });
 
             const auto locked = runner.lock();

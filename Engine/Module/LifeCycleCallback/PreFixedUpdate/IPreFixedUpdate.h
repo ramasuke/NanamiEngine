@@ -1,10 +1,11 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Core/Object/IObject.h"
 #include "../cereal/include/cereal/cereal.hpp"
 
 namespace NanamiEngine::Module::LifeCycleCallback
 {
-    class IPreFixedUpdate : public virtual Object::IObject
+    class NANAMI_API IPreFixedUpdate : public virtual Object::IObject
     {
     public:
         virtual ~IPreFixedUpdate() = default;

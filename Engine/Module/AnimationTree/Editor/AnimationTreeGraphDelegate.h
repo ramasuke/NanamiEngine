@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -26,7 +27,7 @@ namespace NanamiEngine::Module::AnimationTree
      *        遷移（AnimationNodePath）はリンクとして表示し、出力スロット → 入力スロットのドラッグで追加、
      *        クリックで Inspector 表示、右クリック / Delete キーで削除する。
      */
-    class AnimationTreeGraphDelegate final : public GraphEditor::Delegate
+    class NANAMI_API AnimationTreeGraphDelegate final : public GraphEditor::Delegate
     {
     public:
         /**
@@ -71,7 +72,7 @@ namespace NanamiEngine::Module::AnimationTree
             Link
         };
 
-        struct LinkEntry
+        struct NANAMI_API LinkEntry
         {
             std::shared_ptr<AnimationNodePath> path;
             GraphEditor::NodeIndex             from;

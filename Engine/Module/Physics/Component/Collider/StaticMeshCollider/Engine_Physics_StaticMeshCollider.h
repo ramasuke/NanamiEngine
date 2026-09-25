@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../Engine_Physics_ColliderBase.h"
 #include "../../../../Component/ComponentBase.h"
 #include "../../../../Asset/MV1/MV1File.h"
@@ -8,7 +9,7 @@
 
 namespace NanamiEngine::Module::Component
 {
-    class StaticMeshCollider final : public ColliderBase,
+    class NANAMI_API StaticMeshCollider final : public ColliderBase,
                                      public LifeCycleCallback::IStartable
     {
     public:

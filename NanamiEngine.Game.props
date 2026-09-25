@@ -10,11 +10,70 @@
     <OutDir>$(ProjectDir)x64\Game\$(Configuration)\</OutDir>
     <IntDir>x64\Game\$(Configuration)\obj\</IntDir>
   </PropertyGroup>
-  <ItemDefinitionGroup>
+  <ItemGroup Condition="'$(NanamiEngineShared)'!='true'">
+    <!-- WinMain と NvOptimusEnablement は exe に無いといけない (docs/HotReload.md §8)。静的 lib 構成ではゲーム exe がコンパイルする。
+         DLL 構成では NanamiHost.exe (NanamiHost.vcxproj) が持つ -->
+    <ClCompile Include="$(NanamiEngineDir)Main.cpp" />
+  </ItemGroup>
+  <!-- 静的 lib 構成 (Game モード、または NanamiEngineShared=false) -->
+  <ItemDefinitionGroup Condition="'$(NanamiEngineShared)'!='true'">
     <Link>
       <AdditionalDependencies>$(NanamiEngineLib);%(AdditionalDependencies)</AdditionalDependencies>
       <!-- WARNING: 静的初期化子で自己登録するオブジェクトがリンカに捨てられないよう lib を丸ごとリンクする -->
       <AdditionalOptions>"/WHOLEARCHIVE:$(NanamiEngineLib)" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
+  <!-- DLL 構成ではプロジェクトの出力が DLL なので、Rider / VS の Run・Debug には Host をコピーした $(TargetName).exe を起動させる -->
+  <PropertyGroup Condition="'$(NanamiEngineShared)'=='true'">
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommand>$(OutDir)$(TargetName).exe</LocalDebuggerCommand>
+    <LocalDebuggerWorkingDirectory>$(ProjectDir)</LocalDebuggerWorkingDirectory>
+  </PropertyGroup>
+  <!-- DLL 構成 (Editor モード): exe はエンジンの import lib だけをリンクする (docs/HotReload.md §2)。
+       NANAMI_ENGINE_USE_DLL: NANAMI_API / IMGUI_API が dllimport になり、stdafx.h から DxLib / Effekseer が外れる
+       DX_LIB_NOT_DEFAULTPATH: DxLib の自動リンクを切る。ゲーム側に DxLib の呼び出しが残っていればリンクエラーで分かる -->
+  <ItemDefinitionGroup Condition="'$(NanamiEngineShared)'=='true'">
+    <ClCompile>
+      <PreprocessorDefinitions>NANAMI_ENGINE_USE_DLL;DX_LIB_NOT_DEFAULTPATH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(NanamiEngineLib);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <!-- DLL 構成では NanamiEngine.dll (+ .pdb) と Host exe をゲーム DLL の隣に置く。Host は $(TargetName).exe の名前にする
+       (起動コマンドや GameBuilder の手順が静的 lib のときと変わらない)。起動中の exe / DLL は SkipUnchangedFiles で触らない -->
+  <Target Name="NanamiCopyEngineDll" AfterTargets="Build" Condition="'$(NanamiEngineShared)'=='true' and '$(NanamiHotReloadBuild)'!='true'">
+    <ItemGroup>
+      <NanamiEngineDllFile Include="$(NanamiEngineLibDir)NanamiEngine.dll" Condition="Exists('$(NanamiEngineLibDir)NanamiEngine.dll')" />
+      <NanamiEngineDllFile Include="$(NanamiEngineLibDir)NanamiEngine.pdb" Condition="Exists('$(NanamiEngineLibDir)NanamiEngine.pdb')" />
+      <NanamiEngineDllFile Include="$(NanamiEngineLibDir)NanamiHost.pdb" Condition="Exists('$(NanamiEngineLibDir)NanamiHost.pdb')" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NanamiEngineDllFile)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(NanamiEngineLibDir)NanamiHost.exe" DestinationFiles="$(OutDir)$(TargetName).exe" SkipUnchangedFiles="true" Condition="Exists('$(NanamiEngineLibDir)NanamiHost.exe')" />
+  </Target>
+  <!-- エディタの Build & Reload (NanamiHotReloadBuild=true): ロード中の NanamiEngine.dll は差し替えられないのでコピーしない。
+       代わりに、エンジンがエディタ起動後に再ビルドされていたら (lib と exe の隣で更新時刻が違う) エラーにして知らせる -->
+  <Target Name="NanamiCheckEngineUnchanged" AfterTargets="Build" Condition="'$(NanamiEngineShared)'=='true' and '$(NanamiHotReloadBuild)'=='true'">
+    <PropertyGroup>
+      <_NanamiBuiltEngineDll>$(NanamiEngineLibDir)NanamiEngine.dll</_NanamiBuiltEngineDll>
+      <_NanamiRunningEngineDll>$(OutDir)NanamiEngine.dll</_NanamiRunningEngineDll>
+    </PropertyGroup>
+    <Error Condition="Exists('$(_NanamiBuiltEngineDll)') and Exists('$(_NanamiRunningEngineDll)') and '$([System.IO.File]::GetLastWriteTime($(_NanamiBuiltEngineDll)).Ticks)' != '$([System.IO.File]::GetLastWriteTime($(_NanamiRunningEngineDll)).Ticks)'"
+           Text="NanamiEngine.dll がエディタ起動後に再ビルドされています (エンジンのソースが変わった)。ホットリロードでは反映できないので、エディタを終了して Build &amp; Run し直してください" />
+  </Target>
+  <!-- /MD のゲーム版 (Release) は VC++ ランタイム DLL が要る。出力先に同梱し、GameBuilder が exe と一緒にコピーする
+       (Debug の CRT は再配布不可なので開発機の System32 に任せる) -->
+  <PropertyGroup>
+    <!-- NOTE: $(VCToolsRedistDir) は vcvars の環境変数で、MSBuild 単体 (Build Settings / CLI) では空。
+         MSBuild 自身が定義する $(VCToolsRedistInstallDir) を優先する -->
+    <NanamiCrtRedistDir Condition="'$(VCToolsRedistInstallDir)'!=''">$(VCToolsRedistInstallDir)</NanamiCrtRedistDir>
+    <NanamiCrtRedistDir Condition="'$(NanamiCrtRedistDir)'=='' and '$(VCToolsRedistDir)'!=''">$(VCToolsRedistDir)</NanamiCrtRedistDir>
+  </PropertyGroup>
+  <Target Name="NanamiCopyCrtRedist" AfterTargets="Build"
+          Condition="'$(NanamiUseDynamicCrt)'=='true' and '$(NanamiApplicationMode)'=='Game' and '$(Configuration)'=='Release' and '$(NanamiCrtRedistDir)'!=''">
+    <ItemGroup>
+      <NanamiCrtRedistDll Include="$(NanamiCrtRedistDir)$(Platform)\Microsoft.VC*.CRT\*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NanamiCrtRedistDll)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../MainWindowBase.h"
 #include "../../../Editor/Camera/Free/Editor3DCamera.h"
 #include "../../../../../Module/GameObject/PrefabGameObject/PrefabGameObject.h"
@@ -7,7 +8,7 @@
 
 namespace NanamiEngine::Core::MainWindow
 {
-    class PrefabViewWindow final : public virtual MainWindowBase<Module::GameObject::PrefabGameObject>
+    class NANAMI_API PrefabViewWindow final : public virtual MainWindowBase<Module::GameObject::PrefabGameObject>
     {
     public:
         PrefabViewWindow();

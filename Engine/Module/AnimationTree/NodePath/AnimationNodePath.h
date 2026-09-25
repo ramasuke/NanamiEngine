@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Core/Object/Field/Field.h"
 #include "../../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 #include "../Node/IAnimationNode.h"
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::Module::AnimationTree
 {
-    class AnimationNodePath final : public Object::IObject
+    class NANAMI_API AnimationNodePath final : public Object::IObject
     {
     public:
         void InitNodePath(const std::shared_ptr<BlackBoard::ParameterGroup>& additionParams,

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../../../Core/Network/Object/INetworkObject.h"
 #include "../../../../../Core/Network/ObjectId/Engine_Network_NetworkObjectId.h"
 #include "../../../../Component/ComponentBase.h"
@@ -6,7 +7,7 @@
 namespace NanamiEngine::Module::Network
 {
     /** Network上で共通のPrefabとして扱うために使用するクラス */
-    class NetworkGameObject final : public Component::ComponentBase,
+    class NANAMI_API NetworkGameObject final : public Component::ComponentBase,
                                     public Core::Network::INetworkObject
     {
     public:

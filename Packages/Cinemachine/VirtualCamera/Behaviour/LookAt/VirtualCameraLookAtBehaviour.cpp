@@ -68,6 +68,6 @@ void CineMachine::Behaviour::VirtualCameraLookAtBehaviour::LookAtTarget() const
 
 #pragma region SerializationMacro
 ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IAwakable, NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::VirtualCameraLookAtBehaviour);
 #pragma endregion

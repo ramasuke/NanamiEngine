@@ -1,9 +1,10 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "PlayerId/PlayerId.h"
 
 namespace NanamiEngine::Core::Network
 {
-    class IPlayerIdProvider
+    class NANAMI_API IPlayerIdProvider
     {
     public:
         virtual ~IPlayerIdProvider() = default;

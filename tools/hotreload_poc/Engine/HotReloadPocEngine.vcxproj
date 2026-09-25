@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{7A2C1E10-5B1D-4C4A-9E3F-0A1B2C3D4E01}</ProjectGuid>
+    <RootNamespace>HotReloadPocEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\HotReloadPoc.props" />
+  </ImportGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <!-- エンジン DLL 自身: NANAMI_API と cereal の共有スロット入口を dllexport にする -->
+      <PreprocessorDefinitions>NANAMI_ENGINE_BUILD_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Engine\Core\Api\NanamiModule.cpp" />
+    <ClCompile Include="..\..\..\Engine\Module\Serialization\Engine_Module_SerializationTypeRegistry.cpp" />
+    <ClCompile Include="..\..\..\Engine\Module\Serialization\Engine_Module_SharedStaticObject.cpp" />
+    <ClCompile Include="..\..\..\Engine\Module\Serialization\Engine_Module_SerializationModuleUnloader.cpp" />
+    <ClCompile Include="PocEngine.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Engine\Core\Api\NanamiApi.h" />
+    <ClInclude Include="..\..\..\Engine\Core\Api\NanamiModule.h" />
+    <ClInclude Include="..\..\..\Engine\Module\Serialization\Engine_Module_SerializationRegistration.h" />
+    <ClInclude Include="..\..\..\Engine\Module\Serialization\Engine_Module_SerializationTypeRegistry.h" />
+    <ClInclude Include="..\..\..\Engine\Module\Serialization\Engine_Module_SharedStaticObject.h" />
+    <ClInclude Include="..\..\..\Engine\Module\Serialization\Engine_Module_SerializationModuleUnloader.h" />
+    <ClInclude Include="PocEngine.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

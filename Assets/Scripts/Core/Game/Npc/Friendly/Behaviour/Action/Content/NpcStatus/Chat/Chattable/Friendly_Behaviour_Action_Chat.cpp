@@ -48,6 +48,5 @@ namespace GameCore::Npc::Friendly::Behaviour::Action
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::Chat)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::ActionBase, GameCore::Npc::Friendly::Behaviour::Action::Chat)
+NANAMI_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::Chat, GameCore::Npc::Friendly::Behaviour::ActionBase);
 #pragma endregion

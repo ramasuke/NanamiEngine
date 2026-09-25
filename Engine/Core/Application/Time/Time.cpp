@@ -49,6 +49,11 @@ namespace NanamiEngine
         return currentTime_;
     }
 
+    int Time::NowMilliseconds()
+    {
+        return GetNowCount();
+    }
+
     void Time::SetTimeScale(const float scale)
     {
         timeScale_ = scale;

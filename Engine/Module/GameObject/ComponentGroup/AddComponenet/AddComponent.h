@@ -1,17 +1,21 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
+#include "Engine/Core/Api/NanamiModule.h"
 #include "../../../Component/ComponentBase.h"
 
 namespace NanamiEngine::Module::GameObject
 {
-    class AddComponent final
+    class NANAMI_API AddComponent final
     {
     public:
         using DrawMenuFunc = void (*)(std::shared_ptr<Component::ComponentBase>& addComponent);
 
         static std::shared_ptr<Component::ComponentBase> OnDrawGui();
 
-        // NOTE: 標準メニューの後ろに order 昇順で並ぶ
+        // NOTE: 標準メニューの後ろに order 昇順で並ぶ。登録元モジュールは draw の置かれているモジュール
         static bool RegisterMenu(DrawMenuFunc draw, int order = 0);
+        /** @brief module が登録したメニューを消す。戻り値は消した数 */
+        static std::size_t UnregisterModule(Core::ModuleHandle module);
 
         ///addされる場合はoutComponentにComponentBaseのポインタを入れる
         ///addされない場合はnullptrを入れる

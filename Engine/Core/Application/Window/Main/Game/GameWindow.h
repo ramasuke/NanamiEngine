@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../MainWindowBase.h"
 #include "../../../Editor/Camera/Free/Editor3DCamera.h"
 #include "../Factory/MainWindowFactory.h"
@@ -17,7 +18,7 @@ namespace NanamiEngine::Core::Application::Game
 
 namespace NanamiEngine::Core::MainWindow
 {
-    class GameWindow final : public MainWindowBase<Scene::Scene>
+    class NANAMI_API GameWindow final : public MainWindowBase<Scene::Scene>
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
         friend class ::NanamiEngine::Core::Application::Game::GameApplication;
@@ -57,6 +58,20 @@ namespace NanamiEngine::Core::MainWindow
         [[nodiscard]] bool HasSceneLoadFailed() const;
         /** @brief BeginLoadSceneAsync で最後に読み込んだシーン */
         [[nodiscard]] std::weak_ptr<Scene::Scene> LastAsyncLoadedScene() const { return lastAsyncLoadedScene_; }
+
+        /** @brief 開いているシーンのメモリ上の写し (ゲーム DLL の差し替えをまたいで戻すため) */
+        struct NANAMI_API SceneSnapshot
+        {
+            std::string filePath;
+            std::string json;
+            bool        isMain = false;
+        };
+        /** @brief 開いている全シーンを JSON にして返す。失敗したシーンは飛ばす */
+        [[nodiscard]] std::vector<SceneSnapshot> TakeSceneSnapshots() const;
+        /** @brief プレイを止め、全シーンを破棄する (End と違って初期シーンは読み直さない) */
+        void UnloadAllScenes();
+        /** @brief TakeSceneSnapshots の写しからシーンを作り直す。1 つも戻せなければ初期シーンを読む */
+        void RestoreScenes(const std::vector<SceneSnapshot>& snapshots);
 
     private:
         [[nodiscard]] std::vector<std::shared_ptr<Scene::Scene>> Scenes() const;

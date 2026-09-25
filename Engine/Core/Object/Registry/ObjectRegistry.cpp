@@ -1,6 +1,9 @@
 ﻿#include "ObjectRegistry.h"
 
+#include <ranges>
+
 #include "../IObject.h"
+#include "../../Api/NanamiModule.h"
 
 namespace NanamiEngine::Core::FileSystem
 {
@@ -39,6 +42,22 @@ namespace NanamiEngine::Core::FileSystem
         {
             assets_.erase(it);
         }
+    }
+
+    std::size_t ObjectRegistry::PurgeExpired()
+    {
+        return std::erase_if(assets_, [](const auto& pair) { return pair.second.expired(); });
+    }
+
+    std::size_t ObjectRegistry::CountAliveOfModule(const ModuleHandle module) const
+    {
+        std::size_t count = 0;
+        for (const auto& weak : assets_ | std::views::values)
+        {
+            if (const auto shared = weak.lock(); shared && ModuleOfVTable(shared.get()) == module)
+                ++count;
+        }
+        return count;
     }
 }
 

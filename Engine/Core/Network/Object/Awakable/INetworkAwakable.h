@@ -1,9 +1,10 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../ObjectId/Engine_Network_NetworkObjectId.h"
 
 namespace NanamiEngine::Core::Network
 {
-    class INetworkAwakable
+    class NANAMI_API INetworkAwakable
     {
     public:
         virtual ~INetworkAwakable() = default;
