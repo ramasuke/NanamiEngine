@@ -36,6 +36,38 @@ namespace NanamiEngine::Core::Toolbar
             return count == 1 ? found : std::filesystem::path();
         }
 
+        /** @brief .sln の中でエンジン (NanamiEngine / NanamiHost) 以外の .vcxproj がちょうど 1 つならそれ = ゲームプロジェクト */
+        std::filesystem::path FindGameProject(const std::filesystem::path& solution)
+        {
+            std::ifstream stream(solution);
+            std::string   line;
+            std::filesystem::path found;
+            int count = 0;
+            while (std::getline(stream, line))
+            {
+                // Project("{...}") = "Name", "Path\Name.vcxproj", "{guid}"
+                if (line.rfind("Project(", 0) != 0)
+                    continue;
+                const std::size_t equal = line.find('=');
+                if (equal == std::string::npos)
+                    continue;
+                const std::size_t first = line.find('"', line.find(',', equal) + 1);
+                const std::size_t last  = first == std::string::npos ? std::string::npos : line.find('"', first + 1);
+                if (first == std::string::npos || last == std::string::npos)
+                    continue;
+                const std::string relative = line.substr(first + 1, last - first - 1);
+                const std::filesystem::path path = solution.parent_path() / std::filesystem::path(std::u8string(relative.begin(), relative.end()));
+                if (path.extension() != L".vcxproj")
+                    continue;
+                const std::wstring name = path.stem().wstring();
+                if (name == L"NanamiEngine" || name == L"NanamiHost")
+                    continue;
+                found = path;
+                ++count;
+            }
+            return count == 1 ? found : std::filesystem::path();
+        }
+
         const wchar_t* RunningConfigurationName()
         {
 #ifdef _DEBUG
@@ -100,15 +132,23 @@ namespace NanamiEngine::Core::Toolbar
             Module::LogError("HotReload: 作業ディレクトリに .sln がちょうど 1 つある必要があります");
             return;
         }
+        const std::filesystem::path gameProject = FindGameProject(solution);
+        if (gameProject.empty())
+        {
+            Module::LogError("HotReload: .sln の中にゲームの .vcxproj (NanamiEngine / NanamiHost 以外) がちょうど 1 つある必要があります: " + PathToUtf8(solution));
+            return;
+        }
 
         const std::filesystem::path logDirectory = std::filesystem::current_path(ec) / L"Logs" / L"HotReload";
         std::filesystem::create_directories(logDirectory, ec);
         logPath_      = logDirectory / L"GameBuild.log";
         errorLogPath_ = logDirectory / L"GameBuild.errors.log";
 
-        // GameBuilder と同じ形。Editor モード (既定) なので出来るのはゲーム DLL。エンジンは差分なしなら再リンクされない
-        const std::wstring commandLine = L"\"" + msBuild.wstring() + L"\" \"" + solution.wstring() + L"\""
+        // ゲームプロジェクトだけを組む (BuildProjectReferences=false)。ロード中の NanamiEngine.dll は差し替えられないので
+        // エンジンは触らず、NanamiHotReloadBuild で props のコピーを止め、エンジンが別途再ビルドされていればエラーにする
+        const std::wstring commandLine = L"\"" + msBuild.wstring() + L"\" \"" + gameProject.wstring() + L"\""
             L" -p:Configuration=" + std::wstring(RunningConfigurationName()) + L" -p:Platform=x64 -p:PreferredToolArchitecture=x64"
+            L" -p:BuildProjectReferences=false -p:NanamiHotReloadBuild=true"
             L" -m -nologo -nodeReuse:false -noConsoleLogger"
             L" \"-flp:LogFile=" + logPath_.wstring() + L";Verbosity=minimal;Encoding=UTF-8\""
             L" \"-flp1:LogFile=" + errorLogPath_.wstring() + L";ErrorsOnly;Encoding=UTF-8\"";
@@ -125,6 +165,7 @@ namespace NanamiEngine::Core::Toolbar
     {
         if (!buildPending_ || process_.IsRunning())
             return;
+        
         buildPending_ = false;
         if (process_.WasCanceled())
         {
@@ -151,6 +192,7 @@ namespace NanamiEngine::Core::Toolbar
         {
             if (line.empty())
                 continue;
+            
             Module::LogError(line);
             ++shown;
         }

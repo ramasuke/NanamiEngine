@@ -42,7 +42,7 @@
   </ItemDefinitionGroup>
   <!-- DLL 構成では NanamiEngine.dll (+ .pdb) と Host exe をゲーム DLL の隣に置く。Host は $(TargetName).exe の名前にする
        (起動コマンドや GameBuilder の手順が静的 lib のときと変わらない)。起動中の exe / DLL は SkipUnchangedFiles で触らない -->
-  <Target Name="NanamiCopyEngineDll" AfterTargets="Build" Condition="'$(NanamiEngineShared)'=='true'">
+  <Target Name="NanamiCopyEngineDll" AfterTargets="Build" Condition="'$(NanamiEngineShared)'=='true' and '$(NanamiHotReloadBuild)'!='true'">
     <ItemGroup>
       <NanamiEngineDllFile Include="$(NanamiEngineLibDir)NanamiEngine.dll" Condition="Exists('$(NanamiEngineLibDir)NanamiEngine.dll')" />
       <NanamiEngineDllFile Include="$(NanamiEngineLibDir)NanamiEngine.pdb" Condition="Exists('$(NanamiEngineLibDir)NanamiEngine.pdb')" />
@@ -50,6 +50,16 @@
     </ItemGroup>
     <Copy SourceFiles="@(NanamiEngineDllFile)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="$(NanamiEngineLibDir)NanamiHost.exe" DestinationFiles="$(OutDir)$(TargetName).exe" SkipUnchangedFiles="true" Condition="Exists('$(NanamiEngineLibDir)NanamiHost.exe')" />
+  </Target>
+  <!-- エディタの Build & Reload (NanamiHotReloadBuild=true): ロード中の NanamiEngine.dll は差し替えられないのでコピーしない。
+       代わりに、エンジンがエディタ起動後に再ビルドされていたら (lib と exe の隣で更新時刻が違う) エラーにして知らせる -->
+  <Target Name="NanamiCheckEngineUnchanged" AfterTargets="Build" Condition="'$(NanamiEngineShared)'=='true' and '$(NanamiHotReloadBuild)'=='true'">
+    <PropertyGroup>
+      <_NanamiBuiltEngineDll>$(NanamiEngineLibDir)NanamiEngine.dll</_NanamiBuiltEngineDll>
+      <_NanamiRunningEngineDll>$(OutDir)NanamiEngine.dll</_NanamiRunningEngineDll>
+    </PropertyGroup>
+    <Error Condition="Exists('$(_NanamiBuiltEngineDll)') and Exists('$(_NanamiRunningEngineDll)') and '$([System.IO.File]::GetLastWriteTime($(_NanamiBuiltEngineDll)).Ticks)' != '$([System.IO.File]::GetLastWriteTime($(_NanamiRunningEngineDll)).Ticks)'"
+           Text="NanamiEngine.dll がエディタ起動後に再ビルドされています (エンジンのソースが変わった)。ホットリロードでは反映できないので、エディタを終了して Build &amp; Run し直してください" />
   </Target>
   <!-- /MD のゲーム版 (Release) は VC++ ランタイム DLL が要る。出力先に同梱し、GameBuilder が exe と一緒にコピーする
        (Debug の CRT は再配布不可なので開発機の System32 に任せる) -->

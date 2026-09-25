@@ -411,9 +411,12 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
   次の世代を `LoadLibrary` → `ResetAssetsDirectory` → `RestoreScenes` (戻せなければスタートシーン)。結果は `LastReport()` と Console に出る。
 - **保険モード** (`Keep old DLL`、`LocalPrefs/HotReload/KeepOldModules.json`、既定 ON): 古い DLL を `FreeLibrary` しない。
   掃除漏れ (例: ゲーム製 Component を指す期限切れ `weak_ptr` の制御ブロック) があっても落ちない。OFF での差し替えも Debug で確認済み。
-- **Build & Reload**: `HotReloadToolbarWidget` が `AsyncProcess` で MSBuild (実行中の Configuration、Editor モード、`Logs/HotReload/` にログ) を回し、
-  exit 0 なら `RequestReload`。エンジンのソースを変えていた場合はエンジン DLL が再リンクされ、ロード中の `NanamiEngine.dll` へのコピーで
-  `MSB3021` になる = エンジンの変更はエディタ再起動が要る (§8 のとおり)。ゲームだけの変更なら ~30 秒。
+- **Build & Reload**: `HotReloadToolbarWidget` が `AsyncProcess` で MSBuild を回し、exit 0 なら `RequestReload`。組むのは **ゲームの .vcxproj だけ**
+  (.sln の中の NanamiEngine / NanamiHost 以外、`-p:BuildProjectReferences=false -p:NanamiHotReloadBuild=true`、実行中の Configuration、
+  `Logs/HotReload/` にログ)。ロード中の `NanamiEngine.dll` は差し替えられないのでエンジンは触らず、props の DLL コピーも止める。
+  エンジンのソースを変えて別途ビルドしていた場合 (lib と exe の隣の `NanamiEngine.dll` の更新時刻が違う) は props の
+  `NanamiCheckEngineUnchanged` がエラーにする = エディタを再起動して Build & Run (§8 のとおり)。ゲームだけの変更なら ~30 秒。
+  当初は .sln 全体を組んでいて、エンジンのファイル (コメントだけでも) を触ると再リンク → コピーで `MSB3027` になっていた。
 - **AutoMCP**: `hotreload.status` / `hotreload.reload` (`keepOldModules` 任意)。差し替えはコマンドと同じフレームの末尾で行われ、その間 (数秒〜十数秒)
   エンジンは応答しない。`log_tail` と `hotreload_status` の `lastReport` で結果を読む。
 - **注意**: `Instance()` 系のシングルトンと同じく、`SerializationTypeRegistry` の caster の保険掃除 (`sweptCasters`) が毎回 1 件出る =

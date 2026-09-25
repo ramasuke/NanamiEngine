@@ -20,8 +20,9 @@ restored, play mode is ended first). The DLL is loaded from a copy in `x64/<Conf
 overwrite the original. *Keep old DLL* (default on, `LocalPrefs/HotReload/`) skips `FreeLibrary`. Anything game code registers
 into the engine must go through a registry that records the module (`NANAMI_CURRENT_MODULE()` in `Engine/Core/Api/NanamiModule.h`)
 and has `UnregisterModule`; a new registry needs both plus a call in `GameModule::Reload`. AutoMCP exposes it as
-`hotreload_status` / `hotreload_reload`. Changing engine sources still needs an editor restart (the loaded `NanamiEngine.dll`
-can't be replaced; the build then fails with `MSB3021`).
+`hotreload_status` / `hotreload_reload`. *Build & Reload* builds only the game `.vcxproj` (`-p:BuildProjectReferences=false
+-p:NanamiHotReloadBuild=true`); changing engine sources still needs an editor restart (the loaded `NanamiEngine.dll` can't be
+replaced, and the props' `NanamiCheckEngineUnchanged` reports an engine rebuilt after launch as an error).
 
 Shared compiler/linker settings live in `NanamiEngine.props` / `NanamiEngine.Game.props`, not in the vcxproj files.
 Game code includes engine headers root-relative (`#include "Engine/..."`, `"Packages/..."`, `"Libs/..."`).
