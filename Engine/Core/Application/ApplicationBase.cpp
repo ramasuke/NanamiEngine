@@ -124,6 +124,11 @@ namespace NanamiEngine::Core::Application
         }
     }
     
+    void ApplicationBase::RequestClose()
+    {
+        PostMessageW(GetMainWindowHandle(), WM_CLOSE, 0, 0);
+    }
+
     void ApplicationBase::OnChangeWindow(const std::shared_ptr<MainWindow::IMainWindow>& window)
     {
         CurrentMainWindow() = window;

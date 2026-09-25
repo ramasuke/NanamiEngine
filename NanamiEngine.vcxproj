@@ -1166,6 +1166,13 @@
     <ClCompile Include="Engine\Module\Serialization\Engine_Module_SerializationTypeRegistry.cpp" />
     <ClCompile Include="Engine\Module\Serialization\Engine_Module_SharedStaticObject.cpp" />
     <ClCompile Include="Engine\Module\Serialization\Engine_Module_SerializationModuleUnloader.cpp" />
+    <ClCompile Include="Engine\Core\Platform\Input\Input.cpp" />
+    <ClCompile Include="Engine\Core\Platform\Draw2D\Draw2D.cpp" />
+    <ClCompile Include="Engine\Core\Platform\Render\Camera.cpp" />
+    <ClCompile Include="Engine\Core\Platform\Render\Environment.cpp" />
+    <ClCompile Include="Engine\Core\Platform\Render\Shader.cpp" />
+    <ClCompile Include="Engine\Core\Platform\Render\Model.cpp" />
+    <ClCompile Include="Engine\Core\Platform\AsyncLoad\AsyncLoad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Module\Component\BoneSync\Sync\BoneSyncBase.h" />
@@ -1401,6 +1408,13 @@
     <ClInclude Include="Engine\Module\Serialization\Engine_Module_SharedStaticObject.h" />
     <ClInclude Include="Engine\Module\Serialization\Engine_Module_SerializationModuleUnloader.h" />
     <ClInclude Include="Engine\Core\Api\NanamiApi.h" />
+    <ClInclude Include="Engine\Core\Platform\Input\Input.h" />
+    <ClInclude Include="Engine\Core\Platform\Draw2D\Draw2D.h" />
+    <ClInclude Include="Engine\Core\Platform\Render\Camera.h" />
+    <ClInclude Include="Engine\Core\Platform\Render\Environment.h" />
+    <ClInclude Include="Engine\Core\Platform\Render\Shader.h" />
+    <ClInclude Include="Engine\Core\Platform\Render\Model.h" />
+    <ClInclude Include="Engine\Core\Platform\AsyncLoad\AsyncLoad.h" />
     <ClInclude Include="Engine\Module\Namespace\EngineNamespace.h" />
     <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.h" />
     <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\BillboardAnimation3D.h" />

@@ -63,6 +63,8 @@ namespace NanamiEngine::Core::Application
         static void                                            ResetAssetsDirectory();
         static std::shared_ptr<MainWindow::GameWindow>         GameWindow          ();
         static Network::PrefabObjectRegistry                 & NetworkPrefabObjectRegistry();
+        /** @brief メインウィンドウに WM_CLOSE を送って、このフレームの後で終了する */
+        static void                                            RequestClose();
         
     protected:
         /** 1フレーム分のアプリ固有処理。ClearDrawScreen / Time::Update の後、ScreenFlip の前に呼ばれる */

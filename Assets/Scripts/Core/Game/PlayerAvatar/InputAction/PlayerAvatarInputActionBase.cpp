@@ -11,7 +11,7 @@ namespace
 
 void GameCore::PlayerAvatar::PlayerAvatarInputActionBase::OnUpdate()
 {
-    GetJoypadXInputState(DX_INPUT_PAD1, &xInput_ ) ;
+    gamepad_ = NanamiEngine::Platform::Input::Gamepad::Get();
 
     UpdateMouseWheel();
     UpdateCurrentDevice();
@@ -24,27 +24,22 @@ void GameCore::PlayerAvatar::PlayerAvatarInputActionBase::OnUpdate()
 
 void GameCore::PlayerAvatar::PlayerAvatarInputActionBase::UpdateMouseWheel()
 {
-    const int mouseWheel = GetMouseWheelRotVol(FALSE);
+    const int mouseWheel = NanamiEngine::Platform::Input::Mouse::WheelRotation(false);
     mouseWheelDelta_    = mouseWheel - previousMouseWheel_;
     previousMouseWheel_ = mouseWheel;
 }
 
 void GameCore::PlayerAvatar::PlayerAvatarInputActionBase::UpdateCurrentDevice()
 {
-    bool isGamepadTouched = xInput_.LeftTrigger > XINPUT_TRIGGER_DEAD_ZONE || xInput_.RightTrigger > XINPUT_TRIGGER_DEAD_ZONE;
-    for (const auto button : xInput_.Buttons)
-        isGamepadTouched |= button != 0;
-    for (const auto thumb : { xInput_.ThumbLX, xInput_.ThumbLY, xInput_.ThumbRX, xInput_.ThumbRY })
-        isGamepadTouched |= thumb > XINPUT_THUMB_DEAD_ZONE || thumb < -XINPUT_THUMB_DEAD_ZONE;
+    const bool isGamepadTouched = gamepad_.IsAnyDown(XINPUT_TRIGGER_DEAD_ZONE, XINPUT_THUMB_DEAD_ZONE);
 
-    int mouseX = previousMouseX_;
-    int mouseY = previousMouseY_;
-    GetMousePoint(&mouseX, &mouseY);
-    const bool isMouseMoved = mouseX != previousMouseX_ || mouseY != previousMouseY_;
-    previousMouseX_ = mouseX;
-    previousMouseY_ = mouseY;
+    const glm::ivec2 mouse = NanamiEngine::Platform::Input::Mouse::Position();
+    const bool isMouseMoved = mouse.x != previousMouseX_ || mouse.y != previousMouseY_;
+    previousMouseX_ = mouse.x;
+    previousMouseY_ = mouse.y;
 
-    const bool isKeyboardTouched = CheckHitKeyAll() != 0 || GetMouseInput() != 0 || isMouseMoved || mouseWheelDelta_ != 0;
+    // NOTE: IsAnyDeviceDown はパッドのボタンも含む (元の CheckHitKeyAll() と同じ)
+    const bool isKeyboardTouched = NanamiEngine::Platform::Input::IsAnyDeviceDown() || NanamiEngine::Platform::Input::Mouse::Buttons() != 0 || isMouseMoved || mouseWheelDelta_ != 0;
 
     // 両方同時なら直前の機器のまま、どちらも無ければ維持
     if (isGamepadTouched && !isKeyboardTouched)

@@ -3,7 +3,6 @@
 #include <memory>
 #include <optional>
 
-#include "DxLib.h"
 #include "../../Input/Move/InputMove.h"
 #include "../../Input/PlayerAvatarInput_void.h"
 #include "../../InputAction/PlayerAvatarInputActionBase.h"
@@ -45,33 +44,33 @@ namespace GameCore::PlayerAvatar::MagicCaster
         // 右スティックは弾いたと分かるくらい倒した時だけ切り替える
         static constexpr short LOCK_ON_SWITCH_STICK_THRESHOLD = 24000;
 
-        [[nodiscard]] bool IsPaletteTriggerHeld() const { return XInput().LeftTrigger > PALETTE_TRIGGER_DEAD_ZONE; }
-        [[nodiscard]] bool IsPadSlotPressed(const int button) const { return IsPaletteTriggerHeld() && XInput().Buttons[button]; }
+        [[nodiscard]] bool IsPaletteTriggerHeld() const { return Gamepad().leftTrigger > PALETTE_TRIGGER_DEAD_ZONE; }
+        [[nodiscard]] bool IsPadSlotPressed(const PadButton button) const { return IsPaletteTriggerHeld() && IsPadDown(button); }
 
         Input<glm::vec2> move_      = MakeInputAction<PlayerAvatar::Input::InputMove>();
-        Input<void     > run_       = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_LSHIFT) || (!IsPaletteTriggerHeld() && XInput().Buttons[XINPUT_BUTTON_A]); });
-        Input<void     > jump_      = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_SPACE ) || (!IsPaletteTriggerHeld() && XInput().Buttons[XINPUT_BUTTON_B]); });
-        Input<void     > cast_      = MakeInputAction([this] { return GetMouseInput() & MOUSE_INPUT_LEFT || XInput().RightTrigger; });
-        Input<void     > chat_      = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_E     ) || (!IsPaletteTriggerHeld() && XInput().Buttons[XINPUT_BUTTON_Y]); });
+        Input<void     > run_       = MakeInputAction([this] { return IsKeyDown(Key::LShift) || (!IsPaletteTriggerHeld() && IsPadDown(PadButton::A)); });
+        Input<void     > jump_      = MakeInputAction([this] { return IsKeyDown(Key::Space) || (!IsPaletteTriggerHeld() && IsPadDown(PadButton::B)); });
+        Input<void     > cast_      = MakeInputAction([this] { return IsMouseDown(MouseButton::Left) || Gamepad().rightTrigger; });
+        Input<void     > chat_      = MakeInputAction([this] { return IsKeyDown(Key::E) || (!IsPaletteTriggerHeld() && IsPadDown(PadButton::Y)); });
         // 剣士と同じ割り当て
-        Input<void     > avoidRolling_ = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_LCONTROL) || (!IsPaletteTriggerHeld() && XInput().Buttons[XINPUT_BUTTON_X]); });
-        Input<void     > lockOn_    = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_Q     ) || XInput().Buttons[XINPUT_BUTTON_RIGHT_THUMB]; });
+        Input<void     > avoidRolling_ = MakeInputAction([this] { return IsKeyDown(Key::LControl) || (!IsPaletteTriggerHeld() && IsPadDown(PadButton::X)); });
+        Input<void     > lockOn_    = MakeInputAction([this] { return IsKeyDown(Key::Q) || IsPadDown(PadButton::RightThumb); });
         Input<void     > lockOnSwitchLeft_  = MakeInputAction([this] { return MouseWheelDelta() > 0 || XInput().ThumbRX < -LOCK_ON_SWITCH_STICK_THRESHOLD; });
         Input<void     > lockOnSwitchRight_ = MakeInputAction([this] { return MouseWheelDelta() < 0 || XInput().ThumbRX >  LOCK_ON_SWITCH_STICK_THRESHOLD; });
         Input<void     > palette_   = MakeInputAction([this] { return IsPaletteTriggerHeld(); });
-        Input<void     > pageShift_ = MakeInputAction([this] { return GetMouseInput() & MOUSE_INPUT_RIGHT || XInput().Buttons[XINPUT_BUTTON_RIGHT_SHOULDER]; });
+        Input<void     > pageShift_ = MakeInputAction([this] { return IsMouseDown(MouseButton::Right) || IsPadDown(PadButton::RightShoulder); });
         // アイテムは剣士と同じ割り当て
-        Input<void     > cycleItemNext_ = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_X) || XInput().Buttons[XINPUT_BUTTON_DPAD_RIGHT]; });
-        Input<void     > cycleItemPrev_ = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_Z) || XInput().Buttons[XINPUT_BUTTON_DPAD_LEFT ]; });
-        Input<void     > useItem_       = MakeInputAction([this] { return CheckHitKey(KEY_INPUT_R) || XInput().Buttons[XINPUT_BUTTON_LEFT_SHOULDER]; });
+        Input<void     > cycleItemNext_ = MakeInputAction([this] { return IsKeyDown(Key::X) || IsPadDown(PadButton::DPadRight); });
+        Input<void     > cycleItemPrev_ = MakeInputAction([this] { return IsKeyDown(Key::Z) || IsPadDown(PadButton::DPadLeft); });
+        Input<void     > useItem_       = MakeInputAction([this] { return IsKeyDown(Key::R) || IsPadDown(PadButton::LeftShoulder); });
 
         // 時計回りに 上=Y(1) 右=B(2) 下=A(3) 左=X(4)
         std::array<Input<void>, SPELL_SLOTS_PER_PAGE> slots_ =
         {
-            MakeInputAction([this] { return CheckHitKey(KEY_INPUT_1) || IsPadSlotPressed(XINPUT_BUTTON_Y); }),
-            MakeInputAction([this] { return CheckHitKey(KEY_INPUT_2) || IsPadSlotPressed(XINPUT_BUTTON_B); }),
-            MakeInputAction([this] { return CheckHitKey(KEY_INPUT_3) || IsPadSlotPressed(XINPUT_BUTTON_A); }),
-            MakeInputAction([this] { return CheckHitKey(KEY_INPUT_4) || IsPadSlotPressed(XINPUT_BUTTON_X); }),
+            MakeInputAction([this] { return IsKeyDown(Key::Num1) || IsPadSlotPressed(PadButton::Y); }),
+            MakeInputAction([this] { return IsKeyDown(Key::Num2) || IsPadSlotPressed(PadButton::B); }),
+            MakeInputAction([this] { return IsKeyDown(Key::Num3) || IsPadSlotPressed(PadButton::A); }),
+            MakeInputAction([this] { return IsKeyDown(Key::Num4) || IsPadSlotPressed(PadButton::X); }),
         };
     };
 }

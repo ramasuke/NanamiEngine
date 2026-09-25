@@ -2,6 +2,7 @@
 #include "../AssetBase.h"
 #include "../Factory/AssetFactory.h"
 #include "../cereal/include/cereal/types/polymorphic.hpp"
+#include "vec3.hpp"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -16,6 +17,16 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] const Guid& GetGuid       () const override { return guid_;         }
         [[nodiscard]] int         GetDxLibHandle() const          { return dxLibHandle_;  }
         [[nodiscard]] std::string GetContentPath() const override;
+
+        /** @brief 再生 (バックグラウンド)。loop でループ、restart で再生中でも頭から */
+        void Play(bool loop = false, bool restart = true) const;
+        void Stop() const;
+        [[nodiscard]] bool IsPlaying() const;
+        /** @brief 音量 0..255。鳴っている最中にも効く (アセット設定の volume_ は変えない) */
+        void SetVolume(int volume) const;
+        /** @brief 次の再生 1 回だけの音量 0..255 */
+        void SetNextPlayVolume(int volume) const;
+        void Set3DPosition(const glm::vec3& position) const;
 
     private:
         void OnRenamed(const std::string& newContentPath) override { contentPath_ = newContentPath; }

@@ -118,6 +118,20 @@ exception is the bridge folder `Libs/LibCore/DxLib/` (`DxMath.h`: `ToDxVector`/`
 which is included **only from `.cpp` files**. Converting at the call site looks like
 `MV1SetMatrix(handle, LibCore::Dxlib::ToDxMatrix(Transform().GetWorldMatrix()))`.
 
+## Game code must not call DxLib
+
+`Assets/**` never includes `DxLib.h` or calls DxLib functions / uses its types and constants (`VECTOR`, `XINPUT_STATE`,
+`KEY_INPUT_*`, `DX_*`, `VGet`, ...). A Game.dll that linked DxLib would get its own handle tables (`docs/HotReload.md` §2), and
+`python tools/dxlib_guard/check_game_dxlib.py` (exit 0 = clean) is the gate. Use the DxLib-free engine entry points instead:
+`Engine/Core/Platform/Input/Input.h` (`Platform::Input::Keyboard::IsDown(Key::A)`, `Mouse`, `Gamepad::Get()`, `IsWindowActive`;
+game code includes `Assets/Scripts/Core/Input/InputAliases.h` for the short spelling), `Platform/Draw2D/Draw2D.h` (blend / bright /
+filter state, `ScopedDrawState`, `DrawRotaGraph`, `DrawBox`, `DrawString` with UTF-8, `ScreenSize`, `GraphSize`),
+`Platform/Render/{Camera,Environment,Shader,Model}.h` (camera queries, fog / light, constant + vertex / index buffers with
+`ShaderVertex3D`, MV1 frame queries), `Platform/AsyncLoad/AsyncLoad.h` (`SyncLoadScope`, `IsHandleLoading`),
+`Time::NowMilliseconds()`, `SoundFile::Play/Stop/IsPlaying/SetVolume/SetNextPlayVolume/Set3DPosition`,
+`Render3D::Shapes::DrawLine3D`, `ApplicationBase::RequestClose()`. Add a wrapper there (the `.cpp` may include `DxLib.h`) rather
+than calling DxLib from game code.
+
 ## Reactive code goes through R4 (not rxcpp)
 
 rxcpp is wrapped by **`Packages/R4`** (`NanamiEngine::R4`, R3-style): `R4::Subject<T>`, `R4::Observable<T>`,

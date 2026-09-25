@@ -3,9 +3,12 @@
 
 #include "fwd.hpp"
 #include "vec3.hpp"
+#include "../../Color/Color32.h"
 
 namespace NanamiEngine::Module::Render3D::Shapes
 {
+    /** @brief 3D 空間の線 (デバッグ描画用) */
+    void DrawLine3D(const glm::vec3& from, const glm::vec3& to, const Color32& color);
     /** @brief 8頂点から立方体を描画する関数 */
     void DrawCube3DFromVertices(const std::array<glm::vec3, 8>& vertices, const int& edgeColor);
     /** @brief カプセルのワイヤーフレーム描画 */

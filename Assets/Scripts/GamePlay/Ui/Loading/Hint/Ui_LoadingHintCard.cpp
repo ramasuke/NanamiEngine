@@ -2,7 +2,7 @@
 
 #include <cstdlib>
 
-#include "DxLib.h"
+#include "Engine/Core/Platform/Input/Input.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace
@@ -10,18 +10,18 @@ namespace
     /** @brief パッドに触られているか。ロード中は入力が無いので「出発」を押した瞬間の状態を拾う */
     bool LoadingHintIsGamepadActive()
     {
-        XINPUT_STATE xInput{};
-        if (GetJoypadXInputState(DX_INPUT_PAD1, &xInput) != 0)
+        const auto xInput = NanamiEngine::Platform::Input::Gamepad::Get();
+        if (!xInput.connected)
             return false;
 
-        for (const unsigned char button : xInput.Buttons)
+        for (const bool button : xInput.buttons)
         {
-            if (button != 0)
+            if (button)
                 return true;
         }
 
         constexpr int stickDeadZone = 8000;
-        return std::abs(xInput.ThumbLX) > stickDeadZone || std::abs(xInput.ThumbLY) > stickDeadZone;
+        return std::abs(xInput.thumbLX) > stickDeadZone || std::abs(xInput.thumbLY) > stickDeadZone;
     }
 }
 

@@ -1,8 +1,8 @@
 ﻿#include "CharacterSelectPresenter.h"
+#include "Assets/Scripts/Core/Input/InputAliases.h"
 
 #include <limits>
 
-#include "DxLib.h"
 
 #include "../UI_CharacterSelect.h"
 #include "../../../Prop/CharacterPodium/Prop_CharacterPodium.h"
@@ -139,20 +139,19 @@ namespace GamePlay::Ui
             return;
         }
 
-        XINPUT_STATE xInput{};
-        GetJoypadXInputState(DX_INPUT_PAD1, &xInput);
+        const auto xInput = Gamepad::Get();
 
-        const bool isPrevPressed = CheckHitKey(KEY_INPUT_UP) || CheckHitKey(KEY_INPUT_W)
-            || CheckHitKey(KEY_INPUT_LEFT) || CheckHitKey(KEY_INPUT_A)
-            || xInput.Buttons[XINPUT_BUTTON_DPAD_UP] || xInput.Buttons[XINPUT_BUTTON_DPAD_LEFT]
-            || xInput.ThumbLY > CHARACTER_SELECT_STICK_DEADZONE;
-        const bool isNextPressed = CheckHitKey(KEY_INPUT_DOWN) || CheckHitKey(KEY_INPUT_S)
-            || CheckHitKey(KEY_INPUT_RIGHT) || CheckHitKey(KEY_INPUT_D)
-            || xInput.Buttons[XINPUT_BUTTON_DPAD_DOWN] || xInput.Buttons[XINPUT_BUTTON_DPAD_RIGHT]
-            || xInput.ThumbLY < -CHARACTER_SELECT_STICK_DEADZONE;
-        const bool isConfirmPressed = CheckHitKey(KEY_INPUT_RETURN) || CheckHitKey(KEY_INPUT_SPACE)
-            || xInput.Buttons[XINPUT_BUTTON_A];
-        const bool isCancelPressed = CheckHitKey(KEY_INPUT_ESCAPE) || xInput.Buttons[XINPUT_BUTTON_B];
+        const bool isPrevPressed = Keyboard::IsDown(Key::Up) || Keyboard::IsDown(Key::W)
+            || Keyboard::IsDown(Key::Left) || Keyboard::IsDown(Key::A)
+            || xInput.IsDown(GamepadButton::DPadUp) || xInput.IsDown(GamepadButton::DPadLeft)
+            || xInput.thumbLY > CHARACTER_SELECT_STICK_DEADZONE;
+        const bool isNextPressed = Keyboard::IsDown(Key::Down) || Keyboard::IsDown(Key::S)
+            || Keyboard::IsDown(Key::Right) || Keyboard::IsDown(Key::D)
+            || xInput.IsDown(GamepadButton::DPadDown) || xInput.IsDown(GamepadButton::DPadRight)
+            || xInput.thumbLY < -CHARACTER_SELECT_STICK_DEADZONE;
+        const bool isConfirmPressed = Keyboard::IsDown(Key::Return) || Keyboard::IsDown(Key::Space)
+            || xInput.IsDown(GamepadButton::A);
+        const bool isCancelPressed = Keyboard::IsDown(Key::Escape) || xInput.IsDown(GamepadButton::B);
 
         const size_t previousIndex = model_->SelectedIndex();
         if (isPrevPressed && !wasPrevPressed_)

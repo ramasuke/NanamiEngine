@@ -1,6 +1,6 @@
 ﻿#include "Ui_GameCursor.h"
 
-#include "DxLib.h"
+#include "Engine/Core/Platform/Input/Input.h"
 #include "Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/NanamiUI/Button/NanamiUi_Button.h"
@@ -18,19 +18,20 @@ namespace GamePlay::Ui
         pressRemaining_secs_ = 0.0f;
         isHolding_ = false;
         animScale_ = 1.0f;
-        wasMouseDown_ = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;
+        wasMouseDown_ = Platform::Input::Mouse::IsDown(Platform::Input::MouseButton::Left);
         UpdateScale();
     }
 
     void GameCursor::OnUpdate()
     {
-        int mouseX, mouseY;
-        GetMousePoint(&mouseX, &mouseY);
+        const glm::ivec2 mouse = Platform::Input::Mouse::Position();
+        const int mouseX = mouse.x;
+        const int mouseY = mouse.y;
         Transform().SetWorldPos(glm::vec3(static_cast<float>(mouseX), static_cast<float>(mouseY), 0.0f));
 
         SetVisible(ShouldShow(mouseX, mouseY));
 
-        const bool isMouseDown = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;
+        const bool isMouseDown = Platform::Input::Mouse::IsDown(Platform::Input::MouseButton::Left);
         UpdatePress(isMouseDown);
         wasMouseDown_ = isMouseDown;
 
@@ -84,7 +85,7 @@ namespace GamePlay::Ui
 
         if (NanamiEngine::CineMachine::Behaviour::ThirdPersonCameraBehaviour::IsMousePinned())
             return false;
-        if (GetWindowActiveFlag() == FALSE)
+        if (!Platform::Input::IsWindowActive())
             return false;
 
         return mouseX >= 0 && mouseY >= 0

@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "DxLib.h"
+#include "Engine/Core/Platform/Draw2D/Draw2D.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
 namespace GamePlay::Ui
@@ -25,9 +25,10 @@ namespace GamePlay::Ui
 
     void EventBoardQuestPage::FitPhotoToFrame(const int photoHandle) const
     {
-        int width = 0, height = 0;
-        if (GetGraphSize(photoHandle, &width, &height) != 0 || width <= 0 || height <= 0)
+        const auto size = Platform::Draw2D::GraphSize(photoHandle);
+        if (!size || size->x <= 0 || size->y <= 0)
             return;
+        const int width = size->x, height = size->y;
 
         // NOTE: 枠からはみ出す分は枠の縁 (10px) が隠すので、隙間が出ないよう大きい方の倍率で覆う
         const float scale = std::max(detailPhotoSize_px_.x / static_cast<float>(width),

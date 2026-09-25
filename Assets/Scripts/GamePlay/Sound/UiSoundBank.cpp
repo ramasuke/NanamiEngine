@@ -1,7 +1,6 @@
 #include "UiSoundBank.h"
 
 #include <algorithm>
-#include "DxLib.h"
 
 namespace GamePlay::Sound
 {
@@ -35,7 +34,7 @@ namespace GamePlay::Sound
             return;
 
         if (volume >= 0)
-            ChangeNextPlayVolumeSoundMem(std::clamp(volume, 0, 255), handle);
-        PlaySoundMem(handle, DX_PLAYTYPE_BACK, TRUE);
+            sound->SetNextPlayVolume(std::clamp(volume, 0, 255));
+        sound->Play(false, true);
     }
 }

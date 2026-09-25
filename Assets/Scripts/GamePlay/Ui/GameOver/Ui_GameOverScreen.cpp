@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "DxLib.h"
+#include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/GameObject/Transform/Transform.h"
 #include "Libs/LibCore/Tween/Ease/Ease.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
@@ -36,7 +36,7 @@ namespace GamePlay::Ui
 
         // 起動直後から出ていないように、常駐しているぶんを自分で畳んでおく
         SetVisualEnabled(false);
-        lastTickMs_ = GetNowCount();
+        lastTickMs_ = Time::NowMilliseconds();
     }
 
     void GameOverScreenUi::Show()
@@ -46,7 +46,7 @@ namespace GamePlay::Ui
         PlayIntroTweens();
         isStingPlayed_ = false;
         isSlabLanded_ = false;
-        lastTickMs_ = GetNowCount();
+        lastTickMs_ = Time::NowMilliseconds();
 
         SetVisualEnabled(true);
         SetSelection(RETRY_INDEX);
@@ -115,7 +115,7 @@ namespace GamePlay::Ui
 
     float GameOverScreenUi::TickWallClockSeconds()
     {
-        const int nowMs = GetNowCount();
+        const int nowMs = Time::NowMilliseconds();
         const float deltaSecs = static_cast<float>(nowMs - lastTickMs_) / 1000.0f;
         lastTickMs_ = nowMs;
 
@@ -277,7 +277,7 @@ namespace GamePlay::Ui
         if (handle == -1)
             return;
 
-        PlaySoundMem(handle, DX_PLAYTYPE_BACK, TRUE);
+        sound->Play(false, true);
     }
 
     void GameOverScreenUi::OnDrawGui()

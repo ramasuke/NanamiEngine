@@ -4,7 +4,6 @@
 #include "../../../../../../GamePlay/Sound/SoundPlayer.h"
 #include <stdexcept>
 
-#include "DxLib.h"
 #include "../../Loading/Main_SceneLoadStep.h"
 
 #include "Engine/Core/Coroutine/Coroutine.h"
