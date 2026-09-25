@@ -39,7 +39,7 @@ namespace NanamiEngine::Core::PopupWindow
         void OnDraw(FileSystem::EditorDraggingHand& draggingHand);
 
         /** @brief クラスが module にあるウィンドウを閉じて捨てる (ゲーム DLL を外す前)。戻り値は捨てた数 */
-        std::size_t RemoveWindowsOfModule(const void* module)
+        std::size_t RemoveWindowsOfModule(const ModuleHandle module)
         {
             return std::erase_if(popupWindows_, [module](const auto& pair)
             {

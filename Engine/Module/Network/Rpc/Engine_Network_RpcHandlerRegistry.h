@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
+#include "Engine/Core/Api/NanamiModule.h"
 #include <cstdint>
 #include <functional>
 #include <unordered_map>
@@ -22,16 +23,16 @@ namespace NanamiEngine::Module::Network
         using Handler = std::function<void(const Core::Network::ByteBuffer&, size_t&)>;
 
         /** @param module 登録元のモジュール (Rpc<> のテンプレートが NANAMI_CURRENT_MODULE() を渡す) */
-        void Register(Core::Network::RpcId id, Handler handler, void* module = nullptr);
+        void Register(Core::Network::RpcId id, Handler handler, Core::ModuleHandle module = {});
         void Invoke(Core::Network::RpcId id, const Core::Network::ByteBuffer& buffer, size_t& offset) const;
         /** @brief module が登録したハンドラを消す。戻り値は消した数 */
-        std::size_t UnregisterModule(const void* module);
+        std::size_t UnregisterModule(Core::ModuleHandle module);
 
     private:
         struct Entry
         {
-            Handler handler;
-            void*   module;
+            Handler            handler;
+            Core::ModuleHandle module;
         };
         std::unordered_map<uint32_t, Entry> handlers_;
     };

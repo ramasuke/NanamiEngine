@@ -149,7 +149,7 @@ Effekseer のマネージャ) が **エンジン側と別物として 2 つで�
   - `Instance()` は `.cpp` に定義する (§3.1)。
   - `module` は、マクロから実体化されるテンプレート関数の中の static 変数のアドレスを
     `GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | UNCHANGED_REFCOUNT)` に渡して求める。
-    `Windows.h` は `.cpp` だけで include する (ヘッダには `void*` で渡す)。
+    `Windows.h` は `.cpp` だけで include する (ヘッダには `Core::ModuleHandle` (`Engine/Core/Api/NanamiModule.h`、中身は HMODULE) で渡す)。
   - マクロ内の登録用変数は `namespace { const bool <__COUNTER__ で一意な名前> = Record<T, Base, IsType>(); }` の形。
     呼び出し行の末尾に `;` があってもなくても通る形にする。
 - 既存の 3 つのラッパーマクロ (`ENGINE_REGISTER_COMPONENT` / `REGISTER_ATTACK_AREA_TYPE` / `REGISTER_PLAYER_AVATAR_BASE`) の中身も

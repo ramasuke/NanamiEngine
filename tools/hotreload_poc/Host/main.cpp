@@ -14,6 +14,7 @@
 #include "PocPlatform.h"
 #include "../Engine/PocEngine.h"
 #include "../Game/PocGameApi.h"
+#include "Engine/Core/Api/NanamiModule.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationModuleUnloader.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationTypeRegistry.h"
 #include "Engine/Module/Serialization/Engine_Module_SharedStaticObject.h"
@@ -78,9 +79,9 @@ int main(int argc, char** argv)
             return 2;
         const Poc::GameApi* api = getApi();
         // 登録記録の module は「登録子のアドレスが属するモジュール」。ロードした DLL と同じでなければならない
-        const void* module = SerializationTypeRegistry::ModuleOf(reinterpret_cast<const void*>(getApi));
+        const NanamiEngine::Core::ModuleHandle module = NanamiEngine::Core::ModuleOf(reinterpret_cast<const void*>(getApi));
 #if defined(_WIN32)
-        Check(module == handle, "ModuleOf(exported function) == LoadLibrary handle");
+        Check(module.Raw() == handle, "ModuleOf(exported function) == LoadLibrary handle");
 #endif
         const auto records = SerializationTypeRegistry::Instance().RecordsOfModule(module);
         Check(records.size() == 3, "Game registered 3 records (2 types + 1 extra relation)");

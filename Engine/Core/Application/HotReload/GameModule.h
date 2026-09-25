@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Engine/Core/Api/NanamiApi.h"
+#include "Engine/Core/Api/NanamiModule.h"
 #include <filesystem>
 #include <string>
 #include <vector>
@@ -20,9 +21,9 @@ namespace NanamiEngine::Core::Application::HotReload
         /** @brief ApplicationBase::Run が ScreenFlip の後に呼ぶ */
         void OnFrameEnd();
 
-        [[nodiscard]] bool  IsLoaded     () const { return current_ != nullptr; }
-        [[nodiscard]] void* CurrentModule() const { return current_; }
-        [[nodiscard]] int   Generation   () const { return generation_; }
+        [[nodiscard]] bool         IsLoaded     () const { return current_.IsValid(); }
+        [[nodiscard]] ModuleHandle CurrentModule() const { return current_; }
+        [[nodiscard]] int          Generation   () const { return generation_; }
         [[nodiscard]] const std::filesystem::path& SourcePath() const { return source_; }
         [[nodiscard]] const std::string& LastReport() const { return lastReport_; }
         /** @brief true なら古い DLL を FreeLibrary しない (取り残しがあっても落ちない保険モード)。LocalPrefs に保存 */
@@ -37,8 +38,8 @@ namespace NanamiEngine::Core::Application::HotReload
 
         std::filesystem::path source_;
         std::filesystem::path stagingRoot_;
-        void*                 current_         = nullptr;
-        std::vector<void*>    retired_;
+        ModuleHandle              current_;
+        std::vector<ModuleHandle> retired_;
         int                   generation_      = 0;
         bool                  reloadRequested_ = false;
         bool                  keepOldModules_  = true;

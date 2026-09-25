@@ -27,7 +27,7 @@ namespace NanamiEngine::DebugSheet
         stack_.push_back(&root_);
     }
 
-    void Sheet::RegisterPage(const std::string& path, DrawPage draw, const int order, void* module)
+    void Sheet::RegisterPage(const std::string& path, DrawPage draw, const int order, const Core::ModuleHandle module)
     {
         Node* node = &root_;
         std::string_view rest = path;
@@ -62,10 +62,10 @@ namespace NanamiEngine::DebugSheet
 
     void Sheet::RegisterPage(const std::string& path, DrawPage draw, const int order)
     {
-        RegisterPage(path, std::move(draw), order, nullptr);
+        RegisterPage(path, std::move(draw), order, Core::ModuleHandle{});
     }
 
-    std::size_t Sheet::UnregisterModule(const void* module)
+    std::size_t Sheet::UnregisterModule(const Core::ModuleHandle module)
     {
         const std::size_t removed = RemovePagesOfModule(root_, module);
         if (removed > 0)
@@ -78,7 +78,7 @@ namespace NanamiEngine::DebugSheet
         return removed;
     }
 
-    std::size_t Sheet::RemovePagesOfModule(Node& node, const void* module)
+    std::size_t Sheet::RemovePagesOfModule(Node& node, const Core::ModuleHandle module)
     {
         std::size_t removed = 0;
         for (auto& child : node.children)

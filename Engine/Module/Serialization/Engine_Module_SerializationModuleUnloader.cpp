@@ -29,10 +29,9 @@ namespace
     }
 
     /** caster の vtable が module にあるか (実体はヒープにあるので、アドレスではなく vtable で見る) */
-    bool IsCasterOf(const cereal::detail::PolymorphicCaster* caster, const void* module)
+    bool IsCasterOf(const cereal::detail::PolymorphicCaster* caster, const NanamiEngine::Core::ModuleHandle module)
     {
-        const void* const vtable = *reinterpret_cast<const void* const*>(caster);
-        return NanamiEngine::Module::Serialization::SerializationTypeRegistry::ModuleOf(vtable) == module;
+        return NanamiEngine::Core::ModuleOfVTable(caster) == module;
     }
 
     void EraseReverse(cereal::detail::PolymorphicCasters& casters, const std::type_index derived, const std::type_index base)
@@ -47,7 +46,7 @@ namespace
 
 namespace NanamiEngine::Module::Serialization
 {
-    ModuleUnloadReport SerializationModuleUnloader::Unregister(const void* module)
+    ModuleUnloadReport SerializationModuleUnloader::Unregister(const Core::ModuleHandle module)
     {
         ModuleUnloadReport report;
         auto& casters = cereal::detail::StaticObject<cereal::detail::PolymorphicCasters>::getInstance();
@@ -112,7 +111,7 @@ namespace NanamiEngine::Module::Serialization
         cereal::detail::StaticObject<cereal::detail::Versions>::getInstance().mapping.clear();
     }
 
-    std::size_t SerializationModuleUnloader::CountLeftoverCasters(const void* module)
+    std::size_t SerializationModuleUnloader::CountLeftoverCasters(const Core::ModuleHandle module)
     {
         const auto& casters = cereal::detail::StaticObject<cereal::detail::PolymorphicCasters>::getInstance();
         std::size_t count = 0;

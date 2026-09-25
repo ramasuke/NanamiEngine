@@ -41,7 +41,7 @@ namespace NanamiEngine::Module::Asset
         template <typename T>
         void Register(const std::string& extensionLabel);
         /** @param module 登録元のモジュール。REGISTER_CREATABLE_ASSET_EXTENSION が NANAMI_CURRENT_MODULE() を渡す */
-        void RegisterCreatableAssetExtension(const std::string& assetNameLabel, const std::string& extensionLabel, const std::string& categoryLabel, void* module = nullptr);
+        void RegisterCreatableAssetExtension(const std::string& assetNameLabel, const std::string& extensionLabel, const std::string& categoryLabel, Core::ModuleHandle module = {});
         bool TryCreate(const std::string& filePath, std::shared_ptr<AssetBase>& outAsset) const;
         /** アセットを生成せずに、filePath の拡張子が Register 済みかだけを判定する */
         [[nodiscard]] bool IsRegisteredExtension(const std::string& filePath) const;
@@ -50,14 +50,14 @@ namespace NanamiEngine::Module::Asset
         void RegisterLoader(const std::string& extensionLabel);
         [[nodiscard]] std::vector<CreatableAsset> CreatableAssets() const;
         /** @brief module が登録した拡張子・ローダー・新規作成メニューを消す。戻り値は消した数 */
-        std::size_t UnregisterModule(const void* module);
+        std::size_t UnregisterModule(Core::ModuleHandle module);
 
     private:
         template <typename EntryT>
         struct Registered
         {
-            EntryT entry;
-            void*  module;
+            EntryT            entry;
+            Core::ModuleHandle module;
         };
         /** filePathからfileを生成する関数群 */
         std::vector<Registered<OnCreateAsset>> factories_;
@@ -73,7 +73,7 @@ namespace NanamiEngine::Module::Asset
         static_assert(std::is_base_of_v<AssetBase, T>, "T must inherit from AssetBase");
         static_assert(std::is_constructible_v<T, std::string>, "T must be constructible from std::string");
 
-        void* const module = NANAMI_CURRENT_MODULE();
+        const Core::ModuleHandle module = NANAMI_CURRENT_MODULE();
         registeredExtensions_.push_back({ extensionLabel, module });
         factories_.push_back({
             [extensionLabel](const std::string& filePath, std::shared_ptr<AssetBase>& out)
@@ -99,7 +99,7 @@ namespace NanamiEngine::Module::Asset
     {
         static_assert(std::is_base_of_v<AssetBase, T>, "T must inherit from AssetBase");
 
-        void* const module = NANAMI_CURRENT_MODULE();
+        const Core::ModuleHandle module = NANAMI_CURRENT_MODULE();
         loaderers_.push_back({
             [extensionLabel](const std::string& filePath) -> std::shared_ptr<AssetBase>
             {

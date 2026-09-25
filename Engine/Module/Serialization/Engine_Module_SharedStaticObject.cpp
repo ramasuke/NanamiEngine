@@ -3,17 +3,14 @@
 #include <mutex>
 #include <string>
 #include <unordered_map>
-#include <Windows.h>
-
-#include "Engine_Module_SerializationTypeRegistry.h"
 
 namespace
 {
     struct Slot
     {
-        void*  object;
-        void (*destroy)(void*);
-        void*  owner; // 実体を作ったモジュール (HMODULE)。create 関数のアドレスから求める
+        void*                            object;
+        void                           (*destroy)(void*);
+        NanamiEngine::Core::ModuleHandle owner; // 実体を作ったモジュール。create 関数のアドレスから求める
     };
 
     struct Table
@@ -43,7 +40,7 @@ namespace cereal::detail
         }
         // WARNING: create() は別の StaticObject を触って再入してくる (OutputBindingCreator のコンストラクタが
         //          OutputBindingMap を取る等) ので、ロックの外で作る
-        void* const owner  = NanamiEngine::Module::Serialization::SerializationTypeRegistry::ModuleOf(reinterpret_cast<const void*>(create));
+        const NanamiEngine::Core::ModuleHandle owner = NanamiEngine::Core::ModuleOf(reinterpret_cast<const void*>(create));
         void* const object = create();
         std::lock_guard lock(table.mutex);
         const auto [it, inserted] = table.slots.try_emplace(key, Slot{ object, destroy, owner });
@@ -59,7 +56,7 @@ namespace cereal::detail
 
 namespace NanamiEngine::Module::Serialization
 {
-    std::size_t SharedStaticObjects::ReleaseOwnedBy(const void* module)
+    std::size_t SharedStaticObjects::ReleaseOwnedBy(const Core::ModuleHandle module)
     {
         Table& table = GetTable();
         std::lock_guard lock(table.mutex);
@@ -81,7 +78,7 @@ namespace NanamiEngine::Module::Serialization
         return released;
     }
 
-    std::size_t SharedStaticObjects::CountOwnedBy(const void* module)
+    std::size_t SharedStaticObjects::CountOwnedBy(const Core::ModuleHandle module)
     {
         Table& table = GetTable();
         std::lock_guard lock(table.mutex);

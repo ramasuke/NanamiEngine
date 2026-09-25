@@ -18,6 +18,7 @@ SER="$ROOT/Engine/Module/Serialization"
 
 echo "== build Engine.so"
 "$CXX" "${FLAGS[@]}" -DNANAMI_ENGINE_BUILD_DLL -shared -o "$OUT/libHotReloadPocEngine.so" \
+    "$ROOT/Engine/Core/Api/NanamiModule.cpp" \
     "$SER/Engine_Module_SerializationTypeRegistry.cpp" "$SER/Engine_Module_SharedStaticObject.cpp" \
     "$SER/Engine_Module_SerializationModuleUnloader.cpp" "$POC/Engine/PocEngine.cpp" -ldl
 echo "== build Game.so"

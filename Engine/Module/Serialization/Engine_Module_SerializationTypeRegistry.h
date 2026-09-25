@@ -7,6 +7,7 @@
 
 #include "../../../Libs/cereal/include/cereal/types/polymorphic.hpp"
 #include "../../Core/Api/NanamiApi.h"
+#include "../../Core/Api/NanamiModule.h"
 
 namespace NanamiEngine::Module::Serialization
 {
@@ -18,8 +19,8 @@ namespace NanamiEngine::Module::Serialization
         std::type_index base;
         /** 保存ファイルに入る polymorphic_name (cereal::detail::binding_name<T>::name())。関係だけの登録では空 */
         std::string name;
-        /** 登録元のモジュール (HMODULE)。ヘッダに Windows.h を出さないため void* で持つ */
-        void* module;
+        /** 登録元のモジュール */
+        Core::ModuleHandle module;
     };
 
     //Serializeの多層登録を保存するRegistry
@@ -33,12 +34,10 @@ namespace NanamiEngine::Module::Serialization
         void Record(std::type_index type, std::type_index base, std::string name, const void* addressInModule);
 
         [[nodiscard]] std::vector<SerializationTypeRecord> Records() const;
-        [[nodiscard]] std::vector<SerializationTypeRecord> RecordsOfModule(const void* module) const;
+        [[nodiscard]] std::vector<SerializationTypeRecord> RecordsOfModule(Core::ModuleHandle module) const;
         /** @brief そのモジュールの記録を消す */
-        void RemoveModule(const void* module);
+        void RemoveModule(Core::ModuleHandle module);
 
-        /** @brief アドレスが属するモジュール */
-        [[nodiscard]] static void* ModuleOf(const void* address);
 
     private:
         SerializationTypeRegistry() = default;

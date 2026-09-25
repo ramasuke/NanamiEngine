@@ -13,7 +13,7 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
         m_prefsList.push_back(std::move(info));
     }
 
-    std::size_t LocalPrefsRegistry::UnregisterModule(const void* module)
+    std::size_t LocalPrefsRegistry::UnregisterModule(const Core::ModuleHandle module)
     {
         return std::erase_if(m_prefsList, [module](const PrefInfo& info) { return info.module == module; });
     }

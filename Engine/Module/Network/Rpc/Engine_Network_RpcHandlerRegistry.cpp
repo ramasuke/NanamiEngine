@@ -7,7 +7,7 @@
 
 namespace NanamiEngine::Module::Network
 {
-    void RpcHandlerRegistry::Register(const Core::Network::RpcId id, Handler handler, void* const module)
+    void RpcHandlerRegistry::Register(const Core::Network::RpcId id, Handler handler, const Core::ModuleHandle module)
     {
         if (const auto [it, inserted] = handlers_.try_emplace(id.Value(), Entry{ std::move(handler), module }); !inserted)
         {
@@ -28,7 +28,7 @@ namespace NanamiEngine::Module::Network
         it->second.handler(buffer, offset);
     }
 
-    std::size_t RpcHandlerRegistry::UnregisterModule(const void* module)
+    std::size_t RpcHandlerRegistry::UnregisterModule(const Core::ModuleHandle module)
     {
         return std::erase_if(handlers_, [module](const auto& pair) { return pair.second.module == module; });
     }

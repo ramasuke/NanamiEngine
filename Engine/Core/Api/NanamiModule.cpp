@@ -4,21 +4,22 @@
 
 namespace NanamiEngine::Core
 {
-    void* ModuleOf(const void* address)
+    ModuleHandle ModuleOf(const void* address)
     {
         if (address == nullptr)
-            return nullptr;
+            return {};
         HMODULE module = nullptr;
+        // NOTE: UNCHANGED_REFCOUNT: 参照カウントを増やさない (増やすと FreeLibrary で外れなくなる)
         if (!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
                                 reinterpret_cast<LPCWSTR>(address), &module))
-            return nullptr;
-        return module;
+            return {};
+        return ModuleHandle(module);
     }
 
-    void* ModuleOfVTable(const void* object)
+    ModuleHandle ModuleOfVTable(const void* object)
     {
         if (object == nullptr)
-            return nullptr;
+            return {};
         return ModuleOf(*static_cast<void* const*>(object));
     }
 }

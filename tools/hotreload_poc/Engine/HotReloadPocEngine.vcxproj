@@ -41,6 +41,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Engine\Core\Api\NanamiModule.cpp" />
     <ClCompile Include="..\..\..\Engine\Module\Serialization\Engine_Module_SerializationTypeRegistry.cpp" />
     <ClCompile Include="..\..\..\Engine\Module\Serialization\Engine_Module_SharedStaticObject.cpp" />
     <ClCompile Include="..\..\..\Engine\Module\Serialization\Engine_Module_SerializationModuleUnloader.cpp" />
@@ -48,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Engine\Core\Api\NanamiApi.h" />
+    <ClInclude Include="..\..\..\Engine\Core\Api\NanamiModule.h" />
     <ClInclude Include="..\..\..\Engine\Module\Serialization\Engine_Module_SerializationRegistration.h" />
     <ClInclude Include="..\..\..\Engine\Module\Serialization\Engine_Module_SerializationTypeRegistry.h" />
     <ClInclude Include="..\..\..\Engine\Module\Serialization\Engine_Module_SharedStaticObject.h" />

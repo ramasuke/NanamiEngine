@@ -8,7 +8,7 @@ namespace
     {
         NanamiEngine::Module::GameObject::AddComponent::DrawMenuFunc draw;
         int order;
-        void* module;
+        NanamiEngine::Core::ModuleHandle module;
     };
 
     // NOTE: static 初期化順に依存しないよう関数内 static
@@ -28,7 +28,7 @@ bool GameObject::AddComponent::RegisterMenu(const DrawMenuFunc draw, const int o
     return true;
 }
 
-std::size_t GameObject::AddComponent::UnregisterModule(const void* module)
+std::size_t GameObject::AddComponent::UnregisterModule(const NanamiEngine::Core::ModuleHandle module)
 {
     return std::erase_if(RegisteredMenus(), [module](const RegisteredMenu& menu) { return menu.module == module; });
 }

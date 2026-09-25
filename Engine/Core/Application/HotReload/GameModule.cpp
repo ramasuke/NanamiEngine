@@ -132,7 +132,7 @@ namespace NanamiEngine::Core::Application::HotReload
             outError = "ゲーム DLL を読めません: " + PathToUtf8(dll) + " (" + LastErrorText() + ")";
             return false;
         }
-        current_ = module;
+        current_ = ModuleHandle(module);
         ++generation_;
         Module::Log("HotReload: ゲーム DLL を読みました (世代 " + std::to_string(generation_) + "): " + PathToUtf8(dll));
         return true;
@@ -140,7 +140,7 @@ namespace NanamiEngine::Core::Application::HotReload
 
     void GameModule::Reload()
     {
-        void* const oldModule = current_;
+        const ModuleHandle oldModule = current_;
         const auto  gameWindow = ApplicationBase::GameWindow();
 
         // 0. Play 中は状態を持ち越さない。
@@ -192,10 +192,10 @@ namespace NanamiEngine::Core::Application::HotReload
                 + ", casters " + std::to_string(leftoverCasters) + ", statics " + std::to_string(leftoverStatics) + ")。FreeLibrary はしません");
         }
         
-        current_ = nullptr;
+        current_ = {};
         if (keepOldModules_ || hasLeftover)
             retired_.push_back(oldModule);
-        else if (!FreeLibrary(static_cast<HMODULE>(oldModule)))
+        else if (!FreeLibrary(static_cast<HMODULE>(oldModule.Raw())))
             Module::LogError("HotReload: FreeLibrary に失敗しました (" + LastErrorText() + ")");
         Module::Serialization::SerializationModuleUnloader::ClearClassVersions();
 

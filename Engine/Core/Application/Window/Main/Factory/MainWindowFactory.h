@@ -40,7 +40,7 @@ namespace NanamiEngine::Core::MainWindow
         }
 
         /** @brief module が登録したウィンドウ種別を消す。戻り値は消した数 */
-        std::size_t UnregisterModule(const void* module)
+        std::size_t UnregisterModule(const ModuleHandle module)
         {
             std::size_t count = 0;
             for (auto it = modules_.begin(); it != modules_.end();)
@@ -90,7 +90,7 @@ namespace NanamiEngine::Core::MainWindow
         std::unordered_map<std::string, std::function<std::shared_ptr<IMainWindow>()>> factories_;
         std::unordered_map<std::string, std::function<std::shared_ptr<IMainWindow>()>> loaders_;
         std::unordered_map<std::string, std::string>                                    categories_;
-        std::unordered_map<std::string, void*>                                          modules_;
+        std::unordered_map<std::string, ModuleHandle>                                   modules_;
     };
 }
 

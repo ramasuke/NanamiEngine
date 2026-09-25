@@ -6,7 +6,7 @@ namespace NanamiEngine::Module::Asset
         const std::string& assetNameLabel,
         const std::string& extensionLabel,
         const std::string& categoryLabel,
-        void* const module)
+        const Core::ModuleHandle module)
     {
         if (std::ranges::any_of(creatableAssetsData_, [&](const auto& registered) { return registered.entry.name == assetNameLabel && registered.entry.extension == extensionLabel; }))
             return;
@@ -54,7 +54,7 @@ namespace NanamiEngine::Module::Asset
         return result;
     }
 
-    std::size_t AssetFactory::UnregisterModule(const void* module)
+    std::size_t AssetFactory::UnregisterModule(const Core::ModuleHandle module)
     {
         const auto ofModule = [module](const auto& registered) { return registered.module == module; };
         return std::erase_if(factories_, ofModule)

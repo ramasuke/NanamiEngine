@@ -2,6 +2,7 @@
 #include <cstddef>
 
 #include "../../Core/Api/NanamiApi.h"
+#include "../../Core/Api/NanamiModule.h"
 
 // ゲーム DLL をアンロードする前に、その DLL が cereal に登録した多相型を表から消す
 // 消す対象は SerializationTypeRegistry の記録から引き削除する。
@@ -24,11 +25,11 @@ namespace NanamiEngine::Module::Serialization
     class NANAMI_API SerializationModuleUnloader final
     {
     public:
-        static ModuleUnloadReport Unregister(const void* module);
+        static ModuleUnloadReport Unregister(Core::ModuleHandle module);
         static void               ClearClassVersions();
         /** @brief PolymorphicCasters に vtable が module にある caster が残っているか 
          * Debugの取り残しassert用
          * */
-        [[nodiscard]] static std::size_t CountLeftoverCasters(const void* module);
+        [[nodiscard]] static std::size_t CountLeftoverCasters(Core::ModuleHandle module);
     };
 }
