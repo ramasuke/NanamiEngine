@@ -13,6 +13,7 @@ Host exe (WinMain のみ)  ->  NanamiEngine.dll  <-  Game.dll (Assets/Scripts)
 
 改訂履歴
 - 2026-09-25: 初版 (実現可能性調査)。
+- 2026-09-25: 段階 A 実装 (MSVC ビルド・エディタ確認済み)。PoC を `tools/hotreload_poc/` に実装、Linux (g++ + dlopen) で 10 サイクル PASS。
 - 2026-09-25: 段階 A (多相登録のラップ) を追加。登録解除を「cereal の表の差分方式」から「登録記録方式」に変更。
   レビューで出た検討事項 (開いているシーンの保持、バージョン運用、期限切れ weak_ptr、ゲーム製ウィンドウ、
   取り残し検出、FreeLibrary しない保険モード) を §5 に追加。
@@ -166,15 +167,23 @@ cereal は多相ポインタの保存・復元に、モジュールごとの関�
 - ゲーム側がエンジン型 (`shared_ptr<IGameObject>` など) を保存しようとしても、ゲームの map にエンジン型が無い。
 つまり **双方向にマージが必要**で、片方向のコピーでは足りない。
 
-設計案 (cereal は vendored なので改変できる):
-`StaticObject<T>::create()` を、エンジン DLL が export する `void*& NanamiSharedStaticSlot(const char* typeName)` 経由で
-1 つの実体を返すように書き換える (約 20 行)。これで全モジュールが同じ map を見る。
+実装 (`Libs/cereal/include/cereal/details/static_object.hpp` のパッチ、`CEREAL_NANAMI_SHARED_STATIC_OBJECT` 定義時のみ有効。
+未定義なら元の cereal のまま = 今の静的 lib ビルドは無変更):
+`StaticObject<T>::create()` が、エンジン DLL の export する `cereal::detail::nanami_shared_static_object(typeid(T).name(), create, destroy)`
+から実体を取る。表は `Engine/Module/Serialization/Engine_Module_SharedStaticObject.cpp` にあり、実体を作ったモジュール
+(create 関数のアドレスから求める) を覚えておく。これで全モジュールが同じ map を見る。
 登録は Game.dll の静的初期化 (DllMain のローダーロック中) で走るが、既にロード済みのエンジン DLL の export を呼ぶだけなので問題ない。
+**注意**: `create()` はロックの外で呼ぶ (`OutputBindingCreator` のコンストラクタが `OutputBindingMap` を取りに再入する。
+ロック中に作ると `std::mutex` でデッドロックする。PoC で判明)。
+export 指定は `Engine/Core/Api/NanamiApi.h` の `NANAMI_API` (`NANAMI_ENGINE_BUILD_DLL` / `NANAMI_ENGINE_USE_DLL` / どちらも無し = 空)。
+段階 2 で全公開クラスに付けるものの先行分として、Serialization の 3 クラスに付けてある。
 
 #### 登録解除 (記録方式)
 
 **cereal の表のキー集合を LoadLibrary 前後で比べて増えた分を消す「差分方式」は使わない。**
-`SerializationTypeRegistry` から Game.dll の `module` の記録を引き、その `name` / `type` / `base` で cereal の表から消す:
+`SerializationTypeRegistry` から Game.dll の `module` の記録を引き、その `name` / `type` / `base` で cereal の表から消す
+(実装: `Engine/Module/Serialization/Engine_Module_SerializationModuleUnloader.cpp` の `SerializationModuleUnloader::Unregister(module)`。
+`ClearClassVersions()` と、Debug の取り残し確認用 `CountLeftoverCasters(module)` も同じクラス):
 
 | 表 | 消すキー |
 |---|---|
@@ -183,8 +192,10 @@ cereal は多相ポインタの保存・復元に、モジュールごとの関�
 | `PolymorphicCasters::map` | `map[base]` から `type` の項目を消す。`base` の項目が空になれば `base` ごと消す |
 | `PolymorphicCasters::reverseMap` | `type` |
 
-- 保険として、`PolymorphicCasters` に残った caster のポインタが Game.dll のアドレス範囲にあるものも消してよい
-  (`GetModuleHandleExW(FROM_ADDRESS)` が Game.dll を返すもの)。
+- 推移的な項目: cereal は (Mid, Derived) の登録時に `map[祖先][Derived]` と `reverseMap[Derived] = 祖先` も足すので、派生をキーに
+  全部の基底から消す。その型を基底とする `map[型]` も丸ごと消す (派生は同じ DLL の型)。
+- 保険として、vtable が Game.dll にある caster を含む項目も消す (実体はヒープにあるので、アドレスではなく vtable で
+  `GetModuleHandleExW(FROM_ADDRESS)` を引く)。PoC では記録だけで足りていて、この掃除で消えるものは 0。
 - `SerializationTypeRegistry` の Game.dll 分の記録も、Game.dll を外すときに消す。
 - `Versions::mapping` は型名ハッシュ → 番号だけで、無ければ保存時に入れ直される (`cereal.hpp:596` `registerClassVersion`)。
   `emplace` なので古い値が残る (`helpers.hpp:415`)。**FreeLibrary の後、LoadLibrary の前に丸ごと `clear()` する**。
@@ -362,8 +373,8 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
 | 段階 | 内容 | 主な作業 | 完了条件 | 進捗 |
 |---|---|---|---|---|
 | **A** | 多相登録のラップ (§3.2) | `NANAMI_REGISTER_TYPE` / `NANAMI_REGISTER_POLYMORPHIC_RELATION` と `SerializationTypeRegistry` を追加。既存の cereal 直接呼び出し (エンジン 32 型 / 53 関係、ゲーム 156 型 / 160 関係) と 3 つのラッパーマクロをスクリプトで置き換え。ツール・ドキュメント更新 (下記) | 型名の文字列が変わらないこと、regen-catalog の結果が同一、MSVC ビルド、既存のシーン・プレハブ・BT・AnimTree がエディタで開くこと | **実装済み** (2026-09-25)。置き換え 195 ファイル / 397 箇所、型 186・関係 211 の集合が前後で一致、データ内の `polymorphic_name` 246 種すべてが登録名に含まれることを確認。**MSVC ビルドとエディタでの確認は未実施** (Windows 環境で行う) |
-| **PoC** | §3.2 の共有スロットパッチ + 記録方式の登録解除を、最小の Host exe + Engine.dll + Game.dll で検証 | `static_object.hpp` 改変、`SerializationTypeRegistry` からの削除、ロード → シーン復元 → アンロード → 再ロードの 1 サイクル | ゲーム Component を含む `.scene` / `.prefab` が JSON・PortableBinary 双方で復元でき、10 回繰り返しても落ちない。不成立なら止めて報告 | 未着手 |
-| 0 | /MD 化 | props 変更、Effekseer 8 lib の /MD 再ビルド | 4 構成 (Editor/Game × Debug/Release) が動く | 未着手 |
+| **PoC** | §3.2 の共有スロットパッチ + 記録方式の登録解除を、最小の Host exe + Engine.dll + Game.dll で検証 | `static_object.hpp` 改変、`SharedStaticObjects` / `SerializationModuleUnloader` の追加、`tools/hotreload_poc/` (sln + Linux 用スクリプト、README 参照) | ゲーム型を含む多相ポインタが JSON・PortableBinary 双方でエンジン側から復元でき、ゲーム側からエンジン型も保存・復元でき、10 回繰り返しても表がベースラインに戻る。不成立なら止めて報告 | **実装済み**。Linux (g++ + `dlopen(RTLD_DEEPBIND)`、`-fno-gnu-unique`) で 10 サイクル PASS、valgrind でエラー 0・definite leak 0。**Windows (MSVC) での実行は未実施**: `tools/hotreload_poc/HotReloadPoc.sln` をビルドして `HotReloadPocHost.exe` を実行する |
+| 0 | /MD 化 | props 変更、Effekseer 8 lib の /MD 再ビルド | 4 構成 (Editor/Game × Debug/Release) が動く | 未着手 (次) |
 | 1 | ゲームコードから DxLib を排除 | 34 ファイル、約 150 箇所をエンジンラッパーへ (入力・時間・2D 描画・サウンド・座標変換のラッパー整備を含む)。enet 1 ファイル | `DX_LIB_NOT_DEFAULTPATH` 定義でゲーム側がリンクできる | 未着手 |
 | 2 | エンジン DLL 化 (Game は exe のまま) | Host exe へ WinMain 移動、`NANAMI_API` 付与 (382 クラス)、`SingletonBase` 7 クラスの `.cpp` 化、`IMGUI_API`、cereal パッチ適用、engine_dist 更新 | 4 構成が動き、Game モードの成果物と `GameBuilder` の手順が変わらない | 未着手 |
 | 3 | Game.dll 化 + ホットリロード | `ConfigurationType` 切替、§4 のモジュール ID 付き Unregister、`PurgeExpired`、ウィンドウ群の削除関数、§5 の差し替え手順と保険モード、ビルド起動 UI | エディタ上で Game.dll を差し替え、開いていたシーンとウィンドウが戻る | 未着手 |
@@ -392,9 +403,12 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
 
 ## 11. 未検証事項 (実装前に PoC で確認すること)
 
-1. §3.2 の cereal パッチで、エンジン側からゲーム Component を含む `.scene` / `.prefab` が JSON・PortableBinary 双方で復元できること。
-2. `SerializationTypeRegistry` の記録だけで cereal の表から Game.dll 分を漏れなく消せること (差分方式との突き合わせは PoC の検証手段としてだけ使う)。
+1. §3.2 の cereal パッチで、エンジン側からゲーム型を含む多相ポインタが JSON・PortableBinary 双方で復元できること。
+   → PoC で成立 (Linux)。Windows 実行が残り。実エンジンの `.scene` / `.prefab` での確認は段階 3。
+2. `SerializationTypeRegistry` の記録だけで cereal の表から Game.dll 分を漏れなく消せること。
+   → PoC で成立 (記録だけで表がベースラインに戻り、vtable による保険の掃除は 0 件)。
 3. アンロード -> 再ロードを 10 回以上繰り返してもリークや dangling が無いこと (Application Verifier / `_CrtDumpMemoryLeaks` で確認)。
+   → PoC で 10 サイクル、valgrind エラー 0 (Linux)。Windows の Debug ビルドは `_CRTDBG_LEAK_CHECK_DF` を有効にしてある。
 4. Effekseer /MD 再ビルド物で、既存の全エフェクトが従来通り描けること。
 5. `IMGUI_API` dllimport で `ImGuiHelper.h` (LibCore) と ImGuizmo が問題なく動くこと。
 6. VS デバッガをアタッチしたまま Game.dll を差し替えてブレークポイントが効くこと (PDB コピー運用)。

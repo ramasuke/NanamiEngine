@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "../../../Libs/cereal/include/cereal/types/polymorphic.hpp"
+#include "../../Core/Api/NanamiApi.h"
 
 // cereal の多相登録 (NANAMI_REGISTER_TYPE / NANAMI_REGISTER_POLYMORPHIC_RELATION) の記録。
 // cereal 自身は「どの型を、どのモジュール (exe / dll) が登録したか」を覚えないので、ここに残しておく。
@@ -24,7 +25,7 @@ namespace NanamiEngine::Module::Serialization
         void* module;
     };
 
-    class SerializationTypeRegistry final
+    class NANAMI_API SerializationTypeRegistry final
     {
     public:
         // WARNING: SingletonBase を使うと DLL ごとに実体ができるので、.cpp に定義した関数ローカル static を返す

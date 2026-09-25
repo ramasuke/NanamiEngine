@@ -1264,6 +1264,12 @@
     <ClCompile Include="Engine\Module\Serialization\Engine_Module_SerializationTypeRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Module\Serialization\Engine_Module_SharedStaticObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Module\Serialization\Engine_Module_SerializationModuleUnloader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClInclude Include="Engine\Core\Application\Configuration\ApplicationConfiguration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -4680,6 +4686,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\Serialization\Engine_Module_SerializationTypeRegistry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Serialization\Engine_Module_SharedStaticObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Serialization\Engine_Module_SerializationModuleUnloader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Api\NanamiApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.h">
