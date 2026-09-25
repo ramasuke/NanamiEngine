@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <coroutine>
 #include <tuple>
 
@@ -23,7 +24,7 @@ namespace Coroutine
         Follow,
     };
 
-    struct TweenBodyOptions
+    struct NANAMI_API TweenBodyOptions
     {
         TweenBodyMode mode = TweenBodyMode::Delta;
         //NOTE: Y は重力に任せ、XZ だけ tween で動かす

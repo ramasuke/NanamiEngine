@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 
 #include "../../../GameObject/Interface/IGameObject.h"
@@ -12,7 +13,7 @@ namespace NanamiEngine::Module::Physics
 
 namespace NanamiEngine::Module::Physics::Callback
 {
-    class ISensorStayable
+    class NANAMI_API ISensorStayable
     {
     public:
         virtual ~ISensorStayable() = default;

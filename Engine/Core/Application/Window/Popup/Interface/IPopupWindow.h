@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../../../Module/Guid/Guid.h"
 #include "../DrawGuiContext/PopupWindowDrawGuiContext.h"
 
@@ -10,7 +11,7 @@ namespace NanamiEngine::Core::PopupWindow
         Closed,
     };
 
-    class IPopupWindow
+    class NANAMI_API IPopupWindow
     {
     public:
         virtual ~IPopupWindow() = default;

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
 #include "../Install/AssetUpdaterPaths.h"
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::AssetUpdater
 {
-    struct HttpAssetUpdaterSettings
+    struct NANAMI_API HttpAssetUpdaterSettings
     {
         std::string       manifestUrl;
         AssetUpdaterPaths paths;
@@ -14,7 +15,7 @@ namespace NanamiEngine::AssetUpdater
         int               timeoutMilliSeconds;
     };
 
-    class HttpAssetUpdater final : public IAssetUpdater
+    class NANAMI_API HttpAssetUpdater final : public IAssetUpdater
     {
     public:
         explicit HttpAssetUpdater(HttpAssetUpdaterSettings settings);

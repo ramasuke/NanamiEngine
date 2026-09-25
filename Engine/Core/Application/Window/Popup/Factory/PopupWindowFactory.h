@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 #include <unordered_map>
 #include <functional>
@@ -12,11 +13,13 @@ namespace NanamiEngine::Core::PopupWindow
 {
     using FactoryFunc = std::function<std::unique_ptr<IPopupWindow>()>;
 
-    class PopupWindowFactory final : public SingletonBase<PopupWindowFactory>
+    class NANAMI_API PopupWindowFactory final : public SingletonBase<PopupWindowFactory>
     {
     public:
-        /** @param category ツールバーのメニューでの入れ子 ("A::B") */
-        template <typename T>
+        static PopupWindowFactory& Instance();
+
+    public:
+      template <typename T>
         void Register(const std::string& name, const std::string& category)
         {
             static_assert(std::is_base_of_v<IPopupWindow, T>, "T must inherit from IPopupWindow");

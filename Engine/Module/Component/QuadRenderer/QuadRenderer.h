@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/Hlsl/HlslVsFile.h"
@@ -13,7 +14,7 @@ namespace NanamiEngine::Module::Component
     // DxLibのMV1系APIを一切経由しない(SetTransformToWorld + DrawPrimitive3DToShader2)ため、
     // 格子状バリア壁のような「見た目はほぼ平面」なエフェクトをモデルアセット無しで実現できる。
     // 格子模様そのものはジオメトリではなくpsFile_側のUV演算で作る想定。
-    class QuadRenderer final : public ComponentBase,
+    class NANAMI_API QuadRenderer final : public ComponentBase,
                                public LifeCycleCallback::IRenderable,
                                public IShaderConstantBufferHost
     {

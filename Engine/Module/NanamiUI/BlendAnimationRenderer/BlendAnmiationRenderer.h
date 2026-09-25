@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Component/ComponentBase.h"
 #include "../../Component/BlendImageRenderer/BlendImageRenderer.h"
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    class BlendAnimationRenderer final : public Component::ComponentBase,
+    class NANAMI_API BlendAnimationRenderer final : public Component::ComponentBase,
                                          public LifeCycleCallback::IAwakable,
                                          public LifeCycleCallback::IUpdatable
     {

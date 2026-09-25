@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cereal/cereal.hpp>
 #include <cereal/archives/json.hpp>
 
 namespace LibCore {
 
-    class PrefabExtractArchive
+    class NANAMI_API PrefabExtractArchive
         : public cereal::OutputArchive<PrefabExtractArchive>
     {
     public:

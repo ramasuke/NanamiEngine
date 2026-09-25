@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <optional>
 #include <utility>
 
@@ -16,7 +17,7 @@ namespace NanamiEngine::Module::Component
      * @brief 自分と子孫の Collider(Sensor 以外)を1つの Body にまとめて動かす
      * @note 子孫に別の RigidBody があれば、そこから下はその RigidBody の持ち物になる
      */
-    class RigidBody final : public ComponentBase,
+    class NANAMI_API RigidBody final : public ComponentBase,
                             public LifeCycleCallback::IAwakable,
                             public LifeCycleCallback::IBeginPhysics,
                             public LifeCycleCallback::IEndPhysics

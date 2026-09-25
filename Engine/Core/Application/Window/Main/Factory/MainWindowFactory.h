@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 #include <unordered_map>
 #include <functional>
@@ -12,8 +13,11 @@
 
 namespace NanamiEngine::Core::MainWindow
 {
-    class MainWindowFactory final : public SingletonBase<MainWindowFactory>
+    class NANAMI_API MainWindowFactory final : public SingletonBase<MainWindowFactory>
     {
+    public:
+        static MainWindowFactory& Instance();
+
     public:
         /** @param category ツールバーのメニューでの入れ子 ("A::B") */
         template <typename T>

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include "../JoltPhysics/Jolt/Jolt.h"
 #include <../JoltPhysics/Jolt/Physics/Body/AllowedDOFs.h>
@@ -22,7 +23,7 @@ namespace NanamiEngine::Module::GameObject
 
 namespace NanamiEngine::Core
 {
-    class Physics final
+    class NANAMI_API Physics final
     {
     public:
         Physics();

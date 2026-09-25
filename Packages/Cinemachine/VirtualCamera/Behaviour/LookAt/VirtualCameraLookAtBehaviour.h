@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../IVirtualCameraBehaviour.h"
 #include "../../../../../Engine/Core/Object/Field/Field.h"
 #include "../../../../../Engine/Module/Component/ComponentBase.h"
 
 namespace NanamiEngine::CineMachine::Behaviour
 {
-    class VirtualCameraLookAtBehaviour final : public Component::ComponentBase,
+    class NANAMI_API VirtualCameraLookAtBehaviour final : public Component::ComponentBase,
                                                public LifeCycleCallback::IAwakable,
                                                public LifeCycleCallback::IDebugRenderable,
                                                public IVirtualCameraBehaviour

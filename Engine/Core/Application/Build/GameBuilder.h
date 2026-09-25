@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <atomic>
 #include <chrono>
 #include <cstddef>
@@ -27,7 +28,7 @@ namespace NanamiEngine::Core::Application::Build
     };
 
     /** @brief 直近のビルドの結果。Build Settings ウィンドウに出す */
-    struct BuildReport
+    struct NANAMI_API BuildReport
     {
         BuildOutcome             outcome = BuildOutcome::None;
         std::string              elapsed;
@@ -38,7 +39,7 @@ namespace NanamiEngine::Core::Application::Build
     };
 
     /** @brief プロジェクトの .sln をゲーム版 (NanamiApplicationMode=Game) で MSBuild し、配布用フォルダにまとめる */
-    class GameBuilder final
+    class NANAMI_API GameBuilder final
     {
     public:
         static GameBuilder& Instance();
@@ -75,7 +76,7 @@ namespace NanamiEngine::Core::Application::Build
         };
 
         /** @brief Begin で取った Build Settings の写し。ビルド中に設定を変えても影響しない */
-        struct Paths
+        struct NANAMI_API Paths
         {
             std::filesystem::path projectRoot;
             std::filesystem::path solution;
@@ -90,7 +91,7 @@ namespace NanamiEngine::Core::Application::Build
             bool                  assetUpdates  = false;
         };
 
-        struct MirrorStats
+        struct NANAMI_API MirrorStats
         {
             size_t copied  = 0;
             size_t removed = 0;

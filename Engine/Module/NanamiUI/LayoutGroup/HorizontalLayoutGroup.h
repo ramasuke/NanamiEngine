@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "vec2.hpp"
 #include "LayoutCrossAlign.h"
 #include "../../Component/ComponentBase.h"
@@ -8,7 +9,7 @@ namespace NanamiEngine::Module::NanamiUi
 {
     // 子GameObjectをX軸方向に一列に並べる。子の実際の見た目サイズは知らないため、
     // cellSize_を「各子が占めるものとみなす仮想サイズ」として並べる(実サイズの変更は行わない)。
-    class HorizontalLayoutGroup final : public Component::ComponentBase,
+    class NANAMI_API HorizontalLayoutGroup final : public Component::ComponentBase,
                                         public LifeCycleCallback::ILateUpdatable
     {
     private:

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <vector>
 
 #include "IPacketSender.h"
@@ -9,7 +10,7 @@
 
 namespace NanamiEngine::Core::Network
 {
-    class INetworkSystem : public IPacketSender,
+    class NANAMI_API INetworkSystem : public IPacketSender,
                            public IPlayerIdProvider
     {
     public:

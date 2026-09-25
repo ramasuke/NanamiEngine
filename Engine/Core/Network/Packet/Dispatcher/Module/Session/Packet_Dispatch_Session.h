@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../Packet_Dispatch_PacketDispatcherBase.h"
 #include "../../../../PlayerId/PlayerId.h"
 #include "../../../../../../../Packages/R4/R4.h"
@@ -15,7 +16,7 @@ namespace NanamiEngine::Core::Network
     /**
      * セッション管理
      */
-    class SessionDispatcher final : public PacketDispatcherBase
+    class NANAMI_API SessionDispatcher final : public PacketDispatcherBase
     {
     public:
         explicit SessionDispatcher(

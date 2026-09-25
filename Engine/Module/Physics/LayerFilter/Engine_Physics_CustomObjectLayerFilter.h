@@ -1,10 +1,11 @@
-﻿#include "../Layer/Engine_Physics_PhysicsLayer.h"
+﻿#include "Engine/Core/Api/NanamiApi.h"
+#include "../Layer/Engine_Physics_PhysicsLayer.h"
 #include "Jolt/Jolt.h"
 #include "Jolt/Physics/Collision/ObjectLayer.h"
 
 namespace NanamiEngine::Module::Physics
 {
-    class CustomObjectLayerFilter final : public JPH::ObjectLayerFilter
+    class NANAMI_API CustomObjectLayerFilter final : public JPH::ObjectLayerFilter
     {
     public:
         explicit CustomObjectLayerFilter(const LayerMask mask)

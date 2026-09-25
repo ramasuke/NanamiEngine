@@ -1,11 +1,12 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include "../../../../Module/Guid/Guid.h"
 #include "INetworkTickable.h"
 
 namespace NanamiEngine::Core::Network
 {
-    class INetworkTickableRegistry
+    class NANAMI_API INetworkTickableRegistry
     {
     public:
         virtual ~INetworkTickableRegistry() = default;

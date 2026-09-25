@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../Scene/Scene.h"
 #include "../AssetBase.h"
 #include "../Factory/AssetFactory.h"
@@ -7,7 +8,7 @@ namespace NanamiEngine::Module::Asset
 {
     constexpr auto SCENE_FILE_EXTENSION_LABEL = ".scene";
     
-    class SceneFile final : public AssetBase
+    class NANAMI_API SceneFile final : public AssetBase
     {
     public:
         explicit SceneFile(std::string contentPath = "");

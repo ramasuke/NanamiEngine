@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <atomic>
 #include <cstdint>
 #include <stop_token>
@@ -16,7 +17,7 @@ namespace NanamiEngine::AssetUpdater
         Failed,
     };
 
-    struct UpdateCheckResult
+    struct NANAMI_API UpdateCheckResult
     {
         UpdateCheckStatus status = UpdateCheckStatus::Failed;
         AssetManifest     remote;
@@ -27,7 +28,7 @@ namespace NanamiEngine::AssetUpdater
     };
 
     /** ダウンロード中に別スレッドから書かれ、画面側が毎フレーム読む */
-    struct DownloadProgress
+    struct NANAMI_API DownloadProgress
     {
         std::atomic<std::uint64_t> receivedBytes {0};
         std::atomic<std::uint64_t> totalBytes    {0};
@@ -35,14 +36,14 @@ namespace NanamiEngine::AssetUpdater
         std::atomic<std::uint32_t> totalFiles    {0};
     };
 
-    struct DownloadResult
+    struct NANAMI_API DownloadResult
     {
         bool        ok        = false;
         bool        cancelled = false;
         std::string error;
     };
 
-    class IAssetUpdater
+    class NANAMI_API IAssetUpdater
     {
     public:
         virtual ~IAssetUpdater();

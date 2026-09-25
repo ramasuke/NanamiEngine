@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../AssetBase.h"
 #include "../Factory/AssetFactory.h"
 #include "../cereal/include/cereal/types/polymorphic.hpp"
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::Module::Asset
 {
-    class SoundFile final : public AssetBase, public LifeCycleCallback::IEnablableAsset
+    class NANAMI_API SoundFile final : public AssetBase, public LifeCycleCallback::IEnablableAsset
     {
     public:
         explicit SoundFile(std::string contentPath = "");

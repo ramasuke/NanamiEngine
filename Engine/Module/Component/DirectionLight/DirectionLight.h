@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../ComponentBase.h"
 #include "../../LifeCycleCallback/InitRenderable/IInitRenderable.h"
 
 namespace NanamiEngine::Module::Component
 {
-    class DirectionLight final : public ComponentBase,
+    class NANAMI_API DirectionLight final : public ComponentBase,
                                  public LifeCycleCallback::IInitRenderable,
                                  public LifeCycleCallback::IRenderable
     {

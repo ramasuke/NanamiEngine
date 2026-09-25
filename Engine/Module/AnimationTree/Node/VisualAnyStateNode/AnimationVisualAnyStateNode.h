@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../LibCore/cereal/glm/GlmHelper.h"
 #include "../IAnimationNode.h"
 #include "../LibCore/ImGui/Helper/ImGuiHelper.h"
@@ -7,7 +8,7 @@ namespace NanamiEngine::Module::AnimationTree
 {
     
     
-    class AnimationVisualAnyStateNode final : public IAnimationNode
+    class NANAMI_API AnimationVisualAnyStateNode final : public IAnimationNode
     {
     public:
         void           InitForGamePlay  (int   modelHandle ) override;

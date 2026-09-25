@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include <string>
 #include <unordered_map>
@@ -8,12 +9,12 @@
 
 namespace NanamiEngine::Module::Network
 {
-    /** @brief PacketTypeの生バイト値から人間が読める名前を解決するレジストリ。
-     *  EngineはAssets/Scripts側のゲーム独自PacketType列挙を知らないため、
-     *  各レイヤーが自分の持つPacketType名を静的初期化時にここへ登録する
-     *  （PopupWindowFactoryと同じ自己登録パターン）。 */
-    class PacketTypeNameRegistry final : public SingletonBase<PacketTypeNameRegistry>
+    /** @brief PacketTypeの生バイト値から人間が読める名前を解決するレジストリ */
+    class NANAMI_API PacketTypeNameRegistry final : public SingletonBase<PacketTypeNameRegistry>
     {
+    public:
+        static PacketTypeNameRegistry& Instance();
+
     public:
         void Register(Core::Network::PacketType type, const std::string& name);
         [[nodiscard]] std::string Resolve(Core::Network::PacketType type) const;

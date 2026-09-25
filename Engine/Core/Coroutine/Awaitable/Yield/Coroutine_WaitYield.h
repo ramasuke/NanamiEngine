@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <coroutine>
 
 #include "../Engine_Coroutine_ITickableWaitable.h"
 
 namespace Coroutine
 {
-    class WaitYield final : public ITickableWaitable
+    class NANAMI_API WaitYield final : public ITickableWaitable
     {
     public:
         WaitYield() = default;

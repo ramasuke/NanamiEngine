@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <optional>
 
 #include "../../../../../../Libs/ImGui/ImGuiHelper.h"
@@ -19,7 +20,7 @@ namespace NanamiEngine::Core::MainWindow
      *  再生仕様(時間の進め方・区間・ループ/非ループ停止・NameCheck)は AnimationClipNode に合わせ、ゲーム中と同じ見た目になるようにする。
      *  animationFile_ が空のときはモデル自身が持つアニメーションを使う(MV1AttachAnim の AnimSrcMHandle = -1)。
      */
-    class AnimationPreviewSlot final
+    class NANAMI_API AnimationPreviewSlot final
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
 

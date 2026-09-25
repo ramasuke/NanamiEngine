@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 #include <fstream>
 #include <filesystem>
@@ -22,8 +23,8 @@ namespace NanamiEngine::Module::ProjectConfig
     constexpr auto PROJECT_CONFIG_FOLDER_PATH = "ProjectConfig/";
     constexpr auto PROJECT_CONFIG_FILE_EXT    = ".json";
 
-    std::string BuildPath(const std::string& addPath, const std::string& key);
-    void        EnsureDirectory(const std::string& path);
+    NANAMI_API std::string BuildPath(const std::string& addPath, const std::string& key);
+    NANAMI_API void        EnsureDirectory(const std::string& path);
 
     template<Serializable T>
     void SaveWithPath(const std::string& addPath, const std::string& key, const T& value)

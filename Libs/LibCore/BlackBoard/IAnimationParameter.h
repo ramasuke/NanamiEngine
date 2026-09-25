@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
 #include "cereal/cereal.hpp"
 
 namespace NanamiEngine::Module::AnimationTree
 {
-    class IAnimationParameter
+    class NANAMI_API IAnimationParameter
     {
     public:
         template <class Archive>

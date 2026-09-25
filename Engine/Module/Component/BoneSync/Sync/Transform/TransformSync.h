@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../BoneSyncBase.h"
 #include "../../../../../Core/Object/Field/Field.h"
 #include "../../../../GameObject/Interface/IGameObject.h"
 
 namespace NanamiEngine::Module::Bone
 {
-    class TransformSync final : public BoneSyncBase
+    class NANAMI_API TransformSync final : public BoneSyncBase
     {
         void ApplyBonePose(const BonePose& bonePose) override;
 

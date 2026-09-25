@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include "../../../Core/Object/IObject.h"
 
 namespace NanamiEngine::Module::LifeCycleCallback
 {
-    class IShadowRenderable : public virtual Object::IObject
+    class NANAMI_API IShadowRenderable : public virtual Object::IObject
     {
     public:
         template <class Archive>

@@ -244,3 +244,9 @@ namespace NanamiEngine::DebugSheet
         return *stack_.back();
     }
 }
+
+NanamiEngine::DebugSheet::Sheet& NanamiEngine::DebugSheet::Sheet::Instance()
+{
+    static Sheet instance;
+    return instance;
+}

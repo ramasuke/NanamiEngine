@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstddef>
 
 namespace NanamiEngine::AssetUpdater
@@ -8,7 +9,7 @@ namespace NanamiEngine::AssetUpdater
      * 終わらせるのは呼び出し側。古いプロセスの終了処理 (セーブなど) と新しいプロセスが重ならないよう、
      * 起動は atexit の中で行う
      */
-    class Relauncher final
+    class NANAMI_API Relauncher final
     {
     public:
         Relauncher() = delete;

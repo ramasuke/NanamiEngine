@@ -64,6 +64,10 @@ Bash ツールから、ログをスクラッチパッドに書き出して実行
 - CLAUDE.md の規約を守る。特にビルドエラーと絡みやすいもの:
   - `.cpp`/`.h` を新しく作ったら `NanamiEngine.vcxproj`(`Engine/` `Packages/` `Libs/`)か
     `EnviroHunter.vcxproj`(`Assets/`)に手で追加する。`LNK2019`/`LNK2001` はまずこれを疑う。
+  - Editor 構成のエンジンは DLL。ゲーム側のリンクで `__imp_` 付きのシンボルが未解決なら、エンジンのクラス / 関数に
+    `NANAMI_API` が無い (`python tools/engine_api/add_nanami_api.py` を実行。`--check` で一覧)。エンジン DLL 側で
+    `C2280` / `C2027` (暗黙のコピー・デストラクタの実体化) が出たらコピーを `= delete` するか、入れ子の集成体なら
+    `NANAMI_NO_API` を付ける(CLAUDE.md の冒頭参照)。
   - per-file `<ClCompile>` に構成依存の設定を書かない。`<AdditionalOptions>` には `/execution-charset:utf-8` を残す。
   - `NANAMI_REGISTER_TYPE` 等の登録マクロは `.cpp` 末尾、`CEREAL_CLASS_VERSION` はヘッダ。`CEREAL_REGISTER_TYPE` /
     `CEREAL_REGISTER_POLYMORPHIC_RELATION` を直接書かない (`tools/serialization/migrate_register_macros.py` で置き換える)。

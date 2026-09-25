@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <algorithm>
 
 #include "../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine
 {
-    struct Color32 final
+    struct NANAMI_API Color32 final
     {
         explicit Color32(uint8_t r = 255, uint8_t g = 255, uint8_t b = 255);
 

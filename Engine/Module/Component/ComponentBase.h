@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 
 #include "../LifeCycleCallback/Render/IRenderable.h"
@@ -17,7 +18,7 @@ namespace NanamiEngine::Module::GameObject
 
 namespace NanamiEngine::Module::Component
 {
-    class ComponentBase : public virtual Object::IObject
+    class NANAMI_API ComponentBase : public virtual Object::IObject
     {
     public:
         ComponentBase();

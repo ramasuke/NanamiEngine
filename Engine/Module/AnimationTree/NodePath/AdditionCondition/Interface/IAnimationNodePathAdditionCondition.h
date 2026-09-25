@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../../../../Libs/LibCore/BlackBoard/Group/ParameterGroup.h"
 #include "cereal/cereal.hpp"
 
 namespace NanamiEngine::Module::AnimationTree
 {
-    class IAnimationNodePathAdditionCondition 
+    class NANAMI_API IAnimationNodePathAdditionCondition 
     {
     public:
         template <class Archive>

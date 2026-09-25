@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -9,7 +10,7 @@ namespace NanamiEngine::Module::Asset
      * @brief シーンファイルから GUID でたどれるアセットを先読みし、開いているどのシーンからも
      *        参照されないアセットを解放する。対象は IPreloadableAsset を実装したアセットだけ
      */
-    class AssetPreloader final
+    class NANAMI_API AssetPreloader final
     {
     public:
         /** @brief GUID 文字列 → contentPath */

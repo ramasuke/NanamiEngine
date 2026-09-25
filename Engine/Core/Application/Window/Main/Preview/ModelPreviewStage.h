@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 
 #include "../Interface/IMainWindow.h"
@@ -29,7 +30,7 @@ namespace NanamiEngine::Core::MainWindow
      *  プレビュー用 GameObject + ModelRenderer とエディタカメラ・グリッドを持つ。
      *  モデルの描画自体は所有ウィンドウの LifeCycle().OnUpdateForEditor() で行われる。
      */
-    class ModelPreviewStage final
+    class NANAMI_API ModelPreviewStage final
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
 

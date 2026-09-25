@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <filesystem>
 #include <string>
 
@@ -12,7 +13,7 @@ namespace NanamiEngine::Core::Application::Configuration
     };
 
     /** @brief ProjectWindow からソースファイルを開く外部エディタの設定 */
-    class CodeEditorConfiguration final
+    class NANAMI_API CodeEditorConfiguration final
     {
     public:
         static void Load();

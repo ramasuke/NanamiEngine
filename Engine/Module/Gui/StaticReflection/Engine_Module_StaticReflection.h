@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <algorithm>
 #include <functional>
 #include <map>
@@ -101,7 +102,7 @@ namespace NanamiEngine::Module::StaticReflection
     }
 
     /** DrawCategoryMenu の 1 項目。category は "A::B" で入れ子になり、空ならトップレベルに並ぶ */
-    struct CategoryMenuItem
+    struct NANAMI_API CategoryMenuItem
     {
         std::string           category;
         std::string           label;
@@ -109,7 +110,7 @@ namespace NanamiEngine::Module::StaticReflection
         std::function<void()> onSelect;
     };
 
-    struct CategoryMenuNode
+    struct NANAMI_NO_API CategoryMenuNode
     {
         std::map<std::string, std::unique_ptr<CategoryMenuNode>> children;
         std::vector<const CategoryMenuItem*>                     items;

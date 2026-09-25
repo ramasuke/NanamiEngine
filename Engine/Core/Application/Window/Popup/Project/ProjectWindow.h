@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <optional>
 #include <string>
 
@@ -14,14 +15,14 @@ namespace NanamiEngine::Core::FileSystem
 namespace NanamiEngine::Core::PopupWindow
 {
     /** @brief Project内でリネーム編集中のファイルの状態（同時に1件のみ）。Reload Assets でツリーが作り直されるのでパスで覚える */
-    struct FileRenameState
+    struct NANAMI_API FileRenameState
     {
         std::string targetPath;
         char buffer[128] = {};
         bool justStarted = false;
     };
 
-    class ProjectWindow final : public IPopupWindow
+    class NANAMI_API ProjectWindow final : public IPopupWindow
     {
     public:
         explicit ProjectWindow();

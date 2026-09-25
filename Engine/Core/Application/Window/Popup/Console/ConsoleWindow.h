@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../Interface/IPopupWindow.h"
 #include "../Factory/PopupWindowFactory.h"
 #include "../../../../../Module/Log/NanamiEngine_Module_Log.h"
 
 namespace NanamiEngine::Core::PopupWindow
 {
-    class ConsoleWindow final : public IPopupWindow
+    class NANAMI_API ConsoleWindow final : public IPopupWindow
     {
     public:
         ConsoleWindow();

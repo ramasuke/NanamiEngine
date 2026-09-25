@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <ranges>
 #include <unordered_map>
@@ -17,11 +18,16 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
 namespace NanamiEngine::Core::PopupWindow
 {
-    class PopupWindowGroup final
+    class NANAMI_API PopupWindowGroup final
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
 
     public:
+        PopupWindowGroup() = default;
+        // NOTE: export されたクラスは暗黙のコピーも実体化される。unique_ptr の map を持つので明示的に消す
+        PopupWindowGroup(const PopupWindowGroup&)            = delete;
+        PopupWindowGroup& operator=(const PopupWindowGroup&) = delete;
+
         template <PopupWindowType WindowT>
         void MakeWindow();
 

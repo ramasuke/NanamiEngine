@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 
 namespace NanamiEngine::Core::PopupWindow
 {
@@ -7,13 +8,13 @@ namespace NanamiEngine::Core::PopupWindow
 
 namespace NanamiEngine::Core::Toolbar
 {
-    struct EditorToolbarWidgetContext
+    struct NANAMI_API EditorToolbarWidgetContext
     {
         PopupWindow::PopupWindowGroup& popupWindows;
     };
 
     /** @brief エディタのツールバーに並ぶ 1 要素。REGISTER_EDITOR_TOOLBAR_WIDGET で登録する */
-    class IEditorToolbarWidget
+    class NANAMI_API IEditorToolbarWidget
     {
     public:
         virtual ~IEditorToolbarWidget() = default;

@@ -12,7 +12,7 @@
 //   4. ClearClassVersions()          <- 次の LoadLibrary の前 (cereal の Versions は emplace なので古い番号が残る)
 namespace NanamiEngine::Module::Serialization
 {
-    struct ModuleUnloadReport
+    struct NANAMI_API ModuleUnloadReport
     {
         std::size_t inputBindings  = 0; // InputBindingMap (JSON + PortableBinary) から消した数
         std::size_t outputBindings = 0; // OutputBindingMap (JSON + PortableBinary) から消した数

@@ -26,3 +26,9 @@ namespace NanamiEngine::Core::Toolbar
         entries_.insert(position, std::move(entry));
     }
 }
+
+NanamiEngine::Core::Toolbar::EditorToolbarWidgetRegistry& NanamiEngine::Core::Toolbar::EditorToolbarWidgetRegistry::Instance()
+{
+    static EditorToolbarWidgetRegistry instance;
+    return instance;
+}

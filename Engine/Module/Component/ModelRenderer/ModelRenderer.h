@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <string>
 #include <utility>
@@ -19,7 +20,7 @@
 
 namespace NanamiEngine::Module::Component
 {
-    class ModelRenderer final : public ComponentBase,
+    class NANAMI_API ModelRenderer final : public ComponentBase,
                                 public LifeCycleCallback::IInitRenderable,
                                 public LifeCycleCallback::IShadowRenderable,
                                 public LifeCycleCallback::IRenderable,

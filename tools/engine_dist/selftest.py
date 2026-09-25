@@ -28,6 +28,14 @@ def main() -> int:
             failures.append("engine headers not copied")
         if not (out / "Template" / "__PROJECT__.vcxproj").is_file():
             failures.append("template not copied")
+        # Editor 構成は DLL: リポジトリにある分は dll / pdb も一緒に配られる
+        for configuration in pkg.CONFIGURATIONS:
+            for source in pkg.lib_artifacts(_REPO, "Editor", configuration):
+                if source.is_file() and not (out / source.relative_to(_REPO)).is_file():
+                    failures.append(f"missing Editor artifact: {source.relative_to(_REPO)}")
+        for configuration in pkg.CONFIGURATIONS:
+            if (out / "lib" / "Game" / configuration / "NanamiEngine.dll").exists():
+                failures.append("Game mode must stay a static lib (no dll)")
 
         sources = [p for d in pkg.SOURCE_DIRECTORIES for p in (out / d).rglob("*")
                    if p.suffix.lower() in (".cpp", ".c", ".cc", ".cxx")]

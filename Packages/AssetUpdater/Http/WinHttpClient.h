@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include <filesystem>
 #include <functional>
@@ -7,7 +8,7 @@
 
 namespace NanamiEngine::AssetUpdater
 {
-    struct HttpGetResult
+    struct NANAMI_API HttpGetResult
     {
         bool        ok         = false;
         int         statusCode = 0;
@@ -15,7 +16,7 @@ namespace NanamiEngine::AssetUpdater
         std::string error;
     };
 
-    struct HttpDownloadResult
+    struct NANAMI_API HttpDownloadResult
     {
         bool        ok         = false;
         bool        cancelled  = false;
@@ -24,7 +25,7 @@ namespace NanamiEngine::AssetUpdater
     };
 
     /** 同期通信。呼び出したスレッドをブロックする。1つのセッションで接続を使い回す */
-    class WinHttpClient final
+    class NANAMI_API WinHttpClient final
     {
     public:
         WinHttpClient(const std::wstring& userAgent, int timeoutMilliSeconds);

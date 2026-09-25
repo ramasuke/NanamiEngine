@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include "ByteBuffer/Packet_ByteBuffer.h"
 
@@ -20,7 +21,7 @@ namespace NanamiEngine::Core::Network
         OwnershipSnapshot  = 7,
     };
 
-    struct Packet final
+    struct NANAMI_API Packet final
     {
         template<typename EPacketType>
         requires(std::is_enum_v<EPacketType> || std::is_integral_v<EPacketType>)

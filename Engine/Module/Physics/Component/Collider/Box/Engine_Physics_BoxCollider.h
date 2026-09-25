@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../Engine_Physics_ColliderBase.h"
 #include "../../../../Component/ComponentBase.h"
 #include "../JoltPhysics/Jolt/Jolt.h"
@@ -6,7 +7,7 @@
 namespace NanamiEngine::Module::Component
 {
     /// TODO: layer設定は未対応。後で追加予定。
-    class BoxCollider final : public ColliderBase
+    class NANAMI_API BoxCollider final : public ColliderBase
     {
     private:
         void OnDrawGui  () override;

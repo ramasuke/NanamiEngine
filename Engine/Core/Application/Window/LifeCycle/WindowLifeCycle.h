@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <concepts>
 #include <memory>
 
@@ -40,7 +41,7 @@ namespace NanamiEngine::Core::Application
      *  - ShadowRender
      *  - DebugRender
      */
-    class WindowLifeCycle final
+    class NANAMI_API WindowLifeCycle final
     {
     public:
         explicit WindowLifeCycle(bool useShadowMap);

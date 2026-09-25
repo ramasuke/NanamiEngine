@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
 #include "../Interface/IPopupWindow.h"
@@ -7,7 +8,7 @@
 namespace NanamiEngine::Core::PopupWindow
 {
     /** @brief Game 版のビルド設定 (製品名・起動シーン・構成・出力先) の編集とビルドの実行 */
-    class BuildSettingsWindow final : public IPopupWindow
+    class NANAMI_API BuildSettingsWindow final : public IPopupWindow
     {
     public:
         BuildSettingsWindow();
@@ -18,7 +19,7 @@ namespace NanamiEngine::Core::PopupWindow
 
     private:
         /** @brief 編集中は入力途中の文字列を保ち、それ以外は保存済みの値を映す入力欄 */
-        struct TextField
+        struct NANAMI_API TextField
         {
             char buffer[512] = {};
             bool active      = false;

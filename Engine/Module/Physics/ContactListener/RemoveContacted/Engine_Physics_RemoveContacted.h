@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <../JoltPhysics/Jolt/Jolt.h>
 
 #include "../JoltPhysics/Jolt/Physics/Body/BodyID.h"
 
 namespace NanamiEngine::Module::Physics
 {
-    struct RemoveContacted final
+    struct NANAMI_API RemoveContacted final
     {
         RemoveContacted(
             const JPH::BodyID inBody1,

@@ -1,9 +1,10 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 
 namespace NanamiEngine::Module::Component
 {
     /** @brief 同じ GameObject の Animator がアニメーションを適用した直後に呼ばれ、ボーン姿勢を上書きできる */
-    class IAnimationPoseModifier
+    class NANAMI_API IAnimationPoseModifier
     {
     public:
         virtual ~IAnimationPoseModifier() = default;

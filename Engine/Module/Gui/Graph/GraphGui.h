@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 
 #include "vec2.hpp"
@@ -9,7 +10,7 @@
 
 namespace NanamiEngine::Module::Gui::Graph
 {
-    void DrawGrid(ImDrawList* drawList,
+    NANAMI_API void DrawGrid(ImDrawList* drawList,
                   const ImVec2& offset,
                   const ImVec2& windowSize,
                   float gridStep = 64.0f,
@@ -18,7 +19,7 @@ namespace NanamiEngine::Module::Gui::Graph
     /**
      * @note Nodeの描画, NodeをDragの位置移動, NodeをクリックのInspector表示を行う。
      */
-    NodeDrawResult DrawNode(ImVec2 offset, glm::vec2& nodePosition, ImDrawList* drawList, const std::weak_ptr<Object::IObject>& drawObject, const NodeOption& option, const Guid& nodeGuid);
+    NANAMI_API NodeDrawResult DrawNode(ImVec2 offset, glm::vec2& nodePosition, ImDrawList* drawList, const std::weak_ptr<Object::IObject>& drawObject, const NodeOption& option, const Guid& nodeGuid);
     
     /**
      * @note Draw()なのに返り値がboolなのが意味が通っていないが、ImGuiが直前に生成したImGuiItemを即時判定することによって作成していく思想に沿っているため。
@@ -26,7 +27,7 @@ namespace NanamiEngine::Module::Gui::Graph
      * @param position Portの中心位置
      * @param color 描画するPortの色
      */
-    bool DrawInputPort (ImDrawList* drawList, const ImVec2& position, ImU32 color);
+    NANAMI_API bool DrawInputPort (ImDrawList* drawList, const ImVec2& position, ImU32 color);
     
     /**
      * @note Draw()なのに返り値がboolなのが意味が通っていないが、ImGuiが直前に生成したImGuiItemを即時判定することによって作成していく思想に沿っているため。 
@@ -34,5 +35,5 @@ namespace NanamiEngine::Module::Gui::Graph
      * @param position Portの中心位置
      * @param color 描画するPortの色
      */
-    bool DrawOutputPort(ImDrawList* drawList, const ImVec2& position, ImU32 color);
+    NANAMI_API bool DrawOutputPort(ImDrawList* drawList, const ImVec2& position, ImU32 color);
 }

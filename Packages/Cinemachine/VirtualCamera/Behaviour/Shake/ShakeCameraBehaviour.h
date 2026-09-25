@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <vector>
 #include "../IVirtualCameraBehaviour.h"
 #include "../../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
@@ -8,7 +9,7 @@
 
 namespace NanamiEngine::CineMachine::Behaviour
 {
-    class ShakeCameraBehaviour final : public Component::ComponentBase,
+    class NANAMI_API ShakeCameraBehaviour final : public Component::ComponentBase,
                                        public LifeCycleCallback::IAwakable,
                                        public LifeCycleCallback::IUpdatable,
                                        public IVirtualCameraBehaviour

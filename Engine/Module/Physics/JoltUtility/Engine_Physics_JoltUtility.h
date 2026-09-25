@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <utility>
 #include "vec3.hpp"
 #include "Jolt/Jolt.h"
@@ -18,20 +19,20 @@ namespace NanamiEngine::Module::Physics
         return {v.GetX(), v.GetY(), v.GetZ()};
     }
 
-    glm::vec3 GetCenterOfMassPosition(const JPH::BodyID& bodyId);
+    NANAMI_API glm::vec3 GetCenterOfMassPosition(const JPH::BodyID& bodyId);
     // ボディのワールド空間AABB(first=min, second=max)。無効なBodyIDは呼び出し側で弾くこと
-    std::pair<glm::vec3, glm::vec3> GetWorldSpaceBounds(const JPH::BodyID& bodyId);
-    glm::vec3  GetLinearVelocity(const JPH::BodyID& bodyId                           );
-    void SetLinearVelocity      (const JPH::BodyID& bodyId, const glm::vec3& velocity);
+    NANAMI_API std::pair<glm::vec3, glm::vec3> GetWorldSpaceBounds(const JPH::BodyID& bodyId);
+    NANAMI_API glm::vec3  GetLinearVelocity(const JPH::BodyID& bodyId                           );
+    NANAMI_API void SetLinearVelocity      (const JPH::BodyID& bodyId, const glm::vec3& velocity);
     // deg/s
-    glm::vec3 GetAngularVelocity(const JPH::BodyID& bodyId);
+    NANAMI_API glm::vec3 GetAngularVelocity(const JPH::BodyID& bodyId);
     // deg/s
-    void SetAngularVelocity(const JPH::BodyID& bodyId, const glm::vec3& angularVelocity);
-    void AddLinearVelocity      (const JPH::BodyID& bodyId, const glm::vec3& velocity);
-    void AddTorque(const JPH::BodyID& bodyId, const glm::vec3& torque);
+    NANAMI_API void SetAngularVelocity(const JPH::BodyID& bodyId, const glm::vec3& angularVelocity);
+    NANAMI_API void AddLinearVelocity      (const JPH::BodyID& bodyId, const glm::vec3& velocity);
+    NANAMI_API void AddTorque(const JPH::BodyID& bodyId, const glm::vec3& torque);
 
-    JPH::RefConst<JPH::Shape> CreateBoxShape      (const JPH::Vec3& halfSize     );
-    JPH::RefConst<JPH::Shape> CreateSphereShape  (float radius                  );
-    JPH::RefConst<JPH::Shape> CreateCapsuleShape (float halfHeight, float radius);
-    JPH::RefConst<JPH::Shape> CreateCylinderShape(float halfHeight, float radius);
+    NANAMI_API JPH::RefConst<JPH::Shape> CreateBoxShape      (const JPH::Vec3& halfSize     );
+    NANAMI_API JPH::RefConst<JPH::Shape> CreateSphereShape  (float radius                  );
+    NANAMI_API JPH::RefConst<JPH::Shape> CreateCapsuleShape (float halfHeight, float radius);
+    NANAMI_API JPH::RefConst<JPH::Shape> CreateCylinderShape(float halfHeight, float radius);
 }

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <vector>
 #include <string>
 #include <memory>
@@ -9,7 +10,7 @@
 
 namespace NanamiEngine::Module::BlackBoard
 {
-    class ParameterGroup final
+    class NANAMI_API ParameterGroup final
     {
     public:
         ///Tで指定した型のAnimationParameterを取得

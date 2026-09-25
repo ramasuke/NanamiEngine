@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <coroutine>
 
 #include "../Engine_Coroutine_ITickableWaitable.h"
 
 namespace Coroutine
 {
-    struct WaitForSeconds final : ITickableWaitable
+    struct NANAMI_API WaitForSeconds final : ITickableWaitable
     {
         explicit WaitForSeconds(float duration_secs);
 

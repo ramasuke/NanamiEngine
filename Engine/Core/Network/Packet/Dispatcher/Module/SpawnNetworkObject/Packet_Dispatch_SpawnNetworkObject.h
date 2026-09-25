@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <vector>
 #include "../glm/fwd.hpp"
 #include "../../Packet_Dispatch_PacketDispatcherBase.h"
@@ -17,7 +18,7 @@ namespace NanamiEngine::Module::Asset
 
 namespace NanamiEngine::Core::Network
 {
-    class SpawnNetworkObject final : public PacketDispatcherBase
+    class NANAMI_API SpawnNetworkObject final : public PacketDispatcherBase
     {
     public:
         explicit SpawnNetworkObject(

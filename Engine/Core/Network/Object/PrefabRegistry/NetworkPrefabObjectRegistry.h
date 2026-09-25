@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <unordered_map>
 
@@ -11,7 +12,7 @@ namespace NanamiEngine::Module::GameObject
 
 namespace NanamiEngine::Core::Network
 {
-    class PrefabObjectRegistry final
+    class NANAMI_API PrefabObjectRegistry final
     {
     public:
         void Add(const std::weak_ptr<Module::GameObject::PrefabGameObject>& object);

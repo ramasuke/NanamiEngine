@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <filesystem>
 #include <fstream>
 #include <string>
@@ -22,7 +23,7 @@ namespace NanamiEngine::Module::Asset
     using OnCreateAsset = std::function<bool(const std::string&, std::shared_ptr<AssetBase>&)>;
 
     /** ProjectWindow の「+」から新規作成できるアセット */
-    struct CreatableAsset
+    struct NANAMI_API CreatableAsset
     {
         std::string name;
         std::string extension;
@@ -30,8 +31,11 @@ namespace NanamiEngine::Module::Asset
         std::string category;
     };
 
-    class AssetFactory final : public SingletonBase<AssetFactory>
+    class NANAMI_API AssetFactory final : public SingletonBase<AssetFactory>
     {
+    public:
+        static AssetFactory& Instance();
+
     public:
         template <typename T>
         void Register(const std::string& extensionLabel);

@@ -1,9 +1,10 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Component/ComponentBase.h"
 
 namespace NanamiEngine::Module::GameObject
 {
-    class AddComponent final
+    class NANAMI_API AddComponent final
     {
     public:
         using DrawMenuFunc = void (*)(std::shared_ptr<Component::ComponentBase>& addComponent);

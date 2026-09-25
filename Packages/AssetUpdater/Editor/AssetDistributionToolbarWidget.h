@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstddef>
 #include <optional>
 #include <string>
@@ -10,7 +11,7 @@
 namespace NanamiEngine::AssetUpdater::Editor
 {
     /** @brief tools/dist (manifest の build と R2 への upload) をエディタから動かす。tools/dist が無いプロジェクトでは出さない */
-    class AssetDistributionToolbarWidget final : public Core::Toolbar::IEditorToolbarWidget
+    class NANAMI_API AssetDistributionToolbarWidget final : public Core::Toolbar::IEditorToolbarWidget
     {
     public:
         [[nodiscard]] bool IsVisible() const override;

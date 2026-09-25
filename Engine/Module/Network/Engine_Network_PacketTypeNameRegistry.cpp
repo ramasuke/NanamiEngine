@@ -38,3 +38,9 @@ namespace
     };
     static DefaultPacketTypeNameRegistration s_defaultPacketTypeNameRegistration;
 }
+
+NanamiEngine::Module::Network::PacketTypeNameRegistry& NanamiEngine::Module::Network::PacketTypeNameRegistry::Instance()
+{
+    static PacketTypeNameRegistry instance;
+    return instance;
+}

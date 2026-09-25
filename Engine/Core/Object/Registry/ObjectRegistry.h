@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <unordered_map>
 #include "../../../Module/Guid/Guid.h"
@@ -10,7 +11,7 @@ namespace NanamiEngine::Module::Object
 
 namespace NanamiEngine::Core::FileSystem
 {
-    class ObjectRegistry final
+    class NANAMI_API ObjectRegistry final
     {
     public:
         void Add(const std::weak_ptr<Module::Object::IObject>& object);

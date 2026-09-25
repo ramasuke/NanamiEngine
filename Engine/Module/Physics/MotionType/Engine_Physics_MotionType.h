@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 
 namespace NanamiEngine::Module::Physics
@@ -11,5 +12,5 @@ namespace NanamiEngine::Module::Physics
         Dynamic,
     };
 
-    bool DrawChoiceMotionTypeGui(const char* label, MotionType& motionType);
+    NANAMI_API bool DrawChoiceMotionTypeGui(const char* label, MotionType& motionType);
 }

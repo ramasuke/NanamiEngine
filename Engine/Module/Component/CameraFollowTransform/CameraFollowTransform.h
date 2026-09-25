@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../ComponentBase.h"
 #include "../../LifeCycleCallback/LateUpdate/LateUpdate.h"
 
 namespace NanamiEngine::Module::Component
 {
     /** @brief ワールド座標をカメラ位置に追従させる。天候パーティクルのように常に視点周りへ置きたいもの用 */
-    class CameraFollowTransform final : public ComponentBase,
+    class NANAMI_API CameraFollowTransform final : public ComponentBase,
                                         public LifeCycleCallback::ILateUpdatable
     {
     private:

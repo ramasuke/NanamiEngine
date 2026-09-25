@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 
 namespace NanamiEngine::Module::Asset
 {
@@ -6,7 +7,7 @@ namespace NanamiEngine::Module::Asset
      * @brief 起動時には読まず、初めて使われるときかシーンの先読みで DxLib のハンドルを作るアセット。
      *        AssetPreloader が先読みと解放に使う
      */
-    class IPreloadableAsset
+    class NANAMI_API IPreloadableAsset
     {
     public:
         virtual ~IPreloadableAsset() = default;

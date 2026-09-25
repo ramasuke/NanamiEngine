@@ -1,8 +1,9 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 
 namespace NanamiEngine
 {
-    class Time final
+    class NANAMI_API Time final
     {
     public:
         static void Update();

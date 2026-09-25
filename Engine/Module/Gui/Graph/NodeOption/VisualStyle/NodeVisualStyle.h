@@ -1,9 +1,10 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "ImGuiHelper.h"
 
 namespace NanamiEngine::Module::Gui::Graph
 {
-    struct NodeVisualStyle final
+    struct NANAMI_API NodeVisualStyle final
     {
         explicit NodeVisualStyle(
             ImU32 background,

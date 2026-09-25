@@ -1,7 +1,8 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <Windows.h>
 
-class ImGuiWrapper
+class NANAMI_API ImGuiWrapper
 {
 public:
     static void CreateInstance();

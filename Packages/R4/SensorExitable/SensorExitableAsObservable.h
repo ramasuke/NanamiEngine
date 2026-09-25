@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Engine/Module/Physics/ContactCallback/SensorExitable/Engine_Physics_ISensorExitable.h"
 #include "../../Engine/Module/Component/ComponentBase.h"
 #include "../R4.h"
 
 namespace NanamiEngine::R4
 {
-    class SensorExitableAsObservable final : public Component::ComponentBase,
+    class NANAMI_API SensorExitableAsObservable final : public Component::ComponentBase,
                                              public Physics::Callback::ISensorExitable
     {
     public:

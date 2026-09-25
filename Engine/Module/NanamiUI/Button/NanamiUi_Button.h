@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "vec2.hpp"
 #include "../../../../Libs/LibCore/cereal/glm/GlmHelper.h"
 #include "../../../../Packages/R4/R4.h"
@@ -14,7 +15,7 @@ namespace NanamiEngine::Module::NanamiUi
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    class Button final : public Component::ComponentBase,
+    class NANAMI_API Button final : public Component::ComponentBase,
                          public LifeCycleCallback::IAwakable,
                          public LifeCycleCallback::IUpdatable
     {

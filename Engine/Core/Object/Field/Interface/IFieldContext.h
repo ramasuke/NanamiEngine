@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../../Module/Guid/Guid.h"
 #include "../GuidRemap/GuidRemap.h"
 
 namespace NanamiEngine::Core::Object
 {
-    class IFieldContext
+    class NANAMI_API IFieldContext
     {
     public:
         ~IFieldContext() = default;

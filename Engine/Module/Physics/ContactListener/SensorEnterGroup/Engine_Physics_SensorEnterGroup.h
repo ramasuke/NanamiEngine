@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <mutex>
 #include <vector>
 
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::Module::Physics
 {
-    class SensorEnterGroup final
+    class NANAMI_API SensorEnterGroup final
     {
     public:
         void Reserve(size_t size);

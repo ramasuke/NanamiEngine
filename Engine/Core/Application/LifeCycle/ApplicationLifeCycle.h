@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <vector>
 
@@ -8,7 +9,7 @@
 
 namespace NanamiEngine::Core::Application
 {
-    class ApplicationLifeCycle final
+    class NANAMI_API ApplicationLifeCycle final
     {
     public:
         void OnUpdate();
@@ -35,7 +36,7 @@ namespace NanamiEngine::Core::Application
      *        メインスレッドが解決しようとして、参照が null のまま確定してしまう
      *        （LifeCycleOnceCallbackGroup は 1 度しか Invoke しない）
      */
-    class FieldInitStagingScope final
+    class NANAMI_API FieldInitStagingScope final
     {
     public:
         explicit FieldInitStagingScope(std::vector<std::weak_ptr<Object::IFieldContext>>& staging);

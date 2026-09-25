@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <array>
 #include <string_view>
 #include "../LibCore/cereal/glm/GlmHelper.h"
@@ -37,7 +38,7 @@ namespace NanamiEngine::Module::NanamiUi
     }
 
     // Unity の Slider 相当
-    class Slider final : public Component::ComponentBase,
+    class NANAMI_API Slider final : public Component::ComponentBase,
                          public LifeCycleCallback::IUserInterfaceRenderable
     {
     public:
@@ -62,7 +63,7 @@ namespace NanamiEngine::Module::NanamiUi
         void ClipToDrawSize() const;
 
     private:
-        struct DrawFrame
+        struct NANAMI_API DrawFrame
         {
             glm::vec2 origin;
             glm::vec2 axisX;
@@ -74,7 +75,7 @@ namespace NanamiEngine::Module::NanamiUi
         };
 
         // drawSize_ 内の座標（左上原点）の矩形
-        struct LocalRect
+        struct NANAMI_API LocalRect
         {
             glm::vec2 min;
             glm::vec2 max;

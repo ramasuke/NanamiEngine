@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../ComponentBase.h"
 #include "../../../../Libs/LibCore/DxLib/BlendMode.h"
 #include "../../../Core/Object/Field/Field.h"
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    class BlendImageRenderer final : public Component::ComponentBase,
+    class NANAMI_API BlendImageRenderer final : public Component::ComponentBase,
                                      public LifeCycleCallback::IInitRenderable,
                                      public LifeCycleCallback::IUserInterfaceRenderable
     {

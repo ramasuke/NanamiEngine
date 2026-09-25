@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cmath>
 #include <numbers>
 
@@ -12,7 +13,7 @@ namespace LibCore::Tween
     // Back系が一度行き過ぎる量。Robert Pennerの式の定番値で、約10%はみ出す
     constexpr float EASE_BACK_OVERSHOOT = 1.70158f;
 
-    struct EaseFunctor
+    struct NANAMI_API EaseFunctor
     {
         [[nodiscard]] float Ease(const float t) const
         {

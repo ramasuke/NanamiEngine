@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
 #include "../../../../Libs/LibCore/DxLib/BlendMode.h"
@@ -6,7 +7,7 @@
 namespace NanamiEngine::Module::Component
 {
     // ModelRendererが材質ごとの描画切り替えに使う受け渡し用データ。
-    struct MaterialShaderPass
+    struct NANAMI_API MaterialShaderPass
     {
         int  vsHandle       = -1;
         int  psHandle       = -1;
@@ -19,7 +20,7 @@ namespace NanamiEngine::Module::Component
 
     // ModelRendererは「材質」は知るが「用途」は知らない。同じGameObject上の兄弟コンポーネントがこれを実装し、
     // 材質名ごとの描画パスを供給する(ComponentGroup::Catches<IModelMaterialShaderPolicy>()で発見される)。
-    class IModelMaterialShaderPolicy
+    class NANAMI_API IModelMaterialShaderPolicy
     {
     public:
         virtual ~IModelMaterialShaderPolicy() = default;

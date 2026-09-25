@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Engine/Module/Component/ComponentBase.h"
 #include "../../../Engine/Core/Object/Field/Field.h"
 #include "../../../Engine/Module/LifeCycleCallback/LateUpdate/LateUpdate.h"
@@ -8,7 +9,7 @@
 
 namespace NanamiEngine::CineMachine
 {
-    class CinemachineCameraBrain final : public Component::ComponentBase,
+    class NANAMI_API CinemachineCameraBrain final : public Component::ComponentBase,
                                          public LifeCycleCallback::IAwakable,
                                          public LifeCycleCallback::IStartable,
                                          public LifeCycleCallback::ILateUpdatable,

@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../ComponentBase.h"
 #include "../../LifeCycleCallback/Update/IUpdatable.h"
 
 namespace NanamiEngine::Module::Component
 {
-	class Rotator final : public ComponentBase,
+	class NANAMI_API Rotator final : public ComponentBase,
 						  public LifeCycleCallback::IUpdatable
 	{
 	public:

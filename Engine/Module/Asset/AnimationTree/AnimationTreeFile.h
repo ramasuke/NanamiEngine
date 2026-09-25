@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Core/Object/IObject.h"
 #include "../../AnimationTree/AnimationTree.h"
 #include "../../LifeCycleCallback/EnableAsset/IEnablableAsset.h"
@@ -8,7 +9,7 @@ constexpr auto ANIMATION_TREE_FILE_EXTENSION_LABEL = ".animTree";
 
 namespace NanamiEngine::Module::Asset
 {
-    class AnimationTreeFile final : public AssetBase
+    class NANAMI_API AnimationTreeFile final : public AssetBase
     {
     public:
         explicit AnimationTreeFile(std::string contentPath = "");

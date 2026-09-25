@@ -10,13 +10,37 @@
     <OutDir>$(ProjectDir)x64\Game\$(Configuration)\</OutDir>
     <IntDir>x64\Game\$(Configuration)\obj\</IntDir>
   </PropertyGroup>
-  <ItemDefinitionGroup>
+  <ItemGroup>
+    <!-- WinMain と NvOptimusEnablement は exe に無いといけない (docs/HotReload.md §8)。エンジン lib / DLL ではなくゲーム exe がコンパイルする -->
+    <ClCompile Include="$(NanamiEngineDir)Main.cpp" />
+  </ItemGroup>
+  <!-- 静的 lib 構成 (Game モード、または NanamiEngineShared=false) -->
+  <ItemDefinitionGroup Condition="'$(NanamiEngineShared)'!='true'">
     <Link>
       <AdditionalDependencies>$(NanamiEngineLib);%(AdditionalDependencies)</AdditionalDependencies>
       <!-- WARNING: 静的初期化子で自己登録するオブジェクトがリンカに捨てられないよう lib を丸ごとリンクする -->
       <AdditionalOptions>"/WHOLEARCHIVE:$(NanamiEngineLib)" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
+  <!-- DLL 構成 (Editor モード): exe はエンジンの import lib だけをリンクする (docs/HotReload.md §2)。
+       NANAMI_ENGINE_USE_DLL: NANAMI_API / IMGUI_API が dllimport になり、stdafx.h から DxLib / Effekseer が外れる
+       DX_LIB_NOT_DEFAULTPATH: DxLib の自動リンクを切る。ゲーム側に DxLib の呼び出しが残っていればリンクエラーで分かる -->
+  <ItemDefinitionGroup Condition="'$(NanamiEngineShared)'=='true'">
+    <ClCompile>
+      <PreprocessorDefinitions>NANAMI_ENGINE_USE_DLL;DX_LIB_NOT_DEFAULTPATH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(NanamiEngineLib);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <!-- DLL 構成では NanamiEngine.dll (+ .pdb) を exe の隣に置く -->
+  <Target Name="NanamiCopyEngineDll" AfterTargets="Build" Condition="'$(NanamiEngineShared)'=='true'">
+    <ItemGroup>
+      <NanamiEngineDllFile Include="$(NanamiEngineLibDir)NanamiEngine.dll" Condition="Exists('$(NanamiEngineLibDir)NanamiEngine.dll')" />
+      <NanamiEngineDllFile Include="$(NanamiEngineLibDir)NanamiEngine.pdb" Condition="Exists('$(NanamiEngineLibDir)NanamiEngine.pdb')" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NanamiEngineDllFile)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+  </Target>
   <!-- /MD のゲーム版 (Release) は VC++ ランタイム DLL が要る。出力先に同梱し、GameBuilder が exe と一緒にコピーする
        (Debug の CRT は再配布不可なので開発機の System32 に任せる) -->
   <PropertyGroup>

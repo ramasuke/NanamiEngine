@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -9,17 +10,19 @@
 
 namespace NanamiEngine::Core::Toolbar
 {
-    class EditorToolbarWidgetRegistry final : public SingletonBase<EditorToolbarWidgetRegistry>
+    class NANAMI_API EditorToolbarWidgetRegistry final : public SingletonBase<EditorToolbarWidgetRegistry>
     {
     public:
-        struct Entry
+        static EditorToolbarWidgetRegistry& Instance();
+
+    public:
+        struct NANAMI_API Entry
         {
             std::string                           name;
             int                                   order;
             std::unique_ptr<IEditorToolbarWidget> widget;
         };
 
-        /** @param order 小さいほど左。組み込みは 100 刻み */
         template <typename T>
         void Register(const std::string& name, const int order)
         {
@@ -28,7 +31,6 @@ namespace NanamiEngine::Core::Toolbar
             Add({ name, order, std::make_unique<T>() });
         }
 
-        /** @brief order 順 (同じなら名前順) */
         [[nodiscard]] const std::vector<Entry>& GetWidgets() const { return entries_; }
 
         void DrawAll(EditorToolbarWidgetContext& context) const;
@@ -40,7 +42,6 @@ namespace NanamiEngine::Core::Toolbar
     };
 }
 
-// NOTE: .cpp の末尾、TYPE と同じ namespace の中に置く (TYPE は名前空間なしで書く)
 #define REGISTER_EDITOR_TOOLBAR_WIDGET(TYPE, ORDER) \
     namespace { \
         struct EditorToolbarWidgetAutoRegister_##TYPE { \

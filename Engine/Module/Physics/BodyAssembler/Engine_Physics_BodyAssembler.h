@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <optional>
 #include <unordered_map>
@@ -10,6 +11,8 @@
 #include "Jolt/Core/Reference.h"
 #include "Jolt/Physics/Body/BodyID.h"
 #include "Jolt/Physics/Collision/CollisionGroup.h"
+// NOTE: RigidBodyEntry / ColliderEntry の unique_ptr<UserData> が完全型を要る (export されたクラスは暗黙のデストラクタも実体化される)
+#include "../UserData/Engine_Physics_UserData.h"
 
 namespace JPH
 {
@@ -41,7 +44,7 @@ namespace NanamiEngine::Module::Physics
      * @note OnAwake では登録するだけで、Body は Flush() で作る。
      *       Flush() を呼ぶのは「Awake フェーズの直後」と「物理ステップの直前」だけ
      */
-    class BodyAssembler final
+    class NANAMI_API BodyAssembler final
     {
     public:
         explicit BodyAssembler(Core::Physics& physics);
@@ -76,7 +79,7 @@ namespace NanamiEngine::Module::Physics
         [[nodiscard]] static std::shared_ptr<GameObject::IGameObject> FindRigidBodyObject(const Component::ColliderBase& collider);
 
     private:
-        struct RigidBodyEntry
+        struct NANAMI_API RigidBodyEntry
         {
             std::weak_ptr<Component::RigidBody> rigidBody;
             JPH::CollisionGroup::GroupID groupId = JPH::CollisionGroup::cInvalidGroup;
@@ -89,7 +92,7 @@ namespace NanamiEngine::Module::Physics
             mutable bool warnedNonFiniteTransform = false;
         };
 
-        struct ColliderEntry
+        struct NANAMI_API ColliderEntry
         {
             std::weak_ptr<Component::ColliderBase> collider;
             const Component::RigidBody* owner = nullptr;

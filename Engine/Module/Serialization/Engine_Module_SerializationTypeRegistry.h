@@ -8,12 +8,9 @@
 #include "../../../Libs/cereal/include/cereal/types/polymorphic.hpp"
 #include "../../Core/Api/NanamiApi.h"
 
-// cereal の多相登録 (NANAMI_REGISTER_TYPE / NANAMI_REGISTER_POLYMORPHIC_RELATION) の記録。
-// cereal 自身は「どの型を、どのモジュール (exe / dll) が登録したか」を覚えないので、ここに残しておく。
-// ゲーム DLL をアンロードするときは、この記録からそのモジュールの分を引いて cereal の表から消す (docs/HotReload.md §3.2)。
 namespace NanamiEngine::Module::Serialization
 {
-    struct SerializationTypeRecord
+    struct NANAMI_API SerializationTypeRecord
     {
         /** 登録した型 */
         std::type_index type;
@@ -25,6 +22,7 @@ namespace NanamiEngine::Module::Serialization
         void* module;
     };
 
+    //Serializeの多層登録を保存するRegistry
     class NANAMI_API SerializationTypeRegistry final
     {
     public:
@@ -36,10 +34,10 @@ namespace NanamiEngine::Module::Serialization
 
         [[nodiscard]] std::vector<SerializationTypeRecord> Records() const;
         [[nodiscard]] std::vector<SerializationTypeRecord> RecordsOfModule(const void* module) const;
-        /** @brief そのモジュールの記録を消す (cereal の表からの削除は呼び出し側が行う) */
+        /** @brief そのモジュールの記録を消す */
         void RemoveModule(const void* module);
 
-        /** @brief アドレスが属するモジュール (HMODULE)。見つからなければ nullptr */
+        /** @brief アドレスが属するモジュール */
         [[nodiscard]] static void* ModuleOf(const void* address);
 
     private:

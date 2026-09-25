@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../SyncParameter/Network_SyncParameter.h"
 
 namespace NanamiEngine::Core::Network
@@ -6,7 +7,7 @@ namespace NanamiEngine::Core::Network
     template<typename T>
     using SyncParam = std::shared_ptr<SyncParameter<T>>;
     
-    class SyncParamFactory final
+    class NANAMI_API SyncParamFactory final
     {
     public:
         template <typename T>

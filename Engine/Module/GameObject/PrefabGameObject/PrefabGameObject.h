@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../ComponentGroup/ComponentGroup.h"
 #include "../Interface/IGameObject.h"
 #include "../Transform/Transform.h"
@@ -10,7 +11,7 @@ namespace NanamiEngine::Scene
 
 namespace NanamiEngine::Module::GameObject
 {
-    class PrefabGameObject final : public IGameObject
+    class NANAMI_API PrefabGameObject final : public IGameObject
     {
     public:
         explicit PrefabGameObject(const std::string& filePath = "");

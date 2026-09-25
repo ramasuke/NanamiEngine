@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../AssetBase.h"
 #include "../../LifeCycleCallback/EnableAsset/IEnablableAsset.h"
 #include "../Factory/AssetFactory.h"
 
 namespace NanamiEngine::Module::Asset
 {
-    class MovieFile final : public AssetBase
+    class NANAMI_API MovieFile final : public AssetBase
     {
     public:
         explicit MovieFile(const std::string& contentPath = "");

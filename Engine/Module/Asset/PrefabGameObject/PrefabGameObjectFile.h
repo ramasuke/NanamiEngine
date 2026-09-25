@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../GameObject/PrefabGameObject/PrefabGameObject.h"
 #include "../AssetBase.h"
 #include "../Factory/AssetFactory.h"
@@ -7,7 +8,7 @@ namespace NanamiEngine::Module::Asset
 {
     constexpr auto PREFAB_FILE_EXTENSION_LABEL = ".prefab";
     
-    class PrefabGameObjectFile final : public AssetBase,
+    class NANAMI_API PrefabGameObjectFile final : public AssetBase,
                                        public LifeCycleCallback::IEnablableAsset
     {
     public:

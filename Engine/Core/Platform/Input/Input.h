@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <array>
 #include <cstdint>
 
@@ -46,7 +47,7 @@ namespace NanamiEngine::Platform::Input
         A = 12, B = 13, X = 14, Y = 15,
     };
 
-    struct GamepadState
+    struct NANAMI_API GamepadState
     {
         bool                     connected = false;
         std::array<bool, 16>     buttons{};
@@ -61,31 +62,31 @@ namespace NanamiEngine::Platform::Input
 
     namespace Keyboard
     {
-        [[nodiscard]] bool IsDown(Key key);
+        [[nodiscard]] NANAMI_API bool IsDown(Key key);
         /** @brief キーボードのどれかが押されているか (マウス・パッドは見ない) */
-        [[nodiscard]] bool IsAnyDown();
+        [[nodiscard]] NANAMI_API bool IsAnyDown();
         /** @brief 数字キー (上段 1..0 とテンキー) のどちらかで digit (0..9) が押されているか */
-        [[nodiscard]] bool IsDigitDown(int digit);
+        [[nodiscard]] NANAMI_API bool IsDigitDown(int digit);
     }
 
     namespace Mouse
     {
         /** @brief 押されているボタンのビットマスク (MouseButton の値の OR) */
-        [[nodiscard]] int        Buttons();
-        [[nodiscard]] bool       IsDown(MouseButton button);
-        [[nodiscard]] glm::ivec2 Position();
+        [[nodiscard]] NANAMI_API int        Buttons();
+        [[nodiscard]] NANAMI_API bool       IsDown(MouseButton button);
+        [[nodiscard]] NANAMI_API glm::ivec2 Position();
         /** @brief ホイールの累積回転量。reset=true で読んだ後に 0 に戻す */
-        [[nodiscard]] int        WheelRotation(bool reset = false);
+        [[nodiscard]] NANAMI_API int        WheelRotation(bool reset = false);
     }
 
     namespace Gamepad
     {
         /** @param index 0 = 1 つ目のパッド */
-        [[nodiscard]] GamepadState Get(int index = 0);
+        [[nodiscard]] NANAMI_API GamepadState Get(int index = 0);
     }
 
     /** @brief キーボード・マウス・パッドのどれかが押されているか (DxLib の CheckHitKeyAll()) */
-    [[nodiscard]] bool IsAnyDeviceDown();
+    [[nodiscard]] NANAMI_API bool IsAnyDeviceDown();
     /** @brief メインウィンドウがアクティブか */
-    [[nodiscard]] bool IsWindowActive();
+    [[nodiscard]] NANAMI_API bool IsWindowActive();
 }

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 
 namespace NanamiEngine::Module::GameObject
@@ -13,7 +14,7 @@ namespace NanamiEngine::Module::GameObject
 
 namespace NanamiEngine::Module::Physics
 {
-    struct UserData final
+    struct NANAMI_API UserData final
     {
         explicit UserData(const std::weak_ptr<GameObject::IGameObject>& entity);
 
@@ -25,5 +26,5 @@ namespace NanamiEngine::Module::Physics
         std::weak_ptr<GameObject::IGameObject> entity_;
     };
     
-    UserData* ToUserData(uint64_t userData);
+    NANAMI_API UserData* ToUserData(uint64_t userData);
 }

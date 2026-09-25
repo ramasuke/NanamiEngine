@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <../../Libs/glm/glm.hpp>
 #include <../../Libs/glm/gtc/matrix_transform.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
@@ -15,7 +16,7 @@ namespace NanamiEngine::Module::GameObject
 {
     class IGameObject;
 
-    class Transform final
+    class NANAMI_API Transform final
     {
     public:
         template <class Archive>

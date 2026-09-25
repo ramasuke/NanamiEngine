@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 
 #include "vec3.hpp"
@@ -10,7 +11,7 @@ namespace NanamiEngine::Module::GameObject
 
 namespace NanamiEngine::Module::Physics
 {
-    class RaycastHit final
+    class NANAMI_API RaycastHit final
     {
     public:
         RaycastHit(

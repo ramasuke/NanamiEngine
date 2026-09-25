@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <stdexcept>
 #include <string>
 
@@ -16,27 +17,27 @@ namespace NanamiEngine::Core::Application::AutoMcp
     using JsonAllocator = rapidjson::Document::AllocatorType;
 
     /** @brief クライアントへ ok:false として返すエラー */
-    class AutoMcpError final : public std::runtime_error
+    class NANAMI_API AutoMcpError final : public std::runtime_error
     {
     public:
         explicit AutoMcpError(const std::string& message) : std::runtime_error(message) {}
     };
 
     /** @brief UTF-8 として不正なら ACP (CP932) とみなして UTF-8 に直す。文字列リテラル由来のログ等が ACP のため */
-    [[nodiscard]] std::string ToUtf8(const std::string& text);
+    [[nodiscard]] NANAMI_API std::string ToUtf8(const std::string& text);
     /** @brief UTF-8 のパスを MultiByte ビルドの std::ifstream 等が受け取れる ACP 文字列にする */
-    [[nodiscard]] std::string Utf8PathToNative(const std::string& utf8Path);
-    [[nodiscard]] std::string ToJsonText(const JsonValue& value);
+    [[nodiscard]] NANAMI_API std::string Utf8PathToNative(const std::string& utf8Path);
+    [[nodiscard]] NANAMI_API std::string ToJsonText(const JsonValue& value);
     /** @brief typeid 名から "class " と名前空間を落とした短い型名 */
-    [[nodiscard]] std::string ShortTypeName(const char* typeidName);
-    [[nodiscard]] std::string FullTypeName(const char* typeidName);
+    [[nodiscard]] NANAMI_API std::string ShortTypeName(const char* typeidName);
+    [[nodiscard]] NANAMI_API std::string FullTypeName(const char* typeidName);
 
-    [[nodiscard]] JsonValue MakeString(const std::string& text, JsonAllocator& allocator);
-    [[nodiscard]] JsonValue MakeVec3(const glm::vec3& value, JsonAllocator& allocator);
-    [[nodiscard]] JsonValue MakeQuat(const glm::quat& value, JsonAllocator& allocator);
+    [[nodiscard]] NANAMI_API JsonValue MakeString(const std::string& text, JsonAllocator& allocator);
+    [[nodiscard]] NANAMI_API JsonValue MakeVec3(const glm::vec3& value, JsonAllocator& allocator);
+    [[nodiscard]] NANAMI_API JsonValue MakeQuat(const glm::quat& value, JsonAllocator& allocator);
 
     /** @brief コマンド引数 (JSON オブジェクト) の読み取り。不正な型は AutoMcpError */
-    class JsonArgs final
+    class NANAMI_API JsonArgs final
     {
     public:
         explicit JsonArgs(const JsonValue& object) : object_(object) {}

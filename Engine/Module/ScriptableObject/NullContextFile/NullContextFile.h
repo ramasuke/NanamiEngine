@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
 #include "../../../Core/Object/IObject.h"
 
 namespace NanamiEngine::Module::Scriptable
 {
-    class NullContextFile final : public Object::IObject
+    class NANAMI_API NullContextFile final : public Object::IObject
     {
     public:
         explicit NullContextFile(std::string filePath = "");

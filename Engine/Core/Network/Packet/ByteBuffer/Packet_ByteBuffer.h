@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstring>
 #include <sstream>
 #include <string>
@@ -10,7 +11,7 @@
 
 namespace NanamiEngine::Core::Network
 {
-    class ByteBuffer final
+    class NANAMI_API ByteBuffer final
     {
     public:
         [[nodiscard]] const uint8_t* Data() const noexcept;

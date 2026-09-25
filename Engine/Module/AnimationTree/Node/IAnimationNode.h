@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../Namespace/EngineNamespace.h"
 #include "vec2.hpp"
 #include <string>
@@ -11,7 +12,7 @@ namespace NanamiEngine::Module::AnimationTree
     constexpr auto NODE_SIZE = ImVec2(120.0f, 60.0f);
 
     /** @brief 特定クリップの再生進捗 */
-    struct ClipProgress final
+    struct NANAMI_API ClipProgress final
     {
         float duringSecs    = 0.0f; ///< 再生経過秒
         float durationSecs   = 0.0f; ///< クリップ全長（秒）
@@ -20,10 +21,10 @@ namespace NanamiEngine::Module::AnimationTree
 
     ///TODO: InterfaceをVisual可能AnimationNodeとLogicAnimationNodeで分離した方が良い(インターフェースの定義が要件に見合っていないため不適切)
     ///TODO: AnimationNodeBaseクラスを作成した方が共通化可能
-    class IAnimationNode : public virtual Object::IObject
+    class NANAMI_API IAnimationNode : public virtual Object::IObject
     {
     public:
-        struct UpdateCallbackContext
+        struct NANAMI_API UpdateCallbackContext
         {
             UpdateCallbackContext(const float duringSecs, const float duringDeltaTimeSecs, const float timeScale)
                 : during_secs_(duringSecs),

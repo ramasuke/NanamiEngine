@@ -1,9 +1,10 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../../../../Engine/Module/Network/Object/Component/Engine_Network_NetworkComponent.h"
 
 namespace NanamiEngine::Module::Network
 {
-    class NetworkAnimator final : public NetworkComponent
+    class NANAMI_API NetworkAnimator final : public NetworkComponent
     {
     public:
         void NetworkedTick() override;

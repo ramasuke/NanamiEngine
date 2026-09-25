@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -12,19 +13,19 @@ namespace NanamiEngine::Core::Network
     /** 1 通の上限。セッションキーはこれに収まる長さにする */
     constexpr size_t LAN_DISCOVERY_MAX_MESSAGE_SIZE = 512;
 
-    struct LanSessionQuery
+    struct NANAMI_API LanSessionQuery
     {
         std::string sessionKey;
     };
 
-    struct LanSessionReply
+    struct NANAMI_API LanSessionReply
     {
         std::string   sessionKey;
         std::uint16_t port = 0;
     };
 
     /** LAN セッション探索の問い合わせ/返事と UDP で送るバイト列の変換。不正なデータは nullopt */
-    class LanSessionMessage final
+    class NANAMI_API LanSessionMessage final
     {
     public:
         [[nodiscard]] static ByteBuffer EncodeQuery(const LanSessionQuery& query);

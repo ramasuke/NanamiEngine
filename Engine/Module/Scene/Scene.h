@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <atomic>
 #include <queue>
 #include <unordered_map>
@@ -17,13 +18,13 @@ namespace NanamiEngine::Core::Application::AutoMcp
 
 namespace NanamiEngine::Scene
 {
-    class Scene final : public Module::Object::IObject
+    class NANAMI_API Scene final : public Module::Object::IObject
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
 
     public:
         /** @brief .scene をデシリアライズした中間結果。InitGameObject はまだ呼ばれていない */
-        struct DeserializedContent
+        struct NANAMI_API DeserializedContent
         {
             std::string name = "Scene";
             std::vector<std::shared_ptr<Module::GameObject::IGameObject>> gameObjects;
@@ -31,7 +32,7 @@ namespace NanamiEngine::Scene
         };
 
         /** @brief デシリアライズ済みのルート GameObject 数。ワーカーが書き、メインスレッドが読む */
-        struct DeserializeProgress
+        struct NANAMI_API DeserializeProgress
         {
             std::atomic<int> total{0};
             std::atomic<int> done {0};

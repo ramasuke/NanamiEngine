@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../Packet_Dispatch_PacketDispatcherBase.h"
 #include "../../../../ObjectId/Engine_Network_NetworkObjectId.h"
 #include "../glm/vec3.hpp"
@@ -11,7 +12,7 @@ namespace NanamiEngine::Core::Network
 {
     class INetworkObjectInstanceRegistry;
 
-    class SyncTransformDispatcher final : public PacketDispatcherBase
+    class NANAMI_API SyncTransformDispatcher final : public PacketDispatcherBase
     {
     public:
         explicit SyncTransformDispatcher(
@@ -30,7 +31,7 @@ namespace NanamiEngine::Core::Network
         void OnReceive(const Packet& packet) override;
 
     private:
-        struct Snapshot
+        struct NANAMI_API Snapshot
         {
             float     receiveTime;
             glm::vec3 position;

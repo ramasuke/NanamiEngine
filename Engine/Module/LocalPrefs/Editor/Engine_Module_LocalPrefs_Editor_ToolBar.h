@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 
 #include <string>
 #include <vector>
@@ -51,11 +52,11 @@ namespace NanamiEngine::Module::LocalPrefs::Editor
         }
     }
     
-    class LocalPrefsRegistry final
+    class NANAMI_API LocalPrefsRegistry final
     {
     public:
         // 列挙時にエディタ側が受け取る、各設定項目のメタデータ
-        struct PrefInfo final
+        struct NANAMI_API PrefInfo final
         {
             std::string key;
             std::string typeName;

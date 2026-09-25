@@ -1,9 +1,10 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Network/Mode/NetworkSystem_Mode.h"
 
 namespace NanamiEngine::Core::Application::Configuration
 {
-    class NetworkConfiguration final
+    class NANAMI_API NetworkConfiguration final
     {
     public:
         static void Load();

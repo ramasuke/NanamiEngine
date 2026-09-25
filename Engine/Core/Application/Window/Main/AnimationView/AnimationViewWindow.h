@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <optional>
 
@@ -23,7 +24,7 @@ namespace NanamiEngine::Core::MainWindow
      *  表示は ModelViewWindow と同じ ModelPreviewStage を使う。
      *  モデル / アニメ .mv1 は Project ウィンドウからのドラッグ&ドロップ、または ModelViewWindow の「Open in AnimationView」で指定する。
      */
-    class AnimationViewWindow final : public MainWindowBase<Module::Asset::Mv1File>
+    class NANAMI_API AnimationViewWindow final : public MainWindowBase<Module::Asset::Mv1File>
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
 

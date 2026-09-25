@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Engine/Module/Physics/ContactCallback/SensorStayable/Engine_Physics_ISensorStayable.h"
 #include "../../Engine/Module/Component/ComponentBase.h"
 #include "../R4.h"
@@ -6,13 +7,13 @@
 
 namespace NanamiEngine::R4
 {
-    struct SensorStayContext final
+    struct NANAMI_API SensorStayContext final
     {
         Physics::Manifold manifold_;
         std::shared_ptr<GameObject::IGameObject> gameObject_;
     };
 
-    class SensorStayableAsObservable final : public Component::ComponentBase,
+    class NANAMI_API SensorStayableAsObservable final : public Component::ComponentBase,
                                              public Physics::Callback::ISensorStayable
     {
     public:

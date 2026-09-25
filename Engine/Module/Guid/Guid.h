@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 
 #include "../../../Libs/LibCore/ImGui/Helper/ImGuiHelper.h"
 #include "../cereal/include/cereal/cereal.hpp"
 #include "Hash/GuidHash.h"
 
-class Guid final
+class NANAMI_API Guid final
 {
 public:
     Guid();

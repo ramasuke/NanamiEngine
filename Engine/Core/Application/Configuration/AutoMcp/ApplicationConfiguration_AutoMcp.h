@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 
 namespace NanamiEngine::Core::Application::AutoMcp
 {
@@ -8,7 +9,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
 namespace NanamiEngine::Core::Application::Configuration
 {
     /** @brief Claude Code などの MCP ブリッジ (tools/automcp) からエディタを操作するための受付設定 */
-    class AutoMcpConfiguration final
+    class NANAMI_API AutoMcpConfiguration final
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpServer;
 

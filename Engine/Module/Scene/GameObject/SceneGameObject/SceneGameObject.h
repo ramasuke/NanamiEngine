@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../GameObject/ComponentGroup/ComponentGroup.h"
 #include "../../../GameObject/Interface/IGameObject.h"
 #include "../../../GameObject/Transform/Transform.h"
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::Scene
 {
-    class SceneGameObject final : public Module::GameObject::IGameObject
+    class NANAMI_API SceneGameObject final : public Module::GameObject::IGameObject
     {
     public:
         void InitGameObject(const std::weak_ptr<IGameObject>& parent, const std::shared_ptr<IGameObject>& ownPtr) override;

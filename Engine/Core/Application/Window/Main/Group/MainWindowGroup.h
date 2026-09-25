@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <ranges>
 #include <memory>
 #include <typeindex>
@@ -8,7 +9,7 @@
 
 namespace NanamiEngine::Core::MainWindow
 {
-    class MainWindowGroup final
+    class NANAMI_API MainWindowGroup final
     {
     public:
         template <MainWindowType WindowT>

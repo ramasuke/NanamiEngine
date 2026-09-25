@@ -14,6 +14,7 @@ Host exe (WinMain のみ)  ->  NanamiEngine.dll  <-  Game.dll (Assets/Scripts)
 改訂履歴
 - 2026-09-25: 初版 (実現可能性調査)。
 - 2026-09-25: 段階 0 完了 (Effekseer /MD 再ビルド、`NanamiUseDynamicCrt` 既定 `true`)。段階 1 (ゲームコードの DxLib 排除) 実装、Windows 4 構成ビルド済み。
+- 2026-09-25: 段階 2 (エンジン DLL 化) 実装。Editor モードは exe + NanamiEngine.dll、Game モードは静的 lib のまま。
 - 2026-09-25: PoC を Windows (MSVC) で実行、Debug / Release とも 50 サイクル PASS。
 - 2026-09-25: 段階 A 実装 (MSVC ビルド・エディタ確認済み)。PoC を `tools/hotreload_poc/` に実装、Linux (g++ + dlopen) で 10 サイクル PASS。
 - 2026-09-25: 段階 A (多相登録のラップ) を追加。登録解除を「cereal の表の差分方式」から「登録記録方式」に変更。
@@ -380,8 +381,41 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
 | **PoC** | §3.2 の共有スロットパッチ + 記録方式の登録解除を、最小の Host exe + Engine.dll + Game.dll で検証 | `static_object.hpp` 改変、`SharedStaticObjects` / `SerializationModuleUnloader` の追加、`tools/hotreload_poc/` (sln + Linux 用スクリプト、README 参照) | ゲーム型を含む多相ポインタが JSON・PortableBinary 双方でエンジン側から復元でき、ゲーム側からエンジン型も保存・復元でき、10 回繰り返しても表がベースラインに戻る。不成立なら止めて報告 | **完了** (2026-09-25)。Linux (g++ + `dlopen(RTLD_DEEPBIND)`、`-fno-gnu-unique`) で 10 サイクル PASS、valgrind でエラー 0・definite leak 0。Windows (MSVC v143) でも `tools/hotreload_poc/HotReloadPoc.sln` の Debug / Release とも 50 サイクル PASS。Debug の CRT リーク報告はサイクル数 1 / 10 / 50 で同一 (Engine.dll の静的オブジェクト。README 参照) |
 | 0 | /MD 化 | props 変更、Effekseer 8 lib の /MD 再ビルド | 4 構成 (Editor/Game × Debug/Release) が動く | **完了** (2026-09-25)。Effekseer 170e + EffekseerForDXLib 17x@796064f1 を /MD で再ビルドして `*_vs2019_x64_MD(d).lib` を同梱 (`tools/effekseer_md/`)。`-p:NanamiUseDynamicCrt=true` で 4 構成がビルドでき、エディタ起動を確認。`NanamiUseDynamicCrt` の既定を `true` に変更 (`false` で /MT に戻る)。CRT ランタイム DLL は `$(VCToolsRedistInstallDir)` からコピー (MSBuild 単体では `$(VCToolsRedistDir)` が空) |
 | 1 | ゲームコードから DxLib を排除 | 42 ファイル、302 箇所 (再棚卸しで判明。当初の 34 / 150 は入力系だけの数) をエンジンのファサードへ: `Engine/Core/Platform/{Input,Draw2D,Render,AsyncLoad}` (新規 7 組)、`Time::NowMilliseconds`、`SoundFile` の再生 API、`Render3D::Shapes::DrawLine3D`、`ApplicationBase::RequestClose`。enet 1 ファイルは段階 2 で扱う | `python tools/dxlib_guard/check_game_dxlib.py` が 0 (`DX_LIB_NOT_DEFAULTPATH` によるリンク検出は Game.dll 化後) | **実装済み** (2026-09-25)。guard 0 件。MSVC ビルド (Editor Debug / Release、/MD) は通り、エディタ起動とタイトル画面の描画・ログにエラー無しを確認 (`XInput()` の呼び残し 2 ヘッダを `Gamepad().thumbRX` に修正)。エディタで追加確認 (2026-09-25、Editor Debug): GrassLandScene の草 (`GrassRenderer`、頂点 / 定数バッファ経由) と木 (`TreeLeafSway`) のシェーダー描画、MainIslandScene の読み込み、ログに警告・エラー無し。`Key` の全 88 値が DxLib の `KEY_INPUT_*` と一致することをスクリプトで照合 (`Input.cpp` の `static_assert` に加えて)。雲 / 格子バリア / 天候フォグ / ロード画面の BGM / ゲームオーバー / 各 UI プレゼンターは差分が 1:1 の置き換え (`Map` = `GetBufferShaderConstantBuffer` 等) であることをレビューで確認。**プレイヤー操作 (キーボード / パッド)、ショップ・イベントボード・ポーズ・キャラ選択・ステージ選択の部屋番号、大砲ゲージ演出、雲・格子バリアの実描画、天候フォグ、ロード画面の BGM フェードは Play 中の入力が要るため手動確認待ち** (エディタの Play は必ずタイトルから始まり、AutoMCP に入力注入は無い)。挙動が変わる箇所: `StageSelectPresenter` の部屋番号入力 (`KEY_INPUT_0 + digit` は DirectInput のキーコードが連番でないため上段 1〜9 とテンキーが効いていなかった。`Keyboard::IsDigitDown` で両方効く) |
-| 2 | エンジン DLL 化 (Game は exe のまま) | Host exe へ WinMain 移動、`NANAMI_API` 付与 (382 クラス)、`SingletonBase` 7 クラスの `.cpp` 化、`IMGUI_API`、cereal パッチ適用、engine_dist 更新 | 4 構成が動き、Game モードの成果物と `GameBuilder` の手順が変わらない | 未着手 |
+| 2 | エンジン DLL 化 (Game は exe のまま) | WinMain を exe 側へ、`NANAMI_API` 付与、`SingletonBase` 7 クラスの `.cpp` 化、`IMGUI_API`、cereal パッチ適用、engine_dist 更新 | 4 構成が動き、Game モードの成果物と `GameBuilder` の手順が変わらない | **実装済み** (2026-09-25)。Editor モードは `NanamiEngine.vcxproj` が `DynamicLibrary` (`lib/Editor/<Config>/NanamiEngine.dll` + import lib)、Game モードは静的 lib のまま (`NanamiEngineShared`、既定は Mode で決まる)。`NANAMI_API` はスクリプト (`tools/engine_api/add_nanami_api.py`) で 520 箇所 (クラス 362、名前空間スコープ関数 158) に付与。DLL の export は 9,112 個。Editor Debug / Release をビルドし、exe の依存が `NanamiEngine.dll` + CRT だけになること、エディタ起動・タイトル・GrassLandScene の草 / 木・ゲーム製 ImGui ウィンドウ (`EnemyNpcBehaviourWindow`) の描画、ログにエラー無しを確認。Game モード Debug / Release (静的 lib) もビルドでき、exe が起動する (DLL 無し、CRT DLL の同梱も従来どおり)。**完了** |
 | 3 | Game.dll 化 + ホットリロード | `ConfigurationType` 切替、§4 のモジュール ID 付き Unregister、`PurgeExpired`、ウィンドウ群の削除関数、§5 の差し替え手順と保険モード、ビルド起動 UI | エディタ上で Game.dll を差し替え、開いていたシーンとウィンドウが戻る | 未着手 |
+
+### 段階 2 の実装メモ
+
+- **モジュール構成**: Editor モードは `EnviroHunter.exe` (Assets + `Main.cpp`) → `NanamiEngine.dll`。`Main.cpp` (WinMain / `NvOptimusEnablement`) は
+  エンジン lib から外し、`NanamiEngine.Game.props` の `<ClCompile Include="$(NanamiEngineDir)Main.cpp">` で **ゲーム exe プロジェクトがコンパイル**する
+  (Game モードの静的リンクでも同じ。lib の中身が減るだけで成果物は変わらない)。`Main.cpp` は `DxLib.h` ではなく `<Windows.h>` を include する。
+  段階 3 で Game.dll にするときは、この `Main.cpp` を持つ小さな Host プロジェクトに分ければよい。
+- **切り替え**: `NanamiEngineShared` (`NanamiEngine.props`)。既定は `NanamiApplicationMode!=Game` で `true`。`ConfigurationType` は
+  `Microsoft.Cpp.props` より前に決まるので、`NanamiEngine.vcxproj` の先頭でも同じ既定を計算している (2 箇所を揃えること)。
+  `-p:NanamiEngineShared=false` で Editor モードも従来の静的 lib に戻せる (切り分け用)。
+- **定義の配り方**: 共通 (`NanamiEngine.props`, shared 時) `CEREAL_NANAMI_SHARED_STATIC_OBJECT` / `ENET_DLL` と `C4251` / `C4275` の抑止。
+  エンジン側 (`NanamiEngine.vcxproj`) `NANAMI_ENGINE_BUILD_DLL` / `ENET_BUILDING_LIB`。ゲーム側 (`NanamiEngine.Game.props`)
+  `NANAMI_ENGINE_USE_DLL` / `DX_LIB_NOT_DEFAULTPATH`、リンクは import lib だけ (`/WHOLEARCHIVE` 無し)、ビルド後に DLL + PDB を `$(OutDir)` へコピー。
+  `IMGUI_API` は `Libs/ImGui/imconfig.h` が `NANAMI_ENGINE_BUILD_DLL` / `USE_DLL` から決める。`stdafx.h` は `NANAMI_ENGINE_USE_DLL` のとき
+  `DxLib.h` / `EffekseerForDXLib.h` を include しない (ゲーム側の PCH から自動リンク pragma が消える)。
+- **enet**: 再 export 方式 (enet 自身の `ENET_DLL` / `ENET_BUILDING_LIB`)。ゲームの `EnetRelayNetworkSystem.cpp` はそのまま enet の API を呼び、
+  実体はエンジン DLL の 1 つだけ。`enet.h` を include する C++ 側も `ENET_BUILDING_LIB` を定義して dllexport 宣言にしないと `LNK4217` が出る。
+- **`NANAMI_API` の付け方** (`tools/engine_api/add_nanami_api.py`、冪等、`--check` で漏れ検出):
+  非テンプレートの class / struct (入れ子含む) の class-key 直後と、名前空間スコープの関数宣言の先頭 (`[[nodiscard]]` の後)。
+  テンプレート、テンプレートクラスの入れ子、関数内ローカル、無名名前空間、前方宣言、`enum class`、`friend`、マクロ呼び出し (`CEREAL_CLASS_VERSION(...)`) は対象外。
+  **class 単位の dllexport は暗黙のコピー / デストラクタまで実体化する**ので、次を手で直した:
+  `unique_ptr` のコンテナを持つクラスはコピーを `= delete` (`PopupWindowGroup`, `BoneSync`)、集成体のままにしたい入れ子構造体は
+  `NANAMI_NO_API` (空マクロ、スクリプトが飛ばす。`StaticReflection::CategoryMenuNode`, `DebugSheet::Sheet::Node`)、
+  `unique_ptr<T>` メンバの `T` が前方宣言だけだった箇所はヘッダを include (`BodyAssembler` の `UserData`)。
+  ゲーム exe のリンクで未解決になった export 漏れは **0** (関数宣言も機械的に付けたため)。
+- **`SingletonBase` 7 クラス**: 派生クラスに `static T& Instance();` を宣言して `.cpp` で定義 (基底のテンプレート版を隠す)。呼び出し側は無変更。
+  ゲーム側の `SingletonBase` 利用 (13 クラス) はゲームモジュール内で閉じるのでそのまま。
+- **cereal の共有スロット**は実エンジンでも成立: GameManage.scene の `GameCore::Game` (ゲーム型) をエンジン DLL 側のロードで復元できている。
+- **engine_dist**: `Main.cpp` を ROOT_FILES に追加、Editor 構成は `NanamiEngine.{lib,dll,pdb}` を配る (`lib_artifacts`)。selftest 更新済み。
+  テンプレートプロジェクトは無変更 (`Main.cpp` は props 経由で入る)。
+- **ビルドの注意**: PCH の中身が変わった (`stdafx.h` から DxLib が外れた) 後、古い `x64\<Config>\*.obj` が残っていると Release の
+  リンクが `LNK1103 debugging information corrupt` で落ちる。`x64\<Config>\` (Game モードは `x64\Game\<Config>\obj\`) の
+  `*.obj / *.pch / *.idb / *.pdb` を消して組み直せば通る (コードの問題ではない)。
 
 ### 段階 A の実装メモ
 
@@ -415,5 +449,6 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
    → PoC で 10 サイクル、valgrind エラー 0 (Linux)。Windows は Debug / Release とも 50 サイクル PASS、`_CRTDBG_LEAK_CHECK_DF` の報告ブロック数がサイクル数に依らず一定 (2026-09-25)。Application Verifier は未実施。
 4. Effekseer /MD 再ビルド物で、既存の全エフェクトが従来通り描けること。
 5. `IMGUI_API` dllimport で `ImGuiHelper.h` (LibCore) と ImGuizmo が問題なく動くこと。
+   → 段階 2 で成立 (エディタの ImGui とゲーム製 `EnemyNpcBehaviourWindow` が描ける)。ImGuizmo を使う `Data_GrassField.cpp` の実操作は未確認。
 6. VS デバッガをアタッチしたまま Game.dll を差し替えてブレークポイントが効くこと (PDB コピー運用)。
 7. 開いているシーンのメモリ上スナップショットが、Component のメンバ追加 (`CEREAL_CLASS_VERSION` を上げた場合) をまたいで復元できること。

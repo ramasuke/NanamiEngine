@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../Packet_Dispatch_PacketDispatcherBase.h"
 #include "../../../../ObjectId/Engine_Network_NetworkObjectId.h"
 
@@ -11,7 +12,7 @@ namespace NanamiEngine::Core::Network
 {
     class INetworkObjectInstanceRegistry;
 
-    class SyncAnimationDispatcher final : public PacketDispatcherBase
+    class NANAMI_API SyncAnimationDispatcher final : public PacketDispatcherBase
     {
     public:
         explicit SyncAnimationDispatcher(

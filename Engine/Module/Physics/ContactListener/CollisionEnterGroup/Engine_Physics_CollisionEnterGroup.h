@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <mutex>
 #include <vector>
 #include "../ContactedData/Engine_Physics_ContactedData.h"
 
 namespace NanamiEngine::Module::Physics
 {
-    class CollisionEnterGroup final
+    class NANAMI_API CollisionEnterGroup final
     {
     public:
         void Reserve(size_t size);

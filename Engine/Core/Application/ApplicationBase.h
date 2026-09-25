@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <optional>
 #include "Window/Main/Group/MainWindowGroup.h"
@@ -40,7 +41,7 @@ namespace NanamiEngine::Core::FileSystem
 
 namespace NanamiEngine::Core::Application
 {
-    class ApplicationBase
+    class NANAMI_API ApplicationBase
     {
     public:
         ApplicationBase();

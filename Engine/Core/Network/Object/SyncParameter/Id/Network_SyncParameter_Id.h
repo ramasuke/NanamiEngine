@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 
 namespace NanamiEngine::Core::Network
 {
@@ -6,7 +7,7 @@ namespace NanamiEngine::Core::Network
      * Network上で同期するParameterのネットワーク上で共通のID
      * フォーマット: 上位32bit = NetworkObjectId, 下位32bit = オブジェクト内paramIndex
      */
-    struct ParameterId final
+    struct NANAMI_API ParameterId final
     {
         explicit ParameterId(uint64_t id = UINT64_MAX);
 

@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../LifeCycle/WindowLifeCycle.h"
 #include "../DrawGuiContext/MainWindowDrawGuiContext.h"
 
 namespace NanamiEngine::Core::MainWindow
 {
-    class IMainWindow
+    class NANAMI_API IMainWindow
     {
     public:
         virtual ~IMainWindow() = default;

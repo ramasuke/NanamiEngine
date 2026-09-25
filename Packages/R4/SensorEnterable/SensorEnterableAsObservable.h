@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Engine/Module/Physics/ContactCallback/SensorEnterable/Engine_Physics_ISensorEnterable.h"
 #include "../../Engine/Module/Component/ComponentBase.h"
 #include "../R4.h"
@@ -6,13 +7,13 @@
 
 namespace NanamiEngine::R4
 {
-    struct SensorEnterContext final
+    struct NANAMI_API SensorEnterContext final
     {
         Physics::Manifold manifold_;
         std::shared_ptr<GameObject::IGameObject> gameObject_;
     };
     
-    class SensorEnterableAsObservable final : public Component::ComponentBase,
+    class NANAMI_API SensorEnterableAsObservable final : public Component::ComponentBase,
                                               public Physics::Callback::ISensorEnterable
     {
     public:

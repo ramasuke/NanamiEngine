@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../Packet_Dispatch_PacketDispatcherBase.h"
 #include "Registry/Packet_Dispatch_SyncParameter_Registry.h"
 
@@ -9,7 +10,7 @@ namespace NanamiEngine::Core::Network
 
 namespace NanamiEngine::Core::Network
 {
-    class SyncParameterDispatcher final : public PacketDispatcherBase
+    class NANAMI_API SyncParameterDispatcher final : public PacketDispatcherBase
     {
     public:
         SyncParameterDispatcher(const IPlayerIdProvider& playerIdProvider, IPacketSender& packetSender);

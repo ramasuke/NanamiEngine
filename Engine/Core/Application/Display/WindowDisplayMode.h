@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <optional>
 #include <string>
 
@@ -12,11 +13,11 @@ namespace NanamiEngine::Core::Application::Display
         Fullscreen,
     };
 
-    [[nodiscard]] const char*       ToString(WindowDisplayMode mode);
-    [[nodiscard]] WindowDisplayMode WindowDisplayModeFromString(const std::string& text, WindowDisplayMode fallback);
+    [[nodiscard]] NANAMI_API const char*       ToString(WindowDisplayMode mode);
+    [[nodiscard]] NANAMI_API WindowDisplayMode WindowDisplayModeFromString(const std::string& text, WindowDisplayMode fallback);
 
     /** 表示モードの適用と切り替え。プレイヤーの選択は LocalPrefs/Display/WindowMode.json に残る */
-    class WindowDisplayModeController final
+    class NANAMI_API WindowDisplayModeController final
     {
     public:
         /** 起動時のモードを決めて DxLib_Init 前の設定を行う */

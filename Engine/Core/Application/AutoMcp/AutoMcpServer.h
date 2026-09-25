@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include <deque>
 #include <memory>
@@ -26,7 +27,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
      * スレッドは使わず、メインループのフックから毎フレームポーリングする。
      * フックを呼ぶ EditorApplication と、設定画面の AutoMcpConfiguration からだけ触れる。
      */
-    class AutoMcpServer final
+    class NANAMI_API AutoMcpServer final
     {
         friend class ::NanamiEngine::Core::Application::EditorApplication;
         friend class ::NanamiEngine::Core::Application::Configuration::AutoMcpConfiguration;
@@ -49,7 +50,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
         [[nodiscard]] int                ClientCount()   const { return static_cast<int>(clients_.size()); }
         [[nodiscard]] const std::string& LastError()     const { return lastError_; }
 
-        struct Client
+        struct NANAMI_API Client
         {
             std::uint64_t  id = 0;
             std::uintptr_t socket = 0;
@@ -59,7 +60,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             bool           isClosing = false;
         };
 
-        struct PendingRequest
+        struct NANAMI_API PendingRequest
         {
             std::uint64_t                 clientId  = 0;
             std::int64_t                  requestId = -1;
@@ -67,7 +68,7 @@ namespace NanamiEngine::Core::Application::AutoMcp
             std::shared_ptr<JsonDocument> document;
         };
 
-        struct PendingScreenshot
+        struct NANAMI_API PendingScreenshot
         {
             PendingRequest request;
             bool           isGameOnly = false;

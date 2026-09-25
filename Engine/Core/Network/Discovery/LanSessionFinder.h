@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <optional>
 #include <string>
 #include <vector>
@@ -14,7 +15,7 @@ namespace NanamiEngine::Core::Network
      * 探す側: セッションキーが一致するホストを LAN から探す。
      * 同一 PC(127.0.0.1)・255.255.255.255・各 IPv4 アダプタのサブネットブロードキャストへ問い合わせる
      */
-    class LanSessionFinder final
+    class NANAMI_API LanSessionFinder final
     {
     public:
         explicit LanSessionFinder(std::string sessionKey);

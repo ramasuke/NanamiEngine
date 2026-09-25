@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <atomic>
 #include <memory>
 #include <string>
@@ -15,7 +16,7 @@ namespace NanamiEngine::Scene
      *        GameObject の生成まではワーカーで済ませ、InitGameObject 以降は
      *        メインスレッドが受け取ってから行う
      */
-    class AsyncSceneLoader final
+    class NANAMI_API AsyncSceneLoader final
     {
     public:
         AsyncSceneLoader() = default;

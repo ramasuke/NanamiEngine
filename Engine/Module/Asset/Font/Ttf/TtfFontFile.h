@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <string>
 #include <unordered_map>
 
@@ -9,7 +10,7 @@
 
 namespace NanamiEngine::Module::Asset
 {
-    class TtfFontFile final : public AssetBase,
+    class NANAMI_API TtfFontFile final : public AssetBase,
                               public LifeCycleCallback::IEnablableAsset
     {
     public:

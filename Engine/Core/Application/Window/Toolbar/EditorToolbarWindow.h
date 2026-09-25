@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 
 namespace NanamiEngine::Core::PopupWindow
 {
@@ -7,7 +8,7 @@ namespace NanamiEngine::Core::PopupWindow
 
 namespace NanamiEngine::Core
 {
-    class EditorToolbarWindow final
+    class NANAMI_API EditorToolbarWindow final
     {
     public:
         static void OnDraw(PopupWindow::PopupWindowGroup& popupWindows);

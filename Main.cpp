@@ -1,4 +1,6 @@
-﻿#include "DxLib.h"
+﻿// WinMain / NvOptimusEnablement は exe 側に要る (docs/HotReload.md §8)。エンジン lib / DLL ではなく、
+// ゲーム exe プロジェクトが NanamiEngine.Game.props 経由でこのファイルをコンパイルする。DLL 構成では DxLib を見ない
+#include <Windows.h>
 #include <shellapi.h>
 #include <exception>
 #include <memory>

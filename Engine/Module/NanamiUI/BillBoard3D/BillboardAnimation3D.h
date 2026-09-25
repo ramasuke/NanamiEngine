@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/Sprite/AnimationFile/SpriteAnimationFile.h"
 #include "../../Component/ComponentBase.h"
@@ -7,7 +8,7 @@ namespace NanamiEngine::Module::NanamiUi
 {
     // SpriteAnimationFile の1コマを3D空間にビルボード描画する。
     // コマは自動では進めず、呼び出し側が SetFrame で指定する
-    class BillboardAnimation3D final : public Component::ComponentBase,
+    class NANAMI_API BillboardAnimation3D final : public Component::ComponentBase,
                                        public LifeCycleCallback::IInitRenderable,
                                        public LifeCycleCallback::IUserInterfaceRenderable
     {

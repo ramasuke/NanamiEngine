@@ -28,3 +28,9 @@ namespace NanamiEngine::Module::Network
         it->second(buffer, offset);
     }
 }
+
+NanamiEngine::Module::Network::RpcHandlerRegistry& NanamiEngine::Module::Network::RpcHandlerRegistry::Instance()
+{
+    static RpcHandlerRegistry instance;
+    return instance;
+}

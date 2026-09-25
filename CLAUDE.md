@@ -4,13 +4,27 @@ A custom C++ game engine + game (DxLib / ImGui / Jolt / cereal), toolset v143, C
 hand-maintained projects with explicit file lists — **there is no globbing**, so a new `.cpp`/`.h` must be added by hand
 (and, optionally, to the `.vcxproj.filters`):
 
-- `NanamiEngine.vcxproj` — static lib `lib/<Editor|Game>/<Debug|Release>/NanamiEngine.lib`: `Engine/`, `Packages/`,
-  `Libs/`, `Main.cpp` (WinMain lives in the lib).
-- `EnviroHunter.vcxproj` — the game exe (`EnviroHunter.exe`): `Assets/**` sources only; links the lib with `/WHOLEARCHIVE` (static
+- `NanamiEngine.vcxproj` — the engine: `Engine/`, `Packages/`, `Libs/`. In **Editor** mode it is a DLL
+  (`lib/Editor/<Config>/NanamiEngine.dll` + import lib `NanamiEngine.lib`, HotReload stage 2, `docs/HotReload.md`); in
+  **Game** mode (shipping, `-p:NanamiApplicationMode=Game`) it stays a static lib `lib/Game/<Config>/NanamiEngine.lib`.
+  `-p:NanamiEngineShared=false` builds the Editor variant as a static lib again.
+- `EnviroHunter.vcxproj` — the game exe (`EnviroHunter.exe`): `Assets/**` sources plus `Main.cpp` (WinMain +
+  `NvOptimusEnablement`, added by `NanamiEngine.Game.props`). Against the DLL it links only the import lib and
+  `NanamiEngine.Game.props` copies the DLL next to the exe; against the static lib it links with `/WHOLEARCHIVE` (static
   self-registration would otherwise be dropped by the linker).
 
 Shared compiler/linker settings live in `NanamiEngine.props` / `NanamiEngine.Game.props`, not in the vcxproj files.
 Game code includes engine headers root-relative (`#include "Engine/..."`, `"Packages/..."`, `"Libs/..."`).
+
+**Engine symbols used by game code must be exported**: every non-template `class` / `struct` in an engine header and every
+namespace-scope function declaration carries `NANAMI_API` (`Engine/Core/Api/NanamiApi.h`: dllexport in the engine DLL,
+dllimport in the game, empty in the static lib). After adding an engine class or free function run
+`python tools/engine_api/add_nanami_api.py` (idempotent; `--check` lists what is missing). It skips templates and anything
+marked `NANAMI_NO_API` (empty macro for aggregates holding containers of `unique_ptr`, because dllexport instantiates the
+implicit copy / destructor). Classes with such members must delete their copy operations explicitly, and a `unique_ptr<T>`
+member needs `T` complete in the header. `SingletonBase<T>::Instance()` is per module, so engine singletons define their own
+`Instance()` in the `.cpp`. ImGui / ImGuizmo / enet live in the engine DLL only (`IMGUI_API` from `imconfig.h`, `ENET_DLL`);
+game code never compiles their sources.
 
 ## Building from the CLI
 

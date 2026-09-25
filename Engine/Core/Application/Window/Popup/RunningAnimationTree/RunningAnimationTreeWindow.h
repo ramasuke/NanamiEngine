@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 
 #include "../Interface/IPopupWindow.h"
@@ -11,7 +12,7 @@ namespace NanamiEngine::Core::PopupWindow
      * @note シーン上で実際に動いているAnimatorのAnimationTreeをリアルタイムに覗くPopupWindow。
      *       Animator::OnDrawGui()の「Show Running AnimationTree」ボタンから対象がセットされる。
      */
-    class RunningAnimationTreeWindow final : public IPopupWindow
+    class NANAMI_API RunningAnimationTreeWindow final : public IPopupWindow
     {
     public:
         RunningAnimationTreeWindow();

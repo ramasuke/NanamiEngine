@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../MainWindowBase.h"
 #include "../../../Editor/Camera/Free/Editor3DCamera.h"
 #include "../Factory/MainWindowFactory.h"
@@ -17,7 +18,7 @@ namespace NanamiEngine::Core::Application::Game
 
 namespace NanamiEngine::Core::MainWindow
 {
-    class GameWindow final : public MainWindowBase<Scene::Scene>
+    class NANAMI_API GameWindow final : public MainWindowBase<Scene::Scene>
     {
         friend class ::NanamiEngine::Core::Application::AutoMcp::AutoMcpEngineAccess;
         friend class ::NanamiEngine::Core::Application::Game::GameApplication;

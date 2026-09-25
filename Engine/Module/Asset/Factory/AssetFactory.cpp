@@ -46,3 +46,9 @@ namespace NanamiEngine::Module::Asset
         return nullptr;
     }
 }
+
+NanamiEngine::Module::Asset::AssetFactory& NanamiEngine::Module::Asset::AssetFactory::Instance()
+{
+    static AssetFactory instance;
+    return instance;
+}

@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../MainWindowBase.h"
 #include "../../../../../Module/AnimationTree/AnimationTree.h"
 #include "../Factory/MainWindowFactory.h"
 
 namespace NanamiEngine::Core::MainWindow
 {
-    class AnimatorWindow final : public MainWindowBase<AnimationTree::AnimationTree>
+    class NANAMI_API AnimatorWindow final : public MainWindowBase<AnimationTree::AnimationTree>
     {   
     public:
         explicit AnimatorWindow();

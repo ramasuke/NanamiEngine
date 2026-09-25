@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <memory>
 #include <vector>
 #include "../../ObjectId/Engine_Network_NetworkObjectId.h"
@@ -18,13 +19,13 @@ namespace NanamiEngine::Core::Network
         Destroy  = 1, // 破棄する
     };
 
-    struct OwnedEntry final
+    struct NANAMI_API OwnedEntry final
     {
         NetworkObjectId  id;
         OwnerLeavePolicy policy;
     };
     
-    struct ObjectOwner final
+    struct NANAMI_API ObjectOwner final
     {
         NetworkObjectId id;
         PlayerId        owner;
@@ -39,7 +40,7 @@ namespace NanamiEngine::Core::Network
     /**
      * ネットワーク上のオブジェクトインスタンスの現在の所有者を管理する。
      */
-    class INetworkObjectInstanceRegistry
+    class NANAMI_API INetworkObjectInstanceRegistry
     {
     public:
         virtual ~INetworkObjectInstanceRegistry() = default;

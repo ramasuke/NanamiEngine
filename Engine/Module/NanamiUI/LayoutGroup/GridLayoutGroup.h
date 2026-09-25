@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <array>
 #include <string_view>
 #include "vec2.hpp"
@@ -62,7 +63,7 @@ namespace NanamiEngine::Module::NanamiUi
 
     // 子GameObjectを格子状に並べる。子の実際の見た目サイズは知らないため、
     // cellSize_を「各子が占めるものとみなす仮想サイズ」として並べる(実サイズの変更は行わない)。
-    class GridLayoutGroup final : public Component::ComponentBase,
+    class NANAMI_API GridLayoutGroup final : public Component::ComponentBase,
                                   public LifeCycleCallback::ILateUpdatable
     {
     private:

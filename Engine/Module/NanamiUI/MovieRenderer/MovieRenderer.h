@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include "../../Component/ComponentBase.h"
 #include "../../../Core/Object/Field/Field.h"
 #include "../../Asset/Movie/MovieFile.h"
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::Module::NanamiUi
 {
-    class MovieRenderer final : public Component::ComponentBase,
+    class NANAMI_API MovieRenderer final : public Component::ComponentBase,
                                 public LifeCycleCallback::IInitRenderable,
                                 public LifeCycleCallback::IUserInterfaceRenderable
     {

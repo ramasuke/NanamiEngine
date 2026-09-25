@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <cstdint>
 #include <functional>
 #include <unordered_map>
@@ -13,8 +14,11 @@ namespace NanamiEngine::Module::Network
      * RpcIdごとに登録されたハンドラを呼び出すレジストリ(PacketTypeNameRegistryと同じ自己登録パターン)。
      * EnetUDPNetworkSystemのポーリングはメインスレッド単一実行のため排他制御は行わない。
      */
-    class RpcHandlerRegistry final : public SingletonBase<RpcHandlerRegistry>
+    class NANAMI_API RpcHandlerRegistry final : public SingletonBase<RpcHandlerRegistry>
     {
+    public:
+        static RpcHandlerRegistry& Instance();
+
     public:
         using Handler = std::function<void(const Core::Network::ByteBuffer&, size_t&)>;
 

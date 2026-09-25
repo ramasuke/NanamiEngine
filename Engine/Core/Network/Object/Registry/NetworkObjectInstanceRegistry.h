@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Engine/Core/Api/NanamiApi.h"
 #include <unordered_map>
 
 #include "INetworkObjectInstanceRegistry.h"
@@ -6,7 +7,7 @@
 
 namespace NanamiEngine::Core::Network
 {
-    class NetworkObjectInstanceRegistry final : public INetworkObjectInstanceRegistry
+    class NANAMI_API NetworkObjectInstanceRegistry final : public INetworkObjectInstanceRegistry
     {
     public:
         void RegisterWithId(
@@ -28,7 +29,7 @@ namespace NanamiEngine::Core::Network
         [[nodiscard]] INetworkTickableRegistry& GetTickableRegistry() { return tickableRegistry_; }
 
     private:
-        struct Entry
+        struct NANAMI_API Entry
         {
             std::weak_ptr<Module::GameObject::IGameObject> instance;
             PlayerId         owner  = PlayerId::Invalid();
