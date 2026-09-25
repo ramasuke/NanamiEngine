@@ -55,8 +55,8 @@ namespace GameCore::PlayerAvatar::MagicCaster
         // 剣士と同じ割り当て
         Input<void     > avoidRolling_ = MakeInputAction([this] { return IsKeyDown(Key::LControl) || (!IsPaletteTriggerHeld() && IsPadDown(PadButton::X)); });
         Input<void     > lockOn_    = MakeInputAction([this] { return IsKeyDown(Key::Q) || IsPadDown(PadButton::RightThumb); });
-        Input<void     > lockOnSwitchLeft_  = MakeInputAction([this] { return MouseWheelDelta() > 0 || XInput().ThumbRX < -LOCK_ON_SWITCH_STICK_THRESHOLD; });
-        Input<void     > lockOnSwitchRight_ = MakeInputAction([this] { return MouseWheelDelta() < 0 || XInput().ThumbRX >  LOCK_ON_SWITCH_STICK_THRESHOLD; });
+        Input<void     > lockOnSwitchLeft_  = MakeInputAction([this] { return MouseWheelDelta() > 0 || Gamepad().thumbRX < -LOCK_ON_SWITCH_STICK_THRESHOLD; });
+        Input<void     > lockOnSwitchRight_ = MakeInputAction([this] { return MouseWheelDelta() < 0 || Gamepad().thumbRX >  LOCK_ON_SWITCH_STICK_THRESHOLD; });
         Input<void     > palette_   = MakeInputAction([this] { return IsPaletteTriggerHeld(); });
         Input<void     > pageShift_ = MakeInputAction([this] { return IsMouseDown(MouseButton::Right) || IsPadDown(PadButton::RightShoulder); });
         // アイテムは剣士と同じ割り当て

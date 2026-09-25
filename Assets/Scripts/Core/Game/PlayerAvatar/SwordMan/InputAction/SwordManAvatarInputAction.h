@@ -40,8 +40,8 @@ namespace GameCore::PlayerAvatar::SwordMan
         Input<void     > chat_         = MakeInputAction([this] { return IsKeyDown(Key::E) || IsPadDown(PadButton::Y); });
         Input<void     > avoidRolling_ = MakeInputAction([this] { return IsKeyDown(Key::LControl) || IsPadDown(PadButton::X); });
         Input<void     > lockOn_       = MakeInputAction([this] { return IsKeyDown(Key::Q) || IsPadDown(PadButton::RightThumb); });
-        Input<void     > lockOnSwitchLeft_  = MakeInputAction([this] { return MouseWheelDelta() > 0 || XInput().ThumbRX < -LOCK_ON_SWITCH_STICK_THRESHOLD; });
-        Input<void     > lockOnSwitchRight_ = MakeInputAction([this] { return MouseWheelDelta() < 0 || XInput().ThumbRX >  LOCK_ON_SWITCH_STICK_THRESHOLD; });
+        Input<void     > lockOnSwitchLeft_  = MakeInputAction([this] { return MouseWheelDelta() > 0 || Gamepad().thumbRX < -LOCK_ON_SWITCH_STICK_THRESHOLD; });
+        Input<void     > lockOnSwitchRight_ = MakeInputAction([this] { return MouseWheelDelta() < 0 || Gamepad().thumbRX >  LOCK_ON_SWITCH_STICK_THRESHOLD; });
         Input<void     > cycleItemNext_= MakeInputAction([this] { return IsKeyDown(Key::X) || IsPadDown(PadButton::DPadRight); });
         Input<void     > cycleItemPrev_= MakeInputAction([this] { return IsKeyDown(Key::Z) || IsPadDown(PadButton::DPadLeft); });
         Input<void     > useItem_      = MakeInputAction([this] { return IsKeyDown(Key::R) || IsPadDown(PadButton::LeftShoulder); });
