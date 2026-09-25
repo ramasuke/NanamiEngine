@@ -19,10 +19,16 @@
   </ItemDefinitionGroup>
   <!-- /MD のゲーム版 (Release) は VC++ ランタイム DLL が要る。出力先に同梱し、GameBuilder が exe と一緒にコピーする
        (Debug の CRT は再配布不可なので開発機の System32 に任せる) -->
+  <PropertyGroup>
+    <!-- NOTE: $(VCToolsRedistDir) は vcvars の環境変数で、MSBuild 単体 (Build Settings / CLI) では空。
+         MSBuild 自身が定義する $(VCToolsRedistInstallDir) を優先する -->
+    <NanamiCrtRedistDir Condition="'$(VCToolsRedistInstallDir)'!=''">$(VCToolsRedistInstallDir)</NanamiCrtRedistDir>
+    <NanamiCrtRedistDir Condition="'$(NanamiCrtRedistDir)'=='' and '$(VCToolsRedistDir)'!=''">$(VCToolsRedistDir)</NanamiCrtRedistDir>
+  </PropertyGroup>
   <Target Name="NanamiCopyCrtRedist" AfterTargets="Build"
-          Condition="'$(NanamiUseDynamicCrt)'=='true' and '$(NanamiApplicationMode)'=='Game' and '$(Configuration)'=='Release' and '$(VCToolsRedistDir)'!=''">
+          Condition="'$(NanamiUseDynamicCrt)'=='true' and '$(NanamiApplicationMode)'=='Game' and '$(Configuration)'=='Release' and '$(NanamiCrtRedistDir)'!=''">
     <ItemGroup>
-      <NanamiCrtRedistDll Include="$(VCToolsRedistDir)$(Platform)\Microsoft.VC*.CRT\*.dll" />
+      <NanamiCrtRedistDll Include="$(NanamiCrtRedistDir)$(Platform)\Microsoft.VC*.CRT\*.dll" />
     </ItemGroup>
     <Copy SourceFiles="@(NanamiCrtRedistDll)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
   </Target>
