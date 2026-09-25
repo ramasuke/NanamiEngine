@@ -18,6 +18,5 @@ namespace GameCore::PlayerAvatar::Item
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::Item::HealHealthEffect);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::Item::IItemEffect, GameCore::PlayerAvatar::Item::HealHealthEffect);
+NANAMI_REGISTER_TYPE(GameCore::PlayerAvatar::Item::HealHealthEffect, GameCore::PlayerAvatar::Item::IItemEffect);
 #pragma endregion

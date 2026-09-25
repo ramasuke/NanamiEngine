@@ -27,5 +27,4 @@ namespace GameCore::PlayerAvatar::Quest::Request
     REGISTER_TAKEABLE_QUEST(DefeatRequestQuest)
 }
 
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::Quest::Request::DefeatRequestQuest)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::Quest::Request::RequestQuestBase, GameCore::PlayerAvatar::Quest::Request::DefeatRequestQuest)
+NANAMI_REGISTER_TYPE(GameCore::PlayerAvatar::Quest::Request::DefeatRequestQuest, GameCore::PlayerAvatar::Quest::Request::RequestQuestBase);

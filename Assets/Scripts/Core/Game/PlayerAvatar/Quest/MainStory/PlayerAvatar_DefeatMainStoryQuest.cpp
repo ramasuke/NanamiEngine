@@ -49,5 +49,4 @@ namespace GameCore::PlayerAvatar::Quest::MainStory
     REGISTER_TAKEABLE_QUEST(DefeatMainStoryQuest)
 }
 
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::Quest::MainStory::DefeatMainStoryQuest)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::MainStoryQuestBase, GameCore::PlayerAvatar::Quest::MainStory::DefeatMainStoryQuest)
+NANAMI_REGISTER_TYPE(GameCore::PlayerAvatar::Quest::MainStory::DefeatMainStoryQuest, GameCore::PlayerAvatar::MainStoryQuestBase);

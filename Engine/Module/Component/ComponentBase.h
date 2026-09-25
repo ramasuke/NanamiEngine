@@ -83,8 +83,7 @@ CEREAL_CLASS_VERSION(NanamiEngine::Module::Component::ComponentBase, 0);
 // NOTE: ENGINE_REGISTER_COMPONENT(T) はコンポーネントの .cpp に書き、CEREAL_CLASS_VERSION(T, V) はヘッダに残す
 // WARNING: 旧形式の ENGINE_REGISTER_COMPONENT(T, V) もビルドは通るが、ヘッダに書くと include 先すべてで保存・読み込みコードが生成される
 #define ENGINE_REGISTER_COMPONENT_TYPE_(TYPE)                                                   \
-    CEREAL_REGISTER_TYPE(TYPE);                                                                 \
-    CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, TYPE);
+    NANAMI_REGISTER_TYPE(TYPE, NanamiEngine::Module::Component::ComponentBase)
 #define ENGINE_REGISTER_COMPONENT_WITH_VERSION_(TYPE, VERSION)                                  \
     CEREAL_CLASS_VERSION(TYPE, VERSION);                                                        \
     ENGINE_REGISTER_COMPONENT_TYPE_(TYPE)

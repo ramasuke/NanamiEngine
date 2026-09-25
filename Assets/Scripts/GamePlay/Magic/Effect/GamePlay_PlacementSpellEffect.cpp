@@ -55,6 +55,5 @@ namespace GamePlay::Magic
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GamePlay::Magic::PlacementSpellEffect);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Magic::IMagicSpellEffect, GamePlay::Magic::PlacementSpellEffect);
+NANAMI_REGISTER_TYPE(GamePlay::Magic::PlacementSpellEffect, GameCore::Magic::IMagicSpellEffect);
 #pragma endregion

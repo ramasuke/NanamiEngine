@@ -33,6 +33,5 @@ namespace GameCore::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::Lightning)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::Lightning)
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::Lightning, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

@@ -26,8 +26,5 @@ namespace GameCore::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::AttachParticle)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    GameCore::Npc::Enemy::Behaviour::ActionBase,
-    GameCore::Npc::Enemy::Behaviour::Action::AttachParticle)
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::AttachParticle, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

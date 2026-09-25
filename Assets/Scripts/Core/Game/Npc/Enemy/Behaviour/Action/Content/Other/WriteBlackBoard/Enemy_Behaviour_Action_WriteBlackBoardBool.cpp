@@ -20,9 +20,5 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoardBool)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(
-    GameCore::Npc::Enemy::Behaviour::ActionBase,
-    GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoardBool
-)
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoardBool, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

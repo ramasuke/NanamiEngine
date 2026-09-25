@@ -56,6 +56,5 @@ namespace GameCore::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::Chat)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::Chat)
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::Chat, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

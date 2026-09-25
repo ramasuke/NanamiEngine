@@ -35,7 +35,6 @@ namespace NanamiEngine::Module::Asset
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::ParticleFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::ParticleFile);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::ParticleFile, NanamiEngine::Module::Asset::AssetBase);
 REGISTER_ASSET(ParticleFile, ".efkefc")
 #pragma endregion

@@ -35,7 +35,8 @@ SINGLETON_LEAVES = {"AnimatorEntryNode", "AnimationVisualAnyStateNode"}
 
 # -- 正規表現 ------------------------------------------------------------------
 RE_CLASS = re.compile(r"\bclass\s+(\w+)\s+final\s*:\s*public\s+IAnimationNode\b")
-RE_REGISTER_TYPE = re.compile(r"CEREAL_REGISTER_TYPE\s*\(\s*([\w:]+)\s*\)")
+# NANAMI_REGISTER_TYPE(T, Base) が今の書き方。CEREAL_REGISTER_TYPE(T) は古いファイル用
+RE_REGISTER_TYPE = re.compile(r"(?:NANAMI|CEREAL)_REGISTER_TYPE\s*\(\s*([\w:]+)\s*[,)]")
 RE_CLASS_VERSION = re.compile(r"CEREAL_CLASS_VERSION\s*\(\s*([\w:]+)\s*,\s*(\d+)\s*\)")
 RE_SAVE = re.compile(r"\bvoid\s+save\s*\(\s*Archive\s*&\s*\w+\s*,")
 RE_LOAD = re.compile(r"\bvoid\s+load\s*\(\s*Archive\s*&\s*\w+\s*,")
@@ -79,7 +80,7 @@ def _read(path: Path) -> str:
 
 
 def _search_register_type(path: Path, text: str):
-    """CEREAL_REGISTER_TYPE はヘッダと同名の .cpp にある（CEREAL_CLASS_VERSION は
+    """NANAMI_REGISTER_TYPE はヘッダと同名の .cpp にある（CEREAL_CLASS_VERSION は
     ヘッダに残る）。古いヘッダはまだ自身に持っている。"""
     m = RE_REGISTER_TYPE.search(text)
     cpp = path.with_suffix(".cpp")

@@ -46,6 +46,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(MagicCasterAvatarResource, MAGIC_CASTER_RESOURCE_EXTENSION_LABEL, "Player::MagicCaster")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::MagicCasterAvatarResource);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::MagicCasterAvatarResource);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::MagicCasterAvatarResource, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

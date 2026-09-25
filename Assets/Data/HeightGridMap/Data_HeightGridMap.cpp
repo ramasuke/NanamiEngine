@@ -186,6 +186,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(HeightGridMap, HEIGHT_GRID_MAP_EXTENSION_LABEL, "Stage")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::HeightGridMap);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::HeightGridMap);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::HeightGridMap, NanamiEngine::Module::Asset::AssetBase);
 #pragma endregion

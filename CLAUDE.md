@@ -72,10 +72,13 @@ through `LibCore::Dxlib::Utf8ToShiftJis`. The flag lives in every `<AdditionalOp
 
 ## cereal registration goes in the .cpp
 
-`CEREAL_REGISTER_TYPE` / `CEREAL_REGISTER_POLYMORPHIC_RELATION` / `ENGINE_REGISTER_COMPONENT(T)` /
+`NANAMI_REGISTER_TYPE(T, Base)` / `NANAMI_REGISTER_POLYMORPHIC_RELATION(Base, T)` / `ENGINE_REGISTER_COMPONENT(T)` /
 `REGISTER_ATTACK_AREA_TYPE` / `REGISTER_PLAYER_AVATAR_BASE` belong at the end of the type's `.cpp`
 (global scope), which must `#include` `Engine/Module/Serialization/Engine_Module_SerializationRegistration.h`
-so the type is bound to both archives (JSON + PortableBinary). Those are the only archives polymorphic types are
+so the type is bound to both archives (JSON + PortableBinary). Don't write `CEREAL_REGISTER_TYPE` /
+`CEREAL_REGISTER_POLYMORPHIC_RELATION` directly: the `NANAMI_` macros (defined in that header) expand to them and also
+record the type, its base and the registering module in `Serialization::SerializationTypeRegistry`, which a
+game-code hot reload needs to find what to unregister (`docs/HotReload.md`). Those are the only archives polymorphic types are
 bound to - don't serialise polymorphic pointers through `cereal::BinaryArchive` (use PortableBinary).
 `REGISTER_ASSET` / `REGISTER_SCRIPTABLE_OBJECT` / `REGISTER_CREATABLE_ASSET_EXTENSION` go in the `.cpp` too: in a
 header they define a `static` registrar per including file (the factory's vectors got one entry per file) and

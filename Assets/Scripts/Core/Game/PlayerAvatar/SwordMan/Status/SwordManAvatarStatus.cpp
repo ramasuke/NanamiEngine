@@ -367,6 +367,5 @@ namespace GameCore::PlayerAvatar::SwordMan
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::IPlayerAvatarStatus, GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus);
+NANAMI_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::SwordManAvatarStatus, GameCore::PlayerAvatar::IPlayerAvatarStatus);
 #pragma endregion

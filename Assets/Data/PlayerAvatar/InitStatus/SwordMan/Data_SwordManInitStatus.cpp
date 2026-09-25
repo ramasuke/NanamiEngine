@@ -91,6 +91,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(SwordManInitStatus, SWORD_MAN_INIT_STATUS_EXTENSION_LABEL, "Player::SwordMan")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManInitStatus);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManInitStatus);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManInitStatus, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

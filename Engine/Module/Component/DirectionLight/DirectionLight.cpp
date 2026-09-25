@@ -24,5 +24,5 @@ namespace NanamiEngine::Module::Component
 
 #pragma region SerializationMacro
 ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::DirectionLight);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IRenderable, NanamiEngine::Module::Component::DirectionLight);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IRenderable, NanamiEngine::Module::Component::DirectionLight);
 #pragma endregion

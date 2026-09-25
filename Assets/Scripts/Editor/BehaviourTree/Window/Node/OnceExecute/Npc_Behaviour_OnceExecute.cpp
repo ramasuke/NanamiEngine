@@ -121,6 +121,5 @@ namespace Editor::Npc::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(Editor::Npc::Behaviour::OnceExecute);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Editor::Npc::Behaviour::NodeBase, Editor::Npc::Behaviour::OnceExecute);
+NANAMI_REGISTER_TYPE(Editor::Npc::Behaviour::OnceExecute, Editor::Npc::Behaviour::NodeBase);
 #pragma endregion

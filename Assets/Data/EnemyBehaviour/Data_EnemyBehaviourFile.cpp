@@ -46,6 +46,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(EnemyBehaviourFile, ENEMY_BEHAVIOUR_DATA_LABEL, "Npc::Enemy")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::EnemyBehaviourFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::EnemyBehaviourFile);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::EnemyBehaviourFile, NanamiEngine::Module::Asset::AssetBase);
 #pragma endregion

@@ -91,6 +91,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(SwordManAvatarResource, SWORD_MAN_RESOURCE_EXTENSION_LABEL, "Player::SwordMan")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManAvatarResource);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::SwordManAvatarResource);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::SwordManAvatarResource, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

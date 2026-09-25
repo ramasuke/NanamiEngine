@@ -19,6 +19,5 @@ namespace GameCore::Npc::Friendly::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::NodeTickTimer)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::ActionBase, GameCore::Npc::Friendly::Behaviour::Action::NodeTickTimer)
+NANAMI_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::NodeTickTimer, GameCore::Npc::Friendly::Behaviour::ActionBase);
 #pragma endregion

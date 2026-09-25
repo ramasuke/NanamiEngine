@@ -25,5 +25,5 @@ namespace GameCore::Npc
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::EnemyBase, GameCore::Npc::BossEnemyBase);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::EnemyBase, GameCore::Npc::BossEnemyBase);
 #pragma endregion

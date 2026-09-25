@@ -44,7 +44,5 @@ namespace GameCore::PlayerAvatar::Quest::Unlock
     REGISTER_QUEST_UNLOCK_CONDITION(NotUnlockCondition)
 }
 
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::Quest::Unlock::AnyOfUnlockCondition)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::Quest::Unlock::IQuestUnlockCondition, GameCore::PlayerAvatar::Quest::Unlock::AnyOfUnlockCondition)
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::Quest::Unlock::NotUnlockCondition)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::Quest::Unlock::IQuestUnlockCondition, GameCore::PlayerAvatar::Quest::Unlock::NotUnlockCondition)
+NANAMI_REGISTER_TYPE(GameCore::PlayerAvatar::Quest::Unlock::AnyOfUnlockCondition, GameCore::PlayerAvatar::Quest::Unlock::IQuestUnlockCondition);
+NANAMI_REGISTER_TYPE(GameCore::PlayerAvatar::Quest::Unlock::NotUnlockCondition, GameCore::PlayerAvatar::Quest::Unlock::IQuestUnlockCondition);

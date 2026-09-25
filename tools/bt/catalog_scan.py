@@ -44,7 +44,8 @@ _SKIP_DIRS = {"TickContext", "FieldGameObject", "Position"}
 # -- 正規表現 --------------------------------------------------------------------
 RE_CLASS = re.compile(r"\bclass\s+(\w+)\s+final\s*:\s*public\s+[\w:]*ActionBase\b")
 RE_STRUCT = re.compile(r"\b(?:class|struct)\s+(\w+)\s+final\b")
-RE_REGISTER_TYPE = re.compile(r"CEREAL_REGISTER_TYPE\s*\(\s*([\w:]+)\s*\)")
+# NANAMI_REGISTER_TYPE(T, Base) が今の書き方。CEREAL_REGISTER_TYPE(T) は古いファイル用
+RE_REGISTER_TYPE = re.compile(r"(?:NANAMI|CEREAL)_REGISTER_TYPE\s*\(\s*([\w:]+)\s*[,)]")
 RE_CLASS_VERSION = re.compile(r"CEREAL_CLASS_VERSION\s*\(\s*([\w:]+)\s*,\s*(\d+)\s*\)")
 RE_REG_ACTION_NAMED = re.compile(
     r"REGISTER_ENEMY_ACTION_WITH_NAME\s*\(\s*(\w+)\s*,\s*\"((?:[^\"\\]|\\.)*)\"\s*\)"
@@ -86,7 +87,7 @@ def _read(path: Path) -> str:
 
 
 def _search_register_type(path: Path, text: str):
-    """CEREAL_REGISTER_TYPE はヘッダーと同じ場所の .cpp にある（CEREAL_CLASS_VERSION
+    """NANAMI_REGISTER_TYPE はヘッダーと同じ場所の .cpp にある（CEREAL_CLASS_VERSION
     はヘッダーに残る）。古いヘッダーではまだヘッダー自身に書かれている。"""
     m = RE_REGISTER_TYPE.search(text)
     cpp = path.with_suffix(".cpp")

@@ -116,6 +116,5 @@ namespace Editor::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(Editor::Npc::Enemy::Behaviour::ActionNode);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Editor::Npc::Behaviour::NodeBase, Editor::Npc::Enemy::Behaviour::ActionNode);
+NANAMI_REGISTER_TYPE(Editor::Npc::Enemy::Behaviour::ActionNode, Editor::Npc::Behaviour::NodeBase);
 #pragma endregion

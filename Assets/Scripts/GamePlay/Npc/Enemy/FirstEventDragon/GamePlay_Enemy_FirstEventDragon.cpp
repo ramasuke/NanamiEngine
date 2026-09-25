@@ -16,6 +16,5 @@ namespace GamePlay::Npc::Enemy
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GamePlay::Npc::Enemy::FirstEventDragon);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::BossEnemyBase, GamePlay::Npc::Enemy::FirstEventDragon);
+NANAMI_REGISTER_TYPE(GamePlay::Npc::Enemy::FirstEventDragon, GameCore::Npc::BossEnemyBase);
 #pragma endregion

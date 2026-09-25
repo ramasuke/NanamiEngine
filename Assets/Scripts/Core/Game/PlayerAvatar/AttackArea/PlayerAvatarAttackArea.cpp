@@ -13,6 +13,5 @@ namespace GameCore::PlayerAvatar
 
 #pragma region SerializationMacro
 REGISTER_ATTACK_AREA_TYPE(GameCore::PlayerAvatar::ITakablePlayerAttack)
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::PlayerAttackArea);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GamePlay::AttackArea<GameCore::PlayerAvatar::ITakablePlayerAttack>, GameCore::PlayerAvatar::PlayerAttackArea);
+NANAMI_REGISTER_TYPE(GameCore::PlayerAvatar::PlayerAttackArea, GamePlay::AttackArea<GameCore::PlayerAvatar::ITakablePlayerAttack>);
 #pragma endregion

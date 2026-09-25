@@ -345,9 +345,7 @@ CEREAL_CLASS_VERSION(                                                           
 GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>, 4)
 
 #define REGISTER_PLAYER_AVATAR_BASE(TraitsType)                                  \
-CEREAL_REGISTER_TYPE(                                                            \
-GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>)    \
-CEREAL_REGISTER_POLYMORPHIC_RELATION(                                            \
-NanamiEngine::Module::Component::ComponentBase,                                  \
-GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>)
+NANAMI_REGISTER_TYPE(                                                            \
+GamePlay::PlayerAvatar::PlayerAvatarBase<GameCore::PlayerAvatar::TraitsType>,    \
+NanamiEngine::Module::Component::ComponentBase)
 }

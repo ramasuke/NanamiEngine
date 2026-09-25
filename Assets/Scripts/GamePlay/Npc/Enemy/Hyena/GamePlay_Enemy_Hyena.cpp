@@ -17,6 +17,5 @@ void GamePlay::Npc::Enemy::Hyena::OnDrawGui()
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GamePlay::Npc::Enemy::Hyena);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::EnemyBase, GamePlay::Npc::Enemy::Hyena);
+NANAMI_REGISTER_TYPE(GamePlay::Npc::Enemy::Hyena, GameCore::Npc::EnemyBase);
 #pragma endregion

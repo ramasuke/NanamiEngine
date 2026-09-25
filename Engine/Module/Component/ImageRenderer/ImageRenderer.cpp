@@ -47,5 +47,5 @@ void Component::ImageRenderer::OnDrawGui()
 
 #pragma region SerializationMacro
 ENGINE_REGISTER_COMPONENT(NanamiEngine::Module::Component::ImageRenderer);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IUserInterfaceRenderable, NanamiEngine::Module::Component::ImageRenderer);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(LifeCycleCallback::IUserInterfaceRenderable, NanamiEngine::Module::Component::ImageRenderer);
 #pragma endregion

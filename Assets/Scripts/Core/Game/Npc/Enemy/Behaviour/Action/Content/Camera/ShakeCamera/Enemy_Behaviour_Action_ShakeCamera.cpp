@@ -28,6 +28,5 @@ namespace GameCore::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ShakeCamera)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::ShakeCamera)
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ShakeCamera, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

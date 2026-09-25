@@ -20,6 +20,5 @@ namespace GameCore::Npc::Friendly::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::IsStoryFlag);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::ActionBase, GameCore::Npc::Friendly::Behaviour::Action::IsStoryFlag);
+NANAMI_REGISTER_TYPE(GameCore::Npc::Friendly::Behaviour::Action::IsStoryFlag, GameCore::Npc::Friendly::Behaviour::ActionBase);
 #pragma endregion

@@ -77,6 +77,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(UiSoundBankData, UI_SOUND_BANK_EXTENSION_LABEL, "Ui")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::UiSoundBankData);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::UiSoundBankData);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::UiSoundBankData, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

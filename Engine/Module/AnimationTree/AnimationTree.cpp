@@ -347,6 +347,5 @@ std::optional<AnimationTree::ClipProgress> AnimationTree::AnimationTree::GetCurr
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationTree);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Object::IObject, NanamiEngine::Module::AnimationTree::AnimationTree);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimationTree, NanamiEngine::Module::Object::IObject);
 #pragma endregion

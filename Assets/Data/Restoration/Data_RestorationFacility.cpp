@@ -48,6 +48,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(RestorationFacility, RESTORATION_FACILITY_EXTENSION_LABEL, "EventBoard")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::RestorationFacility);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::RestorationFacility);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::RestorationFacility, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

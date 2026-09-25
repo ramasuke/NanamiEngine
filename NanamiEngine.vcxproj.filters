@@ -904,6 +904,9 @@
     <ClCompile Include="Engine\Module\ScriptableObject\ScriptableObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Module\Serialization\Engine_Module_SerializationTypeRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Libs\LibCore\cereal\PrefabExtractArchive\PrefabExtractArchive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -4674,6 +4677,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\Serialization\Engine_Module_Serialization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Module\Serialization\Engine_Module_SerializationTypeRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.h">
