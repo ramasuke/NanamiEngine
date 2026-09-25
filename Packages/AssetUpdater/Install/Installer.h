@@ -20,7 +20,6 @@ namespace NanamiEngine::AssetUpdater
 
         /**
          * 一時置き場の照合済みファイルで Assets/ を更新する。全部成功するか、何も変わらないかのどちらか。
-         * installed.json が無いフォルダ (開発中のリポジトリなど) には何もしない
          */
         [[nodiscard]] ApplyResult Apply(const UpdateCheckResult& update) const;
 
