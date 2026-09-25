@@ -23,6 +23,12 @@
       <AdditionalOptions>"/WHOLEARCHIVE:$(NanamiEngineLib)" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
+  <!-- DLL 構成ではプロジェクトの出力が DLL なので、Rider / VS の Run・Debug には Host をコピーした $(TargetName).exe を起動させる -->
+  <PropertyGroup Condition="'$(NanamiEngineShared)'=='true'">
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommand>$(OutDir)$(TargetName).exe</LocalDebuggerCommand>
+    <LocalDebuggerWorkingDirectory>$(ProjectDir)</LocalDebuggerWorkingDirectory>
+  </PropertyGroup>
   <!-- DLL 構成 (Editor モード): exe はエンジンの import lib だけをリンクする (docs/HotReload.md §2)。
        NANAMI_ENGINE_USE_DLL: NANAMI_API / IMGUI_API が dllimport になり、stdafx.h から DxLib / Effekseer が外れる
        DX_LIB_NOT_DEFAULTPATH: DxLib の自動リンクを切る。ゲーム側に DxLib の呼び出しが残っていればリンクエラーで分かる -->

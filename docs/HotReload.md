@@ -391,6 +391,10 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
   `NanamiEngine.Game.props` がビルド後に `$(OutDir)$(TargetName).exe` の名前でコピーするので、起動コマンド (`x64/Debug/EnviroHunter.exe -project ...`)、
   AutoMCP の `engine_launch`、`/build-run` は変わらない。`EnviroHunter.vcxproj` は `NanamiEngineShared` で `DynamicLibrary` になり `EnviroHunter.dll` を出す
   (export は無し。静的初期化子は obj を直接リンクするので `/WHOLEARCHIVE` 相当は不要)。Game モードでは Host は `Utility` (何も作らない)、ゲームは exe のまま。
+- **Rider / VS の Run**: プロジェクトの出力が DLL になるので、そのままだと `EnviroHunter.dll` を起動しようとして
+  `process launch failed` になる。`NanamiEngine.Game.props` が shared 時に `LocalDebuggerCommand` = `$(OutDir)$(TargetName).exe`
+  (= Host のコピー) と作業ディレクトリ `$(ProjectDir)` を設定しているので、EnviroHunter の Run 構成でそのまま起動できる
+  (Rider の `execute_run_configuration` で確認)。`NanamiHost` の Run 構成はゲームを知らないので使わない。
 - **Host の起動**: `Main.cpp` の `LoadGameModule()` が `-game <dll>` か `<exe 名>.dll` を `GameModule::LoadInitial` に渡す。`Run` より前 = 静的 lib のときと同じ順序で
   静的初期化 (登録) が走る。DLL は `HotReload/<世代>/<名前>.dll` + 同名 `.pdb` にコピーしてから `LoadLibraryExW(LOAD_WITH_ALTERED_SEARCH_PATH)` する
   (同じファイル名なので PDB の紐付けが保たれる。起動時に前回の世代フォルダを消す)。
