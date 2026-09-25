@@ -1,9 +1,8 @@
 ﻿#pragma once
-#include <vector>
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
-#include "ChangeRequest.h"
 #include "Sub_IGameSceneGroup.h"
 
 namespace GameCore::Scene::Sub
@@ -19,11 +18,10 @@ namespace GameCore::Scene::Sub
         explicit GameSceneGroup(std::vector<std::weak_ptr<SceneContextBase>> contexts);
         ~GameSceneGroup() override;
 
-        void Push(const SceneType& type) override;
+        Coroutine::Task<bool> PushAsync(SceneType type) override;
         void Pop(const SceneType& type) override;
         void Clear() override;
 
-        void Update();
         void OnDrawGui() const;
 
         template <class T>
@@ -31,13 +29,8 @@ namespace GameCore::Scene::Sub
         std::shared_ptr<T> Catch(const SceneType& type) const;
 
     private:
-        void ProcessRequests();
-
-    private:
         std::unordered_map<SceneType, std::shared_ptr<IGameScene>> scenes_;
         std::unique_ptr<SceneFactory> factory_;
-
-        std::vector<ChangeRequestOption> changeRequests_;
     };
 
     template <class T>

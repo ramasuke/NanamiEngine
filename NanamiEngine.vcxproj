@@ -89,6 +89,7 @@
     <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForTweenV\Coroutine_WaitForTweenV.cpp" />
     <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForTween\Coroutine_WaitForTween.cpp" />
     <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForTweenBody\Coroutine_WaitForTweenBody.cpp" />
+    <ClCompile Include="Engine\Core\Coroutine\Awaitable\LoadScene\Coroutine_LoadSceneAsync.cpp" />
     <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitUntil\Coroutine_WaitUntil.cpp" />
     <ClCompile Include="Engine\Core\Coroutine\Awaitable\Yield\Coroutine_WaitYield.cpp" />
     <ClCompile Include="Engine\Core\Coroutine\Coroutine.cpp" />
@@ -1251,6 +1252,7 @@
     <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForTween\Coroutine_WaitForTween.h" />
     <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitForTweenBody\Coroutine_WaitForTweenBody.h" />
     <ClInclude Include="Engine\Core\Coroutine\Awaitable\TweenClock\Coroutine_TweenClock.h" />
+    <ClInclude Include="Engine\Core\Coroutine\Awaitable\LoadScene\Coroutine_LoadSceneAsync.h" />
     <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitUntil\Coroutine_WaitUntil.h" />
     <ClInclude Include="Engine\Core\Coroutine\Awaitable\Yield\Coroutine_WaitYield.h" />
     <ClInclude Include="Engine\Core\Coroutine\Coroutine.h" />

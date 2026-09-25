@@ -25,20 +25,15 @@ namespace GameCore::Scene::Main
 
     FirstTouchDownMainIsLandScene::~FirstTouchDownMainIsLandScene() = default;
 
-    void FirstTouchDownMainIsLandScene::Init()
+    std::vector<Sub::SceneType> FirstTouchDownMainIsLandScene::SubScenes() const
     {
-        Coroutine::StartCoroutine(OnEnterAsync(BeginEnter()));
+        return { Sub::SceneType::ChattingUI };
     }
 
-    Coroutine::Task<void> FirstTouchDownMainIsLandScene::OnEnterAsync(const int generation)
+    Coroutine::Task<EnterResult> FirstTouchDownMainIsLandScene::OnEnterAsync(NanamiEngine::R4::CancellationToken)
     {
-        if (!co_await LoadMainSceneAsync(generation))
-            co_return;
-
         // Context の FIELD(飛行船・カメラ・タイトルロゴ)は読み込んだシーン内を指す
         Context()->Init();
-        // メインシーンが居ない間に Instantiate が走らないよう、読み込みが済んでから積む
-        SubScene().Push(Sub::SceneType::ChattingUI);
 
         auto& context = *Context();
         
@@ -56,8 +51,7 @@ namespace GameCore::Scene::Main
         // 船を降りるまでのMovie開始
         aboardAirShipMovie_ = std::make_shared<FirstTouchDownMainIsLand::AboardAirShipMovie>(playerAvatar_, Context());
         Coroutine::StartCoroutine(FirstTouchDownMainIsLand::AboardAirShipMovie::PlayAsync(aboardAirShipMovie_));
-
-        CompleteEnter(generation);
+        co_return EnterResult::Ok();
     }
 
     void FirstTouchDownMainIsLandScene::Enter()

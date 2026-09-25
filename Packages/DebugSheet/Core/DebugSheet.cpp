@@ -5,7 +5,9 @@
 
 #include "DebugSheetStyle.h"
 #include "DebugSheetWidgets.h"
+#include "../../../Engine/Core/Application/ApplicationBase.h"
 #include "../../../Engine/Core/Application/Configuration/ApplicationConfiguration.h"
+#include "../../../Engine/Core/Application/Window/Main/Game/GameWindow.h"
 #include "../../../Libs/LibCore/ImGui/Wrapper/ImGuiWrapper.h"
 
 namespace NanamiEngine::DebugSheet
@@ -14,6 +16,13 @@ namespace NanamiEngine::DebugSheet
     {
         constexpr bool IS_GAME_BUILD =
             Core::Application::Configuration::APPLICATION_MODE == Core::Application::Configuration::ApplicationMode::Game;
+
+        /** @brief エディタではプレイ中（一時停止中を含む）。ゲームビルドは起動時に Play するので常に true */
+        bool IsGameRunning()
+        {
+            const auto gameWindow = Core::Application::ApplicationBase::GameWindow();
+            return gameWindow && gameWindow->IsPlaying();
+        }
 
         ImVec4 ToImVec4(const Palette::Rgba& color)
         {
@@ -94,6 +103,18 @@ namespace NanamiEngine::DebugSheet
 
     void Sheet::Update()
     {
+        if (!IsGameRunning())
+        {
+            // NOTE: プレイを終えたら閉じ、次のプレイはトップページから開く
+            if (isOpen_)
+            {
+                Close();
+                stack_.resize(1);
+            }
+            toggleKeyHeld_ = false;
+            return;
+        }
+
         const bool toggleKey = CheckHitKey(KEY_INPUT_F1) != 0 && GetWindowActiveFlag() != 0;
         if (toggleKey && !toggleKeyHeld_)
             Toggle();
@@ -132,6 +153,9 @@ namespace NanamiEngine::DebugSheet
 
     void Sheet::Open()
     {
+        if (!IsGameRunning())
+            return;
+
         isOpen_ = true;
         if constexpr (IS_GAME_BUILD)
             SetMouseDispFlag(TRUE);

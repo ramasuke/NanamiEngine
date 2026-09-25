@@ -11,6 +11,10 @@
 `NANAMI_DEBUG_SHEET_ENABLED`（`DebugSheetConfig.h`）はエディタと **Debug** 構成のゲームビルドで 1、Release の
 ゲームビルドで 0。F1 で開閉する。
 
+プレイ中のデバッグ機能なので、開けるのは**ゲーム実行中だけ**（`GameWindow::IsPlaying()`）。エディタではプレイ中と
+一時停止中に開け、編集モードでは F1 も `Open()` も効かない。プレイを終えると閉じ、次のプレイはトップページから開く。
+ゲームビルドは起動時に Play するので常に開ける。
+
 エンジンからは呼ばない。常駐するゲーム側のコンポーネントから回す。このプロジェクトでは `GameCore::Game` が
 `IUserInterfaceRenderable`（描画順は最大）を実装して呼んでいる:
 
@@ -25,7 +29,7 @@ void Game::OnUserInterfaceRender()
 }
 ```
 
-- UI 描画はエディタの非プレイ中も回るので、編集モードでも開ける。ゲームが動いていないと使えないページは、その旨を出して return する。
+- UI 描画はエディタの非プレイ中も回るが、判定は `Sheet` 側でするので呼ぶ側は毎フレーム呼ぶだけでよい。ページ側でプレイ中かを確かめる必要はない。
 - エディタでは `Render()` はエディタの ImGui フレームに描くだけ。
 - ゲームビルドは ImGui を初期化していないので、初めて開いたときに `Render()` が ImGui を作り、以降は毎フレーム自前で
   `NewFrame` / `EndFrame` / `RenderVertex` / 描画を回す（閉じていても回す。回さないと入力がキューに溜まる）。開いている間だけ OS のカーソルを出す。
@@ -73,5 +77,5 @@ REGISTER_DEBUG_SHEET_PAGE(GodMode, "チート/無敵", 40, GamePlay::Debug::Draw
 
 - セーブ/全初期化（`SaveDataReset`。`LocalPrefs/` の `.json` から `Display/` `Network/` `Settings/` を除いて消す）
 - ストーリー/フラグ
-- シーン/移動（プレイ中のみ）
+- シーン/移動
 - チート/所持金・アイテム（手元のアバターは `GameCore::PlayerAvatar::Owner()`）

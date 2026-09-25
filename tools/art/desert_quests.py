@@ -4,7 +4,7 @@
 
 - 形は草原の本筋の依頼 GrassLandTyrant.boardQuest.meta の写し (BoardQuest の版 1: 解放条件と、未開の文言つき)。
 - DesertSkeletonDragon : 本筋 (DefeatMainStoryQuest)。骸竜 (EnemyKind 6) を倒すと DesertCleared (StoryFlag 5)。
-                         緑の浮遊石が島に戻ってから (GreenStoneReturned) 貼られる。依頼主は教官
+                         緑の心臓が島に戻ってから (GreenStoneReturned) 貼られる。依頼主は教官
 - DesertScorpionCull   : 稼ぎ口 (DefeatRequestQuest)。オアシスの水場の大サソリ (EnemyKind 4) を6匹。依頼主は隊商頭
 - 砂に埋もれた荷 (QuestType::DesertLostCargo の収集依頼) は、拾う荷のアイテムと置き場所ができてから足す。
 - 報酬は仮 (docs/Story.md §10: 報酬の相場は未決定)。
@@ -34,10 +34,10 @@ FLAG_GRASSLAND_CLEARED, FLAG_GREEN_STONE_RETURNED, FLAG_DESERT_CLEARED = 2, 3, 5
 QUESTS = [
     dict(name='DesertSkeletonDragon', title='砂漠の骸竜', client='教官', rank=4,
          goal='城塞の広場に居着く骸竜を倒す',
-         lines=['光の浮遊石は、砂に沈んだ城塞に落ちている。', '傍に居着く骸竜を倒し、石を島へ取り戻せ。'],
+         lines=['光の心臓は、砂に沈んだ城塞に落ちている。', '傍に居着く骸竜を倒し、心臓を島へ取り戻せ。'],
          quest=dict(kind='main', reward=5000, questType=QUEST_DESERT_DRAGON, enemyKind=KIND_SKELETON_DRAGON,
                     clearedFlag=FLAG_DESERT_CLEARED),
-         unlock=FLAG_GREEN_STONE_RETURNED, locked='緑の浮遊石を島へ戻してから'),
+         unlock=FLAG_GREEN_STONE_RETURNED, locked='緑の心臓を島へ戻してから'),
     dict(name='DesertScorpionCull', title='水場のサソリ退治', client='隊商頭', rank=3,
          goal='オアシスに出る大サソリを6匹倒す',
          lines=['泉の水場まで、大サソリが出るようになった。', '隊商が水を汲めるよう、群れを減らしてくれ。'],

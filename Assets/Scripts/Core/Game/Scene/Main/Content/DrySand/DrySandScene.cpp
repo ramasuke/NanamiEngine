@@ -31,7 +31,7 @@ namespace GameCore::Scene::Main
 
     DrySandScene::~DrySandScene() = default;
 
-    void DrySandScene::Init()
+    void DrySandScene::OnInit()
     {
         if (!Context())
         {
@@ -46,37 +46,32 @@ namespace GameCore::Scene::Main
                 *stageClear,
                 [this](const Story::StoryFlag flag) { OnStageClear(flag); });
         }
-
-        Coroutine::StartCoroutine(OnEnterAsync(BeginEnter()));
     }
 
-    Coroutine::Task<void> DrySandScene::OnEnterAsync(const int generation)
+    std::vector<Sub::SceneType> DrySandScene::SubScenes() const
     {
-        if (!co_await LoadMainSceneAsync(generation))
-            co_return;
-        
+        return { Sub::SceneType::ChattingUI, Sub::SceneType::OtherPlayerStatus };
+    }
+
+    Coroutine::Task<EnterResult> DrySandScene::OnEnterAsync(const NanamiEngine::R4::CancellationToken token)
+    {
+        // Context の FIELD は読み込んだシーン内の GameObject を指すので、読み込みが済んだここで初めて触る
         Context()->Init();
 
         // NOTE: 浮遊石はもう拠点の島へ飛び去っている
         if (const auto stone = Context()->FloatingStone(); stone && Story::StoryProgress::Instance().IsSet(Story::StoryFlag::DesertCleared))
             stone->SetVisible(false);
 
-        // メインシーンが居ない間に Instantiate が走らないよう、ロード完了まで待ってから積む
-        SubScene().Push(Sub::SceneType::ChattingUI);
-        SubScene().Push(Sub::SceneType::OtherPlayerStatus);
-
         LoadingScreen().SetStep(SceneLoadStep::Connecting);
         const auto joinFailure = co_await GameCore::Game::Instance().Matchmaker().JoinOrHostAsync(
             Context()->WeakNetworkRunner(), std::string(ToString(SceneType::Desert)));
-        
-        if (!IsCurrentEnter(generation))
-            co_return;
+        if (token.IsCancellationRequested())
+            co_return {};
 
         auto& networkRunner = Context()->NetworkRunner();
         if (!networkRunner.IsStarted() || networkRunner.GetConnectionState() != Core::Network::ConnectionState::Connected)
         {
-            FailEnter(generation, joinFailure.value_or("マルチプレイの接続に失敗しました"));
-            co_return;
+            co_return EnterResult::Fail(joinFailure.value_or("マルチプレイの接続に失敗しました"));
         }
 
         LoadingScreen().SetStep(SceneLoadStep::Spawning);
@@ -105,9 +100,11 @@ namespace GameCore::Scene::Main
         // カバーが明ける前に画を作っておく
         arrivalMovie_ = std::make_shared<GrassLand::StageArrivalMovie<DrySandSceneContext>>(playerAvatar_, Context());
         arrivalMovie_->Begin();
+        co_return EnterResult::Ok();
+    }
 
-        CompleteEnter(generation);
-
+    void DrySandScene::OnEntered()
+    {
         Coroutine::StartCoroutine(GrassLand::StageArrivalMovie<DrySandSceneContext>::PlayAsync(arrivalMovie_));
     }
 

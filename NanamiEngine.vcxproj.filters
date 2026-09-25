@@ -958,6 +958,9 @@
     <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitForTweenBody\Coroutine_WaitForTweenBody.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Coroutine\Awaitable\LoadScene\Coroutine_LoadSceneAsync.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Core\Coroutine\Awaitable\WaitUntil\Coroutine_WaitUntil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -4653,6 +4656,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Coroutine\Awaitable\TweenClock\Coroutine_TweenClock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Coroutine\Awaitable\LoadScene\Coroutine_LoadSceneAsync.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Coroutine\Awaitable\WaitUntil\Coroutine_WaitUntil.h">

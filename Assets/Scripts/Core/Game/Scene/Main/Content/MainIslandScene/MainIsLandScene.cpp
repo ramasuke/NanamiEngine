@@ -23,21 +23,16 @@ namespace GameCore::Scene::Main
 
     MainIslandScene::~MainIslandScene() = default;
 
-    void MainIslandScene::Init()
+    std::vector<Sub::SceneType> MainIslandScene::SubScenes() const
     {
-        Coroutine::StartCoroutine(OnEnterAsync(BeginEnter()));
+        return { Sub::SceneType::ChattingUI };
     }
 
-    Coroutine::Task<void> MainIslandScene::OnEnterAsync(const int generation)
+    Coroutine::Task<EnterResult> MainIslandScene::OnEnterAsync(NanamiEngine::R4::CancellationToken)
     {
-        if (!co_await LoadMainSceneAsync(generation))
-            co_return;
-
-        // Context の FIELD は読み込んだシーン内を指すので、AddContent が済んだここで初めて触る
+        // Context の FIELD は読み込んだシーン内を指すので、読み込みが済んだここで初めて触る
         Context()->Init();
-        // メインシーンが居ない間に Instantiate が走らないよう、読み込みが済んでから積む
-        SubScene().Push(Sub::SceneType::ChattingUI);
-        
+
         auto loaded = Context()->PlayerAvatarFactory().LoadInitedPlayerAvatarWithAttachments(
             PlayerAvatar::SelectedPlayerAvatarType::Load(),
             Context()->PlayerSpawnPoint(),
@@ -49,7 +44,7 @@ namespace GameCore::Scene::Main
 
         GamePlay::Sound::SoundPlayer::PlayBgm(Context()->BGM());
         ApplyGrassLandReward();
-        CompleteEnter(generation);
+        co_return EnterResult::Ok();
     }
 
     namespace

@@ -5,7 +5,8 @@
 - Assets/Art/Effect/Story/<Name>.efkefc   (+ _Source/Story/<Name>.efkproj)
 - Assets/Prefab/Particle/<Name>.prefab    : scale 8
 
-GreenCoreAura       置いてある石にかけるループ。脈打つ緑の光・地面に広がる光の輪・立ちのぼる光の粒・淡い光の柱
+GreenCoreAura       置いてある石にかけるループ。脈打つ緑の光・地面に広がる光の輪・立ちのぼる光の粒・淡い光の柱・
+                    石に持ち上げられて浮かぶ土くれと岩 (docs/Story.md §2)
 GreenStoneLiftOff   大顎を倒したあと、石が村の跡から抜け出す瞬間。閃光・光の柱・衝撃の輪・飛び散る岩・土煙
 GreenStoneFlight    飛んでいる石に付ける。光の玉と、尾を引く光の粒 (尾はワールドに残る)
 Light/FireStoneFlight  同じものの光(黄)・火(赤)の石の色。序章で3つの石が散るときに使う
@@ -29,7 +30,7 @@ sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from tools.art import magic_fx_textures  # noqa: E402
-from tools.art.magic_fx_lib import FIXED, LIVE_LONG, ON_CREATE, YAXIS, N, emit_circle, emit_sphere, project  # noqa: E402
+from tools.art.magic_fx_lib import BLEND, FIXED, LIVE_LONG, ON_CREATE, YAXIS, N, emit_circle, emit_sphere, project  # noqa: E402
 from tools.art.magic_spell_effects import STONE, flash, rocks, shockwave, smoke, sparks  # noqa: E402
 from tools.common.cereal_json import Num  # noqa: E402
 from tools.effect import xmlio  # noqa: E402
@@ -87,6 +88,16 @@ def core_aura(GREEN, PALE, DEEP):
         N('Column', tex='beam', billboard=YAXIS, at=(0, 2.6, 0), life=150,
           grow_xyz=((0.6, 5.0, 1.0), (1.0, 6.0, 1.0), 0, 0), color=a(GREEN, 55),
           fade_in=60, fade_out=(70, 0, -20), **every(90)),
+        # 石に持ち上げられて浮かぶ土くれ。ゆっくり浮いて止まり、少し沈みながら消える (docs/Story.md §2)
+        N('Debris', tex='rock', blend=BLEND, life=(240, 300), emit=emit_circle((1.6, 4.2)), at=(0, 0.1, 0),
+          vel=((-0.0015, 0.0015), (0.006, 0.011), (-0.0015, 0.0015)), gravity=(0, -0.00004, 0),
+          rot_rand=(0, 0, (-180, 180)), spin=(0, 0, (-1.5, 1.5)), size=((0.12, 0.3), (0.12, 0.3), 1),
+          color=a(STONE, 255), fade_in=30, fade_out=(60, 0, -20), **every(15)),
+        # クレーターの縁から少しだけ浮き上がる大きめの岩
+        N('Chunks', tex='rock', blend=BLEND, life=(260, 300), emit=emit_circle((2.0, 2.8)), at=(0, 0.2, 0),
+          vel=(0, (0.003, 0.005), 0), gravity=(0, -0.00002, 0),
+          rot_rand=(0, 0, (-180, 180)), spin=(0, 0, (-0.6, 0.6)), size=((0.35, 0.6), (0.35, 0.6), 1),
+          color=a(STONE, 255), fade_in=40, fade_out=(70, 0, -20), **every(45)),
     ], END_FRAME)
 
 

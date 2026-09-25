@@ -32,7 +32,10 @@ namespace NanamiEngine::DebugSheet
         /** @brief module が登録したページを消す。空になったカテゴリも消す。戻り値は消したページ数 */
         std::size_t UnregisterModule(Core::ModuleHandle module);
 
-        /** @brief F1 で開閉する */
+        /**
+         * @brief F1 で開閉する
+         * @note  ゲーム実行中（エディタではプレイ中・一時停止中）だけ。プレイを終えると閉じる
+         */
         void Update();
         /**
          * @brief 開いていれば描く
@@ -40,6 +43,7 @@ namespace NanamiEngine::DebugSheet
          */
         void Render();
 
+        /** @brief ゲーム実行中でなければ何もしない */
         void Open();
         void Close();
         void Toggle();
