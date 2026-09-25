@@ -100,8 +100,7 @@ namespace GameCore
     
     void Game::OnUpdate()
     {
-        sceneGroup_   ->Update();
-        subSceneGroup_->Update();
+        sceneGroup_->Update();
 #if NANAMI_DEBUG_SHEET_ENABLED
         GamePlay::Debug::SaveDataReset::Update();
 #endif

@@ -12,19 +12,15 @@ namespace GameCore::Scene::Main
     {
     }
     
-    void TitleScene::Init()
+    void TitleScene::OnInit()
     {
         // TitleSceneContext は GameManage 側に居るので、読み込みより先に触ってよい
         Context()->Init();
-        Coroutine::StartCoroutine(OnEnterAsync(BeginEnter()));
     }
 
-    Coroutine::Task<void> TitleScene::OnEnterAsync(const int generation)
+    Coroutine::Task<EnterResult> TitleScene::OnEnterAsync(NanamiEngine::R4::CancellationToken)
     {
-        if (!co_await LoadMainSceneAsync(generation))
-            co_return;
-
-        CompleteEnter(generation);
+        co_return EnterResult::Ok();
     }
     
     void TitleScene::Enter()

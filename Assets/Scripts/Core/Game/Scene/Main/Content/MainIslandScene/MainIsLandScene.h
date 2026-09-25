@@ -18,8 +18,8 @@ namespace GameCore::Scene::Main
         void SwitchPlayerAvatar(PlayerAvatar::PlayerAvatarType type);
         
     private:
-        void Init     () override;
-        Coroutine::Task<void> OnEnterAsync(int generation);
+        [[nodiscard]] std::vector<Sub::SceneType> SubScenes() const override;
+        Coroutine::Task<EnterResult> OnEnterAsync(NanamiEngine::R4::CancellationToken token) override;
         void Enter    () override;
         void DoDispose  () override;
         void OnDrawGui() override;

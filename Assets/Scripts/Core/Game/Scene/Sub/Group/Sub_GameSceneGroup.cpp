@@ -19,27 +19,45 @@ namespace GameCore::Scene::Sub
 
     GameSceneGroup::~GameSceneGroup() = default;
 
-    void GameSceneGroup::Push(const SceneType& type)
+    Coroutine::Task<bool> GameSceneGroup::PushAsync(const SceneType type)
     {
-        changeRequests_.emplace_back(ChangeRequestType::Push, type);
+        if (scenes_.contains(type))
+            co_return true;
+
+        // NOTE: 今は同期で読み込む。非同期にしても呼び出し側は変わらない
+        try
+        {
+            const auto scene = factory_->Create(type);
+            scene->Init();
+            scenes_[type] = scene;
+        }
+        catch (const NanamiEngine::Module::Exception::NanamiException& exception)
+        {
+            // Scene ファイルの破損などで Push に失敗した。登録しないので Pop 側は何もしない
+            NanamiEngine::Module::LogError("SubGameSceneGroup: シーンの Push に失敗しました: " + std::string(exception.what()));
+            co_return false;
+        }
+        co_return true;
     }
 
     void GameSceneGroup::Pop(const SceneType& type)
     {
-        changeRequests_.emplace_back(ChangeRequestType::Pop, type);
+        const auto it = scenes_.find(type);
+        if (it == scenes_.end())
+            return;
+
+        // Dispose 中に Push / Pop されても壊れないよう、先に外してから片付ける
+        const auto scene = it->second;
+        scenes_.erase(it);
+        scene->Dispose();
     }
 
     void GameSceneGroup::Clear()
     {
-        for (const auto& type : scenes_ | std::views::keys)
+        for (const auto& scene : std::exchange(scenes_, {}) | std::views::values)
         {
-            changeRequests_.emplace_back(ChangeRequestType::Pop, type);
+            scene->Dispose();
         }
-    }
-
-    void GameSceneGroup::Update()
-    {
-        ProcessRequests();
     }
 
     void GameSceneGroup::OnDrawGui() const
@@ -47,42 +65,6 @@ namespace GameCore::Scene::Sub
         for (const auto& scene : scenes_ | std::views::values)
         {
             scene->OnDrawGui();
-        }
-    }
-
-    void GameSceneGroup::ProcessRequests()
-    {
-        // 例外で途中終了しても同じリクエストが次フレームに再実行されないよう、先にキューを空にしてから処理する
-        const auto changeRequests = std::exchange(changeRequests_, {});
-        for (const auto& changeRequest : changeRequests)
-        {
-            switch (changeRequest.type)
-            {
-            case ChangeRequestType::Push:
-                {
-                    try
-                    {
-                        const auto scene = factory_->Create(changeRequest.sceneType);
-                        scene->Init();
-                        scenes_[changeRequest.sceneType] = scene;
-                    }
-                    catch (const NanamiEngine::Module::Exception::NanamiException& exception)
-                    {
-                        // Scene ファイルの破損などで Push に失敗した。登録しないので Pop 側は何もしない
-                        NanamiEngine::Module::LogError("SubGameSceneGroup: シーンの Push に失敗しました: " + std::string(exception.what()));
-                    }
-                    break;
-                }
-            case ChangeRequestType::Pop:
-                {
-                    auto it = scenes_.find(changeRequest.sceneType);
-                    if (it == scenes_.end()) break;
-
-                    it->second->Dispose();
-                    scenes_.erase(it);
-                    break;
-                }
-            }
         }
     }
 }
