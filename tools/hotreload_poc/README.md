@@ -1,4 +1,4 @@
-# HotReload PoC (docs/HotReload.md §10 「PoC」)
+﻿# HotReload PoC (docs/HotReload.md §10 「PoC」)
 
 「Host exe + Engine.dll + Game.dll」で、cereal の多相登録がモジュールを越えて 1 つの表に集まり、
 Game.dll のアンロード時に **登録記録 (`SerializationTypeRegistry`) からその分だけ消せる**ことを確かめる最小構成。
@@ -18,7 +18,8 @@ tools\hotreload_poc\x64\Debug\HotReloadPocHost.exe            # 既定: HotReloa
 tools\hotreload_poc\x64\Debug\HotReloadPocHost.exe HotReloadPocGame.dll 50
 ```
 
-終了コード 0 = PASS。各サイクルで次を確認する (`[FAIL]` が 1 つでもあれば FAIL):
+終了コード 0 = PASS。相対パスの DLL 名は exe のあるフォルダ基準なので、リポジトリルートから起動してよい。
+2026-09-25: MSVC (v143) の Debug / Release とも 50 サイクル PASS。各サイクルで次を確認する (`[FAIL]` が 1 つでもあれば FAIL):
 
 1. エンジン側のコード (`Engine::SaveJson` / `LoadJson` / `SaveBinary` / `LoadBinary`) でゲーム型を保存・復元できる (= Scene のロード)
 2. ゲーム側のコード (`SaveFromGame` / `LoadFromGame`) でエンジン型を保存・復元できる (双方向に同じ表を見ている)
@@ -27,7 +28,10 @@ tools\hotreload_poc\x64\Debug\HotReloadPocHost.exe HotReloadPocGame.dll 50
 5. `FreeLibrary` 後、cereal の表の大きさが最初 (エンジンだけ) と同じに戻る。前サイクルのアンロード後とも同一
 6. アンロード後もエンジン型の保存・復元が壊れていない
 
-Debug ビルドは `_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF)` で終了時にリークを出力する (出力ウィンドウ / デバッガ)。
+Debug ビルドは `_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF)` で終了時にリークを stderr に出力する。報告される 49 ブロック / 2,957 バイトは
+サイクル数 1 / 10 / 50 で同一 = Game.dll の出し入れによるリークではなく、exe の CRT がダンプする時点でまだ生きている
+Engine.dll 側の静的オブジェクト (共有スロットの表など。DLL の静的デストラクタは exe のダンプより後に走る)。
+サイクル数を変えてブロック数が増えないことで判断する。
 
 ## Linux (機構だけの確認)
 

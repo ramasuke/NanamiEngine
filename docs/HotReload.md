@@ -1,4 +1,4 @@
-# ゲームコードのホットリロード (案C) 計画書
+﻿# ゲームコードのホットリロード (案C) 計画書
 
 エディタを起動したまま `Assets/Scripts` を再ビルドして差し替えるために、現在の
 「NanamiEngine (静的 lib) + EnviroHunter (exe)」を
@@ -14,6 +14,7 @@ Host exe (WinMain のみ)  ->  NanamiEngine.dll  <-  Game.dll (Assets/Scripts)
 改訂履歴
 - 2026-09-25: 初版 (実現可能性調査)。
 - 2026-09-25: 段階 0 完了 (Effekseer /MD 再ビルド、`NanamiUseDynamicCrt` 既定 `true`)。段階 1 (ゲームコードの DxLib 排除) 実装、Windows 4 構成ビルド済み。
+- 2026-09-25: PoC を Windows (MSVC) で実行、Debug / Release とも 50 サイクル PASS。
 - 2026-09-25: 段階 A 実装 (MSVC ビルド・エディタ確認済み)。PoC を `tools/hotreload_poc/` に実装、Linux (g++ + dlopen) で 10 サイクル PASS。
 - 2026-09-25: 段階 A (多相登録のラップ) を追加。登録解除を「cereal の表の差分方式」から「登録記録方式」に変更。
   レビューで出た検討事項 (開いているシーンの保持、バージョン運用、期限切れ weak_ptr、ゲーム製ウィンドウ、
@@ -376,7 +377,7 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
 | 段階 | 内容 | 主な作業 | 完了条件 | 進捗 |
 |---|---|---|---|---|
 | **A** | 多相登録のラップ (§3.2) | `NANAMI_REGISTER_TYPE` / `NANAMI_REGISTER_POLYMORPHIC_RELATION` と `SerializationTypeRegistry` を追加。既存の cereal 直接呼び出し (エンジン 32 型 / 53 関係、ゲーム 156 型 / 160 関係) と 3 つのラッパーマクロをスクリプトで置き換え。ツール・ドキュメント更新 (下記) | 型名の文字列が変わらないこと、regen-catalog の結果が同一、MSVC ビルド、既存のシーン・プレハブ・BT・AnimTree がエディタで開くこと | **実装済み** (2026-09-25)。置き換え 195 ファイル / 397 箇所、型 186・関係 211 の集合が前後で一致、データ内の `polymorphic_name` 246 種すべてが登録名に含まれることを確認。**MSVC ビルドとエディタでの確認は未実施** (Windows 環境で行う) |
-| **PoC** | §3.2 の共有スロットパッチ + 記録方式の登録解除を、最小の Host exe + Engine.dll + Game.dll で検証 | `static_object.hpp` 改変、`SharedStaticObjects` / `SerializationModuleUnloader` の追加、`tools/hotreload_poc/` (sln + Linux 用スクリプト、README 参照) | ゲーム型を含む多相ポインタが JSON・PortableBinary 双方でエンジン側から復元でき、ゲーム側からエンジン型も保存・復元でき、10 回繰り返しても表がベースラインに戻る。不成立なら止めて報告 | **実装済み**。Linux (g++ + `dlopen(RTLD_DEEPBIND)`、`-fno-gnu-unique`) で 10 サイクル PASS、valgrind でエラー 0・definite leak 0。**Windows (MSVC) での実行は未実施**: `tools/hotreload_poc/HotReloadPoc.sln` をビルドして `HotReloadPocHost.exe` を実行する |
+| **PoC** | §3.2 の共有スロットパッチ + 記録方式の登録解除を、最小の Host exe + Engine.dll + Game.dll で検証 | `static_object.hpp` 改変、`SharedStaticObjects` / `SerializationModuleUnloader` の追加、`tools/hotreload_poc/` (sln + Linux 用スクリプト、README 参照) | ゲーム型を含む多相ポインタが JSON・PortableBinary 双方でエンジン側から復元でき、ゲーム側からエンジン型も保存・復元でき、10 回繰り返しても表がベースラインに戻る。不成立なら止めて報告 | **完了** (2026-09-25)。Linux (g++ + `dlopen(RTLD_DEEPBIND)`、`-fno-gnu-unique`) で 10 サイクル PASS、valgrind でエラー 0・definite leak 0。Windows (MSVC v143) でも `tools/hotreload_poc/HotReloadPoc.sln` の Debug / Release とも 50 サイクル PASS。Debug の CRT リーク報告はサイクル数 1 / 10 / 50 で同一 (Engine.dll の静的オブジェクト。README 参照) |
 | 0 | /MD 化 | props 変更、Effekseer 8 lib の /MD 再ビルド | 4 構成 (Editor/Game × Debug/Release) が動く | **完了** (2026-09-25)。Effekseer 170e + EffekseerForDXLib 17x@796064f1 を /MD で再ビルドして `*_vs2019_x64_MD(d).lib` を同梱 (`tools/effekseer_md/`)。`-p:NanamiUseDynamicCrt=true` で 4 構成がビルドでき、エディタ起動を確認。`NanamiUseDynamicCrt` の既定を `true` に変更 (`false` で /MT に戻る)。CRT ランタイム DLL は `$(VCToolsRedistInstallDir)` からコピー (MSBuild 単体では `$(VCToolsRedistDir)` が空) |
 | 1 | ゲームコードから DxLib を排除 | 42 ファイル、302 箇所 (再棚卸しで判明。当初の 34 / 150 は入力系だけの数) をエンジンのファサードへ: `Engine/Core/Platform/{Input,Draw2D,Render,AsyncLoad}` (新規 7 組)、`Time::NowMilliseconds`、`SoundFile` の再生 API、`Render3D::Shapes::DrawLine3D`、`ApplicationBase::RequestClose`。enet 1 ファイルは段階 2 で扱う | `python tools/dxlib_guard/check_game_dxlib.py` が 0 (`DX_LIB_NOT_DEFAULTPATH` によるリンク検出は Game.dll 化後) | **実装済み** (2026-09-25)。guard 0 件。MSVC ビルド (Editor Debug / Release、/MD) は通り、エディタ起動とタイトル画面の描画・ログにエラー無しを確認 (`XInput()` の呼び残し 2 ヘッダを `Gamepad().thumbRX` に修正)。**プレイヤー操作 (キーボード / パッド)、ショップ・イベントボード・ポーズ・キャラ選択・ステージ選択の部屋番号、大砲ゲージ演出、草・木・雲・格子バリアのシェーダー、天候フォグ、ロード画面の BGM フェードは入力が要るため手動確認待ち**。挙動が変わる箇所: `StageSelectPresenter` の部屋番号入力 (`KEY_INPUT_0 + digit` は DirectInput のキーコードが連番でないため上段 1〜9 とテンキーが効いていなかった。`Keyboard::IsDigitDown` で両方効く) |
 | 2 | エンジン DLL 化 (Game は exe のまま) | Host exe へ WinMain 移動、`NANAMI_API` 付与 (382 クラス)、`SingletonBase` 7 クラスの `.cpp` 化、`IMGUI_API`、cereal パッチ適用、engine_dist 更新 | 4 構成が動き、Game モードの成果物と `GameBuilder` の手順が変わらない | 未着手 |
@@ -407,11 +408,11 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
 ## 11. 未検証事項 (実装前に PoC で確認すること)
 
 1. §3.2 の cereal パッチで、エンジン側からゲーム型を含む多相ポインタが JSON・PortableBinary 双方で復元できること。
-   → PoC で成立 (Linux)。Windows 実行が残り。実エンジンの `.scene` / `.prefab` での確認は段階 3。
+   → PoC で成立 (Linux、Windows MSVC とも)。実エンジンの `.scene` / `.prefab` での確認は段階 3。
 2. `SerializationTypeRegistry` の記録だけで cereal の表から Game.dll 分を漏れなく消せること。
    → PoC で成立 (記録だけで表がベースラインに戻り、vtable による保険の掃除は 0 件)。
 3. アンロード -> 再ロードを 10 回以上繰り返してもリークや dangling が無いこと (Application Verifier / `_CrtDumpMemoryLeaks` で確認)。
-   → PoC で 10 サイクル、valgrind エラー 0 (Linux)。Windows の Debug ビルドは `_CRTDBG_LEAK_CHECK_DF` を有効にしてある。
+   → PoC で 10 サイクル、valgrind エラー 0 (Linux)。Windows は Debug / Release とも 50 サイクル PASS、`_CRTDBG_LEAK_CHECK_DF` の報告ブロック数がサイクル数に依らず一定 (2026-09-25)。Application Verifier は未実施。
 4. Effekseer /MD 再ビルド物で、既存の全エフェクトが従来通り描けること。
 5. `IMGUI_API` dllimport で `ImGuiHelper.h` (LibCore) と ImGuizmo が問題なく動くこと。
 6. VS デバッガをアタッチしたまま Game.dll を差し替えてブレークポイントが効くこと (PDB コピー運用)。

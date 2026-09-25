@@ -15,9 +15,20 @@ namespace Poc::Platform
     inline void* Symbol(ModuleHandle module, const char* name) { return reinterpret_cast<void*>(GetProcAddress(module, name)); }
     inline bool Unload(ModuleHandle module) { return FreeLibrary(module) != 0; }
     inline std::string LastError() { return std::to_string(GetLastError()); }
+    // exe のあるフォルダ (末尾の区切り付き)。DLL はカレントディレクトリではなく exe の隣から読む
+    inline std::string ExecutableDirectory()
+    {
+        char path[MAX_PATH] = {};
+        GetModuleFileNameA(nullptr, path, MAX_PATH);
+        std::string dir(path);
+        const auto slash = dir.find_last_of("\\/");
+        return slash == std::string::npos ? std::string() : dir.substr(0, slash + 1);
+    }
+    inline bool IsAbsolute(const std::string& path) { return path.size() > 1 && (path[1] == ':' || path[0] == '\\' || path[0] == '/'); }
 }
 #else
 #include <dlfcn.h>
+#include <unistd.h>
 #include <fstream>
 #include <cstdio>
 namespace Poc::Platform
@@ -36,5 +47,14 @@ namespace Poc::Platform
     inline void* Symbol(ModuleHandle module, const char* name) { return dlsym(module, name); }
     inline bool Unload(ModuleHandle module) { return dlclose(module) == 0; }
     inline std::string LastError() { const char* e = dlerror(); return e ? e : ""; }
+    inline std::string ExecutableDirectory()
+    {
+        char path[4096] = {};
+        const auto n = readlink("/proc/self/exe", path, sizeof(path) - 1);
+        std::string dir(path, n > 0 ? static_cast<size_t>(n) : 0);
+        const auto slash = dir.find_last_of('/');
+        return slash == std::string::npos ? std::string() : dir.substr(0, slash + 1);
+    }
+    inline bool IsAbsolute(const std::string& path) { return !path.empty() && path[0] == '/'; }
 }
 #endif

@@ -44,8 +44,15 @@ int main(int argc, char** argv)
     std::setvbuf(stdout, nullptr, _IONBF, 0); // 途中で落ちても出力が残るように
 #if defined(_WIN32) && defined(_DEBUG)
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    // リーク報告をデバッガの出力ではなく stderr に出す (コンソールから実行しても見える)
+    _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
+    _CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDERR);
 #endif
-    const std::string gameLibrary = argc > 1 ? argv[1] : std::string("HotReloadPocGame") + Poc::Platform::LibraryExtension();
+    // 相対パスは exe のあるフォルダ基準 (リポジトリルートから起動しても動くように)
+    const std::string baseDirectory = Poc::Platform::ExecutableDirectory();
+    std::string gameLibrary = argc > 1 ? argv[1] : std::string("HotReloadPocGame") + Poc::Platform::LibraryExtension();
+    if (!Poc::Platform::IsAbsolute(gameLibrary))
+        gameLibrary = baseDirectory + gameLibrary;
     const int cycles = argc > 2 ? std::atoi(argv[2]) : 10;
 
     // エンジンだけが登録されている状態 (ゲーム型のアンロード後に戻るべき形)
@@ -57,7 +64,7 @@ int main(int argc, char** argv)
     {
         std::printf("--- cycle %d ---\n", cycle);
         // 8. リンカが元ファイルを上書きできるように一意名で読む
-        const std::string copy = "HotReloadPocGame_" + std::to_string(cycle) + Poc::Platform::LibraryExtension();
+        const std::string copy = baseDirectory + "HotReloadPocGame_" + std::to_string(cycle) + Poc::Platform::LibraryExtension();
         Check(Poc::Platform::CopyFileTo(gameLibrary, copy), "copy Game library to a unique name");
         const auto handle = Poc::Platform::Load(copy);
         if (!handle)
