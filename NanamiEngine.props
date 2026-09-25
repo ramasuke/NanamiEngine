@@ -6,9 +6,9 @@
     <NanamiEngineDir Condition="!HasTrailingSlash('$(NanamiEngineDir)')">$(NanamiEngineDir)\</NanamiEngineDir>
     <!-- Editor | Game -->
     <NanamiApplicationMode Condition="'$(NanamiApplicationMode)'==''">Editor</NanamiApplicationMode>
-    <!-- CRT: true で /MD (DLL 化の前提, docs/HotReload.md §1)。Effekseer 系 lib は MT 版しか同梱されていないので、
-         tools/effekseer_md で MD 版を作って Libs に置くまでは false (今まで通り /MT) にしておく -->
-    <NanamiUseDynamicCrt Condition="'$(NanamiUseDynamicCrt)'==''">false</NanamiUseDynamicCrt>
+    <!-- CRT: true で /MD (DLL 化の前提, docs/HotReload.md §1)。Effekseer 系 lib の MD 版は tools/effekseer_md で作って同梱済み。
+         false にすると従来の /MT (MT 版の lib を使う) に戻る -->
+    <NanamiUseDynamicCrt Condition="'$(NanamiUseDynamicCrt)'==''">true</NanamiUseDynamicCrt>
     <NanamiEngineLibDir>$(NanamiEngineDir)lib\$(NanamiApplicationMode)\$(Configuration)\</NanamiEngineLibDir>
     <NanamiEngineLib>$(NanamiEngineLibDir)NanamiEngine.lib</NanamiEngineLib>
     <NanamiEngineIncludeDirs>$(NanamiEngineDir);$(NanamiEngineDir)Libs\glm;$(NanamiEngineDir)Libs\プロジェクトに追加すべきファイル_VC用;$(NanamiEngineDir)Libs\cereal\include;$(NanamiEngineDir)Libs\ImGui;$(NanamiEngineDir)Libs\ImGuizmo;$(NanamiEngineDir)Libs\rxcpp;$(NanamiEngineDir)Libs\JoltPhysics;$(NanamiEngineDir)Libs\tweeny;$(NanamiEngineDir)Libs\enet\include</NanamiEngineIncludeDirs>

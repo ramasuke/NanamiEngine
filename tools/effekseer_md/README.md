@@ -45,7 +45,7 @@ powershell -ExecutionPolicy Bypass -File tools\effekseer_md\build_effekseer_md.p
 その後:
 
 - エンジン側は `EffekseerForDXLib.h` (同梱、パッチ済み) が `_DLL` 定義時にこの `_MD` 名を自動リンクする。
-  `NanamiEngine.props` の `NanamiUseDynamicCrt` を `true` にする (または `-p:NanamiUseDynamicCrt=true`) と /MD になる。
+  `NanamiEngine.props` の `NanamiUseDynamicCrt` は既定 `true` (/MD)。`-p:NanamiUseDynamicCrt=false` で従来の /MT に戻る。
 - 4 構成 (Editor / Game × Debug / Release) をビルドし、既存の全エフェクトが従来通り描けることを確認する。
 
 ## 注意
