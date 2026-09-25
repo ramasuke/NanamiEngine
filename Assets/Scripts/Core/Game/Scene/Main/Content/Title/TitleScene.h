@@ -10,8 +10,8 @@ namespace GameCore::Scene::Main
         explicit TitleScene(const std::weak_ptr<TitleSceneContext>& context, GameSceneBaseContext baseContext);
 
     private:
-        void Init     () override;
-        Coroutine::Task<void> OnEnterAsync(int generation);
+        void OnInit() override;
+        Coroutine::Task<EnterResult> OnEnterAsync(NanamiEngine::R4::CancellationToken token) override;
         void Enter    () override;
         void DoDispose() override;
         void OnDrawGui() override;

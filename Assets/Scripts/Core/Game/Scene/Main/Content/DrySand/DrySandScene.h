@@ -23,9 +23,10 @@ namespace GameCore::Scene::Main
         ~DrySandScene() override;
 
     private:
-        void Init     () override;
-        /** @param generation Dispose を跨いだ古いコルーチンを弾くための世代番号 */
-        Coroutine::Task<void> OnEnterAsync(int generation);
+        void OnInit() override;
+        [[nodiscard]] std::vector<Sub::SceneType> SubScenes() const override;
+        Coroutine::Task<EnterResult> OnEnterAsync(NanamiEngine::R4::CancellationToken token) override;
+        void OnEntered() override;
         void Enter    () override;
         void DoDispose() override;
         void OnDrawGui() override;
