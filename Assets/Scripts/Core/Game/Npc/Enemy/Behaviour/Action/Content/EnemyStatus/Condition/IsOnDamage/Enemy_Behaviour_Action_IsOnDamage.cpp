@@ -10,6 +10,5 @@ namespace GameCore::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::IsOnDamage)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::IsOnDamage)
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::IsOnDamage, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

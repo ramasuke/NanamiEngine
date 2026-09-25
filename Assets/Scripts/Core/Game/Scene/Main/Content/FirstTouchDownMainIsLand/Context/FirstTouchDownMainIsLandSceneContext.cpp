@@ -49,6 +49,5 @@ namespace GameCore::Scene
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Scene::FirstTouchDownMainIsLandSceneContext);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::SceneContextBase, GameCore::Scene::FirstTouchDownMainIsLandSceneContext);
+NANAMI_REGISTER_TYPE(GameCore::Scene::FirstTouchDownMainIsLandSceneContext, GameCore::Scene::SceneContextBase);
 #pragma endregion

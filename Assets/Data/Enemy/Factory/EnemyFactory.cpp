@@ -121,6 +121,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(EnemyFactory, ENEMY_FACTORY_EXTENSION_LABEL, "Npc::Enemy")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::EnemyFactory);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::EnemyFactory);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::EnemyFactory, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

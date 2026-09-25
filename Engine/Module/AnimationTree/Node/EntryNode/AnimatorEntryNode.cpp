@@ -19,6 +19,5 @@ void AnimationTree::AnimatorEntryNode::OnExitNode(int modelHandle)
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimatorEntryNode);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::AnimationTree::IAnimationNode, NanamiEngine::Module::AnimationTree::AnimatorEntryNode);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::AnimationTree::AnimatorEntryNode, NanamiEngine::Module::AnimationTree::IAnimationNode);
 #pragma endregion

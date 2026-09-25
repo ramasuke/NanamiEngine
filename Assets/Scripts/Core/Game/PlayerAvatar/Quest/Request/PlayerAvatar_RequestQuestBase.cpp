@@ -64,4 +64,4 @@ namespace GameCore::PlayerAvatar::Quest::Request
     }
 }
 
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::Quest::ITakeableQuest, GameCore::PlayerAvatar::Quest::Request::RequestQuestBase)
+NANAMI_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::Quest::ITakeableQuest, GameCore::PlayerAvatar::Quest::Request::RequestQuestBase);

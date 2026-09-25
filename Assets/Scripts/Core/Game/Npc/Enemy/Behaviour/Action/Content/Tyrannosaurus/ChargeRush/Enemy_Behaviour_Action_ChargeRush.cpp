@@ -304,6 +304,5 @@ namespace GameCore::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ChargeRush);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::ChargeRush);
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::ChargeRush, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

@@ -74,6 +74,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(NpcWalkingRoute, FRIENDLY_NPC_WALKING_ROUTE_EXTENSION_LABEL, "Npc::Friendly")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::NpcWalkingRoute);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::NpcWalkingRoute);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::NpcWalkingRoute, NanamiEngine::Module::Asset::AssetBase);
 #pragma endregion

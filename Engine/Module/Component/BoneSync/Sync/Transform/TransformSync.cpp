@@ -32,6 +32,5 @@ namespace NanamiEngine::Module::Bone
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Bone::TransformSync);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Bone::BoneSyncBase, NanamiEngine::Module::Bone::TransformSync);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Bone::TransformSync, NanamiEngine::Module::Bone::BoneSyncBase);
 #pragma endregion

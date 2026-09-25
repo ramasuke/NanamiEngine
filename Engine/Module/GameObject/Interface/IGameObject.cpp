@@ -2,6 +2,5 @@
 #include "../../Serialization/Engine_Module_SerializationRegistration.h"
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::GameObject::IGameObject);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Object::IObject, NanamiEngine::Module::GameObject::IGameObject);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::GameObject::IGameObject, NanamiEngine::Module::Object::IObject);
 #pragma endregion

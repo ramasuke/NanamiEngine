@@ -1163,6 +1163,7 @@
     <ClCompile Include="Packages\DebugSheet\Core\DebugSheetStyle.cpp" />
     <ClCompile Include="Packages\DebugSheet\Core\DebugSheetWidgets.cpp" />
     <ClCompile Include="Engine\Module\SafeExecute\Engine_Module_SafeExecute.cpp" />
+    <ClCompile Include="Engine\Module\Serialization\Engine_Module_SerializationTypeRegistry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Module\Component\BoneSync\Sync\BoneSyncBase.h" />
@@ -1394,6 +1395,7 @@
     <ClInclude Include="Engine\Module\Log\NanamiEngine_Module_Log.h" />
     <ClInclude Include="Engine\Module\Exception\Engine_Module_Exception.h" />
     <ClInclude Include="Engine\Module\Serialization\Engine_Module_Serialization.h" />
+    <ClInclude Include="Engine\Module\Serialization\Engine_Module_SerializationTypeRegistry.h" />
     <ClInclude Include="Engine\Module\Namespace\EngineNamespace.h" />
     <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\DrawBillboard3D.h" />
     <ClInclude Include="Engine\Module\NanamiUI\BillBoard3D\BillboardAnimation3D.h" />

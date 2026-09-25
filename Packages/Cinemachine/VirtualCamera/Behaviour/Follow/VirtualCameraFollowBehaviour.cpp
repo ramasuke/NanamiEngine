@@ -37,5 +37,5 @@ void CineMachine::Behaviour::VirtualCameraFollowBehaviour::OnDebugRender()
 
 #pragma region SerializationMacro
 ENGINE_REGISTER_COMPONENT(NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::CineMachine::IVirtualCameraBehaviour, NanamiEngine::CineMachine::Behaviour::VirtualCameraFollowBehaviour);
 #pragma endregion

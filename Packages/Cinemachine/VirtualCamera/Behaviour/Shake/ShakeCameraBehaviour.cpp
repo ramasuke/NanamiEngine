@@ -141,5 +141,5 @@ namespace NanamiEngine::CineMachine::Behaviour
 
 #pragma region SerializationMacro
 ENGINE_REGISTER_COMPONENT(CineMachine::Behaviour::ShakeCameraBehaviour);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::ShakeCameraBehaviour);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(CineMachine::IVirtualCameraBehaviour, CineMachine::Behaviour::ShakeCameraBehaviour);
 #pragma endregion

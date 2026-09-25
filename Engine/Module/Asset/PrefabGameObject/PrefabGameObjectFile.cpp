@@ -141,9 +141,8 @@ namespace NanamiEngine::Module::Asset
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::PrefabGameObjectFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::PrefabGameObjectFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::PrefabGameObjectFile);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::PrefabGameObjectFile, NanamiEngine::Module::Asset::AssetBase);
+NANAMI_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::LifeCycleCallback::IEnablableAsset, NanamiEngine::Module::Asset::PrefabGameObjectFile);
 REGISTER_ASSET(PrefabGameObjectFile, PREFAB_FILE_EXTENSION_LABEL)
 REGISTER_CREATABLE_ASSET_EXTENSION("Prefab", PREFAB_FILE_EXTENSION_LABEL, "Scene")
 #pragma endregion

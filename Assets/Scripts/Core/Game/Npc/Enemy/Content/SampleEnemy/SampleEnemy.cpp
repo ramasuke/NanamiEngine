@@ -6,6 +6,5 @@ namespace GameCore::Npc::Enemy
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::SampleEnemy);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::EnemyBase, GameCore::Npc::Enemy::SampleEnemy);
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::SampleEnemy, GameCore::Npc::EnemyBase);
 #pragma endregion

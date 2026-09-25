@@ -14,6 +14,5 @@ namespace GameCore::PlayerAvatar::SwordMan
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase, GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup);
+NANAMI_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::SwordManAvatarCameraGroup, GameCore::PlayerAvatar::PlayerAvatarCameraGroupBase);
 #pragma endregion

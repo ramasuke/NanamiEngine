@@ -89,6 +89,5 @@ namespace GamePlay::Npc::Enemy
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GamePlay::Npc::Enemy::Tyrannosaurus);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::BossEnemyBase, GamePlay::Npc::Enemy::Tyrannosaurus);
+NANAMI_REGISTER_TYPE(GamePlay::Npc::Enemy::Tyrannosaurus, GameCore::Npc::BossEnemyBase);
 #pragma endregion

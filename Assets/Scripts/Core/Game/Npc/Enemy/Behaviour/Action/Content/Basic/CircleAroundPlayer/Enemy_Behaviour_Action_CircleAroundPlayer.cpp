@@ -137,6 +137,5 @@ namespace GameCore::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::CircleAroundPlayer);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::CircleAroundPlayer);
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::CircleAroundPlayer, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

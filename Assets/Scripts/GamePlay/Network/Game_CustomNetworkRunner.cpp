@@ -104,6 +104,5 @@ namespace GamePlay::Network
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GamePlay::Network::CustomNetworkRunner);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(Network::NetworkRunnerBase, GamePlay::Network::CustomNetworkRunner);
+NANAMI_REGISTER_TYPE(GamePlay::Network::CustomNetworkRunner, Network::NetworkRunnerBase);
 #pragma endregion

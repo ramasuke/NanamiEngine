@@ -45,6 +45,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(FriendNpcBehaviourFile, FRIENDLY_NPC_BEHAVIOUR_DATA_EXTENSION_LABEL, "Npc::Friendly")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::FriendNpcBehaviourFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::FriendNpcBehaviourFile);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::FriendNpcBehaviourFile, NanamiEngine::Module::Asset::AssetBase);
 #pragma endregion

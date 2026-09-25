@@ -53,5 +53,4 @@ namespace NanamiEngine::Module::Asset
 }
 
 REGISTER_SCRIPTABLE_OBJECT(LoadingRouteData, LOADING_ROUTE_DATA_EXTENSION_LABEL, "Ui")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::LoadingRouteData);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::LoadingRouteData);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::LoadingRouteData, NanamiEngine::Module::ScriptableObject);

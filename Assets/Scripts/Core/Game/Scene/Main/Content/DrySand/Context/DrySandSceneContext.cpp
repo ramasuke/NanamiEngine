@@ -78,6 +78,5 @@ void GameCore::Scene::DrySandSceneContext::OnDrawGui()
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Scene::DrySandSceneContext);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Scene::SceneContextBase, GameCore::Scene::DrySandSceneContext);
+NANAMI_REGISTER_TYPE(GameCore::Scene::DrySandSceneContext, GameCore::Scene::SceneContextBase);
 #pragma endregion

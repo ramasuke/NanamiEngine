@@ -35,6 +35,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(CharacterData, CHARACTER_DATA_EXTENSION_LABEL, "Player")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::CharacterData);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::CharacterData);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::CharacterData, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

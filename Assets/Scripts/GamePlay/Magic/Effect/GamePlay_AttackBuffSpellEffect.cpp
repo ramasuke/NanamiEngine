@@ -44,6 +44,5 @@ namespace GamePlay::Magic
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GamePlay::Magic::AttackBuffSpellEffect);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Magic::IMagicSpellEffect, GamePlay::Magic::AttackBuffSpellEffect);
+NANAMI_REGISTER_TYPE(GamePlay::Magic::AttackBuffSpellEffect, GameCore::Magic::IMagicSpellEffect);
 #pragma endregion

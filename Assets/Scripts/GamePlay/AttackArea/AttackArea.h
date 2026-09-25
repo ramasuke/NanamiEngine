@@ -241,5 +241,4 @@ namespace GamePlay
 CEREAL_CLASS_VERSION(GamePlay::AttackArea<TYPE>, 2);
 
 #define REGISTER_ATTACK_AREA_TYPE(TYPE)                                                     \
-CEREAL_REGISTER_TYPE(GamePlay::AttackArea<TYPE>);                                           \
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Component::ComponentBase, GamePlay::AttackArea<TYPE>);
+NANAMI_REGISTER_TYPE(GamePlay::AttackArea<TYPE>, NanamiEngine::Module::Component::ComponentBase);

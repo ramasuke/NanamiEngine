@@ -48,6 +48,5 @@ namespace GameCore::PlayerAvatar::SwordMan::Quest
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::Quest::ActionInstructTutorial);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest, GameCore::PlayerAvatar::SwordMan::Quest::ActionInstructTutorial);
+NANAMI_REGISTER_TYPE(GameCore::PlayerAvatar::SwordMan::Quest::ActionInstructTutorial, GameCore::Npc::Friendly::Behaviour::Action::ITakeableSwordManQuest);
 #pragma endregion

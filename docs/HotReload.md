@@ -112,8 +112,8 @@ Effekseer のマネージャ) が **エンジン側と別物として 2 つで�
 
 | 書き方 | エンジン側 | ゲーム側 | 備考 |
 |---|---|---|---|
-| `CEREAL_REGISTER_TYPE(T)` | 29 | 156 | |
-| `CEREAL_REGISTER_POLYMORPHIC_RELATION(Base, T)` | 50 | 160 | 型数より多い分 (エンジン 21、ゲーム 4 行以上) は 2 つ目以降の基底 (`IUpdatable` / `IAwakable` など) と中間基底の関係のみ。関係が型より多いファイルは 13 |
+| `CEREAL_REGISTER_TYPE(T)` | 32 (`Libs/LibCore/BlackBoard/AnimationParameter.cpp` の 3 型を含む) | 156 | |
+| `CEREAL_REGISTER_POLYMORPHIC_RELATION(Base, T)` | 53 | 160 | 型数より多い分 (エンジン 21、ゲーム 4 行以上) は 2 つ目以降の基底 (`IUpdatable` / `IAwakable` など) と中間基底の関係のみ。関係が型より多いファイルは 13 |
 | `ENGINE_REGISTER_COMPONENT(T)` (`ComponentBase.h:85-95`) | - | 114 | 上の 2 つに展開するだけの省略記法 |
 | `REGISTER_ATTACK_AREA_TYPE(T)` (`AttackArea.h:243`) | - | 4 | 同上 (ゲーム側ヘッダで定義) |
 | `REGISTER_PLAYER_AVATAR_BASE(T)` (`PlayerAvatarBase.h:347`) | - | 4 | 同上 (ゲーム側ヘッダで定義、複数行) |
@@ -121,8 +121,8 @@ Effekseer のマネージャ) が **エンジン側と別物として 2 つで�
 書式のばらつき (置き換えスクリプトが扱う 4 パターン):
 1. `TYPE` と `RELATION` の 2 行組 (大半)。
 2. 複数行に分かれた `RELATION` (`AnimationNodePathAdditionCondition.cpp:8-19`、`REGISTER_PLAYER_AVATAR_BASE` の定義)。
-3. `TYPE` を 3 つ並べた後に `RELATION` を 3 つ並べる形 (`AnimationNodePathAdditionCondition.cpp:5-7`)。
-   現在のツリーではこのファイルだけで、`AnimationParameter.cpp` という名前のファイルは存在しない。
+3. `TYPE` を 3 つ並べた後に `RELATION` を 3 つ並べる形 (`AnimationNodePathAdditionCondition.cpp:5-7`、
+   `Libs/LibCore/BlackBoard/AnimationParameter.cpp:5-7`)。
 4. `RELATION` だけの行 (`ENGINE_REGISTER_COMPONENT` の後に 2 つ目の基底を足すもの。例: `Game.cpp:164`、`Rotator.cpp:24`)。
 
 行末の `;` は 235 行にあり 133 行に無い。BOM の無い `.cpp` が 4 つある (`HlslFile.cpp`、`Enemy_Behaviour_Action_ToPlayerRaycast.cpp`、
@@ -361,7 +361,7 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
 
 | 段階 | 内容 | 主な作業 | 完了条件 | 進捗 |
 |---|---|---|---|---|
-| **A** | 多相登録のラップ (§3.2) | `NANAMI_REGISTER_TYPE` / `NANAMI_REGISTER_POLYMORPHIC_RELATION` と `SerializationTypeRegistry` を追加。既存の cereal 直接呼び出し (エンジン 29 型 / 50 関係、ゲーム 156 型 / 160 関係) と 3 つのラッパーマクロをスクリプトで置き換え。ツール・ドキュメント更新 (下記) | 型名の文字列が変わらないこと、regen-catalog の結果が同一、MSVC ビルド、既存のシーン・プレハブ・BT・AnimTree がエディタで開くこと | 未着手 |
+| **A** | 多相登録のラップ (§3.2) | `NANAMI_REGISTER_TYPE` / `NANAMI_REGISTER_POLYMORPHIC_RELATION` と `SerializationTypeRegistry` を追加。既存の cereal 直接呼び出し (エンジン 32 型 / 53 関係、ゲーム 156 型 / 160 関係) と 3 つのラッパーマクロをスクリプトで置き換え。ツール・ドキュメント更新 (下記) | 型名の文字列が変わらないこと、regen-catalog の結果が同一、MSVC ビルド、既存のシーン・プレハブ・BT・AnimTree がエディタで開くこと | **実装済み** (2026-09-25)。置き換え 195 ファイル / 397 箇所、型 186・関係 211 の集合が前後で一致、データ内の `polymorphic_name` 246 種すべてが登録名に含まれることを確認。**MSVC ビルドとエディタでの確認は未実施** (Windows 環境で行う) |
 | **PoC** | §3.2 の共有スロットパッチ + 記録方式の登録解除を、最小の Host exe + Engine.dll + Game.dll で検証 | `static_object.hpp` 改変、`SerializationTypeRegistry` からの削除、ロード → シーン復元 → アンロード → 再ロードの 1 サイクル | ゲーム Component を含む `.scene` / `.prefab` が JSON・PortableBinary 双方で復元でき、10 回繰り返しても落ちない。不成立なら止めて報告 | 未着手 |
 | 0 | /MD 化 | props 変更、Effekseer 8 lib の /MD 再ビルド | 4 構成 (Editor/Game × Debug/Release) が動く | 未着手 |
 | 1 | ゲームコードから DxLib を排除 | 34 ファイル、約 150 箇所をエンジンラッパーへ (入力・時間・2D 描画・サウンド・座標変換のラッパー整備を含む)。enet 1 ファイル | `DX_LIB_NOT_DEFAULTPATH` 定義でゲーム側がリンクできる | 未着手 |
@@ -370,7 +370,8 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
 
 ### 段階 A の実装メモ
 
-- 置き換えはスクリプトで行う (手作業にしない)。§3.2 の 4 パターンと、行末 `;` の有無、複数行の引数を扱う。
+- 置き換えは `tools/serialization/migrate_register_macros.py` で行う (手作業にしない)。既定の対象は `Engine` / `Packages` / `Libs/LibCore` / `Assets` の `.cpp`。
+  再実行しても変更なし (冪等) で、古いエンジンから作ったプロジェクトの移行にも使える。§3.2 の 4 パターンと、行末 `;` の有無、複数行の引数を扱う。
   BOM は元の状態を保つ (BOM の無い 4 ファイルに BOM を足さない。無関係な差分を出さない)。
 - 新しい `.h` / `.cpp` は `NanamiEngine.vcxproj` と `.filters` に手で追加する。
 - ツール:

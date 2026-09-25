@@ -400,6 +400,5 @@ void GameObject::PrefabGameObject::load(Archive& archive, const std::uint32_t ve
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::GameObject::PrefabGameObject);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::GameObject::IGameObject, NanamiEngine::Module::GameObject::PrefabGameObject);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::GameObject::PrefabGameObject, NanamiEngine::Module::GameObject::IGameObject);
 #pragma endregion

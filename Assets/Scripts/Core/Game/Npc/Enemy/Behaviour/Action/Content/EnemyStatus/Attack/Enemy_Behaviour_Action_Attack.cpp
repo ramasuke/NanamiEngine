@@ -113,6 +113,5 @@ namespace GameCore::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::PhysicsAttack)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::PhysicsAttack)
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::PhysicsAttack, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

@@ -40,7 +40,6 @@ void NanamiEngine::Module::Asset::SoundFile::OnDrawGui()
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::SoundFile);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::Asset::AssetBase, NanamiEngine::Module::Asset::SoundFile);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::SoundFile, NanamiEngine::Module::Asset::AssetBase);
 REGISTER_ASSET(SoundFile, ".mp3")
 #pragma endregion

@@ -27,6 +27,5 @@ namespace GameCore::Npc::Enemy::Behaviour
 }
 
 #pragma region SerializationMacro
-CEREAL_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::CheckCompleteQuest)
-CEREAL_REGISTER_POLYMORPHIC_RELATION(GameCore::Npc::Enemy::Behaviour::ActionBase, GameCore::Npc::Enemy::Behaviour::Action::CheckCompleteQuest)
+NANAMI_REGISTER_TYPE(GameCore::Npc::Enemy::Behaviour::Action::CheckCompleteQuest, GameCore::Npc::Enemy::Behaviour::ActionBase);
 #pragma endregion

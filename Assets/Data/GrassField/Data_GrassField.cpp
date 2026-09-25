@@ -367,6 +367,5 @@ namespace NanamiEngine::Module::Asset
 
 #pragma region SerializationMacro
 REGISTER_SCRIPTABLE_OBJECT(GrassField, GRASS_FIELD_EXTENSION_LABEL, "Stage")
-CEREAL_REGISTER_TYPE(NanamiEngine::Module::Asset::GrassField);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(NanamiEngine::Module::ScriptableObject, NanamiEngine::Module::Asset::GrassField);
+NANAMI_REGISTER_TYPE(NanamiEngine::Module::Asset::GrassField, NanamiEngine::Module::ScriptableObject);
 #pragma endregion

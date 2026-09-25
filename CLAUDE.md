@@ -72,10 +72,17 @@ through `LibCore::Dxlib::Utf8ToShiftJis`. The flag lives in every `<AdditionalOp
 
 ## cereal registration goes in the .cpp
 
-`CEREAL_REGISTER_TYPE` / `CEREAL_REGISTER_POLYMORPHIC_RELATION` / `ENGINE_REGISTER_COMPONENT(T)` /
+Polymorphic types are registered with the engine's wrappers, never with cereal's macros directly:
+`NANAMI_REGISTER_TYPE(T, Base)` (= `CEREAL_REGISTER_TYPE(T)` + `CEREAL_REGISTER_POLYMORPHIC_RELATION(Base, T)`) and
+`NANAMI_REGISTER_POLYMORPHIC_RELATION(Base, T)` for every further base (`IUpdatable`, an intermediate base, ...).
+Both also record type / base / `polymorphic_name` / registering module in `Serialization::SerializationTypeRegistry`
+so a hot-reloaded Game.dll can be unregistered (`docs/HotReload.md` §3.2). A trailing `;` is optional.
+`NANAMI_REGISTER_TYPE` / `NANAMI_REGISTER_POLYMORPHIC_RELATION` / `ENGINE_REGISTER_COMPONENT(T)` /
 `REGISTER_ATTACK_AREA_TYPE` / `REGISTER_PLAYER_AVATAR_BASE` belong at the end of the type's `.cpp`
 (global scope), which must `#include` `Engine/Module/Serialization/Engine_Module_SerializationRegistration.h`
-so the type is bound to both archives (JSON + PortableBinary). Those are the only archives polymorphic types are
+so the type is bound to both archives (JSON + PortableBinary) and the wrappers are defined.
+`python tools/serialization/migrate_register_macros.py` rewrites leftover `CEREAL_REGISTER_*` calls (e.g. in a project
+created from an older engine). Those are the only archives polymorphic types are
 bound to - don't serialise polymorphic pointers through `cereal::BinaryArchive` (use PortableBinary).
 `REGISTER_ASSET` / `REGISTER_SCRIPTABLE_OBJECT` / `REGISTER_CREATABLE_ASSET_EXTENSION` go in the `.cpp` too: in a
 header they define a `static` registrar per including file (the factory's vectors got one entry per file) and
