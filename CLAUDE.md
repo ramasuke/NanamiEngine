@@ -33,6 +33,10 @@ editor-only MSBuild path / output dir / configuration in `ProjectConfig/Build/`.
 (`RuntimeLibrary`, `Optimization`, `PreprocessorDefinitions`, `ObjectFileName` under `x64\Debug\`, …) — Visual
 Studio writes them when you edit a single file's properties, and they then leak into every configuration.
 
+`-p:NanamiUseDynamicCrt=true` switches the CRT to /MD (`MultiThreadedDLL`); the default is still /MT until the Effekseer
+libs have been rebuilt for /MD (`tools/effekseer_md/README.md`, HotReload stage 0 in `docs/HotReload.md`). `Libs/` only ships
+`LIBCMT` builds of `Effekseer*_vs2019_x64(_d).lib`, and mixing them into an /MD link fails with `LNK2038`.
+
 `-p:PreferredToolArchitecture=x64` is **required** — the 32-bit compiler runs out
 of heap on the deep cereal template instantiations (`error C1060`). MSBuild lives at
 `C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe`.

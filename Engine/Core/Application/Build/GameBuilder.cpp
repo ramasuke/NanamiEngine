@@ -344,6 +344,12 @@ namespace NanamiEngine::Core::Application::Build
         try
         {
             CopyIfChanged(builtExe, paths.outputRoot / paths.exeFileName);
+            // exe の隣の DLL も持っていく (/MD のときの VC++ ランタイム DLL。NanamiEngine.Game.props の NanamiCopyCrtRedist が置く)
+            for (const auto& entry : std::filesystem::directory_iterator(builtExe.parent_path()))
+            {
+                if (entry.is_regular_file() && entry.path().extension() == L".dll")
+                    CopyIfChanged(entry.path(), paths.outputRoot / entry.path().filename());
+            }
         }
         catch (const std::filesystem::filesystem_error& exception)
         {

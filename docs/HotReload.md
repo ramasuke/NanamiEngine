@@ -61,7 +61,9 @@ Host exe (WinMain のみ)  ->  NanamiEngine.dll  <-  Game.dll (Assets/Scripts)
 | cereal / rxcpp / tweeny | ヘッダのみ | 不要 | |
 
 ### 判定
-可。Effekseer の再ビルドが唯一の追加作業。/MD 化は静的リンクのまま先に行い、4 構成 (Editor/Game × Debug/Release) が動くことを確認してから DLL 化へ進める。
+可。Effekseer の再ビルドが唯一の追加作業 (`tools/effekseer_md/README.md`)。/MD 化は静的リンクのまま先に行い、4 構成 (Editor/Game × Debug/Release) が動くことを確認してから DLL 化へ進める。
+切り替えは `NanamiEngine.props` の `NanamiUseDynamicCrt` (MD 版 lib が揃うまで既定 `false`)。/MD のゲーム版は VC++ ランタイム DLL が要るので、
+`NanamiEngine.Game.props` の `NanamiCopyCrtRedist` (Game × Release) が `$(VCToolsRedistDir)` から出力先へコピーし、`GameBuilder::Package` が exe の隣の DLL を配布フォルダへ持っていく。
 
 ---
 
@@ -374,7 +376,7 @@ ScreenFlip 後 (ApplicationBase::Run, WindowDisplayModeController::OnFrameEnd �
 |---|---|---|---|---|
 | **A** | 多相登録のラップ (§3.2) | `NANAMI_REGISTER_TYPE` / `NANAMI_REGISTER_POLYMORPHIC_RELATION` と `SerializationTypeRegistry` を追加。既存の cereal 直接呼び出し (エンジン 32 型 / 53 関係、ゲーム 156 型 / 160 関係) と 3 つのラッパーマクロをスクリプトで置き換え。ツール・ドキュメント更新 (下記) | 型名の文字列が変わらないこと、regen-catalog の結果が同一、MSVC ビルド、既存のシーン・プレハブ・BT・AnimTree がエディタで開くこと | **実装済み** (2026-09-25)。置き換え 195 ファイル / 397 箇所、型 186・関係 211 の集合が前後で一致、データ内の `polymorphic_name` 246 種すべてが登録名に含まれることを確認。**MSVC ビルドとエディタでの確認は未実施** (Windows 環境で行う) |
 | **PoC** | §3.2 の共有スロットパッチ + 記録方式の登録解除を、最小の Host exe + Engine.dll + Game.dll で検証 | `static_object.hpp` 改変、`SharedStaticObjects` / `SerializationModuleUnloader` の追加、`tools/hotreload_poc/` (sln + Linux 用スクリプト、README 参照) | ゲーム型を含む多相ポインタが JSON・PortableBinary 双方でエンジン側から復元でき、ゲーム側からエンジン型も保存・復元でき、10 回繰り返しても表がベースラインに戻る。不成立なら止めて報告 | **実装済み**。Linux (g++ + `dlopen(RTLD_DEEPBIND)`、`-fno-gnu-unique`) で 10 サイクル PASS、valgrind でエラー 0・definite leak 0。**Windows (MSVC) での実行は未実施**: `tools/hotreload_poc/HotReloadPoc.sln` をビルドして `HotReloadPocHost.exe` を実行する |
-| 0 | /MD 化 | props 変更、Effekseer 8 lib の /MD 再ビルド | 4 構成 (Editor/Game × Debug/Release) が動く | 未着手 (次) |
+| 0 | /MD 化 | props 変更、Effekseer 8 lib の /MD 再ビルド | 4 構成 (Editor/Game × Debug/Release) が動く | **準備済み、Windows 作業待ち**。`NanamiEngine.props` に `NanamiUseDynamicCrt` (既定 `false` = 今まで通り /MT。`true` で /MD)、同梱 `EffekseerForDXLib.h` に `_DLL` → `*_MD(d).lib` の分岐、`tools/effekseer_md/` に再ビルド手順と PowerShell スクリプト (未実行)、`NanamiEngine.Game.props` に VC++ ランタイム DLL の同梱 (`NanamiCopyCrtRedist`)、`GameBuilder` が exe の隣の DLL を配布フォルダへコピー。残り: Windows で Effekseer を /MD 再ビルドして lib を置き、`-p:NanamiUseDynamicCrt=true` で 4 構成を確認、通れば既定を `true` に |
 | 1 | ゲームコードから DxLib を排除 | 34 ファイル、約 150 箇所をエンジンラッパーへ (入力・時間・2D 描画・サウンド・座標変換のラッパー整備を含む)。enet 1 ファイル | `DX_LIB_NOT_DEFAULTPATH` 定義でゲーム側がリンクできる | 未着手 |
 | 2 | エンジン DLL 化 (Game は exe のまま) | Host exe へ WinMain 移動、`NANAMI_API` 付与 (382 クラス)、`SingletonBase` 7 クラスの `.cpp` 化、`IMGUI_API`、cereal パッチ適用、engine_dist 更新 | 4 構成が動き、Game モードの成果物と `GameBuilder` の手順が変わらない | 未着手 |
 | 3 | Game.dll 化 + ホットリロード | `ConfigurationType` 切替、§4 のモジュール ID 付き Unregister、`PurgeExpired`、ウィンドウ群の削除関数、§5 の差し替え手順と保険モード、ビルド起動 UI | エディタ上で Game.dll を差し替え、開いていたシーンとウィンドウが戻る | 未着手 |

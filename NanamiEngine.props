@@ -6,6 +6,9 @@
     <NanamiEngineDir Condition="!HasTrailingSlash('$(NanamiEngineDir)')">$(NanamiEngineDir)\</NanamiEngineDir>
     <!-- Editor | Game -->
     <NanamiApplicationMode Condition="'$(NanamiApplicationMode)'==''">Editor</NanamiApplicationMode>
+    <!-- CRT: true で /MD (DLL 化の前提, docs/HotReload.md §1)。Effekseer 系 lib は MT 版しか同梱されていないので、
+         tools/effekseer_md で MD 版を作って Libs に置くまでは false (今まで通り /MT) にしておく -->
+    <NanamiUseDynamicCrt Condition="'$(NanamiUseDynamicCrt)'==''">false</NanamiUseDynamicCrt>
     <NanamiEngineLibDir>$(NanamiEngineDir)lib\$(NanamiApplicationMode)\$(Configuration)\</NanamiEngineLibDir>
     <NanamiEngineLib>$(NanamiEngineLibDir)NanamiEngine.lib</NanamiEngineLib>
     <NanamiEngineIncludeDirs>$(NanamiEngineDir);$(NanamiEngineDir)Libs\glm;$(NanamiEngineDir)Libs\プロジェクトに追加すべきファイル_VC用;$(NanamiEngineDir)Libs\cereal\include;$(NanamiEngineDir)Libs\ImGui;$(NanamiEngineDir)Libs\ImGuizmo;$(NanamiEngineDir)Libs\rxcpp;$(NanamiEngineDir)Libs\JoltPhysics;$(NanamiEngineDir)Libs\tweeny;$(NanamiEngineDir)Libs\enet\include</NanamiEngineIncludeDirs>
@@ -41,13 +44,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(NanamiUseDynamicCrt)'!='true'">MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(NanamiUseDynamicCrt)'=='true'">MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(NanamiUseDynamicCrt)'!='true'">MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(NanamiUseDynamicCrt)'=='true'">MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalOptions>/Z7 %(AdditionalOptions)</AdditionalOptions>

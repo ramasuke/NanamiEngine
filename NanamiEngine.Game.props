@@ -17,4 +17,13 @@
       <AdditionalOptions>"/WHOLEARCHIVE:$(NanamiEngineLib)" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
+  <!-- /MD のゲーム版 (Release) は VC++ ランタイム DLL が要る。出力先に同梱し、GameBuilder が exe と一緒にコピーする
+       (Debug の CRT は再配布不可なので開発機の System32 に任せる) -->
+  <Target Name="NanamiCopyCrtRedist" AfterTargets="Build"
+          Condition="'$(NanamiUseDynamicCrt)'=='true' and '$(NanamiApplicationMode)'=='Game' and '$(Configuration)'=='Release' and '$(VCToolsRedistDir)'!=''">
+    <ItemGroup>
+      <NanamiCrtRedistDll Include="$(VCToolsRedistDir)$(Platform)\Microsoft.VC*.CRT\*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NanamiCrtRedistDll)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>
