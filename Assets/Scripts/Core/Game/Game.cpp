@@ -109,7 +109,7 @@ namespace GameCore
 #if NANAMI_DEBUG_SHEET_ENABLED
     void Game::OnUserInterfaceRender()
     {
-        // NOTE: UI 描画はエディタの非プレイ中も回るので、開閉もここで見る
+        // NOTE: UI 描画はエディタの非プレイ中も回るが、プレイ中以外は Sheet 側で開かない
         auto& debugSheet = NanamiEngine::DebugSheet::Sheet::Instance();
         debugSheet.Update();
         debugSheet.Render();

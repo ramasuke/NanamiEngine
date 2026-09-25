@@ -120,7 +120,8 @@ rxcpp is wrapped by **`Packages/R4`** (`NanamiEngine::R4`, R3-style): `R4::Subje
 ## Debug menu (DebugSheet)
 
 In-game debug features (cheats, save reset, scene jumps, …) are pages in **`Packages/DebugSheet`** (F1, editor + Debug
-game build only; `NANAMI_DEBUG_SHEET_ENABLED`). The engine never calls it - `GameCore::Game::OnUserInterfaceRender`
+game build only; `NANAMI_DEBUG_SHEET_ENABLED`; opens only while the game is running - in the editor during
+play / pause, closed on End). The engine never calls it - `GameCore::Game::OnUserInterfaceRender`
 drives it. Add a page with `REGISTER_DEBUG_SHEET_PAGE` in a game `.cpp` wrapped in `#if NANAMI_DEBUG_SHEET_ENABLED`
 (`Assets/Scripts/GamePlay/Debug/DebugSheet/`), built from `DebugSheet::Widgets`. See **`Packages/DebugSheet/README.md`**.
 **Don't change game code for debug features.** Use existing public APIs from the debug files (e.g. write the LocalPrefs
