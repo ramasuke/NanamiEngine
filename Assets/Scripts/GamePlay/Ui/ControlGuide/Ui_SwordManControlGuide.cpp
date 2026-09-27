@@ -106,7 +106,9 @@ namespace GamePlay::Ui
             case SwordManAvatarStateType::JumpAttackAir:
                 return phase == PlayerAvatarInputPhase::Pressed ? std::optional(Label::JumpAttack) : std::nullopt;
             case SwordManAvatarStateType::DashAttack:           return Label::DashAttack;
-            case SwordManAvatarStateType::ChargeAttackCharging: return Label::ChargeAttackHold;
+            // 押下で溜めへ入るのは攻撃ボタンそのもの。溜めの案内は押し続ける操作にだけ出す
+            case SwordManAvatarStateType::ChargeAttackCharging:
+                return phase == PlayerAvatarInputPhase::Pressed ? Label::Attack : Label::ChargeAttackHold;
             case SwordManAvatarStateType::ChargeAttackRelease:  return Label::ChargeAttackRelease;
             case SwordManAvatarStateType::Chatting:             return Label::Chat;
             case SwordManAvatarStateType::WakeUp:               return Label::WakeUp;

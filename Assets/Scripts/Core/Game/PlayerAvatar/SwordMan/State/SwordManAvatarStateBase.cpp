@@ -4,12 +4,15 @@
 #include <cmath>
 #include <numbers>
 #include <random>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "Engine/Core/Application/Configuration/ApplicationConfiguration.h"
 #include "Engine/Core/Application/Configuration/Physics/ApplicationConfiguration_Physics.h"
 #include "Engine/Core/Application/Time/Time.h"
+#include "Engine/Module/AnimationTree/AnimationTree.h"
+#include "Engine/Module/AnimationTree/Node/ClipNode/AnimationClipNode.h"
 #include "Engine/Module/Component/Animator/Animator.h"
 #include "Engine/Module/Component/BoneSync/BoneSync.h"
 #include "Engine/Module/Physics/Engine_Physics_Physics.h"
@@ -60,6 +63,9 @@ namespace
         }
         return result;
     }
+
+    /** 移動系とみなす AnimationTree のクリップ名(SwordManAnimation.animTree のノード名) */
+    constexpr std::string_view LOCOMOTION_CLIP_NAMES[] = { "Idle", "Walk", "Run", "InjuredWalk", "InjuredRun" };
 }
 
 namespace GameCore::PlayerAvatar::SwordMan
@@ -155,6 +161,22 @@ namespace GameCore::PlayerAvatar::SwordMan
         ramp.decelerationStart = ramp.current;
     }
 
+    float SwordManAvatarStateBase::LocomotionBlendRate() const
+    {
+        const auto* tree = Animator().GetAnimationTree();
+        if (!tree || tree->CurrentNodes().empty())
+            return 1.0f;
+
+        float blendRate = 0.0f;
+        for (const auto& node : tree->CurrentNodes())
+        {
+            const auto* clip = dynamic_cast<const NanamiEngine::Module::AnimationTree::AnimationClipNode*>(node.get());
+            if (clip && std::ranges::find(LOCOMOTION_CLIP_NAMES, clip->Name()) != std::ranges::end(LOCOMOTION_CLIP_NAMES))
+                blendRate += clip->GetBlendRate();
+        }
+        return std::clamp(blendRate, 0.0f, 1.0f);
+    }
+
     void SwordManAvatarStateBase::MoveForward(MoveSpeedRamp& ramp, const StatusParameter::MoveSpeed maxSpeed, const float accelerationTime_secs, const float decelerationTime_secs) const
     {
         const float targetSpeed = maxSpeed.Value();
@@ -164,6 +186,8 @@ namespace GameCore::PlayerAvatar::SwordMan
             ramp.current = accelerationTime_secs <= 0.0f
                 ? targetSpeed
                 : (std::min)(ramp.current + targetSpeed / accelerationTime_secs * fixedDeltaTime, targetSpeed);
+            // NOTE: 攻撃などのクリップが残っている間(exit time 待ち・ブレンド中)は、移動クリップの重みの分しか速度を出さない
+            ramp.current = (std::min)(ramp.current, targetSpeed * LocomotionBlendRate());
         }
         else if (ramp.current > targetSpeed)
         {
@@ -347,6 +371,13 @@ namespace GameCore::PlayerAvatar::SwordMan
         SwordManTransitionExecutor executor(Input(), OnChangeStateCallback());
         VisitTransitions(executor);
         return executor.HasChanged();
+    }
+
+    void SwordManAvatarStateBase::VisitNormalAttackPress(ISwordManAvatarTransitionVisitor& visitor) const
+    {
+        const bool canCharge = Status().CanChargeAttack();
+        visitor.OnInput(SwordManAvatarStateType::ChargeAttackCharging, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, canCharge);
+        visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, !canCharge);
     }
 
     void SwordManAvatarStateBase::RotateTowardsAttackTarget(AttackTurn& turn, const float smoothTime_secs, const float maxRotateSpeed) const

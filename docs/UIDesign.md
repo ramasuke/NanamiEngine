@@ -70,12 +70,13 @@
 
 ## 4. フォント
 
-`Assets/Art/Font/` の4つ（アセットの `size_` はどれも 60。見た目の大きさは Transform の scale で決める）。
+`Assets/Art/Font/` の5つ（アセットの `size_` はどれも 60。見た目の大きさは Transform の scale で決める）。
 
 | フォント | guid | 使い方 |
 | --- | --- | --- |
 | **Zen Old Mincho Bold** (`ZenOldMincho-Bold.ttf`) | `02951627-F120-4EDC-B4F7-C27985C7F643` | 系統 A の **本文・ラベル・操作ヒント**。一番多い |
 | **Kaisei Decol Bold** (`KaiseiDecol-Bold.ttf`、縁取り 3px `#06141a`) | `956ED4F0-FCBF-4709-B98E-64F17B0DD2AF` | **見出し・名前・数値**（「冒 険 者 の 手 帳」「剣士」、HP の数字、ダメージ数値、ロード画面） |
+| **Kaisei Decol Bold（インク）** (`KaiseiDecol-Bold_Ink.ttf`、縁取りなし) | `A07DF0BC-CA56-40F7-B0AE-F85148AE2677` | 上と同じ字形で、**紙・札の上の暗いインク**（INK / INK_FADE / 朱）に使う。暗い縁取りと茶色の文字が混ざって潰れるのを避けるため。明るい文字は縁取りのある方を使う。生成スクリプトでは `FONT_BRUSH_INK`、spec では `'font': 'brush_ink'` |
 | 怨霊 (`onryou.ttf`) | `30487603-1A70-4739-978D-5CF0105A60D9` | **テキスト描画には使わない**（縮めると潰れて読めない）。PNG に焼き込み済みの文字（ゲームオーバー、キャラ選択の札、ゲージ）だけ |
 | IPA明朝 (`ipam.ttf`) | `C48F5FF6-C374-4289-A3BF-3BAF6C9C24EC` | ゲームオーバー、系統 B の HUD、古い画面 |
 

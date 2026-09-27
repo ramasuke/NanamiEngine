@@ -15,7 +15,8 @@ namespace GameCore::Npc::Enemy::Behaviour::Action
     private:
         [[serialize(0)]] float waitSeconds_ = 0.0f;
         float during_secs_ = 0.0f;
-        
+        std::uint64_t lastTickIndex_ = 0;
+
 #pragma region Serialization Function
     public:
         void DoDrawGui() override;

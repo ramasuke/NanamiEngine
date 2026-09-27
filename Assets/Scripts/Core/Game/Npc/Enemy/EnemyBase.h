@@ -30,6 +30,7 @@ namespace GameCore::Npc
         [[nodiscard]] virtual std::shared_ptr<Enemy::BehaviourTree> BehaviourTree() const { return behaviour_; }
         [[nodiscard]] glm::vec3 LockOnPosition() override;
         void NotifyDefeated();
+        void ApplyNetworkHealth(int value);
 
     protected:
         virtual void DoAwake() { }
@@ -41,6 +42,7 @@ namespace GameCore::Npc
         void OnAwake () override;
         void OnUpdate() override;
         void OnTakeDamage(std::unique_ptr<IDamage> context) override;
+        void SendHealthIfChanged();
 
         bool isNetworkSyncStatus_ = false;
         SyncParam<Enemy::EnemyStatus> currentStatus_ = CreateSyncParameter(Enemy::EnemyStatus());
@@ -50,6 +52,7 @@ namespace GameCore::Npc
         std::optional<Damage::FlinchPower> pendingFlinchPower_;
         bool hasNetworkBehaviourTree_ = false;
         bool isDefeatRecorded_ = false;
+        std::optional<int> lastSentHealth_;
         Enemy::IShowHealthGaugeProvider* showHealthGaugeProvider_ = nullptr;
         [[serialize(5)]] FIELD(PlayerAvatar::LockOnPoint) lockOnPoint_;
 

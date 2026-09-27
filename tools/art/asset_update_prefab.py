@@ -23,7 +23,7 @@ from tools.common.cereal_json import Num  # noqa: E402
 from tools.scene import edits, model  # noqa: E402
 
 import asset_update as art  # noqa: E402
-from event_board_prefab import ALIGN_CENTER, ALIGN_RIGHT, FONT_BODY, FONT_BRUSH, image, text  # noqa: E402
+from event_board_prefab import ALIGN_CENTER, ALIGN_RIGHT, FONT_BODY, FONT_BRUSH_INK, image, text  # noqa: E402
 from game_over_prefab import BLACK_MASK, Builder, asset_guid, guid_of, new_prefab, save_prefab  # noqa: E402
 
 UI_PREFAB_DIR = REPO / 'Assets' / 'Prefab' / 'UI' / 'AssetUpdate'
@@ -73,7 +73,7 @@ def build_details(b, tag):
         put_text(b, details, f'Label{i}', ((L['detail_label_x'], y - lp // 2), lp), label, art.INK_FADE,
                  ORDER_TAG_TEXT, align=ALIGN_LEFT)
         values.append(put_text(b, details, f'Value{i}', ((L['detail_value_x'], y - vp // 2), vp), '', art.INK,
-                               ORDER_TAG_TEXT, font=FONT_BRUSH, align=ALIGN_RIGHT))
+                               ORDER_TAG_TEXT, font=FONT_BRUSH_INK, align=ALIGN_RIGHT))
         image(b, details, f'Rule{i}', (art.TAG_CENTER[0], y + L['detail_rule_dy']), sprite_guid('AssetUpdate_Rule'),
               ORDER_TAG_RULE)
     note = put_text(b, details, 'Note', L['note'], art.NOTE_OFFER, art.INK_FADE, ORDER_TAG_TEXT)
@@ -85,7 +85,7 @@ def build_progress(b, tag):
     progress = b.node(tag, 'Progress')
     hoofs = [image(b, progress, f'Hoof{i}', pos, sprite_guid('AssetUpdate_Hoof_Empty'), ORDER_TAG_MARK)
              for i, pos in enumerate(art.hoof_positions())]
-    percent = put_text(b, progress, 'Percent', L['percent'], '0%', art.INK, ORDER_TAG_TEXT, font=FONT_BRUSH)
+    percent = put_text(b, progress, 'Percent', L['percent'], '0%', art.INK, ORDER_TAG_TEXT, font=FONT_BRUSH_INK)
     amount = put_text(b, progress, 'Amount', L['amount'], '', art.INK_FADE, ORDER_TAG_TEXT)
     wait = put_text(b, progress, 'Wait', L['wait'], '', art.INK_FADE, ORDER_TAG_TEXT)
     return progress, hoofs, percent, amount, wait
@@ -126,7 +126,7 @@ def build_ui():
     _, tag_center = art.tag_sprite()
     tag = b.node(visual, 'Tag')
     image(b, tag, 'Paper', tag_center, sprite_guid('AssetUpdate_Tag'), ORDER_TAG)
-    headline = put_text(b, tag, 'Headline', L['headline'], '', art.INK, ORDER_TAG_TEXT, font=FONT_BRUSH)
+    headline = put_text(b, tag, 'Headline', L['headline'], '', art.INK, ORDER_TAG_TEXT, font=FONT_BRUSH_INK)
     details, values, note = build_details(b, tag)
     progress, hoofs, percent, amount, wait = build_progress(b, tag)
     failure, warning, error = build_failure(b, tag)

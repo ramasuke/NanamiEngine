@@ -7,8 +7,12 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 {
     void SwordManAvatarChattingState::DoEnter()
     {
-        InteractableArea().CatchInteractTarget().lock()->OnInteract();
+        const auto target = InteractableArea().CatchInteractTarget().lock();
         OnChangeState(SwordManAvatarStateType::Idle);
+        if (target)
+        {
+            target->OnInteract();
+        }
     }
 
     void SwordManAvatarChattingState::DoFixedUpdate()

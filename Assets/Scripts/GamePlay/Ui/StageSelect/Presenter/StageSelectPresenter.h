@@ -31,6 +31,8 @@ namespace GamePlay::Ui
             bool digitUp      = false;
             bool digitDown    = false;
             bool erase        = false;
+            bool stageUp      = false;
+            bool stageDown    = false;
             int  typedDigit   = -1; // キーボードの 0〜9
         };
 
@@ -39,6 +41,8 @@ namespace GamePlay::Ui
         void TryEnterWorld();
 
         void CycleMode(int delta);
+        /** @brief 選んでいるステージを上下に動かす。未選択なら先頭を選ぶ */
+        void MoveStage(int delta);
         void UpdateRoomInput(const RoomInput& input);
         /** @brief cursor の桁を digit にする。まだ入れていない桁なら末尾に足す */
         void SetDigit(int digit);

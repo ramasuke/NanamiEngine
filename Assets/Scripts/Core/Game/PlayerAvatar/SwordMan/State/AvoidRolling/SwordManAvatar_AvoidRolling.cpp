@@ -10,6 +10,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
     void AvoidRollingState::DoEnter()
     {
         isAvoided_ = false;
+        FaceAvoidRollingDirection();
         Status().ConsumeAvoidRollingStamina();
         GamePlay::Sound::SoundPlayer::PlaySe(Resources().AvoidRollingSound(), Transform().GetWorldPos());
         StatusEvent().InvokeOnAvoidRolling();
@@ -17,6 +18,8 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void AvoidRollingState::DoFixedUpdate()
     {
+        MoveAvoidRolling();
+
         if (Status().IsDamaged())
         {
             if (!isAvoided_)

@@ -20,7 +20,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         float fallSpeed_ = 0.0f; ///< 空中にいる間の最大落下速度。接地時には床に潰されて0になっているので覚えておく
         bool  hasEmittedLandingParticle_ = false; ///< 着地遷移が遅れても毎フレーム出さないよう、1回の Floating につき1回だけ出す
 
-        [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::Jump; }
+        [[nodiscard]] SwordMan::AnimationType AnimationType() const override { return AnimationType::Fall; }
         [[nodiscard]] PlayerAvatarControlAcceptance ControlAcceptance() const override { return PlayerAvatarControlAcceptance::Accept; }
         void VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const override;
     };

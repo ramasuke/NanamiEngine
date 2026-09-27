@@ -43,7 +43,7 @@ namespace GamePlay::Ui
         [[serialize(0)]] FIELD(NanamiUi::BlendImageRenderer) selectGlow_;
         [[serialize(0)]] FIELD(NanamiUi::BlendImageRenderer) countPill_;
         [[serialize(0)]] FIELD(NanamiUi::TextRenderer) countText_;
-        [[serialize(0)]] Color32 countColor_ = Color32(196, 208, 212);
+        [[serialize(0)]] Color32 countColor_ = Color32(200, 208, 212);
         [[serialize(0)]] Color32 countSelectedColor_ = Color32(255, 206, 104);
 
         bool isPartsCaught_ = false;

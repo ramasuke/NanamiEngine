@@ -1,4 +1,4 @@
-#include "FloatingState.h"
+﻿#include "FloatingState.h"
 
 #include <algorithm>
 #include <cmath>
@@ -59,7 +59,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             return;
         }
 
-        visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, true);
+        VisitNormalAttackPress(visitor);
         const bool isMoving = Input().Move().IsUpdatePressed();
         visitor.OnInput(Status().IsInjured() ? SwordManAvatarStateType::InjuredRun : SwordManAvatarStateType::Run,
                         SwordManAvatarInput::Run, PlayerAvatarInputPhase::Holding, isMoving);

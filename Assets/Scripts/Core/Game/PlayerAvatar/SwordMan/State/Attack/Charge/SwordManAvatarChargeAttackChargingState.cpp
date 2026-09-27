@@ -26,29 +26,31 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         // 溜め中はその場で停止し、攻撃対象へ向き直るだけ
         RotateTowardsAttackTarget(attackTurn_, Status().AttackRotateSmoothTime_secs(), Status().LockOnAttackRotateSpeed());
 
-        if (!isFullyCharged_ && During_secs() >= Status().ChargeAttackMaxCharge_secs())
+        if (!isFullyCharged_ && ChargeElapsed_secs() >= Status().ChargeAttackMaxCharge_secs())
         {
             isFullyCharged_ = true;
             EmitChargeCompleteCue();
             if (Resources().HasChargeHoldParticlePrefab())
+            {
                 chargeHoldParticle_ = NanamiEngine::Scene::GameObject::Instantiate(Resources().ChargeHoldParticlePrefab(), Transform().GetWorldPos());
+            }
         }
 
-        SustainChargeShake();
+        if (During_secs() >= Status().ChargeAttackHoldThreshold_secs())
+        {
+            SustainChargeShake();
+        }
 
         UpdateTransitions();
     }
 
     void SwordManAvatarChargeAttackChargingState::VisitTransitions(ISwordManAvatarTransitionVisitor& visitor) const
     {
-        // アイテム欄は出したままにするが、この State では使えない。宣言しないと大砲と同じ扱いでアイテム欄ごと消えてしまう
         visitor.Action(SwordManAvatarStateAction::CycleItem, false);
         visitor.Action(SwordManAvatarStateAction::UseItem, false);
         visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged());
-        // 最大溜めのまま保持し続けた場合は自動で解放する
-        visitor.Automatic(SwordManAvatarStateType::ChargeAttackRelease, isFullyCharged_ && During_secs() >= Status().ChargeAttackMaxHold_secs());
+        visitor.Automatic(SwordManAvatarStateType::ChargeAttackRelease, isFullyCharged_ && ChargeElapsed_secs() >= Status().ChargeAttackMaxHold_secs());
         visitor.OnInput(SwordManAvatarStateType::ChargeAttackRelease, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::NotHolding, isFullyCharged_);
-        // 溜め切る前に離した場合は通常コンボの1段目として出し直す
         visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::NotHolding, !isFullyCharged_);
     }
 
@@ -71,6 +73,11 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             Resources().ChargeCompleteShakeIntensity(), Resources().ChargeCompleteShakeDuration_secs());
     }
 
+    float SwordManAvatarChargeAttackChargingState::ChargeElapsed_secs() const
+    {
+        return std::max(During_secs() - Status().ChargeAttackHoldThreshold_secs(), 0.0f);
+    }
+
     void SwordManAvatarChargeAttackChargingState::SustainChargeShake() const
     {
         if (isFullyCharged_)
@@ -79,8 +86,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
             return;
         }
 
-        // 最大溜めに近づくほど加速度的に強める
-        const float progress  = std::clamp(During_secs() / std::max(Status().ChargeAttackMaxCharge_secs(), 0.001f), 0.0f, 1.0f);
+        const float progress  = std::clamp(ChargeElapsed_secs() / std::max(Status().ChargeAttackMaxCharge_secs(), 0.001f), 0.0f, 1.0f);
         const float intensity = glm::mix(Resources().ChargingShakeIntensityMin(), Resources().ChargingShakeIntensityMax(), progress * progress);
         NanamiEngine::CineMachine::Behaviour::ShakeCameraBehaviour::SustainShakeMainCamera(intensity);
     }

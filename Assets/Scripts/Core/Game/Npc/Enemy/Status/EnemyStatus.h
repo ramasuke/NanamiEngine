@@ -12,6 +12,7 @@ namespace GameCore::Npc::Enemy
     public:
         void ManualUpdate();
         void OnDamage(int damageValue);
+        void ApplyNetworkHealth(int value);
 
         [[nodiscard]] const StatusParameter::Health& MaxHealth() const { return maxHealth_; }
         [[nodiscard]] NanamiEngine::R4::Observable<StatusParameter::Health> HealthObservable() const { return onHealth_.AsObservable(); }

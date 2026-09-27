@@ -7,6 +7,11 @@ namespace GameCore::Npc::Enemy::Behaviour
 {
     TickStatus Action::WaitSeconds::DoTick(const TickContext& context)
     {
+        // NOTE: 前回の Tick で呼ばれなかった = 枝を抜けて入り直したので、完了済みでも待ち直す
+        if (lastTickIndex_ + 1 != context.TickIndex())
+            during_secs_ = 0.0f;
+        lastTickIndex_ = context.TickIndex();
+
         if (waitSeconds_ <= during_secs_)
         {
             during_secs_ += Time::DeltaTime();

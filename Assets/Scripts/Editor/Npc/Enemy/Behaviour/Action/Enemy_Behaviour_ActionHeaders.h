@@ -56,3 +56,5 @@
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/SkeletonDragon/BossSandstorm/Enemy_Behaviour_Action_BossSandstorm.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/SkeletonDragon/IsBossSandstorm/Enemy_Behaviour_Action_IsBossSandstorm.h"
 #include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/SkeletonDragon/HeartStun/Enemy_Behaviour_Action_HeartStun.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Scene/LockPlayerControl/Enemy_Behaviour_Action_LockPlayerControl.h"
+#include "../../../../../Core/Game/Npc/Enemy/Behaviour/Action/Content/Scene/UnlockPlayerControl/Enemy_Behaviour_Action_UnlockPlayerControl.h"

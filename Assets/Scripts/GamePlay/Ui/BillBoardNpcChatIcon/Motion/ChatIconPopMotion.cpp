@@ -70,7 +70,7 @@ namespace GamePlay::Ui
             return;
 
         owner.Transform().SetLocalPos  (basePos_ + offset);
-        owner.Transform().SetLocalScale(baseScale_ * std::max(scaleRate, MIN_SCALE_RATE));
+        owner.Transform().SetLocalScale(baseScale_ * (std::max)(scaleRate, MIN_SCALE_RATE));
         billboard->SetAngle(angle);
         billboard->SetAlpha(Alpha());
     }

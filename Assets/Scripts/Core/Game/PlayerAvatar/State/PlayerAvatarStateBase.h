@@ -177,5 +177,34 @@ namespace GameCore::PlayerAvatar
             status.StartJumpCooldown();
             status.ConsumeJumpStamina();
         }
+
+        /** @brief 移動入力があればその方向(カメラ基準)へ即座に向く。なければ今の向きのまま転がる */
+        void FaceAvoidRollingDirection() const
+        {
+            auto& input = Context().Input();
+            if (!input.Move().IsUpdatePressed())
+                return;
+
+            const auto move = input.Move().ReadValue();
+            Actions().FaceTowards(Actions().CameraRelativeDirection(glm::vec2(move.x, move.y)));
+        }
+
+        /** @brief 回避中は自機の前方へ、出だしを速く終わり際を遅くした速度で進める */
+        void MoveAvoidRolling() const
+        {
+            const auto& resources = Context().Resources();
+            const float duration_secs = Context().Status().AvoidRollingStateDuration_secs();
+            const float t = duration_secs <= 0.0f ? 1.0f : glm::clamp(During_secs() / duration_secs, 0.0f, 1.0f);
+            const float remaining = 1.0f - t;
+            const float speed = resources.AvoidRollingEndSpeed() + (resources.AvoidRollingStartSpeed() - resources.AvoidRollingEndSpeed()) * remaining * remaining;
+
+            const glm::vec3 forward = Transform().GetWorldRot() * glm::vec3(0.0f, 0.0f, -1.0f);
+            const glm::vec3 flatForward(forward.x, 0.0f, forward.z);
+            if (glm::dot(flatForward, flatForward) < 0.0001f)
+                return;
+
+            const glm::vec3 roll = Actions().LimitToWalkableSlope(glm::normalize(flatForward) * speed);
+            RigidBody().SetLinearVelocity(roll + glm::vec3(0.0f, RigidBody().LinearVelocity().y, 0.0f));
+        }
     };
 }

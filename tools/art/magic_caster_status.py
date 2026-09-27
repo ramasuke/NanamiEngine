@@ -2,7 +2,7 @@
 
     python tools/art/magic_caster_status.py [--portrait-source RENDER.png] [--out-dir Assets/Art/UI/MagicCasterStatusUI]
 
-KnightStatusUI の画像は読むだけで書き換えない。枠は鋼を少し寒色へ寄せ、棘と矢じりに紫の宝石、輪に刻みを足す。
+KnightStatusUI の画像は読むだけで書き換えない（両方の肖像の下に敷く PortraitBackdrop.png だけは KnightStatusUI に書く）。枠は鋼を少し寒色へ寄せ、棘と矢じりに紫の宝石、輪に刻みを足す。
 拳と靴のアイコンの代わりに杖と魔導書を同じメダル形で描く。体力・スタミナのゲージは Knight のものをそのまま使う。
 --portrait-source は Blender で MagicCaster.fbx の顔から肩を背景透過で撮った画像。Knight の肖像画に寄せる仕上げ
 （色の段差・輪郭の締め・周辺の暗さ）をかけ、人物の切り抜きを輪の内側で切って 240x230 の Portrait.png にする。
@@ -41,6 +41,8 @@ PORTRAIT_GEMS = [(300.0, 20.0, 9.0), (342.0, 148.0, 8.0), (332.0, 250.0, 8.0), (
 # 肖像は輪の下に描かれる（renderPriority_ -5）。枠の中での肖像の左上と、切り抜く円の半径（輪の帯 104〜146 の中ほど）
 PORTRAIT_OFFSET_IN_FRAME = (57.0, 43.0)
 PORTRAIT_MASK_RADIUS = 124.0
+# 肖像の切り抜かれた背景から画面が透けないように下に敷く黒の濃さ
+PORTRAIT_BACKDROP_ALPHA = 0.8
 BAR_GEMS = [(612.0, 27.0, 9.0), (30.0, 66.0, 7.0)]
 
 
@@ -205,6 +207,17 @@ def render_portrait(source):
     return to_image(np.concatenate([np.clip(arr, 0, 1), alpha[..., None]], axis=-1))
 
 
+def render_portrait_backdrop():
+    """肖像と同じ位置・同じ円の半透明の黒。Portrait の下（renderPriority_ -6）に置く"""
+    target_w, target_h = PORTRAIT_SIZE
+    ys, xs = np.mgrid[0:target_h, 0:target_w].astype(np.float32)
+    cx = PORTRAIT_RING_CENTER[0] - PORTRAIT_OFFSET_IN_FRAME[0]
+    cy = PORTRAIT_RING_CENTER[1] - PORTRAIT_OFFSET_IN_FRAME[1]
+    alpha = cov(np.hypot(xs - cx, ys - cy) - PORTRAIT_MASK_RADIUS) * PORTRAIT_BACKDROP_ALPHA
+    rgb = np.zeros((target_h, target_w, 3), np.float32)
+    return to_image(np.concatenate([rgb, alpha[..., None]], axis=-1))
+
+
 SPRITES = {
     'PortraitFrame': render_portrait_frame,
     'StatusBarFrame': render_status_bar_frame,
@@ -237,6 +250,10 @@ def main():
         image = fn()
         guid = write_sprite(out_dir, name, image)
         print(f'{name:16s} {image.size[0]}x{image.size[1]}  {guid}')
+
+    image = render_portrait_backdrop()
+    guid = write_sprite(KNIGHT_DIR, 'PortraitBackdrop', image)
+    print(f'{"PortraitBackdrop":16s} {image.size[0]}x{image.size[1]}  {guid}')
 
     if args.portrait_source:
         image = render_portrait(args.portrait_source)

@@ -1352,12 +1352,28 @@
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Scene/LockPlayerCannon/Enemy_Behaviour_Action_LockPlayerCannon.h",
       "params": []
     },
+    "Scene::LockPlayerControl": {
+      "class": "LockPlayerControl",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::LockPlayerControl",
+      "leaf": "LockPlayerControl",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Scene/LockPlayerControl/Enemy_Behaviour_Action_LockPlayerControl.h",
+      "params": []
+    },
     "Scene::UnlockPlayerCannon": {
       "class": "UnlockPlayerCannon",
       "fqn": "GameCore::Npc::Enemy::Behaviour::Action::UnlockPlayerCannon",
       "leaf": "UnlockPlayerCannon",
       "version": 0,
       "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Scene/UnlockPlayerCannon/Enemy_Behaviour_Action_UnlockPlayerCannon.h",
+      "params": []
+    },
+    "Scene::UnlockPlayerControl": {
+      "class": "UnlockPlayerControl",
+      "fqn": "GameCore::Npc::Enemy::Behaviour::Action::UnlockPlayerControl",
+      "leaf": "UnlockPlayerControl",
+      "version": 0,
+      "header": "Assets/Scripts/Core/Game/Npc/Enemy/Behaviour/Action/Content/Scene/UnlockPlayerControl/Enemy_Behaviour_Action_UnlockPlayerControl.h",
       "params": []
     },
     "SkeletonDragon::BossSandstorm": {
@@ -1960,7 +1976,9 @@
     "GameCore::Npc::Enemy::Behaviour::Action::WaitSeconds": "Wait::Seconds::WaitSeconds",
     "GameCore::Npc::Enemy::Behaviour::Action::WanderMove": "Basic::WanderMove",
     "GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoard": "Other::WriteBlackBoard<Int>",
-    "GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoardBool": "Other::WriteBlackBoard<Bool>"
+    "GameCore::Npc::Enemy::Behaviour::Action::WriteBlackBoardBool": "Other::WriteBlackBoard<Bool>",
+    "GameCore::Npc::Enemy::Behaviour::Action::LockPlayerControl": "Scene::LockPlayerControl",
+    "GameCore::Npc::Enemy::Behaviour::Action::UnlockPlayerControl": "Scene::UnlockPlayerControl"
   },
   "by_leaf": {
     "AddRotation": "Transform::Rotation::AddRotation",
@@ -2020,7 +2038,9 @@
     "WaitSeconds": "Wait::Seconds::WaitSeconds",
     "WanderMove": "Basic::WanderMove",
     "WriteBlackBoard": "Other::WriteBlackBoard<Int>",
-    "WriteBlackBoardBool": "Other::WriteBlackBoard<Bool>"
+    "WriteBlackBoardBool": "Other::WriteBlackBoard<Bool>",
+    "LockPlayerControl": "Scene::LockPlayerControl",
+    "UnlockPlayerControl": "Scene::UnlockPlayerControl"
   },
   "nodes": {
     "Editor::Npc::Behaviour::EntryNode": {

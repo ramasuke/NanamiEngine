@@ -14,12 +14,6 @@ namespace GamePlay::Ui
     class AssetUpdatePresenter;
     class TitleScreenUi;
 
-    /**
-     * @brief タイトル画面の入力。何か押すとメニューを出し、「はじめから / つづきから」「終わる」を捌く。
-     *
-     * 配信アセットの更新 (AssetUpdatePresenter) の札が出ている間は、そちらに入力を譲る。
-     * ゲームを始めるときは進み具合から行き先を決めて GameSceneGroup に頼む (ロード画面が覆う)
-     */
     class TitleScreenPresenter final : public Component::ComponentBase,
                                        public LifeCycleCallback::IStartable,
                                        public LifeCycleCallback::IUpdatable

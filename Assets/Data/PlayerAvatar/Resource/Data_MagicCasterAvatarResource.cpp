@@ -34,6 +34,8 @@ namespace NanamiEngine::Module::Asset
         ImGuiHelper::OnDrawInputField("dealDamageTextBillBoardPrefab_", dealDamageTextBillBoardPrefab_);
         ImGuiHelper::OnDrawInputField("avoidRollingSound_", avoidRollingSound_);
         ImGuiHelper::OnDrawInputField("justAvoidRollingSound_", justAvoidRollingSound_);
+        ImGuiHelper::OnDrawInputField("avoidRollingStartSpeed_", avoidRollingStartSpeed_);
+        ImGuiHelper::OnDrawInputField("avoidRollingEndSpeed_", avoidRollingEndSpeed_);
         ImGuiHelper::OnDrawInputField("footstepParticlePrefab_", footstepParticlePrefab_);
         ImGuiHelper::OnDrawInputField("footstepContactHeight_", footstepContactHeight_);
         ImGuiHelper::OnDrawInputField("footstepBoneNames_", footstepBoneNames_, [this]

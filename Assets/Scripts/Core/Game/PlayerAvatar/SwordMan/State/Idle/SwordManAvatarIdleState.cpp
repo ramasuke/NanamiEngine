@@ -38,7 +38,7 @@ void GameCore::PlayerAvatar::SwordMan::State::SwordManAvatarIdleState::VisitTran
     VisitLockOnAction(visitor);
     visitor.Action(SwordManAvatarStateAction::CycleItem, true);
     visitor.Action(SwordManAvatarStateAction::UseItem, Status().Pouch().CanUseSelected());
-    visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, true);
+    VisitNormalAttackPress(visitor);
     
     const bool canWakeUp = Conditions().CanWakeUp();
     visitor.OnInput(SwordManAvatarStateType::WakeUp, SwordManAvatarInput::Chat, PlayerAvatarInputPhase::Pressed, canWakeUp);

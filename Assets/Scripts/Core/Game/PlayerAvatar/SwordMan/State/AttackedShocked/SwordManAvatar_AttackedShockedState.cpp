@@ -25,7 +25,7 @@ void GameCore::PlayerAvatar::SwordMan::State::AttackedShockedState::VisitTransit
                     SwordManAvatarInput::Run, PlayerAvatarInputPhase::Holding, Status().CanRun());
     visitor.OnInput(SwordManAvatarStateType::Jump, SwordManAvatarInput::Jump, PlayerAvatarInputPhase::Pressed, Status().CanJump());
     visitor.OnInput(SwordManAvatarStateType::AvoidRolling, SwordManAvatarInput::AvoidRolling, PlayerAvatarInputPhase::Pressed, Status().CanAvoidRolling());
-    visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, true);
+    VisitNormalAttackPress(visitor);
     visitor.Automatic(SwordManAvatarStateType::Floating, !Conditions().IsGround());
 }
 

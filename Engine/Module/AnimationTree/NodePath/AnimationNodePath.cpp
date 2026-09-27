@@ -64,9 +64,10 @@ void AnimationTree::AnimationNodePath::TryAddNextCurrentNodePath(
     {
         if (!isBlending_ && additionConditionGroup_->Check(*additionParams_))
         {
+            // NOTE: AddCurrentNodePath がその場で遷移元ノードを更新してこのパスが再び呼ばれるため、先に立てる
+            isBlending_ = true;
             onAddCurrentNode_(nextNode_.lock());
             onAddNextCurrentNodePath_(this, context.timeScale_);
-            isBlending_ = true;
         }
         return;
     }
@@ -83,10 +84,10 @@ void AnimationTree::AnimationNodePath::TryAddNextCurrentNodePath(
                 // std::cerr << "StartBlendAnimation" << std::endl;
                 if (!isBlending_)
                 {
+                    isBlending_ = true;
                     onAddCurrentNode_(nextNode_.lock());
                     onAddNextCurrentNodePath_(this, context.timeScale_);
                 }
-                isBlending_ = true;
             }
         }
     }

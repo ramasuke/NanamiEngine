@@ -44,7 +44,7 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         VisitLockOnAction(visitor);
         visitor.Action(SwordManAvatarStateAction::CycleItem, true);
         visitor.Action(SwordManAvatarStateAction::UseItem, Status().Pouch().CanUseSelected());
-        visitor.OnInput(SwordManAvatarStateType::NormalAttack, SwordManAvatarInput::NormalAttack, PlayerAvatarInputPhase::Pressed, true);
+        VisitNormalAttackPress(visitor);
         visitor.Automatic(SwordManAvatarStateType::UseCanon, Conditions().CanUseCannon());
         visitor.Automatic(SwordManAvatarStateType::Floating, !Conditions().IsGround());
     }

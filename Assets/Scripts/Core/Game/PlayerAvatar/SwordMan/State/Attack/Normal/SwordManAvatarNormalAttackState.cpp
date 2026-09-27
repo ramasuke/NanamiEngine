@@ -16,7 +16,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         currentCombo_ = 0;
         isAttacked_   = false;
         bufferedAttackTimer_secs_ = 0.0f;
-        releasedSinceEnter_ = false;
         attackTurn_ = {};
     }
 
@@ -34,8 +33,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
 
     void SwordManAvatarNormalAttackState::DoUpdate()
     {
-        if (!Input().NormalAttack().IsUpdatePressed())
-            releasedSinceEnter_ = true;
         if (UpdateTransitions())
             return;
 
@@ -73,13 +70,6 @@ namespace GameCore::PlayerAvatar::SwordMan::State
         visitor.Action(SwordManAvatarStateAction::UseItem, false);
         visitor.Automatic(SwordManAvatarStateType::Hurt, Status().IsDamaged());
         visitor.Action(SwordManAvatarStateAction::ComboAttack, currentCombo_ + 1 < static_cast<int>(Status().ComboNormalAttack().size()));
-        // 1段目の発生前まで押し続けていたら、ため攻撃の溜めへ移行する
-        visitor.OnInput(
-            SwordManAvatarStateType::ChargeAttackCharging,
-            SwordManAvatarInput::NormalAttack,
-            PlayerAvatarInputPhase::Holding,
-            !releasedSinceEnter_ && currentCombo_ == 0 && !isAttacked_ && Status().CanChargeAttack(),
-            During_secs() >= Status().ChargeAttackHoldThreshold_secs());
     }
 
     void SwordManAvatarNormalAttackState::TryComboAttack()

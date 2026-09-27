@@ -45,6 +45,8 @@ def asset_guid(meta_path):
 
 FONT_BODY = asset_guid(REPO / 'Assets/Art/Font/ipam.ttf.meta')
 FONT_BRUSH = asset_guid(REPO / 'Assets/Art/Font/KaiseiDecol-Bold.ttf.meta')
+FONT_BRUSH_INK = asset_guid(REPO / 'Assets/Art/Font/KaiseiDecol-Bold_Ink.ttf.meta')  # フチなし。紙の上の暗いインク用
+FONTS = {'brush': FONT_BRUSH, 'brush_ink': FONT_BRUSH_INK}
 
 
 # ---------------------------------------------------------------- 部品
@@ -77,7 +79,7 @@ class PrefabBuilder:
     def text(self, parent, name, spec, text=''):
         """spec は layout() の文字の指定。pos は TextRenderer の基準点(左上/上辺中央/右上)"""
         node = self.node(parent, name, spec['pos'], spec['px'] / FONT_PX)
-        font = FONT_BRUSH if spec.get('font') == 'brush' else FONT_BODY
+        font = FONTS.get(spec.get('font'), FONT_BODY)
         comp = self.component(node, 'TextRenderer', fontFile_=font, renderOrder_=ORDER_TEXT,
                               text_=text or spec.get('text', ''), isWorldPos_='false',
                               textColor_=','.join(str(c) for c in spec['color']))

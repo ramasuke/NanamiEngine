@@ -97,11 +97,10 @@ namespace NanamiEngine::Core::Toolbar
         }
         else
         {
-            if (ImGui::Button("Build & Reload"))
+            if (ImGui::Button("HotReload"))
                 BeginBuild();
-            ImGui::SameLine();
-            if (ImGui::Button("Reload"))
-                gameModule.RequestReload();
+            if (ImGui::IsItemHovered())
+                ImGui::SetTooltip("ゲーム DLL をビルドして差し替える");
         }
         ImGui::SameLine();
         bool keepOld = gameModule.KeepOldModules();

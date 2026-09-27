@@ -10,6 +10,7 @@
 #include "../../../../GamePlay/Npc/Enemy/NetworkBehaviourTree/GamePlay_NetworkBehaviourTree.h"
 #include "Behaviour/Enemy_BehaviourTree.h"
 #include "../../PlayerAvatar/Record/PlayerAvatar_RecordBook.h"
+#include "../../../Network/Rpc/Custom_RpcType.h"
 #include "ShowHealthGaugeProvider/IShowHealthGaugeProvider.h"
 #include "Engine/Module/Serialization/Engine_Module_SerializationRegistration.h"
 
@@ -80,7 +81,27 @@ namespace GameCore::Npc
                 pendingFlinchPower_.reset();
             }
         }
+        SendHealthIfChanged();
         DoUpdate();
+    }
+
+    void EnemyBase::SendHealthIfChanged()
+    {
+        // NOTE: NetworkBehaviourTree の無い敵も BT は全ピアで回るが、ダメージはホストにしか入らないので HP はホストから配る
+        if (GetNetworkObjectId() == NanamiEngine::Core::Network::NetworkObjectId::Invalid() || !HasStateAuthority())
+            return;
+
+        const int health = currentStatus_->Get().Health().Value();
+        if (lastSentHealth_ == health)
+            return;
+
+        lastSentHealth_ = health;
+        GameCore::Network::EnemyHealthRpc::Send(GetNetworkObjectId(), Core::Network::DeliveryMode::Reliable, health);
+    }
+
+    void EnemyBase::ApplyNetworkHealth(const int value)
+    {
+        currentStatus_->Get().ApplyNetworkHealth(value);
     }
 
     void EnemyBase::OnTakeDamage(std::unique_ptr<IDamage> context)

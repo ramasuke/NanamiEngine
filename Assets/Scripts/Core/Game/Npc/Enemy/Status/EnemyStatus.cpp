@@ -16,6 +16,12 @@ namespace GameCore::Npc::Enemy
         onHealth_.OnNext(currentHealth_->Get());
     }
 
+    void EnemyStatus::ApplyNetworkHealth(const int value)
+    {
+        currentHealth_->Get() = StatusParameter::Health(value);
+        onHealth_.OnNext(currentHealth_->Get());
+    }
+
     void EnemyStatus::OnDrawGui()
     {
         LibCore::ImGuiHelper::OnDrawInputField("maxHealth_", maxHealth_);

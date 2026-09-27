@@ -19,7 +19,7 @@ from tools.common.cereal_json import Num, OrderedObj  # noqa: E402
 from tools.scene import edits, model  # noqa: E402
 
 import shop as art  # noqa: E402
-from event_board_prefab import ALIGN_CENTER, ALIGN_RIGHT, FONT_BRUSH, image, rgb, text  # noqa: E402
+from event_board_prefab import ALIGN_CENTER, ALIGN_RIGHT, FONT_BRUSH, FONT_BRUSH_INK, image, rgb, text  # noqa: E402
 from game_over_prefab import BLACK_MASK, FONT_BODY, Builder, asset_guid, guid_of, new_prefab, save_prefab  # noqa: E402
 
 UI_PREFAB_DIR = REPO / 'Assets' / 'Prefab' / 'UI' / 'Shop'
@@ -104,7 +104,7 @@ def build_receipt(b, root):
     pos, scale = L['rc_icon']
     icon = image(b, content, 'Icon', pos, PLACEHOLDER_ICON, ORDER_RECEIPT_ICON, scale=scale)
     pos, px = L['rc_name']
-    name = text(b, content, 'NameText', pos, px, '', art.INK, ORDER_RECEIPT_TEXT, font=FONT_BRUSH)
+    name = text(b, content, 'NameText', pos, px, '', art.INK, ORDER_RECEIPT_TEXT, font=FONT_BRUSH_INK)
     pos, px = L['rc_owned']
     owned = text(b, content, 'OwnedText', pos, px, '', art.INK_FADE, ORDER_RECEIPT_TEXT)
     pos, px, step = L['rc_desc']
@@ -114,12 +114,12 @@ def build_receipt(b, root):
     unit = text(b, content, 'UnitPriceText', pos, px, '', art.INK, ORDER_RECEIPT_TEXT, align=ALIGN_RIGHT)
     decrease = blend_image(b, content, 'QtyLeft', L['rc_decrease'], sprite_guid('Shop_QtyLeft'), ORDER_RECEIPT_TEXT, 255)
     pos, px = L['rc_quantity']
-    quantity = text(b, content, 'QuantityText', pos, px, '', art.INK, ORDER_RECEIPT_TEXT, font=FONT_BRUSH,
+    quantity = text(b, content, 'QuantityText', pos, px, '', art.INK, ORDER_RECEIPT_TEXT, font=FONT_BRUSH_INK,
                     align=ALIGN_CENTER)
     increase = blend_image(b, content, 'QtyRight', L['rc_increase'], sprite_guid('Shop_QtyRight'), ORDER_RECEIPT_TEXT,
                            255)
     pos, px = L['rc_total']
-    total = text(b, content, 'TotalText', pos, px, '', art.STAMP_RED, ORDER_RECEIPT_TEXT, font=FONT_BRUSH,
+    total = text(b, content, 'TotalText', pos, px, '', art.STAMP_RED, ORDER_RECEIPT_TEXT, font=FONT_BRUSH_INK,
                  align=ALIGN_RIGHT)
     pos, px = L['rc_after']
     after = text(b, content, 'AfterPaymentText', pos, px, '', art.INK_FADE, ORDER_RECEIPT_TEXT, align=ALIGN_RIGHT)
@@ -188,7 +188,7 @@ def build_ui(row_prefab_guid):
     text(b, root, 'MoneyLabel', pos, px, '所持金', art.HINT_COLOR, ORDER_MONEY_TAG)
     image(b, root, 'MoneyTag', L['money_tag'], sprite_guid('Shop_MoneyTag'), ORDER_MONEY_TAG)
     pos, px = L['money_text']
-    money = text(b, root, 'MoneyText', pos, px, '', art.INK, ORDER_MONEY_TEXT, font=FONT_BRUSH, align=ALIGN_CENTER)
+    money = text(b, root, 'MoneyText', pos, px, '', art.INK, ORDER_MONEY_TEXT, font=FONT_BRUSH_INK, align=ALIGN_CENTER)
     build_hints(b, root)
 
     ui = b.component(root, 'ShopUi', rowSpacing_px_=str(art.ROW_PITCH), maxVisibleRows_=str(art.MAX_ROWS))

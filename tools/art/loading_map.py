@@ -56,7 +56,7 @@ def layout():
         'paper_shadow': {'center': (PAPER_CENTER[0] + 8, PAPER_CENTER[1] + 20)},
         'paper': {'center': PAPER_CENTER},
         'dash_count': 34,
-        'kicker': {'pos': (201, 96), 'px': 34, 'color': INK, 'font': 'brush', 'align': 'left', 'text': '出 航'},
+        'kicker': {'pos': (201, 96), 'px': 34, 'color': INK, 'font': 'brush_ink', 'align': 'left', 'text': '出 航'},
         'title': {'pos': (201, 136), 'px': 60, 'color': INK, 'font': 'body', 'align': 'left', 'text': '草原地帯へ'},
         'from_caption': {'pos': (495, 903), 'px': 21, 'color': STAMP_RED, 'font': 'body', 'align': 'center', 'text': '出 発 地'},
         'to_caption': {'pos': (1395, 603), 'px': 21, 'color': STAMP_RED, 'font': 'body', 'align': 'center', 'text': '目 的 地'},
@@ -68,7 +68,7 @@ def layout():
         'front_clouds': [(700, 300, 0), (1500, 760, 1), (2300, 1000, 2)],
         'vignette': {'center': (960, 540)},
         'chip': {'center': (1680, 905)},
-        'status': {'pos': (1680, 842), 'px': 36, 'color': INK, 'font': 'brush', 'align': 'center', 'text': '航行中…'},
+        'status': {'pos': (1680, 842), 'px': 36, 'color': INK, 'font': 'brush_ink', 'align': 'center', 'text': '航行中…'},
         'percent': {'pos': (1680, 884), 'px': 66, 'color': INK, 'font': 'body', 'align': 'center', 'text': '0%'},
         'hint_glyph': {'center': (176, 1024)},
         'hint_text': {'pos': (212, 1008), 'px': 24, 'color': (238, 224, 198), 'font': 'body', 'align': 'left'},
@@ -499,7 +499,7 @@ def preview(out_path, progress=0.58):
     for spec in (dict(geo['kicker']), dict(geo['title']), dict(geo['from_caption']), dict(geo['to_caption'])):
         anchor = 'la' if spec['align'] == 'left' else 'ma'
         text(base, spec['pos'], spec['text'], spec['px'], spec['color'],
-             path=BRUSH_FONT if spec['font'] == 'brush' else BODY_FONT, anchor=anchor)
+             path=BRUSH_FONT if spec['font'].startswith('brush') else BODY_FONT, anchor=anchor)
 
     put(base, 'LoadingMap_Vignette', geo['vignette']['center'])
     for (x, y, v) in geo['front_clouds']:
@@ -508,7 +508,7 @@ def preview(out_path, progress=0.58):
     for key, value in (('status', '航行中…'), ('percent', f'{int(progress * 100)}%')):
         spec = geo[key]
         text(base, spec['pos'], value, spec['px'], spec['color'],
-             path=BRUSH_FONT if spec['font'] == 'brush' else BODY_FONT, anchor='ma')
+             path=BRUSH_FONT if spec['font'].startswith('brush') else BODY_FONT, anchor='ma')
     put(base, 'LoadingMap_HintSeal', geo['hint_glyph']['center'])
     hint = geo['hint_text']
     text(base, hint['pos'], '回避の直後は無敵時間が発生する', hint['px'], hint['color'], anchor='la')

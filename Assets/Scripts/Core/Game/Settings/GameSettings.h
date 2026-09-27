@@ -27,7 +27,7 @@ namespace GameCore
         }
 
     private:
-        float chatTextCharInterval_secs_     = 0.015f;
-        float chatTextSentenceInterval_secs_ = 1.0f;
+        float chatTextCharInterval_secs_     = 0.01875f;
+        float chatTextSentenceInterval_secs_ = 1.25f;
     };
 }

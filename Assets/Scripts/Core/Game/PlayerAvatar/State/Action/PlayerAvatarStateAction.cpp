@@ -1,6 +1,7 @@
 ﻿#include "PlayerAvatarStateAction.h"
 
 #include <cmath>
+#include <limits>
 
 #include "Engine/Core/Application/Time/Time.h"
 #include "Engine/Module/Physics/Engine_Physics_Physics.h"
@@ -18,7 +19,7 @@ namespace GameCore::PlayerAvatar::State
         
     }
     
-    void PlayerAvatarStateAction::MoveForward(const glm::vec3& inputVelocity, const float rotateSpeed) const
+    glm::vec3 PlayerAvatarStateAction::CameraRelativeDirection(const glm::vec2& input) const
     {
         const glm::quat cameraRot = stateContext_->CameraGroup().CurrentCamera().Transform().GetWorldRot();
         glm::vec3 flatForward = cameraRot * glm::vec3(0, 0, -1);
@@ -31,7 +32,12 @@ namespace GameCore::PlayerAvatar::State
         }
         const glm::vec3 cameraForward = glm::normalize(flatForward);
         const glm::vec3 cameraRight   = glm::cross(cameraForward, glm::vec3(0, 1, 0));
-        const glm::vec3 xzVelocity = cameraForward * inputVelocity.z + cameraRight * inputVelocity.x;
+        return cameraForward * input.y + cameraRight * input.x;
+    }
+
+    void PlayerAvatarStateAction::MoveForward(const glm::vec3& inputVelocity, const float rotateSpeed) const
+    {
+        const glm::vec3 xzVelocity = CameraRelativeDirection(glm::vec2(inputVelocity.x, inputVelocity.z));
         const glm::vec3 walkableVelocity = LimitToWalkableSlope(glm::vec3(xzVelocity.x, 0.0f, xzVelocity.z));
         glm::vec3 currentVelocity = stateContext_->PlayerAvatarRigidBody().LinearVelocity();
         currentVelocity.x = walkableVelocity.x;
@@ -64,6 +70,11 @@ namespace GameCore::PlayerAvatar::State
         
         // 徐々に回転
         playerTransform.SetWorldRot(glm::slerp(currentRot, targetRot, t));
+    }
+
+    void PlayerAvatarStateAction::FaceTowards(const glm::vec3& direction) const
+    {
+        RotateTowards(direction, std::numeric_limits<float>::max());
     }
 
     void PlayerAvatarStateAction::Jump(const glm::vec3& direction) const

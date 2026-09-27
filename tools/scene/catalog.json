@@ -12291,6 +12291,38 @@
           "default": 0.2
         }
       ]
+    },
+    "GamePlay::Network::CustomNetworkRunner": {
+      "class": "CustomNetworkRunner",
+      "fqn": "GamePlay::Network::CustomNetworkRunner",
+      "leaf": "CustomNetworkRunner",
+      "version": 4,
+      "base_fqn": "NanamiEngine::Module::Network::NetworkRunnerBase",
+      "immediate_base": "NetworkRunnerBase",
+      "bases": [
+        {
+          "leaf": "NetworkRunnerBase",
+          "key": "value0"
+        }
+      ],
+      "interleaved_bases": false,
+      "header": "Assets/Scripts/GamePlay/Network/Game_CustomNetworkRunner.h",
+      "params": [
+        {
+          "key": "playerAvatarFactory_",
+          "member": "playerAvatarFactory_",
+          "named": true,
+          "shape": "field",
+          "type": "PlayerAvatarFactory"
+        },
+        {
+          "key": "enemyFactory_",
+          "member": "enemyFactory_",
+          "named": true,
+          "shape": "field",
+          "type": "EnemyFactory"
+        }
+      ]
     }
   },
   "by_leaf": {
@@ -12802,6 +12834,9 @@
     ],
     "ChatIconSurpriseMotion": [
       "GamePlay::Ui::ChatIconSurpriseMotion"
+    ],
+    "CustomNetworkRunner": [
+      "GamePlay::Network::CustomNetworkRunner"
     ]
   },
   "bases": {
@@ -12930,6 +12965,18 @@
     "PickupItemBase": {
       "fqn": "GamePlay::Pickup::PickupItemBase",
       "header": "Assets/Scripts/GamePlay/Pickup/GamePlay_PickupItemBase.h",
+      "version": 1,
+      "empty": false,
+      "bases": [
+        {
+          "leaf": "ComponentBase",
+          "key": "value0"
+        }
+      ]
+    },
+    "NetworkRunnerBase": {
+      "fqn": "NanamiEngine::Module::Network::NetworkRunnerBase",
+      "header": "Engine/Module/Network/Engine_Network_NetworkRunner.h",
       "version": 1,
       "empty": false,
       "bases": [

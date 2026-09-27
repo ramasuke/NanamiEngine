@@ -114,6 +114,13 @@ namespace GamePlay::Ui
         input.digitDown    = IsPadButton(pad, GamepadButton::DPadDown) || pad.thumbLY < -stickThreshold_;
         input.erase        = Keyboard::IsDown(Key::Back) || IsPadButton(pad, GamepadButton::X);
 
+        // 番号で入るときは十字キーと左スティックが数字入力なので、右スティックと ↑↓ キーだけでステージを選ぶ
+        const bool isDigitInput = roomMode_ == Network::RelayRoom::Mode::Join;
+        input.stageUp   = Keyboard::IsDown(Key::Up) || pad.thumbRY > stickThreshold_
+                          || (!isDigitInput && input.digitUp);
+        input.stageDown = Keyboard::IsDown(Key::Down) || pad.thumbRY < -stickThreshold_
+                          || (!isDigitInput && input.digitDown);
+
         for (int digit = 0; digit <= 9; ++digit)
         {
             if (Keyboard::IsDigitDown(digit))
@@ -131,6 +138,10 @@ namespace GamePlay::Ui
             CycleMode(-1);
         if (input.nextMode && !previousInput_.nextMode)
             CycleMode(1);
+        if (input.stageUp && !previousInput_.stageUp)
+            MoveStage(-1);
+        if (input.stageDown && !previousInput_.stageDown)
+            MoveStage(1);
 
         if (roomMode_ != Network::RelayRoom::Mode::Join)
             return;
@@ -164,6 +175,19 @@ namespace GamePlay::Ui
         roomCode_.clear();
         cursor_ = 0;
         ApplyRoomToView();
+    }
+
+    void StageSelectPresenter::MoveStage(const int delta)
+    {
+        const int count = static_cast<int>(model_->Stages().size());
+        if (count == 0)
+            return;
+
+        const int next = model_->HasSelection()
+            ? (static_cast<int>(model_->SelectedIndex()) + delta + count) % count
+            : 0;
+        Sound::UiSoundBank::Play(uiSounds_, Sound::UiSe::Cursor);
+        model_->SelectStage(static_cast<size_t>(next));
     }
 
     void StageSelectPresenter::SetDigit(const int digit)

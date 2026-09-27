@@ -137,7 +137,10 @@ class _ClassVersionAudit:
         self._polymap: dict[int, str] = {}
         self._first: dict[str, str] = {}
         self._reads_positionally: dict[str, bool] = {}
+        self._versions: dict[str, Any] = {}
         self.unmodelled: set[str] = set()
+        self.version_skew: set[str] = set()
+        self.missing_types: dict[int, str] = {}
         self.problems: list[tuple[str, str]] = []
 
     @staticmethod
@@ -155,7 +158,9 @@ class _ClassVersionAudit:
         if type_key not in self._first:
             self._first[type_key] = where
             self._reads_positionally[type_key] = self._first_read_is_positional(node)
+            self._versions[type_key] = _as_int(node.get(_VER))
             if _VER not in node:
+                self.missing_types[len(self.problems)] = type_key
                 self.problems.append((
                     "missing",
                     f"{where}: first occurrence of {type_key} has no {_VER} "
@@ -188,7 +193,15 @@ class _ClassVersionAudit:
         if entry is None:
             self.unmodelled.add(fqn)
             return
-        self._check_bases(entry, data, where)
+        # NOTE: 基底スロットの並びはバージョンで変わる (旧 IUpdatable を読み捨てる CinemachineCameraBrain など)。
+        #       カタログは今の並びしか知らないので、版が違うファイルでは基底を監査しない
+        if self._versions.get(fqn) != entry.get("version"):
+            self.version_skew.add(fqn)
+        else:
+            self._check_bases(entry, data, where)
+        self._check_field_params(entry, data, where)
+
+    def _check_field_params(self, entry: dict, data: OrderedObj, where: str) -> None:
         for param in entry.get("params", []):
             if param.get("shape") != "field":
                 continue
@@ -230,6 +243,12 @@ class _ClassVersionAudit:
             child = node.get(base["key"])
             if isinstance(child, OrderedObj):
                 self._check_base(base["leaf"], child, f"{where}.{base['key']}")
+        # NOTE: 中間基底 (NetworkRunnerBase など) の FIELD も、派生の FIELD より先にこの位置で読まれる
+        candidates = self._cat.by_leaf.get(leaf, [])
+        if len(candidates) == 1:
+            entry = self._cat.component_by_fqn(candidates[0])
+            if entry is not None:
+                self._check_field_params(entry, node, where)
 
     def _check_field(self, field_type: str, block: OrderedObj, where: str) -> None:
         self._check(f"Field<{field_type}>", block, where)
@@ -284,15 +303,22 @@ def validate_class_versions(text: str, cat: catalog_mod.Catalog) -> list[str]:
     # 確か（報告には実際の出現が必要）だが、"missing" の指摘は推測になるので、
     # 理由を添えて note として報告する。
     blind = bool(audit.unmodelled)
-    for kind, message in audit.problems:
-        if kind == "missing" and blind:
+    for index, (kind, message) in enumerate(audit.problems):
+        # NOTE: 版のずれたコンポーネントで飛ばした基底スロットに隠れうるのは基底クラスの型だけ
+        skewed = bool(audit.version_skew) and cat.base_info(audit.missing_types.get(index, "")) is not None
+        if kind == "missing" and (blind or skewed):
             problems.append("note: " + message + " - unverified, see the note below")
         else:
             problems.append(message)
-    if blind:
+    if audit.unmodelled:
         problems.append(
             "note: these types are not in the catalog, so their base slots were not "
             "audited (run regen-catalog; some are unreachable by the v1 scanner): "
             + ", ".join(sorted(audit.unmodelled))
+        )
+    if audit.version_skew:
+        problems.append(
+            "note: these types are saved at an older/newer class version than the catalog, so their "
+            "base slots were not audited: " + ", ".join(sorted(audit.version_skew))
         )
     return problems

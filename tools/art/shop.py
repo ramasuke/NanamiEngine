@@ -42,7 +42,7 @@ HINT_SPRITES = {
 BLACK_MASK = REPO_ROOT / 'Assets' / 'Art' / 'UI' / 'BlackMask.png'
 
 SCREEN_W, SCREEN_H = 1920, 1080
-ICON_PX = 56  # Assets/Art/UI/Item/Icon_*.png の一辺
+ICON_PX = 64  # Assets/Art/UI/Item/Icon_*.png の一辺
 
 CHALK = (240, 238, 228)
 CHALK_DIM = (200, 208, 196)

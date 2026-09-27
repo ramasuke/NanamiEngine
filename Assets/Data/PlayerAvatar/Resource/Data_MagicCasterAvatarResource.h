@@ -44,6 +44,10 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] std::shared_ptr<SoundFile> AvoidRollingSound    () const { return avoidRollingSound_    .get(); }
         /** 回避中に攻撃を受け流したときの音。未設定なら nullptr */
         [[nodiscard]] std::shared_ptr<SoundFile> JustAvoidRollingSound() const { return justAvoidRollingSound_.get(); }
+        /** 回避の出だしの前進速度。終わりに向けて AvoidRollingEndSpeed まで落とす */
+        [[nodiscard]] float AvoidRollingStartSpeed() const { return avoidRollingStartSpeed_; }
+        /** 回避の終わり際の前進速度 */
+        [[nodiscard]] float AvoidRollingEndSpeed  () const { return avoidRollingEndSpeed_;   }
 
         [[nodiscard]] PrefabGameObjectFile& FootstepParticlePrefab() const { return *footstepParticlePrefab_.get(); }
         [[nodiscard]] bool HasFootstepParticlePrefab() const { return static_cast<bool>(footstepParticlePrefab_); }
@@ -68,6 +72,8 @@ namespace NanamiEngine::Module::Asset
         [[serialize(5)]] FIELD(PrefabGameObjectFile) footstepParticlePrefab_;
         [[serialize(5)]] std::vector<std::string>    footstepBoneNames_;
         [[serialize(5)]] float                       footstepContactHeight_ = 5.0f;
+        [[serialize(6)]] float                       avoidRollingStartSpeed_ = 120.0f;
+        [[serialize(6)]] float                       avoidRollingEndSpeed_   = 20.0f;
 
 #pragma region Serialization Function
     public:
@@ -93,6 +99,8 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(footstepParticlePrefab_));
             archive(CEREAL_NVP(footstepBoneNames_));
             archive(CEREAL_NVP(footstepContactHeight_));
+            archive(CEREAL_NVP(avoidRollingStartSpeed_));
+            archive(CEREAL_NVP(avoidRollingEndSpeed_));
         }
 
         template<class Archive>
@@ -136,11 +144,13 @@ namespace NanamiEngine::Module::Asset
                 archive(CEREAL_NVP(footstepBoneNames_));
                 archive(CEREAL_NVP(footstepContactHeight_));
             }
+            if (version >= 6) archive(CEREAL_NVP(avoidRollingStartSpeed_));
+            if (version >= 6) archive(CEREAL_NVP(avoidRollingEndSpeed_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::MagicCasterAvatarResource, 5);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::MagicCasterAvatarResource, 6);
 #pragma endregion

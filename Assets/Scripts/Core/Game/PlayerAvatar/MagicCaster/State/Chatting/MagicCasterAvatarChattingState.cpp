@@ -7,8 +7,12 @@ namespace GameCore::PlayerAvatar::MagicCaster::State
 {
     void ChattingState::DoEnter()
     {
-        InteractableArea().CatchInteractTarget().lock()->OnInteract();
+        const auto target = InteractableArea().CatchInteractTarget().lock();
         OnChangeState(MagicCasterAvatarStateType::Idle);
+        if (target)
+        {
+            target->OnInteract();
+        }
     }
 
     void ChattingState::DoFixedUpdate()

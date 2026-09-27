@@ -13,7 +13,8 @@ namespace GamePlay::Pickup
 {
     /**
      * @brief 地面に落ちている拾い物の共通部分。跳ね上げて出し、少し待ってから拾えるようにし、
-     *        拾われたら中身を渡して SE とパーティクルを出して消える。島の外へ落ちたら消える
+     *        拾えるようになったらこの PC のプレイヤーへ飛んでいって渡し、SE とパーティクルを出して消える。
+     *        持ち物に入りきらない間は地面に残り、島の外へ落ちたら消える
      */
     class PickupItemBase : public Component::ComponentBase,
                            public LifeCycleCallback::IUpdatable,
@@ -34,6 +35,9 @@ namespace GamePlay::Pickup
         void OnUpdate() final;
         [[nodiscard]] bool CanPickUp(const GameCore::PlayerAvatar::IPlayerAvatarStatus& picker) const final;
         void OnPickUp(GameCore::PlayerAvatar::IPlayerAvatarStatus& pickerStatus) final;
+        void UpdateHoming();
+        void StartHoming();
+        void StopHoming();
         void PlayPickupFeedback();
         void Remove();
 
@@ -45,10 +49,19 @@ namespace GamePlay::Pickup
         [[serialize(0)]] FIELD(Asset::PrefabGameObjectFile) pickupParticle_;
         // 島の外へ落ちた拾い物を落とし続けないよう、出た高さからこれだけ落ちたら消す
         [[serialize(1)]] float fallOutDepth_ = 500.0f;
+        // 隙間や崖下へ落ちても取りに行かずに済むよう、地形をすり抜けてプレイヤーへ飛ばす
+        [[serialize(2)]] float homingSpeed_          = 80.0f;
+        [[serialize(2)]] float homingAcceleration_   = 600.0f;
+        [[serialize(2)]] float homingMaxSpeed_       = 700.0f;
+        // NOTE: プレイヤーのカプセルに押し当てないよう、触れる前に渡す
+        [[serialize(2)]] float homingArriveDistance_ = 25.0f;
+        [[serialize(2)]] float homingTargetHeight_   = 20.0f;
 
         std::optional<float> originHeight_;
-        float elapsed_secs_ = 0.0f;
-        bool  isRemoved_    = false;
+        float elapsed_secs_   = 0.0f;
+        float homingSpeedNow_ = 0.0f;
+        bool  isHoming_       = false;
+        bool  isRemoved_      = false;
 
 #pragma region Serialization Function
     public:
@@ -65,6 +78,11 @@ namespace GamePlay::Pickup
             archive(CEREAL_NVP(pickupSound_));
             archive(CEREAL_NVP(pickupParticle_));
             archive(CEREAL_NVP(fallOutDepth_));
+            archive(CEREAL_NVP(homingSpeed_));
+            archive(CEREAL_NVP(homingAcceleration_));
+            archive(CEREAL_NVP(homingMaxSpeed_));
+            archive(CEREAL_NVP(homingArriveDistance_));
+            archive(CEREAL_NVP(homingTargetHeight_));
         }
 
         template<class Archive>
@@ -78,9 +96,14 @@ namespace GamePlay::Pickup
             if (version >= 0) archive(CEREAL_NVP(pickupSound_));
             if (version >= 0) archive(CEREAL_NVP(pickupParticle_));
             if (version >= 1) archive(CEREAL_NVP(fallOutDepth_));
+            if (version >= 2) archive(CEREAL_NVP(homingSpeed_));
+            if (version >= 2) archive(CEREAL_NVP(homingAcceleration_));
+            if (version >= 2) archive(CEREAL_NVP(homingMaxSpeed_));
+            if (version >= 2) archive(CEREAL_NVP(homingArriveDistance_));
+            if (version >= 2) archive(CEREAL_NVP(homingTargetHeight_));
         }
 #pragma endregion
     };
 }
 
-CEREAL_CLASS_VERSION(GamePlay::Pickup::PickupItemBase, 1);
+CEREAL_CLASS_VERSION(GamePlay::Pickup::PickupItemBase, 2);

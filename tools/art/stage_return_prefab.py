@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tools.scene import model  # noqa: E402
 
 import stage_return as art  # noqa: E402
-from event_board_prefab import ALIGN_CENTER, FONT_BODY, FONT_BRUSH, text  # noqa: E402
+from event_board_prefab import ALIGN_CENTER, FONT_BODY, FONT_BRUSH_INK, text  # noqa: E402
 from game_over_prefab import BLACK_MASK, Builder, asset_guid, guid_of, new_prefab, save_prefab  # noqa: E402
 
 UI_PREFAB_DIR = REPO / 'Assets' / 'Prefab' / 'UI' / 'StageReturn'
@@ -94,7 +94,7 @@ def build_tree(b, root):
                        ORDER_NOTICE)
     host = blend_image(b, notice, 'PaperHost', art.notice_center('host'), sprite_guid('StageReturn_Notice_Host'),
                        ORDER_NOTICE, enabled=False)
-    put_text(b, notice, 'Title', L['title'], art.TITLE_TEXT, art.INK, ORDER_TEXT, font=FONT_BRUSH)
+    put_text(b, notice, 'Title', L['title'], art.TITLE_TEXT, art.INK, ORDER_TEXT, font=FONT_BRUSH_INK)
     put_text(b, notice, 'Body', L['body'], art.BODY_TEXT, art.INK, ORDER_TEXT)
     host_note = put_text(b, notice, 'HostNote', L['host_note'], art.HOST_NOTE, art.STAMP_RED, ORDER_TEXT,
                          enabled=False)

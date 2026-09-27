@@ -30,9 +30,10 @@ namespace GamePlay::Ui
         float sweepT = -1.0f;
         const float cycleElapsed = std::fmod(time, cycle_secs_);
         if (cycleElapsed < sweepDuration_secs_)
+        {
             sweepT = cycleElapsed / sweepDuration_secs_;
+        }
 
-        // 周期の最後の tiltDuration_secs_ 秒だけ、減衰しながら左右に傾く
         float angle = pop_.BaseAngle();
         const float tiltElapsed = cycleElapsed - (cycle_secs_ - tiltDuration_secs_);
         if (tiltElapsed > 0.0f)
@@ -49,7 +50,7 @@ namespace GamePlay::Ui
         const int frameCount = rimGlow->GetFrameCount();
         const bool isSweeping = sweepT >= 0.0f && frameCount > 0;
         if (isSweeping)
-            rimGlow->SetFrame(std::min(static_cast<int>(sweepT * static_cast<float>(frameCount)), frameCount - 1));
+            rimGlow->SetFrame((std::min)(static_cast<int>(sweepT * static_cast<float>(frameCount)), frameCount - 1));
 
         rimGlow->SetAngle(angle);
         rimGlow->SetAlpha(isSweeping ? pop_.Alpha() : 0.0f);

@@ -78,7 +78,7 @@
                     "value_": "3CB9FA1F-B4BE-416E-B93D-469D40ED36E0"
                 },
                 "speed_": 30.0,
-                "blendAnimationOffset_secs_": 0.7,
+                "blendAnimationOffset_secs_": 0.699999988079071,
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
@@ -115,7 +115,7 @@
                     "value_": "5D9651FD-38A4-4A88-A3AB-DE4853A0F3F4"
                 },
                 "speed_": 30.0,
-                "blendAnimationOffset_secs_": 0.7,
+                "blendAnimationOffset_secs_": 0.699999988079071,
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
@@ -152,7 +152,7 @@
                     "value_": "79967005-F7A4-4AC4-8E14-9DA783D5B837"
                 },
                 "speed_": 30.0,
-                "blendAnimationOffset_secs_": 0.7,
+                "blendAnimationOffset_secs_": 0.699999988079071,
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
@@ -174,27 +174,27 @@
                             "id": 2147483659,
                             "data": {
                                 "value0": {
-                                    "value_": "6C62B196-3D68-4E6C-BF0A-62DA317D5178"
+                                    "value_": "2EBE88D7-D644-49DB-8A90-1F2ECBAC088D"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "Ask",
+                "name_": "Listen2",
                 "position_": {
-                    "value0": 940.0,
+                    "value0": 1300.0,
                     "value1": 130.0
                 },
                 "guid_": {
-                    "value_": "A2DFBE36-CE3C-448F-831F-3196964DD36F"
+                    "value_": "80E00A97-CB5C-4867-AA32-9DF64D7F5F2F"
                 },
                 "speed_": 30.0,
-                "blendAnimationOffset_secs_": 0.7,
+                "blendAnimationOffset_secs_": 0.699999988079071,
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
                 "isLoop_": true,
-                "nameCheck_": true
+                "nameCheck_": false
             }
         }
     },
@@ -211,22 +211,22 @@
                             "id": 2147483661,
                             "data": {
                                 "value0": {
-                                    "value_": "3F98A630-2701-412C-9209-0B68819D4795"
+                                    "value_": "6C62B196-3D68-4E6C-BF0A-62DA317D5178"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "Agree",
+                "name_": "Ask",
                 "position_": {
-                    "value0": 1120.0,
-                    "value1": 40.0
+                    "value0": 940.0,
+                    "value1": 130.0
                 },
                 "guid_": {
-                    "value_": "B883C1AD-0F77-47DC-824F-8FDF342882A2"
+                    "value_": "A2DFBE36-CE3C-448F-831F-3196964DD36F"
                 },
                 "speed_": 30.0,
-                "blendAnimationOffset_secs_": 0.7,
+                "blendAnimationOffset_secs_": 0.699999988079071,
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
@@ -248,27 +248,27 @@
                             "id": 2147483663,
                             "data": {
                                 "value0": {
-                                    "value_": "2EBE88D7-D644-49DB-8A90-1F2ECBAC088D"
+                                    "value_": "3F98A630-2701-412C-9209-0B68819D4795"
                                 }
                             }
                         }
                     }
                 },
-                "name_": "Listen2",
+                "name_": "Agree",
                 "position_": {
-                    "value0": 1300.0,
-                    "value1": 130.0
+                    "value0": 1120.0,
+                    "value1": 40.0
                 },
                 "guid_": {
-                    "value_": "80E00A97-CB5C-4867-AA32-9DF64D7F5F2F"
+                    "value_": "B883C1AD-0F77-47DC-824F-8FDF342882A2"
                 },
                 "speed_": 30.0,
-                "blendAnimationOffset_secs_": 0.7,
+                "blendAnimationOffset_secs_": 0.699999988079071,
                 "modelAnimationIndex_": 0,
                 "clipStartTime_": 0.0,
                 "clipEndTime_": 0.0,
                 "isLoop_": true,
-                "nameCheck_": false
+                "nameCheck_": true
             }
         }
     },
@@ -319,7 +319,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.7,
+                "transitionDuration_secs_": 0.699999988079071,
                 "fromNodeGuid_": {
                     "value_": "3CB9FA1F-B4BE-416E-B93D-469D40ED36E0"
                 },
@@ -347,7 +347,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.7,
+                "transitionDuration_secs_": 0.699999988079071,
                 "fromNodeGuid_": {
                     "value_": "5D9651FD-38A4-4A88-A3AB-DE4853A0F3F4"
                 },
@@ -375,7 +375,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.7,
+                "transitionDuration_secs_": 0.699999988079071,
                 "fromNodeGuid_": {
                     "value_": "79967005-F7A4-4AC4-8E14-9DA783D5B837"
                 },
@@ -403,7 +403,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.7,
+                "transitionDuration_secs_": 0.699999988079071,
                 "fromNodeGuid_": {
                     "value_": "A2DFBE36-CE3C-448F-831F-3196964DD36F"
                 },
@@ -431,7 +431,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.7,
+                "transitionDuration_secs_": 0.699999988079071,
                 "fromNodeGuid_": {
                     "value_": "B883C1AD-0F77-47DC-824F-8FDF342882A2"
                 },
@@ -459,7 +459,7 @@
                         }
                     }
                 },
-                "transitionDuration_secs_": 0.7,
+                "transitionDuration_secs_": 0.699999988079071,
                 "fromNodeGuid_": {
                     "value_": "80E00A97-CB5C-4867-AA32-9DF64D7F5F2F"
                 },

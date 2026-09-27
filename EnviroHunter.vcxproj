@@ -325,6 +325,7 @@
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\SpawnPrefab\Rpc_SpawnPrefab.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\SpawnMovingPrefab\Rpc_SpawnMovingPrefab.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\PurposeCamera\Rpc_PurposeCamera.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\PlayerControlLock\Rpc_PlayerControlLock.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\ScenePurposeCamera\Rpc_ScenePurposeCamera.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\Chat\Rpc_Chat.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\ChangeMainScene\Rpc_ChangeMainScene.cpp" />
@@ -332,6 +333,7 @@
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\Weather\Rpc_Weather.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\AttackAreaFire\Rpc_AttackAreaFire.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\EnemyDeath\Rpc_EnemyDeath.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\EnemyHealth\Rpc_EnemyHealth.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Network\Rpc\Module\EnemyLeave\Rpc_EnemyLeave.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Network\Session\GamePlay_StageSessionMatchmaking.cpp" />
     <ClCompile Include="Assets\Scripts\GamePlay\Npc\Enemy\Hyena\GamePlay_Enemy_Hyena.cpp" />
@@ -520,6 +522,8 @@
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\SkeletonDragon\BossSandstorm\Enemy_Behaviour_Action_BossSandstorm.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\SkeletonDragon\IsBossSandstorm\Enemy_Behaviour_Action_IsBossSandstorm.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\SkeletonDragon\HeartStun\Enemy_Behaviour_Action_HeartStun.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\LockPlayerControl\Enemy_Behaviour_Action_LockPlayerControl.cpp" />
+    <ClCompile Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\UnlockPlayerControl\Enemy_Behaviour_Action_UnlockPlayerControl.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestJournal.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\AvoidRolling\MagicCasterAvatarAvoidRollingState.cpp" />
     <ClCompile Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemUseAction.cpp" />
@@ -868,6 +872,7 @@
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SpawnPlayer\Packet_Dispatch_SpawnPlayer.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Packet\Dispatcher\Module\SpawnEnemy\Packet_Dispatch_SpawnEnemy.h" />
     <ClInclude Include="Assets\Scripts\Core\Network\Rpc\Custom_RpcType.h" />
+    <ClInclude Include="Assets\Scripts\Core\Network\Rpc\Module\PlayerControlLock\Rpc_PlayerControlLock.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Type\BehaviourTreeType.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\DrawNodeHelper.h" />
     <ClInclude Include="Assets\Scripts\Editor\BehaviourTree\Window\Node\Entry\Npc_BehaviourEntryNode.h" />
@@ -1101,6 +1106,8 @@
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\SkeletonDragon\BossSandstorm\Enemy_Behaviour_Action_BossSandstorm.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\SkeletonDragon\IsBossSandstorm\Enemy_Behaviour_Action_IsBossSandstorm.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\SkeletonDragon\HeartStun\Enemy_Behaviour_Action_HeartStun.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\LockPlayerControl\Enemy_Behaviour_Action_LockPlayerControl.h" />
+    <ClInclude Include="Assets\Scripts\Core\Game\Npc\Enemy\Behaviour\Action\Content\Scene\UnlockPlayerControl\Enemy_Behaviour_Action_UnlockPlayerControl.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Quest\PlayerAvatar_QuestJournal.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\Item\ItemUseAction.h" />
     <ClInclude Include="Assets\Scripts\Core\Game\PlayerAvatar\MagicCaster\State\UseItem\MagicCasterAvatarUseItemState.h" />

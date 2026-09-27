@@ -119,8 +119,13 @@ namespace GamePlay::Ui
             }
         }
 
-        isDisplaying_ = false;
         Entity().lock()->SetEnable(false);
+
+        // NOTE: 閉じた E を押したまま表示中を解くと話しかけてしまう
+        while (IsAdvanceInputDown())
+            co_await Coroutine::WaitYield();
+
+        isDisplaying_ = false;
     }
 
     void NpcChatting::ShowPage(const size_t index, const size_t count) const

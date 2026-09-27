@@ -14,13 +14,13 @@ globbing**, so a new `.cpp`/`.h` must be added by hand (and, optionally, to the 
   `NanamiEngine.dll` next to it. In **Game** mode it is the exe as before: it compiles `Main.cpp` itself and links the static lib
   with `/WHOLEARCHIVE` (static self-registration would otherwise be dropped by the linker).
 
-**Hot reload** (Editor only, `docs/HotReload.md` §5): the toolbar's *Build & Reload* rebuilds the game DLL with MSBuild and
+**Hot reload** (Editor only, `docs/HotReload.md` §5): the toolbar's *HotReload* button rebuilds the game DLL with MSBuild and
 `Engine/Core/Application/HotReload/GameModule` swaps it at the end of the frame (open scenes are snapshotted as JSON and
 restored, play mode is ended first). The DLL is loaded from a copy in `x64/<Config>/HotReload/<n>/`, so the linker can always
 overwrite the original. *Keep old DLL* (default on, `LocalPrefs/HotReload/`) skips `FreeLibrary`. Anything game code registers
 into the engine must go through a registry that records the module (`NANAMI_CURRENT_MODULE()` in `Engine/Core/Api/NanamiModule.h`)
 and has `UnregisterModule`; a new registry needs both plus a call in `GameModule::Reload`. AutoMCP exposes it as
-`hotreload_status` / `hotreload_reload`. *Build & Reload* builds only the game `.vcxproj` (`-p:BuildProjectReferences=false
+`hotreload_status` / `hotreload_reload`. *HotReload* builds only the game `.vcxproj` (`-p:BuildProjectReferences=false
 -p:NanamiHotReloadBuild=true`); changing engine sources still needs an editor restart (the loaded `NanamiEngine.dll` can't be
 replaced, and the props' `NanamiCheckEngineUnchanged` reports an engine rebuilt after launch as an error).
 

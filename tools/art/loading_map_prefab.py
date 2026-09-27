@@ -35,6 +35,8 @@ ROUTE_DIR = REPO / 'Assets' / 'Data' / 'LoadingRoute'
 FONT_PX = 60  # KaiseiDecol-Bold.ttf / ZenOldMincho-Bold.ttf の TtfFontFile はどちらも 60px。TextRenderer は scale で縮める
 FONT_BODY = pm.asset_guid(REPO / 'Assets/Art/Font/ZenOldMincho-Bold.ttf.meta')
 FONT_BRUSH = pm.asset_guid(REPO / 'Assets/Art/Font/KaiseiDecol-Bold.ttf.meta')
+FONT_BRUSH_INK = pm.asset_guid(REPO / 'Assets/Art/Font/KaiseiDecol-Bold_Ink.ttf.meta')  # フチなし。紙の上の暗いインク用
+FONTS = {'brush': FONT_BRUSH, 'brush_ink': FONT_BRUSH_INK}
 BLACK_MASK = pm.asset_guid(REPO / 'Assets/Art/UI/BlackMask.png.meta')
 CLEARED_SEAL = pm.asset_guid(REPO / 'Assets/Art/UI/EventBoard/QuestSeal_Cleared.png.meta')
 KEY_GLYPH = pm.asset_guid(REPO / 'Assets/Art/UI/ControlGuide/ControlGuide_Key_Shift.png.meta')
@@ -156,7 +158,7 @@ class Builder(pm.PrefabBuilder):
     def label(self, parent, name, spec, order, text=None):
         """spec は layout() の文字の指定。pos は TextRenderer の基準点(左揃えは左上、中央揃えは上辺中央)"""
         node = self.node(parent, name, spec['pos'], spec['px'] / FONT_PX)
-        font = FONT_BRUSH if spec.get('font') == 'brush' else FONT_BODY
+        font = FONTS.get(spec.get('font'), FONT_BODY)
         comp = self.component(node, 'TextRenderer', fontFile_=font, renderOrder_=order,
                               text_=spec.get('text', '') if text is None else text, isWorldPos_='false',
                               textColor_=','.join(str(c) for c in spec['color']))

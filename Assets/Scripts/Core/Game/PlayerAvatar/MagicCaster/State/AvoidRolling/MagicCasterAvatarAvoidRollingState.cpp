@@ -9,6 +9,7 @@
 void GameCore::PlayerAvatar::MagicCaster::State::AvoidRollingState::DoEnter()
 {
     isAvoided_ = false;
+    FaceAvoidRollingDirection();
     Status().ConsumeAvoidRollingStamina();
     if (const auto sound = Resources().AvoidRollingSound())
         GamePlay::Sound::SoundPlayer::PlaySe(*sound, Transform().GetWorldPos());
@@ -16,6 +17,8 @@ void GameCore::PlayerAvatar::MagicCaster::State::AvoidRollingState::DoEnter()
 
 void GameCore::PlayerAvatar::MagicCaster::State::AvoidRollingState::DoFixedUpdate()
 {
+    MoveAvoidRolling();
+
     // NOTE: 転がっている間の被ダメージは受け流す(捨てる)
     if (Status().IsDamaged())
     {

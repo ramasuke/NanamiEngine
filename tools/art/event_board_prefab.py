@@ -32,6 +32,8 @@ from game_over_prefab import (  # noqa: E402
 PREFAB_DIR = REPO / 'Assets' / 'Prefab' / 'UI' / 'EventBoard'
 FONT_BODY = asset_guid(REPO / 'Assets/Art/Font/ZenOldMincho-Bold.ttf.meta')
 FONT_BRUSH = asset_guid(REPO / 'Assets/Art/Font/KaiseiDecol-Bold.ttf.meta')
+# NOTE: 紙の上の暗いインク用。KaiseiDecol-Bold の暗いフチは茶色の文字と混ざって潰れる
+FONT_BRUSH_INK = asset_guid(REPO / 'Assets/Art/Font/KaiseiDecol-Bold_Ink.ttf.meta')
 BOARD_DATA = asset_guid(REPO / 'Assets/Data/EventNotice/MainIslandEventBoard.eventBoard.meta')
 HINT_CANCEL = asset_guid(str(art.HINT_CANCEL_SPRITE) + '.meta')
 HINT_CONFIRM = asset_guid(str(art.HINT_CONFIRM_SPRITE) + '.meta')
@@ -128,7 +130,7 @@ def build_row():
 
     seal = ticket_root(b, root)
     title = text(b, root, 'TitleText', L['row_title'][0], L['row_title'][1], '', art.INK,
-                 ORDER_TICKET_TEXT, font=FONT_BRUSH)
+                 ORDER_TICKET_TEXT, font=FONT_BRUSH_INK)
     status = text(b, root, 'StatusText', L['row_status'][0], L['row_status'][1], '', art.INK_FADE,
                   ORDER_TICKET_TEXT)
     stamp = image(b, root, 'OngoingStamp', L['row_stamp'], sprite_guid('OngoingStamp_Small'),
@@ -152,10 +154,10 @@ def build_quest_row():
 
     seal = ticket_root(b, root)
     title = text(b, root, 'TitleText', V['qrow_title'][0], V['qrow_title'][1], '', art.INK,
-                 ORDER_TICKET_TEXT, font=FONT_BRUSH)
+                 ORDER_TICKET_TEXT, font=FONT_BRUSH_INK)
     image(b, root, 'Coin', V['qrow_coin'], sprite_guid('Coin_Small'), ORDER_TICKET_TEXT)
     reward = text(b, root, 'RewardText', V['qrow_reward'][0], V['qrow_reward'][1], '', art.INK,
-                  ORDER_TICKET_TEXT, font=FONT_BRUSH)
+                  ORDER_TICKET_TEXT, font=FONT_BRUSH_INK)
     place = text(b, root, 'PlaceText', V['qrow_place'][0], V['qrow_place'][1], '', art.INK_FADE, ORDER_TICKET_TEXT)
     first, gap, scale = V['qrow_pips']
     rank = pips(b, root, 'Pip', first, gap, scale, ORDER_TICKET_TEXT)
@@ -215,10 +217,10 @@ def build_restoration_row():
 
     seal = ticket_root(b, root)
     name = text(b, root, 'NameText', V['rrow_name'][0], V['rrow_name'][1], '', art.INK,
-                ORDER_TICKET_TEXT, font=FONT_BRUSH)
+                ORDER_TICKET_TEXT, font=FONT_BRUSH_INK)
     image(b, root, 'Coin', V['rrow_coin'], sprite_guid('Coin_Small'), ORDER_TICKET_TEXT)
     cost = text(b, root, 'CostText', V['rrow_cost'][0], V['rrow_cost'][1], '', art.INK,
-                ORDER_TICKET_TEXT, font=FONT_BRUSH)
+                ORDER_TICKET_TEXT, font=FONT_BRUSH_INK)
     note = text(b, root, 'NoteText', V['rrow_note'][0], V['rrow_note'][1], '', art.INK_FADE, ORDER_TICKET_TEXT)
     stamp = image(b, root, 'StateStamp', V['rrow_stamp'], sprite_guid('RestorationStamp_Restored'),
                   ORDER_TICKET_STAMP, enabled=False)
@@ -303,7 +305,7 @@ def build_event_page(row_prefab_guid):
     image(b, detail, 'BannerShade', L['banner'], sprite_guid('BannerShade'), ORDER_BANNER_SHADE)
     image(b, detail, 'BannerFrame', L['banner'], sprite_guid('BannerFrame'), ORDER_BANNER_FRAME)
     title = text(b, detail, 'TitleText', L['title'][0], L['title'][1], '', art.INK, ORDER_POSTER_TEXT,
-                 font=FONT_BRUSH)
+                 font=FONT_BRUSH_INK)
     tag = text(b, detail, 'TagText', L['tag'][0], L['tag'][1], '', art.INK_FADE, ORDER_POSTER_TEXT)
     status = text(b, detail, 'StatusText', L['status'][0], L['status'][1], '', art.INK, ORDER_POSTER_TEXT,
                   align=ALIGN_RIGHT)
@@ -348,7 +350,7 @@ def build_quest_page(row_prefab_guid):
     image(b, photo_root, 'Shade', (0, 0), sprite_guid('QuestPhotoShade'), ORDER_BANNER_SHADE)
     image(b, photo_root, 'Frame', (0, 0), sprite_guid('QuestPhotoFrame'), ORDER_BANNER_FRAME)
     title = text(b, detail, 'TitleText', V['q_title'][0], V['q_title'][1], '', art.INK, ORDER_POSTER_TEXT,
-                 font=FONT_BRUSH)
+                 font=FONT_BRUSH_INK)
     client = text(b, detail, 'ClientText', V['q_client'][0], V['q_client'][1], '', art.INK, ORDER_POSTER_TEXT)
     place = text(b, detail, 'PlaceText', V['q_place'][0], V['q_place'][1], '', art.INK, ORDER_POSTER_TEXT)
     first, gap, scale = V['q_pips']
@@ -356,7 +358,7 @@ def build_quest_page(row_prefab_guid):
     state = text(b, detail, 'StateText', V['q_state'][0], V['q_state'][1], '', art.INK, ORDER_POSTER_TEXT)
     goal = text(b, detail, 'GoalText', V['q_goal'][0], V['q_goal'][1], '', art.INK, ORDER_POSTER_TEXT)
     reward = text(b, detail, 'RewardText', V['q_reward'][0], V['q_reward'][1], '', art.INK, ORDER_POSTER_TEXT,
-                  font=FONT_BRUSH)
+                  font=FONT_BRUSH_INK)
     limit = text(b, detail, 'LimitText', V['q_limit'][0], V['q_limit'][1], '', art.INK, ORDER_POSTER_TEXT)
     (dx, dy), dpx, line_gap, count = V['q_desc']
     lines = [text(b, detail, f'DescLine{i}', (dx, dy + i * line_gap), dpx, '', art.INK, ORDER_POSTER_TEXT)
@@ -403,7 +405,7 @@ def build_notice_page(row_prefab_guid):
     date = text(b, detail, 'DateText', V['n_date'][0], V['n_date'][1], '', art.INK_FADE, ORDER_POSTER_TEXT,
                 align=ALIGN_RIGHT)
     title = text(b, detail, 'TitleText', V['n_title'][0], V['n_title'][1], '', art.INK, ORDER_POSTER_TEXT,
-                 font=FONT_BRUSH)
+                 font=FONT_BRUSH_INK)
     (bx, by), bpx, gap, count = V['n_body']
     lines = [text(b, detail, f'BodyLine{i}', (bx, by + i * gap), bpx, '', art.INK, ORDER_POSTER_TEXT)
              for i in range(count)]
@@ -436,17 +438,17 @@ def build_restoration_page(row_prefab_guid):
 
     detail = b.node(root, 'Detail')
     name = text(b, detail, 'NameText', V['r_name'][0], V['r_name'][1], '', art.INK, ORDER_POSTER_TEXT,
-                font=FONT_BRUSH)
+                font=FONT_BRUSH_INK)
     state = text(b, detail, 'StateText', V['r_state'][0], V['r_state'][1], '', art.INK, ORDER_POSTER_TEXT,
                  align=ALIGN_RIGHT)
     condition = text(b, detail, 'ConditionText', V['r_condition'][0], V['r_condition'][1], '', art.INK_FADE,
                      ORDER_POSTER_TEXT)
     cost = text(b, detail, 'CostText', V['r_cost'][0], V['r_cost'][1], '', art.INK, ORDER_POSTER_TEXT,
-                font=FONT_BRUSH)
+                font=FONT_BRUSH_INK)
     balance = text(b, detail, 'BalanceText', V['r_balance'][0], V['r_balance'][1], '', art.INK, ORDER_POSTER_TEXT,
-                   font=FONT_BRUSH)
+                   font=FONT_BRUSH_INK)
     remain = text(b, detail, 'RemainText', V['r_remain'][0], V['r_remain'][1], '', art.GOLD_INK, ORDER_POSTER_TEXT,
-                  font=FONT_BRUSH)
+                  font=FONT_BRUSH_INK)
     (dx, dy), dpx, line_gap, count = V['r_desc']
     lines = [text(b, detail, f'DescLine{i}', (dx, dy + i * line_gap), dpx, '', art.INK, ORDER_POSTER_TEXT)
              for i in range(count)]

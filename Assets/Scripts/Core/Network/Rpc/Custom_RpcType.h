@@ -60,6 +60,12 @@ namespace GameCore::Network
         /** 骸竜の砂嵐と光の心臓 */
         BossSandstorm,
         StormHeartShaken,
+
+        /** 演出中の操作ロック */
+        PlayerControlLock,
+
+        /** 敵固有 */
+        EnemyHealth,
     };
 
     using WakeUpPlayerRpc    = Module::Network::RpcDef<ERpcType::WakeUpPlayer>;
@@ -108,4 +114,11 @@ namespace GameCore::Network
     /** 骸竜が呼んだ砂嵐を始めるか止めるかと、止めたのが心臓の揺らぎか */
     using BossSandstormRpc    = Module::Network::RpcDef<ERpcType::BossSandstorm, bool, bool>;
     using StormHeartShakenRpc = Module::Network::RpcDef<ERpcType::StormHeartShaken>;
+
+    /** 演出中に各ピアの Owner の操作を止めるか戻すか。敵の NetworkObjectId 宛て */
+    using PlayerControlLockRpc = Module::Network::RpcDef<ERpcType::PlayerControlLock, bool>;
+
+    // NOTE: 敵の HP 同期(SyncParam)が届かないので、ホストが減った HP を敵の NetworkObjectId 宛てに全ピアへ送る
+    /** ホストでの現在 HP */
+    using EnemyHealthRpc = Module::Network::RpcDef<ERpcType::EnemyHealth, int>;
 }

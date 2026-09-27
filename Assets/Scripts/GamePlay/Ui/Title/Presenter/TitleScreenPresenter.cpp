@@ -18,7 +18,7 @@ namespace GamePlay::Ui
 {
     namespace
     {
-        // 左スティックを方向キーとして読むためのしきい値
+        // 左スティックしきい値
         constexpr short TITLE_STICK_DEADZONE = 12000;
     }
 
@@ -38,12 +38,16 @@ namespace GamePlay::Ui
             button->OnHover().Subscribe([this, index](R4::Unit)
             {
                 if (phase_ == Phase::Menu && view_->IsMenuReady() && !IsAssetUpdatePrompting())
+                {
                     Select(index);
+                }
             }).AddTo(this);
             button->OnClick().Subscribe([this, index](NanamiUi::MouseState)
             {
                 if (phase_ == Phase::Menu && view_->IsMenuReady() && !IsAssetUpdatePrompting())
+                {
                     Decide(index);
+                }
             }).AddTo(this);
         }
 
@@ -82,6 +86,7 @@ namespace GamePlay::Ui
         case Phase::Press:
             if (!pressed.any)
                 break;
+            
             // 出だしの途中で押されたら、まず出し切るだけにする
             if (!view_->IsIntroFinished())
             {
@@ -150,9 +155,13 @@ namespace GamePlay::Ui
     {
         Select(index);
         if (selection_ == TitleScreenUi::START_INDEX)
+        {
             StartGame();
+        }
         else
+        {
             ExitGame();
+        }
     }
 
     void TitleScreenPresenter::StartGame()

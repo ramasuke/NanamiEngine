@@ -43,6 +43,10 @@ namespace NanamiEngine::Module::Asset
         [[nodiscard]] const std::vector<ItemStack>& InitialItems() const { return initialItems_; }
         [[nodiscard]] SoundFile& AvoidRollingSound    () const { return *avoidRollingSound_    .get(); }
         [[nodiscard]] SoundFile& JustAvoidRollingSound() const { return *justAvoidRollingSound_.get(); }
+        /** 回避の出だしの前進速度。終わりに向けて AvoidRollingEndSpeed まで落とす */
+        [[nodiscard]] float AvoidRollingStartSpeed() const { return avoidRollingStartSpeed_; }
+        /** 回避の終わり際の前進速度 */
+        [[nodiscard]] float AvoidRollingEndSpeed  () const { return avoidRollingEndSpeed_;   }
         [[nodiscard]] SoundFile& JumpSound() const { return *jumpSound_.get(); }
 
         /** 着地した瞬間に足元へ1回生成する土煙。落ちてきた速さで大きさを変える */
@@ -162,6 +166,8 @@ namespace NanamiEngine::Module::Asset
         [[serialize(22)]] FIELD(SoundFile)              jumpAttackHitSound_;
         [[serialize(22)]] FIELD(SoundFile)              jumpAttackPlungeSound_;
         [[serialize(23)]] float                         jumpAttackGroundCheckRadius_ = 3.5f;
+        [[serialize(24)]] float                         avoidRollingStartSpeed_      = 120.0f;
+        [[serialize(24)]] float                         avoidRollingEndSpeed_        = 20.0f;
 
         
 #pragma region Serialization Function
@@ -242,6 +248,8 @@ namespace NanamiEngine::Module::Asset
             archive(CEREAL_NVP(jumpAttackHitSound_));
             archive(CEREAL_NVP(jumpAttackPlungeSound_));
             archive(CEREAL_NVP(jumpAttackGroundCheckRadius_));
+            archive(CEREAL_NVP(avoidRollingStartSpeed_));
+            archive(CEREAL_NVP(avoidRollingEndSpeed_));
         }
 
         template<class Archive>
@@ -388,11 +396,13 @@ namespace NanamiEngine::Module::Asset
             }
 
             if (version >= 23) archive(CEREAL_NVP(jumpAttackGroundCheckRadius_));
+            if (version >= 24) archive(CEREAL_NVP(avoidRollingStartSpeed_));
+            if (version >= 24) archive(CEREAL_NVP(avoidRollingEndSpeed_));
         }
 #pragma endregion
     };
 }
 
 #pragma region SerializationMacro
-CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 23);
+CEREAL_CLASS_VERSION(NanamiEngine::Module::Asset::SwordManAvatarResource, 24);
 #pragma endregion

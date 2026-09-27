@@ -61,10 +61,10 @@ namespace GamePlay::Ui
 
         [[serialize(0)]] int   maxVisibleSlots_ = 5;
         /// 枠の間隔。HorizontalLayoutGroup の cellSize_.x と揃えること(帯の右端を固定するのに使う)
-        [[serialize(0)]] float slotPitch_px_ = 76.0f;
+        [[serialize(0)]] float slotPitch_px_ = 98.0f;
         [[serialize(0)]] float selectedScale_ = 1.0f;
-        [[serialize(0)]] float unselectedScale_ = 0.74f;
-        [[serialize(0)]] int   dimAlpha_ = 140;
+        [[serialize(0)]] float unselectedScale_ = 0.66f;
+        [[serialize(0)]] int   dimAlpha_ = 200;
         /// 使い切った枠の薄さ
         [[serialize(0)]] float emptyAlphaRate_ = 0.4f;
         /// 使えない State のときの薄さ

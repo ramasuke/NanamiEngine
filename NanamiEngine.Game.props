@@ -51,7 +51,7 @@
     <Copy SourceFiles="@(NanamiEngineDllFile)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="$(NanamiEngineLibDir)NanamiHost.exe" DestinationFiles="$(OutDir)$(TargetName).exe" SkipUnchangedFiles="true" Condition="Exists('$(NanamiEngineLibDir)NanamiHost.exe')" />
   </Target>
-  <!-- エディタの Build & Reload (NanamiHotReloadBuild=true): ロード中の NanamiEngine.dll は差し替えられないのでコピーしない。
+  <!-- エディタの HotReload (NanamiHotReloadBuild=true): ロード中の NanamiEngine.dll は差し替えられないのでコピーしない。
        代わりに、エンジンがエディタ起動後に再ビルドされていたら (lib と exe の隣で更新時刻が違う) エラーにして知らせる -->
   <Target Name="NanamiCheckEngineUnchanged" AfterTargets="Build" Condition="'$(NanamiEngineShared)'=='true' and '$(NanamiHotReloadBuild)'=='true'">
     <PropertyGroup>

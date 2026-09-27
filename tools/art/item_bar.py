@@ -1,16 +1,21 @@
 """Generate the item-pouch sprites (screen bottom-right) drawn by GamePlay::Ui::ItemBar / ItemSlot.
 
-    python tools/art/item_bar.py [--out-dir Assets/Art/UI/ItemBar] [--icon-dir Assets/Art/UI/Item] [--preview PATH]
+    python tools/art/item_bar.py [--out-dir Assets/Art/UI/ItemBar] [--icon-dir Assets/Art/UI/Item]
+                                 [--preview PATH] [--shot SCREEN.png]
 
-Writes the slot parts (ItemSlot_*), the count pill, the name plate and the input glyphs into --out-dir, and
+Writes the slot parts (ItemSlot_*), the count nut, the name plate and the input glyphs into --out-dir, and
 one icon per item into --icon-dir, with a SpriteFile .png.meta for each (an existing .meta keeps its GUID, so
 regenerating never breaks references).
+Design chosen 2026-09-28 from real-screen mocks (案A「鋼のメダル」): the same brushed steel as the KnightStatusUI
+portrait frame and its fist / boot medals. The selected item sits in a steel ring with blades on both sides, the
+others in small steel medals, the count on a hex nut and the name on an arrow-tipped steel plate like the tip of
+the health bar.
 Everything is authored at the *selected* slot size; unselected slots are the same sprites drawn at
 ItemBar::unselectedScale_ through the slot's Content transform, so only one frame set exists per part.
-The palette and the raster helpers come from tools/art/control_guide.py, so the pouch matches the guide.
 The layout values ItemBarUI.prefab / ItemSlot.prefab have to agree with are printed at the end (GEOMETRY).
 --preview composites the strip the way ItemBar::PresentSlots draws it (selected centred, empty slot dimmed,
-the switch pulse, and the dimmed "cannot use" state).
+the switch pulse, and the dimmed "cannot use" state); with --shot it is drawn onto that 1920x1080 screenshot
+at the prefab's root position instead.
 
 Requires Pillow + numpy.
 """
@@ -24,130 +29,148 @@ from PIL import Image, ImageDraw, ImageFont
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
+from tools.art.character_select import bevel, fbm, grid, rgba, soften  # noqa: E402
 from tools.art.control_guide import (  # noqa: E402
-    Canvas, KEY_H, KEY_MARGIN, LINE, TEAL, GOLD, blur, cov, hexc,
-    pad_frame, render_keys, render_pad_trigger, sd_circle, sd_rbox,
+    Canvas, KEY_H, KEY_MARGIN, LINE, cov, hexc, pad_frame, render_keys, render_pad_trigger, sd_rbox,
 )
 from tools.scene import sprite_meta  # noqa: E402
 
-LABEL_FONT = REPO_ROOT / 'Assets' / 'Art' / 'Font' / 'ipam.ttf'
+FONT_DIR = REPO_ROOT / 'Assets' / 'Art' / 'Font'
+LABEL_FONT = FONT_DIR / 'ipam.ttf'
+NAME_FONT = FONT_DIR / 'KaiseiDecol-Bold.ttf'
+NAME_OUTLINE = (6, 20, 26, 255)
 
 # ---- 枠まわり（選択中の枠を等倍とした設計値。非選択は ItemBar 側のスケールで縮む）
-SLOT = 70.0             # 枠の内寸（鋼枠の外形）
-FRAME_PX = 108          # 枠スプライトの一辺（左右のフィンと外側のティール縁が収まる大きさ）
-BACKING_PX = 64
-GLOW_PX = 152
-ICON_PX = 56
-PILL_W, PILL_H = 30, 20
-PILL_OFFSET = (20.0, 22.0)   # 枠の中心から個数ピルの中心まで（枠の内側に収まる位置）
-NAME_W, NAME_H = 244, 38
-NAME_TAIL = 11
+DISC = 100.0            # 鋼の環の外径
+RIM = 11.0              # 環の太さ
+BLADE = 26.0            # 選択中の環の左右に出す刃の長さ
+FRAME_PX = 164          # 枠スプライトの一辺（刃が収まる大きさ）
+BACKING_PX = 84
+GLOW_PX = 150
+ICON_PX = 64
+NUT_PX = 30
+NUT_OFFSET = (32.0, 33.0)    # 枠の中心から個数ナットの中心まで
+NAME_BODY_W, NAME_H, NAME_TIP = 236, 42, 34
 
 # ---- 帯の並び（ItemBar の serialize 既定値と合わせること）
-SLOT_PITCH = 76.0
-UNSELECTED_SCALE = 0.74
-NAME_OFFSET_Y = -72.0
-HINT_OFFSET_Y = 62.0
+SLOT_PITCH = 98.0
+UNSELECTED_SCALE = 0.66
+DIM_ALPHA = 200
+NAME_OFFSET_Y = -88.0
+HINT_OFFSET_Y = 84.0
+ROOT_POS = (1856, 962)
 # ルート（= 一番右の枠の中心）から見た操作ヒントの中心。
-# 切替のキー画像はキーボードの「Z X」が幅 64px (パッドは 32px) あるので、それでも「切替」に触れない位置
+# 切替のキー画像はキーボードの「Z X」が幅 64px (パッドは 32px) あるので、それでも「切り替え」に触れない位置
 HINT_LAYOUT = {
-    'UseLabel': (-24.0, HINT_OFFSET_Y),
-    'UseGlyph': (-76.0, HINT_OFFSET_Y),
-    'CycleLabel': (-142.0, HINT_OFFSET_Y),
-    'CycleGlyph': (-208.0, HINT_OFFSET_Y),
+    'UseLabel': (0.0, HINT_OFFSET_Y),
+    'UseGlyph': (-45.0, HINT_OFFSET_Y),
+    'CycleLabel': (-129.0, HINT_OFFSET_Y),
+    'CycleGlyph': (-211.0, HINT_OFFSET_Y),
 }
-NAME_TEXT_PX, HINT_TEXT_PX, COUNT_TEXT_PX = 25, 21, 17
+HINT_TEXT = {'CycleLabel': '切り替え', 'UseLabel': '使う'}
+NAME_TEXT_PX, HINT_TEXT_PX, COUNT_TEXT_PX = 26, 21, 19
 
-STEEL = hexc('#7c8896')
-STEEL_LT = hexc('#c0cad4')
-INK = hexc('#06101a')
-TEAL_DEEP = hexc('#0c2a30')
-
-
-def _square(px):
-    c = Canvas(px, px)
-    return c, c.X, c.Y, px / 2.0, px / 2.0
+STEEL = np.array([0.50, 0.53, 0.58], np.float32)
+DARK_IN = np.array([0.06, 0.07, 0.09], np.float32)
+COUNT_COLOR = (200, 208, 212)
+COUNT_SELECTED_COLOR = (255, 206, 104)
 
 
+def sdf_mask(d, soft=0.7):
+    return soften(np.clip(0.5 - d, 0, 1), soft)
+
+
+def _brushed(w, h, seed, base=18):
+    return 0.85 + 0.3 * fbm(w, h, seed, octaves=5, base=base)
+
+
+# ---------------------------------------------------------------- 枠
 def render_backing():
-    """枠の内側の暗板。選択中かどうかは枠の明るさと大きさで見せるので1種類だけ"""
-    c, X, Y, cx, cy = _square(BACKING_PX)
-    h = SLOT / 2 - 4
-    d = sd_rbox(X, Y, cx - h, cy - h, cx + h, cy + h, SLOT * 0.12)
-    c.over(INK, cov(d) * 0.86)
-    c.over(hexc('#16202a'), cov(d + 2.5) * 0.6)
-    # 上から下へのわずかな明暗
-    c.over(hexc('#ffffff'), cov(d + 2.5) * np.clip((cy - Y) / SLOT, 0, 1) * 0.05)
-    return c.resolve()
-
-
-def _frame_ring(c, X, Y, cx, cy, color, width_px, alpha=1.0):
-    h = SLOT / 2
-    d = sd_rbox(X, Y, cx - h, cy - h, cx + h, cy + h, SLOT * 0.15)
-    c.over(color, cov(d) * (1 - cov(d + width_px)) * alpha)
+    """環の内側の暗い円板。上から光が落ちて縁ほど暗い"""
+    s = BACKING_PX
+    xx, yy = grid(s, s)
+    c = s / 2
+    r = DISC / 2 - RIM + 2
+    rad = np.hypot(xx - c + 0.5, yy - c + 0.5)
+    mask = sdf_mask(rad - r)
+    t = np.clip(np.hypot(xx - c, yy - (c - r * 0.35)) / r, 0, 1)[..., None]
+    rgb = np.array([0.20, 0.21, 0.26], np.float32) * (1 - t) + DARK_IN * t
+    rgb = rgb * (0.55 + 0.45 * np.clip((r - rad) / 6, 0, 1))[..., None]
+    return rgba(rgb, mask * 0.94)
 
 
 def render_frame(selected):
-    """鋼の枠。選択中は明るいリム＋外側のティール縁＋左右の三角フィン"""
-    c, X, Y, cx, cy = _square(FRAME_PX)
-    h = SLOT / 2
-
+    """鋼の環。選択中は明るく、左右に騎士の肖像枠と同じ斜めに切った刃を出す"""
+    s = FRAME_PX
+    xx, yy = grid(s, s)
+    c = s / 2
+    r = DISC / 2
+    bright = 1.0 if selected else 0.8
+    rad = np.hypot(xx - c + 0.5, yy - c + 0.5)
+    ring_d = np.abs(rad - (r - RIM / 2)) - RIM / 2
+    ring = sdf_mask(ring_d)
+    brushed = _brushed(s, s, 41 if selected else 42)
+    across = np.clip((rad - (r - RIM)) / RIM, 0, 1)
+    light = np.clip(((c - xx) + (c - yy) * 1.4) / (s * 0.7) + 0.55, 0.2, 1.2)
+    rgb = STEEL[None, None, :] * ((0.45 + 1.1 * np.sin(across * np.pi) * light) * brushed * bright)[..., None]
+    alpha = ring
     if selected:
-        fin = SLOT * 0.18
         for sign in (-1, 1):
-            x0 = cx + sign * (h + 3)
-            tipx = x0 + sign * fin
-            # 三角形（頂点 x が外、底辺が枠側）
-            t = np.clip((X - x0) / (tipx - x0), 0, 1) if sign > 0 else np.clip((x0 - X) / (x0 - tipx), 0, 1)
-            half = (1 - t) * fin * 0.95
-            shape = cov(np.abs(Y - cy) - half) * (t > 0) * (t < 1)
-            c.over(STEEL_LT, shape * 0.95)
-
-    _frame_ring(c, X, Y, cx, cy, STEEL_LT if selected else STEEL, 4.2 if selected else 3.2)
-    if selected:
-        # 外側のティール縁。選ばれている枠だけ光って見えるようにする
-        d = sd_rbox(X, Y, cx - h - 4, cy - h - 4, cx + h + 4, cy + h + 4, SLOT * 0.18)
-        ring = cov(d) * (1 - cov(d + 2.2))
-        c.over(TEAL, np.clip(blur(ring, 2.4) * 1.4, 0, 1) * 0.26)
-        c.over(TEAL, ring)
-    return c.resolve()
+            u = (xx - (c + sign * (r - 2))) * sign
+            half = np.clip(1 - u / BLADE, 0, 1) * 15 * np.clip(u / 4 + 0.5, 0, 1)
+            ridge = yy - c + u * 0.35
+            blade = sdf_mask(np.maximum(np.abs(ridge) - half, -u)) * (1 - sdf_mask(rad - r))
+            face = np.where(ridge < 0, 1.25, 0.7)
+            srgb = STEEL[None, None, :] * (face * brushed)[..., None]
+            rgb = srgb * blade[..., None] + rgb * (1 - blade[..., None])
+            alpha = np.maximum(alpha, blade)
+    return rgba(rgb, alpha)
 
 
 def render_select_glow():
-    """切替の瞬間に加算で重ねる光"""
-    c, X, Y, cx, cy = _square(GLOW_PX)
-    h = SLOT / 2
-    d = sd_rbox(X, Y, cx - h, cy - h, cx + h, cy + h, SLOT * 0.15)
-    ring = cov(d) * (1 - cov(d + 3.0))
-    c.over(TEAL, np.clip(blur(ring, 7.0) * 2.4, 0, 1) * 0.8)
-    c.over(hexc('#e8fffb'), ring * 0.75)
-    return c.resolve()
+    """切替の瞬間に加算で重ねる、環の縁に走る白い光"""
+    s = GLOW_PX
+    xx, yy = grid(s, s)
+    c = s / 2
+    rad = np.hypot(xx - c + 0.5, yy - c + 0.5)
+    line = np.clip(1 - np.abs(rad - (DISC / 2 - RIM / 2)) / (RIM / 2), 0, 1)
+    halo = soften(line, 6.0)
+    a = np.clip(line * 0.55 + halo * 1.2, 0, 1)
+    rgb = np.ones((s, s, 3), np.float32) * np.array([0.96, 0.94, 0.88], np.float32)
+    return rgba(rgb, a)
 
 
-def render_count_pill():
-    """個数を載せる小さなピル。選択中かどうかは数字の色（ItemSlot の countSelectedColor_）で見せる"""
-    c = Canvas(PILL_W, PILL_H)
-    X, Y = c.X, c.Y
-    d = sd_rbox(X, Y, 1.5, 1.5, PILL_W - 1.5, PILL_H - 1.5, (PILL_H - 3) / 2)
-    c.over(INK, cov(d) * 0.95)
-    c.over(STEEL, cov(d) * (1 - cov(d + 1.8)))
-    return c.resolve()
+def render_count_nut():
+    """個数を載せる六角の鋼ナット。選択中かどうかは数字の色（ItemSlot の countSelectedColor_）で見せる"""
+    s = NUT_PX
+    xx, yy = grid(s, s)
+    c = s / 2
+    ang = np.arctan2(yy - c, xx - c)
+    rad = np.hypot(xx - c, yy - c)
+    hexr = (s / 2 - 1) * math.cos(math.pi / 6) / np.cos((ang % (math.pi / 3)) - math.pi / 6)
+    d = rad - hexr
+    mask = sdf_mask(d)
+    inner = sdf_mask(d + 3)
+    rim = STEEL[None, None, :] * (1.0 + 1.6 * bevel(mask, 1.4))[..., None]
+    rgb = DARK_IN[None, None, :] * inner[..., None] + rim * (1 - inner[..., None])
+    return rgba(rgb, mask)
 
 
 def render_name_plate():
-    """選択中のアイテム名を載せる帯。下向きのしっぽで枠を指す"""
-    c = Canvas(NAME_W, NAME_H + NAME_TAIL)
-    X, Y = c.X, c.Y
-    body = cov(sd_rbox(X, Y, 0, 0, NAME_W, NAME_H, 4))
-    tail_half = 8.0 * np.clip(1 - (Y - NAME_H) / NAME_TAIL, 0, 1)
-    tail = cov(np.abs(X - NAME_W / 2) - tail_half) * (Y >= NAME_H)
-    shape = np.clip(body + tail, 0, 1)
-    c.over(hexc('#04121a'), shape * 0.84)
-    # 縁取りは本体だけ（しっぽは塗りつぶしのまま）
-    edge = cov(sd_rbox(X, Y, 0, 0, NAME_W, NAME_H, 4)) * (1 - cov(sd_rbox(X, Y, 0, 0, NAME_W, NAME_H, 4) + 1.7))
-    c.over(TEAL, edge * 0.65)
-    c.over(TEAL, cov(sd_rbox(X, Y, 7, 6, 10.5, NAME_H - 6, 0.5)))
-    return c.resolve()
+    """体力バーの先端と同じ、右が矢じりに尖った鋼の札。
+    左に矢じりと同じ幅の透明を足して、本体の中心 = 画像の中心にする（名前の文字は中央揃えで置く）"""
+    w, h = NAME_BODY_W + NAME_TIP * 2, NAME_H
+    xx, yy = grid(w, h)
+    x0 = NAME_TIP
+    point = np.clip((xx - (w - 2 - NAME_TIP)) / NAME_TIP, 0, 1)
+    d = np.maximum.reduce([np.abs(yy - h / 2) - (h / 2 - 2) * (1 - point), x0 + 2 - xx, xx - (w - 2)])
+    mask = sdf_mask(d)
+    inner = sdf_mask(d + 4)
+    rim = STEEL[None, None, :] * (_brushed(w, h, 44, base=20) * (1.05 + 1.6 * bevel(mask, 2.0)))[..., None]
+    ty = np.clip(yy / h, 0, 1)[..., None]
+    in_rgb = np.array([0.13, 0.15, 0.19], np.float32) * (1 - ty) + np.array([0.04, 0.05, 0.07], np.float32) * ty
+    rgb = in_rgb * inner[..., None] + rim * (1 - inner[..., None])
+    return rgba(rgb, mask * 0.97)
 
 
 def render_pad_dpad_lr():
@@ -161,7 +184,7 @@ def render_pad_dpad_lr():
     arm, thick = r * 0.72, r * 0.24
     cross = np.clip(cov(sd_rbox(X, Y, cx - arm, cy - thick, cx + arm, cy + thick, 1.0))
                     + cov(sd_rbox(X, Y, cx - thick, cy - arm, cx + thick, cy + arm, 1.0)), 0, 1)
-    c.over(STEEL, cross * 0.55)
+    c.over(hexc('#7c8896'), cross * 0.55)
 
     tip, base, wing = r * 0.74, r * 0.30, r * 0.20
     for direction in (-1, 1):
@@ -178,73 +201,113 @@ def render_pad_dpad_lr():
     return c.resolve()
 
 
-# ---------------------------------------------------------------- アイテムアイコン
-def _icon_canvas():
-    c = Canvas(ICON_PX, ICON_PX)
-    return c, c.X, c.Y, ICON_PX / 2.0, ICON_PX / 2.0
+# ---------------------------------------------------------------- アイテムアイコン（写実寄りの塗り）
+# 72px で描いて ICON_PX へ縮める
+ICON_DRAW = 72
 
 
-def icon_flask(liquid):
-    c, X, Y, cx, cy = _icon_canvas()
-    body = sd_circle(X, Y, cx, cy + 6, 15)
-    neck = sd_rbox(X, Y, cx - 5, cy - 16, cx + 5, cy, 2)
-    cork = sd_rbox(X, Y, cx - 7, cy - 22, cx + 7, cy - 15, 2)
-    c.over(hexc('#8d9aa2'), cov(neck) * 0.85)
-    c.over(liquid, cov(body))
-    c.over(hexc('#ffffff'), cov(sd_circle(X, Y, cx - 5, cy + 2, 4)) * 0.28)
-    c.over(STEEL_LT, cov(body) * (1 - cov(body + 1.8)))
-    c.over(STEEL_LT, cov(neck) * (1 - cov(neck + 1.4)))
-    c.over(hexc('#7a5a36'), cov(cork))
-    c.over(hexc('#3e2a16'), cov(cork) * (1 - cov(cork + 1.4)))
-    return c.resolve()
+def _shade(mask, base_rgb, seed, grain=0.25, grain_base=10):
+    g = 1 - grain / 2 + grain * fbm(mask.shape[1], mask.shape[0], seed, octaves=5, base=grain_base)
+    return base_rgb[None, None, :] * (g * (1.0 + 1.4 * bevel(mask, 2.2)))[..., None]
+
+
+def _flat(rgb):
+    return np.ones((ICON_DRAW, ICON_DRAW, 3), np.float32) * np.array(rgb, np.float32)
+
+
+def _compose(layers):
+    s = ICON_DRAW
+    out = np.zeros((s, s, 3), np.float32)
+    alpha = np.zeros((s, s), np.float32)
+    for rgb, m in layers:
+        out = rgb * m[..., None] + out * (1 - m[..., None])
+        alpha = m + alpha * (1 - m)
+    return rgba(out, alpha).resize((ICON_PX, ICON_PX), Image.LANCZOS)
+
+
+def icon_potion():
+    """回復薬: 丸底の硝子瓶に緑の薬、コルク栓"""
+    s = ICON_DRAW
+    xx, yy = grid(s, s)
+    cx, cy = s / 2, s / 2 + 7
+    body_d = np.hypot(xx - cx, yy - cy) - 21
+    neck_d = np.maximum(np.abs(xx - cx) - 6.5, np.abs(yy - (cy - 25)) - 9)
+    glass_d = np.minimum(body_d, neck_d)
+    glass = sdf_mask(glass_d)
+    liquid = sdf_mask(np.maximum(body_d + 2.5, (cy - 6) - yy))
+    cork = sdf_mask(np.maximum(np.abs(xx - cx) - 8, np.abs(yy - (cy - 35)) - 5) - 1)
+    lip = sdf_mask(np.maximum(np.abs(xx - cx) - 8.5, np.abs(yy - (cy - 29)) - 1.8) - 0.5)
+    rim = np.clip(1 - np.abs(glass_d + 1.5) / 1.6, 0, 1)
+    glass_rgb = _flat((0.30, 0.38, 0.40)) + rim[..., None] * 0.5
+    t = np.clip(np.hypot(xx - (cx - 5), yy - (cy + 2)) / 22, 0, 1)[..., None]
+    liq = np.array([0.36, 0.82, 0.42], np.float32) * (1 - t) + np.array([0.05, 0.28, 0.12], np.float32) * t
+    liq = liq * (0.9 + 0.2 * fbm(s, s, 3, octaves=4, base=6))[..., None]
+    liq = liq + (np.clip(1 - np.abs(yy - (cy - 6)) / 1.2, 0, 1) * liquid)[..., None] * 0.35
+    spec = sdf_mask(np.hypot((xx - (cx - 10)) / 3.2, (yy - (cy - 5)) / 7.5) - 1, 1.0)
+    spec2 = sdf_mask(np.hypot(xx - (cx + 11), yy - (cy + 10)) - 1.8, 0.8)
+    cork_rgb = _shade(cork, np.array([0.52, 0.36, 0.20], np.float32), 7, grain=0.5, grain_base=8)
+    return _compose([(glass_rgb, glass * 0.85), (liq, liquid), (_flat((0.62, 0.66, 0.68)), lip),
+                     (cork_rgb, cork), (_flat((1, 1, 1)), spec * 0.75), (_flat((1, 1, 1)), spec2 * 0.6)])
 
 
 def icon_meat():
-    c, X, Y, cx, cy = _icon_canvas()
-    meat = sd_circle(X, Y, cx - 3, cy + 6, 15)
-    c.over(hexc('#8f4a2c'), cov(meat))
-    c.over(hexc('#b86c44'), cov(sd_circle(X, Y, cx - 6, cy + 3, 8)) * 0.85)
-    c.over(hexc('#54281a'), cov(meat) * (1 - cov(meat + 1.8)))
-    bone = sd_rbox(X, Y, cx + 1, cy - 17, cx + 5, cy - 2, 2)
-    c.over(hexc('#efeade'), cov(bone))
-    c.over(hexc('#efeade'), cov(sd_circle(X, Y, cx + 3, cy - 18, 5)))
-    return c.resolve()
+    """こんがり肉: 焼き色の付いた骨付き肉"""
+    s = ICON_DRAW
+    xx, yy = grid(s, s)
+    u = (xx - s / 2) * math.cos(0.6) + (yy - s / 2) * math.sin(0.6)
+    v = -(xx - s / 2) * math.sin(0.6) + (yy - s / 2) * math.cos(0.6)
+    meat_d = np.hypot((u + 6) / 22, v / 16) * 16 - 16 + (fbm(s, s, 11, octaves=3, base=5) - 0.5) * 3
+    meat = sdf_mask(meat_d)
+    bone_d = np.minimum(np.maximum(np.abs(v) - 3.2, np.abs(u - 16) - 12),
+                        np.minimum(np.hypot(u - 28, v - 4) - 4.8, np.hypot(u - 28, v + 4) - 4.8))
+    bone = sdf_mask(bone_d) * (1 - meat)
+    t = np.clip((meat_d + 16) / 16, 0, 1)[..., None]
+    meat_rgb = np.array([0.66, 0.36, 0.18], np.float32) * (1 - t) + np.array([0.28, 0.12, 0.05], np.float32) * t
+    meat_rgb = meat_rgb * ((0.7 + 0.6 * fbm(s, s, 12, octaves=5, base=9)) * (1 + 1.2 * bevel(meat, 2.5)))[..., None]
+    gloss = sdf_mask(np.hypot((u + 10) / 9, (v + 7) / 3.5) - 1, 1.2) * meat
+    bone_rgb = _shade(bone, np.array([0.90, 0.86, 0.76], np.float32), 13, grain=0.15)
+    return _compose([(bone_rgb, bone), (meat_rgb, meat), (_flat((1, 0.9, 0.75)), gloss * 0.45)])
 
 
-def icon_bomb():
-    c, X, Y, cx, cy = _icon_canvas()
-    barrel = sd_rbox(X, Y, cx - 13, cy - 8, cx + 13, cy + 17, 4)
-    c.over(hexc('#7a5636'), cov(barrel))
-    c.over(hexc('#42280f'), cov(barrel) * (1 - cov(barrel + 1.6)))
-    for y in (cy - 2, cy + 9):
-        c.over(hexc('#aab4be'), cov(np.abs(Y - y) - 1.6) * cov(barrel + 1.0))
-    fuse_t = np.clip((X - cx) / 9.0, 0, 1)
-    fuse = np.hypot(X - (cx + fuse_t * 9), Y - (cy - 8 - fuse_t * 11)) - 1.5
-    c.over(hexc('#d2c8b4'), cov(fuse) * (X >= cx) * (Y <= cy - 8))
-    c.over(GOLD, cov(sd_circle(X, Y, cx + 9, cy - 19, 3.6)))
-    return c.resolve()
+def icon_barrel():
+    """大タル爆弾: 鉄の箍をはめた樽と火の付いた導火線"""
+    s = ICON_DRAW
+    xx, yy = grid(s, s)
+    cx, cy = s / 2, s / 2 + 5
+    bulge = 1 + 0.12 * (1 - ((yy - cy) / 22) ** 2)
+    body = sdf_mask(np.maximum(np.abs(xx - cx) - 17 * bulge, np.abs(yy - cy) - 22) - 1)
+    across = np.clip((xx - cx) / (17 * bulge), -1, 1)
+    staves = 0.8 + 0.2 * np.abs(np.sin((np.arcsin(across) * 3.2) * math.pi))
+    round_ = np.sqrt(np.clip(1 - across ** 2, 0, 1)) * 0.7 + 0.35
+    light = np.clip(1.15 - (across + 0.3) * 0.35, 0.6, 1.3)
+    wood = np.array([0.50, 0.30, 0.15], np.float32) * (0.75 + 0.5 * fbm(s, s, 21, octaves=5, base=4))[..., None]
+    wood_rgb = wood * (staves * round_ * light)[..., None]
+    hoops = sum(sdf_mask(np.abs(yy - (cy + o)) - 2.3) for o in (-15, 0, 15)) * body
+    hoop_rgb = np.array([0.36, 0.38, 0.40], np.float32) * (round_ * light * (0.8 + 0.4 * fbm(s, s, 22)))[..., None] * 1.3
+    ft = np.clip((xx - (cx + 2)) / 14, 0, 1)
+    fuse_d = np.hypot(xx - (cx + 2 + ft * 12), yy - (cy - 22 - np.sin(ft * 3) * 6)) - 1.6
+    fuse = sdf_mask(fuse_d) * (xx > cx) * (xx < cx + 15)
+    spark = sdf_mask(np.hypot(xx - (cx + 15), yy - (cy - 26)) - 3.2, 1.6)
+    return _compose([(wood_rgb, body), (hoop_rgb, hoops), (_flat((0.78, 0.72, 0.6)), fuse),
+                     (_flat((1.0, 0.6, 0.2)), soften(spark, 3.0) * 0.9), (_flat((1.0, 0.95, 0.7)), spark)])
 
 
 def icon_herb():
-    """薬草: 葉を3枚束ねた株と白い小花"""
-    c, X, Y, cx, cy = _icon_canvas()
-    stem = np.hypot(X - cx, np.maximum(np.abs(Y - (cy + 14)) - 6, 0)) - 1.6
-    c.over(hexc('#4e6e24'), cov(stem))
-    for angle, length, width, fill in ((-38, 14, 6.5, '#3f8a3c'), (38, 14, 6.5, '#3f8a3c'), (0, 17, 7.5, '#6fb84c')):
-        a = math.radians(angle - 90)
-        lx, ly = cx + math.cos(a) * length * 0.9, cy + 8 + math.sin(a) * length * 0.9
-        u = (X - lx) * math.cos(a) + (Y - ly) * math.sin(a)
-        v = -(X - lx) * math.sin(a) + (Y - ly) * math.cos(a)
-        blade = (np.hypot(u / length, v / width) - 1) * width
-        c.over(hexc(fill), cov(blade))
-        c.over(hexc('#1f4a1e'), cov(blade) * (1 - cov(blade + 1.5)))
-        c.over(hexc('#c8e8a0'), cov(np.abs(v) - 0.5) * cov(blade + 2.0) * 0.7)
-    for fx, fy in ((cx + 10, cy - 14), (cx + 15, cy - 9)):
-        for k in range(5):
-            b = 2 * math.pi * k / 5
-            c.over(hexc('#f6f1e0'), cov(sd_circle(X, Y, fx + math.cos(b) * 2.6, fy + math.sin(b) * 2.6, 2.1)))
-        c.over(GOLD, cov(sd_circle(X, Y, fx, fy, 1.4)))
-    return c.resolve()
+    """薬草: 葉脈の通った葉を3枚束ねた株"""
+    s = ICON_DRAW
+    xx, yy = grid(s, s)
+    stem = sdf_mask(np.maximum(np.abs(xx - (s / 2 + (yy - s) * -0.08)) - 1.6, np.abs(yy - (s * 0.78)) - 12))
+    layers = [(_flat((0.30, 0.40, 0.16)), stem)]
+    for ang, ln, wd, col, seed in ((-42, 20, 8, (0.22, 0.46, 0.18), 31), (40, 19, 8, (0.24, 0.50, 0.20), 32),
+                                   (-8, 24, 9.5, (0.34, 0.62, 0.26), 33)):
+        a = math.radians(ang - 90)
+        lx, ly = s / 2 + math.cos(a) * ln * 0.85, s * 0.62 + math.sin(a) * ln * 0.85
+        u = (xx - lx) * math.cos(a) + (yy - ly) * math.sin(a)
+        v = -(xx - lx) * math.sin(a) + (yy - ly) * math.cos(a)
+        m = sdf_mask((np.hypot(u / ln, v / (wd * (1 - 0.35 * u / ln))) - 1) * wd)
+        vein = np.clip(1 - np.abs(v) / 0.9, 0, 1) * 0.35
+        layers.append((_shade(m, np.array(col, np.float32), seed, grain=0.35, grain_base=14) + vein[..., None], m))
+    return _compose(layers)
 
 
 SPRITES = {
@@ -252,7 +315,7 @@ SPRITES = {
     'ItemSlot_Frame': lambda: render_frame(False),
     'ItemSlot_FrameSelected': lambda: render_frame(True),
     'ItemSlot_SelectGlow': render_select_glow,
-    'ItemCount_Pill': render_count_pill,
+    'ItemCount_Pill': render_count_nut,
     'ItemName_Plate': render_name_plate,
     'ItemBar_Pad_DPadLR': render_pad_dpad_lr,
     'ItemBar_Pad_LB': lambda: render_pad_trigger('LB'),
@@ -261,11 +324,12 @@ SPRITES = {
 }
 
 ICONS = {
-    'Icon_Potion': lambda: icon_flask(hexc('#4ac262')),
+    'Icon_Potion': icon_potion,
     'Icon_Meat': icon_meat,
-    'Icon_Bomb': icon_bomb,
+    'Icon_Bomb': icon_barrel,
     'Icon_Herb': icon_herb,
 }
+
 
 def text_top(centre_y, px):
     """TextRenderer は文字の上端が y になる（プレビューは縦中央で描いている）ので、中心から px/2 上げる"""
@@ -273,20 +337,19 @@ def text_top(centre_y, px):
 
 
 GEOMETRY = {
-    'ItemBarUI root localPos (= 一番右の枠の中心)': (1860, 972),
+    'ItemBarUI root localPos (= 一番右の枠の中心)': ROOT_POS,
     'Slots HorizontalLayoutGroup cellSize_': (SLOT_PITCH, 0),
     'Slots HorizontalLayoutGroup spacing_': 0,
     'Slots localPos (ItemBar が実行時に x を上書きする)': (0, 0),
     'NamePlate localPos (x も実行時に上書き)': (0, NAME_OFFSET_Y),
-    'NameText localPos (x も実行時に上書き)': (0, text_top(NAME_OFFSET_Y - NAME_TAIL / 2, NAME_TEXT_PX)),
+    'NameText localPos (x も実行時に上書き)': (0, text_top(NAME_OFFSET_Y, NAME_TEXT_PX)),
     'ItemBar slotPitch_px_': SLOT_PITCH,
     'ItemBar unselectedScale_': UNSELECTED_SCALE,
+    'ItemBar dimAlpha_': DIM_ALPHA,
     'ItemSlot Content localPos / localScale': ((0, 0), 1.0),
-    'ItemSlot Backing localPos': (0, 0),
-    'ItemSlot Icon localPos': (0, -2),
-    'ItemSlot Frame / FrameSelected / SelectGlow localPos': (0, 0),
-    'ItemSlot CountPill localPos': PILL_OFFSET,
-    'ItemSlot CountText localPos': (PILL_OFFSET[0], text_top(PILL_OFFSET[1] - 1, COUNT_TEXT_PX)),
+    'ItemSlot Backing / Icon / Frame / FrameSelected / SelectGlow localPos': (0, 0),
+    'ItemSlot CountPill localPos': NUT_OFFSET,
+    'ItemSlot CountText localPos': (NUT_OFFSET[0], text_top(NUT_OFFSET[1], COUNT_TEXT_PX)),
 }
 GEOMETRY.update({f'Hints {k} localPos': v if k.endswith('Glyph') else (v[0], text_top(v[1], HINT_TEXT_PX))
                  for k, v in HINT_LAYOUT.items()})
@@ -303,7 +366,7 @@ def write_sprite(out_dir, name, image):
 
 # ---------------------------------------------------------------- プレビュー (ItemBar::PresentSlots と同じ処理)
 def fade(im, alpha):
-    a = np.asarray(im, np.float32)
+    a = np.asarray(im, np.float32).copy()
     a[..., 3] *= alpha
     return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8), 'RGBA')
 
@@ -326,80 +389,83 @@ def paste_centred(canvas, im, centre, alpha, scale=1.0):
     canvas.alpha_composite(fade(im, alpha), (round(centre[0] - im.width / 2), round(centre[1] - im.height / 2)))
 
 
-def draw_strip(canvas, sprites, icons, entries, selected, origin, usable_rate, pulse, dim_alpha=140 / 255.0,
-               empty_rate=0.4):
+def outlined(draw, xy, s, px, fill, alpha):
+    stroke = max(1, round(3 * px / 60))
+    draw.text(xy, s, font=ImageFont.truetype(str(NAME_FONT), px), anchor='mm', fill=fill + (int(255 * alpha),),
+              stroke_width=stroke, stroke_fill=NAME_OUTLINE[:3] + (int(255 * alpha),))
+
+
+def draw_strip(canvas, sprites, icons, entries, selected, origin, usable_rate, pulse, empty_rate=0.4):
     count = len(entries)
-    font_count = ImageFont.truetype(str(LABEL_FONT), COUNT_TEXT_PX)
-    font_name = ImageFont.truetype(str(LABEL_FONT), NAME_TEXT_PX)
     font_hint = ImageFont.truetype(str(LABEL_FONT), HINT_TEXT_PX)
     centre_slot = count // 2
+    dim_rate = DIM_ALPHA / 255.0
 
     for i in range(count):
         pouch_index = (selected + i - centre_slot) % count
         icon_name, _, num = entries[pouch_index]
         is_selected = (i == centre_slot)
         scale = 1.0 if is_selected else UNSELECTED_SCALE
-        alpha = usable_rate * (1.0 if is_selected else dim_alpha)
-        content = usable_rate * (1.0 if num > 0 else empty_rate) * (1.0 if is_selected else dim_alpha)
+        alpha = usable_rate * (1.0 if is_selected else dim_rate)
+        content = alpha * (1.0 if num > 0 else empty_rate)
         cx = origin[0] - (count - 1 - i) * SLOT_PITCH
         cy = origin[1]
 
         paste_centred(canvas, sprites['ItemSlot_Backing'], (cx, cy), alpha, scale)
-        paste_centred(canvas, icons[icon_name], (cx, cy - 2 * scale), content, scale)
+        paste_centred(canvas, icons[icon_name], (cx, cy), content, scale)
         paste_centred(canvas, sprites['ItemSlot_FrameSelected' if is_selected else 'ItemSlot_Frame'],
                       (cx, cy), alpha, scale)
         if is_selected and pulse > 0:
             glow = sprites['ItemSlot_SelectGlow']
-            canvas_size = canvas.size
-            glow_scaled = glow.resize((round(glow.width * scale), round(glow.height * scale)), Image.LANCZOS)
-            canvas = add_layer(canvas, glow_scaled,
-                               (round(cx - glow_scaled.width / 2), round(cy - glow_scaled.height / 2)),
+            canvas = add_layer(canvas, glow, (round(cx - glow.width / 2), round(cy - glow.height / 2)),
                                pulse * 210 / 255.0)
-            del canvas_size
-        pill = sprites['ItemCount_Pill']
-        px, py = cx + PILL_OFFSET[0] * scale, cy + PILL_OFFSET[1] * scale
-        paste_centred(canvas, pill, (px, py), content, scale)
-        draw = ImageDraw.Draw(canvas)
-        draw.text((px, py - 1), str(num), font=font_count, anchor='mm',
-                  fill=((255, 206, 104) if is_selected else (196, 208, 212)) + (int(255 * content),))
+        px, py = cx + NUT_OFFSET[0] * scale, cy + NUT_OFFSET[1] * scale
+        paste_centred(canvas, sprites['ItemCount_Pill'], (px, py), content, scale)
+        outlined(ImageDraw.Draw(canvas), (px, py), str(num), round(COUNT_TEXT_PX * scale),
+                 COUNT_SELECTED_COLOR if is_selected else COUNT_COLOR, content)
 
     # 名前プレートは中央の枠の真上
     name_cx = origin[0] - (count - 1 - centre_slot) * SLOT_PITCH
-    plate = sprites['ItemName_Plate']
-    paste_centred(canvas, plate, (name_cx, origin[1] + NAME_OFFSET_Y), usable_rate)
+    paste_centred(canvas, sprites['ItemName_Plate'], (name_cx, origin[1] + NAME_OFFSET_Y), usable_rate)
     draw = ImageDraw.Draw(canvas)
-    draw.text((name_cx + 6, origin[1] + NAME_OFFSET_Y - NAME_TAIL / 2), entries[selected][1], font=font_name,
-              anchor='mm', fill=(228, 240, 242, int(255 * usable_rate)))
+    outlined(draw, (name_cx, origin[1] + NAME_OFFSET_Y), entries[selected][1], NAME_TEXT_PX, (255, 255, 255),
+             usable_rate)
 
     for key_name, (ox, oy) in HINT_LAYOUT.items():
         pos = (origin[0] + ox, origin[1] + oy)
         if key_name.endswith('Glyph'):
-            sprite = sprites['ItemBar_Pad_DPadLR' if key_name.startswith('Cycle') else 'ItemBar_Pad_LB']
+            sprite = sprites['ItemBar_Key_ZX' if key_name.startswith('Cycle') else 'ItemBar_Key_R']
             paste_centred(canvas, sprite, pos, usable_rate)
         else:
-            draw.text(pos, '切替' if key_name.startswith('Cycle') else '使用', font=font_hint, anchor='mm',
-                      fill=(206, 216, 220, int(255 * usable_rate)))
+            draw.text(pos, HINT_TEXT[key_name], font=font_hint, anchor='mm',
+                      fill=(255, 255, 255, int(255 * usable_rate)))
     return canvas
 
 
-def render_preview(sprites, icons, path):
-    entries = [('Icon_Potion', '回復薬グレート', 5), ('Icon_Meat', 'こんがり肉', 3),
-               ('Icon_Bomb', '大タル爆弾G', 0)]
-    panels = [('待機（回復薬を選択）', 0, 1.0, 0.0),
-              ('こんがり肉へ切替した瞬間', 1, 1.0, 1.0),
-              ('使い切った大タル爆弾G', 2, 1.0, 0.0),
-              ('攻撃中（使えない）', 0, 0.6, 0.0)]
+ENTRIES = [('Icon_Bomb', '大タル爆弾G', 3), ('Icon_Potion', '回復薬グレート', 6), ('Icon_Meat', 'こんがり肉', 0)]
 
-    W, H = 520, 260
+
+def render_preview(sprites, icons, path, shot=None):
+    if shot:
+        canvas = Image.open(shot).convert('RGBA').resize((1920, 1080))
+        canvas = draw_strip(canvas, sprites, icons, ENTRIES, 1, ROOT_POS, 1.0, 0.0)
+        canvas.convert('RGB').save(path)
+        return
+
+    panels = [('待機（回復薬を選択）', 1, 1.0, 0.0),
+              ('こんがり肉へ切替した瞬間（使い切り）', 2, 1.0, 1.0),
+              ('大タル爆弾Gを選択', 0, 1.0, 0.0),
+              ('攻撃中（使えない）', 1, 0.6, 0.0)]
+    W, H = 560, 300
     sheet = Image.new('RGB', (W * 2, H * 2), (0, 0, 0))
     cap = ImageFont.truetype(str(LABEL_FONT), 20)
     for i, (title, selected, usable, pulse) in enumerate(panels):
         panel = Image.new('RGBA', (W, H), (60, 74, 52, 255))
         grad = np.linspace(0.55, 1.0, H, dtype=np.float32)[:, None, None]
-        arr = np.asarray(panel, np.float32)
+        arr = np.asarray(panel, np.float32).copy()
         arr[..., :3] *= grad
         panel = Image.fromarray(arr.astype(np.uint8), 'RGBA')
-        panel = draw_strip(panel, sprites, icons, entries, selected, (W - 32, H / 2 + 10), usable, pulse)
+        panel = draw_strip(panel, sprites, icons, ENTRIES, selected, (W - 64, H / 2 + 20), usable, pulse)
         ImageDraw.Draw(panel).text((12, 8), title, font=cap, fill=(255, 255, 255, 255))
         sheet.paste(panel.convert('RGB'), ((i % 2) * W, (i // 2) * H))
     sheet.save(path)
@@ -410,6 +476,7 @@ def main():
     ap.add_argument('--out-dir', default='Assets/Art/UI/ItemBar')
     ap.add_argument('--icon-dir', default='Assets/Art/UI/Item')
     ap.add_argument('--preview', help='also write a composite of pouch states to this PNG path')
+    ap.add_argument('--shot', help='with --preview: draw the strip onto this 1920x1080 screenshot instead')
     args = ap.parse_args()
 
     out_dir = Path(args.out_dir)
@@ -438,7 +505,7 @@ def main():
         print(f"  {k} = {v}")
 
     if args.preview:
-        render_preview(sprites, icons, args.preview)
+        render_preview(sprites, icons, args.preview, args.shot)
         print(f"preview -> {args.preview}")
 
 

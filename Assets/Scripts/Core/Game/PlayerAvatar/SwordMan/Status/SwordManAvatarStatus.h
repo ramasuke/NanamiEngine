@@ -163,7 +163,7 @@ namespace GameCore::PlayerAvatar::SwordMan
         [[serialize(9)]] std::vector<HitFeelParam> comboHitFeel_;
         [[serialize(9)]] HitFeelParam dashHitFeel_; 
         [[serialize(9)]] float comboInputBufferWindow_secs_;
-        [[serialize(11)]] float chargeAttackHoldThreshold_secs_; ///< NormalAttack開始からこの時間押し続けたら溜めへ移行(1段目の発生より短くする)
+        [[serialize(11)]] float chargeAttackHoldThreshold_secs_; ///< 攻撃ボタンを押してから溜め始めるまでの構えの時間
         [[serialize(11)]] float chargeAttackMaxCharge_secs_;     ///< 溜め開始から最大溜めに達するまでの時間。これ未満で離すと通常コンボ
         [[serialize(11)]] float chargeAttackMaxHold_secs_;       ///< 最大溜めのまま保持できる上限。超えると自動解放
         [[serialize(11)]] AttackParam<Damage::PhysicsPower> chargeAttack_;
